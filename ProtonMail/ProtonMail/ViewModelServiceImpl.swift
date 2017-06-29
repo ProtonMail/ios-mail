@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ProtonMailCommon
 
 let sharedVMService : ViewModelService = ViewModelServiceImpl()
 class ViewModelServiceImpl: ViewModelService {

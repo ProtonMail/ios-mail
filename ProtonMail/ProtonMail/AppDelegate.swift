@@ -16,6 +16,8 @@
 import UIKit
 import Fabric
 import Crashlytics
+import ProtonMailCommon
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder {

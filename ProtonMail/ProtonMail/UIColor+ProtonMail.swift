@@ -17,7 +17,7 @@ import UIKit
 
 extension UIColor {
     
-    convenience init(RRGGBB: UInt, alpha: CGFloat) {
+    public convenience init(RRGGBB: UInt, alpha: CGFloat) {
         self.init(
             red: CGFloat((RRGGBB & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((RRGGBB & 0x00FF00) >> 8) / 255.0,
@@ -26,7 +26,7 @@ extension UIColor {
         )
     }
     
-    convenience init(RRGGBB: UInt) {
+    public convenience init(RRGGBB: UInt) {
         self.init(
             red: CGFloat((RRGGBB & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((RRGGBB & 0x00FF00) >> 8) / 255.0,
@@ -35,7 +35,7 @@ extension UIColor {
         )
     }
     
-    convenience init(r: CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) {
+    public convenience init(r: CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) {
         self.init(
             red: r / 255.0,
             green: g / 255.0,
@@ -44,39 +44,40 @@ extension UIColor {
         )
     }
     
-    internal struct ProtonMail {
-        static let Blue_475F77 = UIColor(RRGGBB: UInt(0x475F77))
-        static let Blue_85B1DE = UIColor(RRGGBB: UInt(0x85B1DE))
-        static let Blue_5C7A99 = UIColor(RRGGBB: UInt(0x5C7A99))
-        static let Blue_6789AB = UIColor(RRGGBB: UInt(0x6789AB))
-        static let Gray_383A3B = UIColor(RRGGBB: UInt(0x383A3B))
-        static let Gray_FCFEFF = UIColor(RRGGBB: UInt(0xFCFEFF))
-        static let Gray_C9CED4 = UIColor(RRGGBB: UInt(0xC9CED4))
-        static let Gray_E8EBED = UIColor(RRGGBB: UInt(0xE8EBED))
-        static let Gray_999DA1 = UIColor(RRGGBB: UInt(0x999DA1))
-        static let Red_D74B4B = UIColor(RRGGBB: UInt(0xD74B4B))
-        static let Red_FF5959 = UIColor(RRGGBB: UInt(0xFF5959))
+    public struct ProtonMail {
+
+        public static let Blue_475F77 = UIColor(RRGGBB: UInt(0x475F77))
+        public static let Blue_85B1DE = UIColor(RRGGBB: UInt(0x85B1DE))
+        public static let Blue_5C7A99 = UIColor(RRGGBB: UInt(0x5C7A99))
+        public static let Blue_6789AB = UIColor(RRGGBB: UInt(0x6789AB))
+        public static let Gray_383A3B = UIColor(RRGGBB: UInt(0x383A3B))
+        public static let Gray_FCFEFF = UIColor(RRGGBB: UInt(0xFCFEFF))
+        public static let Gray_C9CED4 = UIColor(RRGGBB: UInt(0xC9CED4))
+        public static let Gray_E8EBED = UIColor(RRGGBB: UInt(0xE8EBED))
+        public static let Gray_999DA1 = UIColor(RRGGBB: UInt(0x999DA1))
+        public static let Red_D74B4B = UIColor(RRGGBB: UInt(0xD74B4B))
+        public static let Red_FF5959 = UIColor(RRGGBB: UInt(0xFF5959))
         
         
-        static let Menu_UnreadCountBackground = UIColor(RRGGBB: UInt(0x8182C3))
-        static let Menu_UnSelectBackground = UIColor(RRGGBB: UInt(0x505061))
-        static let Menu_SelectedBackground = UIColor(RRGGBB: UInt(0x2F2E3C))
+        public static let Menu_UnreadCountBackground = UIColor(RRGGBB: UInt(0x8182C3))
+        public static let Menu_UnSelectBackground = UIColor(RRGGBB: UInt(0x505061))
+        public static let Menu_SelectedBackground = UIColor(RRGGBB: UInt(0x2F2E3C))
         
-        static let Nav_Bar_Background = UIColor(RRGGBB: UInt(0x505061))
+        public static let Nav_Bar_Background = UIColor(RRGGBB: UInt(0x505061))
     
         
-        static let Login_Background_Gradient_Left = UIColor(red: 147/255, green: 151/255, blue: 205/255, alpha: 0.9)
-        static let Login_Background_Gradient_Right = UIColor(red: 23/255, green: 41/255, blue: 131/255, alpha: 0.9)
-        static let Login_Button_Border_Color = UIColor(RRGGBB: UInt(0x9397CD))
+        public  static let Login_Background_Gradient_Left = UIColor(red: 147/255, green: 151/255, blue: 205/255, alpha: 0.9)
+        public static let Login_Background_Gradient_Right = UIColor(red: 23/255, green: 41/255, blue: 131/255, alpha: 0.9)
+        public static let Login_Button_Border_Color = UIColor(RRGGBB: UInt(0x9397CD))
         
         
-        static let MessageCell_UnRead_Color = UIColor(RRGGBB: UInt(0xFFFFFF))
-        static let MessageCell_Read_Color = UIColor(RRGGBB: UInt(0xF2F3F7))
+        public static let MessageCell_UnRead_Color = UIColor(RRGGBB: UInt(0xFFFFFF))
+        public static let MessageCell_Read_Color = UIColor(RRGGBB: UInt(0xF2F3F7))
     
         
-        static let TextFieldTintColor = UIColor.white
+        public static let TextFieldTintColor = UIColor.white
         
-        static let MessageActionTintColor = UIColor(hexString: "#9397cd", alpha: 1.0)
+        public static let MessageActionTintColor = UIColor(hexString: "#9397cd", alpha: 1.0)
     }
 }
 
@@ -84,7 +85,7 @@ extension UIColor {
 extension UIColor
 {
     
-    convenience init(hexColorCode: String)
+    public convenience init(hexColorCode: String)
     {
         var red:   CGFloat = 0.0
         var green: CGFloat = 0.0
@@ -162,7 +163,7 @@ extension UIColor
     
     
     */
-    convenience init(hexString: String, alpha: Float)
+    public convenience init(hexString: String, alpha: Float)
     {
         var hex = hexString
         
@@ -217,8 +218,7 @@ extension UIColor
     let secondColor: UIColor = UIColor(hex: 0xff8942, alpha: 0.5)
     
     */
-    
-    convenience init(hex: Int, alpha: Float)
+    public convenience init(hex: Int, alpha: Float)
     {
         let hexString = NSString(format: "%2X", hex)
         self.init(hexString: hexString as String, alpha: alpha)

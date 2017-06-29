@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ProtonMailCommon
 
 class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     

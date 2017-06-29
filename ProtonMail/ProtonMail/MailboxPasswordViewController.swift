@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import ProtonMailCommon
 
 class MailboxPasswordViewController: UIViewController {
     let animationDuration: TimeInterval = 0.5

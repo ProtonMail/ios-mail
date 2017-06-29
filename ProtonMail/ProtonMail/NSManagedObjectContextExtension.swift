@@ -16,7 +16,7 @@
 
 import Foundation
 import CoreData
-
+import ProtonMailCommon
 
 extension NSManagedObjectContext {
     

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>ProtonMail-Beta</string>
+	<string>ProtonMail</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -22,28 +22,28 @@
 	<string>1</string>
 	<key>NSExtension</key>
 	<dict>
-        <key>NSExtensionPrincipalClass</key>
-        <string>ShareExtensionEntry</string>
 		<key>NSExtensionAttributes</key>
 		<dict>
-            <key>NSExtensionActivationRule</key>
-            <dict>
-                <key>NSExtensionActivationRule</key>
-                <string>TRUEPREDICATE</string>
-                <key>NSExtensionActivationSupportsFileWithMaxCount</key>
-                <integer>1</integer>
-                <key>NSExtensionActivationSupportsImageWithMaxCount</key>
-                <integer>1</integer>
-                <key>NSExtensionActivationSupportsMovieWithMaxCount</key>
-                <integer>0</integer>
-                <key>NSExtensionActivationSupportsText</key>
-                <true/>
-                <key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
-                <integer>1</integer>
-            </dict>
+			<key>NSExtensionActivationRule</key>
+			<dict>
+				<key>NSExtensionActivationRule</key>
+				<string>TRUEPREDICATE</string>
+				<key>NSExtensionActivationSupportsFileWithMaxCount</key>
+				<integer>1</integer>
+				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
+				<integer>1</integer>
+				<key>NSExtensionActivationSupportsMovieWithMaxCount</key>
+				<integer>0</integer>
+				<key>NSExtensionActivationSupportsText</key>
+				<true/>
+				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
+				<integer>1</integer>
+			</dict>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
+		<key>NSExtensionPrincipalClass</key>
+		<string>ShareExtensionEntry</string>
 	</dict>
 </dict>
 </plist>

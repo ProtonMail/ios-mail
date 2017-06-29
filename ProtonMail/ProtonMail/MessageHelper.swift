@@ -8,6 +8,8 @@
 
 import Foundation
 import CoreData
+import ProtonMailCommon
+
 
 
 open class MessageHelper {

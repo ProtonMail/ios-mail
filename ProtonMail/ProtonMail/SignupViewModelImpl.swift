@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import ProtonMailCommon
 
 open class SignupViewModelImpl : SignupViewModel {
     fileprivate var userName : String = ""

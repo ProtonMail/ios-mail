@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import ProtonMailCommon
+
 
 open class LabelApplyViewModelImpl : LabelViewModel {
     fileprivate var messages : [Message]!

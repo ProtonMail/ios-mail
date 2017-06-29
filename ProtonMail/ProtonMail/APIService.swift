@@ -16,6 +16,7 @@
 
 import CoreData
 import Foundation
+import ProtonMailCommon
 
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")

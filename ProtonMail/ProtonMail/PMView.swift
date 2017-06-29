@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import ProtonMailCommon
+
 
 extension PMView {
     func getNibName() -> String {

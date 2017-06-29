@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import ProtonMailCommon
 
 
 /// Auth extension

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ProtonMailCommon
 
 
 typealias CheckUserNameBlock = (Bool, NSError?) -> Void

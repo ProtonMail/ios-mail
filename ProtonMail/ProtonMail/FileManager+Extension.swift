@@ -18,7 +18,7 @@ import Foundation
 
 extension FileManager {
     
-    var applicationSupportDirectoryURL: URL {
+    public var applicationSupportDirectoryURL: URL {
         let urls = self.urls(for: .applicationSupportDirectory, in: .userDomainMask) 
         let applicationSupportDirectoryURL = urls.first!
         //TODO:: need to handle the ! when empty
@@ -32,7 +32,7 @@ extension FileManager {
         return applicationSupportDirectoryURL
     }
     
-    var cachesDirectoryURL: URL {
+    public var cachesDirectoryURL: URL {
         let urls = self.urls(for: .cachesDirectory, in: .userDomainMask) 
         return urls.first!
     }

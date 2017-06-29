@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import ProtonMailCommon
 
 
 //TODO:: this class need split to label & folder later

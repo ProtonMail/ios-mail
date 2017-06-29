@@ -9,6 +9,7 @@
 import UIKit
 import Fabric
 import Crashlytics
+import ProtonMailCommon
 
 class SignUpEmailViewController: UIViewController {
     

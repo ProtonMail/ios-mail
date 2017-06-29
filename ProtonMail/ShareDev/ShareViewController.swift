@@ -43,40 +43,39 @@ class ShareViewController : UIViewController {
     }
 
     func cancelButtonTapped(sender: UIBarButtonItem) {
-        self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
-            self.extensionContext?.cancelRequest(withError: )
-            //            self.extensionContext!.cancelRequest(withError: NSError())
-        })
+        let dismiss: (() -> Void) = {
+            self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
+                //self.extensionContext!.cancelRequest(withError: NSError())
+            })
+        }
+        
+        //if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
+        let alertController = UIAlertController(title: "Confirmation", message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Save draft", style: .default, handler: { (action) -> Void in
+            //                self.stopAutoSave()
+            //                self.collectDraft()
+            //                self.viewModel.updateDraft()
+            dismiss()
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: "Discard draft", style: .destructive, handler: { (action) -> Void in
+            //                self.stopAutoSave()
+            //                self.viewModel.deleteDraft()
+            dismiss()
+        }))
+        
+        alertController.popoverPresentationController?.barButtonItem = sender
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
+        present(alertController, animated: true, completion: nil)
+        
+//        self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
+//            //self.extensionContext?.cancelRequest(withError: )
+//            //self.extensionContext!.cancelRequest(withError: NSError())
+//        })
     }
     
 //    @IBAction func cancelAction(_ sender: UIBarButtonItem) {
-//        let dismiss: (() -> Void) = {
-//            self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
-//                self.extensionContext!.cancelRequest(withError: NSError())
-//            })
-//        }
-//        
-//        //if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
-//        let alertController = UIAlertController(title: "Confirmation", message: nil, preferredStyle: .actionSheet)
-//        alertController.addAction(UIAlertAction(title: "Save draft", style: .default, handler: { (action) -> Void in
-//            //                self.stopAutoSave()
-//            //                self.collectDraft()
-//            //                self.viewModel.updateDraft()
-//            dismiss()
-//        }))
-//        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-//        alertController.addAction(UIAlertAction(title: "Discard draft", style: .destructive, handler: { (action) -> Void in
-//            //                self.stopAutoSave()
-//            //                self.viewModel.deleteDraft()
-//            dismiss()
-//        }))
-//        
-//        alertController.popoverPresentationController?.barButtonItem = sender
-//        alertController.popoverPresentationController?.sourceRect = self.view.frame
-//        present(alertController, animated: true, completion: nil)
-//        //        } else {
-//        //            dismiss()
-//        //        }
+
 //
 //    }
 //    

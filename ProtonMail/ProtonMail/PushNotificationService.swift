@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import ProtonMailCommon
 
 let sharedPushNotificationService = PushNotificationService()
 

@@ -7,6 +7,10 @@
 //
 
 import Foundation
+import ProtonMailCommon
+
+
+
 extension APIService {
     
     fileprivate struct TransType {

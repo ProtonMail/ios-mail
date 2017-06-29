@@ -16,6 +16,7 @@
 
 import Foundation
 import CoreData
+import ProtonMailCommon
 
 let sharedContactDataService = ContactDataService()
 

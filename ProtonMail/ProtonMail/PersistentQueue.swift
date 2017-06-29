@@ -16,7 +16,7 @@
 
 import Foundation
 
-class PersistentQueue {
+public class PersistentQueue {
     
     struct Key {
         static let elementID = "elementID"
@@ -39,11 +39,11 @@ class PersistentQueue {
     fileprivate var queueName: String
     
     /// Number of objects in the Queue
-    var count: Int {
+    public var count: Int {
         return self.queue.count
     }
     
-    func getQueue() -> [Any]
+    public func getQueue() -> [Any]
     {
         return self.queue
     }
@@ -60,25 +60,25 @@ class PersistentQueue {
         }
     }
     
-    func add (_ uuid: UUID, object: NSCoding) -> UUID {
+    public func add (_ uuid: UUID, object: NSCoding) -> UUID {
         let element = [Key.elementID : uuid, Key.object : object] as [String : Any]
         self.queue.append(element)
         return uuid
     }
     
     /// Adds an object to the persistent queue.
-    func add(_ object: NSCoding) -> UUID {
+    public func add(_ object: NSCoding) -> UUID {
         let uuid = UUID()
         return self.add(uuid, object: object)
     }
     
     /// Clears the persistent queue.
-    func clear() {
+    public func clear() {
         queue.removeAll()
     }
     
     /// Returns the next item in the persistent queue or nil, if the queue is empty.
-    func next() -> (elementID: UUID, object: Any)? {
+    public func next() -> (elementID: UUID, object: Any)? {
         if let element = queue.first as? [String : Any] {
             return (element[Key.elementID] as! UUID, element[Key.object]!)
         }
@@ -86,7 +86,7 @@ class PersistentQueue {
     }
     
     /// Removes an element from the persistent queue
-    func remove(_ elementID: UUID) -> Bool {
+    public func remove(_ elementID: UUID) -> Bool {
         for (index, element) in queue.enumerated() {
             if let elementDict = element as? [String : Any], let kID = elementDict[Key.elementID] as? UUID{
                 if kID == elementID {

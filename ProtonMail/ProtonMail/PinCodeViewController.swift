@@ -12,6 +12,7 @@ import UIKit
 import Fabric
 import Crashlytics
 import LocalAuthentication
+import ProtonMailCommon
 
 protocol PinCodeViewControllerDelegate {
     func Cancel()

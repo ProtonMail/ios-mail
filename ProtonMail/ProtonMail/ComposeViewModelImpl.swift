@@ -8,6 +8,7 @@
 
 import Foundation
 
+import ProtonMailCommon
 
 open class ComposeViewModelImpl : ComposeViewModel {
     

@@ -8,6 +8,8 @@
 
 import Foundation
 import CoreData
+import ProtonMailCommon
+
 
 
 let sharedLabelsDataService = LabelsDataService()
