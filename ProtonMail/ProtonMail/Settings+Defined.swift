@@ -37,6 +37,31 @@ extension ELanguage {
         }
     }
     
+    var localeString : String {
+        get {
+            switch(self) {
+            case .english:
+                return "en_US"
+            case .german:
+                return "de_DE"
+            case .french:
+                return "fr_FR"
+            case .russian:
+                return "ru_RU"
+            case .spanish:
+                return "es_ES"
+            case .turkish:
+                return "tr_TR"
+            case .polish:
+                return "pl_PL"
+            case .ukrainian:
+                return "uk_UA"
+            default:
+                return "en_US"
+            }
+        }
+    }
+    
     var code : String {
         get {
             switch(self) {
