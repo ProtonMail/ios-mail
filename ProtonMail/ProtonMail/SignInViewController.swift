@@ -67,6 +67,7 @@ class SignInViewController: ProtonMailViewController {
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var forgotPwdButton: UIButton!
     
+    @IBOutlet weak var languagesLabel: UILabel!
     
     // Constraints
     @IBOutlet weak var userLeftPaddingConstraint: NSLayoutConstraint!
@@ -115,7 +116,37 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
+    @IBAction func changeLanguagesAction(_ sender: UIButton) {
+        let current_language = LanguageManager.currentLanguageEnum()
+        let title = NSLocalizedString("Current Language is: ", comment: "Change language title") + current_language.description
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        for l in ELanguage.allItems() {
+            if l != current_language {
+                alertController.addAction(UIAlertAction(title: l.description, style: .default, handler: { (action) -> Void in
+                    let _ = self.navigationController?.popViewController(animated: true)
+                    LanguageManager.saveLanguage(byCode: l.code)
+                    UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+                        self.setupTextFields()
+                        self.setupButtons()
+                        self.setupVersionLabel()
+                        self.view.layoutIfNeeded()
+                    }, completion: nil)
+
+                }))
+            }
+        }
+        
+        alertController.popoverPresentationController?.sourceView = sender
+        alertController.popoverPresentationController?.sourceRect = sender.bounds
+        present(alertController, animated: true, completion: nil)
+    }
+    
     fileprivate func setupVersionLabel () {
+
+        let language: ELanguage =  LanguageManager.currentLanguageEnum()
+        languagesLabel.text = language.description
+        
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
                 versionLabel.text = NSLocalizedString("v", comment: "versions first character ") + version + "(\(build))"
@@ -143,24 +174,6 @@ class SignInViewController: ProtonMailViewController {
             return SignInUIFlow.restore
         }
     }
-    
-//    internal func setText() {
-//        let s = String(format: NSLocalizedString("Username", comment: "Title"), "test" , "test2")
-//        let desc = String(format: NSLocalizedString("Unable to parse the response object:\n%@", comment: "Description"), "\(self)")
-//        let expire = String(format: NSLocalizedString("Expires in %d days %d hours %d mins %d seconds", comment: "Description"), 1, 2, 3, 44)
-//        let formattedMaxSpace = "200MB"
-//        let checkmessage = String(format: NSLocalizedString("You have used up all of your storage space (%@).", comment: ""), formattedMaxSpace);
-//        let check2message = String(format: NSLocalizedString("You have used %d%% of your storage space (%@).", comment: ""), AppConstants.SpaceWarningThreshold, formattedMaxSpace)
-//        
-//        let testPwd = NSLocalizedString("Password", comment: "Title");
-//        
-////        usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
-////        passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
-//        //signInTitle.text = NSLocalizedString("USER LOGIN", comment: "Title")
-//        signInButton.setTitle(NSLocalizedString("LOGIN", comment: "Title"), for: .normal)
-////        signUpButton.setTitle(NSLocalizedString("NEED AN ACCOUNT? SIGN UP.", comment: "Action"), forState: UIControlState.Normal)
-////        forgotPwd.setTitle(NSLocalizedString("FORGOT PASSWORD?"), forState: UIControlState.Normal)
-//    }
     
     func setupView() {
         if(isRemembered)
@@ -454,7 +467,6 @@ class SignInViewController: ProtonMailViewController {
         
         signUpButton.setTitle(NSLocalizedString("NEED AN ACCOUNT? SIGN UP.", comment: "Action"), for: .normal)
         forgotPwdButton.setTitle(NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd"), for: .normal)
-
     }
     
     fileprivate var cachedTwoCode : String?
