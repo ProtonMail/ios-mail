@@ -26,7 +26,7 @@
 "<no object>" = "<no object>";
 
 /* (No Commment) */
-"A message cannot have more than 5 labels" = "Сообщение не может иметь более 5 меток";
+"A message cannot have more than 5 labels" = "Сообщение не может иметь более 5 ярлыков";
 
 /* Description */
 "A new version of ProtonMail app is available, please update to latest version." = "Доступна новая версия ProtonMail, пожалуйста обновите приложение до последней версии.";
@@ -45,10 +45,10 @@
 
 /* Description
    error message when acction disabled */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Доступ к этой учетной записи запрещен из-за неуплаты. Пожалуйста, войдите в систему, используя protonmail.com, чтобы оплатить счет.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Доступ к этой учетной записи приостановлен из-за неуплаты. Пожалуйста, войдите в систему, используя protonmail.com, чтобы оплатить счет.";
 
 /* (No Commment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Доступ к этой учетной записи запрещен из-за неуплаты.
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Доступ к этой учетной записи приостановлен из-за неуплаты.
 
 Пожалуйста, посетите <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">нашу базу знаний</a> для получения дополнительной информации.";
 
@@ -73,10 +73,10 @@
 "Add New Folder" = "Добавить новую папку";
 
 /* Title */
-"Add New Label" = "Добавить новую метку";
+"Add New Label" = "Добавить новый ярлык";
 
 /* Action */
-"Add Star" = "Отметить звездочкой";
+"Add Star" = "В избранное";
 
 /* alert title
    Error
@@ -104,7 +104,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Apply" = "Применить";
 
 /* Title */
-"Apply Labels" = "Применить метки";
+"Apply Labels" = "Применить ярлыки";
 
 /* Title */
 "Archive" = "Архив";
@@ -154,7 +154,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Bad response" = "Неверный ответ";
 
 /* Title */
-"Bcc" = "BCC";
+"Bcc" = "Cкрытая копия";
 
 /* Title */
 "Bug Description" = "Описание ошибки";
@@ -163,7 +163,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Bug Report Received" = "Отчёт об ошибке получен";
 
 /* agree check box first part words */
-"By using protonmail, you agree to our" = "Используя protonmail, вы согласны с нашими";
+"By using protonmail, you agree to our" = "Используя ProtonMail, вы согласны с нашими";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -173,7 +173,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "CONFIRM" = "ПОДТВЕРДИТЬ";
 
 /* Title */
-"CONTACTS" = "Контакты";
+"CONTACTS" = "КОНТАКТЫ";
 
 /* setup pin action */
 "CREATE" = "СОЗДАТЬ";
@@ -228,8 +228,8 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 
 /* Action
    folder apply - cancel button text
-   Title
-   title */
+   title
+   Title */
 "Cancel" = "Отменить";
 
 /* Action */
@@ -366,7 +366,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Current password" = "Текущий пароль";
 
 /* Title */
-"DECRYPT MAILBOX" = "Расшифровка почтового ящика";
+"DECRYPT MAILBOX" = "РАСШИФРОВКА ПОЧТОВОГО ЯЩИКА";
 
 /* Title */
 "DISPLAY NAME" = "ОТОБРАЖАЕМОЕ ИМЯ";
@@ -458,7 +458,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Edit Folder" = "Редактировать папку";
 
 /* Title */
-"Edit Label" = "Редактировать метку";
+"Edit Label" = "Редактировать ярлык";
 
 /* Placeholder */
 "Email" = "Email";
@@ -480,7 +480,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Email domain invalid" = "Некорректный домен электронной почты";
 
 /* Action */
-"Empty Folder" = "Пустая папка";
+"Empty Folder" = "Очистить папку";
 
 /* Test */
 "Enable - Test" = "Включить - Тест";
@@ -507,7 +507,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Encrypted for outside reply" = "Зашифровано для внешних ответов";
 
 /* Title */
-"Encrypted from outside" = "Зашифровано вне Protonmail";
+"Encrypted from outside" = "Зашифровано извне ProtonMail";
 
 /* Title */
 "Encrypted from outside pgp inline" = "Зашифрованно вне Protonmail, используя pgp-inline";
@@ -657,7 +657,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Incorrect password" = "Неверный пароль";
 
 /* place holder */
-"Input Display Name ..." = "Ввод отображаемого имени...";
+"Input Display Name ..." = "Введите отображаемое имя...";
 
 /* place holder */
 "Input Notification Email ..." = "Введите электронную почту для уведомлений...";
@@ -702,20 +702,20 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "LOGIN" = "Вход";
 
 /* Title */
-"Label Management" = "Управление метками";
+"Label Management" = "Управление ярлыками";
 
 /* createing lable input place holder
    place holder */
-"Label Name" = "Имя метки";
+"Label Name" = "Имя ярлыка";
 
 /* Title */
-"Label as..." = "Отметить как...";
+"Label as..." = "Отметить ярлыком...";
 
 /* Title */
 "Labels have been applied." = "Ярлыки применены.";
 
 /* Title */
-"Labels/Folders" = "Метки/Папки";
+"Labels/Folders" = "Ярлыки/Папки";
 
 /* Title */
 "Language" = "Язык";
@@ -764,7 +764,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Mailbox password doesn't match" = "Пароли почтового ящика не совпадают";
 
 /* Title */
-"Manage Labels/Folders" = "Управление метками и папками";
+"Manage Labels/Folders" = "Управление ярлыками / папками";
 
 /* Action */
 "Mark Read" = "Пометить как прочитанное";
@@ -937,7 +937,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Phone number invalid" = "Некорректный номер телефона";
 
 /* Title */
-"Photo Library" = "Библиотека фотографий";
+"Photo Library" = "Медиатека";
 
 /* Description */
 "Pin code can't be empty." = "PIN-код не может быть пустым.";
@@ -965,13 +965,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Please pick a user name first!" = "Пожалуйста, для начала выберите имя пользователя!";
 
 /* Error */
-"Please remove all attachments before changing sender!" = "Пожалуйста, удалите все вложения перед тем, как изменить отправителя";
+"Please remove all attachments before changing sender!" = "Пожалуйста, удалите все вложения перед сменой отправителя";
 
 /* human check select option title */
 "Please select one of the following options:" = "Пожалуйста, выберите одну из следующих настроек:";
 
 /* Description */
-"Please set a password." = "Пожалуйста, установите пароль.";
+"Please set a password." = "Пожалуйста, задайте пароль.";
 
 /* Error
    error message when create new user */
@@ -979,7 +979,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 
 /* Error
    error message when create new user */
-"Please try a different email address." = "Пожалуйста, попробуйте другие адреса электронной почты.";
+"Please try a different email address." = "Пожалуйста, попробуйте другой адрес электронной почты.";
 
 /* Error
    error message when create new user */
@@ -1018,7 +1018,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "ProtonMail" = "ProtonMail";
 
 /* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus требуется настройка вашей мобильной подписи";
+"ProtonMail Plus is required to customize your mobile signature" = "Для настройки вашей мобильной подписи необходим ProtonMail Plus";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail не продаёт рекламу и не нарушает вашу приватность. Ваша поддержка крайне важна для продолжения работы ProtonMail. Вы можете приобрести платный аккаунт или внести пожертвование в поддержку ProtonMail.";
@@ -1166,7 +1166,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Set Password" = "Задать пароль";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Установить пароль для шифрования этого сообщение для пользователей вне ProtonMail.";
+"Set a password to encrypt this message for non-ProtonMail users." = "Задать пароль для шифрования этого сообщения для пользователей вне ProtonMail.";
 
 /* Signup passwords top title */
 "Set passwords" = "Установить пароли";
@@ -1269,14 +1269,14 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "The highest level of encryption available." = "Доступен наивысший уровень шифрования.";
 
 /* Description */
-"The label name is duplicate" = "Имя метки дублируется";
+"The label name is duplicate" = "Имя ярлыка дублируется";
 
 /* Description
    Error */
 "The mailbox password is incorrect." = "Неверный пароль почтового ящика.";
 
 /* (No Commment) */
-"The maximum number of labels is %d." = "Максимальное количество меток: %d.";
+"The maximum number of labels is %d." = "Максимальное количество ярлыков: %d.";
 
 /* Description */
 "The maximum number of labels is 20." = "Максимальное количество ярлыков: 20.";
@@ -1363,7 +1363,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Description
    settings touchid error
    Touch id error message */
-"TouchID not available" = "TouchID не доступен";
+"TouchID not available" = "TouchID недоступен";
 
 /* Action
    Title */
@@ -1517,7 +1517,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "You have unsaved changes. Do you want to save it?" = "У вас есть несохранённые изменения. Вы хотите сохранить их?";
 
 /* Description */
-"You have used %d%% of your storage space (%@)." = "Вы используете %d%% Вашего дискового пространства (%@).";
+"You have used %d%% of your storage space (%@)." = "Вы используете %d%% вашего дискового пространства (%@).";
 
 /* Description */
 "You have used up all of your storage space (%@)." = "Вы исчерпали всё дисковое пространство (%@).";

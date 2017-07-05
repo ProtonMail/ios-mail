@@ -10,8 +10,13 @@
 #import "LanguageManager.h"
 #import "NSBundle+Language.h"
 
-static NSString * const LanguageCodes[] = { @"en", @"de", @"fr", @"ru", @"es", @"tr" };
-static NSString * const LanguageStrings[] = { @"English", @"German", @"French", @"Russian", @"Spanish", @"Turkish" };
+static NSString * const LanguageCodes[] = { @"en", @"de", @"fr", @"ru", @"es",
+                                            @"tr", @"pl", @"uk" };
+
+static NSString * const LanguageStrings[] = { @"English", @"German", @"French",
+                                              @"Russian", @"Spanish", @"Turkish",
+                                              @"Polish", @"Ukrainian"};
+
 static NSString * const LanguageSaveKey = @"kProtonMailCurrentLanguageKey";
 
 @implementation LanguageManager

@@ -5,7 +5,7 @@
 "%d Minutes" = "%d minutes";
 
 /* Key size text */
-"(2048 bit)" = "(2048 bit)";
+"(2048 bit)" = "(2048 bits)";
 
 /* Key size text */
 "(4096 bit)" = "(4096 bits)";
@@ -20,13 +20,13 @@
 "*OPTIONAL" = "*FACULTATIF";
 
 /* Error */
-"2fa Authentication failed please try to login again" = "L'authentification à deux facteurs a échoué, veuillez tenter une nouvelle connexion";
+"2fa Authentication failed please try to login again" = "L'authentification à deux facteurs a échoué , veuillez vous connecter à nouveau";
 
 /* no object error, local only , this could be not translated! */
 "<no object>" = "<aucun objet>";
 
 /* (No Commment) */
-"A message cannot have more than 5 labels" = "Un message ne peut avoir plus de 5 étiquettes";
+"A message cannot have more than 5 labels" = "Un message ne peut avoir plus de 5 labels";
 
 /* Description */
 "A new version of ProtonMail app is available, please update to latest version." = "Une nouvelle version de l'application ProtonMail est disponible, veuillez mettre à jour vers la dernière version.";
@@ -34,7 +34,7 @@
 /* Description
    settings touchid error
    Touch id error message */
-"A passcode has not been set, enable it in the system Settings" = "Le code d’authentification n’a pas été défini, activez-le dans les paramètres du système";
+"A passcode has not been set, enable it in the system Settings" = "Un code d’authentification n’a pas été définie, activez-le dans les paramètres du système";
 
 /* Error
    Title */
@@ -45,7 +45,7 @@
 
 /* Description
    error message when acction disabled */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "L'accès à ce compte est désactivé pour cause de défaut de paiement. Veuillez vous connecter via protonmail.com pour régler votre facture impayée.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "L'accès à ce compte est désactivé pour cause de non-paiement. Veuillez vous connecter via protonmail.com pour payer votre facture impayée.";
 
 /* (No Commment) */
 "Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "L'accès à ce compte est désactivé pour cause de défaut de paiement. 
@@ -73,7 +73,7 @@ Veuillez vous rendre sur <a href=\"https://protonmail.com/support/knowledge-base
 "Add New Folder" = "Ajouter un nouveau dossier";
 
 /* Title */
-"Add New Label" = "Ajouter une nouvelle étiquette";
+"Add New Label" = "Ajouter un nouveau label";
 
 /* Action */
 "Add Star" = "Ajouter aux favoris";
@@ -104,7 +104,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Apply" = "Appliquer";
 
 /* Title */
-"Apply Labels" = "Appliquer les étiquettes";
+"Apply Labels" = "Appliquer les labels";
 
 /* Title */
 "Archive" = "Archive";
@@ -148,7 +148,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Bad parameter: %@" = "Mauvais paramètre: %@";
 
 /* Description */
-"Bad path" = "Chemin erroné";
+"Bad path" = "Chemin d'accès erroné";
 
 /* Description */
 "Bad response" = "Mauvaise réponse";
@@ -163,7 +163,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Bug Report Received" = "Rapport de bogue reçu";
 
 /* agree check box first part words */
-"By using protonmail, you agree to our" = "En utilisant protonmail, vous acceptez nos";
+"By using protonmail, you agree to our" = "En utilisant ProtonMail, vous acceptez nos";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -182,7 +182,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Can take several minutes to setup." = "Peut prendre plusieurs minutes à mettre en place.";
 
 /* Error */
-"Can't copy the file" = "Impossible de copier ce fichier";
+"Can't copy the file" = "Impossible de copier le fichier";
 
 /* update notification email error
    update password error */
@@ -200,10 +200,10 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Can't download message body, please try again." = "Impossible de télécharger le corps du message, veuillez réessayer.";
 
 /* Description */
-"Can't find the clicked message please try again!" = "Impossible trouver le message cliqué veuillez réessayer !";
+"Can't find the clicked message please try again!" = "Impossible trouver le message cliqué, veuillez réessayer !";
 
 /* when quick look attachment but can't find the data */
-"Can't find this attachment!" = "Impossible de trouver cette pièce jointe !";
+"Can't find this attachment!" = "Impossible de trouver cette pièce-jointe !";
 
 /* sign up user error when can't get moduls id
    update password error */
@@ -228,8 +228,8 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 
 /* Action
    folder apply - cancel button text
-   Title
-   title */
+   title
+   Title */
 "Cancel" = "Annuler";
 
 /* Action */
@@ -245,13 +245,13 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Cc:" = "Cc :";
 
 /* place holder */
-"Cell phone number" = "Numéro de téléphone";
+"Cell phone number" = "Numéro de téléphone portable";
 
 /* change password input label */
 "Change Login Password" = "Changer le mot de passe de connexion";
 
 /* Title */
-"Change Mailbox Password" = "Changer le mot de passe de la boite mail";
+"Change Mailbox Password" = "Changer le mot de passe de la boite de réception";
 
 /* update password error title */
 "Change Password" = "Changer le mot de passe";
@@ -281,7 +281,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Checking ...." = "Vérification...";
 
 /* place holder */
-"Choose a Password" = "Choisir un mot de passe";
+"Choose a Password" = "Choisissez un mot de passe";
 
 /* settings general section title */
 "Clear Local Message Cache" = "Vider le cache des messages locaux";
@@ -348,7 +348,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Create a new account" = "Créer un nouveau compte";
 
 /* Description */
-"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Créez et ajoutez des étiquettes pour organiser votre boîte de réception. Appuyez et maintenez sur un message pour afficher toutes les options.";
+"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Créez et ajoutez des labels pour organiser votre boîte de réception. Appuyez et maintenez sur un message pour afficher toutes les options.";
 
 /* error message title when create new user
    sign up user error
@@ -366,7 +366,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Current password" = "Mot de passe actuel";
 
 /* Title */
-"DECRYPT MAILBOX" = "DÉCRYPTER LA BOÎTE MAIL";
+"DECRYPT MAILBOX" = "DÉCHIFFRER LA BOÎTE DE RÉCEPTION";
 
 /* Title */
 "DISPLAY NAME" = "NOM D’AFFICHAGE";
@@ -401,7 +401,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Default error, please try again." = "Erreur par défaut, veuillez réessayer.";
 
 /* Placeholder */
-"Define Expiration Date" = "Définir la Date d’Expiration";
+"Define Expiration Date" = "Définir la date d'expiration";
 
 /* place holder
    Placeholder */
@@ -458,7 +458,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Edit Folder" = "Modifier le dossier";
 
 /* Title */
-"Edit Label" = "Modifier l'étiquette";
+"Edit Label" = "Modifier le label";
 
 /* Placeholder */
 "Email" = "E-mail";
@@ -604,7 +604,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Get more information" = "En savoir plus";
 
 /* Action */
-"Go to inbox" = "Allez dans votre boîte de réception";
+"Go to inbox" = "Allez dans la boîte de réception";
 
 /* Title */
 "Help & Support" = "Aide & Support";
@@ -645,7 +645,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Import File From..." = "Importer un fichier de...";
 
 /* Error */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Pour utiliser nos services vous devez acceptez les conditions générales d'utilisation de ProtonMail.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Pour utiliser nos services, vous devez acceptez les conditions générales d'utilisation de ProtonMail.";
 
 /* Title */
 "Inbox" = "Boîte de réception";
@@ -687,7 +687,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Invalid hashed password!" = "Mot de passe haché invalide !";
 
 /* Title */
-"Keep me updated about new features" = "Me tenir au courant des nouvelles fonctionnalités";
+"Keep me updated about new features" = "M'informer des nouvelles fonctionnalités";
 
 /* Error */
 "Key generation failed" = "La génération de clé a échoué";
@@ -702,11 +702,11 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "LOGIN" = "Connexion";
 
 /* Title */
-"Label Management" = "Gestion des étiquettes";
+"Label Management" = "Gestion des labels";
 
 /* createing lable input place holder
    place holder */
-"Label Name" = "Nom de l'étiquette";
+"Label Name" = "Nom du label";
 
 /* Title */
 "Label as..." = "Étiqueter comme...";
@@ -715,7 +715,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Labels have been applied." = "Les labels ont été appliqués.";
 
 /* Title */
-"Labels/Folders" = "Étiquettes/Dossiers";
+"Labels/Folders" = "Labels/Dossiers";
 
 /* Title */
 "Language" = "Langue";
@@ -736,7 +736,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Localizable.strings" = "Anglais";
 
 /* Title */
-"Lock The App" = "Verrouiller l'application";
+"Lock The App" = "Verrouiller l’App";
 
 /* touch id box title like Login: email@email.com */
 "Login" = "Connexion";
@@ -764,7 +764,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Mailbox password doesn't match" = "Le mot de passe de la boîte aux lettres ne correspond pas";
 
 /* Title */
-"Manage Labels/Folders" = "Gérer les Étiquettes/Dossiers";
+"Manage Labels/Folders" = "Gérer les labels/dossiers";
 
 /* Action */
 "Mark Read" = "Marquer comme lu";
@@ -803,7 +803,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Message sent" = "Message envoyé";
 
 /* Description */
-"Messages you send can be set to auto delete after a certain time period." = "Les messages que vous envoyez peuvent être réglés pour s'effacer automatiquement après un certain laps de temps.";
+"Messages you send can be set to auto delete after a certain time period." = "Les messages que vous envoyez peuvent être réglés pour s'auto-supprimer après un certain temps.";
 
 /* Title */
 "Mobile Signature" = "Signature Mobile";
@@ -855,7 +855,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "New login password" = "Nouveau mot de passe de connexion";
 
 /* Title */
-"New mailbox password" = "Nouveau mot de passe de boîte aux lettres";
+"New mailbox password" = "Nouveau mot de passe de boîte de réception";
 
 /* Placeholder
    Title */
@@ -872,7 +872,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "No managed object context." = "Pas de contexte d'objet géré.";
 
 /* this is a system object can't find, this could be not trasnlated */
-"No managedObjectContext" = "Aucun managedObjectContext";
+"No managedObjectContext" = "No managedObjectContext";
 
 /* No comment provided by engineer. */
 "None" = "Aucun";
@@ -934,7 +934,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Phone Verification" = "Vérification par téléphone";
 
 /* Title */
-"Phone number invalid" = "Numéro de téléphone invalide";
+"Phone number invalid" = "Numéro de téléphone incorrect";
 
 /* Title */
 "Photo Library" = "Photothèque";
@@ -946,10 +946,10 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Plain text" = "Texte brut";
 
 /* Description */
-"Please check your cell phone for the verification code." = "Veuillez consulter votre téléphone portable pour le code de vérification.";
+"Please check your cell phone for the verification code." = "Consultez votre téléphone portable pour le code de vérification.";
 
 /* error message */
-"Please check your email for the verification code." = "Veuillez consulter vos emails pour le code de vérification.";
+"Please check your email for the verification code." = "Consultez vos emails pour le code de vérification.";
 
 /* Test */
 "Please input ... - Test" = "Veuillez entrer... -Test";
@@ -968,7 +968,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Please remove all attachments before changing sender!" = "Veuillez supprimer toutes les pièces jointes avant de changer l'expéditeur";
 
 /* human check select option title */
-"Please select one of the following options:" = "Veuillez sélectionnez l'une des options suivantes :";
+"Please select one of the following options:" = "Sélectionnez l'une des options suivantes :";
 
 /* Description */
 "Please set a password." = "Veuillez créer un mot de passe.";
@@ -1120,10 +1120,10 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 
 /* Action
    Title */
-"Save" = "Enregister";
+"Save" = "Enregistrer";
 
 /* title */
-"Save Changes" = "Enregistrer les Modifications";
+"Save Changes" = "Enregistrer les modifications";
 
 /* Action */
 "Save draft" = "Enregistrer comme brouillon";
@@ -1169,7 +1169,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Set a password to encrypt this message for non-ProtonMail users." = "Définir un mot de passe pour chiffrer ce message pour les utilisateurs non-ProtonMail.";
 
 /* Signup passwords top title */
-"Set passwords" = "Définir les mot de passes";
+"Set passwords" = "Définir les mots de passe";
 
 /* Title */
 "Settings" = "Paramètres";
@@ -1266,17 +1266,17 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "The draft format incorrectly sending failed!" = "L'envoi a échoué. Une erreur est survenue avec le format du brouillon.";
 
 /* key size note part 1 */
-"The highest level of encryption available." = "Le plus haut niveau de cryptage disponible.";
+"The highest level of encryption available." = "Le plus haut niveau de chiffrement disponible.";
 
 /* Description */
-"The label name is duplicate" = "Le nom de l'étiquette est un doublon";
+"The label name is duplicate" = "Le nom du label est un doublon";
 
 /* Description
    Error */
-"The mailbox password is incorrect." = "Le mot de passe de la boîte aux lettres est incorrect.";
+"The mailbox password is incorrect." = "Le mot de passe de la boîte de réception est incorrect.";
 
 /* (No Commment) */
-"The maximum number of labels is %d." = "Le nombre maximum d'étiquettes est de %d.";
+"The maximum number of labels is %d." = "Le nombre maximum de labels est de %d.";
 
 /* Description */
 "The maximum number of labels is 20." = "Le nombre maximum de labels est de 20.";
@@ -1496,7 +1496,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "What people see in the \"From\" field." = "Ce que les gens voient dans le champ « De ».";
 
 /* display name notes */
-"When you send an email, this is the name that appears in the sender field." = "Quand vous envoyez un email, c'est le nom qui apparaît dans le champ expéditeur.";
+"When you send an email, this is the name that appears in the sender field." = "Quand vous envoyez un email, c'est le nom qui apparaît dans le champ d'expéditeur.";
 
 /* error message title
    Title */
@@ -1527,7 +1527,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "You need at least one recipient to send" = "Vous avez besoin d’au moins un destinataire pour envoyer";
 
 /* view top title */
-"Your Country Code" = "Votre code pays";
+"Your Country Code" = "Votre code de pays";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Votre boîte de réception est maintenant protégée par le chiffrement de bout en bout. Pour envoyer des emails sécurisés à vos amis, demandez-leur de rejoindre ProtonMail! Vous pouvez aussi chiffrer vos messages manuellement s'ils n'utilisent pas ProtonMail.";

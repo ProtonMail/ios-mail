@@ -122,7 +122,7 @@ DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 "Authentication failed" = "Authentifizierung fehlgeschlagen";
 
 /* Error */
-"Authentication failed please try to login again" = "Authentifizierungsfehler. Bitte versuchen Sie es erneut";
+"Authentication failed please try to login again" = "Authentifizierungsfehler. Bitte versuchen Sie sich erneut anzumelden";
 
 /* Description */
 "Authentication was cancelled by the system" = "Authentifizierung wurde vom System abgelehnt";
@@ -228,8 +228,8 @@ DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Action
    folder apply - cancel button text
-   Title
-   title */
+   title
+   Title */
 "Cancel" = "Abbrechen";
 
 /* Action */
@@ -1196,7 +1196,7 @@ DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 "Spam" = "Spam";
 
 /* Description */
-"Spammed" = "Gespammt";
+"Spammed" = "Spam";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Fehlerhafter SRP-Keysalt!";

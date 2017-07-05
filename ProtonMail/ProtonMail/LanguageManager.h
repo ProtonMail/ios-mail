@@ -11,11 +11,15 @@
 typedef NS_ENUM(NSInteger, ELanguage)
 {
     ELanguageEnglish,
-    ELanguageGerman,
+    ELanguageGerman, //added at inital
     ELanguageFrench,
     ELanguageRussian,
     ELanguageSpanish,
     ELanguageTurkish,
+    
+    ELanguagePolish, //added at 07/05/2017
+    ELanguageUkrainian,
+    
     
     ELanguageCount
 };

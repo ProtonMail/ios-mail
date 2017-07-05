@@ -20,7 +20,7 @@
 "*OPTIONAL" = "*OPCIONAL";
 
 /* Error */
-"2fa Authentication failed please try to login again" = "Falló la autenticación de dos factores, inténtalo nuevamente";
+"2fa Authentication failed please try to login again" = "Falló la autenticación de dos factores, inténtelo nuevamente";
 
 /* no object error, local only , this could be not translated! */
 "<no object>" = "<no object>";
@@ -29,12 +29,12 @@
 "A message cannot have more than 5 labels" = "Un mensaje no puede tener más de 5 etiquetas";
 
 /* Description */
-"A new version of ProtonMail app is available, please update to latest version." = "Una nueva versión de la aplicación ProtonMail está disponible, por favor actualiza a la última versión.";
+"A new version of ProtonMail app is available, please update to latest version." = "Una nueva versión de la aplicación ProtonMail está disponible, por favor actualice a la última versión.";
 
 /* Description
    settings touchid error
    Touch id error message */
-"A passcode has not been set, enable it in the system Settings" = "No se ha establecido un código de acceso, habilítalo en los ajustes del sistema";
+"A passcode has not been set, enable it in the system Settings" = "No se ha establecido un código de acceso, habilítelo en los ajustes del sistema";
 
 /* Error
    Title */
@@ -45,13 +45,12 @@
 
 /* Description
    error message when acction disabled */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "El acceso a esta cuenta está deshabilitado por falta de pago. Inicia sesión a través de protonmail.com para pagar tu factura no pagada.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "El acceso a esta cuenta está deshabilitado por falta de pago. Inicie sesión a través de protonmail.com para pagar su factura no pagada.";
 
 /* (No Commment) */
 "Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "El acceso a esta cuenta está deshabilitado por falta de pago.
 
-Visita <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"> nuestra base de conocimientos</a> para más información.
- .";
+Visite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"> nuestra base de conocimientos</a> para más información.";
 
 /* error message title
    Title */
@@ -90,7 +89,7 @@ Visita <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"> n
 /* Description */
 "All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
 
-THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perderán para siempre, pero seguirás siendo capaz de ver los mensajes de correo electrónico sin cifrar.
+THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perderán para siempre, pero seguirá siendo capaz de ver los mensajes de correo electrónico sin cifrar.
 
 ¡ESTA ACCIÓN NO SE PUEDE DESHACER!";
 
@@ -123,7 +122,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Authentication failed" = "Autenticación fallida";
 
 /* Error */
-"Authentication failed please try to login again" = "Autenticación fallida por favor intenta nuevamente";
+"Authentication failed please try to login again" = "Autenticación fallida por favor intente nuevamente";
 
 /* Description */
 "Authentication was cancelled by the system" = "Autenticación cancelada por el sistema";
@@ -164,7 +163,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Bug Report Received" = "Informe de error recibido";
 
 /* agree check box first part words */
-"By using protonmail, you agree to our" = "Al usar ProtonMail, aceptas nuestros";
+"By using protonmail, you agree to our" = "Al usar ProtonMail, acepta nuestros";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -198,10 +197,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Can't decrypt this attachment!" = "¡No se puede descifrar el archivo adjunto!";
 
 /* Error */
-"Can't download message body, please try again." = "No se puede descargar el contenido del mensaje, por favor intenta otra vez.";
+"Can't download message body, please try again." = "No se puede descargar el contenido del mensaje, por favor intente otra vez.";
 
 /* Description */
-"Can't find the clicked message please try again!" = "¡No puede encontrar el mensaje por favor inténtalo de nuevo!";
+"Can't find the clicked message please try again!" = "¡No puede encontrar el mensaje por favor inténtelo de nuevo!";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "¡No se puede encontrar este archivo adjunto!";
@@ -229,8 +228,8 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 
 /* Action
    folder apply - cancel button text
-   Title
-   title */
+   title
+   Title */
 "Cancel" = "Cancelar";
 
 /* Action */
@@ -264,7 +263,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Change Single Password" = "Cambiar contraseña única";
 
 /* Title */
-"Change default address to .." = "Cambiar la dirección predeterminada para...";
+"Change default address to .." = "Cambiar la dirección predeterminada a...";
 
 /* settings swipe actions section action description */
 "Change left swipe action" = "Cambiar acción de deslizamiento hacia la izquierda";
@@ -273,7 +272,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Change right swipe action" = "Cambiar acción de deslizamiento hacia la derecha";
 
 /* Title */
-"Change sender address to .." = "Cambiar la dirección del remitente para...";
+"Change sender address to .." = "Cambiar la dirección del remitente a...";
 
 /* Action */
 "Check Again" = "Verificar de nuevo";
@@ -282,7 +281,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Checking ...." = "Verificando...";
 
 /* place holder */
-"Choose a Password" = "Elige una contraseña";
+"Choose a Password" = "Elija una contraseña";
 
 /* settings general section title */
 "Clear Local Message Cache" = "Vaciar caché de mensajes locales";
@@ -343,13 +342,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Create Account" = "Crear cuenta";
 
 /* Error */
-"Create User failed please try again" = "La creación del usuario ha fallado por favor inténtalo otra vez";
+"Create User failed please try again" = "La creación del usuario ha fallado por favor inténtelo otra vez";
 
 /* Signup top title */
 "Create a new account" = "Crear una nueva cuenta";
 
 /* Description */
-"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Crea y añade etiquetas para organizar tu bandeja de entrada. Presiona y mantén pulsado un mensaje para mostrar las opciones.";
+"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Cree y añada etiquetas para organizar su bandeja de entrada. Presione y mantenga pulsado un mensaje para todas las opciones.";
 
 /* error message title when create new user
    sign up user error
@@ -391,7 +390,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Decrypt" = "Descifrar";
 
 /* Description */
-"Decrypt token failed please try again" = "Error en el token de descifrado, inténtalo nuevamente";
+"Decrypt token failed please try again" = "Error en el token de descifrado, inténtelo nuevamente";
 
 /* Title */
 "Default" = "Predeterminado";
@@ -399,7 +398,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 /* Description
    Error
    error message when create new user */
-"Default error, please try again." = "Error por defecto, inténtalo nuevamente.";
+"Default error, please try again." = "Error por defecto, inténtelo nuevamente.";
 
 /* Placeholder */
 "Define Expiration Date" = "Definir fecha de caducidad";
@@ -530,19 +529,19 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 
 /* place holder
    Title */
-"Enter Verification Code" = "Ingresa el código de verificación";
+"Enter Verification Code" = "Ingrese el código de verificación";
 
 /* set pin title */
-"Enter your PIN" = "Ingresa tu PIN";
+"Enter your PIN" = "Ingrese su PIN";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Ingresa tu PIN para desbloquear la bandeja de entrada.";
+"Enter your PIN to unlock your inbox." = "Ingrese su PIN para desbloquear la bandeja de entrada.";
 
 /* human verification top title */
-"Enter your cell phone number" = "Ingresa tu número de teléfono móvil";
+"Enter your cell phone number" = "Ingrese su número de teléfono móvil";
 
 /* top title */
-"Enter your existing email address." = "Ingresa tu dirección de email existente.";
+"Enter your existing email address." = "Ingrese su dirección de email existente.";
 
 /* settings debug section title */
 "Error Logs" = "Registro de errores";
@@ -561,7 +560,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Extreme Security" = "Máxima seguridad";
 
 /* login page forgot pwd */
-"FORGOT PASSWORD?" = "¿Olvidaste la contraseña?";
+"FORGOT PASSWORD?" = "¿Olvidó su contraseña?";
 
 /* Description */
 "Failed to initialize the application's saved data" = "Error al inicializar los datos guardados de la aplicación";
@@ -602,7 +601,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "German" = "Alemán";
 
 /* Action */
-"Get more information" = "Obtén más información";
+"Get more information" = "Obtener más información";
 
 /* Action */
 "Go to inbox" = "Ir a la bandeja de entrada";
@@ -611,10 +610,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Help & Support" = "Ayuda & Soporte";
 
 /* Title */
-"Help us to improve ProtonMail with your input." = "Ayúdanos a mejorar ProtonMail con tus comentarios.";
+"Help us to improve ProtonMail with your input." = "Ayúdenos a mejorar ProtonMail con sus comentarios.";
 
 /* Title */
-"Help us to make privacy the default in the web." = "Ayúdanos a hacer de la privacidad el estándar en la web.";
+"Help us to make privacy the default in the web." = "Ayúdenos a hacer de la privacidad el estándar en la web.";
 
 /* Action */
 "Hide" = "Ocultar";
@@ -646,7 +645,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Import File From..." = "Importar archivo desde...";
 
 /* Error */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Para poder utilizar nuestros servicios, debes aceptar las condiciones del servicio de ProtonMail.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Para poder utilizar nuestros servicios, debe aceptar las condiciones del servicio de ProtonMail.";
 
 /* Title */
 "Inbox" = "Buzón";
@@ -664,7 +663,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Input Notification Email ..." = "Ingresar email de notificaciones...";
 
 /* Error */
-"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "La creación instantánea de cuentas de ProtonMail se ha deshabilitado temporalmente. Dirígete a https://protonmail.com/invite para solicitar una invitación.";
+"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "La creación instantánea de cuentas de ProtonMail se ha deshabilitado temporalmente. Diríjase a https://protonmail.com/invite para solicitar una invitación.";
 
 /* Error */
 "Invalid Password" = "Contraseña incorrecta";
@@ -677,7 +676,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Invalid UserName!" = "¡Nombre de usuario inválido!";
 
 /* Description */
-"Invalid access token please relogin" = "Token de acceso inválido, vuelve a iniciar sesión";
+"Invalid access token please relogin" = "Token de acceso inválido, vuelva a iniciar sesión";
 
 /* Error */
 "Invalid credential" = "Credencial inválida";
@@ -694,10 +693,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Key generation failed" = "Error en la generación de claves";
 
 /* Error */
-"Key generation failed please try again" = "Se produjo un error en la generación de claves por favor inténtalo de nuevo";
+"Key generation failed please try again" = "Se produjo un error en la generación de claves por favor inténtelo de nuevo";
 
 /* Error */
-"Key invalid please go back try again" = "Clave inválida, vuelve a intentarlo nuevamente";
+"Key invalid please go back try again" = "Clave inválida, vuelva a intentarlo nuevamente";
 
 /* Title */
 "LOGIN" = "Iniciar sesión";
@@ -798,7 +797,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Message password does not match." = "La contraseña del mensaje no coincide.";
 
 /* Description */
-"Message sending failed please try again" = "No se pudo enviar el mensaje, inténtalo de nuevo";
+"Message sending failed please try again" = "No se pudo enviar el mensaje, inténtelo de nuevo";
 
 /* Description */
 "Message sent" = "Mensaje enviado";
@@ -811,7 +810,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 
 /* Description
    signup human check error description when mobile signup disabled */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "El registro por móvil está temporalmente deshabilitado. Inténtalo de nuevo más tarde o intenta registrarte en protonmail.com utilizando una computadora.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "El registro por móvil está temporalmente deshabilitado. Inténtelo de nuevo más tarde o intente registrarse en protonmail.com utilizando una computadora.";
 
 /* Action */
 "Move to AllMail" = "Mover a todos los mensajes";
@@ -844,7 +843,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Multiple Addresses" = "Múltiples direcciones";
 
 /* Action */
-"NEED AN ACCOUNT? SIGN UP." = "Regístrate gratis";
+"NEED AN ACCOUNT? SIGN UP." = "Regístrese gratis";
 
 /* Placeholder */
 "Name" = "Nombre";
@@ -879,13 +878,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "None" = "Ninguno";
 
 /* Signup user name notes */
-"Note: The Username is also your ProtonMail address." = "Nota: El nombre de usuario es también tu dirección de ProtonMail.";
+"Note: The Username is also your ProtonMail address." = "Nota: El nombre de usuario es también su dirección de ProtonMail.";
 
 /* setup password notes */
-"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Nota: Esto se utiliza para cifrar y descifrar tus mensajes. No pierdas esta contraseña, no podemos recuperarla.";
+"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Nota: Esto se utiliza para cifrar y descifrar sus mensajes. No pierda esta contraseña, no podemos recuperarla.";
 
 /* setup password notes */
-"Note: This is used to log you into your account." = "Nota: Esto se utiliza para iniciar sesión en tu cuenta.";
+"Note: This is used to log you into your account." = "Nota: Esto se utiliza para iniciar sesión en su cuenta.";
 
 /* Title */
 "Notification / Recovery Email" = "Notificación / Email de recuperación";
@@ -904,7 +903,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Only plus user could modify default mobile signature or turn it off!" = "¡Sólo usuarios Plus podrán modificar la firma móvil predeterminada o deshabilitarla!";
 
 /* Action */
-"OpenDraft" = "Borrador abierto";
+"OpenDraft" = "Abrir borrador";
 
 /* Title */
 "Outbox" = "Enviados";
@@ -947,67 +946,67 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Plain text" = "Texto plano";
 
 /* Description */
-"Please check your cell phone for the verification code." = "Por favor revisa tu teléfono para obtener el código de verificación.";
+"Please check your cell phone for the verification code." = "Por favor revise su teléfono para obtener el código de verificación.";
 
 /* error message */
-"Please check your email for the verification code." = "Por favor revisa tu correo electrónico para obtener el código de verificación.";
+"Please check your email for the verification code." = "Por favor revise su correo electrónico para obtener el código de verificación.";
 
 /* Test */
-"Please input ... - Test" = "Por favor ingresa... - Prueba";
+"Please input ... - Test" = "Por favor ingrese ... - Prueba";
 
 /* Description */
-"Please input a valid cell phone number." = "Ingresa un número de teléfono válido.";
+"Please input a valid cell phone number." = "Ingrese un número de teléfono válido.";
 
 /* Description
    error message */
-"Please input a valid email address." = "Por favor, ingresa una dirección de email válida.";
+"Please input a valid email address." = "Por favor, ingrese una dirección de email válida.";
 
 /* Error */
-"Please pick a user name first!" = "¡Por favor elige un nombre de usuario primero!";
+"Please pick a user name first!" = "¡Por favor elija un nombre de usuario primero!";
 
 /* Error */
-"Please remove all attachments before changing sender!" = "Elimina todos los datos adjuntos antes de cambiar el remitente";
+"Please remove all attachments before changing sender!" = "Elimine todos los datos adjuntos antes de cambiar el remitente";
 
 /* human check select option title */
-"Please select one of the following options:" = "Por favor, elige una de las siguientes opciones:";
+"Please select one of the following options:" = "Por favor, elija una de las siguientes opciones:";
 
 /* Description */
-"Please set a password." = "Por favor, establece una contraseña.";
+"Please set a password." = "Por favor, establezca una contraseña.";
 
 /* Error
    error message when create new user */
-"Please try a different domain." = "Por favor intenta con un dominio diferente.";
+"Please try a different domain." = "Por favor intente con un dominio diferente.";
 
 /* Error
    error message when create new user */
-"Please try a different email address." = "Por favor, prueba una dirección de correo electrónico diferente.";
+"Please try a different email address." = "Por favor, pruebe una dirección de correo electrónico diferente.";
 
 /* Error
    error message when create new user */
-"Please try a different password." = "Por favor, intenta una contraseña diferente.";
+"Please try a different password." = "Por favor, intente una contraseña diferente.";
 
 /* Error
    error message when create new user */
-"Please try a different user name." = "Por favor, intenta un nombre de usuario diferente.";
+"Please try a different user name." = "Intente un nombre de usuario diferente.";
 
 /* Error
    error message when create new user */
-"Please try again." = "Por favor, inténtalo de nuevo";
+"Please try again." = "Por favor inténtelo de nuevo";
 
 /* (No Commment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "¡Utiliza la versión web de ProtonMail para cambiar la contraseña del buzón!";
+"Please use the web version of ProtonMail to change your mailbox password!" = "¡Utilice la versión web de ProtonMail para cambiar la contraseña del buzón!";
 
 /* Alert */
-"Please use the web version of ProtonMail to change your passwords.!" = "¡Utiliza la versión web de ProtonMail para cambiar tus contraseñas.!";
+"Please use the web version of ProtonMail to change your passwords.!" = "¡Utilice la versión web de ProtonMail para cambiar sus contraseñas.!";
 
 /* Description */
-"Please use your new password when signing in." = "Utiliza tu nueva contraseña al iniciar sesión.";
+"Please use your new password when signing in." = "Utilice su nueva contraseña al iniciar sesión.";
 
 /* The */
-"Please wait until the email downloaded!" = "¡Espera hasta que se descargue el correo electrónico!";
+"Please wait until the email downloaded!" = "¡Espere hasta que se descargue el correo electrónico!";
 
 /* Title */
-"Please, manage it in your phone." = "Por favor, hazlo en tu teléfono.";
+"Please, manage it in your phone." = "Por favor, hágalo en su teléfono.";
 
 /* Title */
 "Protection" = "Protección";
@@ -1022,13 +1021,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "ProtonMail Plus is required to customize your mobile signature" = "Es necesario tener ProtonMail Plus para editar la firma móvil";
 
 /* Description */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail no vende anuncios o no usa su privacidad. Su apoyo es esencial para mantener ProtonMail en ejecución. Puede actualizar a una cuenta de pago o donar para apoyar a ProtonMail.";
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail no vende anuncios o abusa su privacidad. Su apoyo es esencial para mantener ProtonMail en ejecución. Puede actualizar a una cuenta de pago o donar para apoyar a ProtonMail.";
 
 /* Title */
 "ProtonMail encrypted emails" = "ProtonMail correo electrónico cifrado";
 
 /* Description */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail no está actualmente en línea, consulta nuestro twitter para conocer el estado actual: https://twitter.com/protonmail";
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail no está actualmente en línea, consulte nuestro twitter para conocer el estado actual: https://twitter.com/protonmail";
 
 /* Title */
 "Quick swipe actions" = "Acciones de deslizamiento rápido";
@@ -1043,7 +1042,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Rate & Review" = "Calificar & Reseña";
 
 /* set pin title */
-"Re-Enter your PIN" = "Vuelve a ingresar tu PIN";
+"Re-Enter your PIN" = "Vuelva a ingresar su PIN";
 
 /* Title */
 "Re:" = "Re:";
@@ -1137,7 +1136,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Section Title - Test" = "Sección de título - prueba";
 
 /* (No Commment) */
-"Select your language" = "Selecciona tu idioma";
+"Select your language" = "Seleccione su idioma";
 
 /* Action */
 "Send" = "Enviar";
@@ -1167,7 +1166,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Set Password" = "Definir contraseña";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Define una contraseña para cifrar este mensaje para usuarios que no sean de ProtonMail.";
+"Set a password to encrypt this message for non-ProtonMail users." = "Defina una contraseña para cifrar este mensaje para usuarios que no sean de ProtonMail.";
 
 /* Signup passwords top title */
 "Set passwords" = "Definir contraseñas";
@@ -1176,7 +1175,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Settings" = "Ajustes";
 
 /* Title */
-"Share it with your friends" = "Compartir con tus amigos";
+"Share it with your friends" = "Compartir con sus amigos";
 
 /* Action */
 "Sign Out" = "Cerrar sesión";
@@ -1237,7 +1236,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Take a Photo" = "Tomar foto";
 
 /* No comment provided by engineer. */
-"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Gracias por enviar un informe de error.  Hemos añadido tu informe a nuestro sistema de seguimiento de errores.";
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Gracias por enviar un informe de error.  Hemos añadido su informe a nuestro sistema de seguimiento de errores.";
 
 /* update password error */
 "The Password is wrong." = "La contraseña es incorrecta.";
@@ -1261,7 +1260,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "The display name is now %@." = "El nombre para mostrar es ahora %@.";
 
 /* Description */
-"The draft cache is broken please try again" = "La caché del borrador está rota, inténtalo de nuevo";
+"The draft cache is broken please try again" = "La caché del borrador está rota, inténtelo de nuevo";
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Falló el envío. Hubo un error con el formato del borrador.";
@@ -1301,7 +1300,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "The new password not match." = "La nueva contraseña no coincide.";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your login password if you forget it." = "El email de recuperación opcional te permite restablecer tu contraseña de acceso si la olvidaras.";
+"The optional recovery email address allows you to reset your login password if you forget it." = "El email de recuperación opcional le permite restablecer su contraseña de acceso si la olvidara.";
 
 /* Description */
 "The password you entered does not match the current password." = "La contraseña introducida no coincide con la contraseña actual.";
@@ -1333,10 +1332,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "There was an error creating or loading the application's saved data." = "Se ha producido un error al crear o cargar los datos guardados de la aplicación.";
 
 /* No comment provided by engineer. */
-"This contact belongs to your Address Book." = "Este contacto pertenece a tu libreta de direcciones.";
+"This contact belongs to your Address Book." = "Este contacto pertenece a su libreta de direcciones.";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo ha fallado los requisitos de verificación de tu dominio. ¡Pudo ser falsificado o reenviado incorrectamente!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo ha fallado los requisitos de verificación de su dominio. ¡Pudo ser falsificado o reenviado incorrectamente!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo parece ser de una dirección de ProtonMail, pero vino de fuera de nuestro sistema y ha fallado los requisitos de autenticación. ¡Pudo ser falsificado o reenviado incorrectamente!";
@@ -1345,10 +1344,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "To" = "Para";
 
 /* (No Commment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Para restablecer la contraseña de tu buzón, utiliza la versión web de ProtonMail en protonmail.com";
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en protonmail.com";
 
 /* Description */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Para restablecer la contraseña de tu buzón, utiliza la versión web de ProtonMail en protonmail.com";
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en protonmail.com";
 
 /* Title */
 "To:" = "Para:";
@@ -1359,7 +1358,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 /* Description
    settings touchid error
    Touch id error message */
-"TouchID is not enrolled, enable it in the system Settings" = "El TouchID no está registrado, habilítalo en los ajustes del sistema";
+"TouchID is not enrolled, enable it in the system Settings" = "El TouchID no está registrado, habilítelo en los ajustes del sistema";
 
 /* Description
    settings touchid error
@@ -1374,7 +1373,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Trouble shooting guide" = "Guía para resolver problemas";
 
 /* Title */
-"Tweet about ProtonMail" = "Tweetea acerca de ProtonMail";
+"Tweet about ProtonMail" = "Tweetear acerca de ProtonMail";
 
 /* Placeholder */
 "Two Factor Code" = "Código de dos factores";
@@ -1476,13 +1475,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "Version %@ %@" = "Versión %@ %@";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Advertencia: ¡Antes de pasar el control humano no puedes enviar correos electrónicos!";
+"Warning: Before you pass the human check you can't sent email!!!" = "Advertencia: ¡Antes de pasar el control humano no puede enviar correos electrónicos!";
 
 /* Description */
-"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Advertencia: no has establecido un email de recuperación por lo que recuperar la cuenta será imposible si olvidas tu contraseña. ¿Proceder sin email de recuperación?";
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Advertencia: no ha establecido un email de recuperación por lo que recuperar la cuenta será imposible si olvida su contraseña. ¿Proceder sin email de recuperación?";
 
 /* text field notes */
-"We will send a verification code to the cell phone above." = "Te enviaremos un código de verificación al número de teléfono indicado.";
+"We will send a verification code to the cell phone above." = "Le enviaremos un código de verificación al número de teléfono indicado.";
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Enviaremos un código de verificación a la dirección de email indicada.";
@@ -1497,47 +1496,47 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos tus correos cifrados existentes se perde
 "What people see in the \"From\" field." = "Lo que la gente ve en el campo \"De\".";
 
 /* display name notes */
-"When you send an email, this is the name that appears in the sender field." = "Cuando envías un correo, este es el nombre que aparecerá en el campo del remitente.";
+"When you send an email, this is the name that appears in the sender field." = "Cuando envía un correo, este es el nombre que aparecerá en el campo del remitente.";
 
 /* error message title
    Title */
 "Wrong verification code" = "Código de verificación incorrecto";
 
 /* Description */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Puedes personalizar los gestos de deslizamiento en los ajustes de la aplicación ProtonMail.";
+"You can customize swipe gestures in the ProtonMail App Settings." = "Puede personalizar los gestos de deslizamiento en los ajustes de la aplicación ProtonMail.";
 
 /* Description */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Puedes obtener ayuda y soporte en protonmail.com/support. Los errores también se pueden reportar con la aplicación.";
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Puede obtener ayuda y soporte en protonmail.com/support. Los errores también se pueden reportar con la aplicación.";
 
 /* Message */
-"You have %d new emails!" = "¡Tienes %d correos nuevos!";
+"You have %d new emails!" = "¡Tiene %d correos nuevos!";
 
 /* Title */
-"You have a new email!" = "¡Tienes un correo nuevo!";
+"You have a new email!" = "¡Tiene un nuevo correo!";
 
 /* Confirmation message */
-"You have unsaved changes. Do you want to save it?" = "Tienes cambios sin guardar. ¿Deseas guardarlos?";
+"You have unsaved changes. Do you want to save it?" = "Tiene cambios sin guardar. ¿Desea guardarlos?";
 
 /* Description */
-"You have used %d%% of your storage space (%@)." = "Has usado %d%% de tu espacio de almacenamiento (%@).";
+"You have used %d%% of your storage space (%@)." = "Ha usado %d%% de su espacio de almacenamiento (%@).";
 
 /* Description */
-"You have used up all of your storage space (%@)." = "Has usado todo el espacio de almacenamiento (%@).";
+"You have used up all of your storage space (%@)." = "Ha usado todo su espacio de almacenamiento (%@).";
 
 /* Description */
-"You need at least one recipient to send" = "Necesitas al menos un destinatario para enviar";
+"You need at least one recipient to send" = "Necesita al menos un destinatario para enviar";
 
 /* view top title */
-"Your Country Code" = "Tu código de país";
+"Your Country Code" = "Su código de país";
 
 /* Description */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Tu bandeja de entrada está ahora protegida con cifrado de extremo a extremo. Para enviar mensajes de email de forma automática y segura a tus amigos, pídeles que se unan a ProtonMail. También puedes cifrar los mensajes manualmente si no utilizan ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Su bandeja de entrada está ahora protegida con cifrado de extremo a extremo. Para enviar mensajes de correo electrónico de forma automática y de forma segura a amigos, ¡invítelos a utilizar ProtonMail! También puede cifrar los mensajes manualmente si no utilizan ProtonMail.";
 
 /* Description */
-"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Tu nueva cuenta de email cifrado se ha configurado y está lista para enviar y recibir mensajes cifrados.";
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Su nueva cuenta de correo electrónico cifrada se ha configurado y está lista para enviar y recibir mensajes cifrados.";
 
 /* Description */
-"Your signature has been updated." = "Tu firma ha sido actualizada.";
+"Your signature has been updated." = "Su firma ha sido actualizada.";
 
 /* agree check box middle word */
 "and" = "y";
