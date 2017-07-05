@@ -16,7 +16,6 @@
 
 import Foundation
 import CoreData
-import ProtonMailCommon
 
 let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain("CoreDataService")
 

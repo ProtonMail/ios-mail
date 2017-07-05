@@ -7,9 +7,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
-
-
 
 public enum UIApplicationReleaseMode: Int {
     case unknown = 0

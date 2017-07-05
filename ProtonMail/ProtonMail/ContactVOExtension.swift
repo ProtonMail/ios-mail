@@ -11,7 +11,6 @@ import Foundation
 
 extension ContactVO {
     
-    
     /**
     ContactVO extension for check is contactVO contained by a Array<Address>
 
