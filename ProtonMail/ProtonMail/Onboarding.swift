@@ -43,19 +43,19 @@ public enum Onboarding: Int, CustomStringConvertible {
         get {
             switch(self) {
             case .welcome:
-                return NSLocalizedString("Your new encrypted email account has been set up and is ready to send and receive encrypted messages.")
+                return NSLocalizedString("Your new encrypted email account has been set up and is ready to send and receive encrypted messages.", comment: "Description")
             case .swipe:
-                return NSLocalizedString("You can customize swipe gestures in the ProtonMail App Settings.")
+                return NSLocalizedString("You can customize swipe gestures in the ProtonMail App Settings.", comment: "Description")
             case .label:
-                return NSLocalizedString("Create and add Labels to organize your inbox. Press and hold down on a message for all options.")
+                return NSLocalizedString("Create and add Labels to organize your inbox. Press and hold down on a message for all options.", comment: "Description")
             case .encryption:
-                return NSLocalizedString("Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.")
+                return NSLocalizedString("Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.", comment: "Description")
             case .expire:
-                return NSLocalizedString("Messages you send can be set to auto delete after a certain time period.")
+                return NSLocalizedString("Messages you send can be set to auto delete after a certain time period.", comment: "Description")
             case .help:
-                return NSLocalizedString("You can get help and support at protonmail.com/support. Bugs can also be reported with the app.")
+                return NSLocalizedString("You can get help and support at protonmail.com/support. Bugs can also be reported with the app.", comment: "Description")
             case .upgrade:
-                return NSLocalizedString("ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.")
+                return NSLocalizedString("ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.", comment: "Description")
             }
         }
     }
@@ -64,19 +64,19 @@ public enum Onboarding: Int, CustomStringConvertible {
         get {
             switch(self) {
             case .welcome:
-                return NSLocalizedString("Welcome to ProtonMail!")
+                return NSLocalizedString("Welcome to ProtonMail!", comment: "Title")
             case .swipe:
-                return NSLocalizedString("Quick swipe actions")
+                return NSLocalizedString("Quick swipe actions", comment: "Title")
             case .label:
-                return NSLocalizedString("Label Management")
+                return NSLocalizedString("Label Management", comment: "Title")
             case .encryption:
-                return NSLocalizedString("End-to-End Encryption")
+                return NSLocalizedString("End-to-End Encryption", comment: "Title")
             case .expire:
-                return NSLocalizedString("Expiring Messages")
+                return NSLocalizedString("Expiring Messages", comment: "Title")
             case .help:
-                return NSLocalizedString("Help & Support")
+                return NSLocalizedString("Help & Support", comment: "Title")
             case .upgrade:
-                return NSLocalizedString("Support ProtonMail")
+                return NSLocalizedString("Support ProtonMail", comment: "Title")
             }
         }
     }

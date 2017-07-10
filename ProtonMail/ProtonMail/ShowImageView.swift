@@ -28,5 +28,7 @@ class ShowImageView: PMView {
         showImageButton.layer.borderColor = UIColor.ProtonMail.Gray_C9CED4.cgColor
         showImageButton.layer.borderWidth = 1.0
         showImageButton.layer.cornerRadius = 2.0
+        
+        showImageButton.setTitle(NSLocalizedString("Load remote content", comment: "Action"), for: .normal)
     }
 }

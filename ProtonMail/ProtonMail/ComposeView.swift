@@ -36,9 +36,9 @@ class ComposeView: UIViewController {
     
     var pickerHeight : CGFloat = 0;
     
-    let kConfirmError : String = NSLocalizedString( "Message password does not match.")
-    let kEmptyEOPWD : String = NSLocalizedString( "Password cannot be empty.")
-    let kExpirationNeedsPWDError : String = NSLocalizedString("Please set a password.")
+    let kConfirmError : String = NSLocalizedString("Message password does not match.", comment: "Error")
+    let kEmptyEOPWD : String = NSLocalizedString("Password cannot be empty.", comment: "Error")
+    let kExpirationNeedsPWDError : String = NSLocalizedString("Please set a password.", comment: "Description")
     
     var toContactPicker: MBContactPicker!
     var toContacts: String {
@@ -108,6 +108,7 @@ class ComposeView: UIViewController {
     @IBOutlet weak var fromView: UIView!
     @IBOutlet weak var fromAddress: UILabel!
     @IBOutlet weak var fromPickerButton: UIButton!
+    @IBOutlet weak var fromLable: UILabel!
     
     // MARK: - Delegate and Datasource
     var datasource: ComposeViewDataSource?
@@ -134,6 +135,11 @@ class ComposeView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.selfView = self.view;
+        
+        
+        fromLable.text = NSLocalizedString("From", comment: "Title")
+        subject.placeholder = NSLocalizedString("Subject", comment: "Placeholder")
+        encryptedPasswordTextField.placeholder = NSLocalizedString("Define Expiration Date", comment: "Placeholder")
         
         self.configureContactPickerTemplate()
         self.includeButtonBorder(encryptedButton)
@@ -343,26 +349,26 @@ class ComposeView: UIViewController {
     }
     
     internal func showDefinePasswordView() {
-        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Password")
+        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Password", comment: "place holder")
         self.encryptedPasswordTextField.isSecureTextEntry = true
         self.encryptedPasswordTextField.text = ""
     }
     
     internal func showConfirmPasswordView() {
-        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Confirm Password")
+        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Confirm Password", comment: "Title")
         self.encryptedPasswordTextField.isSecureTextEntry = true
         self.encryptedPasswordTextField.text = ""
     }
     
     internal func showPasswordHintView() {
-        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Hint (Optional)")
+        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Hint (Optional)", comment: "place holder")
         self.encryptedPasswordTextField.isSecureTextEntry = false
         self.encryptedPasswordTextField.text = ""
     }
     
     internal func showEncryptionDone() {
         didTapEncryptedDismissButton(encryptedButton)
-        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Password")
+        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Password", comment: "place holder")
         self.encryptedPasswordTextField.isSecureTextEntry = true
         self.encryptedButton.setImage(UIImage(named: "compose_lock-active"), for: UIControlState())
     }
@@ -561,11 +567,11 @@ class ComposeView: UIViewController {
 extension ComposeView: MBContactPickerDataSource {
     func contactModels(for contactPickerView: MBContactPicker!) -> [Any]! {
         if (contactPickerView == toContactPicker) {
-            contactPickerView.prompt = NSLocalizedString("To:")
+            contactPickerView.prompt = NSLocalizedString("To", comment: "Title")
         } else if (contactPickerView == ccContactPicker) {
-            contactPickerView.prompt = NSLocalizedString("Cc:")
+            contactPickerView.prompt = NSLocalizedString("Cc", comment: "Title")
         } else if (contactPickerView == bccContactPicker) {
-            contactPickerView.prompt = NSLocalizedString("Bcc:")
+            contactPickerView.prompt = NSLocalizedString("Bcc", comment: "Title")
         }
         
         //contactPickerView.contactCollectionView.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)

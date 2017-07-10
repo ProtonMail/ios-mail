@@ -17,4 +17,7 @@ public struct NotificationDefined {
     static let didSignOut = "UserDataServiceDidSignOutNotification"
     static let didSignIn = "UserDataServiceDidSignInNotification"
     
+    //static let languageWillChange = "PM_LANGUAGE_WILL_CHANGE"
+    static let languageDidChange = "PM_LANGUAGE_DID_CHANGE"
+    
 }

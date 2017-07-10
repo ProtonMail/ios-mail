@@ -20,13 +20,21 @@ class ReportBugsViewController: ProtonMailViewController {
     
     fileprivate let bottomPadding: CGFloat = 30.0
     
-    @IBOutlet weak var sendButton: UIBarButtonItem!
+    fileprivate var sendButton: UIBarButtonItem!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topTitleLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.sendButton = UIBarButtonItem(title:NSLocalizedString("Send", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(ReportBugsViewController.sendAction(_:)))
+        self.navigationItem.rightBarButtonItem = sendButton
+        
         textView.text = cachedBugReport.cachedBug
+        
+        topTitleLabel.text = NSLocalizedString("Bug Description", comment: "Title")
+        self.title = NSLocalizedString("REPORT BUGS", comment: "Title")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,11 +74,11 @@ class ReportBugsViewController: ProtonMailViewController {
                     sender.isEnabled = true
                     if let error = error {
                         let alert = error.alertController()
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .default, handler: nil))
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Action"), style: .default, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                     } else {
-                        let alert = UIAlertController(title: NSLocalizedString("Bug Report Received"), message: NSLocalizedString("Thank you for submitting a bug report.  We have added your report to our bug tracking system."), preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .default, handler: nil))
+                        let alert = UIAlertController(title: NSLocalizedString("Bug Report Received", comment: "Title"), message: NSLocalizedString("Thank you for submitting a bug report.  We have added your report to our bug tracking system.", comment: ""), preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Action"), style: .default, handler: nil))
                         self.present(alert, animated: true, completion: {
                             self.reset()
                             NotificationCenter.default.post(name: Notification.Name(rawValue: MenuViewController.ObserverSwitchView), object: nil)

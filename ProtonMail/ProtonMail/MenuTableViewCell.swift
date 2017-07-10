@@ -37,7 +37,7 @@ class MenuTableViewCell: UITableViewCell {
         unreadLabel.layer.cornerRadius = 12;
         unreadLabel.text = "0";
         
-        titleLabel.text = item.identifier;
+        titleLabel.text = item.title;
         
         let defaultImage = UIImage(named: item.image)
         let selectedImage = UIImage(named: item.imageSelected)

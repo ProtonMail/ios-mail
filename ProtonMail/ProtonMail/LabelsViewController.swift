@@ -48,6 +48,7 @@ class LablesViewController : UIViewController {
     
     @IBOutlet weak var addLabelButton: UIButton!
     @IBOutlet weak var addFolderButton: UIButton!
+    @IBOutlet weak var archiveOptionLabel: UILabel!
     //
     var delegate : LablesViewControllerDelegate?
     var applyButtonText : String!
@@ -59,6 +60,10 @@ class LablesViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.layer.cornerRadius = 4;
+        
+        addLabelButton.setTitle(NSLocalizedString("Add Label", comment: "Action"), for: .normal)
+        addFolderButton.setTitle(NSLocalizedString("Add Folder", comment: "Action"), for: .normal)
+        archiveOptionLabel.text = NSLocalizedString("Add Folder", comment: "Apply label then also archive")
 
         self.setupFetchedResultsController()
         titleLabel.text = viewModel.getTitle()

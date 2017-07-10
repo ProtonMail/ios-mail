@@ -39,13 +39,17 @@ class ChangePasswordViewController: UIViewController {
         doneButton = self.editButtonItem
         doneButton.target = self;
         doneButton.action = #selector(ChangePasswordViewController.doneAction(_:))
-        doneButton.title = "Save"
-        
+        doneButton.title = NSLocalizedString("Save", comment: "Title")
+
         self.navigationItem.title = viewModel.getNavigationTitle()
         self.titleLable.text = viewModel.getSectionTitle()
         self.labelOne.text = viewModel.getLabelOne()
         self.labelTwo.text = viewModel.getLabelTwo()
         self.labelThree.text = viewModel.getLabelThree()
+        
+        currentPwdEditor.placeholder = NSLocalizedString("Current password", comment: "Placeholder")
+        newPwdEditor.placeholder = NSLocalizedString("New password", comment: "Placeholder")
+        confirmPwdEditor.placeholder = NSLocalizedString("Confirm new password", comment: "Placeholder")
         
         focusFirstEmpty();
     }

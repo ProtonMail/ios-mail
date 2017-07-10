@@ -19,11 +19,11 @@ enum MessageSpamScore: Int, CustomStringConvertible {
         get {
             switch(self) {
             case .spam_100:
-                return NSLocalizedString("This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!")
+                return NSLocalizedString("This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
             case .spam_101:
-                return NSLocalizedString("This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!")
+                return NSLocalizedString("This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
             case .others:
-                return NSLocalizedString("")
+                return NSLocalizedString("", comment: "")
             }
         }
     }

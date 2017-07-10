@@ -18,15 +18,15 @@ final class LabelEditingViewModelImple : LabelEditViewModel {
     }
     
     override func title() -> String {
-        return "Edit Label"
+        return NSLocalizedString("Edit Label", comment: "Title")
     }
     
     override func placeHolder() -> String {
-        return "Label Name"
+        return NSLocalizedString("Label Name", comment: "place holder")
     }
     
     override func rightButtonText() -> String {
-        return "Update"
+        return NSLocalizedString("Update", comment: "top right action text")
     }
     
     override func name() -> String {

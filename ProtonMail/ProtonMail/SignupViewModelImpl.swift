@@ -115,14 +115,14 @@ open class SignupViewModelImpl : SignupViewModel {
                 {
                     // do some async stuff
                     if self.newKey == nil {
-                        complete(true, "Key generation failed please try again", nil)
+                        complete(true, NSLocalizedString("Key generation failed please try again", comment: "Error"), nil)
                     } else {
                         complete(false, nil, nil);
                     }
                 } ~> .main
             }
             catch let ex as NSError {
-                { complete(false, "Key generation failed please try again", ex) } ~> .main
+                { complete(false, NSLocalizedString("Key generation failed please try again", comment: "Error"), ex) } ~> .main
             }
         } ~> .async
     }
@@ -166,10 +166,10 @@ open class SignupViewModelImpl : SignupViewModel {
                             sharedUserDataService.signIn(self.userName, password: self.plaintext_password, twoFACode: nil,
                                 ask2fa: {
                                     //2fa will show error
-                                    complete(false, true, "2fa Authentication failed please try to login again", nil)
+                                    complete(false, true, NSLocalizedString("2fa Authentication failed please try to login again", comment: "Error"), nil)
                                 },
                                 onError: { (error) in
-                                    complete(false, true, "Authentication failed please try to login again", error);
+                                    complete(false, true, NSLocalizedString("Authentication failed please try to login again", comment: "Error"), error);
                                 },
                                 onSuccess: { (mailboxpwd) in
                                     {
@@ -214,38 +214,37 @@ open class SignupViewModelImpl : SignupViewModel {
                                             sharedLabelsDataService.fetchLabels()
                                             sharedUserDataService.fetchUserInfo() { info, _, error in
                                                 if error != nil {
-                                                    complete(false, true, "Fetch user info failed", error)
+                                                    complete(false, true, NSLocalizedString("Fetch user info failed", comment: "Error"), error)
                                                 } else if info != nil {
                                                     sharedUserDataService.isNewUser = true
                                                     sharedUserDataService.setMailboxPassword(self.keypwd_with_keysalt, keysalt: nil, isRemembered: true)
                                                     complete(true, true, "", nil)
                                                 } else {
-                                                    complete(false, true, "Unknown Error", nil)
+                                                    complete(false, true, NSLocalizedString("Unknown Error", comment: "Error"), nil)
                                                 }
                                             }
                                         } catch let ex as NSError {
                                             PMLog.D(any: ex)
-                                            complete(false, true, "Decrypt token failed please try again", nil);
+                                            complete(false, true, NSLocalizedString("Decrypt token failed please try again", comment: "Description"), nil);
                                         }
                                     } ~> .async
                             })
                         } else {
                             if response?.error?.code == 7002 {
-                                complete(false, true, "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.", response!.error);
+                                complete(false, true, NSLocalizedString("Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.", comment: "Error"), response!.error);
                             } else {
-                                complete(false, false, "Create User failed please try again", response!.error);
+                                complete(false, false, NSLocalizedString("Create User failed please try again", comment: "Error"), response!.error);
                             }
                         }
                     })
                 } catch {
-                    //complete(false, true, "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.", response!.error);
+                    complete(false, false, NSLocalizedString("Create User failed please try again", comment: "Error"), nil);
                 }
                 
-
             } ~> .async
             
         } else {
-            complete(false, false, "Key invalid please go back try again", nil);
+            complete(false, false, NSLocalizedString("Key invalid please go back try again", comment: "Error"), nil);
         }
     }
     

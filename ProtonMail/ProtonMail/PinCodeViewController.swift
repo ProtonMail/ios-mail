@@ -85,7 +85,7 @@ class PinCodeViewController : UIViewController {
         var error: NSError?
         context.localizedFallbackTitle = ""
         // Set the reason string that will appear on the authentication alert.
-        let reasonString = "Login: \(savedEmail)"
+        let reasonString = "\(NSLocalizedString("Login", comment: "")): \(savedEmail)"
         
         // Check if the device can evaluate the policy.
         if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
@@ -104,7 +104,7 @@ class PinCodeViewController : UIViewController {
                         switch evalPolicyError!._code {
                         case LAError.Code.systemCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the system")
-                            "Authentication was cancelled by the system".alertToast()
+                            NSLocalizedString("Authentication was cancelled by the system", comment: "Description").alertToast()
                         case LAError.Code.userCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the user")
                         case LAError.Code.userFallback.rawValue:
@@ -113,7 +113,7 @@ class PinCodeViewController : UIViewController {
                         default:
                             PMLog.D("Authentication failed")
                             //self.showPasswordAlert()
-                            "Authentication failed".alertToast()
+                            NSLocalizedString("Authentication failed", comment: "Description").alertToast()
                         }
                         
                     }
@@ -125,12 +125,12 @@ class PinCodeViewController : UIViewController {
             // If the security policy cannot be evaluated then show a short message depending on the error.
             switch error!.code{
             case LAError.Code.touchIDNotEnrolled.rawValue:
-                alertString = "TouchID is not enrolled, enable it in the system Settings"
+                alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings", comment: "Description")
             case LAError.Code.passcodeNotSet.rawValue:
-                alertString = "A passcode has not been set, enable it in the system Settings"
+                alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings", comment: "Description")
             default:
                 // The LAError.TouchIDNotAvailable case.
-                alertString = "TouchID not available"
+                alertString = NSLocalizedString("TouchID not available", comment: "Description")
             }
             PMLog.D(alertString)
             PMLog.D("\(String(describing: error?.localizedDescription))")
@@ -159,7 +159,7 @@ extension PinCodeViewController : PinCodeViewDelegate {
     
     func Next(_ code : String) {
         if code.isEmpty {
-            let alert = "Pin code can't be empty.".alertController()
+            let alert = NSLocalizedString("Pin code can't be empty.", comment: "Description").alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
         } else {

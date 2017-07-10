@@ -11,8 +11,8 @@ import Foundation
 
 class SetPinCodeModelImpl : PinCodeViewModel {
     
-    let StepOneTitle : String = "Enter your PIN"
-    let StepTwoTitle : String = "Re-Enter your PIN"
+    let StepOneTitle : String = NSLocalizedString("Enter your PIN", comment: "set pin title")
+    let StepTwoTitle : String = NSLocalizedString("Re-Enter your PIN", comment: "set pin title")
     
     var currentStep : PinCodeStep = .enterPin
     
@@ -24,7 +24,7 @@ class SetPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func cancel() -> String {
-        return currentStep == .enterPin ? "CREATE" : "CONFIRM"
+        return currentStep == .enterPin ? NSLocalizedString("CREATE", comment: "setup pin action") : NSLocalizedString("CONFIRM", comment: "setup pin action")
     }
     
     override func showConfirm() -> Bool {

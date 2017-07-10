@@ -25,23 +25,23 @@ protocol ChangePWDViewModel {
 class ChangeLoginPWDViewModel : ChangePWDViewModel{
     
     func getNavigationTitle() -> String {
-        return "PASSWORD"
+        return NSLocalizedString("PASSWORD", comment: "change login password navigation title")
     }
     
     func getSectionTitle() -> String {
-        return "Change Login Password"
+        return NSLocalizedString("Change Login Password", comment: "change password input label")
     }
     
     func getLabelOne() -> String {
-        return "Current login password"
+        return NSLocalizedString("Current login password", comment: "Title")
     }
     
     func getLabelTwo() -> String {
-        return "New login password"
+        return NSLocalizedString("New login password", comment: "Title")
     }
     
     func getLabelThree() -> String {
-        return "Confirm new login password"
+        return NSLocalizedString("Confirm new login password", comment: "Title")
     }
     
 
@@ -80,22 +80,22 @@ class ChangeLoginPWDViewModel : ChangePWDViewModel{
 
 class ChangeMailboxPWDViewModel : ChangePWDViewModel{
     func getNavigationTitle() -> String {
-        return "PASSWORD"
+        return NSLocalizedString("PASSWORD", comment: "change mailbox password navigation title")
     }
     func getSectionTitle() -> String {
-        return "Change Mailbox Password"
+        return NSLocalizedString("Change Mailbox Password", comment: "Title")
     }
     
     func getLabelOne() -> String {
-        return "Current login password"
+        return NSLocalizedString("Current login password", comment: "Title")
     }
     
     func getLabelTwo() -> String {
-        return "New mailbox password"
+        return NSLocalizedString("New mailbox password", comment: "Title")
     }
     
     func getLabelThree() -> String {
-        return "Confirm new mailbox password"
+        return NSLocalizedString("Confirm new mailbox password", comment: "Title")
     }
     
     func needAsk2FA() -> Bool {
@@ -133,22 +133,22 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
 
 class ChangeSinglePasswordViewModel : ChangePWDViewModel{
     func getNavigationTitle() -> String {
-        return "PASSWORD"
+        return NSLocalizedString("PASSWORD", comment: "change signle password navigation title")
     }
     func getSectionTitle() -> String {
-        return "Change Single Password"
+        return NSLocalizedString("Change Single Password", comment: "Title")
     }
     
     func getLabelOne() -> String {
-        return "Current password"
+        return NSLocalizedString("Current password", comment: "Title")
     }
     
     func getLabelTwo() -> String {
-        return "New password"
+        return NSLocalizedString("New password", comment: "Title")
     }
     
     func getLabelThree() -> String {
-        return "Confirm new password"
+        return NSLocalizedString("Confirm new password", comment: "Title")
     }
     
     func needAsk2FA() -> Bool {

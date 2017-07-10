@@ -322,7 +322,7 @@ extension NSError {
     class func badUserInfoResponse(_ error : String) -> NSError {
         return apiServiceError(
             code: APIErrorCode.SendErrorCode.draftBad,
-            localizedDescription: NSLocalizedString(error),
-            localizedFailureReason: NSLocalizedString("The user info fetch is wrong"))
+            localizedDescription: error,
+            localizedFailureReason: NSLocalizedString("The user info fetch is wrong", comment: "Description"))
     }
 }

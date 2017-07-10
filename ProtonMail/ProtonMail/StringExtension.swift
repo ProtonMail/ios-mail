@@ -12,14 +12,14 @@ extension String {
     
     func alertController() -> UIAlertController {
         let message = self
-        return UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
+        return UIAlertController(title: NSLocalizedString("Alert", comment: "alert title"), message: message, preferredStyle: .alert)
     }
     
     func alertToast() -> Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = NSLocalizedString("Alert");
+        hud.labelText = NSLocalizedString("Alert", comment: "alert title");
         hud.detailsLabelText = self
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
@@ -49,7 +49,7 @@ extension String {
         }
         let myNSString = self as NSString
         let str = myNSString.substring(with: NSRange(location: 0, length: 3))
-        return str.contains("Re:")
+        return str.contains("Re:") //TODO::Localized check
     }
     
     func hasFwd () -> Bool {
@@ -58,7 +58,7 @@ extension String {
         }
         let myNSString = self as NSString
         let str = myNSString.substring(with: NSRange(location: 0, length: 4))
-        return str.contains("Fwd:")
+        return str.contains("Fwd:") //TODO::Localized check
     }
     
     

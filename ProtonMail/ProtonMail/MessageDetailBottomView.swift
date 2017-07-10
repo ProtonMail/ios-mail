@@ -23,9 +23,31 @@ class MessageDetailBottomView: UIView {
     // Drawing code
     }
     */
+    @IBOutlet weak var replyButton: UIButton!
+    @IBOutlet weak var replyAllButton: UIButton!
+    @IBOutlet weak var forwardButton: UIButton!
+    
+    override func awakeFromNib() {
+        replyButton.setTitle(NSLocalizedString("Reply", comment: "top left back button"), for: .normal)
+        replyAllButton.setTitle(NSLocalizedString("Reply All", comment: "top left back button"), for: .normal)
+        forwardButton.setTitle(NSLocalizedString("Forward", comment: "top left back button"), for: .normal)
+    }
+    
+//    override init(frame: CGRect) { // for using CustomView in code
+//        super.init(frame: frame)
+//        
+//        replyButton.setTitle(NSLocalizedString("Reply", comment: "top left back button"), for: .normal)
+//        replyAllButton.setTitle(NSLocalizedString("Reply All", comment: "top left back button"), for: .normal)
+//        forwardButton.setTitle(NSLocalizedString("Forward", comment: "top left back button"), for: .normal)
+//    }
+//    
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)!
+//        
+//    }
     
     var delegate: MessageDetailBottomViewProtocol?
-    
+
     
     @IBAction func replyClicked(_ sender: AnyObject) {
         self.delegate?.replyClicked()

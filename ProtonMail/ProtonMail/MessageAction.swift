@@ -83,13 +83,13 @@ public enum MessageSwipeAction : Int, CustomStringConvertible {
         get {
             switch(self) {
             case .trash:
-                return NSLocalizedString("Trash")
+                return NSLocalizedString("Trash", comment: "Title")
             case .spam:
-                return NSLocalizedString("Spam")
+                return NSLocalizedString("Spam", comment: "Title")
             case .star:
-                return NSLocalizedString("Star")
+                return NSLocalizedString("Star", comment: "Title")
             case .archive:
-                return NSLocalizedString("Archive")
+                return NSLocalizedString("Archive", comment: "Title")
             }
         }
     }

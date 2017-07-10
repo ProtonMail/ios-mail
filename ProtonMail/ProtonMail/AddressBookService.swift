@@ -85,7 +85,7 @@ extension NSError {
     class func getContactsError() -> NSError {
         return apiServiceError(
             code: APIErrorCode.SendErrorCode.draftBad,
-            localizedDescription: NSLocalizedString("Unable to get contacts"),
-            localizedFailureReason: NSLocalizedString("get contacts() failed, peopleOrderedByUsersPreference return null!!"))
+            localizedDescription: NSLocalizedString("Unable to get contacts", comment: "Error"),
+            localizedFailureReason: NSLocalizedString("get contacts() failed, peopleOrderedByUsersPreference return null!!", comment: "contacts api error when fetch"))
     }
 }

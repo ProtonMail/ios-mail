@@ -39,8 +39,11 @@ class ContactsViewController: ProtonMailViewController {
         super.viewDidLoad()
         tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: kContactCellIdentifier)
         
-        searchController = UISearchController(searchResultsController: nil)
+        self.title = NSLocalizedString("CONTACTS", comment: "Title")
         
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = NSLocalizedString("Search", comment: "Placeholder")
+        searchController.searchBar.setValue(NSLocalizedString("Cancel", comment: "Action"), forKey:"_cancelButtonText")
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
@@ -241,9 +244,8 @@ extension ContactsViewController: UITableViewDelegate {
             self.performSegue(withIdentifier: "toEditContact", sender: self)
         }
         
-        let deleteAction = UITableViewRowAction(style: .default, title: NSLocalizedString("Delete"), handler: deleteClosure)
-        let editAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Edit"), handler: editClosure)
-        
+        let deleteAction = UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: "Action"), handler: deleteClosure)
+        let editAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Edit", comment: "Action"), handler: editClosure)
         return [deleteAction, editAction]
     }
     
@@ -266,8 +268,8 @@ extension ContactsViewController: UITableViewDelegate {
     }
     
     fileprivate func showContactBelongsToAddressBookError() {
-        let description = NSLocalizedString("This contact belongs to your Address Book.")
-        let message = NSLocalizedString("Please, manage it in your phone.")
+        let description = NSLocalizedString("This contact belongs to your Address Book.", comment: "")
+        let message = NSLocalizedString("Please, manage it in your phone.", comment: "Title")
         let alertController = UIAlertController(title: description, message: message, preferredStyle: .alert)
         alertController.addOKAction()
         

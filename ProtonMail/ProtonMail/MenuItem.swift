@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum MenuItem: String {
+enum MenuItem: String {//change to Int later.
     case bugs = "Report Bugs"
     case inbox = "Inbox"
     case starred = "Starred"
@@ -24,7 +24,40 @@ enum MenuItem: String {
     case feedback = "Feedback"
     case lockapp = "Lock The App"
     
-    var identifier: String { return rawValue }
+    //var identifier: String { return rawValue }
+    
+    var title: String {
+        switch self {
+        case .bugs:
+            return NSLocalizedString("Report Bugs", comment: "Title")
+        case .inbox:
+            return NSLocalizedString("Inbox", comment: "Title")
+        case .starred:
+            return NSLocalizedString("Starred", comment: "Title")
+        case .archive:
+            return NSLocalizedString("Archive", comment: "Title")
+        case .drafts:
+            return NSLocalizedString("Drafts", comment: "Title")
+        case .allmail:
+            return NSLocalizedString("All Mail", comment: "Title")
+        case .sent:
+            return NSLocalizedString("Sent", comment: "Title")
+        case .trash:
+            return NSLocalizedString("Trash", comment: "Title")
+        case .spam:
+            return NSLocalizedString("Spam", comment: "Title")
+        case .contacts:
+            return NSLocalizedString("Contacts", comment: "Title")
+        case .settings:
+            return NSLocalizedString("Settings", comment: "Title")
+        case .signout:
+            return NSLocalizedString("Logout", comment: "Title")
+        case .feedback:
+            return NSLocalizedString("Feedback", comment: "Title")
+        case .lockapp:
+            return NSLocalizedString("Lock The App", comment: "Title")
+        }
+    }
     
     var hasCount : Bool {
         var has = false

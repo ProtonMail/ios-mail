@@ -12,15 +12,15 @@ import Foundation
 final class FolderCreatingViewModelImple : LabelEditViewModel {
     
     override func title() -> String {
-        return "Add New Folder"
+        return NSLocalizedString("Add New Folder", comment: "Title")
     }
     
     override func placeHolder() -> String {
-        return "Folder Name"
+        return NSLocalizedString("Folder Name", comment: "place holder")
     }
     
     override func rightButtonText() -> String {
-        return "Create"
+        return NSLocalizedString("Create", comment: "top right action text")
     }
     
     override func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {

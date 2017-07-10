@@ -43,6 +43,7 @@ class SearchViewController: ProtonMailViewController {
     @IBOutlet weak var searchTextField: UITextField!
     
     @IBOutlet weak var noResultLabel: UILabel!
+    @IBOutlet weak var cancelButton: UIButton!
     
     // MARK: - Private Constants
     
@@ -69,6 +70,8 @@ class SearchViewController: ProtonMailViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         
+        cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Action"), for: .normal)
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.noSeparatorsBelowFooter()
@@ -85,7 +88,7 @@ class SearchViewController: ProtonMailViewController {
         searchTextField.font = UIFont.robotoRegular(size: UIFont.Size.h4)
         searchTextField.textColor = UIColor.white
         searchTextField.tintColor = UIColor.white
-        searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Search"), attributes:
+        searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Search", comment: "Title"), attributes:
             [
                 NSForegroundColorAttributeName: UIColor.white,
                 NSFontAttributeName: UIFont.robotoLight(size: UIFont.Size.h3)

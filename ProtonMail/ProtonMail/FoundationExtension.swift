@@ -21,9 +21,10 @@ func dispatch_after_delay(_ delay: TimeInterval, queue: DispatchQueue, block: @e
     queue.asyncAfter(deadline: time, execute: block)
 }
 
-func NSLocalizedString(_ key: String) -> String {
-    return NSLocalizedString(key, comment: "")
-}
+////Export doesn't catch from here, so disabled
+//func NSLocalizedString(_ key: String) -> String {
+//    return NSLocalizedString(key, comment: "")
+//}
 
 func delay(_ delay:Double, closure:@escaping ()->()) {
     DispatchQueue.main.asyncAfter(

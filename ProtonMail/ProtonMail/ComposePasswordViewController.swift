@@ -15,19 +15,23 @@ protocol ComposePasswordViewControllerDelegate {
 }
 
 class ComposePasswordViewController: UIViewController {
-
+    
+    @IBOutlet weak var viewTitleLable: UILabel!
+    @IBOutlet weak var titleDesLabel: UILabel!
+    @IBOutlet weak var moreInfoButton: UIButton!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var passwordErrorLabel: UILabel!
-    
     @IBOutlet weak var confirmPasswordField: UITextField!
     @IBOutlet weak var confirmPasswordErrorLabel: UILabel!
-    
     @IBOutlet weak var hintField: UITextField!
     @IBOutlet weak var hintErrorLabel: UILabel!
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var removeButton: UIButton!
+    @IBOutlet weak var applyButton: UIButton!
+    
     
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var removeButton: UIButton!
     fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
     
     fileprivate var pwd : String = ""
@@ -38,6 +42,19 @@ class ComposePasswordViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewTitleLable.text = NSLocalizedString("Set Password", comment: "Title")
+        titleDesLabel.text = NSLocalizedString("Set a password to encrypt this message for non-ProtonMail users.", comment: "Description")
+        moreInfoButton.setTitle(NSLocalizedString("Get more information", comment: "Action"), for: .normal)
+        passwordField.placeholder = NSLocalizedString("Message Password", comment: "Placeholder")
+        passwordErrorLabel.text = NSLocalizedString("The message password can't be empty", comment: "Description")
+        confirmPasswordField.placeholder = NSLocalizedString("Confirm Password", comment: "Placeholder")
+        confirmPasswordErrorLabel.text = NSLocalizedString("The message password didn't match", comment: "Description")
+        hintField.placeholder = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
+//        hintErrorLabel.text = NSLocalizedString("", comment: "")
+        cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Action"), for: .normal)
+        removeButton.setTitle(NSLocalizedString("Remove", comment: "Action"), for: .normal)
+        applyButton.setTitle(NSLocalizedString("Apply", comment: "Action"), for: .normal)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {

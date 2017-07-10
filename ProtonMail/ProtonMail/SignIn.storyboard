@@ -270,7 +270,7 @@
                                                     <constraint firstAttribute="width" constant="200" id="34x-ap-wAQ"/>
                                                     <constraint firstAttribute="height" constant="42" id="gLb-Jh-YuB"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <state key="normal" title="LOGIN">
                                                     <color key="titleColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
@@ -341,12 +341,47 @@
                                                     <action selector="touchIDAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="imf-lD-7k3"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kb0-7s-rZ2">
-                                                <rect key="frame" x="173" y="544" width="30" height="14"/>
-                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="11"/>
-                                                <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VPr-ye-PCJ">
+                                                <rect key="frame" x="150.5" y="544" width="75" height="27"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kb0-7s-rZ2">
+                                                        <rect key="frame" x="0.0" y="0.0" width="29.5" height="27"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="11"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="English" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2rG-LS-ZyB">
+                                                        <rect key="frame" x="37.5" y="0.0" width="37.5" height="27"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="11"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="luG-we-EEM">
+                                                        <rect key="frame" x="37.5" y="0.0" width="37.5" height="27"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                        <state key="normal">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="changeLanguagesAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="nJy-YC-uu7"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstItem="luG-we-EEM" firstAttribute="leading" secondItem="2rG-LS-ZyB" secondAttribute="leading" id="0fC-zr-ZUQ"/>
+                                                    <constraint firstItem="luG-we-EEM" firstAttribute="trailing" secondItem="2rG-LS-ZyB" secondAttribute="trailing" id="B7L-nK-Aqt"/>
+                                                    <constraint firstAttribute="bottom" secondItem="kb0-7s-rZ2" secondAttribute="bottom" id="EXl-Vv-W0F"/>
+                                                    <constraint firstAttribute="trailing" secondItem="2rG-LS-ZyB" secondAttribute="trailing" id="HqL-9i-jgw"/>
+                                                    <constraint firstItem="luG-we-EEM" firstAttribute="bottom" secondItem="2rG-LS-ZyB" secondAttribute="bottom" id="R0z-bc-szy"/>
+                                                    <constraint firstItem="2rG-LS-ZyB" firstAttribute="leading" secondItem="kb0-7s-rZ2" secondAttribute="trailing" constant="8" id="Wfp-rS-M56"/>
+                                                    <constraint firstItem="luG-we-EEM" firstAttribute="top" secondItem="2rG-LS-ZyB" secondAttribute="top" id="Ybq-8F-RXE"/>
+                                                    <constraint firstItem="kb0-7s-rZ2" firstAttribute="top" secondItem="VPr-ye-PCJ" secondAttribute="top" id="bjO-p0-FH9"/>
+                                                    <constraint firstItem="2rG-LS-ZyB" firstAttribute="top" secondItem="VPr-ye-PCJ" secondAttribute="top" id="mQe-Xr-2R4"/>
+                                                    <constraint firstAttribute="bottom" secondItem="2rG-LS-ZyB" secondAttribute="bottom" id="rph-53-9xZ"/>
+                                                    <constraint firstItem="kb0-7s-rZ2" firstAttribute="leading" secondItem="VPr-ye-PCJ" secondAttribute="leading" id="vBA-Ki-ZBY"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -364,7 +399,7 @@
                                             <constraint firstItem="2gx-2z-FDL" firstAttribute="leading" secondItem="ve5-Rb-bXf" secondAttribute="leading" constant="28" id="RtP-fB-V18"/>
                                             <constraint firstItem="MgP-0E-i6P" firstAttribute="top" secondItem="bOD-D6-5za" secondAttribute="bottom" constant="48" id="T8K-JS-l1w"/>
                                             <constraint firstItem="bb6-Ns-GPi" firstAttribute="top" secondItem="ve5-Rb-bXf" secondAttribute="top" priority="500" constant="45" id="Ugn-di-Dly"/>
-                                            <constraint firstItem="kb0-7s-rZ2" firstAttribute="top" secondItem="BlP-nl-XPC" secondAttribute="bottom" constant="4" id="bRw-yM-Mc1"/>
+                                            <constraint firstItem="VPr-ye-PCJ" firstAttribute="centerX" secondItem="ve5-Rb-bXf" secondAttribute="centerX" id="Yv6-H8-b19"/>
                                             <constraint firstAttribute="centerX" secondItem="Os0-Xv-V8f" secondAttribute="centerX" priority="500" id="cPe-4N-99R"/>
                                             <constraint firstAttribute="centerX" secondItem="1qu-T6-Tyc" secondAttribute="centerX" id="ewr-np-AK9"/>
                                             <constraint firstItem="MgP-0E-i6P" firstAttribute="height" secondItem="B6O-Zu-zTa" secondAttribute="height" id="fLM-xv-Xe4"/>
@@ -375,8 +410,8 @@
                                             <constraint firstAttribute="trailing" secondItem="bOD-D6-5za" secondAttribute="trailing" constant="28" id="m23-RT-mCf"/>
                                             <constraint firstItem="bOD-D6-5za" firstAttribute="leading" secondItem="ve5-Rb-bXf" secondAttribute="leading" constant="28" id="mHQ-MY-4hz"/>
                                             <constraint firstAttribute="centerX" secondItem="bb6-Ns-GPi" secondAttribute="centerX" priority="500" id="oJL-6W-8Xi"/>
+                                            <constraint firstItem="VPr-ye-PCJ" firstAttribute="top" secondItem="BlP-nl-XPC" secondAttribute="bottom" constant="4" id="oWr-AE-I7w"/>
                                             <constraint firstAttribute="trailing" secondItem="2gx-2z-FDL" secondAttribute="trailing" constant="28" id="qAu-zs-eal"/>
-                                            <constraint firstItem="kb0-7s-rZ2" firstAttribute="centerX" secondItem="ve5-Rb-bXf" secondAttribute="centerX" id="tPc-CS-2Be"/>
                                             <constraint firstItem="1qu-T6-Tyc" firstAttribute="top" secondItem="MgP-0E-i6P" secondAttribute="bottom" priority="1" constant="24" id="tPr-d6-uFP"/>
                                             <constraint firstItem="bb6-Ns-GPi" firstAttribute="leading" secondItem="ve5-Rb-bXf" secondAttribute="leading" priority="1" constant="28" id="uel-ce-NZp"/>
                                             <constraint firstItem="bb6-Ns-GPi" firstAttribute="top" secondItem="ve5-Rb-bXf" secondAttribute="top" priority="1" id="uwY-xT-yW3"/>
@@ -413,6 +448,8 @@
                     <navigationItem key="navigationItem" id="UC0-zs-LZ5"/>
                     <connections>
                         <outlet property="backgroundImage" destination="B79-ZV-yWF" id="p2w-gn-VV6"/>
+                        <outlet property="forgotPwdButton" destination="BlP-nl-XPC" id="zIN-HW-4nG"/>
+                        <outlet property="languagesLabel" destination="2rG-LS-ZyB" id="Dxs-il-StJ"/>
                         <outlet property="loginMidlineConstraint" destination="xtp-kV-X4M" id="rOO-hQ-Hkv"/>
                         <outlet property="loginWidthConstraint" destination="34x-ap-wAQ" id="USv-dF-9Uw"/>
                         <outlet property="logoLeftPaddingConstraint" destination="uel-ce-NZp" id="ykA-9O-VZv"/>
@@ -422,6 +459,8 @@
                         <outlet property="passwordView" destination="bOD-D6-5za" id="Tz8-k0-WmG"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="f3K-Vi-4pQ" id="Eaa-cQ-XRp"/>
                         <outlet property="signInButton" destination="MgP-0E-i6P" id="aJo-QJ-EqF"/>
+                        <outlet property="signInTitle" destination="Os0-Xv-V8f" id="0TQ-Bm-jIk"/>
+                        <outlet property="signUpButton" destination="1qu-T6-Tyc" id="ffa-xY-gtj"/>
                         <outlet property="signUpTopConstraint" destination="tPr-d6-uFP" id="qbi-WE-zO2"/>
                         <outlet property="touchIDButton" destination="liV-Dc-2Hc" id="9Qn-Ja-jXi"/>
                         <outlet property="userLeftPaddingConstraint" destination="i9Z-2s-4GQ" id="6h5-WQ-M7m"/>
@@ -444,7 +483,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-2205" y="1357"/>
+            <point key="canvasLocation" x="-2205.5999999999999" y="1356.9715142428786"/>
         </scene>
         <!--Recaptcha View Controller-->
         <scene sceneID="kRk-yJ-4cz">
@@ -481,7 +520,6 @@
                                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="backAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="6zM-e8-psy"/>
                                                     <action selector="backAction:" destination="XYV-2Y-X0C" eventType="touchUpInside" id="gQl-a6-fZQ"/>
                                                 </connections>
                                             </button>
@@ -582,11 +620,14 @@
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="continueButton" destination="uOc-mm-9Q7" id="7ri-o9-fdt"/>
                         <outlet property="logoLeftPaddingConstraint" destination="GHL-Du-Mmu" id="Fje-OL-L6z"/>
                         <outlet property="logoTopPaddingConstraint" destination="uNL-9j-U9n" id="Qnl-5y-dce"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="Hzc-bI-3wt" id="bD2-pi-rxA"/>
                         <outlet property="titleLeftPaddingConstraint" destination="A9T-Rb-jKH" id="d6k-oy-hyE"/>
                         <outlet property="titleTopPaddingConstraint" destination="CrW-rG-lgW" id="Nqf-5o-9UD"/>
+                        <outlet property="topLeftButton" destination="b8d-qE-UH9" id="60A-YG-UEb"/>
+                        <outlet property="topTitleLabel" destination="dx5-WV-bep" id="6eU-gB-DEb"/>
                         <outlet property="webView" destination="dlP-lx-EdD" id="uo2-Ps-qhc"/>
                         <outlet property="webViewHeightConstraint" destination="aU3-Hx-VhC" id="IAB-C0-Vzi"/>
                         <segue destination="YIP-X7-8Un" kind="show" identifier="sign_up_pwd_email_segue" id="BQ1-JS-Xpb"/>
@@ -637,7 +678,6 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="backAction:" destination="5Bg-GM-4IG" eventType="touchUpInside" id="6ZD-Fg-nPT"/>
-                                                    <action selector="backAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="o7f-Xj-kow"/>
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bBB-Os-iCx" userLabel="username_view">
@@ -778,14 +818,13 @@
                                                     <color key="titleColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="checkAction:" destination="YIP-X7-8Un" eventType="touchUpInside" id="GXs-VT-kfV"/>
                                                     <action selector="checkAction:" destination="5Bg-GM-4IG" eventType="touchUpInside" id="dQ3-yK-nKn"/>
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="saF-n1-0c1">
                                                 <rect key="frame" x="36" y="364" width="304" height="29"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CbA-r9-sa6">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CbA-r9-sa6">
                                                         <rect key="frame" x="0.0" y="0.0" width="157" height="29"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="29" id="EmJ-pr-qwX"/>
@@ -809,7 +848,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y6T-qb-8Nh">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y6T-qb-8Nh">
                                                         <rect key="frame" x="199" y="0.0" width="105" height="29"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="105" id="Nhq-i4-hGy"/>
@@ -925,14 +964,21 @@
                     </view>
                     <connections>
                         <outlet property="agreeCheck" destination="ICf-l2-Ci6" id="5AH-HH-9rf"/>
+                        <outlet property="agreementButton" destination="ICf-l2-Ci6" id="hiB-9j-rAG"/>
+                        <outlet property="andLable" destination="7BB-jM-eZq" id="8fm-ic-uFr"/>
                         <outlet property="createAccountButton" destination="RYu-Gf-dyX" id="bn3-kx-0I5"/>
+                        <outlet property="leftBackItem" destination="084-Ad-Wzo" id="MjA-Gv-f4z"/>
                         <outlet property="logoLeftPaddingConstraint" destination="ERs-ST-8NF" id="n2l-ar-N8t"/>
                         <outlet property="logoTopPaddingConstraint" destination="lje-rf-gHK" id="Xl8-57-IKc"/>
                         <outlet property="pickedDomainLabel" destination="Peb-mh-rN0" id="xKK-Gz-Cqb"/>
                         <outlet property="pickerButton" destination="rDi-wT-bHe" id="tOS-bl-d5b"/>
+                        <outlet property="privacyButton" destination="y6T-qb-8Nh" id="3Fu-lg-rbQ"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="mTP-NC-IaV" id="saq-rZ-FeY"/>
+                        <outlet property="termsButton" destination="CbA-r9-sa6" id="J23-hs-ft9"/>
                         <outlet property="titleLeftPaddingConstraint" destination="ZPV-9x-rnm" id="1df-8o-2fG"/>
                         <outlet property="titleTopPaddingConstraint" destination="nBv-dS-5MD" id="NbY-UT-bOf"/>
+                        <outlet property="topTitleLabel" destination="4VW-MQ-Qlx" id="yQ7-kw-odc"/>
+                        <outlet property="userNameNoteLabel" destination="MSW-pX-et7" id="nmo-Eq-DxC"/>
                         <outlet property="userNameTopPaddingConstraint" destination="EVe-Me-1Px" id="flm-Cg-bv4"/>
                         <outlet property="usernameTextField" destination="deA-uA-iau" id="cf4-vf-NAZ"/>
                         <outlet property="warningIcon" destination="9xO-zW-9nQ" id="I4Q-Qc-beV"/>
@@ -948,7 +994,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-2205" y="2285"/>
+            <point key="canvasLocation" x="-2205.5999999999999" y="2284.4077961019493"/>
         </scene>
         <!--Sign Up Password View Controller-->
         <scene sceneID="XWo-Pd-Vec">
@@ -984,7 +1030,6 @@
                                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="backAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="3Sc-yP-8qy"/>
                                                     <action selector="backAction:" destination="cQW-e7-4Wy" eventType="touchUpInside" id="WuP-gw-1j3"/>
                                                 </connections>
                                             </button>
@@ -1104,7 +1149,6 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="createAccountAction:" destination="XYV-2Y-X0C" eventType="touchUpInside" id="oNy-70-3D0"/>
                                                     <action selector="createPasswordAction:" destination="cQW-e7-4Wy" eventType="touchUpInside" id="luh-dG-eeQ"/>
                                                 </connections>
                                             </button>
@@ -1167,13 +1211,17 @@
                     <connections>
                         <outlet property="confirmLoginPasswordField" destination="hvM-1O-hMa" id="WoU-4T-gJW"/>
                         <outlet property="createPasswordButton" destination="DbH-Ns-wpw" id="OXN-yx-i0x"/>
+                        <outlet property="leftTopItem" destination="IWK-8f-VFQ" id="cbW-FS-1W1"/>
                         <outlet property="loginPasswordField" destination="DuG-Wm-Ubd" id="jjA-dt-rPY"/>
                         <outlet property="logoLeftPaddingConstraint" destination="Q6j-vZ-P1D" id="SL1-bG-aaa"/>
                         <outlet property="logoTopPaddingConstraint" destination="hjs-42-aek" id="EMg-LS-6rV"/>
+                        <outlet property="noteOneLable" destination="agB-RC-aUZ" id="VC8-WV-yCt"/>
+                        <outlet property="noteTwoLabel" destination="Ed2-QY-tZc" id="6Rd-tI-091"/>
                         <outlet property="passwordTopPaddingConstraint" destination="P4q-XZ-Fjd" id="Kbi-cN-bli"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="ap7-uQ-UET" id="wtY-QC-ynq"/>
                         <outlet property="titleLeftPaddingConstraint" destination="y1i-dP-HWF" id="ppG-uH-qRN"/>
                         <outlet property="titleTopPaddingConstraint" destination="wW0-FR-tE6" id="9o9-qI-aL7"/>
+                        <outlet property="topTitleLabel" destination="jQu-u1-JG1" id="2Zt-eD-ag3"/>
                         <segue destination="hqf-60-ZdQ" kind="show" identifier="sign_up_password_to_encryption_segue" id="rno-cB-4i7"/>
                     </connections>
                 </viewController>
@@ -1221,7 +1269,6 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="backAction:" destination="YIP-X7-8Un" eventType="touchUpInside" id="bGb-rB-Qiq"/>
-                                                    <action selector="backAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="mpO-6C-KBb"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulations!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ok8-ED-GBl">
@@ -1356,7 +1403,6 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="createAccountAction:" destination="XYV-2Y-X0C" eventType="touchUpInside" id="u5A-Zj-N9A"/>
                                                     <action selector="doneAction:" destination="YIP-X7-8Un" eventType="touchUpInside" id="oKC-84-TMT"/>
                                                 </connections>
                                             </button>
@@ -1446,14 +1492,21 @@
                     <connections>
                         <outlet property="checkButton" destination="ahq-2c-52v" id="wep-iK-Wrv"/>
                         <outlet property="displayNameField" destination="O1s-lp-WDA" id="d5D-gL-a03"/>
+                        <outlet property="displayNameNoteLabel" destination="YyG-M9-XCC" id="eaE-NE-4QG"/>
+                        <outlet property="goInboxButton" destination="3UG-dE-ZUI" id="uN2-o3-1NF"/>
                         <outlet property="logoLeftPaddingConstraint" destination="Xym-Z6-uvD" id="PEB-QU-sMN"/>
                         <outlet property="logoTopPaddingConstraint" destination="26X-sV-eHq" id="cP4-cl-3pe"/>
+                        <outlet property="optionalOneLabel" destination="iBE-pS-uhL" id="XD6-Ze-Hmm"/>
+                        <outlet property="optionalTwoLabel" destination="3g6-MC-D2q" id="XcH-om-bwT"/>
                         <outlet property="recoveryEmailField" destination="NNw-Zp-1k2" id="zRF-e4-23Y"/>
+                        <outlet property="recoveryEmailNoteLabel" destination="J33-vv-E3j" id="Z9c-Wv-jTk"/>
                         <outlet property="recoveryEmailTopPaddingConstraint" destination="GS7-VT-X93" id="hwC-LW-Zzr"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="Z7U-ZZ-EZC" id="pqL-af-iqk"/>
                         <outlet property="titleLeftPaddingConstraint" destination="CP3-w8-drc" id="pPm-3O-HQj"/>
                         <outlet property="titleTopPaddingConstraint" destination="Lgz-ZM-d9H" id="mVG-gK-dxW"/>
                         <outlet property="titleWarningLabel" destination="YDM-Gr-hEC" id="1UZ-DH-U46"/>
+                        <outlet property="topLeftButton" destination="2Ju-xs-RJb" id="IKB-uf-5HG"/>
+                        <outlet property="topTitleLabel" destination="ok8-ED-GBl" id="VcO-y2-qd1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EDR-4o-8hm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1774,6 +1827,7 @@
                         <outlet property="scrollBottomPaddingConstraint" destination="1DM-ZH-shG" id="YK8-bu-x5U"/>
                         <outlet property="titleLeftPaddingConstraint" destination="gsG-04-lH4" id="Gke-Qe-nze"/>
                         <outlet property="titleTopPaddingConstraint" destination="ydB-tk-Hvg" id="zWd-1U-ile"/>
+                        <outlet property="topTitleLabel" destination="Jzp-6U-vEt" id="bP6-rS-5DW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gtd-a3-Tsl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1839,8 +1893,10 @@
                                                     <constraint firstAttribute="width" constant="98" id="lWj-0F-bON"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To prevent abuse of ProtonMail,  we need to verify that you are human." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7E-d0-nk1">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7E-d0-nk1">
                                                 <rect key="frame" x="28" y="179" width="319" height="36"/>
+                                                <string key="text">To prevent abuse of ProtonMail, 
+we need to verify that you are human.</string>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -2004,9 +2060,16 @@
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="captchaButton" destination="ZwP-bW-2uu" id="gKP-RV-4hI"/>
+                        <outlet property="emailCheckButton" destination="oEd-L3-e9c" id="pW7-KT-gtd"/>
                         <outlet property="emailViewConstraint" destination="qjK-GY-BB6" id="Tld-VP-nfz"/>
+                        <outlet property="optionsTitleLabel" destination="Med-83-8hd" id="uRi-ML-RVg"/>
+                        <outlet property="phoneCheckButton" destination="xSN-yE-FoB" id="hqc-JL-qYz"/>
                         <outlet property="phoneViewConstraint" destination="6Kv-07-EaJ" id="wCP-3I-NhK"/>
                         <outlet property="recaptchaViewConstraint" destination="pNi-Qm-dfz" id="Vdc-6M-HUw"/>
+                        <outlet property="topLeftButton" destination="fDh-xH-qmf" id="8Bf-jW-C6K"/>
+                        <outlet property="topNotesLabel" destination="K7E-d0-nk1" id="OLs-Qj-YaJ"/>
+                        <outlet property="topTitleLabel" destination="ND6-no-hE2" id="XDm-kI-r8E"/>
                         <segue destination="KEE-gK-nEU" kind="show" identifier="check_menu_to_email_verify_segue" id="JLb-ho-vYS"/>
                         <segue destination="XYV-2Y-X0C" kind="show" identifier="check_menu_to_recaptcha_verify_segue" id="YQv-tM-1gb"/>
                         <segue destination="72v-cj-LoN" kind="show" identifier="check_menu_to_phone_verify_segue" id="8fc-ho-WgQ"/>
@@ -2053,7 +2116,6 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="backAction:" destination="KEE-gK-nEU" eventType="touchUpInside" id="Dgu-kk-gZP"/>
-                                                    <action selector="backAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="sEP-f3-Gib"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Human Verification" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qwp-pA-b7V">
@@ -2289,6 +2351,7 @@
                     </view>
                     <connections>
                         <outlet property="continueButton" destination="05y-zb-VWq" id="6F4-5Y-OX7"/>
+                        <outlet property="emailFieldNotes" destination="62s-b4-qQ8" id="f8p-TZ-Gyc"/>
                         <outlet property="emailTextField" destination="xHh-K5-hgF" id="XPE-KB-T95"/>
                         <outlet property="logoLeftPaddingConstraint" destination="dzt-HW-boV" id="qn5-zz-pZ4"/>
                         <outlet property="logoTopPaddingConstraint" destination="Re7-ZX-Vqf" id="Ff3-ao-b1P"/>
@@ -2297,6 +2360,8 @@
                         <outlet property="titleLeftPaddingConstraint" destination="i0k-ZJ-MAJ" id="7y5-ef-QLd"/>
                         <outlet property="titleTopPaddingConstraint" destination="g00-HE-Xaq" id="s4p-yg-5lu"/>
                         <outlet property="titleTwoLabel" destination="nPJ-Ai-Bgp" id="FqK-iE-Tj9"/>
+                        <outlet property="topLeftButton" destination="7o7-3e-eNr" id="OPj-rU-7KH"/>
+                        <outlet property="topTitleLabel" destination="qwp-pA-b7V" id="OsZ-Me-slq"/>
                         <outlet property="userNameTopPaddingConstraint" destination="qwX-iT-Bhh" id="heG-RX-kpv"/>
                         <outlet property="verifyCodeTextField" destination="e5M-as-Fd0" id="22g-ka-pPg"/>
                         <outlet property="warningIcon" destination="2EP-KP-thW" id="xSq-XK-Nfm"/>
@@ -2350,7 +2415,6 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="backAction:" destination="72v-cj-LoN" eventType="touchUpInside" id="3k3-0V-k7E"/>
-                                                    <action selector="backAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="LD3-Vk-wre"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Human Verification" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mAA-zc-Xiy">
@@ -2471,7 +2535,7 @@
                                                     <constraint firstItem="XW1-h6-xgs" firstAttribute="leading" secondItem="Zkk-vL-dt9" secondAttribute="leading" id="nj9-fx-uDr"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your cell phone nuber" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q3J-Wb-t9t">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your cell phone number" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q3J-Wb-t9t">
                                                 <rect key="frame" x="28" y="179" width="319" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2606,12 +2670,15 @@
                         <outlet property="emailTextField" destination="t5M-6y-Nuz" id="20n-Ti-R4k"/>
                         <outlet property="logoLeftPaddingConstraint" destination="C7r-Xw-Htq" id="pbW-iM-BKT"/>
                         <outlet property="logoTopPaddingConstraint" destination="0CI-qW-16f" id="0g6-P4-Q54"/>
+                        <outlet property="phoneFieldNoteLabel" destination="1uc-nT-Ek1" id="Ese-YL-zyH"/>
                         <outlet property="pickerButton" destination="QPe-tj-Afs" id="YxZ-Da-d5Z"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="lUw-za-tIZ" id="N3e-iO-CzX"/>
                         <outlet property="sendCodeButton" destination="hpx-h5-Gvz" id="gbN-uZ-KyN"/>
                         <outlet property="titleLeftPaddingConstraint" destination="3c1-jX-33H" id="M4V-th-Mlt"/>
                         <outlet property="titleTopPaddingConstraint" destination="wde-Hb-Ep5" id="7mY-kg-EhX"/>
                         <outlet property="titleTwoLabel" destination="q3J-Wb-t9t" id="76R-Ou-QCe"/>
+                        <outlet property="topLeftButton" destination="rWE-kF-dfC" id="tvy-nx-HQk"/>
+                        <outlet property="topTitleLabel" destination="mAA-zc-Xiy" id="un8-Jm-hye"/>
                         <outlet property="userNameTopPaddingConstraint" destination="eBk-sQ-OQ6" id="pQb-BE-rps"/>
                         <outlet property="verifyCodeTextField" destination="Lep-Ht-zgb" id="mmZ-u1-sdz"/>
                         <outlet property="warningIcon" destination="XW1-h6-xgs" id="wX1-gY-37D"/>
@@ -2706,7 +2773,7 @@
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The current standard" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Fh-Qj-zEk">
                                                 <rect key="frame" x="78" y="232" width="250" height="16"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" red="0.67843137249999996" green="0.67843137249999996" blue="0.75294117650000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <size key="shadowOffset" width="0.0" height="0.0"/>
@@ -2738,7 +2805,6 @@
                                                 </state>
                                                 <state key="selected" image="sign_up_checked"/>
                                                 <connections>
-                                                    <action selector="checkAction:" destination="YIP-X7-8Un" eventType="touchUpInside" id="EcN-nW-PXt"/>
                                                     <action selector="switchAction:" destination="hqf-60-ZdQ" eventType="touchUpInside" id="hem-1A-0Fd"/>
                                                 </connections>
                                             </button>
@@ -2774,7 +2840,6 @@
                                                     </mask>
                                                 </variation>
                                                 <connections>
-                                                    <action selector="checkAction:" destination="YIP-X7-8Un" eventType="touchUpInside" id="wVa-EH-bCQ"/>
                                                     <action selector="switchAction:" destination="hqf-60-ZdQ" eventType="touchUpInside" id="45f-Qv-5yC"/>
                                                 </connections>
                                             </button>
@@ -2860,8 +2925,13 @@
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="continueButton" destination="yi4-sU-Bxn" id="YeW-tm-Jv6"/>
+                        <outlet property="extremeSecurityNoteLabel" destination="bhX-BC-wdL" id="sdL-K5-NnG"/>
                         <outlet property="highBitLevel" destination="Re1-Mr-qNC" id="nRR-cQ-5fx"/>
+                        <outlet property="highSecurityLabel" destination="4Fh-Qj-zEk" id="xbT-hm-E4w"/>
                         <outlet property="normalBitLevel" destination="Ycl-bi-69d" id="1Se-dt-DvC"/>
+                        <outlet property="topLeftButton" destination="fFI-kC-Z9Q" id="D8c-1S-iGA"/>
+                        <outlet property="topTitleLabel" destination="tSv-EG-qd7" id="olT-WV-3zH"/>
                         <segue destination="D1E-h7-WYp" kind="show" identifier="encryption_to_verification_segue" id="VFp-K2-fzd"/>
                     </connections>
                 </viewController>

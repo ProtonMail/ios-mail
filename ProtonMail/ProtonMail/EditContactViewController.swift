@@ -17,6 +17,9 @@ class EditContactViewController: ProtonMailViewController {
     @IBOutlet var nameTextField: UITextField!
     @IBOutlet var emailTextField: UITextField!
     
+    fileprivate var cancelButton: UIBarButtonItem!
+    fileprivate var saveButton: UIBarButtonItem!
+    
     var contact: ContactVO!
     
     fileprivate let kInvalidEmailShakeTimes: Float = 3.0
@@ -26,14 +29,24 @@ class EditContactViewController: ProtonMailViewController {
         super.viewDidLoad()
         UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
         
+        self.cancelButton = UIBarButtonItem(title:NSLocalizedString("Cancel", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(EditContactViewController.didTapCancelButton(_:)))
+        self.navigationItem.leftBarButtonItem = cancelButton
+        
+        self.saveButton = UIBarButtonItem(title:NSLocalizedString("Save", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(EditContactViewController.didTapSaveButton(_:)))
+        self.navigationItem.rightBarButtonItem = saveButton
+        
+        
         nameTextField.delegate = self
         emailTextField.delegate = self
         
+        self.title = NSLocalizedString("Add Contact", comment: "edit contact navigation title")
         if (contact != nil) {
             nameTextField.text = contact.name
             emailTextField.text = contact.email
-            self.title = NSLocalizedString("Edit Contact")
+            self.title = NSLocalizedString("Edit Contact", comment: "edit contact navigation title")
         }
+        nameTextField.placeholder = NSLocalizedString("Name", comment: "Placeholder")
+        emailTextField.placeholder = NSLocalizedString("Email", comment: "Placeholder")
     }
     
     @IBAction func didTapCancelButton(_ sender: UIBarButtonItem) {

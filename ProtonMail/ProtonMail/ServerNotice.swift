@@ -60,15 +60,15 @@ class ServerNotice {
         userCachedStatus.serverNotices = messages
         self.setTime(1800)
         var message = ""
-        message = NSLocalizedString("\(string_show)")
+        message = NSLocalizedString("\(string_show)", comment: "")
         let alertController = UIAlertController(
-            title: NSLocalizedString("ProtonMail"),
+            title: NSLocalizedString("ProtonMail", comment: "Title"),
             message: message,
             preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Remind Me Later"), style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Remind Me Later", comment: "Title"), style: .default, handler: { action in
             self.setTime(10)
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Don't Show Again"), style: .destructive, handler: { action in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Don't Show Again", comment: "Title"), style: .destructive, handler: { action in
              self.setTime(31536000)//1 year 1 * 365 * 24 * 60 * 60
         }))
         UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)

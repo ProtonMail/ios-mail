@@ -19,15 +19,14 @@ import Fabric
 import Crashlytics
 import LocalAuthentication
 
-
 fileprivate enum SignInUIFlow : Int {
     case requirePin = 0
     case requireTouchID = 1
     case restore = 2
 }
 
+//class SignInViewController: BaseViewController {
 class SignInViewController: ProtonMailViewController {
-    
     static var isComeBackFromMailbox                = false
     
     private var showingTouchID                      = false
@@ -60,11 +59,15 @@ class SignInViewController: ProtonMailViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     
     @IBOutlet weak var signInButton: UIButton!
-    @IBOutlet weak var signInLabel: UILabel!
     
     @IBOutlet weak var onePasswordButton: UIButton!
     
     @IBOutlet weak var backgroundImage: UIImageView!
+    @IBOutlet weak var signInTitle: UILabel!
+    @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var forgotPwdButton: UIButton!
+    
+    @IBOutlet weak var languagesLabel: UILabel!
     
     // Constraints
     @IBOutlet weak var userLeftPaddingConstraint: NSLayoutConstraint!
@@ -90,6 +93,7 @@ class SignInViewController: ProtonMailViewController {
         super.viewDidLoad()
         
         hideTouchID(false)
+
         setupTextFields()
         setupButtons()
         setupVersionLabel()
@@ -112,15 +116,45 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
+    @IBAction func changeLanguagesAction(_ sender: UIButton) {
+        let current_language = LanguageManager.currentLanguageEnum()
+        let title = NSLocalizedString("Current Language is: ", comment: "Change language title") + current_language.description
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        for l in ELanguage.allItems() {
+            if l != current_language {
+                alertController.addAction(UIAlertAction(title: l.description, style: .default, handler: { (action) -> Void in
+                    let _ = self.navigationController?.popViewController(animated: true)
+                    LanguageManager.saveLanguage(byCode: l.code)
+                    UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+                        self.setupTextFields()
+                        self.setupButtons()
+                        self.setupVersionLabel()
+                        self.view.layoutIfNeeded()
+                    }, completion: nil)
+
+                }))
+            }
+        }
+        
+        alertController.popoverPresentationController?.sourceView = sender
+        alertController.popoverPresentationController?.sourceRect = sender.bounds
+        present(alertController, animated: true, completion: nil)
+    }
+    
     fileprivate func setupVersionLabel () {
+
+        let language: ELanguage =  LanguageManager.currentLanguageEnum()
+        languagesLabel.text = language.description
+        
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-                versionLabel.text = NSLocalizedString("v") + version + "(\(build))"
+                versionLabel.text = NSLocalizedString("v", comment: "versions first character ") + version + "(\(build))"
             } else {
-                versionLabel.text = NSLocalizedString("v") + version
+                versionLabel.text = NSLocalizedString("v", comment: "versions first character ") + version
             }
         } else {
-            versionLabel.text = NSLocalizedString("")
+            versionLabel.text = ""
         }
     }
     
@@ -283,7 +317,7 @@ class SignInViewController: ProtonMailViewController {
         var error: NSError?
         context.localizedFallbackTitle = ""
         // Set the reason string that will appear on the authentication alert.
-        let reasonString = "Login: \(savedEmail)"
+        let reasonString = "\(NSLocalizedString("Login", comment: "touch id box title like Login: email@email.com")): \(savedEmail)"
         
         // Check if the device can evaluate the policy.
         if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
@@ -301,14 +335,14 @@ class SignInViewController: ProtonMailViewController {
                         switch evalPolicyError!._code {
                         case LAError.Code.systemCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the system")
-                            NSLocalizedString("Authentication was cancelled by the system").alertToast()
+                            NSLocalizedString("Authentication was cancelled by the system", comment: "Description").alertToast()
                         case LAError.Code.userCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the user")
                         case LAError.Code.userFallback.rawValue:
                             PMLog.D("User selected to enter custom password")
                         default:
                             PMLog.D("Authentication failed")
-                            NSLocalizedString("Authentication failed").alertToast()
+                            NSLocalizedString("Authentication failed", comment: "Description").alertToast()
                         }
                     }
                 }
@@ -320,12 +354,12 @@ class SignInViewController: ProtonMailViewController {
             // If the security policy cannot be evaluated then show a short message depending on the error.
             switch error!.code{
             case LAError.Code.touchIDNotEnrolled.rawValue:
-                alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings")
+                alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings", comment: "Description")
             case LAError.Code.passcodeNotSet.rawValue:
-                alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings")
+                alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings", comment: "Description")
             default:
                 // The LAError.TouchIDNotAvailable case.
-                alertString = NSLocalizedString("TouchID not available")
+                alertString = NSLocalizedString("TouchID not available", comment: "Description")
             }
             alertString.alertToast()
         }
@@ -416,6 +450,8 @@ class SignInViewController: ProtonMailViewController {
     }
     
     internal func setupTextFields() {
+        signInTitle.text = NSLocalizedString("USER LOGIN", comment: "Title")
+        
         usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
         passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
     }
@@ -426,6 +462,11 @@ class SignInViewController: ProtonMailViewController {
         
         onePasswordButton.layer.borderColor = UIColor.white.cgColor
         onePasswordButton.layer.borderWidth = 2
+        
+        signInButton.setTitle(NSLocalizedString("LOGIN", comment: "Title"), for: .normal)
+        
+        signUpButton.setTitle(NSLocalizedString("NEED AN ACCOUNT? SIGN UP.", comment: "Action"), for: .normal)
+        forgotPwdButton.setTitle(NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd"), for: .normal)
     }
     
     fileprivate var cachedTwoCode : String?
@@ -501,7 +542,7 @@ class SignInViewController: ProtonMailViewController {
                                 self.loadContent()
                                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: self)
                             } else {
-                                let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.").alertController() //here needs change to a clickable link
+                                let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.", comment: "Description").alertController() //here needs change to a clickable link
                                 alertController.addAction(UIAlertAction.okAction({ (action) -> Void in
                                     let _ = self.navigationController?.popViewController(animated: true)
                                 }))
@@ -515,14 +556,14 @@ class SignInViewController: ProtonMailViewController {
                     }
                 } catch let ex as NSError {
                     MBProgressHUD.hide(for: self.view, animated: true)
-                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? NSLocalizedString("The mailbox password is incorrect.")
-                    let alertController = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString(message),preferredStyle: .alert)
+                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? NSLocalizedString("The mailbox password is incorrect.", comment: "Description")
+                    let alertController = UIAlertController(title: NSLocalizedString("Incorrect password", comment: "Title"), message: NSLocalizedString(message, comment: ""),preferredStyle: .alert)
                     alertController.addOKAction()
                     present(alertController, animated: true, completion: nil)
                 }
             }
         } else {
-            let alert = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString("The mailbox password is incorrect."), preferredStyle: .alert)
+            let alert = UIAlertController(title: NSLocalizedString("Incorrect password", comment: "Title"), message: NSLocalizedString("The mailbox password is incorrect.", comment: "Description"), preferredStyle: .alert)
             alert.addAction((UIAlertAction.okAction()))
             present(alert, animated: true, completion: nil)
         }
@@ -618,6 +659,29 @@ class SignInViewController: ProtonMailViewController {
     @IBAction func fogorPasswordAction(_ sender: AnyObject) {
         dismissKeyboard()
         UIApplication.shared.openURL(forgotPasswordURL)
+        // let displayName = Localize.displayNameForLanguage(language)
+        // let languageAction = UIAlertAction(title: displayName, style: .Default, handler: {
+        //      (alert: UIAlertAction!) -> Void in
+        //      Localize.setCurrentLanguage(language)
+        // })
+        // actionSheet.addAction(languageAction)
+        
+        // let alertController = UIAlertController(title: NSLocalizedString("Switch Language .."), message: nil, preferredStyle: .ActionSheet)
+        // alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+        // let languages : [String] = Localization.availableLanguages()
+        // for (var lan) in languages {
+        //     if lan == Localization.kBaseLanguage {
+        //         continue
+        //     }
+        //     alertController.addAction(UIAlertAction(title: (lan == Localization.currentLanguage() ? " * \(Localization.displayNameForLanguage(lan))" :  Localization.displayNameForLanguage(lan)), style: .Default, handler: { (action) -> Void in
+        //         self.navigationController?.popViewControllerAnimated(true)
+        //         self.setLanguage(lan)
+        //     }))
+        // }
+        // //    
+        // alertController.popoverPresentationController?.sourceView = sender ?? self.view
+        // alertController.popoverPresentationController?.sourceRect = sender.frame
+        // presentViewController(alertController, animated: true, completion: nil)
     }
     
     @IBAction func signUpAction(_ sender: UIButton) {
