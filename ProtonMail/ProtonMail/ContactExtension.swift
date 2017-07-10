@@ -32,7 +32,7 @@ extension Contact {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
     
-    override func awakeFromInsert() {
+    override public func awakeFromInsert() {
         super.awakeFromInsert()
         replaceNilStringAttributesWithEmptyString()
     }

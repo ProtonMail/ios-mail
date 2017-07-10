@@ -8,11 +8,11 @@
 
 import Foundation
 
-let userCachedStatus = UserCachedStatus(shared: UserDefaults.standard)
+public let userCachedStatus = UserCachedStatus(shared: UserDefaults.standard)
 
 //the data in there store longer.
 
-class UserCachedStatus : SharedCacheBase {
+public class UserCachedStatus : SharedCacheBase {
     struct Key {
         // inuse
         static let lastCacheVersion = "last_cache_version" //user cache
@@ -50,9 +50,9 @@ class UserCachedStatus : SharedCacheBase {
         static let lastLocalMobileSignature = "last_local_mobile_signature" //user cache but could restore
     }
     
-    var isForcedLogout : Bool = false
+    public var isForcedLogout : Bool = false
     
-    var isCheckSpaceDisabled: Bool {
+    public var isCheckSpaceDisabled: Bool {
         get {
             return getShared().bool(forKey: Key.isCheckSpaceDisabled)
         }
@@ -61,7 +61,7 @@ class UserCachedStatus : SharedCacheBase {
         }
     }
     
-    var serverNotices : [String] {
+    public var serverNotices : [String] {
         get {
             return getShared().object(forKey: Key.cachedServerNotices) as? [String] ?? [String]()
         }
@@ -70,7 +70,7 @@ class UserCachedStatus : SharedCacheBase {
         }
     }
     
-    var serverNoticesNextTime : String {
+    public var serverNoticesNextTime : String {
         get {
             return getShared().string(forKey: Key.showServerNoticesNextTime) ?? "0"
         }
@@ -79,47 +79,47 @@ class UserCachedStatus : SharedCacheBase {
         }
     }
     
-    func isSplashOk() -> Bool {
+    public func isSplashOk() -> Bool {
         let splashVersion = getShared().integer(forKey: Key.lastSplashViersion)
         return splashVersion == AppConstants.SplashVersion
     }
     
-    func isTourOk() -> Bool {
+    public func isTourOk() -> Bool {
         let tourVersion = getShared().integer(forKey: Key.lastTourViersion)
         return tourVersion == AppConstants.TourVersion
     }
     
-    func showTourNextTime() {
+    public func showTourNextTime() {
         setValue(0, forKey: Key.lastTourViersion)
     }
     
-    func isCacheOk() -> Bool {
+    public func isCacheOk() -> Bool {
         let cachedVersion = getShared().integer(forKey: Key.lastCacheVersion)
         return cachedVersion == AppConstants.CacheVersion
     }
     
-    func isAuthCacheOk() -> Bool {
+    public func isAuthCacheOk() -> Bool {
         let cachedVersion = getShared().integer(forKey: Key.lastAuthCacheVersion)
         return cachedVersion == AppConstants.AuthCacheVersion
     }
     
-    func resetCache() -> Void {
+    public func resetCache() -> Void {
         setValue(AppConstants.CacheVersion, forKey: Key.lastCacheVersion)
     }
     
-    func resetAuthCache() -> Void {
+    public func resetAuthCache() -> Void {
         setValue(AppConstants.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
     }
     
-    func resetSplashCache() -> Void {
+    public func resetSplashCache() -> Void {
         setValue(AppConstants.SplashVersion, forKey: Key.lastSplashViersion)
     }
     
-    func resetTourValue() {
+    public func resetTourValue() {
         setValue(AppConstants.TourVersion, forKey: Key.lastTourViersion)
     }
     
-    var mobileSignature : String {
+    public var mobileSignature : String {
         get {
             if let s = getShared().string(forKey: Key.lastLocalMobileSignature) {
                 return s
@@ -131,7 +131,7 @@ class UserCachedStatus : SharedCacheBase {
         }
     }
     
-    var pinFailedCount : Int {
+    public var pinFailedCount : Int {
         get {
             return getShared().integer(forKey: Key.lastPinFailedTimes)
         }
@@ -140,12 +140,12 @@ class UserCachedStatus : SharedCacheBase {
         }
     }
     
-    func resetMobileSignature() {
+    public func resetMobileSignature() {
         getShared().removeObject(forKey: Key.lastLocalMobileSignature)
         getShared().synchronize()
     }
     
-    func signOut()
+    public func signOut()
     {
         getShared().removeObject(forKey: Key.lastFetchMessageID);
         getShared().removeObject(forKey: Key.lastFetchMessageTime);
@@ -173,7 +173,7 @@ class UserCachedStatus : SharedCacheBase {
         getShared().synchronize()
     }
     
-    func cleanGlobal() {
+    public func cleanGlobal() {
         getShared().removeObject(forKey: Key.lastSplashViersion)
         getShared().removeObject(forKey: Key.lastTourViersion);
         
@@ -195,7 +195,7 @@ class UserCachedStatus : SharedCacheBase {
 
 // touch id part
 extension UserCachedStatus {
-    var touchIDEmail : String {
+    public var touchIDEmail : String {
         get {
             return getShared().string(forKey: Key.touchIDEmail) ?? ""
         }
@@ -203,11 +203,12 @@ extension UserCachedStatus {
             setValue(newValue, forKey: Key.touchIDEmail)
         }
     }
-    func resetTouchIDEmail() {
+    
+    public func resetTouchIDEmail() {
         setValue("", forKey: Key.touchIDEmail)
     }
     
-    var isTouchIDEnabled : Bool {
+    public var isTouchIDEnabled : Bool {
         get {
             return getShared().bool(forKey: Key.isTouchIDEnabled)
         }
@@ -216,7 +217,7 @@ extension UserCachedStatus {
         }
     }
     
-    var isPinCodeEnabled : Bool {
+    public var isPinCodeEnabled : Bool {
         get {
             return getShared().bool(forKey: Key.isPinCodeEnabled)
         }
@@ -226,7 +227,7 @@ extension UserCachedStatus {
     }
     
     /// Value is only stored in the keychain
-    var pinCode : String {
+    public var pinCode : String {
         get {
             return UICKeyChainStore.string(forKey: Key.pinCodeCache) ?? ""
         }
@@ -235,7 +236,7 @@ extension UserCachedStatus {
         }
     }
     
-    var lockTime : String {
+    public var lockTime : String {
         get {
             return UICKeyChainStore.string(forKey: Key.autoLockTime) ?? "-1"
         }
@@ -244,7 +245,7 @@ extension UserCachedStatus {
         }
     }
     
-    var exitTime : String {
+    public var exitTime : String {
         get {
             return UICKeyChainStore.string(forKey: Key.enterBackgroundTime) ?? "0"
         }
@@ -253,7 +254,7 @@ extension UserCachedStatus {
         }
     }
     
-    var lockedApp : Bool {
+    public var lockedApp : Bool {
         get {
             return getShared().bool(forKey: Key.isManuallyLockApp)
         }
@@ -262,7 +263,7 @@ extension UserCachedStatus {
         }
     }
     
-    var lastLoggedInUser : String? {
+    public var lastLoggedInUser : String? {
         get {
             return UICKeyChainStore.string(forKey: Key.lastLoggedInUser)
         }
@@ -271,12 +272,12 @@ extension UserCachedStatus {
         }
     }
     
-    func alreadyAskedEnableTouchID () -> Bool {
+    public func alreadyAskedEnableTouchID () -> Bool {
         let code = getShared().integer(forKey: Key.askEnableTouchID)
         return code == AppConstants.AskTouchID
     }
     
-    func resetAskedEnableTouchID() {
+    public func resetAskedEnableTouchID() {
         setValue(AppConstants.AskTouchID, forKey: Key.askEnableTouchID)
     }
     

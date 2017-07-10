@@ -76,7 +76,7 @@ public class UserDataService {
         }
     }
     
-    fileprivate(set) var username: String? = UserDefaults.standard.string(forKey: Key.username) {
+    public(set) var username: String? = UserDefaults.standard.string(forKey: Key.username) {
         didSet {
             UserDefaults.standard.setValue(username, forKey: Key.username)
             UserDefaults.standard.synchronize()
@@ -108,21 +108,21 @@ public class UserDataService {
         }
     }
     
-    var twoFactorStatus: Int = UserDefaults.standard.integer(forKey: Key.twoFAStatus)  {
+    public var twoFactorStatus: Int = UserDefaults.standard.integer(forKey: Key.twoFAStatus)  {
         didSet {
             UserDefaults.standard.setValue(twoFactorStatus, forKey: Key.twoFAStatus)
             UserDefaults.standard.synchronize()
         }
     }
     
-    var passwordMode: Int = UserDefaults.standard.integer(forKey: Key.userPasswordMode)  {
+    public var passwordMode: Int = UserDefaults.standard.integer(forKey: Key.userPasswordMode)  {
         didSet {
             UserDefaults.standard.setValue(passwordMode, forKey: Key.userPasswordMode)
             UserDefaults.standard.synchronize()
         }
     }
     
-    var showDefaultSignature : Bool {
+    public var showDefaultSignature : Bool {
         get {
             return defaultSignatureStauts
         }
@@ -131,7 +131,7 @@ public class UserDataService {
         }
     }
     
-    var showMobileSignature : Bool {
+    public var showMobileSignature : Bool {
         get {
             #if Enterprise
                 let isEnterprise = true
@@ -150,7 +150,7 @@ public class UserDataService {
         }
     }
     
-    var mobileSignature : String {
+    public var mobileSignature : String {
         get {
             #if Enterprise
                 let isEnterprise = true
@@ -170,76 +170,76 @@ public class UserDataService {
         }
     }
     
-    var usedSpace: Int64 {
+    public var usedSpace: Int64 {
         return userInfo?.usedSpace ?? 0
     }
     
-    var showShowImageView: Bool {
+    public var showShowImageView: Bool {
         return userInfo?.showImages == 0
     }
     
     // MARK: - Public variables
     
-    var defaultEmail : String {
+    public var defaultEmail : String {
         if let addr = userAddresses.getDefaultAddress() {
             return addr.email;
         }
         return "";
     }
     
-    var defaultDisplayName : String {
+    public var defaultDisplayName : String {
         if let addr = userAddresses.getDefaultAddress() {
             return addr.display_name;
         }
         return displayName;
     }
     
-    var swiftLeft : MessageSwipeAction! {
+    public var swiftLeft : MessageSwipeAction! {
         get {
             return MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 3) ?? .archive
         }
     }
     
-    var swiftRight : MessageSwipeAction! {
+    public var swiftRight : MessageSwipeAction! {
         get {
             return MessageSwipeAction(rawValue: userInfo?.swipeRight ?? 0) ?? .trash
         }
     }
     
-    var userAddresses: Array<Address> { //never be null
+    public var userAddresses: Array<Address> { //never be null
         return userInfo?.userAddresses ?? Array<Address>()
     }
     
-    var displayName: String {
+    public var displayName: String {
         return (userInfo?.displayName ?? "").decodeHtml()
     }
     
-    var isMailboxPasswordStored: Bool {
+    public var isMailboxPasswordStored: Bool {
         
         isMailboxPWDOk = mailboxPassword != nil;
         
         return mailboxPassword != nil
     }
     
-    var isRememberMailboxPassword: Bool = UserDefaults.standard.bool(forKey: Key.isRememberMailboxPassword) {
+    public var isRememberMailboxPassword: Bool = UserDefaults.standard.bool(forKey: Key.isRememberMailboxPassword) {
         didSet {
             UserDefaults.standard.set(isRememberMailboxPassword, forKey: Key.isRememberMailboxPassword)
             UserDefaults.standard.synchronize()
         }
     }
     
-    var isRememberUser: Bool = UserDefaults.standard.bool(forKey: Key.isRememberUser) {
+    public var isRememberUser: Bool = UserDefaults.standard.bool(forKey: Key.isRememberUser) {
         didSet {
             UserDefaults.standard.set(isRememberUser, forKey: Key.isRememberUser)
             UserDefaults.standard.synchronize()
         }
     }
     
-    var isSignedIn: Bool = false
-    var isNewUser : Bool = false
+    public var isSignedIn: Bool = false
+    public var isNewUser : Bool = false
     fileprivate(set) var isMailboxPWDOk: Bool = false
     
-    var isUserCredentialStored: Bool {
+    public var isUserCredentialStored: Bool {
         return username != nil && password != nil && isRememberUser
     }
     
@@ -253,33 +253,33 @@ public class UserDataService {
         }
     }
     
-    var maxSpace: Int64 {
+    public var maxSpace: Int64 {
         return userInfo?.maxSpace ?? 0
     }
     
-    var notificationEmail: String {
+    public var notificationEmail: String {
         return userInfo?.notificationEmail ?? ""
     }
     
-    var notify: Bool {
+    public var notify: Bool {
         return (userInfo?.notify ?? 0 ) == 1;
     }
     
-    var signature: String {
+    public var signature: String {
         return (userInfo?.signature ?? "").ln2br()
     }
     
-    var isSet : Bool {
+    public var isSet : Bool {
         return userInfo != nil
     }
     
     // MARK: - Public methods
-    init() {
+    public init() {
         cleanUpIfFirstRun()
         launchCleanUp()
     }
     
-    func fetchUserInfo(_ completion: UserInfoBlock? = nil) {
+    public func fetchUserInfo(_ completion: UserInfoBlock? = nil) {
         
         let getUserInfo = GetUserInfoRequest<GetUserInfoResponse>()
         getUserInfo.call { (task, response, hasError) -> Void in

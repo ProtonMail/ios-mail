@@ -12,7 +12,7 @@ import Foundation
 
 extension ELanguage {
     
-    var description : String {
+    public var description : String {
         get {
             switch(self) {
             case .english:
@@ -39,7 +39,7 @@ extension ELanguage {
         }
     }
     
-    var localeString : String {
+    public var localeString : String {
         get {
             switch(self) {
             case .english:
@@ -66,7 +66,7 @@ extension ELanguage {
         }
     }
     
-    var code : String {
+    public var code : String {
         get {
             switch(self) {
             case .english:
@@ -93,7 +93,7 @@ extension ELanguage {
         }
     }
 
-    static func allItemsCode() -> [String] {
+    static public func allItemsCode() -> [String] {
         return [ELanguage.english.code,
                 ELanguage.german.code,
                 ELanguage.french.code,
@@ -105,7 +105,7 @@ extension ELanguage {
                 ELanguage.dutch.code
         ]
     }
-    static func allItems() -> [ELanguage] {
+    static public func allItems() -> [ELanguage] {
         return [.english,
                 .german,
                 .french,
@@ -119,10 +119,10 @@ extension ELanguage {
     }
 }
 
-enum SDebugItem: Int, CustomStringConvertible {
+public enum SDebugItem: Int, CustomStringConvertible {
     case queue = 0
     case errorLogs = 1
-    var description : String {
+    public var description : String {
         switch(self){
         case .queue:
             return NSLocalizedString("Message Queue", comment: "settings debug section title")
@@ -132,7 +132,7 @@ enum SDebugItem: Int, CustomStringConvertible {
     }
 }
 
-enum SGItems: Int, CustomStringConvertible {
+public enum SGItems: Int, CustomStringConvertible {
     case notifyEmail = 0
     //        case DisplayName = 1
     //        case Signature = 2
@@ -142,7 +142,7 @@ enum SGItems: Int, CustomStringConvertible {
     case autoLoadImage = 9
     case singlePWD = 10
     
-    var description : String {
+    public var description : String {
         switch(self){
         case .notifyEmail:
             return NSLocalizedString("Notification Email", comment: "settings general section title")
@@ -160,11 +160,11 @@ enum SGItems: Int, CustomStringConvertible {
     }
 }
 
-enum SSwipeActionItems: Int, CustomStringConvertible {
+public enum SSwipeActionItems: Int, CustomStringConvertible {
     case left = 0
     case right = 1
     
-    var description : String {
+    public var description : String {
         switch(self){
         case .left:
             return NSLocalizedString("Swipe Left to Right", comment: "settings swipe actions section title")
@@ -173,7 +173,7 @@ enum SSwipeActionItems: Int, CustomStringConvertible {
         }
     }
     
-    var actionDescription : String {
+    public var actionDescription : String {
         switch(self){
         case .left:
             return NSLocalizedString("Change left swipe action", comment: "settings swipe actions section action description")
@@ -183,14 +183,14 @@ enum SSwipeActionItems: Int, CustomStringConvertible {
     }
 }
 
-enum SProtectionItems : Int, CustomStringConvertible {
+public enum SProtectionItems : Int, CustomStringConvertible {
     case touchID = 0
     case pinCode = 1
     case updatePin = 2
     case autoLogout = 3
     case enterTime = 4
     
-    var description : String {
+    public var description : String {
         switch(self){
         case .touchID:
             return NSLocalizedString("Enable TouchID", comment: "settings protection section title")
@@ -206,13 +206,13 @@ enum SProtectionItems : Int, CustomStringConvertible {
     }
 }
 
-enum SAddressItems: Int, CustomStringConvertible {
+public enum SAddressItems: Int, CustomStringConvertible {
     case addresses = 0
     case displayName = 1
     case signature = 2
     case defaultMobilSign = 3
     
-    var description : String {
+    public var description : String {
         switch(self){
         case .addresses:
             return NSLocalizedString("", comment: "")
@@ -226,9 +226,9 @@ enum SAddressItems: Int, CustomStringConvertible {
     }
 }
 
-enum SLabelsItems: Int, CustomStringConvertible {
+public enum SLabelsItems: Int, CustomStringConvertible {
     case labelFolderManager = 0
-    var description : String {
+    public var description : String {
         switch(self){
         case .labelFolderManager:
             return NSLocalizedString("Manage Labels/Folders", comment: "Title")
@@ -236,7 +236,7 @@ enum SLabelsItems: Int, CustomStringConvertible {
     }
 }
 
-enum SettingSections: Int, CustomStringConvertible {
+public enum SettingSections: Int, CustomStringConvertible {
     case debug = 0
     case general = 1
     case multiDomain = 2
@@ -247,7 +247,7 @@ enum SettingSections: Int, CustomStringConvertible {
     case language = 7
     case labels = 8
     
-    var description : String {
+    public var description : String {
         switch(self){
         case .debug:
             return NSLocalizedString("Debug", comment: "Title")

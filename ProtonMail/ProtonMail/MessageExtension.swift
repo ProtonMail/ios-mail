@@ -291,7 +291,7 @@ extension Message {
     }
     
     /// Removes all messages from the store.
-    class func deleteAll(inContext context: NSManagedObjectContext) {
+    public class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
     
@@ -300,7 +300,7 @@ extension Message {
      
      :param: messageID String
      */
-    class func deleteMessage(_ messageID : String) {
+    public class func deleteMessage(_ messageID : String) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                 let labelObjs = message.mutableSetValue(forKey: "labels")
@@ -314,7 +314,7 @@ extension Message {
         }
     }
     
-    class func deleteLocation(_ location : MessageLocation) -> Bool{
+    public class func deleteLocation(_ location : MessageLocation) -> Bool{
         if let mContext = sharedCoreDataService.mainManagedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             if location == .spam || location == .trash {
@@ -339,11 +339,11 @@ extension Message {
         return false
     }
     
-    class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
+    public class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
     }
     
-    class func messagesForObjectIDs(_ objectIDs: [NSManagedObjectID], inManagedObjectContext context: NSManagedObjectContext, error: NSErrorPointer) -> [Message]? {
+    public class func messagesForObjectIDs(_ objectIDs: [NSManagedObjectID], inManagedObjectContext context: NSManagedObjectContext, error: NSErrorPointer) -> [Message]? {
         return context.managedObjectsWithEntityName(Attributes.entityName, forManagedObjectIDs: objectIDs, error: error) as? [Message]
     }
     
@@ -352,17 +352,17 @@ extension Message {
         replaceNilStringAttributesWithEmptyString()
     }
     
-    func updateTag(_ tag: String) {
+    public func updateTag(_ tag: String) {
         self.tag = tag
         isStarred = tag.range(of: Constants.starredTag) != nil
     }
     
     // MARK: Public methods
-    func decryptBody() throws -> String? {
+    public func decryptBody() throws -> String? {
         return try body.decryptMessage(passphrase)
     }
     
-    func bodyToHtml() -> String {
+    public func bodyToHtml() -> String {
         if lockType == .plainTextLock {
             return "<div>" + body.ln2br() + "</div>"
         } else {
@@ -371,7 +371,7 @@ extension Message {
         }
     }
     
-    func decryptBodyIfNeeded() throws -> String? {
+    public func decryptBodyIfNeeded() throws -> String? {
         //PMLog.D("\(body)")
         if !checkIsEncrypted() {
             if isPlainText() {
@@ -394,7 +394,7 @@ extension Message {
         }
     }
     
-    func encryptBody(_ body: String, error: NSErrorPointer?) {
+    public func encryptBody(_ body: String, error: NSErrorPointer?) {
         let address_id = self.getAddressID;
         if address_id.isEmpty {
             return
@@ -402,20 +402,20 @@ extension Message {
         self.body = try! body.encryptMessage(address_id) ?? ""
     }
     
-    func checkIsEncrypted() -> Bool! {
+    public func checkIsEncrypted() -> Bool! {
         let enc_type = EncryptTypes(rawValue: isEncrypted.intValue) ?? EncryptTypes.inner
         let checkIsEncrypted:Bool = enc_type.isEncrypted
         return checkIsEncrypted
     }
     
-    func isPlainText() -> Bool {
+    public func isPlainText() -> Bool {
         if let type = mimeType, type.lowercased() == "text/plain" {
             return true
         }
         return false
     }
     
-    var encryptType : EncryptTypes! {
+    public var encryptType : EncryptTypes! {
         let enc_type = EncryptTypes(rawValue: isEncrypted.intValue) ?? EncryptTypes.inner
         return enc_type
     }
@@ -429,7 +429,7 @@ extension Message {
         return sharedUserDataService.mailboxPassword ?? ""
     }
     
-    var getAddressID: String {
+    public var getAddressID: String {
         get {
             if let addr = defaultAddress {
                 return addr.address_id
@@ -438,7 +438,7 @@ extension Message {
         }
     }
     
-    var defaultAddress : Address? {
+    public var defaultAddress : Address? {
         get {
             if let addressID = addressID {
                 if !addressID.isEmpty {
@@ -459,7 +459,7 @@ extension Message {
         }
     }
     
-    var senderContactVO : ContactVO! {
+    public var senderContactVO : ContactVO! {
         var sender : ContactVO!
         //        if let beforeParsed = self.newSender, paserdNewSender = beforeParsed.toContact() {
         //            sender = paserdNewSender
@@ -469,7 +469,7 @@ extension Message {
         return sender
     }
     
-    func copyMessage (_ copyAtts : Bool) -> Message {
+    public func copyMessage (_ copyAtts : Bool) -> Message {
         let message = self
         let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext!)
         newMessage.location = MessageLocation.draft
@@ -522,7 +522,7 @@ extension Message {
         return newMessage
     }
     
-    func fetchDetailIfNeeded(_ completion: @escaping MessageDataService.CompletionFetchDetail) {
+    public func fetchDetailIfNeeded(_ completion: @escaping MessageDataService.CompletionFetchDetail) {
         sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
     }
 }

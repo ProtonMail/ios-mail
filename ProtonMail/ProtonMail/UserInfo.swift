@@ -17,7 +17,7 @@
 import Foundation
 
 // TODO:: this is not very good need refactor
-final class UserInfo: NSObject {
+public final class UserInfo: NSObject {
     var displayName: String
     let maxSpace: Int64
     var notificationEmail: String
@@ -44,7 +44,7 @@ final class UserInfo: NSObject {
     
     let delinquent : Int
     
-    required init(
+    public required init(
         displayName: String?, maxSpace: Int64?, notificationEmail: String?,
         privateKey: String?, publicKey: String?, signature: String?,
         usedSpace: Int64?, userStatus: Int?, userAddresses: Array<Address>?,
@@ -232,7 +232,7 @@ extension UserInfo: NSCoding {
         static let userKeys = "userKeys"
     }
     
-    convenience init(coder aDecoder: NSCoder) {
+    convenience public init(coder aDecoder: NSCoder) {
         self.init(
             displayName: aDecoder.decodeStringForKey(CoderKey.displayName),
             maxSpace: aDecoder.decodeInt64(forKey: CoderKey.maxSpace),
@@ -261,7 +261,7 @@ extension UserInfo: NSCoding {
         )
     }
     
-    func encode(with aCoder: NSCoder) {
+    public func encode(with aCoder: NSCoder) {
         aCoder.encode(displayName, forKey: CoderKey.displayName)
         aCoder.encode(maxSpace, forKey: CoderKey.maxSpace)
         aCoder.encode(notificationEmail, forKey: CoderKey.notificationEmail)

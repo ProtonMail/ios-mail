@@ -22,12 +22,12 @@ extension UIView {
         case top, bottom, left, right
     }
     
-    func roundCorners() {
+    public func roundCorners() {
         layer.cornerRadius = 4.0
         clipsToBounds = true
     }
     
-    func shake(_ times: Float, offset: CGFloat) {
+    public func shake(_ times: Float, offset: CGFloat) {
         
         PMLog.D("\(self.center)");
         UIView.animate(withDuration: 1.0, animations: {

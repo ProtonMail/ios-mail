@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import ProtonMailCommon
 
 @objc protocol MailboxTableViewCellDelegate {
     func mailboxTableViewCell(_ cell: MailboxTableViewCell, didChangeStarred: Bool)

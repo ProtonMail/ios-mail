@@ -11,6 +11,7 @@
 //
 
 import Foundation
+import ProtonMailCommon
 
 class MenuLabelViewCell: UITableViewCell {
     

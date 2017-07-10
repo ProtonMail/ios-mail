@@ -9,11 +9,11 @@
 import Foundation
 
 
-class  SharedCacheBase {
+public class SharedCacheBase {
     
     fileprivate var userDefaults : UserDefaults!
     
-    func getShared() ->UserDefaults! {
+    public func getShared() ->UserDefaults! {
         return self.userDefaults
     }
         
@@ -26,7 +26,7 @@ class  SharedCacheBase {
         //
     }
     
-    func setValue(_ value: Any?, forKey key: String)
+    public func setValue(_ value: Any?, forKey key: String)
     {
         self.userDefaults.setValue(value, forKey: key)
         self.userDefaults.synchronize()

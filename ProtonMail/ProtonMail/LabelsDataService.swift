@@ -24,14 +24,14 @@ public class LabelsDataService {
     }
     
     //
-    func cleanUp()
+    public func cleanUp()
     {
         if let context = managedObjectContext {
             Label.deleteAll(inContext: context)
         }
     }
     
-    func fetchLabels() {
+    public func fetchLabels() {
         let eventAPI = GetLabelsRequest<GetLabelsResponse>()
         eventAPI.call() { task, response, hasError in
             if response == nil {
@@ -61,7 +61,7 @@ public class LabelsDataService {
         }
     }
     
-    func fetchedResultsController(_ type : LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    public func fetchedResultsController(_ type : LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
             
@@ -79,7 +79,7 @@ public class LabelsDataService {
         return nil
     }
     
-    func addNewLabel(_ response : Dictionary<String, Any>?) {
+    public func addNewLabel(_ response : Dictionary<String, Any>?) {
         if let label = response {
             let context = sharedCoreDataService.newMainManagedObjectContext()
             context.performAndWait() {
