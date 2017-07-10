@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ProtonMailCommon
 
 class RecipientView: PMView {
     override func getNibName() -> String {

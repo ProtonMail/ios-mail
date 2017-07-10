@@ -17,9 +17,9 @@
 import Foundation
 import CoreData
 
-let sharedMonitorSavesDataService = MonitorSavesDataService()
+public let sharedMonitorSavesDataService = MonitorSavesDataService()
 
-class MonitorSavesDataService {
+public class MonitorSavesDataService {
     
     typealias HandlerBlock = ((NSManagedObject) -> Void)
     

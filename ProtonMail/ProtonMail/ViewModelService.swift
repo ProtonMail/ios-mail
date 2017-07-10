@@ -9,13 +9,13 @@
 import Foundation
 
 
-protocol ViewModelProtocol {
+public protocol ViewModelProtocol {
     func setViewModel(_ vm: Any)
     func inactiveViewModel()
 }
 
 // this is abstract ViewModel service
-class ViewModelService {
+public class ViewModelService {
     
     func changeIndex() {
         fatalError("This method must be overridden")

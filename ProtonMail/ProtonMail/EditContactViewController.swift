@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import ProtonMailCommon
 
 class EditContactViewController: ProtonMailViewController {
     

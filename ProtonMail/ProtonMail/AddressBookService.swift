@@ -12,9 +12,9 @@
 
 import Foundation
 
-let sharedAddressBookService = AddressBookService()
+public let sharedAddressBookService = AddressBookService()
 
-class AddressBookService {
+public class AddressBookService {
     
     typealias AuthorizationCompletionBlock = (_ granted: Bool, _ error: Error?) -> Void
     

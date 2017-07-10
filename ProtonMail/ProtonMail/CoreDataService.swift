@@ -19,9 +19,9 @@ import CoreData
 
 let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain("CoreDataService")
 
-let sharedCoreDataService = CoreDataService()
+public let sharedCoreDataService = CoreDataService()
 
-class CoreDataService {
+public class CoreDataService {
     
     struct ErrorCode {
         static let noManagedObjectContext = 10000
@@ -51,21 +51,21 @@ class CoreDataService {
     
     // MARK: - Public methods
     
-    func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
+    public func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
         if let url = URL(string: urlString) {
             return persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url)
         }
         return nil
     }
     
-    func newMainManagedObjectContext() -> NSManagedObjectContext {
+    public func newMainManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.parent = mainManagedObjectContext
         return managedObjectContext
     }
     
     // This context will not automatically merge upstream context saves
-    func newManagedObjectContext() -> NSManagedObjectContext {
+    public func newManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedObjectContext.parent = mainManagedObjectContext
         return managedObjectContext

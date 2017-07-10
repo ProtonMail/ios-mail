@@ -41,10 +41,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-let sharedUserDataService = UserDataService()
+public let sharedUserDataService = UserDataService()
 
 /// Stores information related to the user
-class UserDataService {
+public class UserDataService {
     
     typealias CompletionBlock = APIService.CompletionBlock
     typealias UserInfoBlock = APIService.UserInfoBlock
@@ -351,7 +351,8 @@ class UserDataService {
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignOut), object: self)
         clearAll()
         clearAuthToken()
-        (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
+        //TODO::Fix later
+//        (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     
     func signOutAfterSignUp() {

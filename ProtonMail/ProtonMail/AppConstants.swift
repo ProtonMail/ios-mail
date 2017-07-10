@@ -9,7 +9,7 @@
 import Foundation
 
 
-class AppConstants {
+public class AppConstants {
     
     
     static let CacheVersion : Int = 96
@@ -22,11 +22,11 @@ class AppConstants {
     static var AppVersion : Int = 1
     
     //
-    static let URL_Protocol : String = "https://"
+    static public let URL_Protocol : String = "https://"
     //static let URL_Protocol : String = "http://"
     
     //live api
-    static let URL_HOST : String = "api.protonmail.ch"
+    static public let URL_HOST : String = "api.protonmail.ch"
     
     //live test api
     //static let URL_HOST : String = "test-api.protonmail.ch"
@@ -45,21 +45,21 @@ class AppConstants {
     
     //api options
     //static let API_PATH : String = "/api"
-    static let API_PATH : String = ""
+    static public let API_PATH : String = ""
     
-    static var API_HOST_URL : String {
+    static public var API_HOST_URL : String {
         get {
             return URL_Protocol + URL_HOST
         }
     }
     
-    static var API_FULL_URL : String {
+    static public var API_FULL_URL : String {
         get {
             return API_HOST_URL + API_PATH
         }
     }
     
-    static var getDebugOption : String {
+    static public var getDebugOption : String {
         get {
             #if DEBUG
                 return "" //"?XDEBUG_SESSION_START=\(18073)"

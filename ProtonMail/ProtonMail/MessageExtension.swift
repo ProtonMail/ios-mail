@@ -43,7 +43,7 @@ extension Message {
     
     // MARK: - Public variables
     
-    var allEmailAddresses: String {
+    public var allEmailAddresses: String {
         var lists: [String] = []
         
         if !recipientList.isEmpty {
@@ -75,7 +75,7 @@ extension Message {
         return lists.joined(separator: ",")
     }
     
-    var location: MessageLocation {
+    public var location: MessageLocation {
         get {
             return MessageLocation(rawValue: locationNumber.intValue) ?? .inbox
         }
@@ -84,14 +84,14 @@ extension Message {
         }
     }
     
-    func getScore() -> MessageSpamScore {
+    public func getScore() -> MessageSpamScore {
         if let e = MessageSpamScore(rawValue: self.spamScore.intValue) {
             return e
         }
         return .others
     }
     
-    func hasDraftLabel() -> Bool {
+    public func hasDraftLabel() -> Bool {
         let labels = self.labels
         for l in labels {
             if let label = l as? Label {
@@ -106,7 +106,7 @@ extension Message {
         return false
     }
     
-    func hasLocation(location : MessageLocation) -> Bool {
+    public func hasLocation(location : MessageLocation) -> Bool {
         for l in getLocationFromLabels() {
             if l == location {
                 return true
@@ -115,7 +115,7 @@ extension Message {
         return false
     }
     
-    func getLocationFromLabels() ->  [MessageLocation] {
+    public func getLocationFromLabels() ->  [MessageLocation] {
         var locations = [MessageLocation]()
         let labels = self.labels
         for l in labels {
@@ -131,7 +131,7 @@ extension Message {
         return locations
     }
     
-    func getShowLocationNameFromLabels(ignored : String) -> String? {
+    public func getShowLocationNameFromLabels(ignored : String) -> String? {
         var lableOnly = false
         if ignored == MessageLocation.outbox.title {
             for l in getLocationFromLabels() {
@@ -160,7 +160,7 @@ extension Message {
         return nil
     }
     
-    func setLabelLocation(_ location : MessageLocation) {
+    public func setLabelLocation(_ location : MessageLocation) {
         if let context = self.managedObjectContext {
             context.performAndWait() {
                 let toLableID = String(location.rawValue)
@@ -189,7 +189,7 @@ extension Message {
         }
     }
     
-    func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation, keepSent: Bool) {
+    public func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation, keepSent: Bool) {
         if let context = self.managedObjectContext {
             context.performAndWait() {
                 let labelObjs = self.mutableSetValue(forKey: "labels")
@@ -277,7 +277,7 @@ extension Message {
         return title
     }
     
-    var displaySender : String {
+    public var displaySender : String {
         get {
             let sc = senderContactVO
             return sc!.name.isEmpty ?  sc!.email : sc!.name
@@ -420,7 +420,7 @@ extension Message {
         return enc_type
     }
     
-    var lockType : LockTypes! {
+    public var lockType : LockTypes! {
         return self.encryptType.lockType
     }
     

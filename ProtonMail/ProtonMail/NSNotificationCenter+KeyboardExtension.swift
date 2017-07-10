@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objc protocol NSNotificationCenterKeyboardObserverProtocol: NSObjectProtocol {
+@objc public protocol NSNotificationCenterKeyboardObserverProtocol: NSObjectProtocol {
     @objc optional func keyboardWillHideNotification(_ notification: Notification)
     @objc optional func keyboardWillShowNotification(_ notificaiton: Notification)
 }

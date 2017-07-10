@@ -18,25 +18,25 @@ import Foundation
 
 extension UIStoryboard {
     /// The raw value must match the restorationIdentifier for the initialViewController
-    enum Storyboard: String {
+    public enum Storyboard: String {
         case attachments = "Attachments"
         case inbox = "Menu"
         case signIn = "SignIn"
         
-        var restorationIdentifier: String {
+        public var restorationIdentifier: String {
             return rawValue
         }
         
-        var storyboard: UIStoryboard {
+        public var storyboard: UIStoryboard {
             return UIStoryboard(name: rawValue, bundle: nil)
         }
         
-        func instantiateInitialViewController() -> UIViewController {
+        public func instantiateInitialViewController() -> UIViewController {
             return storyboard.instantiateInitialViewController() as UIViewController!
         }
     }
     
-    class func instantiateInitialViewController(storyboard: Storyboard) -> UIViewController {
+    public class func instantiateInitialViewController(storyboard: Storyboard) -> UIViewController {
         return storyboard.instantiateInitialViewController()
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 
-class CountryCode {
+public class CountryCode {
 
     var phone_code : Int = 0
     var country_en : String = ""

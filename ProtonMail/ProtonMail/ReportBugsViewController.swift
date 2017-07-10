@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import ProtonMailCommon
 
 class ReportBugsViewController: ProtonMailViewController {
     

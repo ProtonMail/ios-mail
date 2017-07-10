@@ -17,9 +17,9 @@
 import Foundation
 import CoreData
 
-let sharedContactDataService = ContactDataService()
+public let sharedContactDataService = ContactDataService()
 
-class ContactDataService {
+public class ContactDataService {
     typealias ContactCompletionBlock = (([Contact]?, NSError?) -> Void)
     
     func addContact(name: String, email: String, completion: ContactCompletionBlock?) {

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ProtonMailCommon
 
 protocol ComposePasswordViewControllerDelegate {
     func Cancelled()

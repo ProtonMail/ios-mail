@@ -32,11 +32,11 @@ extension NSError {
         self.init(domain: domain, code: code, userInfo: userInfo)
     }
     
-    class func protonMailError(_ code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
+    public class func protonMailError(_ code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(domain: protonMailErrorDomain(), code: code, localizedDescription: localizedDescription, localizedFailureReason: localizedFailureReason, localizedRecoverySuggestion: localizedRecoverySuggestion)
     }
     
-    class func protonMailErrorDomain(_ subdomain: String? = nil) -> String {
+    public class func protonMailErrorDomain(_ subdomain: String? = nil) -> String {
         var domain = Bundle.main.bundleIdentifier ?? "ch.protonmail"
         
         if let subdomain = subdomain {
@@ -45,7 +45,7 @@ extension NSError {
         return domain
     }
     
-    func alertController() -> UIAlertController {
+    public func alertController() -> UIAlertController {
         var message = localizedFailureReason
         
         if localizedRecoverySuggestion != nil {
@@ -60,7 +60,7 @@ extension NSError {
         return UIAlertController(title: localizedDescription, message: message, preferredStyle: .alert)
     }
     
-    func getCode() -> Int {
+    public func getCode() -> Int {
         var defaultCode : Int = code;
         if defaultCode == Int.max {
             if let detail = self.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
@@ -70,7 +70,7 @@ extension NSError {
         return defaultCode
     }
     
-    func alertController(_ title : String) -> UIAlertController {
+    public func alertController(_ title : String) -> UIAlertController {
         var message = localizedFailureReason
         
         if localizedRecoverySuggestion != nil {
@@ -86,7 +86,7 @@ extension NSError {
     }
     
     
-    func alertToast() ->Void {
+    public func alertToast() ->Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
@@ -96,7 +96,7 @@ extension NSError {
         hud.hide(true, afterDelay: 3)
     }
     
-    func alertErrorToast() ->Void {
+    public func alertErrorToast() ->Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
@@ -106,7 +106,7 @@ extension NSError {
         hud.hide(true, afterDelay: 3)
     }
     
-    func alertSentErrorToast() ->Void {
+    public func alertSentErrorToast() ->Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
@@ -118,7 +118,7 @@ extension NSError {
         hud.hide(true, afterDelay: 3)
     }
     
-    func alertHumanCheckErrorToast() ->Void {
+    public func alertHumanCheckErrorToast() ->Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
@@ -130,7 +130,7 @@ extension NSError {
     }
     
     
-    class func alertUpdatedToast() ->Void {
+    public class func alertUpdatedToast() ->Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
@@ -140,7 +140,7 @@ extension NSError {
         hud.hide(true, afterDelay: 3)
     }
     
-    class func alertBadTokenToast() ->Void {
+    public class func alertBadTokenToast() ->Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
@@ -150,7 +150,7 @@ extension NSError {
         hud.hide(true, afterDelay: 3)
     }
     
-    class func alertOfflineToast() ->Void {
+    public class func alertOfflineToast() ->Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
@@ -160,7 +160,7 @@ extension NSError {
         hud.hide(true, afterDelay: 3)
     }
     
-    class func alertMessageSendingToast() ->Void {
+    public class func alertMessageSendingToast() ->Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
@@ -171,7 +171,7 @@ extension NSError {
         hud.hide(true, afterDelay: 1)
     }
     
-    class func alertMessageSentToast() ->Void {
+    public class func alertMessageSentToast() ->Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
@@ -182,7 +182,7 @@ extension NSError {
         hud.hide(true, afterDelay: 1)
     }
 
-    class func alertMessageSentErrorToast() ->Void {
+    public class func alertMessageSentErrorToast() ->Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
@@ -193,7 +193,7 @@ extension NSError {
         hud.hide(true, afterDelay: 2)
     }
     
-    class func alertLocalCacheErrorToast() ->Void {
+    public class func alertLocalCacheErrorToast() ->Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
@@ -204,14 +204,14 @@ extension NSError {
         hud.hide(true, afterDelay: 2)
     }
     
-    class func unknowError() -> NSError {
+    public class func unknowError() -> NSError {
         return apiServiceError(
             code: -1,
             localizedDescription: NSLocalizedString("Unknow Error", comment: "Description"),
             localizedFailureReason: NSLocalizedString("Unknow Error", comment: "Description"))
     }
     
-    func isInternetError() -> Bool {
+    public func isInternetError() -> Bool {
         var isInternetIssue = false
         if let _ = self.userInfo ["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
         } else {

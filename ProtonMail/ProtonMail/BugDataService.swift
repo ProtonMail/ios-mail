@@ -16,7 +16,7 @@
 
 import Foundation
 
-class BugDataService {
+public class BugDataService {
     
     func reportBug(_ bug: String, completion: ((NSError?) -> Void)?) {
         let systemVersion = UIDevice.current.systemVersion;

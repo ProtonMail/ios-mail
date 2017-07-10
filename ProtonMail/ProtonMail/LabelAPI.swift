@@ -9,7 +9,7 @@
 import Foundation
 
 // MARK : Get messages part
-final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
+final public class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
     
     override init() {
     }
@@ -27,7 +27,7 @@ final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-final class GetLabelsResponse : ApiResponse {
+final public class GetLabelsResponse : ApiResponse {
     var labels : [Dictionary<String, Any>]?
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
         self.labels =  response["Labels"]  as? [Dictionary<String, Any>]
@@ -37,11 +37,11 @@ final class GetLabelsResponse : ApiResponse {
 
 
 // MARK : apply label to message
-final class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
+final public class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
     var labelID: String!
     var messages:[String]!
     
-    init(labelID:String!, messages: [String]!) {
+    public init(labelID:String!, messages: [String]!) {
         self.labelID = labelID
         self.messages = messages
     }
@@ -67,7 +67,7 @@ final class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
 }
 
 // MARK : remove label from message
-final class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
+final public class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
     
     var labelID: String!
     var messages:[String]!
@@ -100,7 +100,7 @@ final class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
 
 
 // MARK : create label
-final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
+final public class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     var labelName: String
     var color:String
     var exclusive : Bool = false
@@ -138,7 +138,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
 
 
 // MARK : update label
-final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
+final public class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     
     var labelID : String
     var labelName: String
@@ -172,7 +172,7 @@ final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-final class CreateLabelRequestResponse : ApiResponse {
+final public class CreateLabelRequestResponse : ApiResponse {
     var label:Dictionary<String, Any>?
     
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
@@ -183,7 +183,7 @@ final class CreateLabelRequestResponse : ApiResponse {
 
 
 // MARK : create label
-final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
+final public class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
     
     var labelID: String
     

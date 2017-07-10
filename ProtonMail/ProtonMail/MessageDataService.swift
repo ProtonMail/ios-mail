@@ -42,9 +42,9 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-let sharedMessageDataService = MessageDataService()
+public let sharedMessageDataService = MessageDataService()
 
-class MessageDataService {
+public class MessageDataService {
     typealias CompletionBlock = APIService.CompletionBlock
     typealias CompletionFetchDetail = APIService.CompletionFetchDetail
     typealias ReadBlock = (() -> Void)

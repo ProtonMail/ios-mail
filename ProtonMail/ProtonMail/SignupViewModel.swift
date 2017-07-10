@@ -9,7 +9,7 @@
 import Foundation
 
 
-protocol SignupViewModelDelegate{
+public protocol SignupViewModelDelegate{
     func verificationCodeChanged(_ viewModel : SignupViewModel, code : String!)
 }
 
@@ -93,7 +93,7 @@ open class SignupViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
-    func getDirect() -> [String] {
+    public func getDirect() -> [String] {
         fatalError("This method must be overridden")
     }
     

@@ -10,9 +10,9 @@ import Foundation
 
 //MARK : Compose view controller
 public struct EncryptionStep {
-    static let DefinePassword = "DefinePassword"
-    static let ConfirmPassword = "ConfirmPassword"
-    static let DefineHintPassword = "DefineHintPassword"
+    static public let DefinePassword = "DefinePassword"
+    static public let ConfirmPassword = "ConfirmPassword"
+    static public let DefineHintPassword = "DefineHintPassword"
 }
 
 enum ComposeMessageAction: Int, CustomStringConvertible {

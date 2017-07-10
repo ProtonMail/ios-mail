@@ -17,9 +17,9 @@
 import Foundation
 import UIKit
 
-let sharedPushNotificationService = PushNotificationService()
+public let sharedPushNotificationService = PushNotificationService()
 
-class PushNotificationService {
+public class PushNotificationService {
     
     fileprivate var launchOptions: [AnyHashable: Any]? = nil
     
@@ -91,11 +91,12 @@ class PushNotificationService {
                                 completionHandler(.failed)
                             } else {
                                 if let front = revealViewController.frontViewController as? UINavigationController {
-                                    if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
-                                        sharedMessageDataService.pushNotificationMessageID = messageid
-                                        mailboxViewController.performSegueForMessageFromNotification()
-                                    } else {
-                                    }
+                                    //TODO::Fix later
+//                                    if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
+//                                        sharedMessageDataService.pushNotificationMessageID = messageid
+//                                        mailboxViewController.performSegueForMessageFromNotification()
+//                                    } else {
+//                                    }
                                 }
                                 completionHandler(.newData)
                             }

@@ -16,7 +16,7 @@
 import Foundation
 import CoreData
 
-class Attachment: NSManagedObject {
+public class Attachment: NSManagedObject {
     
     @NSManaged var attachmentID: String
     @NSManaged var fileData: Data?

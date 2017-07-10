@@ -32,7 +32,7 @@ extension Attachment {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
     
-    override func prepareForDeletion() {
+    override public func prepareForDeletion() {
         super.prepareForDeletion()
         if let localURL = localURL {
             do {

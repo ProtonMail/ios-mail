@@ -18,56 +18,56 @@ import CoreData
 
 open class Message: NSManagedObject {
 
-    @NSManaged var bccList: String
-    @NSManaged var bccNameList: String
-    @NSManaged var body: String
-    @NSManaged var ccList: String
-    @NSManaged var ccNameList: String
-    @NSManaged var expirationTime: Date?
-    @NSManaged var hasAttachments: Bool   //removed
-    @NSManaged var numAttachments: NSNumber
-    @NSManaged var header: String
-    @NSManaged var isDetailDownloaded: Bool
-    @NSManaged var isEncrypted: NSNumber
-    @NSManaged var isForwarded: Bool
-    @NSManaged var isRead: Bool
-    @NSManaged var isReplied: Bool
-    @NSManaged var isRepliedAll: Bool
-    @NSManaged var isStarred: Bool    //Deprecated, use LabelIDs instead
-    @NSManaged var lastModified: Date?
-    @NSManaged var locationNumber: NSNumber  //Deprecated, use LabelIDs instead
-    @NSManaged var messageID: String
-    @NSManaged var passwordEncryptedBody: String
-    @NSManaged var password: String
-    @NSManaged var passwordHint: String
-    @NSManaged var replyTo: String?
-    @NSManaged var senderObject: String?
-    @NSManaged var recipientList: String
-    @NSManaged var recipientNameList: String
-    @NSManaged var senderAddress: String
-    @NSManaged var senderName: String
-    @NSManaged var spamScore: NSNumber
-    @NSManaged var tag: String
-    @NSManaged var time: Date?
-    @NSManaged var title: String
-    @NSManaged var totalSize: NSNumber
-    @NSManaged var latestUpdateType : NSNumber
-    @NSManaged var needsUpdate : Bool
-    @NSManaged var orginalMessageID: String?
-    @NSManaged var orginalTime: Date?
-    @NSManaged var action: NSNumber?
-    @NSManaged var isSoftDelete: Bool
-    @NSManaged var expirationOffset : Int32
+    @NSManaged public var bccList: String
+    @NSManaged public var bccNameList: String
+    @NSManaged public var body: String
+    @NSManaged public var ccList: String
+    @NSManaged public var ccNameList: String
+    @NSManaged public var expirationTime: Date?
+    @NSManaged public var hasAttachments: Bool   //removed
+    @NSManaged public var numAttachments: NSNumber
+    @NSManaged public var header: String
+    @NSManaged public var isDetailDownloaded: Bool
+    @NSManaged public var isEncrypted: NSNumber
+    @NSManaged public var isForwarded: Bool
+    @NSManaged public var isRead: Bool
+    @NSManaged public var isReplied: Bool
+    @NSManaged public var isRepliedAll: Bool
+    @NSManaged public var isStarred: Bool    //Deprecated, use LabelIDs instead
+    @NSManaged public var lastModified: Date?
+    @NSManaged public var locationNumber: NSNumber  //Deprecated, use LabelIDs instead
+    @NSManaged public var messageID: String
+    @NSManaged public var passwordEncryptedBody: String
+    @NSManaged public var password: String
+    @NSManaged public var passwordHint: String
+    @NSManaged public var replyTo: String?
+    @NSManaged public var senderObject: String?
+    @NSManaged public var recipientList: String
+    @NSManaged public var recipientNameList: String
+    @NSManaged public var senderAddress: String
+    @NSManaged public var senderName: String
+    @NSManaged public var spamScore: NSNumber
+    @NSManaged public var tag: String
+    @NSManaged public var time: Date?
+    @NSManaged public var title: String
+    @NSManaged public var totalSize: NSNumber
+    @NSManaged public var latestUpdateType : NSNumber
+    @NSManaged public var needsUpdate : Bool
+    @NSManaged public var orginalMessageID: String?
+    @NSManaged public var orginalTime: Date?
+    @NSManaged public var action: NSNumber?
+    @NSManaged public var isSoftDelete: Bool
+    @NSManaged public var expirationOffset : Int32
     
-    @NSManaged var addressID : String?
+    @NSManaged public var addressID : String?
     
-    @NSManaged var messageType : NSNumber  // 0 message 1 rate
-    @NSManaged var messageStatus : NSNumber  // bit 0x00000000 no metadata  0x00000001 has
-    @NSManaged var mimeType : String?
+    @NSManaged public var messageType : NSNumber  // 0 message 1 rate
+    @NSManaged public var messageStatus : NSNumber  // bit 0x00000000 no metadata  0x00000001 has
+    @NSManaged public var mimeType : String?
     
-    @NSManaged var isShowedImages : Bool
+    @NSManaged public var isShowedImages : Bool
     
-    @NSManaged var attachments: NSSet
-    @NSManaged var labels: NSSet
+    @NSManaged public var attachments: NSSet
+    @NSManaged public var labels: NSSet
 }
 

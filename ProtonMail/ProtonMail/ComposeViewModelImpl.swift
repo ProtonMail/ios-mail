@@ -8,8 +8,6 @@
 
 import Foundation
 
-import ProtonMailCommon
-
 open class ComposeViewModelImpl : ComposeViewModel {
     
     init(msg: Message?, action : ComposeMessageAction!) {

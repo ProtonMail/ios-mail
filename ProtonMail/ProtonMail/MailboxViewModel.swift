@@ -15,7 +15,7 @@ enum SwipeResponse {
     case showGeneral
 }
 
-class MailboxViewModel {
+public class MailboxViewModel {
     typealias CompletionBlock = APIService.CompletionBlock
     
     public init() { }

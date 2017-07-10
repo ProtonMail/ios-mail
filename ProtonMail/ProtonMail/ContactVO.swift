@@ -12,17 +12,17 @@
 
 import Foundation
 
-class ContactVO: NSObject, MBContactPickerModelProtocol {
+public class ContactVO: NSObject, MBContactPickerModelProtocol {
     struct Attributes {
         static let email = "email"
     }
 
-    internal var contactTitle: String!
-    internal var contactSubtitle: String!
-    internal var contactId: String!
-    internal var name: String!
-    internal var email: String!
-    internal var isProtonMailContact: Bool = false
+    public var contactTitle: String!
+    public var contactSubtitle: String!
+    public var contactId: String!
+    public var name: String!
+    public var email: String!
+    public var isProtonMailContact: Bool = false
     
     init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool = false) {
         self.contactId = id
@@ -34,11 +34,11 @@ class ContactVO: NSObject, MBContactPickerModelProtocol {
         self.contactSubtitle = email
     }
     
-    override var description: String {
+    override public var description: String {
         return "\(name) \(email)"
     }
     
-    override func isEqual(_ object: Any?) -> Bool {
+    override public func isEqual(_ object: Any?) -> Bool {
         guard let rhs = object as? ContactVO else {
             return false
         }
@@ -60,7 +60,7 @@ extension Array where Element: ContactVO {
         }
     }
     
-    internal func uniq() -> [Element] {
+    public func uniq() -> [Element] {
         var arrayCopy = self
         arrayCopy.uniqInPlace()
         return arrayCopy

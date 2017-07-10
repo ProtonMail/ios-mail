@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import ProtonMailCommon
 
 protocol CountryPickerViewControllerDelegate {
     func dismissed();

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
 
 open class SignupViewModelImpl : SignupViewModel {
     fileprivate var userName : String = ""
@@ -33,7 +32,7 @@ open class SignupViewModelImpl : SignupViewModel {
     
     fileprivate var direct : [String] = []
     
-    override func getDirect() -> [String] {
+    override public func getDirect() -> [String] {
         return direct
     }
     

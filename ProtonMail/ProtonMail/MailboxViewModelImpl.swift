@@ -8,7 +8,6 @@
 
 import Foundation
 import CoreData
-import ProtonMailCommon
 
 class MailboxViewModelImpl : MailboxViewModel {
     

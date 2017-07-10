@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-let sharedLabelsDataService = LabelsDataService()
+public let sharedLabelsDataService = LabelsDataService()
 
 public enum LabelFetchType : Int {
     case all = 0
@@ -17,7 +17,7 @@ public enum LabelFetchType : Int {
     case folder = 2
 }
 
-class LabelsDataService {
+public class LabelsDataService {
     
     fileprivate var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
