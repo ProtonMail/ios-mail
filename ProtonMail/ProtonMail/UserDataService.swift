@@ -46,13 +46,13 @@ public let sharedUserDataService = UserDataService()
 /// Stores information related to the user
 public class UserDataService {
     
-    typealias CompletionBlock = APIService.CompletionBlock
-    typealias UserInfoBlock = APIService.UserInfoBlock
+    public typealias CompletionBlock = APIService.CompletionBlock
+    public typealias UserInfoBlock = APIService.UserInfoBlock
     
     //Login callback blocks
-    typealias LoginAsk2FABlock = () -> Void
-    typealias LoginErrorBlock = (_ error: NSError) -> Void
-    typealias LoginSuccessBlock = (_ mpwd: String?) -> Void
+    public typealias LoginAsk2FABlock = () -> Void
+    public typealias LoginErrorBlock = (_ error: NSError) -> Void
+    public typealias LoginSuccessBlock = (_ mpwd: String?) -> Void
     
     struct Key {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
@@ -69,14 +69,15 @@ public class UserDataService {
     }
     
     // MARK: - Private variables
-    fileprivate(set) var userInfo: UserInfo? = UserDefaults.standard.customObjectForKey(Key.userInfo) as? UserInfo {
+    //TODO::Fix later fileprivate(set)
+    public var userInfo: UserInfo? = UserDefaults.standard.customObjectForKey(Key.userInfo) as? UserInfo {
         didSet {
             UserDefaults.standard.setCustomValue(userInfo, forKey: Key.userInfo)
             UserDefaults.standard.synchronize()
         }
     }
-    
-    public(set) var username: String? = UserDefaults.standard.string(forKey: Key.username) {
+    //TODO::Fix later fileprivate(set)
+    public var username: String? = UserDefaults.standard.string(forKey: Key.username) {
         didSet {
             UserDefaults.standard.setValue(username, forKey: Key.username)
             UserDefaults.standard.synchronize()
@@ -84,7 +85,7 @@ public class UserDataService {
     }
     
     // Value is only stored in the keychain
-    fileprivate(set) var password: String? {
+    public var password: String? {
         get {
             return UICKeyChainStore.string(forKey: Key.password)
         }
@@ -93,15 +94,14 @@ public class UserDataService {
         }
     }
     
-    fileprivate var switchCacheOff: Bool? = UserDefaults.standard.bool(forKey: Key.roleSwitchCache) {
-        
+    public var switchCacheOff: Bool? = UserDefaults.standard.bool(forKey: Key.roleSwitchCache) {
         didSet {
             UserDefaults.standard.setValue(switchCacheOff, forKey: Key.roleSwitchCache)
             UserDefaults.standard.synchronize()
         }
     }
     
-    fileprivate var defaultSignatureStauts: Bool = UserDefaults.standard.bool(forKey: Key.defaultSignatureStatus) {
+    public var defaultSignatureStauts: Bool = UserDefaults.standard.bool(forKey: Key.defaultSignatureStatus) {
         didSet {
             UserDefaults.standard.setValue(defaultSignatureStauts, forKey: Key.defaultSignatureStatus)
             UserDefaults.standard.synchronize()
@@ -237,14 +237,14 @@ public class UserDataService {
     
     public var isSignedIn: Bool = false
     public var isNewUser : Bool = false
-    fileprivate(set) var isMailboxPWDOk: Bool = false
+    public var isMailboxPWDOk: Bool = false
     
     public var isUserCredentialStored: Bool {
         return username != nil && password != nil && isRememberUser
     }
     
     /// Value is only stored in the keychain
-    fileprivate(set) var mailboxPassword: String? {
+    public var mailboxPassword: String? {
         get {
             return UICKeyChainStore.string(forKey: Key.mailboxPassword)
         }
@@ -293,29 +293,29 @@ public class UserDataService {
         }
     }
     
-    func updateUserInfoFromEventLog (_ userInfo : UserInfo){
+    public func updateUserInfoFromEventLog (_ userInfo : UserInfo){
         self.userInfo = userInfo
         if let addresses = self.userInfo?.userAddresses.toPMNAddresses() {
             sharedOpenPGP.setAddresses(addresses);
         }
     }
     
-    func isMailboxPasswordValid(_ password: String, privateKey : String) -> Bool {
+    public func isMailboxPasswordValid(_ password: String, privateKey : String) -> Bool {
         let result = PMNOpenPgp.checkPassphrase(password, forPrivateKey: privateKey)
         return result
     }
     
-    func setMailboxPassword(_ password: String, keysalt: String?, isRemembered: Bool) {
+    public func setMailboxPassword(_ password: String, keysalt: String?, isRemembered: Bool) {
         mailboxPassword = password
         isRememberMailboxPassword = isRemembered
         self.isMailboxPWDOk = true;
     }
     
-    func isPasswordValid(_ password: String?) -> Bool {
+    public func isPasswordValid(_ password: String?) -> Bool {
         return self.password == password
     }
     
-    func signIn(_ username: String, password: String, twoFACode: String?, ask2fa: @escaping LoginAsk2FABlock, onError:@escaping LoginErrorBlock, onSuccess: @escaping LoginSuccessBlock) {
+    public func signIn(_ username: String, password: String, twoFACode: String?, ask2fa: @escaping LoginAsk2FABlock, onError:@escaping LoginErrorBlock, onSuccess: @escaping LoginSuccessBlock) {
         sharedAPIService.auth(username, password: password, twoFACode: twoFACode) { task, mpwd, status, error in
             if status == .ask2FA {
                 self.twoFactorStatus = 1
@@ -338,12 +338,12 @@ public class UserDataService {
         }
     }
     
-    func clean() {
+    public func clean() {
         clearAll()
         clearAuthToken()
     }
     
-    func signOut(_ animated: Bool) {
+    public func signOut(_ animated: Bool) {
         sharedVMService.signOut()
         if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
             AuthDeleteRequest().call { (task, response, hasError) in }
@@ -355,7 +355,7 @@ public class UserDataService {
 //        (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     
-    func signOutAfterSignUp() {
+    public func signOutAfterSignUp() {
         sharedVMService.signOut()
         if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
             AuthDeleteRequest().call { (task, response, hasError) in }
@@ -365,7 +365,7 @@ public class UserDataService {
         clearAuthToken()
     }
     
-    func updateDisplayName(_ displayName: String, completion: UserInfoBlock?) {
+    public func updateDisplayName(_ displayName: String, completion: UserInfoBlock?) {
         let new_displayName = displayName.trim()
         let api = UpdateDisplayNameRequest(displayName: new_displayName)
         api.call() { task, response, hasError in
@@ -379,7 +379,7 @@ public class UserDataService {
         }
     }
     
-    func updateAddress(_ addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
+    public func updateAddress(_ addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
         let new_displayName = displayName.trim()
         let new_signature = signature.trim()
         
@@ -403,7 +403,7 @@ public class UserDataService {
         }
     }
     
-    func updateAutoLoadImage(_ status : Int, completion: UserInfoBlock?) {
+    public func updateAutoLoadImage(_ status : Int, completion: UserInfoBlock?) {
         let api = UpdateShowImagesRequest(status: status)
         api.call() { task, response, hasError in
             if !hasError {
@@ -416,7 +416,7 @@ public class UserDataService {
         }
     }
     
-    func updatePassword(_ login_password: String, new_password: String, twoFACode:String?, completion: @escaping CompletionBlock) {
+    public func updatePassword(_ login_password: String, new_password: String, twoFACode:String?, completion: @escaping CompletionBlock) {
         {//asyn
             do {
                 //generate new pwd and verifier
@@ -508,7 +508,7 @@ public class UserDataService {
         } ~> .async
     }
     
-    func updateMailboxPassword(_ login_password: String, new_password: String, twoFACode:String?, buildAuth: Bool, completion: @escaping CompletionBlock) {
+    public func updateMailboxPassword(_ login_password: String, new_password: String, twoFACode:String?, buildAuth: Bool, completion: @escaping CompletionBlock) {
         {//asyn
             do {
                 guard let _username = self.username else {
@@ -644,7 +644,7 @@ public class UserDataService {
         
     }
     
-    func updateUserDomiansOrder(_ email_domains: Array<Address>, newOrder : Array<Int>, completion: @escaping CompletionBlock) {
+    public func updateUserDomiansOrder(_ email_domains: Array<Address>, newOrder : Array<Int>, completion: @escaping CompletionBlock) {
         let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)
         domainSetting.call() { task, response, hasError in
             if !hasError {
@@ -657,7 +657,7 @@ public class UserDataService {
         }
     }
     
-    func updateUserSwipeAction(_ isLeft : Bool , action: MessageSwipeAction, completion: @escaping CompletionBlock) {
+    public func updateUserSwipeAction(_ isLeft : Bool , action: MessageSwipeAction, completion: @escaping CompletionBlock) {
         let api = isLeft ? UpdateSwiftLeftAction<ApiResponse>(action: action) : UpdateSwiftRightAction<ApiResponse>(action: action)
         api.call() { task, response, hasError in
             if !hasError {
@@ -671,7 +671,7 @@ public class UserDataService {
         }
     }
     
-    func updateNotificationEmail(_ new_notification_email: String, login_password : String, twoFACode: String?, completion: @escaping CompletionBlock) {
+    public func updateNotificationEmail(_ new_notification_email: String, login_password : String, twoFACode: String?, completion: @escaping CompletionBlock) {
         {//asyn
             do {
                 guard let _username = self.username else {
@@ -745,7 +745,8 @@ public class UserDataService {
             }
         } ~> .async
     }
-    func updateNotify(_ isOn: Bool, completion: @escaping CompletionBlock) {
+    
+    public func updateNotify(_ isOn: Bool, completion: @escaping CompletionBlock) {
         let notifySetting = UpdateNotify<ApiResponse>(notify: isOn ? 1 : 0)
         notifySetting.call() { task, response, hasError in
             if !hasError {
@@ -758,13 +759,13 @@ public class UserDataService {
         }
     }
     
-    func updateSignature(_ signature: String, completion: UserInfoBlock?) {
+    public func updateSignature(_ signature: String, completion: UserInfoBlock?) {
         sharedAPIService.settingUpdateSignature(signature, completion: completionForUserInfo(completion))
     }
     
     // MARK: - Private methods
     
-    fileprivate func cleanUpIfFirstRun() {
+    public func cleanUpIfFirstRun() {
         let firstRunKey = "FirstRunKey"
         
         if UserDefaults.standard.object(forKey: firstRunKey) == nil {
@@ -774,7 +775,7 @@ public class UserDataService {
         }
     }
     
-    fileprivate func clearAll() {
+    public func clearAll() {
         isSignedIn = false
         
         isRememberUser = false
@@ -790,11 +791,11 @@ public class UserDataService {
         sharedOpenPGP.cleanAddresses()
     }
     
-    fileprivate func clearAuthToken() {
+    public func clearAuthToken() {
         AuthCredential.clearFromKeychain()
     }
     
-    fileprivate func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
+    public func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
         return { task, response, error in
             if error == nil {
                 self.fetchUserInfo(completion)
@@ -804,7 +805,7 @@ public class UserDataService {
         }
     }
     
-    fileprivate func launchCleanUp() {
+    public func launchCleanUp() {
         if !self.isRememberUser {
             username = nil
             password = nil

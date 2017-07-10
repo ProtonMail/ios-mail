@@ -63,20 +63,20 @@ open class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
     }
     
-    override func getAttachments() -> [Attachment]? {
+    override public func getAttachments() -> [Attachment]? {
         return self.message?.attachments.allObjects as? [Attachment]
     }
     
-    override func updateAddressID(_ address_id: String) {
+    override public func updateAddressID(_ address_id: String) {
         self.message?.addressID = address_id
         self.updateDraft()
     }
     
-    override func getAddresses() -> Array<Address> {
+    override public func getAddresses() -> Array<Address> {
         return sharedUserDataService.userAddresses
     }
     
-    override func getDefaultAddress() -> Address? {
+    override public func getDefaultAddress() -> Address? {
         if self.message == nil {
             if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
                 return addr
@@ -85,14 +85,14 @@ open class ComposeViewModelImpl : ComposeViewModel {
         return self.message?.defaultAddress
     }
     
-    override func getCurrrentSignature(_ addr_id : String) -> String? {
+    override public func getCurrrentSignature(_ addr_id : String) -> String? {
         if let addr = sharedUserDataService.userAddresses.indexOfAddress(addr_id) {
             return addr.signature
         }
         return nil
     }
     
-    override func hasAttachment() -> Bool {
+    override public func hasAttachment() -> Bool {
         return true;
     }
     
@@ -199,7 +199,7 @@ open class ComposeViewModelImpl : ComposeViewModel {
         
     }
     
-    override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
+    override public func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
 
         self.setSubject(title)
         

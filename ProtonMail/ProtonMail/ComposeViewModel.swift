@@ -102,31 +102,31 @@ open class ComposeViewModel {
         return ""
     }
     
-    func collectDraft(_ title:String, body:String, expir:TimeInterval, pwd:String, pwdHit:String) -> Void {
+    public func collectDraft(_ title:String, body:String, expir:TimeInterval, pwd:String, pwdHit:String) -> Void {
          NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    func getAttachments() -> [Attachment]? {
+    public func getAttachments() -> [Attachment]? {
         fatalError("This method must be overridden")
     }
     
-    func updateAddressID (_ address_id : String) {
+    public func updateAddressID (_ address_id : String) {
         fatalError("This method must be overridden")
     }
     
-    func getAddresses () -> Array<Address> {
+    public func getAddresses () -> Array<Address> {
         fatalError("This method must be overridden")
     }
    
-    func getDefaultAddress () -> Address? {
+    public func getDefaultAddress () -> Address? {
         fatalError("This method must be overridden")
     }
     
-    func getCurrrentSignature(_ addr_id : String) -> String? {
+    public func getCurrrentSignature(_ addr_id : String) -> String? {
         fatalError("This method must be overridden")
     }
     
-    func hasAttachment () -> Bool {
+    public func hasAttachment () -> Bool {
         fatalError("This method must be overridden")
     }
 }

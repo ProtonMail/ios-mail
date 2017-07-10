@@ -20,9 +20,9 @@ import Foundation
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
-let sharedAPIService = APIService()
+public let sharedAPIService = APIService()
 
-class APIService {
+public class APIService {
     
     // refresh token failed count
     internal var refreshTokenFailedCount = 0

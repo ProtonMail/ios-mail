@@ -20,17 +20,17 @@ import CoreData
 public let sharedContactDataService = ContactDataService()
 
 public class ContactDataService {
-    typealias ContactCompletionBlock = (([Contact]?, NSError?) -> Void)
+    public typealias ContactCompletionBlock = (([Contact]?, NSError?) -> Void)
     
-    func addContact(name: String, email: String, completion: ContactCompletionBlock?) {
+    public func addContact(name: String, email: String, completion: ContactCompletionBlock?) {
         sharedAPIService.contactAdd(name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
     }
     
-    fileprivate var managedObjectContext: NSManagedObjectContext? {
+    public var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
     }
     
-    func cleanUp()
+    public func cleanUp()
     {
         if let context = managedObjectContext {
             Contact.deleteAll(inContext: context)
@@ -38,7 +38,7 @@ public class ContactDataService {
     }
     
     /// Only call from the main thread
-    func allContacts() -> [Contact] {
+    public func allContacts() -> [Contact] {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             //context.performBlockAndWait() {
             return self.allContactsInManagedObjectContext(context)
@@ -47,7 +47,7 @@ public class ContactDataService {
         return []
     }
     
-    fileprivate func allContactsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Contact] {
+    public func allContactsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Contact] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
         do {
             if let contacts = try context.fetch(fetchRequest) as? [Contact] {
@@ -59,7 +59,7 @@ public class ContactDataService {
         return []
     }
     
-    func deleteContact(_ contactID: String!, completion: ContactCompletionBlock?) {
+    public func deleteContact(_ contactID: String!, completion: ContactCompletionBlock?) {
         sharedAPIService.contactDelete(contactID: contactID) { (task, response, error) -> Void in
             if error == nil {
                 if let context = sharedCoreDataService.mainManagedObjectContext {
@@ -77,7 +77,7 @@ public class ContactDataService {
         }
     }
     
-    func fetchContacts(_ completion: ContactCompletionBlock?) {
+    public func fetchContacts(_ completion: ContactCompletionBlock?) {
         let completionWrapper: APIService.CompletionBlock = { task, response, error in
             if let contactsArray = response?["Contacts"] as? [Dictionary<String, Any>] {
                 let context = sharedCoreDataService.newManagedObjectContext()
@@ -104,7 +104,7 @@ public class ContactDataService {
         sharedAPIService.contactList(completionWrapper)
     }
     
-    func updateContact(contactID: String, name: String, email: String, completion: ContactCompletionBlock?) {
+    public func updateContact(contactID: String, name: String, email: String, completion: ContactCompletionBlock?) {
         if (completion != nil) {
             sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
         } else {
@@ -113,7 +113,7 @@ public class ContactDataService {
     }
     
     // MARK: - Private methods
-    fileprivate func completionBlockForContactCompletionBlock(_ completion: ContactCompletionBlock?) -> APIService.CompletionBlock {
+    public func completionBlockForContactCompletionBlock(_ completion: ContactCompletionBlock?) -> APIService.CompletionBlock {
         return { task, response, error in
             if error == nil {
                 self.fetchContacts(completion)
@@ -123,7 +123,7 @@ public class ContactDataService {
         }
     }
     
-    fileprivate func removeContacts(_ contacts: [Contact], notInContext context: NSManagedObjectContext) {
+    public func removeContacts(_ contacts: [Contact], notInContext context: NSManagedObjectContext) {
         if contacts.count == 0 {
             return
         }
@@ -143,9 +143,9 @@ public class ContactDataService {
 // MARK: AddressBook contact extension
 
 extension ContactDataService {
-    typealias ContactVOCompletionBlock = ((_ contacts: [ContactVO], _ error: Error?) -> Void)
+    public typealias ContactVOCompletionBlock = ((_ contacts: [ContactVO], _ error: Error?) -> Void)
     
-    func allContactVOs() -> [ContactVO] {
+    public func allContactVOs() -> [ContactVO] {
         var contacts: [ContactVO] = []
         
         for contact in sharedContactDataService.allContacts() {
@@ -155,7 +155,7 @@ extension ContactDataService {
         return contacts
     }
     
-    func fetchContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
+    public func fetchContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
         // fetch latest contacts from server
         fetchContacts { (_, error) -> Void in
             self.requestAccessToAddressBookIfNeeded(completion)
@@ -163,14 +163,14 @@ extension ContactDataService {
         }
     }
     
-    func getContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
+    public func getContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
         
         self.requestAccessToAddressBookIfNeeded(completion)
         self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: nil, completion: completion)
         
     }
     
-    fileprivate func requestAccessToAddressBookIfNeeded(_ cp: @escaping ContactVOCompletionBlock) {
+    public func requestAccessToAddressBookIfNeeded(_ cp: @escaping ContactVOCompletionBlock) {
         if !sharedAddressBookService.hasAccessToAddressBook() {
             sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: Error?) -> Void in
                 self.processContacts(addressBookAccessGranted: granted, lastError: error, completion: cp)
@@ -178,7 +178,7 @@ extension ContactDataService {
         }
     }
     
-    fileprivate func processContacts(addressBookAccessGranted granted: Bool, lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
+    public func processContacts(addressBookAccessGranted granted: Bool, lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
         DispatchQueue.global(qos: DispatchQoS.QoSClass.utility).async {
             var contacts: [ContactVO] = []
             if granted {

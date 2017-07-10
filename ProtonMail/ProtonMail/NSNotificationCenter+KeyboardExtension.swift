@@ -22,12 +22,12 @@ import UIKit
 }
 
 extension NotificationCenter {
-    func addKeyboardObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol) {
+    public func addKeyboardObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol) {
         addObserver(observer, ifRespondsToAction: .willHide)
         addObserver(observer, ifRespondsToAction: .willShow)
     }
     
-    func removeKeyboardObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol) {
+    public func removeKeyboardObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol) {
         removeObserver(observer, ifRespondsToAction: .willHide)
         removeObserver(observer, ifRespondsToAction: .willShow)
     }
