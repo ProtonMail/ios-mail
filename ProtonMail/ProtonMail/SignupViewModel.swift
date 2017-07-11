@@ -14,82 +14,83 @@ public protocol SignupViewModelDelegate{
 }
 
 
-typealias AvailableDomainsComplete = ([String]) -> Void
+public typealias AvailableDomainsComplete = ([String]) -> Void
 
 open class SignupViewModel : NSObject {
-    func setDelegate (_ delegate: SignupViewModelDelegate?) {
+    public func setDelegate (_ delegate: SignupViewModelDelegate?) {
         fatalError("This method must be overridden")
     }
     
-    func checkUserName(_ username: String, complete: CheckUserNameBlock!) -> Void {
+    public func checkUserName(_ username: String, complete: CheckUserNameBlock!) -> Void {
         fatalError("This method must be overridden")
     }
     
-    func sendVerifyCode (_ type: VerifyCodeType, complete: SendVerificationCodeBlock!) -> Void {
+    public func sendVerifyCode (_ type: VerifyCodeType, complete: SendVerificationCodeBlock!) -> Void {
         fatalError("This method must be overridden")
     }
     
     //
-    func setRecaptchaToken (_ token : String, isExpired : Bool ) {
+    public func setRecaptchaToken (_ token : String, isExpired : Bool ) {
         fatalError("This method must be overridden")
     }
     
-    func setPickedUserName (_ username: String, domain:String) {
+    public func setPickedUserName (_ username: String, domain:String) {
         fatalError("This method must be overridden")
     }
     
-    func isTokenOk() -> Bool {
+    public func isTokenOk() -> Bool {
         fatalError("This method must be overridden")
     }
     
-    func createNewUser(_ complete :@escaping CreateUserBlock) {
+    public func createNewUser(_ complete :@escaping CreateUserBlock) {
         fatalError("This method must be overridden")
     }
     
-    func generateKey(_ complete :@escaping GenerateKey) {
+    public func generateKey(_ complete :@escaping GenerateKey) {
         fatalError("This method must be overridden")
     }
     
-    func setRecovery(_ receiveNews:Bool, email : String, displayName : String) {
+    public func setRecovery(_ receiveNews:Bool, email : String, displayName : String) {
         fatalError("This method must be overridden")
     }
     
-    func setCodeEmail(_ email : String) {
-        fatalError("This method must be overridden")
-    }
-    func setCodePhone(_ phone : String) {
+    public func setCodeEmail(_ email : String) {
         fatalError("This method must be overridden")
     }
     
-    func setEmailVerifyCode(_ code: String) {
+    public func setCodePhone(_ phone : String) {
         fatalError("This method must be overridden")
     }
     
-    func setPhoneVerifyCode (_ code: String) {
+    public func setEmailVerifyCode(_ code: String) {
         fatalError("This method must be overridden")
     }
     
-    func setSinglePassword(_ password: String) {
+    public func setPhoneVerifyCode (_ code: String) {
         fatalError("This method must be overridden")
     }
     
-    func setAgreePolicy(_ isAgree : Bool) {
+    public func setSinglePassword(_ password: String) {
+        fatalError("This method must be overridden")
+    }
+    
+    public func setAgreePolicy(_ isAgree : Bool) {
         fatalError("This method must be overridden")
     }
         
-    func getTimerSet () -> Int {
+    public func getTimerSet () -> Int {
         fatalError("This method must be overridden")
     }
     
-    func getCurrentBit() -> Int32 {
+    public func getCurrentBit() -> Int32 {
         fatalError("This method must be overridden")
     }
     
-    func setBit(_ bit: Int32) {
+    public func setBit(_ bit: Int32) {
         fatalError("This method must be overridden")
     }
     
-    func fetchDirect(_ res : @escaping (_ directs:[String]) -> Void) {
+    public func fetchDirect(_ res : @escaping (_ directs:[String]) -> Void) {
         fatalError("This method must be overridden")
     }
     
@@ -97,7 +98,7 @@ open class SignupViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
-    func getDomains(_ complete : @escaping AvailableDomainsComplete) -> Void {
+    public func getDomains(_ complete : @escaping AvailableDomainsComplete) -> Void {
         fatalError("This method must be overridden")
     }
 }

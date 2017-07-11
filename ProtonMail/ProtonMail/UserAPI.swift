@@ -8,10 +8,10 @@
 
 import Foundation
 
-typealias CheckUserNameBlock = (Bool, NSError?) -> Void
-typealias CreateUserBlock = (Bool, Bool, String, Error?) -> Void
-typealias GenerateKey = (Bool, String?, NSError?) -> Void
-typealias SendVerificationCodeBlock = (Bool, NSError?) -> Void
+public typealias CheckUserNameBlock = (Bool, NSError?) -> Void
+public typealias CreateUserBlock = (Bool, Bool, String, Error?) -> Void
+public typealias GenerateKey = (Bool, String?, NSError?) -> Void
+public typealias SendVerificationCodeBlock = (Bool, NSError?) -> Void
 
 // MARK : update right swipe action
 final class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
@@ -257,11 +257,11 @@ final class DirectResponse : ApiResponse {
     }
 }
 
-enum VerifyCodeType : Int {
+public enum VerifyCodeType : Int {
     case email = 0
     case recaptcha = 1
     case sms = 2
-    var toString : String {
+    public var toString : String {
         get {
             switch(self) {
             case .email:

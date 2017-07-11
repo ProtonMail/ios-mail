@@ -10,7 +10,7 @@ import Foundation
 
 
 // labels and folders manager
-final class LabelManagerViewModelImpl : LabelViewModel {
+final public class LabelManagerViewModelImpl : LabelViewModel {
     fileprivate var labelMessages : Dictionary<String, LabelMessageModel>!
     public override init() {
         super.init()

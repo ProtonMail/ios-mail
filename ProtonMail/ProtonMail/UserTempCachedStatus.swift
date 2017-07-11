@@ -9,22 +9,22 @@
 import Foundation
 
 
-let userDebugCached =  UserDefaults.standard
-class UserTempCachedStatus: NSObject, NSCoding {
+public let userDebugCached =  UserDefaults.standard
+public class UserTempCachedStatus: NSObject, NSCoding {
     struct Key{
         static let keychainStore = "UserTempCachedStatusKey"
     }
     
-    var lastLoggedInUser : String!
+    public var lastLoggedInUser : String!
     
-    var touchIDEmail : String!
-    var isPinCodeEnabled : Bool
-    var pinCodeCache : String!
-    var autoLockTime : String!
-    var showMobileSignature : Bool
-    var localMobileSignature : String!
+    public var touchIDEmail : String!
+    public var isPinCodeEnabled : Bool
+    public var pinCodeCache : String!
+    public var autoLockTime : String!
+    public var showMobileSignature : Bool
+    public var localMobileSignature : String!
     
-    required init(lastLoggedInUser: String!, touchIDEmail: String!, isPinCodeEnabled: Bool, pinCodeCache: String!, autoLockTime : String!, showMobileSignature: Bool, localMobileSignature:String!) {
+    required public init(lastLoggedInUser: String!, touchIDEmail: String!, isPinCodeEnabled: Bool, pinCodeCache: String!, autoLockTime : String!, showMobileSignature: Bool, localMobileSignature:String!) {
         self.lastLoggedInUser = lastLoggedInUser ?? ""
         self.touchIDEmail = touchIDEmail ?? ""
         self.isPinCodeEnabled = isPinCodeEnabled
@@ -35,7 +35,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
         super.init()
     }
     
-    convenience required init(coder aDecoder: NSCoder) {
+    convenience required public init(coder aDecoder: NSCoder) {
         self.init(
             lastLoggedInUser: aDecoder.decodeObject(forKey: CoderKey.lastLoggedInUser) as? String,
             touchIDEmail: aDecoder.decodeObject(forKey: CoderKey.touchIDEmail) as? String,
@@ -56,7 +56,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
         static let localMobileSignature = "localMobileSignature"
     }
     
-    func encode(with aCoder: NSCoder) {
+    public func encode(with aCoder: NSCoder) {
         aCoder.encode(lastLoggedInUser, forKey: CoderKey.lastLoggedInUser)
         aCoder.encode(touchIDEmail, forKey: CoderKey.touchIDEmail)
         aCoder.encode(isPinCodeEnabled, forKey: CoderKey.isPinCodeEnabled)
@@ -67,7 +67,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
     }
     
     
-    class func backup () {
+    public class func backup () {
         if UserTempCachedStatus.fetchFromKeychain() == nil && sharedUserDataService.isSignedIn {
             let u = UserTempCachedStatus(
                 lastLoggedInUser: sharedUserDataService.username,
@@ -81,7 +81,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
         }
     }
     
-    class func restore() {
+    public class func restore() {
         if let cache = UserTempCachedStatus.fetchFromKeychain() {
             if sharedUserDataService.username == cache.lastLoggedInUser {
                 userCachedStatus.touchIDEmail = cache.touchIDEmail ?? ""
@@ -96,7 +96,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
     }
     
     
-    func storeInKeychain() {
+    public func storeInKeychain() {
         userCachedStatus.isForcedLogout = false
         #if DEBUG
             userDebugCached.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
@@ -106,12 +106,12 @@ class UserTempCachedStatus: NSObject, NSCoding {
     }
     
     // MARK - Class methods
-    class func clearFromKeychain() {
+    public class func clearFromKeychain() {
         userDebugCached.removeObject(forKey: Key.keychainStore)
         UICKeyChainStore.removeItem(forKey: Key.keychainStore)
     }
     
-    class func fetchFromKeychain() -> UserTempCachedStatus? {
+    public class func fetchFromKeychain() -> UserTempCachedStatus? {
         
         #if DEBUG
             if let data = userDebugCached.data(forKey: Key.keychainStore) {

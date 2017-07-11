@@ -449,13 +449,13 @@ extension String {
 //        return startIndex ..< endIndex
 //    }
 
-    func nsRange(from range: Range<String.Index>) -> NSRange {
+    public func nsRange(from range: Range<String.Index>) -> NSRange {
         let from = range.lowerBound.samePosition(in: utf16)
         let to = range.upperBound.samePosition(in: utf16)
         return NSRange(location: utf16.distance(from: utf16.startIndex, to: from), length: utf16.distance(from: from, to: to))
     }
     
-    func range(from nsRange: NSRange) -> Range<String.Index>? {
+    public func range(from nsRange: NSRange) -> Range<String.Index>? {
         guard
             let from16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex),
             let to16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location + nsRange.length, limitedBy: utf16.endIndex),
@@ -465,13 +465,13 @@ extension String {
         return from ..< to
     }
     
-    func encodeBase64() -> String {
+    public func encodeBase64() -> String {
         let utf8str = self.data(using: String.Encoding.utf8)
         let base64Encoded = utf8str!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         return base64Encoded
     }
     
-    func decodeBase64() -> String {
+    public func decodeBase64() -> String {
         let decodedData = Data(base64Encoded: self, options: NSData.Base64DecodingOptions(rawValue: 0))
         let decodedString = NSString(data: decodedData!, encoding: String.Encoding.utf8.rawValue)
         PMLog.D(any: decodedString!) // foo
@@ -479,13 +479,13 @@ extension String {
         return decodedString! as String
     }
     
-    func decodeBase64() -> Data {
+    public func decodeBase64() -> Data {
         let decodedData = Data(base64Encoded: self, options: NSData.Base64DecodingOptions(rawValue: 0))
         return decodedData!
     }
     
     //
-    func toContacts() -> [ContactVO] {
+    public func toContacts() -> [ContactVO] {
         var out : [ContactVO] = [ContactVO]();
         let recipients : [[String : String]] = self.parseJson()!
         for dict:[String : String] in recipients {
@@ -494,7 +494,7 @@ extension String {
         return out
     }
     
-    func toContact() -> ContactVO? {
+    public func toContact() -> ContactVO? {
         var out : ContactVO? = nil
         let recipients : [String : String] = self.parseObject()
         
@@ -507,7 +507,7 @@ extension String {
         return out
     }
     
-    func parseObject () -> [String:String] {
+    public func parseObject () -> [String:String] {
         if self.isEmpty {
             return ["" : ""];
         }
@@ -521,7 +521,7 @@ extension String {
         return ["":""]
     }
     
-    func stringByAppendingPathComponent(_ pathComponent: String) -> String {
+    public func stringByAppendingPathComponent(_ pathComponent: String) -> String {
         return (self as NSString).appendingPathComponent(pathComponent)
     }
     

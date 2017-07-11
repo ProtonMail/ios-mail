@@ -52,11 +52,11 @@ open class SignupViewModelImpl : SignupViewModel {
         }
     }
     
-    override func setDelegate(_ delegate: SignupViewModelDelegate?) {
+    override public func setDelegate(_ delegate: SignupViewModelDelegate?) {
         self.delegate = delegate
     }
     
-    override func checkUserName(_ username: String, complete: CheckUserNameBlock!) {
+    override public func checkUserName(_ username: String, complete: CheckUserNameBlock!) {
         // need valide user name format
         let api = CheckUserExistRequest<CheckUserExistResponse>(userName: username)
         api.call { (task, response, hasError) -> Void in
@@ -64,42 +64,42 @@ open class SignupViewModelImpl : SignupViewModel {
         }
     }
     
-    override func getCurrentBit() -> Int32 {
+    override public func getCurrentBit() -> Int32 {
         return self.bit
     }
     
-    override func setBit(_ bit: Int32) {
+    override public func setBit(_ bit: Int32) {
         self.bit = bit
     }
     
-    override func setRecaptchaToken(_ token: String, isExpired: Bool) {
+    override public func setRecaptchaToken(_ token: String, isExpired: Bool) {
         self.token = token
         self.isExpired = isExpired
         self.verifyType = .recaptcha
     }
     
-    override func setPickedUserName(_ username: String, domain:String) {
+    override public func setPickedUserName(_ username: String, domain:String) {
         self.userName = username
         self.domain = domain
     }
     
-    override func isTokenOk() -> Bool {
+    override public func isTokenOk() -> Bool {
         return !isExpired
     }
     
-    override func setEmailVerifyCode(_ code: String) {
+    override public func setEmailVerifyCode(_ code: String) {
         self.token = code
         self.isExpired = false
         self.verifyType = .email
     }
     
-    override func setPhoneVerifyCode (_ code: String) {
+    override public func setPhoneVerifyCode (_ code: String) {
         self.token = code
         self.isExpired = false
         self.verifyType = .sms
     }
     
-    override func generateKey(_ complete: @escaping GenerateKey) {
+    override public func generateKey(_ complete: @escaping GenerateKey) {
         {
             do {
                 //generate key salt
@@ -126,7 +126,7 @@ open class SignupViewModelImpl : SignupViewModel {
         } ~> .async
     }
     
-    override func createNewUser(_ complete: @escaping CreateUserBlock) {
+    override public func createNewUser(_ complete: @escaping CreateUserBlock) {
         //validation here
         if let key = self.newKey {
             {
@@ -247,7 +247,7 @@ open class SignupViewModelImpl : SignupViewModel {
         }
     }
     
-    override func sendVerifyCode(_ type: VerifyCodeType, complete: SendVerificationCodeBlock!) {
+    override public func sendVerifyCode(_ type: VerifyCodeType, complete: SendVerificationCodeBlock!) {
         let api = VerificationCodeRequest(userName: self.userName, destination: destination, type: type)
         api.call { (task, response, hasError) -> Void in
             if !hasError {
@@ -257,7 +257,7 @@ open class SignupViewModelImpl : SignupViewModel {
         }
     }
     
-    override func setRecovery(_ receiveNews: Bool, email: String, displayName : String) {
+    override public func setRecovery(_ receiveNews: Bool, email: String, displayName : String) {
         self.recoverEmail = email
         self.news = receiveNews
         self.displayName = displayName
@@ -282,7 +282,7 @@ open class SignupViewModelImpl : SignupViewModel {
         }
     }
     
-    override func fetchDirect(_ res : @escaping (_ directs:[String]) -> Void) {
+    override public func fetchDirect(_ res : @escaping (_ directs:[String]) -> Void) {
         if direct.count <= 0 {
             let api = DirectRequest<DirectResponse>()
             api.call { (task, response, hasError) -> Void in
@@ -298,26 +298,26 @@ open class SignupViewModelImpl : SignupViewModel {
         }
     }
     
-    override func setCodeEmail(_ email: String) {
+    override public func setCodeEmail(_ email: String) {
         self.destination = email
         self.recoverEmail = email
         self.news = true
     }
     
-    override func setCodePhone(_ phone: String) {
+    override public func setCodePhone(_ phone: String) {
         self.destination = phone
     }
     
-    override func setSinglePassword(_ password: String) {
+    override public func setSinglePassword(_ password: String) {
         self.plaintext_password = password
     }
     
-    override func setAgreePolicy(_ isAgree: Bool) {
+    override public func setAgreePolicy(_ isAgree: Bool) {
         self.agreePolicy = isAgree;
     }
     
     fileprivate var count : Int = 10;
-    override func getTimerSet() -> Int {
+    override public func getTimerSet() -> Int {
         if let lastTime = lastSendTime {
             let time = Date().timeIntervalSince(lastTime)
             let newCount = 120 - Int(time);
@@ -330,7 +330,7 @@ open class SignupViewModelImpl : SignupViewModel {
         }
     }
     
-    override func getDomains(_ complete : @escaping AvailableDomainsComplete) -> Void {
+    override public func getDomains(_ complete : @escaping AvailableDomainsComplete) -> Void {
         let defaultDomains = ["protonmail.com", "protonmail.ch"]
         let api = GetAvailableDomainsRequest<AvailableDomainsResponse>()
         api.call({ (task, response, hasError) -> Void in

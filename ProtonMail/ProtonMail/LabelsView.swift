@@ -178,7 +178,7 @@ class LabelsView: PMView {
                         if labels.count > i {
                             if check > sizeLimit {
                                 if let text = labelView.text?.trim(), text.characters.count > 0 {
-                                    labelView.text = "  " + text[0] + "  ";
+                                    labelView.text = "  " + text  //[0] + "  ";  //TODO::Fix later
                                 }
                                 
                                 labelView.isHidden = true;

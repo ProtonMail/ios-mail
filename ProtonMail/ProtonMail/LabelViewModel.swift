@@ -8,8 +8,6 @@
 
 import Foundation
 import CoreData
-import ProtonMailCommon
-
 
 open class LabelMessageModel {
     var label : Label!

@@ -10,15 +10,15 @@ import Foundation
 
 
 
-let cachedBugReport = BugReportCache(shared: UserDefaults.standard)
+public let cachedBugReport = BugReportCache(shared: UserDefaults.standard)
 
-final class BugReportCache : SharedCacheBase {
+final public class BugReportCache : SharedCacheBase {
     
     fileprivate struct Key {
         static let lastBugReport = "BugReportCache_LastBugReport"
     }
     
-    open var cachedBug: String! {
+    public var cachedBug: String! {
         get {
             return getShared().string(forKey: Key.lastBugReport) ?? ""
         }
@@ -28,7 +28,7 @@ final class BugReportCache : SharedCacheBase {
         }
     }
     
-    open func clear() {
+    public func clear() {
         getShared().removeObject(forKey: Key.lastBugReport)
         getShared().synchronize()
     }

@@ -18,7 +18,7 @@ import CoreData
 import Foundation
 
 
-let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
+public let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
 public let sharedAPIService = APIService()
 

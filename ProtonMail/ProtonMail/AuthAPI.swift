@@ -204,7 +204,7 @@ final class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
 
 
 // MARK : Response part
-final class AuthResponse : ApiResponse {
+final public class AuthResponse : ApiResponse {
     
     var encPrivateKey : String?
     var accessToken : String?
@@ -247,7 +247,7 @@ final class AuthResponse : ApiResponse {
     }
 }
 
-final class AuthInfoResponse : ApiResponse {
+final public class AuthInfoResponse : ApiResponse {
     
     var Modulus : String?
     var ServerEphemeral : String?
