@@ -38,7 +38,7 @@ public class CoreDataService {
     
     // MARK: - Public variables
     
-    lazy var mainManagedObjectContext: NSManagedObjectContext? = {
+    lazy public var mainManagedObjectContext: NSManagedObjectContext? = {
         if self.persistentStoreCoordinator == nil {
             return nil
         }

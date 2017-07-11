@@ -18,16 +18,16 @@ import CoreData
 
 public class Attachment: NSManagedObject {
     
-    @NSManaged var attachmentID: String
-    @NSManaged var fileData: Data?
-    @NSManaged var keyPacket: String?
-    @NSManaged var fileName: String
-    @NSManaged var fileSize: NSNumber
-    @NSManaged var localURL: URL?
-    @NSManaged var mimeType: String
-    @NSManaged var isTemp: Bool
+    @NSManaged public var attachmentID: String
+    @NSManaged public var fileData: Data?
+    @NSManaged public var keyPacket: String?
+    @NSManaged public var fileName: String
+    @NSManaged public var fileSize: NSNumber
+    @NSManaged public var localURL: URL?
+    @NSManaged public var mimeType: String
+    @NSManaged public var isTemp: Bool
     
-    @NSManaged var headerInfo: String?
+    @NSManaged public var headerInfo: String?
     
-    @NSManaged var message: Message
+    @NSManaged public var message: Message
 }

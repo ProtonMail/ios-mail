@@ -19,7 +19,7 @@ public enum UIApplicationReleaseMode: Int {
 
 extension UIApplication {
     
-    func getMobileProvision() -> Dictionary<String, Any>? {
+    public func getMobileProvision() -> Dictionary<String, Any>? {
         struct MP {
             static var mobileProvision : Dictionary<String, Any>? = nil;
         }
@@ -60,7 +60,7 @@ extension UIApplication {
     }
     
     
-    func releaseMode() -> UIApplicationReleaseMode {
+    public func releaseMode() -> UIApplicationReleaseMode {
     
         let mobileProvision = self.getMobileProvision()
         if mobileProvision == nil {

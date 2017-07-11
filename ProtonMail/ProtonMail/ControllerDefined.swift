@@ -15,14 +15,14 @@ public struct EncryptionStep {
     static public let DefineHintPassword = "DefineHintPassword"
 }
 
-enum ComposeMessageAction: Int, CustomStringConvertible {
+public enum ComposeMessageAction: Int, CustomStringConvertible {
     case reply = 0
     case replyAll = 1
     case forward = 2
     case newDraft = 3
     case openDraft = 4
     
-    var description : String {
+    public var description : String {
         get {
             switch(self) {
             case .reply:

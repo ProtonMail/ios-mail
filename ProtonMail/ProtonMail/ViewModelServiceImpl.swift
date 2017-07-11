@@ -8,8 +8,8 @@
 
 import Foundation
 
-let sharedVMService : ViewModelService = ViewModelServiceImpl()
-class ViewModelServiceImpl: ViewModelService {
+public let sharedVMService : ViewModelService = ViewModelServiceImpl()
+public class ViewModelServiceImpl: ViewModelService {
     
     //latest composer view model, not in used now.
     private var latestComposerViewModel : ComposeViewModel?
@@ -22,15 +22,15 @@ class ViewModelServiceImpl: ViewModelService {
     private var mailboxViewController : ViewModelProtocol?
     
     
-    override func signOut() {
+    override public func signOut() {
         self.resetView()
     }
     
-    override func changeIndex() {
+    override public func changeIndex() {
         
     }
     
-    override func resetView() {
+    override public func resetView() {
         if activeViewController != nil {
             DispatchQueue.main.async {
                 self.activeViewController?.inactiveViewModel()
@@ -40,21 +40,21 @@ class ViewModelServiceImpl: ViewModelService {
         latestComposerViewModel = nil
     }
     
-    override func newDraftViewModel(_ vmp : ViewModelProtocol) {
+    override public func newDraftViewModel(_ vmp : ViewModelProtocol) {
         activeViewController = vmp
         latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: .newDraft);
         vmp.setViewModel(latestComposerViewModel!)
     }
     
     
-    override func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO!) {
+    override public func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO!) {
         activeViewController = vmp
         latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft);
         latestComposerViewModel?.addToContacts(contact)
         vmp.setViewModel(latestComposerViewModel!)
     }
     
-    override func newDraftViewModelWithMailTo(_ vmp: ViewModelProtocol, url: URL?) {
+    override public func newDraftViewModelWithMailTo(_ vmp: ViewModelProtocol, url: URL?) {
         activeViewController = vmp
         latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft);
 
@@ -120,29 +120,29 @@ class ViewModelServiceImpl: ViewModelService {
         vmp.setViewModel(latestComposerViewModel!)
     }
     
-    override func openDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!) {
+    override public func openDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!) {
         activeViewController = vmp
         latestComposerViewModel = ComposeViewModelImpl(msg: msg, action: ComposeMessageAction.openDraft);
         vmp.setViewModel(latestComposerViewModel!)
     }
     
-    override func actionDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
+    override public func actionDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
         activeViewController = vmp
         latestComposerViewModel = ComposeViewModelImpl(msg: msg, action: action);
         vmp.setViewModel(latestComposerViewModel!)
     }
     
     // msg details
-    override func messageDetails(fromList vmp: ViewModelProtocol) {
+    override public func messageDetails(fromList vmp: ViewModelProtocol) {
         activeViewController = vmp
     }
     
-    override func messageDetails(fromPush vmp: ViewModelProtocol) {
+    override public func messageDetails(fromPush vmp: ViewModelProtocol) {
         activeViewController = vmp
     }
     
     
-    override func mailbox(fromMenu vmp : ViewModelProtocol, location : MessageLocation) -> Void {
+    override public func mailbox(fromMenu vmp : ViewModelProtocol, location : MessageLocation) -> Void {
         if let oldVC = mailboxViewController {
             oldVC.inactiveViewModel()
         }
@@ -150,7 +150,7 @@ class ViewModelServiceImpl: ViewModelService {
         let viewModel = MailboxViewModelImpl(location: location)
         vmp.setViewModel(viewModel)
     }
-    override func labelbox(fromMenu vmp : ViewModelProtocol, label: Label) -> Void {
+    override public func labelbox(fromMenu vmp : ViewModelProtocol, label: Label) -> Void {
         if let oldVC = mailboxViewController {
             oldVC.inactiveViewModel()
         }

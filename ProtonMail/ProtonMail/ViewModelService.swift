@@ -17,52 +17,52 @@ public protocol ViewModelProtocol {
 // this is abstract ViewModel service
 public class ViewModelService {
     
-    func changeIndex() {
+    public func changeIndex() {
         fatalError("This method must be overridden")
     }
     
-    func newDraftViewModel(_ vmp : ViewModelProtocol) {
+    public func newDraftViewModel(_ vmp : ViewModelProtocol) {
         fatalError("This method must be overridden")
     }
     
-    func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO!) {
+    public func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO!) {
         fatalError("This method must be overridden")
     }
     
-    func newDraftViewModelWithMailTo(_ vmp : ViewModelProtocol, url: URL?) {
+    public func newDraftViewModelWithMailTo(_ vmp : ViewModelProtocol, url: URL?) {
         fatalError("This method must be overridden")
     }
     
-    func openDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!) {
+    public func openDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!) {
         fatalError("This method must be overridden")
     }
     
-    func actionDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
+    public func actionDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
         fatalError("This method must be overridden")
     }
     
     //messgae detail part
-    func messageDetails(fromList vmp : ViewModelProtocol) -> Void {
+    public func messageDetails(fromList vmp : ViewModelProtocol) -> Void {
         fatalError("This method must be overridden")
     }
-    func messageDetails(fromPush vmp : ViewModelProtocol) -> Void {
+    public func messageDetails(fromPush vmp : ViewModelProtocol) -> Void {
         fatalError("This method must be overridden")
     }
     
     //inbox part
-    func mailbox(fromMenu vmp : ViewModelProtocol, location : MessageLocation) -> Void {
+    public func mailbox(fromMenu vmp : ViewModelProtocol, location : MessageLocation) -> Void {
         fatalError("This method must be overridden")
     }
-    func labelbox(fromMenu vmp : ViewModelProtocol, label: Label) -> Void {
-        fatalError("This method must be overridden")
-    }
-    
-    
-    func resetView() {
+    public func labelbox(fromMenu vmp : ViewModelProtocol, label: Label) -> Void {
         fatalError("This method must be overridden")
     }
     
-    func signOut() {
+    
+    public func resetView() {
+        fatalError("This method must be overridden")
+    }
+    
+    public func signOut() {
         
     }
 }
