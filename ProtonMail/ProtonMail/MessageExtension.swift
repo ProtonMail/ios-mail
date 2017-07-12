@@ -19,22 +19,22 @@ import CoreData
 
 extension Message {
     
-    struct Attributes {
-        static let entityName = "Message"
-        static let locationNumber = "locationNumber"
-        static let isDetailDownloaded = "isDetailDownloaded"
-        static let isRead = "isRead"
-        static let isStarred = "isStarred"
-        static let messageID = "messageID"
-        static let recipientList = "recipientList"
-        static let senderName = "senderName"
-        static let senderObject = "senderObject"
-        static let time = "time"
-        static let title = "title"
-        static let labels = "labels"
+    public struct Attributes {
+        static public let entityName = "Message"
+        static public let locationNumber = "locationNumber"
+        static public let isDetailDownloaded = "isDetailDownloaded"
+        static public let isRead = "isRead"
+        static public let isStarred = "isStarred"
+        static public let messageID = "messageID"
+        static public let recipientList = "recipientList"
+        static public let senderName = "senderName"
+        static public let senderObject = "senderObject"
+        static public let time = "time"
+        static public let title = "title"
+        static public let labels = "labels"
         
-        static let messageType = "messageType"
-        static let messageStatus = "messageStatus"
+        static public let messageType = "messageType"
+        static public let messageStatus = "messageStatus"
     }
     
     struct Constants {

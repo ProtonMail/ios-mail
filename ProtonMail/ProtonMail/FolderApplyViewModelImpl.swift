@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
 
 //
 //  LabelApplayViewModel.swift
@@ -19,11 +18,11 @@ import ProtonMailCommon
 
 import Foundation
 
-final class FolderApplyViewModelImpl : LabelViewModel {
+final public class FolderApplyViewModelImpl : LabelViewModel {
     fileprivate var messages : [Message]!
     fileprivate var labelMessages : Dictionary<String, LabelMessageModel>!
     
-    init(msg:[Message]!) {
+    public init(msg:[Message]!) {
         super.init()
         self.messages = msg
         self.labelMessages = Dictionary<String, LabelMessageModel>()

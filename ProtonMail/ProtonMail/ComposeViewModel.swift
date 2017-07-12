@@ -11,21 +11,21 @@ import Foundation
 
 open class ComposeViewModel {
     var message : Message?
-    var messageAction : ComposeMessageAction!
-    var toSelectedContacts: [ContactVO]! = [ContactVO]()
-    var ccSelectedContacts: [ContactVO]! = [ContactVO]()
-    var bccSelectedContacts: [ContactVO]! = [ContactVO]()
+    public var messageAction : ComposeMessageAction!
+    public var toSelectedContacts: [ContactVO]! = [ContactVO]()
+    public var ccSelectedContacts: [ContactVO]! = [ContactVO]()
+    public var bccSelectedContacts: [ContactVO]! = [ContactVO]()
     var contacts: [ContactVO]! = [ContactVO]()
     
     var subject : String! = ""
     var body : String! = ""
     
-    var hasDraft : Bool {
+    public var hasDraft : Bool {
         get{
             return message?.isDetailDownloaded ?? false
         }
     }
-    var needsUpdate : Bool {
+    public var needsUpdate : Bool {
         get{
             return toChanged || ccChanged || bccChanged || titleChanged || bodyChanged
         }
@@ -64,7 +64,7 @@ open class ComposeViewModel {
         bccSelectedContacts.append(contacts)
     }
     
-    func getActionType() -> ComposeMessageAction {
+    public func getActionType() -> ComposeMessageAction {
         return messageAction
     }
     

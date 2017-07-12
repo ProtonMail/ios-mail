@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ProtonMailCommon
 
 internal typealias EditAction = (_ sender: LabelTableViewCell) -> Void
 

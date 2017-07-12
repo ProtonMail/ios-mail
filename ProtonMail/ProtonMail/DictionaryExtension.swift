@@ -9,7 +9,7 @@
 import Foundation
 
 extension Dictionary { //email name
-    func getDisplayName() -> String {    //this function only for the To CC BCC list parsing
+    public func getDisplayName() -> String {    //this function only for the To CC BCC list parsing
         if let key = "Name" as? Key {
             let name = self[key] as? String ?? ""
             if !name.isEmpty {
@@ -22,14 +22,14 @@ extension Dictionary { //email name
         return ""
     }
     
-    func getAddress() -> String {    //this function only for the To CC BCC list parsing
+    public func getAddress() -> String {    //this function only for the To CC BCC list parsing
         if let key = "Address" as? Key {
             return self[key] as? String ?? ""
         }
         return ""
     }
     
-    func getName() -> String {    //this function only for the To CC BCC list parsing
+    public func getName() -> String {    //this function only for the To CC BCC list parsing
         if let key = "Name" as? Key {
             return self[key] as? String ?? ""
         }
@@ -45,7 +45,7 @@ extension Dictionary { //email name
     
     :returns: String value
     */
-    func JSONStringify(_ prettyPrinted: Bool = false) -> String {
+    public func JSONStringify(_ prettyPrinted: Bool = false) -> String {
         let options : JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : JSONSerialization.WritingOptions()
         let anyObject: Any = self
         if JSONSerialization.isValidJSONObject(anyObject) {

@@ -455,6 +455,9 @@
 		75C037481C1F9A940071E04B /* SplashSignInSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C037471C1F9A940071E04B /* SplashSignInSegue.swift */; };
 		75C2175A1AD6F1B800978579 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217581AD6F1B800978579 /* Crashlytics.framework */; };
 		75C2175B1AD6F1B800978579 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217591AD6F1B800978579 /* Fabric.framework */; };
+		75C411C41F15465000F8FF16 /* ChangePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */; };
+		75C411C51F15465000F8FF16 /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */; };
+		75C411C61F154FCA00F8FF16 /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
 		75CFA26F1B223DBB006E4465 /* SharedCacheBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */; };
 		75D0CA411C6BE97F00D9F21C /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */; };
 		75D3C2311F140BD9004B8FD7 /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9311A71C60900EB0CAF /* UserDataService.swift */; };
@@ -497,7 +500,6 @@
 		75DE7CEF1CAAEA4900F5443E /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */; };
 		75DE7CF21CAAEA4900F5443E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */; };
 		75DE7CF41CAAEA4900F5443E /* MultipartResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */; };
-		75DE7CF51CAAEA4900F5443E /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
 		75DE7CF81CAAEA4900F5443E /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD48A1AB80D770084C54A /* CustomHeaderView.swift */; };
 		75DE7CFA1CAAEA4900F5443E /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DCB2051BA2A1560085BE8C /* RecipientCell.swift */; };
 		75DE7CFE1CAAEA4900F5443E /* SettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7510AE7B1AB8D68B00EF3C41 /* SettingDetailViewController.swift */; };
@@ -514,10 +516,8 @@
 		75DE7D141CAAEA4900F5443E /* LabelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E652B31B82AC0D0084DDF8 /* LabelsViewController.swift */; };
 		75DE7D151CAAEA4900F5443E /* LabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751D49EF1BE356180008E75C /* LabelsView.swift */; };
 		75DE7D171CAAEA4900F5443E /* MBContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE8C1AA64DEB0038149C /* MBContactModel.m */; };
-		75DE7D1A1CAAEA4900F5443E /* ChangePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */; };
 		75DE7D1B1CAAEA4900F5443E /* ExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755638C41CA1AE6B003FA2D0 /* ExpirationView.swift */; };
 		75DE7D1D1CAAEA4900F5443E /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706962061A71399D001443B2 /* ContactsViewController.swift */; };
-		75DE7D1F1CAAEA4900F5443E /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */; };
 		75DE7D201CAAEA4900F5443E /* EmailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D91B6702B5004EEDCA /* EmailHeaderView.swift */; };
 		75DE7D251CAAEA4900F5443E /* MailboxRateReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC3E1C922C3800F3486C /* MailboxRateReviewCell.swift */; };
 		75DE7D261CAAEA4900F5443E /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F001A65CF4800129B07 /* SignInViewController.swift */; };
@@ -2998,6 +2998,7 @@
 				758ED8101F05A94D0028D1A5 /* ControllerDefined.swift in Sources */,
 				75F438C61F14196F006A9878 /* SignUp+Error.swift in Sources */,
 				758ED80D1F05A8A50028D1A5 /* UserInfo.swift in Sources */,
+				75C411C41F15465000F8FF16 /* ChangePasswordViewModel.swift in Sources */,
 				75DBEE1B1F144DB900D48DA5 /* LabelApplyViewModelImpl.swift in Sources */,
 				75F438CE1F141B7A006A9878 /* Reachability.m in Sources */,
 				75F438D41F141BBB006A9878 /* NSBundle+Language.m in Sources */,
@@ -3014,6 +3015,7 @@
 				75F438D31F141BB0006A9878 /* LanguageManager.m in Sources */,
 				758ED8121F05A97E0028D1A5 /* APIService+ErrorExtension.swift in Sources */,
 				75DBEE211F144DB900D48DA5 /* FolderCreatingViewModelImpl.swift in Sources */,
+				75C411C61F154FCA00F8FF16 /* ViewModelFactory.swift in Sources */,
 				758ED7E61F05A7F70028D1A5 /* AuthCredential.swift in Sources */,
 				7535D6951F05AD9A009BB794 /* NSManagedObjectContextExtension.swift in Sources */,
 				755FF1E61F1415B50014F77F /* Settings+Defined.swift in Sources */,
@@ -3103,6 +3105,7 @@
 				75F438CA1F141A3E006A9878 /* MailboxViewModelImpl.swift in Sources */,
 				7535D6A51F05AD9A009BB794 /* NSDateExtension.swift in Sources */,
 				758ED80C1F05A8A50028D1A5 /* EncryptTypes.swift in Sources */,
+				75C411C51F15465000F8FF16 /* SettingDetailsViewModel.swift in Sources */,
 				758ED7F61F05A8860028D1A5 /* MessageAPI.swift in Sources */,
 				75F438C41F1418DD006A9878 /* SignupViewModelImpl.swift in Sources */,
 				755FF1E01F1413110014F77F /* APIError+Auth.swift in Sources */,
@@ -3183,7 +3186,6 @@
 				75DE7CF21CAAEA4900F5443E /* AppDelegate.swift in Sources */,
 				75856D6C1CB5B5F2000D9F3B /* PinCodeView.swift in Sources */,
 				75DE7CF41CAAEA4900F5443E /* MultipartResponseParser.m in Sources */,
-				75DE7CF51CAAEA4900F5443E /* ViewModelFactory.swift in Sources */,
 				752902AC1EE5F8E500B46D36 /* BundleLanguage+Extension.swift in Sources */,
 				75DE7CF81CAAEA4900F5443E /* CustomHeaderView.swift in Sources */,
 				75BDECAF1CBCD0FA00982089 /* SetPinCodeModelImpl.swift in Sources */,
@@ -3207,10 +3209,8 @@
 				75DE7D141CAAEA4900F5443E /* LabelsViewController.swift in Sources */,
 				75DE7D151CAAEA4900F5443E /* LabelsView.swift in Sources */,
 				75DE7D171CAAEA4900F5443E /* MBContactModel.m in Sources */,
-				75DE7D1A1CAAEA4900F5443E /* ChangePasswordViewModel.swift in Sources */,
 				75DE7D1B1CAAEA4900F5443E /* ExpirationView.swift in Sources */,
 				75DE7D1D1CAAEA4900F5443E /* ContactsViewController.swift in Sources */,
-				75DE7D1F1CAAEA4900F5443E /* SettingDetailsViewModel.swift in Sources */,
 				75DE7D201CAAEA4900F5443E /* EmailHeaderView.swift in Sources */,
 				75DE7D251CAAEA4900F5443E /* MailboxRateReviewCell.swift in Sources */,
 				75DE7D261CAAEA4900F5443E /* SignInViewController.swift in Sources */,

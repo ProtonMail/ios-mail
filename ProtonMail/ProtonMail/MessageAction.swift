@@ -49,7 +49,7 @@ public enum MessageAction: String {
 }
 
 
-enum MessageLastUpdateType: String {
+public enum MessageLastUpdateType: String {
     
     // Draft
     case saveDraft = "saveDraft"

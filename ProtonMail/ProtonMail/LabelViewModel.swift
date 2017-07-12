@@ -10,11 +10,11 @@ import Foundation
 import CoreData
 
 open class LabelMessageModel {
-    var label : Label!
-    var totalMessages : [Message] = []
-    var originalSelected : [Message] = []
-    var origStatus : Int = 0
-    var currentStatus : Int = 0
+    public var label : Label!
+    public var totalMessages : [Message] = []
+    public var originalSelected : [Message] = []
+    public var origStatus : Int = 0
+    public var currentStatus : Int = 0
 }
 
 open class LabelViewModel {

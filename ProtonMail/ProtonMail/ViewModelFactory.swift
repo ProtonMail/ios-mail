@@ -8,76 +8,81 @@
 
 import Foundation
 
-var shareViewModelFactoy: ViewModelFactory!
+public var shareViewModelFactoy: ViewModelFactory!
 
 // need supprot dev factory live factory
-class ViewModelFactory {
-    func getChangeLoginPassword() -> ChangePWDViewModel {
+public class ViewModelFactory {
+    public func getChangeLoginPassword() -> ChangePWDViewModel {
         fatalError("This method must be overridden")
     }
     
-    func getChangeMailboxPassword() -> ChangePWDViewModel {
+    public func getChangeMailboxPassword() -> ChangePWDViewModel {
         fatalError("This method must be overridden")
     }
     
-    func getChangeSinglePassword() -> ChangePWDViewModel {
+    public func getChangeSinglePassword() -> ChangePWDViewModel {
         fatalError("This method must be overridden")
     }
     
-    func getChangeDisplayName() -> SettingDetailsViewModel {
+    public func getChangeDisplayName() -> SettingDetailsViewModel {
         fatalError("This method must be overridden")
     }
     
-    func getChangeNotificationEmail() -> SettingDetailsViewModel {
+    public func getChangeNotificationEmail() -> SettingDetailsViewModel {
         fatalError("This method must be overridden")
     }
     
-    func getChangeSignature() -> SettingDetailsViewModel {
+    public func getChangeSignature() -> SettingDetailsViewModel {
         fatalError("This method must be overridden")
     }
     
-    func getChangeMobileSignature() -> SettingDetailsViewModel {
+    public func getChangeMobileSignature() -> SettingDetailsViewModel {
         fatalError("This method must be overridden")
     }
 }
 
-class ViewModelFactoryTest : ViewModelFactory {
-    override func getChangeLoginPassword() -> ChangePWDViewModel {
+public class ViewModelFactoryTest : ViewModelFactory {
+    override public func getChangeLoginPassword() -> ChangePWDViewModel {
         return ChangePWDViewModelTest()
     }
     
-    override func getChangeMailboxPassword() -> ChangePWDViewModel {
+    override public func getChangeMailboxPassword() -> ChangePWDViewModel {
         return ChangePWDViewModelTest()
     }
 }
 
 
-class ViewModelFactoryProduction : ViewModelFactory {
-    override func getChangeLoginPassword() -> ChangePWDViewModel {
+public class ViewModelFactoryProduction : ViewModelFactory {
+    
+    override public init() {
+        
+    }
+    
+    override public func getChangeLoginPassword() -> ChangePWDViewModel {
         return ChangeLoginPWDViewModel()
     }
     
-    override func getChangeMailboxPassword() -> ChangePWDViewModel {
+    override public func getChangeMailboxPassword() -> ChangePWDViewModel {
         return ChangeMailboxPWDViewModel()
     }
     
-    override func getChangeSinglePassword() -> ChangePWDViewModel {
+    override public func getChangeSinglePassword() -> ChangePWDViewModel {
         return ChangeSinglePasswordViewModel()
     }
     
-    override func getChangeDisplayName() -> SettingDetailsViewModel {
+    override public func getChangeDisplayName() -> SettingDetailsViewModel {
         return ChangeDisplayNameViewModel()
     }
     
-    override func getChangeNotificationEmail() -> SettingDetailsViewModel {
+    override public func getChangeNotificationEmail() -> SettingDetailsViewModel {
         return ChangeNotificationEmailViewModel()
     }
     
-    override func getChangeSignature() -> SettingDetailsViewModel {
+    override public func getChangeSignature() -> SettingDetailsViewModel {
         return ChangeSignatureViewModel()
     }
     
-    override func getChangeMobileSignature() -> SettingDetailsViewModel {
+    override public func getChangeMobileSignature() -> SettingDetailsViewModel {
         return ChangeMobileSignatureViewModel()
     }
 

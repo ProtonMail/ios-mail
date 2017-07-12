@@ -17,16 +17,13 @@
 
 import Foundation
 
-
 public let lastUpdatedStore = LastUpdatedStore(shared: UserDefaults.standard)
-
-
 final public class UpdateTime : NSObject {
-    var start : Date
-    var end : Date
-    var update : Date
-    var total : Int32
-    var unread : Int32
+    public var start : Date
+    public var end : Date
+    public var update : Date
+    public var total : Int32
+    public var unread : Int32
 
     required public init (start: Date!, end : Date, update : Date, total : Int32, unread: Int32){
         self.start = start

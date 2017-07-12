@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ProtonMailCommon
 
 class CountryCodeTableViewCell : UITableViewCell {
     var vc : UIViewController!;

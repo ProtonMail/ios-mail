@@ -9,21 +9,21 @@
 import Foundation
 
 // label creating
-final class LabelCreatingViewModelImple : LabelEditViewModel {
+final public class LabelCreatingViewModelImple : LabelEditViewModel {
 
-    override func title() -> String {
+    override public func title() -> String {
         return NSLocalizedString("Add New Label", comment: "Title")
     }
     
-    override func placeHolder() -> String {
+    override public func placeHolder() -> String {
         return NSLocalizedString("Label Name", comment: "createing lable input place holder")
     }
     
-    override func rightButtonText() -> String {
+    override public func rightButtonText() -> String {
         return NSLocalizedString("Create", comment: "top right action item title")
     }
     
-    override func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {
+    override public func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {
         let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false)
         api.call { (task, response, hasError) -> Void in
             if hasError {

@@ -7,14 +7,13 @@
 //
 
 import Foundation
-import ProtonMailCommon
 
 
-open class LabelApplyViewModelImpl : LabelViewModel {
+final public class LabelApplyViewModelImpl : LabelViewModel {
     fileprivate var messages : [Message]!
     fileprivate var labelMessages : Dictionary<String, LabelMessageModel>!
     
-    init(msg:[Message]!) {
+    public init(msg:[Message]!) {
         super.init()
         self.messages = msg
         self.labelMessages = Dictionary<String, LabelMessageModel>()

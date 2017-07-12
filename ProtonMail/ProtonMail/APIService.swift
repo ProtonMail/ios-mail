@@ -34,7 +34,7 @@ public class APIService {
     fileprivate var sessionManager: AFHTTPSessionManager
     
     // get session
-    func getSession() -> AFHTTPSessionManager{
+    public func getSession() -> AFHTTPSessionManager{
         return sessionManager;
     }
     

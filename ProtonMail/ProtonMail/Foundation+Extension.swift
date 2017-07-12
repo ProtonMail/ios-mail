@@ -16,7 +16,7 @@
 
 import Foundation
 
-func dispatch_after_delay(_ delay: TimeInterval, queue: DispatchQueue, block: @escaping ()->()) {
+public func dispatch_after_delay(_ delay: TimeInterval, queue: DispatchQueue, block: @escaping ()->()) {
     let time = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
     queue.asyncAfter(deadline: time, execute: block)
 }
@@ -26,7 +26,7 @@ func dispatch_after_delay(_ delay: TimeInterval, queue: DispatchQueue, block: @e
 //    return NSLocalizedString(key, comment: "")
 //}
 
-func delay(_ delay:Double, closure:@escaping ()->()) {
+public func delay(_ delay:Double, closure:@escaping ()->()) {
     DispatchQueue.main.asyncAfter(
         deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
 }

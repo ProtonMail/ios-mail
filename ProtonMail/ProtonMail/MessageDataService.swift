@@ -787,7 +787,7 @@ public class MessageDataService {
         }
     }
     
-    func ForcefetchDetailForMessage(_ message: Message, completion: @escaping CompletionFetchDetail) {
+    public func ForcefetchDetailForMessage(_ message: Message, completion: @escaping CompletionFetchDetail) {
         queue {
             let completionWrapper: CompletionBlock = { task, response, error in
                 let context = sharedCoreDataService.newMainManagedObjectContext()

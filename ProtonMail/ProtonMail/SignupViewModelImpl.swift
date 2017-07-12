@@ -36,7 +36,7 @@ open class SignupViewModelImpl : SignupViewModel {
         return direct
     }
     
-    override init() {
+    override public init() {
         super.init()
         //register observer
         NotificationCenter.default.addObserver(self, selector: #selector(SignupViewModelImpl.notifyReceiveURLSchema(_:)), name: NSNotification.Name(rawValue: NotificationDefined.CustomizeURLSchema), object:nil)

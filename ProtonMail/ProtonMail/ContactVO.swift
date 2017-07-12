@@ -13,8 +13,8 @@
 import Foundation
 
 public class ContactVO: NSObject, MBContactPickerModelProtocol {
-    struct Attributes {
-        static let email = "email"
+    public struct Attributes {
+        static public let email = "email"
     }
 
     public var contactTitle: String!
