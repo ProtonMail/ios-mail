@@ -36,14 +36,14 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     fileprivate var sendButton: UIBarButtonItem!
     
     // private vars
-//    fileprivate var timer : Timer!
-//    fileprivate var draggin : Bool! = false
+    fileprivate var timer : Timer!
+    fileprivate var draggin : Bool! = false
     fileprivate var contacts: [ContactVO]! = [ContactVO]()
-//    fileprivate var actualEncryptionStep = EncryptionStep.DefinePassword
-//    fileprivate var encryptionPassword: String = ""
-//    fileprivate var encryptionConfirmPassword: String = ""
-//    fileprivate var encryptionPasswordHint: String = ""
-//    fileprivate var hasAccessToAddressBook: Bool = false
+    fileprivate var actualEncryptionStep = EncryptionStep.DefinePassword
+    fileprivate var encryptionPassword: String = ""
+    fileprivate var encryptionConfirmPassword: String = ""
+    fileprivate var encryptionPasswordHint: String = ""
+    fileprivate var hasAccessToAddressBook: Bool = false
 //
     fileprivate var attachments: [Any]?
 //    
@@ -60,6 +60,8 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.edgesForExtendedLayout = []
         
         //inital navigation bar items
         self.cancelButton = UIBarButtonItem(title:NSLocalizedString("Cancel", comment: "Action"),
@@ -155,9 +157,78 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         }, completion: completion)
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+    
+    internal func updateEmbedImages() {
+        if let atts = viewModel.getAttachments() {
+            for att in atts {
+                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
+                    att.base64AttachmentData({ (based64String) in
+                        if !based64String.isEmpty {
+                            self.updateEmbedImage(byCID: "cid:\(content_id)", blob:  "data:\(att.mimeType);base64,\(based64String)");
+                        }
+                    })
+                }
+            }
+        }
     }
+    
+    override func webViewDidFinishLoad(_ webView: UIWebView) {
+        super.webViewDidFinishLoad(webView)
+        updateEmbedImages()
+    }
+    
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        self.composeView.notifyViewSize(true)
+    }
+    
+    fileprivate func dismissKeyboard() {
+        self.composeView.subject.becomeFirstResponder()
+        self.composeView.subject.resignFirstResponder()
+    }
+    
+    fileprivate func updateMessageView() {
+        self.composeView.updateFromValue(self.viewModel.getDefaultAddress()?.email ?? "", pickerEnabled: true)
+        self.composeView.subject.text = self.viewModel.getSubject();
+        self.shouldShowKeyboard = false
+        self.setHTML(self.viewModel.getHtmlBody())
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.updateAttachmentButton()
+        super.viewWillAppear(animated)
+        let w = UIScreen.main.applicationFrame.width;
+        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
+//        NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.statusBarHit(_:)), name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
+//        setupAutoSave()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
+//        
+//        stopAutoSave()
+    }
+    
+    internal func willResignActiveNotification (_ notify: Notification) {
+        self.autoSaveTimer()
+        dismissKeyboard()
+    }
+    
+    internal func statusBarHit (_ notify: Notification) {
+        webView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+    }
+    
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
+    
+    override func viewDidLayoutSubviews()
+    {
+        super.viewDidLayoutSubviews()
+    }
+
     
     // ******************
     func configureNavigationBar() {
@@ -184,13 +255,6 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     */
     
     
-    // MARK: - Private methods
-    fileprivate func updateMessageView() {
-        self.composeView.updateFromValue(self.viewModel.getDefaultAddress()?.email ?? "", pickerEnabled: true)
-        self.composeView.subject.text = self.viewModel.getSubject();
-        self.shouldShowKeyboard = false
-        self.setHTML(self.viewModel.getHtmlBody())
-    }
     
     fileprivate func retrieveAllContacts() {
         sharedContactDataService.getContactVOs { (contacts, error) -> Void in
@@ -225,6 +289,72 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
                 }
             }
         })
+    }
+    
+    
+    // MARK: - Private methods
+    fileprivate func setupAutoSave()
+    {
+        self.timer = Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(ComposerViewController.autoSaveTimer), userInfo: nil, repeats: true)
+        if viewModel.getActionType() != .openDraft {
+            self.timer.fire()
+        }
+    }
+    
+    fileprivate func stopAutoSave()
+    {
+        if self.timer != nil {
+            self.timer.invalidate()
+            self.timer = nil
+        }
+    }
+    
+    func autoSaveTimer()
+    {
+        self.collectDraft()
+        self.viewModel.updateDraft()
+    }
+    
+    fileprivate func collectDraft()
+    {
+        let orignal = self.getOrignalEmbedImages()
+        let edited = self.getEditedEmbedImages()
+        self.checkEmbedImageEdit(orignal!, edited: edited!)
+        var body = self.getHTML()
+        if (body?.isEmpty)! {
+            body = "<div><br></div>"
+        }
+        self.viewModel.collectDraft(
+            self.composeView.subject.text!,
+            body: body!,
+            expir: self.composeView.expirationTimeInterval,
+            pwd:self.encryptionPassword,
+            pwdHit:self.encryptionPasswordHint
+        )
+    }
+    
+    fileprivate func checkEmbedImageEdit(_ orignal: String, edited: String) {
+        PMLog.D(edited)
+        if let atts = viewModel.getAttachments() {
+            for att in atts {
+                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
+                    PMLog.D(content_id)
+                    if orignal.contains(content_id) {
+                        if !edited.contains(content_id) {
+                            self.viewModel.deleteAtt(att)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    fileprivate func updateAttachmentButton () {
+//        if attachments?.count > 0 {
+//            self.composeView.updateAttachmentButton(true)
+//        } else {
+            self.composeView.updateAttachmentButton(false)
+//        }
     }
 }
 
@@ -266,13 +396,13 @@ extension ComposerViewController : ComposeViewDelegate {
     }
     
     func ComposeViewDidSizeChanged(_ size: CGSize) {
-//        //self.composeSize = size
-//        //self.updateViewSize()
-//        self.composeViewSize = size.height;
-//        let w = UIScreen.main.applicationFrame.width;
-//        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize )
-//        
-//        self.updateContentLayout(true)
+        //self.composeSize = size
+        //self.updateViewSize()
+        self.composeViewSize = size.height;
+        let w = UIScreen.main.applicationFrame.width;
+        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize )
+        
+        self.updateContentLayout(true)
     }
     
     func ComposeViewDidOffsetChanged(_ offset: CGPoint){

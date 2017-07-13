@@ -5,7 +5,6 @@
 //  Created by Yanfeng Zhang on 7/13/17.
 //  Copyright © 2017 ProtonMail. All rights reserved.
 //
-
 import UIKit
 
 class ShareUnlockViewController: UIViewController {
@@ -27,7 +26,12 @@ class ShareUnlockViewController: UIViewController {
     
     func saveButtonTapped(sender: UIBarButtonItem) {
         let composer = ComposerViewController(nibName: "ComposerViewController", bundle: nil)
+        sharedVMService.newDraftViewModel(composer)
+        let w = UIScreen.main.applicationFrame.width;
+        composer.view.frame = CGRect(x: 0, y: 0, width: w, height: 186 + 60)
+        
         self.navigationController?.pushViewController(composer, animated:true)
+        
     }
     
     func cancelButtonTapped(sender: UIBarButtonItem) {
