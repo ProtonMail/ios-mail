@@ -136,6 +136,8 @@
 		7512A9F11F17DC9E00D84955 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
 		7512A9F21F17DC9E00D84955 /* ControllerDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0721B3363D000A72A1E /* ControllerDefined.swift */; };
 		7512A9F31F17DC9E00D84955 /* NotificationDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B00971B7AB91400F180BD /* NotificationDefined.swift */; };
+		7512A9F91F17E1CE00D84955 /* ShareUnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7512A9F71F17E1CE00D84955 /* ShareUnlockViewController.swift */; };
+		7512A9FA1F17E1CE00D84955 /* ShareUnlockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7512A9F81F17E1CE00D84955 /* ShareUnlockViewController.xib */; };
 		7514FC291B79825F00DDD297 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514FC281B79825F00DDD297 /* MenuItem.swift */; };
 		75150ED11B1E74A20013B476 /* SettingDebugTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */; };
 		751562551B68E8050066FE38 /* EmailAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751562541B68E8050066FE38 /* EmailAttachmentView.swift */; };
@@ -859,6 +861,8 @@
 		7510AE7D1AB8D69B00EF3C41 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		75117C471BA217CE00A0CE68 /* RecipientView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecipientView.xib; sourceTree = "<group>"; };
 		75117C491BA22F6200A0CE68 /* RecipientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientView.swift; sourceTree = "<group>"; };
+		7512A9F71F17E1CE00D84955 /* ShareUnlockViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareUnlockViewController.swift; sourceTree = "<group>"; };
+		7512A9F81F17E1CE00D84955 /* ShareUnlockViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareUnlockViewController.xib; sourceTree = "<group>"; };
 		7514FC281B79825F00DDD297 /* MenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDebugTableViewController.swift; sourceTree = "<group>"; };
 		751562541B68E8050066FE38 /* EmailAttachmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailAttachmentView.swift; sourceTree = "<group>"; };
@@ -1569,6 +1573,23 @@
 			name = Compose;
 			sourceTree = "<group>";
 		};
+		7512A9FB1F17E1D500D84955 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				75FE232D1F04347C00DF12C1 /* ShareViewController.swift */,
+				7512A9F71F17E1CE00D84955 /* ShareUnlockViewController.swift */,
+			);
+			name = ViewController;
+			sourceTree = "<group>";
+		};
+		7512A9FC1F17E1E700D84955 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7512A9F81F17E1CE00D84955 /* ShareUnlockViewController.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		75230C211B9A392500EC2AC2 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -2030,7 +2051,8 @@
 			isa = PBXGroup;
 			children = (
 				75A42B711F044B750025F52C /* ShareExtensionEntry.swift */,
-				75FE232D1F04347C00DF12C1 /* ShareViewController.swift */,
+				7512A9FB1F17E1D500D84955 /* ViewController */,
+				7512A9FC1F17E1E700D84955 /* Views */,
 				75A42B6D1F043E3F0025F52C /* ShareDev.entitlements */,
 				75FE23321F04347C00DF12C1 /* Info.plist */,
 			);
@@ -2291,6 +2313,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7512A9FA1F17E1CE00D84955 /* ShareUnlockViewController.xib in Resources */,
 				758ED7D41F05A5610028D1A5 /* Images.xcassets in Resources */,
 				758ED7D21F05A55B0028D1A5 /* SignIn.storyboard in Resources */,
 				758ED7D31F05A55B0028D1A5 /* Menu.storyboard in Resources */,
@@ -2870,6 +2893,7 @@
 			files = (
 				7512A9F11F17DC9E00D84955 /* AppConstants.swift in Sources */,
 				7512A9F21F17DC9E00D84955 /* ControllerDefined.swift in Sources */,
+				7512A9F91F17E1CE00D84955 /* ShareUnlockViewController.swift in Sources */,
 				7512A9F31F17DC9E00D84955 /* NotificationDefined.swift in Sources */,
 				758ED7D51F05A5E20028D1A5 /* ShareExtensionEntry.swift in Sources */,
 				758ED7D61F05A5E20028D1A5 /* ShareViewController.swift in Sources */,

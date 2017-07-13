@@ -25,9 +25,12 @@ class ShareExtensionEntry : UINavigationController {
 //        //let vc = ShareComposeViewController(nibName: "ShareComposeViewController", bundle: nil)
 //        
 //        super.init(rootViewController: vc)
-
         
-        super.init(rootViewController: ShareViewController())
+        
+        
+        super.init(rootViewController: ShareUnlockViewController(nibName: "ShareUnlockViewController", bundle: nil))
+        
+//        super.init(rootViewController: ShareViewController())
         
 //        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: "cancelButtonTapped:")
 //        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.save, target: self, action: "saveButtonTapped:")
