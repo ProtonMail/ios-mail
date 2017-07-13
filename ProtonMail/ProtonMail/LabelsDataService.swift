@@ -9,29 +9,29 @@
 import Foundation
 import CoreData
 
-public let sharedLabelsDataService = LabelsDataService()
+let sharedLabelsDataService = LabelsDataService()
 
-public enum LabelFetchType : Int {
+enum LabelFetchType : Int {
     case all = 0
     case label = 1
     case folder = 2
 }
 
-public class LabelsDataService {
+class LabelsDataService {
     
     fileprivate var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
     }
     
     //
-    public func cleanUp()
+    func cleanUp()
     {
         if let context = managedObjectContext {
             Label.deleteAll(inContext: context)
         }
     }
     
-    public func fetchLabels() {
+    func fetchLabels() {
         let eventAPI = GetLabelsRequest<GetLabelsResponse>()
         eventAPI.call() { task, response, hasError in
             if response == nil {
@@ -61,7 +61,7 @@ public class LabelsDataService {
         }
     }
     
-    public func fetchedResultsController(_ type : LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func fetchedResultsController(_ type : LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
             
@@ -79,7 +79,7 @@ public class LabelsDataService {
         return nil
     }
     
-    public func addNewLabel(_ response : Dictionary<String, Any>?) {
+    func addNewLabel(_ response : Dictionary<String, Any>?) {
         if let label = response {
             let context = sharedCoreDataService.newMainManagedObjectContext()
             context.performAndWait() {

@@ -24,7 +24,7 @@ extension Attachment {
         static let attachmentID = "attachmentID"
     }
     
-    public var isDownloaded: Bool {
+    var isDownloaded: Bool {
         return localURL != nil
     }
     
@@ -32,7 +32,7 @@ extension Attachment {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
     
-    override public func prepareForDeletion() {
+    override func prepareForDeletion() {
         super.prepareForDeletion()
         if let localURL = localURL {
             do {
@@ -50,8 +50,8 @@ extension Attachment {
     }
     
     
-    // Mark : public functions
-    public func encryptAttachment(_ sender_address_id : String) -> PMNEncryptPackage? {
+    // Mark : functions
+    func encryptAttachment(_ sender_address_id : String) -> PMNEncryptPackage? {
         do {
             guard let out =  try fileData?.encryptAttachment(sender_address_id, fileName: self.fileName) else {
                 return nil
@@ -62,7 +62,7 @@ extension Attachment {
         }
     }
     
-    public func getSessionKey() throws -> Data? {
+    func getSessionKey() throws -> Data? {
         if self.keyPacket == nil {
             return nil
         }
@@ -71,14 +71,14 @@ extension Attachment {
         return sessionKey
     }
     
-    public func fetchAttachment(_ downloadTask: ((URLSessionDownloadTask) -> Void)?, completion:((URLResponse?, URL?, NSError?) -> Void)?) {
+    func fetchAttachment(_ downloadTask: ((URLSessionDownloadTask) -> Void)?, completion:((URLResponse?, URL?, NSError?) -> Void)?) {
         sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: downloadTask, completion: completion)
     }
     
     
-    public typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
+    typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
     
-    public func base64AttachmentData(_ complete : @escaping base64AttachmentDataComplete) {
+    func base64AttachmentData(_ complete : @escaping base64AttachmentDataComplete) {
         
         if let localURL = self.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
             complete( self.base64DecryptAttachment() )
@@ -100,7 +100,7 @@ extension Attachment {
         })
     }
     
-    public func base64DecryptAttachment() -> String {
+    func base64DecryptAttachment() -> String {
         if let localURL = self.localURL {
             if let data : Data = try? Data(contentsOf: localURL as URL) {
                 do {
@@ -137,7 +137,7 @@ extension Attachment {
         return ""
     }
     
-    public func isInline() -> Bool {
+    func isInline() -> Bool {
         guard let headerInfo = self.headerInfo else {
             return false
         }
@@ -153,7 +153,7 @@ extension Attachment {
         return false
     }
     
-    public func getContentID() -> String? {
+    func getContentID() -> String? {
         guard let headerInfo = self.headerInfo else {
             return nil
         }
@@ -170,7 +170,7 @@ extension Attachment {
 }
 
 extension Attachment {
-    public class func attachmentDelete(_ attachmentObjectID: NSManagedObjectID, inManagedObjectContext context: NSManagedObjectContext) -> Void {
+    class func attachmentDelete(_ attachmentObjectID: NSManagedObjectID, inManagedObjectContext context: NSManagedObjectContext) -> Void {
         do {
             if let att = try context.existingObject(with: attachmentObjectID) as? Attachment {
                 context.delete(att)
@@ -185,7 +185,7 @@ extension Attachment {
 }
 
 extension UIImage {
-    public func toAttachment (_ message:Message, fileName : String, type:String) -> Attachment? {
+    func toAttachment (_ message:Message, fileName : String, type:String) -> Attachment? {
         if let fileData = UIImageJPEGRepresentation(self, 0) {
             if let context = message.managedObjectContext {
                 let attachment = Attachment(context: context)
@@ -214,11 +214,11 @@ extension UIImage {
 }
 
 extension Data {
-    public func toAttachment (_ message:Message, fileName : String) -> Attachment? {
+    func toAttachment (_ message:Message, fileName : String) -> Attachment? {
         return self.toAttachment(message, fileName: fileName, type: "image/jpg")
     }
     
-    public func toAttachment (_ message:Message, fileName : String, type:String) -> Attachment? {
+    func toAttachment (_ message:Message, fileName : String, type:String) -> Attachment? {
         let attachment = Attachment(context: message.managedObjectContext!)//TODO:: need check context nil or not instead of !
         attachment.attachmentID = "0"
         attachment.fileName = fileName

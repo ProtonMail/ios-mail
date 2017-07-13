@@ -568,7 +568,9 @@ class MessageDataService {
         if  badgeNumber < 0 {
             badgeNumber = 0
         }
-        UIApplication.shared.applicationIconBadgeNumber = badgeNumber
+        
+        //TODO::Fix later
+//        UIApplication.shared.applicationIconBadgeNumber = badgeNumber
     }
     
     func cleanLocalMessageCache(_ completion: CompletionBlock?) {
@@ -939,8 +941,10 @@ class MessageDataService {
                                         }
                                         let _ = message_out.managedObjectContext?.saveUpstreamIfNeeded()
                                         let tmpError = context.saveUpstreamIfNeeded()
+
+                                        //TODO::Fix later
                                         
-                                        UIApplication.shared.applicationIconBadgeNumber = count
+//                                        UIApplication.shared.applicationIconBadgeNumber = count
                                         DispatchQueue.main.async {
                                             completion(task, response, message_out, tmpError)
                                         }
@@ -1072,14 +1076,16 @@ class MessageDataService {
         sharedContactDataService.cleanUp()
         sharedLabelsDataService.cleanUp()
         
-        UIApplication.shared.applicationIconBadgeNumber = 0
+        //TODO::Fix later
+        //UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     fileprivate func cleanMessage() {
         if let context = managedObjectContext {
             Message.deleteAll(inContext: context)
         }
-        UIApplication.shared.applicationIconBadgeNumber = 0
+        //TODO::Fix later
+//        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     func search(_ query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
@@ -1533,7 +1539,8 @@ class MessageDataService {
                         }
                         
                         if message.managedObjectContext == nil {
-                            NSError.alertLocalCacheErrorToast()
+                            //TODO::Fix later
+//                            NSError.alertLocalCacheErrorToast()
                             let err =  NSError.badDraft()
                             err.uploadFabricAnswer(CacheErrorTitle)
                             errorBlock(task, nil, err)
@@ -1599,7 +1606,8 @@ class MessageDataService {
                                     message.location = MessageLocation.outbox
                                     message.removeLocationFromLabels(currentlocation: .draft, location: .outbox, keepSent: true)
                                 }
-                                NSError.alertMessageSentToast()
+                                //TODO::Fix later
+                                //NSError.alertMessageSentToast()
                                 if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D(" error: \(error)")
                                 } else {
@@ -1610,9 +1618,11 @@ class MessageDataService {
                                 if error?.code == 9001 {
                                     //here need let user to show the human check.
                                     sharedMessageQueue.isRequiredHumanCheck = true
-                                    error?.alertSentErrorToast()
+                                    //TODO::Fix later
+                                    //error?.alertSentErrorToast()
                                 } else if error?.code == 15198 {
-                                    error?.alertSentErrorToast()
+                                    //TODO::Fix later
+                                    //error?.alertSentErrorToast()
                                 }  else {
                                     //error?.alertErrorToast()
                                 }
@@ -1849,7 +1859,8 @@ class MessageDataService {
                         count = 0
                     }
                     lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
-                    UIApplication.shared.applicationIconBadgeNumber = count
+                    //TODO::Fix later
+//                    UIApplication.shared.applicationIconBadgeNumber = count
                 }
                 
                 self.queue(message, action: action)

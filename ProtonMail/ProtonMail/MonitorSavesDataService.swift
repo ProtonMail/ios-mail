@@ -17,9 +17,9 @@
 import Foundation
 import CoreData
 
-public let sharedMonitorSavesDataService = MonitorSavesDataService()
+let sharedMonitorSavesDataService = MonitorSavesDataService()
 
-public class MonitorSavesDataService {
+class MonitorSavesDataService {
     
     typealias HandlerBlock = ((NSManagedObject) -> Void)
     
@@ -35,7 +35,7 @@ public class MonitorSavesDataService {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - Public methods
+    // MARK: - methods
     
     func registerEntityName(_ entityName: String, attribute: String, handler: @escaping HandlerBlock) {
         

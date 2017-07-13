@@ -10,10 +10,8 @@ import Foundation
 
 
 struct QueueConstant {
+    
     static let queueIdentifer = "com.protonmail.persistentQueue"
-    
-    
-    
     
     enum QueueTypes{
         

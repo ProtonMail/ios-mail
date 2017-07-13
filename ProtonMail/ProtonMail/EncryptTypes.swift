@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum EncryptTypes: Int, CustomStringConvertible {
+enum EncryptTypes: Int, CustomStringConvertible {
     case plain = 0          //Plain text
     case inner = 1       // ProtonMail encrypted emails
     case external = 2       // Encrypted from outside
@@ -21,7 +21,7 @@ public enum EncryptTypes: Int, CustomStringConvertible {
     case outPGPMime = 8    // out pgp mime
     
     // didn't in localizable string because no place show this yet
-    public var description : String {
+    var description : String {
         switch(self){
         case .plain:
             return NSLocalizedString("Plain text", comment: "Title")
@@ -44,7 +44,7 @@ public enum EncryptTypes: Int, CustomStringConvertible {
         }
     }
     
-    public var isEncrypted: Bool {
+    var isEncrypted: Bool {
         switch(self) {
         case .plain:
             return false
@@ -53,7 +53,7 @@ public enum EncryptTypes: Int, CustomStringConvertible {
         }
     }
     
-    public var lockType : LockTypes {
+    var lockType : LockTypes {
         switch(self) {
         case .plain, .outPlain, .external:
             return .plainTextLock
@@ -65,7 +65,7 @@ public enum EncryptTypes: Int, CustomStringConvertible {
     }
 }
 
-public enum LockTypes : Int {
+enum LockTypes : Int {
     case plainTextLock = 0
     case encryptLock = 1
     case pgpLock = 2
@@ -74,7 +74,7 @@ public enum LockTypes : Int {
 
 extension NSNumber {
     
-    public func isEncrypted() -> Bool {
+    func isEncrypted() -> Bool {
         let enc_type = EncryptTypes(rawValue: self.intValue) ?? .inner
         let checkIsEncrypted:Bool = enc_type.isEncrypted
 

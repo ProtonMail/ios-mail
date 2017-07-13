@@ -10,12 +10,12 @@ import Foundation
 
 
 
-public enum MessageSpamScore: Int, CustomStringConvertible {
+enum MessageSpamScore: Int, CustomStringConvertible {
     case spam_100 = 100
     case spam_101 = 101
     case others = 0
 
-    public var description : String {
+    var description : String {
         get {
             switch(self) {
             case .spam_100:
