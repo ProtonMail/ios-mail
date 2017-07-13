@@ -380,7 +380,7 @@ extension Message {
             return body
         } else {
             if var body = try decryptBody() {
-                if isEncrypted == 8 {
+                if isEncrypted == 8 { //TODO:: need add check MIMEType === 'multipart/mixed'
                     body = body.multipartGetHtmlContent () 
                 } else if isEncrypted == 7 {
                     body = body.ln2br() 

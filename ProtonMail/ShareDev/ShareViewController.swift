@@ -28,9 +28,11 @@ class ShareViewController : UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.white
-        self.navigationItem.title = "Share this"
         
-
+        
+        self.navigationItem.title = AppConstants.URL_HOST
+        
+        print(AppConstants.URL_HOST)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(ShareViewController.cancelButtonTapped(sender:)))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.save, target: self, action: #selector(ShareViewController.saveButtonTapped(sender:)))
