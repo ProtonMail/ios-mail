@@ -8,7 +8,7 @@
 
 import Foundation
 
-open class ComposeViewModelImpl : ComposeViewModel {
+final class ComposeViewModelImpl : ComposeViewModel {
     
     init(msg: Message?, action : ComposeMessageAction!) {
         super.init()
@@ -53,30 +53,30 @@ open class ComposeViewModelImpl : ComposeViewModel {
         PMLog.D("ComposeViewModelImpl deinit")
     }
     
-    override public func uploadAtt(_ att: Attachment!) {
+    override func uploadAtt(_ att: Attachment!) {
         sharedMessageDataService.uploadAttachment(att)
         self.updateDraft()
     }
     
-    override public func deleteAtt(_ att: Attachment!) {
+    override func deleteAtt(_ att: Attachment!) {
         sharedMessageDataService.deleteAttachment(message?.messageID ?? "", att: att)
         self.updateDraft()
     }
     
-    override public func getAttachments() -> [Attachment]? {
+    override func getAttachments() -> [Attachment]? {
         return self.message?.attachments.allObjects as? [Attachment]
     }
     
-    override public func updateAddressID(_ address_id: String) {
+    override func updateAddressID(_ address_id: String) {
         self.message?.addressID = address_id
         self.updateDraft()
     }
     
-    override public func getAddresses() -> Array<Address> {
+    override func getAddresses() -> Array<Address> {
         return sharedUserDataService.userAddresses
     }
     
-    override public func getDefaultAddress() -> Address? {
+    override func getDefaultAddress() -> Address? {
         if self.message == nil {
             if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
                 return addr
@@ -85,14 +85,14 @@ open class ComposeViewModelImpl : ComposeViewModel {
         return self.message?.defaultAddress
     }
     
-    override public func getCurrrentSignature(_ addr_id : String) -> String? {
+    override func getCurrrentSignature(_ addr_id : String) -> String? {
         if let addr = sharedUserDataService.userAddresses.indexOfAddress(addr_id) {
             return addr.signature
         }
         return nil
     }
     
-    override public func hasAttachment() -> Bool {
+    override func hasAttachment() -> Bool {
         return true;
     }
     
@@ -199,7 +199,7 @@ open class ComposeViewModelImpl : ComposeViewModel {
         
     }
     
-    override public func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
+    override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
 
         self.setSubject(title)
         

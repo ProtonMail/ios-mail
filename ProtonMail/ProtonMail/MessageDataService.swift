@@ -42,14 +42,14 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-public let sharedMessageDataService = MessageDataService()
+let sharedMessageDataService = MessageDataService()
 
-public class MessageDataService {
-    public typealias CompletionBlock = APIService.CompletionBlock
-    public typealias CompletionFetchDetail = APIService.CompletionFetchDetail
-    public typealias ReadBlock = (() -> Void)
+class MessageDataService {
+    typealias CompletionBlock = APIService.CompletionBlock
+    typealias CompletionFetchDetail = APIService.CompletionFetchDetail
+    typealias ReadBlock = (() -> Void)
     
-    public var pushNotificationMessageID : String? = nil
+    var pushNotificationMessageID : String? = nil
     
     struct Key {
         static let read = "read"
@@ -77,7 +77,7 @@ public class MessageDataService {
     }
     
     // MAKR : upload attachment
-    public func uploadAttachment(_ att: Attachment!)
+    func uploadAttachment(_ att: Attachment!)
     {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             if let error = context.saveUpstreamIfNeeded() {
@@ -89,7 +89,7 @@ public class MessageDataService {
         }
     }
     
-    public func deleteAttachment(_ messageid : String, att: Attachment!)
+    func deleteAttachment(_ messageid : String, att: Attachment!)
     {
         let out : [String : Any] = ["MessageID" : messageid, "AttachmentID" : att.attachmentID]
         if let context = sharedCoreDataService.mainManagedObjectContext {
@@ -104,7 +104,7 @@ public class MessageDataService {
     
     
     // MARK : Send message
-    public func send(_ messageID : String!, completion: CompletionBlock?) {
+    func send(_ messageID : String!, completion: CompletionBlock?) {
         var error: NSError?
         if let context = sharedCoreDataService.mainManagedObjectContext {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
@@ -127,13 +127,13 @@ public class MessageDataService {
     
     
     //
-    public func emptyTrash() {
+    func emptyTrash() {
         if Message.deleteLocation(MessageLocation.trash) {
             queue(.emptyTrash)
         }
     }
     
-    public func emptySpam() {
+    func emptySpam() {
         if Message.deleteLocation(MessageLocation.spam) {
             queue(.emptySpam)
         }
@@ -150,7 +150,7 @@ public class MessageDataService {
      :param: Time       the latest update time
      :param: completion aync complete handler
      */
-    public func fetchMessagesForLocation(_ location: MessageLocation, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
+    func fetchMessagesForLocation(_ location: MessageLocation, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String, Any>] {
@@ -221,7 +221,7 @@ public class MessageDataService {
         }
     }
     
-    public func fetchMessagesForLabels(_ labelID : String, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
+    func fetchMessagesForLabels(_ labelID : String, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 // TODO :: need abstract the respons error checking
@@ -274,7 +274,7 @@ public class MessageDataService {
     
     
     
-    public func fetchMessagesForLocationWithEventReset(_ location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
+    func fetchMessagesForLocationWithEventReset(_ location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
         queue {
             let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
             getLatestEventID.call() { task, _IDRes, hasIDError in
@@ -307,7 +307,7 @@ public class MessageDataService {
      :param: completion complete handler
      */
     
-    public func fetchNewMessagesForLocation(_ location: MessageLocation, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
+    func fetchNewMessagesForLocation(_ location: MessageLocation, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, _eventsRes, _hasEventsError in
@@ -378,7 +378,7 @@ public class MessageDataService {
         }
     }
     
-    public func fetchNewMessagesForLabels(_ labelID: String, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
+    func fetchNewMessagesForLabels(_ labelID: String, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response, hasError in
@@ -438,7 +438,7 @@ public class MessageDataService {
         }
     }
     
-    public func processIncrementalUpdateContacts(_ contacts: [Dictionary<String, Any>]?) {
+    func processIncrementalUpdateContacts(_ contacts: [Dictionary<String, Any>]?) {
         struct IncrementalContactUpdateType {
             static let delete = 0
             static let insert = 1
@@ -476,7 +476,7 @@ public class MessageDataService {
         }
     }
     
-    public func processIncrementalUpdateTotal(_ totals: Dictionary<String, Any>?) {
+    func processIncrementalUpdateTotal(_ totals: Dictionary<String, Any>?) {
         
         if let star = totals?["Starred"] as? Int {
             let updateTime = lastUpdatedStore.inboxLastForKey(MessageLocation.starred)
@@ -499,14 +499,14 @@ public class MessageDataService {
         }
     }
     
-    public func processIncrementalUpdateUserInfo(_ userinfo: Dictionary<String, Any>?) {
+    func processIncrementalUpdateUserInfo(_ userinfo: Dictionary<String, Any>?) {
         if let userData = userinfo {
             let userInfo = UserInfo( response: userData )
             sharedUserDataService.updateUserInfoFromEventLog(userInfo);
         }
     }
     
-    public func processIncrementalUpdateLabels(_ labels: [Dictionary<String, Any>]?) {
+    func processIncrementalUpdateLabels(_ labels: [Dictionary<String, Any>]?) {
         
         struct IncrementalUpdateType {
             static let delete = 0
@@ -549,7 +549,7 @@ public class MessageDataService {
         }
     }
     
-    public func processMessageCounts(_ msgCounts: [Dictionary<String, Any>]?) {
+    func processMessageCounts(_ msgCounts: [Dictionary<String, Any>]?) {
         guard let messageCounts = msgCounts, messageCounts.count > 0 else {
             return
         }
@@ -571,7 +571,7 @@ public class MessageDataService {
         UIApplication.shared.applicationIconBadgeNumber = badgeNumber
     }
     
-    public func cleanLocalMessageCache(_ completion: CompletionBlock?) {
+    func cleanLocalMessageCache(_ completion: CompletionBlock?) {
         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
         getLatestEventID.call() { task, response, hasError in
             if response != nil && !hasError && !response!.eventID.isEmpty {
@@ -717,7 +717,7 @@ public class MessageDataService {
     }
     
     
-    public func fetchMessagesWithIDs (_ messages : [Message]) {
+    func fetchMessagesWithIDs (_ messages : [Message]) {
         if messages.count > 0 {
             queue {
                 let completionWrapper: CompletionBlock = { task, responseDict, error in
@@ -754,7 +754,7 @@ public class MessageDataService {
     // old functions
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
-    public func fetchAttachmentForAttachment(_ attachment: Attachment, downloadTask: ((URLSessionDownloadTask) -> Void)?, completion:((URLResponse?, URL?, NSError?) -> Void)?) {
+    func fetchAttachmentForAttachment(_ attachment: Attachment, downloadTask: ((URLSessionDownloadTask) -> Void)?, completion:((URLResponse?, URL?, NSError?) -> Void)?) {
         if let localURL = attachment.localURL {
             completion?(nil, localURL as URL, nil)
             return
@@ -787,7 +787,7 @@ public class MessageDataService {
         }
     }
     
-    public func ForcefetchDetailForMessage(_ message: Message, completion: @escaping CompletionFetchDetail) {
+    func ForcefetchDetailForMessage(_ message: Message, completion: @escaping CompletionFetchDetail) {
         queue {
             let completionWrapper: CompletionBlock = { task, response, error in
                 let context = sharedCoreDataService.newMainManagedObjectContext()
@@ -835,7 +835,7 @@ public class MessageDataService {
         }
     }
     
-    public func fetchMessageDetailForMessage(_ message: Message, completion: @escaping CompletionFetchDetail) {
+    func fetchMessageDetailForMessage(_ message: Message, completion: @escaping CompletionFetchDetail) {
         if !message.isDetailDownloaded {
             queue {
                 let completionWrapper: CompletionBlock = { task, response, error in
@@ -897,7 +897,7 @@ public class MessageDataService {
     }
     
     
-    public func fetchNotificationMessageDetail(_ messageID: String, completion: @escaping CompletionFetchDetail) {
+    func fetchNotificationMessageDetail(_ messageID: String, completion: @escaping CompletionFetchDetail) {
         queue {
             
             let completionWrapper: CompletionBlock = { task, response, error in
@@ -991,7 +991,7 @@ public class MessageDataService {
      
      :returns: NSFetchedResultsController
      */
-    public func fetchedResultsControllerForLocation(_ location: MessageLocation) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func fetchedResultsControllerForLocation(_ location: MessageLocation) -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", "\(location.rawValue)", Message.Attributes.messageStatus)
@@ -1001,7 +1001,7 @@ public class MessageDataService {
         return nil
     }
     
-    public func fetchedResultsControllerForLabels(_ label: Label) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func fetchedResultsControllerForLabels(_ label: Label) -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", label.labelID, Message.Attributes.messageStatus)
@@ -1018,7 +1018,7 @@ public class MessageDataService {
      
      :returns: NSFetchedResultsController
      */
-    public func fetchedMessageControllerForID(_ messageID: String) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func fetchedMessageControllerForID(_ messageID: String) -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID)
@@ -1037,7 +1037,7 @@ public class MessageDataService {
      3. when session expired.
      
      */
-    public func launchCleanUpIfNeeded() {
+    func launchCleanUpIfNeeded() {
         if !sharedUserDataService.isUserCredentialStored || !userCachedStatus.isCacheOk() || !userCachedStatus.isAuthCacheOk() {
             cleanUp()
             userCachedStatus.resetCache()
@@ -1082,7 +1082,7 @@ public class MessageDataService {
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
-    public func search(_ query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
+    func search(_ query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
         queue {
             let completionWrapper: CompletionBlock = {task, response, error in
                 if error != nil {
@@ -1129,7 +1129,7 @@ public class MessageDataService {
         }
     }
     
-    public func saveDraft(_ message : Message!) {
+    func saveDraft(_ message : Message!) {
         if let context = message.managedObjectContext {
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D(" error: \(error)")
@@ -1139,7 +1139,7 @@ public class MessageDataService {
         }
     }
     
-    public func deleteDraft (_ message : Message!)
+    func deleteDraft (_ message : Message!)
     {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             if let error = context.saveUpstreamIfNeeded() {
@@ -1150,7 +1150,7 @@ public class MessageDataService {
         }
     }
     
-    public func purgeOldMessages() {
+    func purgeOldMessages() {
         // need fetch status bad messages
         if let context = sharedCoreDataService.mainManagedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
@@ -1234,7 +1234,7 @@ public class MessageDataService {
                                 let based64Token = token.encodeBase64() as String
                                 let encryptedToken = try based64Token.encryptWithPassphrase(message.password)
                                 
-                                // encrypt keys use public key
+                                // encrypt keys use key
                                 var attPack : [AttachmentKeyPackage] = []
                                 for att in tempAtts {
                                     let newKeyPack = try att.Key?.getSymmetricSessionKeyPackage(message.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
@@ -1252,7 +1252,7 @@ public class MessageDataService {
                             }
                         }
                         else {
-                            // encrypt keys use public key
+                            // encrypt keys use key
                             var attPack : [AttachmentKeyPackage] = []
                             for att in tempAtts {
                                 //attID:String!, attKey:String!, Algo : String! = ""
@@ -1304,7 +1304,7 @@ public class MessageDataService {
         do {
             if let keys = response?["keys"] as? [[String : String]] {
                 if let body = try message.decryptBody() {
-                    // encrypt body with each public key
+                    // encrypt body with each key
                     for publicKeys in keys {
                         for (email, publicKey) in publicKeys {
                             if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey) {
@@ -1868,7 +1868,7 @@ public class MessageDataService {
 // MARK: - NSFileManager extension
 
 extension FileManager {
-    public var attachmentDirectory: URL {
+    var attachmentDirectory: URL {
         let attachmentDirectory = applicationSupportDirectoryURL.appendingPathComponent("attachments", isDirectory: true)
         //TODO:: need to handle the empty instead of !
         if !self.fileExists(atPath: attachmentDirectory.absoluteString) {
@@ -1884,7 +1884,7 @@ extension FileManager {
         return attachmentDirectory
     }
     
-    public func cleanCachedAtts() {
+    func cleanCachedAtts() {
         let attachmentDirectory = applicationSupportDirectoryURL.appendingPathComponent("attachments", isDirectory: true)
         let path = attachmentDirectory.path
         do {
@@ -1903,7 +1903,7 @@ extension FileManager {
 }
 
 extension NSError {
-    public class func badDraft() -> NSError {
+    class func badDraft() -> NSError {
         return apiServiceError(
             code: APIErrorCode.SendErrorCode.draftBad,
             localizedDescription: NSLocalizedString("Unable to send the email", comment: "error when sending the message"),

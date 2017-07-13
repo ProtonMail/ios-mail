@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Light.ttf">
+            <string>Roboto-Light</string>
+        </array>
+        <array key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ComposerViewController" customModule="ShareDev" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YWm-4O-rnu" userLabel="from pick view">
+                    <rect key="frame" x="-3" y="71" width="375" height="48"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" text="From" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RQl-Ku-tes">
+                            <rect key="frame" x="10" y="0.0" width="33" height="48"/>
+                            <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                            <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dg-Jk-Fbj">
+                            <rect key="frame" x="55" y="0.0" width="320" height="48"/>
+                            <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                            <color key="textColor" red="0.52929306030000001" green="0.52396804090000004" blue="0.67762881519999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oUJ-i0-igN">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
+                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
+                            <state key="normal" image="mail_attachment-closed">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nrO-ET-NAB">
+                            <rect key="frame" x="0.0" y="47" width="375" height="1"/>
+                            <color key="backgroundColor" red="0.78823529410000004" green="0.80784313730000001" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="1op-aC-qDp"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="nrO-ET-NAB" firstAttribute="leading" secondItem="YWm-4O-rnu" secondAttribute="leading" id="75e-df-yeY"/>
+                        <constraint firstAttribute="trailing" secondItem="3dg-Jk-Fbj" secondAttribute="trailing" id="7io-Jl-v0U"/>
+                        <constraint firstAttribute="bottom" secondItem="3dg-Jk-Fbj" secondAttribute="bottom" id="8cU-9U-j0R"/>
+                        <constraint firstAttribute="bottom" secondItem="oUJ-i0-igN" secondAttribute="bottom" id="Ged-hH-Txr"/>
+                        <constraint firstItem="RQl-Ku-tes" firstAttribute="leading" secondItem="YWm-4O-rnu" secondAttribute="leading" constant="10" id="Js5-Qv-IBe"/>
+                        <constraint firstItem="3dg-Jk-Fbj" firstAttribute="top" secondItem="YWm-4O-rnu" secondAttribute="top" id="L56-OG-8QA"/>
+                        <constraint firstItem="oUJ-i0-igN" firstAttribute="top" secondItem="YWm-4O-rnu" secondAttribute="top" id="MWh-Wr-dQH"/>
+                        <constraint firstItem="oUJ-i0-igN" firstAttribute="leading" secondItem="YWm-4O-rnu" secondAttribute="leading" id="UQ1-9L-M5D"/>
+                        <constraint firstAttribute="trailing" secondItem="oUJ-i0-igN" secondAttribute="trailing" id="Wts-Mc-5Sz"/>
+                        <constraint firstItem="RQl-Ku-tes" firstAttribute="top" secondItem="YWm-4O-rnu" secondAttribute="top" id="b6z-V4-dMG"/>
+                        <constraint firstAttribute="bottom" secondItem="RQl-Ku-tes" secondAttribute="bottom" id="dUo-fu-hxp"/>
+                        <constraint firstAttribute="height" constant="48" id="fCd-7l-r6B"/>
+                        <constraint firstItem="3dg-Jk-Fbj" firstAttribute="leading" secondItem="RQl-Ku-tes" secondAttribute="trailing" constant="12" id="sCA-l9-SyC"/>
+                        <constraint firstAttribute="trailing" secondItem="nrO-ET-NAB" secondAttribute="trailing" id="vfn-qL-uy0"/>
+                        <constraint firstAttribute="bottom" secondItem="nrO-ET-NAB" secondAttribute="bottom" id="yBa-YH-UgO"/>
+                    </constraints>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0oj-V6-J9V" userLabel="To Contact Picker" customClass="MBContactPicker" customModule="ShareDev" customModuleProvider="target">
+                    <rect key="frame" x="-3" y="119" width="375" height="48"/>
+                    <color key="backgroundColor" red="0.88801312450000003" green="0.90205764769999996" blue="0.91173589229999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="v0m-xA-Rom"/>
+                    </constraints>
+                </view>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Subject" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="oHj-d4-cej">
+                    <rect key="frame" x="-3" y="167" width="375" height="44"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="oED-Vk-MNv">
+                            <variation key="widthClass=compact" constant="44"/>
+                        </constraint>
+                    </constraints>
+                    <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tX7-zg-j8o" userLabel="Show CC BCC View">
+                    <rect key="frame" x="318" y="119" width="44" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="dle-Eg-n8r">
+                            <variation key="widthClass=compact" constant="44"/>
+                        </constraint>
+                        <constraint firstAttribute="width" constant="49" id="vrp-cH-W8B">
+                            <variation key="widthClass=compact" constant="44"/>
+                        </constraint>
+                    </constraints>
+                    <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" image="compose_pluscontact">
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                </button>
+                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mvz-yE-cSA" userLabel="Buttons View">
+                    <rect key="frame" x="-3" y="211" width="375" height="48"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AEt-mM-afp" userLabel="Attachment Button">
+                            <rect key="frame" x="250" y="0.0" width="125" height="48"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" image="compose_attachment">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uxg-hV-XM3" userLabel="Encrypted Button">
+                            <rect key="frame" x="0.0" y="0.0" width="125" height="48"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" image="compose_lock">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FcU-We-CGZ" userLabel="Expiration Button">
+                            <rect key="frame" x="125" y="0.0" width="125" height="48"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" image="compose_expiration">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="FcU-We-CGZ" firstAttribute="bottom" secondItem="uxg-hV-XM3" secondAttribute="bottom" id="2ek-iw-cfI"/>
+                        <constraint firstItem="FcU-We-CGZ" firstAttribute="trailing" secondItem="AEt-mM-afp" secondAttribute="leading" id="5Pt-FZ-PNB"/>
+                        <constraint firstAttribute="trailing" secondItem="AEt-mM-afp" secondAttribute="trailing" id="69j-ww-7Ti"/>
+                        <constraint firstAttribute="height" constant="48" id="BaV-lV-oQS"/>
+                        <constraint firstItem="FcU-We-CGZ" firstAttribute="width" secondItem="uxg-hV-XM3" secondAttribute="width" id="Djs-pK-KKa"/>
+                        <constraint firstItem="uxg-hV-XM3" firstAttribute="top" secondItem="mvz-yE-cSA" secondAttribute="top" id="PXZ-vj-MqR"/>
+                        <constraint firstItem="FcU-We-CGZ" firstAttribute="top" secondItem="AEt-mM-afp" secondAttribute="top" id="VIR-ry-UVW"/>
+                        <constraint firstItem="AEt-mM-afp" firstAttribute="bottom" secondItem="uxg-hV-XM3" secondAttribute="bottom" id="Zp5-E3-CZz"/>
+                        <constraint firstItem="FcU-We-CGZ" firstAttribute="width" secondItem="AEt-mM-afp" secondAttribute="width" id="iJX-1d-cMr"/>
+                        <constraint firstItem="uxg-hV-XM3" firstAttribute="trailing" secondItem="FcU-We-CGZ" secondAttribute="leading" id="jiw-2o-L4D">
+                            <variation key="widthClass=compact" constant="0.0"/>
+                        </constraint>
+                        <constraint firstAttribute="bottom" secondItem="uxg-hV-XM3" secondAttribute="bottom" id="ril-s7-Cpv"/>
+                        <constraint firstItem="uxg-hV-XM3" firstAttribute="leading" secondItem="mvz-yE-cSA" secondAttribute="leading" id="sHq-dH-qoZ"/>
+                        <constraint firstItem="FcU-We-CGZ" firstAttribute="top" secondItem="uxg-hV-XM3" secondAttribute="top" id="yXX-YY-dmW"/>
+                    </constraints>
+                </view>
+                <view alpha="0.0" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JYD-KQ-f7m" userLabel="Expiration View">
+                    <rect key="frame" x="-3" y="211" width="375" height="48"/>
+                    <subviews>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Define Expiration Date" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eo9-RS-iOq" userLabel="Expiration Text Field">
+                            <rect key="frame" x="52" y="0.0" width="323" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="48" id="Zhl-R7-6Af"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <button opaque="NO" contentMode="center" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wXC-4A-PE6" userLabel="Expiration Action">
+                            <rect key="frame" x="0.0" y="0.0" width="52" height="48"/>
+                            <color key="backgroundColor" red="0.33301636579999999" green="0.45990800859999997" blue="0.60649919510000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="52" id="OGW-vU-d84"/>
+                                <constraint firstAttribute="height" constant="48" id="de6-M8-ISy"/>
+                            </constraints>
+                            <state key="normal" image="expiration_compose_white">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="wXC-4A-PE6" firstAttribute="leading" secondItem="JYD-KQ-f7m" secondAttribute="leading" id="8wC-nv-bMf"/>
+                        <constraint firstAttribute="trailing" secondItem="eo9-RS-iOq" secondAttribute="trailing" id="A2e-cu-vua"/>
+                        <constraint firstItem="eo9-RS-iOq" firstAttribute="leading" secondItem="wXC-4A-PE6" secondAttribute="trailing" id="O6P-IB-78b"/>
+                        <constraint firstItem="wXC-4A-PE6" firstAttribute="top" secondItem="JYD-KQ-f7m" secondAttribute="top" id="T1o-Lb-iXB"/>
+                        <constraint firstItem="eo9-RS-iOq" firstAttribute="top" secondItem="JYD-KQ-f7m" secondAttribute="top" id="XFM-fy-1L7"/>
+                        <constraint firstAttribute="bottom" secondItem="eo9-RS-iOq" secondAttribute="bottom" id="gZf-U9-4Bf"/>
+                    </constraints>
+                </view>
+                <view alpha="0.0" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iYi-Nm-nCZ" userLabel="Password View">
+                    <rect key="frame" x="-3" y="211" width="375" height="48"/>
+                    <subviews>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Define Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zyU-HF-f2e" userLabel="Encrypted Password TextField">
+                            <rect key="frame" x="52" y="0.0" width="323" height="48"/>
+                            <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
+                            <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                        </textField>
+                        <button opaque="NO" contentMode="center" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jZ6-cL-wEg" userLabel="Encrypted Action Button">
+                            <rect key="frame" x="0.0" y="0.0" width="52" height="48"/>
+                            <color key="backgroundColor" red="0.33301636579999999" green="0.45990800859999997" blue="0.60649919510000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="52" id="3Qe-JX-Cpf"/>
+                                <constraint firstAttribute="height" constant="48" id="kiw-CT-8ZW"/>
+                            </constraints>
+                            <state key="normal" image="encrypted_compose_white">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="jZ6-cL-wEg" firstAttribute="top" secondItem="iYi-Nm-nCZ" secondAttribute="top" id="9bV-Ef-Sc7"/>
+                        <constraint firstItem="zyU-HF-f2e" firstAttribute="leading" secondItem="jZ6-cL-wEg" secondAttribute="trailing" id="Mdc-C3-41i"/>
+                        <constraint firstAttribute="trailing" secondItem="zyU-HF-f2e" secondAttribute="trailing" id="UrU-nQ-YE3"/>
+                        <constraint firstItem="zyU-HF-f2e" firstAttribute="top" secondItem="iYi-Nm-nCZ" secondAttribute="top" id="eoO-2w-4Wi"/>
+                        <constraint firstItem="jZ6-cL-wEg" firstAttribute="leading" secondItem="iYi-Nm-nCZ" secondAttribute="leading" id="lwh-F7-qPM"/>
+                        <constraint firstAttribute="bottom" secondItem="jZ6-cL-wEg" secondAttribute="bottom" id="uQR-Va-9jW"/>
+                        <constraint firstAttribute="bottom" secondItem="zyU-HF-f2e" secondAttribute="bottom" id="zW8-3w-f2R"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="tX7-zg-j8o" firstAttribute="top" secondItem="YWm-4O-rnu" secondAttribute="bottom" id="1RB-lg-sdW"/>
+                <constraint firstItem="iYi-Nm-nCZ" firstAttribute="top" secondItem="JYD-KQ-f7m" secondAttribute="top" id="5Lx-Nk-pt3"/>
+                <constraint firstItem="oHj-d4-cej" firstAttribute="top" secondItem="0oj-V6-J9V" secondAttribute="bottom" id="M7W-53-aZH"/>
+                <constraint firstItem="mvz-yE-cSA" firstAttribute="top" secondItem="oHj-d4-cej" secondAttribute="bottom" id="eRC-QW-uM3"/>
+                <constraint firstItem="JYD-KQ-f7m" firstAttribute="top" secondItem="oHj-d4-cej" secondAttribute="bottom" id="gKd-z5-A2Q"/>
+                <constraint firstItem="0oj-V6-J9V" firstAttribute="top" secondItem="YWm-4O-rnu" secondAttribute="bottom" id="wBx-YN-GcA"/>
+            </constraints>
+            <point key="canvasLocation" x="-124" y="-63"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="compose_attachment" width="44" height="44"/>
+        <image name="compose_expiration" width="44" height="44"/>
+        <image name="compose_lock" width="44" height="44"/>
+        <image name="compose_pluscontact" width="24" height="24"/>
+        <image name="encrypted_compose_white" width="20" height="27"/>
+        <image name="expiration_compose_white" width="22" height="22"/>
+        <image name="mail_attachment-closed" width="14" height="14"/>
+    </resources>
+</document>

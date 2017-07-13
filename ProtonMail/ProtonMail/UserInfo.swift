@@ -17,34 +17,34 @@
 import Foundation
 
 // TODO:: this is not very good need refactor
-final public class UserInfo : NSObject {
-    public var displayName: String
-    public let maxSpace: Int64
-    public var notificationEmail: String
-    public var privateKey: String
-    public let publicKey: String
-    public var signature: String
-    public let usedSpace: Int64
-    public let userStatus: Int
-    public var userAddresses: Array<Address>
-    public var userKeys: Array<Key>
+final class UserInfo : NSObject {
+    var displayName: String
+    let maxSpace: Int64
+    var notificationEmail: String
+    var privateKey: String
+    let publicKey: String
+    var signature: String
+    let usedSpace: Int64
+    let userStatus: Int
+    var userAddresses: Array<Address>
+    var userKeys: Array<Key>
     
     // new values v1.0.8
-    public let autoSaveContact : Int
-    public let language : String
-    public let maxUpload: Int64
-    public var notify: Int
-    public var showImages : Int  //1 is auto 0 is manual
+    let autoSaveContact : Int
+    let language : String
+    let maxUpload: Int64
+    var notify: Int
+    var showImages : Int  //1 is auto 0 is manual
     
     // new valuse v1.1.4
-    public var swipeLeft : Int
-    public var swipeRight : Int
+    var swipeLeft : Int
+    var swipeRight : Int
     
-    public let role : Int
+    let role : Int
     
-    public let delinquent : Int
+    let delinquent : Int
     
-    required public init(
+    required init(
         displayName: String?, maxSpace: Int64?, notificationEmail: String?,
         privateKey: String?, publicKey: String?, signature: String?,
         usedSpace: Int64?, userStatus: Int?, userAddresses: Array<Address>?,
@@ -80,21 +80,21 @@ final public class UserInfo : NSObject {
     }
 }
 
-final public class Address: NSObject {
-    public let address_id: String
-    public var send: Int    // address order
-    public let email: String  //email address name
-    public let status : Int   // 0 is disabled, 1 is enabled, can be set by user
-    public let type : Int  //1 is original PM, 2 is PM alias, 3 is custom domain address
-    public let receive: Int // 1 is active address (Status=1 and has key), 0 is inactive (cannot send or receive)
+final class Address: NSObject {
+    let address_id: String
+    var send: Int    // address order
+    let email: String  //email address name
+    let status : Int   // 0 is disabled, 1 is enabled, can be set by user
+    let type : Int  //1 is original PM, 2 is PM alias, 3 is custom domain address
+    let receive: Int // 1 is active address (Status=1 and has key), 0 is inactive (cannot send or receive)
     
-    public let keys: Array<Key>
+    let keys: Array<Key>
     
-    public let mailbox: Int   //Not inuse
-    public var display_name: String  //not inuse
-    public var signature: String //not inuse
+    let mailbox: Int   //Not inuse
+    var display_name: String  //not inuse
+    var signature: String //not inuse
     
-    required public init(addressid: String?, email: String?, send: Int?, receive: Int?, mailbox: Int?, display_name: String?, signature: String?, keys: Array<Key>?, status: Int?, type:Int?) {
+    required init(addressid: String?, email: String?, send: Int?, receive: Int?, mailbox: Int?, display_name: String?, signature: String?, keys: Array<Key>?, status: Int?, type:Int?) {
         self.address_id = addressid ?? ""
         self.email = email ?? ""
         self.send = send ?? 0
@@ -109,14 +109,14 @@ final public class Address: NSObject {
     }
 }
 
-final public class Key : NSObject {
-    public let key_id: String
-    public let public_key: String
-    public var private_key : String
-    public var fingerprint : String
-    public var is_updated : Bool = false
+final class Key : NSObject {
+    let key_id: String
+    let public_key: String
+    var private_key : String
+    var fingerprint : String
+    var is_updated : Bool = false
     
-    required public init(key_id: String?, public_key: String?, private_key: String?, fingerprint : String?, isupdated: Bool) {
+    required init(key_id: String?, public_key: String?, private_key: String?, fingerprint : String?, isupdated: Bool) {
         self.key_id = key_id ?? ""
         self.public_key = public_key ?? ""
         self.private_key = private_key ?? ""
@@ -232,7 +232,7 @@ extension UserInfo: NSCoding {
         static let userKeys = "userKeys"
     }
     
-    convenience public init(coder aDecoder: NSCoder) {
+    convenience init(coder aDecoder: NSCoder) {
         self.init(
             displayName: aDecoder.decodeStringForKey(CoderKey.displayName),
             maxSpace: aDecoder.decodeInt64(forKey: CoderKey.maxSpace),
@@ -261,7 +261,7 @@ extension UserInfo: NSCoding {
         )
     }
     
-    public func encode(with aCoder: NSCoder) {
+    func encode(with aCoder: NSCoder) {
         aCoder.encode(displayName, forKey: CoderKey.displayName)
         aCoder.encode(maxSpace, forKey: CoderKey.maxSpace)
         aCoder.encode(notificationEmail, forKey: CoderKey.notificationEmail)
@@ -305,7 +305,7 @@ extension Address: NSCoding {
         static let addressType = "addressType"
     }
     
-    convenience public init(coder aDecoder: NSCoder) {
+    convenience init(coder aDecoder: NSCoder) {
         self.init(
             addressid: aDecoder.decodeStringForKey(CoderKey.displayName),
             email: aDecoder.decodeStringForKey(CoderKey.maxSpace),
@@ -321,7 +321,7 @@ extension Address: NSCoding {
         )
     }
     
-    public func encode(with aCoder: NSCoder) {
+    func encode(with aCoder: NSCoder) {
         aCoder.encode(address_id, forKey: CoderKey.displayName)
         aCoder.encode(email, forKey: CoderKey.maxSpace)
         aCoder.encode(send, forKey: CoderKey.notificationEmail)
@@ -345,7 +345,7 @@ extension Key: NSCoding {
         static let fingerprintKey = "fingerprintKey"
     }
     
-    convenience public init(coder aDecoder: NSCoder) {
+    convenience init(coder aDecoder: NSCoder) {
         self.init(
             key_id: aDecoder.decodeStringForKey(CoderKey.keyID),
             public_key: aDecoder.decodeStringForKey(CoderKey.publicKey),
@@ -354,7 +354,7 @@ extension Key: NSCoding {
             isupdated: false)
     }
     
-    public func encode(with aCoder: NSCoder) {
+    func encode(with aCoder: NSCoder) {
         aCoder.encode(key_id, forKey: CoderKey.keyID)
         aCoder.encode(public_key, forKey: CoderKey.publicKey)
         aCoder.encode(private_key, forKey: CoderKey.privateKey)
@@ -363,25 +363,25 @@ extension Key: NSCoding {
 }
 
 extension Address {
-    public func toPMNAddress() -> PMNAddress! {
+    func toPMNAddress() -> PMNAddress! {
         return PMNAddress(addressId: self.address_id, addressName: self.email, keys: self.keys.toPMNPgpKeys())
     }
 }
 
 extension Key {
-    public func toPMNPgpKey<T : PMNOpenPgpKey>() -> T {
+    func toPMNPgpKey<T : PMNOpenPgpKey>() -> T {
         return T(keyId: key_id, publicKey: public_key, privateKey: private_key, fingerPrint: fingerprint, isUpdated: is_updated)
     }
 }
 
 extension PMNOpenPgpKey {
-    public func toKey<T : Key>() -> T {
+    func toKey<T : Key>() -> T {
         return T(key_id: keyId, public_key: publicKey, private_key: privateKey, fingerprint : fingerPrint, isupdated: isUpdated)
     }
 }
 
 extension Array where Element : Key {
-    public func toPMNPgpKeys() -> [PMNOpenPgpKey] {
+    func toPMNPgpKeys() -> [PMNOpenPgpKey] {
         var out_array = Array<PMNOpenPgpKey>()
         for i in 0 ..< self.count {
             let addr = self[i]
@@ -392,7 +392,7 @@ extension Array where Element : Key {
 }
 
 extension Array where Element : PMNOpenPgpKey {
-    public func toKeys() -> [Key] {
+    func toKeys() -> [Key] {
         var out_array = Array<Key>()
         for i in 0 ..< self.count {
             let addr = self[i]
@@ -404,7 +404,7 @@ extension Array where Element : PMNOpenPgpKey {
 
 extension Array where Element : Address {
 
-    public func toPMNAddresses() -> Array<PMNAddress> {
+    func toPMNAddresses() -> Array<PMNAddress> {
         var out_array = Array<PMNAddress>()
         for i in 0 ..< self.count {
             let addr = self[i]
@@ -413,7 +413,7 @@ extension Array where Element : Address {
         return out_array;
     }
     
-    public func getDefaultAddress () -> Address? {
+    func getDefaultAddress () -> Address? {
         for addr in self {
             if addr.status == 1 && addr.receive == 1 {
                 return addr;
@@ -422,7 +422,7 @@ extension Array where Element : Address {
         return nil;
     }
     
-    public func indexOfAddress(_ addressid : String) -> Address? {
+    func indexOfAddress(_ addressid : String) -> Address? {
         for addr in self {
             if addr.status == 1 && addr.receive == 1 && addr.address_id == addressid {
                 return addr;
@@ -431,17 +431,17 @@ extension Array where Element : Address {
         return nil;
     }
     
-    public func getAddressOrder() -> Array<String> {
+    func getAddressOrder() -> Array<String> {
         let ids = self.map { $0.address_id }
         return ids;
     }
     
-    public func getAddressNewOrder() -> Array<Int> {
+    func getAddressNewOrder() -> Array<Int> {
         let ids = self.map { $0.send }
         return ids;
     }
     
-    public func toKeys() -> Array<Key> {
+    func toKeys() -> Array<Key> {
         var out_array = Array<Key>()
         for i in 0 ..< self.count {
             let addr = self[i]

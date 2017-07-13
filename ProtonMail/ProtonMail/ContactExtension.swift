@@ -26,7 +26,7 @@ extension Contact {
         static let name = "name"
     }
 
-    // MARK: - Public methods
+    // MARK: - methods
     
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)

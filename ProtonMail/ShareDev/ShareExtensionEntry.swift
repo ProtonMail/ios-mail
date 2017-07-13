@@ -14,27 +14,7 @@ import UIKit
 class ShareExtensionEntry : UINavigationController {
     
     init() {
-//        let storyboard = UIStoryboard(name: "SignIn", bundle: nil)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "ShareViewController")
-//        //        self.presentViewController(vc, animated: true, completion: nil)
-//        //        let sb = UIStoryboard.get
-//        //        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-//        //        UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"myViewController"];
-//        //        vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-//        //        [self presentViewController:vc animated:YES completion:NULL];
-//        //let vc = ShareComposeViewController(nibName: "ShareComposeViewController", bundle: nil)
-//        
-//        super.init(rootViewController: vc)
-        
-        
-        
         super.init(rootViewController: ShareUnlockViewController(nibName: "ShareUnlockViewController", bundle: nil))
-        
-//        super.init(rootViewController: ShareViewController())
-        
-//        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: "cancelButtonTapped:")
-//        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.save, target: self, action: "saveButtonTapped:")
-       
     }
     
     required init(coder aDecoder: NSCoder) {

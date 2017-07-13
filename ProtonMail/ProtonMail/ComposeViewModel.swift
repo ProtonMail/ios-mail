@@ -9,23 +9,23 @@
 import Foundation
 
 
-open class ComposeViewModel {
-    public var message : Message?
-    public var messageAction : ComposeMessageAction!
-    public var toSelectedContacts: [ContactVO]! = [ContactVO]()
-    public var ccSelectedContacts: [ContactVO]! = [ContactVO]()
-    public var bccSelectedContacts: [ContactVO]! = [ContactVO]()
-    public var contacts: [ContactVO]! = [ContactVO]()
+class ComposeViewModel {
+    var message : Message?
+    var messageAction : ComposeMessageAction!
+    var toSelectedContacts: [ContactVO]! = [ContactVO]()
+    var ccSelectedContacts: [ContactVO]! = [ContactVO]()
+    var bccSelectedContacts: [ContactVO]! = [ContactVO]()
+    var contacts: [ContactVO]! = [ContactVO]()
     
     var subject : String! = ""
     var body : String! = ""
     
-    public var hasDraft : Bool {
+    var hasDraft : Bool {
         get{
             return message?.isDetailDownloaded ?? false
         }
     }
-    public var needsUpdate : Bool {
+    var needsUpdate : Bool {
         get{
             return toChanged || ccChanged || bccChanged || titleChanged || bodyChanged
         }
@@ -37,96 +37,96 @@ open class ComposeViewModel {
     var titleChanged : Bool = false;
     var bodyChanged : Bool = false;
     
-    public init() { }
+    init() { }
     
-    open func getSubject() -> String {
+    func getSubject() -> String {
         return self.subject
         //return self.message?.subject ?? ""
     }
     
-    open func setSubject(_ sub : String) {
+    func setSubject(_ sub : String) {
         self.subject = sub
     }
     
-    open func setBody(_ body : String) {
+    func setBody(_ body : String) {
         self.body = body
     }
     
-    public  func addToContacts(_ contacts: ContactVO! ) {
+     func addToContacts(_ contacts: ContactVO! ) {
         toSelectedContacts.append(contacts)
     }
     
-    public  func addCcContacts(_ contacts: ContactVO! ) {
+     func addCcContacts(_ contacts: ContactVO! ) {
         ccSelectedContacts.append(contacts)
     }
     
-    public  func addBccContacts(_ contacts: ContactVO! ) {
+     func addBccContacts(_ contacts: ContactVO! ) {
         bccSelectedContacts.append(contacts)
     }
     
-    public func getActionType() -> ComposeMessageAction {
+    func getActionType() -> ComposeMessageAction {
         return messageAction
     }
     
     ///
-    open func sendMessage() {
+    func sendMessage() {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    open func updateDraft() {
+    func updateDraft() {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    open func deleteDraft() {
+    func deleteDraft() {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    public func uploadAtt(_ att : Attachment!) {
+    func uploadAtt(_ att : Attachment!) {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    public func deleteAtt(_ att : Attachment!) {
+    func deleteAtt(_ att : Attachment!) {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    open func markAsRead() {
+    func markAsRead() {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    open func getDefaultComposeBody() {
+    func getDefaultComposeBody() {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    open func getHtmlBody() -> String {
+    func getHtmlBody() -> String {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
         return ""
     }
     
-    public func collectDraft(_ title:String, body:String, expir:TimeInterval, pwd:String, pwdHit:String) -> Void {
+    func collectDraft(_ title:String, body:String, expir:TimeInterval, pwd:String, pwdHit:String) -> Void {
          NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    public func getAttachments() -> [Attachment]? {
+    func getAttachments() -> [Attachment]? {
         fatalError("This method must be overridden")
     }
     
-    public func updateAddressID (_ address_id : String) {
+    func updateAddressID (_ address_id : String) {
         fatalError("This method must be overridden")
     }
     
-    public func getAddresses () -> Array<Address> {
+    func getAddresses () -> Array<Address> {
         fatalError("This method must be overridden")
     }
    
-    public func getDefaultAddress () -> Address? {
+    func getDefaultAddress () -> Address? {
         fatalError("This method must be overridden")
     }
     
-    public func getCurrrentSignature(_ addr_id : String) -> String? {
+    func getCurrrentSignature(_ addr_id : String) -> String? {
         fatalError("This method must be overridden")
     }
     
-    public func hasAttachment () -> Bool {
+    func hasAttachment () -> Bool {
         fatalError("This method must be overridden")
     }
 }

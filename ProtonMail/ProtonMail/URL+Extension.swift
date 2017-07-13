@@ -18,7 +18,7 @@ import Foundation
 
 extension URL {
     
-    public mutating func excludeFromBackup() {
+    mutating func excludeFromBackup() {
         do {
             var resourceValues = URLResourceValues()
             resourceValues.isExcludedFromBackup = true

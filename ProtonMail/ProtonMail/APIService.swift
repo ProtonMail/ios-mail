@@ -18,11 +18,11 @@ import CoreData
 import Foundation
 
 
-public let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
+let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
-public let sharedAPIService = APIService()
+let sharedAPIService = APIService()
 
-public class APIService {
+class APIService {
     
     // refresh token failed count
     internal var refreshTokenFailedCount = 0
@@ -34,7 +34,7 @@ public class APIService {
     fileprivate var sessionManager: AFHTTPSessionManager
     
     // get session
-    public func getSession() -> AFHTTPSessionManager{
+    func getSession() -> AFHTTPSessionManager{
         return sessionManager;
     }
     
@@ -76,10 +76,11 @@ public class APIService {
                 if authenticated && errorCode == 401 {
                     AuthCredential.expireOrClear(auth?.token)
                     if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
-                        error.alertToast()
-                        UserTempCachedStatus.backup()
-                        sharedUserDataService.signOut(true);
-                        userCachedStatus.signOut()
+                        //TODO::Fix later
+//                        error.alertToast()
+//                        UserTempCachedStatus.backup()
+//                        sharedUserDataService.signOut(true);
+//                        userCachedStatus.signOut()
                     }else {
                         //self.setApiVesion(1, appVersion: 1)
                         self.request(method: method, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
@@ -107,11 +108,12 @@ public class APIService {
                         //self.setApiVesion(1, appVersion: 1)
                         self.request(method: method, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
                     } else if responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004 {
-                        NSError.alertUpdatedToast()
-                        completion(task, responseDictionary, error)
-                        UserTempCachedStatus.backup()
-                        sharedUserDataService.signOut(true);
-                        userCachedStatus.signOut()
+                        //TODO::Fix later
+//                        NSError.alertUpdatedToast()
+//                        completion(task, responseDictionary, error)
+//                        UserTempCachedStatus.backup()
+//                        sharedUserDataService.signOut(true);
+//                        userCachedStatus.signOut()
                     } else if responseCode == APIErrorCode.API_offline {
                         completion(task, responseDictionary, error)
                     }
@@ -156,11 +158,12 @@ public class APIService {
                         AuthCredential.clearFromKeychain()
                         pthread_mutex_unlock(&self.mutex)
                         DispatchQueue.main.async {
+                            //TODO::Fix later
                             completion(nil, NSError.AuthCachePassEmpty())
-                            UserTempCachedStatus.backup()
-                            sharedUserDataService.signOut(true) //NOTES:signout + errors
-                            userCachedStatus.signOut()
-                            NSError.alertBadTokenToast()
+//                            UserTempCachedStatus.backup()
+//                            sharedUserDataService.signOut(true) //NOTES:signout + errors
+//                            userCachedStatus.signOut()
+//                            NSError.alertBadTokenToast()
                         }
                     } else {
                         pthread_mutex_unlock(&self.mutex)
@@ -173,11 +176,12 @@ public class APIService {
                         AuthCredential.clearFromKeychain()
                         pthread_mutex_unlock(&self.mutex)
                         DispatchQueue.main.async {
+                            //TODO::Fix later
                             completion(nil, NSError.AuthCachePassEmpty())
-                            UserTempCachedStatus.backup()
-                            sharedUserDataService.signOut(true)
-                            userCachedStatus.signOut()
-                            NSError.alertBadTokenToast()
+//                            UserTempCachedStatus.backup()
+//                            sharedUserDataService.signOut(true)
+//                            userCachedStatus.signOut()
+//                            NSError.alertBadTokenToast()
                         }
                     } else {
                         self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
@@ -185,13 +189,15 @@ public class APIService {
                             if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
                                 AuthCredential.clearFromKeychain()
                                 DispatchQueue.main.async {
-                                    NSError.alertBadTokenToast()
+                                    //TODO::Fix later
+//                                    NSError.alertBadTokenToast()
                                     self.fetchAuthCredential(completion)
                                 }
                             } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                                 AuthCredential.clearFromKeychain()
                                 DispatchQueue.main.async {
-                                    NSError.alertBadTokenToast()
+                                    //TODO::Fix later
+//                                    NSError.alertBadTokenToast()
                                     self.fetchAuthCredential(completion)
                                 }
                             } else {
@@ -208,9 +214,10 @@ public class APIService {
                 DispatchQueue.main.async {
                     if sharedUserDataService.isSignedIn {
                         completion(nil, NSError.authCacheBad())
-                        UserTempCachedStatus.backup()
-                        sharedUserDataService.signOut(true)
-                        userCachedStatus.signOut()
+                        //TODO::Fix later
+//                        UserTempCachedStatus.backup()
+//                        sharedUserDataService.signOut(true)
+//                        userCachedStatus.signOut()
                     }
                 }
             }

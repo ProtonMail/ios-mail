@@ -19,31 +19,31 @@ import CoreData
 
 extension Message {
     
-    public struct Attributes {
-        static public let entityName = "Message"
-        static public let locationNumber = "locationNumber"
-        static public let isDetailDownloaded = "isDetailDownloaded"
-        static public let isRead = "isRead"
-        static public let isStarred = "isStarred"
-        static public let messageID = "messageID"
-        static public let recipientList = "recipientList"
-        static public let senderName = "senderName"
-        static public let senderObject = "senderObject"
-        static public let time = "time"
-        static public let title = "title"
-        static public let labels = "labels"
+    struct Attributes {
+        static let entityName = "Message"
+        static let locationNumber = "locationNumber"
+        static let isDetailDownloaded = "isDetailDownloaded"
+        static let isRead = "isRead"
+        static let isStarred = "isStarred"
+        static let messageID = "messageID"
+        static let recipientList = "recipientList"
+        static let senderName = "senderName"
+        static let senderObject = "senderObject"
+        static let time = "time"
+        static let title = "title"
+        static let labels = "labels"
         
-        static public let messageType = "messageType"
-        static public let messageStatus = "messageStatus"
+        static let messageType = "messageType"
+        static let messageStatus = "messageStatus"
     }
     
     struct Constants {
         static let starredTag = "starred"
     }
     
-    // MARK: - Public variables
+    // MARK: - variables
     
-    public var allEmailAddresses: String {
+    var allEmailAddresses: String {
         var lists: [String] = []
         
         if !recipientList.isEmpty {
@@ -75,7 +75,7 @@ extension Message {
         return lists.joined(separator: ",")
     }
     
-    public var location: MessageLocation {
+    var location: MessageLocation {
         get {
             return MessageLocation(rawValue: locationNumber.intValue) ?? .inbox
         }
@@ -84,14 +84,14 @@ extension Message {
         }
     }
     
-    public func getScore() -> MessageSpamScore {
+    func getScore() -> MessageSpamScore {
         if let e = MessageSpamScore(rawValue: self.spamScore.intValue) {
             return e
         }
         return .others
     }
     
-    public func hasDraftLabel() -> Bool {
+    func hasDraftLabel() -> Bool {
         let labels = self.labels
         for l in labels {
             if let label = l as? Label {
@@ -106,7 +106,7 @@ extension Message {
         return false
     }
     
-    public func hasLocation(location : MessageLocation) -> Bool {
+    func hasLocation(location : MessageLocation) -> Bool {
         for l in getLocationFromLabels() {
             if l == location {
                 return true
@@ -115,7 +115,7 @@ extension Message {
         return false
     }
     
-    public func getLocationFromLabels() ->  [MessageLocation] {
+    func getLocationFromLabels() ->  [MessageLocation] {
         var locations = [MessageLocation]()
         let labels = self.labels
         for l in labels {
@@ -131,7 +131,7 @@ extension Message {
         return locations
     }
     
-    public func getShowLocationNameFromLabels(ignored : String) -> String? {
+    func getShowLocationNameFromLabels(ignored : String) -> String? {
         var lableOnly = false
         if ignored == MessageLocation.outbox.title {
             for l in getLocationFromLabels() {
@@ -160,7 +160,7 @@ extension Message {
         return nil
     }
     
-    public func setLabelLocation(_ location : MessageLocation) {
+    func setLabelLocation(_ location : MessageLocation) {
         if let context = self.managedObjectContext {
             context.performAndWait() {
                 let toLableID = String(location.rawValue)
@@ -189,7 +189,7 @@ extension Message {
         }
     }
     
-    public func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation, keepSent: Bool) {
+    func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation, keepSent: Bool) {
         if let context = self.managedObjectContext {
             context.performAndWait() {
                 let labelObjs = self.mutableSetValue(forKey: "labels")
@@ -277,7 +277,7 @@ extension Message {
         return title
     }
     
-    public var displaySender : String {
+    var displaySender : String {
         get {
             let sc = senderContactVO
             return sc!.name.isEmpty ?  sc!.email : sc!.name
@@ -285,13 +285,13 @@ extension Message {
         
     }
     
-    // MARK: - Public methods
+    // MARK: - methods
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
     
     /// Removes all messages from the store.
-    public class func deleteAll(inContext context: NSManagedObjectContext) {
+    class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
     
@@ -300,7 +300,7 @@ extension Message {
      
      :param: messageID String
      */
-    public class func deleteMessage(_ messageID : String) {
+    class func deleteMessage(_ messageID : String) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                 let labelObjs = message.mutableSetValue(forKey: "labels")
@@ -314,7 +314,7 @@ extension Message {
         }
     }
     
-    public class func deleteLocation(_ location : MessageLocation) -> Bool{
+    class func deleteLocation(_ location : MessageLocation) -> Bool{
         if let mContext = sharedCoreDataService.mainManagedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             if location == .spam || location == .trash {
@@ -339,11 +339,11 @@ extension Message {
         return false
     }
     
-    public class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
+    class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
     }
     
-    public class func messagesForObjectIDs(_ objectIDs: [NSManagedObjectID], inManagedObjectContext context: NSManagedObjectContext, error: NSErrorPointer) -> [Message]? {
+    class func messagesForObjectIDs(_ objectIDs: [NSManagedObjectID], inManagedObjectContext context: NSManagedObjectContext, error: NSErrorPointer) -> [Message]? {
         return context.managedObjectsWithEntityName(Attributes.entityName, forManagedObjectIDs: objectIDs, error: error) as? [Message]
     }
     
@@ -352,17 +352,17 @@ extension Message {
         replaceNilStringAttributesWithEmptyString()
     }
     
-    public func updateTag(_ tag: String) {
+    func updateTag(_ tag: String) {
         self.tag = tag
         isStarred = tag.range(of: Constants.starredTag) != nil
     }
     
-    // MARK: Public methods
-    public func decryptBody() throws -> String? {
+    // MARK: methods
+    func decryptBody() throws -> String? {
         return try body.decryptMessage(passphrase)
     }
     
-    public func bodyToHtml() -> String {
+    func bodyToHtml() -> String {
         if lockType == .plainTextLock {
             return "<div>" + body.ln2br() + "</div>"
         } else {
@@ -371,7 +371,7 @@ extension Message {
         }
     }
     
-    public func decryptBodyIfNeeded() throws -> String? {
+    func decryptBodyIfNeeded() throws -> String? {
         //PMLog.D("\(body)")
         if !checkIsEncrypted() {
             if isPlainText() {
@@ -394,7 +394,7 @@ extension Message {
         }
     }
     
-    public func encryptBody(_ body: String, error: NSErrorPointer?) {
+    func encryptBody(_ body: String, error: NSErrorPointer?) {
         let address_id = self.getAddressID;
         if address_id.isEmpty {
             return
@@ -402,25 +402,25 @@ extension Message {
         self.body = try! body.encryptMessage(address_id) ?? ""
     }
     
-    public func checkIsEncrypted() -> Bool! {
+    func checkIsEncrypted() -> Bool! {
         let enc_type = EncryptTypes(rawValue: isEncrypted.intValue) ?? EncryptTypes.inner
         let checkIsEncrypted:Bool = enc_type.isEncrypted
         return checkIsEncrypted
     }
     
-    public func isPlainText() -> Bool {
+    func isPlainText() -> Bool {
         if let type = mimeType, type.lowercased() == "text/plain" {
             return true
         }
         return false
     }
     
-    public var encryptType : EncryptTypes! {
+    var encryptType : EncryptTypes! {
         let enc_type = EncryptTypes(rawValue: isEncrypted.intValue) ?? EncryptTypes.inner
         return enc_type
     }
     
-    public var lockType : LockTypes! {
+    var lockType : LockTypes! {
         return self.encryptType.lockType
     }
     
@@ -429,7 +429,7 @@ extension Message {
         return sharedUserDataService.mailboxPassword ?? ""
     }
     
-    public var getAddressID: String {
+    var getAddressID: String {
         get {
             if let addr = defaultAddress {
                 return addr.address_id
@@ -438,7 +438,7 @@ extension Message {
         }
     }
     
-    public var defaultAddress : Address? {
+    var defaultAddress : Address? {
         get {
             if let addressID = addressID {
                 if !addressID.isEmpty {
@@ -459,7 +459,7 @@ extension Message {
         }
     }
     
-    public var senderContactVO : ContactVO! {
+    var senderContactVO : ContactVO! {
         var sender : ContactVO!
         //        if let beforeParsed = self.newSender, paserdNewSender = beforeParsed.toContact() {
         //            sender = paserdNewSender
@@ -469,7 +469,7 @@ extension Message {
         return sender
     }
     
-    public func copyMessage (_ copyAtts : Bool) -> Message {
+    func copyMessage (_ copyAtts : Bool) -> Message {
         let message = self
         let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext!)
         newMessage.location = MessageLocation.draft
@@ -522,14 +522,14 @@ extension Message {
         return newMessage
     }
     
-    public func fetchDetailIfNeeded(_ completion: @escaping MessageDataService.CompletionFetchDetail) {
+    func fetchDetailIfNeeded(_ completion: @escaping MessageDataService.CompletionFetchDetail) {
         sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
     }
 }
 
 extension String {
     
-    public func multipartGetHtmlContent() -> String {
+    func multipartGetHtmlContent() -> String {
 
         let textplainType = "text/plain".data(using: String.Encoding.utf8)
         let htmlType = "text/html".data(using: String.Encoding.utf8)

@@ -19,7 +19,7 @@ import CoreData
 
 extension NSManagedObjectContext {
     
-    public func deleteAll(_ entityName: String) {
+    func deleteAll(_ entityName: String) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.includesPropertyValues = false
         
@@ -41,7 +41,7 @@ extension NSManagedObjectContext {
         }
     }
     
-    public func managedObjectWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> NSManagedObject? {
+    func managedObjectWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> NSManagedObject? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)
         
@@ -54,7 +54,7 @@ extension NSManagedObjectContext {
         return nil
     }
     
-    public func managedObjectsWithEntityName(_ entityName: String, forManagedObjectIDs objectIDs: [NSManagedObjectID], error: NSErrorPointer) -> [NSManagedObject]? {
+    func managedObjectsWithEntityName(_ entityName: String, forManagedObjectIDs objectIDs: [NSManagedObjectID], error: NSErrorPointer) -> [NSManagedObject]? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         request.predicate = NSPredicate(format: "SELF in %@", objectIDs)
         do {
@@ -66,7 +66,7 @@ extension NSManagedObjectContext {
         return nil
     }
     
-    public func saveUpstreamIfNeeded() -> NSError? {
+    func saveUpstreamIfNeeded() -> NSError? {
         var error: NSError?
         do {
             if hasChanges {

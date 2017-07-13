@@ -18,30 +18,30 @@ import Foundation
 
 let OpenPGPErrorDomain = "com.ProtonMail.OpenPGP"
 
-public let sharedOpenPGP = PMNOpenPgp.createInstance()!
+let sharedOpenPGP = PMNOpenPgp.createInstance()!
 
 extension PMNOpenPgp {
-    public enum ErrorCode: Int {
+    enum ErrorCode: Int {
         case badPassphrase = 10001
         case noPrivateKey = 10004
         case badProtonMailPGPMessage = 10006
     }
     
-    public func setAddresses (_ addresses : Array<PMNAddress>!) {
+    func setAddresses (_ addresses : Array<PMNAddress>!) {
         self.cleanAddresses();
         for addr in addresses {
             self.add(addr)
         }
     }
     
-    static public func checkPassphrase(_ passphrase: String, forPrivateKey privateKey: String) -> Bool {
+    static func checkPassphrase(_ passphrase: String, forPrivateKey privateKey: String) -> Bool {
         if !checkPassphrase(privateKey, passphrase: passphrase) {
             return false
         }
         return true
     }
     
-    public func generateKey(_ passphrase: String, userName: String, domain:String, bits: Int32) throws -> PMNOpenPgpKey? {
+    func generateKey(_ passphrase: String, userName: String, domain:String, bits: Int32) throws -> PMNOpenPgpKey? {
         var out_new_key : PMNOpenPgpKey?
         try ObjC.catchException {
             out_new_key = self.generateKey(userName, domain: domain, passphrase: passphrase, bits: bits)
@@ -52,7 +52,7 @@ extension PMNOpenPgp {
         return out_new_key
     }
     
-    public class func updateKeysPassword(_ old_keys : Array<Key>, old_pass: String, new_pass: String ) throws -> Array<Key> {
+    class func updateKeysPassword(_ old_keys : Array<Key>, old_pass: String, new_pass: String ) throws -> Array<Key> {
         let pm_keys = old_keys.toPMNPgpKeys()
         var out_keys : Array<Key>?
         try ObjC.catchException {
@@ -81,7 +81,7 @@ extension PMNOpenPgp {
     }
     
     
-    public class func updateAddrKeysPassword(_ old_addresses : Array<Address>, old_pass: String, new_pass: String ) throws -> Array<Address> {
+    class func updateAddrKeysPassword(_ old_addresses : Array<Address>, old_pass: String, new_pass: String ) throws -> Array<Address> {
         var out_addresses = Array<Address>()
         for addr in old_addresses {
             var out_keys : Array<Key>?
@@ -131,7 +131,7 @@ extension PMNOpenPgp {
         return out_addresses
     }
     
-    public class func updateKeyPassword(_ private_key: String, old_pass: String, new_pass: String ) throws -> String {
+    class func updateKeyPassword(_ private_key: String, old_pass: String, new_pass: String ) throws -> String {
         var out_key : String?
         try ObjC.catchException {
             out_key = PMNOpenPgp.updateSinglePassphrase(private_key, oldPassphrase: old_pass, newPassphrase: new_pass)
@@ -156,7 +156,7 @@ extension PMNOpenPgp {
 
 extension String {
     
-    public func getSignature() throws -> String? {
+    func getSignature() throws -> String? {
         var dec_out_att : String?
         try ObjC.catchException {
             dec_out_att = sharedOpenPGP.readClearsignedMessage(self)
@@ -165,7 +165,7 @@ extension String {
         return dec_out_att
     }
     
-    public func decryptMessage(_ passphrase: String) throws -> String? {
+    func decryptMessage(_ passphrase: String) throws -> String? {
         var out_decrypted : String?
         try ObjC.catchException {
             out_decrypted = sharedOpenPGP.decryptMessage(self, passphras: passphrase)
@@ -174,7 +174,7 @@ extension String {
         return out_decrypted
     }
     
-    public func decryptMessageWithSinglKey(_ privateKey: String, passphrase: String) throws -> String? {
+    func decryptMessageWithSinglKey(_ privateKey: String, passphrase: String) throws -> String? {
         var out_decrypted : String?
         try ObjC.catchException {
             out_decrypted = sharedOpenPGP.decryptMessageSingleKey(self, privateKey: privateKey, passphras: passphrase)
@@ -183,7 +183,7 @@ extension String {
         return out_decrypted;
     }
     
-    public func encryptMessage(_ address_id: String) throws -> String? {
+    func encryptMessage(_ address_id: String) throws -> String? {
         var out_encrypted : String?
         try ObjC.catchException {
             out_encrypted = sharedOpenPGP.encryptMessage(address_id, plainText: self)
@@ -192,7 +192,7 @@ extension String {
         return out_encrypted
     }
     
-    public func encryptMessageWithSingleKey(_ publicKey: String) throws -> String? {
+    func encryptMessageWithSingleKey(_ publicKey: String) throws -> String? {
         var out_encrypted : String?
         try ObjC.catchException {
             out_encrypted = sharedOpenPGP.encryptMessageSingleKey(publicKey, plainText: self)
@@ -201,7 +201,7 @@ extension String {
         return out_encrypted
     }
     
-    public func encryptWithPassphrase(_ passphrase: String) throws -> String? {
+    func encryptWithPassphrase(_ passphrase: String) throws -> String? {
         var out_encrypted : String?
         try ObjC.catchException {
             out_encrypted = sharedOpenPGP.encryptMessageAes(self, password: passphrase)
@@ -210,7 +210,7 @@ extension String {
         return out_encrypted
     }
     
-    public func decryptWithPassphrase(_ passphrase: String) throws -> String? {
+    func decryptWithPassphrase(_ passphrase: String) throws -> String? {
         var out_dncrypted : String?
         try ObjC.catchException {
             out_dncrypted = sharedOpenPGP.decryptMessageAes(self, password: passphrase)
@@ -221,7 +221,7 @@ extension String {
 }
 
 extension Data {
-    public func decryptAttachment(_ keyPackage:Data!, passphrase: String) throws -> Data? {
+    func decryptAttachment(_ keyPackage:Data!, passphrase: String) throws -> Data? {
         var dec_out_att : Data?
         try ObjC.catchException {
             dec_out_att = sharedOpenPGP.decryptAttachment(keyPackage, data: self, passphras: passphrase)
@@ -230,7 +230,7 @@ extension Data {
         return dec_out_att
     }
     
-    public func decryptAttachmentWithSingleKey(_ keyPackage:Data!, passphrase: String, publicKey: String, privateKey: String) throws -> Data? {
+    func decryptAttachmentWithSingleKey(_ keyPackage:Data!, passphrase: String, publicKey: String, privateKey: String) throws -> Data? {
         var dec_out_att : Data?
         try ObjC.catchException {
             dec_out_att = sharedOpenPGP.decryptAttachmentSingleKey(keyPackage, data: self, privateKey: privateKey, passphras: passphrase)
@@ -239,7 +239,7 @@ extension Data {
         return dec_out_att
     }
     
-    public func encryptAttachment(_ address_id: String, fileName:String) throws -> PMNEncryptPackage? {
+    func encryptAttachment(_ address_id: String, fileName:String) throws -> PMNEncryptPackage? {
         var out_enc_data : PMNEncryptPackage?
         try ObjC.catchException {
             out_enc_data = sharedOpenPGP.encryptAttachment(address_id, unencryptData: self, fileName: fileName)
@@ -248,7 +248,7 @@ extension Data {
         return out_enc_data
     }
     
-    public func encryptAttachmentWithSingleKey(_ publicKey: String, fileName:String) throws -> PMNEncryptPackage? {
+    func encryptAttachmentWithSingleKey(_ publicKey: String, fileName:String) throws -> PMNEncryptPackage? {
         var out_enc_data : PMNEncryptPackage?
         try ObjC.catchException {
             out_enc_data = sharedOpenPGP.encryptAttachmentSingleKey(publicKey, unencryptData: self, fileName: fileName)
@@ -258,7 +258,7 @@ extension Data {
     }
     
     //key packet part
-    public func getSessionKeyFromPubKeyPackage(_ passphrase: String) throws -> Data? {
+    func getSessionKeyFromPubKeyPackage(_ passphrase: String) throws -> Data? {
         var key_session_out : Data?
         try ObjC.catchException {
             key_session_out = sharedOpenPGP.getPublicKeySessionKey(self, passphrase: passphrase)
@@ -267,7 +267,7 @@ extension Data {
         return key_session_out
     }
     
-    public func getSessionKeyFromPubKeyPackageWithSingleKey(_ privateKey: String, passphrase: String, publicKey: String) throws -> Data? {
+    func getSessionKeyFromPubKeyPackageWithSingleKey(_ privateKey: String, passphrase: String, publicKey: String) throws -> Data? {
         var key_session_out : Data?
         try ObjC.catchException {
             key_session_out = sharedOpenPGP.getPublicKeySessionKeySingleKey(self, privateKey: privateKey, passphrase: passphrase)
@@ -276,7 +276,7 @@ extension Data {
         return key_session_out
     }
     
-    public func getPublicSessionKeyPackage(_ publicKey: String) throws -> Data? {
+    func getPublicSessionKeyPackage(_ publicKey: String) throws -> Data? {
         var out_new_key : Data?
         try ObjC.catchException {
             out_new_key = sharedOpenPGP.getNewPublicKeyPackage(self, publicKey: publicKey)
@@ -285,7 +285,7 @@ extension Data {
         return out_new_key
     }
     
-    public func getSymmetricSessionKeyPackage(_ pwd: String) throws -> Data? {
+    func getSymmetricSessionKeyPackage(_ pwd: String) throws -> Data? {
         var out_sym_key_package : Data?
         try ObjC.catchException {
             out_sym_key_package = sharedOpenPGP.getNewSymmetricKeyPackage(self, password: pwd)

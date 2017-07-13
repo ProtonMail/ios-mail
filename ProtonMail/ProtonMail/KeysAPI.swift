@@ -36,7 +36,7 @@ final class KeySaltResponse : ApiResponse {
 }
 
 /// message packages
-open class PasswordAuth : Package {
+final class PasswordAuth : Package {
 
     let AuthVersion : Int = 4
     let ModulusID : String! //encrypted id

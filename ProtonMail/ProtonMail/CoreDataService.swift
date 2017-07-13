@@ -19,9 +19,9 @@ import CoreData
 
 let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain("CoreDataService")
 
-public let sharedCoreDataService = CoreDataService()
+let sharedCoreDataService = CoreDataService()
 
-public class CoreDataService {
+class CoreDataService {
     
     struct ErrorCode {
         static let noManagedObjectContext = 10000
@@ -36,9 +36,9 @@ public class CoreDataService {
         return self.newPersistentStoreCoordinator(self.managedObjectModel)
     }()
     
-    // MARK: - Public variables
+    // MARK: - variables
     
-    lazy public var mainManagedObjectContext: NSManagedObjectContext? = {
+    lazy var mainManagedObjectContext: NSManagedObjectContext? = {
         if self.persistentStoreCoordinator == nil {
             return nil
         }
@@ -49,23 +49,23 @@ public class CoreDataService {
         }()
     
     
-    // MARK: - Public methods
+    // MARK: - methods
     
-    public func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
+    func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
         if let url = URL(string: urlString) {
             return persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url)
         }
         return nil
     }
     
-    public func newMainManagedObjectContext() -> NSManagedObjectContext {
+    func newMainManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.parent = mainManagedObjectContext
         return managedObjectContext
     }
     
     // This context will not automatically merge upstream context saves
-    public func newManagedObjectContext() -> NSManagedObjectContext {
+    func newManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedObjectContext.parent = mainManagedObjectContext
         return managedObjectContext
@@ -106,12 +106,13 @@ public class CoreDataService {
         let alertError = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any])
         PMLog.D("Unresolved error \(error), \(error.userInfo)")
         
-        let alertController = alertError.alertController()
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Action"), style: .default, handler: { (action) -> Void in
-            abort()
-        }))
-        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
-        
+        //TODO::Fix later
+//        let alertController = alertError.alertController()
+//        alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Action"), style: .default, handler: { (action) -> Void in
+//            abort()
+//        }))
+//        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+//        
     }
 }
 
