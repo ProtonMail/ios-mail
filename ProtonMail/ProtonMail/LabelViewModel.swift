@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-open class LabelMessageModel {
+class LabelMessageModel {
     public var label : Label!
     public var totalMessages : [Message] = []
     public var originalSelected : [Message] = []
@@ -17,7 +17,7 @@ open class LabelMessageModel {
     public var currentStatus : Int = 0
 }
 
-open class LabelViewModel {
+class LabelViewModel {
     
     public typealias OkBlock = () -> Void
     public typealias ErrorBlock = (_ code : Int, _ errorMessage : String) -> Void
@@ -26,47 +26,47 @@ open class LabelViewModel {
         
     }
     
-    open func getFetchType() -> LabelFetchType {
+    func getFetchType() -> LabelFetchType {
         fatalError("This method must be overridden")
     }
     
-    public func apply (archiveMessage : Bool) -> Bool {
+    func apply (archiveMessage : Bool) -> Bool {
         fatalError("This method must be overridden")
     }
     
-    open func cancel () {
+    func cancel () {
         fatalError("This method must be overridden")
     }
     
-    open func getLabelMessage(_ label : Label!) -> LabelMessageModel! {
+    func getLabelMessage(_ label : Label!) -> LabelMessageModel! {
         fatalError("This method must be overridden")
     }
     
-    open func cellClicked(_ label : Label!) {
+    func cellClicked(_ label : Label!) {
         fatalError("This method must be overridden")
     }
     
-    open func singleSelectLabel() {
+    func singleSelectLabel() {
         
     }
     
-    open func getTitle() -> String {
+    func getTitle() -> String {
         fatalError("This method must be overridden")
     }
     
-    open func showArchiveOption() -> Bool {
+    func showArchiveOption() -> Bool {
         fatalError("This method must be overridden")
     }
     
-    open func getApplyButtonText() -> String {
+    func getApplyButtonText() -> String {
         fatalError("This method must be overridden")
     }
     
-    open func getCancelButtonText() -> String {
+    func getCancelButtonText() -> String {
         fatalError("This method must be overridden")
     }
     
-    open func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         fatalError("This method must be overridden")
     }
 }
