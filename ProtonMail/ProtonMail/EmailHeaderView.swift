@@ -8,7 +8,6 @@
 
 
 import UIKit
-import ProtonMailCommon
 
 protocol EmailHeaderViewProtocol {
     func updateSize()

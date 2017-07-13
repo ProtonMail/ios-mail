@@ -7,8 +7,6 @@
 //
 import Foundation
 import UIKit
-import ProtonMailCommon
-
 
 protocol ComposeViewDelegate {
     func ComposeViewDidSizeChanged(_ size: CGSize)

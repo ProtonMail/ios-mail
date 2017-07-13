@@ -10,12 +10,12 @@ import Foundation
 
 
 open class ComposeViewModel {
-    var message : Message?
+    public var message : Message?
     public var messageAction : ComposeMessageAction!
     public var toSelectedContacts: [ContactVO]! = [ContactVO]()
     public var ccSelectedContacts: [ContactVO]! = [ContactVO]()
     public var bccSelectedContacts: [ContactVO]! = [ContactVO]()
-    var contacts: [ContactVO]! = [ContactVO]()
+    public var contacts: [ContactVO]! = [ContactVO]()
     
     var subject : String! = ""
     var body : String! = ""
@@ -52,15 +52,15 @@ open class ComposeViewModel {
         self.body = body
     }
     
-    internal func addToContacts(_ contacts: ContactVO! ) {
+    public  func addToContacts(_ contacts: ContactVO! ) {
         toSelectedContacts.append(contacts)
     }
     
-    internal func addCcContacts(_ contacts: ContactVO! ) {
+    public  func addCcContacts(_ contacts: ContactVO! ) {
         ccSelectedContacts.append(contacts)
     }
     
-    internal func addBccContacts(_ contacts: ContactVO! ) {
+    public  func addBccContacts(_ contacts: ContactVO! ) {
         bccSelectedContacts.append(contacts)
     }
     
@@ -81,11 +81,11 @@ open class ComposeViewModel {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    func uploadAtt(_ att : Attachment!) {
+    public func uploadAtt(_ att : Attachment!) {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    func deleteAtt(_ att : Attachment!) {
+    public func deleteAtt(_ att : Attachment!) {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     

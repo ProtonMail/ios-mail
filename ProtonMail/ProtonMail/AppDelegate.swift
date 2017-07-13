@@ -16,8 +16,6 @@
 import UIKit
 import Fabric
 import Crashlytics
-import ProtonMailCommon
-
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
@@ -133,7 +131,7 @@ extension AppDelegate: UIApplicationDelegate {
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
         
         let tmp = UIApplication.shared.releaseMode()
-        //net work debug option
+        //net work debug optionx
         if let logger = AFNetworkActivityLogger.shared().loggers.first as? AFNetworkActivityConsoleLogger {
             logger.level = .AFLoggerLevelDebug;
         }

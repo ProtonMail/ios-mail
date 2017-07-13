@@ -56,10 +56,6 @@ target 'ProtonMailTests' do
 	pm_pods
 end
 
-target 'ProtonMailCommon' do
-    pm_pods
-end
-
 target 'ShareDev' do
     pm_extensions
 end

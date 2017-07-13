@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ProtonMailCommon
 
 class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
     

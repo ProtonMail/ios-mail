@@ -18,21 +18,21 @@ enum SwipeResponse {
 public class MailboxViewModel {
     public typealias CompletionBlock = APIService.CompletionBlock
     
-    public init() { }
+    init() { }
     
-    public func getNavigationTitle() -> String {
+    func getNavigationTitle() -> String {
         fatalError("This method must be overridden")
     }
     
-    public func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         fatalError("This method must be overridden")
     }
     
-    public func lastUpdateTime() -> UpdateTime {
+    func lastUpdateTime() -> UpdateTime {
         fatalError("This method must be overridden")
     }
     
-    public func getSwipeTitle(_ action: MessageSwipeAction) -> String {
+    func getSwipeTitle(_ action: MessageSwipeAction) -> String {
         fatalError("This method must be overridden")
     }
     
@@ -74,7 +74,7 @@ public class MailboxViewModel {
         return .nothing
     }
     
-    public func updateBadgeNumberWhenMove(_ message : Message, to : MessageLocation) {
+    func updateBadgeNumberWhenMove(_ message : Message, to : MessageLocation) {
         let fromLocation = message.location
         let toLocation = to
         
@@ -111,7 +111,7 @@ public class MailboxViewModel {
         }
     }
     
-    public func updateBadgeNumberWhenRead(_ message : Message, changeToRead : Bool) {
+    func updateBadgeNumberWhenRead(_ message : Message, changeToRead : Bool) {
         let location = message.location
         
         if message.isRead == changeToRead {
@@ -137,60 +137,60 @@ public class MailboxViewModel {
         }
     }
     
-    public func isDrafts() -> Bool {
+    func isDrafts() -> Bool {
         return false
     }
     
-    public func isArchive() -> Bool {
+    func isArchive() -> Bool {
         return false
     }
     
-    public func isDelete () -> Bool {
+    func isDelete () -> Bool {
         return false
     }
     
-    public func showLocation () -> Bool {
+    func showLocation () -> Bool {
         return false
     }
     
-    public func ignoredLocationTitle() -> String {
+    func ignoredLocationTitle() -> String {
         return ""
     }
     
-    public func isCurrentLocation(_ l : MessageLocation) -> Bool {
+    func isCurrentLocation(_ l : MessageLocation) -> Bool {
         return false
     }
     
-    public func isSwipeActionValid(_ action: MessageSwipeAction) -> Bool {
+    func isSwipeActionValid(_ action: MessageSwipeAction) -> Bool {
         return true
     }
     
-    public func stayAfterAction (_ action: MessageSwipeAction) -> Bool {
+    func stayAfterAction (_ action: MessageSwipeAction) -> Bool {
         return false
     }
     
-    public func isShowEmptyFolder() -> Bool {
+    func isShowEmptyFolder() -> Bool {
         return false
     }
     
-    public func emptyFolder() {
+    func emptyFolder() {
     }
     
-    public func fetchMessages(_ MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
+    func fetchMessages(_ MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         fatalError("This method must be overridden")
     }
-    public func fetchNewMessages(_ notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
+    func fetchNewMessages(_ notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
         fatalError("This method must be overridden")
     }
-    public func fetchMessagesForLocationWithEventReset(_ MessageID : String, Time: Int, completion: CompletionBlock?) {
+    func fetchMessagesForLocationWithEventReset(_ MessageID : String, Time: Int, completion: CompletionBlock?) {
         //fatalError("This method must be overridden")
     }
     
-    public func getNotificationMessage() -> String? {
+    func getNotificationMessage() -> String? {
         fatalError("This method must be overridden")
     }
     
-    public func resetNotificationMessage() -> Void {
+    func resetNotificationMessage() -> Void {
         fatalError("This method must be overridden")
     }
 }

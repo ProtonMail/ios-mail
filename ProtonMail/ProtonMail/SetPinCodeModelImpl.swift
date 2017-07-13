@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
-
 
 public class SetPinCodeModelImpl : PinCodeViewModel {
     

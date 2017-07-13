@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
 
 class LableEditViewController : UIViewController {
     

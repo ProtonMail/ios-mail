@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import QuickLook
-import ProtonMailCommon
 
 protocol EmailViewProtocol {
     func mailto(_ url: URL?)

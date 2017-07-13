@@ -14,9 +14,8 @@
 // the license agreement.
 //
 
-import Foundation
 import UIKit
-import ProtonMailCommon
+import Foundation
 
 class Snapshot {
     

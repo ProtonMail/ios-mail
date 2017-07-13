@@ -25,7 +25,7 @@ extension String {
         hud.hide(true, afterDelay: 3)
     }
     
-    public func contains(_ s: String) -> Bool
+    public func isContains(check s: String) -> Bool
     {
         return self.range(of: s, options: NSString.CompareOptions.caseInsensitive) != nil ? true : false
     }

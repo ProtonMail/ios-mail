@@ -18,7 +18,6 @@ import UIKit
 import Fabric
 import Crashlytics
 import LocalAuthentication
-import ProtonMailCommon
 
 fileprivate enum SignInUIFlow : Int {
     case requirePin = 0

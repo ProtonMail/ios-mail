@@ -12,8 +12,6 @@
 
 import UIKit
 import CoreData
-import ProtonMailCommon
-
 
 class MenuViewController: UIViewController {
     internal static let ObserverSwitchView:String = "Push_Switch_View"

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
 
 let sharedTouchID = TouchID ()
 

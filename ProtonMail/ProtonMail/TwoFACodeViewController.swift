@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import ProtonMailCommon
 
 protocol TwoFACodeViewControllerDelegate {
     func Cancel2FA()

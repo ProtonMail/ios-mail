@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ProtonMailCommon
 
 enum MenuItem: String {//change to Int later.
     case bugs = "Report Bugs"

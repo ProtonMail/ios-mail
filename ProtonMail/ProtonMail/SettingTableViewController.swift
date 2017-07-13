@@ -8,7 +8,6 @@
 
 import UIKit
 import LocalAuthentication
-import ProtonMailCommon
 
 class SettingTableViewController: ProtonMailViewController {
     

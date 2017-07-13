@@ -11,7 +11,6 @@
 //
 
 import UIKit
-import ProtonMailCommon
 
 class SettingsViewController: ProtonMailViewController {
     typealias CompletionBlock = APIService.CompletionBlock

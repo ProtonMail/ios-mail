@@ -8,7 +8,6 @@
 
 import Foundation
 import LocalAuthentication
-import ProtonMailCommon
 
 class TouchIDCell: UITableViewCell {
     

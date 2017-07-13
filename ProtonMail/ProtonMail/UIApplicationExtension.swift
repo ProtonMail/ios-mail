@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum UIApplicationReleaseMode: Int {
+enum UIApplicationReleaseMode: Int {
     case unknown = 0
     case sim = 1
     case dev = 2
@@ -19,7 +19,7 @@ public enum UIApplicationReleaseMode: Int {
 
 extension UIApplication {
     
-    public func getMobileProvision() -> Dictionary<String, Any>? {
+    func getMobileProvision() -> Dictionary<String, Any>? {
         struct MP {
             static var mobileProvision : Dictionary<String, Any>? = nil;
         }
@@ -60,7 +60,7 @@ extension UIApplication {
     }
     
     
-    public func releaseMode() -> UIApplicationReleaseMode {
+    func releaseMode() -> UIApplicationReleaseMode {
     
         let mobileProvision = self.getMobileProvision()
         if mobileProvision == nil {

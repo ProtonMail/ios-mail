@@ -8,7 +8,6 @@
 
 
 import UIKit
-import ProtonMailCommon
 
 class HumanCheckMenuViewController: UIViewController {
     

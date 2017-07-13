@@ -16,10 +16,10 @@
 
 import Foundation
 
-public let sharedMessageQueue = MessageQueue(queueName: "writeQueue")
-public let sharedFailedQueue = MessageQueue(queueName: "failedQueue")
+let sharedMessageQueue = MessageQueue(queueName: "writeQueue")
+let sharedFailedQueue = MessageQueue(queueName: "failedQueue")
 
-public class MessageQueue: PersistentQueue {
+class MessageQueue: PersistentQueue {
     fileprivate struct Key {
         static let id = "id"
         static let action = "action"
@@ -27,19 +27,19 @@ public class MessageQueue: PersistentQueue {
         static let count = "count"
     }
     
-    // MARK: - Public variables
-    public var isBlocked: Bool = false
-    public var isInProgress: Bool = false
-    public var isRequiredHumanCheck : Bool = false
+    // MARK: - variables
+    var isBlocked: Bool = false
+    var isInProgress: Bool = false
+    var isRequiredHumanCheck : Bool = false
     
     //TODO::here need input the time of action when local cache changed.
-    public func addMessage(_ messageID: String, action: MessageAction) -> UUID {
+    func addMessage(_ messageID: String, action: MessageAction) -> UUID {
         let time = Date().timeIntervalSince1970
         let element = [Key.id : messageID, Key.action : action.rawValue, Key.time : "\(time)", Key.count : "0"]
         return add(element as NSCoding)
     }
     
-    public func nextMessage() -> (uuid: UUID, messageID: String, action: String)? {
+    func nextMessage() -> (uuid: UUID, messageID: String, action: String)? {
         if isBlocked || isInProgress || isRequiredHumanCheck {
             return nil
         }

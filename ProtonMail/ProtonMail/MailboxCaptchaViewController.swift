@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
 
 protocol MailboxCaptchaVCDelegate {
     func cancel()

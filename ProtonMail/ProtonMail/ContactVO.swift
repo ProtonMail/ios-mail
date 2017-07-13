@@ -24,7 +24,7 @@ public class ContactVO: NSObject, MBContactPickerModelProtocol {
     public var email: String!
     public var isProtonMailContact: Bool = false
     
-    init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool = false) {
+    public init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool = false) {
         self.contactId = id
         self.name = name
         self.email = email

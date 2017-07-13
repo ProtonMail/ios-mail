@@ -16,7 +16,7 @@
 
 import Foundation
 
-public enum MessageAction: String {
+enum MessageAction: String {
     
     // Draft
     case saveDraft = "saveDraft"
@@ -48,8 +48,7 @@ public enum MessageAction: String {
     case emptySpam = "emptySpam"
 }
 
-
-public enum MessageLastUpdateType: String {
+enum MessageLastUpdateType: String {
     
     // Draft
     case saveDraft = "saveDraft"
@@ -94,7 +93,7 @@ public enum MessageSwipeAction : Int, CustomStringConvertible {
         }
     }
     
-    public var actionColor: UIColor {
+    var actionColor: UIColor {
         switch(self) {
         case .trash:
             return UIColor.red

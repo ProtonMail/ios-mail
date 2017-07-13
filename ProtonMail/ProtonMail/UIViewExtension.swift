@@ -18,16 +18,16 @@ import Foundation
 
 extension UIView {
     
-    public enum UIBorderSide {
+    enum BorderSide {
         case top, bottom, left, right
     }
     
-    public func roundCorners() {
+    func roundCorners() {
         layer.cornerRadius = 4.0
         clipsToBounds = true
     }
     
-    public func shake(_ times: Float, offset: CGFloat) {
+    func shake(_ times: Float, offset: CGFloat) {
         
         PMLog.D("\(self.center)");
         UIView.animate(withDuration: 1.0, animations: {
@@ -42,7 +42,7 @@ extension UIView {
         })
     }
     
-    public func addBorder(_ side: UIBorderSide, color: UIColor, borderWidth: CGFloat) {
+    func addBorder(_ side: BorderSide, color: UIColor, borderWidth: CGFloat) {
         let border = CALayer()
         border.backgroundColor = color.cgColor
         

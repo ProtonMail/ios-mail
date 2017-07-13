@@ -12,14 +12,14 @@ import Foundation
 public class AppConstants {
     
     
-    static let CacheVersion : Int = 96
-    static let AuthCacheVersion : Int = 12
-    static let SpaceWarningThreshold: Double = 80
-    static let SplashVersion : Int = 1
-    static let TourVersion : Int = 2
+    static public let CacheVersion : Int = 96
+    static public let AuthCacheVersion : Int = 12
+    static public let SpaceWarningThreshold: Double = 80
+    static public let SplashVersion : Int = 1
+    static public let TourVersion : Int = 2
     
-    static let AskTouchID : Int = 1
-    static var AppVersion : Int = 1
+    static public let AskTouchID : Int = 1
+    static public var AppVersion : Int = 1
     
     //
     static public let URL_Protocol : String = "https://"

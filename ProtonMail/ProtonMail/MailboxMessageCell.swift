@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import ProtonMailCommon
-
 
 class MailboxMessageCell: MCSwipeTableViewCell {
     /**

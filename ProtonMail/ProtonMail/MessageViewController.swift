@@ -11,8 +11,6 @@ import QuickLook
 import Foundation
 import CoreData
 import PassKit
-import ProtonMailCommon
-
 
 class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     

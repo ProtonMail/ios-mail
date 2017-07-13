@@ -53,12 +53,12 @@ open class ComposeViewModelImpl : ComposeViewModel {
         PMLog.D("ComposeViewModelImpl deinit")
     }
     
-    override func uploadAtt(_ att: Attachment!) {
+    override public func uploadAtt(_ att: Attachment!) {
         sharedMessageDataService.uploadAttachment(att)
         self.updateDraft()
     }
     
-    override func deleteAtt(_ att: Attachment!) {
+    override public func deleteAtt(_ att: Attachment!) {
         sharedMessageDataService.deleteAttachment(message?.messageID ?? "", att: att)
         self.updateDraft()
     }

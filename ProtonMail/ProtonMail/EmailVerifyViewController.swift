@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ProtonMailCommon
 
 class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     
