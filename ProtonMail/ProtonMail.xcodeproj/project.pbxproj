@@ -489,6 +489,10 @@
 		75542AD21EE53D40000F4ABA /* PasswordExtension.strings in Resources */ = {isa = PBXBuildFile; fileRef = 75542ABA1EE53C3C000F4ABA /* PasswordExtension.strings */; };
 		75555BB81F18243E000C0C10 /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
 		75555BBB1F18273C000C0C10 /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */; };
+		75555BBC1F1840B7000C0C10 /* AttachmentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */; };
+		75555BBD1F1840CF000C0C10 /* AttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07411D8D1AAA407A002A4611 /* AttachmentTableViewCell.swift */; };
+		75555BBE1F1840DB000C0C10 /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7821CADD1EA006B523B /* PMImagePickerController.swift */; };
+		75555BBF1F184109000C0C10 /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750729521DEFA52D0021483D /* MimeTypes.swift */; };
 		755638C11CA1AE42003FA2D0 /* ShowImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755638C01CA1AE42003FA2D0 /* ShowImageView.xib */; };
 		755638C31CA1AE5B003FA2D0 /* ExpirationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755638C21CA1AE5B003FA2D0 /* ExpirationView.xib */; };
 		755638C51CA1AE6B003FA2D0 /* ExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755638C41CA1AE6B003FA2D0 /* ExpirationView.swift */; };
@@ -3056,6 +3060,7 @@
 				7512AA4C1F1804F900D84955 /* SharedCacheBase.swift in Sources */,
 				7512AA651F180B5700D84955 /* ComposeViewModelImpl.swift in Sources */,
 				753E5ABE1F181C590090C0F9 /* LabelboxViewModelImpl.swift in Sources */,
+				75555BBC1F1840B7000C0C10 /* AttachmentsTableViewController.swift in Sources */,
 				7512AA331F17FEDE00D84955 /* APIServiceResponse.swift in Sources */,
 				7512AA5B1F18077300D84955 /* AddressAPI.swift in Sources */,
 				753E5ABA1F181B7D0090C0F9 /* MessageQueue.swift in Sources */,
@@ -3064,6 +3069,7 @@
 				753E5AC71F181F6B0090C0F9 /* MonitorSavesDataService.swift in Sources */,
 				7512AA0E1F17F77800D84955 /* ComposeErrorView.swift in Sources */,
 				7512AA321F17FED200D84955 /* APIServiceRequest.swift in Sources */,
+				75555BBD1F1840CF000C0C10 /* AttachmentTableViewCell.swift in Sources */,
 				753E5ACA1F1820E80090C0F9 /* LanguageManager.swift in Sources */,
 				7512A9F11F17DC9E00D84955 /* AppConstants.swift in Sources */,
 				7512AA4B1F18045800D84955 /* UserCachedStatus.swift in Sources */,
@@ -3100,6 +3106,7 @@
 				7512AA631F1808C100D84955 /* KeysAPI.swift in Sources */,
 				753E5AC91F1820E80090C0F9 /* Localization.swift in Sources */,
 				753E5AB41F181A2D0090C0F9 /* MessageAPI.swift in Sources */,
+				75555BBF1F184109000C0C10 /* MimeTypes.swift in Sources */,
 				753E5ACF1F1821000090C0F9 /* NSData+MultipartResponses.m in Sources */,
 				7512AA391F18018500D84955 /* APIError+Auth.swift in Sources */,
 				753E5ABC1F181BE00090C0F9 /* QueueConstant.swift in Sources */,
@@ -3124,6 +3131,7 @@
 				7512A9F91F17E1CE00D84955 /* ShareUnlockViewController.swift in Sources */,
 				753E5AC11F181D4F0090C0F9 /* APIService+DeviceExtension.swift in Sources */,
 				753E5AC01F181D480090C0F9 /* APIService+AttachmentExtension.swift in Sources */,
+				75555BBE1F1840DB000C0C10 /* PMImagePickerController.swift in Sources */,
 				7512AA641F180B2D00D84955 /* APIService+SettingsExtension.swift in Sources */,
 				7512A9F31F17DC9E00D84955 /* NotificationDefined.swift in Sources */,
 				753E5ABB1F181BAD0090C0F9 /* PersistentQueue.swift in Sources */,

@@ -175,6 +175,8 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     override func webViewDidFinishLoad(_ webView: UIWebView) {
         super.webViewDidFinishLoad(webView)
         updateEmbedImages()
+        
+        self.composeView.notifyViewSize(true)
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
@@ -198,6 +200,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         super.viewWillAppear(animated)
         let w = UIScreen.main.applicationFrame.width;
         self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
+    
 //        NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.statusBarHit(_:)), name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
 //        setupAutoSave()
@@ -258,19 +261,29 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     fileprivate func retrieveAllContacts() {
         sharedContactDataService.getContactVOs { (contacts, error) -> Void in
-//            if let error = error as NSError? {
-//                PMLog.D(" error: \(error)")
-//                
-//                let alertController = error.alertController()
-//                alertController.addOKAction()
-//                
-//                self.present(alertController, animated: true, completion: nil)
-//            }
-//            
-//            self.contacts = contacts
-//            
-//            self.refreshControl.endRefreshing()
-//            self.tableView.reloadData()
+            if let error = error {
+                PMLog.D(" error: \(error)")
+            }
+            self.contacts = contacts
+            
+            self.composeView.toContactPicker.reloadData()
+            self.composeView.ccContactPicker.reloadData()
+            self.composeView.bccContactPicker.reloadData()
+            
+            self.composeView.toContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.composeView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.composeView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
+            
+            switch self.viewModel.messageAction!
+            {
+            case .openDraft, .reply, .replyAll:
+                self.focus();
+                self.composeView.notifyViewSize(true)
+                break
+            default:
+                self.composeView.toContactPicker.becomeFirstResponder()
+                break
+            }
         }
     }
     
@@ -396,8 +409,6 @@ extension ComposerViewController : ComposeViewDelegate {
     }
     
     func ComposeViewDidSizeChanged(_ size: CGSize) {
-        //self.composeSize = size
-        //self.updateViewSize()
         self.composeViewSize = size.height;
         let w = UIScreen.main.applicationFrame.width;
         self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize )
@@ -406,11 +417,6 @@ extension ComposerViewController : ComposeViewDelegate {
     }
     
     func ComposeViewDidOffsetChanged(_ offset: CGPoint){
-        //        if ( self.cousorOffset  != offset.y)
-        //        {
-        //            self.cousorOffset = offset.y
-        //            self.updateAutoScroll()
-        //        }
     }
     
     func composeViewDidTapNextButton(_ composeView: ComposeView) {
@@ -559,5 +565,76 @@ extension ComposerViewController : ComposeViewDataSource {
 //        }
         return selectedContacts
     }
+}
+
+// MARK: - AttachmentsViewControllerDelegate
+extension ComposerViewController: AttachmentsTableViewControllerDelegate {
+    
+    func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments attachments: [Any]) {
+        self.attachments = attachments
+    }
+    
+    func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment attachment: Attachment) {
+        self.collectDraft()
+        self.viewModel.uploadAtt(attachment)
+    }
+    
+    func attachments(_ attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
+        self.collectDraft()
+        
+        if let content_id = attachment.getContentID(), !content_id.isEmpty && attachment.isInline() {
+            self.removeEmbedImage(byCID: "cid:\(content_id)")
+        }
+        
+        self.viewModel.deleteAtt(attachment)
+    }
+    
+    func attachments(_ attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) {
+    }
+    
+    func attachments(_ attViewController: AttachmentsTableViewController, error: String) {
+    }
+}
+
+// MARK: - UIPickerViewDataSource
+
+extension ComposerViewController : UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return kNumberOfColumnsInTimePicker
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if (component == 0) {
+            return kNumberOfDaysInTimePicker
+        } else {
+            return kNumberOfHoursInTimePicker
+        }
+    }
+}
+
+// MARK: - UIPickerViewDelegate
+
+extension ComposerViewController : UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if (component == 0) {
+            return "\(row) " + NSLocalizedString("days", comment: "")
+        } else {
+            return "\(row) " + NSLocalizedString("Hours", comment: "")
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedDay = pickerView.selectedRow(inComponent: 0)
+        let selectedHour = pickerView.selectedRow(inComponent: 1)
+        
+        let day = "\(selectedDay) " + NSLocalizedString("days", comment: "")
+        let hour = "\(selectedHour) " + NSLocalizedString("Hours", comment: "")
+        self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
+    }
+    
+    
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return super.canPerformAction(action, withSender: sender)
+    }
+    
 }
 

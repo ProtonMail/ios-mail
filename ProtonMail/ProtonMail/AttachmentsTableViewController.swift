@@ -191,15 +191,17 @@ class AttachmentsTableViewController: UITableViewController {
     }
     
     func showSizeErrorAlert( _ didReachedSizeLimitation: Int) {
-        let alert = NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description").alertController()
-        alert.addOKAction()
-        present(alert, animated: true, completion: nil)
+        //TODO::Fix later
+//        let alert = NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description").alertController()
+//        alert.addOKAction()
+//        present(alert, animated: true, completion: nil)
     }
     
     func showErrorAlert( _ error: String) {
-        let alert = NSLocalizedString(error, comment: "").alertController()
-        alert.addOKAction()
-        present(alert, animated: true, completion: nil)
+        //TODO::Fix later
+//        let alert = NSLocalizedString(error, comment: "").alertController()
+//        alert.addOKAction()
+//        present(alert, animated: true, completion: nil)
     }
     
     
@@ -489,7 +491,9 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
     }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.lightContent, animated: false)
+        
+        //TODO::Fix later
+//        UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.lightContent, animated: false)
         configureNavigationBar(navigationController)
     }
 }
