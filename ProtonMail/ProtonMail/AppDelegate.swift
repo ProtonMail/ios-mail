@@ -186,7 +186,7 @@ extension AppDelegate: UIApplicationDelegate {
         sharedMessageDataService.purgeOldMessages()
         
         
-        sharedKeychain.keychain().setString("Keychain Group", forKey: "Test")
+        sharedKeychain.keychain().setString("Keychain 1 * Group", forKey: "Test")
         let t = sharedKeychain.keychain().string(forKey: "Test")
         
         PMLog.D(t!)

@@ -20,7 +20,7 @@ final class KeychainWrapper {
     }
     
     init() {
-        prefix = Bundle.main.infoDictionary!["AppIdentifierPrefix"] as! String
+        prefix = "6UN54H93QT."
         #if Enterprise
             group = prefix + "com.protonmail.protonmail"
             service = "com.protonmail"
