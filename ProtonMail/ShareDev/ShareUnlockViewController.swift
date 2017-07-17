@@ -34,8 +34,6 @@ class ShareUnlockViewController: UIViewController {
         
         PMLog.D(t)
 
-
-        
         let signinFlow = getViewFlow()
         switch signinFlow {
         case .requirePin:

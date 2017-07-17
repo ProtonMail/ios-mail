@@ -184,13 +184,6 @@ extension AppDelegate: UIApplicationDelegate {
             userCachedStatus.exitTime = "\(timeInterval)";
         }
         sharedMessageDataService.purgeOldMessages()
-        
-        
-        sharedKeychain.keychain().setString("Keychain 1 * Group", forKey: "Test")
-        let t = sharedKeychain.keychain().string(forKey: "Test")
-        
-        PMLog.D(t!)
-        
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {

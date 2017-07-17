@@ -47,7 +47,7 @@ final public class AuthCredential: NSObject, NSCoding {
                 }
             }
         #else
-            if let data = UICKeyChainStore.data(forKey: Key.keychainStore) {
+            if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
                     try authCredential.setupToken(password)
                 }
@@ -123,7 +123,7 @@ final public class AuthCredential: NSObject, NSCoding {
         #if DEBUG
             authDebugCached.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
         #else
-            UICKeyChainStore().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
+            sharedKeychain.keychain().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
         #endif
     }
     
@@ -136,7 +136,7 @@ final public class AuthCredential: NSObject, NSCoding {
                 }
             }
         #else
-            if let data = UICKeyChainStore.data(forKey: Key.keychainStore) {
+            if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
                     return authCredential.privateKey ?? ""
                 }
@@ -153,7 +153,7 @@ final public class AuthCredential: NSObject, NSCoding {
                 }
             }
         #else
-            if let data = UICKeyChainStore.data(forKey: Key.keychainStore) {
+            if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
                     return authCredential.passwordKeySalt
                 }
@@ -166,7 +166,8 @@ final public class AuthCredential: NSObject, NSCoding {
     public class func clearFromKeychain() {
         userCachedStatus.isForcedLogout = true
         authDebugCached.removeObject(forKey: Key.keychainStore)
-        UICKeyChainStore.removeItem(forKey: Key.keychainStore)
+        UICKeyChainStore.removeItem(forKey: Key.keychainStore) //older version
+        sharedKeychain.keychain().removeItem(forKey: Key.keychainStore) //newer version
     }
     
     public class func expireOrClear(_ token : String?) {
@@ -190,7 +191,7 @@ final public class AuthCredential: NSObject, NSCoding {
                 }
             }
         #else
-            if let data = UICKeyChainStore.data(forKey: Key.keychainStore) {
+            if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
                     return authCredential
                 }

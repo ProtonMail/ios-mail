@@ -101,14 +101,16 @@ public class UserTempCachedStatus: NSObject, NSCoding {
         #if DEBUG
             userDebugCached.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
         #else
-            UICKeyChainStore().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
+            sharedKeychain.keychain().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
         #endif
     }
     
     // MARK - Class methods
     public class func clearFromKeychain() {
         userDebugCached.removeObject(forKey: Key.keychainStore)
-        UICKeyChainStore.removeItem(forKey: Key.keychainStore)
+        UICKeyChainStore.removeItem(forKey: Key.keychainStore) // older version
+        
+        sharedKeychain.keychain().removeItem(forKey: Key.keychainStore) //newer version
     }
     
     public class func fetchFromKeychain() -> UserTempCachedStatus? {

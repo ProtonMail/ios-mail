@@ -87,10 +87,10 @@ class UserDataService {
     // Value is only stored in the keychain
     var password: String? {
         get {
-            return UICKeyChainStore.string(forKey: Key.password)
+            return sharedKeychain.keychain().string(forKey: Key.password)
         }
         set {
-            UICKeyChainStore.setString(newValue, forKey: Key.password)
+            sharedKeychain.keychain().setString(newValue, forKey: Key.password)
         }
     }
     
@@ -246,10 +246,10 @@ class UserDataService {
     /// Value is only stored in the keychain
     var mailboxPassword: String? {
         get {
-            return UICKeyChainStore.string(forKey: Key.mailboxPassword)
+            return sharedKeychain.keychain().string(forKey: Key.mailboxPassword)
         }
         set {
-            UICKeyChainStore.setString(newValue, forKey: Key.mailboxPassword)
+            sharedKeychain.keychain().setString(newValue, forKey: Key.mailboxPassword)
         }
     }
     
