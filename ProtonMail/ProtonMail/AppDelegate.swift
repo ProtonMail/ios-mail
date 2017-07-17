@@ -184,6 +184,15 @@ extension AppDelegate: UIApplicationDelegate {
             userCachedStatus.exitTime = "\(timeInterval)";
         }
         sharedMessageDataService.purgeOldMessages()
+        
+        
+
+        UICKeyChainStore.setString("Keychain Group", forKey: "Test", service: "com.protonmail", accessGroup: "6UN54H93QT.com.protonmail.protonmail")
+        let t = UICKeyChainStore.string(forKey: "Test", service: "com.protonmail", accessGroup: "6UN54H93QT.com.protonmail.protonmail")
+        
+        
+        PMLog.D(t!)
+        
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
