@@ -17,7 +17,57 @@ class ShareUnlockViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(ComposerViewController.cancelButtonTapped(sender:)))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.save, target: self, action: #selector(ComposerViewController.saveButtonTapped(sender:)))
+        
+        ///
+
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+                PMLog.D( NSLocalizedString("v", comment: "versions first character ") + version + "(\(build))" )
+            } else {
+                PMLog.D(  NSLocalizedString("v", comment: "versions first character ") + version )
+            }
+        } else {
+             PMLog.D( "Can't find the version" )
+        }
+
+        
+        let signinFlow = getViewFlow()
+        switch signinFlow {
+        case .requirePin:
+            sharedUserDataService.isSignedIn = false
+//            self.performSegue(withIdentifier: kSegueToPinCodeViewNoAnimation, sender: self)
+            break
+        case .requireTouchID:
+            sharedUserDataService.isSignedIn = false
+//            showTouchID(false)
+//            authenticateUser()
+            break
+        case .restore:
+//            signInIfRememberedCredentials()
+//            setupView();
+            break
+        }
+        
     }
+    
+    fileprivate func getViewFlow() -> SignInUIFlow {
+        if sharedTouchID.showTouchIDOrPin() {
+            if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
+                self.view.backgroundColor = UIColor.red
+                return SignInUIFlow.requirePin
+            } else {
+                //check touch id status
+                if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+                    return SignInUIFlow.requireTouchID
+                } else {
+                    return SignInUIFlow.restore
+                }
+            }
+        } else {
+            return SignInUIFlow.restore
+        }
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

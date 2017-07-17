@@ -19,11 +19,6 @@ import Fabric
 import Crashlytics
 import LocalAuthentication
 
-fileprivate enum SignInUIFlow : Int {
-    case requirePin = 0
-    case requireTouchID = 1
-    case restore = 2
-}
 
 //class SignInViewController: BaseViewController {
 class SignInViewController: ProtonMailViewController {

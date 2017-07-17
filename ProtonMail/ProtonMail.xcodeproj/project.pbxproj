@@ -507,6 +507,7 @@
 		755F92191C7E6D0D00BAEDF9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755F92181C7E6D0D00BAEDF9 /* OnboardingView.swift */; };
 		755F921B1C7E6D1F00BAEDF9 /* OnboardingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */; };
 		755F921D1C7E7FF300BAEDF9 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755F921C1C7E7FF300BAEDF9 /* Onboarding.swift */; };
+		7561836B1F1D262C00EF02DA /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713171DCD616D0084BF34 /* SignInViewModel.swift */; };
 		7564898E1B7DBE64007EA207 /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898D1B7DBE64007EA207 /* LabelAPI.swift */; };
 		756489901B7DBE8C007EA207 /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */; };
 		756489921B7DC8B8007EA207 /* LabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756489911B7DC8B8007EA207 /* LabelExtension.swift */; };
@@ -2340,6 +2341,9 @@
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
 						};
 					};
 					75DE7CB21CAAEA4900F5443E = {
@@ -2348,6 +2352,12 @@
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.DataProtection = {
+								enabled = 0;
+							};
+							com.apple.Keychain = {
 								enabled = 1;
 							};
 							com.apple.Push = {
@@ -3042,6 +3052,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7561836B1F1D262C00EF02DA /* SignInViewModel.swift in Sources */,
 				753E5AD31F1821000090C0F9 /* TouchID.swift in Sources */,
 				7512AA621F1808BB00D84955 /* OrganizationsAPI.swift in Sources */,
 				753E5AB51F181A500090C0F9 /* MessageSpamScore.swift in Sources */,

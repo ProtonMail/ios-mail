@@ -19,7 +19,11 @@ class SharedCacheBase {
         
     convenience init (shared : UserDefaults) {
         self.init()
-        self.userDefaults = shared
+        
+//        shared.addSuite(named: "group.com.protonmail.protonmail")
+//        self.userDefaults = shared
+        
+        self.userDefaults = UserDefaults(suiteName: "group.com.protonmail.protonmail")
     }
     
     deinit {
