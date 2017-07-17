@@ -45,5 +45,7 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>ShareExtensionEntry</string>
 	</dict>
+    <key>AppIdentifierPrefix</key>
+    <string>$(AppIdentifierPrefix)</string>
 </dict>
 </plist>

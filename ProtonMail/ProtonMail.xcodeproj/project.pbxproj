@@ -248,6 +248,9 @@
 		7518393F1B3DCA3000C714A6 /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518393E1B3DCA3000C714A6 /* EventAPI.swift */; };
 		75187BB11CAC54DD00C84382 /* phone_country_code.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */; };
 		75187BB21CAC54DD00C84382 /* phone_country_code.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */; };
+		751900741F1D4A5700DB68ED /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751900731F1D4A5700DB68ED /* KeychainWrapper.swift */; };
+		751900751F1D4A5700DB68ED /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751900731F1D4A5700DB68ED /* KeychainWrapper.swift */; };
+		751900761F1D4A5700DB68ED /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751900731F1D4A5700DB68ED /* KeychainWrapper.swift */; };
 		751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B446D1B81245100B68CD6 /* TableCellLabelView.swift */; };
 		751C5FEA1C49C17700949FBF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
 		751CE0261DDFBD0600D5EC66 /* ServerNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */; };
@@ -1005,6 +1008,7 @@
 		751562541B68E8050066FE38 /* EmailAttachmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailAttachmentView.swift; sourceTree = "<group>"; };
 		7516452D1D7F66C800DE0BD2 /* test_email.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = test_email.html; sourceTree = "<group>"; };
 		7518393E1B3DCA3000C714A6 /* EventAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAPI.swift; sourceTree = "<group>"; };
+		751900731F1D4A5700DB68ED /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeychainWrapper.swift; path = ProtonMail/KeychainWrapper.swift; sourceTree = SOURCE_ROOT; };
 		751B446D1B81245100B68CD6 /* TableCellLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCellLabelView.swift; sourceTree = "<group>"; };
 		751C5FE81C49C17700949FBF /* SwiftTryCatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwiftTryCatch.m; sourceTree = "<group>"; };
 		751C5FE91C49C17700949FBF /* SwiftTryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftTryCatch.h; sourceTree = "<group>"; };
@@ -1966,6 +1970,7 @@
 		758ED7E51F05A7CB0028D1A5 /* LocalCache */ = {
 			isa = PBXGroup;
 			children = (
+				751900731F1D4A5700DB68ED /* KeychainWrapper.swift */,
 				07B797C41A6EE5FF00244532 /* AuthCredential.swift */,
 				75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */,
 				75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */,
@@ -2853,6 +2858,7 @@
 				072AB6911A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift in Sources */,
 				75BDECAB1CBCCE5B00982089 /* SetPinCodeModelImpl.swift in Sources */,
 				75DCB2071BA2A1560085BE8C /* RecipientCell.swift in Sources */,
+				751900741F1D4A5700DB68ED /* KeychainWrapper.swift in Sources */,
 				756489901B7DBE8C007EA207 /* LabelsDataService.swift in Sources */,
 				701DDE971AA651100038149C /* ContactVO.swift in Sources */,
 				7510AE7C1AB8D68B00EF3C41 /* SettingDetailViewController.swift in Sources */,
@@ -3081,6 +3087,7 @@
 				7512AA0E1F17F77800D84955 /* ComposeErrorView.swift in Sources */,
 				7512AA321F17FED200D84955 /* APIServiceRequest.swift in Sources */,
 				75555BBD1F1840CF000C0C10 /* AttachmentTableViewCell.swift in Sources */,
+				751900761F1D4A5700DB68ED /* KeychainWrapper.swift in Sources */,
 				753E5ACA1F1820E80090C0F9 /* LanguageManager.swift in Sources */,
 				7512A9F11F17DC9E00D84955 /* AppConstants.swift in Sources */,
 				7512AA4B1F18045800D84955 /* UserCachedStatus.swift in Sources */,
@@ -3276,6 +3283,7 @@
 				75256C931F16DFBD00F2771E /* APIServiceDefined.swift in Sources */,
 				75256C941F16DFBD00F2771E /* APIServiceRequest.swift in Sources */,
 				75256C951F16DFBD00F2771E /* APIServiceResponse.swift in Sources */,
+				751900751F1D4A5700DB68ED /* KeychainWrapper.swift in Sources */,
 				75256C961F16DFBD00F2771E /* AddressAPI.swift in Sources */,
 				75256C971F16DFBD00F2771E /* AuthAPI.swift in Sources */,
 				75256CCD1F16E29E00F2771E /* AppDelegate.swift in Sources */,
