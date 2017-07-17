@@ -29,11 +29,8 @@ class ShareUnlockViewController: UIViewController {
         } else {
              PMLog.D( "Can't find the version" )
         }
-        let keychain = sharedKeychain
-        let t = UICKeyChainStore.string(forKey: "Test", service: "com.protonmail", accessGroup: "6UN54H93QT.com.protonmail.protonmail") ?? "no"
         
-        //UICKeyChainStore.setString("Keychain Group", forKey: "Test")
-        //let t = UICKeyChainStore.string(forKey: "Test") ?? "no"
+        let t = sharedKeychain.keychain().string(forKey: "Test") ?? "no"
         
         PMLog.D(t)
 

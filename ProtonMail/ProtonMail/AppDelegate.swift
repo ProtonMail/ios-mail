@@ -186,10 +186,8 @@ extension AppDelegate: UIApplicationDelegate {
         sharedMessageDataService.purgeOldMessages()
         
         
-
-        UICKeyChainStore.setString("Keychain Group", forKey: "Test", service: "com.protonmail", accessGroup: "6UN54H93QT.com.protonmail.protonmail")
-        let t = UICKeyChainStore.string(forKey: "Test", service: "com.protonmail", accessGroup: "6UN54H93QT.com.protonmail.protonmail")
-        
+        sharedKeychain.keychain().setString("Keychain Group", forKey: "Test")
+        let t = sharedKeychain.keychain().string(forKey: "Test")
         
         PMLog.D(t!)
         

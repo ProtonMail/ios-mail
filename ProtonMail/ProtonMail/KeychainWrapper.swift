@@ -9,16 +9,26 @@
 import Foundation
 
 let sharedKeychain = KeychainWrapper()
-class KeychainWrapper {
+final class KeychainWrapper {
     
     private var prefix : String!
+    private var service : String!
+    private var group : String!
     
-    private func getKeychain() ->UICKeyChainStore! {
-        return UICKeyChainStore(service: "com.protonmail", accessGroup: "")
+    public func keychain() ->UICKeyChainStore! {
+        return UICKeyChainStore(service: service, accessGroup: group)
     }
     
     init() {
         prefix = Bundle.main.infoDictionary!["AppIdentifierPrefix"] as! String
+        #if Enterprise
+            group = prefix + "com.protonmail.protonmail"
+            service = "com.protonmail"
+
+        #else
+            group = prefix + "ch.protonmail.protonmail"
+            service = "ch.protonmail"
+        #endif
     }
     
     deinit {
