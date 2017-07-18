@@ -70,17 +70,17 @@ class UserDataService {
     
     // MARK: - Private variables
     //TODO::Fix later fileprivate(set)
-    var userInfo: UserInfo? = UserDefaults.standard.customObjectForKey(Key.userInfo) as? UserInfo {
+    var userInfo: UserInfo? = SharedCacheBase.getDefault().customObjectForKey(Key.userInfo) as? UserInfo {
         didSet {
-            UserDefaults.standard.setCustomValue(userInfo, forKey: Key.userInfo)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().setCustomValue(userInfo, forKey: Key.userInfo)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     //TODO::Fix later fileprivate(set)
-    var username: String? = UserDefaults.standard.string(forKey: Key.username) {
+    var username: String? = SharedCacheBase.getDefault().string(forKey: Key.username) {
         didSet {
-            UserDefaults.standard.setValue(username, forKey: Key.username)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().setValue(username, forKey: Key.username)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
@@ -94,31 +94,31 @@ class UserDataService {
         }
     }
     
-    var switchCacheOff: Bool? = UserDefaults.standard.bool(forKey: Key.roleSwitchCache) {
+    var switchCacheOff: Bool? = SharedCacheBase.getDefault().bool(forKey: Key.roleSwitchCache) {
         didSet {
-            UserDefaults.standard.setValue(switchCacheOff, forKey: Key.roleSwitchCache)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().setValue(switchCacheOff, forKey: Key.roleSwitchCache)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    var defaultSignatureStauts: Bool = UserDefaults.standard.bool(forKey: Key.defaultSignatureStatus) {
+    var defaultSignatureStauts: Bool = SharedCacheBase.getDefault().bool(forKey: Key.defaultSignatureStatus) {
         didSet {
-            UserDefaults.standard.setValue(defaultSignatureStauts, forKey: Key.defaultSignatureStatus)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().setValue(defaultSignatureStauts, forKey: Key.defaultSignatureStatus)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    var twoFactorStatus: Int = UserDefaults.standard.integer(forKey: Key.twoFAStatus)  {
+    var twoFactorStatus: Int = SharedCacheBase.getDefault().integer(forKey: Key.twoFAStatus)  {
         didSet {
-            UserDefaults.standard.setValue(twoFactorStatus, forKey: Key.twoFAStatus)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().setValue(twoFactorStatus, forKey: Key.twoFAStatus)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    var passwordMode: Int = UserDefaults.standard.integer(forKey: Key.userPasswordMode)  {
+    var passwordMode: Int = SharedCacheBase.getDefault().integer(forKey: Key.userPasswordMode)  {
         didSet {
-            UserDefaults.standard.setValue(passwordMode, forKey: Key.userPasswordMode)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().setValue(passwordMode, forKey: Key.userPasswordMode)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
@@ -221,17 +221,17 @@ class UserDataService {
         return mailboxPassword != nil
     }
     
-    var isRememberMailboxPassword: Bool = UserDefaults.standard.bool(forKey: Key.isRememberMailboxPassword) {
+    var isRememberMailboxPassword: Bool = SharedCacheBase.getDefault().bool(forKey: Key.isRememberMailboxPassword) {
         didSet {
-            UserDefaults.standard.set(isRememberMailboxPassword, forKey: Key.isRememberMailboxPassword)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().set(isRememberMailboxPassword, forKey: Key.isRememberMailboxPassword)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    var isRememberUser: Bool = UserDefaults.standard.bool(forKey: Key.isRememberUser) {
+    var isRememberUser: Bool = SharedCacheBase.getDefault().bool(forKey: Key.isRememberUser) {
         didSet {
-            UserDefaults.standard.set(isRememberUser, forKey: Key.isRememberUser)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().set(isRememberUser, forKey: Key.isRememberUser)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
@@ -768,10 +768,10 @@ class UserDataService {
     func cleanUpIfFirstRun() {
         let firstRunKey = "FirstRunKey"
         
-        if UserDefaults.standard.object(forKey: firstRunKey) == nil {
+        if SharedCacheBase.getDefault().object(forKey: firstRunKey) == nil {
             clearAll()
-            UserDefaults.standard.set(Date(), forKey: firstRunKey)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().set(Date(), forKey: firstRunKey)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     

@@ -16,7 +16,9 @@
 
 import Foundation
 
-public let authDebugCached =  UserDefaults.standard
+public let authDebugCached = SharedCacheBase.getDefault()
+
+
 final public class AuthCredential: NSObject, NSCoding {
     struct Key{
         static let keychainStore = "keychainStoreKey"
@@ -41,7 +43,7 @@ final public class AuthCredential: NSObject, NSCoding {
     
     public class func setupToken (_ password:String, isRememberMailbox : Bool = true) throws {
         #if DEBUG
-            if let data = authDebugCached.data(forKey: Key.keychainStore) {
+            if let data = authDebugCached?.data(forKey: Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
                     try authCredential.setupToken(password)
                 }
@@ -121,7 +123,7 @@ final public class AuthCredential: NSObject, NSCoding {
     public func storeInKeychain() {
         userCachedStatus.isForcedLogout = false
         #if DEBUG
-            authDebugCached.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
+            authDebugCached?.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
         #else
             sharedKeychain.keychain().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
         #endif
@@ -130,7 +132,7 @@ final public class AuthCredential: NSObject, NSCoding {
     public class func getPrivateKey() -> String {
         
         #if DEBUG
-            if let data = authDebugCached.data(forKey: Key.keychainStore) {
+            if let data = authDebugCached?.data(forKey: Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
                     return authCredential.privateKey ?? ""
                 }
@@ -147,7 +149,7 @@ final public class AuthCredential: NSObject, NSCoding {
     
     public class func getKeySalt() -> String? {
         #if DEBUG
-            if let data = authDebugCached.data(forKey: Key.keychainStore) {
+            if let data = authDebugCached?.data(forKey: Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
                     return authCredential.passwordKeySalt
                 }
@@ -165,7 +167,7 @@ final public class AuthCredential: NSObject, NSCoding {
     // MARK - Class methods
     public class func clearFromKeychain() {
         userCachedStatus.isForcedLogout = true
-        authDebugCached.removeObject(forKey: Key.keychainStore)
+        authDebugCached?.removeObject(forKey: Key.keychainStore)
         UICKeyChainStore.removeItem(forKey: Key.keychainStore) //older version
         sharedKeychain.keychain().removeItem(forKey: Key.keychainStore) //newer version
     }
@@ -185,7 +187,7 @@ final public class AuthCredential: NSObject, NSCoding {
     public class func fetchFromKeychain() -> AuthCredential? {
         
         #if DEBUG
-            if let data = authDebugCached.data(forKey: Key.keychainStore) {
+            if let data = authDebugCached?.data(forKey: Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
                     return authCredential
                 }

@@ -9,7 +9,7 @@
 import Foundation
 
 
-public let userDebugCached =  UserDefaults.standard
+public let userDebugCached =  SharedCacheBase.getDefault()
 public class UserTempCachedStatus: NSObject, NSCoding {
     struct Key{
         static let keychainStore = "UserTempCachedStatusKey"
@@ -99,7 +99,7 @@ public class UserTempCachedStatus: NSObject, NSCoding {
     public func storeInKeychain() {
         userCachedStatus.isForcedLogout = false
         #if DEBUG
-            userDebugCached.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
+            userDebugCached?.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
         #else
             sharedKeychain.keychain().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
         #endif
@@ -107,7 +107,7 @@ public class UserTempCachedStatus: NSObject, NSCoding {
     
     // MARK - Class methods
     public class func clearFromKeychain() {
-        userDebugCached.removeObject(forKey: Key.keychainStore)
+        userDebugCached?.removeObject(forKey: Key.keychainStore)
         UICKeyChainStore.removeItem(forKey: Key.keychainStore) // older version
         
         sharedKeychain.keychain().removeItem(forKey: Key.keychainStore) //newer version
@@ -116,7 +116,7 @@ public class UserTempCachedStatus: NSObject, NSCoding {
     public class func fetchFromKeychain() -> UserTempCachedStatus? {
         
         #if DEBUG
-            if let data = userDebugCached.data(forKey: Key.keychainStore) {
+            if let data = userDebugCached?.data(forKey: Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? UserTempCachedStatus {
                     return authCredential
                 }

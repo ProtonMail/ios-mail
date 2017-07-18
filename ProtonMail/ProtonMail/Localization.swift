@@ -35,7 +35,7 @@ public class Localization {
     }
     
     class func currentLanguage() -> String {
-        if let currentLanguage = UserDefaults.standard.object(forKey: kProtonMailCurrentLanguageKey) as? String {
+        if let currentLanguage = SharedCacheBase.getDefault().object(forKey: kProtonMailCurrentLanguageKey) as? String {
             return currentLanguage
         }
         return defaultLanguage()

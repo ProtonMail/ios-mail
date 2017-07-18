@@ -17,7 +17,7 @@
 
 import Foundation
 
-let lastUpdatedStore = LastUpdatedStore(shared: UserDefaults.standard)
+let lastUpdatedStore = LastUpdatedStore()
 final class UpdateTime : NSObject {
     var start : Date
     var end : Date

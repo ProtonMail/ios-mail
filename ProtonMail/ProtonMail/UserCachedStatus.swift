@@ -8,7 +8,7 @@
 
 import Foundation
 
-let userCachedStatus = UserCachedStatus(shared: UserDefaults.standard)
+let userCachedStatus = UserCachedStatus()
 
 //the data in there store longer.
 

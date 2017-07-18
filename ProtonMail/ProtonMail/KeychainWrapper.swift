@@ -34,10 +34,4 @@ final class KeychainWrapper {
     deinit {
         //
     }
-    
-//    func setValue(_ value: Any?, forKey key: String)
-//    {
-//        self.userDefaults.setValue(value, forKey: key)
-//        self.userDefaults.synchronize()
-//    }
 }

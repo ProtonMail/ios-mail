@@ -10,7 +10,7 @@ import Foundation
 
 
 
-let cachedBugReport = BugReportCache(shared: UserDefaults.standard)
+let cachedBugReport = BugReportCache()
 
 final class BugReportCache : SharedCacheBase {
     

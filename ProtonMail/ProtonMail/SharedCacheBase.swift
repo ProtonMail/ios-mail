@@ -9,21 +9,25 @@
 import Foundation
 
 
-class SharedCacheBase {
+public class SharedCacheBase {
     
     fileprivate var userDefaults : UserDefaults!
     
     func getShared() ->UserDefaults! {
         return self.userDefaults
     }
+    
+    init () {
+        #if Enterprise
+            self.userDefaults = UserDefaults(suiteName: "group.com.protonmail.protonmail")
+        #else
+            self.userDefaults = UserDefaults(suiteName: "group.ch.protonmail.protonmail")
+        #endif
+    }
         
     convenience init (shared : UserDefaults) {
         self.init()
-        
-//        shared.addSuite(named: "group.com.protonmail.protonmail")
-//        self.userDefaults = shared
-        
-        self.userDefaults = UserDefaults(suiteName: "group.com.protonmail.protonmail")
+        self.userDefaults = shared
     }
     
     deinit {
@@ -34,5 +38,13 @@ class SharedCacheBase {
     {
         self.userDefaults.setValue(value, forKey: key)
         self.userDefaults.synchronize()
+    }
+    
+    class func getDefault() ->UserDefaults! {
+        #if Enterprise
+            return UserDefaults(suiteName: "group.com.protonmail.protonmail")
+        #else
+            return UserDefaults(suiteName: "group.ch.protonmail.protonmail")
+        #endif
     }
 }

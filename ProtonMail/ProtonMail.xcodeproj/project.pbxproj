@@ -251,6 +251,7 @@
 		751900741F1D4A5700DB68ED /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751900731F1D4A5700DB68ED /* KeychainWrapper.swift */; };
 		751900751F1D4A5700DB68ED /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751900731F1D4A5700DB68ED /* KeychainWrapper.swift */; };
 		751900761F1D4A5700DB68ED /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751900731F1D4A5700DB68ED /* KeychainWrapper.swift */; };
+		751900771F1D832C00DB68ED /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
 		751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B446D1B81245100B68CD6 /* TableCellLabelView.swift */; };
 		751C5FEA1C49C17700949FBF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
 		751CE0261DDFBD0600D5EC66 /* ServerNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */; };
@@ -1970,14 +1971,14 @@
 		758ED7E51F05A7CB0028D1A5 /* LocalCache */ = {
 			isa = PBXGroup;
 			children = (
-				751900731F1D4A5700DB68ED /* KeychainWrapper.swift */,
 				07B797C41A6EE5FF00244532 /* AuthCredential.swift */,
+				752A9EBF1DB8286C008D4392 /* BugReportCache.swift */,
+				754BD9A41CB31DB300913A5C /* DeviceInfoCache.swift */,
+				751900731F1D4A5700DB68ED /* KeychainWrapper.swift */,
+				07DD68A21A96CFB800ED130C /* LastUpdatedStore.swift */,
 				75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */,
 				75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */,
 				7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */,
-				07DD68A21A96CFB800ED130C /* LastUpdatedStore.swift */,
-				754BD9A41CB31DB300913A5C /* DeviceInfoCache.swift */,
-				752A9EBF1DB8286C008D4392 /* BugReportCache.swift */,
 			);
 			name = LocalCache;
 			sourceTree = "<group>";
@@ -3172,6 +3173,7 @@
 				7512AA491F18039700D84955 /* DataService+Error.swift in Sources */,
 				7512AA6A1F180DAD00D84955 /* LastUpdatedStore.swift in Sources */,
 				7512AA251F17FD4A00D84955 /* ComposeViewModel.swift in Sources */,
+				751900771F1D832C00DB68ED /* UserTempCachedStatus.swift in Sources */,
 				7512AA011F17EA4300D84955 /* ViewModelService.swift in Sources */,
 				753E5AB61F181A5F0090C0F9 /* EncryptTypes.swift in Sources */,
 				7512AA311F17FEC400D84955 /* AuthAPI.swift in Sources */,
