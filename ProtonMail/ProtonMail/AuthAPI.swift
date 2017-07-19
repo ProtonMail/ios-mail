@@ -61,7 +61,7 @@ final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return AuthAPI.Path + "/info" + AppConstants.getDebugOption
+        return AuthAPI.Path + "/info" + AppConstants.DEBUG_OPTION
     }
     
     override open func getIsAuthFunction() -> Bool {
@@ -77,7 +77,7 @@ final class AuthModulusRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return AuthAPI.Path + "/modulus" + AppConstants.getDebugOption
+        return AuthAPI.Path + "/modulus" + AppConstants.DEBUG_OPTION
     }
     
     override open func getIsAuthFunction() -> Bool {
@@ -134,7 +134,7 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return AuthAPI.Path + AppConstants.getDebugOption
+        return AuthAPI.Path + AppConstants.DEBUG_OPTION
     }
     
     override open func getIsAuthFunction() -> Bool {
@@ -173,7 +173,7 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return AuthAPI.Path + "/refresh" + AppConstants.getDebugOption
+        return AuthAPI.Path + "/refresh" + AppConstants.DEBUG_OPTION
     }
     
     override open func getIsAuthFunction() -> Bool {
@@ -194,7 +194,7 @@ final class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getRequestPath() -> String {
-        return AuthAPI.Path + AppConstants.getDebugOption
+        return AuthAPI.Path + AppConstants.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {

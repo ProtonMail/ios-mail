@@ -18,7 +18,7 @@ final class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
     }
     
     override open func getRequestPath() -> String {
-        return EventAPI.Path + "/\(self.eventID)" + AppConstants.getDebugOption
+        return EventAPI.Path + "/\(self.eventID)" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -30,7 +30,7 @@ final class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
 final class EventLatestIDRequest<T : ApiResponse> : ApiRequest<T>{
 
     override open func getRequestPath() -> String {
-        return EventAPI.Path + "/latest" + AppConstants.getDebugOption
+        return EventAPI.Path + "/latest" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {

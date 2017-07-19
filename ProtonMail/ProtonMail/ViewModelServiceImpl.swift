@@ -159,4 +159,14 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     
+    
+    
+    //
+    override func cleanLegacy() {
+        
+        //get current version
+        
+    }
+
+    
 }

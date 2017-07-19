@@ -30,7 +30,7 @@ final class UpdateAddressRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getRequestPath() -> String {
-        return AddressesAPI.Path + "/" + addressid + AppConstants.getDebugOption
+        return AddressesAPI.Path + "/" + addressid + AppConstants.DEBUG_OPTION
     }
     
     override func getVersion() -> Int {

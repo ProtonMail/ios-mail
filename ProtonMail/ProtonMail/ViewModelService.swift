@@ -65,6 +65,10 @@ public class ViewModelService {
         
     }
     
-    
+    func cleanLegacy() {
+        
+        //get current version
+        
+    }
 }
 

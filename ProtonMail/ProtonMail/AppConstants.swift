@@ -9,24 +9,23 @@
 import Foundation
 
 
-public class AppConstants {
+class AppConstants {
     
+    static let CacheVersion : Int = 98
+    static let AuthCacheVersion : Int = 14
+    static let SpaceWarningThreshold: Double = 80
+    static let SplashVersion : Int = 1
+    static let TourVersion : Int = 2
     
-    static public let CacheVersion : Int = 98
-    static public let AuthCacheVersion : Int = 14
-    static public let SpaceWarningThreshold: Double = 80
-    static public let SplashVersion : Int = 1
-    static public let TourVersion : Int = 2
-    
-    static public let AskTouchID : Int = 1
-    static public var AppVersion : Int = 1
+    static let AskTouchID : Int = 1
+    static var AppVersion : Int = 1
     
     //
-    static public let URL_Protocol : String = "https://"
+    static let URL_Protocol : String = "https://"
     //static let URL_Protocol : String = "http://"
     
     //live api
-    static public let URL_HOST : String = "api.protonmail.ch"
+    static let URL_HOST : String = "api.protonmail.ch"
     
     //live test api
     //static let URL_HOST : String = "test-api.protonmail.ch"
@@ -45,21 +44,21 @@ public class AppConstants {
     
     //api options
     //static let API_PATH : String = "/api"
-    static public let API_PATH : String = ""
+    static let API_PATH : String = ""
     
-    static public var API_HOST_URL : String {
+    static var API_HOST_URL : String {
         get {
             return URL_Protocol + URL_HOST
         }
     }
     
-    static public var API_FULL_URL : String {
+    static var API_FULL_URL : String {
         get {
             return API_HOST_URL + API_PATH
         }
     }
     
-    static public var getDebugOption : String {
+    static var DEBUG_OPTION : String {
         get {
             #if DEBUG
                 return "" //"?XDEBUG_SESSION_START=\(18073)"
@@ -68,5 +67,17 @@ public class AppConstants {
             #endif
         }
     }
+    
+    //app share group 
+    static var APP_GROUP : String {
+        get {
+            #if Enterprise
+                return "group.com.protonmail.protonmail"
+            #else
+                return "group.ch.protonmail.protonmail"
+            #endif
+        }
+    }
+    
 }
 

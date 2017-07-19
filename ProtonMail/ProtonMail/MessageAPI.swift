@@ -12,7 +12,7 @@ import Foundation
 // MARK : Get messages part
 final class MessageCountRequest<T : ApiResponse> : ApiRequest<T> {
     override open func getRequestPath() -> String {
-        return MessageAPI.Path + "/count" + AppConstants.getDebugOption
+        return MessageAPI.Path + "/count" + AppConstants.DEBUG_OPTION
     }
     override open func getVersion() -> Int {
         return MessageAPI.V_MessageFetchRequest
@@ -57,7 +57,7 @@ final class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getRequestPath() -> String {
-        return MessageAPI.Path + AppConstants.getDebugOption
+        return MessageAPI.Path + AppConstants.DEBUG_OPTION
     }
     
     override func getVersion() -> Int {
@@ -122,7 +122,7 @@ final class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getRequestPath() -> String {
-        return MessageAPI.Path + AppConstants.getDebugOption
+        return MessageAPI.Path + AppConstants.DEBUG_OPTION
     }
     
     override func getVersion() -> Int {
@@ -185,7 +185,7 @@ final class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> {
     }
     
     override func getRequestPath() -> String {
-        return MessageAPI.Path + "/draft/" + message.messageID + AppConstants.getDebugOption
+        return MessageAPI.Path + "/draft/" + message.messageID + AppConstants.DEBUG_OPTION
     }
     
     override func getVersion() -> Int {
@@ -240,7 +240,7 @@ final class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
     }
     
     override func getRequestPath() -> String {
-        return MessageAPI.Path + "/" + self.action + AppConstants.getDebugOption
+        return MessageAPI.Path + "/" + self.action + AppConstants.DEBUG_OPTION
     }
     
     override func getVersion() -> Int {
@@ -265,7 +265,7 @@ final class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
     }
     
     override func getRequestPath() -> String {
-        return MessageAPI.Path + "/" + location + AppConstants.getDebugOption
+        return MessageAPI.Path + "/" + location + AppConstants.DEBUG_OPTION
     }
     
     override func getVersion() -> Int {
@@ -331,7 +331,7 @@ final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     }
     
     override func getRequestPath() -> String {
-        return MessageAPI.Path + "/send/" + self.messageID + AppConstants.getDebugOption
+        return MessageAPI.Path + "/send/" + self.messageID + AppConstants.DEBUG_OPTION
     }
     
     override func getVersion() -> Int {

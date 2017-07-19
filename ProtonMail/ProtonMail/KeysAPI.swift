@@ -17,7 +17,7 @@ final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return KeysAPI.Path + "/salts" + AppConstants.getDebugOption
+        return KeysAPI.Path + "/salts" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -139,7 +139,7 @@ final class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getRequestPath() -> String {
-        return KeysAPI.Path + "/private" + AppConstants.getDebugOption
+        return KeysAPI.Path + "/private" + AppConstants.DEBUG_OPTION
     }
     
     override func getVersion() -> Int {
@@ -188,7 +188,7 @@ final class SetupKeyRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getRequestPath() -> String {
-        return KeysAPI.Path + "/setup" + AppConstants.getDebugOption
+        return KeysAPI.Path + "/setup" + AppConstants.DEBUG_OPTION
     }
     
     override func getVersion() -> Int {

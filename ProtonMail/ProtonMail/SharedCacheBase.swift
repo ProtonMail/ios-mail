@@ -18,11 +18,7 @@ public class SharedCacheBase {
     }
     
     init () {
-        #if Enterprise
-            self.userDefaults = UserDefaults(suiteName: "group.com.protonmail.protonmail")
-        #else
-            self.userDefaults = UserDefaults(suiteName: "group.ch.protonmail.protonmail")
-        #endif
+        self.userDefaults = UserDefaults(suiteName: AppConstants.APP_GROUP)
     }
         
     convenience init (shared : UserDefaults) {
@@ -41,10 +37,6 @@ public class SharedCacheBase {
     }
     
     class func getDefault() ->UserDefaults! {
-        #if Enterprise
-            return UserDefaults(suiteName: "group.com.protonmail.protonmail")
-        #else
-            return UserDefaults(suiteName: "group.ch.protonmail.protonmail")
-        #endif
+        return UserDefaults(suiteName: AppConstants.APP_GROUP)
     }
 }

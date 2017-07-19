@@ -10,7 +10,7 @@ import Foundation
 
 //keep this unique
 let sharedVMService : ViewModelService = ViewModelServiceShareImpl()
-class ViewModelServiceShareImpl: ViewModelService {
+final class ViewModelServiceShareImpl: ViewModelService {
 
 
 
