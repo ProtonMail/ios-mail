@@ -16,6 +16,7 @@
 
 import Foundation
 
+@objc(UserInfo)
 // TODO:: this is not very good need refactor
 final class UserInfo : NSObject {
     var displayName: String

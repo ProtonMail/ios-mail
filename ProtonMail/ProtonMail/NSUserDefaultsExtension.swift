@@ -16,40 +16,18 @@
 
 import Foundation
 
-
-class MyUnArchiverDelegate: NSObject, NSKeyedUnarchiverDelegate {
-    
-    // This class is placeholder for unknown classes.
-    // It will eventually be `nil` when decoded.
-    final class UnknowClass: NSObject, NSCoding  {
-        func encode(with aCoder: NSCoder) {
-            
-        }
-
-        init?(coder aDecoder: NSCoder) {
-            super.init()
-            return nil
-        }
-        
-        func encodeWithCoder(aCoder: NSCoder) {
-        }
-    }
-
-    func unarchiver(_ unarchiver: NSKeyedUnarchiver, cannotDecodeObjectOfClassName name: String, originalClasses classNames: [String]) -> AnyClass? {
-        return UnknowClass.self
-    }
-    
-}
-
 extension UserDefaults {
     
     func customObjectForKey(_ key: String) -> Any? {
         if let data = object(forKey: key) as? Data {
-//            let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
-//            let delegate = MyUnArchiverDelegate()
-//            unarchiver.delegate = delegate
-//            
-//            return unarchiver.decodeObject(forKey: "root")
+            NSKeyedUnarchiver.setClass(UserInfo.classForKeyedArchiver(), forClassName: "ProtonMail.UserInfo")
+            NSKeyedUnarchiver.setClass(Address.classForKeyedArchiver(), forClassName: "ProtonMail.Address")
+            NSKeyedUnarchiver.setClass(Key.classForKeyedArchiver(), forClassName: "ProtonMail.Key")
+            
+//            NSKeyedUnarchiver.setClass(Address.classForKeyedArchiver(), forClassName: "UserInfo")
+//            NSKeyedUnarchiver.setClass(UserInfo.classForKeyedArchiver(), forClassName: "ProtonMail.UserInfo")
+//            NSKeyedUnarchiver.setClass(UserInfo.classForKeyedArchiver(), forClassName: "UserInfo")
+            
             return NSKeyedUnarchiver.unarchiveObject(with: data)
         }
         return nil
