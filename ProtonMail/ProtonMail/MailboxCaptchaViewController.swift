@@ -70,18 +70,16 @@ class MailboxCaptchaViewController : UIViewController, UIWebViewDelegate {
     
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         let urlString = request.url?.absoluteString
-
-        //TODO::Fix later
-//        if urlString?.contains("https://www.google.com/intl/en/policies/privacy") == true {
-//            return false
-//        }
-//        
-//        if urlString?.contains("how-to-solve-") == true {
-//            return false
-//        }
-//        if urlString?.contains("https://www.google.com/intl/en/policies/terms") == true {
-//            return false
-//        }
+        if urlString?.contains("https://www.google.com/intl/en/policies/privacy") == true {
+            return false
+        }
+        
+        if urlString?.contains("how-to-solve-") == true {
+            return false
+        }
+        if urlString?.contains("https://www.google.com/intl/en/policies/terms") == true {
+            return false
+        }
 
         
         if let _ = urlString?.range(of: "https://secure.protonmail.com/expired_recaptcha_response://") {

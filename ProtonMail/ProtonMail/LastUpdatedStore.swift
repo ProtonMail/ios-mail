@@ -83,7 +83,6 @@ final class LastUpdatedStore : SharedCacheBase {
         static let lastEventID = "lastEventID"  //
         static let lastCantactsUpdated = "LastCantactsUpdated" //
         
-        
         //Removed at 1.5.5 still need for cleanup
         static let mailboxUnreadCount = "MailboxUnreadCount"
         static let lastInboxesUpdated = "LastInboxesUpdated"
@@ -111,7 +110,8 @@ final class LastUpdatedStore : SharedCacheBase {
     
     var lastEventID: String! {
         get {
-            return getShared().string(forKey: Key.lastEventID) ?? "0"
+            let eid =  getShared().string(forKey: Key.lastEventID) ?? "0"
+            return eid
         }
         set {
             getShared().setValue(newValue, forKey: Key.lastEventID)

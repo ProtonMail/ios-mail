@@ -93,7 +93,16 @@ extension SWRevealViewController {
 let sharedInternetReachability : Reachability = Reachability.forInternetConnection()
 //let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
 
-extension AppDelegate: UIApplicationDelegate {
+extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServiceDelegate {
+    
+    func onLogout(animated: Bool) {
+        self.switchTo(storyboard: .signIn, animated: animated)
+    }
+    
+    func onError(error: NSError) {
+        error.alertToast()
+    }
+
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.checkOrientation(self.window?.rootViewController)
     }
@@ -125,6 +134,7 @@ extension AppDelegate: UIApplicationDelegate {
         Fabric.with([Crashlytics()])
         
         sharedVMService.cleanLegacy()
+        sharedAPIService.delegate = self
         
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
         

@@ -16,48 +16,39 @@
 
 import Foundation
 
-public let authDebugCached = SharedCacheBase.getDefault()
 
 
-final public class AuthCredential: NSObject, NSCoding {
+final class AuthCredential: NSObject, NSCoding {
     struct Key{
         static let keychainStore = "keychainStoreKey"
     }
     
-    public var encryptToken: String!
-    public var refreshToken: String!
-    public var userID: String!
-    public var expiration: Date!
-    public var privateKey : String?
-    public var plainToken : String?
-    public var password : String?
-    public var passwordKeySalt : String?
+    var encryptToken: String!
+    var refreshToken: String!
+    var userID: String!
+    var expiration: Date!
+    var privateKey : String?
+    var plainToken : String?
+    var password : String?
+    var passwordKeySalt : String?
     
-    override public var description: String {
+    override var description: String {
         return "\n  token: \(String(describing: plainToken))\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
     }
     
-    public var isExpired: Bool {
+    var isExpired: Bool {
         return expiration == nil || Date().compare(expiration) != .orderedAscending
     }
     
-    public class func setupToken (_ password:String, isRememberMailbox : Bool = true) throws {
-        #if DEBUG
-            if let data = authDebugCached?.data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    try authCredential.setupToken(password)
-                }
+    class func setupToken (_ password:String, isRememberMailbox : Bool = true) throws {
+        if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
+                try authCredential.setupToken(password)
             }
-        #else
-            if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    try authCredential.setupToken(password)
-                }
-            }
-        #endif
+        }
     }
     
-    public func setupToken (_ password:String) throws {
+    func setupToken (_ password:String) throws {
         if let key = self.privateKey {
             self.plainToken = try self.encryptToken.decryptMessageWithSinglKey(key, passphrase: password)
         } else {
@@ -67,11 +58,11 @@ final public class AuthCredential: NSObject, NSCoding {
         self.storeInKeychain()
     }
     
-    public var token : String? {
+    var token : String? {
         return self.plainToken
     }
     
-    public func update(_ res : AuthResponse!) {
+    func update(_ res : AuthResponse!) {
         self.encryptToken = res.accessToken
         if res.refreshToken != nil {
             self.refreshToken = res.refreshToken
@@ -82,7 +73,7 @@ final public class AuthCredential: NSObject, NSCoding {
         self.passwordKeySalt = res.keySalt
     }
     
-    required public init(res : AuthResponse!) {
+    required init(res : AuthResponse!) {
         super.init()
         self.encryptToken = res.accessToken
         self.refreshToken = res.refreshToken
@@ -92,7 +83,7 @@ final public class AuthCredential: NSObject, NSCoding {
         self.passwordKeySalt = res.keySalt
     }
     
-    required public init(accessToken: String!, refreshToken: String!, userID: String!, expiration: Date!, key : String!, plain: String?, pwd:String?, salt:String?) {
+    required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: Date!, key : String!, plain: String?, pwd:String?, salt:String?) {
         super.init()
         self.encryptToken = accessToken
         self.refreshToken = refreshToken
@@ -104,7 +95,7 @@ final public class AuthCredential: NSObject, NSCoding {
         self.passwordKeySalt = salt
     }
     
-    convenience required public init(coder aDecoder: NSCoder) {
+    convenience required init(coder aDecoder: NSCoder) {
         self.init(accessToken: aDecoder.decodeObject(forKey: CoderKey.accessToken) as? String,
             refreshToken: aDecoder.decodeObject(forKey: CoderKey.refreshToken) as? String,
             userID: aDecoder.decodeObject(forKey: CoderKey.userID) as? String,
@@ -120,59 +111,36 @@ final public class AuthCredential: NSObject, NSCoding {
         storeInKeychain()
     }
     
-    public func storeInKeychain() {
+    func storeInKeychain() {
         userCachedStatus.isForcedLogout = false
-        #if DEBUG
-            authDebugCached?.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
-        #else
-            sharedKeychain.keychain().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
-        #endif
+        sharedKeychain.keychain().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
     }
     
-    public class func getPrivateKey() -> String {
-        
-        #if DEBUG
-            if let data = authDebugCached?.data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    return authCredential.privateKey ?? ""
-                }
+    class func getPrivateKey() -> String {
+        if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
+                return authCredential.privateKey ?? ""
             }
-        #else
-            if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    return authCredential.privateKey ?? ""
-                }
-            }
-        #endif
+        }
         return ""
     }
     
-    public class func getKeySalt() -> String? {
-        #if DEBUG
-            if let data = authDebugCached?.data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    return authCredential.passwordKeySalt
-                }
+    class func getKeySalt() -> String? {
+        if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
+                return authCredential.passwordKeySalt
             }
-        #else
-            if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    return authCredential.passwordKeySalt
-                }
-            }
-        #endif
+        }
         return ""
     }
     
     // MARK - Class methods
-    public class func clearFromKeychain() {
+    class func clearFromKeychain() {
         userCachedStatus.isForcedLogout = true
-        authDebugCached?.removeObject(forKey: Key.keychainStore)
-        UICKeyChainStore.removeItem(forKey: Key.keychainStore) //older version
         sharedKeychain.keychain().removeItem(forKey: Key.keychainStore) //newer version
     }
     
-    public class func expireOrClear(_ token : String?) {
+    class func expireOrClear(_ token : String?) {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
                 if let t = token, t == credential.plainToken {
@@ -184,22 +152,12 @@ final public class AuthCredential: NSObject, NSCoding {
         }
     }
     
-    public class func fetchFromKeychain() -> AuthCredential? {
-        
-        #if DEBUG
-            if let data = authDebugCached?.data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    return authCredential
-                }
+    class func fetchFromKeychain() -> AuthCredential? {
+        if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
+                return authCredential
             }
-        #else
-            if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    return authCredential
-                }
-            }
-        #endif
-
+        }
         return nil
     }
     
@@ -216,7 +174,7 @@ final public class AuthCredential: NSObject, NSCoding {
         static let salt = "passwordKeySalt"
     }
     
-    public func encode(with aCoder: NSCoder) {
+    func encode(with aCoder: NSCoder) {
         aCoder.encode(encryptToken, forKey: CoderKey.accessToken)
         aCoder.encode(refreshToken, forKey: CoderKey.refreshToken)
         aCoder.encode(userID, forKey: CoderKey.userID)

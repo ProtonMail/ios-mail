@@ -20,10 +20,13 @@ import Foundation
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
-let sharedAPIService = APIService()
 
+protocol APIServiceDelegate {
+    func onError(error: NSError)
+}
+
+let sharedAPIService = APIService()
 class APIService {
-    
     // refresh token failed count
     internal var refreshTokenFailedCount = 0
     
@@ -37,6 +40,8 @@ class APIService {
     func getSession() -> AFHTTPSessionManager{
         return sessionManager;
     }
+    
+    var delegate : APIServiceDelegate?
     
     // MARK: - Internal methods
     
@@ -214,10 +219,9 @@ class APIService {
                 DispatchQueue.main.async {
                     if sharedUserDataService.isSignedIn {
                         completion(nil, NSError.authCacheBad())
-                        //TODO::Fix later
-//                        UserTempCachedStatus.backup()
-//                        sharedUserDataService.signOut(true)
-//                        userCachedStatus.signOut()
+                        UserTempCachedStatus.backup()
+                        sharedUserDataService.signOut(true)
+                        userCachedStatus.signOut()
                     }
                 }
             }

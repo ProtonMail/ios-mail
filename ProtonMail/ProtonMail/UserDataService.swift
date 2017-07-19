@@ -41,6 +41,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
+protocol UserDataServiceDelegate {
+    func onLogout(animated: Bool)
+}
+
 let sharedUserDataService = UserDataService()
 
 /// Stores information related to the user
@@ -53,6 +57,8 @@ class UserDataService {
     typealias LoginAsk2FABlock = () -> Void
     typealias LoginErrorBlock = (_ error: NSError) -> Void
     typealias LoginSuccessBlock = (_ mpwd: String?) -> Void
+    
+    var delegate : UserDataServiceDelegate?
     
     struct Key {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
@@ -351,8 +357,8 @@ class UserDataService {
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignOut), object: self)
         clearAll()
         clearAuthToken()
-        //TODO::Fix later
-//        (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
+        delegate?.onLogout(animated: animated)
+        //(UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     
     func signOutAfterSignUp() {
