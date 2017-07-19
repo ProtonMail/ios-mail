@@ -8,8 +8,7 @@
 
 import Foundation
 
-
-public struct NotificationDefined {
+struct NotificationDefined {
     
     static public let CustomizeURLSchema = "customize_url_schema"
     static public let TouchStatusBar = "touchStatusBarClick"

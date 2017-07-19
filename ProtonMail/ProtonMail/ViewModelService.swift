@@ -57,7 +57,6 @@ public class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    
     public func resetView() {
         fatalError("This method must be overridden")
     }
@@ -65,5 +64,7 @@ public class ViewModelService {
     public func signOut() {
         
     }
+    
+    
 }
 

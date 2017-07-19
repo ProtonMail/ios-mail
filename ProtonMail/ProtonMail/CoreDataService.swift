@@ -73,6 +73,18 @@ class CoreDataService {
     
     func newPersistentStoreCoordinator(_ managedObjectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
+        
+        //TODO::Fix later clean up
+        var r : String = ""
+        #if Enterprise
+            r = "group.com.protonmail.protonmail"
+        #else
+            r = "group.ch.protonmail.protonmail"
+        #endif
+        var path = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: r)?.path
+//        var test = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: r)?.appendPathComponent("ProtonMail.sqlite")
+        
+//        var url = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
         var url = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
         do {
             try coordinator?.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)

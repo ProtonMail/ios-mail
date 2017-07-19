@@ -20,10 +20,7 @@ import Crashlytics
 @UIApplicationMain
 class AppDelegate: UIResponder {
     
-    fileprivate let animationDuration: TimeInterval = 0.5
-    
     var window: UIWindow?
-    
     func instantiateRootViewController() -> UIViewController {
         let storyboard = UIStoryboard.Storyboard.signIn
         return UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
@@ -43,7 +40,7 @@ class AppDelegate: UIResponder {
                     if !animated {
                         window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
                     } else {
-                        UIView.animate(withDuration: animationDuration/2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+                        UIView.animate(withDuration: ViewDefined.animationDuration/2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
                             rootViewController.view.alpha = 0
                             }, completion: { (finished) -> Void in
                                 let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
@@ -64,7 +61,7 @@ class AppDelegate: UIResponder {
                                 viewController.view.alpha = 0
                                 window.rootViewController = viewController
                                 
-                                UIView.animate(withDuration: self.animationDuration/2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+                                UIView.animate(withDuration: ViewDefined.animationDuration/2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
                                     viewController.view.alpha = 1.0
                                     }, completion: nil)
                         })
@@ -94,7 +91,7 @@ extension SWRevealViewController {
 
 //move to a manager class later
 let sharedInternetReachability : Reachability = Reachability.forInternetConnection()
-let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
+//let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
 
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {

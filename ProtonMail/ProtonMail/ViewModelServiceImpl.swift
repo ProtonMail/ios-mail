@@ -8,12 +8,11 @@
 
 import Foundation
 
+//keep this unique
 let sharedVMService : ViewModelService = ViewModelServiceImpl()
 class ViewModelServiceImpl: ViewModelService {
-    
     //latest composer view model, not in used now.
     private var latestComposerViewModel : ComposeViewModel?
-    
     
     //the active view controller needs to be reset when resetComposerView be called
     private var activeViewController : ViewModelProtocol?

@@ -556,13 +556,13 @@ extension ComposerViewController : ComposeViewDataSource {
     
     func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: MBContactPicker) ->  [Any]! {
         var selectedContacts: [ContactVO] = [ContactVO]()
-//        if (picker == composeView.toContactPicker) {
-//            selectedContacts = self.viewModel.toSelectedContacts
-//        } else if (picker == composeView.ccContactPicker) {
-//            selectedContacts = self.viewModel.ccSelectedContacts
-//        } else if (picker == composeView.bccContactPicker) {
-//            selectedContacts = self.viewModel.bccSelectedContacts
-//        }
+        if (picker == composeView.toContactPicker) {
+            selectedContacts = self.viewModel.toSelectedContacts
+        } else if (picker == composeView.ccContactPicker) {
+            selectedContacts = self.viewModel.ccSelectedContacts
+        } else if (picker == composeView.bccContactPicker) {
+            selectedContacts = self.viewModel.bccSelectedContacts
+        }
         return selectedContacts
     }
 }
@@ -597,7 +597,6 @@ extension ComposerViewController: AttachmentsTableViewControllerDelegate {
 }
 
 // MARK: - UIPickerViewDataSource
-
 extension ComposerViewController : UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return kNumberOfColumnsInTimePicker
@@ -612,7 +611,6 @@ extension ComposerViewController : UIPickerViewDataSource {
 }
 
 // MARK: - UIPickerViewDelegate
-
 extension ComposerViewController : UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (component == 0) {
@@ -630,7 +628,6 @@ extension ComposerViewController : UIPickerViewDelegate {
         let hour = "\(selectedHour) " + NSLocalizedString("Hours", comment: "")
         self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
     }
-    
     
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return super.canPerformAction(action, withSender: sender)
