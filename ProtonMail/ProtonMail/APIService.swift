@@ -59,8 +59,6 @@ class APIService {
             sessionManager.securityPolicy.allowInvalidCertificates = true
         #endif
         
-        //NSOperationQueueDefaultMaxConcurrentOperationCount sessionManager.operationQueue.maxConcurrentOperationCount
-        //let defaultV = NSOperationQueueDefaultMaxConcurrentOperationCount;
         setupValueTransforms()
     }
     
@@ -81,13 +79,11 @@ class APIService {
                 if authenticated && errorCode == 401 {
                     AuthCredential.expireOrClear(auth?.token)
                     if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
-                        //TODO::Fix later
-//                        error.alertToast()
-//                        UserTempCachedStatus.backup()
-//                        sharedUserDataService.signOut(true);
-//                        userCachedStatus.signOut()
+                        self.delegate?.onError(error: error)
+                        UserTempCachedStatus.backup()
+                        sharedUserDataService.signOut(true);
+                        userCachedStatus.signOut()
                     }else {
-                        //self.setApiVesion(1, appVersion: 1)
                         self.request(method: method, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
                     }
                 } else {
@@ -110,15 +106,14 @@ class APIService {
                     
                     if authenticated && responseCode == 401 {
                         AuthCredential.expireOrClear(auth?.token)
-                        //self.setApiVesion(1, appVersion: 1)
                         self.request(method: method, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
                     } else if responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004 {
                         //TODO::Fix later
 //                        NSError.alertUpdatedToast()
-//                        completion(task, responseDictionary, error)
-//                        UserTempCachedStatus.backup()
-//                        sharedUserDataService.signOut(true);
-//                        userCachedStatus.signOut()
+                        completion(task, responseDictionary, error)
+                        UserTempCachedStatus.backup()
+                        sharedUserDataService.signOut(true);
+                        userCachedStatus.signOut()
                     } else if responseCode == APIErrorCode.API_offline {
                         completion(task, responseDictionary, error)
                     }
@@ -165,10 +160,11 @@ class APIService {
                         DispatchQueue.main.async {
                             //TODO::Fix later
                             completion(nil, NSError.AuthCachePassEmpty())
-//                            UserTempCachedStatus.backup()
-//                            sharedUserDataService.signOut(true) //NOTES:signout + errors
-//                            userCachedStatus.signOut()
-//                            NSError.alertBadTokenToast()
+                            UserTempCachedStatus.backup()
+                            sharedUserDataService.signOut(true) //NOTES:signout + errors
+                            userCachedStatus.signOut()
+                            
+                            //NSError.alertBadTokenToast()
                         }
                     } else {
                         pthread_mutex_unlock(&self.mutex)
@@ -183,9 +179,9 @@ class APIService {
                         DispatchQueue.main.async {
                             //TODO::Fix later
                             completion(nil, NSError.AuthCachePassEmpty())
-//                            UserTempCachedStatus.backup()
-//                            sharedUserDataService.signOut(true)
-//                            userCachedStatus.signOut()
+                            UserTempCachedStatus.backup()
+                            sharedUserDataService.signOut(true)
+                            userCachedStatus.signOut()
 //                            NSError.alertBadTokenToast()
                         }
                     } else {

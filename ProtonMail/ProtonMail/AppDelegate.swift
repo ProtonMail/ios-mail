@@ -135,6 +135,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         
         sharedVMService.cleanLegacy()
         sharedAPIService.delegate = self
+        sharedUserDataService.delegate = self
         
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
         

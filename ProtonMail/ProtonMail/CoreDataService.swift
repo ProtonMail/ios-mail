@@ -73,6 +73,7 @@ class CoreDataService {
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
         guard let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier:AppConstants.APP_GROUP) else {
             //TODO::fix later need add error
+            PMLog.D("Can't find the group")
             return nil
         }
         var url = containerUrl.appendingPathComponent("ProtonMail.sqlite")

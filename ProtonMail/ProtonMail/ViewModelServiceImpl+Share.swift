@@ -11,7 +11,13 @@ import Foundation
 //keep this unique
 let sharedVMService : ViewModelService = ViewModelServiceShareImpl()
 final class ViewModelServiceShareImpl: ViewModelService {
+    
+    private var latestComposerViewModel : ComposeViewModel?
+//    private var activeViewController : ViewModelProtocol?
 
-
-
+    override func newDraftViewModel(_ vmp : ViewModelProtocol) {
+//        activeViewController = vmp
+        latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: .newDraft);
+        vmp.setViewModel(latestComposerViewModel!)
+    }
 }

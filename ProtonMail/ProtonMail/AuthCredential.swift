@@ -16,16 +16,26 @@
 
 import Foundation
 
-
-
 final class AuthCredential: NSObject, NSCoding {
+    
     struct Key{
         static let keychainStore = "keychainStoreKey"
     }
     
+    struct CoderKey {
+        static let accessToken   = "accessTokenCoderKey"
+        static let refreshToken  = "refreshTokenCoderKey"
+        static let userID        = "userIDCoderKey"
+        static let expiration    = "expirationCoderKey"
+        static let key           = "privateKeyCoderKey"
+        static let plainToken    = "plainCoderKey"
+        static let pwd           = "pwdKey"
+        static let salt          = "passwordKeySalt"
+    }
+    
+    var userID: String!
     var encryptToken: String!
     var refreshToken: String!
-    var userID: String!
     var expiration: Date!
     var privateKey : String?
     var plainToken : String?
@@ -42,6 +52,7 @@ final class AuthCredential: NSObject, NSCoding {
     
     class func setupToken (_ password:String, isRememberMailbox : Bool = true) throws {
         if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
             if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
                 try authCredential.setupToken(password)
             }
@@ -159,19 +170,6 @@ final class AuthCredential: NSObject, NSCoding {
             }
         }
         return nil
-    }
-    
-    // MARK - NSCoding
-    
-    struct CoderKey {
-        static let accessToken = "accessTokenCoderKey"
-        static let refreshToken = "refreshTokenCoderKey"
-        static let userID = "userIDCoderKey"
-        static let expiration = "expirationCoderKey"
-        static let key = "privateKeyCoderKey"
-        static let plainToken = "plainCoderKey"
-        static let pwd = "pwdKey"
-        static let salt = "passwordKeySalt"
     }
     
     func encode(with aCoder: NSCoder) {

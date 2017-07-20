@@ -162,18 +162,18 @@ class ViewModelServiceImpl: ViewModelService {
     override func cleanLegacy() {
         //get current cache version
         let currentVersion = userCachedStatus.lastCacheVersion
-        if currentVersion > 0 || currentVersion < 98 {
+        if currentVersion > 0 && currentVersion < 98 {
             sharedCoreDataService.cleanLegacy()//clean core data
             
             //get default sharedbased
             let oldDefault = UserDefaults.standard
             
             //keychain part
-            oldDefault.removeObject(forKey: "keychainStoreKey") //older version
-            UICKeyChainStore.removeItem(forKey: "keychainStoreKey") //older version
+            oldDefault.removeObject(forKey: "keychainStoreKey")
+            UICKeyChainStore.removeItem(forKey: "keychainStoreKey")
             
-            
-            
+            oldDefault.removeObject(forKey: "UserTempCachedStatusKey")
+            UICKeyChainStore.removeItem(forKey: "UserTempCachedStatusKey")
             
             oldDefault.synchronize()
         }
