@@ -450,10 +450,32 @@ extension ComposerViewController : ComposeViewDelegate {
     }
     
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView) {
-        self.performSegue(withIdentifier: kPasswordSegue, sender: self)
-        //        self.actualEncryptionStep = EncryptionStep.DefinePassword
-        //        self.composeView.showDefinePasswordView()
-        //        self.composeView.hidePasswordAndConfirmDoesntMatch()
+        let passwordVC = PasswordEncryptViewController(nibName: "PasswordEncryptViewController", bundle: nil)
+        passwordVC.providesPresentationContextTransitionStyle = true;
+        passwordVC.definesPresentationContext = true;
+        passwordVC.modalTransitionStyle = .crossDissolve
+        passwordVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        
+        //        let popup = segue.destination as! ComposePasswordViewController
+//        popup.pwdDelegate = self
+//        popup.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
+        //popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+//        self.setPresentationStyleForSelfController(self, presentingController: passwordVC)
+      //  passwordVC.mod
+       // self.navigationController.modal
+        
+//        self.present(viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?)
+//        self.navigationController?.pushViewController(passwordVC, animated:true)
+        self.present(passwordVC, animated: true) {
+            
+        }
+        //self.performSegue(withIdentifier: kPasswordSegue, sender: self)
+        //self.actualEncryptionStep = EncryptionStep.DefinePassword
+        //self.composeView.showDefinePasswordView()
+        //self.composeView.hidePasswordAndConfirmDoesntMatch()
+        
+        
+        
     }
     
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView) {

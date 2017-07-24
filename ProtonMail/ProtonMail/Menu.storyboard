@@ -3262,7 +3262,7 @@
         <!--Compose Password View Controller-->
         <scene sceneID="rQ1-Eu-gUm">
             <objects>
-                <viewController modalTransitionStyle="crossDissolve" id="QX9-as-dZj" customClass="ComposePasswordViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="composer_password_view_controller" modalTransitionStyle="crossDissolve" id="QX9-as-dZj" customClass="ComposePasswordViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Upb-C9-LDO"/>
                         <viewControllerLayoutGuide type="bottom" id="JYX-AX-Prv"/>
@@ -3608,7 +3608,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="4671" y="3608"/>
+            <point key="canvasLocation" x="4903" y="3608"/>
         </scene>
         <!--TwoFA Code View Controller-->
         <scene sceneID="w0j-1V-fOM">
