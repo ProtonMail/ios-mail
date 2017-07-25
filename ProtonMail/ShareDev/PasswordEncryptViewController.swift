@@ -113,11 +113,7 @@ class PasswordEncryptViewController: UIViewController {
         pwdDelegate?.Apply(pwd, confirmPassword: pwdConfirm, hint: hint)
         self.dismiss(animated: true, completion: nil)
     }
-    
-    @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
-        dismissKeyboard()
-    }
-    
+
     internal func dismissKeyboard() {
         passwordField.resignFirstResponder()
         confirmPasswordField.resignFirstResponder()
@@ -131,27 +127,26 @@ class PasswordEncryptViewController: UIViewController {
     }
 }
 
-
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension PasswordEncryptViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
-//        let keyboardInfo = notification.keyboardInfo
-//        scrollBottomPaddingConstraint.constant = 0.0
-//        //self.configConstraint(false)
-//        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
-//            self.view.layoutIfNeeded()
-//        }, completion: nil)
+        scrollBottomPaddingConstraint.constant = 0.0
+        guard let duration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double) else {
+                return
+        }
+        UIView.animate(withDuration: duration, delay: 0, options: .curveLinear, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
     
     func keyboardWillShowNotification(_ notification: Notification) {
-//        let keyboardInfo = notification.keyboardInfo
-//        let info: NSDictionary = notification.userInfo! as NSDictionary
-//        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-//            scrollBottomPaddingConstraint.constant = keyboardSize.height;
-//        }
-//        //self.configConstraint(true)
-//        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
-//            self.view.layoutIfNeeded()
-//        }, completion: nil)
+        guard let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
+            let duration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double) else {
+                return
+        }
+        scrollBottomPaddingConstraint.constant = keyboardSize.height;
+        UIView.animate(withDuration: duration, delay: 0, options: .curveLinear, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
