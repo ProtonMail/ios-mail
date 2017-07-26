@@ -165,6 +165,7 @@ final class AuthCredential: NSObject, NSCoding {
     
     class func fetchFromKeychain() -> AuthCredential? {
         if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
             if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
                 return authCredential
             }

@@ -71,7 +71,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.sendButton = UIBarButtonItem(image: UIImage(named:"sent_compose"),
                                           style: .plain,
                                           target: self,
-                                          action: #selector(ComposerViewController.saveButtonTapped(sender:)))
+                                          action: #selector(ComposerViewController.sendButtonTapped(sender:)))
         self.navigationItem.leftBarButtonItem = self.cancelButton
         self.navigationItem.rightBarButtonItem = self.sendButton
         
@@ -117,11 +117,9 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         // Dispose of any resources that can be recreated.
     }
     
-    func saveButtonTapped(sender: UIBarButtonItem) {
+    func sendButtonTapped(sender: UIBarButtonItem) {
         self.dismissKeyboard()
-        self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
-            self.extensionContext!.completeRequest(returningItems: nil, completionHandler: nil)
-        })
+        self.sendMessage()
     }
     
     func cancelButtonTapped(sender: UIBarButtonItem) {
@@ -233,7 +231,6 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     {
         super.viewDidLayoutSubviews()
     }
-    
     
     // ******************
     func configureNavigationBar() {
@@ -362,6 +359,50 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
     }
     
+    func sendMessage () {
+        if self.composeView.expirationTimeInterval > 0 {
+            if self.composeView.hasOutSideEmails && self.encryptionPassword.characters.count <= 0 {
+                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
+                return;
+            }
+        }
+        
+        if self.viewModel.toSelectedContacts.count <= 0 &&
+            self.viewModel.ccSelectedContacts.count <= 0 &&
+            self.viewModel.bccSelectedContacts.count <= 0 {
+            let alert = UIAlertController(title: NSLocalizedString("Alert", comment: "Title"),
+                                          message: NSLocalizedString("You need at least one recipient to send", comment: "Description"),
+                                          preferredStyle: .alert)
+            alert.addAction((UIAlertAction.okAction()))
+            present(alert, animated: true, completion: nil)
+            return;
+        }
+        
+        stopAutoSave()
+        self.collectDraft()
+        
+        //start send show loading
+        self.viewModel.sendMessage()
+        
+        
+        // done show error or dismiss if sucessed
+        
+//        // show messagex
+//        delay(0.5) {
+//            NSError.alertMessageSendingToast();
+//        }
+//        
+//        if presentingViewController != nil {
+//            dismiss(animated: true, completion: nil)
+//        } else {
+//            let _ = navigationController?.popToRootViewController(animated: true)
+//        }
+        
+        //        self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
+        //            self.extensionContext!.completeRequest(returningItems: nil, completionHandler: nil)
+        //        })
+    }
+    
     fileprivate func updateAttachmentButton () {
         //        if attachments?.count > 0 {
         //            self.composeView.updateAttachmentButton(true)
@@ -377,27 +418,23 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
 extension ComposerViewController : PasswordEncryptViewControllerDelegate {
     
     func Cancelled() {
-        //        updateEmbedImages()
-        //
-        //        let test = self.getHTML()
-        //
-        //        PMLog.D(test)
+        
     }
     
     func Apply(_ password: String, confirmPassword: String, hint: String) {
+        self.encryptionPassword        = password
+        self.encryptionConfirmPassword = confirmPassword
+        self.encryptionPasswordHint    = hint
         
-        //        self.encryptionPassword = password
-        //        self.encryptionConfirmPassword = confirmPassword
-        //        self.encryptionPasswordHint = hint
-        //        self.composeView.showEncryptionDone()
+        self.composeView.showEncryptionDone()
     }
     
     func Removed() {
-        //        self.encryptionPassword = ""
-        //        self.encryptionConfirmPassword = ""
-        //        self.encryptionPasswordHint = ""
-        //
-        //        self.composeView.showEncryptionRemoved()
+        self.encryptionPassword        = ""
+        self.encryptionConfirmPassword = ""
+        self.encryptionPasswordHint    = ""
+        
+        self.composeView.showEncryptionRemoved()
     }
 }
 
@@ -481,33 +518,17 @@ extension ComposerViewController : ComposeViewDelegate {
     
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView) {
         let passwordVC = PasswordEncryptViewController(nibName: "PasswordEncryptViewController", bundle: nil)
+        
         passwordVC.providesPresentationContextTransitionStyle = true;
-        passwordVC.definesPresentationContext = true;
-        passwordVC.modalTransitionStyle = .crossDissolve
-        passwordVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-        passwordVC.pwdDelegate = self
+        passwordVC.definesPresentationContext                 = true;
+        passwordVC.modalTransitionStyle                       = .crossDissolve
+        passwordVC.modalPresentationStyle                     = UIModalPresentationStyle.overCurrentContext
+        passwordVC.pwdDelegate                                = self
         
-        
-        //        let popup = segue.destination as! ComposePasswordViewController
-        //        popup.pwdDelegate = self
-        //        popup.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
-        //popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
-        //        self.setPresentationStyleForSelfController(self, presentingController: passwordVC)
-        //  passwordVC.mod
-        // self.navigationController.modal
-        
-        //        self.present(viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?)
-        //        self.navigationController?.pushViewController(passwordVC, animated:true)
+        passwordVC.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
         self.present(passwordVC, animated: true) {
-            
+            //nothing
         }
-        //self.performSegue(withIdentifier: kPasswordSegue, sender: self)
-        //self.actualEncryptionStep = EncryptionStep.DefinePassword
-        //self.composeView.showDefinePasswordView()
-        //self.composeView.hidePasswordAndConfirmDoesntMatch()
-        
-        
-        
     }
     
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView) {
@@ -550,53 +571,52 @@ extension ComposerViewController : ComposeViewDelegate {
         //        }
     }
     
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
-    {
-        //        if (picker == composeView.toContactPicker) {
-        //            self.viewModel.toSelectedContacts.append(contact)
-        //        } else if (picker == composeView.ccContactPicker) {
-        //            self.viewModel.ccSelectedContacts.append(contact)
-        //        } else if (picker == composeView.bccContactPicker) {
-        //            self.viewModel.bccSelectedContacts.append(contact)
-        //        }
+    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker) {
+        if (picker == composeView.toContactPicker) {
+            self.viewModel.toSelectedContacts.append(contact)
+        } else if (picker == composeView.ccContactPicker) {
+            self.viewModel.ccSelectedContacts.append(contact)
+        } else if (picker == composeView.bccContactPicker) {
+            self.viewModel.bccSelectedContacts.append(contact)
+        }
     }
     
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
-    {// here each logic most same, need refactor later
-        //        if (picker == composeView.toContactPicker) {
-        //            var contactIndex = -1
-        //            let selectedContacts = self.viewModel.toSelectedContacts
-        //            for (index, selectedContact) in (selectedContacts?.enumerated())! {
-        //                if (contact.email == selectedContact.email) {
-        //                    contactIndex = index
-        //                }
-        //            }
-        //            if (contactIndex >= 0) {
-        //                self.viewModel.toSelectedContacts.remove(at: contactIndex)
-        //            }
-        //        } else if (picker == composeView.ccContactPicker) {
-        //            var contactIndex = -1
-        //            let selectedContacts = self.viewModel.ccSelectedContacts
-        //            for (index, selectedContact) in (selectedContacts?.enumerated())! {
-        //                if (contact.email == selectedContact.email) {
-        //                    contactIndex = index
-        //                }
-        //            }
-        //            if (contactIndex >= 0) {
-        //                self.viewModel.ccSelectedContacts.remove(at: contactIndex)
-        //            }
-        //        } else if (picker == composeView.bccContactPicker) {
-        //            var contactIndex = -1
-        //            let selectedContacts = self.viewModel.bccSelectedContacts
-        //            for (index, selectedContact) in (selectedContacts?.enumerated())! {
-        //                if (contact.email == selectedContact.email) {
-        //                    contactIndex = index
-        //                }
-        //            }
-        //            if (contactIndex >= 0) {
-        //                self.viewModel.bccSelectedContacts.remove(at: contactIndex)
-        //            }
-        //        }
+    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker) {
+        // here each logic most same, need refactor later
+        if (picker == composeView.toContactPicker) {
+            var contactIndex = -1
+            let selectedContacts = self.viewModel.toSelectedContacts
+            for (index, selectedContact) in (selectedContacts?.enumerated())! {
+                if (contact.email == selectedContact.email) {
+                    contactIndex = index
+                }
+            }
+            if (contactIndex >= 0) {
+                self.viewModel.toSelectedContacts.remove(at: contactIndex)
+            }
+        } else if (picker == composeView.ccContactPicker) {
+            var contactIndex = -1
+            let selectedContacts = self.viewModel.ccSelectedContacts
+            for (index, selectedContact) in (selectedContacts?.enumerated())! {
+                if (contact.email == selectedContact.email) {
+                    contactIndex = index
+                }
+            }
+            if (contactIndex >= 0) {
+                self.viewModel.ccSelectedContacts.remove(at: contactIndex)
+            }
+        } else if (picker == composeView.bccContactPicker) {
+            var contactIndex = -1
+            let selectedContacts = self.viewModel.bccSelectedContacts
+            for (index, selectedContact) in (selectedContacts?.enumerated())! {
+                if (contact.email == selectedContact.email) {
+                    contactIndex = index
+                }
+            }
+            if (contactIndex >= 0) {
+                self.viewModel.bccSelectedContacts.remove(at: contactIndex)
+            }
+        }
     }
 }
 

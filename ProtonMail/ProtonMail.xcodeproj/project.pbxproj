@@ -242,6 +242,7 @@
 		751303DB1F26A6A3003FE4A2 /* PasswordEncryptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751303D91F26A6A3003FE4A2 /* PasswordEncryptViewController.swift */; };
 		751303DC1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 751303DA1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib */; };
 		751303DD1F26AF35003FE4A2 /* NSNotificationCenter+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F081A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift */; };
+		751303DE1F26C74E003FE4A2 /* UIAlertActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075675581AB135F500449905 /* UIAlertActionExtension.swift */; };
 		7514FC291B79825F00DDD297 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514FC281B79825F00DDD297 /* MenuItem.swift */; };
 		75150ED11B1E74A20013B476 /* SettingDebugTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */; };
 		751562551B68E8050066FE38 /* EmailAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751562541B68E8050066FE38 /* EmailAttachmentView.swift */; };
@@ -3183,6 +3184,7 @@
 				7512AA451F18031E00D84955 /* NSStringExtension.swift in Sources */,
 				758ED7D51F05A5E20028D1A5 /* ShareExtensionEntry.swift in Sources */,
 				7512AA151F17F8C200D84955 /* MBContactCollectionViewFlowLayout.m in Sources */,
+				751303DE1F26C74E003FE4A2 /* UIAlertActionExtension.swift in Sources */,
 				75555BBB1F18273C000C0C10 /* LabelsDataService.swift in Sources */,
 				753E5AB71F181B1C0090C0F9 /* LabelExtension.swift in Sources */,
 				7512AA671F180C8500D84955 /* MessageDataService.swift in Sources */,
