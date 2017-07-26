@@ -246,16 +246,6 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         ]
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
     fileprivate func retrieveAllContacts() {
         sharedContactDataService.getContactVOs { (contacts, error) -> Void in
             if let error = error {
@@ -300,7 +290,6 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
             }
         })
     }
-    
     
     // MARK: - Private methods
     fileprivate func setupAutoSave()
@@ -398,9 +387,9 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
 //            let _ = navigationController?.popToRootViewController(animated: true)
 //        }
         
-        //        self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
-        //            self.extensionContext!.completeRequest(returningItems: nil, completionHandler: nil)
-        //        })
+        self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
+            self.extensionContext!.completeRequest(returningItems: nil, completionHandler: nil)
+        })
     }
     
     fileprivate func updateAttachmentButton () {

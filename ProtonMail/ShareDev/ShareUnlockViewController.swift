@@ -13,6 +13,22 @@ class ShareUnlockViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let inputitems = self.extensionContext?.inputItems as? [NSExtensionItem] {
+            PMLog.D("\(inputitems)")
+            for var item in inputitems {
+                if let itemProvider = item.attachments?.first as? NSItemProvider {
+                    if itemProvider.hasItemConformingToTypeIdentifier("public.url") {
+                        itemProvider.loadItem(forTypeIdentifier: "public.url", options: nil, completionHandler: { (url, error) -> Void in
+                            if let shareURL = url as? NSURL {
+                                PMLog.D("\(shareURL)")
+                            }
+                        })
+                    }
+                }
+            }
+        }
+        
         configureNavigationBar()
         
         pinUnlock.alpha = 0.0

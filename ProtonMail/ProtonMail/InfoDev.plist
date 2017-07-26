@@ -19,7 +19,6 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.rarlab.rar-archive</string>
-				<string>public.archive</string>
 			</array>
 		</dict>
 		<dict>
@@ -35,7 +34,6 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>org.7-zip.7-zip-archive</string>
-				<string>public.archive</string>
 			</array>
 		</dict>
 	</array>
