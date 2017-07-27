@@ -570,6 +570,7 @@
 		75856D6C1CB5B5F2000D9F3B /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA111CB5AEC300F03228 /* PinCodeView.swift */; };
 		758625D31CD80C6D0037DFA7 /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758625D21CD80C6D0037DFA7 /* SettingsNavigationController.swift */; };
 		7588BB401BFBE05A00EC8EFD /* SecureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */; };
+		758993291F2953BE0030B5AC /* ActivityIndicatorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70762C3A1A94EC30006B9693 /* ActivityIndicatorHelper.swift */; };
 		758C44841C6D09FE00E6E867 /* EncryptionSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758C44831C6D09FE00E6E867 /* EncryptionSetupViewController.swift */; };
 		758DB00E1DDBBCA8007B83D3 /* OrganizationsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758DB00D1DDBBCA8007B83D3 /* OrganizationsAPI.swift */; };
 		758ED7CB1F05A4000028D1A5 /* ShareDev.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 758ED7C11F05A3FF0028D1A5 /* ShareDev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -781,6 +782,13 @@
 		75E49F101CAB296500235ACC /* PhoneVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E49F0C1CAB256900235ACC /* PhoneVerifyViewController.swift */; };
 		75E49F111CAB296900235ACC /* CountryPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E49F0E1CAB288F00235ACC /* CountryPickerViewController.swift */; };
 		75E49F131CAB2D2100235ACC /* SignupViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E49F121CAB2D2100235ACC /* SignupViewModelImpl.swift */; };
+		75E5F79D1F29586E00001B4F /* Foundation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99651A6F1380000FD6F8 /* Foundation+Extension.swift */; };
+		75E5F79F1F295D0900001B4F /* PinCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECA81CBCCE4400982089 /* PinCodeModel.swift */; };
+		75E5F7A11F295D3200001B4F /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA111CB5AEC300F03228 /* PinCodeView.swift */; };
+		75E5F7A21F295D5A00001B4F /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */; };
+		75E5F7A51F295DFD00001B4F /* SharePinUnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E5F7A31F295DFD00001B4F /* SharePinUnlockViewController.swift */; };
+		75E5F7A61F295DFD00001B4F /* SharePinUnlockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75E5F7A41F295DFD00001B4F /* SharePinUnlockViewController.xib */; };
+		75E5F7A81F29617100001B4F /* ShareUnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E5F7A71F29617100001B4F /* ShareUnlockPinCodeModelImpl.swift */; };
 		75E652B41B82AC0D0084DDF8 /* LabelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E652B31B82AC0D0084DDF8 /* LabelsViewController.swift */; };
 		75ECC2381AB9F28100B8FC78 /* ChangePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */; };
 		75ECCDFE1B31F01000A8C800 /* APIServiceDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECCDFD1B31F01000A8C800 /* APIServiceDefined.swift */; };
@@ -1232,6 +1240,9 @@
 		75E49F0C1CAB256900235ACC /* PhoneVerifyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneVerifyViewController.swift; sourceTree = "<group>"; };
 		75E49F0E1CAB288F00235ACC /* CountryPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryPickerViewController.swift; sourceTree = "<group>"; };
 		75E49F121CAB2D2100235ACC /* SignupViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModelImpl.swift; sourceTree = "<group>"; };
+		75E5F7A31F295DFD00001B4F /* SharePinUnlockViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePinUnlockViewController.swift; sourceTree = "<group>"; };
+		75E5F7A41F295DFD00001B4F /* SharePinUnlockViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SharePinUnlockViewController.xib; sourceTree = "<group>"; };
+		75E5F7A71F29617100001B4F /* ShareUnlockPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareUnlockPinCodeModelImpl.swift; sourceTree = "<group>"; };
 		75E652B31B82AC0D0084DDF8 /* LabelsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelsViewController.swift; sourceTree = "<group>"; };
 		75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModel.swift; sourceTree = "<group>"; };
 		75ECCDFD1B31F01000A8C800 /* APIServiceDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIServiceDefined.swift; sourceTree = "<group>"; };
@@ -1728,6 +1739,7 @@
 				7512A9F71F17E1CE00D84955 /* ShareUnlockViewController.swift */,
 				7512A9FD1F17E95100D84955 /* ComposerViewController.swift */,
 				751303D91F26A6A3003FE4A2 /* PasswordEncryptViewController.swift */,
+				75E5F7A31F295DFD00001B4F /* SharePinUnlockViewController.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -1735,6 +1747,7 @@
 		7512A9FC1F17E1E700D84955 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				75E5F7A41F295DFD00001B4F /* SharePinUnlockViewController.xib */,
 				7512A9F81F17E1CE00D84955 /* ShareUnlockViewController.xib */,
 				7512A9FE1F17E95100D84955 /* ComposerViewController.xib */,
 				751303DA1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib */,
@@ -2049,6 +2062,7 @@
 				75BDECA81CBCCE4400982089 /* PinCodeModel.swift */,
 				75BDECAA1CBCCE5B00982089 /* SetPinCodeModelImpl.swift */,
 				75BDECAC1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift */,
+				75E5F7A71F29617100001B4F /* ShareUnlockPinCodeModelImpl.swift */,
 			);
 			name = PinCode;
 			sourceTree = "<group>";
@@ -2490,6 +2504,7 @@
 				7512AA241F17FB3700D84955 /* test_email.html in Resources */,
 				7512AA211F17FB2F00D84955 /* backup.css in Resources */,
 				7512AA191F17FABC00D84955 /* ContactsTableViewCell.xib in Resources */,
+				75E5F7A21F295D5A00001B4F /* PinCodeView.xib in Resources */,
 				758ED7D31F05A55B0028D1A5 /* Menu.storyboard in Resources */,
 				7512AA1B1F17FB2C00D84955 /* Roboto-MediumItalic.ttf in Resources */,
 				7512AA411F18028400D84955 /* Settings.bundle in Resources */,
@@ -2497,6 +2512,7 @@
 				7512AA1E1F17FB2C00D84955 /* Roboto-Regular.ttf in Resources */,
 				7512AA221F17FB3200D84955 /* flags.bundle in Resources */,
 				7512AA0C1F17F76F00D84955 /* ComposeView.xib in Resources */,
+				75E5F7A61F295DFD00001B4F /* SharePinUnlockViewController.xib in Resources */,
 				7512AA1A1F17FB2C00D84955 /* Roboto-Medium.ttf in Resources */,
 				7512AA231F17FB3400D84955 /* phone_country_code.geojson in Resources */,
 				7512AA201F17FB2F00D84955 /* editor.css in Resources */,
@@ -3108,6 +3124,7 @@
 				75555BBD1F1840CF000C0C10 /* AttachmentTableViewCell.swift in Sources */,
 				751900761F1D4A5700DB68ED /* KeychainWrapper.swift in Sources */,
 				753E5ACA1F1820E80090C0F9 /* LanguageManager.swift in Sources */,
+				75E5F7A81F29617100001B4F /* ShareUnlockPinCodeModelImpl.swift in Sources */,
 				751303DB1F26A6A3003FE4A2 /* PasswordEncryptViewController.swift in Sources */,
 				7512A9F11F17DC9E00D84955 /* AppConstants.swift in Sources */,
 				7512AA4B1F18045800D84955 /* UserCachedStatus.swift in Sources */,
@@ -3129,9 +3146,11 @@
 				7512AA2F1F17FEA300D84955 /* AuthCredential.swift in Sources */,
 				7512AA3C1F18020B00D84955 /* String+Extension.swift in Sources */,
 				753E5AB81F181B390090C0F9 /* AttachmentExtension.swift in Sources */,
+				75E5F7A11F295D3200001B4F /* PinCodeView.swift in Sources */,
 				7512AA2E1F17FE9600D84955 /* NSTimeIntervalExtension.swift in Sources */,
 				7512AA5A1F18075A00D84955 /* SettingsAPI.swift in Sources */,
 				7512AA501F1805A800D84955 /* CoreDataService.swift in Sources */,
+				75E5F79D1F29586E00001B4F /* Foundation+Extension.swift in Sources */,
 				7512AA021F17EA4C00D84955 /* ContactVO.swift in Sources */,
 				7512AA271F17FD6100D84955 /* UserInfo.swift in Sources */,
 				7512AA111F17F8C200D84955 /* MBContactPicker.m in Sources */,
@@ -3143,6 +3162,7 @@
 				753E5AC31F181D940090C0F9 /* EventAPI.swift in Sources */,
 				7512AA631F1808C100D84955 /* KeysAPI.swift in Sources */,
 				753E5AC91F1820E80090C0F9 /* Localization.swift in Sources */,
+				758993291F2953BE0030B5AC /* ActivityIndicatorHelper.swift in Sources */,
 				753E5AB41F181A2D0090C0F9 /* MessageAPI.swift in Sources */,
 				75555BBF1F184109000C0C10 /* MimeTypes.swift in Sources */,
 				753E5ACF1F1821000090C0F9 /* NSData+MultipartResponses.m in Sources */,
@@ -3185,6 +3205,7 @@
 				758ED7D51F05A5E20028D1A5 /* ShareExtensionEntry.swift in Sources */,
 				7512AA151F17F8C200D84955 /* MBContactCollectionViewFlowLayout.m in Sources */,
 				751303DE1F26C74E003FE4A2 /* UIAlertActionExtension.swift in Sources */,
+				75E5F79F1F295D0900001B4F /* PinCodeModel.swift in Sources */,
 				75555BBB1F18273C000C0C10 /* LabelsDataService.swift in Sources */,
 				753E5AB71F181B1C0090C0F9 /* LabelExtension.swift in Sources */,
 				7512AA671F180C8500D84955 /* MessageDataService.swift in Sources */,
@@ -3201,6 +3222,7 @@
 				7512AA311F17FEC400D84955 /* AuthAPI.swift in Sources */,
 				7512AA4D1F18051200D84955 /* NSUserDefaultsExtension.swift in Sources */,
 				7512AA5C1F18078100D84955 /* Threading.swift in Sources */,
+				75E5F7A51F295DFD00001B4F /* SharePinUnlockViewController.swift in Sources */,
 				753E5ACE1F1820E80090C0F9 /* Reachability.m in Sources */,
 				7512AA171F17F8C200D84955 /* MBContactModel.m in Sources */,
 				7512AA0B1F17F75000D84955 /* ComposeView.swift in Sources */,

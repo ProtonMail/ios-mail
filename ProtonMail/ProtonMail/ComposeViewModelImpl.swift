@@ -215,6 +215,12 @@ final class ComposeViewModelImpl : ComposeViewModel {
                                                              body: body,
                                                              attachments: nil,
                                                              inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
+            
+            self.message?.password = pwd
+            self.message?.isRead = true
+            self.message?.passwordHint = pwdHit
+            self.message?.expirationOffset = Int32(expir)
+            
         } else {
             self.message?.recipientList = toJsonString(self.toSelectedContacts)
             self.message?.ccList = toJsonString(self.ccSelectedContacts)

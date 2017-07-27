@@ -10,7 +10,7 @@ import Foundation
 
 
 
-public enum PinCodeStep: Int {
+enum PinCodeStep: Int {
     case enterPin = 0
     case reEnterPin = 1
     case unlock = 2

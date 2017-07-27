@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class SetPinCodeModelImpl : PinCodeViewModel {
+class SetPinCodeModelImpl : PinCodeViewModel {
     
     let StepOneTitle : String = NSLocalizedString("Enter your PIN", comment: "set pin title")
     let StepTwoTitle : String = NSLocalizedString("Re-Enter your PIN", comment: "set pin title")
