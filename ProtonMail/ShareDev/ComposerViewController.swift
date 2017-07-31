@@ -46,9 +46,9 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     fileprivate var hasAccessToAddressBook: Bool = false
     //
     fileprivate var attachments: [Any]?
-    //
-    //    @IBOutlet weak var expirationPicker: UIPickerView!
-    //    // offsets
+    
+    @IBOutlet weak var expirationPicker: UIPickerView!
+    // offsets
     fileprivate var composeViewSize : CGFloat = 186;
     
     // MARK : const values
@@ -95,10 +95,10 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         updateMessageView()
         self.contacts = sharedContactDataService.allContactVOs()
         retrieveAllContacts()
-        //
-        //        self.expirationPicker.alpha = 0.0
-        //        self.expirationPicker.dataSource = self
-        //        self.expirationPicker.delegate = self
+        
+        self.expirationPicker.alpha = 0.0
+        self.expirationPicker.dataSource = self
+        self.expirationPicker.delegate = self
         
         self.attachments = viewModel.getAttachments()
         
@@ -420,9 +420,6 @@ extension ComposerViewController : PasswordEncryptViewControllerDelegate {
 }
 
 
-
-
-
 // MARK : - view extensions
 extension ComposerViewController : ComposeViewDelegate {
     func composeViewPickFrom(_ composeView: ComposeView) {
@@ -527,29 +524,29 @@ extension ComposerViewController : ComposeViewDelegate {
     
     func composeViewDidTapExpirationButton(_ composeView: ComposeView)
     {
-        //        self.expirationPicker.alpha = 1;
-        //        self.view.bringSubview(toFront: expirationPicker)
+        self.expirationPicker.alpha = 1;
+        self.view.bringSubview(toFront: expirationPicker)
     }
     
     func composeViewHideExpirationView(_ composeView: ComposeView)
     {
-        //        self.expirationPicker.alpha = 0;
+        self.expirationPicker.alpha = 0;
     }
     
     func composeViewCancelExpirationData(_ composeView: ComposeView)
     {
-        //        self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
-        //        self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
+        self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
+        self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
     }
     
     func composeViewCollectExpirationData(_ composeView: ComposeView)
     {
-        //        let selectedDay = expirationPicker.selectedRow(inComponent: 0)
-        //        let selectedHour = expirationPicker.selectedRow(inComponent: 1)
-        //        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour)
-        //        {
-        //            self.expirationPicker.alpha = 0;
-        //        }
+        let selectedDay = expirationPicker.selectedRow(inComponent: 0)
+        let selectedHour = expirationPicker.selectedRow(inComponent: 1)
+        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour)
+        {
+            self.expirationPicker.alpha = 0;
+        }
     }
     
     func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker) {
@@ -636,7 +633,7 @@ extension ComposerViewController: AttachmentsTableViewControllerDelegate {
     
     func attachments(_ attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
         self.collectDraft()
-        
+
         if let content_id = attachment.getContentID(), !content_id.isEmpty && attachment.isInline() {
             self.removeEmbedImage(byCID: "cid:\(content_id)")
         }

@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ComposerViewController" customModule="ShareDev" customModuleProvider="target">
             <connections>
+                <outlet property="expirationPicker" destination="oGe-nc-aVf" id="RcR-XZ-oas"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -18,7 +19,22 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <pickerView alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oGe-nc-aVf">
+                    <rect key="frame" x="0.0" y="505" width="375" height="162"/>
+                    <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="162" id="Vtp-MB-COK"/>
+                        <constraint firstAttribute="height" constant="162" id="hRK-x9-Sdy"/>
+                    </constraints>
+                </pickerView>
+            </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="oGe-nc-aVf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="DPO-Hs-HQc"/>
+                <constraint firstAttribute="trailing" secondItem="oGe-nc-aVf" secondAttribute="trailing" id="MSe-UP-KzH"/>
+                <constraint firstAttribute="bottom" secondItem="oGe-nc-aVf" secondAttribute="bottom" id="c6u-lN-c4F"/>
+            </constraints>
             <point key="canvasLocation" x="-124" y="-63"/>
         </view>
     </objects>
