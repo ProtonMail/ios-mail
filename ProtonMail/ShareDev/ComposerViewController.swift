@@ -200,18 +200,14 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         super.viewWillAppear(animated)
         let w = UIScreen.main.applicationFrame.width;
         self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
-        
-        //        NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.statusBarHit(_:)), name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
-        //        NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ComposerViewController.willResignActiveNotification(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
         setupAutoSave()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
-        //        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
-        //
-        //        stopAutoSave()
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
+        stopAutoSave()
     }
     
     internal func willResignActiveNotification (_ notify: Notification) {
@@ -423,34 +419,34 @@ extension ComposerViewController : PasswordEncryptViewControllerDelegate {
 // MARK : - view extensions
 extension ComposerViewController : ComposeViewDelegate {
     func composeViewPickFrom(_ composeView: ComposeView) {
-        //        if attachments?.count > 0 {
-        //            let alertController = NSLocalizedString("Please remove all attachments before changing sender!", comment: "Error").alertController()
-        //            alertController.addOKAction()
-        //            self.present(alertController, animated: true, completion: nil)
-        //        } else {
-        //            var needsShow : Bool = false
-        //            let alertController = UIAlertController(title: NSLocalizedString("Change sender address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
-        //            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
-        //            let multi_domains = self.viewModel.getAddresses()
-        //            let defaultAddr = self.viewModel.getDefaultAddress()
-        //            for addr in multi_domains {
-        //                if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
-        //                    needsShow = true
-        //                    alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
-        //                        if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
-        //                            self.updateSignature("\(signature)")
-        //                        }
-        //                        self.viewModel.updateAddressID(addr.address_id)
-        //                        self.composeView.updateFromValue(addr.email, pickerEnabled: true)
-        //                    }))
-        //                }
-        //            }
-        //            if needsShow {
-        //                alertController.popoverPresentationController?.sourceView = self.composeView.fromView
-        //                alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
-        //                present(alertController, animated: true, completion: nil)
-        //            }
-        //        }
+        if let att = self.attachments, att.count > 0 {
+            let alertController = NSLocalizedString("Please remove all attachments before changing sender!", comment: "Error").alertController()
+            alertController.addOKAction()
+            self.present(alertController, animated: true, completion: nil)
+        } else {
+            var needsShow : Bool = false
+            let alertController = UIAlertController(title: NSLocalizedString("Change sender address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+            let multi_domains = self.viewModel.getAddresses()
+            let defaultAddr = self.viewModel.getDefaultAddress()
+            for addr in multi_domains {
+                if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
+                    needsShow = true
+                    alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
+                        if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
+                            self.updateSignature("\(signature)")
+                        }
+                        self.viewModel.updateAddressID(addr.address_id)
+                        self.composeView.updateFromValue(addr.email, pickerEnabled: true)
+                    }))
+                }
+            }
+            if needsShow {
+                alertController.popoverPresentationController?.sourceView = self.composeView.fromView
+                alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
+                present(alertController, animated: true, completion: nil)
+            }
+        }
     }
     
     func ComposeViewDidSizeChanged(_ size: CGSize) {
@@ -465,33 +461,7 @@ extension ComposerViewController : ComposeViewDelegate {
     }
     
     func composeViewDidTapNextButton(_ composeView: ComposeView) {
-        //        switch(actualEncryptionStep) {
-        //        case EncryptionStep.DefinePassword:
-        //            self.encryptionPassword = (composeView.encryptedPasswordTextField.text ?? "").trim()
-        //            if !self.encryptionPassword.isEmpty {
-        //                self.actualEncryptionStep = EncryptionStep.ConfirmPassword
-        //                self.composeView.showConfirmPasswordView()
-        //            } else {
-        //                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kEmptyEOPWD);
-        //            }
-        //        case EncryptionStep.ConfirmPassword:
-        //            self.encryptionConfirmPassword = (composeView.encryptedPasswordTextField.text ?? "").trim()
-        //
-        //            if (self.encryptionPassword == self.encryptionConfirmPassword) {
-        //                self.actualEncryptionStep = EncryptionStep.DefineHintPassword
-        //                self.composeView.hidePasswordAndConfirmDoesntMatch()
-        //                self.composeView.showPasswordHintView()
-        //            } else {
-        //                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kConfirmError)
-        //            }
-        //
-        //        case EncryptionStep.DefineHintPassword:
-        //            self.encryptionPasswordHint = (composeView.encryptedPasswordTextField.text ?? "").trim()
-        //            self.actualEncryptionStep = EncryptionStep.DefinePassword
-        //            self.composeView.showEncryptionDone()
-        //        default:
-        //            PMLog.D("No step defined.")
-        //        }
+        
     }
     
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView) {

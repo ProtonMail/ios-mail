@@ -159,7 +159,7 @@ class ShareUnlockViewController: UIViewController {
     }
     
     @IBAction func touch_id_action(_ sender: Any) {
-        
+        self.authenticateUser()
     }
     
     @IBAction func pin_unlock_action(_ sender: Any) {
@@ -181,29 +181,33 @@ class ShareUnlockViewController: UIViewController {
             context.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: Error?) in
                 if success {
                     DispatchQueue.main.async {
-//                        self.goto_composer()
-//                        self.viewModel.done()
-//                        self.delegate?.Next()
-//                        let _ = self.navigationController?.popViewController(animated: true)
+                        self.signInIfRememberedCredentials()
                     }
                 }
                 else{
                     DispatchQueue.main.async {
-                        
                         PMLog.D("\(String(describing: evalPolicyError?.localizedDescription))")
                         switch evalPolicyError!._code {
                         case LAError.Code.systemCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the system")
-                            //NSLocalizedString("Authentication was cancelled by the system", comment: "Description").alertToast()
+                            let alertController = NSLocalizedString("Authentication was cancelled by the system", comment: "Description").alertController()
+                            alertController.addOKAction()
+                            self.present(alertController, animated: true, completion: nil)
                         case LAError.Code.userCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the user")
+                            let alertController = NSLocalizedString("Authentication was cancelled by the user", comment: "Description").alertController()
+                            alertController.addOKAction()
+                            self.present(alertController, animated: true, completion: nil)
                         case LAError.Code.userFallback.rawValue:
                             PMLog.D("User selected to enter custom password")
-                        //self.showPasswordAlert()
+                            let alertController = NSLocalizedString("Authentication failed", comment: "Description").alertController()
+                            alertController.addOKAction()
+                            self.present(alertController, animated: true, completion: nil)
                         default:
                             PMLog.D("Authentication failed")
-                            //self.showPasswordAlert()
-                            //NSLocalizedString("Authentication failed", comment: "Description").alertToast()
+                            let alertController = NSLocalizedString("Authentication failed", comment: "Description").alertController()
+                            alertController.addOKAction()
+                            self.present(alertController, animated: true, completion: nil)
                         }
                         
                     }
@@ -224,7 +228,9 @@ class ShareUnlockViewController: UIViewController {
             }
             PMLog.D(alertString)
             PMLog.D("\(String(describing: error?.localizedDescription))")
-            //alertString.alertToast()
+            let alertController = alertString.alertController()
+            alertController.addOKAction()
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     

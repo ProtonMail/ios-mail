@@ -637,6 +637,10 @@
 		75C7FF361F2FB3FF00F15792 /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */; };
 		75C7FF371F2FB4A000F15792 /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07411D8B1AAA3F1B002A4611 /* AttachmentTableViewCell.xib */; };
 		75C7FF381F2FB6BB00F15792 /* AttachmentHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */; };
+		75C7FF3A1F2FE1F800F15792 /* String+Toast+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7FF391F2FE1F800F15792 /* String+Toast+Extension.swift */; };
+		75C7FF3B1F2FE1F800F15792 /* String+Toast+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7FF391F2FE1F800F15792 /* String+Toast+Extension.swift */; };
+		75C7FF3C1F2FE20C00F15792 /* String+Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7512AA461F18035500D84955 /* String+Alert+Extension.swift */; };
+		75C7FF3D1F2FE21500F15792 /* UIAlertControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0756755A1AB1369C00449905 /* UIAlertControllerExtension.swift */; };
 		75CFA26F1B223DBB006E4465 /* SharedCacheBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */; };
 		75D0CA411C6BE97F00D9F21C /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */; };
 		75D3C2311F140BD9004B8FD7 /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9311A71C60900EB0CAF /* UserDataService.swift */; };
@@ -1226,6 +1230,7 @@
 		75C037471C1F9A940071E04B /* SplashSignInSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashSignInSegue.swift; sourceTree = "<group>"; };
 		75C217581AD6F1B800978579 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		75C217591AD6F1B800978579 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		75C7FF391F2FE1F800F15792 /* String+Toast+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Toast+Extension.swift"; sourceTree = "<group>"; };
 		75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharedCacheBase.swift; path = ../ProtonMail/SharedCacheBase.swift; sourceTree = "<group>"; };
 		75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAPI.swift; sourceTree = "<group>"; };
 		75DCB2051BA2A1560085BE8C /* RecipientCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientCell.swift; sourceTree = "<group>"; };
@@ -2044,6 +2049,7 @@
 				07A0E1AA1A9D2D1D005FD04B /* NSStringExtension.swift */,
 				70FC90D91A9BC11F00498B42 /* String+Extension.swift */,
 				7512AA461F18035500D84955 /* String+Alert+Extension.swift */,
+				75C7FF391F2FE1F800F15792 /* String+Toast+Extension.swift */,
 				75DF17A81AB8FAB8008A032B /* ArrayExtension.swift */,
 				75FFC65E1B45C549007FB75A /* DictionaryExtension.swift */,
 				75539CAC1C6BEF2B001DD042 /* NSDataExtension.swift */,
@@ -2839,6 +2845,7 @@
 				756CDEFC1D9DB3A0004455F6 /* JKBCryptRandom.swift in Sources */,
 				07CCCC301AA4E26000ECA79E /* NSCoder+Extension.swift in Sources */,
 				752A9EBD1DB80E40008D4392 /* LabelApplyViewModelImpl.swift in Sources */,
+				75C7FF3A1F2FE1F800F15792 /* String+Toast+Extension.swift in Sources */,
 				7547131B1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */,
 				754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */,
 				07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */,
@@ -3124,6 +3131,7 @@
 				7512AA331F17FEDE00D84955 /* APIServiceResponse.swift in Sources */,
 				7512AA5B1F18077300D84955 /* AddressAPI.swift in Sources */,
 				753E5ABA1F181B7D0090C0F9 /* MessageQueue.swift in Sources */,
+				75C7FF3C1F2FE20C00F15792 /* String+Alert+Extension.swift in Sources */,
 				7512AA5E1F18081200D84955 /* JKBCrypt.swift in Sources */,
 				7512AA371F17FF5700D84955 /* NSError+Extension.swift in Sources */,
 				753E5AC71F181F6B0090C0F9 /* MonitorSavesDataService.swift in Sources */,
@@ -3214,6 +3222,7 @@
 				758ED7D51F05A5E20028D1A5 /* ShareExtensionEntry.swift in Sources */,
 				7512AA151F17F8C200D84955 /* MBContactCollectionViewFlowLayout.m in Sources */,
 				751303DE1F26C74E003FE4A2 /* UIAlertActionExtension.swift in Sources */,
+				75C7FF3D1F2FE21500F15792 /* UIAlertControllerExtension.swift in Sources */,
 				75E5F79F1F295D0900001B4F /* PinCodeModel.swift in Sources */,
 				755E0D051F2FAB74004D2873 /* UIStoryboardExtension.swift in Sources */,
 				75555BBB1F18273C000C0C10 /* LabelsDataService.swift in Sources */,
@@ -3279,6 +3288,7 @@
 				75256C541F16DFBD00F2771E /* UIAlertControllerExtension.swift in Sources */,
 				75256C551F16DFBD00F2771E /* UIButton+ProtonMail.swift in Sources */,
 				75256C561F16DFBD00F2771E /* UIFontExtension.swift in Sources */,
+				75C7FF3B1F2FE1F800F15792 /* String+Toast+Extension.swift in Sources */,
 				75256C571F16DFBD00F2771E /* UILabel+ProtonMail.swift in Sources */,
 				75256C581F16DFBD00F2771E /* UIScrollViewExtension.swift in Sources */,
 				75256C5B1F16DFBD00F2771E /* NSDateExtension.swift in Sources */,
