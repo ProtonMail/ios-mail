@@ -134,15 +134,15 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         //if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
         let alertController = UIAlertController(title: "Confirmation", message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: "Save draft", style: .default, handler: { (action) -> Void in
-            //                self.stopAutoSave()
-            //                self.collectDraft()
-            //                self.viewModel.updateDraft()
+            self.stopAutoSave()
+            self.collectDraft()
+            self.viewModel.updateDraft()
             dismiss()
         }))
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alertController.addAction(UIAlertAction(title: "Discard draft", style: .destructive, handler: { (action) -> Void in
-            //                self.stopAutoSave()
-            //                self.viewModel.deleteDraft()
+            self.stopAutoSave()
+            self.viewModel.deleteDraft()
             dismiss()
         }))
         
@@ -203,7 +203,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         //        NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.statusBarHit(_:)), name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
         //        NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
-        //        setupAutoSave()
+        setupAutoSave()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -292,30 +292,26 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     // MARK: - Private methods
-    fileprivate func setupAutoSave()
-    {
+    fileprivate func setupAutoSave() {
         self.timer = Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(ComposerViewController.autoSaveTimer), userInfo: nil, repeats: true)
         if viewModel.getActionType() != .openDraft {
             self.timer.fire()
         }
     }
     
-    fileprivate func stopAutoSave()
-    {
+    fileprivate func stopAutoSave() {
         if self.timer != nil {
             self.timer.invalidate()
             self.timer = nil
         }
     }
     
-    func autoSaveTimer()
-    {
+    func autoSaveTimer() {
         self.collectDraft()
         self.viewModel.updateDraft()
     }
     
-    fileprivate func collectDraft()
-    {
+    fileprivate func collectDraft() {
         let orignal = self.getOrignalEmbedImages()
         let edited = self.getEditedEmbedImages()
         self.checkEmbedImageEdit(orignal!, edited: edited!)
@@ -380,7 +376,6 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
 //        delay(0.5) {
 //            NSError.alertMessageSendingToast();
 //        }
-//        
 //        if presentingViewController != nil {
 //            dismiss(animated: true, completion: nil)
 //        } else {
@@ -393,16 +388,13 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     fileprivate func updateAttachmentButton () {
-        //        if attachments?.count > 0 {
-        //            self.composeView.updateAttachmentButton(true)
-        //        } else {
-        self.composeView.updateAttachmentButton(false)
-        //        }
+        if let att = attachments, att.count > 0 {
+            self.composeView.updateAttachmentButton(true)
+        } else {
+            self.composeView.updateAttachmentButton(false)
+        }
     }
 }
-
-
-
 
 extension ComposerViewController : PasswordEncryptViewControllerDelegate {
     
@@ -521,16 +513,16 @@ extension ComposerViewController : ComposeViewDelegate {
     }
     
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView) {
-        //        if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
-        //            if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsTableViewController {
-        //                attachmentsViewController.delegate = self
-        //                attachmentsViewController.message = viewModel.message;
-        //                if let _ = attachments {
-        //                    attachmentsViewController.attachments = viewModel.getAttachments() ?? []
-        //                }
-        //            }
-        //            present(viewController, animated: true, completion: nil)
-        //        }
+        if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
+            if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsTableViewController {
+                attachmentsViewController.delegate = self
+                attachmentsViewController.message = viewModel.message;
+                if let _ = attachments {
+                    attachmentsViewController.attachments = viewModel.getAttachments() ?? []
+                }
+            }
+            present(viewController, animated: true, completion: nil)
+        }
     }
     
     func composeViewDidTapExpirationButton(_ composeView: ComposeView)
@@ -632,9 +624,9 @@ extension ComposerViewController : ComposeViewDataSource {
 
 // MARK: - AttachmentsViewControllerDelegate
 extension ComposerViewController: AttachmentsTableViewControllerDelegate {
-    
     func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments attachments: [Any]) {
         self.attachments = attachments
+        self.updateAttachmentButton()
     }
     
     func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment attachment: Attachment) {
@@ -653,9 +645,11 @@ extension ComposerViewController: AttachmentsTableViewControllerDelegate {
     }
     
     func attachments(_ attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) {
+        
     }
     
     func attachments(_ attViewController: AttachmentsTableViewController, error: String) {
+        
     }
 }
 

@@ -510,6 +510,8 @@
 		755B6A701B38C0B800745872 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755B6A6F1B38C0B800745872 /* Label.swift */; };
 		755D6B761E8C5ABB00466C80 /* ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D6B751E8C5ABB00466C80 /* ErrorExtension.swift */; };
 		755D6B771E8C5ABB00466C80 /* ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D6B751E8C5ABB00466C80 /* ErrorExtension.swift */; };
+		755E0D051F2FAB74004D2873 /* UIStoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */; };
+		755E0D061F2FACF9004D2873 /* Attachments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B123771AB8CD90006EA38C /* Attachments.storyboard */; };
 		755F92171C7E685700BAEDF9 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755F92161C7E685700BAEDF9 /* OnboardingViewController.swift */; };
 		755F92191C7E6D0D00BAEDF9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755F92181C7E6D0D00BAEDF9 /* OnboardingView.swift */; };
 		755F921B1C7E6D1F00BAEDF9 /* OnboardingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */; };
@@ -632,6 +634,9 @@
 		75C037481C1F9A940071E04B /* SplashSignInSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C037471C1F9A940071E04B /* SplashSignInSegue.swift */; };
 		75C2175A1AD6F1B800978579 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217581AD6F1B800978579 /* Crashlytics.framework */; };
 		75C2175B1AD6F1B800978579 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217591AD6F1B800978579 /* Fabric.framework */; };
+		75C7FF361F2FB3FF00F15792 /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */; };
+		75C7FF371F2FB4A000F15792 /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07411D8B1AAA3F1B002A4611 /* AttachmentTableViewCell.xib */; };
+		75C7FF381F2FB6BB00F15792 /* AttachmentHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */; };
 		75CFA26F1B223DBB006E4465 /* SharedCacheBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */; };
 		75D0CA411C6BE97F00D9F21C /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */; };
 		75D3C2311F140BD9004B8FD7 /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9311A71C60900EB0CAF /* UserDataService.swift */; };
@@ -2494,6 +2499,7 @@
 			files = (
 				7512AA1F1F17FB2C00D84955 /* Roboto-Thin.ttf in Resources */,
 				751303DC1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib in Resources */,
+				755E0D061F2FACF9004D2873 /* Attachments.storyboard in Resources */,
 				7512A9FA1F17E1CE00D84955 /* ShareUnlockViewController.xib in Resources */,
 				758ED7D41F05A5610028D1A5 /* Images.xcassets in Resources */,
 				7512AA1D1F17FB2C00D84955 /* Roboto-LightItalic.ttf in Resources */,
@@ -2509,6 +2515,7 @@
 				7512AA1B1F17FB2C00D84955 /* Roboto-MediumItalic.ttf in Resources */,
 				7512AA411F18028400D84955 /* Settings.bundle in Resources */,
 				7512AA0D1F17F77600D84955 /* ComposeErrorView.xib in Resources */,
+				75C7FF371F2FB4A000F15792 /* AttachmentTableViewCell.xib in Resources */,
 				7512AA1E1F17FB2C00D84955 /* Roboto-Regular.ttf in Resources */,
 				7512AA221F17FB3200D84955 /* flags.bundle in Resources */,
 				7512AA0C1F17F76F00D84955 /* ComposeView.xib in Resources */,
@@ -3101,6 +3108,7 @@
 				7512AA611F1808AA00D84955 /* NSDataExtension.swift in Sources */,
 				7512AA3E1F18025C00D84955 /* Bundle+Extension.swift in Sources */,
 				7512AA2A1F17FDBA00D84955 /* APIService.swift in Sources */,
+				75C7FF381F2FB6BB00F15792 /* AttachmentHelper.swift in Sources */,
 				751303DD1F26AF35003FE4A2 /* NSNotificationCenter+KeyboardExtension.swift in Sources */,
 				7512AA181F17FABC00D84955 /* ContactsTableViewCell.swift in Sources */,
 				7512AA521F18061800D84955 /* URL+Extension.swift in Sources */,
@@ -3193,6 +3201,7 @@
 				7512AA641F180B2D00D84955 /* APIService+SettingsExtension.swift in Sources */,
 				7512A9F31F17DC9E00D84955 /* NotificationDefined.swift in Sources */,
 				753E5ABB1F181BAD0090C0F9 /* PersistentQueue.swift in Sources */,
+				75C7FF361F2FB3FF00F15792 /* PMDocumentPickerViewController.swift in Sources */,
 				7512AA601F18084D00D84955 /* SrpClientExtension.swift in Sources */,
 				7512AA041F17EAAE00D84955 /* Message.swift in Sources */,
 				7512AA681F180CF100D84955 /* ContactVOExtension.swift in Sources */,
@@ -3206,6 +3215,7 @@
 				7512AA151F17F8C200D84955 /* MBContactCollectionViewFlowLayout.m in Sources */,
 				751303DE1F26C74E003FE4A2 /* UIAlertActionExtension.swift in Sources */,
 				75E5F79F1F295D0900001B4F /* PinCodeModel.swift in Sources */,
+				755E0D051F2FAB74004D2873 /* UIStoryboardExtension.swift in Sources */,
 				75555BBB1F18273C000C0C10 /* LabelsDataService.swift in Sources */,
 				753E5AB71F181B1C0090C0F9 /* LabelExtension.swift in Sources */,
 				7512AA671F180C8500D84955 /* MessageDataService.swift in Sources */,
