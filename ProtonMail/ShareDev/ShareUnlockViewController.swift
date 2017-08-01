@@ -39,13 +39,12 @@ class ShareUnlockViewController: UIViewController {
         
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
-        var is_inputs_error : Bool = false
+        var is_inputs_error : Bool = true
         //this part need move to a seperate function
         if let inputitems = self.extensionContext?.inputItems as? [NSExtensionItem] {
             PMLog.D("\(inputitems)")
             for item in inputitems {
                 let plainText = item.attributedContentText?.string
-                
                 if let attachments = item.attachments {
                     for att in attachments {
                         if let itemProvider = att as? NSItemProvider {
@@ -55,8 +54,10 @@ class ShareUnlockViewController: UIViewController {
                             let file_url_key = kUTTypeFileURL as String
                             
                             if itemProvider.hasItemConformingToTypeIdentifier(image_type) {
+                                is_inputs_error = false
                                 PMLog.D("image")
                             } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
+                                is_inputs_error = false
                                 PMLog.D("1")
                                 //                        [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypePropertyList
                                 //                            options:nil
@@ -70,23 +71,31 @@ class ShareUnlockViewController: UIViewController {
                                 //                            }];
                                 
                             } else if itemProvider.hasItemConformingToTypeIdentifier(file_url_key) {
+                                is_inputs_error = false
                                 PMLog.D("file_url_key")
                             } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
+                                is_inputs_error = false
                                 PMLog.D("2")
                                 itemProvider.loadItem(forTypeIdentifier: url_key, options: nil, completionHandler: { (url, error) -> Void in
-                                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-
-                                    if let shareURL = url as? NSURL {
-                                        PMLog.D("\(shareURL)")
-                                        self.inputSubject = plainText ?? ""
-                                        self.inputContent = shareURL.absoluteString ?? ""
-                                        self.loginCheck()
-                                    } else {
+                                    
+                                    {
                                         ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                                        self.showErrorAndQuit()
-                                    }
+                                        if let shareURL = url as? NSURL {
+                                            PMLog.D("\(shareURL)")
+                                            self.inputSubject = plainText ?? ""
+                                            self.inputContent = shareURL.absoluteString ?? ""
+                                            self.loginCheck()
+                                            
+                                        } else {
+                                            self.showErrorAndQuit(errorMsg: "Can't load share content!")
+                                            
+                                        }
+                                        
+                                    } ~> .main
+
                                 })
                             } else if let pt = plainText {
+                                is_inputs_error = false
                                 inputSubject = ""
                                 inputContent = pt
                                 delay(1.0) {
@@ -108,13 +117,11 @@ class ShareUnlockViewController: UIViewController {
         }
         
         if is_inputs_error {
-            //if no input items or see any issues . dirrectly go to composer
-            //show error and quit
+            self.showErrorAndQuit(errorMsg: "Can't load share content!")
         }
     }
     
     private func loginCheck() {
-        self.showErrorAndQuit() //test
         let signinFlow = getViewFlow()
         switch signinFlow {
         case .requirePin:
@@ -137,8 +144,11 @@ class ShareUnlockViewController: UIViewController {
         }
     }
     
-    private func showErrorAndQuit() {
-        let alertController = UIAlertController(title: "Share Alert", message: "Can't load share content!", preferredStyle: .alert)
+    private func showErrorAndQuit(errorMsg : String) {
+        self.touchID.alpha = 0.0
+        self.pinUnlock.alpha = 0.0
+        
+        let alertController = UIAlertController(title: "Share Alert", message: errorMsg, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Action"), style: .default, handler: { (action) -> Void in
             self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
                 let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)

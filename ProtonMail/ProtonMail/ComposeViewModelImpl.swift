@@ -372,7 +372,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 return "\(head)\(htmlString)\(sp)\(body)\(foot)"
             case .newDraft:
                 if !self.body.isEmpty {
-                    let newhtmlString = "\(head) \(self.body) \(htmlString) \(foot)"
+                    let newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
                     self.body = ""
                     return newhtmlString
                 } else {
