@@ -21,6 +21,10 @@ public class ViewModelService {
         fatalError("This method must be overridden")
     }
     
+    public func newShareDraftViewModel(_ vmp : ViewModelProtocol, subject: String, content: String) {
+        fatalError("This method must be overridden")
+    }
+    
     public func newDraftViewModel(_ vmp : ViewModelProtocol) {
         fatalError("This method must be overridden")
     }

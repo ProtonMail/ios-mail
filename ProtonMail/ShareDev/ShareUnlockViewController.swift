@@ -12,9 +12,15 @@ class ShareUnlockViewController: UIViewController {
     @IBOutlet weak var pinUnlock: UIButton!
     @IBOutlet weak var touchID: UIButton!
     
+    //
+    var inputSubject : String! = ""
+    var inputContent : String! = ""
+    var inputAttachments : String! = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        LanguageManager.setupCurrentLanguage()
         
         configureNavigationBar()
         
@@ -24,6 +30,8 @@ class ShareUnlockViewController: UIViewController {
         pinUnlock.isEnabled = false
         touchID.isEnabled = false
         
+        touchID.layer.cornerRadius = 25
+        
         // Do any additional setup after loading the view.
         self.navigationItem.title = ""
         
@@ -31,24 +39,77 @@ class ShareUnlockViewController: UIViewController {
         
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
+        var is_inputs_error : Bool = false
         //this part need move to a seperate function
         if let inputitems = self.extensionContext?.inputItems as? [NSExtensionItem] {
             PMLog.D("\(inputitems)")
             for item in inputitems {
-                if let itemProvider = item.attachments?.first as? NSItemProvider {
-                    if itemProvider.hasItemConformingToTypeIdentifier("public.url") {
-                        itemProvider.loadItem(forTypeIdentifier: "public.url", options: nil, completionHandler: { (url, error) -> Void in
-                            if let shareURL = url as? NSURL {
-                                PMLog.D("\(shareURL)")
+                let plainText = item.attributedContentText?.string
+                
+                if let attachments = item.attachments {
+                    for att in attachments {
+                        if let itemProvider = att as? NSItemProvider {
+                            let image_type = kUTTypeImage as String
+                            let propertylist_ket = kUTTypePropertyList as String
+                            let url_key = kUTTypeURL as String
+                            let file_url_key = kUTTypeFileURL as String
+                            
+                            if itemProvider.hasItemConformingToTypeIdentifier(image_type) {
+                                PMLog.D("image")
+                            } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
+                                PMLog.D("1")
+                                //                        [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypePropertyList
+                                //                            options:nil
+                                //                            completionHandler:^(NSDictionary *item, NSError *error) {
+                                //                            // If it's a "webpage". This type seems to be mostly shared by Safari.
+                                //                            // We can run custom JS if it's a webpage, so get more info that way
+                                //                            // e.g. page title, currently selected text, etc.
+                                //                            NSDictionary *results = [item objectForKey:NSExtensionJavaScriptPreprocessingResultsKey];
+                                //                            // Probably don't need sharedPlainText here since we can get
+                                //                            // lots of info from the page itself
+                                //                            }];
+                                
+                            } else if itemProvider.hasItemConformingToTypeIdentifier(file_url_key) {
+                                PMLog.D("file_url_key")
+                            } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
+                                PMLog.D("2")
+                                itemProvider.loadItem(forTypeIdentifier: url_key, options: nil, completionHandler: { (url, error) -> Void in
+                                    if let shareURL = url as? NSURL {
+                                        PMLog.D("\(shareURL)")
+                                        self.inputSubject = plainText ?? ""
+                                        self.inputContent = shareURL.absoluteString ?? ""
+                                        delay(1.0) {
+                                            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                                            self.loginCheck()
+                                        }
+                                    } else {
+                                        //TODO::show error
+                                    }
+                                })
+                            } else if let pt = plainText {
+                                inputSubject = ""
+                                inputContent = pt
                                 delay(1.0) {
                                     ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                                     self.loginCheck()
                                 }
+                            } else {
+                                PMLog.D("4")
+                                // Or maybe there's nothing at all <flanders.gif>
+                                // Not sure why this would happen, might be a beta bug.
+                                // I managed to get it when sharing the calendar event from apple.com/live :/
                             }
-                        })
+                        }
                     }
+                    
                 }
+                
             }
+        }
+        
+        if is_inputs_error {
+            //if no input items or see any issues . dirrectly go to composer
+            //show error and quit
         }
     }
     
@@ -72,7 +133,6 @@ class ShareUnlockViewController: UIViewController {
             break
         case .restore:
             self.signInIfRememberedCredentials()
-            self.goto_composer()
             break
         }
     }
@@ -134,7 +194,10 @@ class ShareUnlockViewController: UIViewController {
     func goto_composer() {
         let composer = ComposerViewController(nibName: "ComposerViewController", bundle: nil)
         //TODO:: here need to setup the composer with input items
-        sharedVMService.newDraftViewModel(composer)
+        sharedVMService.newShareDraftViewModel(composer,
+                                               subject: self.inputSubject,
+                                               content: self.inputContent)
+        
         let w = UIScreen.main.applicationFrame.width;
         composer.view.frame = CGRect(x: 0, y: 0, width: w, height: 186 + 60)
         self.navigationController?.pushViewController(composer, animated:true)

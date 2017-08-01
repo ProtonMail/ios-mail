@@ -91,12 +91,11 @@ public class PushNotificationService {
                                 completionHandler(.failed)
                             } else {
                                 if let front = revealViewController.frontViewController as? UINavigationController {
-                                    //TODO::Fix later
-//                                    if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
-//                                        sharedMessageDataService.pushNotificationMessageID = messageid
-//                                        mailboxViewController.performSegueForMessageFromNotification()
-//                                    } else {
-//                                    }
+                                    if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
+                                        sharedMessageDataService.pushNotificationMessageID = messageid
+                                        mailboxViewController.performSegueForMessageFromNotification()
+                                    } else {
+                                    }
                                 }
                                 completionHandler(.newData)
                             }
@@ -105,17 +104,6 @@ public class PushNotificationService {
                 }
             }
         }
-        
-        //TODO :: fix the notification fetch part
-        //        sharedMessageDataService.fetchLatestMessagesForLocation(.inbox, completion: { (task, messages, error) -> Void in
-        //            if error != nil {
-        //                completionHandler(.Failed)
-        //            } else if messages != nil && messages!.isEmpty {
-        //                completionHandler(.NoData)
-        //            } else {
-        //                completionHandler(.NewData)
-        //            }
-        //        })
     }
     
     public func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data) {

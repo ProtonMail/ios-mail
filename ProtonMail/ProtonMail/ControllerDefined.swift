@@ -21,6 +21,7 @@ public enum ComposeMessageAction: Int, CustomStringConvertible {
     case forward = 2
     case newDraft = 3
     case openDraft = 4
+    case newDraftFromShare = 5
     
     public var description : String {
         get {
@@ -31,7 +32,7 @@ public enum ComposeMessageAction: Int, CustomStringConvertible {
                 return NSLocalizedString("ReplyAll", comment: "Action")
             case .forward:
                 return NSLocalizedString("Forward", comment: "Action")
-            case .newDraft:
+            case .newDraft, .newDraftFromShare:
                 return NSLocalizedString("Draft", comment: "Action")
             case .openDraft:
                 return NSLocalizedString("OpenDraft", comment: "Action")

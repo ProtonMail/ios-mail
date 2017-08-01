@@ -10,6 +10,16 @@ import Foundation
 
 final class ComposeViewModelImpl : ComposeViewModel {
     
+    
+    init(subject: String, body: String, action : ComposeMessageAction!) {
+        super.init()
+        
+        self.message = nil
+        self.setSubject(subject)
+        self.setBody(body)
+        self.messageAction = action
+    }
+    
     init(msg: Message?, action : ComposeMessageAction!) {
         super.init()
         
@@ -101,7 +111,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         if message != nil {
             switch messageAction!
             {
-            case .newDraft, .forward:
+            case .newDraft, .forward, .newDraftFromShare:
                 break;
             case .openDraft:
                 let toContacts = self.toContacts(self.message!.recipientList)
@@ -364,6 +374,17 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 if !self.body.isEmpty {
                     let newhtmlString = "\(head) \(self.body) \(htmlString) \(foot)"
                     self.body = ""
+                    return newhtmlString
+                } else {
+                    if htmlString.trim().isEmpty {
+                        let ret_body = "<div><br><div><div><br></div><div><br></div><div><br></div>" //add some space
+                        return ret_body
+                    }
+                }
+                return htmlString
+            case .newDraftFromShare:
+                if !self.body.isEmpty {
+                    let newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
                     return newhtmlString
                 } else {
                     if htmlString.trim().isEmpty {
