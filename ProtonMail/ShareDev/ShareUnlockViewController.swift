@@ -74,16 +74,16 @@ class ShareUnlockViewController: UIViewController {
                             } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
                                 PMLog.D("2")
                                 itemProvider.loadItem(forTypeIdentifier: url_key, options: nil, completionHandler: { (url, error) -> Void in
+                                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+
                                     if let shareURL = url as? NSURL {
                                         PMLog.D("\(shareURL)")
                                         self.inputSubject = plainText ?? ""
                                         self.inputContent = shareURL.absoluteString ?? ""
-                                        delay(1.0) {
-                                            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                                            self.loginCheck()
-                                        }
+                                        self.loginCheck()
                                     } else {
-                                        //TODO::show error
+                                        ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                                        self.showErrorAndQuit()
                                     }
                                 })
                             } else if let pt = plainText {
@@ -114,7 +114,7 @@ class ShareUnlockViewController: UIViewController {
     }
     
     private func loginCheck() {
-
+        self.showErrorAndQuit() //test
         let signinFlow = getViewFlow()
         switch signinFlow {
         case .requirePin:
@@ -135,6 +135,17 @@ class ShareUnlockViewController: UIViewController {
             self.signInIfRememberedCredentials()
             break
         }
+    }
+    
+    private func showErrorAndQuit() {
+        let alertController = UIAlertController(title: "Share Alert", message: "Can't load share content!", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Action"), style: .default, handler: { (action) -> Void in
+            self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
+                let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
+                self.extensionContext!.cancelRequest(withError: cancelError)
+            })
+        }))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
