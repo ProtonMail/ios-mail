@@ -218,7 +218,7 @@ class ShareUnlockViewController: UIViewController {
         }
         else
         {
-            //show error and let user sign in with app first
+             self.showErrorAndQuit(errorMsg: NSLocalizedString("Please use ProtonMail App login first", comment: "Description"))
         }
     }
     
