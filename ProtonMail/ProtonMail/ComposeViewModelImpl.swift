@@ -11,13 +11,27 @@ import Foundation
 final class ComposeViewModelImpl : ComposeViewModel {
     
     
-    init(subject: String, body: String, action : ComposeMessageAction!) {
+    init(subject: String, body: String, files: [FileData], action : ComposeMessageAction!) {
         super.init()
         
         self.message = nil
         self.setSubject(subject)
         self.setBody(body)
         self.messageAction = action
+        
+        self.collectDraft(subject,
+                          body: body,
+                          expir: 0,
+                          pwd: "",
+                          pwdHit: "")
+        
+        
+        self.updateDraft()
+        
+        for f in files {
+            self.uploadAtt(f.data.toAttachment(self.message!, fileName: f.name, type: f.ext))
+        }
+        
     }
     
     init(msg: Message?, action : ComposeMessageAction!) {

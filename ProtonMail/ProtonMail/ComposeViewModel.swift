@@ -9,6 +9,14 @@
 import Foundation
 
 
+
+struct FileData {
+    var name : String
+    var ext : String
+    var data : Data
+}
+
+
 class ComposeViewModel {
     var message : Message?
     var messageAction : ComposeMessageAction!

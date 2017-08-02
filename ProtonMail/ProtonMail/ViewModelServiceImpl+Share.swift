@@ -15,9 +15,9 @@ final class ViewModelServiceShareImpl: ViewModelService {
     private var latestComposerViewModel : ComposeViewModel?
 //    private var activeViewController : ViewModelProtocol?
     
-    override func newShareDraftViewModel(_ vmp : ViewModelProtocol, subject: String, content: String) {
+    override func newShareDraftViewModel(_ vmp : ViewModelProtocol, subject: String, content: String, files : [FileData]) {
         //        activeViewController = vmp
-        latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, action: .newDraftFromShare);
+        latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare);
         vmp.setViewModel(latestComposerViewModel!)
     }
 }
