@@ -62,11 +62,16 @@ class ShareUnlockViewController: UIViewController {
                             if  itemProvider.loadItem(types: file_types,  handler: { (fileData : FileData?, error : NSError?) in
                                 ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                                 
-                                if error != nil {
+                                if error != nil || fileData == nil {
                                     self.showErrorAndQuit(errorMsg: "Can't load share content!")
                                 } else {
-                                    self.files.append(fileData!)
-                                    self.loginCheck()
+                                    let length = fileData!.data.count
+                                    if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
+                                        self.files.append(fileData!)
+                                        self.loginCheck()
+                                    } else {
+                                        self.showErrorAndQuit(errorMsg: NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description"))
+                                    }
                                 }
                                 
                             }) {
