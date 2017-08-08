@@ -65,6 +65,9 @@ Veuillez vous rendre sur <a href=\"https://protonmail.com/support/knowledge-base
    Apply label then also archive */
 "Add Folder" = "Ajouter un dossier";
 
+/* Apply label then also archive */
+"Also Archive" = "Archiver également";
+
 /* Action */
 "Add Label" = "Ajouter un label";
 

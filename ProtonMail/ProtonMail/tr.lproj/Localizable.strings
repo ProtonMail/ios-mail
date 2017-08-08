@@ -66,6 +66,9 @@ Daha fazla bilgi için lütfen <a href=\"https://protonmail.com/support/knowledg
    Apply label then also archive */
 "Add Folder" = "Klasör Ekle";
 
+/* Apply label then also archive */
+"Also Archive" = "Ayrıca Arşiv";
+
 /* Action */
 "Add Label" = "Etiket Ekle";
 

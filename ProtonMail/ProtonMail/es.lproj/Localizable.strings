@@ -65,6 +65,9 @@ Visite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"> n
    Apply label then also archive */
 "Add Folder" = "Añadir carpeta";
 
+/* Apply label then also archive */
+"Also Archive" = "Archivar también";
+
 /* Action */
 "Add Label" = "Añadir etiqueta";
 

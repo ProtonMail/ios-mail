@@ -65,6 +65,9 @@ Bitte besuchen Sie <a href=\"https://protonmail.com/support/knowledge-base/delin
    Apply label then also archive */
 "Add Folder" = "Ordner erstellen";
 
+/* Apply label then also archive */
+"Also Archive" = "Auch archivieren";
+
 /* Action */
 "Add Label" = "Kategorie erstellen";
 

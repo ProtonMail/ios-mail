@@ -63,6 +63,9 @@
    Apply label then also archive */
 "Add Folder" = "Dodaj folder";
 
+/* Apply label then also archive */
+"Also Archive" = "Przy okazji archiwizuj";
+
 /* Action */
 "Add Label" = "Dodaj etykietę";
 

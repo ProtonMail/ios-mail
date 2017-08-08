@@ -65,6 +65,9 @@
    Apply label then also archive */
 "Add Folder" = "Добавить папку";
 
+/* Apply label then also archive */
+"Also Archive" = "Перенести в архив";
+
 /* Action */
 "Add Label" = "Добавить ярлык";
 
