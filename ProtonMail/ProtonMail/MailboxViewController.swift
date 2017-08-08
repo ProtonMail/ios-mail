@@ -422,11 +422,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel",  comment: "Action"), style: .cancel, handler: nil))
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Mark Read",  comment: "Action"), style: .default, handler: { (action) -> Void in
-            self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isRead)
-            self.cancelButtonTapped();
-            self.navigationController?.popViewController(animated: true)
-        }))
         if viewModel.isShowEmptyFolder() {
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Empty Folder",  comment: "Action"), style: .destructive, handler: { (action) -> Void in
 
@@ -435,6 +430,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                 self.navigationController?.popViewController(animated: true)
             }))
         } else {
+            
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Mark Read",  comment: "Action"), style: .default, handler: { (action) -> Void in
+                self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isRead)
+                self.cancelButtonTapped();
+                self.navigationController?.popViewController(animated: true)
+            }))
+            
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Add Star",  comment: "Action"), style: .default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
                 self.selectedMessagesSetStar()
