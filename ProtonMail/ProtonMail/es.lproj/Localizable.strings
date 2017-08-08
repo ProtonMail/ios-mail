@@ -52,8 +52,7 @@
 
 Visite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"> nuestra base de conocimientos</a> para más información.";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "Account password invalid" = "Contraseña de cuenta incorrecta";
 
 /* (No Commment) */
@@ -374,13 +373,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Title */
 "DRAFTS" = "Borradores";
 
-/* like Date: 2017-10-10 */
-"Date" = "Fecha";
-
 /* Title */
 "Date:" = "Fecha:";
 
-/* No comment provided by engineer. */
+/* like Date: 2017-10-10 */
 "Date: %@" = "Fecha: %@";
 
 /* Title */
@@ -475,8 +471,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* place holder */
 "Email default signature" = "Firma de correo electrónico predeterminada";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "Email domain invalid" = "Dominio de correo electrónico inválido";
 
 /* Action */
@@ -549,8 +544,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* No comment provided by engineer. */
 "Every time enter app" = "Cada vez al abrir la aplicación";
 
-/* Description
-   expiration time count down */
+/* expiration time count down */
 "Expires in %d days %d hours %d mins %d seconds" = "Caduca en %d días %d horas %d minutos %d segundos";
 
 /* Title */
@@ -973,24 +967,19 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Description */
 "Please set a password." = "Por favor, establezca una contraseña.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different domain." = "Por favor intente con un dominio diferente.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different email address." = "Por favor, pruebe una dirección de correo electrónico diferente.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different password." = "Por favor, intente una contraseña diferente.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different user name." = "Intente un nombre de usuario diferente.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try again." = "Por favor inténtelo de nuevo";
 
 /* (No Commment) */
@@ -1321,8 +1310,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Description */
 "The user info fetch is wrong" = "La búsqueda de información del usuario es incorrecta";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "The verification email invalid" = "Correo de verificación inválido";
 
 /* Error */
@@ -1454,12 +1442,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* No comment provided by engineer. */
 "User is available!" = "Nombre de usuario disponible";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "User name exist" = "El nombre de usuario existe";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "User name invalid" = "Nombre de usuario inválido";
 
 /* Title */
@@ -1498,8 +1484,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Cuando envía un correo, este es el nombre que aparecerá en el campo del remitente.";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "Wrong verification code" = "Código de verificación incorrecto";
 
 /* Description */
@@ -1574,9 +1559,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* agree check box privacy */
 "privacy policy." = "política de privacidad.";
-
-/* Title */
-"reCAPTCHA verification failed" = "Falló la verificación de reCAPTCHA";
 
 /* agree check box terms */
 "terms and conditions" = "términos y condiciones";
