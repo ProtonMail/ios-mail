@@ -52,8 +52,7 @@
 
 Veuillez vous rendre sur <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"> notre base de connaissance</a> pour plus d'information.";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "Account password invalid" = "Mot de passe du compte invalide";
 
 /* (No Commment) */
@@ -148,7 +147,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Bad parameter: %@" = "Mauvais paramètre: %@";
 
 /* Description */
-"Bad path" = "Chemin d'accès erroné";
+"Bad path" = "Chemin erroné";
 
 /* Description */
 "Bad response" = "Mauvaise réponse";
@@ -207,7 +206,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 
 /* sign up user error when can't get moduls id
    update password error */
-"Can't get a Moduls ID!" = "Impossible de récupérer les ID des Moduls!";
+"Can't get a Moduls ID!" = "Impossible d’obtenir un identifiant Moduls !";
 
 /* sign up user error
    update password error */
@@ -251,7 +250,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Change Login Password" = "Changer le mot de passe de connexion";
 
 /* Title */
-"Change Mailbox Password" = "Changer le mot de passe de la boite de réception";
+"Change Mailbox Password" = "Changer le mot de passe de la boîte mail";
 
 /* update password error title */
 "Change Password" = "Changer le mot de passe";
@@ -260,7 +259,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Change Pin" = "Changer le code PIN";
 
 /* Title */
-"Change Single Password" = "Changer mot de passe unique";
+"Change Single Password" = "Changer en mot de passe unique";
 
 /* Title */
 "Change default address to .." = "Changer l'adresse par défaut par...";
@@ -278,7 +277,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Check Again" = "Vérifier encore une fois";
 
 /* loading message */
-"Checking ...." = "Vérification...";
+"Checking ...." = "Vérification en cours...";
 
 /* place holder */
 "Choose a Password" = "Choisissez un mot de passe";
@@ -374,13 +373,10 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 /* Title */
 "DRAFTS" = "Brouillons";
 
-/* like Date: 2017-10-10 */
-"Date" = "Date";
-
 /* Title */
 "Date:" = "Date :";
 
-/* No comment provided by engineer. */
+/* like Date: 2017-10-10 */
 "Date: %@" = "Date : %@";
 
 /* Title */
@@ -390,7 +386,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Decrypt" = "Déchiffrer";
 
 /* Description */
-"Decrypt token failed please try again" = "Le déchiffrage du jeton à échoué, veuillez réessayer";
+"Decrypt token failed please try again" = "Le déchiffrement du jeton à échoué, veuillez réessayer";
 
 /* Title */
 "Default" = "Défaut";
@@ -475,12 +471,11 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 /* place holder */
 "Email default signature" = "Signature d’email par défaut";
 
-/* error message title
-   Title */
-"Email domain invalid" = "Nom de domaine email invalide";
+/* (No Commment) */
+"Email domain invalid" = "Nom de domaine d'email invalide";
 
 /* Action */
-"Empty Folder" = "Dossier vide";
+"Empty Folder" = "Vider la corbeille";
 
 /* Test */
 "Enable - Test" = "Activer - Test";
@@ -510,10 +505,10 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Encrypted from outside" = "Chiffré de l’extérieur";
 
 /* Title */
-"Encrypted from outside pgp inline" = "Chiffré de l’extérieur avec pgp en ligne";
+"Encrypted from outside pgp inline" = "Chiffré en dehors de la ligne PGP";
 
 /* Title */
-"Encrypted from outside pgp mime" = "Chiffré en dehors de la line PGP";
+"Encrypted from outside pgp mime" = "Chiffré en dehors du mime PGP";
 
 /* key setup top title */
 "Encryption Setup" = "Configuration du chiffrement";
@@ -549,8 +544,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 /* No comment provided by engineer. */
 "Every time enter app" = "À chaque ouverture de l'application";
 
-/* Description
-   expiration time count down */
+/* expiration time count down */
 "Expires in %d days %d hours %d mins %d seconds" = "Expire dans %d jours %d heures %d minutes %d secondes";
 
 /* Title */
@@ -563,7 +557,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "FORGOT PASSWORD?" = "Mot de passe oublié ?";
 
 /* Description */
-"Failed to initialize the application's saved data" = "Impossible d'initialiser les données enregistrées de l'application";
+"Failed to initialize the application's saved data" = "L'initialisation des données enregistrées de l’application a échoué";
 
 /* Title */
 "Feedback" = "Vos commentaires";
@@ -613,7 +607,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Help us to improve ProtonMail with your input." = "Aidez-nous à améliorer ProtonMail avec vos commentaires.";
 
 /* Title */
-"Help us to make privacy the default in the web." = "Aidez nous à faire en sorte que la confidentialité soit un standard dans l'univers du web.";
+"Help us to make privacy the default in the web." = "Aidez nous à faire d'Internet un endroit où prime la vie privée.";
 
 /* Action */
 "Hide" = "Masquer";
@@ -631,7 +625,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Human Check Failed" = "La vérification humaine a échoué";
 
 /* human check warning title */
-"Human Check Warning" = "Avertissement pour la verification humaine";
+"Human Check Warning" = "Avertissement pour la vérification humaine";
 
 /* human verification top title
    top title
@@ -642,7 +636,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "INBOX" = "Boîte de réception";
 
 /* Title */
-"Import File From..." = "Importer un fichier de...";
+"Import File From..." = "Importer un fichier depuis...";
 
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Pour utiliser nos services, vous devez acceptez les conditions générales d'utilisation de ProtonMail.";
@@ -663,7 +657,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Input Notification Email ..." = "Entrez l'email de notification...";
 
 /* Error */
-"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "La création instantanée du compte ProtonMail a été temporairement désactivé. Veuillez vous rendre sur https://protonmail.com/invite pour demander une invitation.";
+"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "La création instantanée du compte ProtonMail a été temporairement désactivée. Veuillez vous rendre sur https://protonmail.com/invite pour demander une invitation.";
 
 /* Error */
 "Invalid Password" = "Mot de passe invalide";
@@ -679,7 +673,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Invalid access token please relogin" = "Jeton d'accès invalide, veuillez vous reconnecter";
 
 /* Error */
-"Invalid credential" = "Acréditation invalide";
+"Invalid credential" = "Identifiants invalides";
 
 /* sign up user error
    update notification email error
@@ -727,7 +721,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Load remote content" = "Charger le contenu distant";
 
 /* No comment provided by engineer. */
-"Loading..." = "Chargement...";
+"Loading..." = "Chargement en cours...";
 
 /* Description */
 "Local cache can't find mailbox password" = "Le cache local ne peut pas trouver le mot de passe de la boîte mail";
@@ -752,16 +746,16 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Logout" = "Déconnexion";
 
 /* Title */
-"MAILBOX PASSWORD" = "Mot de passe de la boîte aux lettres";
+"MAILBOX PASSWORD" = "Mot de passe de la boîte mail";
 
 /* Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* settings general section title */
-"Mailbox Password" = "Mot de passe de la boîte aux lettres";
+"Mailbox Password" = "Mot de passe de la boîte mail";
 
 /* (No Commment) */
-"Mailbox password doesn't match" = "Le mot de passe de la boîte aux lettres ne correspond pas";
+"Mailbox password doesn't match" = "Le mot de passe de la boîte mail ne correspond pas";
 
 /* Title */
 "Manage Labels/Folders" = "Gérer les labels/dossiers";
@@ -773,7 +767,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Mark as unread" = "Marquer comme non lu";
 
 /* Message with title */
-"Message %@" = "Ecrit à %@";
+"Message %@" = "Écrit à %@";
 
 /* Placeholder */
 "Message Password" = "Mot de passe du message";
@@ -816,7 +810,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Move to AllMail" = "Déplacer dans tous les emails";
 
 /* Action */
-"Move to Archive" = "Déplacer vers Archives";
+"Move to Archive" = "Archiver";
 
 /* Action */
 "Move to Draft" = "Déplacer vers Brouillons";
@@ -855,7 +849,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "New login password" = "Nouveau mot de passe de connexion";
 
 /* Title */
-"New mailbox password" = "Nouveau mot de passe de boîte de réception";
+"New mailbox password" = "Nouveau mot de passe de boîte mail";
 
 /* Placeholder
    Title */
@@ -900,7 +894,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "On" = "Activé";
 
 /* Description */
-"Only plus user could modify default mobile signature or turn it off!" = "Seuls les utilisateurs plus peuvent modifier ou désactiver la signature mobile !";
+"Only plus user could modify default mobile signature or turn it off!" = "Seuls les utilisateurs Plus peuvent modifier ou désactiver la signature mobile !";
 
 /* Action */
 "OpenDraft" = "Ouvrir le brouillon";
@@ -973,24 +967,19 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 /* Description */
 "Please set a password." = "Veuillez créer un mot de passe.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different domain." = "Veuillez essayer un autre nom de domaine.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different email address." = "Veuillez essayer une autre adresse e-mail.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different password." = "Veuillez essayer un mot de passe différent.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different user name." = "Veuillez essayer un autre nom d’utilisateur.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try again." = "Veuillez essayer à nouveau";
 
 /* (No Commment) */
@@ -1082,10 +1071,10 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Report Bugs" = "Signaler un bug";
 
 /* (No Commment) */
-"Reseting message cache ..." = "Réinitialisation du cache des messages ...";
+"Reseting message cache ..." = "Réinitialisation du cache du message ...";
 
 /* Title */
-"Resetting message cache ..." = "Réinitialisation du cache des messages ...";
+"Resetting message cache ..." = "Réinitialisation du cache du message ...";
 
 /* Action */
 "Retry" = "Réesayer";
@@ -1199,7 +1188,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Spammed" = "Spammé";
 
 /* Description */
-"Srp single password keyslat invalid!" = "Mot de passe unique Srp keyslat invalide !";
+"Srp single password keyslat invalid!" = "Mot de passe unique SRP keysalt invalide!";
 
 /* Title */
 "Star" = "Ajouter aux favoris";
@@ -1273,7 +1262,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 
 /* Description
    Error */
-"The mailbox password is incorrect." = "Le mot de passe de la boîte de réception est incorrect.";
+"The mailbox password is incorrect." = "Le mot de passe de la boîte mail est incorrect.";
 
 /* (No Commment) */
 "The maximum number of labels is %d." = "Le nombre maximum de labels est de %d.";
@@ -1321,8 +1310,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 /* Description */
 "The user info fetch is wrong" = "L'extraction des informations utilisateur est erronée";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "The verification email invalid" = "Email de vérification invalide";
 
 /* Error */
@@ -1344,10 +1332,10 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "To" = "À";
 
 /* (No Commment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pour réinitialiser le mot de passe de votre boîte aux lettres, veuillez utiliser la version web de ProtonMail sur protonmail.com";
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pour réinitialiser le mot de passe de votre boîte mail, veuillez utiliser la version web de ProtonMail à protonmail.com";
 
 /* Description */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Pour réinitialiser le mot de passe de votre boîte aux lettres, veuillez utiliser la version web de ProtonMail sur protonmail.com";
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Pour réinitialiser le mot de passe de votre boîte mail, veuillez utiliser la version web de ProtonMail à protonmail.com";
 
 /* Title */
 "To:" = "À :";
@@ -1376,7 +1364,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Tweet about ProtonMail" = "Tweeter à propos de ProtonMail";
 
 /* Placeholder */
-"Two Factor Code" = "Code d'authentification à deux facteurs";
+"Two Factor Code" = "Code d'authentification à deux étapes";
 
 /* Title */
 "USER LOGIN" = "Connexion de l'utilisateur";
@@ -1454,12 +1442,10 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 /* No comment provided by engineer. */
 "User is available!" = "Nom d'utilisateur disponible";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "User name exist" = "Le nom d'utilisateur existe";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "User name invalid" = "Nom d'utilisateur invalide";
 
 /* Title */
@@ -1478,7 +1464,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Warning: Before you pass the human check you can't sent email!!!" = "Attention: vous ne pouvez pas envoyer d'email avant d'avoir passé la vérification humaine!!!";
 
 /* Description */
-"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Avertissement: vous n’avez pas défini d'email de récupération, donc la récupération du compte est impossible si vous oubliez votre mot de passe. Voulez-vous poursuivre sans email de récupération?";
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Avertissement: vous n’avez pas défini d'email de récupération, la récupération du compte est donc impossible si vous oubliez votre mot de passe. Voulez-vous poursuivre sans email de récupération?";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Nous enverrons un code de vérification au numéro de téléphone ci-dessus.";
@@ -1498,8 +1484,7 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Quand vous envoyez un email, c'est le nom qui apparaît dans le champ d'expéditeur.";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "Wrong verification code" = "Code de vérification erroné";
 
 /* Description */
@@ -1530,10 +1515,10 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "Your Country Code" = "Votre code de pays";
 
 /* Description */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Votre boîte de réception est maintenant protégée par le chiffrement de bout en bout. Pour envoyer des emails sécurisés à vos amis, demandez-leur de rejoindre ProtonMail! Vous pouvez aussi chiffrer vos messages manuellement s'ils n'utilisent pas ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Votre boîte de réception est maintenant protégée par le chiffrement de bout-en-bout. Pour envoyer des emails sécurisés à vos amis, demandez-leur de rejoindre ProtonMail! Vous pouvez aussi chiffrer vos messages manuellement s'ils n'utilisent pas ProtonMail.";
 
 /* Description */
-"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Votre nouveau compte d'email chiffré a été mis en place et est prêt à envoyer et recevoir des messages chiffrés.";
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Votre nouveau compte d'emails chiffrés a été mis en place et est prêt à envoyer et recevoir des messages chiffrés.";
 
 /* Description */
 "Your signature has been updated." = "Votre signature a été mise à jour.";
@@ -1574,9 +1559,6 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 
 /* agree check box privacy */
 "privacy policy." = "politique de confidentialité.";
-
-/* Title */
-"reCAPTCHA verification failed" = "la verification reCAPTCHA a échoué";
 
 /* agree check box terms */
 "terms and conditions" = "conditions générales d'utilisation";
