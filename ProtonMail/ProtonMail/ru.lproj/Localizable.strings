@@ -52,8 +52,7 @@
 
 Пожалуйста, посетите <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">нашу базу знаний</a> для получения дополнительной информации.";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "Account password invalid" = "Неправильный пароль от аккаунта";
 
 /* (No Commment) */
@@ -374,13 +373,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Title */
 "DRAFTS" = "Черновики";
 
-/* like Date: 2017-10-10 */
-"Date" = "Дата";
-
 /* Title */
 "Date:" = "Дата:";
 
-/* No comment provided by engineer. */
+/* like Date: 2017-10-10 */
 "Date: %@" = "Дата: %@";
 
 /* Title */
@@ -475,8 +471,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* place holder */
 "Email default signature" = "Подпись электронной почты по умолчанию";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "Email domain invalid" = "Некорректный домен электронной почты";
 
 /* Action */
@@ -510,10 +505,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Encrypted from outside" = "Зашифровано извне ProtonMail";
 
 /* Title */
-"Encrypted from outside pgp inline" = "Зашифрованно вне Protonmail, используя pgp-inline";
+"Encrypted from outside pgp inline" = "Зашифровано вне ProtonMail, используя pgp-inline";
 
 /* Title */
-"Encrypted from outside pgp mime" = "Зашифрованно вне Protonmail, используя pgp-mime";
+"Encrypted from outside pgp mime" = "Зашифровано вне ProtonMail, используя pgp-mime";
 
 /* key setup top title */
 "Encryption Setup" = "Настройка шифрования";
@@ -549,8 +544,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* No comment provided by engineer. */
 "Every time enter app" = "При каждом входе в приложение";
 
-/* Description
-   expiration time count down */
+/* expiration time count down */
 "Expires in %d days %d hours %d mins %d seconds" = "Истекает через %d д. %d ч. %d мин. %d сек.";
 
 /* Title */
@@ -973,24 +967,19 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Description */
 "Please set a password." = "Пожалуйста, задайте пароль.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different domain." = "Пожалуйста, попробуйте другой домен.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different email address." = "Пожалуйста, попробуйте другой адрес электронной почты.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different password." = "Пожалуйста, попробуйте другой пароль.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different user name." = "Пожалуйста, попробуйте другое имя пользователя.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try again." = "Пожалуйста, попробуйте ещё раз";
 
 /* (No Commment) */
@@ -1321,8 +1310,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Description */
 "The user info fetch is wrong" = "Ошибка при получении информации о пользователе";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "The verification email invalid" = "Некорректная электронная почта для подтверждения";
 
 /* Error */
@@ -1453,12 +1441,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* No comment provided by engineer. */
 "User is available!" = "Данное имя пользователя доступно";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "User name exist" = "Имя пользователя существует";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "User name invalid" = "Некорректное имя пользователя";
 
 /* Title */
@@ -1497,8 +1483,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Когда вы отправляете письмо, указанное имя будет отображено в графе отправителя.";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "Wrong verification code" = "Неверный код подтверждения";
 
 /* Description */
@@ -1573,9 +1558,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 
 /* agree check box privacy */
 "privacy policy." = "политикой конфиденциальности.";
-
-/* Title */
-"reCAPTCHA verification failed" = "Сбой проверки reCAPTCHA";
 
 /* agree check box terms */
 "terms and conditions" = "условия и положения";
