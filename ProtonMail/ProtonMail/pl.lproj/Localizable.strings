@@ -23,7 +23,7 @@
 "2fa Authentication failed please try to login again" = "Nieudane logowanie dwuskładnikowe, proszę spróbuj zalogować raz jeszcze";
 
 /* no object error, local only , this could be not translated! */
-"<no object>" = "< brak obiektu >";
+"<no object>" = "<brak obiektu>";
 
 /* (No Commment) */
 "A message cannot have more than 5 labels" = "Wiadomość nie może mieć więcej niż 5 etykiet";
@@ -38,20 +38,19 @@
 
 /* Error
    Title */
-"API Server not reachable..." = "Serwer API nie jest osiągalny...";
+"API Server not reachable..." = "Serwer API jest nieosiągalny...";
 
 /* Title */
 "ARCHIVE" = "Archiwum";
 
 /* Description
    error message when acction disabled */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Dostęp do tego konta jest wyłączona z powodu braku płatności. Zaloguj się za pomocą protonmail.com, aby zapłacić niezapłacone faktury.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Dostęp do tego konta jest wyłączony z powodu braku płatności. Zaloguj się za pomocą protonmail.com, aby zapłacić niezapłacone faktury.";
 
 /* (No Commment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Dostęp do tego konta jest wyłączony z powodu braku płatności. Odwiedź stronę naszą< href = \"https://protonmail.com/support/knowledge-base/delinquency/\" > bazę wiedzy < /a >, aby uzyskać więcej informacji.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Dostęp do tego konta jest wyłączony z powodu braku płatności. Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">naszą stronę bazę wiedzy</a>, aby uzyskać więcej informacji.";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "Account password invalid" = "Nieprawidłowe hasło logowania";
 
 /* (No Commment) */
@@ -87,7 +86,9 @@
 /* Description */
 "All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
 
-THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości e-mail zostaną utracone na zawsze, ale nadal będziesz w stanie wyświetlić niezaszyfrowane wiadomości. TEJ AKCJI NIE MOŻNA COFNĄĆ!";
+THIS ACTION CANNOT BE UNDONE!" = "Wszystkie Twoje zaszyfrowane wiadomości e-mail zostaną utracone na zawsze, ale nadal będziesz w stanie wyświetlić niezaszyfrowane wiadomości.
+
+TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 
 /* Description */
 "Also used to reset a forgotten password." = "Umożliwia również zresetowanie zapomnianego hasła.";
@@ -106,22 +107,22 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Archive" = "Archiwum";
 
 /* Description */
-"Archived" = "Archiwalne";
+"Archived" = "Zarchiwizowano";
 
 /* Title */
-"Authentication" = "Logowanie";
+"Authentication" = "Uwierzytelnianie";
 
 /* Description */
-"Authentication Failed Wrong username or password" = "Logowanie nie powiodło się. Nieprawidłowa nazwa użytkownika lub hasło.";
+"Authentication Failed Wrong username or password" = "Uwierzytelnianie nie powiodło się. Nieprawidłowa nazwa użytkownika lub hasło.";
 
 /* Description */
-"Authentication failed" = "Logowanie nieudane";
+"Authentication failed" = "Uwierzytelnianie nieudane";
 
 /* Error */
-"Authentication failed please try to login again" = "Logowanie nieudane, proszę spróbować ponownie";
+"Authentication failed please try to login again" = "Uwierzytelnianie nieudane, proszę spróbować ponownie";
 
 /* Description */
-"Authentication was cancelled by the system" = "Logowanie zostało przerwane przez system";
+"Authentication was cancelled by the system" = "Uwierzytelnianie zostało przerwane przez system";
 
 /* settings protection section title
    Title */
@@ -135,7 +136,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Back" = "Wstecz";
 
 /* Error */
-"Bad auth cache" = "Błąd buforu uwierzytelniania";
+"Bad auth cache" = "Błąd pamięci podręcznej uwierzytelniania";
 
 /* Description */
 "Bad parameter" = "Błędny parametr";
@@ -229,7 +230,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Cancel" = "Anuluj";
 
 /* Action */
-"Cancel Check" = "Anuluj wyboru";
+"Cancel Check" = "Anuluj wybór";
 
 /* (No Commment) */
 "Cant' decrypt this attachment!" = "Nie można odszyfrować tego załącznika.";
@@ -268,7 +269,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Change right swipe action" = "Zmień akcję przesuwania w prawo";
 
 /* Title */
-"Change sender address to .." = "Zmień adres nadawcy do...";
+"Change sender address to .." = "Zmień adres nadawcy na...";
 
 /* Action */
 "Check Again" = "Sprawdź ponownie";
@@ -280,7 +281,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Choose a Password" = "Wybierz hasło";
 
 /* settings general section title */
-"Clear Local Message Cache" = "Wyczyść lokalny bufor wiadomości";
+"Clear Local Message Cache" = "Wyczyść pamięć podręczną wiadomości";
 
 /* Action
    lable manager close action */
@@ -368,15 +369,12 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "DISPLAY NAME" = "NAZWA WYŚWIETLANA";
 
 /* Title */
-"DRAFTS" = "Kopie robocze";
-
-/* like Date: 2017-10-10 */
-"Date" = "Data";
+"DRAFTS" = "Szkice";
 
 /* Title */
 "Date:" = "Data:";
 
-/* No comment provided by engineer. */
+/* like Date: 2017-10-10 */
 "Date: %@" = "Data: %@";
 
 /* Title */
@@ -419,7 +417,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Details" = "Szczegóły";
 
 /* Action */
-"Discard draft" = "Odrzucić kopię roboczą";
+"Discard draft" = "Odrzuć szkic";
 
 /* Title */
 "Display Name" = "Nazwa wyświetlana";
@@ -439,10 +437,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 
 /* Action
    Title */
-"Draft" = "Wersja robocza";
+"Draft" = "Szkic";
 
 /* Title */
-"Drafts" = "Kopie robocze";
+"Drafts" = "Szkice";
 
 /* Action */
 "Edit" = "Edytuj";
@@ -463,7 +461,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Email Verification" = "Weryfikacja adresu e-mail";
 
 /* Title */
-"Email address" = "Adres email";
+"Email address" = "Adres e-mail";
 
 /* Title */
 "Email address invalid" = "Niepoprawny adres e-mail";
@@ -471,8 +469,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 /* place holder */
 "Email default signature" = "Domyślny podpis e-mail";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "Email domain invalid" = "Nieprawidłowa domena e-mail";
 
 /* Action */
@@ -531,7 +528,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Enter your PIN" = "Wprowadź PIN";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Wprowadź PIN, aby odblokować skrzynkę odbiorczą.";
+"Enter your PIN to unlock your inbox." = "Wprowadź PIN, aby odblokować skrzynkę.";
 
 /* human verification top title */
 "Enter your cell phone number" = "Wprowadź swój numer telefonu komórkowego";
@@ -545,8 +542,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 /* No comment provided by engineer. */
 "Every time enter app" = "Za każdym wejściem do aplikacji";
 
-/* Description
-   expiration time count down */
+/* expiration time count down */
 "Expires in %d days %d hours %d mins %d seconds" = "Wygasa za %d dni %d godzin %d min %d sekund";
 
 /* Title */
@@ -573,10 +569,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 
 /* Action
    top left back button */
-"Forward" = "Prześlij dalej";
+"Forward" = "Przekaż";
 
 /* Title */
-"Forwarded message" = "Przekazana wiadomoś";
+"Forwarded message" = "Przekazana wiadomość";
 
 /* Action */
 "French" = "francuski";
@@ -600,7 +596,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Get more information" = "Uzyskaj więcej informacji";
 
 /* Action */
-"Go to inbox" = "Przejdź do skrzynki odbiorczej";
+"Go to inbox" = "Przejdź do odebranych";
 
 /* Title */
 "Help & Support" = "Pomoc i Wsparcie";
@@ -609,7 +605,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Help us to improve ProtonMail with your input." = "Pomóż nam ulepszyć ProtonMail z Twoim udziałem.";
 
 /* Title */
-"Help us to make privacy the default in the web." = "Pomóż nam aby prywatności była standardem w Internecie.";
+"Help us to make privacy the default in the web." = "Pomóż nam sprawić, aby prywatność była standardem w Internecie.";
 
 /* Action */
 "Hide" = "Ukryj";
@@ -627,7 +623,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Human Check Failed" = "Weryfikacja człowieczeństwa nieudana";
 
 /* human check warning title */
-"Human Check Warning" = "Ostrzeżenie weryfikacji człowiczeństwa";
+"Human Check Warning" = "Ostrzeżenie weryfikacji człowieczeństwa";
 
 /* human verification top title
    top title
@@ -635,7 +631,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Human Verification" = "Weryfikacja człowieczeństwa";
 
 /* Title */
-"INBOX" = "Skrzynka odbiorcza";
+"INBOX" = "Odebrane";
 
 /* Title */
 "Import File From..." = "Importuj plik z...";
@@ -644,7 +640,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "W celu korzystania z naszych usług, musisz zgodzić się na Warunki Korzystania z Usługi ProtonMail.";
 
 /* Title */
-"Inbox" = "Skrzynka odbiorcza";
+"Inbox" = "Odebrane";
 
 /* Error */
 "Incorrect PIN," = "Niepoprawny PIN,";
@@ -815,13 +811,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Move to Archive" = "Przenieś do archiwum";
 
 /* Action */
-"Move to Draft" = "Przenieś do kopii roboczych";
+"Move to Draft" = "Przenieś do Szkicy";
 
 /* folder apply - title */
 "Move to Folder" = "Przenieś do folderu";
 
 /* Action */
-"Move to Inbox" = "Przejdź do skrzynki odbiorczej";
+"Move to Inbox" = "Przejdź do Odebranych";
 
 /* Action */
 "Move to Outbox" = "Przenieś do skrzynki nadawczej";
@@ -899,7 +895,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Only plus user could modify default mobile signature or turn it off!" = "Tylko użytkownicy kont Plus mogą zmodyfikować domyślny podpis mobilny lub go wyłączyć!";
 
 /* Action */
-"OpenDraft" = "Otwórz brudnopis";
+"OpenDraft" = "Otwórz szkic";
 
 /* Title */
 "Outbox" = "Skrzynka nadawcza";
@@ -969,24 +965,19 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 /* Description */
 "Please set a password." = "Proszę ustawić hasło.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different domain." = "Spróbuj innej domeny.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different email address." = "Spróbuj użyć innego adresu e-mail.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different password." = "Spróbuj użyć innego hasła.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try a different user name." = "Wybierz inną nazwę użytkownika.";
 
-/* Error
-   error message when create new user */
+/* (No Commment) */
 "Please try again." = "Spróbuj ponownie";
 
 /* (No Commment) */
@@ -1112,7 +1103,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "SRP Server" = "Serwer SRP";
 
 /* Title */
-"STARRED" = "Oznaczone gwiazdką";
+"STARRED" = "Wyróżnione";
 
 /* Action
    Title */
@@ -1122,7 +1113,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Save Changes" = "Zapisz zmiany";
 
 /* Action */
-"Save draft" = "Zapisz kopię roboczą";
+"Save draft" = "Zapisz szkic";
 
 /* Placeholder
    Title */
@@ -1201,7 +1192,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "Star" = "Gwiazdka";
 
 /* Title */
-"Starred" = "Oznaczone gwiazdką";
+"Starred" = "Wyróżnione";
 
 /* Title */
 "Storage" = "Pamięć";
@@ -1256,10 +1247,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 "The display name is now %@." = "Nazwa wyświetlana to aktualnie %@.";
 
 /* Description */
-"The draft cache is broken please try again" = "Kopia robocza bufora jest uszkodzona, spróbuj ponownie";
+"The draft cache is broken please try again" = "Bufor szkiców jest uszkodzony, spróbuj ponownie";
 
 /* error when sending the message */
-"The draft format incorrectly sending failed!" = "Wysyłanie nie powiodło się. Wystąpił błąd w formacie kopii roboczej.";
+"The draft format incorrectly sending failed!" = "Wysyłanie nie powiodło się. Wystąpił błąd w formacie szkicu.";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Najwyższy poziom szyfrowania dostępny.";
@@ -1317,8 +1308,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 /* Description */
 "The user info fetch is wrong" = "Pobrane dane użytkownika są błędne";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "The verification email invalid" = "Nieprawidłowy email weryfikacyjny";
 
 /* Error */
@@ -1449,12 +1439,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 /* No comment provided by engineer. */
 "User is available!" = "Nazwa użytkownika jest dostępna";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "User name exist" = "Nazwa użytkownika już istnieje";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "User name invalid" = "Nieprawidłowa nazwa użytkownika";
 
 /* Title */
@@ -1493,8 +1481,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Kiedy wysyłasz wiadomość, ta nazwa pojawia się w oknie nadawcy.";
 
-/* error message title
-   Title */
+/* (No Commment) */
 "Wrong verification code" = "Nieprawidłowy kod weryfikacyjny";
 
 /* Description */
@@ -1538,7 +1525,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 
 /* like at 10:00pm
    Title */
-"at" = "w";
+"at" = "o";
 
 /* Error */
 "attempt remaining until secure data wipe!" = "próba przed bezpiecznym wymazaniem danych!";
@@ -1569,9 +1556,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Wszystkie istniejące zaszyfrowane wiadomości
 
 /* agree check box privacy */
 "privacy policy." = "zasady ochrony prywatności.";
-
-/* Title */
-"reCAPTCHA verification failed" = "Nieudana walidacja reCAPTCHA";
 
 /* agree check box terms */
 "terms and conditions" = "warunki i zasady korzystania";
