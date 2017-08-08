@@ -1,0 +1,1576 @@
+/* No comment provided by engineer. */
+"%d Minute" = "%d minuut";
+
+/* No comment provided by engineer. */
+"%d Minutes" = "%d minuten";
+
+/* Key size text */
+"(2048 bit)" = "(2048 bit)";
+
+/* Key size text */
+"(4096 bit)" = "(4096 bit)";
+
+/* No comment provided by engineer. */
+"(string_show)" = "(string_show)";
+
+/* No comment provided by engineer. */
+"**********" = "**********";
+
+/* Title */
+"*OPTIONAL" = "*OPTIONEEL";
+
+/* Error */
+"2fa Authentication failed please try to login again" = "Tweestapsauthenticatie mislukt, probeer opnieuw in te loggen";
+
+/* no object error, local only , this could be not translated! */
+"<no object>" = "<geen object>";
+
+/* (No Commment) */
+"A message cannot have more than 5 labels" = "Een bericht kan maximaal 5 labels hebben";
+
+/* Description */
+"A new version of ProtonMail app is available, please update to latest version." = "Er is een nieuwe versie van de ProtonMail app beschikbaar, update de app.";
+
+/* Description
+   settings touchid error
+   Touch id error message */
+"A passcode has not been set, enable it in the system Settings" = "Er is geen wachtwoord ingesteld, stel er een in in de systeem instellingen";
+
+/* Error
+   Title */
+"API Server not reachable..." = "API server is onbereikbaar...";
+
+/* Title */
+"ARCHIVE" = "Archief";
+
+/* Description
+   error message when acction disabled */
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Toegang tot dit account is geblokkeerd als gevolg van niet betaalde facturen. Gelieve aan te melden via protonmail.com om uw onbetaalde factuur te betalen.";
+
+/* (No Commment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Toegang tot dit account is geblokkeerd als gevolg van niet betaalde facturen
+
+Bezoek <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">our knowledge base</a> voor meer informatie.";
+
+/* (No Commment) */
+"Account password invalid" = "Ongeldig accountwachtwoord";
+
+/* (No Commment) */
+"Add" = "Voeg toe";
+
+/* edit contact navigation title */
+"Add Contact" = "Voeg contact toe";
+
+/* Action
+   Apply label then also archive */
+"Add Folder" = "Voeg map toe";
+
+/* Action */
+"Add Label" = "Voeg label toe";
+
+/* Title */
+"Add New Folder" = "Voeg een nieuwe map toe";
+
+/* Title */
+"Add New Label" = "Voeg een nieuw label toe";
+
+/* Action */
+"Add Star" = "Voeg ster toe";
+
+/* alert title
+   Error
+   Title */
+"Alert" = "Waarschuwing";
+
+/* Title */
+"All Mail" = "Alle mail";
+
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "Al uw bestaande versleutelde e-mails zullen voorgoed verloren gaan, maar u zal nog steeds uw niet-versleutelde e-mails kunnen bekijken. 
+
+DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
+
+/* Description */
+"Also used to reset a forgotten password." = "Ook gebruikt om een vergeten wachtwoord opnieuw in te stellen.";
+
+/* No comment provided by engineer. */
+"AppVersion" = "App-versie";
+
+/* Action
+   folder apply - apply button text */
+"Apply" = "Pas toe";
+
+/* Title */
+"Apply Labels" = "Pas label toe";
+
+/* Title */
+"Archive" = "Archief";
+
+/* Description */
+"Archived" = "Gearchiveerd";
+
+/* Title */
+"Authentication" = "Authenticatie";
+
+/* Description */
+"Authentication Failed Wrong username or password" = "Authenticatie mislukt: De gebruikersnaam of het wachtwoord is verkeerd.";
+
+/* Description */
+"Authentication failed" = "Authenticatie mislukt";
+
+/* Error */
+"Authentication failed please try to login again" = "Authenticatie mislukt, probeer opnieuw in te loggen";
+
+/* Description */
+"Authentication was cancelled by the system" = "Authenticatie is geannuleerd door het systeem";
+
+/* settings protection section title
+   Title */
+"Auto Lock Time" = "Tijd tot automatische vergrendeling";
+
+/* settings general section title */
+"Auto Show Images" = "Toon afbeeldingen automatisch";
+
+/* Action
+   top left back button */
+"Back" = "Vorige";
+
+/* Error */
+"Bad auth cache" = "Foutieve authenticatie cache";
+
+/* Description */
+"Bad parameter" = "Foutieve parameter";
+
+/* Description */
+"Bad parameter: %@" = "Foutieve parameter %@";
+
+/* Description */
+"Bad path" = "Foutief pad";
+
+/* Description */
+"Bad response" = "Foutieve reactie";
+
+/* Title */
+"Bcc" = "BCC";
+
+/* Title */
+"Bug Description" = "Omschrijving van de bug";
+
+/* Title */
+"Bug Report Received" = "Melding ontvangen";
+
+/* agree check box first part words */
+"By using protonmail, you agree to our" = "Door protonmail te gebruiken, gaat u akkoord met onze";
+
+/* human check option button */
+"CAPTCHA" = "CAPTCHA";
+
+/* Action
+   setup pin action */
+"CONFIRM" = "BEVESTIGEN";
+
+/* Title */
+"CONTACTS" = "CONTACTEN";
+
+/* setup pin action */
+"CREATE" = "AANMAKEN";
+
+/* key size note part 2 */
+"Can take several minutes to setup." = "Kan enkele minuten duren om in te stellen.";
+
+/* Error */
+"Can't copy the file" = "Kan bestand niet kopiëren";
+
+/* update notification email error
+   update password error */
+"Can't create a SRP Client" = "Kan geen SRP client maken";
+
+/* sign up user error
+   update notification email error
+   update password error */
+"Can't create a SRP verifier!" = "Kan geen SRP verificator maken!";
+
+/* When quick look attachment but can't decrypt it! */
+"Can't decrypt this attachment!" = "Kan deze bijlage niet ontsleutelen!";
+
+/* Error */
+"Can't download message body, please try again." = "Kan de inhoud van het bericht niet downloaden, probeer opnieuw.";
+
+/* Description */
+"Can't find the clicked message please try again!" = "Kan het aangeklikte bericht niet vinden, probeer opnieuw!";
+
+/* when quick look attachment but can't find the data */
+"Can't find this attachment!" = "Kan deze bijlage niet vinden!";
+
+/* sign up user error when can't get moduls id
+   update password error */
+"Can't get a Moduls ID!" = "Kan geen Moduls ID verkrijgen!";
+
+/* sign up user error
+   update password error */
+"Can't get a Moduls!" = "Kan geen Moduls verkrijgen!";
+
+/* update notification email error
+   update password error */
+"Can't get user auth info" = "Kan gebruikerauthenticatieinformatie niet verkrijgen";
+
+/* Error */
+"Can't load the file" = "Kan het bestand niet laden";
+
+/* Description */
+"Can't not find the value from the response body" = "Kan de waarde in de reactietekst niet vinden";
+
+/* Error */
+"Can't open the file" = "Kan het bestand niet openen";
+
+/* Action
+   folder apply - cancel button text
+   title
+   Title */
+"Cancel" = "Annuleren";
+
+/* Action */
+"Cancel Check" = "Annuleer controle";
+
+/* (No Commment) */
+"Cant' decrypt this attachment!" = "Kan deze bijlage niet ontsleutelen.";
+
+/* Title */
+"Cc" = "CC";
+
+/* Title */
+"Cc:" = "Cc:";
+
+/* place holder */
+"Cell phone number" = "Telefoonnummer";
+
+/* change password input label */
+"Change Login Password" = "Wijzig inlogwachtwoord";
+
+/* Title */
+"Change Mailbox Password" = "Wijzig mailboxwachtwoord";
+
+/* update password error title */
+"Change Password" = "Wijzig wachtwoord";
+
+/* settings protection section title */
+"Change Pin" = "Wijzig PIN";
+
+/* Title */
+"Change Single Password" = "Wijzig enige wachtwoord";
+
+/* Title */
+"Change default address to .." = "Wijzig standaardadres naar...";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Wijzig actie links vegen";
+
+/* settings swipe actions section action description */
+"Change right swipe action" = "Wijzig actie rechts vegen";
+
+/* Title */
+"Change sender address to .." = "Wijzig afzenderadres naar...";
+
+/* Action */
+"Check Again" = "Controleer opnieuw";
+
+/* loading message */
+"Checking ...." = "Wordt gecontroleerd...";
+
+/* place holder */
+"Choose a Password" = "Kies een wachtwoord";
+
+/* settings general section title */
+"Clear Local Message Cache" = "Lokaal bericht cache legen";
+
+/* Action
+   lable manager close action */
+"Close" = "Sluiten";
+
+/* Action */
+"Compose" = "Opstellen";
+
+/* Action
+   Title */
+"Confirm" = "Bevestig";
+
+/* (No Commment) */
+"Confirm Login Password" = "Bevestig inlogwachtwoord";
+
+/* (No Commment) */
+"Confirm Mailbox Password" = "Bevestig mailboxwachtwoord";
+
+/* place holder
+   Placeholder
+   Title */
+"Confirm Password" = "Bevestig wachtwoord";
+
+/* Title */
+"Confirm new login password" = "Bevestig nieuw inlogwachtwoord";
+
+/* Title */
+"Confirm new mailbox password" = "Bevestig nieuw mailboxwachtwoord";
+
+/* Placeholder
+   Title */
+"Confirm new password" = "Bevestig nieuw wachtwoord";
+
+/* Title */
+"Confirmation" = "Bevestiging";
+
+/* view top title */
+"Congratulations!" = "Gefeliciteerd!";
+
+/* Title */
+"Contact the ProtonMail team" = "Neem contact op met het ProtonMail-team";
+
+/* Title */
+"Contacts" = "Contactpersonen";
+
+/* Action
+   key setup continue button */
+"Continue" = "Volgende";
+
+/* top right action item title
+   top right action text */
+"Create" = "Aanmaken";
+
+/* Create account button */
+"Create Account" = "Account aanmaken";
+
+/* Error */
+"Create User failed please try again" = "Gebruiker aanmaken is mislukt, probeer het opnieuw";
+
+/* Signup top title */
+"Create a new account" = "Nieuw account aanmaken";
+
+/* Description */
+"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Voeg labels toe om uw inbox te ordenen. Houd een bericht ingedrukt voor alle opties.";
+
+/* error message title when create new user
+   sign up user error
+   Title */
+"Create user failed" = "Gebruiker aanmaken mislukt";
+
+/* Change language title */
+"Current Language is: " = "Huidige taal is: ";
+
+/* Title */
+"Current login password" = "Huidig loginwachtwoord";
+
+/* Placeholder
+   Title */
+"Current password" = "Huidig wachtwoord";
+
+/* Title */
+"DECRYPT MAILBOX" = "MAILBOX ONTSLEUTELEN";
+
+/* Title */
+"DISPLAY NAME" = "WEERGEGEVEN NAAM";
+
+/* Title */
+"DRAFTS" = "Concepten";
+
+/* Title */
+"Date:" = "Datum:";
+
+/* like Date: 2017-10-10 */
+"Date: %@" = "Datum: %@";
+
+/* Title */
+"Debug" = "Debug";
+
+/* Action */
+"Decrypt" = "Ontsleutelen";
+
+/* Description */
+"Decrypt token failed please try again" = "Token ontsleutelen mislukt, probeer opnieuw";
+
+/* Title */
+"Default" = "Standaard";
+
+/* Description
+   Error
+   error message when create new user */
+"Default error, please try again." = "Standaard fout, probeer alstublieft opnieuw.";
+
+/* Placeholder */
+"Define Expiration Date" = "Definieer de vervaldatum";
+
+/* place holder
+   Placeholder */
+"Define Hint (Optional)" = "Definieer hint (optioneel)";
+
+/* place holder */
+"Define Password" = "Definieer wachtwoord";
+
+/* Action
+   lable manager delete action
+   swipe title when swipe cell on mailbox message list */
+"Delete" = "Verwijder";
+
+/* Description
+   Title */
+"Deleted" = "Verwijderd";
+
+/* Title */
+"Details" = "Details";
+
+/* Action */
+"Discard draft" = "Verwerp concept";
+
+/* Title */
+"Display Name" = "Weergavenaam";
+
+/* Title */
+"Display Name Updated" = "Weergavenaam bijgewerkt";
+
+/* Title */
+"DisplayName" = "Weergavenaam";
+
+/* Title */
+"Don't Show Again" = "Laat niet meer zien";
+
+/* Action
+   Title */
+"Done" = "Klaar";
+
+/* Action
+   Title */
+"Draft" = "Concept";
+
+/* Title */
+"Drafts" = "Concepten";
+
+/* Action */
+"Edit" = "Bewerk";
+
+/* edit contact navigation title */
+"Edit Contact" = "Bewerk contact";
+
+/* Title */
+"Edit Folder" = "Bewerk folder";
+
+/* Title */
+"Edit Label" = "Bewerk label";
+
+/* Placeholder */
+"Email" = "E-mail";
+
+/* human check option button */
+"Email Verification" = "E-mailverificatie";
+
+/* Title */
+"Email address" = "E-mailadres";
+
+/* Title */
+"Email address invalid" = "Ongeldig e-mailadres";
+
+/* place holder */
+"Email default signature" = "Standaard e-mailhandtekening";
+
+/* (No Commment) */
+"Email domain invalid" = "Ongeldig e-mail domein";
+
+/* Action */
+"Empty Folder" = "Lege map";
+
+/* Test */
+"Enable - Test" = "Activeer - Test";
+
+/* Title */
+"Enable Default Signature" = "Activeer standaard handtekening";
+
+/* Title */
+"Enable Mobile Signature" = "Activeer mobiele handtekening";
+
+/* Title */
+"Enable Notification Email" = "Activeer emailnotificatie";
+
+/* settings protection section title */
+"Enable Pin Protection" = "Activeer PIN beveiliging";
+
+/* settings protection section title */
+"Enable TouchID" = "Activeer TouchID";
+
+/* Title */
+"Encrypted for outside" = "Versleuteld voor buiten";
+
+/* Title */
+"Encrypted for outside reply" = "Versleuteld voor extern antwoord";
+
+/* Title */
+"Encrypted from outside" = "Versleuteld vanaf extern";
+
+/* Title */
+"Encrypted from outside pgp inline" = "Versleuteld vanaf externe in-regel pgp";
+
+/* Title */
+"Encrypted from outside pgp mime" = "Versleuteld vanaf externe pgp/mime";
+
+/* key setup top title */
+"Encryption Setup" = "Versleuteling configuratie";
+
+/* Title */
+"End-to-End Encryption" = "Eind-tot-eind versleuteling";
+
+/* Action */
+"English" = "Engels";
+
+/* Action */
+"Enter" = "Invoeren";
+
+/* place holder
+   Title */
+"Enter Verification Code" = "Voer verificatiecode in";
+
+/* set pin title */
+"Enter your PIN" = "Voer uw PIN in";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Voer uw pincode in om uw inbox te ontgrendelen.";
+
+/* human verification top title */
+"Enter your cell phone number" = "Voer uw telefoonnummer in";
+
+/* top title */
+"Enter your existing email address." = "Voer uw bestaande e-mailadres in.";
+
+/* settings debug section title */
+"Error Logs" = "Foutenlog";
+
+/* No comment provided by engineer. */
+"Every time enter app" = "Elke keer als u de app opent";
+
+/* expiration time count down */
+"Expires in %d days %d hours %d mins %d seconds" = "Verloopt in %d dagen %d uur %d minuten %d seconden";
+
+/* Title */
+"Expiring Messages" = "Verlopende berichten";
+
+/* Key size checkbox */
+"Extreme Security" = "Strenge Beveiliging";
+
+/* login page forgot pwd */
+"FORGOT PASSWORD?" = "Wachtwoord vergeten?";
+
+/* Description */
+"Failed to initialize the application's saved data" = "Het initialiseren van de opgeslagen data van de applicatie is mislukt";
+
+/* Title */
+"Feedback" = "Feedback";
+
+/* Error */
+"Fetch user info failed" = "Ophalen van gebruikersgegevens is mislukt";
+
+/* folder editing editfeild place holder
+   place holder */
+"Folder Name" = "Mapnaam";
+
+/* Action
+   top left back button */
+"Forward" = "Doorsturen";
+
+/* Title */
+"Forwarded message" = "Doorgestuurd bericht";
+
+/* Action */
+"French" = "Frans";
+
+/* Title */
+"From" = "Van";
+
+/* Title */
+"From:" = "Van:";
+
+/* Title */
+"Fwd:" = "Fwd:";
+
+/* Title */
+"General Settings" = "Algemene instellingen";
+
+/* Action */
+"German" = "Duits";
+
+/* Action */
+"Get more information" = "Meer informatie";
+
+/* Action */
+"Go to inbox" = "Ga naar inbox";
+
+/* Title */
+"Help & Support" = "Help & Ondersteuning";
+
+/* Title */
+"Help us to improve ProtonMail with your input." = "Help ons om met uw input ProtonMail te verbeteren.";
+
+/* Title */
+"Help us to make privacy the default in the web." = "Help ons om privacy de standaard op het web te maken.";
+
+/* Action */
+"Hide" = "Verberg";
+
+/* Title */
+"Hide Details" = "Verberg details";
+
+/* Key size checkbox */
+"High Security" = "Strikte beveiliging";
+
+/* No comment provided by engineer. */
+"Hours" = "Uren";
+
+/* Description */
+"Human Check Failed" = "Menselijke Controle Mislukt";
+
+/* human check warning title */
+"Human Check Warning" = "Menselijke Controle Waarschuwing";
+
+/* human verification top title
+   top title
+   view top title */
+"Human Verification" = "Menselijke Verificatie";
+
+/* Title */
+"INBOX" = "Inbox";
+
+/* Title */
+"Import File From..." = "Bestand importeren uit...";
+
+/* Error */
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Om onze diensten te gebruiken, moet u akkoord gaan met de ProtonMail gebruiksvoorwaarden.";
+
+/* Title */
+"Inbox" = "Inbox";
+
+/* Error */
+"Incorrect PIN," = "Onjuiste pincode,";
+
+/* Title */
+"Incorrect password" = "Onjuist wachtwoord";
+
+/* place holder */
+"Input Display Name ..." = "Weergavenaam invoeren...";
+
+/* place holder */
+"Input Notification Email ..." = "Notificatie e-mailadres ingeven ...";
+
+/* Error */
+"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Instant ProtonMail account aanmaken is tijdelijk uitgeschakeld. Ga naar https://protonmail.com/invite om een uitnodiging aan te vragen.";
+
+/* Error */
+"Invalid Password" = "Ongeldig wachtwoord";
+
+/* Error */
+"Invalid UserName" = "Ongeldige gebruikersnaam";
+
+/* update notification email error
+   update password error when input invalid username */
+"Invalid UserName!" = "Ongeldige gebruikersnaam!";
+
+/* Description */
+"Invalid access token please relogin" = "Ongeldige toegangstoken, log opnieuw in";
+
+/* Error */
+"Invalid credential" = "Inloggegevens ongeldig";
+
+/* sign up user error
+   update notification email error
+   update password error */
+"Invalid hashed password!" = "Ongeldige wachtwoordhash!";
+
+/* Title */
+"Keep me updated about new features" = "Houd me op de hoogte over nieuwe functionaliteit";
+
+/* Error */
+"Key generation failed" = "Genereren van sleutels is mislukt";
+
+/* Error */
+"Key generation failed please try again" = "Genereren van sleutels mislukt, probeer het opnieuw";
+
+/* Error */
+"Key invalid please go back try again" = "Sleutel ongeldig, ga terug en probeer het opnieuw";
+
+/* Title */
+"LOGIN" = "Login";
+
+/* Title */
+"Label Management" = "Label beheer";
+
+/* createing lable input place holder
+   place holder */
+"Label Name" = "Labelnaam";
+
+/* Title */
+"Label as..." = "Label als...";
+
+/* Title */
+"Labels have been applied." = "Labels zijn toegepast.";
+
+/* Title */
+"Labels/Folders" = "Labels/mappen";
+
+/* Title */
+"Language" = "Taal";
+
+/* lib version text */
+"LibVersion" = "LibVersion";
+
+/* Action */
+"Load remote content" = "Externe inhoud laden";
+
+/* No comment provided by engineer. */
+"Loading..." = "Laden...";
+
+/* Description */
+"Local cache can't find mailbox password" = "Lokale cache kan het mailbox wachtwoord niet vinden";
+
+/* (No Commment) */
+"Localizable.strings" = "Engels";
+
+/* Title */
+"Lock The App" = "App vergrendelen";
+
+/* touch id box title like Login: email@email.com */
+"Login" = "Inloggen";
+
+/* Placeholder
+   settings general section title */
+"Login Password" = "Inlogwachtwoord";
+
+/* Error */
+"Login password doesn't match" = "Inlogwachtwoord komt niet overeen";
+
+/* Title */
+"Logout" = "Uitloggen";
+
+/* Title */
+"MAILBOX PASSWORD" = "Mailboxwachtwoord";
+
+/* Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPromp";
+
+/* settings general section title */
+"Mailbox Password" = "Mailboxwachtwoord";
+
+/* (No Commment) */
+"Mailbox password doesn't match" = "Mailbox wachtwoord komt niet overeen";
+
+/* Title */
+"Manage Labels/Folders" = "Beheer labels/folders";
+
+/* Action */
+"Mark Read" = "Markeer als gelezen";
+
+/* Action */
+"Mark as unread" = "Markeer als ongelezen";
+
+/* Message with title */
+"Message %@" = "Bericht %@";
+
+/* Placeholder */
+"Message Password" = "Bericht wachtwoord";
+
+/* settings debug section title */
+"Message Queue" = "Berichtenwachtrij";
+
+/* Title */
+"Message Swipe Actions" = "Bericht veeg acties";
+
+/* No comment provided by engineer. */
+"Message expired" = "Bericht is verlopen";
+
+/* Title */
+"Message has been deleted." = "Bericht is verwijderd.";
+
+/* Title */
+"Message has been moved." = "Bericht is verplaatst.";
+
+/* Error */
+"Message password does not match." = "Bericht wachtwoord komt niet overeen.";
+
+/* Description */
+"Message sending failed please try again" = "Bericht versturen mislukt, probeer het opnieuw";
+
+/* Description */
+"Message sent" = "Bericht verzonden";
+
+/* Description */
+"Messages you send can be set to auto delete after a certain time period." = "Berichten die u verstuurd kunnen worden ingesteld om na een bepaalde tijd automatisch te worden verwijderd.";
+
+/* Title */
+"Mobile Signature" = "Mobiele handtekening";
+
+/* Description
+   signup human check error description when mobile signup disabled */
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobiele aanmeldingen zijn tijdelijk uitgeschakeld. Probeer het later opnieuw of meld u aan via protonmail.com op een laptop of desktop.";
+
+/* Action */
+"Move to AllMail" = "Verplaats naar Alle Berichten";
+
+/* Action */
+"Move to Archive" = "Verplaats naar archief";
+
+/* Action */
+"Move to Draft" = "Verplaats naar concepten";
+
+/* folder apply - title */
+"Move to Folder" = "Verplaats naar Map";
+
+/* Action */
+"Move to Inbox" = "Verplaats naar inbox";
+
+/* Action */
+"Move to Outbox" = "Verplaats naar uitgaande map";
+
+/* Action */
+"Move to Spam" = "Verplaats naar ongewenst";
+
+/* Action */
+"Move to Trash" = "Verplaats naar prullenbak";
+
+/* Title */
+"Move to..." = "Verplaats naar...";
+
+/* Title */
+"Multiple Addresses" = "Meerdere adressen";
+
+/* Action */
+"NEED AN ACCOUNT? SIGN UP." = "Meld u gratis aan";
+
+/* Placeholder */
+"Name" = "Naam";
+
+/* Test */
+"Navigation Title - Test" = "Navigatie Titel - Test";
+
+/* Title */
+"New login password" = "Nieuw inlogwachtwoord";
+
+/* Title */
+"New mailbox password" = "Nieuw mailbox-wachtwoord";
+
+/* Placeholder
+   Title */
+"New password" = "Nieuw wachtwoord";
+
+/* Error
+   Title */
+"No connectivity detected..." = "Geen netwerkverbinding gedetecteerd...";
+
+/* Description */
+"No managed object context" = "Geen beheerde objectcontext";
+
+/* Description */
+"No managed object context." = "Geen beheerde objectcontext.";
+
+/* this is a system object can't find, this could be not trasnlated */
+"No managedObjectContext" = "Geen managedObjectContext";
+
+/* No comment provided by engineer. */
+"None" = "Geen";
+
+/* Signup user name notes */
+"Note: The Username is also your ProtonMail address." = "Opmerking: De gebruikersnaam is ook uw ProtonMail adres.";
+
+/* setup password notes */
+"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Opmerking: Dit wachtwoord wordt gebruikt om uw berichten te versleutelen en ontsleutelen. Verlies dit wachtwoord daarom niet, wij kunnen het herstellen.";
+
+/* setup password notes */
+"Note: This is used to log you into your account." = "Opmerking: Dit is gebruikt om in te loggen op uw account.";
+
+/* Title */
+"Notification / Recovery Email" = "Notificatie / Herstel e-mail";
+
+/* settings general section title
+   Title */
+"Notification Email" = "Notificatie e-mail";
+
+/* Action */
+"OK" = "Oké";
+
+/* Title */
+"On" = "Aan";
+
+/* Description */
+"Only plus user could modify default mobile signature or turn it off!" = "Alleen plus gebruikers kunnen mobiele handtekeningen aanpassen of uitzetten!";
+
+/* Action */
+"OpenDraft" = "Open conceptbericht";
+
+/* Title */
+"Outbox" = "Postvak uit";
+
+/* change login password navigation title
+   change mailbox password navigation title
+   change signle password navigation title */
+"PASSWORD" = "WACHTWOORD";
+
+/* Title */
+"Password" = "Wachtwoord";
+
+/* Error
+   Title */
+"Password Mismatch" = "Wachtwoorden komen niet overeen";
+
+/* Title */
+"Password Updated" = "Wachtwoord bijgewerkt";
+
+/* Error */
+"Password cannot be empty." = "Wachtwoord kan niet leeg zijn.";
+
+/* update notification email error
+   update password error */
+"Password update failed" = "Wachtwoord wijzigen mislukt";
+
+/* human check option button */
+"Phone Verification" = "Telefonische verificatie";
+
+/* Title */
+"Phone number invalid" = "Telefoonnummer is ongeldig";
+
+/* Title */
+"Photo Library" = "Fotobibliotheek";
+
+/* Description */
+"Pin code can't be empty." = "Pin-code kan niet leeg zijn.";
+
+/* Title */
+"Plain text" = "Onversleutelde tekst";
+
+/* Description */
+"Please check your cell phone for the verification code." = "Controleer uw telefoon voor de verificatiecode.";
+
+/* error message */
+"Please check your email for the verification code." = "Controleer uw e-mail voor de verificatiecode.";
+
+/* Test */
+"Please input ... - Test" = "Voer in... - Test";
+
+/* Description */
+"Please input a valid cell phone number." = "Voer een geldig telefoonnummer in.";
+
+/* Description
+   error message */
+"Please input a valid email address." = "Voer een geldig e-mailadres in.";
+
+/* Error */
+"Please pick a user name first!" = "Kies eerst een gebruikersnaam!";
+
+/* Error */
+"Please remove all attachments before changing sender!" = "Verwijder alle bijlagen voor het wijzigen van de afzender";
+
+/* human check select option title */
+"Please select one of the following options:" = "Selecteer een van de volgende opties:";
+
+/* Description */
+"Please set a password." = "Stel een wachtwoord in.";
+
+/* (No Commment) */
+"Please try a different domain." = "Probeer een andere domeinnaam.";
+
+/* (No Commment) */
+"Please try a different email address." = "Probeer een ander e-mailadres.";
+
+/* (No Commment) */
+"Please try a different password." = "Probeer een ander wachtwoord.";
+
+/* (No Commment) */
+"Please try a different user name." = "Probeer een andere gebruikersnaam.";
+
+/* (No Commment) */
+"Please try again." = "Probeer opnieuw";
+
+/* (No Commment) */
+"Please use the web version of ProtonMail to change your mailbox password!" = "Gebruik de webversie van ProtonMail om het wachtwoord van uw mailbox te wijzigen!";
+
+/* Alert */
+"Please use the web version of ProtonMail to change your passwords.!" = "Gebruik de webversie van ProtonMail om uw wachtwoorden te wijzigen.!";
+
+/* Description */
+"Please use your new password when signing in." = "Gebruik uw nieuwe wachtwoord om in te loggen.";
+
+/* The */
+"Please wait until the email downloaded!" = "Wacht totdat de e-mail is gedownload!";
+
+/* Title */
+"Please, manage it in your phone." = "Beheer dit vanaf uw telefoon.";
+
+/* Title */
+"Protection" = "Bescherming";
+
+/* settings protection section title */
+"Protection Entire App" = "Bescherming gehele app";
+
+/* Title */
+"ProtonMail" = "ProtonMail";
+
+/* Description */
+"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus is vereist om uw mobiele handtekening te kunnen wijzigen";
+
+/* Description */
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail verkoopt geen advertenties en maakt geen misbruik van uw privacy. Uw steun is essentieel om ProtonMail draaiende te houden. U kunt upgraden naar een betaald account of doneren ter ondersteuning van ProtonMail.";
+
+/* Title */
+"ProtonMail encrypted emails" = "ProtonMail versleutelde e-mails";
+
+/* Description */
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail is momenteel offline, kijk op onze twitter voor de huidige status: https://twitter.com/protonmail";
+
+/* Title */
+"Quick swipe actions" = "Snelle Swipe acties";
+
+/* Title */
+"REPORT BUGS" = "MELD BUGS";
+
+/* Action */
+"RESET MAILBOX PASSWORD" = "MAILBOX-WACHTWOORD OPNIEUW INSTELLEN";
+
+/* Title */
+"Rate & Review" = "Beoordeel ons";
+
+/* set pin title */
+"Re-Enter your PIN" = "Vul uw PIN nogmaals in";
+
+/* Title */
+"Re:" = "Re:";
+
+/* Title */
+"Recovery Code" = "Herherstelcode";
+
+/* Title */
+"Recovery Email" = "Herstel-e-mailadres";
+
+/* Title */
+"Recovery Email Warning" = "Herstel e-mail waarschuwing";
+
+/* Title */
+"Remind Me Later" = "Herinner mij later";
+
+/* Action */
+"Remove" = "Verwijderen";
+
+/* Action */
+"Remove Star" = "Ster verwijderen";
+
+/* Action
+   top left back button */
+"Reply" = "Beantwoorden";
+
+/* top left back button */
+"Reply All" = "Allen beantwoorden";
+
+/* (No Commment) */
+"Reply message" = "Bericht beantwoorden";
+
+/* Action */
+"ReplyAll" = "Allen beantwoorden";
+
+/* Title */
+"Report Bugs" = "Fout melden";
+
+/* (No Commment) */
+"Reseting message cache ..." = "Berichten cache resetten...";
+
+/* Title */
+"Resetting message cache ..." = "Berichten cache resetten...";
+
+/* Action */
+"Retry" = "Opnieuw proberen";
+
+/* email verify code resend count down
+   Title */
+"Retry after %d seconds" = "Probeer opnieuw over %d seconden";
+
+/* Action */
+"Russian" = "Russisch";
+
+/* Title */
+"SENT" = "Verzonden";
+
+/* Title */
+"SETTINGS" = "INSTELLINGEN";
+
+/* Title */
+"SIGNATURE" = "HANDTEKENING";
+
+/* Title */
+"SPAM" = "Spam";
+
+/* Error */
+"SRP Client" = "SRP Client";
+
+/* Error */
+"SRP Server" = "SRP Server";
+
+/* Title */
+"STARRED" = "Gemarkeerd";
+
+/* Action
+   Title */
+"Save" = "Opslaan";
+
+/* title */
+"Save Changes" = "Wijzigingen opslaan";
+
+/* Action */
+"Save draft" = "Concept opslaan";
+
+/* Placeholder
+   Title */
+"Search" = "Zoek";
+
+/* Test */
+"Section Title - Test" = "Titel van de sectie - Test";
+
+/* (No Commment) */
+"Select your language" = "Selecteer uw taal";
+
+/* Action */
+"Send" = "Verzenden";
+
+/* Title */
+"Send Verification Code" = "Verzend verificatiecode";
+
+/* Description */
+"Send message without subject?" = "Bericht zonder onderwerp verzenden?";
+
+/* Title */
+"Send plain but stored enc" = "Verzend onversleuted maar bewaar het versleuteld";
+
+/* Description */
+"Sending Message" = "Bericht wordt verzonden";
+
+/* Title */
+"Sent" = "Verzonden";
+
+/* Description */
+"Sent Failed" = "Verzenden mislukt";
+
+/* Description */
+"Server proofs not valid!" = "Server bewijzen ongeldig!";
+
+/* Title */
+"Set Password" = "Wachtwoord instellen";
+
+/* Description */
+"Set a password to encrypt this message for non-ProtonMail users." = "Stel een wachtwoord in om dit bericht te versleutelen voor non-ProtonMail gebruikers.";
+
+/* Signup passwords top title */
+"Set passwords" = "Wachtwoorden instellen";
+
+/* Title */
+"Settings" = "Instellingen";
+
+/* Title */
+"Share it with your friends" = "Deel het met uw vrienden";
+
+/* Action */
+"Sign Out" = "Afmelden";
+
+/* Title */
+"Signature" = "Handtekening";
+
+/* Title */
+"Signature Updated" = "Handtekening bijgewerkt";
+
+/* settings general section title */
+"Single Password" = "Enige wachtwoord";
+
+/* Title */
+"Space Warning" = "Opslagruimte waarschuwing";
+
+/* Title */
+"Spam" = "Spam";
+
+/* Description */
+"Spammed" = "Spam";
+
+/* Description */
+"Srp single password keyslat invalid!" = "SRP enkel wachtwoord keysalt ongeldig!";
+
+/* Title */
+"Star" = "Ster";
+
+/* Title */
+"Starred" = "Gemarkeerd";
+
+/* Title */
+"Storage" = "Opslag";
+
+/* Placeholder */
+"Subject" = "Onderwerp";
+
+/* Title */
+"Subject:" = "Onderwerp:";
+
+/* Action
+   Title */
+"Support ProtonMail" = "Klantenservice ProtonMail";
+
+/* settings swipe actions section title */
+"Swipe Left to Right" = "Veeg van links naar rechts";
+
+/* settings swipe actions section title */
+"Swipe Right to Left" = "Veeg van rechts naar links";
+
+/* Error */
+"System can't copy the file" = "Het systeem kan het bestand niet kopiëren";
+
+/* Title */
+"TRASH" = "Prullenbak";
+
+/* Title */
+"Take a Photo" = "Maak foto";
+
+/* No comment provided by engineer. */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Bedankt voor het indienen van een foutmelding. We hebben uw verslag toegevoegd aan ons bug tracking systeem.";
+
+/* update password error */
+"The Password is wrong." = "Het wachtwoord is onjuist.";
+
+/* Title */
+"The ProtonMail current offline..." = "ProtonMail is momenteel offline...";
+
+/* Error Description */
+"The UserName have been taken." = "De gebruikersnaam is reeds in gebruik.";
+
+/* Description */
+"The authentication credentials are invalid." = "Ongeldige inloggegevens.";
+
+/* Description */
+"The authentication token has expired." = "De authenticatie token is verlopen.";
+
+/* key size notes */
+"The current standard" = "De huidige standaard";
+
+/* Description */
+"The display name is now %@." = "De weergavenaam is nu %@.";
+
+/* Description */
+"The draft cache is broken please try again" = "De concepten cache is kapot, probeer het opnieuw";
+
+/* error when sending the message */
+"The draft format incorrectly sending failed!" = "Versturen mislukt. Er was een fout met het concept formaat.";
+
+/* key size note part 1 */
+"The highest level of encryption available." = "Het hoogste niveau van versleuteling is beschikbaar.";
+
+/* Description */
+"The label name is duplicate" = "De labelnaam is een duplicaat";
+
+/* Description
+   Error */
+"The mailbox password is incorrect." = "Het mailbox wachtwoord is onjuist.";
+
+/* (No Commment) */
+"The maximum number of labels is %d." = "Het maximaal aantal labels is %d.";
+
+/* Description */
+"The maximum number of labels is 20." = "Het maximale aantal labels is 20.";
+
+/* Description */
+"The message password can't be empty" = "Het bericht wachtwoordveld kan niet leeg zijn";
+
+/* Description */
+"The message password didn't match" = "Het berichtenwachtwoord komt niet overeen";
+
+/* (No Commment) */
+"The new password can't empty" = "Het nieuwe wachtwoordveld kan niet leeg zijn";
+
+/* update password error */
+"The new password can't empty." = "Het nieuwe wachtwoordveld kan niet leeg zijn.";
+
+/* (No Commment) */
+"The new password not match" = "Wachtwoorden komen niet overeen";
+
+/* update password error */
+"The new password not match." = "Het nieuwe wachtwoord komt niet overeen.";
+
+/* recovery email notes */
+"The optional recovery email address allows you to reset your login password if you forget it." = "Met het optionele herstel e-mailadres kunt u uw inlog wachtwoord resetten wanneer u deze bent vergeten.";
+
+/* Description */
+"The password you entered does not match the current password." = "Het opgegeven wachtwoord komt niet overeen met het huidig wachtwoord.";
+
+/* Description */
+"The passwords you entered do not match." = "De ingevoerde wachtwoorden komen niet overeen.";
+
+/* update password error */
+"The private update failed." = "De privé update is mislukt.";
+
+/* Error
+   Title */
+"The request timed out." = "De aanvraag kreeg niet op tijd een reactie.";
+
+/* Description */
+"The total attachment size can't be bigger than 25MB" = "De totale grootte van de bijlagen kan niet groter zijn dan 25MB";
+
+/* Description */
+"The user info fetch is wrong" = "Fout bij het ophalen van de gebruikersinformatie";
+
+/* (No Commment) */
+"The verification email invalid" = "Ongeldige verificatie e-mail";
+
+/* Error */
+"The verification failed!" = "De verificatie is mislukt!";
+
+/* Description */
+"There was an error creating or loading the application's saved data." = "Er is een fout opgetreden tijdens het maken of laden van de opgeslagen data van de applicatie.";
+
+/* No comment provided by engineer. */
+"This contact belongs to your Address Book." = "Deze contactpersoon behoort toe tot uw adresboek.";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail voldoet niet aan de authenticatie-vereisten van haar domein. Mogelijk werd deze gespoofed of onjuist doorgestuurd!";
+
+/* spam score warning */
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail lijkt afkomstig van een ProtonMail-adres maar kwam van buiten ons systeem en voldoet niet aan onze authenticatie-vereisten. Mogelijk werd deze gespoofed of onjuist doorgestuurd!";
+
+/* Title */
+"To" = "Aan";
+
+/* (No Commment) */
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Om uw mailbox wachtwoord te resetten dient u de webversie van ProtonMail (via protonmail.com) te gebruiken";
+
+/* Description */
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Om uw mailbox wachtwoord te resetten dient u de webversie van ProtonMail (via protonmail.com) te gebruiken";
+
+/* Title */
+"To:" = "Aan:";
+
+/* Error */
+"Token expired" = "Token vervallen";
+
+/* Description
+   settings touchid error
+   Touch id error message */
+"TouchID is not enrolled, enable it in the system Settings" = "TouchID is niet actief, activeer het in de systeem instellingen";
+
+/* Description
+   settings touchid error
+   Touch id error message */
+"TouchID not available" = "TouchID is niet beschikbaar";
+
+/* Action
+   Title */
+"Trash" = "Prullenbak";
+
+/* Title */
+"Trouble shooting guide" = "Foutoplossingsgids";
+
+/* Title */
+"Tweet about ProtonMail" = "Tweet over ProtonMail";
+
+/* Placeholder */
+"Two Factor Code" = "Tweestapsverificatiecode";
+
+/* Title */
+"USER LOGIN" = "Gebruiker inlog";
+
+/* Description */
+"Unable to connect to the server" = "Niet in staat om met de server te verbinden";
+
+/* Description */
+"Unable to construct a valid URL with the following path: %@" = "Niet mogelijk om een geldige URL met het volgende pad to construeren: %@";
+
+/* Description */
+"Unable to create SRP Client!" = "Niet in staat om een SRP client te maken!";
+
+/* Error */
+"Unable to decrypt message." = "Niet in staat om het bericht te ontsleutelen.";
+
+/* Description */
+"Unable to generate hash password!" = "Niet in staat om een wachtwoordhash te maken!";
+
+/* Error */
+"Unable to get contacts" = "Niet in staat om contactpersonen op te halen";
+
+/* Description */
+"Unable to parse authentication info!" = "Niet in staat om authenticatiegegevens te verwerken!";
+
+/* Description */
+"Unable to parse authentication token!" = "Niet in staat om de authenticatie token te verwerken!";
+
+/* Description */
+"Unable to parse cased authentication token!" = "Niet mogelijk om de authenticatie-token te verwerken!";
+
+/* Description */
+"Unable to parse response" = "Niet in staat om de reactie te verwerken";
+
+/* Description */
+"Unable to parse the response object:
+%@" = "Niet in staat om het antwoord object te verwerken: %@";
+
+/* Error */
+"Unable to parse token" = "Niet in staat om token te verwerken";
+
+/* error when sending the message */
+"Unable to send the email" = "E-mail kon niet worden verzonden.";
+
+/* Action */
+"Undo" = "Ongedaan maken";
+
+/* Description */
+"Unknow Error" = "Onbekende fout";
+
+/* (No Commment) */
+"Unknow file" = "Onbekend bestand";
+
+/* No comment provided by engineer. */
+"Unknown" = "Onbekend";
+
+/* Error */
+"Unknown Error" = "Onbekende fout";
+
+/* No comment provided by engineer. */
+"Unkonw Version" = "Onbekende versie";
+
+/* right top action button
+   top right action text */
+"Update" = "Werk bij";
+
+/* update notification email error title
+   update notification email error title when signup */
+"Update Notification Email" = "Notificatie e-mailadres bijwerken";
+
+/* error when user already exist */
+"User already exist!" = "Gebruikersnaam reeds in gebruik";
+
+/* No comment provided by engineer. */
+"User is available!" = "Gebruikersnaam is beschikbaar";
+
+/* (No Commment) */
+"User name exist" = "Gebruikersnaam bestaat reeds";
+
+/* (No Commment) */
+"User name invalid" = "Ongeldige gebruikersnaam";
+
+/* Title */
+"Username" = "Gebruikersnaam";
+
+/* Title */
+"Verification code request failed" = "Verificatiecode aanvraag mislukt";
+
+/* Title */
+"Verification code sent" = "Verificatiecode verzonden";
+
+/* (No Commment) */
+"Version %@ %@" = "Versie %@ %@";
+
+/* human check warning description */
+"Warning: Before you pass the human check you can't sent email!!!" = "Waarschuwing: Voordat u bewezen heeft een natuurlijk persoon te zijn kunt u geen e-mail versturen!!!";
+
+/* Description */
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Waarschuwing: U heeft geen herstel e-mailadres ingesteld, hierdoor is account herstel niet mogelijk als u uw wachtwoord vergeet. Doorgaan zonder herstel e-mailadres?";
+
+/* text field notes */
+"We will send a verification code to the cell phone above." = "Wij zullen een verificatiecode naar bovenstaand telefoonnummer sturen.";
+
+/* email field notes */
+"We will send a verification code to the email address above." = "Wij zullen een verificatiecode naar bovenstaand e-mailadres sturen.";
+
+/* Title */
+"We would like to know what we can do better." = "Wij horen graag wat wij kunnen verbeteren.";
+
+/* Title */
+"Welcome to ProtonMail!" = "Welkom bij ProtonMail";
+
+/* Description */
+"What people see in the \"From\" field." = "Wat ontvangers in het veld \"Afzender\" zien.";
+
+/* display name notes */
+"When you send an email, this is the name that appears in the sender field." = "Wanneer u een e-mail verstuurt, is dit de naam die bij 'afzender' verschijnt.";
+
+/* (No Commment) */
+"Wrong verification code" = "Onjuiste verificatiecode";
+
+/* Description */
+"You can customize swipe gestures in the ProtonMail App Settings." = "U kunt onder \"Instellingen\" in de ProtonMail app veeg gebaren instellen.";
+
+/* Description */
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "U kunt hulp en ondersteuning krijgen via protonmail.com/support. U kunt ook bugs melden via de app.";
+
+/* Message */
+"You have %d new emails!" = "U heeft %d nieuwe e-mails!";
+
+/* Title */
+"You have a new email!" = "U heeft een nieuwe e-mail!";
+
+/* Confirmation message */
+"You have unsaved changes. Do you want to save it?" = "U heeft nog niet opgeslagen wijzigingen. Wilt u deze opslaan?";
+
+/* Description */
+"You have used %d%% of your storage space (%@)." = "U heeft %d%% van uw opslagruimte gebruikt (%@).";
+
+/* Description */
+"You have used up all of your storage space (%@)." = "U heeft al uw opslagruimte gebruikt (%@).";
+
+/* Description */
+"You need at least one recipient to send" = "U moet minstens één ontvanger invoeren om het bericht te verzenden";
+
+/* view top title */
+"Your Country Code" = "Uw landcode";
+
+/* Description */
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Uw inbox is nu met end-to-end versleuteling beveiligd. Om automatisch veilig met uw vrienden te e-mailen moeten zij ook ProtonMail gebruiken! U kunt ook handmatig berichten versleutelen als zij geen ProtonMail gebruiken.";
+
+/* Description */
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Uw nieuw versleuteld e-mail account is aangemaakt en u kunt nu versleutelde berichten verzenden en ontvangen.";
+
+/* Description */
+"Your signature has been updated." = "Uw handtekening werd gewijzigd.";
+
+/* agree check box middle word */
+"and" = "en";
+
+/* like at 10:00pm
+   Title */
+"at" = "om";
+
+/* Error */
+"attempt remaining until secure data wipe!" = "poging over tot het vernietigen van alle gegevens!";
+
+/* Description */
+"attempts remaining" = "pogingen resterend";
+
+/* Error */
+"attempts remaining until secure data wipe!" = "pogingen over tot het vernietigen van alle gegevens!";
+
+/* Action */
+"close tour" = "sluit rondleiding";
+
+/* No comment provided by engineer. */
+"days" = "Dagen";
+
+/* contacts api error when fetch */
+"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "laden van contacts() mislukt, peopleOrderedByUsersPreference geeft null terug!!";
+
+/* (No Commment) */
+"hours" = "Uren";
+
+/* Title */
+"inline attachments" = "inline-bijlage";
+
+/* Title */
+"normal attachments" = "normale bijlagen";
+
+/* agree check box privacy */
+"privacy policy." = "privacybeleid.";
+
+/* agree check box terms */
+"terms and conditions" = "algemene voorwaarden";
+
+/* Test */
+"test value" = "testwaarde";
+
+/* Test */
+"this is description - Test" = "dit is een beschrijving - Test";
+
+/* versions first character */
+"v" = "v";
+
+/* Title */
+"wrote:" = "schreef:";
+

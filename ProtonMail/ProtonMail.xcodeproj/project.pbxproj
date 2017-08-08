@@ -930,6 +930,12 @@
 		7564899D1B7F2C9F007EA207 /* ComposeViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModelImpl.swift; sourceTree = "<group>"; };
 		7565998E1AC4809B00C187E4 /* EncryptTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptTypes.swift; sourceTree = "<group>"; };
 		75662BA61B543A5B006C538E /* SettingsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAPI.swift; sourceTree = "<group>"; };
+		7566AE861F394CEA006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7566AE871F394CEA006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
+		7566AE881F394CEB006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoDevPlist.strings; sourceTree = "<group>"; };
+		7566AE891F394CEC006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7566AE8A1F394CEC006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7566AE8B1F394CED006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		7567B06C1B334FA400A72A1E /* ViewModelService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelService.swift; sourceTree = "<group>"; };
 		7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelServiceImpl.swift; sourceTree = "<group>"; };
@@ -3009,6 +3015,7 @@
 				753A36211EF2512300032667 /* tr */,
 				757DC6461F0D623700342CB0 /* uk */,
 				757DC64C1F0D625B00342CB0 /* pl */,
+				7566AE8B1F394CED006D84F9 /* nl */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
@@ -3023,6 +3030,7 @@
 				753A361D1EF2512200032667 /* tr */,
 				757DC6421F0D623500342CB0 /* uk */,
 				757DC6481F0D625900342CB0 /* pl */,
+				7566AE871F394CEA006D84F9 /* nl */,
 			);
 			name = PasswordExtension.strings;
 			sourceTree = "<group>";
@@ -3037,6 +3045,7 @@
 				753A361E1EF2512300032667 /* tr */,
 				757DC6431F0D623500342CB0 /* uk */,
 				757DC6491F0D625900342CB0 /* pl */,
+				7566AE861F394CEA006D84F9 /* nl */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -3051,6 +3060,7 @@
 				753A361F1EF2512300032667 /* tr */,
 				757DC6441F0D623500342CB0 /* uk */,
 				757DC64A1F0D625900342CB0 /* pl */,
+				7566AE881F394CEB006D84F9 /* nl */,
 			);
 			name = InfoDevPlist.strings;
 			sourceTree = "<group>";
@@ -3065,6 +3075,7 @@
 				753A36201EF2512300032667 /* tr */,
 				757DC6451F0D623600342CB0 /* uk */,
 				757DC64B1F0D625A00342CB0 /* pl */,
+				7566AE8A1F394CEC006D84F9 /* nl */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -3081,6 +3092,7 @@
 				753A361C1EF2512200032667 /* tr */,
 				757DC6411F0D623400342CB0 /* uk */,
 				757DC6471F0D625800342CB0 /* pl */,
+				7566AE891F394CEC006D84F9 /* nl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

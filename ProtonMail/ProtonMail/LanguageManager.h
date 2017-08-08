@@ -20,6 +20,8 @@ typedef NS_ENUM(NSInteger, ELanguage)
     ELanguagePolish, //added at 07/05/2017
     ELanguageUkrainian,
     
+    ELanguageDutch, //added at 08/07/2017
+    
     
     ELanguageCount
 };
