@@ -29,14 +29,14 @@ open class ComposeViewModelImpl : ComposeViewModel {
                     if let title = self.message?.title {
                         if !title.hasRe() {
                             let re = NSLocalizedString("Re:", comment: "Title")
-                            self.message?.title = "Re: \(title)"
+                            self.message?.title = "\(re) \(title)"
                         }
                     }
                 } else if action == ComposeMessageAction.forward {
                     if let title = self.message?.title {
                         if !title.hasFwd() {
-                            let f = NSLocalizedString("Fwd:", comment: "Title")
-                            self.message?.title = "Fwd: \(title)"
+                            let fwd = NSLocalizedString("Fwd:", comment: "Title")
+                            self.message?.title = "\(fwd) \(title)"
                         }
                     }
                 } else {

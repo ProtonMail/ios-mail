@@ -51,8 +51,8 @@ extension CustomErrorVar {
 // code start at 0x110000
 enum UpdatePasswordError : Int, Error, CustomErrorVar {
     case invalidUserName = 0x110001
-    case invalidModulsID = 0x110002
-    case invalidModuls = 0x110003
+    case invalidModulusID = 0x110002
+    case invalidModulus = 0x110003
     case cantHashPassword = 0x110004
     case cantGenerateVerifier = 0x110005
     case cantGenerateSRPClient = 0x110006
@@ -78,10 +78,10 @@ enum UpdatePasswordError : Int, Error, CustomErrorVar {
         switch self {
         case .invalidUserName:
             return NSLocalizedString("Invalid UserName!", comment: "update password error when input invalid username")
-        case .invalidModulsID:
-            return NSLocalizedString("Can't get a Moduls ID!", comment: "update password error")
-        case .invalidModuls:
-            return NSLocalizedString("Can't get a Moduls!", comment: "update password error")
+        case .invalidModulusID:
+            return NSLocalizedString("Can't get a Moduls ID!", comment: "update password error = typo:Modulus")
+        case .invalidModulus:
+            return NSLocalizedString("Can't get a Moduls!", comment: "update password error = typo:Modulus")
         case .cantHashPassword:
             return NSLocalizedString("Invalid hashed password!", comment: "update password error")
         case .cantGenerateVerifier:

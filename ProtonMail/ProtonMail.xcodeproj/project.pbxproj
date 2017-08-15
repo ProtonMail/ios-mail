@@ -153,8 +153,6 @@
 		7523E88E1BB1561F00126D62 /* NSData+MultipartResponses.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */; };
 		7523E8C01BB182B300126D62 /* MultipartResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */; };
 		7526AC8E1B6C4B3700E1967E /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
-		752902A21EE5D2CC00B46D36 /* LanguageManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 752902A11EE5D2CC00B46D36 /* LanguageManager.h */; };
-		752902A31EE5D2CC00B46D36 /* LanguageManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 752902A11EE5D2CC00B46D36 /* LanguageManager.h */; };
 		752902A51EE5D6B700B46D36 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
 		752902A61EE5D6B700B46D36 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
 		752902A81EE5F71C00B46D36 /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 752902A71EE5F71C00B46D36 /* LanguageManager.m */; };
@@ -2536,7 +2534,6 @@
 				755638C71CA1AE78003FA2D0 /* ShowImageView.swift in Sources */,
 				75B1794C1B376D2E006044D4 /* AttachmentHelper.swift in Sources */,
 				75BB65761BD5C88800F9432D /* AttachmentAPI.swift in Sources */,
-				752902A21EE5D2CC00B46D36 /* LanguageManager.h in Sources */,
 				078A3A4C1A7FF4DC002C5FF3 /* MessageDataService.swift in Sources */,
 				75F169811AF80B5900BE6E79 /* UserCachedStatus.swift in Sources */,
 				75F4638E1C60172300918B46 /* SignUpUserNameViewController.swift in Sources */,
@@ -2874,7 +2871,6 @@
 				75DE7D2C1CAAEA4900F5443E /* FeedbackTableViewCell.swift in Sources */,
 				75DE7D2D1CAAEA4900F5443E /* ViewModelServiceImpl.swift in Sources */,
 				75DE7D2E1CAAEA4900F5443E /* Logger.swift in Sources */,
-				752902A31EE5D2CC00B46D36 /* LanguageManager.h in Sources */,
 				75DE7D2F1CAAEA4900F5443E /* MenuItem.swift in Sources */,
 				75DE7D301CAAEA4900F5443E /* SettingsViewController.swift in Sources */,
 				75DE7D311CAAEA4900F5443E /* PushNotificationService.swift in Sources */,
