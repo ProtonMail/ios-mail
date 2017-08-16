@@ -13,6 +13,16 @@
 
 
 
+
+
+/* sign up user error when can't get moduls id
+ update password error */
+"Can't get a Moduls ID!" = "Can't get a Modulus ID!";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
+
+
 /**
  *  Login View
  */
@@ -268,7 +278,6 @@ Please visit <a href=\"https://protonmail.com/support/knowledge-base/delinquency
 "Unkonw Version" = "Unknown version";
 "Version %@ %@" = "Version %@ %@";
 "Please use the web version of ProtonMail to change your mailbox password!" = "Please use the web version of ProtonMail to change your mailbox password!";
-"Reseting message cache ..." = "Reseting message cache...";
 "Done" = "Done";
 "Auto Lock Time" = "Auto lock time";
 "Change default address to .." = "Change default address to...";

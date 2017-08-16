@@ -299,6 +299,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
     }
     
     func getTopHelpText() -> String {
+        let _ = NSLocalizedString("Only a paid user can modify default mobile signature or turn it off!", comment: "Description")
         return NSLocalizedString("Only plus user could modify default mobile signature or turn it off!", comment: "Description")
     }
     

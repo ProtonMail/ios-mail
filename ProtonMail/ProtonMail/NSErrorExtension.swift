@@ -110,6 +110,7 @@ extension NSError {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
+        let _ = NSLocalizedString("Sending Failed", comment: "Description")
         hud.detailsLabelText = "\(NSLocalizedString("Sent Failed", comment: "Description")): \(self.localizedDescription)"
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
