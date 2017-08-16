@@ -44,21 +44,25 @@ extension String {
     
     
     func hasRe () -> Bool {
-        if self.characters.count < 3 {
+        let re = NSLocalizedString("Re:", comment: "Title")
+        let checkCount = re.characters.count
+        if self.characters.count < checkCount {
             return false;
         }
         let myNSString = self as NSString
-        let str = myNSString.substring(with: NSRange(location: 0, length: 3))
-        return str.contains("Re:") //TODO::Localized check
+        let str = myNSString.substring(with: NSRange(location: 0, length: checkCount))
+        return str.contains(re)
     }
     
     func hasFwd () -> Bool {
-        if self.characters.count < 4 {
+        let fwd = NSLocalizedString("Fwd:", comment: "Title")
+        let checkCount = fwd.characters.count
+        if self.characters.count < checkCount {
             return false;
         }
         let myNSString = self as NSString
-        let str = myNSString.substring(with: NSRange(location: 0, length: 4))
-        return str.contains("Fwd:") //TODO::Localized check
+        let str = myNSString.substring(with: NSRange(location: 0, length: checkCount))
+        return str.contains(fwd)
     }
     
     

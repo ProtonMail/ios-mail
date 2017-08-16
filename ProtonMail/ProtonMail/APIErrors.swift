@@ -128,7 +128,7 @@ extension NSError {
         return apiServiceError(
             code: APIErrorCode.badParameter,
             localizedDescription: NSLocalizedString("Bad parameter", comment: "Description"),
-            localizedFailureReason: String(format: NSLocalizedString("Bad parameter: %@", comment: "Description"), "\(parameter)"))
+            localizedFailureReason: String(format: NSLocalizedString("Bad parameter: %@", comment: "Description"), "\(String(describing: parameter))"))
     }
     
     class func badPath(_ path: String) -> NSError {

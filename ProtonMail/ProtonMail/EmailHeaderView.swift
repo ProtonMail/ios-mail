@@ -126,8 +126,8 @@ class EmailHeaderView: UIView {
             let n = self.sender?.name ?? ""
             let e = self.sender?.email ?? ""
             let f = NSLocalizedString("From:", comment: "Title")
-            let from = "From: \((n.isEmpty ? e : n))"  //TODO:: fix later
-            let formRange = NSRange (location: 0, length: 6)
+            let from = "\(f) \((n.isEmpty ? e : n))"
+            let formRange = NSRange (location: 0, length: from.characters.count)
             let attributedString = NSMutableAttributedString(string: from, attributes: [NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#838897")])
             attributedString.setAttributes([NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#C0C4CE")], range: formRange)
             
@@ -137,8 +137,9 @@ class EmailHeaderView: UIView {
     
     fileprivate var fromShortAttr : NSMutableAttributedString! {
         get {
-            let from = "From: "
-            let formRange = NSRange (location: 0, length: 6)
+            let f = NSLocalizedString("From:", comment: "Title")
+            let from = "\(f) "
+            let formRange = NSRange (location: 0, length: from.characters.count)
             let attributedString = NSMutableAttributedString(string: from, attributes: [NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#838897")])
             attributedString.setAttributes([NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#C0C4CE")], range: formRange)
             return attributedString
@@ -163,8 +164,8 @@ class EmailHeaderView: UIView {
             }
             
             let t = NSLocalizedString("To:", comment: "Title")
-            let to = "To: \(strTo)"
-            let formRange = NSRange (location: 0, length: 4)
+            let to = "\(t) \(strTo)"
+            let formRange = NSRange (location: 0, length: to.characters.count)
             let attributedString = NSMutableAttributedString(string: to, attributes: [NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#838897")])
             attributedString.setAttributes([NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#C0C4CE")], range: formRange)
             return attributedString
@@ -173,8 +174,9 @@ class EmailHeaderView: UIView {
     
     fileprivate var toShortAttr : NSMutableAttributedString! {
         get {
-            let to = "To: "
-            let formRange = NSRange (location: 0, length: 4)
+            let t = NSLocalizedString("To:", comment: "Title")
+            let to = "\(t) "
+            let formRange = NSRange (location: 0, length: to.characters.count)
             let attributedString = NSMutableAttributedString(string: to, attributes: [NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#838897")])
             attributedString.setAttributes([NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#C0C4CE")], range: formRange)
             return attributedString
@@ -184,9 +186,9 @@ class EmailHeaderView: UIView {
     fileprivate var ccShortAttr : NSMutableAttributedString! {
         get {
             let c = NSLocalizedString("Cc:", comment: "Title")
-            let to = "Cc: "
-            let formRange = NSRange (location: 0, length: 4)
-            let attributedString = NSMutableAttributedString(string: to, attributes: [NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#838897")])
+            let cc = "\(c) "
+            let formRange = NSRange (location: 0, length: cc.characters.count)
+            let attributedString = NSMutableAttributedString(string: cc, attributes: [NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#838897")])
             attributedString.setAttributes([NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#C0C4CE")], range: formRange)
             return attributedString
         }
