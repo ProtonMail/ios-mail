@@ -78,7 +78,7 @@ class MailboxViewModelImpl : MailboxViewModel {
         }
     }
     
-    override func deleteMessage(_ msg: Message) -> Bool  {
+    override func deleteMessage(_ msg: Message) -> SwipeResponse  {
         var needShowMessage = true
         if msg.managedObjectContext != nil {
             switch(self.location!) {
@@ -97,7 +97,7 @@ class MailboxViewModelImpl : MailboxViewModel {
                 PMLog.D("error: \(error)")
             }
         }
-        return needShowMessage
+        return needShowMessage ? SwipeResponse.showUndo : SwipeResponse.nothing
     }
     
     override func isDrafts() -> Bool {

@@ -687,16 +687,27 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func archiveMessageForIndexPath(_ indexPath: IndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
-            viewModel.archiveMessage(message)
-            showUndoView(NSLocalizedString("Archived", comment: "Description"))
+            let res = viewModel.archiveMessage(message)
+            switch res {
+            case .showUndo:
+                showUndoView(NSLocalizedString("Archived", comment: "Description"))
+            case .showGeneral:
+                showMessageMoved(title: NSLocalizedString("Message has been moved.", comment: "Title"))
+            default: break
+            }
         }
     }
     
     fileprivate func deleteMessageForIndexPath(_ indexPath: IndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
-            if viewModel.deleteMessage(message) {
+            let res = viewModel.deleteMessage(message)
+            switch res {
+            case .showUndo:
                 showUndoView(NSLocalizedString("Deleted", comment: "Description"))
+            case .showGeneral:
+                showMessageMoved(title: NSLocalizedString("Message has been deleted.", comment: "Title"))
+            default: break
             }
         }
     }
@@ -704,15 +715,21 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func spamMessageForIndexPath(_ indexPath: IndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
-            viewModel.spamMessage(message)
-            showUndoView(NSLocalizedString("Spammed", comment: "Description"))
+            let res = viewModel.spamMessage(message)
+            switch res {
+            case .showUndo:
+                showUndoView(NSLocalizedString("Spammed", comment: "Description"))
+            case .showGeneral:
+                showMessageMoved(title: NSLocalizedString("Message has been moved.", comment: "Title"))
+            default: break
+            }
         }
     }
     
     fileprivate func starMessageForIndexPath(_ indexPath: IndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
-            viewModel.starMessage(message)
+            let _ = viewModel.starMessage(message)
         }
     }
     
