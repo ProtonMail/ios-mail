@@ -873,7 +873,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         let code = error.code
         if code == NSURLErrorTimedOut {
             self.showTimeOutErrorMessage()
-        } else if code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
+        } else if code == NSURLErrorNotConnectedToInternet || code == NSURLErrorCannotConnectToHost {
             self.showNoInternetErrorMessage()
         } else if code == APIErrorCode.API_offline {
             self.showOfflineErrorMessage(error)

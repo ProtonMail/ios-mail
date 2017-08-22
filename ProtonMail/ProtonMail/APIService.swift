@@ -152,7 +152,6 @@ class APIService {
             if let credential = AuthCredential.fetchFromKeychain() {
                 if !credential.isExpired { // access token time is valid
                     if (credential.password ?? "").isEmpty { // mailbox pwd is empty should show error and logout
-                        
                         //clean auth cache let user relogin
                         AuthCredential.clearFromKeychain()
                         pthread_mutex_unlock(&self.mutex)
@@ -193,7 +192,7 @@ class APIService {
                                 AuthCredential.clearFromKeychain()
                                 DispatchQueue.main.async {
                                     NSError.alertBadTokenToast()
-                                    completion(authCredential, error)
+                                    self.fetchAuthCredential(completion)
                                 }
                             } else {
                                 DispatchQueue.main.async {
