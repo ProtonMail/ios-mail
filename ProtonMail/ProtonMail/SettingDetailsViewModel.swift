@@ -33,7 +33,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-public protocol SettingDetailsViewModel {
+protocol SettingDetailsViewModel {
     
     func getNavigationTitle() -> String
     func getTopHelpText() ->String
@@ -58,118 +58,118 @@ public protocol SettingDetailsViewModel {
 }
 
 
-public class SettingDetailsViewModelTest : SettingDetailsViewModel{
-    public func getNavigationTitle() -> String {
+class SettingDetailsViewModelTest : SettingDetailsViewModel{
+    func getNavigationTitle() -> String {
         return NSLocalizedString("Navigation Title - Test", comment: "Test")
     }
     
-    public func getTopHelpText() -> String {
+    func getTopHelpText() -> String {
         return NSLocalizedString("this is description - Test", comment: "Test")
     }
     
-    public func isRequireLoginPassword() -> Bool {
+    func isRequireLoginPassword() -> Bool {
         return false
     }
     
-    public func getSectionTitle() -> String {
+    func getSectionTitle() -> String {
         return NSLocalizedString("Section Title - Test", comment: "Test")
     }
     
-    public func isDisplaySwitch() -> Bool {
+    func isDisplaySwitch() -> Bool {
         return true
     }
     
-    public func getSwitchText() -> String {
+    func getSwitchText() -> String {
         return NSLocalizedString("Enable - Test", comment: "Test")
     }
     
-    public func getSwitchStatus() -> Bool {
+    func getSwitchStatus() -> Bool {
         return true
     }
     
-    public func isShowTextView() -> Bool {
+    func isShowTextView() -> Bool {
         return true
     }
     
-    public func getPlaceholdText() -> String {
+    func getPlaceholdText() -> String {
         return NSLocalizedString("Please input ... - Test", comment: "Test")
     }
     
-    public func getCurrentValue() -> String {
+    func getCurrentValue() -> String {
         return NSLocalizedString("test value", comment: "Test")
     }
     
-    public func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping(Bool, NSError?) -> Void) {
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping(Bool, NSError?) -> Void) {
         complete(true, nil)
     }
     
-    public func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
         complete(true, nil)
     }
     
-    public func isSwitchEnabled() -> Bool {
+    func isSwitchEnabled() -> Bool {
         return true
     }
-    public func isTextEnabled() -> Bool{
+    func isTextEnabled() -> Bool{
         return true
     }
     
-    public func getNotes() -> String {
+    func getNotes() -> String {
         return ""
     }
     
-    public func needAsk2FA() -> Bool {
+    func needAsk2FA() -> Bool {
         return false
     }
 }
 
 
 
-public class ChangeDisplayNameViewModel : SettingDetailsViewModel{
-    public func getNavigationTitle() -> String {
+class ChangeDisplayNameViewModel : SettingDetailsViewModel{
+    func getNavigationTitle() -> String {
         return NSLocalizedString("DisplayName", comment: "Title")
     }
     
-    public func getTopHelpText() -> String {
+    func getTopHelpText() -> String {
         return NSLocalizedString("What people see in the \"From\" field.", comment: "Description")
     }
     
-    public func getSectionTitle() -> String {
+    func getSectionTitle() -> String {
         return NSLocalizedString("DISPLAY NAME", comment: "Title")
     }
     
-    public func isDisplaySwitch() -> Bool {
+    func isDisplaySwitch() -> Bool {
         return false
     }
     
-    public func getSwitchText() -> String {
+    func getSwitchText() -> String {
         return ""
     }
     
-    public func getSwitchStatus() -> Bool {
+    func getSwitchStatus() -> Bool {
         return true
     }
 
-    public func isShowTextView() -> Bool {
+    func isShowTextView() -> Bool {
         return false
     }
     
-    public func isRequireLoginPassword() -> Bool {
+    func isRequireLoginPassword() -> Bool {
         return false
     }
     
-    public func getPlaceholdText() -> String {
+    func getPlaceholdText() -> String {
         return NSLocalizedString("Input Display Name ...", comment: "place holder")
     }
     
-    public func getCurrentValue() -> String {
+    func getCurrentValue() -> String {
         if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
             return addr.display_name
         }
         return sharedUserDataService.displayName
     }
     
-    public func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
         if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
             sharedUserDataService.updateAddress(addr.address_id, displayName: new_value, signature: addr.signature, completion: { (_, _, error) in
                 if let error = error {
@@ -189,71 +189,71 @@ public class ChangeDisplayNameViewModel : SettingDetailsViewModel{
         }
     }
     
-    public func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
         complete(true, nil)
     }
-    public func isSwitchEnabled() -> Bool {
+    func isSwitchEnabled() -> Bool {
         return true
     }
-    public func isTextEnabled() -> Bool {
+    func isTextEnabled() -> Bool {
         return true
     }
     
-    public func getNotes() -> String {
+    func getNotes() -> String {
         return ""
     }
     
-    public func needAsk2FA() -> Bool {
+    func needAsk2FA() -> Bool {
         return false
     }
 }
 
 
-public class ChangeSignatureViewModel : SettingDetailsViewModel{
-    public func getNavigationTitle() -> String {
+class ChangeSignatureViewModel : SettingDetailsViewModel{
+    func getNavigationTitle() -> String {
         return NSLocalizedString("Signature", comment: "Title")
     }
     
-    public func getTopHelpText() -> String {
+    func getTopHelpText() -> String {
         return NSLocalizedString("Email default signature", comment: "place holder")
     }
     
-    public func getSectionTitle() -> String {
+    func getSectionTitle() -> String {
         return NSLocalizedString("SIGNATURE", comment: "Title")
     }
     
-    public func isDisplaySwitch() -> Bool {
+    func isDisplaySwitch() -> Bool {
         return true
     }
     
-    public func getSwitchText() -> String {
+    func getSwitchText() -> String {
         return NSLocalizedString("Enable Default Signature", comment: "Title")
     }
     
-    public func getSwitchStatus() -> Bool {
+    func getSwitchStatus() -> Bool {
         return sharedUserDataService.showDefaultSignature
     }
 
-    public func isShowTextView() -> Bool {
+    func isShowTextView() -> Bool {
         return true
     }
     
-    public func isRequireLoginPassword() -> Bool {
+    func isRequireLoginPassword() -> Bool {
         return false
     }
     
-    public func getPlaceholdText() -> String {
+    func getPlaceholdText() -> String {
         return ""
     }
     
-    public func getCurrentValue() -> String {
+    func getCurrentValue() -> String {
         if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
             return addr.signature
         }
         return sharedUserDataService.signature
     }
     
-    public func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
         if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
             sharedUserDataService.updateAddress(addr.address_id, displayName: addr.display_name, signature: new_value.ln2br(), completion: { (_, _, error) in
                 if let error = error {
@@ -273,29 +273,29 @@ public class ChangeSignatureViewModel : SettingDetailsViewModel{
         }
     }
     
-    public func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
         sharedUserDataService.showDefaultSignature = isOn
         complete(true, nil)
     }
     
-    public func isSwitchEnabled() -> Bool {
+    func isSwitchEnabled() -> Bool {
         return true
     }
-    public func isTextEnabled() -> Bool {
+    func isTextEnabled() -> Bool {
         return true
     }
     
-    public func getNotes() -> String {
+    func getNotes() -> String {
         return ""
     }
     
-    public func needAsk2FA() -> Bool {
+    func needAsk2FA() -> Bool {
         return false
     }
 }
 
-public class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
-    public func getNavigationTitle() -> String {
+class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
+    func getNavigationTitle() -> String {
         return NSLocalizedString("Mobile Signature", comment: "Title")
     }
     
@@ -304,39 +304,39 @@ public class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
         return NSLocalizedString("Only plus user could modify default mobile signature or turn it off!", comment: "Description")
     }
     
-    public func getSectionTitle() -> String {
+    func getSectionTitle() -> String {
         return NSLocalizedString("Mobile Signature", comment: "Title")
     }
     
-    public func isDisplaySwitch() -> Bool {
+    func isDisplaySwitch() -> Bool {
         return true
     }
     
-    public func getSwitchText() -> String {
+    func getSwitchText() -> String {
         return NSLocalizedString("Enable Mobile Signature", comment: "Title")
     }
     
-    public func getSwitchStatus() -> Bool {
+    func getSwitchStatus() -> Bool {
         return sharedUserDataService.showMobileSignature
     }
     
-    public func isShowTextView() -> Bool {
+    func isShowTextView() -> Bool {
         return true
     }
     
-    public func isRequireLoginPassword() -> Bool {
+    func isRequireLoginPassword() -> Bool {
         return false
     }
     
-    public func getPlaceholdText() -> String {
+    func getPlaceholdText() -> String {
         return ""
     }
     
-    public func getCurrentValue() -> String {
+    func getCurrentValue() -> String {
         return sharedUserDataService.mobileSignature
     }
     
-    public func updateValue(_ new_value: String, password: String, tfaCode: String?, complete:@escaping (Bool, NSError?) -> Void) {
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete:@escaping (Bool, NSError?) -> Void) {
         if new_value == getCurrentValue() {
             complete(true, nil)
         } else {
@@ -345,7 +345,7 @@ public class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
         }
     }
     
-    public func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
         if isOn == getSwitchStatus() {
             complete(true, nil)
         } else {
@@ -353,14 +353,14 @@ public class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
             complete(true, nil)
         }
     }
-    public func isSwitchEnabled() -> Bool {
+    func isSwitchEnabled() -> Bool {
         return self.getRole()
     }
-    public func isTextEnabled() -> Bool {
+    func isTextEnabled() -> Bool {
         return self.getRole()
     }
     
-    public func getNotes() -> String {
+    func getNotes() -> String {
         return self.getRole() ? "" : NSLocalizedString("ProtonMail Plus is required to customize your mobile signature", comment: "Description")
     }
     
@@ -374,54 +374,54 @@ public class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
         return sharedUserDataService.userInfo?.role > 0 || isEnterprise
     }
     
-    public func needAsk2FA() -> Bool {
+    func needAsk2FA() -> Bool {
         return false
     }
 }
 
 
-public class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
-    public func getNavigationTitle() -> String {
+class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
+    func getNavigationTitle() -> String {
         return NSLocalizedString("Notification Email", comment: "Title")
     }
     
-    public func getTopHelpText() -> String {
+    func getTopHelpText() -> String {
         return NSLocalizedString("Also used to reset a forgotten password.", comment: "Description")
     }
     
-    public func getSectionTitle() -> String {
+    func getSectionTitle() -> String {
         return NSLocalizedString("Notification / Recovery Email", comment: "Title")
     }
     
-    public func isRequireLoginPassword() -> Bool {
+    func isRequireLoginPassword() -> Bool {
         return true
     }
     
-    public func isDisplaySwitch() -> Bool {
+    func isDisplaySwitch() -> Bool {
         return true
     }
     
-    public func getSwitchText() -> String {
+    func getSwitchText() -> String {
         return NSLocalizedString("Enable Notification Email", comment: "Title")
     }
     
-    public func getSwitchStatus() -> Bool {
+    func getSwitchStatus() -> Bool {
         return sharedUserDataService.notify
     }
   
-    public func isShowTextView() -> Bool {
+    func isShowTextView() -> Bool {
         return false
     }
     
-    public func getPlaceholdText() -> String {
+    func getPlaceholdText() -> String {
         return NSLocalizedString("Input Notification Email ...", comment: "place holder")
     }
 
-    public func getCurrentValue() -> String {
+    func getCurrentValue() -> String {
         return sharedUserDataService.notificationEmail
     }
     
-    public func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
         if new_value == getCurrentValue() {
              complete(true, nil)
         } else {
@@ -435,7 +435,7 @@ public class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
         }
     }
     
-    public func updateNotification(_ isOn : Bool, complete:@escaping (Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn : Bool, complete:@escaping (Bool, NSError?) -> Void) {
         if isOn == getSwitchStatus() {
             complete(true, nil)
         } else {
@@ -449,18 +449,18 @@ public class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
         }
     }
     
-    public func isSwitchEnabled() -> Bool {
+    func isSwitchEnabled() -> Bool {
         return true
     }
-    public func isTextEnabled() -> Bool {
+    func isTextEnabled() -> Bool {
         return true
     }
     
-    public func getNotes() -> String {
+    func getNotes() -> String {
         return ""
     }
     
-    public func needAsk2FA() -> Bool {
+    func needAsk2FA() -> Bool {
         return sharedUserDataService.twoFactorStatus == 1
     }
 }

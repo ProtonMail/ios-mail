@@ -15,8 +15,8 @@ enum SwipeResponse {
     case showGeneral
 }
 
-public class MailboxViewModel {
-    public typealias CompletionBlock = APIService.CompletionBlock
+class MailboxViewModel {
+    typealias CompletionBlock = APIService.CompletionBlock
     
     init() { }
     
@@ -102,14 +102,14 @@ public class MailboxViewModel {
             }
             lastUpdatedStore.updateUnreadCountForKey(toLocation, count: toCount)
         }
-
+        
         //TODO::Fix later
-//        if fromLocation == .inbox {
-//            UIApplication.shared.applicationIconBadgeNumber = fromCount
-//        }
-//        if toLocation == .inbox {
-//            UIApplication.shared.applicationIconBadgeNumber = toCount
-//        }
+        //        if fromLocation == .inbox {
+        //            UIApplication.shared.applicationIconBadgeNumber = fromCount
+        //        }
+        //        if toLocation == .inbox {
+        //            UIApplication.shared.applicationIconBadgeNumber = toCount
+        //        }
     }
     
     func updateBadgeNumberWhenRead(_ message : Message, changeToRead : Bool) {
