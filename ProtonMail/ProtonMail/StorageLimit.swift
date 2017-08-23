@@ -36,13 +36,13 @@ class StorageLimit {
             return
         }
         
-        let formattedMaxSpace = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.file)
+        let formattedMaxSpace : String = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.file)
         var message = ""
         
         if usedSpace >= maxSpace {
             message = String(format: NSLocalizedString("You have used up all of your storage space (%@).", comment: "Description"), formattedMaxSpace);
         } else {
-            message =  String(format: NSLocalizedString("You have used %d%% of your storage space (%@).", comment: "Description"), AppConstants.SpaceWarningThreshold, formattedMaxSpace);
+            message = String(format: NSLocalizedString("You have used %d%% of your storage space (%@).", comment: "Description"), Int(AppConstants.SpaceWarningThreshold), formattedMaxSpace);
         }
         
         let alertController = UIAlertController(
