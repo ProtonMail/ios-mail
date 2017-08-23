@@ -56,6 +56,7 @@ class ShareUnlockViewController: UIViewController {
                             let url_key = kUTTypeURL as String
                             
                             let file_types : [String] = [kUTTypeImage as String,
+                                                         kUTTypeMovie as String,
                                                          kUTTypeVideo as String,
                                                          kUTTypeFileURL as String]
                             
