@@ -217,9 +217,6 @@
 		755405B21B1648D2003BFC0A /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B01B1648D2003BFC0A /* ComposeView.swift */; };
 		755405B31B1648D2003BFC0A /* ComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755405B11B1648D2003BFC0A /* ComposeView.xib */; };
 		75542AB81EE53C3C000F4ABA /* PasswordExtension.strings in Resources */ = {isa = PBXBuildFile; fileRef = 75542ABA1EE53C3C000F4ABA /* PasswordExtension.strings */; };
-		75542ABD1EE53C3D000F4ABA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 75542ABF1EE53C3D000F4ABA /* InfoPlist.strings */; };
-		75542AC21EE53C3F000F4ABA /* InfoDevPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 75542AC41EE53C3F000F4ABA /* InfoDevPlist.strings */; };
-		75542AC71EE53C40000F4ABA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 75542AC91EE53C40000F4ABA /* InfoPlist.strings */; };
 		75542AD21EE53D40000F4ABA /* PasswordExtension.strings in Resources */ = {isa = PBXBuildFile; fileRef = 75542ABA1EE53C3C000F4ABA /* PasswordExtension.strings */; };
 		755638C11CA1AE42003FA2D0 /* ShowImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755638C01CA1AE42003FA2D0 /* ShowImageView.xib */; };
 		755638C31CA1AE5B003FA2D0 /* ExpirationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755638C21CA1AE5B003FA2D0 /* ExpirationView.xib */; };
@@ -851,15 +848,9 @@
 		753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ErrorExtension.swift"; sourceTree = "<group>"; };
 		753A36161EF250D300032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		753A36171EF250D400032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		753A36181EF250D500032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		753A36191EF250D500032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoDevPlist.strings; sourceTree = "<group>"; };
-		753A361A1EF250D500032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		753A361B1EF250D500032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		753A361C1EF2512200032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		753A361D1EF2512200032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		753A361E1EF2512300032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		753A361F1EF2512300032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoDevPlist.strings; sourceTree = "<group>"; };
-		753A36201EF2512300032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		753A36211EF2512300032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		754508391E14860500265CD0 /* MailboxHumanCheckMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxHumanCheckMenuVC.swift; sourceTree = "<group>"; };
 		7545083C1E14861E00265CD0 /* MailboxCaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxCaptchaViewController.swift; sourceTree = "<group>"; };
@@ -889,21 +880,12 @@
 		755405B01B1648D2003BFC0A /* ComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		755405B11B1648D2003BFC0A /* ComposeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposeView.xib; sourceTree = "<group>"; };
 		75542AB91EE53C3C000F4ABA /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		75542ABE1EE53C3D000F4ABA /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		75542AC31EE53C3F000F4ABA /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoDevPlist.strings; sourceTree = "<group>"; };
-		75542AC81EE53C40000F4ABA /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		75542ACA1EE53C40000F4ABA /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		75542ACC1EE53CD7000F4ABA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoDevPlist.strings; sourceTree = "<group>"; };
-		75542ACD1EE53CD8000F4ABA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		75542ACE1EE53CD8000F4ABA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		75542ACF1EE53CD9000F4ABA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		75542AD41EE53D7D000F4ABA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		75542AD51EE53D7D000F4ABA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		75542AD61EE53D7D000F4ABA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		75542AD71EE53D7E000F4ABA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoDevPlist.strings; sourceTree = "<group>"; };
-		75542AD81EE53D7E000F4ABA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		75542AD91EE53D7F000F4ABA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		75542ADA1EE53DA8000F4ABA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		755638C01CA1AE42003FA2D0 /* ShowImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowImageView.xib; sourceTree = "<group>"; };
 		755638C21CA1AE5B003FA2D0 /* ExpirationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpirationView.xib; sourceTree = "<group>"; };
 		755638C41CA1AE6B003FA2D0 /* ExpirationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpirationView.swift; sourceTree = "<group>"; };
@@ -928,11 +910,8 @@
 		7564899D1B7F2C9F007EA207 /* ComposeViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModelImpl.swift; sourceTree = "<group>"; };
 		7565998E1AC4809B00C187E4 /* EncryptTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptTypes.swift; sourceTree = "<group>"; };
 		75662BA61B543A5B006C538E /* SettingsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAPI.swift; sourceTree = "<group>"; };
-		7566AE861F394CEA006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7566AE871F394CEA006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		7566AE881F394CEB006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoDevPlist.strings; sourceTree = "<group>"; };
 		7566AE891F394CEC006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		7566AE8A1F394CEC006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7566AE8B1F394CED006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		7567B06C1B334FA400A72A1E /* ViewModelService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelService.swift; sourceTree = "<group>"; };
@@ -959,15 +938,9 @@
 		757945D91B6702B5004EEDCA /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
 		757DC6411F0D623400342CB0 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		757DC6421F0D623500342CB0 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		757DC6431F0D623500342CB0 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		757DC6441F0D623500342CB0 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/InfoDevPlist.strings; sourceTree = "<group>"; };
-		757DC6451F0D623600342CB0 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		757DC6461F0D623700342CB0 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		757DC6471F0D625800342CB0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		757DC6481F0D625900342CB0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		757DC6491F0D625900342CB0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		757DC64A1F0D625900342CB0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoDevPlist.strings; sourceTree = "<group>"; };
-		757DC64B1F0D625A00342CB0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		757DC64C1F0D625B00342CB0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		757F4A041E677E1C001CDE71 /* LabelEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelEditViewController.swift; sourceTree = "<group>"; };
 		757F4A081E68F37E001CDE71 /* LabelEditViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelEditViewModel.swift; sourceTree = "<group>"; };
@@ -1288,8 +1261,6 @@
 		075E3DE91A5F4ECF00E001A7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				75542AC91EE53C40000F4ABA /* InfoPlist.strings */,
-				75542AC41EE53C3F000F4ABA /* InfoDevPlist.strings */,
 				75542ABA1EE53C3C000F4ABA /* PasswordExtension.strings */,
 				75E49EFA1CAAF47D00235ACC /* InfoDev.plist */,
 				075E3DEA1A5F4ECF00E001A7 /* Info.plist */,
@@ -1317,7 +1288,6 @@
 		075E3E021A5F4ECF00E001A7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				75542ABF1EE53C3D000F4ABA /* InfoPlist.strings */,
 				075E3E031A5F4ECF00E001A7 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -2126,7 +2096,6 @@
 				70C6ABE41A72C1B7006EC400 /* Roboto-Regular.ttf in Resources */,
 				07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */,
 				7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */,
-				75542AC71EE53C40000F4ABA /* InfoPlist.strings in Resources */,
 				75BA19991EC631A300153A1A /* SpamScoreWarningView.xib in Resources */,
 				75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */,
 				7516452E1D7F66C800DE0BD2 /* test_email.html in Resources */,
@@ -2168,7 +2137,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75542ABD1EE53C3D000F4ABA /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2212,7 +2180,6 @@
 				75F1618C1DCBB19300912662 /* TwoFACodeView.xib in Resources */,
 				75DE7DA01CAAEA4900F5443E /* Settings.bundle in Resources */,
 				75542AD21EE53D40000F4ABA /* PasswordExtension.strings in Resources */,
-				75542AC21EE53C3F000F4ABA /* InfoDevPlist.strings in Resources */,
 				75DE7DA11CAAEA4900F5443E /* LoadingView.xib in Resources */,
 				75DE7DA21CAAEA4900F5443E /* backup.css in Resources */,
 				75DE7DA31CAAEA4900F5443E /* Roboto-Medium.ttf in Resources */,
@@ -3029,51 +2996,6 @@
 				7566AE871F394CEA006D84F9 /* nl */,
 			);
 			name = PasswordExtension.strings;
-			sourceTree = "<group>";
-		};
-		75542ABF1EE53C3D000F4ABA /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				75542ABE1EE53C3D000F4ABA /* fr */,
-				75542AD61EE53D7D000F4ABA /* ru */,
-				75542ADA1EE53DA8000F4ABA /* de */,
-				753A36181EF250D500032667 /* es */,
-				753A361E1EF2512300032667 /* tr */,
-				757DC6431F0D623500342CB0 /* uk */,
-				757DC6491F0D625900342CB0 /* pl */,
-				7566AE861F394CEA006D84F9 /* nl */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		75542AC41EE53C3F000F4ABA /* InfoDevPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				75542AC31EE53C3F000F4ABA /* fr */,
-				75542ACC1EE53CD7000F4ABA /* de */,
-				75542AD71EE53D7E000F4ABA /* ru */,
-				753A36191EF250D500032667 /* es */,
-				753A361F1EF2512300032667 /* tr */,
-				757DC6441F0D623500342CB0 /* uk */,
-				757DC64A1F0D625900342CB0 /* pl */,
-				7566AE881F394CEB006D84F9 /* nl */,
-			);
-			name = InfoDevPlist.strings;
-			sourceTree = "<group>";
-		};
-		75542AC91EE53C40000F4ABA /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				75542AC81EE53C40000F4ABA /* fr */,
-				75542ACD1EE53CD8000F4ABA /* de */,
-				75542AD81EE53D7E000F4ABA /* ru */,
-				753A361A1EF250D500032667 /* es */,
-				753A36201EF2512300032667 /* tr */,
-				757DC6451F0D623600342CB0 /* uk */,
-				757DC64B1F0D625A00342CB0 /* pl */,
-				7566AE8A1F394CEC006D84F9 /* nl */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		7599B1741CC8124300B2CB8D /* Localizable.strings */ = {
