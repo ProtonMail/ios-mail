@@ -20,7 +20,7 @@ class SettingsViewController: ProtonMailViewController {
     fileprivate let kKeyboardOffsetHeight: CGFloat = 100.0
     fileprivate let kFieldsMarginLeft: CGFloat = 8.0
     fileprivate let kFieldsMarginTop: CGFloat = 50.0
-    fileprivate let resetMailboxPasswordMessage = NSLocalizedString("All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!")
+    fileprivate let resetMailboxPasswordMessage = NSLocalizedString("All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!", comment: "Description")
     
     
     // MARK: - Private attributes
@@ -129,9 +129,10 @@ class SettingsViewController: ProtonMailViewController {
                 
                 self.present(alertController, animated: true, completion: nil)
             } else {
-                let alertController = UIAlertController(title: NSLocalizedString("Display Name Updated"), message: NSLocalizedString("The display name is now \(String(describing: self.displayNameTextField.text))."), preferredStyle: .alert)
+                let alertController = UIAlertController(title: NSLocalizedString("Display Name Updated", comment: "Title"),
+                                                        message: String(format: NSLocalizedString("The display name is now %@.", comment: "Description"), "\(String(describing: self.displayNameTextField.text))"),
+                                                        preferredStyle: .alert)
                 alertController.addOKAction()
-                
                 self.present(alertController, animated: true, completion: nil)
             }
         }
@@ -150,7 +151,7 @@ class SettingsViewController: ProtonMailViewController {
                 
                 self.present(alertController, animated: true, completion: nil)
             } else {
-                let alertController = UIAlertController(title: NSLocalizedString("Signature Updated"), message: NSLocalizedString("Your signature has been updated."), preferredStyle: .alert)
+                let alertController = UIAlertController(title: NSLocalizedString("Signature Updated", comment: "Title"), message: NSLocalizedString("Your signature has been updated.", comment: "Description"), preferredStyle: .alert)
                 alertController.addOKAction()
                 
                 self.present(alertController, animated: true, completion: nil)
@@ -169,7 +170,7 @@ class SettingsViewController: ProtonMailViewController {
     
     fileprivate func updateMailboxPassword() {
 //        if !sharedUserDataService.isMailboxPasswordValid(currentMailboxPasswordTextField.text, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
-//            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The mailbox password you entered does not match the current mailbox password."), preferredStyle: .Alert)
+//            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch", "Error"), message: NSLocalizedString("The mailbox password you entered does not match the current mailbox password."), preferredStyle: .Alert)
 //            alertController.addOKAction()
 //            
 //            presentViewController(alertController, animated: true, completion: { () -> Void in
@@ -180,7 +181,7 @@ class SettingsViewController: ProtonMailViewController {
 //        }
 //        if validatePasswordTextField(newMailboxPasswordTextField, matchesConfirmPasswordTextField: confirmNewMailboxPasswordTextField) {
 //            let alertController = UIAlertController(title: NSLocalizedString("Confirm mailbox password change"), message: resetMailboxPasswordMessage, preferredStyle: .ActionSheet)
-//            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: { (action) -> Void in
+//            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", "Action"), style: .Cancel, handler: { (action) -> Void in
 //                self.clearMailboxPasswordFields()
 //            }))
 //            alertController.addAction(UIAlertAction(title: NSLocalizedString("Change mailbox password"), style: .Destructive, handler: { (action) -> Void in
@@ -214,7 +215,7 @@ class SettingsViewController: ProtonMailViewController {
     
     fileprivate func updatePassword() {
         if !sharedUserDataService.isPasswordValid(currentLoginPasswordTextField.text) {
-            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The password you entered does not match the current password."), preferredStyle: .alert)
+            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch", comment: "Title"), message: NSLocalizedString("The password you entered does not match the current password.", comment: "Description"), preferredStyle: .alert)
             alertController.addOKAction()
             
             present(alertController, animated: true, completion: { () -> Void in
@@ -240,7 +241,7 @@ class SettingsViewController: ProtonMailViewController {
                 } else {
                     
                     
-                    let alertController = UIAlertController(title: NSLocalizedString("Password Updated"), message: NSLocalizedString("Please use your new password when signing in."), preferredStyle: .alert)
+                    let alertController = UIAlertController(title: NSLocalizedString("Password Updated", comment: "Title"), message: NSLocalizedString("Please use your new password when signing in.", comment: "Description"), preferredStyle: .alert)
                     alertController.addOKAction()
                     
                     self.present(alertController, animated: true, completion: { () -> Void in
@@ -257,7 +258,7 @@ class SettingsViewController: ProtonMailViewController {
         let result = !passwordTextField.text!.isEmpty && passwordTextField.text == confirmPasswordTextField.text
         
         if !result {
-            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The passwords you entered do not match."), preferredStyle: .alert)
+            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch", comment: "Title"), message: NSLocalizedString("The passwords you entered do not match.", comment: "Description"), preferredStyle: .alert)
             alertController.addOKAction()
             
             present(alertController, animated: true, completion: { () -> Void in

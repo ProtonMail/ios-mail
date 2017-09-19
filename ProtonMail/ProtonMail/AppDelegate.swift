@@ -54,6 +54,7 @@ class AppDelegate: UIResponder {
                                             if (firstViewController.isKind(of: MailboxViewController.self)) {
                                                 if let mailboxViewController: MailboxViewController = firstViewController as? MailboxViewController {
                                                     mailboxViewController.resetFetchedResultsController()
+                                                    //TODO:: fix later, this logic change to viewModel service 
                                                 }
                                             }
                                         }
@@ -82,7 +83,7 @@ extension SWRevealViewController {
             if let firstViewController: UIViewController = navigationController.viewControllers.first as UIViewController? {
                 if (firstViewController.isKind(of: MailboxViewController.self)) {
                     let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
-                    mailboxViewController.viewModel = MailboxViewModelImpl(location: .inbox)
+                    sharedVMService.mailbox(fromMenu: mailboxViewController, location: .inbox)
                 }
             }
         }
@@ -146,9 +147,18 @@ extension AppDelegate: UIApplicationDelegate {
         if tmp != .dev && tmp != .sim {
             AFNetworkActivityLogger.shared().stopLogging()
         }
-        sharedPushNotificationService.setLaunchOptions(launchOptions)
         
+        LanguageManager.setupCurrentLanguage()
+
+       // LanguageManager.setupCurrentLanguage()
+        //Localization.restoreLanguage()
+        //sharedPushNotificationService.setLaunchOptions(launchOptions)
         return true
+    }
+    
+    func languageWillChange(notification:NSNotification){
+        let targetLang = notification.object as! String
+        Localization.setCurrentLanguage(language: targetLang)
     }
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {

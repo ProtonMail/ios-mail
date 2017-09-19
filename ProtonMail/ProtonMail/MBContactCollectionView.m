@@ -118,7 +118,7 @@ typedef NS_ENUM(NSInteger, ContactCollectionViewSection) {
     self.selectedContacts = [[NSMutableArray alloc] init];
     
     self.cellHeight = kCellHeight;
-    _prompt = NSLocalizedStringWithDefaultValue(@"MBContactPickerPrompt", nil, [NSBundle mainBundle], kPrompt, @"Prompt text shown in the prompt cell");
+    _prompt = NSLocalizedStringWithDefaultValue(@"MBContactPickerPrompt", nil, [NSBundle mainBundle], kPrompt, @"Default Prompt text shown in the prompt cell");
     self.searchText = kDefaultEntryText;
     self.allowsTextInput = YES;
     _showPrompt = YES;

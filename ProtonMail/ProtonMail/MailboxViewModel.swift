@@ -9,6 +9,11 @@
 import Foundation
 import CoreData
 
+enum SwipeResponse {
+    case showUndo
+    case nothing
+    case showGeneral
+}
 
 class MailboxViewModel {
     typealias CompletionBlock = APIService.CompletionBlock
@@ -31,11 +36,11 @@ class MailboxViewModel {
         fatalError("This method must be overridden")
     }
     
-    func deleteMessage(_ msg: Message) -> Bool {
+    func deleteMessage(_ msg: Message) -> SwipeResponse {
         fatalError("This method must be overridden")
     }
     
-    func archiveMessage(_ msg: Message) {
+    func archiveMessage(_ msg: Message) -> SwipeResponse {
         self.updateBadgeNumberWhenMove(msg, to: .archive)
         msg.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
         msg.needsUpdate = true
@@ -43,9 +48,11 @@ class MailboxViewModel {
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
         }
+        
+        return .showUndo
     }
     
-    func spamMessage(_ msg: Message) {
+    func spamMessage(_ msg: Message) -> SwipeResponse {
         self.updateBadgeNumberWhenMove(msg, to: .spam)
         msg.removeLocationFromLabels(currentlocation: msg.location, location: .spam, keepSent: true)
         msg.needsUpdate = true
@@ -53,9 +60,10 @@ class MailboxViewModel {
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
         }
+        return .showUndo
     }
     
-    func starMessage(_ msg: Message) {
+    func starMessage(_ msg: Message) -> SwipeResponse {
         self.updateBadgeNumberWhenMove(msg, to: .starred)
         msg.setLabelLocation(.starred)
         msg.isStarred = true
@@ -63,6 +71,7 @@ class MailboxViewModel {
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
         }
+        return .nothing
     }
     
     func updateBadgeNumberWhenMove(_ message : Message, to : MessageLocation) {

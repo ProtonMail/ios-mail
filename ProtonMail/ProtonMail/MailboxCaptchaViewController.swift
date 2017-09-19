@@ -51,13 +51,13 @@ class MailboxCaptchaViewController : UIViewController, UIWebViewDelegate {
     
     @IBAction func cancelAction(_ sender: AnyObject) {
         let alertController = UIAlertController(
-            title: NSLocalizedString("Human Check Warning"),
-            message: NSLocalizedString("Warning: Before you pass the human check you can't sent email!!!"),
+            title: NSLocalizedString("Human Check Warning", comment: "human check warning title"),
+            message: NSLocalizedString("Warning: Before you pass the human check you can't sent email!!!", comment: "human check warning description"),
             preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Check Again"), style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Check Again", comment: "Action"), style: .default, handler: { action in
             
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel Check"), style: .destructive, handler: { action in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel Check", comment: "Action"), style: .destructive, handler: { action in
             
             self.dismiss(animated: true, completion: nil)
             self.delegate?.cancel()

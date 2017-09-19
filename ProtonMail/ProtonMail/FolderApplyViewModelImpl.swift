@@ -20,7 +20,7 @@ import Foundation
 
 import Foundation
 
-open class FolderApplyViewModelImpl : LabelViewModel {
+final class FolderApplyViewModelImpl : LabelViewModel {
     fileprivate var messages : [Message]!
     fileprivate var labelMessages : Dictionary<String, LabelMessageModel>!
     
@@ -35,11 +35,11 @@ open class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     open override func getApplyButtonText() -> String {
-        return NSLocalizedString("Apply")
+        return NSLocalizedString("Apply", comment: "folder apply - apply button text")
     }
     
     open override func getCancelButtonText() -> String {
-        return NSLocalizedString("Cancel")
+        return NSLocalizedString("Cancel", comment: "folder apply - cancel button text")
     }
     
     override open func getLabelMessage( _ label : Label!) -> LabelMessageModel! {
@@ -142,7 +142,7 @@ open class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     override open func getTitle() -> String {
-        return NSLocalizedString("Move to Folder")
+        return NSLocalizedString("Move to Folder", comment: "folder apply - title")
     }
     
     override open func cancel() {

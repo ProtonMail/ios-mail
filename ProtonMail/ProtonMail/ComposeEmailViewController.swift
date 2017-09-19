@@ -57,6 +57,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     // private views
     fileprivate var webView : UIWebView!
     fileprivate var composeView : ComposeView!
+    fileprivate var cancelButton: UIBarButtonItem!
     
     // private vars
     fileprivate var timer : Timer!
@@ -88,6 +89,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.cancelButton = UIBarButtonItem(title:NSLocalizedString("Cancel", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(ComposeEmailViewController.cancel_clicked(_:)))
+        self.navigationItem.leftBarButtonItem = cancelButton
         
         configureNavigationBar()
         setNeedsStatusBarAppearanceUpdate()
@@ -228,6 +232,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             NSForegroundColorAttributeName: UIColor.white,
             NSFontAttributeName: navigationBarTitleFont
         ]
+        
+        self.navigationItem.leftBarButtonItem?.title = NSLocalizedString("Cancel", comment: "Action")
+        
+        cancelButton.title = NSLocalizedString("Cancel", comment: "Action")
     }
     
     override func didReceiveMemoryWarning() {
@@ -288,13 +296,14 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             }
         }
         
-        let alertController = UIAlertController(title: NSLocalizedString("Compose"), message: "Send message without subject?", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send"), style: .destructive, handler: { (action) -> Void in
+        let alertController = UIAlertController(title: NSLocalizedString("Compose", comment: "Action"),
+                                                message: NSLocalizedString("Send message without subject?", comment: "Description"),
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send", comment: "Action"), style: .destructive, handler: { (action) -> Void in
             self.sendMessage()
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .cancel, handler: nil))
-        present(alertController, animated: true, completion: nil)
-        
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        present(alertController, animated: true, completion: nil)        
     }
     
     func sendMessage () {
@@ -305,8 +314,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             }
         }
         
-        if self.viewModel.toSelectedContacts.count <= 0 && self.viewModel.ccSelectedContacts.count <= 0 && self.viewModel.bccSelectedContacts.count <= 0 {
-            let alert = UIAlertController(title: NSLocalizedString("Alert"), message: NSLocalizedString("You need at least one recipient to send"), preferredStyle: .alert)
+        if self.viewModel.toSelectedContacts.count <= 0 &&
+            self.viewModel.ccSelectedContacts.count <= 0 &&
+            self.viewModel.bccSelectedContacts.count <= 0 {
+            let alert = UIAlertController(title: NSLocalizedString("Alert", comment: "Title"),
+                                          message: NSLocalizedString("You need at least one recipient to send", comment: "Description"),
+                                          preferredStyle: .alert)
             alert.addAction((UIAlertAction.okAction()))
             present(alert, animated: true, completion: nil)
             return;
@@ -340,15 +353,16 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
         
         if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
-            let alertController = UIAlertController(title: NSLocalizedString("Confirmation"), message: nil, preferredStyle: .actionSheet)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft"), style: .default, handler: { (action) -> Void in
+            let alertController = UIAlertController(title: NSLocalizedString("Confirmation", comment: "Title"),
+                                                    message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft", comment: "Action"), style: .default, handler: { (action) -> Void in
                 self.stopAutoSave()
                 self.collectDraft()
                 self.viewModel.updateDraft()
                 dismiss()
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .cancel, handler: nil))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft"), style: .destructive, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft", comment: "Action"), style: .destructive, handler: { (action) -> Void in
                 self.stopAutoSave()
                 self.viewModel.deleteDraft()
                 dismiss()
@@ -459,13 +473,13 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
 extension ComposeEmailViewController : ComposeViewDelegate {
     func composeViewPickFrom(_ composeView: ComposeView) {
         if attachments?.count > 0 {
-            let alertController = NSLocalizedString("Please remove all attachments before changing sender!").alertController()
+            let alertController = NSLocalizedString("Please remove all attachments before changing sender!", comment: "Error").alertController()
             alertController.addOKAction()
             self.present(alertController, animated: true, completion: nil)
         } else {
             var needsShow : Bool = false
-            let alertController = UIAlertController(title: NSLocalizedString("Change sender address to .."), message: nil, preferredStyle: .actionSheet)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .cancel, handler: nil))
+            let alertController = UIAlertController(title: NSLocalizedString("Change sender address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
             let multi_domains = self.viewModel.getAddresses()
             let defaultAddr = self.viewModel.getDefaultAddress()
             for addr in multi_domains {
@@ -704,9 +718,9 @@ extension ComposeEmailViewController: UIPickerViewDataSource {
 extension ComposeEmailViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (component == 0) {
-            return "\(row) " + NSLocalizedString("days")
+            return "\(row) " + NSLocalizedString("days", comment: "")
         } else {
-            return "\(row) " + NSLocalizedString("hours")
+            return "\(row) " + NSLocalizedString("Hours", comment: "")
         }
     }
     
@@ -714,8 +728,8 @@ extension ComposeEmailViewController: UIPickerViewDelegate {
         let selectedDay = pickerView.selectedRow(inComponent: 0)
         let selectedHour = pickerView.selectedRow(inComponent: 1)
         
-        let day = "\(selectedDay) " + NSLocalizedString("days")
-        let hour = "\(selectedHour) " + NSLocalizedString("hours")
+        let day = "\(selectedDay) " + NSLocalizedString("days", comment: "")
+        let hour = "\(selectedHour) " + NSLocalizedString("Hours", comment: "")
         self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
     }
     

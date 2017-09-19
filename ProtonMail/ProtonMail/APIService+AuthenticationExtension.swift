@@ -139,16 +139,26 @@ extension APIService {
         if let authCredential = AuthCredential.fetchFromKeychain() {
             AuthRefreshRequest<AuthResponse>(resfresh: authCredential.refreshToken, uid: authCredential.userID).call() { task, res , hasError in
                 if hasError {
-                    self.refreshTokenFailedCount += 1
+                    var needsRetry : Bool = false
                     if let err = res?.error {
                         err.uploadFabricAnswer(AuthErrorTitle)
+                        if err.code == NSURLErrorTimedOut ||
+                            err.code == NSURLErrorNotConnectedToInternet ||
+                            err.code == NSURLErrorCannotConnectToHost ||
+                            err.code == APIErrorCode.API_offline ||
+                            err.code == APIErrorCode.HTTP503 {
+                            needsRetry = true
+                        } else {
+                            self.refreshTokenFailedCount += 1
+                        }
                     }
                     
-                    if self.refreshTokenFailedCount > 10 {
-                        PMLog.D("self.refreshTokenFailedCount == 10")
+                    if self.refreshTokenFailedCount > 5 || !needsRetry {
+                        PMLog.D("self.refreshTokenFailedCount == 5")
+                        completion?(task, nil, NSError.authInvalidGrant())
+                    } else {
+                        completion?(task, nil, NSError.internetError())
                     }
-                    
-                    completion?(task, nil, NSError.authInvalidGrant())
                 }
                 else if res?.code == 1000 {
                     do {

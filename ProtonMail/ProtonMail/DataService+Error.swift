@@ -51,8 +51,8 @@ extension CustomErrorVar {
 // code start at 0x110000
 enum UpdatePasswordError : Int, Error, CustomErrorVar {
     case invalidUserName = 0x110001
-    case invalidModulsID = 0x110002
-    case invalidModuls = 0x110003
+    case invalidModulusID = 0x110002
+    case invalidModulus = 0x110003
     case cantHashPassword = 0x110004
     case cantGenerateVerifier = 0x110005
     case cantGenerateSRPClient = 0x110006
@@ -71,35 +71,35 @@ enum UpdatePasswordError : Int, Error, CustomErrorVar {
     }
     
     var desc : String {
-        return NSLocalizedString("Change Password") //TODO:: check with jason for localization
+        return NSLocalizedString("Change Password", comment: "update password error title") //TODO:: check with jason for localization
     }
     
     var reason : String {
         switch self {
         case .invalidUserName:
-            return NSLocalizedString("Invalid UserName!")
-        case .invalidModulsID:
-            return NSLocalizedString("Can't get a Moduls ID!")
-        case .invalidModuls:
-            return NSLocalizedString("Can't get a Moduls!")
+            return NSLocalizedString("Invalid UserName!", comment: "update password error when input invalid username")
+        case .invalidModulusID:
+            return NSLocalizedString("Can't get a Moduls ID!", comment: "update password error = typo:Modulus")
+        case .invalidModulus:
+            return NSLocalizedString("Can't get a Moduls!", comment: "update password error = typo:Modulus")
         case .cantHashPassword:
-            return NSLocalizedString("Invalid hashed password!")
+            return NSLocalizedString("Invalid hashed password!", comment: "update password error")
         case .cantGenerateVerifier:
-            return NSLocalizedString("Can't create a SRP verifier!")
+            return NSLocalizedString("Can't create a SRP verifier!", comment: "update password error")
         case .cantGenerateSRPClient:
-            return NSLocalizedString("Can't create a SRP Client")
+            return NSLocalizedString("Can't create a SRP Client", comment: "update password error")
         case .invalideAuthInfo:
-            return NSLocalizedString("Can't get user auth info")
+            return NSLocalizedString("Can't get user auth info", comment: "update password error")
         case .currentPasswordWrong:
-            return NSLocalizedString("The Password is wrong.")
+            return NSLocalizedString("The Password is wrong.", comment: "update password error")
         case .newNotMatch:
-            return NSLocalizedString("The new password not match.")
+            return NSLocalizedString("The new password not match.", comment: "update password error")
         case .passwordEmpty:
-            return NSLocalizedString("The new password can't empty.")
+            return NSLocalizedString("The new password can't empty.", comment: "update password error")
         case .keyUpdateFailed:
-            return NSLocalizedString("The private update failed.")
+            return NSLocalizedString("The private update failed.", comment: "update password error")
         case .default:
-            return NSLocalizedString("Password update failed")
+            return NSLocalizedString("Password update failed", comment: "update password error")
         }
     }
 }
@@ -120,23 +120,23 @@ enum UpdateNotificationEmailError : Int, Error, CustomErrorVar {
     }
     
     var desc : String {
-        return NSLocalizedString("Update Notification Email") //TODO:: check with jason for localization
+        return NSLocalizedString("Update Notification Email", comment: "update notification email error title")
     }
     
     var reason : String {
         switch self {
         case .invalidUserName:
-            return NSLocalizedString("Invalid UserName!")
+            return NSLocalizedString("Invalid UserName!", comment: "update notification email error")
         case .cantHashPassword:
-            return NSLocalizedString("Invalid hashed password!")
+            return NSLocalizedString("Invalid hashed password!", comment: "update notification email error")
         case .cantGenerateVerifier:
-            return NSLocalizedString("Can't create a SRP verifier!")
+            return NSLocalizedString("Can't create a SRP verifier!", comment: "update notification email error")
         case .cantGenerateSRPClient:
-            return NSLocalizedString("Can't create a SRP Client")
+            return NSLocalizedString("Can't create a SRP Client", comment: "update notification email error")
         case .invalideAuthInfo:
-            return NSLocalizedString("Can't get user auth info")
+            return NSLocalizedString("Can't get user auth info", comment: "update notification email error")
         case .default:
-            return NSLocalizedString("Password update failed")
+            return NSLocalizedString("Password update failed", comment: "update notification email error")
         }
     }
 }

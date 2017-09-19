@@ -16,6 +16,7 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var contentScrollView: UIScrollView!
     @IBOutlet weak var pageControlView: UIPageControl!
     @IBOutlet weak var learnmoreButton: UIButton!
+    @IBOutlet weak var closeButton: UIButton!
     
      fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
     
@@ -43,6 +44,9 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
         contentScrollView.contentSize = CGSize (width: pageWidth * CGFloat(count), height: contentScrollView.contentSize.height);
         pageControlView.numberOfPages = count;
         pageControlView.currentPage = 0;
+        
+        closeButton.setTitle(NSLocalizedString("close tour", comment: "Action"), for: .normal)
+        learnmoreButton.setTitle(NSLocalizedString("Support ProtonMail", comment: "Action"), for: .normal)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

@@ -41,12 +41,13 @@ class SettingDetailViewController: UIViewController {
         doneButton = self.editButtonItem
         doneButton.target = self;
         doneButton.action = #selector(SettingDetailViewController.doneAction(_:))
-        doneButton.title = "Save"
+        doneButton.title = NSLocalizedString("Save", comment: "Title")
+        
         self.navigationItem.title = viewModel.getNavigationTitle()
         sectionTitleLabel.text = viewModel.getSectionTitle()
         
         self.navigationItem.hidesBackButton = true
-        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(SettingDetailViewController.back(sender:)))
+        let newBackButton = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(SettingDetailViewController.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
         
         if viewModel.isDisplaySwitch() {
@@ -73,6 +74,8 @@ class SettingDetailViewController: UIViewController {
             inputTextField.placeholder = viewModel.getPlaceholdText()
         }
         
+        passwordTextField.placeholder = NSLocalizedString("Login Password", comment: "Placeholder")
+        
         if viewModel.isRequireLoginPassword() {
             passwordView.isHidden = false
         } else {
@@ -92,16 +95,16 @@ class SettingDetailViewController: UIViewController {
         }
         else {
             let alertController = UIAlertController(
-                title: NSLocalizedString("Confirmation"),
-                message: NSLocalizedString("You have unsaved changes. Do you want to save it?"),
+                title: NSLocalizedString("Confirmation", comment: "Title"),
+                message: NSLocalizedString("You have unsaved changes. Do you want to save it?", comment: "Confirmation message"),
                 preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"),
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "title"),
                                                     style: .destructive,
                                                     handler: { action in
                                                         _ = self.navigationController?.popViewController(animated: true)
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save Changes"),
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save Changes", comment: "title"),
                                                     style: .default,
                                                     handler: { action in
                                                         self.startUpdateValue()

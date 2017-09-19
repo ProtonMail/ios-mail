@@ -231,6 +231,48 @@ extension Message {
         }
     }
     
+    func removeFromFolder(current: Label, location : MessageLocation, keepSent: Bool) {
+        if let context = self.managedObjectContext {
+            context.performAndWait() {
+                let labelObjs = self.mutableSetValue(forKey: "labels")
+                if keepSent && current.exclusive == false {
+                    
+                } else {
+                    let fromLabelID = current.labelID
+                    for l in labelObjs {
+                        if let label = l as? Label {
+                            if label.labelID == fromLabelID {
+                                labelObjs.remove(label)
+                                break
+                            }
+                        }
+                    }
+                }
+                
+                let toLableID = String(location.rawValue)
+                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+                    var exsited = false
+                    for l in labelObjs {
+                        if let label = l as? Label {
+                            if label == toLabel {
+                                exsited = true
+                                break
+                            }
+                        }
+                    }
+                    if !exsited {
+                        labelObjs.add(toLabel)
+                    }
+                }
+                
+                self.setValue(labelObjs, forKey: "labels")
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
+            }
+        }
+    }
+    
     var subject : String {
         return title
     }
@@ -573,7 +615,6 @@ extension String {
                 break
             }
             //get data
-            
             let text = data.subdata(with: NSMakeRange(1, secondboundaryRange.location - 1))
             
             let plainFound = contentType.range(of: textplainType!, options: NSData.SearchOptions(rawValue: 0), in: NSMakeRange(0, contentType.length))

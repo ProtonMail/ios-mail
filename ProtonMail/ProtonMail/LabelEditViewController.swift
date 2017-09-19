@@ -45,7 +45,7 @@ class LableEditViewController : UIViewController {
         applyButtonText = viewModel.rightButtonText()
         applyButton.setTitle(applyButtonText, for: UIControlState.disabled)
         applyButton.setTitle(applyButtonText, for: UIControlState())
-        cancelButton.setTitle("Cancel", for: UIControlState())
+        cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Title"), for: UIControlState())
         
         applyButton.isEnabled = !name.isEmpty
     }
@@ -66,11 +66,11 @@ class LableEditViewController : UIViewController {
         viewModel.apply(withName: newLabelInput.text!, color: color, error: { (code, errorMessage) -> Void in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
             if code == 14005 {
-                let alert = NSLocalizedString("The maximum number of labels is 20.").alertController()
+                let alert = NSLocalizedString("The maximum number of labels is 20.", comment: "Description").alertController()
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             } else if code == 14002 {
-                let alert = NSLocalizedString("The label name is duplicate").alertController()
+                let alert = NSLocalizedString("The label name is duplicate", comment: "Description").alertController()
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             } else {

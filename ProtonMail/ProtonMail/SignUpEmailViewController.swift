@@ -18,20 +18,22 @@ class SignUpEmailViewController: UIViewController {
     
     @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var titleTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var titleLeftPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var recoveryEmailTopPaddingConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var titleWarningLabel: UILabel!
-    
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var recoveryEmailField: TextInsetTextField!
     @IBOutlet weak var displayNameField: TextInsetTextField!
     
+    @IBOutlet weak var titleWarningLabel: UILabel!
     @IBOutlet weak var checkButton: UIButton!
+    @IBOutlet weak var topLeftButton: UIButton!
+    @IBOutlet weak var topTitleLabel: UILabel!
+    @IBOutlet weak var displayNameNoteLabel: UILabel!
+    @IBOutlet weak var optionalOneLabel: UILabel!
+    @IBOutlet weak var optionalTwoLabel: UILabel!
+    @IBOutlet weak var recoveryEmailNoteLabel: UILabel!
+    @IBOutlet weak var goInboxButton: UIButton!
     
     var viewModel : SignupViewModel!
     
@@ -51,8 +53,19 @@ class SignUpEmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         userCachedStatus.showTourNextTime()
-        recoveryEmailField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Recovery Email"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        displayNameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Display Name"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        recoveryEmailField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Recovery Email", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        displayNameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Display Name", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        
+        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
+        topTitleLabel.text = NSLocalizedString("Congratulations!", comment: "view top title")
+        titleWarningLabel.text = NSLocalizedString("Your new secure email\r\n account is ready.", comment: "view top title")
+        optionalOneLabel.text = NSLocalizedString("*OPTIONAL", comment: "Title")
+        displayNameNoteLabel.text = NSLocalizedString("When you send an email, this is the name that appears in the sender field.", comment: "display name notes")
+        optionalTwoLabel.text = NSLocalizedString("*OPTIONAL", comment: "Title")
+        
+        recoveryEmailNoteLabel.text = NSLocalizedString("The optional recovery email address allows you to reset your login password if you forget it.", comment: "recovery email notes")
+        checkButton.setTitle(NSLocalizedString("Keep me updated about new features", comment: "Title"), for: .normal)
+        goInboxButton.setTitle(NSLocalizedString("Go to inbox", comment: "Action"), for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,15 +108,15 @@ class SignUpEmailViewController: UIViewController {
         if email.isEmpty {
             // show a warning
             let alertController = UIAlertController(
-                title: NSLocalizedString("Recovery Email Warning"),
-                message: NSLocalizedString("Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?"),
+                title: NSLocalizedString("Recovery Email Warning", comment: "Title"),
+                message: NSLocalizedString("Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?", comment: "Description"),
                 preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .default, handler: { action in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Title"), style: .default, handler: { action in
                 
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm"), style: .destructive, handler: { action in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Title"), style: .destructive, handler: { action in
                 if (!email.isEmpty && !email.isValidEmail()) {
-                    let alert = NSLocalizedString("Please input a valid email address.").alertController()
+                    let alert = NSLocalizedString("Please input a valid email address.", comment: "Description").alertController()
                     alert.addOKAction()
                     self.present(alert, animated: true, completion: nil)
                 } else {
@@ -124,7 +137,7 @@ class SignUpEmailViewController: UIViewController {
             self.present(alertController, animated: true, completion: nil)
         } else {
             if (!email.isValidEmail()) {
-                let alert = NSLocalizedString("Please input a valid email address.").alertController()
+                let alert = NSLocalizedString("Please input a valid email address.", comment: "Description").alertController()
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             } else {

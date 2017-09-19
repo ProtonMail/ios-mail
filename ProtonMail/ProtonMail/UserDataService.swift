@@ -423,10 +423,10 @@ class UserDataService {
                 }
                 let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
                 guard let moduls_id = authModuls?.ModulusID else {
-                    throw UpdatePasswordError.invalidModulsID.toError()
+                    throw UpdatePasswordError.invalidModulusID.toError()
                 }
                 guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
-                    throw UpdatePasswordError.invalidModuls.toError()
+                    throw UpdatePasswordError.invalidModulus.toError()
                 }
                 //generat new verifier
                 let new_decodedModulus : Data = new_encodedModulus.decodeBase64()
@@ -546,10 +546,10 @@ class UserDataService {
                 if buildAuth {
                     let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
                     guard let moduls_id = authModuls?.ModulusID else {
-                        throw UpdatePasswordError.invalidModulsID.toError()
+                        throw UpdatePasswordError.invalidModulusID.toError()
                     }
                     guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
-                        throw UpdatePasswordError.invalidModuls.toError()
+                        throw UpdatePasswordError.invalidModulus.toError()
                     }
                     //generat new verifier
                     let new_decodedModulus : Data = new_encodedModulus.decodeBase64()

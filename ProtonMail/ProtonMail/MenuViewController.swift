@@ -125,12 +125,12 @@ class MenuViewController: UIViewController {
                     PMLog.D("Menu Table Clicked -- Done")
                     if indexPath.section == 0 {
                         self.lastMenuItem = self.itemForIndexPath(indexPath)
-                        mailboxViewController.viewModel = MailboxViewModelImpl(location: self.lastMenuItem.menuToLocation)
+                        sharedVMService.mailbox(fromMenu: mailboxViewController, location: self.lastMenuItem.menuToLocation)
                     } else if indexPath.section == 1 {
                     } else if indexPath.section == 2 {
                         //if indexPath.row < fetchedLabels?.fetchedObjects?.count {
                         let label = self.fetchedLabels?.object(at: IndexPath(row: indexPath.row, section: 0)) as! Label
-                        mailboxViewController.viewModel = LabelboxViewModelImpl(label: label)
+                        sharedVMService.labelbox(fromMenu: mailboxViewController, label: label)
                         //}
                     } else {
                     }
@@ -163,8 +163,8 @@ class MenuViewController: UIViewController {
     }
     
     func handleSignOut(_ sender : UIView?) {
-        let alertController = UIAlertController(title: NSLocalizedString("Confirm"), message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out"), style: .destructive, handler: { (action) -> Void in
+        let alertController = UIAlertController(title: NSLocalizedString("Confirm", comment: "Action"), message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out", comment: "Action"), style: .destructive, handler: { (action) -> Void in
             self.signingOut = true
             UserTempCachedStatus.backup()
             sharedUserDataService.signOut(true)
@@ -172,7 +172,7 @@ class MenuViewController: UIViewController {
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view
         alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
         self.sectionClicked = false
         present(alertController, animated: true, completion: nil)
     }

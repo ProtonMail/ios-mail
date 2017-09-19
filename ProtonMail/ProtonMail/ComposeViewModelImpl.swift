@@ -28,13 +28,15 @@ open class ComposeViewModelImpl : ComposeViewModel {
                 if action == ComposeMessageAction.reply || action == ComposeMessageAction.replyAll {
                     if let title = self.message?.title {
                         if !title.hasRe() {
-                            self.message?.title = "Re: \(title)"
+                            let re = NSLocalizedString("Re:", comment: "Title")
+                            self.message?.title = "\(re) \(title)"
                         }
                     }
                 } else if action == ComposeMessageAction.forward {
                     if let title = self.message?.title {
                         if !title.hasFwd() {
-                            self.message?.title = "Fwd: \(title)"
+                            let fwd = NSLocalizedString("Fwd:", comment: "Title")
+                            self.message?.title = "\(fwd) \(title)"
                         }
                     }
                 } else {
@@ -298,8 +300,9 @@ open class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingStyleHTML()
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
-                
-                let time : String! = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
+                let on = NSLocalizedString("On", comment: "Title")
+                let at = NSLocalizedString("at", comment: "Title")
+                let time : String! = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' h:mm a") ?? ""
                 let sn : String! = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
                 let se : String! = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
                 
@@ -308,21 +311,29 @@ open class ComposeViewModelImpl : ComposeViewModel {
                 replyHeader = replyHeader.stringByStrippingBodyStyle()
                 replyHeader = replyHeader.stringByPurifyHTML()
                 
-                
-                let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+                let w = NSLocalizedString("wrote:", comment: "Title")
+                let sp = "<div><br><div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
                 
                 return " \(head) \(htmlString) \(sp) \(body)</blockquote> \(foot)"
             case .forward:
                 let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
+                
+                
+                let fwdm = NSLocalizedString("Forwarded message", comment: "Title")
+                let from = NSLocalizedString("From:", comment: "Title")
+                let dt = NSLocalizedString("Date:", comment: "Title")
+                let sj = NSLocalizedString("Subject:", comment: "Title")
+                let t = NSLocalizedString("To:", comment: "Title")
+                let c = NSLocalizedString("Cc:", comment: "Title")
                 var forwardHeader =
-                "---------- Forwarded message ----------<br>From: " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + " class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>Date: \(time)<br>Subject: \(message!.title)<br>"
+                "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + " class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
                 
                 if message!.recipientList != "" {
-                    forwardHeader += "To: \(message!.recipientList.formatJsonContact(true))<br>"
+                    forwardHeader += "\(t) \(message!.recipientList.formatJsonContact(true))<br>"
                 }
                 
                 if message!.ccList != "" {
-                    forwardHeader += "CC: \(message!.ccList.formatJsonContact(true))<br>"
+                    forwardHeader += "\(c) \(message!.ccList.formatJsonContact(true))<br>"
                 }
                 forwardHeader += ""
                 var body = ""

@@ -10,7 +10,7 @@ import Foundation
 
 
 // labels and folders manager
-open class LabelManagerViewModelImpl : LabelViewModel {
+final class LabelManagerViewModelImpl : LabelViewModel {
     fileprivate var labelMessages : Dictionary<String, LabelMessageModel>!
     public override init() {
         super.init()
@@ -35,15 +35,15 @@ open class LabelManagerViewModelImpl : LabelViewModel {
     }
     
     override open func getTitle() -> String {
-        return NSLocalizedString("Manage Labels/Folders")
+        return NSLocalizedString("Manage Labels/Folders", comment: "Title")
     }
     
     open override func getApplyButtonText() -> String {
-        return NSLocalizedString("Delete")
+        return NSLocalizedString("Delete", comment: "lable manager delete action")
     }
     
     open override func getCancelButtonText() -> String {
-        return NSLocalizedString("Close")
+        return NSLocalizedString("Close", comment: "lable manager close action")
     }
     
     open override func cellClicked(_ label: Label!) {

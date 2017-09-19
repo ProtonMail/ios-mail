@@ -152,7 +152,6 @@ class APIService {
             if let credential = AuthCredential.fetchFromKeychain() {
                 if !credential.isExpired { // access token time is valid
                     if (credential.password ?? "").isEmpty { // mailbox pwd is empty should show error and logout
-                        
                         //clean auth cache let user relogin
                         AuthCredential.clearFromKeychain()
                         pthread_mutex_unlock(&self.mutex)
@@ -193,7 +192,7 @@ class APIService {
                                 AuthCredential.clearFromKeychain()
                                 DispatchQueue.main.async {
                                     NSError.alertBadTokenToast()
-                                    completion(authCredential, error)
+                                    self.fetchAuthCredential(completion)
                                 }
                             } else {
                                 DispatchQueue.main.async {
@@ -255,6 +254,9 @@ class APIService {
                 let appversion = "iOS_\(Bundle.main.majorVersion)"
                 request.setValue("application/vnd.protonmail.v1+json", forHTTPHeaderField: "Accept")
                 request.setValue(appversion, forHTTPHeaderField: "x-pm-appversion")
+                
+                let clanguage = LanguageManager.currentLanguageEnum()
+                request.setValue(clanguage.localeString, forHTTPHeaderField: "x-pm-locale")
                 
                 let sessionDownloadTask = self.sessionManager.downloadTask(with: request as URLRequest, progress: { (progress) in
                     
@@ -318,6 +320,8 @@ class APIService {
                 request.setValue("application/vnd.protonmail.v1+json", forHTTPHeaderField: "Accept")
                 request.setValue(appversion, forHTTPHeaderField: "x-pm-appversion")
                 
+                let clanguage = LanguageManager.currentLanguageEnum()
+                request.setValue(clanguage.localeString, forHTTPHeaderField: "x-pm-locale")
             
                 var uploadTask: URLSessionDataTask? = nil
                 uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request as URLRequest, progress: { (progress) in
@@ -365,6 +369,9 @@ class APIService {
                 let appversion = "iOS_\(Bundle.main.majorVersion)"
                 request.setValue("application/vnd.protonmail.v1+json", forHTTPHeaderField: "Accept")
                 request.setValue(appversion, forHTTPHeaderField: "x-pm-appversion")
+                
+                let clanguage = LanguageManager.currentLanguageEnum()
+                request.setValue(clanguage.localeString, forHTTPHeaderField: "x-pm-locale")
                 
                 var task: URLSessionDataTask? = nil
                 task = self.sessionManager.dataTask(with: request as URLRequest, uploadProgress: { (progress) in

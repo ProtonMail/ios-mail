@@ -119,7 +119,7 @@ class MessageDataService {
             }
             
         } else {
-            error = NSError.protonMailError(500, localizedDescription: NSLocalizedString("No managedObjectContext"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
+            error = NSError.protonMailError(500, localizedDescription: NSLocalizedString("No managedObjectContext", comment: "this is a system object can't find, this could be not trasnlated"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
         }
         completion?(nil, nil, error)
     }
@@ -1905,7 +1905,7 @@ extension NSError {
     class func badDraft() -> NSError {
         return apiServiceError(
             code: APIErrorCode.SendErrorCode.draftBad,
-            localizedDescription: NSLocalizedString("Unable to send the email"),
-            localizedFailureReason: NSLocalizedString("The draft format incorrectly sending failed!"))
+            localizedDescription: NSLocalizedString("Unable to send the email", comment: "error when sending the message"),
+            localizedFailureReason: NSLocalizedString("The draft format incorrectly sending failed!", comment: "error when sending the message"))
     }
 }

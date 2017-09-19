@@ -12,14 +12,14 @@ extension String {
     
     func alertController() -> UIAlertController {
         let message = self
-        return UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
+        return UIAlertController(title: NSLocalizedString("Alert", comment: "alert title"), message: message, preferredStyle: .alert)
     }
     
     func alertToast() -> Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = NSLocalizedString("Alert");
+        hud.labelText = NSLocalizedString("Alert", comment: "alert title");
         hud.detailsLabelText = self
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
@@ -44,21 +44,25 @@ extension String {
     
     
     func hasRe () -> Bool {
-        if self.characters.count < 3 {
+        let re = NSLocalizedString("Re:", comment: "Title")
+        let checkCount = re.characters.count
+        if self.characters.count < checkCount {
             return false;
         }
         let myNSString = self as NSString
-        let str = myNSString.substring(with: NSRange(location: 0, length: 3))
-        return str.contains("Re:")
+        let str = myNSString.substring(with: NSRange(location: 0, length: checkCount))
+        return str.contains(re)
     }
     
     func hasFwd () -> Bool {
-        if self.characters.count < 4 {
+        let fwd = NSLocalizedString("Fwd:", comment: "Title")
+        let checkCount = fwd.characters.count
+        if self.characters.count < checkCount {
             return false;
         }
         let myNSString = self as NSString
-        let str = myNSString.substring(with: NSRange(location: 0, length: 4))
-        return str.contains("Fwd:")
+        let str = myNSString.substring(with: NSRange(location: 0, length: checkCount))
+        return str.contains(fwd)
     }
     
     
