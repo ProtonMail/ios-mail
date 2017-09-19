@@ -77,6 +77,22 @@ final class ComposeViewModelImpl : ComposeViewModel {
         PMLog.D("ComposeViewModelImpl deinit")
     }
     
+    fileprivate let k12HourMinuteFormat = "h:mm a"
+    fileprivate let k24HourMinuteFormat = "HH:mm"
+    private func using12hClockFormat() -> Bool {
+        
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        
+        let dateString = formatter.string(from: Date())
+        let amRange = dateString.range(of: formatter.amSymbol)
+        let pmRange = dateString.range(of: formatter.pmSymbol)
+        
+        return !(pmRange == nil && amRange == nil)
+    }
+    
     override func uploadAtt(_ att: Attachment!) {
         sharedMessageDataService.uploadAttachment(att)
         self.updateDraft()
@@ -331,7 +347,8 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByPurifyHTML()
                 let on = NSLocalizedString("On", comment: "Title")
                 let at = NSLocalizedString("at", comment: "Title")
-                let time : String! = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' h:mm a") ?? ""
+                let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+                let time : String! = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
                 let sn : String! = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
                 let se : String! = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
                 
@@ -345,8 +362,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 
                 return " \(head) \(htmlString) \(sp) \(body)</blockquote> \(foot)"
             case .forward:
-                let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
-                
+                let on = NSLocalizedString("On", comment: "Title")
+                let at = NSLocalizedString("at", comment: "Title")
+                let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+                let time = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
                 
                 let fwdm = NSLocalizedString("Forwarded message", comment: "Title")
                 let from = NSLocalizedString("From:", comment: "Title")

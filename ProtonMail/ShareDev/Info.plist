@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.6.8</string>
+	<string>1.7.0</string>
 	<key>CFBundleVersion</key>
 	<string>Debug</string>
 	<key>NSAppTransportSecurity</key>
@@ -31,8 +31,6 @@
 	<string>$(PRODUCT_NAME) camera use</string>
 	<key>NSContactsUsageDescription</key>
 	<string>$(PRODUCT_NAME) contact use</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) photo library use</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -58,5 +56,7 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>ShareExtensionEntry</string>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) photo library use</string>
 </dict>
 </plist>
