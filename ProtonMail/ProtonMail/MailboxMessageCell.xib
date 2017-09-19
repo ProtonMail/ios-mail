@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -145,9 +145,11 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="attachmentImage" destination="MUg-6h-6KQ" id="Hx0-9q-0TL"/>
                 <outlet property="attachmentWidth" destination="ZQl-7I-b7j" id="8BV-F3-dgB"/>
                 <outlet property="checkboxButton" destination="ehh-A8-O8P" id="7zz-Yx-j88"/>
                 <outlet property="checkboxWidth" destination="Sgz-zJ-w4Y" id="VnI-I6-zoo"/>
+                <outlet property="expirationImage" destination="l8F-Fo-5Gz" id="3ua-CO-6Pv"/>
                 <outlet property="expirationWidth" destination="GgZ-zI-WdS" id="asZ-oN-uSr"/>
                 <outlet property="forwardWidth" destination="yaw-js-fIe" id="zZq-lW-vhX"/>
                 <outlet property="labelsView" destination="qih-v7-hfv" id="oHn-37-EtJ"/>

@@ -99,7 +99,6 @@
 		7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */; };
 		7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */; };
 		7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7061A3F41A6E8C9D0006D36C /* Menu.storyboard */; };
-		706628211A715A0900164117 /* MailboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706628201A715A0900164117 /* MailboxTableViewCell.swift */; };
 		706932AB1A77BE3D00A75A93 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706932AA1A77BE3D00A75A93 /* SearchViewController.swift */; };
 		706961FF1A7136A0001443B2 /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */; };
 		706962071A71399D001443B2 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706962061A71399D001443B2 /* ContactsViewController.swift */; };
@@ -657,7 +656,6 @@
 		75DE7CC81CAAEA4900F5443E /* QuickViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */; };
 		75DE7CCA1CAAEA4900F5443E /* TouchIDCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE561C8D557C00FCEB0A /* TouchIDCell.swift */; };
 		75DE7CCC1CAAEA4900F5443E /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD4871AB809D60084C54A /* SettingTableViewController.swift */; };
-		75DE7CD01CAAEA4900F5443E /* MailboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706628201A715A0900164117 /* MailboxTableViewCell.swift */; };
 		75DE7CD11CAAEA4900F5443E /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */; };
 		75DE7CD31CAAEA4900F5443E /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D71B6702A2004EEDCA /* EmailView.swift */; };
 		75DE7CD41CAAEA4900F5443E /* MenuLabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756489931B7E77AC007EA207 /* MenuLabelViewCell.swift */; };
@@ -2865,7 +2863,6 @@
 				07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */,
 				0713239C1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift in Sources */,
 				751C5FEA1C49C17700949FBF /* SwiftTryCatch.m in Sources */,
-				706628211A715A0900164117 /* MailboxTableViewCell.swift in Sources */,
 				706961FF1A7136A0001443B2 /* ProtonMailViewController.swift in Sources */,
 				071323811A7846150043DB41 /* UIViewExtension.swift in Sources */,
 				757945D81B6702A2004EEDCA /* EmailView.swift in Sources */,
@@ -3432,7 +3429,6 @@
 				75DE7CC81CAAEA4900F5443E /* QuickViewViewController.swift in Sources */,
 				75DE7CCA1CAAEA4900F5443E /* TouchIDCell.swift in Sources */,
 				75DE7CCC1CAAEA4900F5443E /* SettingTableViewController.swift in Sources */,
-				75DE7CD01CAAEA4900F5443E /* MailboxTableViewCell.swift in Sources */,
 				75DE7CD11CAAEA4900F5443E /* ProtonMailViewController.swift in Sources */,
 				75DE7CD31CAAEA4900F5443E /* EmailView.swift in Sources */,
 				75DE7CD41CAAEA4900F5443E /* MenuLabelViewCell.swift in Sources */,
