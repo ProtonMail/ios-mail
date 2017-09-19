@@ -63,6 +63,24 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         self.edgesForExtendedLayout = []
         
+        
+        var appVersion = NSLocalizedString("Unkonw Version", comment: "")
+        var libVersion = "| \(NSLocalizedString("LibVersion", comment: "lib version text")): 1.0.0"
+        
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            appVersion = "\(NSLocalizedString("AppVersion", comment: "")): \(version)"
+        }
+        if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+            appVersion = appVersion + " (\(build))"
+        }
+        
+        let lib_v = PMNLibVersion.getLibVersion()
+        libVersion = "| \(NSLocalizedString("LibVersion", comment: "")): \(lib_v)"
+
+        PMLog.D(appVersion)
+        
+        PMLog.D(libVersion)
+        
         //inital navigation bar items
         self.cancelButton = UIBarButtonItem(title:NSLocalizedString("Cancel", comment: "Action"),
                                             style: .plain,

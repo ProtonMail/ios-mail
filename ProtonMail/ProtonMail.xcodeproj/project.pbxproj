@@ -2314,6 +2314,7 @@
 				758ED7BE1F05A3FF0028D1A5 /* Frameworks */,
 				758ED7BF1F05A3FF0028D1A5 /* Resources */,
 				F0F31CD68DE510331A63E010 /* [CP] Copy Pods Resources */,
+				75DAB3FC1F71B46F008F9997 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2656,6 +2657,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "./Fabric.framework/run 982063ac8b41a8754cf79640ebab8b392ebe7e86 e66156cd496bbb89d6374b216ff8adf504838a4c1bf02c34c5390d289840bd02";
+		};
+		75DAB3FC1F71B46F008F9997 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
 		};
 		75DE7CB31CAAEA4900F5443E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3472,8 +3486,6 @@
 				75DE7D2A1CAAEA4900F5443E /* Onboarding.swift in Sources */,
 				75856D6A1CB5B5EC000D9F3B /* PinCodeViewController.swift in Sources */,
 				75DE7D2C1CAAEA4900F5443E /* FeedbackTableViewCell.swift in Sources */,
-				75DE7D2D1CAAEA4900F5443E /* ViewModelServiceImpl.swift in Sources */,
-				75DE7D2E1CAAEA4900F5443E /* Logger.swift in Sources */,
 				75DE7D2F1CAAEA4900F5443E /* MenuItem.swift in Sources */,
 				75DE7D301CAAEA4900F5443E /* SettingsViewController.swift in Sources */,
 				75DE7D321CAAEA4900F5443E /* LabelTableViewCell.swift in Sources */,
