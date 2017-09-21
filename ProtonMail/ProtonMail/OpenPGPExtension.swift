@@ -112,15 +112,15 @@ extension PMNOpenPgp {
             
             let new_addr = Address(addressid: addr.address_id,
                                    email: addr.email,
-                                   send: addr.send,
+                                   order: addr.order,
                                    receive: addr.receive,
                                    mailbox: addr.mailbox,
                                    display_name: addr.display_name,
                                    signature: addr.signature,
                                    keys: outKeys,
                                    status: addr.status,
-                                   type: addr.type)
-            
+                                   type: addr.type,
+                                   send: addr.send)
             out_addresses.append(new_addr)
         }
         

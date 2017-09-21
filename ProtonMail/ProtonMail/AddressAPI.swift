@@ -83,14 +83,15 @@ final class SetupAddressResponse : ApiResponse {
             addresses.append(Address(
                 addressid: res["ID"] as? String,
                 email:res["Email"] as? String,
-                send: res["Send"] as? Int,
+                order: res["Order"] as? Int,
                 receive: res["Receive"] as? Int,
                 mailbox: res["Mailbox"] as? Int,
                 display_name: res["DisplayName"] as? String,
                 signature: res["Signature"] as? String,
                 keys : keys,
                 status: res["Status"] as? Int,
-                type: res["Type"] as? Int
+                type: res["Type"] as? Int,
+                send: res["Send"] as? Int
                 ))
             
         }
