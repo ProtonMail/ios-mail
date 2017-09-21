@@ -586,15 +586,15 @@ class SettingTableViewController: ProtonMailViewController {
                                         var newAddrs = Array<Address>()
                                         var newOrder = Array<Int>()
                                         newAddrs.append(addr)
-                                        newOrder.append(addr.send)
+                                        newOrder.append(addr.order)
                                         var order = 1
-                                        addr.send = order
+                                        addr.order = order
                                         order += 1
                                         for oldAddr in self.multi_domains {
                                             if oldAddr != addr {
                                                 newAddrs.append(oldAddr)
-                                                newOrder.append(oldAddr.send)
-                                                oldAddr.send = order
+                                                newOrder.append(oldAddr.order)
+                                                oldAddr.order = order
                                                 order += 1
                                             }
                                         }
