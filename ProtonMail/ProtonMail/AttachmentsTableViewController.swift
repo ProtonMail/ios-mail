@@ -462,9 +462,9 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
             let attachment = originalImage.toAttachment(self.message, fileName: fileName, type: mimeType)
             let length = attachment?.fileSize.intValue ?? 0
             if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
-                if self.message.managedObjectContext != nil {
-                    self.attachments.append(attachment!)
-                    self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                if let att = attachment, self.message.managedObjectContext != nil {
+                    self.attachments.append(att)
+                    self.delegate?.attachments(self, didPickedAttachment: att)
                 } else {
                     PMLog.D(" Error during copying size incorrect")
                     self.showErrorAlert(NSLocalizedString("Can't copy the file", comment: "Error"))
