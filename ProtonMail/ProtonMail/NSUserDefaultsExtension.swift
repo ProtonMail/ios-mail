@@ -29,6 +29,9 @@ extension UserDefaults {
             NSKeyedUnarchiver.setClass(Key.classForKeyedArchiver(), forClassName: "ProtonMail.Key")
             NSKeyedUnarchiver.setClass(Key.classForKeyedArchiver(), forClassName: "ShareDev.Key")
             
+            NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedArchiver(), forClassName: "ProtonMail.UpdateTime")
+            NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedArchiver(), forClassName: "ShareDev.UpdateTime")
+            
             return NSKeyedUnarchiver.unarchiveObject(with: data)
         }
         return nil
