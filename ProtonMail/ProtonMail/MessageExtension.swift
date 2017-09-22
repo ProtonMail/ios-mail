@@ -381,7 +381,13 @@ extension Message {
         } else {
             if var body = try decryptBody() {
                 if isEncrypted == 8 { //TODO:: need add check MIMEType === 'multipart/mixed'
-                    body = body.multipartGetHtmlContent () 
+                    PMLog.D("\(body)")
+                    if let mimeMsg = MIMEMessage(string: body) {
+                        let parseagain = mimeMsg.hasMultipart
+                        body = mimeMsg.htmlBody ?? ""
+                    } else { //backup plan
+                        body = body.multipartGetHtmlContent ()
+                    }
                 } else if isEncrypted == 7 {
                     body = body.ln2br() 
                 }
