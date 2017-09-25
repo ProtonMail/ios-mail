@@ -203,7 +203,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
     
-    internal func unreadButtonTapped() {
+    @objc internal func unreadButtonTapped() {
         if !actionTapped {
             actionTapped = true
             messagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
@@ -218,7 +218,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         }
     }
     
-    internal func removeButtonTapped() {
+    @objc internal func removeButtonTapped() {
         if !actionTapped {
             actionTapped = true
             switch(message.location) {
@@ -235,10 +235,10 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         }
     }
     
-    internal func labelButtonTapped() {
+    @objc internal func labelButtonTapped() {
         self.performSegue(withIdentifier: kSegueToApplyLabels, sender: self)
     }
-    internal func folderButtonTapped() {
+    @objc internal func folderButtonTapped() {
         self.performSegue(withIdentifier: kSegueMoveToFolders, sender: self)
     }
     internal func spamButtonTapped() {
@@ -255,7 +255,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         }
     }
     
-    internal func moreButtonTapped(_ sender : UIBarButtonItem) {
+    @objc internal func moreButtonTapped(_ sender : UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
         let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .default, .spam : .default, .archive : .default]
@@ -355,7 +355,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         }
     }
     
-    internal func statusBarHit (_ notify: Notification) {
+    @objc internal func statusBarHit (_ notify: Notification) {
         self.emailView?.contentWebView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
@@ -381,7 +381,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         }
     }
     
-    func autoTimer()
+    @objc func autoTimer()
     {
         emailView?.emailHeader.updateExpirationDate(self.message.expirationTime)
         if let time = self.message.expirationTime {

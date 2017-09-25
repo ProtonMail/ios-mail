@@ -108,7 +108,7 @@ class CoreDataService {
         //TODO:: need monitor
         
         let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain("CoreDataService")
-        let _ = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any])
+        let _ = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any] as! [String : Any])
         PMLog.D("Unresolved error \(error), \(error.userInfo)")
         
         //TODO::Fix later

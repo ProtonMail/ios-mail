@@ -46,7 +46,7 @@ class TopMessageView : PMView {
         return (messageLabel.frame.height + 16) * -1
     }
     
-    func timerTriggered() {
+    @objc func timerTriggered() {
         self.timerAutoDismiss?.invalidate()
         self.timerAutoDismiss = nil
         delegate?.close()

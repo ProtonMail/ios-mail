@@ -110,8 +110,8 @@ class AttachmentsTableViewController: UITableViewController {
         
         let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
         navigationController.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.white,
-            NSFontAttributeName: navigationBarTitleFont
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: navigationBarTitleFont
         ]
     }
     

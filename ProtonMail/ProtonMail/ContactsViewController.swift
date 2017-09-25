@@ -84,7 +84,7 @@ class ContactsViewController: ProtonMailViewController {
     
     
     // MARK: - Private methods
-    internal func retrieveAllContacts() {
+    @objc internal func retrieveAllContacts() {
         sharedContactDataService.getContactVOs { (contacts, error) -> Void in
             if let error = error as NSError? {
                 PMLog.D(" error: \(error)")

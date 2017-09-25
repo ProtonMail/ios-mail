@@ -135,12 +135,12 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         // Dispose of any resources that can be recreated.
     }
     
-    func sendButtonTapped(sender: UIBarButtonItem) {
+    @objc func sendButtonTapped(sender: UIBarButtonItem) {
         self.dismissKeyboard()
         self.sendMessage()
     }
     
-    func cancelButtonTapped(sender: UIBarButtonItem) {
+    @objc func cancelButtonTapped(sender: UIBarButtonItem) {
         self.dismissKeyboard()
         let dismiss: (() -> Void) = {
             self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
@@ -228,7 +228,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         stopAutoSave()
     }
     
-    internal func willResignActiveNotification (_ notify: Notification) {
+    @objc internal func willResignActiveNotification (_ notify: Notification) {
         self.autoSaveTimer()
         dismissKeyboard()
     }
@@ -255,8 +255,8 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         let navigationBarTitleFont = UIFont.systemFont(ofSize: UIFont.Size.h2)
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.white,
-            NSFontAttributeName: navigationBarTitleFont
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: navigationBarTitleFont
         ]
     }
     
@@ -320,7 +320,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
     }
     
-    func autoSaveTimer() {
+    @objc func autoSaveTimer() {
         self.collectDraft()
         self.viewModel.updateDraft()
     }

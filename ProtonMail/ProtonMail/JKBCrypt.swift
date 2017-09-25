@@ -469,7 +469,7 @@ class JKBCrypt: NSObject {
         }
         let rounds : Int = extactedRounds!
         range = salt.index(saltStart, offsetBy: off+3) ..< salt.index(saltStart, offsetBy: off+25)
-        realSalt = salt[range]
+        realSalt = String(salt[range])
         
         var passwordPreEncoding : String = password
         if minor >= "a" {
@@ -741,13 +741,13 @@ class JKBCrypt: NSObject {
         
         j = 0
         for i in 0 ..< clen {
-            result[j] = Int8(truncatingBitPattern: (cdata[i] >> 24) & 0xff)
+            result[j] = Int8(truncatingIfNeeded: (cdata[i] >> 24) & 0xff)
             j += 1
-            result[j] = Int8(truncatingBitPattern: (cdata[i] >> 16) & 0xff)
+            result[j] = Int8(truncatingIfNeeded: (cdata[i] >> 16) & 0xff)
             j += 1
-            result[j] = Int8(truncatingBitPattern: (cdata[i] >> 8) & 0xff)
+            result[j] = Int8(truncatingIfNeeded: (cdata[i] >> 8) & 0xff)
             j += 1
-            result[j] = Int8(truncatingBitPattern: cdata[i] & 0xff)
+            result[j] = Int8(truncatingIfNeeded: cdata[i] & 0xff)
             j += 1
         }
         

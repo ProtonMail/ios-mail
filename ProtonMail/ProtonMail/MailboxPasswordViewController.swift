@@ -30,8 +30,8 @@ class MailboxPasswordViewController: UIViewController {
     var isShowpwd : Bool = false;
     
     //define
-    fileprivate let hidePriority : UILayoutPriority = 1.0;
-    fileprivate let showPriority: UILayoutPriority = 750.0;
+    fileprivate let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0);
+    fileprivate let showPriority: UILayoutPriority = UILayoutPriority(rawValue: 750.0);
     
     @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
@@ -49,7 +49,7 @@ class MailboxPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDecryptButton()
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("MAILBOX PASSWORD", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("MAILBOX PASSWORD", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
         
         topTitleLabel.text = NSLocalizedString("DECRYPT MAILBOX", comment: "Title")
         decryptButton.setTitle(NSLocalizedString("Decrypt", comment: "Action"), for: .normal)
@@ -153,8 +153,8 @@ class MailboxPasswordViewController: UIViewController {
         
         let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.white,
-            NSFontAttributeName: navigationBarTitleFont
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: navigationBarTitleFont
         ]
     }
     

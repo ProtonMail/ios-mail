@@ -339,11 +339,11 @@ class ComposeView: UIViewController {
         isShowingCcBccView = !isShowingCcBccView
     }
     
-    internal func didTapConfirmExpirationButton() {
+    @objc internal func didTapConfirmExpirationButton() {
         self.delegate?.composeViewCollectExpirationData(self)
     }
     
-    internal func didTapNextButton() {
+    @objc internal func didTapNextButton() {
         self.delegate?.composeViewDidTapNextButton(self)
     }
     

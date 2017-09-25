@@ -376,7 +376,7 @@ extension String {
             let matches = regexBody.matches(in: self, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location: 0, length: self.characters.count))
             if let first = matches.first {
                 if first.numberOfRanges > 0 {
-                    let range = first.rangeAt(0)
+                    let range = first.range(at: 0)
                     if let nRange = self.range(from: range) {
                         var bodyTag = self.substring(with: nRange)
                         if !bodyTag.isEmpty && bodyTag.characters.count > 0  {
@@ -407,39 +407,6 @@ extension String {
             randomString.appendFormat("%C", letters.character(at: Int(rand)))
         }
         return randomString as String
-    }
-    
-//    func rangeFromNSRange(nsRange : NSRange) -> Range<String.Index>? {
-//        let from16 = utf16.startIndex.advancedBy(nsRange.location, limit: utf16.endIndex)
-//        let to16 = from16.advancedBy(nsRange.length, limit: utf16.endIndex)
-//        if let from = String.Index(from16, within: self),
-//            let to = String.Index(to16, within: self) {
-//            return from ..< to
-//        }
-//        return nil
-//    }
-//    
-//    func NSRangeFromRange(range : Range<String.Index>) -> NSRange {
-//        let utf16view = self.utf16
-//        let from = String.UTF16View.Index(range.startIndex, within: utf16view)
-//        let to = String.UTF16View.Index(range.endIndex, within: utf16view)
-//        return NSMakeRange(utf16view.startIndex.distanceTo(from), from.distanceTo(to))
-//    }
-//    
-//    
-//    func RangeFromNSRange(range: Range<Int>) -> Range<String.Index> {
-//        let startIndex =  self.index(self.startIndex, offsetBy: range.lowerBound)
-//        let endIndex = self.index(self.startIndex, offsetBy: range.upperBound)
-//        
-//        //let startIndex = self.startIndex.advancedBy(range.lowerBound)
-//        //let endIndex = startIndex.advancedBy(range.endIndex - range.startIndex)
-//        return startIndex ..< endIndex
-//    }
-
-    public func nsRange(from range: Range<String.Index>) -> NSRange {
-        let from = range.lowerBound.samePosition(in: utf16)
-        let to = range.upperBound.samePosition(in: utf16)
-        return NSRange(location: utf16.distance(from: utf16.startIndex, to: from), length: utf16.distance(from: from, to: to))
     }
     
     public func range(from nsRange: NSRange) -> Range<String.Index>? {
@@ -525,7 +492,7 @@ extension String {
         return String(self[i] as Character)
     }
     
-    subscript (r: Range<Int>) -> String {
-        return substring(with: characters.index(startIndex, offsetBy: r.upperBound) ..< characters.index(startIndex, offsetBy: r.upperBound))
-    }
+//    subscript (r: Range<Int>) -> String {
+//        return substring(with: characters.index(startIndex, offsetBy: r.upperBound) ..< characters.index(startIndex, offsetBy: r.upperBound))
+//    }
 }

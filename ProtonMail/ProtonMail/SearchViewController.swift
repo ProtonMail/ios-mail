@@ -91,8 +91,8 @@ class SearchViewController: ProtonMailViewController {
         searchTextField.tintColor = UIColor.white
         searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Search", comment: "Title"), attributes:
             [
-                NSForegroundColorAttributeName: UIColor.white,
-                NSFontAttributeName: UIFont.robotoLight(size: UIFont.Size.h3)
+                NSAttributedStringKey.foregroundColor: UIColor.white,
+                NSAttributedStringKey.font: UIFont.robotoLight(size: UIFont.Size.h3)
             ])
         
         managedObjectContext = sharedCoreDataService.newMainManagedObjectContext()
@@ -111,7 +111,7 @@ class SearchViewController: ProtonMailViewController {
     }
     
     // my selector that was defined above
-    func willEnterForeground() {
+    @objc func willEnterForeground() {
         self.dismiss(animated: false, completion: nil)
     }
 

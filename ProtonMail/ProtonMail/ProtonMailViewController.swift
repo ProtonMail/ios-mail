@@ -47,8 +47,8 @@ class ProtonMailViewController: UIViewController {
         
         let navigationBarTitleFont = UIFont.robotoRegular(size: UIFont.Size.h2)
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.white,
-            NSFontAttributeName: navigationBarTitleFont
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: navigationBarTitleFont
         ]
     }
     

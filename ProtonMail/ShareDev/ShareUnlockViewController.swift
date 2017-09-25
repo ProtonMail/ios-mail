@@ -348,8 +348,8 @@ class ShareUnlockViewController: UIViewController {
         
         let navigationBarTitleFont = UIFont.systemFont(ofSize: UIFont.Size.h2)
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.white,
-            NSFontAttributeName: navigationBarTitleFont
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: navigationBarTitleFont
         ]
     }
 }
@@ -401,7 +401,7 @@ extension NSItemProvider {
                     } else {
                         DispatchQueue.main.async {
                             handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
-                            print("Unexpected data:", type(of: data))
+                            print("Unexpected data:", Swift.type(of: data))
                         }
                     }
                 }

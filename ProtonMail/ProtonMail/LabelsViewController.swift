@@ -79,21 +79,21 @@ class LablesViewController : UIViewController {
         
         switch viewModel.getFetchType() {
         case .all:
-            middleLineConstraint.priority = 1000
-            addFolderCenterConstraint.priority = 750
-            addLabelCenterConstraint.priority = 750
+            middleLineConstraint.priority = UILayoutPriority(rawValue: 1000)
+            addFolderCenterConstraint.priority = UILayoutPriority(rawValue: 750)
+            addLabelCenterConstraint.priority = UILayoutPriority(rawValue: 750)
             addLabelButton.isHidden = false
             addFolderButton.isHidden = false
         case .label:
-            middleLineConstraint.priority = 750
-            addFolderCenterConstraint.priority = 750
-            addLabelCenterConstraint.priority = 1000
+            middleLineConstraint.priority = UILayoutPriority(rawValue: 750)
+            addFolderCenterConstraint.priority = UILayoutPriority(rawValue: 750)
+            addLabelCenterConstraint.priority = UILayoutPriority(rawValue: 1000)
             addLabelButton.isHidden = false
             addFolderButton.isHidden = true
         case .folder:
-            middleLineConstraint.priority = 750
-            addFolderCenterConstraint.priority = 1000
-            addLabelCenterConstraint.priority = 750
+            middleLineConstraint.priority = UILayoutPriority(rawValue: 750)
+            addFolderCenterConstraint.priority = UILayoutPriority(rawValue: 1000)
+            addLabelCenterConstraint.priority = UILayoutPriority(rawValue: 750)
             addLabelButton.isHidden = true
             addFolderButton.isHidden = false
         }

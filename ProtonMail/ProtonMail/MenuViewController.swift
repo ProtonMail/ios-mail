@@ -82,7 +82,7 @@ class MenuViewController: UIViewController {
         sharedLabelsDataService.fetchLabels();
     }
     
-    func performLastSegue(_ notification: Notification)
+    @objc func performLastSegue(_ notification: Notification)
     {
         self.performSegue(withIdentifier: lastSegue, sender: IndexPath(row: 0, section: 0))
     }

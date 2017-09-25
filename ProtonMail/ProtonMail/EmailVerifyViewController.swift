@@ -28,8 +28,8 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     @IBOutlet weak var emailFieldNotes: UILabel!
 
     //define
-    fileprivate let hidePriority : UILayoutPriority = 1.0;
-    fileprivate let showPriority: UILayoutPriority = 750.0;
+    fileprivate let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0);
+    fileprivate let showPriority: UILayoutPriority = UILayoutPriority(rawValue: 750.0);
     
     @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
@@ -63,8 +63,8 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        emailTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Email address", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Enter Verification Code", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        emailTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Email address", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Enter Verification Code", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
         
         topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
@@ -124,7 +124,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         }
     }
     
-    func countDown() {
+    @objc func countDown() {
         let count = self.viewModel.getTimerSet()
         UIView.performWithoutAnimation { () -> Void in
             if count != 0 {

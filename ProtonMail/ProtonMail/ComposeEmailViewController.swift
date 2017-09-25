@@ -209,12 +209,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         stopAutoSave()
     }
     
-    internal func willResignActiveNotification (_ notify: Notification) {
+    @objc internal func willResignActiveNotification (_ notify: Notification) {
         self.autoSaveTimer()
         dismissKeyboard()
     }
     
-    internal func statusBarHit (_ notify: Notification) {
+    @objc internal func statusBarHit (_ notify: Notification) {
         webView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
@@ -230,8 +230,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.white,
-            NSFontAttributeName: navigationBarTitleFont
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: navigationBarTitleFont
         ]
         
         self.navigationItem.leftBarButtonItem?.title = NSLocalizedString("Cancel", comment: "Action")
@@ -390,7 +390,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
     }
     
-    func autoSaveTimer() {
+    @objc func autoSaveTimer() {
         self.collectDraft()
         self.viewModel.updateDraft()
     }
