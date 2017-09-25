@@ -52,7 +52,6 @@ public struct Part: CustomStringConvertible {
         if let blankIndex = components.index(of: "") {
             self.headers = components[0..<blankIndex].map { Header($0) }
             self.body = components[blankIndex..<components.count]
-            let dataString = String(data: self.body, encoding: .utf8)
             var parts: [Part] = []
             if let boundary = self.headers[.contentType]?.boundaryValue {
                 let groups = components.separated(by: boundary)
