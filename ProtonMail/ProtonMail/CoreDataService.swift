@@ -99,7 +99,6 @@ class CoreDataService {
     }
     
     func popError (_ error : NSError) {
-        
         // Report any error we got.
         var dict = [AnyHashable: Any]()
         dict[NSLocalizedDescriptionKey] = NSLocalizedString("Failed to initialize the application's saved data", comment: "Description")
@@ -108,7 +107,7 @@ class CoreDataService {
         //TODO:: need monitor
         
         let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain("CoreDataService")
-        let _ = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any] as! [String : Any])
+        let _ = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any] as? [String : Any])
         PMLog.D("Unresolved error \(error), \(error.userInfo)")
         
         //TODO::Fix later

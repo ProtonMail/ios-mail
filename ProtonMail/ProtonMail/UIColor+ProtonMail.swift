@@ -179,7 +179,10 @@ extension UIColor
         if hexLength == 3
         {
             let redHex   = hex.substring(to: hex.characters.index(hex.startIndex, offsetBy: 1))
+            let index = hex.characters.index(hex.startIndex, offsetBy: 1)
+            let r = hex[...index]
             let greenHex = hex.substring(with: hex.characters.index(hex.startIndex, offsetBy: 1) ..< hex.characters.index(hex.startIndex, offsetBy: 2))
+            
             let blueHex  = hex.substring(from: hex.characters.index(hex.startIndex, offsetBy: 2))
             hex = redHex + redHex + greenHex + greenHex + blueHex + blueHex
         }

@@ -50,25 +50,25 @@ extension APIService {
     }
     
     //new way to do the new work calls
-    func POST<T: ApiResponse> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
+    func POST<T> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         let parameterStrings = apiRequest.toDictionary()
         //setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .post, path: apiRequest.getRequestPath(), parameters: parameterStrings, headers: ["x-pm-apiversion": apiRequest.getVersion()], completion: completion)
     }
     
-    func PUT<T: ApiResponse>  ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
+    func PUT<T> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         let parameterStrings = apiRequest.toDictionary()
         //setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .put, path: apiRequest.getRequestPath(), parameters: parameterStrings, headers: ["x-pm-apiversion": apiRequest.getVersion()], completion: completion)
     }
 
-    func GET<T: ApiResponse>  ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
+    func GET<T> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         let parameterStrings = apiRequest.toDictionary()
         //setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .get, path: apiRequest.getRequestPath(), parameters: parameterStrings, headers: ["x-pm-apiversion": apiRequest.getVersion()], completion: completion)
     }
     
-    func Delete<T: ApiResponse>  ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
+    func Delete<T> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         let parameterStrings = apiRequest.toDictionary()
         //setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .delete, path: apiRequest.getRequestPath(), parameters: parameterStrings, headers: ["x-pm-apiversion": apiRequest.getVersion()], completion: completion)

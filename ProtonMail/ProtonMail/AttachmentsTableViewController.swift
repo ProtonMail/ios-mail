@@ -236,7 +236,7 @@ class AttachmentsTableViewController: UITableViewController {
         }
         
         if let att = attachment {
-            cell.configCell(att.fileName, fileSize:  Int(att.fileSize), showDownload: false)
+            cell.configCell(att.fileName, fileSize: att.fileSize.intValue, showDownload: false)
             let crossView = UILabel();
             crossView.text = NSLocalizedString("Remove", comment: "Action")
             crossView.sizeToFit()

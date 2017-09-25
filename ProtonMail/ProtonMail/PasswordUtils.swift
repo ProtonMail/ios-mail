@@ -84,7 +84,10 @@ final class PasswordUtils {
         do {
             let out = try bcrypt_string(password, salt: encodedSalt)
             let index = out.characters.index(out.startIndex, offsetBy: 29)
-            return out.substring(from: index)
+            
+//            let newStr = String(str[index<..])
+            let outStr = out.substring(from: index)
+            return outStr
         } catch PasswordError.hashEmpty {
             // check error
         } catch PasswordError.hashSizeWrong {

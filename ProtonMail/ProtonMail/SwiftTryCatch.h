@@ -33,9 +33,9 @@
 /**
  Provides try catch functionality for swift by wrapping around Objective-C
  */
-+ (void)tryBlock:(void(^)())tryBlock catchBlock:(void(^)(NSException*exception))catchBlock finallyBlock:(void(^)())finallyBlock;
++ (void)tryBlock:(void(^)(void))tryBlock catchBlock:(void(^)(NSException*exception))catchBlock finallyBlock:(void(^)(void))finallyBlock;
 
-+ (void)tryBlock:(void(^)())tryBlock catchError:(void(^)(NSError*error))catchError finallyBlock:(void(^)())finallyBlock;
++ (void)tryBlock:(void(^)(void))tryBlock catchError:(void(^)(NSError*error))catchError finallyBlock:(void(^)(void))finallyBlock;
 
 
 + (void)throwString:(NSString*)s;
@@ -51,6 +51,6 @@
 
 @interface ObjC : NSObject
 
-+ (BOOL)catchException:(void(^)())tryBlock error:(__autoreleasing NSError **)error;
++ (BOOL)catchException:(void(^)(void))tryBlock error:(__autoreleasing NSError **)error;
 
 @end
