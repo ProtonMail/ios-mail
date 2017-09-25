@@ -578,8 +578,9 @@ static Class hackishFixClass = Nil;
 - (void)updateHTML {
     
     NSString *html = self.internalHTML;
-    self.sourceView.text = html;
-    NSString *cleanedHTML = [self removeQuotesFromHTML:self.sourceView.text];
+//    self.sourceView.text = html;
+//    NSString *cleanedHTML = [self removeQuotesFromHTML:self.sourceView.text];
+    NSString *cleanedHTML = [self removeQuotesFromHTML:html];
     NSString *trigger = [NSString stringWithFormat:@"zss_editor.setHTML(\"%@\");", cleanedHTML];
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
     
