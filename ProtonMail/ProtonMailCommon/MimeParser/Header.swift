@@ -46,14 +46,18 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
             let pieces = component.components(separatedBy: "=")
             guard pieces.count >= 2 else { continue }
             let key = pieces[0].trimmingCharacters(in: .quotes).components(separatedBy: .whitespaces).last!
-            results[key] = Array(pieces[1...]).joined(separator: "=").trimmingCharacters(in: .quotes)
+            let arrary = Array(pieces[1...])
+            results[key] = arrary.joined(separator: "=").trimmingCharacters(in: .quotes)
         }
         return results
     }
     
     var boundaryValue: String? {
         for (key, value) in self.keyValues {
-            if key.contains("boundary") { return value }
+            if key.contains("boundary") {
+                let pieces = value.components(separatedBy: ";")
+                return pieces.first?.trimmingCharacters(in: .quotes)
+            }
         }
         return nil
     }

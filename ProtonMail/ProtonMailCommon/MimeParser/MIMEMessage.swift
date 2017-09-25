@@ -22,10 +22,6 @@ public class MIMEMessage {
 		return nil
 	}
     
-    public var hasMultipart: Bool {
-        return self.mainPart.part(ofType: "multipart/mixed") == nil
-    }
-	
 	public subscript(_ field: Header.Kind) -> String? {
 		return self.mainPart[field]
 	}
