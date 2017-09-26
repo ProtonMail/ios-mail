@@ -230,6 +230,8 @@ final class LastUpdatedStore : SharedCacheBase {
         getShared().removeObject(forKey: Key.mailboxUnreadCount)
         getShared().removeObject(forKey: Key.labelsUnreadCount)
         getShared().removeObject(forKey: Key.lastCantactsUpdated)
+        getShared().removeObject(forKey: Key.unreadMessageCount)
+        
         getShared().synchronize()
     }
 }

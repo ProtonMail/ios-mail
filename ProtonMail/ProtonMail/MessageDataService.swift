@@ -1849,18 +1849,18 @@ class MessageDataService {
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isRead, handler: { message in
             if message.needsUpdate {
                 let action: MessageAction = message.isRead ? .read : .unread
-                if message.location == .inbox {
-                    var count = lastUpdatedStore.UnreadCountForKey(.inbox)
-                    let offset = message.isRead ? -1 : 1
-                    count = count + offset
-                    if count < 0 {
-                        count = 0
-                    }
-                    lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
-                    
-                    UIApplication.setBadge(badge: count)
-                    //UIApplication.shared.applicationIconBadgeNumber = count
-                }
+//                if message.location == .inbox {
+//                    var count = lastUpdatedStore.UnreadCountForKey(.inbox)
+//                    let offset = message.isRead ? -1 : 1
+//                    count = count + offset
+//                    if count < 0 {
+//                        count = 0
+//                    }
+//                    lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
+//
+//                    UIApplication.setBadge(badge: count)
+//                    //UIApplication.shared.applicationIconBadgeNumber = count
+//                }
                 
                 self.queue(message, action: action)
             }

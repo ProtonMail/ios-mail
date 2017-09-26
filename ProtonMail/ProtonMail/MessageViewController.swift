@@ -206,7 +206,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     @objc internal func unreadButtonTapped() {
         if !actionTapped {
             actionTapped = true
-            messagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
+            messagesSetRead(isRead: false)
             self.popViewController()
         }
     }
@@ -282,6 +282,44 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D(" error: \(error)")
             }
+        }
+    }
+    
+    fileprivate func messagesSetRead(isRead: Bool) {
+        if let context = message.managedObjectContext {
+            self.updateBadgeNumberWhenRead(message, changeToRead: isRead)
+            message.isRead = isRead
+            message.needsUpdate = true
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(" error: \(error)")
+            }
+        }
+    }
+    
+    func updateBadgeNumberWhenRead(_ message : Message, changeToRead : Bool) {
+        let location = message.location
+        
+        if message.isRead == changeToRead {
+            return
+        }
+        var count = lastUpdatedStore.UnreadCountForKey(location)
+        count = count + (changeToRead ? -1 : 1)
+        if count < 0 {
+            count = 0
+        }
+        lastUpdatedStore.updateUnreadCountForKey(location, count: count)
+        
+        if message.isStarred {
+            var staredCount = lastUpdatedStore.UnreadCountForKey(.starred)
+            staredCount = staredCount + (changeToRead ? -1 : 1)
+            if staredCount < 0 {
+                staredCount = 0
+            }
+            lastUpdatedStore.updateUnreadCountForKey(.starred, count: staredCount)
+        }
+        if location == .inbox {
+            UIApplication.setBadge(badge: count)
+            //UIApplication.shared.applicationIconBadgeNumber = count
         }
     }
     
