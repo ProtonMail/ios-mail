@@ -628,6 +628,9 @@
 		75B052A11F1FE1FC008E483A /* ViewDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B0529E1F1FE1FC008E483A /* ViewDefined.swift */; };
 		75B1794C1B376D2E006044D4 /* AttachmentHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */; };
 		75B179501B377748006044D4 /* ContactVOExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794F1B377748006044D4 /* ContactVOExtension.swift */; };
+		75B431BB1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B431BA1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift */; };
+		75B431BE1F7AF661009DD520 /* UIApplication+BadgeNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B431BA1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift */; };
+		75B431BF1F7AF66B009DD520 /* UIApplication+BadgeNumber+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B431BC1F7AF406009DD520 /* UIApplication+BadgeNumber+Share.swift */; };
 		75B549E61D02731300F21A30 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 75B549E51D02731300F21A30 /* Reachability.m */; };
 		75B9C6081DA2D39A001DE21E /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B9C6071DA2D39A001DE21E /* Hash.swift */; };
 		75BA19991EC631A300153A1A /* SpamScoreWarningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75BA19961EC631A300153A1A /* SpamScoreWarningView.xib */; };
@@ -1234,6 +1237,8 @@
 		75B0529E1F1FE1FC008E483A /* ViewDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewDefined.swift; path = ProtonMail/ViewDefined.swift; sourceTree = SOURCE_ROOT; };
 		75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentHelper.swift; sourceTree = "<group>"; };
 		75B1794F1B377748006044D4 /* ContactVOExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactVOExtension.swift; sourceTree = "<group>"; };
+		75B431BA1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIApplication+BadgeNumber.swift"; path = "ProtonMail/UIApplication+BadgeNumber.swift"; sourceTree = SOURCE_ROOT; };
+		75B431BC1F7AF406009DD520 /* UIApplication+BadgeNumber+Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIApplication+BadgeNumber+Share.swift"; path = "ProtonMail/UIApplication+BadgeNumber+Share.swift"; sourceTree = SOURCE_ROOT; };
 		75B549E41D02731300F21A30 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		75B549E51D02731300F21A30 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		75B9C6071DA2D39A001DE21E /* Hash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hash.swift; sourceTree = "<group>"; };
@@ -1870,6 +1875,8 @@
 				075675581AB135F500449905 /* UIAlertActionExtension.swift */,
 				0756755A1AB1369C00449905 /* UIAlertControllerExtension.swift */,
 				7508BAC51B87C6EA001A3564 /* UIApplicationExtension.swift */,
+				75B431BA1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift */,
+				75B431BC1F7AF406009DD520 /* UIApplication+BadgeNumber+Share.swift */,
 				07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */,
 				0713239B1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift */,
 				07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */,
@@ -3065,6 +3072,7 @@
 				709FE39D1A9643CF00034288 /* UIScrollViewExtension.swift in Sources */,
 				0713239A1A7C02AB0043DB41 /* Message.swift in Sources */,
 				75E49F131CAB2D2100235ACC /* SignupViewModelImpl.swift in Sources */,
+				75B431BB1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift in Sources */,
 				75539CAD1C6BEF2B001DD042 /* NSDataExtension.swift in Sources */,
 				756489961B7E94BB007EA207 /* UIImageExtension.swift in Sources */,
 				0767587A1AA126E400F9AC9C /* StorageLimit.swift in Sources */,
@@ -3189,6 +3197,7 @@
 				753E5ABA1F181B7D0090C0F9 /* MessageQueue.swift in Sources */,
 				75C7FF3C1F2FE20C00F15792 /* String+Alert+Extension.swift in Sources */,
 				7512AA5E1F18081200D84955 /* JKBCrypt.swift in Sources */,
+				75B431BF1F7AF66B009DD520 /* UIApplication+BadgeNumber+Share.swift in Sources */,
 				75921C951F747E270028DAC9 /* Header.swift in Sources */,
 				7512AA371F17FF5700D84955 /* NSError+Extension.swift in Sources */,
 				753E5AC71F181F6B0090C0F9 /* MonitorSavesDataService.swift in Sources */,
@@ -3531,6 +3540,7 @@
 				75DE7D171CAAEA4900F5443E /* MBContactModel.m in Sources */,
 				75DE7D1B1CAAEA4900F5443E /* ExpirationView.swift in Sources */,
 				75DE7D1D1CAAEA4900F5443E /* ContactsViewController.swift in Sources */,
+				75B431BE1F7AF661009DD520 /* UIApplication+BadgeNumber.swift in Sources */,
 				75DE7D201CAAEA4900F5443E /* EmailHeaderView.swift in Sources */,
 				75DE7D251CAAEA4900F5443E /* MailboxRateReviewCell.swift in Sources */,
 				75DE7D261CAAEA4900F5443E /* SignInViewController.swift in Sources */,

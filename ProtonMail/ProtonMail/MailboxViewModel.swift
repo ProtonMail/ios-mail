@@ -103,13 +103,14 @@ class MailboxViewModel {
             lastUpdatedStore.updateUnreadCountForKey(toLocation, count: toCount)
         }
         
-        //TODO::Fix later
-        //        if fromLocation == .inbox {
-        //            UIApplication.shared.applicationIconBadgeNumber = fromCount
-        //        }
-        //        if toLocation == .inbox {
-        //            UIApplication.shared.applicationIconBadgeNumber = toCount
-        //        }
+        if fromLocation == .inbox {
+            UIApplication.setBadge(badge: fromCount)
+            //UIApplication.shared.applicationIconBadgeNumber = fromCount
+        }
+        if toLocation == .inbox {
+            UIApplication.setBadge(badge: toCount)
+            //UIApplication.shared.applicationIconBadgeNumber = toCount
+        }
     }
     
     func updateBadgeNumberWhenRead(_ message : Message, changeToRead : Bool) {
@@ -134,7 +135,7 @@ class MailboxViewModel {
             lastUpdatedStore.updateUnreadCountForKey(.starred, count: staredCount)
         }
         if location == .inbox {
-            //TODO::Fix later
+            UIApplication.setBadge(badge: count)
             //UIApplication.shared.applicationIconBadgeNumber = count
         }
     }

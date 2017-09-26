@@ -236,8 +236,6 @@ class APIService {
                            authenticated: Bool = true,
                            downloadTask: ((URLSessionDownloadTask) -> Void)?,
                            completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
-        
-        
         let authBlock: AuthCredentialBlock = { auth, error in
             if let error = error {
                 completion(nil, nil, error)

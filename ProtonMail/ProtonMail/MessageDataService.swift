@@ -20,25 +20,25 @@ import CoreData
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
 }
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
 }
 
 
@@ -568,9 +568,8 @@ class MessageDataService {
         if  badgeNumber < 0 {
             badgeNumber = 0
         }
-        
-        //TODO::Fix later
-//        UIApplication.shared.applicationIconBadgeNumber = badgeNumber
+        UIApplication.setBadge(badge: badgeNumber)
+        //UIApplication.shared.applicationIconBadgeNumber = badgeNumber
     }
     
     func cleanLocalMessageCache(_ completion: CompletionBlock?) {
@@ -769,18 +768,18 @@ class MessageDataService {
                                                     destinationDirectoryURL: FileManager.default.attachmentDirectory,
                                                     downloadTask: downloadTask,
                                                     completion: { task, fileURL, error in
-                    var error = error
-                    if let context = attachment.managedObjectContext {
-                        if let fileURL = fileURL {
-                            attachment.localURL = fileURL
-                            attachment.fileData = try? Data(contentsOf: fileURL)
-                            error = context.saveUpstreamIfNeeded()
-                            if error != nil  {
-                                PMLog.D(" error: \(String(describing: error))")
-                            }
-                        }
-                    }
-                    completion?(task, fileURL, error)
+                                                        var error = error
+                                                        if let context = attachment.managedObjectContext {
+                                                            if let fileURL = fileURL {
+                                                                attachment.localURL = fileURL
+                                                                attachment.fileData = try? Data(contentsOf: fileURL)
+                                                                error = context.saveUpstreamIfNeeded()
+                                                                if error != nil  {
+                                                                    PMLog.D(" error: \(String(describing: error))")
+                                                                }
+                                                            }
+                                                        }
+                                                        completion?(task, fileURL, error)
                 })
             } else {
                 PMLog.D("The attachment not exist") //TODO:: need add log here
@@ -932,7 +931,7 @@ class MessageDataService {
                                         if message_out.isRead == false {
                                             message_out.isRead = true
                                             self.queue(message_out, action: .read)
-
+                                            
                                             count = count + needOffset
                                             if count < 0 {
                                                 count = 0
@@ -941,10 +940,9 @@ class MessageDataService {
                                         }
                                         let _ = message_out.managedObjectContext?.saveUpstreamIfNeeded()
                                         let tmpError = context.saveUpstreamIfNeeded()
-
-                                        //TODO::Fix later
                                         
-//                                        UIApplication.shared.applicationIconBadgeNumber = count
+                                        UIApplication.setBadge(badge: count)
+                                        //UIApplication.shared.applicationIconBadgeNumber = count
                                         DispatchQueue.main.async {
                                             completion(task, response, message_out, tmpError)
                                         }
@@ -1076,7 +1074,7 @@ class MessageDataService {
         sharedContactDataService.cleanUp()
         sharedLabelsDataService.cleanUp()
         
-        //TODO::Fix later
+        UIApplication.setBadge(badge: 0)
         //UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
@@ -1084,8 +1082,8 @@ class MessageDataService {
         if let context = managedObjectContext {
             Message.deleteAll(inContext: context)
         }
-        //TODO::Fix later
-//        UIApplication.shared.applicationIconBadgeNumber = 0
+        UIApplication.setBadge(badge: 0)
+        //UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     func search(_ query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
@@ -1540,7 +1538,7 @@ class MessageDataService {
                         
                         if message.managedObjectContext == nil {
                             //TODO::Fix later
-//                            NSError.alertLocalCacheErrorToast()
+                            //                            NSError.alertLocalCacheErrorToast()
                             let err =  NSError.badDraft()
                             err.uploadFabricAnswer(CacheErrorTitle)
                             errorBlock(task, nil, err)
@@ -1859,8 +1857,9 @@ class MessageDataService {
                         count = 0
                     }
                     lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
-                    //TODO::Fix later
-//                    UIApplication.shared.applicationIconBadgeNumber = count
+                    
+                    UIApplication.setBadge(badge: count)
+                    //UIApplication.shared.applicationIconBadgeNumber = count
                 }
                 
                 self.queue(message, action: action)
