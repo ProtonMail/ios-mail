@@ -325,11 +325,11 @@ extension SearchViewController: UITableViewDataSource {
         return fetchedResultsController?.numberOfSections() ?? 0
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedResultsController?.numberOfRowsInSection(section) ?? 0
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let mailboxCell = tableView.dequeueReusableCell(withIdentifier: MailboxMessageCell.Constant.identifier, for: indexPath) as! MailboxMessageCell
         if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
             if let message = fetchedResultsController?.object(at: indexPath) as? Message {
@@ -339,7 +339,7 @@ extension SearchViewController: UITableViewDataSource {
         return mailboxCell
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
             cell.separatorInset = UIEdgeInsets.zero
         }
@@ -357,7 +357,7 @@ extension SearchViewController: UITableViewDataSource {
 
 extension SearchViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
             if let _ = fetchedResultsController?.object(at: indexPath) as? Message {
                 self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
@@ -365,7 +365,7 @@ extension SearchViewController: UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return kSearchCellHeight
     }
 }

@@ -142,7 +142,7 @@ extension ContactsViewController: UITableViewDataSource {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if (self.searchController.isActive) {
             return searchResults.count
@@ -150,7 +150,7 @@ extension ContactsViewController: UITableViewDataSource {
         return contacts.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ContactsTableViewCell = tableView.dequeueReusableCell(withIdentifier: kContactCellIdentifier, for: indexPath) as! ContactsTableViewCell
         
         var contact: ContactVO
@@ -179,14 +179,14 @@ extension ContactsViewController: UITableViewDataSource {
 
 extension ContactsViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60.0
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
     }
     
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    @objc func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteClosure = { (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
             var contact: ContactVO
             if (self.searchController.isActive) {
@@ -249,7 +249,7 @@ extension ContactsViewController: UITableViewDelegate {
         return [deleteAction, editAction]
     }
     
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    @objc func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
@@ -276,7 +276,7 @@ extension ContactsViewController: UITableViewDelegate {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (self.searchController.isActive) {
             self.selectedContact = self.searchResults[indexPath.row]
         } else {

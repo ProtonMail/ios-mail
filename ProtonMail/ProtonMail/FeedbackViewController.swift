@@ -57,14 +57,14 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
         return sectionSource.count
     }
     
-    func tableView(_ tableView: UITableView!, numberOfRowsInSection section: Int) -> Int  {
+    @objc func tableView(_ tableView: UITableView!, numberOfRowsInSection section: Int) -> Int  {
         let items = dataSource[sectionSource[section]]
         
         return items?.count ?? 0
     }
     
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    @objc func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let key = sectionSource[section]
         if key.hasTitle {
             let cell: FeedbackHeadCell = tableView.dequeueReusableCell(withIdentifier: "feedback_table_section_header_cell") as! FeedbackHeadCell
@@ -75,15 +75,15 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    @objc func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return nil
     }
     
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    @objc func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.01
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    @objc func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let key = sectionSource[section]
         if key.hasTitle {
             return 46
@@ -92,7 +92,7 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
         }
     }
     
-    private func tableView(_ tableView: UITableView!, cellForRowAtIndexPath indexPath: IndexPath!) -> UITableViewCell!  {
+    @objc func tableView(_ tableView: UITableView!, cellForRowAtIndexPath indexPath: IndexPath!) -> UITableViewCell!  {
         let key = sectionSource[indexPath.section]
         let items : [FeedbackItem]? = dataSource[key]
         if key == .header {
@@ -108,7 +108,7 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let key = sectionSource[indexPath.section]
         let items : [FeedbackItem]? = dataSource[key]
         if key == .header {
@@ -204,7 +204,7 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
 
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
             cell.separatorInset = UIEdgeInsets.zero
         }

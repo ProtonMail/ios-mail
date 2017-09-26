@@ -1476,7 +1476,7 @@ extension MailboxViewController: UITableViewDataSource {
         return fetchedResultsController?.numberOfSections() ?? 1
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let rIndex = self.getRatingIndex() {
             if rIndex == indexPath {
@@ -1491,12 +1491,12 @@ extension MailboxViewController: UITableViewDataSource {
         return mailboxCell
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = fetchedResultsController?.numberOfRowsInSection(section) ?? 0
         return count
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
             cell.separatorInset = UIEdgeInsets.zero
         }
@@ -1576,7 +1576,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 // MARK: - UITableViewDelegate
 
 extension MailboxViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if let rIndex = self.getRatingIndex() {
             if rIndex == indexPath {
                 return kMailboxRateReviewCellHeight
@@ -1585,7 +1585,7 @@ extension MailboxViewController: UITableViewDelegate {
         return kMailboxCellHeight
     }
     
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    @objc func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if let rIndex = self.getRatingIndex() {
             if rIndex == indexPath {
                 return nil
@@ -1594,7 +1594,7 @@ extension MailboxViewController: UITableViewDelegate {
         return indexPath
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
             if (self.listEditing) {
                 let messageAlreadySelected: Bool = selectedMessages.contains(message.messageID)
