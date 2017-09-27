@@ -246,6 +246,9 @@
 		751562551B68E8050066FE38 /* EmailAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751562541B68E8050066FE38 /* EmailAttachmentView.swift */; };
 		7516452E1D7F66C800DE0BD2 /* test_email.html in Resources */ = {isa = PBXBuildFile; fileRef = 7516452D1D7F66C800DE0BD2 /* test_email.html */; };
 		7516452F1D7F66C800DE0BD2 /* test_email.html in Resources */ = {isa = PBXBuildFile; fileRef = 7516452D1D7F66C800DE0BD2 /* test_email.html */; };
+		7516B1A71F7B6AB500DC5229 /* NSError+Alert+Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7516B1A61F7B6AB500DC5229 /* NSError+Alert+Mail.swift */; };
+		7516B1A81F7B6AB500DC5229 /* NSError+Alert+Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7516B1A61F7B6AB500DC5229 /* NSError+Alert+Mail.swift */; };
+		7516B1AA1F7B6ADE00DC5229 /* NSError+Alert+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7516B1A91F7B6ADE00DC5229 /* NSError+Alert+Share.swift */; };
 		7518393F1B3DCA3000C714A6 /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518393E1B3DCA3000C714A6 /* EventAPI.swift */; };
 		75187BB11CAC54DD00C84382 /* phone_country_code.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */; };
 		75187BB21CAC54DD00C84382 /* phone_country_code.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */; };
@@ -1053,6 +1056,8 @@
 		75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDebugTableViewController.swift; sourceTree = "<group>"; };
 		751562541B68E8050066FE38 /* EmailAttachmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailAttachmentView.swift; sourceTree = "<group>"; };
 		7516452D1D7F66C800DE0BD2 /* test_email.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = test_email.html; sourceTree = "<group>"; };
+		7516B1A61F7B6AB500DC5229 /* NSError+Alert+Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSError+Alert+Mail.swift"; path = "ProtonMail/NSError+Alert+Mail.swift"; sourceTree = SOURCE_ROOT; };
+		7516B1A91F7B6ADE00DC5229 /* NSError+Alert+Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSError+Alert+Share.swift"; path = "ProtonMail/NSError+Alert+Share.swift"; sourceTree = SOURCE_ROOT; };
 		7518393E1B3DCA3000C714A6 /* EventAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAPI.swift; sourceTree = "<group>"; };
 		751900731F1D4A5700DB68ED /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeychainWrapper.swift; path = ProtonMail/KeychainWrapper.swift; sourceTree = SOURCE_ROOT; };
 		751B446D1B81245100B68CD6 /* TableCellLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCellLabelView.swift; sourceTree = "<group>"; };
@@ -1900,6 +1905,8 @@
 				750729521DEFA52D0021483D /* MimeTypes.swift */,
 				07CC99631A6F076A000FD6F8 /* NSError+Extension.swift */,
 				7512AA341F17FF3300D84955 /* NSError+Alert+Extenion.swift */,
+				7516B1A61F7B6AB500DC5229 /* NSError+Alert+Mail.swift */,
+				7516B1A91F7B6ADE00DC5229 /* NSError+Alert+Share.swift */,
 				755D6B751E8C5ABB00466C80 /* ErrorExtension.swift */,
 				70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */,
 				07DD68A61A9815DF00ED130C /* URL+Extension.swift */,
@@ -2887,6 +2894,7 @@
 				75921C801F747BC90028DAC9 /* MIMEMessage.swift in Sources */,
 				75230C241B9A3A3600EC2AC2 /* MailboxMessageCell.swift in Sources */,
 				071323921A7ADA590043DB41 /* APIService+MessagesExtension.swift in Sources */,
+				7516B1A71F7B6AB500DC5229 /* NSError+Alert+Mail.swift in Sources */,
 				078FF4CA1A91232D008321D1 /* OpenPGPExtension.swift in Sources */,
 				701DDE931AA64DEB0038149C /* MBContactCollectionViewFlowLayout.m in Sources */,
 				07CF61941A89895600ED38AE /* MessageExtension.swift in Sources */,
@@ -3233,6 +3241,7 @@
 				7512AA5A1F18075A00D84955 /* SettingsAPI.swift in Sources */,
 				7512AA501F1805A800D84955 /* CoreDataService.swift in Sources */,
 				75E5F79D1F29586E00001B4F /* Foundation+Extension.swift in Sources */,
+				7516B1AA1F7B6ADE00DC5229 /* NSError+Alert+Share.swift in Sources */,
 				7512AA021F17EA4C00D84955 /* ContactVO.swift in Sources */,
 				7512AA271F17FD6100D84955 /* UserInfo.swift in Sources */,
 				7512AA111F17F8C200D84955 /* MBContactPicker.m in Sources */,
@@ -3343,6 +3352,7 @@
 				75256C441F16DFBD00F2771E /* Threading.swift in Sources */,
 				75256C451F16DFBD00F2771E /* UIColor+ProtonMail.swift in Sources */,
 				75256C461F16DFBD00F2771E /* URL+Extension.swift in Sources */,
+				7516B1A81F7B6AB500DC5229 /* NSError+Alert+Mail.swift in Sources */,
 				75256C471F16DFBD00F2771E /* FileManager+Extension.swift in Sources */,
 				75256C481F16DFBD00F2771E /* Foundation+Extension.swift in Sources */,
 				75256C491F16DFBD00F2771E /* Bundle+Extension.swift in Sources */,

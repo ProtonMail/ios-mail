@@ -191,17 +191,15 @@ class AttachmentsTableViewController: UITableViewController {
     }
     
     func showSizeErrorAlert( _ didReachedSizeLimitation: Int) {
-        //TODO::Fix later
-//        let alert = NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description").alertController()
-//        alert.addOKAction()
-//        present(alert, animated: true, completion: nil)
+        let alert = NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description").alertController()
+        alert.addOKAction()
+        present(alert, animated: true, completion: nil)
     }
     
     func showErrorAlert( _ error: String) {
-        //TODO::Fix later
-//        let alert = NSLocalizedString(error, comment: "").alertController()
-//        alert.addOKAction()
-//        present(alert, animated: true, completion: nil)
+        let alert = NSLocalizedString(error, comment: "").alertController()
+        alert.addOKAction()
+        present(alert, animated: true, completion: nil)
     }
     
     

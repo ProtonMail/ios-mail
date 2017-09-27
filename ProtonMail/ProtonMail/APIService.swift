@@ -108,8 +108,7 @@ class APIService {
                         AuthCredential.expireOrClear(auth?.token)
                         self.request(method: method, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
                     } else if responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004 {
-                        //TODO::Fix later
-//                        NSError.alertUpdatedToast()
+                        NSError.alertUpdatedToast()
                         completion(task, responseDictionary, error)
                         UserTempCachedStatus.backup()
                         sharedUserDataService.signOut(true);
@@ -158,13 +157,11 @@ class APIService {
                         AuthCredential.clearFromKeychain()
                         pthread_mutex_unlock(&self.mutex)
                         DispatchQueue.main.async {
-                            //TODO::Fix later
                             completion(nil, NSError.AuthCachePassEmpty())
                             UserTempCachedStatus.backup()
                             sharedUserDataService.signOut(true) //NOTES:signout + errors
                             userCachedStatus.signOut()
-                            
-                            //NSError.alertBadTokenToast()
+                            NSError.alertBadTokenToast()
                         }
                     } else {
                         pthread_mutex_unlock(&self.mutex)
@@ -177,12 +174,11 @@ class APIService {
                         AuthCredential.clearFromKeychain()
                         pthread_mutex_unlock(&self.mutex)
                         DispatchQueue.main.async {
-                            //TODO::Fix later
                             completion(nil, NSError.AuthCachePassEmpty())
                             UserTempCachedStatus.backup()
                             sharedUserDataService.signOut(true)
                             userCachedStatus.signOut()
-//                            NSError.alertBadTokenToast()
+                            NSError.alertBadTokenToast()
                         }
                     } else {
                         self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
@@ -190,15 +186,13 @@ class APIService {
                             if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
                                 AuthCredential.clearFromKeychain()
                                 DispatchQueue.main.async {
-                                    //TODO::Fix later
-//                                    NSError.alertBadTokenToast()
+                                    NSError.alertBadTokenToast()
                                     self.fetchAuthCredential(completion)
                                 }
                             } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                                 AuthCredential.clearFromKeychain()
                                 DispatchQueue.main.async {
-                                    //TODO::Fix later
-//                                    NSError.alertBadTokenToast()
+                                    NSError.alertBadTokenToast()
                                     self.fetchAuthCredential(completion)
                                 }
                             } else {

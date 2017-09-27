@@ -1537,8 +1537,7 @@ class MessageDataService {
                         }
                         
                         if message.managedObjectContext == nil {
-                            //TODO::Fix later
-                            //                            NSError.alertLocalCacheErrorToast()
+                            NSError.alertLocalCacheErrorToast()
                             let err =  NSError.badDraft()
                             err.uploadFabricAnswer(CacheErrorTitle)
                             errorBlock(task, nil, err)
@@ -1604,8 +1603,8 @@ class MessageDataService {
                                     message.location = MessageLocation.outbox
                                     message.removeLocationFromLabels(currentlocation: .draft, location: .outbox, keepSent: true)
                                 }
-                                //TODO::Fix later
-                                //NSError.alertMessageSentToast()
+
+                                NSError.alertMessageSentToast()
                                 if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D(" error: \(error)")
                                 } else {
@@ -1616,11 +1615,9 @@ class MessageDataService {
                                 if error?.code == 9001 {
                                     //here need let user to show the human check.
                                     sharedMessageQueue.isRequiredHumanCheck = true
-                                    //TODO::Fix later
-                                    //error?.alertSentErrorToast()
+                                    error?.alertSentErrorToast()
                                 } else if error?.code == 15198 {
-                                    //TODO::Fix later
-                                    //error?.alertSentErrorToast()
+                                    error?.alertSentErrorToast()
                                 }  else {
                                     //error?.alertErrorToast()
                                 }

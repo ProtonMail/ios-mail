@@ -159,32 +159,32 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         PMLog.D("\(request)")
         let urlString = request.url?.absoluteString;
-        //TODO::Fix later
-//        if urlString?.contains("https://www.google.com/recaptcha/api2/frame") == true {
-//            startVerify = true;
-//        }
-//        
-//        if urlString?.contains(".com/fc/api/nojs") == true {
-//            startVerify = true;
-//        }
-//        if urlString?.contains("fc/apps/canvas") == true {
-//            startVerify = true;
-//        }
-//        
-//        if urlString?.contains("about:blank") == true {
-//            startVerify = true;
-//        }
-//        
-//        if urlString?.contains("https://www.google.com/intl/en/policies/privacy") == true {
-//            return false
-//        }
-//
-//        if urlString?.contains("how-to-solve-") == true {
-//            return false
-//        }
-//        if urlString?.contains("https://www.google.com/intl/en/policies/terms") == true {
-//            return false
-//        }
+
+        if urlString?.contains("https://www.google.com/recaptcha/api2/frame") == true {
+            startVerify = true;
+        }
+        
+        if urlString?.contains(".com/fc/api/nojs") == true {
+            startVerify = true;
+        }
+        if urlString?.contains("fc/apps/canvas") == true {
+            startVerify = true;
+        }
+        
+        if urlString?.contains("about:blank") == true {
+            startVerify = true;
+        }
+        
+        if urlString?.contains("https://www.google.com/intl/en/policies/privacy") == true {
+            return false
+        }
+
+        if urlString?.contains("how-to-solve-") == true {
+            return false
+        }
+        if urlString?.contains("https://www.google.com/intl/en/policies/terms") == true {
+            return false
+        }
 
         if let _ = urlString?.range(of: "https://secure.protonmail.com/expired_recaptcha_response://") {
             viewModel.setRecaptchaToken("", isExpired: true)
