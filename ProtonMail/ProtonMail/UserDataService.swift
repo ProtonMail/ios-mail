@@ -93,10 +93,19 @@ class UserDataService {
     // Value is only stored in the keychain
     var password: String? {
         get {
-            return sharedKeychain.keychain().string(forKey: Key.password)
+            do {
+                let savedPwd = sharedKeychain.keychain().string(forKey: Key.password)
+                return try savedPwd?.decryptWithPassphrase("$Proton$" + Key.password)
+            }catch {
+                return nil
+            }
         }
         set {
-            sharedKeychain.keychain().setString(newValue, forKey: Key.password)
+            do {
+                let nv = try newValue?.encryptWithPassphrase("$Proton$" + Key.password)
+                sharedKeychain.keychain().setString(nv, forKey: Key.password)
+            }catch {
+            }
         }
     }
     
@@ -252,10 +261,19 @@ class UserDataService {
     /// Value is only stored in the keychain
     var mailboxPassword: String? {
         get {
-            return sharedKeychain.keychain().string(forKey: Key.mailboxPassword)
+            do {
+                let savedPwd = sharedKeychain.keychain().string(forKey: Key.mailboxPassword)
+                return try savedPwd?.decryptWithPassphrase("$Proton$" + Key.mailboxPassword)
+            }catch {
+                return nil
+            }
         }
         set {
-            sharedKeychain.keychain().setString(newValue, forKey: Key.mailboxPassword)
+            do {
+                let nv = try newValue?.encryptWithPassphrase("$Proton$" + Key.mailboxPassword)
+                sharedKeychain.keychain().setString(nv, forKey: Key.mailboxPassword)
+            }catch {
+            }
         }
     }
     
