@@ -32,8 +32,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-
-
 class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     // view model
@@ -309,11 +307,27 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
             if self.composeView.hasOutSideEmails && self.encryptionPassword.characters.count <= 0 {
-                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
+                let emails = self.composeView.allEmails
+                //show loading
+                ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+                let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
+                api.call({ (task, response: EmailsCheckResponse?, hasError : Bool) in
+                    //hide loading
+                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                    if let res = response, res.hasOutsideEmails == false {
+                        self.sendMessageStepTwo()
+                    } else {
+                        self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
+                    }
+                })
                 return;
             }
         }
-        
+        self.sendMessageStepTwo()
+    
+    }
+    
+    internal func sendMessageStepTwo() {
         if self.viewModel.toSelectedContacts.count <= 0 &&
             self.viewModel.ccSelectedContacts.count <= 0 &&
             self.viewModel.bccSelectedContacts.count <= 0 {

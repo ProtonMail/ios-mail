@@ -123,6 +123,7 @@ struct UsersAPI {
     static let V_CheckUserExistRequest : Int = 1
     static let V_SendVerificationCodeRequest : Int = 1
     static let V_DirectRequest : Int = 1
+    static let V_GetUserPublicKeysRequest : Int = 2
 }
 
 struct KeysAPI {

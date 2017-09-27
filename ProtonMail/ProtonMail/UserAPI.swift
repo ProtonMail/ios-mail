@@ -14,7 +14,7 @@ typealias GenerateKey = (Bool, String?, NSError?) -> Void
 typealias SendVerificationCodeBlock = (Bool, NSError?) -> Void
 
 // MARK : update right swipe action
-final class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
+class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     
     let userName : String!
     let recaptchaToken : String!
@@ -83,7 +83,7 @@ final class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-final class GetUserInfoResponse : ApiResponse {
+class GetUserInfoResponse : ApiResponse {
     var userInfo : UserInfo?
     
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
@@ -98,7 +98,7 @@ final class GetUserInfoResponse : ApiResponse {
 }
 
 
-final class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
+class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
     
     override init() {
     }
@@ -121,7 +121,7 @@ final class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
 }
 
 
-final class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
+class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
     
     override init() {
     }
@@ -143,7 +143,7 @@ final class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-final class GetHumanCheckResponse : ApiResponse {
+class GetHumanCheckResponse : ApiResponse {
     var token : String?
     var type : [String]?
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
@@ -153,7 +153,7 @@ final class GetHumanCheckResponse : ApiResponse {
     }
 }
 
-final class HumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
+class HumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
     var token : String
     var type : String
     
@@ -180,7 +180,7 @@ final class HumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-final class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
+class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
     
     let userName : String!
     
@@ -209,7 +209,7 @@ final class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-final class CheckUserExistResponse : ApiResponse {
+class CheckUserExistResponse : ApiResponse {
     var isAvailable : Bool?
     
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
@@ -220,8 +220,8 @@ final class CheckUserExistResponse : ApiResponse {
 }
 
 
-final class DirectRequest<T : ApiResponse> : ApiRequest<T> {
-
+class DirectRequest<T : ApiResponse> : ApiRequest<T> {
+    
     override func toDictionary() -> Dictionary<String, Any>? {
         return nil
     }
@@ -243,7 +243,7 @@ final class DirectRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-final class DirectResponse : ApiResponse {
+class DirectResponse : ApiResponse {
     var isSignUpAvailable : Int = 1
     var signupFunctions : [String]?
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
@@ -275,7 +275,7 @@ enum VerifyCodeType : Int {
     }
 }
 
-final class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
+class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
     
     let userName : String!
     let destination : String!
@@ -313,6 +313,62 @@ final class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
     
     override open func getVersion() -> Int {
         return UsersAPI.V_SendVerificationCodeRequest
+    }
+}
+
+
+class GetUserPublicKeysRequest<T : ApiResponse> : ApiRequest<T> {
+    var emails : String
+    var requestPath : String =  UsersAPI.Path + "/pubkeys"
+    
+    init(emails : String) {
+        self.emails = emails
+        if let base64Emails = emails.base64Encoded() {
+            let escapedValue : String? = base64Emails.addingPercentEncoding(withAllowedCharacters: CharacterSet(charactersIn: "/+=\n").inverted)
+            self.requestPath = UsersAPI.Path.stringByAppendingPathComponent("pubkeys").stringByAppendingPathComponent(escapedValue ?? base64Emails)
+            PMLog.D(self.requestPath)
+        }
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .get
+    }
+    
+    override func getRequestPath() -> String {
+        return requestPath
+    }
+    
+    override func getVersion() -> Int {
+        return UsersAPI.V_GetUserPublicKeysRequest
+    }
+}
+
+class PublicKeysResponse : ApiResponse {
+
+    var publicKeys : [String : String] = [String : String]()
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+        for (k,v) in response {
+            if k != "Code" {
+                publicKeys[k] = (v as? String) ?? ""
+            }
+        }
+        return true
+    }
+}
+
+class EmailsCheckResponse : PublicKeysResponse {
+    var hasOutsideEmails : Bool = false
+    
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+        if super.ParseResponse(response) {
+            for (_, v) in publicKeys {
+                if v.isEmpty {
+                    hasOutsideEmails = true
+                }
+            }
+            return true
+        }
+        return false
     }
 }
 

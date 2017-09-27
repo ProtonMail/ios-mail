@@ -62,6 +62,32 @@ class ComposeView: UIViewController {
         
         return false
     }
+    
+    var allEmails : String {  // email,email,email
+        var emails : [String] = []
+        
+        let toEmails = toContactPicker.contactList
+        if !toEmails.isEmpty  {
+            emails.append(toEmails)
+        }
+        
+        let ccEmails = ccContactPicker.contactList
+        if !ccEmails.isEmpty  {
+            emails.append(ccEmails)
+        }
+        
+        let bccEmails = bccContactPicker.contactList
+        if !bccEmails.isEmpty  {
+            emails.append(bccEmails)
+        }
+        if emails.isEmpty {
+            return ""
+        }
+        return emails.joined(separator: ",")
+    }
+    
+    
+    
     var ccContactPicker: MBContactPicker!
     var ccContacts: String {
         return ccContactPicker.contactList
