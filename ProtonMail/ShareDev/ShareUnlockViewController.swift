@@ -64,7 +64,7 @@ class ShareUnlockViewController: UIViewController {
                                 ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                                 
                                 if error != nil || fileData == nil {
-                                    self.showErrorAndQuit(errorMsg: "Can't load share content!")
+                                    self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
                                 } else {
                                     let length = fileData!.data.count
                                     if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
@@ -104,7 +104,7 @@ class ShareUnlockViewController: UIViewController {
                                             self.loginCheck()
                                             
                                         } else {
-                                            self.showErrorAndQuit(errorMsg: "Can't load share content!")
+                                            self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
                                         }
                                         
                                     } ~> .main
@@ -133,7 +133,7 @@ class ShareUnlockViewController: UIViewController {
         }
         
         if is_inputs_error {
-            self.showErrorAndQuit(errorMsg: "Can't load share content!")
+            self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
         }
     }
     
@@ -164,7 +164,7 @@ class ShareUnlockViewController: UIViewController {
         self.touchID.alpha = 0.0
         self.pinUnlock.alpha = 0.0
         
-        let alertController = UIAlertController(title: "Share Alert", message: errorMsg, preferredStyle: .alert)
+        let alertController = UIAlertController(title: NSLocalizedString("Share Alert", comment: "Title"), message: errorMsg, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Action"), style: .default, handler: { (action) -> Void in
             self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
                 let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)

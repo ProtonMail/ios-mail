@@ -150,15 +150,15 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
         
         //if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
-        let alertController = UIAlertController(title: "Confirmation", message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: "Save draft", style: .default, handler: { (action) -> Void in
+        let alertController = UIAlertController(title: NSLocalizedString("Confirmation", comment: "Title") , message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft", comment: "Title"), style: .default, handler: { (action) -> Void in
             self.stopAutoSave()
             self.collectDraft()
             self.viewModel.updateDraft()
             dismiss()
         }))
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: "Discard draft", style: .destructive, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Title"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft", comment: "Title"), style: .destructive, handler: { (action) -> Void in
             self.stopAutoSave()
             self.viewModel.deleteDraft()
             dismiss()
