@@ -265,8 +265,6 @@
 		75230C241B9A3A3600EC2AC2 /* MailboxMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */; };
 		75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */; };
 		75230C271B9A430F00EC2AC2 /* TempXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C261B9A430F00EC2AC2 /* TempXIB.xib */; };
-		7523E88E1BB1561F00126D62 /* NSData+MultipartResponses.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */; };
-		7523E8C01BB182B300126D62 /* MultipartResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */; };
 		75256C391F16DE0A00F2771E /* ProtonMail-Bridging-Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */; };
 		75256C3A1F16DFBD00F2771E /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
 		75256C3B1F16DFBD00F2771E /* ControllerDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0721B3363D000A72A1E /* ControllerDefined.swift */; };
@@ -457,8 +455,6 @@
 		753E5ACC1F1820E80090C0F9 /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */; };
 		753E5ACD1F1820E80090C0F9 /* BundleLanguage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902AA1EE5F8E500B46D36 /* BundleLanguage+Extension.swift */; };
 		753E5ACE1F1820E80090C0F9 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 75B549E51D02731300F21A30 /* Reachability.m */; };
-		753E5ACF1F1821000090C0F9 /* NSData+MultipartResponses.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */; };
-		753E5AD01F1821000090C0F9 /* MultipartResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */; };
 		753E5AD31F1821000090C0F9 /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE541C8D4F9100FCEB0A /* TouchID.swift */; };
 		7545083A1E14860500265CD0 /* MailboxHumanCheckMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754508391E14860500265CD0 /* MailboxHumanCheckMenuVC.swift */; };
 		7545083B1E14860500265CD0 /* MailboxHumanCheckMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754508391E14860500265CD0 /* MailboxHumanCheckMenuVC.swift */; };
@@ -694,7 +690,6 @@
 		75DE7CEB1CAAEA4900F5443E /* RecipientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75117C491BA22F6200A0CE68 /* RecipientView.swift */; };
 		75DE7CEE1CAAEA4900F5443E /* FeedbackHeadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE3DF71C977683007C208E /* FeedbackHeadCell.swift */; };
 		75DE7CEF1CAAEA4900F5443E /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */; };
-		75DE7CF41CAAEA4900F5443E /* MultipartResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */; };
 		75DE7CF81CAAEA4900F5443E /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD48A1AB80D770084C54A /* CustomHeaderView.swift */; };
 		75DE7CFA1CAAEA4900F5443E /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DCB2051BA2A1560085BE8C /* RecipientCell.swift */; };
 		75DE7CFE1CAAEA4900F5443E /* SettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7510AE7B1AB8D68B00EF3C41 /* SettingDetailViewController.swift */; };
@@ -706,7 +701,6 @@
 		75DE7D0E1CAAEA4900F5443E /* SignUpUserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F4638D1C60172300918B46 /* SignUpUserNameViewController.swift */; };
 		75DE7D0F1CAAEA4900F5443E /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076758771AA0EB6900F9AC9C /* LoadingView.swift */; };
 		75DE7D101CAAEA4900F5443E /* MBContactCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE821AA64DEB0038149C /* MBContactCollectionView.m */; };
-		75DE7D111CAAEA4900F5443E /* NSData+MultipartResponses.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */; };
 		75DE7D131CAAEA4900F5443E /* OnePasswordExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7580D6591C8E440200A15885 /* OnePasswordExtension.m */; };
 		75DE7D141CAAEA4900F5443E /* LabelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E652B31B82AC0D0084DDF8 /* LabelsViewController.swift */; };
 		75DE7D151CAAEA4900F5443E /* LabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751D49EF1BE356180008E75C /* LabelsView.swift */; };
@@ -1069,10 +1063,6 @@
 		75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxMessageCell.swift; sourceTree = "<group>"; };
 		75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MailboxMessageCell.xib; sourceTree = "<group>"; };
 		75230C261B9A430F00EC2AC2 /* TempXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TempXIB.xib; sourceTree = "<group>"; };
-		7523E88C1BB1561F00126D62 /* NSData+MultipartResponses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MultipartResponses.h"; sourceTree = "<group>"; };
-		7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MultipartResponses.m"; sourceTree = "<group>"; };
-		7523E8BE1BB182B300126D62 /* MultipartResponseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultipartResponseParser.h; sourceTree = "<group>"; };
-		7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultipartResponseParser.m; sourceTree = "<group>"; };
 		7526AC8D1B6C4B3700E1967E /* backup.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = backup.css; sourceTree = "<group>"; };
 		752902A11EE5D2CC00B46D36 /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		752902A41EE5D6B700B46D36 /* Settings+Defined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Settings+Defined.swift"; sourceTree = "<group>"; };
@@ -2268,10 +2258,6 @@
 				75B549E31D02730100F21A30 /* Reachability */,
 				7580D6571C8E438800A15885 /* LastPass */,
 				7580D6561C8E436F00A15885 /* OnePassword */,
-				7523E88C1BB1561F00126D62 /* NSData+MultipartResponses.h */,
-				7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */,
-				7523E8BE1BB182B300126D62 /* MultipartResponseParser.h */,
-				7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */,
 				076758791AA126E400F9AC9C /* StorageLimit.swift */,
 				751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */,
 				7546BE541C8D4F9100FCEB0A /* TouchID.swift */,
@@ -2414,7 +2400,7 @@
 					075E3DE51A5F4ECF00E001A7 = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = 2SB5Z68H26;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -2427,7 +2413,7 @@
 					};
 					075E3DFD1A5F4ECF00E001A7 = {
 						CreatedOnToolsVersion = 6.1.1;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0900;
 						TestTargetID = 75DE7CB21CAAEA4900F5443E;
 					};
 					758ED7C01F05A3FF0028D1A5 = {
@@ -2967,7 +2953,6 @@
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
 				75E2202E1DDA532900078D6C /* Threading.swift in Sources */,
 				7567B07B1B338EB900A72A1E /* MessageHelper.swift in Sources */,
-				7523E8C01BB182B300126D62 /* MultipartResponseParser.m in Sources */,
 				759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */,
 				75E2202B1DD6728200078D6C /* KeysAPI.swift in Sources */,
 				75F9A1121AFD705B007229C7 /* UIDeviceExtension.swift in Sources */,
@@ -3001,7 +2986,6 @@
 				076758781AA0EB6900F9AC9C /* LoadingView.swift in Sources */,
 				701DDE901AA64DEB0038149C /* MBContactCollectionView.m in Sources */,
 				754BD9A51CB31DB300913A5C /* DeviceInfoCache.swift in Sources */,
-				7523E88E1BB1561F00126D62 /* NSData+MultipartResponses.m in Sources */,
 				75E090501CAC6E8E00751136 /* CountryCode.swift in Sources */,
 				7564898E1B7DBE64007EA207 /* LabelAPI.swift in Sources */,
 				7580D65A1C8E440200A15885 /* OnePasswordExtension.m in Sources */,
@@ -3228,7 +3212,6 @@
 				7512AA281F17FD9D00D84955 /* NSCoder+Extension.swift in Sources */,
 				7512AA121F17F8C200D84955 /* MBContactCollectionView.m in Sources */,
 				7512AA051F17EAB800D84955 /* MessageLocation.swift in Sources */,
-				753E5AD01F1821000090C0F9 /* MultipartResponseParser.m in Sources */,
 				7512AA581F18072800D84955 /* UserAPI.swift in Sources */,
 				75921C931F747DF00028DAC9 /* MessageExtension.swift in Sources */,
 				7512AA551F1806A400D84955 /* NSManagedObjectContextExtension.swift in Sources */,
@@ -3257,7 +3240,6 @@
 				75921C981F747E270028DAC9 /* String+Mime.swift in Sources */,
 				753E5AB41F181A2D0090C0F9 /* MessageAPI.swift in Sources */,
 				75555BBF1F184109000C0C10 /* MimeTypes.swift in Sources */,
-				753E5ACF1F1821000090C0F9 /* NSData+MultipartResponses.m in Sources */,
 				75921C991F747E270028DAC9 /* UInt8+Mime.swift in Sources */,
 				7512AA391F18018500D84955 /* APIError+Auth.swift in Sources */,
 				753E5ABC1F181BE00090C0F9 /* QueueConstant.swift in Sources */,
@@ -3523,7 +3505,6 @@
 				75DE7CEE1CAAEA4900F5443E /* FeedbackHeadCell.swift in Sources */,
 				75DE7CEF1CAAEA4900F5443E /* ProtonMail.xcdatamodeld in Sources */,
 				75856D6C1CB5B5F2000D9F3B /* PinCodeView.swift in Sources */,
-				75DE7CF41CAAEA4900F5443E /* MultipartResponseParser.m in Sources */,
 				752902AC1EE5F8E500B46D36 /* BundleLanguage+Extension.swift in Sources */,
 				75DE7CF81CAAEA4900F5443E /* CustomHeaderView.swift in Sources */,
 				75256C391F16DE0A00F2771E /* ProtonMail-Bridging-Header.cpp in Sources */,
@@ -3543,7 +3524,6 @@
 				75DE7D0E1CAAEA4900F5443E /* SignUpUserNameViewController.swift in Sources */,
 				75DE7D0F1CAAEA4900F5443E /* LoadingView.swift in Sources */,
 				75DE7D101CAAEA4900F5443E /* MBContactCollectionView.m in Sources */,
-				75DE7D111CAAEA4900F5443E /* NSData+MultipartResponses.m in Sources */,
 				75DE7D131CAAEA4900F5443E /* OnePasswordExtension.m in Sources */,
 				75DE7D141CAAEA4900F5443E /* LabelsViewController.swift in Sources */,
 				75DE7D151CAAEA4900F5443E /* LabelsView.swift in Sources */,
@@ -3831,7 +3811,8 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -3864,7 +3845,8 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -3888,7 +3870,8 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
 			name = Debug;
@@ -3908,7 +3891,8 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
 			name = Release;
@@ -4208,7 +4192,8 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -4228,7 +4213,8 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
 			name = Distribution;
