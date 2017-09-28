@@ -15,11 +15,10 @@
 			<key>CFBundleTypeName</key>
 			<string>Rar archive</string>
 			<key>LSHandlerRank</key>
-			<string>Alternate</string>
+			<string>None</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.rarlab.rar-archive</string>
-				<string>public.archive</string>
 			</array>
 		</dict>
 		<dict>
@@ -35,7 +34,6 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>org.7-zip.7-zip-archive</string>
-				<string>public.archive</string>
 			</array>
 		</dict>
 	</array>
@@ -50,7 +48,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.6.6</string>
+	<string>1.7.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>

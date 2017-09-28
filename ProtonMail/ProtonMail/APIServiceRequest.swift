@@ -8,8 +8,6 @@
 
 import Foundation
 
-
-
 protocol Package {
     
     /**
@@ -91,7 +89,7 @@ class ApiRequest<T : ApiResponse> : Package {
         return .get
     }
     
-    func call(_ complete: ResponseCompletionBlock?) {
+    public func call(_ complete: ResponseCompletionBlock?) {
         //TODO :: 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper:  APIService.CompletionBlock = { task, res, error in
             let realType = T.self
@@ -122,7 +120,7 @@ class ApiRequest<T : ApiResponse> : Package {
     }
     
     
-    func syncCall() throws -> T? {
+    public func syncCall() throws -> T? {
         var ret_res : T? = nil
         var ret_error : NSError? = nil
         let sema = DispatchSemaphore(value: 0);

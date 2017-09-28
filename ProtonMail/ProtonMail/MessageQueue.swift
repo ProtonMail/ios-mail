@@ -27,7 +27,7 @@ class MessageQueue: PersistentQueue {
         static let count = "count"
     }
     
-    // MARK: - Public variables
+    // MARK: - variables
     var isBlocked: Bool = false
     var isInProgress: Bool = false
     var isRequiredHumanCheck : Bool = false

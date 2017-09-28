@@ -14,8 +14,8 @@
 // the license agreement.
 //
 
-import Foundation
 import UIKit
+import Foundation
 
 class Snapshot {
     

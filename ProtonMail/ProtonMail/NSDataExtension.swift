@@ -11,7 +11,7 @@ import Foundation
 extension Data {
     
     
-    public func stringFromToken() -> String {
+    func stringFromToken() -> String {
         let tokenChars = (self as NSData).bytes.bindMemory(to: CChar.self, capacity: self.count)
         var tokenString = ""
         for i in 0 ..< self.count {

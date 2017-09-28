@@ -578,8 +578,9 @@ static Class hackishFixClass = Nil;
 - (void)updateHTML {
     
     NSString *html = self.internalHTML;
-    self.sourceView.text = html;
-    NSString *cleanedHTML = [self removeQuotesFromHTML:self.sourceView.text];
+//    self.sourceView.text = html;
+//    NSString *cleanedHTML = [self removeQuotesFromHTML:self.sourceView.text];
+    NSString *cleanedHTML = [self removeQuotesFromHTML:html];
     NSString *trigger = [NSString stringWithFormat:@"zss_editor.setHTML(\"%@\");", cleanedHTML];
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
     
@@ -851,74 +852,74 @@ static Class hackishFixClass = Nil;
 - (void)showInsertLinkDialogWithLink:(NSString *)url title:(NSString *)title {
     
     // Insert Button Title
-    NSString *insertButtonTitle = !self.selectedLinkURL ? NSLocalizedString(@"Insert", nil) : NSLocalizedString(@"Update", nil);
+    // NSString *insertButtonTitle = !self.selectedLinkURL ? NSLocalizedString(@"Insert", nil) : NSLocalizedString(@"Update", nil);
     
-    // Picker Button
-    UIButton *am = [UIButton buttonWithType:UIButtonTypeCustom];
-    am.frame = CGRectMake(0, 0, 25, 25);
-    [am setImage:[UIImage imageNamed:@"ZSSpicker.png"] forState:UIControlStateNormal];
-    [am addTarget:self action:@selector(showInsertURLAlternatePicker) forControlEvents:UIControlEventTouchUpInside];
+    // // Picker Button
+    // UIButton *am = [UIButton buttonWithType:UIButtonTypeCustom];
+    // am.frame = CGRectMake(0, 0, 25, 25);
+    // [am setImage:[UIImage imageNamed:@"ZSSpicker.png"] forState:UIControlStateNormal];
+    // [am addTarget:self action:@selector(showInsertURLAlternatePicker) forControlEvents:UIControlEventTouchUpInside];
     
-    if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
+    // if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
         
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Insert Link", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"URL (required)", nil);
-            if (url) {
-                textField.text = url;
-            }
-            textField.rightView = am;
-            textField.rightViewMode = UITextFieldViewModeAlways;
-            textField.clearButtonMode = UITextFieldViewModeAlways;
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"Title", nil);
-            textField.clearButtonMode = UITextFieldViewModeAlways;
-            textField.secureTextEntry = NO;
-            if (title) {
-                textField.text = title;
-            }
-        }];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [self focusTextEditor];
-        }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:insertButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    //     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Insert Link", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+    //     [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+    //         textField.placeholder = NSLocalizedString(@"URL (required)", nil);
+    //         if (url) {
+    //             textField.text = url;
+    //         }
+    //         textField.rightView = am;
+    //         textField.rightViewMode = UITextFieldViewModeAlways;
+    //         textField.clearButtonMode = UITextFieldViewModeAlways;
+    //     }];
+    //     [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+    //         textField.placeholder = NSLocalizedString(@"Title", nil);
+    //         textField.clearButtonMode = UITextFieldViewModeAlways;
+    //         textField.secureTextEntry = NO;
+    //         if (title) {
+    //             textField.text = title;
+    //         }
+    //     }];
+    //     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    //         [self focusTextEditor];
+    //     }]];
+    //     [alertController addAction:[UIAlertAction actionWithTitle:insertButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             
-            UITextField *linkURL = [alertController.textFields objectAtIndex:0];
-            UITextField *title = [alertController.textFields objectAtIndex:1];
-            if (!self.selectedLinkURL) {
-                [self insertLink:linkURL.text title:title.text];
-                NSLog(@"insert link");
-            } else {
-                [self updateLink:linkURL.text title:title.text];
-            }
-            [self focusTextEditor];
-        }]];
-        [self presentViewController:alertController animated:YES completion:NULL];
+    //         UITextField *linkURL = [alertController.textFields objectAtIndex:0];
+    //         UITextField *title = [alertController.textFields objectAtIndex:1];
+    //         if (!self.selectedLinkURL) {
+    //             [self insertLink:linkURL.text title:title.text];
+    //             NSLog(@"insert link");
+    //         } else {
+    //             [self updateLink:linkURL.text title:title.text];
+    //         }
+    //         [self focusTextEditor];
+    //     }]];
+    //     [self presentViewController:alertController animated:YES completion:NULL];
         
-    } else {
+    // } else {
         
-        self.alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Insert Link", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:insertButtonTitle, nil];
-        self.alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
-        self.alertView.tag = 2;
-        UITextField *linkURL = [self.alertView textFieldAtIndex:0];
-        linkURL.placeholder = NSLocalizedString(@"URL (required)", nil);
-        if (url) {
-            linkURL.text = url;
-        }
+    //     self.alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Insert Link", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:insertButtonTitle, nil];
+    //     self.alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    //     self.alertView.tag = 2;
+    //     UITextField *linkURL = [self.alertView textFieldAtIndex:0];
+    //     linkURL.placeholder = NSLocalizedString(@"URL (required)", nil);
+    //     if (url) {
+    //         linkURL.text = url;
+    //     }
         
-        linkURL.rightView = am;
-        linkURL.rightViewMode = UITextFieldViewModeAlways;
+    //     linkURL.rightView = am;
+    //     linkURL.rightViewMode = UITextFieldViewModeAlways;
         
-        UITextField *alt = [self.alertView textFieldAtIndex:1];
-        alt.secureTextEntry = NO;
-        alt.placeholder = NSLocalizedString(@"Title", nil);
-        if (title) {
-            alt.text = title;
-        }
+    //     UITextField *alt = [self.alertView textFieldAtIndex:1];
+    //     alt.secureTextEntry = NO;
+    //     alt.placeholder = NSLocalizedString(@"Title", nil);
+    //     if (title) {
+    //         alt.text = title;
+    //     }
         
-        [self.alertView show];
-    }
+    //     [self.alertView show];
+    // }
     
 }
 
@@ -990,76 +991,76 @@ static Class hackishFixClass = Nil;
 
 - (void)showInsertImageDialogWithLink:(NSString *)url alt:(NSString *)alt {
     
-    // Insert Button Title
-    NSString *insertButtonTitle = !self.selectedImageURL ? NSLocalizedString(@"Insert", nil) : NSLocalizedString(@"Update", nil);
+    // // Insert Button Title
+    // NSString *insertButtonTitle = !self.selectedImageURL ? NSLocalizedString(@"Insert", nil) : NSLocalizedString(@"Update", nil);
     
-    // Picker Button
-    UIButton *am = [UIButton buttonWithType:UIButtonTypeCustom];
-    am.frame = CGRectMake(0, 0, 25, 25);
-    [am setImage:[UIImage imageNamed:@"ZSSpicker.png"] forState:UIControlStateNormal];
-    [am addTarget:self action:@selector(showInsertImageAlternatePicker) forControlEvents:UIControlEventTouchUpInside];
+    // // Picker Button
+    // UIButton *am = [UIButton buttonWithType:UIButtonTypeCustom];
+    // am.frame = CGRectMake(0, 0, 25, 25);
+    // [am setImage:[UIImage imageNamed:@"ZSSpicker.png"] forState:UIControlStateNormal];
+    // [am addTarget:self action:@selector(showInsertImageAlternatePicker) forControlEvents:UIControlEventTouchUpInside];
     
-    if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
+    // if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
         
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Insert Image", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"URL (required)", nil);
-            if (url) {
-                textField.text = url;
-            }
-            textField.rightView = am;
-            textField.rightViewMode = UITextFieldViewModeAlways;
-            textField.clearButtonMode = UITextFieldViewModeAlways;
-        }];
-        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"Alt", nil);
-            textField.clearButtonMode = UITextFieldViewModeAlways;
-            textField.secureTextEntry = NO;
-            if (alt) {
-                textField.text = alt;
-            }
-        }];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [self focusTextEditor];
-        }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:insertButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    //     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Insert Image", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+    //     [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+    //         textField.placeholder = NSLocalizedString(@"URL (required)", nil);
+    //         if (url) {
+    //             textField.text = url;
+    //         }
+    //         textField.rightView = am;
+    //         textField.rightViewMode = UITextFieldViewModeAlways;
+    //         textField.clearButtonMode = UITextFieldViewModeAlways;
+    //     }];
+    //     [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+    //         textField.placeholder = NSLocalizedString(@"Alt", nil);
+    //         textField.clearButtonMode = UITextFieldViewModeAlways;
+    //         textField.secureTextEntry = NO;
+    //         if (alt) {
+    //             textField.text = alt;
+    //         }
+    //     }];
+    //     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    //         [self focusTextEditor];
+    //     }]];
+    //     [alertController addAction:[UIAlertAction actionWithTitle:insertButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             
-            UITextField *imageURL = [alertController.textFields objectAtIndex:0];
-            UITextField *alt = [alertController.textFields objectAtIndex:1];
-            if (!self.selectedImageURL) {
-                [self insertImage:imageURL.text alt:alt.text];
-            } else {
-                [self updateImage:imageURL.text alt:alt.text];
-            }
-            [self focusTextEditor];
-        }]];
-        [self presentViewController:alertController animated:YES completion:NULL];
+    //         UITextField *imageURL = [alertController.textFields objectAtIndex:0];
+    //         UITextField *alt = [alertController.textFields objectAtIndex:1];
+    //         if (!self.selectedImageURL) {
+    //             [self insertImage:imageURL.text alt:alt.text];
+    //         } else {
+    //             [self updateImage:imageURL.text alt:alt.text];
+    //         }
+    //         [self focusTextEditor];
+    //     }]];
+    //     [self presentViewController:alertController animated:YES completion:NULL];
         
-    } else {
+    // } else {
         
-        self.alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Insert Image", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:insertButtonTitle, nil];
-        self.alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
-        self.alertView.tag = 1;
-        UITextField *imageURL = [self.alertView textFieldAtIndex:0];
-        imageURL.placeholder = NSLocalizedString(@"URL (required)", nil);
-        if (url) {
-            imageURL.text = url;
-        }
+    //     self.alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Insert Image", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:insertButtonTitle, nil];
+    //     self.alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    //     self.alertView.tag = 1;
+    //     UITextField *imageURL = [self.alertView textFieldAtIndex:0];
+    //     imageURL.placeholder = NSLocalizedString(@"URL (required)", nil);
+    //     if (url) {
+    //         imageURL.text = url;
+    //     }
         
-        imageURL.rightView = am;
-        imageURL.rightViewMode = UITextFieldViewModeAlways;
-        imageURL.clearButtonMode = UITextFieldViewModeAlways;
+    //     imageURL.rightView = am;
+    //     imageURL.rightViewMode = UITextFieldViewModeAlways;
+    //     imageURL.clearButtonMode = UITextFieldViewModeAlways;
         
-        UITextField *alt1 = [self.alertView textFieldAtIndex:1];
-        alt1.secureTextEntry = NO;
-        alt1.placeholder = NSLocalizedString(@"Alt", nil);
-        alt1.clearButtonMode = UITextFieldViewModeAlways;
-        if (alt) {
-            alt1.text = alt;
-        }
+    //     UITextField *alt1 = [self.alertView textFieldAtIndex:1];
+    //     alt1.secureTextEntry = NO;
+    //     alt1.placeholder = NSLocalizedString(@"Alt", nil);
+    //     alt1.clearButtonMode = UITextFieldViewModeAlways;
+    //     if (alt) {
+    //         alt1.text = alt;
+    //     }
         
-        [self.alertView show];
-    }
+    //     [self.alertView show];
+    // }
     
 }
 
@@ -1258,80 +1259,80 @@ static Class hackishFixClass = Nil;
 
 - (void)keyboardWillShowOrHide:(NSNotification *)notification {
     
-    // Orientation
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    // // Orientation
+    // UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     
-    // User Info
-    NSDictionary *info = notification.userInfo;
-    CGFloat duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-    int curve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
-    CGRect keyboardEnd = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    // // User Info
+    // NSDictionary *info = notification.userInfo;
+    // CGFloat duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    // int curve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+    // CGRect keyboardEnd = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
-    // Toolbar Sizes
-    CGFloat sizeOfToolbar = 0; // self.toolbarHolder.frame.size.height;
+    // // Toolbar Sizes
+    // CGFloat sizeOfToolbar = 0; // self.toolbarHolder.frame.size.height;
     
-    // Keyboard Size
-    //Checks if IOS8, gets correct keyboard height
-    CGFloat keyboardHeight =  UIInterfaceOrientationIsLandscape(orientation) ? ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.000000) ? keyboardEnd.size.height : keyboardEnd.size.width : keyboardEnd.size.height;
+    // // Keyboard Size
+    // //Checks if IOS8, gets correct keyboard height
+    // CGFloat keyboardHeight =  UIInterfaceOrientationIsLandscape(orientation) ? ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.000000) ? keyboardEnd.size.height : keyboardEnd.size.width : keyboardEnd.size.height;
     
-    // Correct Curve
-    UIViewAnimationOptions animationOptions = curve << 16;
+    // // Correct Curve
+    // UIViewAnimationOptions animationOptions = curve << 16;
     
-    if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {
+    // if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {
         
-        [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
+    //     [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             
-            // Toolbar
-            CGRect frame = self.toolbarHolder.frame;
-            frame.origin.y = self.view.frame.size.height - (keyboardHeight + sizeOfToolbar);
-            //self.toolbarHolder.frame = frame;
+    //         // Toolbar
+    //         CGRect frame = self.toolbarHolder.frame;
+    //         frame.origin.y = self.view.frame.size.height - (keyboardHeight + sizeOfToolbar);
+    //         //self.toolbarHolder.frame = frame;
             
-            // Editor View
-            const int extraHeight = 10;
+    //         // Editor View
+    //         const int extraHeight = 10;
             
-            CGRect editorFrame = self.editorView.frame;
-            editorFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
-            //self.editorView.frame = editorFrame;
-            //self.editorViewFrame = self.editorView.frame;
-            self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
-            self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    //         CGRect editorFrame = self.editorView.frame;
+    //         editorFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
+    //         //self.editorView.frame = editorFrame;
+    //         //self.editorViewFrame = self.editorView.frame;
+    //         self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
+    //         self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
             
-            // Source View
-            CGRect sourceFrame = self.sourceView.frame;
-            sourceFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
-            //self.sourceView.frame = sourceFrame;
+    //         // Source View
+    //         CGRect sourceFrame = self.sourceView.frame;
+    //         sourceFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
+    //         //self.sourceView.frame = sourceFrame;
             
-            // Provide editor with keyboard height and editor view height
-            [self setFooterHeight:(keyboardHeight + self.footerOffset - 8)];
-            [self setContentHeight: editorFrame.size.height];
+    //         // Provide editor with keyboard height and editor view height
+    //         [self setFooterHeight:(keyboardHeight + self.footerOffset - 8)];
+    //         [self setContentHeight: editorFrame.size.height];
             
-        } completion:nil];
+    //     } completion:nil];
         
-    } else {
+    // } else {
         
-        [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
+    //     [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             
-            CGRect frame = self.toolbarHolder.frame;
-            frame.origin.y = self.view.frame.size.height + keyboardHeight;
-            //self.toolbarHolder.frame = frame;
+    //         CGRect frame = self.toolbarHolder.frame;
+    //         frame.origin.y = self.view.frame.size.height + keyboardHeight;
+    //         //self.toolbarHolder.frame = frame;
             
-            // Editor View
-            CGRect editorFrame = self.editorView.frame;
-            editorFrame.size.height = self.view.frame.size.height;
-            //self.editorView.frame = editorFrame;
-            self.editorViewFrame = self.editorView.frame;
-            self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
-            self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    //         // Editor View
+    //         CGRect editorFrame = self.editorView.frame;
+    //         editorFrame.size.height = self.view.frame.size.height;
+    //         //self.editorView.frame = editorFrame;
+    //         self.editorViewFrame = self.editorView.frame;
+    //         self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
+    //         self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
             
-            // Source View
-            CGRect sourceFrame = self.sourceView.frame;
-            sourceFrame.size.height = self.view.frame.size.height;
-            //self.sourceView.frame = sourceFrame;
-            [self setFooterHeight:0];
-            [self setContentHeight: editorFrame.size.height];
-        } completion:nil];
+    //         // Source View
+    //         CGRect sourceFrame = self.sourceView.frame;
+    //         sourceFrame.size.height = self.view.frame.size.height;
+    //         //self.sourceView.frame = sourceFrame;
+    //         [self setFooterHeight:0];
+    //         [self setContentHeight: editorFrame.size.height];
+    //     } completion:nil];
         
-    }//end
+    // }//end
     
 }
 

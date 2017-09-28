@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 protocol ComposeViewDelegate {
     func ComposeViewDidSizeChanged(_ size: CGSize)
     func ComposeViewDidOffsetChanged(_ offset: CGPoint)
@@ -63,6 +62,32 @@ class ComposeView: UIViewController {
         
         return false
     }
+    
+    var allEmails : String {  // email,email,email
+        var emails : [String] = []
+        
+        let toEmails = toContactPicker.contactList
+        if !toEmails.isEmpty  {
+            emails.append(toEmails)
+        }
+        
+        let ccEmails = ccContactPicker.contactList
+        if !ccEmails.isEmpty  {
+            emails.append(ccEmails)
+        }
+        
+        let bccEmails = bccContactPicker.contactList
+        if !bccEmails.isEmpty  {
+            emails.append(bccEmails)
+        }
+        if emails.isEmpty {
+            return ""
+        }
+        return emails.joined(separator: ",")
+    }
+    
+    
+    
     var ccContactPicker: MBContactPicker!
     var ccContacts: String {
         return ccContactPicker.contactList
@@ -340,11 +365,11 @@ class ComposeView: UIViewController {
         isShowingCcBccView = !isShowingCcBccView
     }
     
-    internal func didTapConfirmExpirationButton() {
+    @objc internal func didTapConfirmExpirationButton() {
         self.delegate?.composeViewCollectExpirationData(self)
     }
     
-    internal func didTapNextButton() {
+    @objc internal func didTapNextButton() {
         self.delegate?.composeViewDidTapNextButton(self)
     }
     

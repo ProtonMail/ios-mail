@@ -9,9 +9,6 @@
 // in whole or in part, is expressly prohibited except as authorized by
 // the license agreement.
 //
-
-import Foundation
-
 import Foundation
 import UIKit
 
@@ -44,7 +41,8 @@ extension UIColor {
         )
     }
     
-    internal struct ProtonMail {
+    struct ProtonMail {
+
         static let Blue_475F77 = UIColor(RRGGBB: UInt(0x475F77))
         static let Blue_85B1DE = UIColor(RRGGBB: UInt(0x85B1DE))
         static let Blue_5C7A99 = UIColor(RRGGBB: UInt(0x5C7A99))
@@ -69,13 +67,10 @@ extension UIColor {
         static let Login_Background_Gradient_Right = UIColor(red: 23/255, green: 41/255, blue: 131/255, alpha: 0.9)
         static let Login_Button_Border_Color = UIColor(RRGGBB: UInt(0x9397CD))
         
-        
         static let MessageCell_UnRead_Color = UIColor(RRGGBB: UInt(0xFFFFFF))
         static let MessageCell_Read_Color = UIColor(RRGGBB: UInt(0xF2F3F7))
     
-        
         static let TextFieldTintColor = UIColor.white
-        
         static let MessageActionTintColor = UIColor(hexString: "#9397cd", alpha: 1.0)
     }
 }
@@ -184,7 +179,10 @@ extension UIColor
         if hexLength == 3
         {
             let redHex   = hex.substring(to: hex.characters.index(hex.startIndex, offsetBy: 1))
+            let index = hex.characters.index(hex.startIndex, offsetBy: 1)
+            let r = hex[...index]
             let greenHex = hex.substring(with: hex.characters.index(hex.startIndex, offsetBy: 1) ..< hex.characters.index(hex.startIndex, offsetBy: 2))
+            
             let blueHex  = hex.substring(from: hex.characters.index(hex.startIndex, offsetBy: 2))
             hex = redHex + redHex + greenHex + greenHex + blueHex + blueHex
         }
@@ -217,7 +215,6 @@ extension UIColor
     let secondColor: UIColor = UIColor(hex: 0xff8942, alpha: 0.5)
     
     */
-    
     convenience init(hex: Int, alpha: Float)
     {
         let hexString = NSString(format: "%2X", hex)

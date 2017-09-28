@@ -19,11 +19,6 @@ import Fabric
 import Crashlytics
 import LocalAuthentication
 
-fileprivate enum SignInUIFlow : Int {
-    case requirePin = 0
-    case requireTouchID = 1
-    case restore = 2
-}
 
 //class SignInViewController: BaseViewController {
 class SignInViewController: ProtonMailViewController {
@@ -47,8 +42,8 @@ class SignInViewController: ProtonMailViewController {
     private var isRemembered                        = false;
     
     //define
-    fileprivate let hidePriority : UILayoutPriority = 1.0;
-    fileprivate let showPriority: UILayoutPriority  = 750.0;
+    fileprivate let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0);
+    fileprivate let showPriority: UILayoutPriority  = UILayoutPriority(rawValue: 750.0);
     
     
     //views
@@ -196,7 +191,7 @@ class SignInViewController: ProtonMailViewController {
     internal func showTouchID(_ animated : Bool = true) {
         touchIDButton.layer.cornerRadius = 25
         touchIDButton.isHidden = false
-        signUpTopConstraint.priority = 1
+        signUpTopConstraint.priority = UILayoutPriority(rawValue: 1)
         UIView.animate(withDuration: animated ? 0.25 : 0, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
@@ -205,7 +200,7 @@ class SignInViewController: ProtonMailViewController {
     internal func hideTouchID(_ animated : Bool = true) {
         touchIDButton.layer.cornerRadius = 25
         touchIDButton.isHidden = true
-        signUpTopConstraint.priority = 750
+        signUpTopConstraint.priority = UILayoutPriority(rawValue: 750)
         UIView.animate(withDuration: animated ? 0.25 : 0, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
@@ -298,7 +293,7 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
-    func doEnterForeground(){
+    @objc func doEnterForeground(){
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             authenticateUser()
         }
@@ -452,8 +447,8 @@ class SignInViewController: ProtonMailViewController {
     internal func setupTextFields() {
         signInTitle.text = NSLocalizedString("USER LOGIN", comment: "Title")
         
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
     }
     
     func setupButtons() {

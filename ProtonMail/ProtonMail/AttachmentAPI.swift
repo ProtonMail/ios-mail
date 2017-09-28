@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 // MARK : Get messages part
 final class AttachmentDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     let body : String!
@@ -29,7 +28,7 @@ final class AttachmentDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getRequestPath() -> String {
-        return AttachmentAPI.Path + "/remove" + AppConstants.getDebugOption
+        return AttachmentAPI.Path + "/remove" + AppConstants.DEBUG_OPTION
     }
     
     override func getVersion() -> Int {

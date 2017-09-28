@@ -10,30 +10,30 @@ import Foundation
 
 
 // label editing
-final class LabelEditingViewModelImple : LabelEditViewModel {
+final public class LabelEditingViewModelImple : LabelEditViewModel {
     var currentLabel : Label
     
-    required init(label : Label) {
+    required public init(label : Label) {
         self.currentLabel = label
     }
     
-    override func title() -> String {
+    override public func title() -> String {
         return NSLocalizedString("Edit Label", comment: "Title")
     }
     
-    override func placeHolder() -> String {
+    override public func placeHolder() -> String {
         return NSLocalizedString("Label Name", comment: "place holder")
     }
     
-    override func rightButtonText() -> String {
+    override public func rightButtonText() -> String {
         return NSLocalizedString("Update", comment: "top right action text")
     }
     
-    override func name() -> String {
+    override public func name() -> String {
         return currentLabel.name
     }
     
-    override func seletedIndex() -> IndexPath {
+    override public func seletedIndex() -> IndexPath {
         let currentColor = currentLabel.color
         if let index = colors.index(of: currentColor) {
             return IndexPath(row: index, section: 0)
@@ -42,7 +42,7 @@ final class LabelEditingViewModelImple : LabelEditViewModel {
         }
     }
     
-    override func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {
+    override public func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {
         let api = UpdateLabelRequest<CreateLabelRequestResponse>(id: currentLabel.labelID, name: name, color: color)
         api.call { (task, response, hasError) -> Void in
             if hasError {

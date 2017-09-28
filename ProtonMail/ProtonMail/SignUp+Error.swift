@@ -9,8 +9,6 @@
 import Foundation
 
 
-
-
 // code start at 0x110200
 enum SignUpCreateUserError : Int, Error, CustomErrorVar {
     case invalidModulsID = 0x110201

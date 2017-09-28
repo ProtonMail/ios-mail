@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 class SetPinCodeModelImpl : PinCodeViewModel {
     
     let StepOneTitle : String = NSLocalizedString("Enter your PIN", comment: "set pin title")

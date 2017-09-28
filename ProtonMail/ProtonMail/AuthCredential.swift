@@ -16,15 +16,26 @@
 
 import Foundation
 
-let authDebugCached =  UserDefaults.standard
-class AuthCredential: NSObject, NSCoding {
+final class AuthCredential: NSObject, NSCoding {
+    
     struct Key{
         static let keychainStore = "keychainStoreKey"
     }
     
+    struct CoderKey {
+        static let accessToken   = "accessTokenCoderKey"
+        static let refreshToken  = "refreshTokenCoderKey"
+        static let userID        = "userIDCoderKey"
+        static let expiration    = "expirationCoderKey"
+        static let key           = "privateKeyCoderKey"
+        static let plainToken    = "plainCoderKey"
+        static let pwd           = "pwdKey"
+        static let salt          = "passwordKeySalt"
+    }
+    
+    var userID: String!
     var encryptToken: String!
     var refreshToken: String!
-    var userID: String!
     var expiration: Date!
     var privateKey : String?
     var plainToken : String?
@@ -40,19 +51,13 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     class func setupToken (_ password:String, isRememberMailbox : Bool = true) throws {
-        #if DEBUG
-            if let data = authDebugCached.data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    try authCredential.setupToken(password)
-                }
+        if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
+            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
+            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
+                try authCredential.setupToken(password)
             }
-        #else
-            if let data = UICKeyChainStore.data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    try authCredential.setupToken(password)
-                }
-            }
-        #endif
+        }
     }
     
     func setupToken (_ password:String) throws {
@@ -120,53 +125,35 @@ class AuthCredential: NSObject, NSCoding {
     
     func storeInKeychain() {
         userCachedStatus.isForcedLogout = false
-        #if DEBUG
-            authDebugCached.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
-        #else
-            UICKeyChainStore().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
-        #endif
+        sharedKeychain.keychain().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
     }
     
     class func getPrivateKey() -> String {
-        
-        #if DEBUG
-            if let data = authDebugCached.data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    return authCredential.privateKey ?? ""
-                }
+        if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
+            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
+            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
+                return authCredential.privateKey ?? ""
             }
-        #else
-            if let data = UICKeyChainStore.data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    return authCredential.privateKey ?? ""
-                }
-            }
-        #endif
+        }
         return ""
     }
     
     class func getKeySalt() -> String? {
-        #if DEBUG
-            if let data = authDebugCached.data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    return authCredential.passwordKeySalt
-                }
+        if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
+            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
+            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
+                return authCredential.passwordKeySalt
             }
-        #else
-            if let data = UICKeyChainStore.data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    return authCredential.passwordKeySalt
-                }
-            }
-        #endif
+        }
         return ""
     }
     
     // MARK - Class methods
     class func clearFromKeychain() {
         userCachedStatus.isForcedLogout = true
-        authDebugCached.removeObject(forKey: Key.keychainStore)
-        UICKeyChainStore.removeItem(forKey: Key.keychainStore)
+        sharedKeychain.keychain().removeItem(forKey: Key.keychainStore) //newer version
     }
     
     class func expireOrClear(_ token : String?) {
@@ -182,35 +169,14 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     class func fetchFromKeychain() -> AuthCredential? {
-        
-        #if DEBUG
-            if let data = authDebugCached.data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    return authCredential
-                }
+        if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
+            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
+            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
+                return authCredential
             }
-        #else
-            if let data = UICKeyChainStore.data(forKey: Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                    return authCredential
-                }
-            }
-        #endif
-
+        }
         return nil
-    }
-    
-    // MARK - NSCoding
-    
-    struct CoderKey {
-        static let accessToken = "accessTokenCoderKey"
-        static let refreshToken = "refreshTokenCoderKey"
-        static let userID = "userIDCoderKey"
-        static let expiration = "expirationCoderKey"
-        static let key = "privateKeyCoderKey"
-        static let plainToken = "plainCoderKey"
-        static let pwd = "pwdKey"
-        static let salt = "passwordKeySalt"
     }
     
     func encode(with aCoder: NSCoder) {
@@ -222,5 +188,12 @@ class AuthCredential: NSObject, NSCoding {
         aCoder.encode(plainToken, forKey: CoderKey.plainToken)
         aCoder.encode(password, forKey: CoderKey.pwd)
         aCoder.encode(passwordKeySalt, forKey: CoderKey.salt)
+    }
+}
+
+extension AuthCredential {
+    convenience init(authInfo: APIService.AuthInfo) {
+        let expiration = Date(timeIntervalSinceNow: (authInfo.expiresId ?? 0))
+        self.init(accessToken: authInfo.accessToken, refreshToken: authInfo.refreshToken, userID: authInfo.userID, expiration: expiration, key : "", plain: authInfo.accessToken, pwd: "", salt: "")
     }
 }

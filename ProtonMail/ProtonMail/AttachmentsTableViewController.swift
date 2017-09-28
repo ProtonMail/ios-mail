@@ -10,8 +10,6 @@ import UIKit
 import AssetsLibrary
 import Photos
 
-
-
 protocol AttachmentsTableViewControllerDelegate {
     
     func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments: [Any]) -> Void
@@ -112,8 +110,8 @@ class AttachmentsTableViewController: UITableViewController {
         
         let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
         navigationController.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.white,
-            NSFontAttributeName: navigationBarTitleFont
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: navigationBarTitleFont
         ]
     }
     
@@ -212,7 +210,7 @@ class AttachmentsTableViewController: UITableViewController {
         return attachmentSections.count
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let section = attachmentSections[section]
         switch section {
         case .normal:
@@ -222,7 +220,7 @@ class AttachmentsTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentTableViewCell.Constant.identifier, for: indexPath) as! AttachmentTableViewCell
         
         let section = attachmentSections[indexPath.section]
@@ -236,7 +234,7 @@ class AttachmentsTableViewController: UITableViewController {
         }
         
         if let att = attachment {
-            cell.configCell(att.fileName, fileSize:  Int(att.fileSize), showDownload: false)
+            cell.configCell(att.fileName, fileSize: att.fileSize.intValue, showDownload: false)
             let crossView = UILabel();
             crossView.text = NSLocalizedString("Remove", comment: "Action")
             crossView.sizeToFit()
@@ -280,20 +278,20 @@ class AttachmentsTableViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    @objc override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44;
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    @objc override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let section = attachmentSections[section]
         return section.actionTitle
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    @objc override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 20
     }
     
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
+    @objc override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
     {
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = UIFont.systemFont(ofSize: 12)
@@ -462,9 +460,9 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
             let attachment = originalImage.toAttachment(self.message, fileName: fileName, type: mimeType)
             let length = attachment?.fileSize.intValue ?? 0
             if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
-                if self.message.managedObjectContext != nil {
-                    self.attachments.append(attachment!)
-                    self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                if let att = attachment, self.message.managedObjectContext != nil {
+                    self.attachments.append(att)
+                    self.delegate?.attachments(self, didPickedAttachment: att)
                 } else {
                     PMLog.D(" Error during copying size incorrect")
                     self.showErrorAlert(NSLocalizedString("Can't copy the file", comment: "Error"))
@@ -491,7 +489,9 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
     }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.lightContent, animated: false)
+        
+        //TODO::Fix later
+//        UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.lightContent, animated: false)
         configureNavigationBar(navigationController)
     }
 }

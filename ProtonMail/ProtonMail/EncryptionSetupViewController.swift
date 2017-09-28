@@ -37,20 +37,20 @@ class EncryptionSetupViewController: UIViewController {
         let font = UIFont.boldSystemFont(ofSize: 16)
         let attrHigh = NSMutableAttributedString(
             string: " " + NSLocalizedString("High Security", comment: "Key size checkbox"),
-            attributes: [NSFontAttributeName:font])
+            attributes: [NSAttributedStringKey.font:font])
         let font1 = UIFont.systemFont(ofSize: 16)
         let attrHighSize = NSMutableAttributedString(
             string: " " + NSLocalizedString("(2048 bit)", comment: "Key size text"),
-            attributes: [NSFontAttributeName:font1])
+            attributes: [NSAttributedStringKey.font:font1])
         attrHigh.append(attrHighSize)
         highBitLevel.setAttributedTitle(attrHigh, for: .normal)
         
         let attrExtreme = NSMutableAttributedString(
             string: NSLocalizedString("Extreme Security", comment: "Key size checkbox"),
-            attributes: [NSFontAttributeName:font])
+            attributes: [NSAttributedStringKey.font:font])
         let attrExtremeSize = NSMutableAttributedString(
             string: " " + NSLocalizedString("(4096 bit)", comment: "Key size text"),
-            attributes: [NSFontAttributeName:font1])
+            attributes: [NSAttributedStringKey.font:font1])
         attrExtreme.append(attrExtremeSize)
         normalBitLevel.setAttributedTitle(attrExtreme, for: .normal)
         
@@ -59,11 +59,11 @@ class EncryptionSetupViewController: UIViewController {
         let notesfont = UIFont.systemFont(ofSize: 13)
         let attr1 = NSMutableAttributedString(
             string: NSLocalizedString("The highest level of encryption available.", comment: "key size note part 1") + " ",
-            attributes: [NSFontAttributeName:notesfont])
+            attributes: [NSAttributedStringKey.font:notesfont])
         let notesfont1 = UIFont.boldSystemFont(ofSize: 13)
         let attr2 = NSMutableAttributedString(
             string: NSLocalizedString("Can take several minutes to setup.", comment: "key size note part 2"),
-            attributes: [NSFontAttributeName:notesfont1])
+            attributes: [NSAttributedStringKey.font:notesfont1])
         attr1.append(attr2)
         extremeSecurityNoteLabel.attributedText = attr1
         continueButton.setTitle(NSLocalizedString("Continue", comment: "key setup continue button"), for: .normal)

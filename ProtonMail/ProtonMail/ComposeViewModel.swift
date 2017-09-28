@@ -9,7 +9,15 @@
 import Foundation
 
 
-open class ComposeViewModel {
+
+struct FileData {
+    var name : String
+    var ext : String
+    var data : Data
+}
+
+
+class ComposeViewModel {
     var message : Message?
     var messageAction : ComposeMessageAction!
     var toSelectedContacts: [ContactVO]! = [ContactVO]()
@@ -37,30 +45,30 @@ open class ComposeViewModel {
     var titleChanged : Bool = false;
     var bodyChanged : Bool = false;
     
-    public init() { }
+    init() { }
     
-    open func getSubject() -> String {
+    func getSubject() -> String {
         return self.subject
         //return self.message?.subject ?? ""
     }
     
-    open func setSubject(_ sub : String) {
+    func setSubject(_ sub : String) {
         self.subject = sub
     }
     
-    open func setBody(_ body : String) {
+    func setBody(_ body : String) {
         self.body = body
     }
     
-    internal func addToContacts(_ contacts: ContactVO! ) {
+     func addToContacts(_ contacts: ContactVO! ) {
         toSelectedContacts.append(contacts)
     }
     
-    internal func addCcContacts(_ contacts: ContactVO! ) {
+     func addCcContacts(_ contacts: ContactVO! ) {
         ccSelectedContacts.append(contacts)
     }
     
-    internal func addBccContacts(_ contacts: ContactVO! ) {
+     func addBccContacts(_ contacts: ContactVO! ) {
         bccSelectedContacts.append(contacts)
     }
     
@@ -69,15 +77,15 @@ open class ComposeViewModel {
     }
     
     ///
-    open func sendMessage() {
+    func sendMessage() {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    open func updateDraft() {
+    func updateDraft() {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    open func deleteDraft() {
+    func deleteDraft() {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
@@ -89,15 +97,15 @@ open class ComposeViewModel {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    open func markAsRead() {
+    func markAsRead() {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    open func getDefaultComposeBody() {
+    func getDefaultComposeBody() {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    open func getHtmlBody() -> String {
+    func getHtmlBody() -> String {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
         return ""
     }

@@ -16,11 +16,11 @@
 
 import UIKit
 
-struct KeyboardInfo {
-    let beginFrame: CGRect
-    let endFrame: CGRect
-    let duration: TimeInterval
-    let animationOption: UIViewAnimationOptions = .beginFromCurrentState
+public struct KeyboardInfo {
+    public let beginFrame: CGRect
+    public let endFrame: CGRect
+    public let duration: TimeInterval
+    public let animationOption: UIViewAnimationOptions = .beginFromCurrentState
     
     init(beginFrame: CGRect, endFrame: CGRect, duration: TimeInterval) {
         self.beginFrame = beginFrame
@@ -30,7 +30,7 @@ struct KeyboardInfo {
 }
 
 extension Notification {
-    var keyboardInfo: KeyboardInfo {
+    public var keyboardInfo: KeyboardInfo {
         let beginFrame = (userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue ?? CGRect.zero
         let endFrame = (userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue ?? CGRect.zero
         let duration = (userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0

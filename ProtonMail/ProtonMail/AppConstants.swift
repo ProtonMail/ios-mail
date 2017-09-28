@@ -11,9 +11,8 @@ import Foundation
 
 class AppConstants {
     
-    
-    static let CacheVersion : Int = 96
-    static let AuthCacheVersion : Int = 12
+    static let CacheVersion : Int = 98
+    static let AuthCacheVersion : Int = 15
     static let SpaceWarningThreshold: Double = 80
     static let SplashVersion : Int = 1
     static let TourVersion : Int = 2
@@ -59,7 +58,7 @@ class AppConstants {
         }
     }
     
-    static var getDebugOption : String {
+    static var DEBUG_OPTION : String {
         get {
             #if DEBUG
                 return "" //"?XDEBUG_SESSION_START=\(18073)"
@@ -68,5 +67,17 @@ class AppConstants {
             #endif
         }
     }
+    
+    //app share group 
+    static var APP_GROUP : String {
+        get {
+            #if Enterprise
+                return "group.com.protonmail.protonmail"
+            #else
+                return "group.ch.protonmail.protonmail"
+            #endif
+        }
+    }
+    
 }
 

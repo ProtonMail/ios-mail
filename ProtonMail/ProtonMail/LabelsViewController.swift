@@ -79,21 +79,21 @@ class LablesViewController : UIViewController {
         
         switch viewModel.getFetchType() {
         case .all:
-            middleLineConstraint.priority = 1000
-            addFolderCenterConstraint.priority = 750
-            addLabelCenterConstraint.priority = 750
+            middleLineConstraint.priority = UILayoutPriority(rawValue: 1000)
+            addFolderCenterConstraint.priority = UILayoutPriority(rawValue: 750)
+            addLabelCenterConstraint.priority = UILayoutPriority(rawValue: 750)
             addLabelButton.isHidden = false
             addFolderButton.isHidden = false
         case .label:
-            middleLineConstraint.priority = 750
-            addFolderCenterConstraint.priority = 750
-            addLabelCenterConstraint.priority = 1000
+            middleLineConstraint.priority = UILayoutPriority(rawValue: 750)
+            addFolderCenterConstraint.priority = UILayoutPriority(rawValue: 750)
+            addLabelCenterConstraint.priority = UILayoutPriority(rawValue: 1000)
             addLabelButton.isHidden = false
             addFolderButton.isHidden = true
         case .folder:
-            middleLineConstraint.priority = 750
-            addFolderCenterConstraint.priority = 1000
-            addLabelCenterConstraint.priority = 750
+            middleLineConstraint.priority = UILayoutPriority(rawValue: 750)
+            addFolderCenterConstraint.priority = UILayoutPriority(rawValue: 1000)
+            addLabelCenterConstraint.priority = UILayoutPriority(rawValue: 750)
             addLabelButton.isHidden = true
             addFolderButton.isHidden = false
         }
@@ -193,7 +193,7 @@ extension LablesViewController: UITableViewDataSource {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let labelCell = tableView.dequeueReusableCell(withIdentifier: "labelApplyCell", for: indexPath) as! LabelTableViewCell
         if let label = fetchedLabels?.object(at: indexPath) as? Label {
             let lm = viewModel.getLabelMessage(label)
@@ -214,12 +214,12 @@ extension LablesViewController: UITableViewDataSource {
         return labelCell
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = fetchedLabels?.numberOfRowsInSection(section) ?? 0
         return count
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
             cell.separatorInset = UIEdgeInsets.zero
         }
@@ -233,11 +233,11 @@ extension LablesViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension LablesViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 45.0
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // verify whether the user is checking messages or not
         if let label = fetchedLabels?.object(at: indexPath) as? Label {
             viewModel.cellClicked(label)

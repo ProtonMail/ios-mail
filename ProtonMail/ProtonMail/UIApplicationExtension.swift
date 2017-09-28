@@ -8,9 +8,7 @@
 
 import Foundation
 
-
-
-public enum UIApplicationReleaseMode: Int {
+enum UIApplicationReleaseMode: Int {
     case unknown = 0
     case sim = 1
     case dev = 2
@@ -49,7 +47,7 @@ extension UIApplication {
                 }
                 let newStr = String("\(plistString!)</plist>")
                 // juggle latin1 back to utf-8!
-                let plistdata_latin1 : Data = newStr!.data(using: String.Encoding.isoLatin1, allowLossyConversion: false)!
+                let plistdata_latin1 : Data = newStr.data(using: String.Encoding.isoLatin1, allowLossyConversion: false)!
                 
                 MP.mobileProvision = try PropertyListSerialization.propertyList(from: plistdata_latin1, options: PropertyListSerialization.ReadOptions(rawValue: 0), format: nil) as? Dictionary<String, Any>
             } catch {

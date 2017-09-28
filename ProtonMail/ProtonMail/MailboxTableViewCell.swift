@@ -101,7 +101,6 @@ class MailboxTableViewCell: UITableViewCell {
         } else {
             checkboxButton.setImage(kCheckboxCheckedImage, for: UIControlState())
         }
-        
         self.isChecked = !self.isChecked
         self.delegate?.mailBoxTableViewCell(self, didChangeChecked: self.isChecked)
     }
@@ -122,8 +121,10 @@ class MailboxTableViewCell: UITableViewCell {
         self.attachImage.isHidden = !(message.numAttachments.int32Value > 0)
         
         if message.numAttachments.int32Value > 0 {
+            self.attachImage.isHidden = false
             self.attachmentConstraint.constant = self.kAttachmentWidth
         } else {
+            self.attachImage.isHidden = true
             self.attachmentConstraint.constant = 0
         }
         
@@ -131,8 +132,10 @@ class MailboxTableViewCell: UITableViewCell {
         self.checkboxButton.layer.masksToBounds = true
         
         if message.isStarred {
+            self.starredImage.isHidden = false
             self.starConstraint.constant = self.kStarWidth
         } else {
+            self.starredImage.isHidden = true
             self.starConstraint.constant = 0
         }
         
@@ -201,17 +204,38 @@ class MailboxTableViewCell: UITableViewCell {
         self.time.text = message.time != nil ? " \(NSDate.stringForDisplay(from: message.time as Date!))" : ""
         
         timeConstraint.constant = self.time.sizeThatFits(CGSize.zero).width
+        
+        
+        
+        title.isHidden = true
+        sender.isHidden = true
+        time.isHidden = true
+        
+        encryptedImage.isHidden = true
+        attachImage.isHidden = true
+        checkboxButton.isHidden = true
+        replyImage.isHidden = true
+        starredImage.isHidden = true
+        
+        labelView.isHidden = true
+        labelView2.isHidden = true
+        labelView3.isHidden = true
+        labelView4.isHidden = true
+        labelView5.isHidden = true
     }
     
     fileprivate func updateLables (_ labelView : TableCellLabelView, labelConstraint : NSLayoutConstraint, label:Label?) {
         if let label = label {
             if label.name.isEmpty || label.color.isEmpty {
+                labelView.isHidden = true
                 labelConstraint.constant = 0
             } else {
                 let w = labelView.setText(label.name, color: UIColor(hexString: label.color, alpha: 1.0) )
+                labelView.isHidden = false
                 labelConstraint.constant = w
             }
         } else {
+            labelView.isHidden = true
             labelConstraint.constant = 0
         }
     }

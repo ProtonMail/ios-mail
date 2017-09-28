@@ -9,8 +9,8 @@
 import Foundation
 
 
-class ApiResponse {
-    required init() {}
+public class ApiResponse {
+    required public init() {}
     
     var code : Int! = 1000
     var errorMessage : String?

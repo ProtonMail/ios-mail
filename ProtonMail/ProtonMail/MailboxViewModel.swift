@@ -18,7 +18,7 @@ enum SwipeResponse {
 class MailboxViewModel {
     typealias CompletionBlock = APIService.CompletionBlock
     
-    public init() { }
+    init() { }
     
     func getNavigationTitle() -> String {
         fatalError("This method must be overridden")
@@ -104,10 +104,12 @@ class MailboxViewModel {
         }
         
         if fromLocation == .inbox {
-            UIApplication.shared.applicationIconBadgeNumber = fromCount
+            UIApplication.setBadge(badge: fromCount)
+            //UIApplication.shared.applicationIconBadgeNumber = fromCount
         }
         if toLocation == .inbox {
-            UIApplication.shared.applicationIconBadgeNumber = toCount
+            UIApplication.setBadge(badge: toCount)
+            //UIApplication.shared.applicationIconBadgeNumber = toCount
         }
     }
     
@@ -133,7 +135,8 @@ class MailboxViewModel {
             lastUpdatedStore.updateUnreadCountForKey(.starred, count: staredCount)
         }
         if location == .inbox {
-            UIApplication.shared.applicationIconBadgeNumber = count
+            UIApplication.setBadge(badge: count)
+            //UIApplication.shared.applicationIconBadgeNumber = count
         }
     }
     

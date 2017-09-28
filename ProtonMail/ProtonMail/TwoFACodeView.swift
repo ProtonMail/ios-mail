@@ -81,7 +81,7 @@ class TwoFACodeView : PMView {
         enterButton.setTitle(NSLocalizedString("Enter", comment: "Action"), for: .normal)
     }
 
-    func doneButtonAction() {
+    @objc func doneButtonAction() {
         self.twoFactorCodeField.inputAccessoryView = nil
         self.twoFactorCodeField.keyboardType = UIKeyboardType.asciiCapable
         self.twoFactorCodeField.reloadInputViews()

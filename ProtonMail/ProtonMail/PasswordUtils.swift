@@ -14,10 +14,10 @@ enum PasswordError: Error {
     case hashSizeWrong
 }
 
-open class PasswordUtils {
+final class PasswordUtils {
     
     
-    open static func getHashedPwd(_ authVersion: Int , password: String, username: String, decodedSalt : Data, decodedModulus : Data) -> Data? {
+    static func getHashedPwd(_ authVersion: Int , password: String, username: String, decodedSalt : Data, decodedModulus : Data) -> Data? {
         var hashedPassword : Data?
         switch authVersion {
         case 0:
@@ -41,7 +41,7 @@ open class PasswordUtils {
     }
     
     
-    open static func CleanUserName(_ username : String) -> String {
+    static func CleanUserName(_ username : String) -> String {
         return username.preg_replace("_|\\.|-", replaceto: "").lowercased()
     }
     
@@ -72,11 +72,11 @@ open class PasswordUtils {
     }
     
     
-    open static func expandHash(_ input : Data) -> Data {
+    static func expandHash(_ input : Data) -> Data {
         return PMNSrpClient.expandHash(input);
     }
     
-    open static func getMailboxPassword(_ password : String, salt : Data) -> String {
+    static func getMailboxPassword(_ password : String, salt : Data) -> String {
         let byteArray = NSMutableData()
         byteArray.append(salt)
         let source = NSData(data: byteArray as Data) as Data
@@ -84,7 +84,10 @@ open class PasswordUtils {
         do {
             let out = try bcrypt_string(password, salt: encodedSalt)
             let index = out.characters.index(out.startIndex, offsetBy: 29)
-            return out.substring(from: index)
+            
+//            let newStr = String(str[index<..])
+            let outStr = out.substring(from: index)
+            return outStr
         } catch PasswordError.hashEmpty {
             // check error
         } catch PasswordError.hashSizeWrong {
@@ -96,11 +99,11 @@ open class PasswordUtils {
         
     }
     
-    open static func hashPasswordVersion4(_ password : String, salt : Data, modulus : Data) -> Data? {
+    static func hashPasswordVersion4(_ password : String, salt : Data, modulus : Data) -> Data? {
         return hashPasswordVersion3(password, salt: salt, modulus: modulus);
     }
     
-    open static func hashPasswordVersion3(_ password : String, salt : Data, modulus : Data) -> Data? {
+    static func hashPasswordVersion3(_ password : String, salt : Data, modulus : Data) -> Data? {
         let byteArray = NSMutableData()
         byteArray.append(salt)
         if let encodedSalt = "proton".data(using: String.Encoding.utf8, allowLossyConversion: false) {
@@ -127,11 +130,11 @@ open class PasswordUtils {
         return nil
     }
 
-    open static func hashPasswordVersion2(_ password : String, username : String, modulus : Data) -> Data? {
+    static func hashPasswordVersion2(_ password : String, username : String, modulus : Data) -> Data? {
         return hashPasswordVersion1(password, username: CleanUserName(username), modulus: modulus);
     }
     
-    open static func hashPasswordVersion1(_ password : String, username : String, modulus : Data) -> Data? {
+    static func hashPasswordVersion1(_ password : String, username : String, modulus : Data) -> Data? {
         let un = username.lowercased()
         let salt = un.md5
         do {
@@ -151,7 +154,7 @@ open class PasswordUtils {
         return nil
     }
     
-    open static func hashPasswordVersion0(_ password : String,   username : String,  modulus: Data ) -> Data? {
+    static func hashPasswordVersion0(_ password : String,   username : String,  modulus: Data ) -> Data? {
         //need check password size
         if let prehashed = password.sha512_byte {
             let encoded = prehashed.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))

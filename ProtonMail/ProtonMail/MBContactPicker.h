@@ -13,7 +13,7 @@
 #import "MBContactCollectionViewPromptCell.h"
 #import "MBContactCollectionViewEntryCell.h"
 
-typedef void(^CompletionBlock)();
+typedef void(^CompletionBlock)(void);
 
 @class MBContactPicker;
 

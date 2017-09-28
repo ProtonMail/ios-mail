@@ -48,7 +48,6 @@ enum MessageAction: String {
     case emptySpam = "emptySpam"
 }
 
-
 enum MessageLastUpdateType: String {
     
     // Draft
@@ -73,13 +72,13 @@ enum MessageLastUpdateType: String {
     case send = "send"
 }
 
-public enum MessageSwipeAction : Int, CustomStringConvertible {
+enum MessageSwipeAction : Int, CustomStringConvertible {
     case trash = 0
     case spam = 1
     case star = 2
     case archive = 3
     
-    public var description : String {
+    var description : String {
         get {
             switch(self) {
             case .trash:

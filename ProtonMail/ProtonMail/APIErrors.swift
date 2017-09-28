@@ -8,45 +8,45 @@
 
 import Foundation
 
-class APIErrorCode {
-    static let responseOK = 1000
+public class APIErrorCode {
+    static public let responseOK = 1000
     
-    static let HTTP503 = 503
-    static let HTTP504 = 504
+    static public let HTTP503 = 503
+    static public let HTTP504 = 504
     
-    static let badParameter = 1
-    static let badPath = 2
-    static let unableToParseResponse = 3
-    static let badResponse = 4
+    static public let badParameter = 1
+    static public let badPath = 2
+    static public let unableToParseResponse = 3
+    static public let badResponse = 4
     
-    struct AuthErrorCode {
-        static let credentialExpired = 10
-        static let credentialInvalid = 20
-        static let invalidGrant = 30
-        static let unableToParseToken = 40
-        static let localCacheBad = 50
-        static let networkIusse = 60
-        static let unableToParseAuthInfo = 70
-        static let authServerSRPInValid = 80
-        static let authUnableToGenerateSRP = 90
-        static let authUnableToGeneratePwd = 100
-        static let authInValidKeySalt = 110
+    public struct AuthErrorCode {
+        static public let credentialExpired = 10
+        static public let credentialInvalid = 20
+        static public let invalidGrant = 30
+        static public let unableToParseToken = 40
+        static public let localCacheBad = 50
+        static public let networkIusse = 60
+        static public let unableToParseAuthInfo = 70
+        static public let authServerSRPInValid = 80
+        static public let authUnableToGenerateSRP = 90
+        static public let authUnableToGeneratePwd = 100
+        static public let authInValidKeySalt = 110
         
-        static let Cache_PasswordEmpty = 0x10000001
+        static public let Cache_PasswordEmpty = 0x10000001
     }
     
-    static let API_offline = 7001
+    static public let API_offline = 7001
     
-    struct UserErrorCode {
-        static let userNameExsit = 12011
-        static let currentWrong = 12021
-        static let newNotMatch = 12022
-        static let pwdUpdateFailed = 12023
-        static let pwdEmpty = 12024
+    public struct UserErrorCode {
+        static public let userNameExsit = 12011
+        static public let currentWrong = 12021
+        static public let newNotMatch = 12022
+        static public let pwdUpdateFailed = 12023
+        static public let pwdEmpty = 12024
     }
     
-    struct SendErrorCode {
-        static let draftBad = 70
+    public struct SendErrorCode {
+        static public let draftBad = 70
     }
     
 }
@@ -115,7 +115,7 @@ extension NSError {
 //localized
 extension NSError {
     
-    class func apiServiceError(code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
+    public class func apiServiceError(code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(
             domain: APIServiceErrorDomain,
             code: code,
@@ -124,28 +124,28 @@ extension NSError {
             localizedRecoverySuggestion: localizedRecoverySuggestion)
     }
     
-    class func badParameter(_ parameter: Any?) -> NSError {
+    public class func badParameter(_ parameter: Any?) -> NSError {
         return apiServiceError(
             code: APIErrorCode.badParameter,
             localizedDescription: NSLocalizedString("Bad parameter", comment: "Description"),
             localizedFailureReason: String(format: NSLocalizedString("Bad parameter: %@", comment: "Description"), "\(String(describing: parameter))"))
     }
     
-    class func badPath(_ path: String) -> NSError {
+    public class func badPath(_ path: String) -> NSError {
         return apiServiceError(
             code: APIErrorCode.badPath,
             localizedDescription: NSLocalizedString("Bad path", comment: "Description"),
             localizedFailureReason: String(format: NSLocalizedString("Unable to construct a valid URL with the following path: %@", comment: "Description"), "\(path)"))
     }
     
-    class func badResponse() -> NSError {
+    public class func badResponse() -> NSError {
         return apiServiceError(
             code: APIErrorCode.badResponse,
             localizedDescription: NSLocalizedString("Bad response", comment: "Description"),
             localizedFailureReason: NSLocalizedString("Can't not find the value from the response body", comment: "Description"))
     }
     
-    class func unableToParseResponse(_ response: Any?) -> NSError {
+    public class func unableToParseResponse(_ response: Any?) -> NSError {
         let noObject = NSLocalizedString("<no object>", comment: "no object error, local only , this could be not translated!")
         return apiServiceError(
             code: APIErrorCode.unableToParseResponse,

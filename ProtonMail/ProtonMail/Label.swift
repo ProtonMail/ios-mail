@@ -11,17 +11,17 @@ import CoreData
 
 
 
-open class Label: NSManagedObject {
+public class Label: NSManagedObject {
     
-    @NSManaged var color: String
-    @NSManaged var isDisplay: Bool
-    @NSManaged var labelID: String
-    @NSManaged var name: String
-    @NSManaged var type: NSNumber
-    @NSManaged var exclusive: Bool
+    @NSManaged public var color: String
+    @NSManaged public var isDisplay: Bool
+    @NSManaged public var labelID: String
+    @NSManaged public var name: String
+    @NSManaged public var type: NSNumber
+    @NSManaged public var exclusive: Bool
     
  /// start at 1 , lower number on the top
-    @NSManaged var order: NSNumber
+    @NSManaged public var order: NSNumber
     
-    @NSManaged var messages: NSSet
+    @NSManaged public var messages: NSSet
 }

@@ -8,8 +8,6 @@
 
 import Foundation
 
-
-
 //
 //  LabelApplayViewModel.swift
 //  ProtonMail
@@ -30,19 +28,19 @@ final class FolderApplyViewModelImpl : LabelViewModel {
         self.labelMessages = Dictionary<String, LabelMessageModel>()
     }
     
-    override open func showArchiveOption() -> Bool {
+    override func showArchiveOption() -> Bool {
         return false;
     }
     
-    open override func getApplyButtonText() -> String {
+    override func getApplyButtonText() -> String {
         return NSLocalizedString("Apply", comment: "folder apply - apply button text")
     }
     
-    open override func getCancelButtonText() -> String {
+    override func getCancelButtonText() -> String {
         return NSLocalizedString("Cancel", comment: "folder apply - cancel button text")
     }
     
-    override open func getLabelMessage( _ label : Label!) -> LabelMessageModel! {
+    override func getLabelMessage( _ label : Label!) -> LabelMessageModel! {
         if let outVar = self.labelMessages[label.labelID] {
             return outVar
         } else {
@@ -76,7 +74,7 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     
-    open override func cellClicked(_ label: Label!) {
+    override func cellClicked(_ label: Label!) {
         
         for (_, model) in self.labelMessages {
             if model.label == label {
@@ -95,7 +93,7 @@ final class FolderApplyViewModelImpl : LabelViewModel {
         }
     }
     
-    override open func apply(archiveMessage : Bool) -> Bool {
+    override func apply(archiveMessage : Bool) -> Bool {
         var changed : Bool = false
         let context = sharedCoreDataService.newMainManagedObjectContext()
         for (key, value) in self.labelMessages {
@@ -141,11 +139,11 @@ final class FolderApplyViewModelImpl : LabelViewModel {
         return changed
     }
     
-    override open func getTitle() -> String {
+    override func getTitle() -> String {
         return NSLocalizedString("Move to Folder", comment: "folder apply - title")
     }
     
-    override open func cancel() {
+    override func cancel() {
 //        let context = sharedCoreDataService.newMainManagedObjectContext()
 //        for (_, value) in self.labelMessages {
 //            
@@ -168,12 +166,12 @@ final class FolderApplyViewModelImpl : LabelViewModel {
 //        }
     }
     
-    open override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
+    override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         return sharedLabelsDataService.fetchedResultsController(.folder)
     }
     
     
-    open override func getFetchType() -> LabelFetchType {
+    override func getFetchType() -> LabelFetchType {
         return .folder
     }
 

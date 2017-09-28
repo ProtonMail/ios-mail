@@ -71,7 +71,7 @@ class LabelTableViewCell: UITableViewCell {
             if showIcon {
                 offset += 16
                 labelIcon.isHidden = false
-                labelleft.priority = 500
+                labelleft.priority = UILayoutPriority(rawValue: 500)
                 let color = UIColor(hexString: model.label.color, alpha:1)
                 var image = UIImage(named: "menu_label")
                 if model.label.exclusive {
@@ -83,7 +83,7 @@ class LabelTableViewCell: UITableViewCell {
                 labelIcon.tintColor = color
             } else {
                 labelIcon.isHidden = true
-                labelleft.priority = 900
+                labelleft.priority = UILayoutPriority(rawValue: 900)
             }
             
             if showEdit {

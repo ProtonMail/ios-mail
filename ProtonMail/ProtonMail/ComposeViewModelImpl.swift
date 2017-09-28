@@ -8,8 +8,31 @@
 
 import Foundation
 
-
-open class ComposeViewModelImpl : ComposeViewModel {
+final class ComposeViewModelImpl : ComposeViewModel {
+    
+    
+    init(subject: String, body: String, files: [FileData], action : ComposeMessageAction!) {
+        super.init()
+        
+        self.message = nil
+        self.setSubject(subject)
+        self.setBody(body)
+        self.messageAction = action
+        
+        self.collectDraft(subject,
+                          body: body,
+                          expir: 0,
+                          pwd: "",
+                          pwdHit: "")
+        
+        
+        self.updateDraft()
+        
+        for f in files {
+            self.uploadAtt(f.data.toAttachment(self.message!, fileName: f.name, type: f.ext))
+        }
+        
+    }
     
     init(msg: Message?, action : ComposeMessageAction!) {
         super.init()
@@ -52,6 +75,22 @@ open class ComposeViewModelImpl : ComposeViewModel {
     
     deinit {
         PMLog.D("ComposeViewModelImpl deinit")
+    }
+    
+    fileprivate let k12HourMinuteFormat = "h:mm a"
+    fileprivate let k24HourMinuteFormat = "HH:mm"
+    private func using12hClockFormat() -> Bool {
+        
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        
+        let dateString = formatter.string(from: Date())
+        let amRange = dateString.range(of: formatter.amSymbol)
+        let pmRange = dateString.range(of: formatter.pmSymbol)
+        
+        return !(pmRange == nil && amRange == nil)
     }
     
     override func uploadAtt(_ att: Attachment!) {
@@ -102,7 +141,7 @@ open class ComposeViewModelImpl : ComposeViewModel {
         if message != nil {
             switch messageAction!
             {
-            case .newDraft, .forward:
+            case .newDraft, .forward, .newDraftFromShare:
                 break;
             case .openDraft:
                 let toContacts = self.toContacts(self.message!.recipientList)
@@ -216,6 +255,12 @@ open class ComposeViewModelImpl : ComposeViewModel {
                                                              body: body,
                                                              attachments: nil,
                                                              inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
+            
+            self.message?.password = pwd
+            self.message?.isRead = true
+            self.message?.passwordHint = pwdHit
+            self.message?.expirationOffset = Int32(expir)
+            
         } else {
             self.message?.recipientList = toJsonString(self.toSelectedContacts)
             self.message?.ccList = toJsonString(self.ccSelectedContacts)
@@ -302,7 +347,8 @@ open class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByPurifyHTML()
                 let on = NSLocalizedString("On", comment: "Title")
                 let at = NSLocalizedString("at", comment: "Title")
-                let time : String! = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' h:mm a") ?? ""
+                let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+                let time : String! = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
                 let sn : String! = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
                 let se : String! = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
                 
@@ -316,8 +362,10 @@ open class ComposeViewModelImpl : ComposeViewModel {
                 
                 return " \(head) \(htmlString) \(sp) \(body)</blockquote> \(foot)"
             case .forward:
-                let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
-                
+                let on = NSLocalizedString("On", comment: "Title")
+                let at = NSLocalizedString("at", comment: "Title")
+                let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+                let time = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
                 
                 let fwdm = NSLocalizedString("Forwarded message", comment: "Title")
                 let from = NSLocalizedString("From:", comment: "Title")
@@ -357,8 +405,19 @@ open class ComposeViewModelImpl : ComposeViewModel {
                 return "\(head)\(htmlString)\(sp)\(body)\(foot)"
             case .newDraft:
                 if !self.body.isEmpty {
-                    let newhtmlString = "\(head) \(self.body) \(htmlString) \(foot)"
+                    let newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
                     self.body = ""
+                    return newhtmlString
+                } else {
+                    if htmlString.trim().isEmpty {
+                        let ret_body = "<div><br><div><div><br></div><div><br></div><div><br></div>" //add some space
+                        return ret_body
+                    }
+                }
+                return htmlString
+            case .newDraftFromShare:
+                if !self.body.isEmpty {
+                    let newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
                     return newhtmlString
                 } else {
                     if htmlString.trim().isEmpty {

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 // MARK : Get messages part
 final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
     
@@ -20,7 +19,7 @@ final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return LabelAPI.Path + AppConstants.getDebugOption
+        return LabelAPI.Path + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -31,7 +30,6 @@ final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
 final class GetLabelsResponse : ApiResponse {
     var labels : [Dictionary<String, Any>]?
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        PMLog.D(response.JSONStringify(true))
         self.labels =  response["Labels"]  as? [Dictionary<String, Any>]
         return true
     }
@@ -60,7 +58,7 @@ final class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return LabelAPI.Path + "/apply/" + self.labelID + AppConstants.getDebugOption
+        return LabelAPI.Path + "/apply/" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -92,7 +90,7 @@ final class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return LabelAPI.Path + "/remove/" + self.labelID + AppConstants.getDebugOption
+        return LabelAPI.Path + "/remove/" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -130,7 +128,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return LabelAPI.Path + AppConstants.getDebugOption
+        return LabelAPI.Path + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -166,7 +164,7 @@ final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return LabelAPI.Path + "/\(labelID)" + AppConstants.getDebugOption
+        return LabelAPI.Path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -178,11 +176,7 @@ final class CreateLabelRequestResponse : ApiResponse {
     var label:Dictionary<String, Any>?
     
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        
-        PMLog.D(response.JSONStringify(true))
-        
         self.label = response["Label"] as? Dictionary<String, Any>
-        
         return true
     }
 }
@@ -202,7 +196,7 @@ final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return LabelAPI.Path + "/\(labelID)" + AppConstants.getDebugOption
+        return LabelAPI.Path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {

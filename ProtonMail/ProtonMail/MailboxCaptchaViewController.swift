@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 protocol MailboxCaptchaVCDelegate {
     func cancel()
     func done()
@@ -69,7 +70,6 @@ class MailboxCaptchaViewController : UIViewController, UIWebViewDelegate {
     
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         let urlString = request.url?.absoluteString
-        
         if urlString?.contains("https://www.google.com/intl/en/policies/privacy") == true {
             return false
         }

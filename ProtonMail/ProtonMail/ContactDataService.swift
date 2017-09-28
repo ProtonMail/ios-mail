@@ -26,7 +26,7 @@ class ContactDataService {
         sharedAPIService.contactAdd(name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
     }
     
-    fileprivate var managedObjectContext: NSManagedObjectContext? {
+    var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
     }
     
@@ -47,7 +47,7 @@ class ContactDataService {
         return []
     }
     
-    fileprivate func allContactsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Contact] {
+    func allContactsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Contact] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
         do {
             if let contacts = try context.fetch(fetchRequest) as? [Contact] {
@@ -113,7 +113,7 @@ class ContactDataService {
     }
     
     // MARK: - Private methods
-    fileprivate func completionBlockForContactCompletionBlock(_ completion: ContactCompletionBlock?) -> APIService.CompletionBlock {
+    func completionBlockForContactCompletionBlock(_ completion: ContactCompletionBlock?) -> APIService.CompletionBlock {
         return { task, response, error in
             if error == nil {
                 self.fetchContacts(completion)
@@ -123,7 +123,7 @@ class ContactDataService {
         }
     }
     
-    fileprivate func removeContacts(_ contacts: [Contact], notInContext context: NSManagedObjectContext) {
+    func removeContacts(_ contacts: [Contact], notInContext context: NSManagedObjectContext) {
         if contacts.count == 0 {
             return
         }
@@ -170,7 +170,7 @@ extension ContactDataService {
         
     }
     
-    fileprivate func requestAccessToAddressBookIfNeeded(_ cp: @escaping ContactVOCompletionBlock) {
+    func requestAccessToAddressBookIfNeeded(_ cp: @escaping ContactVOCompletionBlock) {
         if !sharedAddressBookService.hasAccessToAddressBook() {
             sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: Error?) -> Void in
                 self.processContacts(addressBookAccessGranted: granted, lastError: error, completion: cp)
@@ -178,7 +178,7 @@ extension ContactDataService {
         }
     }
     
-    fileprivate func processContacts(addressBookAccessGranted granted: Bool, lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
+    func processContacts(addressBookAccessGranted granted: Bool, lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
         DispatchQueue.global(qos: DispatchQoS.QoSClass.utility).async {
             var contacts: [ContactVO] = []
             if granted {

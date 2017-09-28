@@ -8,8 +8,7 @@
 
 import Foundation
 
-
-open class SignupViewModelImpl : SignupViewModel {
+class SignupViewModelImpl : SignupViewModel {
     fileprivate var userName : String = ""
     fileprivate var token : String = ""
     fileprivate var isExpired : Bool = true
@@ -47,7 +46,7 @@ open class SignupViewModelImpl : SignupViewModel {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationDefined.CustomizeURLSchema), object:nil)
     }
     
-    internal func notifyReceiveURLSchema (_ notify: Notification) {
+    @objc internal func notifyReceiveURLSchema (_ notify: Notification) {
         if let verifyCode = notify.userInfo?["verifyCode"] as? String {
             delegate?.verificationCodeChanged(self, code: verifyCode)
         }

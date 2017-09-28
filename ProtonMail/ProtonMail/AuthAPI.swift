@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 //TODO:: need refacotr the api request structures
 struct AuthKey {
     static let clientID = "ClientID"
@@ -62,7 +61,7 @@ final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return AuthAPI.Path + "/info" + AppConstants.getDebugOption
+        return AuthAPI.Path + "/info" + AppConstants.DEBUG_OPTION
     }
     
     override open func getIsAuthFunction() -> Bool {
@@ -78,7 +77,7 @@ final class AuthModulusRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return AuthAPI.Path + "/modulus" + AppConstants.getDebugOption
+        return AuthAPI.Path + "/modulus" + AppConstants.DEBUG_OPTION
     }
     
     override open func getIsAuthFunction() -> Bool {
@@ -135,7 +134,7 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return AuthAPI.Path + AppConstants.getDebugOption
+        return AuthAPI.Path + AppConstants.DEBUG_OPTION
     }
     
     override open func getIsAuthFunction() -> Bool {
@@ -174,7 +173,7 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return AuthAPI.Path + "/refresh" + AppConstants.getDebugOption
+        return AuthAPI.Path + "/refresh" + AppConstants.DEBUG_OPTION
     }
     
     override open func getIsAuthFunction() -> Bool {
@@ -195,7 +194,7 @@ final class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getRequestPath() -> String {
-        return AuthAPI.Path + AppConstants.getDebugOption
+        return AuthAPI.Path + AppConstants.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
@@ -205,7 +204,7 @@ final class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
 
 
 // MARK : Response part
-final class AuthResponse : ApiResponse {
+final public class AuthResponse : ApiResponse {
     
     var encPrivateKey : String?
     var accessToken : String?
@@ -248,7 +247,7 @@ final class AuthResponse : ApiResponse {
     }
 }
 
-final class AuthInfoResponse : ApiResponse {
+final public class AuthInfoResponse : ApiResponse {
     
     var Modulus : String?
     var ServerEphemeral : String?

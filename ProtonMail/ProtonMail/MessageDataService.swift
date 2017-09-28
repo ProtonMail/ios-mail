@@ -16,28 +16,29 @@
 
 import Foundation
 import CoreData
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
 }
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
 }
 
 
@@ -567,7 +568,8 @@ class MessageDataService {
         if  badgeNumber < 0 {
             badgeNumber = 0
         }
-        UIApplication.shared.applicationIconBadgeNumber = badgeNumber
+        UIApplication.setBadge(badge: badgeNumber)
+        //UIApplication.shared.applicationIconBadgeNumber = badgeNumber
     }
     
     func cleanLocalMessageCache(_ completion: CompletionBlock?) {
@@ -766,18 +768,18 @@ class MessageDataService {
                                                     destinationDirectoryURL: FileManager.default.attachmentDirectory,
                                                     downloadTask: downloadTask,
                                                     completion: { task, fileURL, error in
-                    var error = error
-                    if let context = attachment.managedObjectContext {
-                        if let fileURL = fileURL {
-                            attachment.localURL = fileURL
-                            attachment.fileData = try? Data(contentsOf: fileURL)
-                            error = context.saveUpstreamIfNeeded()
-                            if error != nil  {
-                                PMLog.D(" error: \(String(describing: error))")
-                            }
-                        }
-                    }
-                    completion?(task, fileURL, error)
+                                                        var error = error
+                                                        if let context = attachment.managedObjectContext {
+                                                            if let fileURL = fileURL {
+                                                                attachment.localURL = fileURL
+                                                                attachment.fileData = try? Data(contentsOf: fileURL)
+                                                                error = context.saveUpstreamIfNeeded()
+                                                                if error != nil  {
+                                                                    PMLog.D(" error: \(String(describing: error))")
+                                                                }
+                                                            }
+                                                        }
+                                                        completion?(task, fileURL, error)
                 })
             } else {
                 PMLog.D("The attachment not exist") //TODO:: need add log here
@@ -929,7 +931,7 @@ class MessageDataService {
                                         if message_out.isRead == false {
                                             message_out.isRead = true
                                             self.queue(message_out, action: .read)
-
+                                            
                                             count = count + needOffset
                                             if count < 0 {
                                                 count = 0
@@ -939,7 +941,8 @@ class MessageDataService {
                                         let _ = message_out.managedObjectContext?.saveUpstreamIfNeeded()
                                         let tmpError = context.saveUpstreamIfNeeded()
                                         
-                                        UIApplication.shared.applicationIconBadgeNumber = count
+                                        UIApplication.setBadge(badge: count)
+                                        //UIApplication.shared.applicationIconBadgeNumber = count
                                         DispatchQueue.main.async {
                                             completion(task, response, message_out, tmpError)
                                         }
@@ -1071,14 +1074,16 @@ class MessageDataService {
         sharedContactDataService.cleanUp()
         sharedLabelsDataService.cleanUp()
         
-        UIApplication.shared.applicationIconBadgeNumber = 0
+        UIApplication.setBadge(badge: 0)
+        //UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     fileprivate func cleanMessage() {
         if let context = managedObjectContext {
             Message.deleteAll(inContext: context)
         }
-        UIApplication.shared.applicationIconBadgeNumber = 0
+        UIApplication.setBadge(badge: 0)
+        //UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     func search(_ query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
@@ -1233,7 +1238,7 @@ class MessageDataService {
                                 let based64Token = token.encodeBase64() as String
                                 let encryptedToken = try based64Token.encryptWithPassphrase(message.password)
                                 
-                                // encrypt keys use public key
+                                // encrypt keys use key
                                 var attPack : [AttachmentKeyPackage] = []
                                 for att in tempAtts {
                                     let newKeyPack = try att.Key?.getSymmetricSessionKeyPackage(message.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
@@ -1251,7 +1256,7 @@ class MessageDataService {
                             }
                         }
                         else {
-                            // encrypt keys use public key
+                            // encrypt keys use key
                             var attPack : [AttachmentKeyPackage] = []
                             for att in tempAtts {
                                 //attID:String!, attKey:String!, Algo : String! = ""
@@ -1303,7 +1308,7 @@ class MessageDataService {
         do {
             if let keys = response?["keys"] as? [[String : String]] {
                 if let body = try message.decryptBody() {
-                    // encrypt body with each public key
+                    // encrypt body with each key
                     for publicKeys in keys {
                         for (email, publicKey) in publicKeys {
                             if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey) {
@@ -1598,6 +1603,7 @@ class MessageDataService {
                                     message.location = MessageLocation.outbox
                                     message.removeLocationFromLabels(currentlocation: .draft, location: .outbox, keepSent: true)
                                 }
+
                                 NSError.alertMessageSentToast()
                                 if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D(" error: \(error)")
@@ -1840,16 +1846,18 @@ class MessageDataService {
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isRead, handler: { message in
             if message.needsUpdate {
                 let action: MessageAction = message.isRead ? .read : .unread
-                if message.location == .inbox {
-                    var count = lastUpdatedStore.UnreadCountForKey(.inbox)
-                    let offset = message.isRead ? -1 : 1
-                    count = count + offset
-                    if count < 0 {
-                        count = 0
-                    }
-                    lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
-                    UIApplication.shared.applicationIconBadgeNumber = count
-                }
+//                if message.location == .inbox {
+//                    var count = lastUpdatedStore.UnreadCountForKey(.inbox)
+//                    let offset = message.isRead ? -1 : 1
+//                    count = count + offset
+//                    if count < 0 {
+//                        count = 0
+//                    }
+//                    lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
+//
+//                    UIApplication.setBadge(badge: count)
+//                    //UIApplication.shared.applicationIconBadgeNumber = count
+//                }
                 
                 self.queue(message, action: action)
             }

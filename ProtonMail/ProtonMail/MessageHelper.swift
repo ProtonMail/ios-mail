@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 open class MessageHelper {
     
     static func messageWithLocation (

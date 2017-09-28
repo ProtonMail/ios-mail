@@ -12,16 +12,16 @@ import Foundation
 // labels and folders manager
 final class LabelManagerViewModelImpl : LabelViewModel {
     fileprivate var labelMessages : Dictionary<String, LabelMessageModel>!
-    public override init() {
+    override init() {
         super.init()
         self.labelMessages = Dictionary<String, LabelMessageModel>()
     }
     
-    override open func showArchiveOption() -> Bool {
+    override func showArchiveOption() -> Bool {
         return false
     }
     
-    override open func getLabelMessage( _ label : Label!) -> LabelMessageModel! {
+    override func getLabelMessage( _ label : Label!) -> LabelMessageModel! {
         if let outVar = self.labelMessages[label.labelID] {
             return outVar
         } else {
@@ -34,19 +34,19 @@ final class LabelManagerViewModelImpl : LabelViewModel {
         }
     }
     
-    override open func getTitle() -> String {
+    override func getTitle() -> String {
         return NSLocalizedString("Manage Labels/Folders", comment: "Title")
     }
     
-    open override func getApplyButtonText() -> String {
+    override func getApplyButtonText() -> String {
         return NSLocalizedString("Delete", comment: "lable manager delete action")
     }
     
-    open override func getCancelButtonText() -> String {
+    override func getCancelButtonText() -> String {
         return NSLocalizedString("Close", comment: "lable manager close action")
     }
     
-    open override func cellClicked(_ label: Label!) {
+    override func cellClicked(_ label: Label!) {
         if let model = self.labelMessages[label.labelID] {
             var plusCount = 1
             if model.totalMessages.count <= 1 || 0 ==  model.originalSelected.count || model.originalSelected.count ==  model.totalMessages.count {
@@ -62,7 +62,7 @@ final class LabelManagerViewModelImpl : LabelViewModel {
         }
     }
     
-    override public func apply(archiveMessage : Bool) -> Bool {
+    override func apply(archiveMessage : Bool) -> Bool {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             for (key, value) in self.labelMessages {
                 if value.currentStatus == 2 { //delete
@@ -79,15 +79,15 @@ final class LabelManagerViewModelImpl : LabelViewModel {
         return true
     }
     
-    override open func cancel() {
+    override func cancel() {
         
     }
     
-    open override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
+    override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         return sharedLabelsDataService.fetchedResultsController(.all)
     }
 
-    open override func getFetchType() -> LabelFetchType {
+    override func getFetchType() -> LabelFetchType {
         return .all
     }
     

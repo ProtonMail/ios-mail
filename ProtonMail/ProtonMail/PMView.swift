@@ -9,11 +9,11 @@
 import UIKit
 
 extension PMView {
-    func getNibName() -> String {
+    @objc func getNibName() -> String {
         fatalError("This method must be overridden")
     }
     
-    func setup() -> Void {
+    @objc func setup() -> Void {
         
     }
 }

@@ -17,12 +17,10 @@
 import Foundation
 import CoreData
 
-let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain("CoreDataService")
 
 let sharedCoreDataService = CoreDataService()
 
 class CoreDataService {
-    
     struct ErrorCode {
         static let noManagedObjectContext = 10000
     }
@@ -36,7 +34,7 @@ class CoreDataService {
         return self.newPersistentStoreCoordinator(self.managedObjectModel)
     }()
     
-    // MARK: - Public variables
+    // MARK: - variables
     
     lazy var mainManagedObjectContext: NSManagedObjectContext? = {
         if self.persistentStoreCoordinator == nil {
@@ -49,7 +47,7 @@ class CoreDataService {
         }()
     
     
-    // MARK: - Public methods
+    // MARK: - methods
     
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
         if let url = URL(string: urlString) {
@@ -73,7 +71,12 @@ class CoreDataService {
     
     func newPersistentStoreCoordinator(_ managedObjectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        var url = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
+        guard let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier:AppConstants.APP_GROUP) else {
+            //TODO::fix later need add error
+            PMLog.D("Can't find the group")
+            return nil
+        }
+        var url = containerUrl.appendingPathComponent("ProtonMail.sqlite")
         do {
             try coordinator?.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
             url.excludeFromBackup()
@@ -96,32 +99,46 @@ class CoreDataService {
     }
     
     func popError (_ error : NSError) {
-        
         // Report any error we got.
         var dict = [AnyHashable: Any]()
         dict[NSLocalizedDescriptionKey] = NSLocalizedString("Failed to initialize the application's saved data", comment: "Description")
         dict[NSLocalizedFailureReasonErrorKey] = NSLocalizedString("There was an error creating or loading the application's saved data.", comment: "Description")
         dict[NSUnderlyingErrorKey] = error
         //TODO:: need monitor
-        let alertError = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any])
+        
+        let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain("CoreDataService")
+        let _ = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any] as? [String : Any])
         PMLog.D("Unresolved error \(error), \(error.userInfo)")
         
-        let alertController = alertError.alertController()
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Action"), style: .default, handler: { (action) -> Void in
-            abort()
-        }))
-        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
-        
+        //TODO::Fix later
+//        let alertController = alertError.alertController()
+//        alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Action"), style: .default, handler: { (action) -> Void in
+//            abort()
+//        }))
+//        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+//        
     }
+
+    func cleanLegacy() {
+        //the old code data file
+        let url = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
+        do {
+            try FileManager.default.removeItem(at: url)
+            PMLog.D("clean ok")
+        } catch let error as NSError{
+            PMLog.D("\(error)")
+        }
+    }
+    
 }
 
 // MARK: - NSError Core Data extensions
-
-extension NSError {
-    class func noManagedObjectContext() -> NSError {
-        return NSError.protonMailError(
-            10000,
-            localizedDescription: NSLocalizedString("No managed object context", comment: "Description"),
-            localizedFailureReason: NSLocalizedString("No managed object context.", comment: "Description"))
-    }
-}
+//
+//extension NSError {
+//    class func noManagedObjectContext() -> NSError {
+//        return NSError.protonMailError(
+//            10000,
+//            localizedDescription: NSLocalizedString("No managed object context", comment: "Description"),
+//            localizedFailureReason: NSLocalizedString("No managed object context.", comment: "Description"))
+//    }
+//}

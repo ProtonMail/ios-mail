@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 extension APIService {
     
     fileprivate struct TransType {

@@ -137,35 +137,35 @@ extension APIService {
     
     fileprivate var deviceToken: String {
         get {
-            return UserDefaults.standard.string(forKey: DeviceKey.token) ?? ""
+            return SharedCacheBase.getDefault().string(forKey: DeviceKey.token) ?? ""
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: DeviceKey.token)
+            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.token)
         }
     }
     fileprivate var deviceUID: String {
         get {
-            return UserDefaults.standard.string(forKey: DeviceKey.UID) ?? ""
+            return SharedCacheBase.getDefault().string(forKey: DeviceKey.UID) ?? ""
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: DeviceKey.UID)
+            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.UID)
         }
     }
     
     fileprivate var badToken: String {
         get {
-            return UserDefaults.standard.string(forKey: DeviceKey.badToken) ?? ""
+            return SharedCacheBase.getDefault().string(forKey: DeviceKey.badToken) ?? ""
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: DeviceKey.badToken)
+            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.badToken)
         }
     }
     fileprivate var badUID: String {
         get {
-            return UserDefaults.standard.string(forKey: DeviceKey.badUID) ?? ""
+            return SharedCacheBase.getDefault().string(forKey: DeviceKey.badUID) ?? ""
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: DeviceKey.badUID)
+            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.badUID)
         }
     }
     

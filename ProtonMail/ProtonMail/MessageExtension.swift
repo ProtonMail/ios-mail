@@ -41,7 +41,7 @@ extension Message {
         static let starredTag = "starred"
     }
     
-    // MARK: - Public variables
+    // MARK: - variables
     
     var allEmailAddresses: String {
         var lists: [String] = []
@@ -285,7 +285,7 @@ extension Message {
         
     }
     
-    // MARK: - Public methods
+    // MARK: - methods
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
@@ -357,7 +357,7 @@ extension Message {
         isStarred = tag.range(of: Constants.starredTag) != nil
     }
     
-    // MARK: Public methods
+    // MARK: methods
     func decryptBody() throws -> String? {
         return try body.decryptMessage(passphrase)
     }
@@ -372,7 +372,6 @@ extension Message {
     }
     
     func decryptBodyIfNeeded() throws -> String? {
-        //PMLog.D("\(body)")
         if !checkIsEncrypted() {
             if isPlainText() {
                 return body.ln2br() 
@@ -381,7 +380,11 @@ extension Message {
         } else {
             if var body = try decryptBody() {
                 if isEncrypted == 8 {
-                    body = body.multipartGetHtmlContent () 
+                    if let mimeMsg = MIMEMessage(string: body) {
+                        body = mimeMsg.htmlBody ?? ""
+                    } else { //backup plan
+                        body = body.multipartGetHtmlContent ()
+                    }
                 } else if isEncrypted == 7 {
                     body = body.ln2br() 
                 }
@@ -529,7 +532,7 @@ extension Message {
 
 extension String {
     
-    public func multipartGetHtmlContent() -> String {
+    func multipartGetHtmlContent() -> String {
 
         let textplainType = "text/plain".data(using: String.Encoding.utf8)
         let htmlType = "text/html".data(using: String.Encoding.utf8)

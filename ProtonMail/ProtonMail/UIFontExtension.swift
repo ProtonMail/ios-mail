@@ -16,6 +16,7 @@
 
 import Foundation
 
+
 extension UIFont {
     class func robotoThin(size: CGFloat) -> UIFont {
         return UIFont(name: "Roboto-Thin", size: size)!
@@ -50,7 +51,7 @@ extension UIFont {
         /// size 16
         static var h4:CGFloat = 16.0
         static var h5:CGFloat = 14.0
- /// size 12
+        /// size 12
         static var h6:CGFloat = 12.0
         static var h7:CGFloat = 9.0
     }

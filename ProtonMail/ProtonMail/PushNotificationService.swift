@@ -17,9 +17,9 @@
 import Foundation
 import UIKit
 
-let sharedPushNotificationService = PushNotificationService()
+public let sharedPushNotificationService = PushNotificationService()
 
-class PushNotificationService {
+public class PushNotificationService {
     
     fileprivate var launchOptions: [AnyHashable: Any]? = nil
     
@@ -34,19 +34,19 @@ class PushNotificationService {
     
     // MARK: - registration methods
     
-    func registerUserNotificationSettings() {
+    public func registerUserNotificationSettings() {
         let types: UIUserNotificationType = [.badge , .sound , .alert]
         let settings = UIUserNotificationSettings(types: types, categories: nil)
         UIApplication.shared.registerUserNotificationSettings(settings)
     }
     
-    func registerForRemoteNotifications() {
+    public func registerForRemoteNotifications() {
         if sharedUserDataService.isSignedIn {
            UIApplication.shared.registerForRemoteNotifications()
         }
     }
     
-    func unregisterForRemoteNotifications() {
+    public func unregisterForRemoteNotifications() {
         UIApplication.shared.unregisterForRemoteNotifications()
         sharedAPIService.deviceUnregister()
     }
@@ -54,11 +54,11 @@ class PushNotificationService {
     
     // MARK: - callback methods
     
-    func didFailToRegisterForRemoteNotificationsWithError(_ error: NSError) {
+    public func didFailToRegisterForRemoteNotificationsWithError(_ error: NSError) {
         PMLog.D(" \(error)")
     }
     
-    func setLaunchOptions (_ launchOptions: [AnyHashable: Any]?) {
+    public func setLaunchOptions (_ launchOptions: [AnyHashable: Any]?) {
         if let launchoption = launchOptions {
             if let option = launchoption["UIApplicationLaunchOptionsRemoteNotificationKey"] as? [AnyHashable: Any] {
                 self.launchOptions = option;
@@ -66,11 +66,11 @@ class PushNotificationService {
         }
     }
     
-    func setNotificationOptions (_ userInfo: [AnyHashable: Any]?) {
+    public func setNotificationOptions (_ userInfo: [AnyHashable: Any]?) {
         self.launchOptions = userInfo;
     }
     
-    func processCachedLaunchOptions() {
+    public func processCachedLaunchOptions() {
         if let options = self.launchOptions {
             sharedPushNotificationService.didReceiveRemoteNotification(options, forceProcess: true, fetchCompletionHandler: { (UIBackgroundFetchResult) -> Void in
             })
@@ -78,7 +78,7 @@ class PushNotificationService {
         }
     }
     
-    func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         if sharedUserDataService.isSignedIn && sharedUserDataService.isMailboxPWDOk {
             let application = UIApplication.shared
             if let messageid = messageIDForUserInfo(userInfo) {
@@ -104,20 +104,9 @@ class PushNotificationService {
                 }
             }
         }
-        
-        //TODO :: fix the notification fetch part
-        //        sharedMessageDataService.fetchLatestMessagesForLocation(.inbox, completion: { (task, messages, error) -> Void in
-        //            if error != nil {
-        //                completionHandler(.Failed)
-        //            } else if messages != nil && messages!.isEmpty {
-        //                completionHandler(.NoData)
-        //            } else {
-        //                completionHandler(.NewData)
-        //            }
-        //        })
     }
     
-    func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data) {
+    public func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data) {
         sharedAPIService.cleanBadKey(deviceToken)
         sharedAPIService.deviceRegisterWithToken(deviceToken, completion: { (_, _, error) -> Void in
             if let error = error {
@@ -126,19 +115,19 @@ class PushNotificationService {
         })
     }
     
-    func didRegisterUserNotificationSettings(_ notificationSettings: UIUserNotificationSettings) {
+    public func didRegisterUserNotificationSettings(_ notificationSettings: UIUserNotificationSettings) {
         
     }
     
     
     // MARK: - Notifications
     
-    @objc func didSignInNotification(_ notification: Notification) {
+    @objc public func didSignInNotification(_ notification: Notification) {
         registerUserNotificationSettings()
         registerForRemoteNotifications()
     }
     
-    @objc func didSignOutNotification(_ notification: Notification) {
+    @objc public func didSignOutNotification(_ notification: Notification) {
         unregisterForRemoteNotifications()
     }
     

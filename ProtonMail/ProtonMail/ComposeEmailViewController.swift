@@ -7,31 +7,30 @@
 //
 
 import UIKit
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
 }
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
 }
-
-
 
 class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
@@ -81,7 +80,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     fileprivate let kNumberOfHoursInTimePicker: Int = 24
     
     fileprivate let kPasswordSegue : String = "to_eo_password_segue"
-
+    
     deinit {
         self.webView.delegate = nil
         self.webView.stopLoading()
@@ -208,12 +207,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         stopAutoSave()
     }
     
-    internal func willResignActiveNotification (_ notify: Notification) {
+    @objc internal func willResignActiveNotification (_ notify: Notification) {
         self.autoSaveTimer()
         dismissKeyboard()
     }
     
-    internal func statusBarHit (_ notify: Notification) {
+    @objc internal func statusBarHit (_ notify: Notification) {
         webView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
@@ -229,8 +228,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.white,
-            NSFontAttributeName: navigationBarTitleFont
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: navigationBarTitleFont
         ]
         
         self.navigationItem.leftBarButtonItem?.title = NSLocalizedString("Cancel", comment: "Action")
@@ -252,13 +251,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
     }
     
-    internal func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController)
-    {
+    internal func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController) {
         presentingController.providesPresentationContextTransitionStyle = true;
         presentingController.definesPresentationContext = true;
         presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
     }
-
+    
     
     override func editorDidScroll(withPosition position: Int) {
         super.editorDidScroll(withPosition: position)
@@ -271,7 +269,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     fileprivate func updateContentLayout(_ animation: Bool) {
         UIView.animate(withDuration: animation ? 0.25 : 0, animations: { () -> Void in
             for subview in self.webView.scrollView.subviews {
-                let sub = subview 
+                let sub = subview
                 if sub == self.composeView.view {
                     continue
                 } else if sub is UIImageView {
@@ -303,17 +301,33 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             self.sendMessage()
         }))
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
-        present(alertController, animated: true, completion: nil)        
+        present(alertController, animated: true, completion: nil)
     }
     
     func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
             if self.composeView.hasOutSideEmails && self.encryptionPassword.characters.count <= 0 {
-                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
+                let emails = self.composeView.allEmails
+                //show loading
+                ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+                let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
+                api.call({ (task, response: EmailsCheckResponse?, hasError : Bool) in
+                    //hide loading
+                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                    if let res = response, res.hasOutsideEmails == false {
+                        self.sendMessageStepTwo()
+                    } else {
+                        self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
+                    }
+                })
                 return;
             }
         }
-        
+        self.sendMessageStepTwo()
+    
+    }
+    
+    internal func sendMessageStepTwo() {
         if self.viewModel.toSelectedContacts.count <= 0 &&
             self.viewModel.ccSelectedContacts.count <= 0 &&
             self.viewModel.bccSelectedContacts.count <= 0 {
@@ -342,7 +356,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     @IBAction func cancel_clicked(_ sender: UIBarButtonItem) {
-        
         let dismiss: (() -> Void) = {
             self.dismissKeyboard()
             if self.presentingViewController != nil {
@@ -377,30 +390,26 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     // MARK: - Private methods
-    fileprivate func setupAutoSave()
-    {
+    fileprivate func setupAutoSave() {
         self.timer = Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(ComposeEmailViewController.autoSaveTimer), userInfo: nil, repeats: true)
         if viewModel.getActionType() != .openDraft {
             self.timer.fire()
         }
     }
     
-    fileprivate func stopAutoSave()
-    {
+    fileprivate func stopAutoSave() {
         if self.timer != nil {
             self.timer.invalidate()
             self.timer = nil
         }
     }
     
-    func autoSaveTimer()
-    {
+    @objc func autoSaveTimer() {
         self.collectDraft()
         self.viewModel.updateDraft()
     }
     
-    fileprivate func collectDraft()
-    {
+    fileprivate func collectDraft() {
         let orignal = self.getOrignalEmbedImages()
         let edited = self.getEditedEmbedImages()
         self.checkEmbedImageEdit(orignal!, edited: edited!)
@@ -445,11 +454,11 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
 extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
     
     func Cancelled() {
-//        updateEmbedImages()
-//        
-//        let test = self.getHTML()
-//        
-//        PMLog.D(test)
+        //        updateEmbedImages()
+        //
+        //        let test = self.getHTML()
+        //
+        //        PMLog.D(test)
     }
     
     func Apply(_ password: String, confirmPassword: String, hint: String) {
@@ -552,9 +561,9 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView) {
         self.performSegue(withIdentifier: kPasswordSegue, sender: self)
-//        self.actualEncryptionStep = EncryptionStep.DefinePassword
-//        self.composeView.showDefinePasswordView()
-//        self.composeView.hidePasswordAndConfirmDoesntMatch()
+        //        self.actualEncryptionStep = EncryptionStep.DefinePassword
+        //        self.composeView.showDefinePasswordView()
+        //        self.composeView.hidePasswordAndConfirmDoesntMatch()
     }
     
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView) {
@@ -733,7 +742,7 @@ extension ComposeEmailViewController: UIPickerViewDelegate {
         self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
     }
     
-
+    
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return super.canPerformAction(action, withSender: sender)
     }

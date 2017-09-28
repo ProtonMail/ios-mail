@@ -12,6 +12,7 @@
 
 import UIKit
 import CoreData
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -375,21 +376,21 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     // MARK: - Button Targets
     
-    internal func composeButtonTapped() {
+    @objc internal func composeButtonTapped() {
         if checkHuman() {
             self.performSegue(withIdentifier: kSegueToCompose, sender: self)
         }
     }
     
-    internal func searchButtonTapped() {
+    @objc internal func searchButtonTapped() {
         self.performSegue(withIdentifier: kSegueToSearchController, sender: self)
     }
     
-    internal func labelButtonTapped() {
+    @objc internal func labelButtonTapped() {
         self.performSegue(withIdentifier: kSegueToApplyLabels, sender: self)
     }
     
-    internal func folderButtonTapped() {
+    @objc internal func folderButtonTapped() {
         self.performSegue(withIdentifier: kSegueMoveToFolders, sender: self)
     }
     
@@ -397,7 +398,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         performSegue(withIdentifier: kSegueToMessageDetailFromNotification, sender: self)
     }
     
-    internal func removeButtonTapped() {
+    @objc internal func removeButtonTapped() {
         if viewModel.isDelete() {
             moveMessagesToLocation(.deleted)
             showMessageMoved(title: NSLocalizedString("Message has been deleted.", comment: "Title"))
@@ -408,17 +409,17 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         cancelButtonTapped();
     }
     
-    internal func favoriteButtonTapped() {
+    @objc internal func favoriteButtonTapped() {
         selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
         cancelButtonTapped();
     }
     
-    internal func unreadButtonTapped() {
+    @objc internal func unreadButtonTapped() {
         selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
         cancelButtonTapped();
     }
     
-    internal func moreButtonTapped() {
+    @objc internal func moreButtonTapped() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel",  comment: "Action"), style: .cancel, handler: nil))
         
@@ -476,14 +477,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         present(alertController, animated: true, completion: nil)
     }
     
-    internal func cancelButtonTapped() {
+    @objc internal func cancelButtonTapped() {
         self.selectedMessages.removeAllObjects()
         self.hideCheckOptions()
         
         self.updateNavigationController(false)
     }
     
-    internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+    @objc internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         self.showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(listEditing)
     }
@@ -559,7 +560,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         }
     }
     
-    func refreshPage()
+    @objc func refreshPage()
     {
         if !fetchingStopped {
             getLatestMessages()
@@ -790,7 +791,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         })
     }
     
-    func timerTriggered() {
+    @objc func timerTriggered() {
         self.hideUndoView()
     }
     
@@ -887,7 +888,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         PMLog.D("error: \(error)")
     }
     
-    internal func getLatestMessages() {
+    @objc internal func getLatestMessages() {
         self.hideTopMessage()
         if !fetchingMessage {
             fetchingMessage = true
@@ -1361,7 +1362,7 @@ extension MailboxViewController : TopMessageViewDelegate {
         }
     }
     
-    internal func reachabilityChanged(_ note : Notification) {
+    @objc internal func reachabilityChanged(_ note : Notification) {
         if let curReach = note.object as? Reachability {
             self.updateInterfaceWithReachability(curReach)
         } else {
@@ -1475,7 +1476,7 @@ extension MailboxViewController: UITableViewDataSource {
         return fetchedResultsController?.numberOfSections() ?? 1
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let rIndex = self.getRatingIndex() {
             if rIndex == indexPath {
@@ -1490,12 +1491,12 @@ extension MailboxViewController: UITableViewDataSource {
         return mailboxCell
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = fetchedResultsController?.numberOfRowsInSection(section) ?? 0
         return count
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
             cell.separatorInset = UIEdgeInsets.zero
         }
@@ -1575,7 +1576,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 // MARK: - UITableViewDelegate
 
 extension MailboxViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if let rIndex = self.getRatingIndex() {
             if rIndex == indexPath {
                 return kMailboxRateReviewCellHeight
@@ -1584,7 +1585,7 @@ extension MailboxViewController: UITableViewDelegate {
         return kMailboxCellHeight
     }
     
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    @objc func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if let rIndex = self.getRatingIndex() {
             if rIndex == indexPath {
                 return nil
@@ -1593,7 +1594,7 @@ extension MailboxViewController: UITableViewDelegate {
         return indexPath
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
             if (self.listEditing) {
                 let messageAlreadySelected: Bool = selectedMessages.contains(message.messageID)

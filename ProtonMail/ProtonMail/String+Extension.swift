@@ -10,27 +10,14 @@ import Foundation
 
 extension String {
     
-    func alertController() -> UIAlertController {
-        let message = self
-        return UIAlertController(title: NSLocalizedString("Alert", comment: "alert title"), message: message, preferredStyle: .alert)
-    }
+
     
-    func alertToast() -> Void {
-        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.labelText = NSLocalizedString("Alert", comment: "alert title");
-        hud.detailsLabelText = self
-        hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
-    }
-    
-    func contains(_ s: String) -> Bool
+    public func contains(check s: String) -> Bool
     {
         return self.range(of: s, options: NSString.CompareOptions.caseInsensitive) != nil ? true : false
     }
     
-    func isMatch(_ regex: String, options: NSRegularExpression.Options) -> Bool
+    public func isMatch(_ regex: String, options: NSRegularExpression.Options) -> Bool
     {
         do {
             let exp = try NSRegularExpression(pattern: regex, options: options)
@@ -71,7 +58,7 @@ extension String {
      
      :returns: true | false
      */
-    func isValidEmail() -> Bool {
+    public func isValidEmail() -> Bool {
         //"[A-Z0-9a-z]+([._%+-]{1}[A-Z0-9a-z]+)*@[A-Z0-9a-z]+([.-]{1}[A-Z0-9a-z]+)*(\\.[A-Za-z]{2,4}){0,1}"       //"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
         let emailRegEx = "^(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?(?:(?:(?:[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+(?:\\.[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+)*)|(?:\"(?:(?:(?:(?: )*(?:(?:[!#-Z^-~]|\\[|\\])|(?:\\\\(?:\\t|[ -~]))))+(?: )*)|(?: )+)\"))(?:@)(?:(?:(?:[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)(?:\\.[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)*)|(?:\\[(?:(?:(?:(?:(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))\\.){3}(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))))|(?:(?:(?: )*[!-Z^-~])*(?: )*)|(?:[Vv][0-9A-Fa-f]+\\.[-A-Za-z0-9._~!$&'()*+,;=:]+))\\])))(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?$"
         if let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx) as NSPredicate? {
@@ -88,7 +75,7 @@ extension String {
      
      :returns: trimed string value
      */
-    func trim() -> String {
+    public func trim() -> String {
         return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
@@ -98,7 +85,7 @@ extension String {
      
      :returns: [ [String:String] ]
      */
-    func parseJson() -> [[String:String]]? {
+    public func parseJson() -> [[String:String]]? {
         if self.isEmpty {
             return [];
         }
@@ -120,7 +107,7 @@ extension String {
      
      :returns: parsed address
      */
-    func getDisplayAddress() -> String {
+    public func getDisplayAddress() -> String {
         var lists: [String] = []
         let recipients : [[String : String]] = self.parseJson()!
         for dict:[String : String] in recipients {
@@ -142,19 +129,19 @@ extension String {
      
      :returns: [String]
      */
-    func splitByComma() -> [String] {
+    public func splitByComma() -> [String] {
         return self.components(separatedBy: ",")
     }
     
-    func ln2br() -> String {
+    public func ln2br() -> String {
         return  self.replacingOccurrences(of: "\n", with: "<br />")
     }
     
-    func rmln() -> String {
+    public func rmln() -> String {
         return  self.replacingOccurrences(of: "\n", with: "")
     }
     
-    func lr2lrln() -> String {
+    public func lr2lrln() -> String {
         return  self.replacingOccurrences(of: "\r", with: "\r\n")
     }
     
@@ -163,7 +150,7 @@ extension String {
      
      :returns: String
      */
-    func formatJsonContact(_ mailto : Bool = false) -> String {
+    public func formatJsonContact(_ mailto : Bool = false) -> String {
         var lists: [String] = []
         
         let recipients : [[String : String]] = self.parseJson()!
@@ -182,7 +169,7 @@ extension String {
      
      :returns: String
      */
-    func decodeHtml() -> String {
+    public func decodeHtml() -> String {
         var result = self.replacingOccurrences(of: "&amp;", with: "&", options: NSString.CompareOptions.caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: "&quot;", with: "\"", options: NSString.CompareOptions.caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: "&#039;", with: "'", options: NSString.CompareOptions.caseInsensitive, range: nil)
@@ -192,7 +179,7 @@ extension String {
         return result
     }
     
-    func encodeHtml() -> String {
+    public func encodeHtml() -> String {
         var result = self.replacingOccurrences(of: "&", with: "&amp;", options: NSString.CompareOptions.caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: "\"", with: "&quot;", options: NSString.CompareOptions.caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: "'", with: "&#039;", options: NSString.CompareOptions.caseInsensitive, range: nil)
@@ -201,12 +188,12 @@ extension String {
         return result
     }
     
-    func plainText() -> String {
+    public func plainText() -> String {
         return self;
     }
     
     
-    func stringByStrippingStyleHTML() -> String {
+    public func stringByStrippingStyleHTML() -> String {
         let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
             let regex = try NSRegularExpression(pattern: "<style[^>]*?>.*?</style>", options:options)
@@ -220,11 +207,11 @@ extension String {
         return self
     }
     
-    func preg_replace_none_regex (_ partten: String, replaceto:String) -> String {
+    public func preg_replace_none_regex (_ partten: String, replaceto:String) -> String {
         return self.replacingOccurrences(of: partten, with: replaceto, options: NSString.CompareOptions.caseInsensitive, range: nil)
     }
     
-    func preg_replace (_ partten: String, replaceto:String) -> String {
+    public func preg_replace (_ partten: String, replaceto:String) -> String {
         let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
             let regex = try NSRegularExpression(pattern: partten, options:options)
@@ -238,7 +225,7 @@ extension String {
         return self
     }
     
-    func preg_match (_ partten: String) -> Bool {
+    public func preg_match (_ partten: String) -> Bool {
         let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
             let regex = try NSRegularExpression(pattern: partten, options:options)
@@ -251,7 +238,7 @@ extension String {
         return false
     }
     
-    func hasImage () -> Bool {
+    public func hasImage () -> Bool {
         if self.preg_match("\\ssrc='(?!cid:)") {
             return true
         }
@@ -273,7 +260,7 @@ extension String {
         return false
     }
     
-    func stringByPurifyImages () -> String {
+    public func stringByPurifyImages () -> String {
         //src=\"(?!cid:)(.*?)(^|>|\"|\\s)
        //let out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)|srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
         
@@ -288,7 +275,7 @@ extension String {
         return out
     }
     
-    func stringFixImages () -> String {
+    public func stringFixImages () -> String {
         var out = self.preg_replace(" data-src='", replaceto: " src='")
         out = out.preg_replace(" data-src=\"", replaceto: " src=\"")
         out = out.preg_replace(" data-srcset=", replaceto: " srcset=")
@@ -300,11 +287,11 @@ extension String {
         return out
     }
     
-    func stringBySetupInlineImage(_ from : String, to: String) -> String {
+    public func stringBySetupInlineImage(_ from : String, to: String) -> String {
         return self.preg_replace_none_regex(from, replaceto:to);
     }
     
-    func stringByPurifyHTML() -> String {
+    public func stringByPurifyHTML() -> String {
         //|<(\\/?link.*?)>   <[^>]*?alert.*?>| |<[^>]*?confirm.*?> //the comment out part case hpylink have those key works been filtered out
         let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>|<img.*?.onerror=alert.*?>", replaceto: " ")
         
@@ -382,14 +369,14 @@ extension String {
         //        }
     }
     
-    func stringByStrippingBodyStyle() -> String {
+    public func stringByStrippingBodyStyle() -> String {
         let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
             let regexBody = try NSRegularExpression(pattern: "<body[^>]*>", options:options)
             let matches = regexBody.matches(in: self, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location: 0, length: self.characters.count))
             if let first = matches.first {
                 if first.numberOfRanges > 0 {
-                    let range = first.rangeAt(0)
+                    let range = first.range(at: 0)
                     if let nRange = self.range(from: range) {
                         var bodyTag = self.substring(with: nRange)
                         if !bodyTag.isEmpty && bodyTag.characters.count > 0  {
@@ -411,7 +398,7 @@ extension String {
         return self
     }
     
-    static func randomString(_ len:Int) -> String {
+    static public func randomString(_ len:Int) -> String {
         let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         let randomString : NSMutableString = NSMutableString(capacity: len)
         let length = UInt32 (letters.length)
@@ -422,40 +409,7 @@ extension String {
         return randomString as String
     }
     
-//    func rangeFromNSRange(nsRange : NSRange) -> Range<String.Index>? {
-//        let from16 = utf16.startIndex.advancedBy(nsRange.location, limit: utf16.endIndex)
-//        let to16 = from16.advancedBy(nsRange.length, limit: utf16.endIndex)
-//        if let from = String.Index(from16, within: self),
-//            let to = String.Index(to16, within: self) {
-//            return from ..< to
-//        }
-//        return nil
-//    }
-//    
-//    func NSRangeFromRange(range : Range<String.Index>) -> NSRange {
-//        let utf16view = self.utf16
-//        let from = String.UTF16View.Index(range.startIndex, within: utf16view)
-//        let to = String.UTF16View.Index(range.endIndex, within: utf16view)
-//        return NSMakeRange(utf16view.startIndex.distanceTo(from), from.distanceTo(to))
-//    }
-//    
-//    
-//    func RangeFromNSRange(range: Range<Int>) -> Range<String.Index> {
-//        let startIndex =  self.index(self.startIndex, offsetBy: range.lowerBound)
-//        let endIndex = self.index(self.startIndex, offsetBy: range.upperBound)
-//        
-//        //let startIndex = self.startIndex.advancedBy(range.lowerBound)
-//        //let endIndex = startIndex.advancedBy(range.endIndex - range.startIndex)
-//        return startIndex ..< endIndex
-//    }
-
-    func nsRange(from range: Range<String.Index>) -> NSRange {
-        let from = range.lowerBound.samePosition(in: utf16)
-        let to = range.upperBound.samePosition(in: utf16)
-        return NSRange(location: utf16.distance(from: utf16.startIndex, to: from), length: utf16.distance(from: from, to: to))
-    }
-    
-    func range(from nsRange: NSRange) -> Range<String.Index>? {
+    public func range(from nsRange: NSRange) -> Range<String.Index>? {
         guard
             let from16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex),
             let to16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location + nsRange.length, limitedBy: utf16.endIndex),
@@ -465,13 +419,13 @@ extension String {
         return from ..< to
     }
     
-    func encodeBase64() -> String {
+    public func encodeBase64() -> String {
         let utf8str = self.data(using: String.Encoding.utf8)
         let base64Encoded = utf8str!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         return base64Encoded
     }
     
-    func decodeBase64() -> String {
+    public func decodeBase64() -> String {
         let decodedData = Data(base64Encoded: self, options: NSData.Base64DecodingOptions(rawValue: 0))
         let decodedString = NSString(data: decodedData!, encoding: String.Encoding.utf8.rawValue)
         PMLog.D(any: decodedString!) // foo
@@ -479,13 +433,13 @@ extension String {
         return decodedString! as String
     }
     
-    func decodeBase64() -> Data {
+    public func decodeBase64() -> Data {
         let decodedData = Data(base64Encoded: self, options: NSData.Base64DecodingOptions(rawValue: 0))
         return decodedData!
     }
     
     //
-    func toContacts() -> [ContactVO] {
+    public func toContacts() -> [ContactVO] {
         var out : [ContactVO] = [ContactVO]();
         let recipients : [[String : String]] = self.parseJson()!
         for dict:[String : String] in recipients {
@@ -494,7 +448,7 @@ extension String {
         return out
     }
     
-    func toContact() -> ContactVO? {
+    public func toContact() -> ContactVO? {
         var out : ContactVO? = nil
         let recipients : [String : String] = self.parseObject()
         
@@ -507,7 +461,7 @@ extension String {
         return out
     }
     
-    func parseObject () -> [String:String] {
+    public func parseObject () -> [String:String] {
         if self.isEmpty {
             return ["" : ""];
         }
@@ -521,7 +475,7 @@ extension String {
         return ["":""]
     }
     
-    func stringByAppendingPathComponent(_ pathComponent: String) -> String {
+    public func stringByAppendingPathComponent(_ pathComponent: String) -> String {
         return (self as NSString).appendingPathComponent(pathComponent)
     }
     
@@ -538,7 +492,7 @@ extension String {
         return String(self[i] as Character)
     }
     
-    subscript (r: Range<Int>) -> String {
-        return substring(with: characters.index(startIndex, offsetBy: r.upperBound) ..< characters.index(startIndex, offsetBy: r.upperBound))
-    }
+//    subscript (r: Range<Int>) -> String {
+//        return substring(with: characters.index(startIndex, offsetBy: r.upperBound) ..< characters.index(startIndex, offsetBy: r.upperBound))
+//    }
 }

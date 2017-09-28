@@ -25,8 +25,8 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
     @IBOutlet weak var pickerButton: UIButton!
     
     //define
-    fileprivate let hidePriority : UILayoutPriority = 1.0;
-    fileprivate let showPriority: UILayoutPriority = 750.0;
+    fileprivate let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0);
+    fileprivate let showPriority: UILayoutPriority = UILayoutPriority(rawValue: 750.0);
     
     @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
@@ -68,8 +68,8 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        emailTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Cell phone number", comment: "place holder"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Enter Verification Code", comment: "place holder"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        emailTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Cell phone number", comment: "place holder"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Enter Verification Code", comment: "place holder"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
         topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
         topTitleLabel.text = NSLocalizedString("Human Verification", comment: "human verification top title")
@@ -136,7 +136,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         }
     }
     
-    func countDown() {
+    @objc func countDown() {
         let count = self.viewModel.getTimerSet()
         UIView.performWithoutAnimation { () -> Void in
             if count != 0 {

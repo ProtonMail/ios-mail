@@ -14,7 +14,7 @@ import Foundation
 
 extension UIScrollView {
 
-    func slideToBottom() {
+    public func slideToBottom() {
         let bottomOffset: CGPoint = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height);
         self.setContentOffset(bottomOffset, animated:true)
     }

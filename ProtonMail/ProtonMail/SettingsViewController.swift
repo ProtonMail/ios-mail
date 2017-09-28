@@ -78,7 +78,7 @@ class SettingsViewController: ProtonMailViewController {
         setupUserInfo()
     }
     
-    func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         if (self.activeField != nil) {
             self.activeField.resignFirstResponder()
         }

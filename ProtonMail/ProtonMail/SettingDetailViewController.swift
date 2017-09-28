@@ -88,7 +88,7 @@ class SettingDetailViewController: UIViewController {
         notesLabel.text = viewModel.getNotes()
     }
     
-    func back(sender: UIBarButtonItem) {
+    @objc func back(sender: UIBarButtonItem) {
         dismissKeyboard()
         if viewModel.getCurrentValue() == getTextValue() && viewModel.getSwitchStatus() == self.switcher.isOn {
             _ = self.navigationController?.popViewController(animated: true)

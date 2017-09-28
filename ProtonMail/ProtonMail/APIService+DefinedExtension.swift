@@ -36,8 +36,8 @@ extension APIService {
         static let errorDesc = "ErrorDescription"
     }
     
-    internal typealias CompletionBlock = (_ task: URLSessionDataTask?, _ response: Dictionary<String, Any>?, _ error: NSError?) -> Void
-    internal typealias CompletionFetchDetail = (_ task: URLSessionDataTask?, _ response: Dictionary<String, Any>?, _ message:Message?, _ error: NSError?) -> Void
+    public typealias CompletionBlock = (_ task: URLSessionDataTask?, _ response: Dictionary<String, Any>?, _ error: NSError?) -> Void
+    public typealias CompletionFetchDetail = (_ task: URLSessionDataTask?, _ response: Dictionary<String, Any>?, _ message:Message?, _ error: NSError?) -> Void
     
     // MARK: - Internal variables
     

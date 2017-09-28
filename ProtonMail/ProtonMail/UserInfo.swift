@@ -16,8 +16,9 @@
 
 import Foundation
 
+@objc(UserInfo)
 // TODO:: this is not very good need refactor
-final class UserInfo: NSObject {
+final class UserInfo : NSObject {
     var displayName: String
     let maxSpace: Int64
     var notificationEmail: String
@@ -82,22 +83,31 @@ final class UserInfo: NSObject {
 
 final class Address: NSObject {
     let address_id: String
-    var send: Int    // address order
-    let email: String  //email address name
-    let status : Int   // 0 is disabled, 1 is enabled, can be set by user
-    let type : Int  //1 is original PM, 2 is PM alias, 3 is custom domain address
-    let receive: Int // 1 is active address (Status=1 and has key), 0 is inactive (cannot send or receive)
-    
+    let email: String   //email address name
+    let status : Int    // 0 is disabled, 1 is enabled, can be set by user
+    let type : Int      //1 is original PM, 2 is PM alias, 3 is custom domain address
+    let receive: Int    // 1 is active address (Status =1 and has key), 0 is inactive (cannot send or receive)
+    var order: Int      // address order replace send //1.7
+    var send: Int       // v<1.7 address order  v>=1.7 not in use
     let keys: Array<Key>
     
     let mailbox: Int   //Not inuse
     var display_name: String  //not inuse
     var signature: String //not inuse
     
-    required init(addressid: String?, email: String?, send: Int?, receive: Int?, mailbox: Int?, display_name: String?, signature: String?, keys: Array<Key>?, status: Int?, type:Int?) {
+    required init(addressid: String?,
+                  email: String?,
+                  order: Int?,
+                  receive: Int?,
+                  mailbox: Int?,
+                  display_name: String?,
+                  signature: String?,
+                  keys: Array<Key>?,
+                  status: Int?,
+                  type:Int?,
+                  send: Int?) {
         self.address_id = addressid ?? ""
         self.email = email ?? ""
-        self.send = send ?? 0
         self.receive = receive ?? 0
         self.mailbox = mailbox ?? 0
         self.display_name = display_name ?? ""
@@ -106,6 +116,9 @@ final class Address: NSObject {
         
         self.status = status ?? 0
         self.type = type ?? 0
+        
+        self.send = send ?? 0
+        self.order = order ?? 0
     }
 }
 
@@ -160,14 +173,15 @@ extension UserInfo {
                 addresses.append(Address(
                     addressid: res["ID"] as? String,
                     email:res["Email"] as? String,
-                    send: res["Send"] as? Int,
+                    order: res["Order"] as? Int,
                     receive: res["Receive"] as? Int,
                     mailbox: res["Mailbox"] as? Int,
                     display_name: res["DisplayName"] as? String,
                     signature: res["Signature"] as? String,
                     keys : keys,
                     status: res["Status"] as? Int,
-                    type: res["Type"] as? Int
+                    type: res["Type"] as? Int,
+                    send: res["Send"] as? Int
                     ))
             }
         }
@@ -294,7 +308,7 @@ extension Address: NSCoding {
     fileprivate struct CoderKey { //the keys all messed up but it works
         static let displayName = "displayName"
         static let maxSpace = "maxSpace"
-        static let notificationEmail = "notificationEmail"
+        static let notificationEmail = "notificationEmail"  //this is a bad name in accident . it is `order`
         static let privateKey = "privateKey"
         static let publicKey = "publicKey"
         static let signature = "signature"
@@ -303,13 +317,15 @@ extension Address: NSCoding {
         
         static let addressStatus = "addressStatus"
         static let addressType = "addressType"
+        
+        static let addressSend = "addressSendStatus"
     }
     
     convenience init(coder aDecoder: NSCoder) {
         self.init(
             addressid: aDecoder.decodeStringForKey(CoderKey.displayName),
             email: aDecoder.decodeStringForKey(CoderKey.maxSpace),
-            send: aDecoder.decodeInteger(forKey: CoderKey.notificationEmail),
+            order: aDecoder.decodeInteger(forKey: CoderKey.notificationEmail),
             receive: aDecoder.decodeInteger(forKey: CoderKey.privateKey),
             mailbox: aDecoder.decodeInteger(forKey: CoderKey.publicKey),
             display_name: aDecoder.decodeStringForKey(CoderKey.signature),
@@ -317,14 +333,15 @@ extension Address: NSCoding {
             keys: aDecoder.decodeObject(forKey: CoderKey.userKeys) as?  Array<Key>,
             
             status : aDecoder.decodeInteger(forKey: CoderKey.addressStatus),
-            type:aDecoder.decodeInteger(forKey: CoderKey.addressType)
+            type:aDecoder.decodeInteger(forKey: CoderKey.addressType),
+            send: aDecoder.decodeInteger(forKey: CoderKey.addressSend)
         )
     }
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(address_id, forKey: CoderKey.displayName)
         aCoder.encode(email, forKey: CoderKey.maxSpace)
-        aCoder.encode(send, forKey: CoderKey.notificationEmail)
+        aCoder.encode(order, forKey: CoderKey.notificationEmail)
         aCoder.encode(receive, forKey: CoderKey.privateKey)
         aCoder.encode(mailbox, forKey: CoderKey.publicKey)
         aCoder.encode(display_name, forKey: CoderKey.signature)
@@ -333,6 +350,8 @@ extension Address: NSCoding {
         
         aCoder.encode(status, forKey: CoderKey.addressStatus)
         aCoder.encode(type, forKey: CoderKey.addressType)
+        
+        aCoder.encode(send, forKey: CoderKey.addressSend)
     }
 }
 
@@ -403,6 +422,7 @@ extension Array where Element : PMNOpenPgpKey {
 }
 
 extension Array where Element : Address {
+
     func toPMNAddresses() -> Array<PMNAddress> {
         var out_array = Array<PMNAddress>()
         for i in 0 ..< self.count {
@@ -436,7 +456,7 @@ extension Array where Element : Address {
     }
     
     func getAddressNewOrder() -> Array<Int> {
-        let ids = self.map { $0.send }
+        let ids = self.map { $0.order }
         return ids;
     }
     

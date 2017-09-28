@@ -8,10 +8,9 @@
 
 import Foundation
 
+public typealias ChangePasswordComplete = (Bool, NSError?) -> Void
 
-typealias ChangePasswordComplete = (Bool, NSError?) -> Void
-
-protocol ChangePWDViewModel {
+public protocol ChangePWDViewModel {
     
     func getNavigationTitle() -> String
     func getSectionTitle() -> String
@@ -22,34 +21,33 @@ protocol ChangePWDViewModel {
     func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete:@escaping ChangePasswordComplete)
 }
 
-class ChangeLoginPWDViewModel : ChangePWDViewModel{
+public class ChangeLoginPWDViewModel : ChangePWDViewModel{
     
-    func getNavigationTitle() -> String {
+    public func getNavigationTitle() -> String {
         return NSLocalizedString("PASSWORD", comment: "change login password navigation title")
     }
     
-    func getSectionTitle() -> String {
+    public func getSectionTitle() -> String {
         return NSLocalizedString("Change Login Password", comment: "change password input label")
     }
     
-    func getLabelOne() -> String {
+    public func getLabelOne() -> String {
         return NSLocalizedString("Current login password", comment: "Title")
     }
     
-    func getLabelTwo() -> String {
+    public func getLabelTwo() -> String {
         return NSLocalizedString("New login password", comment: "Title")
     }
     
-    func getLabelThree() -> String {
+    public func getLabelThree() -> String {
         return NSLocalizedString("Confirm new login password", comment: "Title")
     }
     
-
-    func needAsk2FA() -> Bool {
+    public func needAsk2FA() -> Bool {
         return sharedUserDataService.twoFactorStatus == 1
     }
     
-    func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
+    public func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
         let curr_pwd = current //.trim();
         let newpwd = new_pwd //.trim();
         let confirmpwd = confirm_new_pwd //.trim();

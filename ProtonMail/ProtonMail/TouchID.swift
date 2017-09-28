@@ -1,4 +1,4 @@
-//
+ //
 //  TouchID.swift
 //  ProtonMail
 //
