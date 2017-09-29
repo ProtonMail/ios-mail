@@ -37,7 +37,6 @@
 		0756755B1AB1369C00449905 /* UIAlertControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0756755A1AB1369C00449905 /* UIAlertControllerExtension.swift */; };
 		075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */; };
 		075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */; };
-		075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */; };
 		075F0A521ABF5DB500E6B9AE /* MessageLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F0A511ABF5DB500E6B9AE /* MessageLocation.swift */; };
 		075F0A541ABF5E3E00E6B9AE /* MessageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F0A531ABF5E3E00E6B9AE /* MessageAction.swift */; };
 		07655BBD1AB1036200CD3883 /* BugDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07655BBC1AB1036200CD3883 /* BugDataService.swift */; };
@@ -475,6 +474,8 @@
 		75475EA71CCEB97400588D41 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75475EA61CCEB97400588D41 /* BaseViewController.swift */; };
 		75475EA81CCEB97400588D41 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75475EA61CCEB97400588D41 /* BaseViewController.swift */; };
 		75475EAB1CCEE21C00588D41 /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */; };
+		75482B291F7F08C400B0BFFB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75482B281F7F08C400B0BFFB /* LaunchScreen.xib */; };
+		75482B2A1F7F08C700B0BFFB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75482B281F7F08C400B0BFFB /* LaunchScreen.xib */; };
 		75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
 		7548D0961CC10DFB001C3AEC /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
 		7549F0B11D07827A00643C64 /* AddressAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7549F0B01D07827A00643C64 /* AddressAPI.swift */; };
@@ -765,7 +766,6 @@
 		75DE7D911CAAEA4900F5443E /* MailboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */; };
 		75DE7D921CAAEA4900F5443E /* LabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 759BBDC11BA0C586002608B5 /* LabelDisplayView.xib */; };
 		75DE7D931CAAEA4900F5443E /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7061A3F41A6E8C9D0006D36C /* Menu.storyboard */; };
-		75DE7D941CAAEA4900F5443E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */; };
 		75DE7D951CAAEA4900F5443E /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F111A684C1900129B07 /* Roboto-Light.ttf */; };
 		75DE7D961CAAEA4900F5443E /* ContactsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */; };
 		75DE7D971CAAEA4900F5443E /* Attachments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B123771AB8CD90006EA38C /* Attachments.storyboard */; };
@@ -933,7 +933,6 @@
 		075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		075E3DEE1A5F4ECF00E001A7 /* ProtonMail.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProtonMail.xcdatamodel; sourceTree = "<group>"; };
 		075E3DF51A5F4ECF00E001A7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		075E3DF81A5F4ECF00E001A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		075E3DFE1A5F4ECF00E001A7 /* ProtonMailTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtonMailTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		075E3E031A5F4ECF00E001A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		075F0A511ABF5DB500E6B9AE /* MessageLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageLocation.swift; sourceTree = "<group>"; };
@@ -1084,10 +1083,8 @@
 		753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ErrorExtension.swift"; sourceTree = "<group>"; };
 		753A36161EF250D300032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		753A36171EF250D400032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		753A361B1EF250D500032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		753A361C1EF2512200032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		753A361D1EF2512200032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		753A36211EF2512300032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		754508391E14860500265CD0 /* MailboxHumanCheckMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxHumanCheckMenuVC.swift; sourceTree = "<group>"; };
 		7545083C1E14861E00265CD0 /* MailboxCaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxCaptchaViewController.swift; sourceTree = "<group>"; };
 		754508401E149B6600265CD0 /* HumanCheckViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckViewModel.swift; sourceTree = "<group>"; };
@@ -1101,6 +1098,7 @@
 		75475EA61CCEB97400588D41 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		75475EA91CCEE21C00588D41 /* NSBundle+Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Language.h"; sourceTree = "<group>"; };
 		75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Language.m"; sourceTree = "<group>"; };
+		75482B281F7F08C400B0BFFB /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSDateExtension.swift; path = ../ProtonMail/NSDateExtension.swift; sourceTree = "<group>"; };
 		7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserTempCachedStatus.swift; path = ../ProtonMail/UserTempCachedStatus.swift; sourceTree = "<group>"; };
 		7549F0B01D07827A00643C64 /* AddressAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressAPI.swift; sourceTree = "<group>"; };
@@ -1116,12 +1114,9 @@
 		755405B01B1648D2003BFC0A /* ComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		755405B11B1648D2003BFC0A /* ComposeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposeView.xib; sourceTree = "<group>"; };
 		75542AB91EE53C3C000F4ABA /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		75542ACA1EE53C40000F4ABA /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		75542ACE1EE53CD8000F4ABA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		75542ACF1EE53CD9000F4ABA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		75542AD41EE53D7D000F4ABA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		75542AD51EE53D7D000F4ABA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		75542AD91EE53D7F000F4ABA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		755638C01CA1AE42003FA2D0 /* ShowImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowImageView.xib; sourceTree = "<group>"; };
 		755638C21CA1AE5B003FA2D0 /* ExpirationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpirationView.xib; sourceTree = "<group>"; };
 		755638C41CA1AE6B003FA2D0 /* ExpirationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpirationView.swift; sourceTree = "<group>"; };
@@ -1148,7 +1143,6 @@
 		75662BA61B543A5B006C538E /* SettingsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAPI.swift; sourceTree = "<group>"; };
 		7566AE871F394CEA006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		7566AE891F394CEC006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		7566AE8B1F394CED006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		7567B06C1B334FA400A72A1E /* ViewModelService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelService.swift; sourceTree = "<group>"; };
 		7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelServiceImpl.swift; sourceTree = "<group>"; };
@@ -1174,10 +1168,8 @@
 		757945D91B6702B5004EEDCA /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
 		757DC6411F0D623400342CB0 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		757DC6421F0D623500342CB0 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		757DC6461F0D623700342CB0 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		757DC6471F0D625800342CB0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		757DC6481F0D625900342CB0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		757DC64C1F0D625B00342CB0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		757F4A041E677E1C001CDE71 /* LabelEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelEditViewController.swift; sourceTree = "<group>"; };
 		757F4A081E68F37E001CDE71 /* LabelEditViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelEditViewModel.swift; sourceTree = "<group>"; };
 		757F4A0B1E68F3A4001CDE71 /* FolderApplyViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderApplyViewModelImpl.swift; sourceTree = "<group>"; };
@@ -1765,7 +1757,7 @@
 			name = Compose;
 			sourceTree = "<group>";
 		};
-		7512A9FB1F17E1D500D84955 /* ViewController */ = {
+		7512A9FB1F17E1D500D84955 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				7512A9F71F17E1CE00D84955 /* ShareUnlockViewController.swift */,
@@ -1773,7 +1765,7 @@
 				751303D91F26A6A3003FE4A2 /* PasswordEncryptViewController.swift */,
 				75E5F7A31F295DFD00001B4F /* SharePinUnlockViewController.swift */,
 			);
-			name = ViewController;
+			name = Controller;
 			sourceTree = "<group>";
 		};
 		7512A9FC1F17E1E700D84955 /* Views */ = {
@@ -1804,7 +1796,7 @@
 		7523A1A31DB9513900A89E55 /* StoryBoard */ = {
 			isa = PBXGroup;
 			children = (
-				075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */,
+				75482B281F7F08C400B0BFFB /* LaunchScreen.xib */,
 				07009EFE1A659AD400129B07 /* SignIn.storyboard */,
 				7061A3F41A6E8C9D0006D36C /* Menu.storyboard */,
 			);
@@ -2269,7 +2261,7 @@
 			isa = PBXGroup;
 			children = (
 				75A42B711F044B750025F52C /* ShareExtensionEntry.swift */,
-				7512A9FB1F17E1D500D84955 /* ViewController */,
+				7512A9FB1F17E1D500D84955 /* Controller */,
 				7512A9FC1F17E1E700D84955 /* Views */,
 				75A42B6D1F043E3F0025F52C /* ShareDev.entitlements */,
 				75FE23321F04347C00DF12C1 /* Info.plist */,
@@ -2495,11 +2487,11 @@
 				07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */,
 				7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */,
 				75BA19991EC631A300153A1A /* SpamScoreWarningView.xib in Resources */,
+				75482B291F7F08C400B0BFFB /* LaunchScreen.xib in Resources */,
 				75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */,
 				7516452E1D7F66C800DE0BD2 /* test_email.html in Resources */,
 				759BBDC21BA0C586002608B5 /* LabelDisplayView.xib in Resources */,
 				7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */,
-				075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */,
 				7599B1721CC8124300B2CB8D /* Localizable.strings in Resources */,
 				07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */,
 				75E49F091CAB200000235ACC /* flags.bundle in Resources */,
@@ -2596,9 +2588,9 @@
 				75DE7D921CAAEA4900F5443E /* LabelDisplayView.xib in Resources */,
 				75856D6B1CB5B5F2000D9F3B /* PinCodeView.xib in Resources */,
 				75DE7D931CAAEA4900F5443E /* Menu.storyboard in Resources */,
-				75DE7D941CAAEA4900F5443E /* LaunchScreen.xib in Resources */,
 				75DE7D951CAAEA4900F5443E /* Roboto-Light.ttf in Resources */,
 				75DE7D961CAAEA4900F5443E /* ContactsTableViewCell.xib in Resources */,
+				75482B2A1F7F08C700B0BFFB /* LaunchScreen.xib in Resources */,
 				75DE7D971CAAEA4900F5443E /* Attachments.storyboard in Resources */,
 				75DE7D981CAAEA4900F5443E /* ShowImageView.xib in Resources */,
 				75DE7D991CAAEA4900F5443E /* RecipientCell.xib in Resources */,
@@ -3619,22 +3611,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				075E3DF81A5F4ECF00E001A7 /* Base */,
-				75542ACA1EE53C40000F4ABA /* fr */,
-				75542ACE1EE53CD8000F4ABA /* de */,
-				75542AD91EE53D7F000F4ABA /* ru */,
-				753A361B1EF250D500032667 /* es */,
-				753A36211EF2512300032667 /* tr */,
-				757DC6461F0D623700342CB0 /* uk */,
-				757DC64C1F0D625B00342CB0 /* pl */,
-				7566AE8B1F394CED006D84F9 /* nl */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
 		75542ABA1EE53C3C000F4ABA /* PasswordExtension.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3788,7 +3764,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
 				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				ENABLE_BITCODE = NO;
@@ -3806,8 +3782,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
-				PROVISIONING_PROFILE = "2159c4f2-d88c-47a2-96f6-0ec400ae84c5";
-				PROVISIONING_PROFILE_SPECIFIER = "XC Ad Hoc: ch.protonmail.protonmail";
+				PROVISIONING_PROFILE = "47a3798e-a84d-4d93-a2ba-d403b81298a2";
+				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Dev";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
@@ -3840,8 +3816,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
-				PROVISIONING_PROFILE = "2159c4f2-d88c-47a2-96f6-0ec400ae84c5";
-				PROVISIONING_PROFILE_SPECIFIER = "XC Ad Hoc: ch.protonmail.protonmail";
+				PROVISIONING_PROFILE = "6348ecc1-4193-44dd-9faa-774e65f4af3a";
+				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Release";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";

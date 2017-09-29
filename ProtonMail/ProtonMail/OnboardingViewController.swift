@@ -8,10 +8,7 @@
 
 import Foundation
 
-
-
 class OnboardingViewController : UIViewController, UIScrollViewDelegate {
-    
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var contentScrollView: UIScrollView!
     @IBOutlet weak var pageControlView: UIPageControl!

@@ -13,8 +13,10 @@ import UIKit
 
 class ShareExtensionEntry : UINavigationController {
     
+    internal let entryNibName = "ShareUnlockViewController"
+    
     init() {
-        super.init(rootViewController: ShareUnlockViewController(nibName: "ShareUnlockViewController", bundle: nil))
+        super.init(rootViewController: ShareUnlockViewController(nibName: entryNibName , bundle: nil))
     }
     
     required init(coder aDecoder: NSCoder) {
