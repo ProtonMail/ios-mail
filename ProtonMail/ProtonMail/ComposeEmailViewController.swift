@@ -317,11 +317,11 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             if self.composeView.hasOutSideEmails && self.encryptionPassword.characters.count <= 0 {
                 let emails = self.composeView.allEmails
                 //show loading
-                ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+                ActivityIndicatorHelper.showActivityIndicator(at: view)
                 let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
                 api.call({ (task, response: EmailsCheckResponse?, hasError : Bool) in
                     //hide loading
-                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                     if let res = response, res.hasOutsideEmails == false {
                         self.sendMessageStepTwo()
                     } else {

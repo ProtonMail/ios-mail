@@ -40,7 +40,7 @@ extension UIView {
         })
     }
     
-    public func add(border side: UIBorderSide, color: UIColor, borderWidth: CGFloat) {
+    func add(border side: BorderSide, color: UIColor, borderWidth: CGFloat) {
         let border = CALayer()
         border.backgroundColor = color.cgColor
         

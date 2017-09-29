@@ -61,19 +61,19 @@ class EditContactViewController: ProtonMailViewController {
         if (!email.isValidEmail()) {
             showInvalidEmailError()
         } else {
-            ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
-            
-            if (contact == nil) {
-                sharedContactDataService.addContact(name: name, email: email) { (contacts: [Contact]?, error: NSError?) in
-                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                    self.dismiss(animated: true, completion: nil)
-                }
-            } else {
-                sharedContactDataService.updateContact(contactID: contact.contactId, name: name, email: email, completion: { ( contacts: [Contact]?, error: NSError?) -> Void in
-                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                    self.dismiss(animated: true, completion: nil)
-                })
-            }
+            ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+            //TODO::Fix later
+//            if (contact == nil) {
+//                sharedContactDataService.addContact(name: name, email: email) { (contacts: [Contact]?, error: NSError?) in
+//                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+//                    self.dismiss(animated: true, completion: nil)
+//                }
+//            } else {
+//                sharedContactDataService.updateContact(contactID: contact.contactId, name: name, email: email, completion: { ( contacts: [Contact]?, error: NSError?) -> Void in
+//                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+//                    self.dismiss(animated: true, completion: nil)
+//                })
+//            }
         }
     }
     

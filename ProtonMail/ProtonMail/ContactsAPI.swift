@@ -25,7 +25,7 @@ class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
         //    let path = ContactPath.base
         //    //setApiVesion(1, appVersion: 1)
         //    request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 1], completion: completion)
-        return ContactsAPI.Path + "/emails" +  AppConstants.getDebugOption
+        return ContactsAPI.Path + "/emails" +  AppConstants.DEBUG_OPTION
     }
     
     override func toDictionary() -> Dictionary<String, Any>? {
@@ -87,7 +87,7 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
     }
 
     override public func getRequestPath() -> String {
-        return ContactsAPI.Path + "/" + self.contactID +  AppConstants.getDebugOption
+        return ContactsAPI.Path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
     }
     
     override public func getVersion() -> Int {
@@ -183,7 +183,7 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func getRequestPath() -> String {
-        return ContactsAPI.Path +  AppConstants.getDebugOption
+        return ContactsAPI.Path +  AppConstants.DEBUG_OPTION
     }
     
     override public func getVersion() -> Int {
@@ -250,7 +250,7 @@ final class ContactDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func getRequestPath() -> String {
-        return ContactsAPI.Path + "/delete" +  AppConstants.getDebugOption
+        return ContactsAPI.Path + "/delete" +  AppConstants.DEBUG_OPTION
     }
     
     override public func getVersion() -> Int {
@@ -288,7 +288,7 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func getRequestPath() -> String {
-        return ContactsAPI.Path + "/" + self.contactID +  AppConstants.getDebugOption
+        return ContactsAPI.Path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
     }
     
     override public func getVersion() -> Int {
