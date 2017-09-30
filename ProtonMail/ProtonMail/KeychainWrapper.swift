@@ -20,12 +20,14 @@ final class KeychainWrapper {
     }
     
     init() {
-        prefix = "6UN54H93QT."
+        
         #if Enterprise
+            prefix = "6UN54H93QT."
             group = prefix + "com.protonmail.protonmail"
             service = "com.protonmail"
 
         #else
+            prefix = "2SB5Z68H26."
             group = prefix + "ch.protonmail.protonmail"
             service = "ch.protonmail"
         #endif
