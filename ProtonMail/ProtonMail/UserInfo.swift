@@ -86,8 +86,8 @@ final class Address: NSObject {
     let status : Int    // 0 is disabled, 1 is enabled, can be set by user
     let type : Int      //1 is original PM, 2 is PM alias, 3 is custom domain address
     let receive: Int    // 1 is active address (Status =1 and has key), 0 is inactive (cannot send or receive)
-    var order: Int      // address order replace send //1.7
-    var send: Int       // v<1.7 address order  v>=1.7 not in use
+    var order: Int      // address order replace send //1.6.7
+    var send: Int       // v<1.6.7 address order  v>=1.6.7 not in use
     let keys: Array<Key>
     
     let mailbox: Int   //Not inuse
