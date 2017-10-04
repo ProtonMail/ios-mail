@@ -125,6 +125,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         //change message as read
         self.viewModel.markAsRead();
+        
+        self.formatHTML = true
     }
     
     
