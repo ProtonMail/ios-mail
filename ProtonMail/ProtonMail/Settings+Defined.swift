@@ -108,7 +108,8 @@ extension ELanguage {
                 ELanguage.turkish.code,
                 ELanguage.polish.code,
                 ELanguage.ukrainian.code,
-                ELanguage.dutch.code
+                ELanguage.dutch.code,
+                ELanguage.italian.code,
         ]
     }
     static public func allItems() -> [ELanguage] {
@@ -120,7 +121,8 @@ extension ELanguage {
                 .turkish,
                 .polish,
                 .ukrainian,
-                .dutch
+                .dutch,
+                .italian
         ]
     }
 }
