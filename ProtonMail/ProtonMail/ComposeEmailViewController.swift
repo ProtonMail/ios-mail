@@ -323,7 +323,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
                 return;
             }
         }
-        self.sendMessageStepTwo()
+        delay(0.3) {
+            self.sendMessageStepTwo()
+        }
     
     }
     
