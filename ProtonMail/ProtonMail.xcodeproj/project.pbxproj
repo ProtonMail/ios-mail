@@ -411,9 +411,6 @@
 		7526AC8E1B6C4B3700E1967E /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
 		752902A51EE5D6B700B46D36 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
 		752902A81EE5F71C00B46D36 /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 752902A71EE5F71C00B46D36 /* LanguageManager.m */; };
-		752902AB1EE5F8E500B46D36 /* BundleLanguage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902AA1EE5F8E500B46D36 /* BundleLanguage+Extension.swift */; };
-		752902AC1EE5F8E500B46D36 /* BundleLanguage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902AA1EE5F8E500B46D36 /* BundleLanguage+Extension.swift */; };
-		752902AE1EE5FA2A00B46D36 /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902AD1EE5FA2A00B46D36 /* LanguageManager.swift */; };
 		752A9EBD1DB80E40008D4392 /* LabelApplyViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBC1DB80E40008D4392 /* LabelApplyViewModelImpl.swift */; };
 		752A9EC01DB8286C008D4392 /* BugReportCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBF1DB8286C008D4392 /* BugReportCache.swift */; };
 		752D3DC11BD18CA800103DC8 /* AttachmentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */; };
@@ -448,11 +445,8 @@
 		753E5AC61F181ED90090C0F9 /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB65751BD5C88800F9432D /* AttachmentAPI.swift */; };
 		753E5AC71F181F6B0090C0F9 /* MonitorSavesDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61971A8AE5AA00ED38AE /* MonitorSavesDataService.swift */; };
 		753E5AC81F181FEF0090C0F9 /* MonitorSavesDataServiceMessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6901A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift */; };
-		753E5AC91F1820E80090C0F9 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7599B17C1CC8247E00B2CB8D /* Localization.swift */; };
-		753E5ACA1F1820E80090C0F9 /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902AD1EE5FA2A00B46D36 /* LanguageManager.swift */; };
 		753E5ACB1F1820E80090C0F9 /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 752902A71EE5F71C00B46D36 /* LanguageManager.m */; };
 		753E5ACC1F1820E80090C0F9 /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */; };
-		753E5ACD1F1820E80090C0F9 /* BundleLanguage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902AA1EE5F8E500B46D36 /* BundleLanguage+Extension.swift */; };
 		753E5ACE1F1820E80090C0F9 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 75B549E51D02731300F21A30 /* Reachability.m */; };
 		753E5AD31F1821000090C0F9 /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE541C8D4F9100FCEB0A /* TouchID.swift */; };
 		7545083A1E14860500265CD0 /* MailboxHumanCheckMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754508391E14860500265CD0 /* MailboxHumanCheckMenuVC.swift */; };
@@ -511,7 +505,6 @@
 		75482B4E1F7F09E100B0BFFB /* APIServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0761B3387F700A72A1E /* APIServiceRequest.swift */; };
 		75482B4F1F7F09E100B0BFFB /* AttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07411D8D1AAA407A002A4611 /* AttachmentTableViewCell.swift */; };
 		75482B501F7F09E100B0BFFB /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751900731F1D4A5700DB68ED /* KeychainWrapper.swift */; };
-		75482B511F7F09E100B0BFFB /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902AD1EE5FA2A00B46D36 /* LanguageManager.swift */; };
 		75482B521F7F09E100B0BFFB /* ShareUnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E5F7A71F29617100001B4F /* ShareUnlockPinCodeModelImpl.swift */; };
 		75482B531F7F09E100B0BFFB /* PasswordEncryptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751303D91F26A6A3003FE4A2 /* PasswordEncryptViewController.swift */; };
 		75482B541F7F09E100B0BFFB /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
@@ -549,7 +542,6 @@
 		75482B741F7F09E100B0BFFB /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755B6A6F1B38C0B800745872 /* Label.swift */; };
 		75482B751F7F09E100B0BFFB /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518393E1B3DCA3000C714A6 /* EventAPI.swift */; };
 		75482B761F7F09E100B0BFFB /* KeysAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2202A1DD6728200078D6C /* KeysAPI.swift */; };
-		75482B771F7F09E100B0BFFB /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7599B17C1CC8247E00B2CB8D /* Localization.swift */; };
 		75482B781F7F09E100B0BFFB /* ActivityIndicatorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70762C3A1A94EC30006B9693 /* ActivityIndicatorHelper.swift */; };
 		75482B791F7F09E100B0BFFB /* String+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C751F747BC80028DAC9 /* String+Mime.swift */; };
 		75482B7A1F7F09E100B0BFFB /* MessageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0741B3383F900A72A1E /* MessageAPI.swift */; };
@@ -570,7 +562,6 @@
 		75482B891F7F09E100B0BFFB /* MBContactCollectionViewEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE861AA64DEB0038149C /* MBContactCollectionViewEntryCell.m */; };
 		75482B8A1F7F09E100B0BFFB /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898D1B7DBE64007EA207 /* LabelAPI.swift */; };
 		75482B8B1F7F09E100B0BFFB /* ContactDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FE0181A955ED900825980 /* ContactDataService.swift */; };
-		75482B8C1F7F09E100B0BFFB /* BundleLanguage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902AA1EE5F8E500B46D36 /* BundleLanguage+Extension.swift */; };
 		75482B8D1F7F09E100B0BFFB /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323801A7846150043DB41 /* UIViewExtension.swift */; };
 		75482B8E1F7F09E100B0BFFB /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 752902A71EE5F71C00B46D36 /* LanguageManager.m */; };
 		75482B8F1F7F09E100B0BFFB /* MailboxViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756489991B7F2ACA007EA207 /* MailboxViewModelImpl.swift */; };
@@ -788,7 +779,6 @@
 		7597B6851DEE37E800511AFF /* PHAssetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7597B6831DEE37E800511AFF /* PHAssetExtension.swift */; };
 		7599B1721CC8124300B2CB8D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
 		7599B1761CC8124C00B2CB8D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
-		7599B17D1CC8247E00B2CB8D /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7599B17C1CC8247E00B2CB8D /* Localization.swift */; };
 		759BBDC01BA0C55E002608B5 /* LabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759BBDBF1BA0C55E002608B5 /* LabelDisplayView.swift */; };
 		759BBDC21BA0C586002608B5 /* LabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 759BBDC11BA0C586002608B5 /* LabelDisplayView.xib */; };
 		759BBDC41BA0D18A002608B5 /* MultiLabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 759BBDC31BA0D18A002608B5 /* MultiLabelDisplayView.xib */; };
@@ -1012,8 +1002,6 @@
 		75F22BEF1E83335100677E67 /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F22BED1E83335000677E67 /* ToastMessageView.swift */; };
 		75F22BF11E83348100677E67 /* ToastMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75F22BF01E83348100677E67 /* ToastMessageView.xib */; };
 		75F22BF21E83348100677E67 /* ToastMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75F22BF01E83348100677E67 /* ToastMessageView.xib */; };
-		75F438D11F141BA5006A9878 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7599B17C1CC8247E00B2CB8D /* Localization.swift */; };
-		75F438D21F141BA5006A9878 /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902AD1EE5FA2A00B46D36 /* LanguageManager.swift */; };
 		75F463881C5FEBF400918B46 /* HumanCheckMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F463871C5FEBF400918B46 /* HumanCheckMenuViewController.swift */; };
 		75F4638A1C60071B00918B46 /* EmailVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F463891C60071B00918B46 /* EmailVerifyViewController.swift */; };
 		75F4638E1C60172300918B46 /* SignUpUserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F4638D1C60172300918B46 /* SignUpUserNameViewController.swift */; };
@@ -1263,8 +1251,6 @@
 		752902A11EE5D2CC00B46D36 /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		752902A41EE5D6B700B46D36 /* Settings+Defined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Settings+Defined.swift"; sourceTree = "<group>"; };
 		752902A71EE5F71C00B46D36 /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
-		752902AA1EE5F8E500B46D36 /* BundleLanguage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BundleLanguage+Extension.swift"; sourceTree = "<group>"; };
-		752902AD1EE5FA2A00B46D36 /* LanguageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 		752A9EBC1DB80E40008D4392 /* LabelApplyViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelApplyViewModelImpl.swift; sourceTree = "<group>"; };
 		752A9EBF1DB8286C008D4392 /* BugReportCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BugReportCache.swift; path = ../ProtonMail/BugReportCache.swift; sourceTree = "<group>"; };
 		752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsTableViewController.swift; sourceTree = "<group>"; };
@@ -1282,6 +1268,8 @@
 		753A36171EF250D400032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		753A361C1EF2512200032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		753A361D1EF2512200032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
+		753E304E1F86D61400CE5AF8 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		753E304F1F86D61400CE5AF8 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		754508391E14860500265CD0 /* MailboxHumanCheckMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxHumanCheckMenuVC.swift; sourceTree = "<group>"; };
 		7545083C1E14861E00265CD0 /* MailboxCaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxCaptchaViewController.swift; sourceTree = "<group>"; };
 		754508401E149B6600265CD0 /* HumanCheckViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckViewModel.swift; sourceTree = "<group>"; };
@@ -1297,7 +1285,6 @@
 		75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Language.m"; sourceTree = "<group>"; };
 		75482B281F7F08C400B0BFFB /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		75482BE71F7F09E100B0BFFB /* Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Share.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		75482BE81F7F09E200B0BFFB /* ShareDev copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ShareDev copy-Info.plist"; path = "/Users/Yanfeng/Documents/ProtonMailGit/protonmail_ios/ProtonMail/ShareDev copy-Info.plist"; sourceTree = "<absolute>"; };
 		75482BEA1F7F0D2000B0BFFB /* InfoDev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
 		75482BEC1F7F0D2A00B0BFFB /* Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Share.entitlements; sourceTree = "<group>"; };
 		75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSDateExtension.swift; path = ../ProtonMail/NSDateExtension.swift; sourceTree = "<group>"; };
@@ -1404,7 +1391,6 @@
 		7599B1731CC8124300B2CB8D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7599B1751CC8124A00B2CB8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7599B1781CC8130600B2CB8D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		7599B17C1CC8247E00B2CB8D /* Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		759BBDBF1BA0C55E002608B5 /* LabelDisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelDisplayView.swift; sourceTree = "<group>"; };
 		759BBDC11BA0C586002608B5 /* LabelDisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelDisplayView.xib; sourceTree = "<group>"; };
 		759BBDC31BA0D18A002608B5 /* MultiLabelDisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiLabelDisplayView.xib; sourceTree = "<group>"; };
@@ -1656,7 +1642,6 @@
 				075E3DE71A5F4ECF00E001A7 /* Products */,
 				518B9570F3E0BF19912099F3 /* Pods */,
 				EDDC3A27CB6370D84ADB05EA /* Frameworks */,
-				75482BE81F7F09E200B0BFFB /* ShareDev copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2020,13 +2005,10 @@
 		752902A01EE5CEA400B46D36 /* Localization */ = {
 			isa = PBXGroup;
 			children = (
-				7599B17C1CC8247E00B2CB8D /* Localization.swift */,
-				752902AD1EE5FA2A00B46D36 /* LanguageManager.swift */,
 				752902A11EE5D2CC00B46D36 /* LanguageManager.h */,
 				752902A71EE5F71C00B46D36 /* LanguageManager.m */,
 				75475EA91CCEE21C00588D41 /* NSBundle+Language.h */,
 				75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */,
-				752902AA1EE5F8E500B46D36 /* BundleLanguage+Extension.swift */,
 			);
 			name = Localization;
 			sourceTree = "<group>";
@@ -3243,7 +3225,6 @@
 				750B00981B7AB91400F180BD /* NotificationDefined.swift in Sources */,
 				7567B06B1B334AF200A72A1E /* ComposeViewModel.swift in Sources */,
 				07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */,
-				752902AB1EE5F8E500B46D36 /* BundleLanguage+Extension.swift in Sources */,
 				756489921B7DC8B8007EA207 /* LabelExtension.swift in Sources */,
 				0713237F1A7844390043DB41 /* MailboxPasswordViewController.swift in Sources */,
 				75F4638A1C60071B00918B46 /* EmailVerifyViewController.swift in Sources */,
@@ -3452,9 +3433,7 @@
 				07CAB8061A894F8600C5E347 /* CoreDataService.swift in Sources */,
 				750254DA1AB8157800050B12 /* GeneralSettingViewCell.swift in Sources */,
 				75DF17AB1AB9051F008A032B /* StorageViewCell.swift in Sources */,
-				7599B17D1CC8247E00B2CB8D /* Localization.swift in Sources */,
 				07DD68A51A97DE9F00ED130C /* APIService+AttachmentExtension.swift in Sources */,
-				752902AE1EE5FA2A00B46D36 /* LanguageManager.swift in Sources */,
 				07411D8E1AAA407A002A4611 /* AttachmentTableViewCell.swift in Sources */,
 				750AAAC81C2490DB00BAC444 /* SignUpPasswordViewController.swift in Sources */,
 				757F4A121E68F409001CDE71 /* LabelCreatingViewModelImple.swift in Sources */,
@@ -3517,7 +3496,6 @@
 				75482B4E1F7F09E100B0BFFB /* APIServiceRequest.swift in Sources */,
 				75482B4F1F7F09E100B0BFFB /* AttachmentTableViewCell.swift in Sources */,
 				75482B501F7F09E100B0BFFB /* KeychainWrapper.swift in Sources */,
-				75482B511F7F09E100B0BFFB /* LanguageManager.swift in Sources */,
 				75482B521F7F09E100B0BFFB /* ShareUnlockPinCodeModelImpl.swift in Sources */,
 				75482B531F7F09E100B0BFFB /* PasswordEncryptViewController.swift in Sources */,
 				75482B541F7F09E100B0BFFB /* AppConstants.swift in Sources */,
@@ -3555,7 +3533,6 @@
 				75482B741F7F09E100B0BFFB /* Label.swift in Sources */,
 				75482B751F7F09E100B0BFFB /* EventAPI.swift in Sources */,
 				75482B761F7F09E100B0BFFB /* KeysAPI.swift in Sources */,
-				75482B771F7F09E100B0BFFB /* Localization.swift in Sources */,
 				75482B781F7F09E100B0BFFB /* ActivityIndicatorHelper.swift in Sources */,
 				75482B791F7F09E100B0BFFB /* String+Mime.swift in Sources */,
 				75482B7A1F7F09E100B0BFFB /* MessageAPI.swift in Sources */,
@@ -3576,7 +3553,6 @@
 				75482B891F7F09E100B0BFFB /* MBContactCollectionViewEntryCell.m in Sources */,
 				75482B8A1F7F09E100B0BFFB /* LabelAPI.swift in Sources */,
 				75482B8B1F7F09E100B0BFFB /* ContactDataService.swift in Sources */,
-				75482B8C1F7F09E100B0BFFB /* BundleLanguage+Extension.swift in Sources */,
 				75482B8D1F7F09E100B0BFFB /* UIViewExtension.swift in Sources */,
 				75482B8E1F7F09E100B0BFFB /* LanguageManager.m in Sources */,
 				75482B8F1F7F09E100B0BFFB /* MailboxViewModelImpl.swift in Sources */,
@@ -3671,7 +3647,6 @@
 				7512AA321F17FED200D84955 /* APIServiceRequest.swift in Sources */,
 				75555BBD1F1840CF000C0C10 /* AttachmentTableViewCell.swift in Sources */,
 				751900761F1D4A5700DB68ED /* KeychainWrapper.swift in Sources */,
-				753E5ACA1F1820E80090C0F9 /* LanguageManager.swift in Sources */,
 				75E5F7A81F29617100001B4F /* ShareUnlockPinCodeModelImpl.swift in Sources */,
 				751303DB1F26A6A3003FE4A2 /* PasswordEncryptViewController.swift in Sources */,
 				7512A9F11F17DC9E00D84955 /* AppConstants.swift in Sources */,
@@ -3709,7 +3684,6 @@
 				7512AA061F17EABF00D84955 /* Label.swift in Sources */,
 				753E5AC31F181D940090C0F9 /* EventAPI.swift in Sources */,
 				7512AA631F1808C100D84955 /* KeysAPI.swift in Sources */,
-				753E5AC91F1820E80090C0F9 /* Localization.swift in Sources */,
 				758993291F2953BE0030B5AC /* ActivityIndicatorHelper.swift in Sources */,
 				75921C981F747E270028DAC9 /* String+Mime.swift in Sources */,
 				753E5AB41F181A2D0090C0F9 /* MessageAPI.swift in Sources */,
@@ -3730,7 +3704,6 @@
 				7512AA141F17F8C200D84955 /* MBContactCollectionViewEntryCell.m in Sources */,
 				753E5AC51F181E500090C0F9 /* LabelAPI.swift in Sources */,
 				7512AA291F17FDAA00D84955 /* ContactDataService.swift in Sources */,
-				753E5ACD1F1820E80090C0F9 /* BundleLanguage+Extension.swift in Sources */,
 				7512AA101F17F78D00D84955 /* UIViewExtension.swift in Sources */,
 				753E5ACB1F1820E80090C0F9 /* LanguageManager.m in Sources */,
 				753E5ABD1F181C480090C0F9 /* MailboxViewModelImpl.swift in Sources */,
@@ -3952,7 +3925,6 @@
 				75DE7CBE1CAAEA4900F5443E /* MailboxMessageCell.swift in Sources */,
 				75921C8B1F747BD10028DAC9 /* String+Mime.swift in Sources */,
 				75DE7CC11CAAEA4900F5443E /* MBContactCollectionViewFlowLayout.m in Sources */,
-				75F438D21F141BA5006A9878 /* LanguageManager.swift in Sources */,
 				75DE7CC51CAAEA4900F5443E /* SettingsCell.swift in Sources */,
 				75E3EF3A1F16EFA400E14D1E /* UIViewExtension.swift in Sources */,
 				75E3EF3C1F16F05200E14D1E /* LanguageManager.m in Sources */,
@@ -3979,7 +3951,6 @@
 				75DE7CEE1CAAEA4900F5443E /* FeedbackHeadCell.swift in Sources */,
 				75DE7CEF1CAAEA4900F5443E /* ProtonMail.xcdatamodeld in Sources */,
 				75856D6C1CB5B5F2000D9F3B /* PinCodeView.swift in Sources */,
-				752902AC1EE5F8E500B46D36 /* BundleLanguage+Extension.swift in Sources */,
 				75DE7CF81CAAEA4900F5443E /* CustomHeaderView.swift in Sources */,
 				75256C391F16DE0A00F2771E /* ProtonMail-Bridging-Header.cpp in Sources */,
 				75BDECAF1CBCD0FA00982089 /* SetPinCodeModelImpl.swift in Sources */,
@@ -4066,7 +4037,6 @@
 				75E49F101CAB296500235ACC /* PhoneVerifyViewController.swift in Sources */,
 				75DE7D7B1CAAEA4900F5443E /* StorageViewCell.swift in Sources */,
 				75DE7D7D1CAAEA4900F5443E /* AttachmentTableViewCell.swift in Sources */,
-				75F438D11F141BA5006A9878 /* Localization.swift in Sources */,
 				75DE7D7E1CAAEA4900F5443E /* SignUpPasswordViewController.swift in Sources */,
 				75DE7D7F1CAAEA4900F5443E /* MessageViewController.swift in Sources */,
 			);
@@ -4109,6 +4079,7 @@
 				757DC6421F0D623500342CB0 /* uk */,
 				757DC6481F0D625900342CB0 /* pl */,
 				7566AE871F394CEA006D84F9 /* nl */,
+				753E304F1F86D61400CE5AF8 /* it */,
 			);
 			name = PasswordExtension.strings;
 			sourceTree = "<group>";
@@ -4126,6 +4097,7 @@
 				757DC6411F0D623400342CB0 /* uk */,
 				757DC6471F0D625800342CB0 /* pl */,
 				7566AE891F394CEC006D84F9 /* nl */,
+				753E304E1F86D61400CE5AF8 /* it */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

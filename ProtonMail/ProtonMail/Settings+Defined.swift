@@ -33,7 +33,9 @@ extension ELanguage {
                 return NSLocalizedString("Ukrainian", comment: "Action")
             case .dutch:
                 return NSLocalizedString("Dutch", comment: "Action")
-            default:
+            case .italian:
+                return NSLocalizedString("Italian", comment: "Action")
+            case .count:
                 return ""
             }
         }
@@ -60,7 +62,9 @@ extension ELanguage {
                 return "uk_UA"
             case .dutch:
                 return "nl_NL"
-            default:
+            case .italian:
+                return "it_IT"
+            case .count:
                 return "en_US"
             }
         }
@@ -87,7 +91,9 @@ extension ELanguage {
                 return "uk"
             case .dutch:
                 return "nl"
-            default:
+            case .italian:
+                return "it"
+            case .count:
                 return "en"
             }
         }

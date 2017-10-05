@@ -158,18 +158,14 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         if tmp != .dev && tmp != .sim {
             AFNetworkActivityLogger.shared().stopLogging()
         }
-        
         LanguageManager.setupCurrentLanguage()
-
-       // LanguageManager.setupCurrentLanguage()
-        //Localization.restoreLanguage()
-        //sharedPushNotificationService.setLaunchOptions(launchOptions)
+        
         return true
     }
     
     func languageWillChange(notification:NSNotification){
-        let targetLang = notification.object as! String
-        Localization.setCurrentLanguage(language: targetLang)
+        //let targetLang = notification.object as! String
+        //Localization.setCurrentLanguage(language: targetLang)
     }
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {

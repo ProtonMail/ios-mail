@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-
+//Notes: when add new language need to do:
+//       1. update ELanguage enum
+//       2. update extension ELanguage in viewmodel -- allItemsCode & allItems
+//
 typedef NS_ENUM(NSInteger, ELanguage)
 {
     ELanguageEnglish,
@@ -21,6 +24,8 @@ typedef NS_ENUM(NSInteger, ELanguage)
     ELanguageUkrainian,
     
     ELanguageDutch, //added at 08/07/2017
+    
+    ELanguageItalian, //add at 10/05/2017
     
     
     ELanguageCount
