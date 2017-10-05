@@ -25,15 +25,13 @@
 /* no object error, local only , this could be not translated! */
 "<no object>" = "<geen object>";
 
-/* (No Commment) */
+/* (No Comment) */
 "A message cannot have more than 5 labels" = "Een bericht kan maximaal 5 labels hebben";
 
 /* Description */
 "A new version of ProtonMail app is available, please update to latest version." = "Er is een nieuwe versie van de ProtonMail app beschikbaar, update de app.";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "A passcode has not been set, enable it in the system Settings" = "Er is geen wachtwoord ingesteld, stel er een in in de systeem instellingen";
 
 /* Error
@@ -47,22 +45,19 @@
    error message when acction disabled */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Toegang tot dit account is geblokkeerd als gevolg van niet betaalde facturen. Gelieve aan te melden via protonmail.com om uw onbetaalde factuur te betalen.";
 
-/* (No Commment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Toegang tot dit account is geblokkeerd als gevolg van niet betaalde facturen
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Toegang tot dit account is geblokkeerd als gevolg van niet betaalde facturen\n\nBezoek <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">our knowledge base</a> voor meer informatie.";
 
-Bezoek <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">our knowledge base</a> voor meer informatie.";
-
-/* (No Commment) */
+/* (No Comment) */
 "Account password invalid" = "Ongeldig accountwachtwoord";
 
-/* (No Commment) */
+/* (No Comment) */
 "Add" = "Voeg toe";
 
 /* edit contact navigation title */
 "Add Contact" = "Voeg contact toe";
 
-/* Action
-   Apply label then also archive */
+/* Action */
 "Add Folder" = "Voeg map toe";
 
 /* Action */
@@ -86,11 +81,10 @@ Bezoek <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">ou
 "All Mail" = "Alle mail";
 
 /* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Al uw bestaande versleutelde e-mails zullen voorgoed verloren gaan, maar u zal nog steeds uw niet-versleutelde e-mails kunnen bekijken. \n\nDEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 
-THIS ACTION CANNOT BE UNDONE!" = "Al uw bestaande versleutelde e-mails zullen voorgoed verloren gaan, maar u zal nog steeds uw niet-versleutelde e-mails kunnen bekijken. 
-
-DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
+/* Apply label then also archive */
+"Also Archive" = "Ook archiveren";
 
 /* Description */
 "Also used to reset a forgotten password." = "Ook gebruikt om een vergeten wachtwoord opnieuw in te stellen.";
@@ -98,8 +92,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* No comment provided by engineer. */
 "AppVersion" = "App-versie";
 
-/* Action
-   folder apply - apply button text */
+/* Action */
 "Apply" = "Pas toe";
 
 /* Title */
@@ -126,8 +119,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Description */
 "Authentication was cancelled by the system" = "Authenticatie is geannuleerd door het systeem";
 
-/* settings protection section title
-   Title */
+/* settings protection section title */
 "Auto Lock Time" = "Tijd tot automatische vergrendeling";
 
 /* settings general section title */
@@ -167,8 +159,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
 
-/* Action
-   setup pin action */
+/* Action */
 "CONFIRM" = "BEVESTIGEN";
 
 /* Title */
@@ -187,8 +178,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
    update password error */
 "Can't create a SRP Client" = "Kan geen SRP client maken";
 
-/* sign up user error
-   update notification email error
+/* update notification email error
    update password error */
 "Can't create a SRP verifier!" = "Kan geen SRP verificator maken!";
 
@@ -204,17 +194,12 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Kan deze bijlage niet vinden!";
 
-/* sign up user error when can't get moduls id
-   update password error */
-"Can't get a Moduls ID!" = "Kan geen Moduls ID verkrijgen!";
-
-/* sign up user error
-   update password error */
+/* update password error = typo:Modulus */
 "Can't get a Moduls!" = "Kan geen Moduls verkrijgen!";
 
 /* update notification email error
    update password error */
-"Can't get user auth info" = "Kan gebruikerauthenticatieinformatie niet verkrijgen";
+"Can't get user auth info" = "Kan gebruikersauthenticatie informatie niet verkrijgen";
 
 /* Error */
 "Can't load the file" = "Kan het bestand niet laden";
@@ -226,15 +211,13 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 "Can't open the file" = "Kan het bestand niet openen";
 
 /* Action
-   folder apply - cancel button text
-   title
    Title */
 "Cancel" = "Annuleren";
 
 /* Action */
 "Cancel Check" = "Annuleer controle";
 
-/* (No Commment) */
+/* (No Comment) */
 "Cant' decrypt this attachment!" = "Kan deze bijlage niet ontsleutelen.";
 
 /* Title */
@@ -285,8 +268,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* settings general section title */
 "Clear Local Message Cache" = "Lokaal bericht cache legen";
 
-/* Action
-   lable manager close action */
+/* Action */
 "Close" = "Sluiten";
 
 /* Action */
@@ -296,14 +278,13 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
    Title */
 "Confirm" = "Bevestig";
 
-/* (No Commment) */
+/* (No Comment) */
 "Confirm Login Password" = "Bevestig inlogwachtwoord";
 
-/* (No Commment) */
+/* (No Comment) */
 "Confirm Mailbox Password" = "Bevestig mailboxwachtwoord";
 
-/* place holder
-   Placeholder
+/* Placeholder
    Title */
 "Confirm Password" = "Bevestig wachtwoord";
 
@@ -406,19 +387,16 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* place holder */
 "Define Password" = "Definieer wachtwoord";
 
-/* Action
-   lable manager delete action
-   swipe title when swipe cell on mailbox message list */
+/* swipe title when swipe cell on mailbox message list */
 "Delete" = "Verwijder";
 
-/* Description
-   Title */
+/* Title */
 "Deleted" = "Verwijderd";
 
 /* Title */
 "Details" = "Details";
 
-/* Action */
+/* Title */
 "Discard draft" = "Verwerp concept";
 
 /* Title */
@@ -433,8 +411,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Title */
 "Don't Show Again" = "Laat niet meer zien";
 
-/* Action
-   Title */
+/* Action */
 "Done" = "Klaar";
 
 /* Action
@@ -443,6 +420,9 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 
 /* Title */
 "Drafts" = "Concepten";
+
+/* Action */
+"Dutch" = "Nederlands";
 
 /* Action */
 "Edit" = "Bewerk";
@@ -471,7 +451,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* place holder */
 "Email default signature" = "Standaard e-mailhandtekening";
 
-/* (No Commment) */
+/* (No Comment) */
 "Email domain invalid" = "Ongeldig e-mail domein";
 
 /* Action */
@@ -487,7 +467,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 "Enable Mobile Signature" = "Activeer mobiele handtekening";
 
 /* Title */
-"Enable Notification Email" = "Activeer emailnotificatie";
+"Enable Notification Email" = "Activeer e-mailnotificatie";
 
 /* settings protection section title */
 "Enable Pin Protection" = "Activeer PIN beveiliging";
@@ -496,7 +476,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 "Enable TouchID" = "Activeer TouchID";
 
 /* Title */
-"Encrypted for outside" = "Versleuteld voor buiten";
+"Encrypted for outside" = "Versleuteld voor extern";
 
 /* Title */
 "Encrypted for outside reply" = "Versleuteld voor extern antwoord";
@@ -505,7 +485,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 "Encrypted from outside" = "Versleuteld vanaf extern";
 
 /* Title */
-"Encrypted from outside pgp inline" = "Versleuteld vanaf externe in-regel pgp";
+"Encrypted from outside pgp inline" = "Versleuteld vanaf externe inline pgp";
 
 /* Title */
 "Encrypted from outside pgp mime" = "Versleuteld vanaf externe pgp/mime";
@@ -514,7 +494,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 "Encryption Setup" = "Versleuteling configuratie";
 
 /* Title */
-"End-to-End Encryption" = "Eind-tot-eind versleuteling";
+"End-to-End Encryption" = "End-to-End encryptie";
 
 /* Action */
 "English" = "Engels";
@@ -551,7 +531,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 "Expiring Messages" = "Verlopende berichten";
 
 /* Key size checkbox */
-"Extreme Security" = "Strenge Beveiliging";
+"Extreme Security" = "Extreme beveiliging";
 
 /* login page forgot pwd */
 "FORGOT PASSWORD?" = "Wachtwoord vergeten?";
@@ -569,8 +549,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
    place holder */
 "Folder Name" = "Mapnaam";
 
-/* Action
-   top left back button */
+/* Action */
 "Forward" = "Doorsturen";
 
 /* Title */
@@ -675,8 +654,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Error */
 "Invalid credential" = "Inloggegevens ongeldig";
 
-/* sign up user error
-   update notification email error
+/* update notification email error
    update password error */
 "Invalid hashed password!" = "Ongeldige wachtwoordhash!";
 
@@ -726,17 +704,16 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Description */
 "Local cache can't find mailbox password" = "Lokale cache kan het mailbox wachtwoord niet vinden";
 
-/* (No Commment) */
+/* (No Comment) */
 "Localizable.strings" = "Engels";
 
 /* Title */
 "Lock The App" = "App vergrendelen";
 
-/* touch id box title like Login: email@email.com */
+/* No comment provided by engineer. */
 "Login" = "Inloggen";
 
-/* Placeholder
-   settings general section title */
+/* settings general section title */
 "Login Password" = "Inlogwachtwoord";
 
 /* Error */
@@ -748,13 +725,13 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Title */
 "MAILBOX PASSWORD" = "Mailboxwachtwoord";
 
-/* Prompt text shown in the prompt cell */
+/* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPromp";
 
 /* settings general section title */
 "Mailbox Password" = "Mailboxwachtwoord";
 
-/* (No Commment) */
+/* (No Comment) */
 "Mailbox password doesn't match" = "Mailbox wachtwoord komt niet overeen";
 
 /* Title */
@@ -825,7 +802,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 "Move to Outbox" = "Verplaats naar uitgaande map";
 
 /* Action */
-"Move to Spam" = "Verplaats naar ongewenst";
+"Move to Spam" = "Verplaats naar Spam";
 
 /* Action */
 "Move to Trash" = "Verplaats naar prullenbak";
@@ -883,8 +860,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Title */
 "Notification / Recovery Email" = "Notificatie / Herstel e-mail";
 
-/* settings general section title
-   Title */
+/* settings general section title */
 "Notification Email" = "Notificatie e-mail";
 
 /* Action */
@@ -937,7 +913,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 "Pin code can't be empty." = "Pin-code kan niet leeg zijn.";
 
 /* Title */
-"Plain text" = "Onversleutelde tekst";
+"Plain text" = "Onopgemaakte tekst";
 
 /* Description */
 "Please check your cell phone for the verification code." = "Controleer uw telefoon voor de verificatiecode.";
@@ -967,26 +943,26 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Description */
 "Please set a password." = "Stel een wachtwoord in.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different domain." = "Probeer een andere domeinnaam.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different email address." = "Probeer een ander e-mailadres.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different password." = "Probeer een ander wachtwoord.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different user name." = "Probeer een andere gebruikersnaam.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try again." = "Probeer opnieuw";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Gebruik de webversie van ProtonMail om het wachtwoord van uw mailbox te wijzigen!";
 
 /* Alert */
-"Please use the web version of ProtonMail to change your passwords.!" = "Gebruik de webversie van ProtonMail om uw wachtwoorden te wijzigen.!";
+"Please use the web version of ProtonMail to change your passwords.!" = "Gebruik de webversie van ProtonMail om uw wachtwoorden te wijzigen!";
 
 /* Description */
 "Please use your new password when signing in." = "Gebruik uw nieuwe wachtwoord om in te loggen.";
@@ -996,6 +972,9 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 
 /* Title */
 "Please, manage it in your phone." = "Beheer dit vanaf uw telefoon.";
+
+/* Action */
+"Polish" = "Pools";
 
 /* Title */
 "Protection" = "Bescherming";
@@ -1037,10 +1016,10 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 "Re:" = "Re:";
 
 /* Title */
-"Recovery Code" = "Herherstelcode";
+"Recovery Code" = "Herstelcode";
 
 /* Title */
-"Recovery Email" = "Herstel-e-mailadres";
+"Recovery Email" = "Herstel e-mailadres";
 
 /* Title */
 "Recovery Email Warning" = "Herstel e-mail waarschuwing";
@@ -1054,14 +1033,13 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Action */
 "Remove Star" = "Ster verwijderen";
 
-/* Action
-   top left back button */
+/* Action */
 "Reply" = "Beantwoorden";
 
 /* top left back button */
 "Reply All" = "Allen beantwoorden";
 
-/* (No Commment) */
+/* (No Comment) */
 "Reply message" = "Bericht beantwoorden";
 
 /* Action */
@@ -1069,9 +1047,6 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 
 /* Title */
 "Report Bugs" = "Fout melden";
-
-/* (No Commment) */
-"Reseting message cache ..." = "Berichten cache resetten...";
 
 /* Title */
 "Resetting message cache ..." = "Berichten cache resetten...";
@@ -1105,7 +1080,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 "SRP Server" = "SRP Server";
 
 /* Title */
-"STARRED" = "Gemarkeerd";
+"STARRED" = "Met ster";
 
 /* Action
    Title */
@@ -1114,7 +1089,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* title */
 "Save Changes" = "Wijzigingen opslaan";
 
-/* Action */
+/* Title */
 "Save draft" = "Concept opslaan";
 
 /* Placeholder
@@ -1124,7 +1099,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Test */
 "Section Title - Test" = "Titel van de sectie - Test";
 
-/* (No Commment) */
+/* (No Comment) */
 "Select your language" = "Selecteer uw taal";
 
 /* Action */
@@ -1187,14 +1162,14 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Description */
 "Spammed" = "Spam";
 
-/* Description */
-"Srp single password keyslat invalid!" = "SRP enkel wachtwoord keysalt ongeldig!";
+/* Action */
+"Spanish" = "Spaans";
 
 /* Title */
 "Star" = "Ster";
 
 /* Title */
-"Starred" = "Gemarkeerd";
+"Starred" = "Met ster";
 
 /* Title */
 "Storage" = "Opslag";
@@ -1264,7 +1239,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
    Error */
 "The mailbox password is incorrect." = "Het mailbox wachtwoord is onjuist.";
 
-/* (No Commment) */
+/* (No Comment) */
 "The maximum number of labels is %d." = "Het maximaal aantal labels is %d.";
 
 /* Description */
@@ -1276,13 +1251,13 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Description */
 "The message password didn't match" = "Het berichtenwachtwoord komt niet overeen";
 
-/* (No Commment) */
+/* (No Comment) */
 "The new password can't empty" = "Het nieuwe wachtwoordveld kan niet leeg zijn";
 
 /* update password error */
 "The new password can't empty." = "Het nieuwe wachtwoordveld kan niet leeg zijn.";
 
-/* (No Commment) */
+/* (No Comment) */
 "The new password not match" = "Wachtwoorden komen niet overeen";
 
 /* update password error */
@@ -1310,7 +1285,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Description */
 "The user info fetch is wrong" = "Fout bij het ophalen van de gebruikersinformatie";
 
-/* (No Commment) */
+/* (No Comment) */
 "The verification email invalid" = "Ongeldige verificatie e-mail";
 
 /* Error */
@@ -1331,7 +1306,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Title */
 "To" = "Aan";
 
-/* (No Commment) */
+/* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Om uw mailbox wachtwoord te resetten dient u de webversie van ProtonMail (via protonmail.com) te gebruiken";
 
 /* Description */
@@ -1343,14 +1318,10 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Error */
 "Token expired" = "Token vervallen";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID is niet actief, activeer het in de systeem instellingen";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "TouchID not available" = "TouchID is niet beschikbaar";
 
 /* Action
@@ -1360,6 +1331,9 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Title */
 "Trouble shooting guide" = "Foutoplossingsgids";
 
+/* Action */
+"Turkish" = "Turks";
+
 /* Title */
 "Tweet about ProtonMail" = "Tweet over ProtonMail";
 
@@ -1368,6 +1342,9 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 
 /* Title */
 "USER LOGIN" = "Gebruiker inlog";
+
+/* Action */
+"Ukrainian" = "Oekraïens";
 
 /* Description */
 "Unable to connect to the server" = "Niet in staat om met de server te verbinden";
@@ -1400,8 +1377,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 "Unable to parse response" = "Niet in staat om de reactie te verwerken";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Niet in staat om het antwoord object te verwerken: %@";
+"Unable to parse the response object:\n%@" = "Niet in staat om het antwoord object te verwerken: %@";
 
 /* Error */
 "Unable to parse token" = "Niet in staat om token te verwerken";
@@ -1415,7 +1391,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Description */
 "Unknow Error" = "Onbekende fout";
 
-/* (No Commment) */
+/* (No Comment) */
 "Unknow file" = "Onbekend bestand";
 
 /* No comment provided by engineer. */
@@ -1429,10 +1405,9 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 
 /* right top action button
    top right action text */
-"Update" = "Werk bij";
+"Update" = "Bijwerken";
 
-/* update notification email error title
-   update notification email error title when signup */
+/* update notification email error title */
 "Update Notification Email" = "Notificatie e-mailadres bijwerken";
 
 /* error when user already exist */
@@ -1441,10 +1416,10 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* No comment provided by engineer. */
 "User is available!" = "Gebruikersnaam is beschikbaar";
 
-/* (No Commment) */
+/* (No Comment) */
 "User name exist" = "Gebruikersnaam bestaat reeds";
 
-/* (No Commment) */
+/* (No Comment) */
 "User name invalid" = "Ongeldige gebruikersnaam";
 
 /* Title */
@@ -1456,7 +1431,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* Title */
 "Verification code sent" = "Verificatiecode verzonden";
 
-/* (No Commment) */
+/* (No Comment) */
 "Version %@ %@" = "Versie %@ %@";
 
 /* human check warning description */
@@ -1478,12 +1453,12 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 "Welcome to ProtonMail!" = "Welkom bij ProtonMail";
 
 /* Description */
-"What people see in the \"From\" field." = "Wat ontvangers in het veld \"Afzender\" zien.";
+"What people see in the \"From\" field." = "Wat ontvangers in het veld \"Van\" zien.";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Wanneer u een e-mail verstuurt, is dit de naam die bij 'afzender' verschijnt.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Wrong verification code" = "Onjuiste verificatiecode";
 
 /* Description */
@@ -1525,8 +1500,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* agree check box middle word */
 "and" = "en";
 
-/* like at 10:00pm
-   Title */
+/* Title */
 "at" = "om";
 
 /* Error */
@@ -1547,7 +1521,7 @@ DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!";
 /* contacts api error when fetch */
 "get contacts() failed, peopleOrderedByUsersPreference return null!!" = "laden van contacts() mislukt, peopleOrderedByUsersPreference geeft null terug!!";
 
-/* (No Commment) */
+/* (No Comment) */
 "hours" = "Uren";
 
 /* Title */
