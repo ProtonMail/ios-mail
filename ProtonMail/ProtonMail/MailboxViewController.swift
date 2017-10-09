@@ -183,6 +183,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
         }
         self.topMessageView.delegate = self
+        
+        self.undoBottomDistance.constant = -88
+        self.undoButton.isHidden = true
+        
         cleanRateReviewCell()
     }
     
@@ -783,7 +787,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         self.timerAutoDismiss?.invalidate()
         self.timerAutoDismiss = nil
         
-        self.undoBottomDistance.constant = -44
+        self.undoBottomDistance.constant = -88
         self.undoButton.isHidden = true
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
