@@ -61,14 +61,10 @@
             <constraints>
                 <constraint firstItem="VDi-Mg-ytx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="0wd-Bv-gX7"/>
                 <constraint firstAttribute="bottom" secondItem="VDi-Mg-ytx" secondAttribute="bottom" id="9TV-4w-pDU"/>
-                <constraint firstAttribute="bottom" secondItem="VDi-Mg-ytx" secondAttribute="bottom" id="Elb-ce-FAg"/>
                 <constraint firstItem="VDi-Mg-ytx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Fqv-Hd-QYB"/>
                 <constraint firstAttribute="trailing" secondItem="VDi-Mg-ytx" secondAttribute="trailing" id="RqP-2g-Li2"/>
-                <constraint firstAttribute="trailing" secondItem="VDi-Mg-ytx" secondAttribute="trailing" id="VSx-rR-r16"/>
                 <constraint firstAttribute="centerX" secondItem="j07-5X-rPA" secondAttribute="centerX" id="WpK-Bw-igG"/>
                 <constraint firstAttribute="centerY" secondItem="j07-5X-rPA" secondAttribute="centerY" constant="24" id="h1I-zM-q36"/>
-                <constraint firstItem="VDi-Mg-ytx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="u1K-Ry-Ox5"/>
-                <constraint firstItem="VDi-Mg-ytx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xKS-AO-TK5"/>
             </constraints>
             <point key="canvasLocation" x="428" y="402"/>
         </view>
