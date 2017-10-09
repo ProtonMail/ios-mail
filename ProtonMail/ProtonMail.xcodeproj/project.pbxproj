@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04A1270696CC8F117036D2BC /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		04A1270696CC8F117036D2BC /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		06CC130B33FBCEAB5E406DB8 /* libPods-ShareDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2723A6BEC97254756259C1CF /* libPods-ShareDev.a */; };
 		07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07009EFE1A659AD400129B07 /* SignIn.storyboard */; };
 		07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F001A65CF4800129B07 /* SignInViewController.swift */; };
@@ -81,6 +81,7 @@
 		07DD68A71A9815DF00ED130C /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A61A9815DF00ED130C /* URL+Extension.swift */; };
 		07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */; };
 		07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */; };
+		177E8D3057F56B2DDDD39B64 /* libPods-ShareDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2723A6BEC97254756259C1CF /* libPods-ShareDev.a */; };
 		4E0220EFD2D3FFE70AC21C16 /* libPods-ProtonMailTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EF314E2219A1089E6DAF06 /* libPods-ProtonMailTests.a */; };
 		701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */; };
 		7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */; };
@@ -424,6 +425,10 @@
 		753745041D6B7E8F00682C5A /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
 		753745071D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */; };
 		7537450A1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */; };
+		753E30A71F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
+		753E30A81F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
+		753E30A91F86F77D00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
+		753E30AA1F86F77E00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
 		753E5AB31F181A110090C0F9 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
 		753E5AB41F181A2D0090C0F9 /* MessageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0741B3383F900A72A1E /* MessageAPI.swift */; };
 		753E5AB51F181A500090C0F9 /* MessageSpamScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA199E1EC6474D00153A1A /* MessageSpamScore.swift */; };
@@ -617,7 +622,6 @@
 		75482BC21F7F09E100B0BFFB /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217591AD6F1B800978579 /* Fabric.framework */; };
 		75482BC31F7F09E100B0BFFB /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217581AD6F1B800978579 /* Crashlytics.framework */; };
 		75482BC41F7F09E100B0BFFB /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A42B6A1F0439690025F52C /* libstdc++.tbd */; };
-		75482BC51F7F09E100B0BFFB /* libPods-ShareDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2723A6BEC97254756259C1CF /* libPods-ShareDev.a */; };
 		75482BC71F7F09E100B0BFFB /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F121A684C1900129B07 /* Roboto-Thin.ttf */; };
 		75482BC81F7F09E100B0BFFB /* PasswordEncryptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 751303DA1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib */; };
 		75482BC91F7F09E100B0BFFB /* Attachments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B123771AB8CD90006EA38C /* Attachments.storyboard */; };
@@ -1014,7 +1018,7 @@
 		75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */; };
 		E0543BDD2F4BC3F59ABC6EC6 /* libPods-ProtonMail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7825C5C162EAD55A62734859 /* libPods-ProtonMail.a */; };
 		E2B40018E0A64B49A01B3DF6 /* libPods-ProtonMailDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 802280F25581311CFBC3C8E3 /* libPods-ProtonMailDev.a */; };
-		EAF4B9D23FDBAA4F2F237B3A /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		EAF4B9D23FDBAA4F2F237B3A /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1164,7 +1168,8 @@
 		07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSFetchedResultsControllerExtension.swift; path = ../ProtonMail/NSFetchedResultsControllerExtension.swift; sourceTree = "<group>"; };
 		244A62D4C89F2BB7DF4957E0 /* Pods-ProtonMail.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.release.xcconfig"; sourceTree = "<group>"; };
 		2723A6BEC97254756259C1CF /* libPods-ShareDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShareDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3BA479B770B35B0782BCAF37 /* Pods-ShareDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.debug.xcconfig"; sourceTree = "<group>"; };
+		2753871EAB4E48C75B953246 /* Pods-ShareDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.distribution.xcconfig"; sourceTree = "<group>"; };
+		32E074A6A514A1E79DAA0126 /* Pods-ShareDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.release.xcconfig"; sourceTree = "<group>"; };
 		41169F68B3FE8907F2C72783 /* Pods-ProtonMailTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54F29596C87DC71ECEC2B74B /* Pods-ProtonMailDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
@@ -1206,7 +1211,6 @@
 		70FC90D91A9BC11F00498B42 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		72AC1531F9DC8F37E025D0ED /* Pods-ProtonMailDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.release.xcconfig"; sourceTree = "<group>"; };
-		74746AFE1D9521FFFE30EDFB /* Pods-ShareDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
 		750729521DEFA52D0021483D /* MimeTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MimeTypes.swift; path = ../ProtonMail/MimeTypes.swift; sourceTree = "<group>"; };
 		750778CD1BE98900009F516C /* UserAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
@@ -1270,6 +1274,7 @@
 		753A361D1EF2512200032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		753E304E1F86D61400CE5AF8 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		753E304F1F86D61400CE5AF8 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
+		753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BCrypt+Extension.swift"; sourceTree = "<group>"; };
 		754508391E14860500265CD0 /* MailboxHumanCheckMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxHumanCheckMenuVC.swift; sourceTree = "<group>"; };
 		7545083C1E14861E00265CD0 /* MailboxCaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxCaptchaViewController.swift; sourceTree = "<group>"; };
 		754508401E149B6600265CD0 /* HumanCheckViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckViewModel.swift; sourceTree = "<group>"; };
@@ -1483,7 +1488,7 @@
 		7BBE5AA309996CC3AE0CB72A /* Pods-ProtonMailTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.release.xcconfig"; sourceTree = "<group>"; };
 		802280F25581311CFBC3C8E3 /* libPods-ProtonMailDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A7CF350E37E2333C78D200A /* Pods-ProtonMailDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.debug.xcconfig"; sourceTree = "<group>"; };
-		B32DFF869C0F203D317CE968 /* Pods-ShareDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.release.xcconfig"; sourceTree = "<group>"; };
+		ADEE9DF404B6CD14E9C04A8D /* Pods-ShareDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.debug.xcconfig"; sourceTree = "<group>"; };
 		C87DB98FF3BD404B025BC4DC /* Pods-ProtonMail.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.debug.xcconfig"; sourceTree = "<group>"; };
 		D150620E49C5EDEC5065FEA1 /* Pods-ProtonMailTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.distribution.xcconfig"; sourceTree = "<group>"; };
 		F3EF314E2219A1089E6DAF06 /* libPods-ProtonMailTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1506,8 +1511,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAF4B9D23FDBAA4F2F237B3A /* (null) in Frameworks */,
-				04A1270696CC8F117036D2BC /* (null) in Frameworks */,
+				EAF4B9D23FDBAA4F2F237B3A /* BuildFile in Frameworks */,
+				04A1270696CC8F117036D2BC /* BuildFile in Frameworks */,
 				4E0220EFD2D3FFE70AC21C16 /* libPods-ProtonMailTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1519,7 +1524,6 @@
 				75482BC21F7F09E100B0BFFB /* Fabric.framework in Frameworks */,
 				75482BC31F7F09E100B0BFFB /* Crashlytics.framework in Frameworks */,
 				75482BC41F7F09E100B0BFFB /* libstdc++.tbd in Frameworks */,
-				75482BC51F7F09E100B0BFFB /* libPods-ShareDev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1531,6 +1535,7 @@
 				7512A9EF1F17D5B400D84955 /* Crashlytics.framework in Frameworks */,
 				758ED7D01F05A43B0028D1A5 /* libstdc++.tbd in Frameworks */,
 				06CC130B33FBCEAB5E406DB8 /* libPods-ShareDev.a in Frameworks */,
+				177E8D3057F56B2DDDD39B64 /* libPods-ShareDev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1592,6 +1597,7 @@
 				751C5FE91C49C17700949FBF /* SwiftTryCatch.h */,
 				078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */,
 				75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */,
+				753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */,
 			);
 			name = Encryption;
 			path = ../ProtonMail;
@@ -1796,9 +1802,9 @@
 				41169F68B3FE8907F2C72783 /* Pods-ProtonMailTests.debug.xcconfig */,
 				7BBE5AA309996CC3AE0CB72A /* Pods-ProtonMailTests.release.xcconfig */,
 				D150620E49C5EDEC5065FEA1 /* Pods-ProtonMailTests.distribution.xcconfig */,
-				3BA479B770B35B0782BCAF37 /* Pods-ShareDev.debug.xcconfig */,
-				B32DFF869C0F203D317CE968 /* Pods-ShareDev.release.xcconfig */,
-				74746AFE1D9521FFFE30EDFB /* Pods-ShareDev.distribution.xcconfig */,
+				ADEE9DF404B6CD14E9C04A8D /* Pods-ShareDev.debug.xcconfig */,
+				32E074A6A514A1E79DAA0126 /* Pods-ShareDev.release.xcconfig */,
+				2753871EAB4E48C75B953246 /* Pods-ShareDev.distribution.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -2537,11 +2543,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 75482BE31F7F09E100B0BFFB /* Build configuration list for PBXNativeTarget "Share" */;
 			buildPhases = (
-				75482B2C1F7F09E100B0BFFB /* [CP] Check Pods Manifest.lock */,
 				75482B2D1F7F09E100B0BFFB /* Sources */,
 				75482BC11F7F09E100B0BFFB /* Frameworks */,
 				75482BC61F7F09E100B0BFFB /* Resources */,
-				75482BE11F7F09E100B0BFFB /* [CP] Copy Pods Resources */,
 				75482BE21F7F09E100B0BFFB /* ShellScript */,
 			);
 			buildRules = (
@@ -2927,36 +2931,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		75482B2C1F7F09E100B0BFFB /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		75482BE11F7F09E100B0BFFB /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		75482BE21F7F09E100B0BFFB /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3329,6 +3303,7 @@
 				754713111DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */,
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
 				75921C7B1F747BC90028DAC9 /* String+Mime.swift in Sources */,
+				753E30A71F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */,
 				758625D31CD80C6D0037DFA7 /* SettingsNavigationController.swift in Sources */,
 				07520CFC1AA67D38000D2175 /* PushNotificationService.swift in Sources */,
 				75510BAB1B82BDEB001348FF /* LabelTableViewCell.swift in Sources */,
@@ -3481,6 +3456,7 @@
 				75482B3F1F7F09E100B0BFFB /* NSBundle+Language.m in Sources */,
 				75482B401F7F09E100B0BFFB /* SharedCacheBase.swift in Sources */,
 				75482B411F7F09E100B0BFFB /* ComposeViewModelImpl.swift in Sources */,
+				753E30AA1F86F77E00CE5AF8 /* BCrypt+Extension.swift in Sources */,
 				75482B421F7F09E100B0BFFB /* LabelboxViewModelImpl.swift in Sources */,
 				75482B431F7F09E100B0BFFB /* AttachmentsTableViewController.swift in Sources */,
 				75482B441F7F09E100B0BFFB /* APIServiceResponse.swift in Sources */,
@@ -3632,6 +3608,7 @@
 				753E5ACC1F1820E80090C0F9 /* NSBundle+Language.m in Sources */,
 				7512AA4C1F1804F900D84955 /* SharedCacheBase.swift in Sources */,
 				7512AA651F180B5700D84955 /* ComposeViewModelImpl.swift in Sources */,
+				753E30A91F86F77D00CE5AF8 /* BCrypt+Extension.swift in Sources */,
 				753E5ABE1F181C590090C0F9 /* LabelboxViewModelImpl.swift in Sources */,
 				75555BBC1F1840B7000C0C10 /* AttachmentsTableViewController.swift in Sources */,
 				7512AA331F17FEDE00D84955 /* APIServiceResponse.swift in Sources */,
@@ -3928,6 +3905,7 @@
 				75DE7CC51CAAEA4900F5443E /* SettingsCell.swift in Sources */,
 				75E3EF3A1F16EFA400E14D1E /* UIViewExtension.swift in Sources */,
 				75E3EF3C1F16F05200E14D1E /* LanguageManager.m in Sources */,
+				753E30A81F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */,
 				75DE7CC61CAAEA4900F5443E /* HumanCheckMenuViewController.swift in Sources */,
 				75DE7CC81CAAEA4900F5443E /* QuickViewViewController.swift in Sources */,
 				75DE7CCA1CAAEA4900F5443E /* TouchIDCell.swift in Sources */,
@@ -4336,7 +4314,6 @@
 		};
 		75482BE41F7F09E100B0BFFB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3BA479B770B35B0782BCAF37 /* Pods-ShareDev.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
@@ -4373,7 +4350,6 @@
 		};
 		75482BE51F7F09E100B0BFFB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B32DFF869C0F203D317CE968 /* Pods-ShareDev.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
@@ -4410,7 +4386,6 @@
 		};
 		75482BE61F7F09E100B0BFFB /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 74746AFE1D9521FFFE30EDFB /* Pods-ShareDev.distribution.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
@@ -4447,7 +4422,7 @@
 		};
 		758ED7CD1F05A4000028D1A5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3BA479B770B35B0782BCAF37 /* Pods-ShareDev.debug.xcconfig */;
+			baseConfigurationReference = ADEE9DF404B6CD14E9C04A8D /* Pods-ShareDev.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev;
@@ -4484,7 +4459,7 @@
 		};
 		758ED7CE1F05A4000028D1A5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B32DFF869C0F203D317CE968 /* Pods-ShareDev.release.xcconfig */;
+			baseConfigurationReference = 32E074A6A514A1E79DAA0126 /* Pods-ShareDev.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev;
@@ -4521,7 +4496,7 @@
 		};
 		758ED7CF1F05A4000028D1A5 /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 74746AFE1D9521FFFE30EDFB /* Pods-ShareDev.distribution.xcconfig */;
+			baseConfigurationReference = 2753871EAB4E48C75B953246 /* Pods-ShareDev.distribution.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev;

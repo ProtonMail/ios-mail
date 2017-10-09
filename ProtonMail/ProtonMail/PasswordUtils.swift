@@ -46,7 +46,18 @@ final class PasswordUtils {
     }
     
     fileprivate static func bcrypt(_ password :String, salt :String) throws -> String {
-        if let out = JKBCrypt.hashPassword(password, withSalt: "$2a$10$" + salt), !out.isEmpty {
+        let real_salt = "$2a$10$" + salt
+        let out_hash = PMNBCrypt(password: password, salt: real_salt)
+        if !out_hash.isEmpty {
+            let size = out_hash.characters.count
+            if size > 4 {
+                let index = out_hash.characters.index(out_hash.startIndex, offsetBy: 4)
+                return "$2y$" + out_hash.substring(from: index)
+            }
+        }
+        
+        //backup plan when native bcrypt return empty string
+        if let out = JKBCrypt.hashPassword(password, withSalt: real_salt), !out.isEmpty {
             let size = out.characters.count
             if size > 4 {
                 let index = out.characters.index(out.startIndex, offsetBy: 4)
