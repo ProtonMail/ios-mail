@@ -332,9 +332,6 @@ class ComposeView: UIViewController {
     }
     
     internal func configureSubject() {
-        //self.subject.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
-        //self.subject.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
-        
         let subjectLeftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: self.subject.frame.size.height))
         self.subject.leftView = subjectLeftPaddingView
         self.subject.leftViewMode = UITextFieldViewMode.always
@@ -575,13 +572,6 @@ class ComposeView: UIViewController {
             fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight
         }
         contactPicker.contactCollectionView!.addBorder(.bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
-        
-//        UIView.animateWithDuration(NSTimeInterval(contactPicker.animationSpeed), animations: { () -> Void in
-//            //self.view.layoutIfNeeded()
-//            contactPicker.contactCollectionView!.addBorder(.Bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
-//            //contactPicker.contactCollectionView.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
-//            //contactPicker.contactCollectionView.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
-//        })
     }
 }
 
@@ -598,9 +588,6 @@ extension ComposeView: MBContactPickerDataSource {
         } else if (contactPickerView == bccContactPicker) {
             contactPickerView.prompt = NSLocalizedString("Bcc", comment: "Title")
         }
-        
-        //contactPickerView.contactCollectionView.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
-        //contactPickerView.contactCollectionView.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         return self.datasource?.composeViewContactsModelForPicker(self, picker: contactPickerView)
     }
     
