@@ -52,7 +52,7 @@ final class PasswordUtils {
             let size = out_hash.characters.count
             if size > 4 {
                 let index = out_hash.characters.index(out_hash.startIndex, offsetBy: 4)
-                return "$2y$" + out_hash.substring(from: index)
+                return "$2y$" + String(out_hash[index...])
             }
         }
         
@@ -61,7 +61,7 @@ final class PasswordUtils {
             let size = out.characters.count
             if size > 4 {
                 let index = out.characters.index(out.startIndex, offsetBy: 4)
-                return "$2y$" + out.substring(from: index)
+                return "$2y$" + String(out[index...])
             } else {
                 throw PasswordError.hashSizeWrong
             }
@@ -95,9 +95,7 @@ final class PasswordUtils {
         do {
             let out = try bcrypt_string(password, salt: encodedSalt)
             let index = out.characters.index(out.startIndex, offsetBy: 29)
-            
-//            let newStr = String(str[index<..])
-            let outStr = out.substring(from: index)
+            let outStr = String(out[index...])
             return outStr
         } catch PasswordError.hashEmpty {
             // check error

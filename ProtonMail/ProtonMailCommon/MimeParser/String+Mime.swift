@@ -13,13 +13,10 @@ extension String {
 		var result = self
 		let utf = "=?utf-8?Q?"
 		let utfEnd = "?="
-		
-//		while let range = result.range(of: utf, options: .caseInsensitive),
-//			let endRange = result.range(of: utfEnd, options: .caseInsensitive, range: range.upperBound..<(self.index(before: self.endIndex)), locale: nil) {
 
 		while let range = result.range(of: utf, options: .caseInsensitive), let endRange = result.range(of: utfEnd), range.upperBound < endRange.lowerBound {
 			let innerRange = range.upperBound..<endRange.lowerBound
-			let innerChunk = String(result[innerRange]) ?? ""
+			let innerChunk = String(result[innerRange])
 			result = result.replacingCharacters(in: range.lowerBound..<endRange.upperBound, with: innerChunk.convertedFromEmailHeaderField)
 		}
 		return result.trimmingCharacters(in: .whitespacesAndNewlines)
