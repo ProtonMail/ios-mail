@@ -69,7 +69,7 @@ class SearchViewController: ProtonMailViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.white
+//        self.view.backgroundColor = UIColor.white
         
         cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Action"), for: .normal)
         

@@ -1310,10 +1310,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2zf-id-O9k" userLabel="Navigation Bar VIew">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="86"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bbn-ia-w6G">
-                                        <rect key="frame" x="319" y="38" width="48" height="30"/>
+                                        <rect key="frame" x="319" y="7" width="48" height="30"/>
                                         <state key="normal" title="Cancel">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1323,14 +1323,14 @@
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="SIf-Aw-ALo" userLabel="Search Image">
-                                        <rect key="frame" x="8" y="42" width="22" height="22"/>
+                                        <rect key="frame" x="8" y="11" width="22" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="Dws-ct-CTX"/>
                                             <constraint firstAttribute="width" constant="22" id="dEY-TV-214"/>
                                         </constraints>
                                     </imageView>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="osS-Tz-qFA" userLabel="Search Text">
-                                        <rect key="frame" x="46" y="38" width="265" height="30"/>
+                                        <rect key="frame" x="46" y="7" width="265" height="30"/>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="DvR-Yt-iU3"/>
@@ -1342,8 +1342,8 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.24604520201683044" green="0.24387916922569275" blue="0.30707395076751709" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="86" id="0pn-iv-cyJ"/>
-                                    <constraint firstAttribute="centerY" secondItem="SIf-Aw-ALo" secondAttribute="centerY" constant="-10" id="4cX-R5-Gpb"/>
+                                    <constraint firstAttribute="height" constant="44" id="0pn-iv-cyJ"/>
+                                    <constraint firstAttribute="centerY" secondItem="SIf-Aw-ALo" secondAttribute="centerY" id="4cX-R5-Gpb"/>
                                     <constraint firstItem="osS-Tz-qFA" firstAttribute="centerY" secondItem="SIf-Aw-ALo" secondAttribute="centerY" id="4fy-cr-nL6"/>
                                     <constraint firstItem="Bbn-ia-w6G" firstAttribute="leading" secondItem="osS-Tz-qFA" secondAttribute="trailing" constant="8" id="96i-92-fvB"/>
                                     <constraint firstItem="SIf-Aw-ALo" firstAttribute="leading" secondItem="2zf-id-O9k" secondAttribute="leading" constant="16" id="CZD-gf-cjK">
@@ -1355,7 +1355,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="64" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="bZe-7F-cQr">
-                                <rect key="frame" x="0.0" y="86" width="375" height="726"/>
+                                <rect key="frame" x="0.0" y="88" width="375" height="724"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="separatorColor" red="0.74228572845458984" green="0.76431012153625488" blue="0.79264485836029053" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
@@ -1807,7 +1807,7 @@
                                 </prototypes>
                             </tableView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Results Found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hkd-6v-qIH">
-                                <rect key="frame" x="0.0" y="86" width="375" height="81"/>
+                                <rect key="frame" x="0.0" y="88" width="375" height="81"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="81" id="nba-l9-gS7"/>
                                 </constraints>
@@ -1825,7 +1825,7 @@
                             <constraint firstAttribute="bottom" secondItem="bZe-7F-cQr" secondAttribute="bottom" id="G0g-YA-Pm9"/>
                             <constraint firstItem="hkd-6v-qIH" firstAttribute="leading" secondItem="GFM-UM-cBX" secondAttribute="leading" id="K5S-Pu-TPb"/>
                             <constraint firstItem="bZe-7F-cQr" firstAttribute="leading" secondItem="GFM-UM-cBX" secondAttribute="leading" id="LiJ-ly-H3n"/>
-                            <constraint firstItem="2zf-id-O9k" firstAttribute="top" secondItem="GFM-UM-cBX" secondAttribute="top" id="Tjk-S1-jKH"/>
+                            <constraint firstItem="2zf-id-O9k" firstAttribute="top" secondItem="LVg-7A-0tI" secondAttribute="bottom" id="Tjk-S1-jKH"/>
                             <constraint firstItem="2zf-id-O9k" firstAttribute="leading" secondItem="GFM-UM-cBX" secondAttribute="leading" id="gJ7-Wm-bbg"/>
                             <constraint firstItem="hkd-6v-qIH" firstAttribute="top" secondItem="2zf-id-O9k" secondAttribute="bottom" id="lmP-8C-cRk"/>
                         </constraints>
@@ -2799,7 +2799,7 @@
         <!--Search Navigation Controller-->
         <scene sceneID="arq-ry-cmQ">
             <objects>
-                <navigationController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="xBI-ex-VGk" userLabel="Search Navigation Controller" sceneMemberID="viewController">
+                <navigationController navigationBarHidden="YES" id="xBI-ex-VGk" userLabel="Search Navigation Controller" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="aTD-c0-dRX">
                         <autoresizingMask key="autoresizingMask"/>
