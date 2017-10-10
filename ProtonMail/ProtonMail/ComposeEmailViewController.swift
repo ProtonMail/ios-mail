@@ -101,8 +101,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         // init views
         self.composeView = ComposeView(nibName: "ComposeView", bundle: nil)
-        let w = UIScreen.main.applicationFrame.width;
-        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
+        if #available(iOS 11.0, *) {
+            self.updateComposeFrame()
+        } else {
+            let w = UIScreen.main.applicationFrame.width;
+            self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
+        }
         self.composeView.delegate = self
         self.composeView.datasource = self
         self.webView.scrollView.addSubview(composeView.view);
@@ -126,6 +130,26 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.viewModel.markAsRead();
     }
     
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if #available(iOS 11.0, *) {
+            self.updateComposeFrame()
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    @available(iOS 11.0, *)
+    internal func updateComposeFrame() {
+        let inset = self.view.safeAreaInsets
+        let offset = inset.left + inset.right
+        var w = UIScreen.main.applicationFrame.width - offset;
+        if w < 0 {
+            w = 0
+        }
+        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
+    }
     
     
     internal func retrieveAllContacts() {
@@ -514,12 +538,13 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     }
     
     func ComposeViewDidSizeChanged(_ size: CGSize) {
-        //self.composeSize = size
-        //self.updateViewSize()
         self.composeViewSize = size.height;
-        let w = UIScreen.main.applicationFrame.width;
-        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize )
-        
+        if #available(iOS 11.0, *) {
+            self.updateComposeFrame()
+        } else {
+            let w = UIScreen.main.applicationFrame.width
+            self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize )
+        }
         self.updateContentLayout(true)
     }
     

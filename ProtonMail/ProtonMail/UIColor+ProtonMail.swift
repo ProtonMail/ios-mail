@@ -58,11 +58,11 @@ extension UIColor {
         
         static let Menu_UnreadCountBackground = UIColor(RRGGBB: UInt(0x8182C3))
         static let Menu_UnSelectBackground = UIColor(RRGGBB: UInt(0x505061))
+        static let Menu_UnSelectBackground_Label = UIColor(RRGGBB:UInt(0x3F3E4E))
         static let Menu_SelectedBackground = UIColor(RRGGBB: UInt(0x2F2E3C))
-        
+    
         static let Nav_Bar_Background = UIColor(RRGGBB: UInt(0x505061))
     
-        
         static let Login_Background_Gradient_Left = UIColor(red: 147/255, green: 151/255, blue: 205/255, alpha: 0.9)
         static let Login_Background_Gradient_Right = UIColor(red: 23/255, green: 41/255, blue: 131/255, alpha: 0.9)
         static let Login_Button_Border_Color = UIColor(RRGGBB: UInt(0x9397CD))

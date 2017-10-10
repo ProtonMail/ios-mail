@@ -63,24 +63,6 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         self.edgesForExtendedLayout = []
         
-        
-        var appVersion = NSLocalizedString("Unkonw Version", comment: "")
-        var libVersion = "| \(NSLocalizedString("LibVersion", comment: "lib version text")): 1.0.0"
-        
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            appVersion = "\(NSLocalizedString("AppVersion", comment: "")): \(version)"
-        }
-        if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-            appVersion = appVersion + " (\(build))"
-        }
-        
-        let lib_v = PMNLibVersion.getLibVersion()
-        libVersion = "| \(NSLocalizedString("LibVersion", comment: "")): \(lib_v)"
-
-        PMLog.D(appVersion)
-        
-        PMLog.D(libVersion)
-        
         //inital navigation bar items
         self.cancelButton = UIBarButtonItem(title:NSLocalizedString("Cancel", comment: "Action"),
                                             style: .plain,
@@ -216,8 +198,8 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     override func viewWillAppear(_ animated: Bool) {
         self.updateAttachmentButton()
         super.viewWillAppear(animated)
-        let w = UIScreen.main.applicationFrame.width;
-        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
+       // let w = UIScreen.main.applicationFrame.width;
+       // self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
         NotificationCenter.default.addObserver(self, selector: #selector(ComposerViewController.willResignActiveNotification(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
         setupAutoSave()
     }
@@ -241,9 +223,27 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         return UIStatusBarStyle.lightContent
     }
     
-    override func viewDidLayoutSubviews()
-    {
+    override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        if #available(iOS 11.0, *) {
+            self.updateComposeFrame()
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    @available(iOS 11.0, *)
+    internal func updateComposeFrame() {
+        let inset = self.view.safeAreaInsets
+        let offset = inset.left + inset.right
+        var w = UIScreen.main.applicationFrame.width - offset;
+        if w < 0 {
+            w = 0
+        }
+        var frame = self.view.frame
+        frame.size.width = w
+        self.view.frame = frame
+        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
     }
     
     // ******************
@@ -469,9 +469,12 @@ extension ComposerViewController : ComposeViewDelegate {
     
     func ComposeViewDidSizeChanged(_ size: CGSize) {
         self.composeViewSize = size.height;
-        let w = UIScreen.main.applicationFrame.width;
-        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize )
-        
+        if #available(iOS 11.0, *) {
+            self.updateComposeFrame()
+        } else {
+            let w = UIScreen.main.applicationFrame.width
+            self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
+        }
         self.updateContentLayout(true)
     }
     

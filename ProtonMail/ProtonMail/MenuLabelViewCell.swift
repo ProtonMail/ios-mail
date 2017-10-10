@@ -29,8 +29,6 @@ class MenuLabelViewCell: UITableViewCell {
         selectedBackgroundView.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
         
         self.selectedBackgroundView = selectedBackgroundView
-        self.separatorInset = UIEdgeInsets.zero
-        self.layoutMargins = UIEdgeInsets.zero
     }
     
     func configCell (_ item : Label!) {
@@ -76,7 +74,7 @@ class MenuLabelViewCell: UITableViewCell {
         if highlighted {
             self.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
         } else {
-            self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground
+            self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground_Label
         }
     }
     
@@ -89,7 +87,7 @@ class MenuLabelViewCell: UITableViewCell {
         if selected {
             self.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
         } else {
-            self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground
+            self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground_Label
         }
     }
 }
