@@ -215,7 +215,7 @@ extension LablesViewController: UITableViewDataSource {
     }
     
     @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count = fetchedLabels?.numberOfRowsInSection(section) ?? 0
+        let count = fetchedLabels?.numberOfRows(in: section) ?? 0
         return count
     }
     

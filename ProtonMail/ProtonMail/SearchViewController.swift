@@ -180,7 +180,7 @@ class SearchViewController: ProtonMailViewController {
     
     func showHideNoresult(){
         noResultLabel.isHidden = false
-        if let count = fetchedResultsController?.numberOfRowsInSection(0) {
+        if let count = fetchedResultsController?.numberOfRows(in: 0) {
             if count > 0 {
                 noResultLabel.isHidden = true
             }
@@ -326,12 +326,12 @@ extension SearchViewController: UITableViewDataSource {
     }
 
     @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController?.numberOfRowsInSection(section) ?? 0
+        return fetchedResultsController?.numberOfRows(in: section) ?? 0
     }
     
     @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let mailboxCell = tableView.dequeueReusableCell(withIdentifier: MailboxMessageCell.Constant.identifier, for: indexPath) as! MailboxMessageCell
-        if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
+        if self.fetchedResultsController?.numberOfRows(in: indexPath.section) > indexPath.row {
             if let message = fetchedResultsController?.object(at: indexPath) as? Message {
                 mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "")
             }
@@ -358,7 +358,7 @@ extension SearchViewController: UITableViewDataSource {
 extension SearchViewController: UITableViewDelegate {
     
     @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
+        if self.fetchedResultsController?.numberOfRows(in: indexPath.section) > indexPath.row {
             if let _ = fetchedResultsController?.object(at: indexPath) as? Message {
                 self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
             }

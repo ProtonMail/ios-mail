@@ -140,7 +140,7 @@ extension Data {
 			var count = 0, i = 0
 			let space = UInt8(firstCharacterOf: " ")
 			let tab = UInt8(firstCharacterOf: "\t")
-			let cr = UInt8(firstCharacterOf: "\r")
+            //let cr = UInt8(firstCharacterOf: "\r")
 			let newline = UInt8(firstCharacterOf: "\n")
 			
 			while i < length {

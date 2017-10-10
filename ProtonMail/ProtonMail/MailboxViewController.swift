@@ -599,7 +599,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate func messageAtIndexPath(_ indexPath: IndexPath) -> Message? {
         if self.fetchedResultsController?.numberOfSections() > indexPath.section {
-            if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
+            if self.fetchedResultsController?.numberOfRows(in: indexPath.section) > indexPath.row {
                 if let message = fetchedResultsController?.object(at: indexPath) as? Message {
                     if message.managedObjectContext != nil {
                         return message
@@ -819,7 +819,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                         let isOlderMessage = updateTime.end.compare(currentTime as Date) != ComparisonResult.orderedAscending
                         let isLastMessage = (last == current)
                         if  (isOlderMessage || isLastMessage) && !fetching {
-                            let sectionCount = fetchedResultsController.numberOfRowsInSection(0) 
+                            let sectionCount = fetchedResultsController.numberOfRows(in: 0)
                             let recordedCount = Int(updateTime.total)
                             if updateTime.isNew || recordedCount > sectionCount { //here need add a counter to check if tried too many times make one real call in case count not right
                                 self.fetching = true
@@ -853,7 +853,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         if let fetchedResultsController = fetchedResultsController {
             let secouts = fetchedResultsController.numberOfSections() 
             if secouts > 0 {
-                let sectionCount = fetchedResultsController.numberOfRowsInSection(0) 
+                let sectionCount = fetchedResultsController.numberOfRows(in: 0)
                 if sectionCount == 0 {
                     let updateTime = viewModel.lastUpdateTime()
                     let recordedCount = Int(updateTime.total)
@@ -953,7 +953,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     fileprivate func showNoResultLabel() {
-        let count = (self.fetchedResultsController?.numberOfSections() > 0) ? (self.fetchedResultsController?.numberOfRowsInSection(0) ?? 0) : 0
+        let count = (self.fetchedResultsController?.numberOfSections() > 0) ? (self.fetchedResultsController?.numberOfRows(in: 0) ?? 0) : 0
         if (count <= 0 && !fetchingMessage ) {
             self.noResultLabel.isHidden = false;
         } else {
@@ -1481,13 +1481,12 @@ extension MailboxViewController: UITableViewDataSource {
     }
     
     @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if let rIndex = self.getRatingIndex() {
             if rIndex == indexPath {
-                //                let mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rIndex) as! MailboxRateReviewCell
-                //                mailboxRateCell.callback = self
-                //                mailboxRateCell.selectionStyle = .None
-                //                return mailboxRateCell
+                //let mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rIndex) as! MailboxRateReviewCell
+                //mailboxRateCell.callback = self
+                //mailboxRateCell.selectionStyle = .None
+                //return mailboxRateCell
             }
         }
         let mailboxCell = tableView.dequeueReusableCell(withIdentifier: MailboxMessageCell.Constant.identifier, for: indexPath) as! MailboxMessageCell
@@ -1496,7 +1495,7 @@ extension MailboxViewController: UITableViewDataSource {
     }
     
     @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count = fetchedResultsController?.numberOfRowsInSection(section) ?? 0
+        let count = fetchedResultsController?.numberOfRows(in: section) ?? 0
         return count
     }
     
@@ -1504,11 +1503,9 @@ extension MailboxViewController: UITableViewDataSource {
         if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
             cell.separatorInset = UIEdgeInsets.zero
         }
-        
         if (cell.responds(to: #selector(setter: UIView.layoutMargins))) {
             cell.layoutMargins = UIEdgeInsets.zero
         }
-        
         fetchMessagesIfNeededForIndexPath(indexPath)
     }
 }

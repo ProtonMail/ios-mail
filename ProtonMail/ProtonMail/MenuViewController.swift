@@ -255,7 +255,7 @@ extension MenuViewController: UITableViewDataSource {
         } else if (section == 1) {
             return otherItems.count
         } else if (section == 2) {
-            let count = fetchedLabels?.numberOfRowsInSection(0) ?? 0
+            let count = fetchedLabels?.numberOfRows(in: 0) ?? 0
             return count
         }
         return 0
