@@ -14,7 +14,7 @@ protocol FeedbackViewControllerDelegate {
     func dismissed();
 }
 
-class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
+class FeedbackViewController : ProtonMailViewController, UITableViewDelegate, UITableViewDataSource {
     
     fileprivate let sectionSource : [FeedbackSection] = [.header, .reviews, .guid]
     fileprivate let dataSource : [FeedbackSection : [FeedbackItem]] = [.header : [.header], .reviews : [.rate, .tweet, .facebook], .guid : [.guide, .contact]]
@@ -53,16 +53,15 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
     
     - returns:
     */
-    func numberOfSectionsInTableView(_ tableView: UITableView!) -> Int  {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         return sectionSource.count
     }
     
-    @objc func tableView(_ tableView: UITableView!, numberOfRowsInSection section: Int) -> Int  {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let items = dataSource[sectionSource[section]]
-        
         return items?.count ?? 0
     }
-    
     
     @objc func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let key = sectionSource[section]
@@ -91,23 +90,7 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
             return 0.01
         }
     }
-    
-    @objc func tableView(_ tableView: UITableView!, cellForRowAtIndexPath indexPath: IndexPath!) -> UITableViewCell!  {
-        let key = sectionSource[indexPath.section]
-        let items : [FeedbackItem]? = dataSource[key]
-        if key == .header {
-            let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "feedback_table_top_cell", for: indexPath) 
-            cell.selectionStyle = .none
-            return cell
-        } else {
-            let cell: FeedbackTableViewCell = tableView.dequeueReusableCell(withIdentifier: "feedback_table_detail_cell", for: indexPath) as! FeedbackTableViewCell
-            if let item = items?[indexPath.row] {
-                cell.configCell(item)
-            }
-            return cell
-        }
-    }
-    
+
     @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let key = sectionSource[indexPath.section]
         let items : [FeedbackItem]? = dataSource[key]
@@ -129,6 +112,23 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let _ = self.navigationController?.popToRootViewController(animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let key = sectionSource[indexPath.section]
+        let items : [FeedbackItem]? = dataSource[key]
+        if key == .header {
+            let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "feedback_table_top_cell", for: indexPath)
+            cell.selectionStyle = .none
+            return cell
+        } else {
+            let cell: FeedbackTableViewCell = tableView.dequeueReusableCell(withIdentifier: "feedback_table_detail_cell", for: indexPath) as! FeedbackTableViewCell
+            if let item = items?[indexPath.row] {
+                cell.configCell(item)
+            }
+            return cell
+        }
+    }
+//    override func cellfor
     
     func openRating () {
         let url :URL = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=979659905")!
