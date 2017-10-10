@@ -222,8 +222,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.statusBarHit(_:)), name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
         setupAutoSave()
-        
-        self.composeView.view.backgroundColor = .red
     }
     
     override func viewWillDisappear(_ animated: Bool) {

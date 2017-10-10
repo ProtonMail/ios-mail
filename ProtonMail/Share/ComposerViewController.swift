@@ -198,8 +198,6 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     override func viewWillAppear(_ animated: Bool) {
         self.updateAttachmentButton()
         super.viewWillAppear(animated)
-       // let w = UIScreen.main.applicationFrame.width;
-       // self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
         NotificationCenter.default.addObserver(self, selector: #selector(ComposerViewController.willResignActiveNotification(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
         setupAutoSave()
     }
@@ -243,7 +241,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         var frame = self.view.frame
         frame.size.width = w
         self.view.frame = frame
-        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
+        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
     }
     
     // ******************
