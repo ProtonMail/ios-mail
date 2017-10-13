@@ -104,7 +104,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         updateContentLayout(false)
         
         //change message as read
-        self.viewModel.markAsRead()
+        self.viewModel.markAsRead();
+        
+        self.formatHTML = true
     }
     
     

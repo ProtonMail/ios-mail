@@ -389,6 +389,7 @@ extension Message {
                     body = body.ln2br() 
                 }
                 if isPlainText() {
+                    body = body.encodeHtml()
                     return body.ln2br() 
                 }
                 return body

@@ -1571,6 +1571,8 @@ class MessageDataService {
                                         message.hasAttachments = true;
                                         message.numAttachments = NSNumber(value: attachments.count)
                                     }
+                                    //TODO::fix later 1.7
+                                    message.mimeType = "text/html"
                                     
                                     message.needsUpdate = false
                                     message.isRead = true
