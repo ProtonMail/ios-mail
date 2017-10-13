@@ -51,14 +51,14 @@ class UserDataService {
     
     // MARK: - Private variables
     //TODO::Fix later fileprivate(set)
-    var userInfo: UserInfo? = SharedCacheBase.getDefault().customObjectForKey(Key.userInfo) as? UserInfo {
+    fileprivate(set) var userInfo: UserInfo? = SharedCacheBase.getDefault().customObjectForKey(Key.userInfo) as? UserInfo {
         didSet {
             SharedCacheBase.getDefault().setCustomValue(userInfo, forKey: Key.userInfo)
             SharedCacheBase.getDefault().synchronize()
         }
     }
     //TODO::Fix later fileprivate(set)
-    var username: String? = SharedCacheBase.getDefault().string(forKey: Key.username) {
+    fileprivate(set) var username: String? = SharedCacheBase.getDefault().string(forKey: Key.username) {
         didSet {
             SharedCacheBase.getDefault().setValue(username, forKey: Key.username)
             SharedCacheBase.getDefault().synchronize()
