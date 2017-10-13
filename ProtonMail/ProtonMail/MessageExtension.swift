@@ -442,6 +442,7 @@ extension Message {
         }
     }
     
+    //this function need to factor
     var defaultAddress : Address? {
         get {
             if let addressID = addressID {
@@ -452,6 +453,10 @@ extension Message {
                         if let add = sharedUserDataService.userAddresses.getDefaultAddress() {
                             return add;
                         }
+                    }
+                } else {
+                    if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+                        return addr
                     }
                 }
             } else {

@@ -98,9 +98,9 @@ class ShareUnlockViewController: UIViewController {
                                     {
                                         ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                                         if let shareURL = url as? NSURL {
-                                            PMLog.D("\(shareURL)")
                                             self.inputSubject = plainText ?? ""
-                                            self.inputContent = shareURL.absoluteString ?? ""
+                                            let url = shareURL.absoluteString ?? ""
+                                            self.inputContent = "<a href=\"\(url)\">\(url)</a>"
                                             self.loginCheck()
                                             
                                         } else {
