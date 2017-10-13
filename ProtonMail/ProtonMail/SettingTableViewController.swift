@@ -506,8 +506,9 @@ class SettingTableViewController: ProtonMailViewController {
                     case .cleanCache:
                         if !cleaning {
                             cleaning = true
-                            let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
-                            let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+                            //let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+                            let nview = self.navigationController?.view
+                            let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
                             hud.labelText = NSLocalizedString("Resetting message cache ...", comment: "Title")
                             hud.removeFromSuperViewOnHide = true
                             sharedMessageDataService.cleanLocalMessageCache() { task, res, error in
@@ -586,15 +587,15 @@ class SettingTableViewController: ProtonMailViewController {
                                         var newAddrs = Array<Address>()
                                         var newOrder = Array<Int>()
                                         newAddrs.append(addr)
-                                        newOrder.append(addr.send)
+                                        newOrder.append(addr.order)
                                         var order = 1
-                                        addr.send = order
+                                        addr.order = order
                                         order += 1
                                         for oldAddr in self.multi_domains {
                                             if oldAddr != addr {
                                                 newAddrs.append(oldAddr)
-                                                newOrder.append(oldAddr.send)
-                                                oldAddr.send = order
+                                                newOrder.append(oldAddr.order)
+                                                oldAddr.order = order
                                                 order += 1
                                             }
                                         }
