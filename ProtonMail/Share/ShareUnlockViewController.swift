@@ -8,6 +8,8 @@
 import UIKit
 import LocalAuthentication
 
+let sharedUserDataService = UserDataService()
+
 class ShareUnlockViewController: UIViewController {
     @IBOutlet weak var pinUnlock: UIButton!
     @IBOutlet weak var touchID: UIButton!

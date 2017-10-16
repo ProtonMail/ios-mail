@@ -20,8 +20,6 @@ protocol UserDataServiceDelegate {
     func onLogout(animated: Bool)
 }
 
-let sharedUserDataService = UserDataService()
-
 /// Stores information related to the user
 class UserDataService {
     

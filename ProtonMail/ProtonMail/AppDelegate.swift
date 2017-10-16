@@ -17,6 +17,8 @@ import UIKit
 import Fabric
 import Crashlytics
 
+let sharedUserDataService = UserDataService()
+
 @UIApplicationMain
 class AppDelegate: UIResponder {
     
