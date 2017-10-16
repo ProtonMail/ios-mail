@@ -8,7 +8,7 @@
 import UIKit
 import LocalAuthentication
 
-let sharedUserDataService = UserDataService()
+var sharedUserDataService : UserDataService!
 
 class ShareUnlockViewController: UIViewController {
     @IBOutlet weak var pinUnlock: UIButton!
@@ -24,6 +24,8 @@ class ShareUnlockViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        sharedUserDataService = UserDataService()
         
         LanguageManager.setupCurrentLanguage()
         
