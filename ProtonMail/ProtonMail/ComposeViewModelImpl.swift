@@ -374,7 +374,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 let t = NSLocalizedString("To:", comment: "Title")
                 let c = NSLocalizedString("Cc:", comment: "Title")
                 var forwardHeader =
-                "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + " class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
+                "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
                 
                 if message!.recipientList != "" {
                     forwardHeader += "\(t) \(message!.recipientList.formatJsonContact(true))<br>"
@@ -397,7 +397,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
                 
-                var sp = "\(forwardHeader)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+                var sp = "<blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
                 sp = sp.stringByStrippingStyleHTML()
                 sp = sp.stringByStrippingBodyStyle()
                 sp = sp.stringByPurifyHTML()
