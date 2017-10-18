@@ -233,8 +233,9 @@ extension String {
         
         return false
     }
-    
+    //<link rel=“stylesheet” type=“text/css” href=“http://url/“>
      func hasImage () -> Bool {
+        
         if self.preg_match("\\ssrc='(?!cid:)") {
             return true
         }
@@ -268,6 +269,12 @@ extension String {
         out = out.preg_replace("background=", replaceto: " data-background=")
         out = out.preg_replace("url\\(", replaceto: " data-url(")
         
+        
+        // this is get http part and replace
+//        if self.preg_match("(<link\\b.*href=[\"'])(http.*.[\"'])(.*>)") {
+//            return true
+//        }
+        
         return out
     }
     
@@ -289,7 +296,7 @@ extension String {
     
      func stringByPurifyHTML() -> String {
         //|<(\\/?link.*?)>   <[^>]*?alert.*?>| |<[^>]*?confirm.*?> //the comment out part case hpylink have those key works been filtered out
-        let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>|<img.*?.onerror=alert.*?>", replaceto: " ")
+        let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>|<img.*?.onerror=alert.*?>|<link[^>]*.href.[^>]*>", replaceto: " ")
         
 //        var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
 //        //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
