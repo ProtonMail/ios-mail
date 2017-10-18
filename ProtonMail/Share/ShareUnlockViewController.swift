@@ -157,10 +157,25 @@ class ShareUnlockViewController: UIViewController {
             sharedUserDataService.isSignedIn = false
             touchID.alpha = 1.0
             touchID.isEnabled = true
-            self.authenticateUser()
+            DispatchQueue.main.async {
+                self.authenticateUser()
+            }
             break
         case .restore:
             self.signInIfRememberedCredentials()
+            break
+        }
+    }
+    
+    private func tryTouchID() {
+        let signinFlow = getViewFlow()
+        switch signinFlow {
+        case .requirePin:
+            break
+        case .requireTouchID:
+            self.authenticateUser()
+            break
+        case .restore:
             break
         }
     }
