@@ -671,7 +671,7 @@
 "Key invalid please go back try again" = "Klucz nieprawidłowy, proszę wróć aby spróbować ponownie";
 
 /* Title */
-"LOGIN" = "Nazwa użytkowika";
+"LOGIN" = "Logowanie";
 
 /* Title */
 "Label Management" = "Zarządzanie etykietą";
@@ -867,7 +867,7 @@
 "OK" = "Ok";
 
 /* Title */
-"On" = "Włączony";
+"On" = "Dnia";
 
 /* Description */
 "Only plus user could modify default mobile signature or turn it off!" = "Tylko użytkownicy kont Plus mogą zmodyfikować domyślny podpis mobilny lub go wyłączyć!";
