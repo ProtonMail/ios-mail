@@ -157,9 +157,6 @@ class ShareUnlockViewController: UIViewController {
             sharedUserDataService.isSignedIn = false
             touchID.alpha = 1.0
             touchID.isEnabled = true
-            DispatchQueue.main.async {
-                self.authenticateUser()
-            }
             break
         case .restore:
             self.signInIfRememberedCredentials()
@@ -200,6 +197,7 @@ class ShareUnlockViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.tryTouchID()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
