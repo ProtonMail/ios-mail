@@ -35,6 +35,8 @@ extension ELanguage {
                 return NSLocalizedString("Dutch", comment: "Action")
             case .italian:
                 return NSLocalizedString("Italian", comment: "Action")
+            case .portugueseBrazil:
+                return NSLocalizedString("Portuguese Brazil", comment: "Action")
             case .count:
                 return ""
             }
@@ -64,12 +66,15 @@ extension ELanguage {
                 return "nl_NL"
             case .italian:
                 return "it_IT"
+            case .portugueseBrazil:
+                return "pt_BR"
             case .count:
                 return "en_US"
             }
         }
     }
     
+    //This code needs to match the project language folder
     public var code : String {
         get {
             switch(self) {
@@ -93,6 +98,8 @@ extension ELanguage {
                 return "nl"
             case .italian:
                 return "it"
+            case .portugueseBrazil:
+                return "pt-BR"
             case .count:
                 return "en"
             }
@@ -110,6 +117,7 @@ extension ELanguage {
                 ELanguage.ukrainian.code,
                 ELanguage.dutch.code,
                 ELanguage.italian.code,
+                ELanguage.portugueseBrazil.code
         ]
     }
     static public func allItems() -> [ELanguage] {
@@ -122,7 +130,8 @@ extension ELanguage {
                 .polish,
                 .ukrainian,
                 .dutch,
-                .italian
+                .italian,
+                .portugueseBrazil
         ]
     }
 }

@@ -10,7 +10,7 @@
 //Notes: when add new language need to do:
 //       1. update ELanguage enum
 //       2. update extension ELanguage in viewmodel -- allItemsCode & allItems
-//
+//       3. update .m of this file update the string&code
 typedef NS_ENUM(NSInteger, ELanguage)
 {
     ELanguageEnglish,
@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, ELanguage)
     
     ELanguageItalian, //add at 10/05/2017
     
+    ELanguagePortugueseBrazil, //add at 18/10/2017
     
     ELanguageCount
 };

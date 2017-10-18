@@ -1453,6 +1453,8 @@
 		75DE7DAE1CAAEA4900F5443E /* ProtonMail.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProtonMail.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75DF17A81AB8FAB8008A032B /* ArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		75DF17AA1AB9051F008A032B /* StorageViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageViewCell.swift; sourceTree = "<group>"; };
+		75DF9ED71F97CB0200C2A01C /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		75DF9ED81F97CB0300C2A01C /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/PasswordExtension.strings"; sourceTree = "<group>"; };
 		75E0904F1CAC6E8E00751136 /* CountryCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCode.swift; sourceTree = "<group>"; };
 		75E090531CAC7A3A00751136 /* CountryCodeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCodeTableViewCell.swift; sourceTree = "<group>"; };
 		75E2202A1DD6728200078D6C /* KeysAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeysAPI.swift; sourceTree = "<group>"; };
@@ -4503,6 +4505,7 @@
 				757DC6481F0D625900342CB0 /* pl */,
 				7566AE871F394CEA006D84F9 /* nl */,
 				753E304F1F86D61400CE5AF8 /* it */,
+				75DF9ED81F97CB0300C2A01C /* pt-BR */,
 			);
 			name = PasswordExtension.strings;
 			sourceTree = "<group>";
@@ -4521,6 +4524,7 @@
 				757DC6471F0D625800342CB0 /* pl */,
 				7566AE891F394CEC006D84F9 /* nl */,
 				753E304E1F86D61400CE5AF8 /* it */,
+				75DF9ED71F97CB0200C2A01C /* pt-BR */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
