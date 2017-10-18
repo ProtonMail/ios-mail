@@ -42,7 +42,9 @@ class ShareUnlockViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.navigationItem.title = ""
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(ComposerViewController.cancelButtonTapped(sender:)))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel,
+                                                                target: self,
+                                                                action: #selector(ShareUnlockViewController.cancelButtonTapped(sender:)))
         
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
@@ -197,7 +199,9 @@ class ShareUnlockViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.tryTouchID()
+        delay(0.3, closure: {
+            self.tryTouchID()
+        })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -269,7 +273,7 @@ class ShareUnlockViewController: UIViewController {
         self.present(pinVC, animated: true, completion: nil)
     }
     
-    func cancelButtonTapped(sender: UIBarButtonItem) {
+    @objc func cancelButtonTapped(sender: UIBarButtonItem) {
         self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
             let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
             self.extensionContext!.cancelRequest(withError: cancelError)
