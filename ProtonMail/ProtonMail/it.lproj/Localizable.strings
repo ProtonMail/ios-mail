@@ -753,7 +753,7 @@
 "Message Queue" = "Coda dei messaggi";
 
 /* Title */
-"Message Swipe Actions" = "Gesti su schermo per i messaggi";
+"Message Swipe Actions" = "Azioni di scorrimento per i messaggi";
 
 /* No comment provided by engineer. */
 "Message expired" = "Messaggio scaduto";
@@ -1185,10 +1185,10 @@
 "Support ProtonMail" = "Supportare ProtonMail";
 
 /* settings swipe actions section title */
-"Swipe Left to Right" = "Scorrimento da sinistra a destra";
+"Swipe Left to Right" = "Scorri da sinistra a destra";
 
 /* settings swipe actions section title */
-"Swipe Right to Left" = "Scorrimento da destra a sinistra";
+"Swipe Right to Left" = "Scorri da destra a sinistra";
 
 /* Error */
 "System can't copy the file" = "Il sistema non può copiare il file";
@@ -1462,7 +1462,7 @@
 "Wrong verification code" = "Codice di verifica non valido";
 
 /* Description */
-"You can customize swipe gestures in the ProtonMail App Settings." = "È possibile personalizzare i gesti su schermo nelle impostazioni di ProtonMail.";
+"You can customize swipe gestures in the ProtonMail App Settings." = "È possibile personalizzare i gesti di scorrimento nelle impostazioni di ProtonMail.";
 
 /* Description */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Può ricevere aiuto e assistenza su protonmail.com/support. I bug possono essere segnalati anche tramite l'app.";
