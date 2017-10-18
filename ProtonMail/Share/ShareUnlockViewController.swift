@@ -157,6 +157,7 @@ class ShareUnlockViewController: UIViewController {
             sharedUserDataService.isSignedIn = false
             touchID.alpha = 1.0
             touchID.isEnabled = true
+            self.authenticateUser()
             break
         case .restore:
             self.signInIfRememberedCredentials()
