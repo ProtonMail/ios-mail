@@ -45,10 +45,13 @@ class MailboxViewModel {
         msg.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
         msg.needsUpdate = true
         msg.location = .archive
-        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
+        if let context = msg.managedObjectContext {
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
+            }
         }
-        
         return .showUndo
     }
     
@@ -57,8 +60,12 @@ class MailboxViewModel {
         msg.removeLocationFromLabels(currentlocation: msg.location, location: .spam, keepSent: true)
         msg.needsUpdate = true
         msg.location = .spam
-        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
+        if let context = msg.managedObjectContext {
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
+            }
         }
         return .showUndo
     }
@@ -68,8 +75,12 @@ class MailboxViewModel {
         msg.setLabelLocation(.starred)
         msg.isStarred = true
         msg.needsUpdate = true
-        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
+        if let context = msg.managedObjectContext {
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
+            }
         }
         return .nothing
     }

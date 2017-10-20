@@ -1301,9 +1301,11 @@ extension EmailHeaderView: UITableViewDelegate {
                     }
                 } else {
                     attachment.localURL = nil
-                    let error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-                    if error != nil  {
-                        PMLog.D(" error: \(String(describing: error))")
+                    if let context = attachment.managedObjectContext {
+                        let error = context.saveUpstreamIfNeeded()
+                        if error != nil  {
+                            PMLog.D(" error: \(String(describing: error))")
+                        }
                     }
                     downloadAttachment(attachment, forIndexPath: indexPath)
                 }

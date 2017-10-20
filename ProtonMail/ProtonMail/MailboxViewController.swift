@@ -478,9 +478,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     //                    let newMessage = Message(context: context)
     //                    newMessage.messageType = 1
     //                    newMessage.title = ""
-    
-    //    newMessage.messageStatus = 1
-    
+    //                    newMessage.messageStatus = 1
     //                    newMessage.time = message.time ?? NSDate()
     //                    if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
     //                        PMLog.D("error: \(error)")
@@ -495,19 +493,21 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "%K == 1", Message.Attributes.messageType)
-            do {
-                if let messages = try context.fetch(fetchRequest) as? [Message] {
-                    for msg in messages {
-                        if msg.managedObjectContext != nil {
-                            context.delete(msg)
+            context.perform {
+                do {
+                    if let messages = try context.fetch(fetchRequest) as? [Message] {
+                        for msg in messages {
+                            if msg.managedObjectContext != nil {
+                                context.delete(msg)
+                            }
+                        }
+                        if let error = context.saveUpstreamIfNeeded() {
+                            PMLog.D("error: \(error)")
                         }
                     }
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    }
+                } catch let ex as NSError {
+                    PMLog.D("error: \(ex)")
                 }
-            } catch let ex as NSError {
-                PMLog.D("error: \(ex)")
             }
         }
     }
@@ -718,13 +718,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func undoTheMessage() { //need move into viewModel
         if let undoMsg = undoMessage {
             if let context = fetchedResultsController?.managedObjectContext {
-                if let message = Message.messageForMessageID(undoMsg.messageID, inManagedObjectContext: context) {
-                    viewModel.updateBadgeNumberWhenMove(message, to: undoMsg.oldLocation)
-                    message.removeLocationFromLabels(currentlocation: message.location, location: undoMsg.oldLocation, keepSent: true)
-                    message.needsUpdate = true
-                    message.location = undoMsg.oldLocation
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
+                context.perform {
+                    if let message = Message.messageForMessageID(undoMsg.messageID, inManagedObjectContext: context) {
+                        self.viewModel.updateBadgeNumberWhenMove(message, to: undoMsg.oldLocation)
+                        message.removeLocationFromLabels(currentlocation: message.location, location: undoMsg.oldLocation, keepSent: true)
+                        message.needsUpdate = true
+                        message.location = undoMsg.oldLocation
+                        if let error = context.saveUpstreamIfNeeded() {
+                            PMLog.D("error: \(error)")
+                        }
                     }
                 }
             }
@@ -942,22 +944,23 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func moveMessagesToLocation(_ location: MessageLocation) {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
-            do {
-                if let messages = try context.fetch(fetchRequest) as? [Message] {
-                    for message in messages {
-                        message.removeLocationFromLabels(currentlocation: message.location, location: location, keepSent: true);
-                        message.needsUpdate = true
-                        message.location = location
-                        
-                        if let error = context.saveUpstreamIfNeeded() {
-                            PMLog.D("error: \(error)")
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, self.selectedMessages)
+            context.perform {
+                do {
+                    if let messages = try context.fetch(fetchRequest) as? [Message] {
+                        for message in messages {
+                            message.removeLocationFromLabels(currentlocation: message.location, location: location, keepSent: true);
+                            message.needsUpdate = true
+                            message.location = location
+                            if let error = context.saveUpstreamIfNeeded() {
+                                PMLog.D("error: \(error)")
+                            }
                         }
+                        
                     }
-                    
+                } catch let ex as NSError {
+                    PMLog.D(" error: \(ex)")
                 }
-            } catch let ex as NSError {
-                PMLog.D(" error: \(ex)")
             }
         }
     }
@@ -1004,25 +1007,27 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func selectedMessagesSetValue(setValue value: Any?, forKey key: String) {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
-            do {
-                if let messages = try context.fetch(fetchRequest) as? [Message] {
-                    if key == Message.Attributes.isRead {
-                        if let changeto = value as? Bool {
-                            for msg in messages {
-                                viewModel.updateBadgeNumberWhenRead(msg, changeToRead: changeto)
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, self.selectedMessages)
+            context.perform {
+                do {
+                    if let messages = try context.fetch(fetchRequest) as? [Message] {
+                        if key == Message.Attributes.isRead {
+                            if let changeto = value as? Bool {
+                                for msg in messages {
+                                    self.viewModel.updateBadgeNumberWhenRead(msg, changeToRead: changeto)
+                                }
                             }
                         }
+                        NSArray(array: messages).setValue(value, forKey: key)
+                        NSArray(array: messages).setValue(true, forKey: "needsUpdate")
+                        let error = context.saveUpstreamIfNeeded()
+                        if let error = error {
+                            PMLog.D(" error: \(error)")
+                        }
                     }
-                    NSArray(array: messages).setValue(value, forKey: key)
-                    NSArray(array: messages).setValue(true, forKey: "needsUpdate")
-                    let error = context.saveUpstreamIfNeeded()
-                    if let error = error {
-                        PMLog.D(" error: \(error)")
-                    }
+                } catch let ex as NSError {
+                    PMLog.D(" error: \(ex)")
                 }
-            } catch let ex as NSError {
-                PMLog.D(" error: \(ex)")
             }
         }
     }
@@ -1031,21 +1036,21 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func selectedMessagesSetStar() {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
-            do {
-                if let messages = try context.fetch(fetchRequest) as? [Message] {
-                    
-                    for msg in messages {
-                        msg.setLabelLocation(.starred);
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, self.selectedMessages)
+            context.perform {
+                do {
+                    if let messages = try context.fetch(fetchRequest) as? [Message] {
+                        for msg in messages {
+                            msg.setLabelLocation(.starred);
+                        }
+                        let error = context.saveUpstreamIfNeeded()
+                        if let error = error {
+                            PMLog.D(" error: \(error)")
+                        }
                     }
-                    let error = context.saveUpstreamIfNeeded()
-                    if let error = error {
-                        PMLog.D(" error: \(error)")
-                    }
-                    
+                } catch let ex as NSError {
+                    PMLog.D(" error: \(ex)")
                 }
-            } catch let ex as NSError {
-                PMLog.D(" error: \(ex)")
             }
         }
     }
@@ -1053,19 +1058,21 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func selectedMessagesSetUnStar() {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
-            do {
-                if let messages = try context.fetch(fetchRequest) as? [Message] {
-                    for msg in messages {
-                        msg.removeLocationFromLabels(currentlocation: .starred, location: .deleted, keepSent: true);
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, self.selectedMessages)
+            context.perform {
+                do {
+                    if let messages = try context.fetch(fetchRequest) as? [Message] {
+                        for msg in messages {
+                            msg.removeLocationFromLabels(currentlocation: .starred, location: .deleted, keepSent: true);
+                        }
+                        let error = context.saveUpstreamIfNeeded()
+                        if let error = error {
+                            PMLog.D(" error: \(error)")
+                        }
                     }
-                    let error = context.saveUpstreamIfNeeded()
-                    if let error = error {
-                        PMLog.D(" error: \(error)")
-                    }
+                } catch let ex as NSError {
+                    PMLog.D(" error: \(ex)")
                 }
-            } catch let ex as NSError {
-                PMLog.D(" error: \(ex)")
             }
         }
     }
