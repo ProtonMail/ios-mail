@@ -207,4 +207,8 @@ class MailboxViewModel {
     func resetNotificationMessage() -> Void {
         fatalError("This method must be overridden")
     }
+    
+    func reloadTable() -> Bool {
+        return false
+    }
 }

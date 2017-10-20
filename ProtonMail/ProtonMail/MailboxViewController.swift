@@ -132,6 +132,18 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         resetFetchedResultsController()
     }
     
+    @objc func doEnterForeground(){
+        if viewModel.reloadTable() {
+            resetTableView()
+        }
+    }
+    
+    func resetTableView() {
+        resetFetchedResultsController()
+        setupFetchedResultsController()
+        self.tableView.reloadData()
+    }
+    
     // MARK: - UIViewController Lifecycle
     
     override func viewDidLoad() {
@@ -175,6 +187,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         super.viewWillAppear(animated)
         self.hideTopMessage()
         NotificationCenter.default.addObserver(self, selector: #selector(MailboxViewController.reachabilityChanged(_:)), name: NSNotification.Name.reachabilityChanged, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector:#selector(MailboxViewController.doEnterForeground), name:  NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        
         leftSwipeAction = sharedUserDataService.swiftLeft
         rightSwipeAction = sharedUserDataService.swiftRight
         
@@ -188,7 +203,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.reachabilityChanged, object:nil)
+        NotificationCenter.default.removeObserver(self)
         self.stopAutoFetch()
     }
     

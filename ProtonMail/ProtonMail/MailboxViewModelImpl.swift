@@ -177,4 +177,8 @@ class MailboxViewModelImpl : MailboxViewModel {
     override func resetNotificationMessage() -> Void {
         sharedMessageDataService.pushNotificationMessageID = nil
     }
+    
+    override func reloadTable() -> Bool {
+        return self.location == .draft
+    }
 }
