@@ -1335,7 +1335,7 @@ class MessageDataService {
                                         PMLog.D("\(mess)")
                                         
                                         message.messageID = messageID
-                                        message.isDetailDownloaded = false
+                                        message.isDetailDownloaded = true
                                         
                                         var hasTemp = false;
                                         let attachments = message.mutableSetValue(forKey: "attachments")
@@ -1609,6 +1609,7 @@ class MessageDataService {
                                     message.isRead = true
                                     lastUpdatedStore.ReadMailboxMessage(message.location)
                                     message.location = MessageLocation.outbox
+                                    message.isDetailDownloaded = false
                                     message.removeLocationFromLabels(currentlocation: .draft, location: .outbox, keepSent: true)
                                 }
 
