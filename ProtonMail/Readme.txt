@@ -2,3 +2,7 @@
 
 
 * MCSwipeTableViewCell => MCSwipeTableViewCell.m   have local hot fix   TODO::make a folk and let pod read from my repo
+
+
+
+ 

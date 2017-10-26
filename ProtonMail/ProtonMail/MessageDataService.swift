@@ -70,11 +70,9 @@ class MessageDataService {
     {
         let out : [String : Any] = ["MessageID" : messageid, "AttachmentID" : att.attachmentID]
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            context.perform {
-                context.delete(att)
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
+            context.delete(att)
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(" error: \(error)")
             }
         }
         let _ = sharedMessageQueue.addMessage(out.JSONStringify(false), action: .deleteAtt)
