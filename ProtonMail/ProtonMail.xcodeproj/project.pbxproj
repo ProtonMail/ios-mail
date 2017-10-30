@@ -647,7 +647,6 @@
 		75482BDE1F7F09E100B0BFFB /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7550648D1B9A5B79006F2D39 /* Roboto-Medium.ttf */; };
 		75482BDF1F7F09E100B0BFFB /* phone_country_code.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */; };
 		75482BE01F7F09E100B0BFFB /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 75978BDA1B28F63100D07501 /* editor.css */; };
-		75482BEB1F7F0D2000B0BFFB /* InfoDev.plist in Resources */ = {isa = PBXBuildFile; fileRef = 75482BEA1F7F0D2000B0BFFB /* InfoDev.plist */; };
 		75482BED1F7F10B500B0BFFB /* Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 75482BE71F7F09E100B0BFFB /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
 		7548D0961CC10DFB001C3AEC /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
@@ -2790,7 +2789,6 @@
 			files = (
 				75482BC71F7F09E100B0BFFB /* Roboto-Thin.ttf in Resources */,
 				75482BC81F7F09E100B0BFFB /* PasswordEncryptViewController.xib in Resources */,
-				75482BEB1F7F0D2000B0BFFB /* InfoDev.plist in Resources */,
 				75482BC91F7F09E100B0BFFB /* Attachments.storyboard in Resources */,
 				75482BCA1F7F09E100B0BFFB /* ShareUnlockViewController.xib in Resources */,
 				75482BCB1F7F09E100B0BFFB /* Images.xcassets in Resources */,
