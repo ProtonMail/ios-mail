@@ -2579,11 +2579,11 @@
 			buildConfigurationList = 758ED7CC1F05A4000028D1A5 /* Build configuration list for PBXNativeTarget "ShareDev" */;
 			buildPhases = (
 				07C487A7A08BCBFD76F9A5CF /* [CP] Check Pods Manifest.lock */,
+				75DAB3FC1F71B46F008F9997 /* ShellScript */,
 				758ED7BD1F05A3FF0028D1A5 /* Sources */,
 				758ED7BE1F05A3FF0028D1A5 /* Frameworks */,
 				758ED7BF1F05A3FF0028D1A5 /* Resources */,
 				F0F31CD68DE510331A63E010 /* [CP] Copy Pods Resources */,
-				75DAB3FC1F71B46F008F9997 /* ShellScript */,
 			);
 			buildRules = (
 			);
