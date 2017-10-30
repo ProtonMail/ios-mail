@@ -2559,10 +2559,10 @@
 			buildConfigurationList = 75482BE31F7F09E100B0BFFB /* Build configuration list for PBXNativeTarget "Share" */;
 			buildPhases = (
 				E4DB375294B99572FFD5ADC1 /* [CP] Check Pods Manifest.lock */,
+				75482BE21F7F09E100B0BFFB /* ShellScript */,
 				75482B2D1F7F09E100B0BFFB /* Sources */,
 				75482BC11F7F09E100B0BFFB /* Frameworks */,
 				75482BC61F7F09E100B0BFFB /* Resources */,
-				75482BE21F7F09E100B0BFFB /* ShellScript */,
 				A063DD28565AD9C70A47288F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
