@@ -16,15 +16,15 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate var viewModel : ContactDetailsViewModel!
     
-    private let kInvalidEmailShakeTimes: Float    = 3.0
-    private let kInvalidEmailShakeOffset: CGFloat = 10.0
+    private let kInvalidEmailShakeTimes: Float         = 3.0
+    private let kInvalidEmailShakeOffset: CGFloat      = 10.0
     
     
     fileprivate let kContactDetailsHeaderView : String = "ContactSectionHeadView"
-    fileprivate let kContactDetailsHeaderID : String = "contact_section_head_view"
+    fileprivate let kContactDetailsHeaderID : String   = "contact_section_head_view"
     
-    fileprivate let kEditContactSegue : String = "toEditContactSegue"
-    fileprivate let kToComposeSegue : String = "toComplseSegue"
+    fileprivate let kEditContactSegue : String         = "toEditContactSegue"
+    fileprivate let kToComposeSegue : String           = "toComplseSegue"
     
     
     let sections: [ContactEditSectionType] = [.display_name,
@@ -51,7 +51,10 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     ///
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.doneItem = UIBarButtonItem(title: NSLocalizedString("Edit", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(ContactDetailViewController.didTapEditButton(sender:) ))
+        self.doneItem = UIBarButtonItem(title: NSLocalizedString("Edit", comment: "Action"),
+                                        style: UIBarButtonItemStyle.plain,
+                                        target: self, action: #selector(ContactDetailViewController.didTapEditButton(sender:)))
+        
         self.navigationItem.rightBarButtonItem = doneItem
         ActivityIndicatorHelper.showActivityIndicator(at: self.view)
         viewModel.getDetails(loading: {
@@ -95,7 +98,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         }
     }
     
-    @IBAction func didTapEditButton(sender: UIBarButtonItem) {
+    @objc func didTapEditButton(sender: UIBarButtonItem) {
         self.performSegue(withIdentifier: kEditContactSegue, sender: viewModel.getContact())
     }
     
@@ -145,9 +148,7 @@ extension ContactDetailViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView
-        cell?.backgroundColor = .black
-        
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView       
         let s = sections[section]
         switch s {
         case .display_name:

@@ -64,7 +64,7 @@ class LabelDisplayView: PMView {
     override func setup() {
         labelText.layer.borderWidth = 1
         labelText.layer.cornerRadius = 2
-        labelText.font = UIFont.robotoLight(size: 9)
+        labelText.font = Fonts.h7.light
     }
     
     fileprivate func updateLabel(_ color : UIColor?) {

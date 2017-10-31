@@ -64,7 +64,7 @@ class ViewModelServiceImpl: ViewModelService {
                 
             } else {
                 let defaultRecipient = rawURLparts[0]
-                if defaultRecipient.characters.count > 0 { //default to
+                if defaultRecipient.count > 0 { //default to
                     if defaultRecipient.isValidEmail() {
                         latestComposerViewModel?.addToContacts(ContactVO(name: defaultRecipient, email: defaultRecipient))
                     }

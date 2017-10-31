@@ -274,7 +274,7 @@ extension ContactsViewController: UITableViewDelegate {
 //                return
 //            }
 //            
-//            if (contact.contactId.characters.count > 0) {
+//            if (contact.contactId.count > 0) {
 //                //TODO:: delete contact
 ////                sharedContactDataService.deleteContact(contact.contactId, completion: { (contacts, error) -> Void in
 ////                    self.retrieveAllContacts()

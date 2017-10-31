@@ -30,7 +30,7 @@ class LabelTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.labelView.updateTextFont(UIFont.robotoLight(size: 20))
+        self.labelView.updateTextFont(Fonts.s20.light)
         selectStatusButton.isEnabled = false
     }
 

@@ -62,7 +62,7 @@ class CountryPickerViewController : UIViewController {
         
         var lastLetter : String = ""
         for (index, value) in countryCodes.enumerated() {
-            let firstIndex = value.country_en.characters.index(value.country_en.startIndex, offsetBy: 1)
+            let firstIndex = value.country_en.index(value.country_en.startIndex, offsetBy: 1)
             let firstString = String(value.country_en[..<firstIndex])
             if firstString != lastLetter {
                 lastLetter = firstString

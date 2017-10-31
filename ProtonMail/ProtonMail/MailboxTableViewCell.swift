@@ -273,16 +273,16 @@ class MailboxTableViewCell: UITableViewCell {
     
     func changeStyleToReadDesign() {
         self.contentView.backgroundColor = UIColor(RRGGBB: UInt(0xF2F3F7))
-        self.title.font = UIFont.robotoLight(size: UIFont.Size.h4)
-        self.sender.font = UIFont.robotoLight(size: UIFont.Size.h6)
-        self.time.font = UIFont.robotoLight(size: UIFont.Size.h6)
+        self.title.font = Fonts.h4.light
+        self.sender.font = Fonts.h6.light
+        self.time.font = Fonts.h6.light
     }
     
     func changeStyleToUnreadDesign() {
         self.contentView.backgroundColor = UIColor(RRGGBB: UInt(0xFFFFFF))
-        self.title.font = UIFont.robotoRegular(size: UIFont.Size.h4)
-        self.sender.font = UIFont.robotoRegular(size: UIFont.Size.h6)
-        self.time.font = UIFont.robotoRegular(size: UIFont.Size.h6)
+        self.title.font = Fonts.h4.regular
+        self.sender.font = Fonts.h6.regular
+        self.time.font = Fonts.h6.regular
     }
     
     override func prepareForReuse() {

@@ -58,7 +58,7 @@ class MoreOptionsView: UIView {
     // MARK: - Subviews
     
     fileprivate func addSubviews() {
-        let labelFont = UIFont.robotoRegular(size: UIFont.Size.h5)
+        let labelFont = Fonts.h5.regular
         let labelColor = UIColor.ProtonMail.Gray_FCFEFF
         
         self.tagButton = UIButton(image: UIImage(named: "tag")!)

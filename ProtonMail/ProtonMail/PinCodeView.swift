@@ -126,7 +126,7 @@ class PinCodeView : PMView {
     
     internal func remove() {
         if !pinCode.isEmpty {
-            let index = pinCode.characters.index(before: pinCode.endIndex)
+            let index = pinCode.index(before: pinCode.endIndex)
             pinCode = String(pinCode[..<index])
             self.updateCodeDisplay()
         }

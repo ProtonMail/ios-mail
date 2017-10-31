@@ -16,20 +16,22 @@
 #ifndef ProtonMail_ProtonMail_Bridging_Header_h
 #define ProtonMail_ProtonMail_Bridging_Header_h
 
+//new work
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <AFNetworkActivityLogger.h>
 #import <AFNetworkActivityConsoleLogger.h>
+
+//
 #import <Groot/Groot.h>
 #import <Masonry/Masonry.h>
+
+//contact picker
 #import "MBContactPicker.h"
+
+//progress
 #import <MBProgressHUD/MBProgressHUD.h>
 #import <NSDate+Helper/NSDate+Helper.h>
-#import <OpenPGP/PMNOpenPgp.h>
-#import <OpenPGP/PMNSrpClient.h>
-#import <OpenPGP/PMNLibVersion.h>
-#import <OpenPGP/PMNBCryptHash.h>
-#import "SwiftTryCatch.h"
 #import <RHAddressBook/AddressBook.h>
 #import <RHAddressBook/RHMultiValue.h>
 #import <SWRevealViewController/SWRevealViewController.h>
@@ -37,12 +39,26 @@
 #import <UIColor+Hex/UIColor+Hex.h>
 #import <ZSSRichTextEditor.h>
 #import <MCSwipeTableViewCell.h>
-#import "OnePasswordExtension.h"
-#import "Reachability.h"
 #import <CommonCrypto/CommonCrypto.h>
 
+//try catch objective-c
+#import "SwiftTryCatch.h"
+
+//1 password
+#import "OnePasswordExtension.h"
+
+//network check
+#import "Reachability.h"
+
+//localization
 #import "LanguageManager.h"
 #import "NSBundle+Language.h"
+
+//pgp part
+#import <OpenPGP/PMNOpenPgp.h>
+#import <OpenPGP/PMNSrpClient.h>
+#import <OpenPGP/PMNLibVersion.h>
+#import <OpenPGP/PMNBCryptHash.h>
 
 //vcard part
 #import <OpenPGP/PMNIEzvcard.h>

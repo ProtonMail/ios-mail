@@ -11,8 +11,6 @@
 		06CC130B33FBCEAB5E406DB8 /* libPods-ShareDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2723A6BEC97254756259C1CF /* libPods-ShareDev.a */; };
 		07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07009EFE1A659AD400129B07 /* SignIn.storyboard */; };
 		07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F001A65CF4800129B07 /* SignInViewController.swift */; };
-		07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F111A684C1900129B07 /* Roboto-Light.ttf */; };
-		07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F121A684C1900129B07 /* Roboto-Thin.ttf */; };
 		071210E61AA91B4000B834F2 /* APIService+DeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071210E51AA91B4000B834F2 /* APIService+DeviceExtension.swift */; };
 		0713237F1A7844390043DB41 /* MailboxPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713237E1A7844390043DB41 /* MailboxPasswordViewController.swift */; };
 		071323901A79BD8F0043DB41 /* TextInsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */; };
@@ -69,8 +67,6 @@
 		07DD68A71A9815DF00ED130C /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A61A9815DF00ED130C /* URL+Extension.swift */; };
 		07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */; };
 		4E0220EFD2D3FFE70AC21C16 /* libPods-ProtonMailTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EF314E2219A1089E6DAF06 /* libPods-ProtonMailTests.a */; };
-		701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */; };
-		7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */; };
 		701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE7F1AA64DEB0038149C /* MBContactPicker.m */; };
 		701DDE901AA64DEB0038149C /* MBContactCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE821AA64DEB0038149C /* MBContactCollectionView.m */; };
 		701DDE911AA64DEB0038149C /* MBContactCollectionViewContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE841AA64DEB0038149C /* MBContactCollectionViewContactCell.m */; };
@@ -95,7 +91,6 @@
 		70945E6E1A813550002B6837 /* UIButton+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */; };
 		70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */; };
 		70B28D0A1A9BA0AC002D9EC8 /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */; };
-		70C6ABE41A72C1B7006EC400 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */; };
 		70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */; };
 		70FC90DA1A9BC11F00498B42 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FC90D91A9BC11F00498B42 /* String+Extension.swift */; };
 		750254DA1AB8157800050B12 /* GeneralSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */; };
@@ -151,17 +146,10 @@
 		7512AA171F17F8C200D84955 /* MBContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE8C1AA64DEB0038149C /* MBContactModel.m */; };
 		7512AA181F17FABC00D84955 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7048B9F21A9E385B00D45F57 /* ContactsTableViewCell.swift */; };
 		7512AA191F17FABC00D84955 /* ContactsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */; };
-		7512AA1A1F17FB2C00D84955 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7550648D1B9A5B79006F2D39 /* Roboto-Medium.ttf */; };
-		7512AA1B1F17FB2C00D84955 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */; };
-		7512AA1C1F17FB2C00D84955 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F111A684C1900129B07 /* Roboto-Light.ttf */; };
-		7512AA1D1F17FB2C00D84955 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */; };
-		7512AA1E1F17FB2C00D84955 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */; };
-		7512AA1F1F17FB2C00D84955 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F121A684C1900129B07 /* Roboto-Thin.ttf */; };
 		7512AA201F17FB2F00D84955 /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 75978BDA1B28F63100D07501 /* editor.css */; };
 		7512AA211F17FB2F00D84955 /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
 		7512AA221F17FB3200D84955 /* flags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F081CAB200000235ACC /* flags.bundle */; };
 		7512AA231F17FB3400D84955 /* phone_country_code.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */; };
-		7512AA241F17FB3700D84955 /* test_email.html in Resources */ = {isa = PBXBuildFile; fileRef = 7516452D1D7F66C800DE0BD2 /* test_email.html */; };
 		7512AA251F17FD4A00D84955 /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */; };
 		7512AA261F17FD5900D84955 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CFC9D31A81A2B0007A72B7 /* Attachment.swift */; };
 		7512AA271F17FD6100D84955 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */; };
@@ -185,7 +173,6 @@
 		7512AA3C1F18020B00D84955 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FC90D91A9BC11F00498B42 /* String+Extension.swift */; };
 		7512AA3D1F18024200D84955 /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9311A71C60900EB0CAF /* UserDataService.swift */; };
 		7512AA3E1F18025C00D84955 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07655BC01AB10D7100CD3883 /* Bundle+Extension.swift */; };
-		7512AA3F1F18026A00D84955 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
 		7512AA401F18028100D84955 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
 		7512AA411F18028400D84955 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07CC99691A705BA4000FD6F8 /* Settings.bundle */; };
 		7512AA441F1802CE00D84955 /* APIService+UserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD92B1A719B7900EB0CAF /* APIService+UserExtension.swift */; };
@@ -224,8 +211,6 @@
 		7514FC291B79825F00DDD297 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7514FC281B79825F00DDD297 /* MenuItem.swift */; };
 		75150ED11B1E74A20013B476 /* SettingDebugTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */; };
 		751562551B68E8050066FE38 /* EmailAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751562541B68E8050066FE38 /* EmailAttachmentView.swift */; };
-		7516452E1D7F66C800DE0BD2 /* test_email.html in Resources */ = {isa = PBXBuildFile; fileRef = 7516452D1D7F66C800DE0BD2 /* test_email.html */; };
-		7516452F1D7F66C800DE0BD2 /* test_email.html in Resources */ = {isa = PBXBuildFile; fileRef = 7516452D1D7F66C800DE0BD2 /* test_email.html */; };
 		7516B1A71F7B6AB500DC5229 /* NSError+Alert+Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7516B1A61F7B6AB500DC5229 /* NSError+Alert+Mail.swift */; };
 		7516B1A81F7B6AB500DC5229 /* NSError+Alert+Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7516B1A61F7B6AB500DC5229 /* NSError+Alert+Mail.swift */; };
 		7516B1AA1F7B6ADE00DC5229 /* NSError+Alert+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7516B1A91F7B6ADE00DC5229 /* NSError+Alert+Share.swift */; };
@@ -395,7 +380,7 @@
 		752800151FA7FEF6005F66A3 /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8B1FA7FE84005F66A3 /* UIAlertController+Extension.swift */; };
 		752800161FA7FEF6005F66A3 /* UIApplication+InfoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF901FA7FE85005F66A3 /* UIApplication+InfoExtension.swift */; };
 		752800171FA7FEF6005F66A3 /* UIDevice+InfoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF7E1FA7FE81005F66A3 /* UIDevice+InfoExtension.swift */; };
-		752800181FA7FEF6005F66A3 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF881FA7FE83005F66A3 /* UIFont+Extension.swift */; };
+		752800181FA7FEF6005F66A3 /* Fonts+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF881FA7FE83005F66A3 /* Fonts+Constants.swift */; };
 		752800191FA7FEF6005F66A3 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF7C1FA7FE81005F66A3 /* UIImage+Extension.swift */; };
 		7528001A1FA7FEF6005F66A3 /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF771FA7FE80005F66A3 /* UIScrollView+Extension.swift */; };
 		7528001B1FA7FEF6005F66A3 /* UIStoryboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF801FA7FE82005F66A3 /* UIStoryboard+Extension.swift */; };
@@ -410,8 +395,8 @@
 		752800241FA80005005F66A3 /* ContactVO+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8D1FA7FE84005F66A3 /* ContactVO+Extension.swift */; };
 		752800251FA8001F005F66A3 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8E1FA7FE85005F66A3 /* Date+Extension.swift */; };
 		752800261FA8001F005F66A3 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8E1FA7FE85005F66A3 /* Date+Extension.swift */; };
-		752800271FA8003F005F66A3 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF881FA7FE83005F66A3 /* UIFont+Extension.swift */; };
-		752800281FA80040005F66A3 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF881FA7FE83005F66A3 /* UIFont+Extension.swift */; };
+		752800271FA8003F005F66A3 /* Fonts+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF881FA7FE83005F66A3 /* Fonts+Constants.swift */; };
+		752800281FA80040005F66A3 /* Fonts+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF881FA7FE83005F66A3 /* Fonts+Constants.swift */; };
 		752800291FA80049005F66A3 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFC51FA7FEC2005F66A3 /* UIView+Extension.swift */; };
 		7528002A1FA80049005F66A3 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFC51FA7FEC2005F66A3 /* UIView+Extension.swift */; };
 		7528002B1FA80069005F66A3 /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8B1FA7FE84005F66A3 /* UIAlertController+Extension.swift */; };
@@ -451,7 +436,7 @@
 		7528FFA21FA7FE85005F66A3 /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF851FA7FE83005F66A3 /* Data+Extension.swift */; };
 		7528FFA31FA7FE85005F66A3 /* Error+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF861FA7FE83005F66A3 /* Error+Extension.swift */; };
 		7528FFA41FA7FE85005F66A3 /* UIAlertAction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF871FA7FE83005F66A3 /* UIAlertAction+Extension.swift */; };
-		7528FFA51FA7FE85005F66A3 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF881FA7FE83005F66A3 /* UIFont+Extension.swift */; };
+		7528FFA51FA7FE85005F66A3 /* Fonts+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF881FA7FE83005F66A3 /* Fonts+Constants.swift */; };
 		7528FFA61FA7FE85005F66A3 /* EmailExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF891FA7FE84005F66A3 /* EmailExtension.swift */; };
 		7528FFA71FA7FE85005F66A3 /* NSSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8A1FA7FE84005F66A3 /* NSSet+Extension.swift */; };
 		7528FFA81FA7FE85005F66A3 /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8B1FA7FE84005F66A3 /* UIAlertController+Extension.swift */; };
@@ -522,6 +507,8 @@
 		753745041D6B7E8F00682C5A /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
 		753745071D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */; };
 		7537450A1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */; };
+		753934C31FAA91CF00EBFBA5 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
+		753934C41FAA91D000EBFBA5 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
 		753E30A71F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
 		753E30A81F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
 		753E30A91F86F77D00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
@@ -700,34 +687,26 @@
 		75482BBD1F7F09E100B0BFFB /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B01B1648D2003BFC0A /* ComposeView.swift */; };
 		75482BBE1F7F09E100B0BFFB /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */; };
 		75482BBF1F7F09E100B0BFFB /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C781F747BC80028DAC9 /* Part.swift */; };
-		75482BC01F7F09E100B0BFFB /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
 		75482BC21F7F09E100B0BFFB /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217591AD6F1B800978579 /* Fabric.framework */; };
 		75482BC31F7F09E100B0BFFB /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217581AD6F1B800978579 /* Crashlytics.framework */; };
 		75482BC41F7F09E100B0BFFB /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A42B6A1F0439690025F52C /* libstdc++.tbd */; };
-		75482BC71F7F09E100B0BFFB /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F121A684C1900129B07 /* Roboto-Thin.ttf */; };
 		75482BC81F7F09E100B0BFFB /* PasswordEncryptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 751303DA1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib */; };
 		75482BC91F7F09E100B0BFFB /* Attachments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B123771AB8CD90006EA38C /* Attachments.storyboard */; };
 		75482BCA1F7F09E100B0BFFB /* ShareUnlockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7512A9F81F17E1CE00D84955 /* ShareUnlockViewController.xib */; };
 		75482BCB1F7F09E100B0BFFB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF51A5F4ECF00E001A7 /* Images.xcassets */; };
-		75482BCC1F7F09E100B0BFFB /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */; };
 		75482BCD1F7F09E100B0BFFB /* ComposerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7512A9FE1F17E95100D84955 /* ComposerViewController.xib */; };
 		75482BCE1F7F09E100B0BFFB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
-		75482BCF1F7F09E100B0BFFB /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F111A684C1900129B07 /* Roboto-Light.ttf */; };
 		75482BD01F7F09E100B0BFFB /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07009EFE1A659AD400129B07 /* SignIn.storyboard */; };
-		75482BD11F7F09E100B0BFFB /* test_email.html in Resources */ = {isa = PBXBuildFile; fileRef = 7516452D1D7F66C800DE0BD2 /* test_email.html */; };
 		75482BD21F7F09E100B0BFFB /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
 		75482BD31F7F09E100B0BFFB /* ContactsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */; };
 		75482BD41F7F09E100B0BFFB /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */; };
 		75482BD51F7F09E100B0BFFB /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7061A3F41A6E8C9D0006D36C /* Menu.storyboard */; };
-		75482BD61F7F09E100B0BFFB /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */; };
 		75482BD71F7F09E100B0BFFB /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07CC99691A705BA4000FD6F8 /* Settings.bundle */; };
 		75482BD81F7F09E100B0BFFB /* ComposeErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75A2F44D1C97D6B400BF4306 /* ComposeErrorView.xib */; };
 		75482BD91F7F09E100B0BFFB /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07411D8B1AAA3F1B002A4611 /* AttachmentTableViewCell.xib */; };
-		75482BDA1F7F09E100B0BFFB /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */; };
 		75482BDB1F7F09E100B0BFFB /* flags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F081CAB200000235ACC /* flags.bundle */; };
 		75482BDC1F7F09E100B0BFFB /* ComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755405B11B1648D2003BFC0A /* ComposeView.xib */; };
 		75482BDD1F7F09E100B0BFFB /* SharePinUnlockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75E5F7A41F295DFD00001B4F /* SharePinUnlockViewController.xib */; };
-		75482BDE1F7F09E100B0BFFB /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7550648D1B9A5B79006F2D39 /* Roboto-Medium.ttf */; };
 		75482BDF1F7F09E100B0BFFB /* phone_country_code.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */; };
 		75482BE01F7F09E100B0BFFB /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 75978BDA1B28F63100D07501 /* editor.css */; };
 		75482BED1F7F10B500B0BFFB /* Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 75482BE71F7F09E100B0BFFB /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -738,7 +717,6 @@
 		754BD9A51CB31DB300913A5C /* DeviceInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754BD9A41CB31DB300913A5C /* DeviceInfoCache.swift */; };
 		754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD4871AB809D60084C54A /* SettingTableViewController.swift */; };
 		754CD48B1AB80D770084C54A /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD48A1AB80D770084C54A /* CustomHeaderView.swift */; };
-		7550648E1B9A5ECA006F2D39 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7550648D1B9A5B79006F2D39 /* Roboto-Medium.ttf */; };
 		75510BAB1B82BDEB001348FF /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75510BAA1B82BDEB001348FF /* LabelTableViewCell.swift */; };
 		75510BAD1B82F990001348FF /* LabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75510BAC1B82F990001348FF /* LabelViewModel.swift */; };
 		755405B21B1648D2003BFC0A /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B01B1648D2003BFC0A /* ComposeView.swift */; };
@@ -1005,18 +983,14 @@
 		75DE7D8B1CAAEA4900F5443E /* OnboardingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */; };
 		75DE7D8C1CAAEA4900F5443E /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 75978BDA1B28F63100D07501 /* editor.css */; };
 		75DE7D8D1CAAEA4900F5443E /* ComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755405B11B1648D2003BFC0A /* ComposeView.xib */; };
-		75DE7D8E1CAAEA4900F5443E /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */; };
 		75DE7D8F1CAAEA4900F5443E /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07009EFE1A659AD400129B07 /* SignIn.storyboard */; };
-		75DE7D901CAAEA4900F5443E /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */; };
 		75DE7D911CAAEA4900F5443E /* MailboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */; };
 		75DE7D921CAAEA4900F5443E /* LabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 759BBDC11BA0C586002608B5 /* LabelDisplayView.xib */; };
 		75DE7D931CAAEA4900F5443E /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7061A3F41A6E8C9D0006D36C /* Menu.storyboard */; };
-		75DE7D951CAAEA4900F5443E /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F111A684C1900129B07 /* Roboto-Light.ttf */; };
 		75DE7D961CAAEA4900F5443E /* ContactsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */; };
 		75DE7D971CAAEA4900F5443E /* Attachments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B123771AB8CD90006EA38C /* Attachments.storyboard */; };
 		75DE7D981CAAEA4900F5443E /* ShowImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755638C01CA1AE42003FA2D0 /* ShowImageView.xib */; };
 		75DE7D991CAAEA4900F5443E /* RecipientCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75DCB2061BA2A1560085BE8C /* RecipientCell.xib */; };
-		75DE7D9A1CAAEA4900F5443E /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F121A684C1900129B07 /* Roboto-Thin.ttf */; };
 		75DE7D9B1CAAEA4900F5443E /* LabelsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7558C5471BE82D6300043009 /* LabelsView.xib */; };
 		75DE7D9C1CAAEA4900F5443E /* RecipientView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75117C471BA217CE00A0CE68 /* RecipientView.xib */; };
 		75DE7D9D1CAAEA4900F5443E /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */; };
@@ -1025,9 +999,7 @@
 		75DE7DA01CAAEA4900F5443E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07CC99691A705BA4000FD6F8 /* Settings.bundle */; };
 		75DE7DA11CAAEA4900F5443E /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 076758751AA0E86400F9AC9C /* LoadingView.xib */; };
 		75DE7DA21CAAEA4900F5443E /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
-		75DE7DA31CAAEA4900F5443E /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7550648D1B9A5B79006F2D39 /* Roboto-Medium.ttf */; };
 		75DE7DA41CAAEA4900F5443E /* ComposeErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75A2F44D1C97D6B400BF4306 /* ComposeErrorView.xib */; };
-		75DE7DA51CAAEA4900F5443E /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */; };
 		75DE7DA61CAAEA4900F5443E /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07411D8B1AAA3F1B002A4611 /* AttachmentTableViewCell.xib */; };
 		75DE7EB21CAAEF9000F5443E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF51A5F4ECF00E001A7 /* Images.xcassets */; };
 		75DE7EB31CAAEF9400F5443E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF51A5F4ECF00E001A7 /* Images.xcassets */; };
@@ -1159,8 +1131,6 @@
 		07009EF91A64AA6A00129B07 /* ProtonMail-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProtonMail-Bridging-Header.h"; sourceTree = "<group>"; };
 		07009EFE1A659AD400129B07 /* SignIn.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SignIn.storyboard; sourceTree = "<group>"; };
 		07009F001A65CF4800129B07 /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SignInViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		07009F111A684C1900129B07 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
-		07009F121A684C1900129B07 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		071210E51AA91B4000B834F2 /* APIService+DeviceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+DeviceExtension.swift"; sourceTree = "<group>"; };
 		0713237E1A7844390043DB41 /* MailboxPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MailboxPasswordViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInsetTextField.swift; sourceTree = "<group>"; };
@@ -1229,8 +1199,6 @@
 		41169F68B3FE8907F2C72783 /* Pods-ProtonMailTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54F29596C87DC71ECEC2B74B /* Pods-ProtonMailDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		6ABD3AECB53A1BEFDC5C3B7A /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
-		701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
-		701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		701DDE7F1AA64DEB0038149C /* MBContactPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBContactPicker.m; sourceTree = "<group>"; };
 		701DDE811AA64DEB0038149C /* MBContactCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBContactCollectionView.h; sourceTree = "<group>"; };
 		701DDE821AA64DEB0038149C /* MBContactCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBContactCollectionView.m; sourceTree = "<group>"; };
@@ -1265,7 +1233,6 @@
 		70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookService.swift; sourceTree = "<group>"; };
 		70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+ProtonMail.swift"; path = "../ProtonMail/UIColor+ProtonMail.swift"; sourceTree = "<group>"; };
 		70FC90D91A9BC11F00498B42 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		72AC1531F9DC8F37E025D0ED /* Pods-ProtonMailDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.release.xcconfig"; sourceTree = "<group>"; };
 		750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
 		750729521DEFA52D0021483D /* MimeTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MimeTypes.swift; path = ../ProtonMail/MimeTypes.swift; sourceTree = "<group>"; };
@@ -1292,7 +1259,6 @@
 		7514FC281B79825F00DDD297 /* MenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDebugTableViewController.swift; sourceTree = "<group>"; };
 		751562541B68E8050066FE38 /* EmailAttachmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailAttachmentView.swift; sourceTree = "<group>"; };
-		7516452D1D7F66C800DE0BD2 /* test_email.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = test_email.html; sourceTree = "<group>"; };
 		7516B1A61F7B6AB500DC5229 /* NSError+Alert+Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSError+Alert+Mail.swift"; path = "ProtonMail/NSError+Alert+Mail.swift"; sourceTree = SOURCE_ROOT; };
 		7516B1A91F7B6ADE00DC5229 /* NSError+Alert+Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSError+Alert+Share.swift"; path = "ProtonMail/NSError+Alert+Share.swift"; sourceTree = SOURCE_ROOT; };
 		7518393E1B3DCA3000C714A6 /* EventAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAPI.swift; sourceTree = "<group>"; };
@@ -1326,7 +1292,7 @@
 		7528FF851FA7FE83005F66A3 /* Data+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Data+Extension.swift"; path = "ProtonMail/Data+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		7528FF861FA7FE83005F66A3 /* Error+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Error+Extension.swift"; path = "ProtonMail/Error+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		7528FF871FA7FE83005F66A3 /* UIAlertAction+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertAction+Extension.swift"; path = "ProtonMailCommon/UIAlertAction+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF881FA7FE83005F66A3 /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIFont+Extension.swift"; path = "ProtonMailCommon/UIFont+Extension.swift"; sourceTree = SOURCE_ROOT; };
+		7528FF881FA7FE83005F66A3 /* Fonts+Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Fonts+Constants.swift"; path = "ProtonMailCommon/Fonts+Constants.swift"; sourceTree = SOURCE_ROOT; };
 		7528FF891FA7FE84005F66A3 /* EmailExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailExtension.swift; path = ProtonMail/EmailExtension.swift; sourceTree = SOURCE_ROOT; };
 		7528FF8A1FA7FE84005F66A3 /* NSSet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSSet+Extension.swift"; path = "ProtonMailCommon/NSSet+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		7528FF8B1FA7FE84005F66A3 /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertController+Extension.swift"; path = "ProtonMailCommon/UIAlertController+Extension.swift"; sourceTree = SOURCE_ROOT; };
@@ -1406,7 +1372,6 @@
 		754BD9A41CB31DB300913A5C /* DeviceInfoCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceInfoCache.swift; path = ../ProtonMail/DeviceInfoCache.swift; sourceTree = "<group>"; };
 		754CD4871AB809D60084C54A /* SettingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		754CD48A1AB80D770084C54A /* CustomHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
-		7550648D1B9A5B79006F2D39 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		75510BAA1B82BDEB001348FF /* LabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		75510BAC1B82F990001348FF /* LabelViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelViewModel.swift; sourceTree = "<group>"; };
 		755405B01B1648D2003BFC0A /* ComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
@@ -1677,20 +1642,6 @@
 			name = "Sign In";
 			sourceTree = "<group>";
 		};
-		07009F101A684BDB00129B07 /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				7550648D1B9A5B79006F2D39 /* Roboto-Medium.ttf */,
-				701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */,
-				07009F111A684C1900129B07 /* Roboto-Light.ttf */,
-				701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */,
-				70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */,
-				07009F121A684C1900129B07 /* Roboto-Thin.ttf */,
-			);
-			name = Fonts;
-			path = ..;
-			sourceTree = "<group>";
-		};
 		072AB6A71A8FB0AB00AF45D6 /* Encryption */ = {
 			isa = PBXGroup;
 			children = (
@@ -1766,7 +1717,6 @@
 		075E3DE81A5F4ECF00E001A7 /* ProtonMail */ = {
 			isa = PBXGroup;
 			children = (
-				753480B11CADABCA00964965 /* ProtonMail.entitlements */,
 				075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */,
 				07CCCC2D1AA2BD8800ECA79E /* Snapshot.swift */,
 				7535D6901F05AD69009BB794 /* Alert+Extension.swift */,
@@ -1783,12 +1733,13 @@
 			isa = PBXGroup;
 			children = (
 				75542ABA1EE53C3C000F4ABA /* PasswordExtension.strings */,
+				7599B1741CC8124300B2CB8D /* Localizable.strings */,
 				75E49EFA1CAAF47D00235ACC /* InfoDev.plist */,
 				075E3DEA1A5F4ECF00E001A7 /* Info.plist */,
+				753480B11CADABCA00964965 /* ProtonMail.entitlements */,
 				07009EF91A64AA6A00129B07 /* ProtonMail-Bridging-Header.h */,
 				072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */,
 				07CC99691A705BA4000FD6F8 /* Settings.bundle */,
-				7599B1741CC8124300B2CB8D /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2080,6 +2031,14 @@
 			name = Compose;
 			sourceTree = "<group>";
 		};
+		750844B71FA93EF5009D6654 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				7528FF881FA7FE83005F66A3 /* Fonts+Constants.swift */,
+			);
+			name = Constants;
+			sourceTree = "<group>";
+		};
 		750AAEB21FA91A1700CBFCA3 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
@@ -2157,15 +2116,16 @@
 		75352E6F1F05784500B41443 /* ProtonMailCommon */ = {
 			isa = PBXGroup;
 			children = (
+				750844B71FA93EF5009D6654 /* Constants */,
 				75352E801F057A5700B41443 /* Defined */,
-				75352E821F057AB100B41443 /* Utilities */,
-				75352E841F057B1100B41443 /* Extensions */,
-				75ECC2361AB9F10600B8FC78 /* ViewModels */,
 				073FD9301A71C5F000EB0CAF /* DataServices */,
 				072AB6A71A8FB0AB00AF45D6 /* Encryption */,
+				75352E841F057B1100B41443 /* Extensions */,
 				758ED7E51F05A7CB0028D1A5 /* LocalCache */,
 				07B797C31A6EE54600244532 /* Network */,
 				07CAB7FC1A880AF300C5E347 /* Queue */,
+				75352E821F057AB100B41443 /* Utilities */,
+				75ECC2361AB9F10600B8FC78 /* ViewModels */,
 			);
 			path = ProtonMailCommon;
 			sourceTree = SOURCE_ROOT;
@@ -2211,7 +2171,6 @@
 				7528FF8F1FA7FE85005F66A3 /* TimeInterval+Extension.swift */,
 				7528FF7F1FA7FE82005F66A3 /* UserDefaults+Extension.swift */,
 				70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */,
-				7528FF881FA7FE83005F66A3 /* UIFont+Extension.swift */,
 				70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */,
 				7528FF771FA7FE80005F66A3 /* UIScrollView+Extension.swift */,
 				7528FF801FA7FE82005F66A3 /* UIStoryboard+Extension.swift */,
@@ -2400,12 +2359,10 @@
 		75978BD91B28F5F800D07501 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				75E49F081CAB200000235ACC /* flags.bundle */,
 				075E3DF51A5F4ECF00E001A7 /* Images.xcassets */,
-				7516452D1D7F66C800DE0BD2 /* test_email.html */,
-				07009F101A684BDB00129B07 /* Fonts */,
 				75978BDA1B28F63100D07501 /* editor.css */,
 				7526AC8D1B6C4B3700E1967E /* backup.css */,
-				75E49F081CAB200000235ACC /* flags.bundle */,
 				75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */,
 			);
 			name = Resource;
@@ -2459,6 +2416,7 @@
 			isa = PBXGroup;
 			children = (
 				75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */,
+				752902A41EE5D6B700B46D36 /* Settings+Defined.swift */,
 				759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */,
 			);
 			name = Settings;
@@ -2533,17 +2491,16 @@
 		75ECC2361AB9F10600B8FC78 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				752902A41EE5D6B700B46D36 /* Settings+Defined.swift */,
-				75DD3E551E81BFCD005A7B93 /* MessageDetail */,
 				75DD3E541E81BFB0005A7B93 /* Composer */,
-				75DD3E531E81BF94005A7B93 /* Settings */,
-				757F4A071E67A0B8001CDE71 /* Labels */,
 				750AAEB21FA91A1700CBFCA3 /* Contacts */,
+				757F4A071E67A0B8001CDE71 /* Labels */,
 				7545083F1E149B3900265CD0 /* Mailbox */,
-				754713161DCD61510084BF34 /* SignIn */,
-				7547130F1DCD517E0084BF34 /* TwoFA */,
+				75DD3E551E81BFCD005A7B93 /* MessageDetail */,
 				75BDECA71CBCCC5A00982089 /* PinCode */,
+				754713161DCD61510084BF34 /* SignIn */,
 				75E49EFE1CAB07BC00235ACC /* SignUp */,
+				75DD3E531E81BF94005A7B93 /* Settings */,
+				7547130F1DCD517E0084BF34 /* TwoFA */,
 				759339BF1ABB45C700535F1B /* ViewModelFactory.swift */,
 				7567B06C1B334FA400A72A1E /* ViewModelService.swift */,
 				7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */,
@@ -2855,17 +2812,13 @@
 				75978BDB1B28F63100D07501 /* editor.css in Resources */,
 				755405B31B1648D2003BFC0A /* ComposeView.xib in Resources */,
 				75DE7EB31CAAEF9400F5443E /* Images.xcassets in Resources */,
-				70C6ABE41A72C1B7006EC400 /* Roboto-Regular.ttf in Resources */,
 				07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */,
-				7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */,
 				75BA19991EC631A300153A1A /* SpamScoreWarningView.xib in Resources */,
 				75482B291F7F08C400B0BFFB /* LaunchScreen.xib in Resources */,
 				75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */,
-				7516452E1D7F66C800DE0BD2 /* test_email.html in Resources */,
 				759BBDC21BA0C586002608B5 /* LabelDisplayView.xib in Resources */,
 				7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */,
 				7599B1721CC8124300B2CB8D /* Localizable.strings in Resources */,
-				07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */,
 				75E49F091CAB200000235ACC /* flags.bundle in Resources */,
 				7528FFD11FA7FEC3005F66A3 /* ContactSectionHeadView.xib in Resources */,
 				7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */,
@@ -2873,7 +2826,6 @@
 				755638C11CA1AE42003FA2D0 /* ShowImageView.xib in Resources */,
 				75DCB2081BA2A1560085BE8C /* RecipientCell.xib in Resources */,
 				75BA55A71D087F6A0081DD88 /* Readme.txt in Resources */,
-				07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */,
 				7558C5481BE82D6300043009 /* LabelsView.xib in Resources */,
 				75187BB11CAC54DD00C84382 /* phone_country_code.geojson in Resources */,
 				7582CFBC1D024E2900F521D4 /* TopMessageView.xib in Resources */,
@@ -2886,10 +2838,8 @@
 				7526AC8E1B6C4B3700E1967E /* backup.css in Resources */,
 				75542AB81EE53C3C000F4ABA /* PasswordExtension.strings in Resources */,
 				752FAA101CB5AEAF00F03228 /* PinCodeView.xib in Resources */,
-				7550648E1B9A5ECA006F2D39 /* Roboto-Medium.ttf in Resources */,
 				75F22BF11E83348100677E67 /* ToastMessageView.xib in Resources */,
 				75A2F44E1C97D6B400BF4306 /* ComposeErrorView.xib in Resources */,
-				701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */,
 				07411D8C1AAA3F1B002A4611 /* AttachmentTableViewCell.xib in Resources */,
 				75F1618B1DCBB19300912662 /* TwoFACodeView.xib in Resources */,
 			);
@@ -2906,30 +2856,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75482BC71F7F09E100B0BFFB /* Roboto-Thin.ttf in Resources */,
 				75482BC81F7F09E100B0BFFB /* PasswordEncryptViewController.xib in Resources */,
 				75482BC91F7F09E100B0BFFB /* Attachments.storyboard in Resources */,
 				75482BCA1F7F09E100B0BFFB /* ShareUnlockViewController.xib in Resources */,
 				75482BCB1F7F09E100B0BFFB /* Images.xcassets in Resources */,
-				75482BCC1F7F09E100B0BFFB /* Roboto-LightItalic.ttf in Resources */,
 				75482BCD1F7F09E100B0BFFB /* ComposerViewController.xib in Resources */,
 				75482BCE1F7F09E100B0BFFB /* Localizable.strings in Resources */,
-				75482BCF1F7F09E100B0BFFB /* Roboto-Light.ttf in Resources */,
 				75482BD01F7F09E100B0BFFB /* SignIn.storyboard in Resources */,
-				75482BD11F7F09E100B0BFFB /* test_email.html in Resources */,
 				75482BD21F7F09E100B0BFFB /* backup.css in Resources */,
 				75482BD31F7F09E100B0BFFB /* ContactsTableViewCell.xib in Resources */,
 				75482BD41F7F09E100B0BFFB /* PinCodeView.xib in Resources */,
 				75482BD51F7F09E100B0BFFB /* Menu.storyboard in Resources */,
-				75482BD61F7F09E100B0BFFB /* Roboto-MediumItalic.ttf in Resources */,
 				75482BD71F7F09E100B0BFFB /* Settings.bundle in Resources */,
 				75482BD81F7F09E100B0BFFB /* ComposeErrorView.xib in Resources */,
 				75482BD91F7F09E100B0BFFB /* AttachmentTableViewCell.xib in Resources */,
-				75482BDA1F7F09E100B0BFFB /* Roboto-Regular.ttf in Resources */,
 				75482BDB1F7F09E100B0BFFB /* flags.bundle in Resources */,
 				75482BDC1F7F09E100B0BFFB /* ComposeView.xib in Resources */,
 				75482BDD1F7F09E100B0BFFB /* SharePinUnlockViewController.xib in Resources */,
-				75482BDE1F7F09E100B0BFFB /* Roboto-Medium.ttf in Resources */,
 				75482BDF1F7F09E100B0BFFB /* phone_country_code.geojson in Resources */,
 				75482BE01F7F09E100B0BFFB /* editor.css in Resources */,
 			);
@@ -2939,30 +2882,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7512AA1F1F17FB2C00D84955 /* Roboto-Thin.ttf in Resources */,
 				751303DC1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib in Resources */,
 				755E0D061F2FACF9004D2873 /* Attachments.storyboard in Resources */,
 				7512A9FA1F17E1CE00D84955 /* ShareUnlockViewController.xib in Resources */,
 				758ED7D41F05A5610028D1A5 /* Images.xcassets in Resources */,
-				7512AA1D1F17FB2C00D84955 /* Roboto-LightItalic.ttf in Resources */,
 				7512AA001F17E95100D84955 /* ComposerViewController.xib in Resources */,
 				7512AA401F18028100D84955 /* Localizable.strings in Resources */,
-				7512AA1C1F17FB2C00D84955 /* Roboto-Light.ttf in Resources */,
 				758ED7D21F05A55B0028D1A5 /* SignIn.storyboard in Resources */,
-				7512AA241F17FB3700D84955 /* test_email.html in Resources */,
 				7512AA211F17FB2F00D84955 /* backup.css in Resources */,
 				7512AA191F17FABC00D84955 /* ContactsTableViewCell.xib in Resources */,
 				75E5F7A21F295D5A00001B4F /* PinCodeView.xib in Resources */,
 				758ED7D31F05A55B0028D1A5 /* Menu.storyboard in Resources */,
-				7512AA1B1F17FB2C00D84955 /* Roboto-MediumItalic.ttf in Resources */,
 				7512AA411F18028400D84955 /* Settings.bundle in Resources */,
 				7512AA0D1F17F77600D84955 /* ComposeErrorView.xib in Resources */,
 				75C7FF371F2FB4A000F15792 /* AttachmentTableViewCell.xib in Resources */,
-				7512AA1E1F17FB2C00D84955 /* Roboto-Regular.ttf in Resources */,
 				7512AA221F17FB3200D84955 /* flags.bundle in Resources */,
 				7512AA0C1F17F76F00D84955 /* ComposeView.xib in Resources */,
 				75E5F7A61F295DFD00001B4F /* SharePinUnlockViewController.xib in Resources */,
-				7512AA1A1F17FB2C00D84955 /* Roboto-Medium.ttf in Resources */,
 				7512AA231F17FB3400D84955 /* phone_country_code.geojson in Resources */,
 				7512AA201F17FB2F00D84955 /* editor.css in Resources */,
 			);
@@ -2980,27 +2916,22 @@
 				75DE7D8B1CAAEA4900F5443E /* OnboardingView.xib in Resources */,
 				75DE7D8C1CAAEA4900F5443E /* editor.css in Resources */,
 				75DE7D8D1CAAEA4900F5443E /* ComposeView.xib in Resources */,
-				7516452F1D7F66C800DE0BD2 /* test_email.html in Resources */,
 				75F22BF21E83348100677E67 /* ToastMessageView.xib in Resources */,
 				75DE7EB21CAAEF9000F5443E /* Images.xcassets in Resources */,
 				75BA55A81D087F6A0081DD88 /* Readme.txt in Resources */,
-				75DE7D8E1CAAEA4900F5443E /* Roboto-Regular.ttf in Resources */,
 				75BA199C1EC632E100153A1A /* SpamScoreWarningView.xib in Resources */,
 				75DE7D8F1CAAEA4900F5443E /* SignIn.storyboard in Resources */,
 				7582CFBD1D024E2900F521D4 /* TopMessageView.xib in Resources */,
-				75DE7D901CAAEA4900F5443E /* Roboto-LightItalic.ttf in Resources */,
 				75DE7D911CAAEA4900F5443E /* MailboxMessageCell.xib in Resources */,
 				7599B1761CC8124C00B2CB8D /* Localizable.strings in Resources */,
 				75DE7D921CAAEA4900F5443E /* LabelDisplayView.xib in Resources */,
 				75856D6B1CB5B5F2000D9F3B /* PinCodeView.xib in Resources */,
 				75DE7D931CAAEA4900F5443E /* Menu.storyboard in Resources */,
-				75DE7D951CAAEA4900F5443E /* Roboto-Light.ttf in Resources */,
 				75DE7D961CAAEA4900F5443E /* ContactsTableViewCell.xib in Resources */,
 				75482B2A1F7F08C700B0BFFB /* LaunchScreen.xib in Resources */,
 				75DE7D971CAAEA4900F5443E /* Attachments.storyboard in Resources */,
 				75DE7D981CAAEA4900F5443E /* ShowImageView.xib in Resources */,
 				75DE7D991CAAEA4900F5443E /* RecipientCell.xib in Resources */,
-				75DE7D9A1CAAEA4900F5443E /* Roboto-Thin.ttf in Resources */,
 				75DE7D9B1CAAEA4900F5443E /* LabelsView.xib in Resources */,
 				75DE7D9C1CAAEA4900F5443E /* RecipientView.xib in Resources */,
 				75DE7D9D1CAAEA4900F5443E /* MessageDetailBottomView.xib in Resources */,
@@ -3012,9 +2943,7 @@
 				7528FFF91FA7FEF6005F66A3 /* ContactSectionHeadView.xib in Resources */,
 				75DE7DA11CAAEA4900F5443E /* LoadingView.xib in Resources */,
 				75DE7DA21CAAEA4900F5443E /* backup.css in Resources */,
-				75DE7DA31CAAEA4900F5443E /* Roboto-Medium.ttf in Resources */,
 				75DE7DA41CAAEA4900F5443E /* ComposeErrorView.xib in Resources */,
-				75DE7DA51CAAEA4900F5443E /* Roboto-MediumItalic.ttf in Resources */,
 				75DE7DA61CAAEA4900F5443E /* AttachmentTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3769,7 +3698,7 @@
 				073FE01D1A9561F600825980 /* Contact.swift in Sources */,
 				073FE01F1A95620D00825980 /* ContactExtension.swift in Sources */,
 				754713181DCD616D0084BF34 /* SignInViewModel.swift in Sources */,
-				7528FFA51FA7FE85005F66A3 /* UIFont+Extension.swift in Sources */,
+				7528FFA51FA7FE85005F66A3 /* Fonts+Constants.swift in Sources */,
 				75921C7F1F747BC90028DAC9 /* Header.swift in Sources */,
 				7528FFCD1FA7FEC3005F66A3 /* ContactDetailsViewModelImpl.swift in Sources */,
 				7528FFDA1FA7FEC3005F66A3 /* ContactEditViewController.swift in Sources */,
@@ -4131,6 +4060,7 @@
 				75482B931F7F09E100B0BFFB /* APIService+AttachmentExtension.swift in Sources */,
 				75482B941F7F09E100B0BFFB /* PMImagePickerController.swift in Sources */,
 				75482B951F7F09E100B0BFFB /* APIService+SettingsExtension.swift in Sources */,
+				753934C41FAA91D000EBFBA5 /* Settings+Defined.swift in Sources */,
 				75482B961F7F09E100B0BFFB /* NotificationDefined.swift in Sources */,
 				75BA4F521F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */,
 				75482B971F7F09E100B0BFFB /* PersistentQueue.swift in Sources */,
@@ -4156,7 +4086,7 @@
 				75482BAF1F7F09E100B0BFFB /* ViewModelServiceImpl+Share.swift in Sources */,
 				7528002C1FA8006A005F66A3 /* UIAlertController+Extension.swift in Sources */,
 				752800201FA7FFDE005F66A3 /* NotificationCenter+KeyboardExtension.swift in Sources */,
-				752800281FA80040005F66A3 /* UIFont+Extension.swift in Sources */,
+				752800281FA80040005F66A3 /* Fonts+Constants.swift in Sources */,
 				75482BB01F7F09E100B0BFFB /* AttachmentAPI.swift in Sources */,
 				75482BB11F7F09E100B0BFFB /* DataService+Error.swift in Sources */,
 				75482BB21F7F09E100B0BFFB /* LastUpdatedStore.swift in Sources */,
@@ -4174,7 +4104,6 @@
 				75482BBD1F7F09E100B0BFFB /* ComposeView.swift in Sources */,
 				75482BBE1F7F09E100B0BFFB /* ProtonMail.xcdatamodeld in Sources */,
 				75482BBF1F7F09E100B0BFFB /* Part.swift in Sources */,
-				75482BC01F7F09E100B0BFFB /* Settings+Defined.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4289,6 +4218,7 @@
 				75555BBE1F1840DB000C0C10 /* PMImagePickerController.swift in Sources */,
 				7512AA641F180B2D00D84955 /* APIService+SettingsExtension.swift in Sources */,
 				7512A9F31F17DC9E00D84955 /* NotificationDefined.swift in Sources */,
+				753934C31FAA91CF00EBFBA5 /* Settings+Defined.swift in Sources */,
 				75BA4F541F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */,
 				753E5ABB1F181BAD0090C0F9 /* PersistentQueue.swift in Sources */,
 				75C7FF361F2FB3FF00F15792 /* PMDocumentPickerViewController.swift in Sources */,
@@ -4314,7 +4244,7 @@
 				7512AA541F18066E00D84955 /* ContactExtension.swift in Sources */,
 				753E5AC81F181FEF0090C0F9 /* MonitorSavesDataServiceMessageExtension.swift in Sources */,
 				75B0529D1F1FE032008E483A /* ViewModelServiceImpl+Share.swift in Sources */,
-				752800271FA8003F005F66A3 /* UIFont+Extension.swift in Sources */,
+				752800271FA8003F005F66A3 /* Fonts+Constants.swift in Sources */,
 				753E5AC61F181ED90090C0F9 /* AttachmentAPI.swift in Sources */,
 				7512AA491F18039700D84955 /* DataService+Error.swift in Sources */,
 				7512AA6A1F180DAD00D84955 /* LastUpdatedStore.swift in Sources */,
@@ -4332,7 +4262,6 @@
 				7512AA0B1F17F75000D84955 /* ComposeView.swift in Sources */,
 				7512AA031F17EAAC00D84955 /* ProtonMail.xcdatamodeld in Sources */,
 				75921C971F747E270028DAC9 /* Part.swift in Sources */,
-				7512AA3F1F18026A00D84955 /* Settings+Defined.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4626,7 +4555,7 @@
 				75DE7D681CAAEA4900F5443E /* SettingDebugTableViewController.swift in Sources */,
 				75DE7D6A1CAAEA4900F5443E /* AttachmentsTableViewController.swift in Sources */,
 				75DE7D6C1CAAEA4900F5443E /* ContactsTableViewCell.swift in Sources */,
-				752800181FA7FEF6005F66A3 /* UIFont+Extension.swift in Sources */,
+				752800181FA7FEF6005F66A3 /* Fonts+Constants.swift in Sources */,
 				75DE7D6D1CAAEA4900F5443E /* MenuTableViewCell.swift in Sources */,
 				75DE7D6F1CAAEA4900F5443E /* FeedbackItem.swift in Sources */,
 				75DE7D721CAAEA4900F5443E /* MoreOptionsView.swift in Sources */,

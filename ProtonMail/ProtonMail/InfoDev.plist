@@ -102,14 +102,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) photo library use</string>
 	<key>UIAppFonts</key>
-	<array>
-		<string>Roboto-Medium.ttf</string>
-		<string>Roboto-Regular.ttf</string>
-		<string>Roboto-LightItalic.ttf</string>
-		<string>Roboto-MediumItalic.ttf</string>
-		<string>Roboto-Light.ttf</string>
-		<string>Roboto-Thin.ttf</string>
-	</array>
+	<array/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

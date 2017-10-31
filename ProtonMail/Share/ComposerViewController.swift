@@ -251,7 +251,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
-        let navigationBarTitleFont = UIFont.systemFont(ofSize: UIFont.Size.h2)
+        let navigationBarTitleFont = Fonts.h2.regular
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: navigationBarTitleFont
@@ -358,7 +358,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
-            if self.composeView.hasOutSideEmails && self.encryptionPassword.characters.count <= 0 {
+            if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
                 self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
                 return;
             }

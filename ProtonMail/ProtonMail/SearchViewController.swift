@@ -61,13 +61,13 @@ class SearchViewController: ProtonMailViewController {
         searchTextField.autocapitalizationType = UITextAutocapitalizationType.none
         searchTextField.returnKeyType = .search
         searchTextField.delegate = self
-        searchTextField.font = UIFont.robotoRegular(size: UIFont.Size.h4)
+        searchTextField.font = Fonts.h4.regular
         searchTextField.textColor = UIColor.white
         searchTextField.tintColor = UIColor.white
         searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Search", comment: "Title"), attributes:
             [
                 NSAttributedStringKey.foregroundColor: UIColor.white,
-                NSAttributedStringKey.font: UIFont.robotoLight(size: UIFont.Size.h3)
+                NSAttributedStringKey.font: Fonts.h3.light
             ])
         
         managedObjectContext = sharedCoreDataService.newMainManagedObjectContext()

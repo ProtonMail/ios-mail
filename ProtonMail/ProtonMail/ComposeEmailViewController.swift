@@ -235,7 +235,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
-        let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
+        let navigationBarTitleFont = Fonts.h2.light
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: navigationBarTitleFont
@@ -314,7 +314,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
-            if self.composeView.hasOutSideEmails && self.encryptionPassword.characters.count <= 0 {
+            if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
                 let emails = self.composeView.allEmails
                 //show loading
                 ActivityIndicatorHelper.showActivityIndicator(at: view)

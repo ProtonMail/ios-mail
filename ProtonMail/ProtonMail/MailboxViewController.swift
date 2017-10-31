@@ -249,7 +249,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate func addSubViews() {
         self.navigationTitleLabel.backgroundColor = UIColor.clear
-        self.navigationTitleLabel.font = UIFont.robotoRegular(size: UIFont.Size.h2)
+        self.navigationTitleLabel.font = Fonts.h2.regular
         self.navigationTitleLabel.textAlignment = NSTextAlignment.center
         self.navigationTitleLabel.textColor = UIColor.white
         self.navigationTitleLabel.text = self.title ?? NSLocalizedString("INBOX", comment: "Title")
@@ -1245,7 +1245,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         animation.duration = 0.25
         animation.type = kCATransitionFade
         self.navigationController?.navigationBar.layer.add(animation, forKey: "fadeText")
-        if let t = text, t.characters.count > 0 {
+        if let t = text, t.count > 0 {
             self.title = t
             self.navigationTitleLabel.text = t
         } else {

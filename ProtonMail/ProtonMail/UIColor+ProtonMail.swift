@@ -76,9 +76,8 @@ extension UIColor {
 }
 
 
-extension UIColor
-{
-    
+extension UIColor {
+
     convenience init(hexColorCode: String) {
         var red:   CGFloat = 0.0
         var green: CGFloat = 0.0
@@ -86,54 +85,36 @@ extension UIColor
         var alpha: CGFloat = 1.0
         
         if hexColorCode.hasPrefix("#") {
-            let index   = hexColorCode.characters.index(hexColorCode.startIndex, offsetBy: 1)
+            let index   = hexColorCode.index(hexColorCode.startIndex, offsetBy: 1)
             let hex     = String(hexColorCode[index...])
             let scanner = Scanner(string: hex)
             var hexValue: CUnsignedLongLong = 0
             
-            if scanner.scanHexInt64(&hexValue)
-            {
-                if hex.characters.count == 6
-                {
+            if scanner.scanHexInt64(&hexValue) {
+                if hex.count == 6 {
                     red   = CGFloat((hexValue & 0xFF0000) >> 16) / 255.0
                     green = CGFloat((hexValue & 0x00FF00) >> 8)  / 255.0
                     blue  = CGFloat(hexValue & 0x0000FF) / 255.0
-                }
-                else if hex.characters.count == 8
-                {
+                } else if hex.count == 8 {
                     red   = CGFloat((hexValue & 0xFF000000) >> 24) / 255.0
                     green = CGFloat((hexValue & 0x00FF0000) >> 16) / 255.0
                     blue  = CGFloat((hexValue & 0x0000FF00) >> 8)  / 255.0
                     alpha = CGFloat(hexValue & 0x000000FF)         / 255.0
-                }
-                else
-                {
+                } else {
                     PMLog.D("invalid hex code string, length should be 7 or 9")
                 }
-            }
-            else
-            {
+            } else {
                 PMLog.D("scan hex error")
             }
-        }
-        else
-        {
+        } else {
             PMLog.D("invalid hex code string, missing '#' as prefix")
         }
-        
         self.init(red:red, green:green, blue:blue, alpha:alpha)
     }
-    
 }
 
-
-
-
 // Other Methods
-
-extension UIColor
-    
-{
+extension UIColor {
     /**
      Create non-autoreleased color with in the given hex string and alpha
      
@@ -152,47 +133,44 @@ extension UIColor
      
      // Short handling
      let shortColorWithHex: UIColor = UIColor(hexString: "fff")
-     
-     
      */
-    convenience init(hexString: String, alpha: Float)
-    {
+    
+    convenience init(hexString: String, alpha: Float) {
         var hex = hexString
         
         // Check for hash and remove the hash
         if hex.hasPrefix("#") {
-            let hexL = hex.characters.index(hex.startIndex, offsetBy: 1)
+            let hexL = hex.index(hex.startIndex, offsetBy: 1)
             hex = String(hex[hexL...])
         }
         
-        if hex.characters.count == 0 {
+        if hex.count == 0 {
             hex = "000000"
         }
         
-        let hexLength = hex.characters.count
+        let hexLength = hex.count
         // Check for string length
         assert(hexLength == 6 || hexLength == 3)
         
         // Deal with 3 character Hex strings
-        if hexLength == 3
-        {
-            let redR = hex.characters.index(hex.startIndex, offsetBy: 1)
+        if hexLength == 3 {
+            let redR = hex.index(hex.startIndex, offsetBy: 1)
             let redHex = String(hex[..<redR])
-            let greenL = hex.characters.index(hex.startIndex, offsetBy: 1)
-            let greenR = hex.characters.index(hex.startIndex, offsetBy: 2)
+            let greenL = hex.index(hex.startIndex, offsetBy: 1)
+            let greenR = hex.index(hex.startIndex, offsetBy: 2)
             let greenHex = String(hex[greenL..<greenR])
-            let blueL = hex.characters.index(hex.startIndex, offsetBy: 2)
+            let blueL = hex.index(hex.startIndex, offsetBy: 2)
             let blueHex = String(hex[blueL...])
             hex = redHex + redHex + greenHex + greenHex + blueHex + blueHex
         }
-        let redR = hex.characters.index(hex.startIndex, offsetBy: 2)
+        let redR = hex.index(hex.startIndex, offsetBy: 2)
         let redHex = String(hex[..<redR])
-        let greenL = hex.characters.index(hex.startIndex, offsetBy: 2)
-        let greenR = hex.characters.index(hex.startIndex, offsetBy: 4)
+        let greenL = hex.index(hex.startIndex, offsetBy: 2)
+        let greenR = hex.index(hex.startIndex, offsetBy: 4)
         let greenHex = String(hex[greenL..<greenR])
         
-        let blueL = hex.characters.index(hex.startIndex, offsetBy: 4)
-        let blueR = hex.characters.index(hex.startIndex, offsetBy: 6)
+        let blueL = hex.index(hex.startIndex, offsetBy: 4)
+        let blueR = hex.index(hex.startIndex, offsetBy: 6)
         let blueHex = String(hex[blueL..<blueR])
         
         var redInt:   CUnsignedInt = 0
@@ -206,8 +184,6 @@ extension UIColor
         self.init(red: CGFloat(redInt) / 255.0, green: CGFloat(greenInt) / 255.0, blue: CGFloat(blueInt) / 255.0, alpha: CGFloat(alpha))
     }
     
-    
-    
     /**
      Create non-autoreleased color with in the given hex value and alpha
      
@@ -219,10 +195,8 @@ extension UIColor
      let secondColor: UIColor = UIColor(hex: 0xff8942, alpha: 0.5)
      
      */
-    convenience init(hex: Int, alpha: Float)
-    {
+    convenience init(hex: Int, alpha: Float) {
         let hexString = NSString(format: "%2X", hex)
         self.init(hexString: hexString as String, alpha: alpha)
     }
-    
 }

@@ -1,69 +1,57 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="Roboto-Regular.ttf">
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <animations/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </view>
         <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchedCell" rowHeight="62" id="IBQ-gS-tnP" customClass="MailboxTableViewCell" customModule="ProtonMail" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="600" height="62"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IBQ-gS-tnP" id="1t8-mA-eij">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="61.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_lock" translatesAutoresizingMaskIntoConstraints="NO" id="5zK-Lt-1vr">
                         <rect key="frame" x="574" y="36" width="14" height="14"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="MDv-M4-iFQ"/>
                             <constraint firstAttribute="width" constant="14" id="ld9-iQ-FV5"/>
                         </constraints>
-                        <variation key="heightClass=regular" misplaced="YES">
-                            <rect key="frame" x="276" y="32" width="15" height="20"/>
-                        </variation>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CAF-hE-NPx">
-                        <rect key="frame" x="16" y="36" width="38" height="14"/>
-                        <animations/>
+                        <rect key="frame" x="16" y="36" width="40.5" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="lI0-OY-odJ"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
-                        <color key="textColor" red="0.51372549020000002" green="0.53333333329999999" blue="0.59215686270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.43910825252532959" green="0.45715746283531189" blue="0.52097928524017334" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
-                        <variation key="heightClass=regular" misplaced="YES">
-                            <rect key="frame" x="16" y="38" width="215" height="14"/>
-                        </variation>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cz6-UI-7gQ" userLabel="Checked">
                         <rect key="frame" x="16" y="20" width="0.0" height="22"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="9rm-hc-hJE"/>
                             <constraint firstAttribute="width" id="s5u-kF-vFo"/>
                         </constraints>
                         <state key="normal" image="unchecked">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </state>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reply" translatesAutoresizingMaskIntoConstraints="NO" id="Tbg-fH-p3T">
                         <rect key="frame" x="16" y="12" width="20" height="20"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="5bJ-iu-Rfe"/>
                             <constraint firstAttribute="width" constant="20" id="Kmt-Sp-9kS">
@@ -73,8 +61,7 @@
                     </imageView>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GCg-za-AFz" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="484" y="36" width="42" height="14"/>
-                        <animations/>
-                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="Kdt-fa-Fk7"/>
                             <constraint firstAttribute="height" constant="14" id="VI8-9A-Lqo"/>
@@ -82,39 +69,34 @@
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tiX-kY-Mf8" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="427" y="36" width="57" height="14"/>
-                        <animations/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="57" id="rNU-o6-Pvx"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="upn-WW-m9K" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="370" y="36" width="57" height="14"/>
-                        <animations/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="57" id="jpc-MI-q9e"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aJE-GR-wr7" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="313" y="36" width="57" height="14"/>
-                        <animations/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="57" id="lWF-ui-jth"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X9A-qR-27r" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="256" y="36" width="57" height="14"/>
-                        <animations/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="57" id="vJq-BX-0p4"/>
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_starred-active" translatesAutoresizingMaskIntoConstraints="NO" id="6l1-Ol-AEt">
                         <rect key="frame" x="526" y="33" width="24" height="16"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="ihU-dD-BSJ"/>
                             <constraint firstAttribute="width" constant="24" id="tp2-80-8KX"/>
@@ -122,48 +104,32 @@
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cwU-iO-PwG">
                         <rect key="frame" x="538" y="12" width="50" height="16"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="7ir-Ik-DaJ"/>
                             <constraint firstAttribute="width" constant="50" id="NU4-DZ-Hiw"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
-                        <color key="textColor" red="0.51372549020000002" green="0.53333333329999999" blue="0.59215686270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.43910825252532959" green="0.45715746283531189" blue="0.52097928524017334" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
-                        <variation key="heightClass=regular" misplaced="YES">
-                            <rect key="frame" x="263" y="10" width="41" height="16"/>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                            <rect key="frame" x="343" y="10" width="41" height="14"/>
-                        </variation>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" misplaced="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aoW-p5-zr1">
                         <rect key="frame" x="44" y="12" width="491" height="20"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="pU7-f2-Bh6"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
-                        <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.24604520201683044" green="0.24387916922569275" blue="0.30707395076751709" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
-                        <variation key="heightClass=regular" misplaced="YES">
-                            <rect key="frame" x="43" y="12" width="188" height="19"/>
-                        </variation>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="mail_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="L0v-Bs-vty">
                         <rect key="frame" x="552" y="36" width="22" height="14"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="BvR-wb-Xzk"/>
                             <constraint firstAttribute="width" constant="22" id="wHG-3R-Yeo"/>
                         </constraints>
-                        <variation key="heightClass=regular" misplaced="YES">
-                            <rect key="frame" x="255" y="36" width="14" height="16"/>
-                        </variation>
                     </imageView>
                 </subviews>
-                <animations/>
-                <color key="backgroundColor" red="0.98823529409999999" green="0.99607843139999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" red="0.98540240526199341" green="0.9950486421585083" blue="0.99995875358581543" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="5zK-Lt-1vr" secondAttribute="bottom" constant="12" id="14H-CM-h5i"/>
                     <constraint firstItem="GCg-za-AFz" firstAttribute="top" secondItem="L0v-Bs-vty" secondAttribute="top" id="2R1-Ss-uD2"/>
@@ -238,7 +204,6 @@
                     </mask>
                 </variation>
             </tableViewCellContentView>
-            <animations/>
             <connections>
                 <outlet property="attachImage" destination="L0v-Bs-vty" id="Nsf-lZ-ToD"/>
                 <outlet property="attachmentConstraint" destination="wHG-3R-Yeo" id="XtK-Wb-bHc"/>

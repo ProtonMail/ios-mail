@@ -313,9 +313,9 @@ class ComposeView: UIViewController {
     
     fileprivate func configureContactPickerTemplate() {
         MBContactCollectionViewContactCell.appearance().tintColor = UIColor.ProtonMail.Blue_6789AB
-        MBContactCollectionViewContactCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h6)
-        MBContactCollectionViewPromptCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h6)
-        MBContactCollectionViewEntryCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h6)
+        MBContactCollectionViewContactCell.appearance().font = Fonts.h6.light
+        MBContactCollectionViewPromptCell.appearance().font = Fonts.h6.light
+        MBContactCollectionViewEntryCell.appearance().font = Fonts.h6.light
     }
     
     ///
@@ -468,7 +468,7 @@ class ComposeView: UIViewController {
         } else {
             if (!hasExpirationSchedule) {
                 self.expirationButton.setImage(UIImage(named: "compose_expiration-active"), for: UIControlState())
-                self.confirmExpirationButton.setImage(UIImage(named: "cancel_compose"), for: UIControlState())
+                self.confirmExpirationButton.setImage(UIImage(named: "compose_expiration_cancel"), for: UIControlState())
             } else {
                 self.expirationDateTextField.text = ""
                 self.expirationTimeInterval  = 0;

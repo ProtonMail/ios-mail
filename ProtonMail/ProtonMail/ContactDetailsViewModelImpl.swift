@@ -57,7 +57,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
                     return; //with error
                 }
-                self.verifyType2 = sharedOpenPGP.signDetachedVerify(userkey.public_key, signature: c.sign, plainText: c.data)
+                self.verifyType2 = sharedOpenPGP.signVerify(detached: c.sign, publicKey: userkey.public_key, plainText: c.data)
                 if let vcard = PMNIEzvcard.parseFirst(c.data) {
                     let emails = vcard.getEmails()
                     var order : Int = 1
