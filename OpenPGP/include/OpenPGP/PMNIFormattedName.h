@@ -5,6 +5,7 @@
 @class PMNIFormattedName;
 
 
+/**ezvcard part */
 @interface PMNIFormattedName : NSObject
 
 - (nonnull NSString *)getLanguage;

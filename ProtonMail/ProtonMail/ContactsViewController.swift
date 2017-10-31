@@ -202,7 +202,7 @@ extension ContactsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController?.numberOfRowsInSection(section) ?? 0
+        return fetchedResultsController?.numberOfRows(in: section) ?? 0
 //        if (self.searchController.isActive) {
 //            return searchResults.count
 //        }

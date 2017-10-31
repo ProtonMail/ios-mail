@@ -571,7 +571,7 @@ class ComposeView: UIViewController {
         } else {
             fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight
         }
-        contactPicker.contactCollectionView!.addBorder(.bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
+        contactPicker.contactCollectionView!.add(border: .bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
     }
 }
 
