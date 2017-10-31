@@ -273,8 +273,13 @@ final class ComposeViewModelImpl : ComposeViewModel {
             self.message?.expirationOffset = Int32(expir)
             self.message?.setLabelLocation(.draft)
             MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil)
-            if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
+            
+            if let context = message!.managedObjectContext {
+                context.perform {
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)")
+                    }
+                }
             }
         }
         
@@ -296,8 +301,12 @@ final class ComposeViewModelImpl : ComposeViewModel {
     open override func markAsRead() {
         if message != nil {
             message?.isRead = true;
-            if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
+            if let context = message!.managedObjectContext {
+                context.perform {
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)")
+                    }
+                }
             }
         }
     }

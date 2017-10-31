@@ -42,6 +42,7 @@ class CoreDataService {
         }
         
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
         return managedObjectContext
         }()
@@ -58,6 +59,7 @@ class CoreDataService {
     
     func newMainManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         managedObjectContext.parent = mainManagedObjectContext
         return managedObjectContext
     }
@@ -65,6 +67,7 @@ class CoreDataService {
     // This context will not automatically merge upstream context saves
     func newManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         managedObjectContext.parent = mainManagedObjectContext
         return managedObjectContext
     }

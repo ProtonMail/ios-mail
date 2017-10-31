@@ -48,7 +48,11 @@ final public class FolderEditingViewModelImple : LabelEditViewModel {
             } else {
                 self.currentLabel.name = name
                 self.currentLabel.color = color
-                let _ = self.currentLabel.managedObjectContext?.saveUpstreamIfNeeded()
+                if let context = self.currentLabel.managedObjectContext {
+                    context.perform {
+                        let _ = context.saveUpstreamIfNeeded()
+                    }
+                }
                 complete()
             }
         }

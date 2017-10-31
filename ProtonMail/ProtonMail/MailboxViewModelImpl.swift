@@ -80,7 +80,7 @@ class MailboxViewModelImpl : MailboxViewModel {
     
     override func deleteMessage(_ msg: Message) -> SwipeResponse  {
         var needShowMessage = true
-        if msg.managedObjectContext != nil {
+        if let context = msg.managedObjectContext {
             switch(self.location!) {
             case .trash, .spam:
                 msg.removeLocationFromLabels(currentlocation: self.location, location: .deleted, keepSent: false)
@@ -93,8 +93,10 @@ class MailboxViewModelImpl : MailboxViewModel {
                 self.updateBadgeNumberWhenMove(msg, to: .deleted)
                 msg.location = .trash
             }
-            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
             }
         }
         return needShowMessage ? SwipeResponse.showUndo : SwipeResponse.nothing
@@ -174,5 +176,9 @@ class MailboxViewModelImpl : MailboxViewModel {
     }
     override func resetNotificationMessage() -> Void {
         sharedMessageDataService.pushNotificationMessageID = nil
+    }
+    
+    override func reloadTable() -> Bool {
+        return self.location == .draft
     }
 }

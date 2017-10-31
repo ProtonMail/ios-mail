@@ -174,9 +174,11 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                 
             }
             
-            let error = context.saveUpstreamIfNeeded()
-            if let error = error {
-                PMLog.D("error: \(error)")
+            context.perform {
+                let error = context.saveUpstreamIfNeeded()
+                if let error = error {
+                    PMLog.D("error: \(error)")
+                }
             }
         }
         
@@ -186,8 +188,10 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                 message.needsUpdate = false
                 message.location = .archive
             }
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
             }
             let ids = self.messages.map { ($0).messageID }
             let api = MessageActionRequest<ApiResponse>(action: "archive", ids: ids)

@@ -55,11 +55,13 @@ class MessageDataService {
     func uploadAttachment(_ att: Attachment!)
     {
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
-                dequeueIfNeeded()
-            } else {
-                queue(att, action: .uploadAtt)
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                    self.dequeueIfNeeded()
+                } else {
+                    self.queue(att, action: .uploadAtt)
+                }
             }
         }
     }
@@ -650,12 +652,16 @@ class MessageDataService {
                                 // apply the label changes
                                 if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
                                     for delete in deleted {
-                                        if let label = Label.labelForLableID(delete as! String, inManagedObjectContext: context) {
+                                        let labelID = delete as! String
+                                        if let label = Label.labelForLableID(labelID, inManagedObjectContext: context) {
                                             let labelObjs = messageObject.mutableSetValue(forKey: "labels")
                                             if labelObjs.count > 0 {
                                                 labelObjs.remove(label)
                                                 messageObject.setValue(labelObjs, forKey: "labels")
                                             }
+                                        }
+                                        if labelID == "1" {
+                                            messageObject.isDetailDownloaded = false
                                         }
                                     }
                                 }
@@ -765,9 +771,11 @@ class MessageDataService {
                                                             if let fileURL = fileURL {
                                                                 attachment.localURL = fileURL
                                                                 attachment.fileData = try? Data(contentsOf: fileURL)
-                                                                error = context.saveUpstreamIfNeeded()
-                                                                if error != nil  {
-                                                                    PMLog.D(" error: \(String(describing: error))")
+                                                                context.perform {
+                                                                    error = context.saveUpstreamIfNeeded()
+                                                                    if error != nil  {
+                                                                        PMLog.D(" error: \(String(describing: error))")
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -847,7 +855,15 @@ class MessageDataService {
                                             message_n.isDetailDownloaded = true
                                             message_n.needsUpdate = true
                                             message_n.isRead = true
-                                            let _ = message_n.managedObjectContext?.saveUpstreamIfNeeded()
+                                            
+                                            if let ctx = message_n.managedObjectContext {
+                                                ctx.perform {
+                                                    if let error = ctx.saveUpstreamIfNeeded() {
+                                                        PMLog.D("\(error)")
+                                                    }
+                                                }
+                                            }
+
                                             let tmpError = context.saveUpstreamIfNeeded()
                                             DispatchQueue.main.async {
                                                 completion(task, response, message_n, tmpError)
@@ -892,24 +908,17 @@ class MessageDataService {
     
     func fetchNotificationMessageDetail(_ messageID: String, completion: @escaping CompletionFetchDetail) {
         queue {
-            
             let completionWrapper: CompletionBlock = { task, response, error in
-                
                 DispatchQueue.main.async {
-                    
                     let context = sharedCoreDataService.newMainManagedObjectContext()
                     context.perform() {
                         if response != nil {
                             //TODO need check the respons code
                             if var msg: Dictionary<String,Any> = response?["Message"] as? Dictionary<String,Any> {
-                                
-                                print("\(msg)");
-                                
                                 msg.removeValue(forKey: "Location")
                                 msg.removeValue(forKey: "Starred")
                                 msg.removeValue(forKey: "test")
                                 do {
-                                    
                                     var needOffset = 0
                                     if let msg = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                                         needOffset = msg.isRead ? 0 : -1
@@ -1127,10 +1136,12 @@ class MessageDataService {
     
     func saveDraft(_ message : Message!) {
         if let context = message.managedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            } else {
-                queue(message, action: .saveDraft)
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                } else {
+                    self.queue(message, action: .saveDraft)
+                }
             }
         }
     }
@@ -1138,10 +1149,12 @@ class MessageDataService {
     func deleteDraft (_ message : Message!)
     {
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            } else {
-                queue(message, action: .delete)
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                } else {
+                    self.queue(message, action: .delete)
+                }
             }
         }
     }
@@ -1335,7 +1348,7 @@ class MessageDataService {
                                         PMLog.D("\(mess)")
                                         
                                         message.messageID = messageID
-                                        message.isDetailDownloaded = false
+                                        message.isDetailDownloaded = true
                                         
                                         var hasTemp = false;
                                         let attachments = message.mutableSetValue(forKey: "attachments")
@@ -1609,6 +1622,7 @@ class MessageDataService {
                                     message.isRead = true
                                     lastUpdatedStore.ReadMailboxMessage(message.location)
                                     message.location = MessageLocation.outbox
+                                    message.isDetailDownloaded = false
                                     message.removeLocationFromLabels(currentlocation: .draft, location: .outbox, keepSent: true)
                                 }
 
@@ -1671,8 +1685,12 @@ class MessageDataService {
                                     } else {
                                         //ignore
                                     }
-                                    if let error = message.managedObjectContext!.saveUpstreamIfNeeded() {
-                                        PMLog.D(" error: \(error)")
+                                    if let context = message.managedObjectContext {
+                                        context.perform {
+                                            if let error = context.saveUpstreamIfNeeded() {
+                                                PMLog.D(" error: \(error)")
+                                            }
+                                        }
                                     }
                                 }
                             } catch {

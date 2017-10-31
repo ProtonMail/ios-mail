@@ -51,6 +51,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kSegueMoveToFolders                   = "toMoveToFolderSegue"
     fileprivate let kSegueToApplyLabels                   = "toApplyLabelsSegue"
     
+    @IBOutlet weak var undoView: UIView!
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var undoButtonWidth: NSLayoutConstraint!
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
@@ -132,6 +133,18 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         resetFetchedResultsController()
     }
     
+    @objc func doEnterForeground(){
+        if viewModel.reloadTable() {
+            resetTableView()
+        }
+    }
+    
+    func resetTableView() {
+        resetFetchedResultsController()
+        setupFetchedResultsController()
+        self.tableView.reloadData()
+    }
+    
     // MARK: - UIViewController Lifecycle
     
     override func viewDidLoad() {
@@ -163,6 +176,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         
         self.undoBottomDistance.constant = -88
         self.undoButton.isHidden = true
+        self.undoView.isHidden = true
         
         cleanRateReviewCell()
     }
@@ -175,6 +189,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         super.viewWillAppear(animated)
         self.hideTopMessage()
         NotificationCenter.default.addObserver(self, selector: #selector(MailboxViewController.reachabilityChanged(_:)), name: NSNotification.Name.reachabilityChanged, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector:#selector(MailboxViewController.doEnterForeground), name:  NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        
         leftSwipeAction = sharedUserDataService.swiftLeft
         rightSwipeAction = sharedUserDataService.swiftRight
         
@@ -188,7 +205,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.reachabilityChanged, object:nil)
+        NotificationCenter.default.removeObserver(self)
         self.stopAutoFetch()
     }
     
@@ -478,9 +495,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     //                    let newMessage = Message(context: context)
     //                    newMessage.messageType = 1
     //                    newMessage.title = ""
-    
-    //    newMessage.messageStatus = 1
-    
+    //                    newMessage.messageStatus = 1
     //                    newMessage.time = message.time ?? NSDate()
     //                    if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
     //                        PMLog.D("error: \(error)")
@@ -719,7 +734,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         if let undoMsg = undoMessage {
             if let context = fetchedResultsController?.managedObjectContext {
                 if let message = Message.messageForMessageID(undoMsg.messageID, inManagedObjectContext: context) {
-                    viewModel.updateBadgeNumberWhenMove(message, to: undoMsg.oldLocation)
+                    self.viewModel.updateBadgeNumberWhenMove(message, to: undoMsg.oldLocation)
                     message.removeLocationFromLabels(currentlocation: message.location, location: undoMsg.oldLocation, keepSent: true)
                     message.needsUpdate = true
                     message.location = undoMsg.oldLocation
@@ -736,6 +751,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         undoLabel.text = String(format: NSLocalizedString("Message %@", comment: "Message with title"), title)
         self.undoBottomDistance.constant = 0
         self.undoButton.isHidden = false
+        self.undoView.isHidden = false
         self.undoButtonWidth.constant = 100.0
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
@@ -749,7 +765,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func showMessageMoved(title : String) {
         undoLabel.text = title
         self.undoBottomDistance.constant = 0
-        self.undoButton.isHidden = true
+        self.undoButton.isHidden = false
+        self.undoView.isHidden = false
         self.undoButtonWidth.constant = 0.0
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
@@ -766,6 +783,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         
         self.undoBottomDistance.constant = -88
         self.undoButton.isHidden = true
+        self.undoView.isHidden = true
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -942,14 +960,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func moveMessagesToLocation(_ location: MessageLocation) {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, self.selectedMessages)
             do {
                 if let messages = try context.fetch(fetchRequest) as? [Message] {
                     for message in messages {
                         message.removeLocationFromLabels(currentlocation: message.location, location: location, keepSent: true);
                         message.needsUpdate = true
                         message.location = location
-                        
                         if let error = context.saveUpstreamIfNeeded() {
                             PMLog.D("error: \(error)")
                         }
@@ -959,6 +976,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             } catch let ex as NSError {
                 PMLog.D(" error: \(ex)")
             }
+            
         }
     }
     fileprivate func performSegueForMessage(_ message: Message) {
@@ -1004,13 +1022,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func selectedMessagesSetValue(setValue value: Any?, forKey key: String) {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, self.selectedMessages)
+            
             do {
                 if let messages = try context.fetch(fetchRequest) as? [Message] {
                     if key == Message.Attributes.isRead {
                         if let changeto = value as? Bool {
                             for msg in messages {
-                                viewModel.updateBadgeNumberWhenRead(msg, changeToRead: changeto)
+                                self.viewModel.updateBadgeNumberWhenRead(msg, changeToRead: changeto)
                             }
                         }
                     }
@@ -1031,10 +1050,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func selectedMessagesSetStar() {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, self.selectedMessages)
             do {
                 if let messages = try context.fetch(fetchRequest) as? [Message] {
-                    
                     for msg in messages {
                         msg.setLabelLocation(.starred);
                     }
@@ -1042,7 +1060,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                     if let error = error {
                         PMLog.D(" error: \(error)")
                     }
-                    
                 }
             } catch let ex as NSError {
                 PMLog.D(" error: \(ex)")
@@ -1053,7 +1070,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func selectedMessagesSetUnStar() {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, self.selectedMessages)
             do {
                 if let messages = try context.fetch(fetchRequest) as? [Message] {
                     for msg in messages {

@@ -55,6 +55,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
             msg.removeFromFolder(current: label, location: .trash, keepSent: true)
             msg.needsUpdate = true
             msg.location = .trash
+            
             if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
                 PMLog.D(" error: \(error)")
             }
