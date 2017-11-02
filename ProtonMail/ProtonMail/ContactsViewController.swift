@@ -56,10 +56,8 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: kContactCellIdentifier)
-        
         self.title = NSLocalizedString("CONTACTS", comment: "Title")
-        
+        tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: kContactCellIdentifier)
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = NSLocalizedString("Search", comment: "Placeholder")
         searchController.searchBar.setValue(NSLocalizedString("Cancel", comment: "Action"), forKey:"_cancelButtonText")
@@ -67,14 +65,13 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
         self.searchController.hidesNavigationBarDuringPresentation = true
-        
         self.searchController.searchBar.tintColor = UIColor.black
         self.searchController.searchBar.backgroundColor = UIColor.clear
+        self.searchController.searchBar.sizeToFit()
         
         self.tableView.tableHeaderView = self.searchController.searchBar;
         self.definesPresentationContext = true;
         self.extendedLayoutIncludesOpaqueBars = true
-        self.searchController.searchBar.sizeToFit()
         self.automaticallyAdjustsScrollViewInsets = false
         self.tableView.noSeparatorsBelowFooter()
         
@@ -140,7 +137,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             }
             //TODO::
            // self.contacts = contacts
-            
             self.refreshControl.endRefreshing()
             self.tableView.reloadData()
         }

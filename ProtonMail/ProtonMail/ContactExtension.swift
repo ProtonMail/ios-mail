@@ -23,6 +23,7 @@ extension Contact {
         static let entityName = "Contact"
         static let contactID = "contactID"
         static let name = "name"
+        static let emails = "emails"
     }
 
     // MARK: - methods

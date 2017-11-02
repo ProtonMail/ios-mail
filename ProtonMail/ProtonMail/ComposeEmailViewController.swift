@@ -136,7 +136,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     
     internal func retrieveAllContacts() {
-        sharedContactDataService.fetchContacts { (contacts, error) -> Void in
+        sharedContactDataService.fetchContacts { (contacts, error) in
             if let error = error {
                 PMLog.D(" error: \(error)")
             }

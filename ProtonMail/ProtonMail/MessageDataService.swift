@@ -256,8 +256,9 @@ class MessageDataService {
                         completion?(task, responseDict, error)
                     }
                     self.cleanMessage()
-                    sharedContactDataService.cleanUp()
+                    sharedContactDataService.clean()
                     self.fetchMessagesForLocation(location, MessageID: MessageID, Time: Time, foucsClean: false, completion: completionWrapper)
+                    
                     sharedContactDataService.fetchContacts(completion: nil)
                     sharedLabelsDataService.fetchLabels();
                 }  else {
@@ -294,7 +295,7 @@ class MessageDataService {
                                     completion?(task, responseDict, error)
                                 }
                                 self.cleanMessage()
-                                sharedContactDataService.cleanUp()
+                                sharedContactDataService.clean()
                                 self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
                                 sharedContactDataService.fetchContacts(completion: nil)
                                 sharedLabelsDataService.fetchLabels();
@@ -366,7 +367,7 @@ class MessageDataService {
                                 completion?(task, nil, error)
                             }
                             self.cleanMessage()
-                            sharedContactDataService.cleanUp()
+                            sharedContactDataService.clean()
                             self.fetchMessagesForLabels(labelID, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
                             sharedContactDataService.fetchContacts(completion: nil)
                             sharedLabelsDataService.fetchLabels();
@@ -1060,7 +1061,7 @@ class MessageDataService {
         sharedFailedQueue.clear()
         
         //tempary for clean contact cache
-        sharedContactDataService.cleanUp()
+        sharedContactDataService.clean() //here need move to a general data service manager
         sharedLabelsDataService.cleanUp()
         
         UIApplication.setBadge(badge: 0)

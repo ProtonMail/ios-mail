@@ -609,16 +609,15 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
-    func loadContactsAfterInstall()
-    {
+    func loadContactsAfterInstall() {
         sharedUserDataService.fetchUserInfo()
-        sharedContactDataService.fetchContacts(completion: { (contacts, error) -> Void in
+        sharedContactDataService.fetchContacts { (contacts, error) in
             if error != nil {
                 PMLog.D("\(String(describing: error))")
             } else {
                 PMLog.D("Contacts count: \(contacts!.count)")
             }
-        })
+        }
     }
     
     func clean()

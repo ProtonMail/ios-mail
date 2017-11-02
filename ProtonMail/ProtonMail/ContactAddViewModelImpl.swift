@@ -244,15 +244,15 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             cards.append(card3)
         }
         
-        sharedContactDataService.addContact(name: profile.newDisplayName,
-                                            emails: a_emails,
-                                            cards: cards,
-                                            completion:  { (contact : Contact?, error : NSError?) in
-                                                if error == nil {
-                                                    complete(nil)
-                                                } else {
-                                                    complete(error)
-                                                }
+        sharedContactDataService.add(name: profile.newDisplayName,
+                                     emails: a_emails,
+                                     cards: cards,
+                                     completion:  { (contact : Contact?, error : NSError?) in
+                                        if error == nil {
+                                            complete(nil)
+                                        } else {
+                                            complete(error)
+                                        }
         })
         
         

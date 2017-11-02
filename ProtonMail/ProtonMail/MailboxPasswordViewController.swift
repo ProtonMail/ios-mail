@@ -228,15 +228,14 @@ class MailboxPasswordViewController: UIViewController {
         (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
     }
     
-    func loadContactsAfterInstall()
-    {
-        sharedContactDataService.fetchContacts(completion: { (contacts, error) -> Void in
+    func loadContactsAfterInstall() {
+        sharedContactDataService.fetchContacts { (contacts, error) in
             if error != nil {
                 PMLog.D("\(String(describing: error))")
             } else {
                 PMLog.D("Contacts count: \(contacts!.count)")
             }
-        })
+        }
     }
     
     func updateButton(_ button: UIButton) {

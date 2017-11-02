@@ -356,18 +356,17 @@ class ContactEditViewModelImpl : ContactEditViewModel {
 //            PMLog.D(encrypted_vcard);
 //            
 //            let contactData : ContactData = ContactData(d: encrypted_vcard, t: 1)
-            
-            sharedContactDataService.updateContact(contactid: c.contactID,
-                                                   name: contactDisplayName,
-                                                   emails: nil,
-                                                   cards: nil,
-                                                   completion: { (contactRes: Contact?, error : NSError?) in
-                                                        if error == nil {
-                                                            complete(nil)
-                                                        } else {
-                                                            complete(error)
-                                                        }
-                                                    })
+            sharedContactDataService.update(contactID: c.contactID,
+                                            name: contactDisplayName,
+                                            emails: nil,
+                                            cards: nil,
+                                            completion: { (contactRes: Contact?, error : NSError?) in
+                                                if error == nil {
+                                                    complete(nil)
+                                                } else {
+                                                    complete(error)
+                                                }
+            })
         } else {
             //add
             var a_emails: [ContactEmail] = []
@@ -465,16 +464,16 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 cards.append(card3)
             }
             
-            sharedContactDataService.addContact(name: profile.newDisplayName,
-                                                emails: a_emails,
-                                                cards: cards,
-                                                completion:  { (contact : Contact?, error : NSError?) in
-                                                    if error == nil {
-                                                        complete(nil)
-                                                    } else {
-                                                        complete(error)
-                                                    }
-                                                })
+            sharedContactDataService.add(name: profile.newDisplayName,
+                                         emails: a_emails,
+                                         cards: cards,
+                                         completion:  { (contact : Contact?, error : NSError?) in
+                                            if error == nil {
+                                                complete(nil)
+                                            } else {
+                                                complete(error)
+                                            }
+            })
             
             
 //            var contact : Contact? //optional if nil add new contact
@@ -488,19 +487,14 @@ class ContactEditViewModelImpl : ContactEditViewModel {
 //            var notes : ContactEditNote = ContactEditNote(n_note: "")
 //            var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
         }
-        
-
-        
-        
-        
     }
     
-    override func delete(complete: @escaping ContactEditViewModel.ContactEditSaveComplete) {
+    override func delete(complete: @escaping ContactEditSaveComplete) {
         if isNew() {
             complete(nil)
         } else {
             let contactID = contact?.contactID
-            sharedContactDataService.deleteContact(contactID!, completion: { (error) in
+            sharedContactDataService.delete(contactID: contactID!, completion: { (error) in
                 if let err = error {
                     complete(err)
                 } else {

@@ -12,9 +12,8 @@ import Foundation
 
 final class ContactsViewModelImpl : ContactsViewModel {
     
-    
     override func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        if let fetchedResultsController = sharedContactDataService.fetchedResultsControllerForLocation() {
+        if let fetchedResultsController = sharedContactDataService.resultController() {
             do {
                 try fetchedResultsController.performFetch()
             } catch let ex as NSError {

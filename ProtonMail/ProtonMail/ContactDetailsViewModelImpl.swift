@@ -213,11 +213,10 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
             return complete(contact, nil)
         }
         
-        sharedContactDataService.fetchContactDetails(cid: contact.contactID) { (contact : Contact?, error : NSError?) in
+        sharedContactDataService.details(contactID: contact.contactID, completion: { (contact : Contact?, error : NSError?) in
             self.setupEmails()
             complete(contact, nil)
-        }
-        
+        })
     }
     
     override func getProfile() -> ContactEditProfile {
