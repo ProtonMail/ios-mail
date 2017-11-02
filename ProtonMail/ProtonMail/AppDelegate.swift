@@ -17,13 +17,12 @@ import UIKit
 import Fabric
 import Crashlytics
 
+let sharedUserDataService = UserDataService()
+
 @UIApplicationMain
 class AppDelegate: UIResponder {
     
-    fileprivate let animationDuration: TimeInterval = 0.5
-    
     var window: UIWindow?
-    
     func instantiateRootViewController() -> UIViewController {
         let storyboard = UIStoryboard.Storyboard.signIn
         return UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
@@ -43,7 +42,7 @@ class AppDelegate: UIResponder {
                     if !animated {
                         window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
                     } else {
-                        UIView.animate(withDuration: animationDuration/2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+                        UIView.animate(withDuration: ViewDefined.animationDuration/2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
                             rootViewController.view.alpha = 0
                             }, completion: { (finished) -> Void in
                                 let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
@@ -64,7 +63,7 @@ class AppDelegate: UIResponder {
                                 viewController.view.alpha = 0
                                 window.rootViewController = viewController
                                 
-                                UIView.animate(withDuration: self.animationDuration/2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+                                UIView.animate(withDuration: ViewDefined.animationDuration/2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
                                     viewController.view.alpha = 1.0
                                     }, completion: nil)
                         })
@@ -94,9 +93,18 @@ extension SWRevealViewController {
 
 //move to a manager class later
 let sharedInternetReachability : Reachability = Reachability.forInternetConnection()
-let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
+//let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
 
-extension AppDelegate: UIApplicationDelegate {
+extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServiceDelegate {
+    
+    func onLogout(animated: Bool) {
+        self.switchTo(storyboard: .signIn, animated: animated)
+    }
+    
+    func onError(error: NSError) {
+        error.alertToast()
+    }
+
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.checkOrientation(self.window?.rootViewController)
     }
@@ -128,10 +136,15 @@ extension AppDelegate: UIApplicationDelegate {
         Fabric.with([Crashlytics()])
         
         shareViewModelFactoy = ViewModelFactoryProduction()
+        
+        sharedVMService.cleanLegacy()
+        sharedAPIService.delegate = self
+        sharedUserDataService.delegate = self
+        
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
         
         let tmp = UIApplication.shared.releaseMode()
-        //net work debug option
+        //net work debug optionx
         if let logger = AFNetworkActivityLogger.shared().loggers.first as? AFNetworkActivityConsoleLogger {
             logger.level = .AFLoggerLevelDebug;
         }
@@ -147,18 +160,14 @@ extension AppDelegate: UIApplicationDelegate {
         if tmp != .dev && tmp != .sim {
             AFNetworkActivityLogger.shared().stopLogging()
         }
-        
         LanguageManager.setupCurrentLanguage()
-
-       // LanguageManager.setupCurrentLanguage()
-        //Localization.restoreLanguage()
-        //sharedPushNotificationService.setLaunchOptions(launchOptions)
+        
         return true
     }
     
     func languageWillChange(notification:NSNotification){
-        let targetLang = notification.object as! String
-        Localization.setCurrentLanguage(language: targetLang)
+        //let targetLang = notification.object as! String
+        //Localization.setCurrentLanguage(language: targetLang)
     }
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
@@ -206,7 +215,13 @@ extension AppDelegate: UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        let _ = sharedCoreDataService.mainManagedObjectContext?.saveUpstreamIfNeeded()
+        
+        //TODO::here need change to notify composer to save editing draft
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            context.perform {
+                let _ = context.saveUpstreamIfNeeded()
+            }
+        }
     }
     
     // MARK: Notification methods

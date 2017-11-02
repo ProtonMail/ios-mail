@@ -16,9 +16,12 @@
 
 import Foundation
 
-class BugDataService {
+public class BugDataService {
+    public init() {
+        
+    }
     
-    func reportBug(_ bug: String, completion: ((NSError?) -> Void)?) {
+    public func reportBug(_ bug: String, completion: ((NSError?) -> Void)?) {
         let systemVersion = UIDevice.current.systemVersion;
         let model = UIDevice.current.model
         let mainBundle = Bundle.main

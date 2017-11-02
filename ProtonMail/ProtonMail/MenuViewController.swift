@@ -82,8 +82,7 @@ class MenuViewController: UIViewController {
         sharedLabelsDataService.fetchLabels();
     }
     
-    func performLastSegue(_ notification: Notification)
-    {
+    @objc func performLastSegue(_ notification: Notification) {
         self.performSegue(withIdentifier: lastSegue, sender: IndexPath(row: 0, section: 0))
     }
     
@@ -104,7 +103,6 @@ class MenuViewController: UIViewController {
         } else {
             otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, /*MenuItem.feedback,*/ MenuItem.signout]
         }
-        
         
         updateEmailLabel()
         updateDisplayNameLabel()
@@ -205,11 +203,11 @@ extension MenuViewController: UITableViewDelegate {
         return 3
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return kMenuCellHeight
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if !self.sectionClicked {
             self.sectionClicked = true
@@ -249,19 +247,19 @@ extension MenuViewController: UITableViewDelegate {
 
 extension MenuViewController: UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return inboxItems.count
         } else if (section == 1) {
             return otherItems.count
         } else if (section == 2) {
-            let count = fetchedLabels?.numberOfRowsInSection(0) ?? 0
+            let count = fetchedLabels?.numberOfRows(in: 0) ?? 0
             return count
         }
         return 0
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell
             cell.configCell(inboxItems[indexPath.row])
@@ -287,7 +285,7 @@ extension MenuViewController: UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    @objc func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 1.0
     }
 }

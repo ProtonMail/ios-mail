@@ -11,8 +11,8 @@ import UIKit
 class SignUpPasswordViewController: UIViewController {
     
     //define
-    fileprivate let hidePriority : UILayoutPriority = 1.0;
-    fileprivate let showPriority: UILayoutPriority = 750.0;
+    fileprivate let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0);
+    fileprivate let showPriority: UILayoutPriority = UILayoutPriority(rawValue: 750.0);
     
     @IBOutlet weak var createPasswordButton: UIButton!
     
@@ -55,8 +55,8 @@ class SignUpPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Choose a Password", comment: "place holder"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Confirm Password", comment: "place holder"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        loginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Choose a Password", comment: "place holder"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Confirm Password", comment: "place holder"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
         leftTopItem.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
         topTitleLabel.text = NSLocalizedString("Set passwords", comment: "Signup passwords top title")

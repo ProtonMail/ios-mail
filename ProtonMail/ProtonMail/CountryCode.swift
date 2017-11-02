@@ -9,17 +9,17 @@
 import Foundation
 
 
-class CountryCode {
+public class CountryCode {
 
-    var phone_code : Int = 0
-    var country_en : String = ""
-    var country_code : String = ""
+    public var phone_code : Int = 0
+    public var country_en : String = ""
+    public var country_code : String = ""
 
-    func isValid() -> Bool {
+    public func isValid() -> Bool {
         return phone_code > 0 && !country_en.isEmpty && !country_code.isEmpty
     }
     
-    static func getCountryCodes (_ content: [Dictionary<String,Any>]!) -> [CountryCode]! {
+    static public func getCountryCodes (_ content: [Dictionary<String,Any>]!) -> [CountryCode]! {
         var outList : [CountryCode] = [CountryCode]()
         
         for con in content {
@@ -32,7 +32,7 @@ class CountryCode {
         return outList
     }
     
-    func parseCountryCode (_ content: Dictionary<String,Any>!) -> Bool {
+    public func parseCountryCode (_ content: Dictionary<String,Any>!) -> Bool {
         country_en = content["country_en"] as? String ?? ""
         country_code = content["country_code"] as? String ?? ""
         phone_code =  content["phone_code"] as? Int ?? 0

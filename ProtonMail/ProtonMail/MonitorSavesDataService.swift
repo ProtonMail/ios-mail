@@ -35,7 +35,7 @@ class MonitorSavesDataService {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - Public methods
+    // MARK: - methods
     
     func registerEntityName(_ entityName: String, attribute: String, handler: @escaping HandlerBlock) {
         

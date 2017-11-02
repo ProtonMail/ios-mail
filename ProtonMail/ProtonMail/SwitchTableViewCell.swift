@@ -41,7 +41,7 @@ class SwitchTableViewCell: UITableViewCell {
         callback = complete
         
         if bottomLine.isEmpty {
-            centerConstraint.priority = 750.0;
+            centerConstraint.priority = UILayoutPriority(rawValue: 750.0);
             bottomLineLabel.isHidden = true
             self.layoutIfNeeded()
         }

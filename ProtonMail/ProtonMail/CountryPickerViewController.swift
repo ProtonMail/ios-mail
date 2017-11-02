@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 protocol CountryPickerViewControllerDelegate {
     func dismissed();
     func apply(_ country : CountryCode);
@@ -64,7 +63,7 @@ class CountryPickerViewController : UIViewController {
         var lastLetter : String = ""
         for (index, value) in countryCodes.enumerated() {
             let firstIndex = value.country_en.characters.index(value.country_en.startIndex, offsetBy: 1)
-            let firstString = value.country_en.substring(to: firstIndex)
+            let firstString = String(value.country_en[..<firstIndex])
             if firstString != lastLetter {
                 lastLetter = firstString
                 titleIndex.append(lastLetter)
@@ -116,7 +115,7 @@ extension CountryPickerViewController: UITableViewDataSource {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let countryCell = tableView.dequeueReusableCell(withIdentifier: "country_code_table_cell", for: indexPath) as! CountryCodeTableViewCell
         if indexPath.row < countryCodes.count {
             let country = countryCodes[indexPath.row]
@@ -125,11 +124,11 @@ extension CountryPickerViewController: UITableViewDataSource {
         return countryCell
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return countryCodes.count
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
             cell.separatorInset = UIEdgeInsets.zero
         }
@@ -139,7 +138,7 @@ extension CountryPickerViewController: UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+    @objc func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         if let selectIndex = indexCache[title] {
             tableView.scrollToRow(at: IndexPath(row: selectIndex, section: 0), at: UITableViewScrollPosition.top, animated: true)
         }
@@ -156,11 +155,11 @@ extension CountryPickerViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension CountryPickerViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 45.0
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // verify whether the user is checking messages or not
     }
 }

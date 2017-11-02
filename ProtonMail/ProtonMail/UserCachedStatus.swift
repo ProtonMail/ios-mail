@@ -8,11 +8,11 @@
 
 import Foundation
 
-let userCachedStatus = UserCachedStatus(shared: UserDefaults.standard)
+let userCachedStatus = UserCachedStatus()
 
 //the data in there store longer.
 
-class UserCachedStatus : SharedCacheBase {
+final class UserCachedStatus : SharedCacheBase {
     struct Key {
         // inuse
         static let lastCacheVersion = "last_cache_version" //user cache
@@ -98,6 +98,13 @@ class UserCachedStatus : SharedCacheBase {
         return cachedVersion == AppConstants.CacheVersion
     }
     
+    var lastCacheVersion : Int {
+        get {
+            let cachedVersion = getShared().integer(forKey: Key.lastCacheVersion)
+            return cachedVersion
+        }
+    }
+    
     func isAuthCacheOk() -> Bool {
         let cachedVersion = getShared().integer(forKey: Key.lastAuthCacheVersion)
         return cachedVersion == AppConstants.AuthCacheVersion
@@ -162,13 +169,20 @@ class UserCachedStatus : SharedCacheBase {
         
         //pin code
         getShared().removeObject(forKey: Key.isPinCodeEnabled)
+        getShared().removeObject(forKey: Key.lastPinFailedTimes)
+        getShared().removeObject(forKey: Key.isManuallyLockApp)
+        
+        //for version <= 1.6.5 clean old stuff.
         UICKeyChainStore.removeItem(forKey: Key.pinCodeCache)
         UICKeyChainStore.removeItem(forKey: Key.lastLoggedInUser)
         UICKeyChainStore.removeItem(forKey: Key.autoLockTime)
         UICKeyChainStore.removeItem(forKey: Key.enterBackgroundTime)
-        getShared().removeObject(forKey: Key.lastPinFailedTimes)
-        getShared().removeObject(forKey: Key.isManuallyLockApp)
         
+        //for newer version > 1.6.5
+        sharedKeychain.keychain().removeItem(forKey: Key.pinCodeCache)
+        sharedKeychain.keychain().removeItem(forKey: Key.lastLoggedInUser)
+        sharedKeychain.keychain().removeItem(forKey: Key.autoLockTime)
+        sharedKeychain.keychain().removeItem(forKey: Key.enterBackgroundTime)
         
         getShared().synchronize()
     }
@@ -203,6 +217,7 @@ extension UserCachedStatus {
             setValue(newValue, forKey: Key.touchIDEmail)
         }
     }
+    
     func resetTouchIDEmail() {
         setValue("", forKey: Key.touchIDEmail)
     }
@@ -228,28 +243,28 @@ extension UserCachedStatus {
     /// Value is only stored in the keychain
     var pinCode : String {
         get {
-            return UICKeyChainStore.string(forKey: Key.pinCodeCache) ?? ""
+            return sharedKeychain.keychain().string(forKey: Key.pinCodeCache) ?? ""
         }
         set {
-            UICKeyChainStore.setString(newValue, forKey: Key.pinCodeCache)
+            sharedKeychain.keychain().setString(newValue, forKey: Key.pinCodeCache)
         }
     }
     
     var lockTime : String {
         get {
-            return UICKeyChainStore.string(forKey: Key.autoLockTime) ?? "-1"
+            return sharedKeychain.keychain().string(forKey: Key.autoLockTime) ?? "-1"
         }
         set {
-            UICKeyChainStore.setString(newValue, forKey: Key.autoLockTime)
+            sharedKeychain.keychain().setString(newValue, forKey: Key.autoLockTime)
         }
     }
     
     var exitTime : String {
         get {
-            return UICKeyChainStore.string(forKey: Key.enterBackgroundTime) ?? "0"
+            return sharedKeychain.keychain().string(forKey: Key.enterBackgroundTime) ?? "0"
         }
         set {
-            UICKeyChainStore.setString(newValue, forKey: Key.enterBackgroundTime)
+            sharedKeychain.keychain().setString(newValue, forKey: Key.enterBackgroundTime)
         }
     }
     
@@ -264,10 +279,10 @@ extension UserCachedStatus {
     
     var lastLoggedInUser : String? {
         get {
-            return UICKeyChainStore.string(forKey: Key.lastLoggedInUser)
+            return sharedKeychain.keychain().string(forKey: Key.lastLoggedInUser)
         }
         set {
-            UICKeyChainStore.setString(newValue, forKey: Key.lastLoggedInUser)
+            sharedKeychain.keychain().setString(newValue, forKey: Key.lastLoggedInUser)
         }
     }
     

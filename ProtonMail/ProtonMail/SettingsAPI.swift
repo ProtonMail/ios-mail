@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 // MARK : update domain order
 final class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {
     let newOrder : Array<Int>!
@@ -28,7 +27,7 @@ final class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return SettingsAPI.Path + "/addressorder" + AppConstants.getDebugOption
+        return SettingsAPI.Path + "/addressorder" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -55,7 +54,7 @@ final class UpdateNotify<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return SettingsAPI.Path + "/notify" + AppConstants.getDebugOption
+        return SettingsAPI.Path + "/notify" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -102,7 +101,7 @@ final class UpdateNotificationEmail<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return SettingsAPI.Path + "/noticeemail" + AppConstants.getDebugOption
+        return SettingsAPI.Path + "/noticeemail" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -129,7 +128,7 @@ final class UpdateNewsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return SettingsAPI.Path + "/news" + AppConstants.getDebugOption
+        return SettingsAPI.Path + "/news" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -155,7 +154,7 @@ final class UpdateDisplayNameRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return SettingsAPI.Path + "/display" + AppConstants.getDebugOption
+        return SettingsAPI.Path + "/display" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -181,7 +180,7 @@ final class UpdateShowImagesRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return SettingsAPI.Path + "/showimages" + AppConstants.getDebugOption
+        return SettingsAPI.Path + "/showimages" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -207,7 +206,7 @@ final class UpdateSwiftLeftAction<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return SettingsAPI.Path + "/swipeleft" + AppConstants.getDebugOption
+        return SettingsAPI.Path + "/swipeleft" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -233,7 +232,7 @@ final class UpdateSwiftRightAction<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return SettingsAPI.Path + "/swiperight" + AppConstants.getDebugOption
+        return SettingsAPI.Path + "/swiperight" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {
@@ -298,7 +297,7 @@ final class UpdateLoginPassword<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return SettingsAPI.Path + "/password" + AppConstants.getDebugOption
+        return SettingsAPI.Path + "/password" + AppConstants.DEBUG_OPTION
     }
     
     override open func getVersion() -> Int {

@@ -27,6 +27,8 @@ public enum MessageLocation: Int, CustomStringConvertible {
     case allmail = 5
     case starred = 10
     
+    //8 , 7  another type of draft,sent 
+    
     public var actionTitle : String {
         get {
             switch(self) {

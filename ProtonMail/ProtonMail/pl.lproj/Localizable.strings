@@ -25,15 +25,13 @@
 /* no object error, local only , this could be not translated! */
 "<no object>" = "<brak obiektu>";
 
-/* (No Commment) */
+/* (No Comment) */
 "A message cannot have more than 5 labels" = "Wiadomość nie może mieć więcej niż 5 etykiet";
 
 /* Description */
 "A new version of ProtonMail app is available, please update to latest version." = "Dostępna jest nowa wersja aplikacji ProtonMail, prosimy o aktualizację do najnowszej wersji.";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "A passcode has not been set, enable it in the system Settings" = "Kod nie został ustawiony, włącz go w Ustawieniach systemu";
 
 /* Error
@@ -47,24 +45,20 @@
    error message when acction disabled */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Dostęp do tego konta jest wyłączony z powodu braku płatności. Zaloguj się za pomocą protonmail.com, aby zapłacić niezapłacone faktury.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Dostęp do tego konta jest wyłączony z powodu braku płatności. Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">naszą stronę bazę wiedzy</a>, aby uzyskać więcej informacji.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Account password invalid" = "Nieprawidłowe hasło logowania";
 
-/* (No Commment) */
+/* (No Comment) */
 "Add" = "Dodaj";
 
 /* edit contact navigation title */
 "Add Contact" = "Dodaj kontakt";
 
-/* Action
-   Apply label then also archive */
+/* Action */
 "Add Folder" = "Dodaj folder";
-
-/* Apply label then also archive */
-"Also Archive" = "Przy okazji archiwizuj";
 
 /* Action */
 "Add Label" = "Dodaj etykietę";
@@ -87,11 +81,10 @@
 "All Mail" = "Wszystkie wiadomości";
 
 /* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Wszystkie Twoje zaszyfrowane wiadomości e-mail zostaną utracone na zawsze, ale nadal będziesz w stanie wyświetlić niezaszyfrowane wiadomości.\n\nTEJ AKCJI NIE MOŻNA COFNĄĆ!";
 
-THIS ACTION CANNOT BE UNDONE!" = "Wszystkie Twoje zaszyfrowane wiadomości e-mail zostaną utracone na zawsze, ale nadal będziesz w stanie wyświetlić niezaszyfrowane wiadomości.
-
-TEJ AKCJI NIE MOŻNA COFNĄĆ!";
+/* Apply label then also archive */
+"Also Archive" = "Przy okazji archiwizuj";
 
 /* Description */
 "Also used to reset a forgotten password." = "Umożliwia również zresetowanie zapomnianego hasła.";
@@ -99,8 +92,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* No comment provided by engineer. */
 "AppVersion" = "Wersja aplikacji";
 
-/* Action
-   folder apply - apply button text */
+/* Action */
 "Apply" = "Zastosuj";
 
 /* Title */
@@ -127,8 +119,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Description */
 "Authentication was cancelled by the system" = "Uwierzytelnianie zostało przerwane przez system";
 
-/* settings protection section title
-   Title */
+/* settings protection section title */
 "Auto Lock Time" = "Czas automatycznego blokowania";
 
 /* settings general section title */
@@ -168,8 +159,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
 
-/* Action
-   setup pin action */
+/* Action */
 "CONFIRM" = "POTWIERDŹ";
 
 /* Title */
@@ -188,8 +178,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
    update password error */
 "Can't create a SRP Client" = "Nie można utworzyć klienta SRP";
 
-/* sign up user error
-   update notification email error
+/* update notification email error
    update password error */
 "Can't create a SRP verifier!" = "Nie można utworzyć weryfikatora SRP!";
 
@@ -205,12 +194,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Nie można znaleźć tego załącznika!";
 
-/* sign up user error when can't get moduls id
-   update password error */
-"Can't get a Moduls ID!" = "Nie można uzyskać identyfikatora modułu!";
-
-/* sign up user error
-   update password error */
+/* update password error = typo:Modulus */
 "Can't get a Moduls!" = "Nie można załadować modułów!";
 
 /* update notification email error
@@ -227,15 +211,13 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 "Can't open the file" = "Nie można otworzyć pliku";
 
 /* Action
-   folder apply - cancel button text
-   title
    Title */
 "Cancel" = "Anuluj";
 
 /* Action */
 "Cancel Check" = "Anuluj wybór";
 
-/* (No Commment) */
+/* (No Comment) */
 "Cant' decrypt this attachment!" = "Nie można odszyfrować tego załącznika.";
 
 /* Title */
@@ -286,8 +268,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* settings general section title */
 "Clear Local Message Cache" = "Wyczyść pamięć podręczną wiadomości";
 
-/* Action
-   lable manager close action */
+/* Action */
 "Close" = "Zamknij";
 
 /* Action */
@@ -297,14 +278,13 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
    Title */
 "Confirm" = "Potwierdź";
 
-/* (No Commment) */
+/* (No Comment) */
 "Confirm Login Password" = "Potwierdź hasło logowania";
 
-/* (No Commment) */
+/* (No Comment) */
 "Confirm Mailbox Password" = "Potwierdź hasło skrzynki pocztowej";
 
-/* place holder
-   Placeholder
+/* Placeholder
    Title */
 "Confirm Password" = "Powtórz hasło";
 
@@ -407,19 +387,16 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* place holder */
 "Define Password" = "Ustaw hasło";
 
-/* Action
-   lable manager delete action
-   swipe title when swipe cell on mailbox message list */
+/* swipe title when swipe cell on mailbox message list */
 "Delete" = "Usuń";
 
-/* Description
-   Title */
+/* Title */
 "Deleted" = "Usunięte";
 
 /* Title */
 "Details" = "Szczegóły";
 
-/* Action */
+/* Title */
 "Discard draft" = "Odrzuć szkic";
 
 /* Title */
@@ -434,8 +411,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Title */
 "Don't Show Again" = "Nie pokazuj ponownie";
 
-/* Action
-   Title */
+/* Action */
 "Done" = "Gotowe";
 
 /* Action
@@ -444,6 +420,9 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 
 /* Title */
 "Drafts" = "Szkice";
+
+/* Action */
+"Dutch" = "Holenderski";
 
 /* Action */
 "Edit" = "Edytuj";
@@ -472,7 +451,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* place holder */
 "Email default signature" = "Domyślny podpis e-mail";
 
-/* (No Commment) */
+/* (No Comment) */
 "Email domain invalid" = "Nieprawidłowa domena e-mail";
 
 /* Action */
@@ -570,8 +549,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
    place holder */
 "Folder Name" = "Nazwa folderu";
 
-/* Action
-   top left back button */
+/* Action */
 "Forward" = "Przekaż";
 
 /* Title */
@@ -676,8 +654,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Error */
 "Invalid credential" = "Nieprawidłowe poświadczenia";
 
-/* sign up user error
-   update notification email error
+/* update notification email error
    update password error */
 "Invalid hashed password!" = "Nieprawidłowy skrót hasła!";
 
@@ -694,7 +671,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 "Key invalid please go back try again" = "Klucz nieprawidłowy, proszę wróć aby spróbować ponownie";
 
 /* Title */
-"LOGIN" = "Nazwa użytkowika";
+"LOGIN" = "Logowanie";
 
 /* Title */
 "Label Management" = "Zarządzanie etykietą";
@@ -727,17 +704,16 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Description */
 "Local cache can't find mailbox password" = "Lokalny bufor nie może odnaleźć hasła skrzynki odbiorczej";
 
-/* (No Commment) */
+/* (No Comment) */
 "Localizable.strings" = "angielski";
 
 /* Title */
 "Lock The App" = "Zablokuj aplikację";
 
-/* touch id box title like Login: email@email.com */
+/* No comment provided by engineer. */
 "Login" = "Logowanie";
 
-/* Placeholder
-   settings general section title */
+/* settings general section title */
 "Login Password" = "Hasło logowania";
 
 /* Error */
@@ -749,13 +725,13 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Title */
 "MAILBOX PASSWORD" = "Hasło skrzynki pocztowej";
 
-/* Prompt text shown in the prompt cell */
+/* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* settings general section title */
 "Mailbox Password" = "Hasło skrzynki pocztowej";
 
-/* (No Commment) */
+/* (No Comment) */
 "Mailbox password doesn't match" = "Hasło skrzynki nie pasuje";
 
 /* Title */
@@ -884,15 +860,14 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Title */
 "Notification / Recovery Email" = "Adres e-mail dla powiadomień lub odzyskania dostępu";
 
-/* settings general section title
-   Title */
+/* settings general section title */
 "Notification Email" = "Powiadomienie e-mail";
 
 /* Action */
 "OK" = "Ok";
 
 /* Title */
-"On" = "Włączony";
+"On" = "Dnia";
 
 /* Description */
 "Only plus user could modify default mobile signature or turn it off!" = "Tylko użytkownicy kont Plus mogą zmodyfikować domyślny podpis mobilny lub go wyłączyć!";
@@ -968,22 +943,22 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Description */
 "Please set a password." = "Proszę ustawić hasło.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different domain." = "Spróbuj innej domeny.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different email address." = "Spróbuj użyć innego adresu e-mail.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different password." = "Spróbuj użyć innego hasła.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different user name." = "Wybierz inną nazwę użytkownika.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try again." = "Spróbuj ponownie";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Proszę użyć strony ProtonMail aby zmienić hasło skrzynki pocztowej!";
 
 /* Alert */
@@ -997,6 +972,9 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 
 /* Title */
 "Please, manage it in your phone." = "Zarządzaj tym w Twoim telefonie.";
+
+/* Action */
+"Polish" = "Polski";
 
 /* Title */
 "Protection" = "Ochrona";
@@ -1055,14 +1033,13 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Action */
 "Remove Star" = "Usuń gwiazdkę";
 
-/* Action
-   top left back button */
+/* Action */
 "Reply" = "Odpowiedz";
 
 /* top left back button */
 "Reply All" = "Odpowiedz wszystkim";
 
-/* (No Commment) */
+/* (No Comment) */
 "Reply message" = "Odpowiedz na wiadomość";
 
 /* Action */
@@ -1070,9 +1047,6 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 
 /* Title */
 "Report Bugs" = "Zgłoś błędy";
-
-/* (No Commment) */
-"Reseting message cache ..." = "Resetowanie pamięci podręcznej wiadomości...";
 
 /* Title */
 "Resetting message cache ..." = "Resetowanie pamięci podręcznej wiadomości...";
@@ -1115,7 +1089,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* title */
 "Save Changes" = "Zapisz zmiany";
 
-/* Action */
+/* Title */
 "Save draft" = "Zapisz szkic";
 
 /* Placeholder
@@ -1125,7 +1099,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Test */
 "Section Title - Test" = "Tytuł sekcji - Test";
 
-/* (No Commment) */
+/* (No Comment) */
 "Select your language" = "Wybierz swój język";
 
 /* Action */
@@ -1188,8 +1162,8 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Description */
 "Spammed" = "Zaspamowany";
 
-/* Description */
-"Srp single password keyslat invalid!" = "Srp ciąg zaburzający hasło jednorazowe niepoprawny!";
+/* Action */
+"Spanish" = "Hiszpański";
 
 /* Title */
 "Star" = "Gwiazdka";
@@ -1265,7 +1239,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
    Error */
 "The mailbox password is incorrect." = "Hasło skrzynki pocztowej jest nieprawidłowe.";
 
-/* (No Commment) */
+/* (No Comment) */
 "The maximum number of labels is %d." = "Maksymalna liczba etykiet wynosi %d.";
 
 /* Description */
@@ -1277,13 +1251,13 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Description */
 "The message password didn't match" = "Hasło wiadomości nie zgadza się";
 
-/* (No Commment) */
+/* (No Comment) */
 "The new password can't empty" = "Nowe hasło nie może być puste";
 
 /* update password error */
 "The new password can't empty." = "Nowe hasło nie może być puste.";
 
-/* (No Commment) */
+/* (No Comment) */
 "The new password not match" = "Hasła nie zgadzają się";
 
 /* update password error */
@@ -1311,7 +1285,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Description */
 "The user info fetch is wrong" = "Pobrane dane użytkownika są błędne";
 
-/* (No Commment) */
+/* (No Comment) */
 "The verification email invalid" = "Nieprawidłowy email weryfikacyjny";
 
 /* Error */
@@ -1332,7 +1306,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Title */
 "To" = "Do";
 
-/* (No Commment) */
+/* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Aby zresetować swoje hasło skrzynki pocztowej, użyj wersji webowej ProtonMail na protonmail.com";
 
 /* Description */
@@ -1344,14 +1318,10 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Error */
 "Token expired" = "Token wygasł";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID nie jest ustawiony, włącz funkcję w Ustawieniach systemu";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "TouchID not available" = "TouchID nie jest dostępne";
 
 /* Action
@@ -1361,6 +1331,9 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Title */
 "Trouble shooting guide" = "Przewodnik rozwiązywania problemów";
 
+/* Action */
+"Turkish" = "Turecki";
+
 /* Title */
 "Tweet about ProtonMail" = "Tweetnij o ProtonMailu";
 
@@ -1369,6 +1342,9 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 
 /* Title */
 "USER LOGIN" = "Logowanie użytkownika";
+
+/* Action */
+"Ukrainian" = "Ukraiński";
 
 /* Description */
 "Unable to connect to the server" = "Nie można połączyć się z serwerem";
@@ -1401,8 +1377,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 "Unable to parse response" = "Nie można przetworzyć odpowiedzi";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Nie możemy przetworzyć tego obiektu odpowiedzi: %@";
+"Unable to parse the response object:\n%@" = "Nie możemy przetworzyć tego obiektu odpowiedzi: %@";
 
 /* Error */
 "Unable to parse token" = "Nie można przetworzyć tokena";
@@ -1416,7 +1391,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Description */
 "Unknow Error" = "Nieznany błąd";
 
-/* (No Commment) */
+/* (No Comment) */
 "Unknow file" = "Nieznany plik";
 
 /* No comment provided by engineer. */
@@ -1432,8 +1407,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
    top right action text */
 "Update" = "Aktualizacja";
 
-/* update notification email error title
-   update notification email error title when signup */
+/* update notification email error title */
 "Update Notification Email" = "Zaktualizowano e-mail powiadomień";
 
 /* error when user already exist */
@@ -1442,10 +1416,10 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* No comment provided by engineer. */
 "User is available!" = "Nazwa użytkownika jest dostępna";
 
-/* (No Commment) */
+/* (No Comment) */
 "User name exist" = "Nazwa użytkownika już istnieje";
 
-/* (No Commment) */
+/* (No Comment) */
 "User name invalid" = "Nieprawidłowa nazwa użytkownika";
 
 /* Title */
@@ -1457,7 +1431,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* Title */
 "Verification code sent" = "Kod weryfikacyjny wysłany";
 
-/* (No Commment) */
+/* (No Comment) */
 "Version %@ %@" = "Wersja %@ %@";
 
 /* human check warning description */
@@ -1484,7 +1458,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Kiedy wysyłasz wiadomość, ta nazwa pojawia się w oknie nadawcy.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Wrong verification code" = "Nieprawidłowy kod weryfikacyjny";
 
 /* Description */
@@ -1526,8 +1500,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* agree check box middle word */
 "and" = "i";
 
-/* like at 10:00pm
-   Title */
+/* Title */
 "at" = "o";
 
 /* Error */
@@ -1548,7 +1521,7 @@ TEJ AKCJI NIE MOŻNA COFNĄĆ!";
 /* contacts api error when fetch */
 "get contacts() failed, peopleOrderedByUsersPreference return null!!" = "Nie powiodło się poranie contacts(), peopleOrderedByUsersPreference zwracana wartość null!";
 
-/* (No Commment) */
+/* (No Comment) */
 "hours" = "Godzin";
 
 /* Title */

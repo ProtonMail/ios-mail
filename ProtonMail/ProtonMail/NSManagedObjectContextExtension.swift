@@ -17,7 +17,6 @@
 import Foundation
 import CoreData
 
-
 extension NSManagedObjectContext {
     
     func deleteAll(_ entityName: String) {

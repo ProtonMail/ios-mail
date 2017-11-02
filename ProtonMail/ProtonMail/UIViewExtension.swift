@@ -18,7 +18,7 @@ import Foundation
 
 extension UIView {
     
-    public enum UIBorderSide {
+    enum BorderSide {
         case top, bottom, left, right
     }
     
@@ -42,7 +42,7 @@ extension UIView {
         })
     }
     
-    public func addBorder(_ side: UIBorderSide, color: UIColor, borderWidth: CGFloat) {
+    func addBorder(_ side: BorderSide, color: UIColor, borderWidth: CGFloat) {
         let border = CALayer()
         border.backgroundColor = color.cgColor
         

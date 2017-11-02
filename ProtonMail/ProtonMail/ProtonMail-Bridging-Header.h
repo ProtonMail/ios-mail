@@ -28,6 +28,7 @@
 #import <OpenPGP/PMNOpenPgp.h>
 #import <OpenPGP/PMNSrpClient.h>
 #import <OpenPGP/PMNLibVersion.h>
+#import <OpenPGP/PMNBCryptHash.h>
 #import "SwiftTryCatch.h"
 #import <RHAddressBook/AddressBook.h>
 #import <RHAddressBook/RHMultiValue.h>
@@ -35,8 +36,6 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <UIColor+Hex/UIColor+Hex.h>
 #import <ZSSRichTextEditor.h>
-#import "NSData+MultipartResponses.h"
-#import "MultipartResponseParser.h"
 #import <MCSwipeTableViewCell.h>
 #import "OnePasswordExtension.h"
 #import "Reachability.h"

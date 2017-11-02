@@ -8,7 +8,8 @@
 
 import Foundation
 
-open class LabelApplyViewModelImpl : LabelViewModel {
+
+final class LabelApplyViewModelImpl : LabelViewModel {
     fileprivate var messages : [Message]!
     fileprivate var labelMessages : Dictionary<String, LabelMessageModel>!
     
@@ -18,7 +19,7 @@ open class LabelApplyViewModelImpl : LabelViewModel {
         self.labelMessages = Dictionary<String, LabelMessageModel>()
     }
 
-    override open func showArchiveOption() -> Bool {
+    override func showArchiveOption() -> Bool {
         if let msg = messages.first {
             let locations = msg.getLocationFromLabels()
             for loc in locations {
@@ -30,15 +31,15 @@ open class LabelApplyViewModelImpl : LabelViewModel {
         return true;
     }
     
-    open override func getApplyButtonText() -> String {
+    override func getApplyButtonText() -> String {
         return NSLocalizedString("Apply", comment: "Action")
     }
     
-    open override func getCancelButtonText() -> String {
+    override func getCancelButtonText() -> String {
         return NSLocalizedString("Cancel", comment: "Action")
     }
     
-    override open func getLabelMessage( _ label : Label!) -> LabelMessageModel! {
+    override func getLabelMessage( _ label : Label!) -> LabelMessageModel! {
         if let outVar = self.labelMessages[label.labelID] {
             return outVar
         } else {
@@ -71,7 +72,7 @@ open class LabelApplyViewModelImpl : LabelViewModel {
         }
     }
     
-    open override func cellClicked(_ label: Label!) {
+    override func cellClicked(_ label: Label!) {
         if let model = self.labelMessages[label.labelID] {
             var plusCount = 1
             if model.totalMessages.count <= 1 || 0 ==  model.originalSelected.count || model.originalSelected.count ==  model.totalMessages.count {
@@ -144,7 +145,7 @@ open class LabelApplyViewModelImpl : LabelViewModel {
 //        self.updateStatusButton();
 //    }
     
-    override public func apply(archiveMessage : Bool) -> Bool {
+    override func apply(archiveMessage : Bool) -> Bool {
         let context = sharedCoreDataService.newMainManagedObjectContext()
         for (key, value) in self.labelMessages {
             if value.currentStatus != value.origStatus && value.currentStatus == 0 { //remove
@@ -173,9 +174,11 @@ open class LabelApplyViewModelImpl : LabelViewModel {
                 
             }
             
-            let error = context.saveUpstreamIfNeeded()
-            if let error = error {
-                PMLog.D("error: \(error)")
+            context.perform {
+                let error = context.saveUpstreamIfNeeded()
+                if let error = error {
+                    PMLog.D("error: \(error)")
+                }
             }
         }
         
@@ -185,8 +188,10 @@ open class LabelApplyViewModelImpl : LabelViewModel {
                 message.needsUpdate = false
                 message.location = .archive
             }
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
             }
             let ids = self.messages.map { ($0).messageID }
             let api = MessageActionRequest<ApiResponse>(action: "archive", ids: ids)
@@ -196,11 +201,11 @@ open class LabelApplyViewModelImpl : LabelViewModel {
         return true
     }
     
-    override open func getTitle() -> String {
+    override func getTitle() -> String {
         return NSLocalizedString("Apply Labels", comment: "Title")
     }
     
-    override open func cancel() {
+    override func cancel() {
 //        let context = sharedCoreDataService.newMainManagedObjectContext()
 //        for (_, value) in self.labelMessages {
 //            
@@ -223,11 +228,11 @@ open class LabelApplyViewModelImpl : LabelViewModel {
 //        }
     }
     
-    open override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
+    override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         return sharedLabelsDataService.fetchedResultsController(.label)
     }
 
-    open override func getFetchType() -> LabelFetchType {
+    override func getFetchType() -> LabelFetchType {
         return .label
     }
 }

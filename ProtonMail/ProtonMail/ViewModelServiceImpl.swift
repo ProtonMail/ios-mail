@@ -8,12 +8,11 @@
 
 import Foundation
 
+//keep this unique
 let sharedVMService : ViewModelService = ViewModelServiceImpl()
 class ViewModelServiceImpl: ViewModelService {
-    
     //latest composer view model, not in used now.
     private var latestComposerViewModel : ComposeViewModel?
-    
     
     //the active view controller needs to be reset when resetComposerView be called
     private var activeViewController : ViewModelProtocol?
@@ -159,5 +158,25 @@ class ViewModelServiceImpl: ViewModelService {
         vmp.setViewModel(viewModel)
     }
     
-    
+    //
+    override func cleanLegacy() {
+        //get current cache version
+        let currentVersion = userCachedStatus.lastCacheVersion
+        if currentVersion > 0 && currentVersion < 98 {
+            sharedCoreDataService.cleanLegacy()//clean core data
+            
+            //get default sharedbased
+            let oldDefault = UserDefaults.standard
+            
+            //keychain part
+            oldDefault.removeObject(forKey: "keychainStoreKey")
+            UICKeyChainStore.removeItem(forKey: "keychainStoreKey")
+            
+            oldDefault.removeObject(forKey: "UserTempCachedStatusKey")
+            UICKeyChainStore.removeItem(forKey: "UserTempCachedStatusKey")
+            
+            oldDefault.synchronize()
+        }
+    }
+
 }

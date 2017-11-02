@@ -25,15 +25,13 @@
 /* no object error, local only , this could be not translated! */
 "<no object>" = "<no object>";
 
-/* (No Commment) */
+/* (No Comment) */
 "A message cannot have more than 5 labels" = "Un mensaje no puede tener más de 5 etiquetas";
 
 /* Description */
 "A new version of ProtonMail app is available, please update to latest version." = "Una nueva versión de la aplicación ProtonMail está disponible, por favor actualice a la última versión.";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "A passcode has not been set, enable it in the system Settings" = "No se ha establecido un código de acceso, habilítelo en los ajustes del sistema";
 
 /* Error
@@ -47,26 +45,20 @@
    error message when acction disabled */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "El acceso a esta cuenta está deshabilitado por falta de pago. Inicie sesión a través de protonmail.com para pagar su factura no pagada.";
 
-/* (No Commment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "El acceso a esta cuenta está deshabilitado por falta de pago.
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "El acceso a esta cuenta está deshabilitado por falta de pago.\n\nVisite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"> nuestra base de conocimientos</a> para más información.";
 
-Visite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"> nuestra base de conocimientos</a> para más información.";
-
-/* (No Commment) */
+/* (No Comment) */
 "Account password invalid" = "Contraseña de cuenta incorrecta";
 
-/* (No Commment) */
+/* (No Comment) */
 "Add" = "Añadir";
 
 /* edit contact navigation title */
 "Add Contact" = "Añadir contacto";
 
-/* Action
-   Apply label then also archive */
+/* Action */
 "Add Folder" = "Añadir carpeta";
-
-/* Apply label then also archive */
-"Also Archive" = "Archivar también";
 
 /* Action */
 "Add Label" = "Añadir etiqueta";
@@ -89,11 +81,10 @@ Visite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"> n
 "All Mail" = "Todos los mensajes";
 
 /* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perderán para siempre, pero seguirá siendo capaz de ver los mensajes de correo electrónico sin cifrar.\n\n¡ESTA ACCIÓN NO SE PUEDE DESHACER!";
 
-THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perderán para siempre, pero seguirá siendo capaz de ver los mensajes de correo electrónico sin cifrar.
-
-¡ESTA ACCIÓN NO SE PUEDE DESHACER!";
+/* Apply label then also archive */
+"Also Archive" = "Además archivar";
 
 /* Description */
 "Also used to reset a forgotten password." = "También se utiliza para restablecer una contraseña olvidada.";
@@ -101,8 +92,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* No comment provided by engineer. */
 "AppVersion" = "AppVersion";
 
-/* Action
-   folder apply - apply button text */
+/* Action */
 "Apply" = "Aplicar";
 
 /* Title */
@@ -129,8 +119,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Description */
 "Authentication was cancelled by the system" = "Autenticación cancelada por el sistema";
 
-/* settings protection section title
-   Title */
+/* settings protection section title */
 "Auto Lock Time" = "Tiempo de bloqueo automático";
 
 /* settings general section title */
@@ -170,8 +159,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
 
-/* Action
-   setup pin action */
+/* Action */
 "CONFIRM" = "CONFIRMAR";
 
 /* Title */
@@ -190,8 +178,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
    update password error */
 "Can't create a SRP Client" = "No se puede crear un cliente SRP";
 
-/* sign up user error
-   update notification email error
+/* update notification email error
    update password error */
 "Can't create a SRP verifier!" = "¡No se puede crear un verificador SRP!";
 
@@ -207,12 +194,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "¡No se puede encontrar este archivo adjunto!";
 
-/* sign up user error when can't get moduls id
-   update password error */
-"Can't get a Moduls ID!" = "¡No se puede obtener un ID de Moduls!";
-
-/* sign up user error
-   update password error */
+/* update password error = typo:Modulus */
 "Can't get a Moduls!" = "¡No se puede obtener un Moduls!";
 
 /* update notification email error
@@ -229,15 +211,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 "Can't open the file" = "No se puede abrir el archivo";
 
 /* Action
-   folder apply - cancel button text
-   title
    Title */
 "Cancel" = "Cancelar";
 
 /* Action */
 "Cancel Check" = "Cancelar la verificación";
 
-/* (No Commment) */
+/* (No Comment) */
 "Cant' decrypt this attachment!" = "No se puede descifrar este archivo adjunto.";
 
 /* Title */
@@ -288,8 +268,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* settings general section title */
 "Clear Local Message Cache" = "Vaciar caché de mensajes locales";
 
-/* Action
-   lable manager close action */
+/* Action */
 "Close" = "Cerrar";
 
 /* Action */
@@ -299,14 +278,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
    Title */
 "Confirm" = "Confirmar";
 
-/* (No Commment) */
+/* (No Comment) */
 "Confirm Login Password" = "Confirmar contraseña de inicio de sesión";
 
-/* (No Commment) */
+/* (No Comment) */
 "Confirm Mailbox Password" = "Confirmar contraseña del buzón";
 
-/* place holder
-   Placeholder
+/* Placeholder
    Title */
 "Confirm Password" = "Confirmar contraseña";
 
@@ -409,19 +387,16 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* place holder */
 "Define Password" = "Definir contraseña";
 
-/* Action
-   lable manager delete action
-   swipe title when swipe cell on mailbox message list */
+/* swipe title when swipe cell on mailbox message list */
 "Delete" = "Eliminar";
 
-/* Description
-   Title */
+/* Title */
 "Deleted" = "Eliminado";
 
 /* Title */
 "Details" = "Detalles";
 
-/* Action */
+/* Title */
 "Discard draft" = "Descartar borrador";
 
 /* Title */
@@ -436,8 +411,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Title */
 "Don't Show Again" = "No mostrar de nuevo";
 
-/* Action
-   Title */
+/* Action */
 "Done" = "Hecho";
 
 /* Action
@@ -446,6 +420,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Title */
 "Drafts" = "Borradores";
+
+/* Action */
+"Dutch" = "Holandés";
 
 /* Action */
 "Edit" = "Editar";
@@ -474,11 +451,11 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* place holder */
 "Email default signature" = "Firma de correo electrónico predeterminada";
 
-/* (No Commment) */
+/* (No Comment) */
 "Email domain invalid" = "Dominio de correo electrónico inválido";
 
 /* Action */
-"Empty Folder" = "Carpeta vacía";
+"Empty Folder" = "Vaciar carpeta";
 
 /* Test */
 "Enable - Test" = "Habilitar - Prueba";
@@ -572,8 +549,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
    place holder */
 "Folder Name" = "Nombre de la carpeta";
 
-/* Action
-   top left back button */
+/* Action */
 "Forward" = "Reenviar";
 
 /* Title */
@@ -678,8 +654,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Error */
 "Invalid credential" = "Credencial inválida";
 
-/* sign up user error
-   update notification email error
+/* update notification email error
    update password error */
 "Invalid hashed password!" = "¡Contraseña hash inválida!";
 
@@ -729,17 +704,16 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Description */
 "Local cache can't find mailbox password" = "La caché local no puede encontrar la contraseña del buzón";
 
-/* (No Commment) */
+/* (No Comment) */
 "Localizable.strings" = "Inglés";
 
 /* Title */
 "Lock The App" = "Bloquear la aplicación";
 
-/* touch id box title like Login: email@email.com */
+/* No comment provided by engineer. */
 "Login" = "Iniciar sesión";
 
-/* Placeholder
-   settings general section title */
+/* settings general section title */
 "Login Password" = "Contraseña de inicio de sesión";
 
 /* Error */
@@ -751,13 +725,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Title */
 "MAILBOX PASSWORD" = "Contraseña del buzón";
 
-/* Prompt text shown in the prompt cell */
+/* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* settings general section title */
 "Mailbox Password" = "Contraseña del buzón";
 
-/* (No Commment) */
+/* (No Comment) */
 "Mailbox password doesn't match" = "La contraseña del buzón no coincide";
 
 /* Title */
@@ -886,8 +860,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Title */
 "Notification / Recovery Email" = "Notificación / Email de recuperación";
 
-/* settings general section title
-   Title */
+/* settings general section title */
 "Notification Email" = "Email de notificación";
 
 /* Action */
@@ -970,22 +943,22 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Description */
 "Please set a password." = "Por favor, establezca una contraseña.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different domain." = "Por favor intente con un dominio diferente.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different email address." = "Por favor, pruebe una dirección de correo electrónico diferente.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different password." = "Por favor, intente una contraseña diferente.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different user name." = "Intente un nombre de usuario diferente.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try again." = "Por favor inténtelo de nuevo";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "¡Utilice la versión web de ProtonMail para cambiar la contraseña del buzón!";
 
 /* Alert */
@@ -999,6 +972,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Title */
 "Please, manage it in your phone." = "Por favor, hágalo en su teléfono.";
+
+/* Action */
+"Polish" = "Polaco";
 
 /* Title */
 "Protection" = "Protección";
@@ -1057,14 +1033,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Action */
 "Remove Star" = "Quitar destacado";
 
-/* Action
-   top left back button */
+/* Action */
 "Reply" = "Responder";
 
 /* top left back button */
 "Reply All" = "Responder a todos";
 
-/* (No Commment) */
+/* (No Comment) */
 "Reply message" = "Responder mensaje";
 
 /* Action */
@@ -1072,9 +1047,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Title */
 "Report Bugs" = "Reportar errores";
-
-/* (No Commment) */
-"Reseting message cache ..." = "Restableciendo la caché del mensaje...";
 
 /* Title */
 "Resetting message cache ..." = "Restableciendo la caché del mensaje...";
@@ -1117,7 +1089,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* title */
 "Save Changes" = "Guardar cambios";
 
-/* Action */
+/* Title */
 "Save draft" = "Guardar borrador";
 
 /* Placeholder
@@ -1127,7 +1099,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Test */
 "Section Title - Test" = "Sección de título - prueba";
 
-/* (No Commment) */
+/* (No Comment) */
 "Select your language" = "Seleccione su idioma";
 
 /* Action */
@@ -1190,8 +1162,8 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Description */
 "Spammed" = "Correo no deseado";
 
-/* Description */
-"Srp single password keyslat invalid!" = "¡Paquete de claves de única contraseña de SRP inválido!";
+/* Action */
+"Spanish" = "Español";
 
 /* Title */
 "Star" = "Destacar";
@@ -1267,7 +1239,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
    Error */
 "The mailbox password is incorrect." = "La contraseña del buzón es incorrecta.";
 
-/* (No Commment) */
+/* (No Comment) */
 "The maximum number of labels is %d." = "El número máximo de etiquetas es %d.";
 
 /* Description */
@@ -1279,13 +1251,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Description */
 "The message password didn't match" = "La contraseña del mensaje no coincide";
 
-/* (No Commment) */
+/* (No Comment) */
 "The new password can't empty" = "La nueva contraseña no puede estar vacía";
 
 /* update password error */
 "The new password can't empty." = "La nueva contraseña no puede estar vacía.";
 
-/* (No Commment) */
+/* (No Comment) */
 "The new password not match" = "Las contraseñas no coinciden";
 
 /* update password error */
@@ -1313,7 +1285,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Description */
 "The user info fetch is wrong" = "La búsqueda de información del usuario es incorrecta";
 
-/* (No Commment) */
+/* (No Comment) */
 "The verification email invalid" = "Correo de verificación inválido";
 
 /* Error */
@@ -1334,7 +1306,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Title */
 "To" = "Para";
 
-/* (No Commment) */
+/* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en protonmail.com";
 
 /* Description */
@@ -1346,14 +1318,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Error */
 "Token expired" = "Token caducado";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "TouchID is not enrolled, enable it in the system Settings" = "El TouchID no está registrado, habilítelo en los ajustes del sistema";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "TouchID not available" = "TouchID no disponible";
 
 /* Action
@@ -1363,6 +1331,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Title */
 "Trouble shooting guide" = "Guía para resolver problemas";
 
+/* Action */
+"Turkish" = "Turco";
+
 /* Title */
 "Tweet about ProtonMail" = "Tweetear acerca de ProtonMail";
 
@@ -1371,6 +1342,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Title */
 "USER LOGIN" = "Inicio de sesión de usuario";
+
+/* Action */
+"Ukrainian" = "Ucraniano";
 
 /* Description */
 "Unable to connect to the server" = "No se ha podido conectar con el servidor";
@@ -1403,9 +1377,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 "Unable to parse response" = "No se puede analizar la respuesta";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "No se puede analizar el objeto de respuesta:
-%@";
+"Unable to parse the response object:\n%@" = "No se puede analizar el objeto de respuesta:\n%@";
 
 /* Error */
 "Unable to parse token" = "No se puede analizar el token";
@@ -1419,7 +1391,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Description */
 "Unknow Error" = "Error desconocido";
 
-/* (No Commment) */
+/* (No Comment) */
 "Unknow file" = "Archivo desconocido";
 
 /* No comment provided by engineer. */
@@ -1435,8 +1407,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
    top right action text */
 "Update" = "Actualizar";
 
-/* update notification email error title
-   update notification email error title when signup */
+/* update notification email error title */
 "Update Notification Email" = "Actualizar email de notificación";
 
 /* error when user already exist */
@@ -1445,10 +1416,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* No comment provided by engineer. */
 "User is available!" = "Nombre de usuario disponible";
 
-/* (No Commment) */
+/* (No Comment) */
 "User name exist" = "El nombre de usuario existe";
 
-/* (No Commment) */
+/* (No Comment) */
 "User name invalid" = "Nombre de usuario inválido";
 
 /* Title */
@@ -1460,7 +1431,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Title */
 "Verification code sent" = "Código de verificación enviado";
 
-/* (No Commment) */
+/* (No Comment) */
 "Version %@ %@" = "Versión %@ %@";
 
 /* human check warning description */
@@ -1487,7 +1458,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Cuando envía un correo, este es el nombre que aparecerá en el campo del remitente.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Wrong verification code" = "Código de verificación incorrecto";
 
 /* Description */
@@ -1529,8 +1500,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* agree check box middle word */
 "and" = "y";
 
-/* like at 10:00pm
-   Title */
+/* Title */
 "at" = "en";
 
 /* Error */
@@ -1551,7 +1521,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* contacts api error when fetch */
 "get contacts() failed, peopleOrderedByUsersPreference return null!!" = "falló obtener contacts(), peopleOrderedByUsersPreference devuelve nulo";
 
-/* (No Commment) */
+/* (No Comment) */
 "hours" = "Horas";
 
 /* Title */

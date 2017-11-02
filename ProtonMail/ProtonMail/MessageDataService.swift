@@ -16,30 +16,6 @@
 
 import Foundation
 import CoreData
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 let sharedMessageDataService = MessageDataService()
 
@@ -79,11 +55,13 @@ class MessageDataService {
     func uploadAttachment(_ att: Attachment!)
     {
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
-                dequeueIfNeeded()
-            } else {
-                queue(att, action: .uploadAtt)
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                    self.dequeueIfNeeded()
+                } else {
+                    self.queue(att, action: .uploadAtt)
+                }
             }
         }
     }
@@ -106,18 +84,19 @@ class MessageDataService {
     func send(_ messageID : String!, completion: CompletionBlock?) {
         var error: NSError?
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                //message.location = .outbox
-                error = context.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D(" error: \(String(describing: error))")
+            context.perform {
+                if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                    //message.location = .outbox
+                    error = context.saveUpstreamIfNeeded()
+                    if error != nil {
+                        PMLog.D(" error: \(String(describing: error))")
+                    } else {
+                        self.queue(message, action: .send)
+                    }
                 } else {
-                    queue(message, action: .send)
+                    //TODO:: handle can't find the message error.
                 }
-            } else {
-                //TODO:: handle can't find the message error.
             }
-            
         } else {
             error = NSError.protonMailError(500, localizedDescription: NSLocalizedString("No managedObjectContext", comment: "this is a system object can't find, this could be not trasnlated"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
         }
@@ -567,7 +546,8 @@ class MessageDataService {
         if  badgeNumber < 0 {
             badgeNumber = 0
         }
-        UIApplication.shared.applicationIconBadgeNumber = badgeNumber
+        UIApplication.setBadge(badge: badgeNumber)
+        //UIApplication.shared.applicationIconBadgeNumber = badgeNumber
     }
     
     func cleanLocalMessageCache(_ completion: CompletionBlock?) {
@@ -643,9 +623,25 @@ class MessageDataService {
                         }
                         
                         if let lo = msg.message?["Location"] as? Int {
-                            if lo == 1 {
+                            if lo == 1 { //if it is a draft
                                 if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
                                     if exsitMes.messageStatus == 1 {
+                                        if let subject = msg.message?["Subject"] as? String {
+                                            exsitMes.title = subject
+                                        }
+                                        if let timeValue = msg.message?["Time"] {
+                                            if let timeString = timeValue as? NSString {
+                                                let time = timeString.doubleValue as TimeInterval
+                                                if time != 0 {
+                                                    exsitMes.time = time.asDate()
+                                                }
+                                            } else if let dateNumber = timeValue as? NSNumber {
+                                                let time = dateNumber.doubleValue as TimeInterval
+                                                if time != 0 {
+                                                    exsitMes.time = time.asDate()
+                                                }
+                                            }
+                                        }
                                         continue;
                                     }
                                 }
@@ -656,12 +652,16 @@ class MessageDataService {
                                 // apply the label changes
                                 if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
                                     for delete in deleted {
-                                        if let label = Label.labelForLableID(delete as! String, inManagedObjectContext: context) {
+                                        let labelID = delete as! String
+                                        if let label = Label.labelForLableID(labelID, inManagedObjectContext: context) {
                                             let labelObjs = messageObject.mutableSetValue(forKey: "labels")
                                             if labelObjs.count > 0 {
                                                 labelObjs.remove(label)
                                                 messageObject.setValue(labelObjs, forKey: "labels")
                                             }
+                                        }
+                                        if labelID == "1" {
+                                            messageObject.isDetailDownloaded = false
                                         }
                                     }
                                 }
@@ -766,18 +766,20 @@ class MessageDataService {
                                                     destinationDirectoryURL: FileManager.default.attachmentDirectory,
                                                     downloadTask: downloadTask,
                                                     completion: { task, fileURL, error in
-                    var error = error
-                    if let context = attachment.managedObjectContext {
-                        if let fileURL = fileURL {
-                            attachment.localURL = fileURL
-                            attachment.fileData = try? Data(contentsOf: fileURL)
-                            error = context.saveUpstreamIfNeeded()
-                            if error != nil  {
-                                PMLog.D(" error: \(String(describing: error))")
-                            }
-                        }
-                    }
-                    completion?(task, fileURL, error)
+                                                        var error = error
+                                                        if let context = attachment.managedObjectContext {
+                                                            if let fileURL = fileURL {
+                                                                attachment.localURL = fileURL
+                                                                attachment.fileData = try? Data(contentsOf: fileURL)
+                                                                context.perform {
+                                                                    error = context.saveUpstreamIfNeeded()
+                                                                    if error != nil  {
+                                                                        PMLog.D(" error: \(String(describing: error))")
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        completion?(task, fileURL, error)
                 })
             } else {
                 PMLog.D("The attachment not exist") //TODO:: need add log here
@@ -853,7 +855,15 @@ class MessageDataService {
                                             message_n.isDetailDownloaded = true
                                             message_n.needsUpdate = true
                                             message_n.isRead = true
-                                            let _ = message_n.managedObjectContext?.saveUpstreamIfNeeded()
+                                            
+                                            if let ctx = message_n.managedObjectContext {
+                                                ctx.perform {
+                                                    if let error = ctx.saveUpstreamIfNeeded() {
+                                                        PMLog.D("\(error)")
+                                                    }
+                                                }
+                                            }
+
                                             let tmpError = context.saveUpstreamIfNeeded()
                                             DispatchQueue.main.async {
                                                 completion(task, response, message_n, tmpError)
@@ -898,24 +908,17 @@ class MessageDataService {
     
     func fetchNotificationMessageDetail(_ messageID: String, completion: @escaping CompletionFetchDetail) {
         queue {
-            
             let completionWrapper: CompletionBlock = { task, response, error in
-                
                 DispatchQueue.main.async {
-                    
                     let context = sharedCoreDataService.newMainManagedObjectContext()
                     context.perform() {
                         if response != nil {
                             //TODO need check the respons code
                             if var msg: Dictionary<String,Any> = response?["Message"] as? Dictionary<String,Any> {
-                                
-                                print("\(msg)");
-                                
                                 msg.removeValue(forKey: "Location")
                                 msg.removeValue(forKey: "Starred")
                                 msg.removeValue(forKey: "test")
                                 do {
-                                    
                                     var needOffset = 0
                                     if let msg = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                                         needOffset = msg.isRead ? 0 : -1
@@ -929,7 +932,7 @@ class MessageDataService {
                                         if message_out.isRead == false {
                                             message_out.isRead = true
                                             self.queue(message_out, action: .read)
-
+                                            
                                             count = count + needOffset
                                             if count < 0 {
                                                 count = 0
@@ -939,7 +942,8 @@ class MessageDataService {
                                         let _ = message_out.managedObjectContext?.saveUpstreamIfNeeded()
                                         let tmpError = context.saveUpstreamIfNeeded()
                                         
-                                        UIApplication.shared.applicationIconBadgeNumber = count
+                                        UIApplication.setBadge(badge: count)
+                                        //UIApplication.shared.applicationIconBadgeNumber = count
                                         DispatchQueue.main.async {
                                             completion(task, response, message_out, tmpError)
                                         }
@@ -1071,14 +1075,16 @@ class MessageDataService {
         sharedContactDataService.cleanUp()
         sharedLabelsDataService.cleanUp()
         
-        UIApplication.shared.applicationIconBadgeNumber = 0
+        UIApplication.setBadge(badge: 0)
+        //UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     fileprivate func cleanMessage() {
         if let context = managedObjectContext {
             Message.deleteAll(inContext: context)
         }
-        UIApplication.shared.applicationIconBadgeNumber = 0
+        UIApplication.setBadge(badge: 0)
+        //UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     func search(_ query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
@@ -1130,10 +1136,12 @@ class MessageDataService {
     
     func saveDraft(_ message : Message!) {
         if let context = message.managedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            } else {
-                queue(message, action: .saveDraft)
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                } else {
+                    self.queue(message, action: .saveDraft)
+                }
             }
         }
     }
@@ -1141,10 +1149,12 @@ class MessageDataService {
     func deleteDraft (_ message : Message!)
     {
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            } else {
-                queue(message, action: .delete)
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                } else {
+                    self.queue(message, action: .delete)
+                }
             }
         }
     }
@@ -1233,7 +1243,7 @@ class MessageDataService {
                                 let based64Token = token.encodeBase64() as String
                                 let encryptedToken = try based64Token.encryptWithPassphrase(message.password)
                                 
-                                // encrypt keys use public key
+                                // encrypt keys use key
                                 var attPack : [AttachmentKeyPackage] = []
                                 for att in tempAtts {
                                     let newKeyPack = try att.Key?.getSymmetricSessionKeyPackage(message.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
@@ -1251,7 +1261,7 @@ class MessageDataService {
                             }
                         }
                         else {
-                            // encrypt keys use public key
+                            // encrypt keys use key
                             var attPack : [AttachmentKeyPackage] = []
                             for att in tempAtts {
                                 //attID:String!, attKey:String!, Algo : String! = ""
@@ -1303,7 +1313,7 @@ class MessageDataService {
         do {
             if let keys = response?["keys"] as? [[String : String]] {
                 if let body = try message.decryptBody() {
-                    // encrypt body with each public key
+                    // encrypt body with each key
                     for publicKeys in keys {
                         for (email, publicKey) in publicKeys {
                             if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey) {
@@ -1329,48 +1339,62 @@ class MessageDataService {
                 do {
                     if let message = try context.existingObject(with: objectID) as? Message {
                         let completionWrapper: CompletionBlock = { task, response, error in
-                            PMLog.D("SendAttachmentDebug == finish save draft!")
-                            if let mess = response {
-                                if let messageID = mess["ID"] as? String {
-                                    //if message context is invalid let app crash which is fine
-                                    message.messageID = messageID
-                                    message.isDetailDownloaded = true
-                                    
-                                    var hasTemp = false;
-                                    let attachments = message.mutableSetValue(forKey: "attachments")
-                                    for att in attachments {
-                                        if let att = att as? Attachment {
-                                            if att.isTemp {
-                                                hasTemp = true;
-                                                context.delete(att)
+                            context.perform() {
+                                PMLog.D("SendAttachmentDebug == finish save draft!")
+                                if var mess = response {
+                                    if let messageID = mess["ID"] as? String {
+                                        PMLog.D("\(mess)")
+                                        mess.removeValue(forKey: "Attachments")
+                                        PMLog.D("\(mess)")
+                                        
+                                        message.messageID = messageID
+                                        message.isDetailDownloaded = true
+                                        
+                                        var hasTemp = false;
+                                        let attachments = message.mutableSetValue(forKey: "attachments")
+                                        for att in attachments {
+                                            if let att = att as? Attachment {
+                                                if att.isTemp {
+                                                    hasTemp = true;
+                                                    context.delete(att)
+                                                }
                                             }
                                         }
-                                    }
-                                    
-                                    if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-                                        PMLog.D(" error: \(error)")
-                                    }
-                                    
-                                    if hasTemp {
-                                        do {
-                                            try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
-                                            if let save_error = context.saveUpstreamIfNeeded() {
-                                                PMLog.D(" error: \(save_error)")
-                                            }
-                                        } catch let exc as NSError {
-                                            completion?(task, response, exc)
-                                            return
+                                        
+                                        if let error = context.saveUpstreamIfNeeded() {
+                                            PMLog.D(" error: \(error)")
                                         }
+                                        
+                                        if hasTemp {
+                                            do {
+                                                try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
+                                                if let save_error = context.saveUpstreamIfNeeded() {
+                                                    PMLog.D(" error: \(save_error)")
+                                                }
+                                            } catch let exc as NSError {
+                                                completion?(task, response, exc)
+                                                return
+                                            }
+                                        } else {
+                                            do {
+                                                try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
+                                                if let error = context.saveUpstreamIfNeeded() {
+                                                    PMLog.D(" error: \(error)")
+                                                }
+                                            } catch {// let _ as NSError {
+                                                
+                                            }
+                                        }
+                                        completion?(task, response, error)
+                                        return
+                                    } else {//error
+                                        completion?(task, response, error)
+                                        return
                                     }
-                                    completion?(task, response, error)
-                                    return
                                 } else {//error
                                     completion?(task, response, error)
                                     return
                                 }
-                            } else {//error
-                                completion?(task, response, error)
-                                return
                             }
                         }
                         
@@ -1598,8 +1622,10 @@ class MessageDataService {
                                     message.isRead = true
                                     lastUpdatedStore.ReadMailboxMessage(message.location)
                                     message.location = MessageLocation.outbox
+                                    message.isDetailDownloaded = false
                                     message.removeLocationFromLabels(currentlocation: .draft, location: .outbox, keepSent: true)
                                 }
+
                                 NSError.alertMessageSentToast()
                                 if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D(" error: \(error)")
@@ -1659,8 +1685,12 @@ class MessageDataService {
                                     } else {
                                         //ignore
                                     }
-                                    if let error = message.managedObjectContext!.saveUpstreamIfNeeded() {
-                                        PMLog.D(" error: \(error)")
+                                    if let context = message.managedObjectContext {
+                                        context.perform {
+                                            if let error = context.saveUpstreamIfNeeded() {
+                                                PMLog.D(" error: \(error)")
+                                            }
+                                        }
                                     }
                                 }
                             } catch {
@@ -1842,16 +1872,18 @@ class MessageDataService {
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isRead, handler: { message in
             if message.needsUpdate {
                 let action: MessageAction = message.isRead ? .read : .unread
-                if message.location == .inbox {
-                    var count = lastUpdatedStore.UnreadCountForKey(.inbox)
-                    let offset = message.isRead ? -1 : 1
-                    count = count + offset
-                    if count < 0 {
-                        count = 0
-                    }
-                    lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
-                    UIApplication.shared.applicationIconBadgeNumber = count
-                }
+//                if message.location == .inbox {
+//                    var count = lastUpdatedStore.UnreadCountForKey(.inbox)
+//                    let offset = message.isRead ? -1 : 1
+//                    count = count + offset
+//                    if count < 0 {
+//                        count = 0
+//                    }
+//                    lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
+//
+//                    UIApplication.setBadge(badge: count)
+//                    //UIApplication.shared.applicationIconBadgeNumber = count
+//                }
                 
                 self.queue(message, action: action)
             }

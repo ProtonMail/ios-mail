@@ -16,8 +16,9 @@
 
 import Foundation
 
+@objc(UserInfo)
 // TODO:: this is not very good need refactor
-final class UserInfo: NSObject {
+final class UserInfo : NSObject {
     var displayName: String
     let maxSpace: Int64
     var notificationEmail: String
@@ -421,6 +422,7 @@ extension Array where Element : PMNOpenPgpKey {
 }
 
 extension Array where Element : Address {
+
     func toPMNAddresses() -> Array<PMNAddress> {
         var out_array = Array<PMNAddress>()
         for i in 0 ..< self.count {

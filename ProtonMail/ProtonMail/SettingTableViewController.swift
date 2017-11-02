@@ -156,11 +156,14 @@ class SettingTableViewController: ProtonMailViewController {
     }
     
     // MARK: - Table view data source
-    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+    @objc func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         return setting_headers.count
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        return setting_headers.count
+//    }
+//
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if setting_headers.count > section {
             switch(setting_headers[section])
             {
@@ -187,7 +190,7 @@ class SettingTableViewController: ProtonMailViewController {
         return 0
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
         var cellout : UITableViewCell?
         if setting_headers.count > indexPath.section {
             let setting_item = setting_headers[indexPath.section]
@@ -450,7 +453,7 @@ class SettingTableViewController: ProtonMailViewController {
         }
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    @objc func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: HeaderCell) as! CustomHeaderView
         if(setting_headers[section] == SettingSections.version){
             var appVersion = NSLocalizedString("Unkonw Version", comment: "")
@@ -474,12 +477,11 @@ class SettingTableViewController: ProtonMailViewController {
         return headerCell
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
-    {
+    @objc func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CellHeight
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
         if setting_headers.count > indexPath.section {
             let setting_item = setting_headers[indexPath.section]
             switch setting_item {
@@ -684,28 +686,28 @@ class SettingTableViewController: ProtonMailViewController {
     }
     
     // Override to support conditional editing of the table view.
-    func tableView(_ tableView: UITableView, canEditRowAtIndexPath indexPath: IndexPath) -> Bool {
+    @objc func tableView(_ tableView: UITableView, canEditRowAtIndexPath indexPath: IndexPath) -> Bool {
         return false
     }
     
     // Override to support conditional rearranging of the table view.
-    func tableView(_ tableView: UITableView, canMoveRowAtIndexPath indexPath: IndexPath) -> Bool {
+    @objc func tableView(_ tableView: UITableView, canMoveRowAtIndexPath indexPath: IndexPath) -> Bool {
         return false
     }
     
     // Override to support editing the table view.
-    func tableView(_ tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: IndexPath) {
     }
     
-    func tableView(_ tableView: UITableView, editingStyleForRowAtIndexPath indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    @objc func tableView(_ tableView: UITableView, editingStyleForRowAtIndexPath indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return UITableViewCellEditingStyle.none
     }
     
-    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAtIndexPath indexPath: IndexPath) -> Bool {
+    @objc func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAtIndexPath indexPath: IndexPath) -> Bool {
         return false
     }
     
-    func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+    @objc func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
         if sourceIndexPath.section != proposedDestinationIndexPath.section {
             return sourceIndexPath
         }
@@ -715,7 +717,7 @@ class SettingTableViewController: ProtonMailViewController {
     }
     
     // Override to support rearranging the table view.
-    func tableView(_ tableView: UITableView, moveRowAtIndexPath fromIndexPath: IndexPath, toIndexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, moveRowAtIndexPath fromIndexPath: IndexPath, toIndexPath: IndexPath) {
         if setting_headers[fromIndexPath.section] == SettingSections.multiDomain {
             let val = self.multi_domains.remove(at: fromIndexPath.row)
             self.multi_domains.insert(val, at: toIndexPath.row)

@@ -17,7 +17,7 @@
 import Foundation
 
 extension UIButton {
-    class func buttonWithImage(_ image: UIImage) -> UIButton {
+    public class func buttonWithImage(_ image: UIImage) -> UIButton {
         let button = UIButton()
         button.setImage(image, for: UIControlState())
         button.sizeToFit()

@@ -13,8 +13,8 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var webView: UIWebView!
     
     //define
-    fileprivate let hidePriority : UILayoutPriority = 1.0;
-    fileprivate let showPriority: UILayoutPriority = 750.0;
+    fileprivate let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0);
+    fileprivate let showPriority: UILayoutPriority = UILayoutPriority(rawValue: 750.0);
     
     @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
@@ -159,6 +159,7 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         PMLog.D("\(request)")
         let urlString = request.url?.absoluteString;
+
         if urlString?.contains("https://www.google.com/recaptcha/api2/frame") == true {
             startVerify = true;
         }

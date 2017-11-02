@@ -21,10 +21,10 @@ open class DeviceUtil {
     
      static var deviceToken: String? {
         get {
-            return UserDefaults.standard.string(forKey: DeviceKey.token)
+            return SharedCacheBase.getDefault().string(forKey: DeviceKey.token)
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: DeviceKey.token)
+            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.token)
         }
     }
 

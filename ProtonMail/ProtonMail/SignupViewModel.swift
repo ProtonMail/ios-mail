@@ -16,7 +16,7 @@ protocol SignupViewModelDelegate{
 
 typealias AvailableDomainsComplete = ([String]) -> Void
 
-open class SignupViewModel : NSObject {
+class SignupViewModel : NSObject {
     func setDelegate (_ delegate: SignupViewModelDelegate?) {
         fatalError("This method must be overridden")
     }
@@ -57,6 +57,7 @@ open class SignupViewModel : NSObject {
     func setCodeEmail(_ email : String) {
         fatalError("This method must be overridden")
     }
+    
     func setCodePhone(_ phone : String) {
         fatalError("This method must be overridden")
     }

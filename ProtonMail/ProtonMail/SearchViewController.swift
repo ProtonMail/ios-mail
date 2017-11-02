@@ -12,30 +12,6 @@
 
 import UIKit
 import CoreData
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 class SearchViewController: ProtonMailViewController {
     
@@ -68,7 +44,7 @@ class SearchViewController: ProtonMailViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.white
+//        self.view.backgroundColor = UIColor.white
         
         cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Action"), for: .normal)
         
@@ -90,8 +66,8 @@ class SearchViewController: ProtonMailViewController {
         searchTextField.tintColor = UIColor.white
         searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Search", comment: "Title"), attributes:
             [
-                NSForegroundColorAttributeName: UIColor.white,
-                NSFontAttributeName: UIFont.robotoLight(size: UIFont.Size.h3)
+                NSAttributedStringKey.foregroundColor: UIColor.white,
+                NSAttributedStringKey.font: UIFont.robotoLight(size: UIFont.Size.h3)
             ])
         
         managedObjectContext = sharedCoreDataService.newMainManagedObjectContext()
@@ -110,7 +86,7 @@ class SearchViewController: ProtonMailViewController {
     }
     
     // my selector that was defined above
-    func willEnterForeground() {
+    @objc func willEnterForeground() {
         self.dismiss(animated: false, completion: nil)
     }
 
@@ -179,7 +155,7 @@ class SearchViewController: ProtonMailViewController {
     
     func showHideNoresult(){
         noResultLabel.isHidden = false
-        if let count = fetchedResultsController?.numberOfRowsInSection(0) {
+        if let count = fetchedResultsController?.numberOfRows(in: 0) {
             if count > 0 {
                 noResultLabel.isHidden = true
             }
@@ -324,13 +300,13 @@ extension SearchViewController: UITableViewDataSource {
         return fetchedResultsController?.numberOfSections() ?? 0
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController?.numberOfRowsInSection(section) ?? 0
+    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return fetchedResultsController?.numberOfRows(in: section) ?? 0
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let mailboxCell = tableView.dequeueReusableCell(withIdentifier: MailboxMessageCell.Constant.identifier, for: indexPath) as! MailboxMessageCell
-        if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
+        if self.fetchedResultsController?.numberOfRows(in: indexPath.section) > indexPath.row {
             if let message = fetchedResultsController?.object(at: indexPath) as? Message {
                 mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "")
             }
@@ -338,7 +314,7 @@ extension SearchViewController: UITableViewDataSource {
         return mailboxCell
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
             cell.separatorInset = UIEdgeInsets.zero
         }
@@ -356,15 +332,15 @@ extension SearchViewController: UITableViewDataSource {
 
 extension SearchViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
+    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if self.fetchedResultsController?.numberOfRows(in: indexPath.section) > indexPath.row {
             if let _ = fetchedResultsController?.object(at: indexPath) as? Message {
                 self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
             }
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return kSearchCellHeight
     }
 }

@@ -10,31 +10,43 @@
 #import "LanguageManager.h"
 #import "NSBundle+Language.h"
 
-static NSString * const LanguageCodes[] = { @"en", @"de", @"fr", @"ru", @"es",
-                                            @"tr", @"pl", @"uk", @"nl" };
+static NSString * const LanguageCodes[] = { @"en", @"de", @"fr",
+                                            @"ru", @"es", @"tr",
+                                            @"pl", @"uk", @"nl",
+                                            @"it", @"pt-BR"
+};
 
 static NSString * const LanguageStrings[] = { @"English", @"German", @"French",
                                               @"Russian", @"Spanish", @"Turkish",
-                                              @"Polish", @"Ukrainian", @"Dutch"};
+                                              @"Polish", @"Ukrainian", @"Dutch",
+                                              @"Italian", @"PortugueseBrazil"
+};
 
 static NSString * const LanguageSaveKey = @"kProtonMailCurrentLanguageKey";
+
+#ifndef Enterprise
+static NSString * const LanguageAppGroup = @"group.com.protonmail.protonmail";
+#else
+static NSString * const LanguageAppGroup = @"group.ch.protonmail.protonmail";
+#endif
 
 @implementation LanguageManager
 
 + (void)setupCurrentLanguage
 {
-    NSString *currentLanguage = [[NSUserDefaults standardUserDefaults] objectForKey:LanguageSaveKey];
+    NSUserDefaults* shared = [[NSUserDefaults alloc] initWithSuiteName:LanguageAppGroup];
+    NSString *currentLanguage = [shared objectForKey:LanguageSaveKey];
     if (!currentLanguage) {
-        NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
+        NSArray *languages = [shared objectForKey:@"AppleLanguages"];
         if (languages.count > 0) {
             currentLanguage = languages[0];
-            [[NSUserDefaults standardUserDefaults] setObject:currentLanguage forKey:LanguageSaveKey];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            [shared setObject:currentLanguage forKey:LanguageSaveKey];
+            [shared synchronize];
         }
     }
 #ifndef USE_ON_FLY_LOCALIZATION
-    [[NSUserDefaults standardUserDefaults] setObject:@[currentLanguage] forKey:@"AppleLanguages"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [shared setObject:@[currentLanguage] forKey:@"AppleLanguages"];
+    [shared synchronize];
 #else
     [NSBundle setLanguage:currentLanguage];
 #endif
@@ -52,7 +64,7 @@ static NSString * const LanguageSaveKey = @"kProtonMailCurrentLanguageKey";
 + (NSString *)currentLanguageString
 {
     NSString *string = @"";
-    NSString *currentCode = [[NSUserDefaults standardUserDefaults] objectForKey:LanguageSaveKey];
+    NSString *currentCode = [[[NSUserDefaults alloc] initWithSuiteName:LanguageAppGroup] objectForKey:LanguageSaveKey];
     for (NSInteger i = 0; i < ELanguageCount; ++i) {
         if ([currentCode isEqualToString:LanguageCodes[i]]) {
             string = NSLocalizedString(LanguageStrings[i], @"");
@@ -64,13 +76,13 @@ static NSString * const LanguageSaveKey = @"kProtonMailCurrentLanguageKey";
 
 + (NSString *)currentLanguageCode
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:LanguageSaveKey];
+    return [[[NSUserDefaults alloc] initWithSuiteName:LanguageAppGroup] objectForKey:LanguageSaveKey];
 }
 
 + (NSInteger)currentLanguageIndex
 {
     NSInteger index = 0;
-    NSString *currentCode = [[NSUserDefaults standardUserDefaults] objectForKey:LanguageSaveKey];
+    NSString *currentCode = [[[NSUserDefaults alloc] initWithSuiteName:LanguageAppGroup] objectForKey:LanguageSaveKey];
     for (NSInteger i = 0; i < ELanguageCount; ++i) {
         if ([currentCode isEqualToString:LanguageCodes[i]]) {
             index = i;
@@ -90,8 +102,9 @@ static NSString * const LanguageSaveKey = @"kProtonMailCurrentLanguageKey";
 {
     if (index >= 0 && index < ELanguageCount) {
         NSString *code = LanguageCodes[index];
-        [[NSUserDefaults standardUserDefaults] setObject:code forKey:LanguageSaveKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSUserDefaults* shared = [[NSUserDefaults alloc] initWithSuiteName:LanguageAppGroup];
+        [shared setObject:code forKey:LanguageSaveKey];
+        [shared synchronize];
 #ifdef USE_ON_FLY_LOCALIZATION
         [NSBundle setLanguage:code];
 #endif
@@ -99,8 +112,9 @@ static NSString * const LanguageSaveKey = @"kProtonMailCurrentLanguageKey";
 }
 
 + (void)saveLanguageByCode:(NSString*)code {
-    [[NSUserDefaults standardUserDefaults] setObject:code forKey:LanguageSaveKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSUserDefaults* shared = [[NSUserDefaults alloc] initWithSuiteName:LanguageAppGroup];
+    [shared setObject:code forKey:LanguageSaveKey];
+    [shared synchronize];
 #ifdef USE_ON_FLY_LOCALIZATION
     [NSBundle setLanguage:code];
 #endif

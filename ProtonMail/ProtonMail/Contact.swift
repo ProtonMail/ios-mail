@@ -9,9 +9,9 @@
 import Foundation
 import CoreData
 
-class Contact: NSManagedObject {
+public class Contact: NSManagedObject {
 
-    @NSManaged var contactID: String
-    @NSManaged var name: String
-    @NSManaged var email: String
+    @NSManaged public var contactID: String
+    @NSManaged public var name: String
+    @NSManaged public var email: String
 }

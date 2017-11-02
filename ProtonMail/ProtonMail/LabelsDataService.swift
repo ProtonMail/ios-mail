@@ -9,10 +9,9 @@
 import Foundation
 import CoreData
 
-
 let sharedLabelsDataService = LabelsDataService()
 
-public enum LabelFetchType : Int {
+enum LabelFetchType : Int {
     case all = 0
     case label = 1
     case folder = 2

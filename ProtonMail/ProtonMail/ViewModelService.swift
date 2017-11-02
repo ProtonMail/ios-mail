@@ -21,6 +21,10 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
+    func newShareDraftViewModel(_ vmp : ViewModelProtocol, subject: String, content: String, files : [FileData]) {
+        fatalError("This method must be overridden")
+    }
+    
     func newDraftViewModel(_ vmp : ViewModelProtocol) {
         fatalError("This method must be overridden")
     }
@@ -57,12 +61,17 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    
     func resetView() {
         fatalError("This method must be overridden")
     }
     
     func signOut() {
+        
+    }
+    
+    func cleanLegacy() {
+        
+        //get current version
         
     }
 }

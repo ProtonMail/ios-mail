@@ -8,30 +8,30 @@
 
 import Foundation
 // folder editing
-final class FolderEditingViewModelImple : LabelEditViewModel {
+final public class FolderEditingViewModelImple : LabelEditViewModel {
     var currentLabel : Label
     
-    required init(label : Label) {
+    required public init(label : Label) {
         self.currentLabel = label
     }
     
-     override func title() -> String {
+     override public func title() -> String {
         return NSLocalizedString("Edit Folder", comment: "Title")
     }
     
-    override func placeHolder() -> String {
+    override public func placeHolder() -> String {
         return NSLocalizedString("Folder Name", comment: "folder editing editfeild place holder")
     }
     
-    override func rightButtonText() -> String {
+    override public func rightButtonText() -> String {
         return NSLocalizedString("Update", comment: "right top action button")
     }
     
-    override func name() -> String {
+    override public func name() -> String {
         return currentLabel.name
     }
     
-    override func seletedIndex() -> IndexPath {
+    override public func seletedIndex() -> IndexPath {
         let currentColor = currentLabel.color
         if let index = colors.index(of: currentColor) {
             return IndexPath(row: index, section: 0)
@@ -40,7 +40,7 @@ final class FolderEditingViewModelImple : LabelEditViewModel {
         }
     }
     
-    override func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {
+    override public func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {
         let api = UpdateLabelRequest<CreateLabelRequestResponse>(id: currentLabel.labelID, name: name, color: color)
         api.call { (task, response, hasError) -> Void in
             if hasError {
@@ -48,7 +48,11 @@ final class FolderEditingViewModelImple : LabelEditViewModel {
             } else {
                 self.currentLabel.name = name
                 self.currentLabel.color = color
-                let _ = self.currentLabel.managedObjectContext?.saveUpstreamIfNeeded()
+                if let context = self.currentLabel.managedObjectContext {
+                    context.perform {
+                        let _ = context.saveUpstreamIfNeeded()
+                    }
+                }
                 complete()
             }
         }

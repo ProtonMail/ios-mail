@@ -15,32 +15,10 @@
 //
 
 import Foundation
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+
+protocol UserDataServiceDelegate {
+    func onLogout(animated: Bool)
 }
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
-
-let sharedUserDataService = UserDataService()
 
 /// Stores information related to the user
 class UserDataService {
@@ -52,6 +30,8 @@ class UserDataService {
     typealias LoginAsk2FABlock = () -> Void
     typealias LoginErrorBlock = (_ error: NSError) -> Void
     typealias LoginSuccessBlock = (_ mpwd: String?) -> Void
+    
+    var delegate : UserDataServiceDelegate?
     
     struct Key {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
@@ -68,56 +48,65 @@ class UserDataService {
     }
     
     // MARK: - Private variables
-    fileprivate(set) var userInfo: UserInfo? = UserDefaults.standard.customObjectForKey(Key.userInfo) as? UserInfo {
+    //TODO::Fix later fileprivate(set)
+    fileprivate(set) var userInfo: UserInfo? = SharedCacheBase.getDefault().customObjectForKey(Key.userInfo) as? UserInfo {
         didSet {
-            UserDefaults.standard.setCustomValue(userInfo, forKey: Key.userInfo)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().setCustomValue(userInfo, forKey: Key.userInfo)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
-    
-    fileprivate(set) var username: String? = UserDefaults.standard.string(forKey: Key.username) {
+    //TODO::Fix later fileprivate(set)
+    fileprivate(set) var username: String? = SharedCacheBase.getDefault().string(forKey: Key.username) {
         didSet {
-            UserDefaults.standard.setValue(username, forKey: Key.username)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().setValue(username, forKey: Key.username)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
     // Value is only stored in the keychain
-    fileprivate(set) var password: String? {
+    var password: String? {
         get {
-            return UICKeyChainStore.string(forKey: Key.password)
+            do {
+                let savedPwd = sharedKeychain.keychain().string(forKey: Key.password)
+                return try savedPwd?.decryptWithPassphrase("$Proton$" + Key.password)
+            }catch {
+                return nil
+            }
         }
         set {
-            UICKeyChainStore.setString(newValue, forKey: Key.password)
+            do {
+                let nv = try newValue?.encryptWithPassphrase("$Proton$" + Key.password)
+                sharedKeychain.keychain().setString(nv, forKey: Key.password)
+            }catch {
+            }
         }
     }
     
-    fileprivate var switchCacheOff: Bool? = UserDefaults.standard.bool(forKey: Key.roleSwitchCache) {
-        
+    var switchCacheOff: Bool? = SharedCacheBase.getDefault().bool(forKey: Key.roleSwitchCache) {
         didSet {
-            UserDefaults.standard.setValue(switchCacheOff, forKey: Key.roleSwitchCache)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().setValue(switchCacheOff, forKey: Key.roleSwitchCache)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    fileprivate var defaultSignatureStauts: Bool = UserDefaults.standard.bool(forKey: Key.defaultSignatureStatus) {
+    var defaultSignatureStauts: Bool = SharedCacheBase.getDefault().bool(forKey: Key.defaultSignatureStatus) {
         didSet {
-            UserDefaults.standard.setValue(defaultSignatureStauts, forKey: Key.defaultSignatureStatus)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().setValue(defaultSignatureStauts, forKey: Key.defaultSignatureStatus)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    var twoFactorStatus: Int = UserDefaults.standard.integer(forKey: Key.twoFAStatus)  {
+    var twoFactorStatus: Int = SharedCacheBase.getDefault().integer(forKey: Key.twoFAStatus)  {
         didSet {
-            UserDefaults.standard.setValue(twoFactorStatus, forKey: Key.twoFAStatus)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().setValue(twoFactorStatus, forKey: Key.twoFAStatus)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    var passwordMode: Int = UserDefaults.standard.integer(forKey: Key.userPasswordMode)  {
+    var passwordMode: Int = SharedCacheBase.getDefault().integer(forKey: Key.userPasswordMode)  {
         didSet {
-            UserDefaults.standard.setValue(passwordMode, forKey: Key.userPasswordMode)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().setValue(passwordMode, forKey: Key.userPasswordMode)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
@@ -177,7 +166,7 @@ class UserDataService {
         return userInfo?.showImages == 0
     }
     
-    // MARK: - Public variables
+    // MARK: - variables
     
     var defaultEmail : String {
         if let addr = userAddresses.getDefaultAddress() {
@@ -220,35 +209,44 @@ class UserDataService {
         return mailboxPassword != nil
     }
     
-    var isRememberMailboxPassword: Bool = UserDefaults.standard.bool(forKey: Key.isRememberMailboxPassword) {
+    var isRememberMailboxPassword: Bool = SharedCacheBase.getDefault().bool(forKey: Key.isRememberMailboxPassword) {
         didSet {
-            UserDefaults.standard.set(isRememberMailboxPassword, forKey: Key.isRememberMailboxPassword)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().set(isRememberMailboxPassword, forKey: Key.isRememberMailboxPassword)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    var isRememberUser: Bool = UserDefaults.standard.bool(forKey: Key.isRememberUser) {
+    var isRememberUser: Bool = SharedCacheBase.getDefault().bool(forKey: Key.isRememberUser) {
         didSet {
-            UserDefaults.standard.set(isRememberUser, forKey: Key.isRememberUser)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().set(isRememberUser, forKey: Key.isRememberUser)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
     var isSignedIn: Bool = false
     var isNewUser : Bool = false
-    fileprivate(set) var isMailboxPWDOk: Bool = false
+    var isMailboxPWDOk: Bool = false
     
     var isUserCredentialStored: Bool {
         return username != nil && password != nil && isRememberUser
     }
     
     /// Value is only stored in the keychain
-    fileprivate(set) var mailboxPassword: String? {
+    var mailboxPassword: String? {
         get {
-            return UICKeyChainStore.string(forKey: Key.mailboxPassword)
+            do {
+                let savedPwd = sharedKeychain.keychain().string(forKey: Key.mailboxPassword)
+                return try savedPwd?.decryptWithPassphrase("$Proton$" + Key.mailboxPassword)
+            }catch {
+                return nil
+            }
         }
         set {
-            UICKeyChainStore.setString(newValue, forKey: Key.mailboxPassword)
+            do {
+                let nv = try newValue?.encryptWithPassphrase("$Proton$" + Key.mailboxPassword)
+                sharedKeychain.keychain().setString(nv, forKey: Key.mailboxPassword)
+            }catch {
+            }
         }
     }
     
@@ -272,7 +270,7 @@ class UserDataService {
         return userInfo != nil
     }
     
-    // MARK: - Public methods
+    // MARK: - methods
     init() {
         cleanUpIfFirstRun()
         launchCleanUp()
@@ -350,7 +348,8 @@ class UserDataService {
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignOut), object: self)
         clearAll()
         clearAuthToken()
-        (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
+        delegate?.onLogout(animated: animated)
+        //(UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     
     func signOutAfterSignUp() {
@@ -743,6 +742,7 @@ class UserDataService {
             }
         } ~> .async
     }
+    
     func updateNotify(_ isOn: Bool, completion: @escaping CompletionBlock) {
         let notifySetting = UpdateNotify<ApiResponse>(notify: isOn ? 1 : 0)
         notifySetting.call() { task, response, hasError in
@@ -762,17 +762,17 @@ class UserDataService {
     
     // MARK: - Private methods
     
-    fileprivate func cleanUpIfFirstRun() {
+    func cleanUpIfFirstRun() {
         let firstRunKey = "FirstRunKey"
         
-        if UserDefaults.standard.object(forKey: firstRunKey) == nil {
+        if SharedCacheBase.getDefault().object(forKey: firstRunKey) == nil {
             clearAll()
-            UserDefaults.standard.set(Date(), forKey: firstRunKey)
-            UserDefaults.standard.synchronize()
+            SharedCacheBase.getDefault().set(Date(), forKey: firstRunKey)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    fileprivate func clearAll() {
+    func clearAll() {
         isSignedIn = false
         
         isRememberUser = false
@@ -788,11 +788,11 @@ class UserDataService {
         sharedOpenPGP.cleanAddresses()
     }
     
-    fileprivate func clearAuthToken() {
+    func clearAuthToken() {
         AuthCredential.clearFromKeychain()
     }
     
-    fileprivate func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
+    func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
         return { task, response, error in
             if error == nil {
                 self.fetchUserInfo(completion)
@@ -802,7 +802,7 @@ class UserDataService {
         }
     }
     
-    fileprivate func launchCleanUp() {
+    func launchCleanUp() {
         if !self.isRememberUser {
             username = nil
             password = nil

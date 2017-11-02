@@ -25,15 +25,13 @@
 /* no object error, local only , this could be not translated! */
 "<no object>" = "<no object>";
 
-/* (No Commment) */
+/* (No Comment) */
 "A message cannot have more than 5 labels" = "Сообщение не может иметь более 5 ярлыков";
 
 /* Description */
 "A new version of ProtonMail app is available, please update to latest version." = "Доступна новая версия ProtonMail, пожалуйста обновите приложение до последней версии.";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "A passcode has not been set, enable it in the system Settings" = "Пароль не задан, установите его в системных настройках";
 
 /* Error
@@ -45,28 +43,22 @@
 
 /* Description
    error message when acction disabled */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Доступ к этой учетной записи приостановлен из-за неуплаты. Пожалуйста, войдите в систему, используя protonmail.com, чтобы оплатить счет.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Доступ к этой учётной записи приостановлен из-за неуплаты. Пожалуйста, войдите в систему, используя protonmail.com, чтобы оплатить счёт.";
 
-/* (No Commment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Доступ к этой учетной записи приостановлен из-за неуплаты.
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Доступ к этой учётной записи приостановлен из-за неуплаты.\n\nПожалуйста, посетите <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">нашу базу знаний</a> для получения дополнительной информации.";
 
-Пожалуйста, посетите <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">нашу базу знаний</a> для получения дополнительной информации.";
+/* (No Comment) */
+"Account password invalid" = "Неправильный пароль учётной записи";
 
-/* (No Commment) */
-"Account password invalid" = "Неправильный пароль от аккаунта";
-
-/* (No Commment) */
+/* (No Comment) */
 "Add" = "Добавить";
 
 /* edit contact navigation title */
 "Add Contact" = "Добавить контакт";
 
-/* Action
-   Apply label then also archive */
+/* Action */
 "Add Folder" = "Добавить папку";
-
-/* Apply label then also archive */
-"Also Archive" = "Перенести в архив";
 
 /* Action */
 "Add Label" = "Добавить ярлык";
@@ -89,11 +81,10 @@
 "All Mail" = "Все письма";
 
 /* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные письма будут утеряны навсегда, но вы все ещё сможете прочесть ваши нешифрованные письма.\n\nЭТО ДЕЙСТВИЕ НЕЛЬЗЯ БУДЕТ ОТМЕНИТЬ!";
 
-THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные письма будут утеряны навсегда, но вы все ещё сможете прочесть ваши нешифрованные письма.
-
-ЭТО ДЕЙСТВИЕ НЕЛЬЗЯ БУДЕТ ОТМЕНИТЬ!";
+/* Apply label then also archive */
+"Also Archive" = "Перенести в архив";
 
 /* Description */
 "Also used to reset a forgotten password." = "Также используется для сброса забытого пароля.";
@@ -101,8 +92,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* No comment provided by engineer. */
 "AppVersion" = "Версия";
 
-/* Action
-   folder apply - apply button text */
+/* Action */
 "Apply" = "Применить";
 
 /* Title */
@@ -129,8 +119,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Description */
 "Authentication was cancelled by the system" = "Аутентификация была отменена системой";
 
-/* settings protection section title
-   Title */
+/* settings protection section title */
 "Auto Lock Time" = "Время авто-блокировки";
 
 /* settings general section title */
@@ -141,7 +130,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Back" = "Назад";
 
 /* Error */
-"Bad auth cache" = "Неверный кэш авторизации";
+"Bad auth cache" = "Неверный кэш аутентификации";
 
 /* Description */
 "Bad parameter" = "Неверный параметр";
@@ -170,8 +159,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
 
-/* Action
-   setup pin action */
+/* Action */
 "CONFIRM" = "ПОДТВЕРДИТЬ";
 
 /* Title */
@@ -190,8 +178,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
    update password error */
 "Can't create a SRP Client" = "Не удается создать SRP-клиент";
 
-/* sign up user error
-   update notification email error
+/* update notification email error
    update password error */
 "Can't create a SRP verifier!" = "Не удается создать SRP-верификатор!";
 
@@ -207,13 +194,8 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Не удается найти это вложение!";
 
-/* sign up user error when can't get moduls id
-   update password error */
-"Can't get a Moduls ID!" = "Не удается получить ID модулей!";
-
-/* sign up user error
-   update password error */
-"Can't get a Moduls!" = "Не удается получить модули!";
+/* update password error = typo:Modulus */
+"Can't get a Moduls!" = "Не удаётся получить Moduls!";
 
 /* update notification email error
    update password error */
@@ -229,15 +211,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Can't open the file" = "Не удается открыть файл";
 
 /* Action
-   folder apply - cancel button text
-   title
    Title */
 "Cancel" = "Отменить";
 
 /* Action */
 "Cancel Check" = "Отменить проверку";
 
-/* (No Commment) */
+/* (No Comment) */
 "Cant' decrypt this attachment!" = "Невозможно расшифровать это вложение.";
 
 /* Title */
@@ -250,7 +230,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Cell phone number" = "Номер мобильного телефона";
 
 /* change password input label */
-"Change Login Password" = "Изменить пароль учетной записи";
+"Change Login Password" = "Изменить пароль учётной записи";
 
 /* Title */
 "Change Mailbox Password" = "Изменить пароль почтового ящика";
@@ -288,8 +268,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* settings general section title */
 "Clear Local Message Cache" = "Очистить локальный кэш сообщений";
 
-/* Action
-   lable manager close action */
+/* Action */
 "Close" = "Закрыть";
 
 /* Action */
@@ -299,14 +278,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
    Title */
 "Confirm" = "Подтвердить";
 
-/* (No Commment) */
+/* (No Comment) */
 "Confirm Login Password" = "Подтвердить пароль";
 
-/* (No Commment) */
+/* (No Comment) */
 "Confirm Mailbox Password" = "Подтверждение пароля почтового ящика";
 
-/* place holder
-   Placeholder
+/* Placeholder
    Title */
 "Confirm Password" = "Подтвердить пароль";
 
@@ -347,7 +325,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Create User failed please try again" = "Ошибка создания учётной записи, пожалуйста, попробуйте снова";
 
 /* Signup top title */
-"Create a new account" = "Создать новый аккаунт";
+"Create a new account" = "Создать новую учётную запись";
 
 /* Description */
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Создать и добавить метки для организации входящих сообщений. Нажмите на сообщение и удерживайте, чтобы увидеть все доступные варианты.";
@@ -409,19 +387,16 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* place holder */
 "Define Password" = "Укажите пароль";
 
-/* Action
-   lable manager delete action
-   swipe title when swipe cell on mailbox message list */
+/* swipe title when swipe cell on mailbox message list */
 "Delete" = "Удалить";
 
-/* Description
-   Title */
+/* Title */
 "Deleted" = "Удаленные";
 
 /* Title */
 "Details" = "Детали";
 
-/* Action */
+/* Title */
 "Discard draft" = "Удалить черновик";
 
 /* Title */
@@ -436,8 +411,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Title */
 "Don't Show Again" = "Больше не показывать";
 
-/* Action
-   Title */
+/* Action */
 "Done" = "Готово";
 
 /* Action
@@ -446,6 +420,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 
 /* Title */
 "Drafts" = "Черновики";
+
+/* Action */
+"Dutch" = "Голландский";
 
 /* Action */
 "Edit" = "Редактировать";
@@ -474,7 +451,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* place holder */
 "Email default signature" = "Подпись электронной почты по умолчанию";
 
-/* (No Commment) */
+/* (No Comment) */
 "Email domain invalid" = "Некорректный домен электронной почты";
 
 /* Action */
@@ -533,7 +510,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Enter your PIN" = "Введите ваш PIN";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Введите ваш ПИН-код, чтобы разблокировать почтовый ящик.";
+"Enter your PIN to unlock your inbox." = "Введите ваш PIN-код, чтобы разблокировать почтовый ящик.";
 
 /* human verification top title */
 "Enter your cell phone number" = "Введите ваш номер телефона";
@@ -572,8 +549,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
    place holder */
 "Folder Name" = "Имя папки";
 
-/* Action
-   top left back button */
+/* Action */
 "Forward" = "Переслать";
 
 /* Title */
@@ -589,7 +565,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "From:" = "От:";
 
 /* Title */
-"Fwd:" = "Переслано:";
+"Fwd:" = "Fwd:";
 
 /* Title */
 "General Settings" = "Основные настройки";
@@ -610,7 +586,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Help us to improve ProtonMail with your input." = "Помогите нам улучшить ProtonMail с помощью ваших данных.";
 
 /* Title */
-"Help us to make privacy the default in the web." = "Помогите нам сделать интернет конфиденциальным по умолчанию.";
+"Help us to make privacy the default in the web." = "Помогите нам сделать конфиденциальность данностью в Сети.";
 
 /* Action */
 "Hide" = "Скрыть";
@@ -648,7 +624,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Inbox" = "Входящие";
 
 /* Error */
-"Incorrect PIN," = "Неверный ПИН-код";
+"Incorrect PIN," = "Неверный PIN-код";
 
 /* Title */
 "Incorrect password" = "Неверный пароль";
@@ -678,8 +654,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Error */
 "Invalid credential" = "Недействительные учётные данные";
 
-/* sign up user error
-   update notification email error
+/* update notification email error
    update password error */
 "Invalid hashed password!" = "Недопустимый хешированный пароль!";
 
@@ -729,17 +704,16 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Description */
 "Local cache can't find mailbox password" = "Локальный кэш не может найти пароль почтового ящика";
 
-/* (No Commment) */
+/* (No Comment) */
 "Localizable.strings" = "Английский";
 
 /* Title */
 "Lock The App" = "Заблокировать приложение";
 
-/* touch id box title like Login: email@email.com */
+/* No comment provided by engineer. */
 "Login" = "Вход";
 
-/* Placeholder
-   settings general section title */
+/* settings general section title */
 "Login Password" = "Пароль для входа";
 
 /* Error */
@@ -751,13 +725,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Title */
 "MAILBOX PASSWORD" = "Пароль почтового ящика";
 
-/* Prompt text shown in the prompt cell */
+/* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* settings general section title */
 "Mailbox Password" = "Пароль почтового ящика";
 
-/* (No Commment) */
+/* (No Comment) */
 "Mailbox password doesn't match" = "Пароли почтового ящика не совпадают";
 
 /* Title */
@@ -886,8 +860,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Title */
 "Notification / Recovery Email" = "Электронная почта для уведомлений / восстановления";
 
-/* settings general section title
-   Title */
+/* settings general section title */
 "Notification Email" = "Электронная почта для уведомлений";
 
 /* Action */
@@ -970,22 +943,22 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Description */
 "Please set a password." = "Пожалуйста, задайте пароль.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different domain." = "Пожалуйста, попробуйте другой домен.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different email address." = "Пожалуйста, попробуйте другой адрес электронной почты.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different password." = "Пожалуйста, попробуйте другой пароль.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try a different user name." = "Пожалуйста, попробуйте другое имя пользователя.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please try again." = "Пожалуйста, попробуйте ещё раз";
 
-/* (No Commment) */
+/* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Пожалуйста, используйте веб-версию ProtonMail для изменения пароля вашего почтового ящика!";
 
 /* Alert */
@@ -1000,6 +973,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Title */
 "Please, manage it in your phone." = "Пожалуйста, управляйте этим с помощью вашего телефона.";
 
+/* Action */
+"Polish" = "Польский";
+
 /* Title */
 "Protection" = "Защита";
 
@@ -1013,7 +989,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "ProtonMail Plus is required to customize your mobile signature" = "Для настройки вашей мобильной подписи необходим ProtonMail Plus";
 
 /* Description */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail не продаёт рекламу и не нарушает вашу приватность. Ваша поддержка крайне важна для продолжения работы ProtonMail. Вы можете приобрести платный аккаунт или внести пожертвование в поддержку ProtonMail.";
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail не продаёт рекламу и не нарушает вашу приватность. Ваша поддержка крайне важна для продолжения работы ProtonMail. Вы можете перейти на платный тариф или внести пожертвование, чтобы поддержать ProtonMail.";
 
 /* Title */
 "ProtonMail encrypted emails" = "Зашифрованная электронная почта ProtonMail";
@@ -1037,7 +1013,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Re-Enter your PIN" = "Повторно введите ваш PIN-код";
 
 /* Title */
-"Re:" = "Ответить:";
+"Re:" = "Re:";
 
 /* Title */
 "Recovery Code" = "Код восстановления";
@@ -1057,14 +1033,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Action */
 "Remove Star" = "Удалить из избранного";
 
-/* Action
-   top left back button */
+/* Action */
 "Reply" = "Ответить";
 
 /* top left back button */
 "Reply All" = "Ответить всем";
 
-/* (No Commment) */
+/* (No Comment) */
 "Reply message" = "Ответить на сообщение";
 
 /* Action */
@@ -1072,9 +1047,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 
 /* Title */
 "Report Bugs" = "Сообщить об ошибках";
-
-/* (No Commment) */
-"Reseting message cache ..." = "Сброс кэша сообщений...";
 
 /* Title */
 "Resetting message cache ..." = "Сброс кэша сообщений...";
@@ -1117,7 +1089,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* title */
 "Save Changes" = "Сохранить изменения";
 
-/* Action */
+/* Title */
 "Save draft" = "Сохранить черновик";
 
 /* Placeholder
@@ -1127,7 +1099,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Test */
 "Section Title - Test" = "Название раздела - Тест";
 
-/* (No Commment) */
+/* (No Comment) */
 "Select your language" = "Выберите язык";
 
 /* Action */
@@ -1190,8 +1162,8 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Description */
 "Spammed" = "Много спама";
 
-/* Description */
-"Srp single password keyslat invalid!" = "Неверная соль пароля SRP!";
+/* Action */
+"Spanish" = "Испанский";
 
 /* Title */
 "Star" = "Добавить в Избранное";
@@ -1267,7 +1239,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
    Error */
 "The mailbox password is incorrect." = "Неверный пароль почтового ящика.";
 
-/* (No Commment) */
+/* (No Comment) */
 "The maximum number of labels is %d." = "Максимальное количество ярлыков: %d.";
 
 /* Description */
@@ -1279,13 +1251,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Description */
 "The message password didn't match" = "Пароль сообщения не совпал";
 
-/* (No Commment) */
+/* (No Comment) */
 "The new password can't empty" = "Новый пароль не может быть пустым";
 
 /* update password error */
 "The new password can't empty." = "Новый пароль не может быть пустым.";
 
-/* (No Commment) */
+/* (No Comment) */
 "The new password not match" = "Пароли не совпадают";
 
 /* update password error */
@@ -1313,7 +1285,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Description */
 "The user info fetch is wrong" = "Ошибка при получении информации о пользователе";
 
-/* (No Commment) */
+/* (No Comment) */
 "The verification email invalid" = "Некорректная электронная почта для подтверждения";
 
 /* Error */
@@ -1334,7 +1306,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Title */
 "To" = "Кому";
 
-/* (No Commment) */
+/* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Для сброса пароля почтового ящика, пожалуйста, используйте веб-версию ProtonMail по адресу protonmail.com";
 
 /* Description */
@@ -1346,14 +1318,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Error */
 "Token expired" = "Срок действия токена истёк";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "TouchID is not enrolled, enable it in the system Settings" = "Невозможно использовать TouchID, включите его в настройках телефона (если он есть)";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "TouchID not available" = "TouchID недоступен";
 
 /* Action
@@ -1363,6 +1331,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Title */
 "Trouble shooting guide" = "Руководство по устранению проблем";
 
+/* Action */
+"Turkish" = "Турецкий";
+
 /* Title */
 "Tweet about ProtonMail" = "Твит о ProtonMail";
 
@@ -1371,6 +1342,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 
 /* Title */
 "USER LOGIN" = "Вход пользователя";
+
+/* Action */
+"Ukrainian" = "Украинский";
 
 /* Description */
 "Unable to connect to the server" = "Не удалось подключиться к серверу";
@@ -1403,8 +1377,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "Unable to parse response" = "Не удалось разобрать ответ";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Не удалось разобрать объект при ответе: %@";
+"Unable to parse the response object:\n%@" = "Не удалось разобрать объект при ответе: %@";
 
 /* Error */
 "Unable to parse token" = "Не удалось разобрать токен";
@@ -1418,7 +1391,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Description */
 "Unknow Error" = "Неизвестная ошибка";
 
-/* (No Commment) */
+/* (No Comment) */
 "Unknow file" = "Неизвестный файл";
 
 /* No comment provided by engineer. */
@@ -1434,8 +1407,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
    top right action text */
 "Update" = "Обновить";
 
-/* update notification email error title
-   update notification email error title when signup */
+/* update notification email error title */
 "Update Notification Email" = "Обновить электронную почту для уведомлений";
 
 /* error when user already exist */
@@ -1444,10 +1416,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* No comment provided by engineer. */
 "User is available!" = "Данное имя пользователя доступно";
 
-/* (No Commment) */
+/* (No Comment) */
 "User name exist" = "Имя пользователя существует";
 
-/* (No Commment) */
+/* (No Comment) */
 "User name invalid" = "Некорректное имя пользователя";
 
 /* Title */
@@ -1459,7 +1431,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Title */
 "Verification code sent" = "Код подтверждения отправлен";
 
-/* (No Commment) */
+/* (No Comment) */
 "Version %@ %@" = "Версия %@ %@";
 
 /* human check warning description */
@@ -1486,7 +1458,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Когда вы отправляете письмо, указанное имя будет отображено в графе отправителя.";
 
-/* (No Commment) */
+/* (No Comment) */
 "Wrong verification code" = "Неверный код подтверждения";
 
 /* Description */
@@ -1528,8 +1500,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* agree check box middle word */
 "and" = "и";
 
-/* like at 10:00pm
-   Title */
+/* Title */
 "at" = "в";
 
 /* Error */
@@ -1550,7 +1521,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* contacts api error when fetch */
 "get contacts() failed, peopleOrderedByUsersPreference return null!!" = "получение contacts() не удалось, peopleOrderedByUsersPreference вернуло пустое значение!";
 
-/* (No Commment) */
+/* (No Comment) */
 "hours" = "Часов";
 
 /* Title */

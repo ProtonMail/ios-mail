@@ -9,9 +9,6 @@
 // in whole or in part, is expressly prohibited except as authorized by
 // the license agreement.
 //
-
-import Foundation
-
 import Foundation
 import UIKit
 
@@ -44,7 +41,8 @@ extension UIColor {
         )
     }
     
-    internal struct ProtonMail {
+    struct ProtonMail {
+        
         static let Blue_475F77 = UIColor(RRGGBB: UInt(0x475F77))
         static let Blue_85B1DE = UIColor(RRGGBB: UInt(0x85B1DE))
         static let Blue_5C7A99 = UIColor(RRGGBB: UInt(0x5C7A99))
@@ -60,22 +58,19 @@ extension UIColor {
         
         static let Menu_UnreadCountBackground = UIColor(RRGGBB: UInt(0x8182C3))
         static let Menu_UnSelectBackground = UIColor(RRGGBB: UInt(0x505061))
+        static let Menu_UnSelectBackground_Label = UIColor(RRGGBB:UInt(0x3F3E4E))
         static let Menu_SelectedBackground = UIColor(RRGGBB: UInt(0x2F2E3C))
         
         static let Nav_Bar_Background = UIColor(RRGGBB: UInt(0x505061))
-    
         
         static let Login_Background_Gradient_Left = UIColor(red: 147/255, green: 151/255, blue: 205/255, alpha: 0.9)
         static let Login_Background_Gradient_Right = UIColor(red: 23/255, green: 41/255, blue: 131/255, alpha: 0.9)
         static let Login_Button_Border_Color = UIColor(RRGGBB: UInt(0x9397CD))
         
-        
         static let MessageCell_UnRead_Color = UIColor(RRGGBB: UInt(0xFFFFFF))
         static let MessageCell_Read_Color = UIColor(RRGGBB: UInt(0xF2F3F7))
-    
         
         static let TextFieldTintColor = UIColor.white
-        
         static let MessageActionTintColor = UIColor(hexString: "#9397cd", alpha: 1.0)
     }
 }
@@ -84,17 +79,15 @@ extension UIColor {
 extension UIColor
 {
     
-    convenience init(hexColorCode: String)
-    {
+    convenience init(hexColorCode: String) {
         var red:   CGFloat = 0.0
         var green: CGFloat = 0.0
         var blue:  CGFloat = 0.0
         var alpha: CGFloat = 1.0
         
-        if hexColorCode.hasPrefix("#")
-        {
+        if hexColorCode.hasPrefix("#") {
             let index   = hexColorCode.characters.index(hexColorCode.startIndex, offsetBy: 1)
-            let hex     = hexColorCode.substring(from: index)
+            let hex     = String(hexColorCode[index...])
             let scanner = Scanner(string: hex)
             var hexValue: CUnsignedLongLong = 0
             
@@ -142,40 +135,40 @@ extension UIColor
     
 {
     /**
-    Create non-autoreleased color with in the given hex string and alpha
-    
-    :param:   hexString
-    :param:   alpha
-    :returns: color with the given hex string and alpha
-    
-    
-    Example:
-    
-    // With hash
-    let color: UIColor = UIColor(hexString: "#ff8942")
-    
-    // Without hash, with alpha
-    let secondColor: UIColor = UIColor(hexString: "ff8942", alpha: 0.5)
-    
-    // Short handling
-    let shortColorWithHex: UIColor = UIColor(hexString: "fff")
-    
-    
-    */
+     Create non-autoreleased color with in the given hex string and alpha
+     
+     :param:   hexString
+     :param:   alpha
+     :returns: color with the given hex string and alpha
+     
+     
+     Example:
+     
+     // With hash
+     let color: UIColor = UIColor(hexString: "#ff8942")
+     
+     // Without hash, with alpha
+     let secondColor: UIColor = UIColor(hexString: "ff8942", alpha: 0.5)
+     
+     // Short handling
+     let shortColorWithHex: UIColor = UIColor(hexString: "fff")
+     
+     
+     */
     convenience init(hexString: String, alpha: Float)
     {
         var hex = hexString
         
         // Check for hash and remove the hash
-        if hex.hasPrefix("#")
-        {
-            hex = hex.substring(from: hex.characters.index(hex.startIndex, offsetBy: 1))
+        if hex.hasPrefix("#") {
+            let hexL = hex.characters.index(hex.startIndex, offsetBy: 1)
+            hex = String(hex[hexL...])
         }
-
+        
         if hex.characters.count == 0 {
             hex = "000000"
         }
-
+        
         let hexLength = hex.characters.count
         // Check for string length
         assert(hexLength == 6 || hexLength == 3)
@@ -183,15 +176,24 @@ extension UIColor
         // Deal with 3 character Hex strings
         if hexLength == 3
         {
-            let redHex   = hex.substring(to: hex.characters.index(hex.startIndex, offsetBy: 1))
-            let greenHex = hex.substring(with: hex.characters.index(hex.startIndex, offsetBy: 1) ..< hex.characters.index(hex.startIndex, offsetBy: 2))
-            let blueHex  = hex.substring(from: hex.characters.index(hex.startIndex, offsetBy: 2))
+            let redR = hex.characters.index(hex.startIndex, offsetBy: 1)
+            let redHex = String(hex[..<redR])
+            let greenL = hex.characters.index(hex.startIndex, offsetBy: 1)
+            let greenR = hex.characters.index(hex.startIndex, offsetBy: 2)
+            let greenHex = String(hex[greenL..<greenR])
+            let blueL = hex.characters.index(hex.startIndex, offsetBy: 2)
+            let blueHex = String(hex[blueL...])
             hex = redHex + redHex + greenHex + greenHex + blueHex + blueHex
         }
+        let redR = hex.characters.index(hex.startIndex, offsetBy: 2)
+        let redHex = String(hex[..<redR])
+        let greenL = hex.characters.index(hex.startIndex, offsetBy: 2)
+        let greenR = hex.characters.index(hex.startIndex, offsetBy: 4)
+        let greenHex = String(hex[greenL..<greenR])
         
-        let redHex = hex.substring(to: hex.characters.index(hex.startIndex, offsetBy: 2))
-        let greenHex = hex.substring(with: hex.characters.index(hex.startIndex, offsetBy: 2) ..< hex.characters.index(hex.startIndex, offsetBy: 4))
-        let blueHex = hex.substring(with: hex.characters.index(hex.startIndex, offsetBy: 4) ..< hex.characters.index(hex.startIndex, offsetBy: 6))
+        let blueL = hex.characters.index(hex.startIndex, offsetBy: 4)
+        let blueR = hex.characters.index(hex.startIndex, offsetBy: 6)
+        let blueHex = String(hex[blueL..<blueR])
         
         var redInt:   CUnsignedInt = 0
         var greenInt: CUnsignedInt = 0
@@ -207,17 +209,16 @@ extension UIColor
     
     
     /**
-    Create non-autoreleased color with in the given hex value and alpha
-    
-    :param:   hex
-    :param:   alpha
-    :returns: color with the given hex value and alpha
-    
-    Example:
-    let secondColor: UIColor = UIColor(hex: 0xff8942, alpha: 0.5)
-    
-    */
-    
+     Create non-autoreleased color with in the given hex value and alpha
+     
+     :param:   hex
+     :param:   alpha
+     :returns: color with the given hex value and alpha
+     
+     Example:
+     let secondColor: UIColor = UIColor(hex: 0xff8942, alpha: 0.5)
+     
+     */
     convenience init(hex: Int, alpha: Float)
     {
         let hexString = NSString(format: "%2X", hex)

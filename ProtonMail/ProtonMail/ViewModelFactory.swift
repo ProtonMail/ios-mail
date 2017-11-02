@@ -53,6 +53,11 @@ class ViewModelFactoryTest : ViewModelFactory {
 
 
 class ViewModelFactoryProduction : ViewModelFactory {
+    
+    override init() {
+        
+    }
+    
     override func getChangeLoginPassword() -> ChangePWDViewModel {
         return ChangeLoginPWDViewModel()
     }

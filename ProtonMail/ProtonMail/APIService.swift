@@ -20,10 +20,13 @@ import Foundation
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
-let sharedAPIService = APIService()
 
+protocol APIServiceDelegate {
+    func onError(error: NSError)
+}
+
+let sharedAPIService = APIService()
 class APIService {
-    
     // refresh token failed count
     internal var refreshTokenFailedCount = 0
     
@@ -37,6 +40,8 @@ class APIService {
     func getSession() -> AFHTTPSessionManager{
         return sessionManager;
     }
+    
+    var delegate : APIServiceDelegate?
     
     // MARK: - Internal methods
     
@@ -54,8 +59,6 @@ class APIService {
             sessionManager.securityPolicy.allowInvalidCertificates = true
         #endif
         
-        //NSOperationQueueDefaultMaxConcurrentOperationCount sessionManager.operationQueue.maxConcurrentOperationCount
-        //let defaultV = NSOperationQueueDefaultMaxConcurrentOperationCount;
         setupValueTransforms()
     }
     
@@ -76,12 +79,11 @@ class APIService {
                 if authenticated && errorCode == 401 {
                     AuthCredential.expireOrClear(auth?.token)
                     if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
-                        error.alertToast()
+                        self.delegate?.onError(error: error)
                         UserTempCachedStatus.backup()
                         sharedUserDataService.signOut(true);
                         userCachedStatus.signOut()
                     }else {
-                        //self.setApiVesion(1, appVersion: 1)
                         self.request(method: method, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
                     }
                 } else {
@@ -104,7 +106,6 @@ class APIService {
                     
                     if authenticated && responseCode == 401 {
                         AuthCredential.expireOrClear(auth?.token)
-                        //self.setApiVesion(1, appVersion: 1)
                         self.request(method: method, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
                     } else if responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004 {
                         NSError.alertUpdatedToast()
@@ -229,8 +230,6 @@ class APIService {
                            authenticated: Bool = true,
                            downloadTask: ((URLSessionDownloadTask) -> Void)?,
                            completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
-        
-        
         let authBlock: AuthCredentialBlock = { auth, error in
             if let error = error {
                 completion(nil, nil, error)

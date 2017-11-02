@@ -9,7 +9,6 @@
 import Foundation
 
 
-
 // MARK : Get messages part
 final class BugReportRequest<T : ApiResponse> : ApiRequest<T> {
     let os : String!
@@ -51,7 +50,7 @@ final class BugReportRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getRequestPath() -> String {
-        return BugsAPI.Path + AppConstants.getDebugOption
+        return BugsAPI.Path + AppConstants.DEBUG_OPTION
     }
     
     override func getVersion() -> Int {

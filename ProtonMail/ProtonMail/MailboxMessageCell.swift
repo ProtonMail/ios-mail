@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class MailboxMessageCell: MCSwipeTableViewCell {
     /**
     *  Constants
@@ -46,6 +45,8 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     @IBOutlet weak var lockImage: UIImageView!
     @IBOutlet weak var replyImage: UIImageView!
     
+    @IBOutlet weak var attachmentImage: UIImageView!
+    @IBOutlet weak var expirationImage: UIImageView!
     @IBOutlet weak var starImage: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -91,18 +92,19 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     }
     
     func changeStyleToReadDesign() {
-        self.contentView.backgroundColor = UIColor.ProtonMail.MessageCell_Read_Color
+        //self.contentView.backgroundColor = UIColor.ProtonMail.MessageCell_Read_Color
+        self.backgroundColor = UIColor.ProtonMail.MessageCell_Read_Color
         self.title.font = UIFont.robotoLight(size: UIFont.Size.h4)
         //self.sender.font = UIFont.robotoLight(size: UIFont.Size.h6)
         self.time.font = UIFont.robotoLight(size: UIFont.Size.h6)
     }
     
     func changeStyleToUnreadDesign() {
-        self.contentView.backgroundColor = UIColor.ProtonMail.MessageCell_UnRead_Color
+        //self.contentView.backgroundColor = UIColor.ProtonMail.MessageCell_UnRead_Color
+        self.backgroundColor = UIColor.ProtonMail.MessageCell_UnRead_Color
         self.title.font = UIFont.robotoMedium(size: UIFont.Size.h4)
         //self.sender.font = UIFont.robotoMedium(size: UIFont.Size.h6)
         self.time.font = UIFont.robotoMedium(size: UIFont.Size.h6)
-        
     }
     
     
@@ -141,20 +143,26 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         }
         
         if message.numAttachments.int32Value > 0 {
+            self.attachmentImage.isHidden = false
             self.attachmentWidth.constant = kIconsWidth
         } else {
+            self.attachmentImage.isHidden = true
             self.attachmentWidth.constant = 0
         }
         
         if message.isStarred {
+            self.starImage.isHidden = false
             self.starWidth.constant = self.kIconsWidth
         } else {
+            self.starImage.isHidden = true
             self.starWidth.constant = 0
         }
         
         if message.expirationTime != nil {
+            self.expirationImage.isHidden = false
             self.expirationWidth.constant = self.kIconsWidth
         } else {
+            self.expirationImage.isHidden = true
             self.expirationWidth.constant = 0
         }
         

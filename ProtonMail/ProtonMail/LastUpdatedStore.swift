@@ -17,10 +17,7 @@
 
 import Foundation
 
-
-let lastUpdatedStore = LastUpdatedStore(shared: UserDefaults.standard)
-
-
+let lastUpdatedStore = LastUpdatedStore()
 final class UpdateTime : NSObject {
     var start : Date
     var end : Date
@@ -28,7 +25,7 @@ final class UpdateTime : NSObject {
     var total : Int32
     var unread : Int32
 
-    required public init (start: Date!, end : Date, update : Date, total : Int32, unread: Int32){
+    required init (start: Date!, end : Date, update : Date, total : Int32, unread: Int32){
         self.start = start
         self.end = end
         self.update = update
@@ -66,7 +63,7 @@ extension UpdateTime : NSCoding {
             unread: aDecoder.decodeInt32(forKey: CoderKey.unread))
     }
     
-    open func encode(with aCoder: NSCoder) {
+    func encode(with aCoder: NSCoder) {
         aCoder.encode(self.start, forKey: CoderKey.startCode)
         aCoder.encode(self.end, forKey: CoderKey.endCode)
         aCoder.encode(self.update, forKey: CoderKey.updateCode)
@@ -86,13 +83,12 @@ final class LastUpdatedStore : SharedCacheBase {
         static let lastEventID = "lastEventID"  //
         static let lastCantactsUpdated = "LastCantactsUpdated" //
         
-        
         //Removed at 1.5.5 still need for cleanup
         static let mailboxUnreadCount = "MailboxUnreadCount"
         static let lastInboxesUpdated = "LastInboxesUpdated"
     }
     
-    fileprivate var lastLabelsUpdateds: Dictionary<String, UpdateTime> {
+    var lastLabelsUpdateds: Dictionary<String, UpdateTime> {
         get {
             return (getShared().customObjectForKey(Key.lastLabelsUpdated) as? Dictionary<String, UpdateTime>) ?? [:]
         }
@@ -102,7 +98,7 @@ final class LastUpdatedStore : SharedCacheBase {
         }
     }
     
-    fileprivate var labelsUnreadCounts: Dictionary<String, Int> {
+    var labelsUnreadCounts: Dictionary<String, Int> {
         get {
             return (getShared().customObjectForKey(Key.labelsUnreadCount) as? Dictionary<String, Int>) ?? [:]
         }
@@ -114,7 +110,8 @@ final class LastUpdatedStore : SharedCacheBase {
     
     var lastEventID: String! {
         get {
-            return getShared().string(forKey: Key.lastEventID) ?? "0"
+            let eid =  getShared().string(forKey: Key.lastEventID) ?? "0"
+            return eid
         }
         set {
             getShared().setValue(newValue, forKey: Key.lastEventID)
@@ -189,6 +186,7 @@ final class LastUpdatedStore : SharedCacheBase {
     func UnreadCountForKey(_ labelID : String) -> Int {
         return labelsUnreadCounts[labelID] ?? 0
     }
+    
     func UnreadCountForKey(_ location : MessageLocation) -> Int {
         let str_location = String(location.rawValue)
         return labelsUnreadCounts[str_location] ?? 0
@@ -202,7 +200,6 @@ final class LastUpdatedStore : SharedCacheBase {
         let str_location = String(location.rawValue)
         return labelsUnreadCounts[str_location] = count
     }
-    
     
     // Mailbox unread count change
     func UnreadMailboxMessage(_ location : MessageLocation) {
@@ -233,6 +230,8 @@ final class LastUpdatedStore : SharedCacheBase {
         getShared().removeObject(forKey: Key.mailboxUnreadCount)
         getShared().removeObject(forKey: Key.labelsUnreadCount)
         getShared().removeObject(forKey: Key.lastCantactsUpdated)
+        getShared().removeObject(forKey: Key.unreadMessageCount)
+        
         getShared().synchronize()
     }
 }

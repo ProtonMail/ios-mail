@@ -33,10 +33,10 @@
 @property (nonatomic) NSMutableArray *selectedContacts;
 @property (nonatomic, weak) IBOutlet id<MBContactCollectionViewDelegate> contactDelegate;
 
-- (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model withCompletion:(void(^)())completion;
-- (void)removeFromSelectedContacts:(NSInteger)index withCompletion:(void(^)())completion;
+- (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model withCompletion:(void(^)(void))completion;
+- (void)removeFromSelectedContacts:(NSInteger)index withCompletion:(void(^)(void))completion;
 - (void)setFocusOnEntry;
-- (void)scrollToEntryAnimated:(BOOL)animated onComplete:(void(^)())complete;
+- (void)scrollToEntryAnimated:(BOOL)animated onComplete:(void(^)(void))complete;
 - (BOOL)isEntryCell:(NSIndexPath*)indexPath;
 - (BOOL)isPromptCell:(NSIndexPath*)indexPath;
 - (BOOL)isContactCell:(NSIndexPath*)indexPath;

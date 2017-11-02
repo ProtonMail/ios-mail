@@ -19,7 +19,7 @@ import UIKit
 
 extension UIAlertController {
     
-    func addOKAction() {
+    public func addOKAction() {
         addAction(UIAlertAction.okAction())
     }
 }

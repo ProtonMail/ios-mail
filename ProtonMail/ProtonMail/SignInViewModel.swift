@@ -7,3 +7,13 @@
 //
 
 import Foundation
+
+
+
+
+
+enum SignInUIFlow : Int {
+    case requirePin = 0
+    case requireTouchID = 1
+    case restore = 2
+}

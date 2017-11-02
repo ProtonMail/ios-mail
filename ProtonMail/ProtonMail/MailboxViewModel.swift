@@ -18,7 +18,7 @@ enum SwipeResponse {
 class MailboxViewModel {
     typealias CompletionBlock = APIService.CompletionBlock
     
-    public init() { }
+    init() { }
     
     func getNavigationTitle() -> String {
         fatalError("This method must be overridden")
@@ -45,10 +45,13 @@ class MailboxViewModel {
         msg.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
         msg.needsUpdate = true
         msg.location = .archive
-        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
+        if let context = msg.managedObjectContext {
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
+            }
         }
-        
         return .showUndo
     }
     
@@ -57,8 +60,12 @@ class MailboxViewModel {
         msg.removeLocationFromLabels(currentlocation: msg.location, location: .spam, keepSent: true)
         msg.needsUpdate = true
         msg.location = .spam
-        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
+        if let context = msg.managedObjectContext {
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
+            }
         }
         return .showUndo
     }
@@ -68,8 +75,12 @@ class MailboxViewModel {
         msg.setLabelLocation(.starred)
         msg.isStarred = true
         msg.needsUpdate = true
-        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
+        if let context = msg.managedObjectContext {
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
+            }
         }
         return .nothing
     }
@@ -104,10 +115,12 @@ class MailboxViewModel {
         }
         
         if fromLocation == .inbox {
-            UIApplication.shared.applicationIconBadgeNumber = fromCount
+            UIApplication.setBadge(badge: fromCount)
+            //UIApplication.shared.applicationIconBadgeNumber = fromCount
         }
         if toLocation == .inbox {
-            UIApplication.shared.applicationIconBadgeNumber = toCount
+            UIApplication.setBadge(badge: toCount)
+            //UIApplication.shared.applicationIconBadgeNumber = toCount
         }
     }
     
@@ -133,7 +146,8 @@ class MailboxViewModel {
             lastUpdatedStore.updateUnreadCountForKey(.starred, count: staredCount)
         }
         if location == .inbox {
-            UIApplication.shared.applicationIconBadgeNumber = count
+            UIApplication.setBadge(badge: count)
+            //UIApplication.shared.applicationIconBadgeNumber = count
         }
     }
     
@@ -192,5 +206,9 @@ class MailboxViewModel {
     
     func resetNotificationMessage() -> Void {
         fatalError("This method must be overridden")
+    }
+    
+    func reloadTable() -> Bool {
+        return false
     }
 }

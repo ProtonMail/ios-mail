@@ -255,7 +255,7 @@ typedef NS_ENUM(NSInteger, ContactCollectionViewSection) {
 
 #pragma mark - Helper Methods
 
-- (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model withCompletion:(void(^)())completion
+- (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model withCompletion:(void(^)(void))completion
 {
     if ([[self indexPathsForVisibleItems] containsObject:self.entryCellIndexPath])
     {
@@ -287,7 +287,7 @@ typedef NS_ENUM(NSInteger, ContactCollectionViewSection) {
     }
 }
 
-- (void)removeFromSelectedContacts:(NSInteger)index withCompletion:(void(^)())completion
+- (void)removeFromSelectedContacts:(NSInteger)index withCompletion:(void(^)(void))completion
 {
     if (self.selectedContacts.count + 1 > self.indexPathsForSelectedItems.count)
     {
@@ -380,7 +380,7 @@ typedef NS_ENUM(NSInteger, ContactCollectionViewSection) {
     return [[self indexPathsForVisibleItems] containsObject:[self entryCellIndexPath]];
 }
 
-- (void)scrollToEntryAnimated:(BOOL)animated onComplete:(void(^)())complete
+- (void)scrollToEntryAnimated:(BOOL)animated onComplete:(void(^)(void))complete
 {
     if (animated)
     {

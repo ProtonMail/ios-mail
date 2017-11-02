@@ -31,8 +31,8 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     @IBOutlet weak var privacyButton: UIButton!
     
     //define
-    fileprivate let hidePriority : UILayoutPriority = 1.0;
-    fileprivate let showPriority: UILayoutPriority = 750.0;
+    fileprivate let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0);
+    fileprivate let showPriority: UILayoutPriority = UILayoutPriority(rawValue: 750.0);
     
     @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
@@ -73,7 +73,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     override func viewDidLoad() {
         super.viewDidLoad()
         resetChecking()
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         MBProgressHUD.showAdded(to: view, animated: true)
         pickerButton.isHidden = true
         pickedDomainLabel.isHidden = true
@@ -269,7 +269,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         self.dismiss(animated: true, completion: nil);
     }
     
-    func cancelSelection(_ sender: UIButton){
+    @objc func cancelSelection(_ sender: UIButton){
         PMLog.D("Cancel");
         self.dismiss(animated: true, completion: nil);
     }
