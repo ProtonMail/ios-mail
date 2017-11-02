@@ -39,14 +39,177 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     private func prepareContactData() {
         if let c = contact, c.managedObjectContext != nil {
             profile = ContactEditProfile(o_displayname: c.name)
-            
-            if let es = c.getEmailsArray() {
-                for i in 0 ..< es.count {
-                    let e = es[i]
-                    let ce = ContactEditEmail(o_order: i,o_type: e.type, o_email:e.email );
-                    emails.append(ce)
+            let cards = c.getCardData()
+            for c in cards {
+                switch c.type {
+                case .PlainText:
+                    if let vcard = PMNIEzvcard.parseFirst(c.data) {
+                        let emails = vcard.getEmails()
+                        var order : Int = 1
+                        for e in emails {
+                            let types = e.getTypes()
+                            let type = types.count > 0 ? types.first! : ""
+                            let ce = ContactEditEmail(n_order: order, n_type:type, n_email:e.getValue())
+                            self.emails.append(ce)
+                            order += 1
+                        }
+                    }
+                    break
+                case .EncryptedOnly: break
+                case .SignedOnly:
+                    if let vcard = PMNIEzvcard.parseFirst(c.data) {
+                        let emails = vcard.getEmails()
+                        var order : Int = 1
+                        for e in emails {
+                            let types = e.getTypes()
+                            let type = types.count > 0 ? types.first! : ""
+                            let ce = ContactEditEmail(n_order: order, n_type:type, n_email:e.getValue())
+                            self.emails.append(ce)
+                            order += 1
+                        }
+                    }
+                    break
+                case .SignAndEncrypt:
+                    let pt_contact = sharedOpenPGP.decryptMessage(c.data, passphras: sharedUserDataService.mailboxPassword!)
+                    if let vcard = PMNIEzvcard.parseFirst(pt_contact) {
+                        let types = vcard.getPropertyTypes()
+                        for type in types {
+                            switch type {
+                            case "Telephone":
+                                let telephones = vcard.getTelephoneNumbers()
+                                var order : Int = 1
+                                for t in telephones {
+                                    let types = t.getTypes()
+                                    let type = types.count > 0 ? types.first! : ""
+                                    let cp = ContactEditPhone(n_order: order, n_type:type, n_phone:t.getText())
+                                    self.cells.append(cp)
+                                    order += 1
+                                }
+                                break
+                            case "Address":
+                                let addresses = vcard.getAddresses()
+                                var order : Int = 1
+                                for a in addresses {
+                                    let types = a.getTypes()
+                                    let type = types.count > 0 ? types.first! : ""
+                                    let address = a.getPoBoxes().joined(separator: ",")
+                                    let ca = ContactEditAddress(n_order: order, n_type:type, n_street:address)
+                                    self.addresses.append(ca)
+                                    order += 1
+                                }
+                                
+                            case "Organization":
+                                let org = vcard.getOrganization()
+                                let info = ContactEditInformation(type: .organization, value:org?.getValue() ?? "")
+                                self.informations.append(info)
+                            case "Title":
+                                let title = vcard.getTitle()
+                                let info = ContactEditInformation(type: .title, value:title?.getTitle() ?? "")
+                                self.informations.append(info)
+                            case "Nickname":
+                                let nick = vcard.getNickname()
+                                let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "")
+                                self.informations.append(info)
+                            case "Birthday":
+                                //                            let nick = vcard.ge
+                                //                            let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "")
+                                //                            origInformations.append(info)
+                                break
+                            case "Anniversary":
+                                break
+                                //case "Agent":
+                                //case "Birthday":
+                                //case "CalendarRequestUri":
+                                //case "CalendarUri":
+                                //case "Categories":
+                                //case "Classification":
+                                //case "ClientPidMap":
+                                //case "Email": //this in type2
+                                //case "FreeBusyUrl":
+                                //case "FormattedName":
+                                //case "Gender":
+                                //case "Geo":
+                                //case "Impp":
+                                
+                                //[0] = "Telephone"
+                                //[1] = "Organization"
+                                //[2] = "Address"
+                                //[3] = "Nickname"
+                                //[4] = "RawProperty"
+                                //[5] = "Title"
+                                //[6] = "Birthday"
+                                //[7] = "Url"
+                                //[8] = "Note"
+                                
+                                //
+                                //"Key":
+                                //"KindScribe());
+                                //"LabelScribe());
+                                //"LanguageScribe());
+                                //"LogoScribe());
+                                //"MailerScribe());
+                                //"MemberScribe());
+                                //"NicknameScribe());
+                                //"NoteScribe());
+                                //"OrganizationScribe());
+                                //"PhotoScribe());
+                                //"ProductIdScribe());
+                                //"ProfileScribe());
+                                //"RelatedScribe());
+                                //"RevisionScribe());
+                                //"RoleScribe());
+                                //"SortStringScribe());
+                                //"SoundScribe());
+                                //"SourceDisplayTextScribe());
+                                //"SourceScribe());
+                                //"StructuredNameScribe());
+                                //"TelephoneScribe());
+                                //"TimezoneScribe());
+                                //"TitleScribe());
+                                //"UidScribe());
+                                //"UrlScribe());
+                                //"BirthplaceScribe());
+                                //"DeathdateScribe());
+                                //"DeathplaceScribe());
+                                //"ExpertiseScribe());
+                                //"OrgDirectoryScribe());
+                                //"InterestScribe());
+                            //"HobbyScribe());
+                            default:
+                                break
+                            }
+                        }
+                        
+                        let customs = vcard.getCustoms()
+                        var order : Int = 1
+                        for t in customs {
+                            let type = t.getType()
+                            let cp = ContactEditField(n_order: order, n_type: type, n_field: t.getValue() )
+                         self.fields.append(cp)
+                            order += 1
+                        }
+                        
+                        if let note = vcard.getNote() {
+                            let n = ContactEditNote(n_note: note.getNote())
+                            n.isNew = false
+                            self.notes = n
+                        }
+                    }
+                    break
                 }
             }
+            
+            
+            
+            
+            
+//            if let es = c.getEmailsArray() {
+//                for i in 0 ..< es.count {
+//                    let e = es[i]
+//                    let ce = ContactEditEmail(o_order: i,o_type: e.type, o_email:e.email );
+//                    emails.append(ce)
+//                }
+//            }
             
 //            var emails : [ContactEditEmail] = []
 //            var cells : [ContactEditPhone] = []

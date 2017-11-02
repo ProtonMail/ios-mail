@@ -18,28 +18,26 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate var viewModel : ContactEditViewModel!
     
     //
-    private let kInvalidEmailShakeTimes: Float = 3.0
-    private let kInvalidEmailShakeOffset: CGFloat = 10.0
-    
-    fileprivate var origFrameHeight : CGFloat = 0.0
+    private let kInvalidEmailShakeTimes: Float        = 3.0
+    private let kInvalidEmailShakeOffset: CGFloat     = 10.0
+    fileprivate var origFrameHeight : CGFloat         = 0.0
     
     //const cell identifier
-    fileprivate let kContactEditAddCell: String = "ContactEditAddCell"
-    fileprivate let kContactEditEmailCell: String = "ContactEditEmailCell"
-    
+    fileprivate let kContactEditAddCell: String       = "ContactEditAddCell"
+    fileprivate let kContactEditDeleteCell: String    = "ContactEditDeleteCell"
+    fileprivate let kContactEditEmailCell: String     = "ContactEditEmailCell"
     fileprivate let kContactEditCellphoneCell: String = "ContactEditCellphoneCell"
-    fileprivate let kContactEditAddressCell: String = "ContactEditAddressCell"
-    fileprivate let kContactEditCellInfoCell: String = "ContactEditInformationCell"
-    fileprivate let kContactEditFieldCell: String = "ContactEditFieldCell"
-    fileprivate let kContactEditNotesCell: String = "ContactEditNotesCell"
+    fileprivate let kContactEditAddressCell: String   = "ContactEditAddressCell"
+    fileprivate let kContactEditCellInfoCell: String  = "ContactEditInformationCell"
+    fileprivate let kContactEditFieldCell: String     = "ContactEditFieldCell"
+    fileprivate let kContactEditNotesCell: String     = "ContactEditNotesCell"
     
     //const segue
-    fileprivate let ktoContactTypeSegue : String = "toContactTypeSegue"
+    fileprivate let ktoContactTypeSegue : String      = "toContactTypeSegue"
     
-    
+    //
     fileprivate var doneItem: UIBarButtonItem!
     @IBOutlet weak var cancelItem: UIBarButtonItem!
-    
     @IBOutlet weak var displayNameField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomOffset: NSLayoutConstraint!
@@ -59,7 +57,9 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.doneItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ContactEditViewController.doneAction))
+        self.doneItem = UIBarButtonItem(title: "Done",
+                                        style: UIBarButtonItemStyle.plain,
+                                        target: self, action: #selector(ContactEditViewController.doneAction))
         self.navigationItem.rightBarButtonItem = doneItem
        
         if viewModel.isNew() {
@@ -84,11 +84,10 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
-        
         dismissKeyboard()
     }
     
@@ -333,14 +332,14 @@ extension ContactEditViewController: UITableViewDataSource {
             cell.selectionStyle = .none
             outCell = cell
         case .delete:
-            let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditDeleteCell, for: indexPath) as! ContactEditAddCell
             cell.configCell(value: "Delete Contact")
             cell.selectionStyle = .default
             outCell = cell
         }
         
         if outCell == nil { //default
-            outCell = tableView.dequeueReusableCell(withIdentifier: "ContactEditAddCell", for: indexPath)
+            outCell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath)
             outCell?.selectionStyle = .none
         }
         return outCell!

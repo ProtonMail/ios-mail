@@ -63,9 +63,12 @@ class AppDelegate: UIResponder {
                                 viewController.view.alpha = 0
                                 window.rootViewController = viewController
                                 
-                                UIView.animate(withDuration: ViewDefined.animationDuration/2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
-                                    viewController.view.alpha = 1.0
-                                    }, completion: nil)
+                                UIView.animate(withDuration: ViewDefined.animationDuration/2,
+                                               delay: 0, options: UIViewAnimationOptions(),
+                                               animations: { () -> Void in
+                                                    viewController.view.alpha = 1.0
+                                                },
+                                               completion: nil)
                         })
                     }
                 }

@@ -456,7 +456,6 @@
 		7528FFD31FA7FEC3005F66A3 /* ContactEditViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFB81FA7FEBF005F66A3 /* ContactEditViewModelImpl.swift */; };
 		7528FFD41FA7FEC3005F66A3 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFB91FA7FEBF005F66A3 /* Array+Extension.swift */; };
 		7528FFD61FA7FEC3005F66A3 /* ContactsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFBB1FA7FEBF005F66A3 /* ContactsAPI.swift */; };
-		7528FFD71FA7FEC3005F66A3 /* ContactEditAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFBC1FA7FEBF005F66A3 /* ContactEditAddressCell.swift */; };
 		7528FFD81FA7FEC3005F66A3 /* ContactEditCell+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFBD1FA7FEC0005F66A3 /* ContactEditCell+Delegates.swift */; };
 		7528FFD91FA7FEC3005F66A3 /* ContactSectionHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFBE1FA7FEC0005F66A3 /* ContactSectionHeadView.swift */; };
 		7528FFDA1FA7FEC3005F66A3 /* ContactEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFBF1FA7FEC0005F66A3 /* ContactEditViewController.swift */; };
@@ -477,7 +476,6 @@
 		7528FFEA1FA7FEF6005F66A3 /* ContactDetailsViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFB21FA7FEBD005F66A3 /* ContactDetailsViewModelImpl.swift */; };
 		7528FFEB1FA7FEF6005F66A3 /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFB01FA7FEBD005F66A3 /* ContactDetailViewController.swift */; };
 		7528FFEC1FA7FEF6005F66A3 /* ContactEditAddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFB31FA7FEBE005F66A3 /* ContactEditAddCell.swift */; };
-		7528FFED1FA7FEF6005F66A3 /* ContactEditAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFBC1FA7FEBF005F66A3 /* ContactEditAddressCell.swift */; };
 		7528FFEE1FA7FEF6005F66A3 /* ContactEditCell+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFBD1FA7FEC0005F66A3 /* ContactEditCell+Delegates.swift */; };
 		7528FFEF1FA7FEF6005F66A3 /* ContactEditEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFC61FA7FEC2005F66A3 /* ContactEditEmailCell.swift */; };
 		7528FFF01FA7FEF6005F66A3 /* ContactEditFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFC31FA7FEC1005F66A3 /* ContactEditFieldCell.swift */; };
@@ -509,6 +507,8 @@
 		7537450A1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */; };
 		753934C31FAA91CF00EBFBA5 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
 		753934C41FAA91D000EBFBA5 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
+		753934C71FAB961300EBFBA5 /* ContactEditAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753934C61FAB961200EBFBA5 /* ContactEditAddressCell.swift */; };
+		753934C81FAB96CA00EBFBA5 /* ContactEditAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753934C61FAB961200EBFBA5 /* ContactEditAddressCell.swift */; };
 		753E30A71F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
 		753E30A81F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
 		753E30A91F86F77D00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
@@ -1312,7 +1312,6 @@
 		7528FFB81FA7FEBF005F66A3 /* ContactEditViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactEditViewModelImpl.swift; path = ProtonMail/ContactEditViewModelImpl.swift; sourceTree = SOURCE_ROOT; };
 		7528FFB91FA7FEBF005F66A3 /* Array+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Array+Extension.swift"; path = "ProtonMail/Array+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		7528FFBB1FA7FEBF005F66A3 /* ContactsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactsAPI.swift; path = ProtonMail/ContactsAPI.swift; sourceTree = SOURCE_ROOT; };
-		7528FFBC1FA7FEBF005F66A3 /* ContactEditAddressCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactEditAddressCell.swift; path = ProtonMail/ContactEditAddressCell.swift; sourceTree = SOURCE_ROOT; };
 		7528FFBD1FA7FEC0005F66A3 /* ContactEditCell+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ContactEditCell+Delegates.swift"; path = "ProtonMail/ContactEditCell+Delegates.swift"; sourceTree = SOURCE_ROOT; };
 		7528FFBE1FA7FEC0005F66A3 /* ContactSectionHeadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactSectionHeadView.swift; path = ProtonMail/ContactSectionHeadView.swift; sourceTree = SOURCE_ROOT; };
 		7528FFBF1FA7FEC0005F66A3 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactEditViewController.swift; path = ProtonMail/ContactEditViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -1341,6 +1340,7 @@
 		753745031D6B7E8F00682C5A /* APIError+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIError+Auth.swift"; sourceTree = "<group>"; };
 		753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ResponseTransformer.swift"; sourceTree = "<group>"; };
 		753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ErrorExtension.swift"; sourceTree = "<group>"; };
+		753934C61FAB961200EBFBA5 /* ContactEditAddressCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditAddressCell.swift; sourceTree = "<group>"; };
 		753A36161EF250D300032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		753A36171EF250D400032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		753A361C1EF2512200032667 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1921,7 +1921,7 @@
 				7528FFAF1FA7FEBD005F66A3 /* ContactTypeAddCustomCell.swift */,
 				7528FFC81FA7FEC2005F66A3 /* ContactDetailsDisplayCell.swift */,
 				7528FFB31FA7FEBE005F66A3 /* ContactEditAddCell.swift */,
-				7528FFBC1FA7FEBF005F66A3 /* ContactEditAddressCell.swift */,
+				753934C61FAB961200EBFBA5 /* ContactEditAddressCell.swift */,
 				7528FFBD1FA7FEC0005F66A3 /* ContactEditCell+Delegates.swift */,
 				7528FFC61FA7FEC2005F66A3 /* ContactEditEmailCell.swift */,
 				7528FFC31FA7FEC1005F66A3 /* ContactEditFieldCell.swift */,
@@ -1949,21 +1949,21 @@
 			children = (
 				75475EA61CCEB97400588D41 /* BaseViewController.swift */,
 				706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */,
-				755F92151C7E67C200BAEDF9 /* Onboarding */,
 				07B123761AB8CD76006EA38C /* Attachments */,
 				07CB23541AB0F20F00699068 /* Bugs */,
 				709FE39E1A977C8400034288 /* Compose */,
 				706962031A713959001443B2 /* Contacts */,
-				756DAC431C92B2B600F3486C /* Review */,
-				70945E681A80F331002B6837 /* Mailbox */,
 				75E652B21B82AA630084DDF8 /* Labels */,
+				70945E681A80F331002B6837 /* Mailbox */,
+				7061A3F11A6E8C4A0006D36C /* Menu */,
 				701704761A79185D000A90D2 /* Message Detail */,
+				755F92151C7E67C200BAEDF9 /* Onboarding */,
+				756DAC431C92B2B600F3486C /* Review */,
 				706932A91A77BE2900A75A93 /* Search */,
 				706962041A713960001443B2 /* Settings */,
 				07009EFD1A659A8000129B07 /* Sign In */,
-				7061A3F11A6E8C4A0006D36C /* Menu */,
-				07CCCC2C1AA2962200ECA79E /* Views */,
 				7523A1A31DB9513900A89E55 /* StoryBoard */,
+				07CCCC2C1AA2962200ECA79E /* Views */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -3703,7 +3703,6 @@
 				7528FFCD1FA7FEC3005F66A3 /* ContactDetailsViewModelImpl.swift in Sources */,
 				7528FFDA1FA7FEC3005F66A3 /* ContactEditViewController.swift in Sources */,
 				07655BBD1AB1036200CD3883 /* BugDataService.swift in Sources */,
-				7528FFD71FA7FEC3005F66A3 /* ContactEditAddressCell.swift in Sources */,
 				70FC90DA1A9BC11F00498B42 /* String+Extension.swift in Sources */,
 				7528FFAC1FA7FE85005F66A3 /* TimeInterval+Extension.swift in Sources */,
 				759BBDC81BA0D1E3002608B5 /* PMView.swift in Sources */,
@@ -3804,6 +3803,7 @@
 				755F921D1C7E7FF300BAEDF9 /* Onboarding.swift in Sources */,
 				75106D0D1C97704B007F8176 /* FeedbackTableViewCell.swift in Sources */,
 				75BF8F461DA6E49D000F350F /* SRPClient.swift in Sources */,
+				753934C71FAB961300EBFBA5 /* ContactEditAddressCell.swift in Sources */,
 				7567B06F1B334FD300A72A1E /* ViewModelServiceImpl.swift in Sources */,
 				75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */,
 				7514FC291B79825F00DDD297 /* MenuItem.swift in Sources */,
@@ -4322,7 +4322,6 @@
 				75256C721F16DFBD00F2771E /* LabelEditingViewModelImpl.swift in Sources */,
 				7528000E1FA7FEF6005F66A3 /* NotificationCenter+KeyboardExtension.swift in Sources */,
 				75256C731F16DFBD00F2771E /* FolderEditingViewModelImpl .swift in Sources */,
-				7528FFED1FA7FEF6005F66A3 /* ContactEditAddressCell.swift in Sources */,
 				7528FFF21FA7FEF6005F66A3 /* ContactEditNotesCell.swift in Sources */,
 				75256C741F16DFBD00F2771E /* LabelCreatingViewModelImple.swift in Sources */,
 				752800171FA7FEF6005F66A3 /* UIDevice+InfoExtension.swift in Sources */,
@@ -4445,6 +4444,7 @@
 				752800041FA7FEF6005F66A3 /* ContactTypeViewModel.swift in Sources */,
 				75DE7CC11CAAEA4900F5443E /* MBContactCollectionViewFlowLayout.m in Sources */,
 				75DE7CC51CAAEA4900F5443E /* SettingsCell.swift in Sources */,
+				753934C81FAB96CA00EBFBA5 /* ContactEditAddressCell.swift in Sources */,
 				75E3EF3C1F16F05200E14D1E /* LanguageManager.m in Sources */,
 				753E30A81F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */,
 				75DE7CC61CAAEA4900F5443E /* HumanCheckMenuViewController.swift in Sources */,
