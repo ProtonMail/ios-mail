@@ -150,6 +150,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.noResultLabel.text = NSLocalizedString("No Messages", comment: "message when mailbox doesnt have emailsß")
+        
         undoButton.setTitle(NSLocalizedString("Undo", comment: "Action"), for: .normal)
 
         self.setNavigationTitleText(viewModel.getNavigationTitle())
