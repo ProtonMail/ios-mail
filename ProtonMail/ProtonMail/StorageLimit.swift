@@ -30,7 +30,7 @@ class StorageLimit {
         
         let maxSpace : Double = Double(maxSpace)
         let usedSpace : Double = Double(usedSpace) // * 160)
-        let percentage : Double = Double(AppConstants.SpaceWarningThreshold / 100)
+        let percentage : Double = Double(AppConstants.SpaceWarningThresholdDouble / 100)
         let threshold : Double = percentage * maxSpace
         
         if maxSpace == 0 || usedSpace < threshold {
@@ -48,7 +48,7 @@ class StorageLimit {
                 message = String(format: localized, formattedMaxSpace);
             }
         } else {
-            message = String(format: NSLocalizedString("You have used %d%% of your storage space (%@).", comment: "Description"), Int(AppConstants.SpaceWarningThreshold), formattedMaxSpace);
+            message = String(format: NSLocalizedString("You have used %d%% of your storage space (%@).", comment: "Description"), AppConstants.SpaceWarningThreshold, formattedMaxSpace);
         }
         
         let alertController = UIAlertController(

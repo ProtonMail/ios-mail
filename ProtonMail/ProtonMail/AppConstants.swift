@@ -14,6 +14,7 @@ class AppConstants {
     static let CacheVersion : Int = 98
     static let AuthCacheVersion : Int = 15
     static let SpaceWarningThreshold: Int = 80
+    static let SpaceWarningThresholdDouble: Double = 80
     static let SplashVersion : Int = 1
     static let TourVersion : Int = 2
     
