@@ -52,22 +52,18 @@ class MessageDataService {
     }
     
     // MAKR : upload attachment
-    func uploadAttachment(_ att: Attachment!)
-    {
+    func uploadAttachment(_ att: Attachment!) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            context.perform {
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
-                    self.dequeueIfNeeded()
-                } else {
-                    self.queue(att, action: .uploadAtt)
-                }
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D("error: \(error)")
+                self.dequeueIfNeeded()
+            } else {
+                self.queue(att, action: .uploadAtt)
             }
         }
     }
     
-    func deleteAttachment(_ messageid : String, att: Attachment!)
-    {
+    func deleteAttachment(_ messageid : String, att: Attachment!) {
         let out : [String : Any] = ["MessageID" : messageid, "AttachmentID" : att.attachmentID]
         if let context = sharedCoreDataService.mainManagedObjectContext {
             context.delete(att)
@@ -84,18 +80,16 @@ class MessageDataService {
     func send(_ messageID : String!, completion: CompletionBlock?) {
         var error: NSError?
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            context.perform {
-                if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                    //message.location = .outbox
-                    error = context.saveUpstreamIfNeeded()
-                    if error != nil {
-                        PMLog.D(" error: \(String(describing: error))")
-                    } else {
-                        self.queue(message, action: .send)
-                    }
+            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                //message.location = .outbox
+                error = context.saveUpstreamIfNeeded()
+                if error != nil {
+                    PMLog.D(" error: \(String(describing: error))")
                 } else {
-                    //TODO:: handle can't find the message error.
+                    self.queue(message, action: .send)
                 }
+            } else {
+                //TODO:: handle can't find the message error.
             }
         } else {
             error = NSError.protonMailError(500, localizedDescription: NSLocalizedString("No managedObjectContext", comment: "this is a system object can't find, this could be not trasnlated"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
@@ -771,11 +765,9 @@ class MessageDataService {
                                                             if let fileURL = fileURL {
                                                                 attachment.localURL = fileURL
                                                                 attachment.fileData = try? Data(contentsOf: fileURL)
-                                                                context.perform {
-                                                                    error = context.saveUpstreamIfNeeded()
-                                                                    if error != nil  {
-                                                                        PMLog.D(" error: \(String(describing: error))")
-                                                                    }
+                                                                error = context.saveUpstreamIfNeeded()
+                                                                if error != nil  {
+                                                                    PMLog.D(" error: \(String(describing: error))")
                                                                 }
                                                             }
                                                         }
@@ -855,15 +847,11 @@ class MessageDataService {
                                             message_n.isDetailDownloaded = true
                                             message_n.needsUpdate = true
                                             message_n.isRead = true
-                                            
                                             if let ctx = message_n.managedObjectContext {
-                                                ctx.perform {
-                                                    if let error = ctx.saveUpstreamIfNeeded() {
-                                                        PMLog.D("\(error)")
-                                                    }
+                                                if let error = ctx.saveUpstreamIfNeeded() {
+                                                    PMLog.D("\(error)")
                                                 }
                                             }
-
                                             let tmpError = context.saveUpstreamIfNeeded()
                                             DispatchQueue.main.async {
                                                 completion(task, response, message_n, tmpError)
@@ -1136,25 +1124,20 @@ class MessageDataService {
     
     func saveDraft(_ message : Message!) {
         if let context = message.managedObjectContext {
-            context.perform {
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                } else {
-                    self.queue(message, action: .saveDraft)
-                }
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(" error: \(error)")
+            } else {
+                self.queue(message, action: .saveDraft)
             }
         }
     }
     
-    func deleteDraft (_ message : Message!)
-    {
+    func deleteDraft (_ message : Message!) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            context.perform {
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                } else {
-                    self.queue(message, action: .delete)
-                }
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(" error: \(error)")
+            } else {
+                self.queue(message, action: .delete)
             }
         }
     }
@@ -1339,62 +1322,66 @@ class MessageDataService {
                 do {
                     if let message = try context.existingObject(with: objectID) as? Message {
                         let completionWrapper: CompletionBlock = { task, response, error in
-                            context.perform() {
-                                PMLog.D("SendAttachmentDebug == finish save draft!")
-                                if var mess = response {
-                                    if let messageID = mess["ID"] as? String {
-                                        PMLog.D("\(mess)")
-                                        mess.removeValue(forKey: "Attachments")
-                                        PMLog.D("\(mess)")
-                                        
-                                        message.messageID = messageID
-                                        message.isDetailDownloaded = true
-                                        
-                                        var hasTemp = false;
-                                        let attachments = message.mutableSetValue(forKey: "attachments")
-                                        for att in attachments {
-                                            if let att = att as? Attachment {
-                                                if att.isTemp {
-                                                    hasTemp = true;
-                                                    context.delete(att)
-                                                }
+                            PMLog.D("SendAttachmentDebug == finish save draft!")
+                            if let mess = response {
+                                if let messageID = mess["ID"] as? String {
+                                    message.messageID = messageID
+                                    message.isDetailDownloaded = true
+                                    
+                                    var hasTemp = false;
+                                    let attachments = message.mutableSetValue(forKey: "attachments")
+                                    for att in attachments {
+                                        if let att = att as? Attachment {
+                                            if att.isTemp {
+                                                hasTemp = true;
+                                                context.delete(att)
                                             }
                                         }
-                                        
-                                        if let error = context.saveUpstreamIfNeeded() {
-                                            PMLog.D(" error: \(error)")
-                                        }
-                                        
-                                        if hasTemp {
-                                            do {
-                                                try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
-                                                if let save_error = context.saveUpstreamIfNeeded() {
-                                                    PMLog.D(" error: \(save_error)")
-                                                }
-                                            } catch let exc as NSError {
-                                                completion?(task, response, exc)
-                                                return
-                                            }
-                                        } else {
-                                            do {
-                                                try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
-                                                if let error = context.saveUpstreamIfNeeded() {
-                                                    PMLog.D(" error: \(error)")
-                                                }
-                                            } catch {// let _ as NSError {
-                                                
-                                            }
-                                        }
-                                        completion?(task, response, error)
-                                        return
-                                    } else {//error
-                                        completion?(task, response, error)
-                                        return
                                     }
+                                    
+                                    
+                                    if let subject = mess["Subject"] as? String {
+                                        message.title = subject
+                                    }
+                                    if let timeValue = mess["Time"] {
+                                        if let timeString = timeValue as? NSString {
+                                            let time = timeString.doubleValue as TimeInterval
+                                            if time != 0 {
+                                                message.time = time.asDate()
+                                            }
+                                        } else if let dateNumber = timeValue as? NSNumber {
+                                            let time = dateNumber.doubleValue as TimeInterval
+                                            if time != 0 {
+                                                message.time = time.asDate()
+                                            }
+                                        }
+                                    }
+                                    
+                                    
+                                    if let error = context.saveUpstreamIfNeeded() {
+                                        PMLog.D(" error: \(error)")
+                                    }
+                                    
+                                    if hasTemp {
+                                        do {
+                                            try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
+                                            if let save_error = context.saveUpstreamIfNeeded() {
+                                                PMLog.D(" error: \(save_error)")
+                                            }
+                                        } catch let exc as NSError {
+                                            completion?(task, response, exc)
+                                            return
+                                        }
+                                    }
+                                    completion?(task, response, error)
+                                    return
                                 } else {//error
                                     completion?(task, response, error)
                                     return
                                 }
+                            } else {//error
+                                completion?(task, response, error)
+                                return
                             }
                         }
                         
@@ -1686,10 +1673,8 @@ class MessageDataService {
                                         //ignore
                                     }
                                     if let context = message.managedObjectContext {
-                                        context.perform {
-                                            if let error = context.saveUpstreamIfNeeded() {
-                                                PMLog.D(" error: \(error)")
-                                            }
+                                        if let error = context.saveUpstreamIfNeeded() {
+                                            PMLog.D(" error: \(error)")
                                         }
                                     }
                                 }
