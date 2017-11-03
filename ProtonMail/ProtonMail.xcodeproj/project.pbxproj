@@ -75,7 +75,6 @@
 		701DDE941AA64DEB0038149C /* MBContactCollectionViewPromptCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE8A1AA64DEB0038149C /* MBContactCollectionViewPromptCell.m */; };
 		701DDE951AA64DEB0038149C /* MBContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE8C1AA64DEB0038149C /* MBContactModel.m */; };
 		701DDE971AA651100038149C /* ContactVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE961AA651100038149C /* ContactVO.swift */; };
-		701FFE611A9CBAD600380C2B /* EditContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FFE601A9CBAD600380C2B /* EditContactViewController.swift */; };
 		7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */; };
 		7048B9F41A9E385B00D45F57 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7048B9F21A9E385B00D45F57 /* ContactsTableViewCell.swift */; };
 		7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */; };
@@ -903,7 +902,6 @@
 		75DE7CD11CAAEA4900F5443E /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */; };
 		75DE7CD31CAAEA4900F5443E /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D71B6702A2004EEDCA /* EmailView.swift */; };
 		75DE7CD41CAAEA4900F5443E /* MenuLabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756489931B7E77AC007EA207 /* MenuLabelViewCell.swift */; };
-		75DE7CD61CAAEA4900F5443E /* EditContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FFE601A9CBAD600380C2B /* EditContactViewController.swift */; };
 		75DE7CD91CAAEA4900F5443E /* ComposeErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A2F44B1C97D69800BF4306 /* ComposeErrorView.swift */; };
 		75DE7CDE1CAAEA4900F5443E /* MailboxPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713237E1A7844390043DB41 /* MailboxPasswordViewController.swift */; };
 		75DE7CDF1CAAEA4900F5443E /* EmailVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F463891C60071B00918B46 /* EmailVerifyViewController.swift */; };
@@ -1214,7 +1212,6 @@
 		701DDE8C1AA64DEB0038149C /* MBContactModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBContactModel.m; sourceTree = "<group>"; };
 		701DDE8D1AA64DEB0038149C /* MBContactPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBContactPicker.h; sourceTree = "<group>"; };
 		701DDE961AA651100038149C /* ContactVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactVO.swift; sourceTree = "<group>"; };
-		701FFE601A9CBAD600380C2B /* EditContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContactViewController.swift; sourceTree = "<group>"; };
 		7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		7048B9F21A9E385B00D45F57 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
 		7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsTableViewCell.xib; sourceTree = "<group>"; };
@@ -1982,7 +1979,6 @@
 				7048B9F61A9E3B1B00D45F57 /* Cell */,
 				701DDE7C1AA64D430038149C /* MBContactPicker */,
 				706962061A71399D001443B2 /* ContactsViewController.swift */,
-				701FFE601A9CBAD600380C2B /* EditContactViewController.swift */,
 				7528FFC11FA7FEC0005F66A3 /* ContactTypeViewController.swift */,
 				7528FFB01FA7FEBD005F66A3 /* ContactDetailViewController.swift */,
 				7528FFBF1FA7FEC0005F66A3 /* ContactEditViewController.swift */,
@@ -3680,7 +3676,6 @@
 				757F4A151E68F817001CDE71 /* FolderCreatingViewModelImpl.swift in Sources */,
 				756489941B7E77AC007EA207 /* MenuLabelViewCell.swift in Sources */,
 				7567B0791B33880500A72A1E /* APIServiceResponse.swift in Sources */,
-				701FFE611A9CBAD600380C2B /* EditContactViewController.swift in Sources */,
 				07CFC9D41A81A2B0007A72B7 /* Attachment.swift in Sources */,
 				075F0A541ABF5E3E00E6B9AE /* MessageAction.swift in Sources */,
 				752902A81EE5F71C00B46D36 /* LanguageManager.m in Sources */,
@@ -4456,7 +4451,6 @@
 				75DE7CD11CAAEA4900F5443E /* ProtonMailViewController.swift in Sources */,
 				75DE7CD31CAAEA4900F5443E /* EmailView.swift in Sources */,
 				75DE7CD41CAAEA4900F5443E /* MenuLabelViewCell.swift in Sources */,
-				75DE7CD61CAAEA4900F5443E /* EditContactViewController.swift in Sources */,
 				75DE7CD91CAAEA4900F5443E /* ComposeErrorView.swift in Sources */,
 				75DE7CDE1CAAEA4900F5443E /* MailboxPasswordViewController.swift in Sources */,
 				75DE7CDF1CAAEA4900F5443E /* EmailVerifyViewController.swift in Sources */,

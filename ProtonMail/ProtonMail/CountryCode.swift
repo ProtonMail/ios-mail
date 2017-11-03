@@ -21,7 +21,6 @@ public class CountryCode {
     
     static public func getCountryCodes (_ content: [Dictionary<String,Any>]!) -> [CountryCode]! {
         var outList : [CountryCode] = [CountryCode]()
-        
         for con in content {
             let out = CountryCode()
             let _ = out.parseCountryCode(con)

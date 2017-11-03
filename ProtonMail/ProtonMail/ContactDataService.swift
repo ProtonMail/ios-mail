@@ -101,38 +101,6 @@ class ContactDataService {
     }
     
     /**
-     delete a contact
-     
-     - Parameter contactID: delete contact id
-     - Parameter completion: async delete prcess complete response
-     **/
-    func delete(contactID: String,
-                completion: @escaping ContactDeleteComplete) {
-        let api = ContactDeleteRequest<ApiResponse>(ids: [contactID])
-        api.call { (task, response, hasError) in
-            if hasError {
-                completion(response?.error)
-            } else {
-                if let context = sharedCoreDataService.mainManagedObjectContext {
-                    context.performAndWait() {
-                        if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
-                            context.delete(contact)
-                        }
-                        if let error = context.saveUpstreamIfNeeded() {
-                            PMLog.D(" error: \(error)")
-                            completion(error)
-                        } else {
-                            completion(nil)
-                        }
-                    }
-                } else {
-                    completion(NSError.unableToParseResponse(response))
-                }
-            }
-        }
-    }
-
-    /**
      update a exsiting conact
      
      - Parameter contactID: delete contact id
@@ -178,6 +146,39 @@ class ContactDataService {
             }
         }
     }
+    
+    /**
+     delete a contact
+     
+     - Parameter contactID: delete contact id
+     - Parameter completion: async delete prcess complete response
+     **/
+    func delete(contactID: String,
+                completion: @escaping ContactDeleteComplete) {
+        let api = ContactDeleteRequest<ApiResponse>(ids: [contactID])
+        api.call { (task, response, hasError) in
+            if hasError {
+                completion(response?.error)
+            } else {
+                if let context = sharedCoreDataService.mainManagedObjectContext {
+                    context.performAndWait() {
+                        if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
+                            context.delete(contact)
+                        }
+                        if let error = context.saveUpstreamIfNeeded() {
+                            PMLog.D(" error: \(error)")
+                            completion(error)
+                        } else {
+                            completion(nil)
+                        }
+                    }
+                } else {
+                    completion(NSError.unableToParseResponse(response))
+                }
+            }
+        }
+    }
+
     
     /**
      get all contacts from server

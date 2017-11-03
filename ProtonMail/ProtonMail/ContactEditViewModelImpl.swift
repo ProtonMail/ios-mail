@@ -30,6 +30,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     var notes : ContactEditNote = ContactEditNote(n_note: "")
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
     
+    var origvCard2 : PMNIVCard?
+    var origvCard3 : PMNIVCard?
+    
     init(c : Contact?) {
         super.init()
         self.contact = c
@@ -57,7 +60,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     break
                 case .EncryptedOnly: break
                 case .SignedOnly:
-                    if let vcard = PMNIEzvcard.parseFirst(c.data) {
+                    origvCard2 = PMNIEzvcard.parseFirst(c.data)
+                    if let vcard = origvCard2 {
                         let emails = vcard.getEmails()
                         var order : Int = 1
                         for e in emails {
@@ -71,7 +75,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     break
                 case .SignAndEncrypt:
                     let pt_contact = sharedOpenPGP.decryptMessage(c.data, passphras: sharedUserDataService.mailboxPassword!)
-                    if let vcard = PMNIEzvcard.parseFirst(pt_contact) {
+                    origvCard3 = PMNIEzvcard.parseFirst(pt_contact)
+                    if let vcard = origvCard3 {
                         let types = vcard.getPropertyTypes()
                         for type in types {
                             switch type {
@@ -319,48 +324,136 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     
     override func done(complete : @escaping ContactEditSaveComplete) {
         if let c = contact, c.managedObjectContext != nil {
-            
-            //profile.
-            var contactDisplayName : String? = nil
-            if profile.needsUpdate() {
-                contactDisplayName = profile.newDisplayName
+            //update
+            var a_emails: [ContactEmail] = []
+            for e in getOrigEmails() {
+                a_emails.append(e.toContactEmail())
+            }
+            if origvCard2 == nil {
+                origvCard2 = PMNIVCard.createInstance()
             }
             
-            //update
-//            var a_emails: [ContactEmail] = []
-//            for e in getOrigEmails() {
-//                a_emails.append(e.toContactEmail())
-//            }
-//            //            let a_data: ContactDate
-//            guard let vcard = PMNIVCard.createInstance() else {
+            var cards : [CardData] = []
+            if let vcard2 = origvCard2 {
+                if let fn = PMNIFormattedName.createInstance(profile.newDisplayName) {
+                    vcard2.setFormattedName(fn)
+                }
+                
+                var i : Int = 1;
+                for email in a_emails {
+                    let group = "Item\(i)"
+                    let m = PMNIEmail.createInstance(email.type, email: email.email, group: group)
+                    vcard2.add(m)
+                    i += 1
+                }
+                
+                //get uid first if null create a new one
+                let uid = vcard2.getUid()
+                if uid == nil || uid!.getValue() == ""  {
+                    let newuid = "protonmail-ios-" + UUID().uuidString
+                    let uuid = PMNIUid.createInstance(newuid)
+                    vcard2.setUid(uuid)
+                }
+                
+                
+                
+                
+                // add others later
+                let vcard2Str = PMNIEzvcard.write(vcard2)
+                guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
+                    return; //with error
+                }
+                PMLog.D(vcard2Str);
+                let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key, plainText: vcard2Str, passphras: sharedUserDataService.mailboxPassword!)
+                
+                //card 2 object
+                let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
+                
+                cards.append(card2)
+            }
+          
+ 
+            
+            
+//            //start type 3 vcard
+//            var isCard3Set : Bool = false
+//            //
+//            guard let vcard3 = PMNIVCard.createInstance() else {
 //                return; //with error
 //            }
-//            
-//            if let fn = PMNIFormattedName.createInstance(profile.newDisplayName) {
-//                vcard.setFormattedName(fn)
+//            for cell in cells {
+//                let c = PMNITelephone.createInstance(cell.newType, number: cell.newPhone)
+//                vcard3.add(c)
+//                isCard3Set = true
 //            }
-//            
-//            for email in a_emails {
-//                let m = PMNIEmail.createInstance(email.type, email: email.email)
-//                vcard.add(m)
+//
+//            for addr in addresses {
+//                let a = PMNIAddress.createInstance(addr.newType,
+//                                                   street: addr.newStreet,
+//                                                   locality: "",
+//                                                   region: "",
+//                                                   zip: "",
+//                                                   country: "",
+//                                                   pobox: "")
+//                vcard3.add(a)
+//                isCard3Set = true
 //            }
-//            
-//            // add others later
-//            
-//            let vcardStr = PMNIEzvcard.write(vcard)
-//            guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
-//                return; //with error
+//
+//            for info in informations {
+//                switch info.infoType {
+//                case .organization:
+//                    let org = PMNIOrganization.createInstance("", value: info.newValue)
+//                    vcard3.add(org)
+//                    isCard3Set = true
+//                case .nickname:
+//                    let nn = PMNINickname.createInstance("", value: info.newValue)
+//                    vcard3.add(nn)
+//                    isCard3Set = true
+//                case .title:
+//                    let t = PMNITitle.createInstance("", value: info.newValue)
+//                    vcard3.add(t)
+//                    isCard3Set = true
+//                case .birthday:
+//                    break
+//                case .anniversary:
+//                    break
+//                }
 //            }
-//            PMLog.D(vcardStr);
-//            let encrypted_vcard = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcardStr)
-//            PMLog.D(encrypted_vcard);
-//            
-//            let contactData : ContactData = ContactData(d: encrypted_vcard, t: 1)
+//
+//
+//            if notes.newNote != "" {
+//                let n = PMNINote.createInstance("", note: notes.newNote)
+//                vcard3.add(n)
+//                isCard3Set = true
+//            }
+//
+//
+//            for field in fields{
+//                let f = PMNIPMCustom.createInstance(field.newType, value: field.newField)
+//                vcard3.add(f)
+//                isCard3Set = true
+//            }
+//
+//            vcard3.setUid(uuid)
+//
+//            let vcard3Str = PMNIEzvcard.write(vcard3)
+//            PMLog.D(vcard3Str);
+//            let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str)
+//            PMLog.D(encrypted_vcard3);
+//            let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
+//                                                           plainText: vcard3Str,
+//                                                           passphras: sharedUserDataService.mailboxPassword!)
+//            //card 2 object
+//            let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
+//
+//            if isCard3Set {
+//                cards.append(card3)
+//            }
+            
             sharedContactDataService.update(contactID: c.contactID,
-                                            name: contactDisplayName,
-                                            emails: nil,
-                                            cards: nil,
-                                            completion: { (contactRes: Contact?, error : NSError?) in
+                                            name: profile.newDisplayName,
+                                            emails: a_emails,
+                                            cards: cards, completion: { (contact : Contact?, error : NSError?) in
                                                 if error == nil {
                                                     complete(nil)
                                                 } else {
@@ -368,124 +461,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                                 }
             })
         } else {
-            //add
-            var a_emails: [ContactEmail] = []
-            for e in getOrigEmails() {
-                a_emails.append(e.toContactEmail())
-            }
-            //            let a_data: ContactDate
-            guard let vcard2 = PMNIVCard.createInstance() else {
-                return; //with error
-            }
-            
-            if let fn = PMNIFormattedName.createInstance(profile.newDisplayName) {
-                vcard2.setFormattedName(fn)
-            }
-
-            var i : Int = 1;
-            for email in a_emails {
-                let group = "Item\(i)"
-                let m = PMNIEmail.createInstance(email.type, email: email.email, group: group)
-                vcard2.add(m)
-                i += 1
-            }
-            
-            //generate UID
-            let newuid = "protonmail-ios-" + UUID().uuidString
-            let uuid = PMNIUid.createInstance(newuid)
-            vcard2.setUid(uuid)
-            
-            // add others later
-            let vcard2Str = PMNIEzvcard.write(vcard2)
-            guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
-                return; //with error
-            }
-            PMLog.D(vcard2Str);
-            let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key, plainText: vcard2Str, passphras: sharedUserDataService.mailboxPassword!)
-            
-            //card 2 object
-            let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
-            
-            var isCard3Set : Bool = false
-            //
-            guard let vcard3 = PMNIVCard.createInstance() else {
-                return; //with error
-            }
-            for cell in cells {
-                let c = PMNITelephone.createInstance(cell.newType, number: cell.newPhone)
-                vcard3.add(c)
-                isCard3Set = true
-            }
-
-            for addr in addresses {
-                let a = PMNIAddress.createInstance(addr.newType,
-                                                   street: addr.newStreet,
-                                                   locality: "",
-                                                   region: "",
-                                                   zip: "",
-                                                   country: "",
-                                                   pobox: "")
-                vcard3.add(a)
-                isCard3Set = true
-            }
-            
-            
-            if notes.newNote != "" {
-                let n = PMNINote.createInstance("", note: notes.newNote)
-                vcard3.add(n)
-                isCard3Set = true
-            }
-            
-            
-            for field in fields{
-                let f = PMNIPMCustom.createInstance(field.newType, value: field.newField)
-                vcard3.add(f)
-                isCard3Set = true
-            }
-
-//            override func getProfile() -> ContactEditProfile {
-//                return profile
-//            }
-
-            vcard3.setUid(uuid)
-
-            let vcard3Str = PMNIEzvcard.write(vcard3)
-            PMLog.D(vcard3Str);
-            let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str)
-            PMLog.D(encrypted_vcard3);
-            let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                          plainText: vcard3Str,
-                                                          passphras: sharedUserDataService.mailboxPassword!)
-            //card 2 object
-            let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
-            
-            var cards : [CardData] = [card2]
-            if isCard3Set {
-                cards.append(card3)
-            }
-            
-            sharedContactDataService.add(name: profile.newDisplayName,
-                                         emails: a_emails,
-                                         cards: cards,
-                                         completion:  { (contact : Contact?, error : NSError?) in
-                                            if error == nil {
-                                                complete(nil)
-                                            } else {
-                                                complete(error)
-                                            }
-            })
-            
-            
-//            var contact : Contact? //optional if nil add new contact
-//            var emails : [ContactEditEmail] = []
-//            
-//            //those should be in the
-//            var cells : [ContactEditPhone] = []
-//            var addresses : [ContactEditAddress] = []
-//            var orgs : [ContactEditOrg] = []
-//            var fields : [ContactEditField] = []
-//            var notes : ContactEditNote = ContactEditNote(n_note: "")
-//            var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
+            // pop error
         }
     }
     

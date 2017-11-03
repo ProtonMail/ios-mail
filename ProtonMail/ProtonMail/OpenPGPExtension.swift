@@ -228,7 +228,6 @@ extension String {
         try ObjC.catchException {
             out_dncrypted = sharedOpenPGP.decryptMessageAes(self, password: passphrase)
         }
-        
         return out_dncrypted
     }
 }
