@@ -208,10 +208,10 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     
     override func getDetails(loading: () -> Void, complete: @escaping (Contact?, NSError?) -> Void) {
         loading()
-        if contact.isDownloaded {
-            self.setupEmails()
-            return complete(contact, nil)
-        }
+//        if contact.isDownloaded {
+//            self.setupEmails()
+//            return complete(contact, nil)
+//        }
         
         sharedContactDataService.details(contactID: contact.contactID, completion: { (contact : Contact?, error : NSError?) in
             self.setupEmails()

@@ -63,15 +63,9 @@ class ContactDataService {
      - Parameter cards: vcard contact data -- 4 different types
      - Parameter completion: async add contact complete response
      **/
-    func add(name: String,
-             emails: [ContactEmail],
-             cards: [CardData],
+    func add(cards: [CardData],
              completion: ContactAddComplete?) {
-        
-        let api = ContactAddRequest<ContactAddResponse>(name: name,
-                                                        lids: [],
-                                                        emails: emails,
-                                                        cards: cards)
+        let api = ContactAddRequest<ContactAddResponse>(cards: cards)
         api.call { (task, response, hasError) in
             if let error = response?.resError {
                 completion?(nil, error)
@@ -110,15 +104,9 @@ class ContactDataService {
      - Parameter completion: async add contact complete response
      **/
     func update(contactID : String,
-                name: String?,
-                emails: [ContactEmail]?,
-                cards: [CardData]?,
+                cards: [CardData],
                 completion: ContactAddComplete?) {
-        let api = ContactUpdateRequest<ContactDetailResponse>(contactid: contactID,
-                                                              name: name,
-                                                              lids: nil,
-                                                              emails: nil,
-                                                              ecryptData: nil)
+        let api = ContactUpdateRequest<ContactDetailResponse>(contactid: contactID, cards:cards)
         api.call { (task, response, hasError) in
             if hasError {
                 completion?(nil, response?.error)

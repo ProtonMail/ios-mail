@@ -166,19 +166,8 @@ final class CardData : Package {
 
 
 final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
-    let Name : String
-    let LabelIDs : [String]
-    let Emails : [ContactEmail]
     let Cards : [CardData]
-    
-    init(name: String,
-         lids: [String],
-         emails: [ContactEmail],
-         cards: [CardData]) {
-        
-        self.Name = name
-        self.LabelIDs = lids
-        self.Emails = emails
+    init(cards: [CardData]) {
         self.Cards = cards
     }
     
@@ -269,22 +258,12 @@ final class ContactDeleteRequest<T : ApiResponse> : ApiRequest<T> {
 
 final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
     var contactID : String
-    
-    let Name : String?
-    let LabelIDs : [String]?
-    let Emails : [ContactEmail]?
-    let EncryptData : [CardData]?
+    let Cards : [CardData]
     
     init(contactid: String,
-         name: String?,
-         lids: [String]?,
-         emails: [ContactEmail]?,
-         ecryptData: [CardData]?) {
+         cards: [CardData]) {
         self.contactID = contactid
-        self.Name = name
-        self.LabelIDs = lids
-        self.Emails = emails
-        self.EncryptData = ecryptData
+        self.Cards = cards
     }
     
     override public func getRequestPath() -> String {
@@ -300,30 +279,15 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func toDictionary() -> Dictionary<String, Any>? {
-        var contact : [String : Any]  = [:]
-        if let n = Name {
-            contact["Name"] = n
+        var cards_dict : [Any] = [Any] ()
+        for c in self.Cards {
+            if let dict = c.toDictionary() {
+                cards_dict.append(dict)
+            }
         }
-
-        
-//        var tmp_emails : [Any] = [Any]()
-//        for e in self.Emails {
-//            if let dict = e.toDictionary() {
-//                tmp_emails.append(dict)
-//            }
-//        }
-//        var tmp_data : [Any] = [Any]()
-//        for e in self.EncryptData {
-//            if let dict = e.toDictionary() {
-//                tmp_data.append(dict)
-//            }
-//        }
-//        
-//        
-//        contacts.append(contact)
-//        
-//        return ["Contacts" : contacts]
-        return contact
+        return [
+            "Cards": cards_dict
+        ]
     }
 }
 

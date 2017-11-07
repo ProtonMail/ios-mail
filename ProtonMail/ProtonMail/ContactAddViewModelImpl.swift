@@ -197,11 +197,11 @@ class ContactAddViewModelImpl : ContactEditViewModel {
                 isCard3Set = true
             case .nickname:
                 let nn = PMNINickname.createInstance("", value: info.newValue)
-                vcard3.add(nn)
+                vcard3.setNickname(nn)
                 isCard3Set = true
             case .title:
                 let t = PMNITitle.createInstance("", value: info.newValue)
-                vcard3.add(t)
+                vcard3.setTitle(t)
                 isCard3Set = true
             case .birthday:
                 break
@@ -210,13 +210,11 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             }
         }
         
-        
         if notes.newNote != "" {
             let n = PMNINote.createInstance("", note: notes.newNote)
-            vcard3.add(n)
+            vcard3.setNote(n)
             isCard3Set = true
         }
-        
         
         for field in fields{
             let f = PMNIPMCustom.createInstance(field.newType, value: field.newField)
@@ -236,7 +234,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
                                                        plainText: vcard3Str,
                                                        passphras: sharedUserDataService.mailboxPassword!)
-        //card 2 object
+        //card 3 object
         let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
         
         var cards : [CardData] = [card2]
@@ -244,9 +242,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             cards.append(card3)
         }
         
-        sharedContactDataService.add(name: profile.newDisplayName,
-                                     emails: a_emails,
-                                     cards: cards,
+        sharedContactDataService.add(cards: cards,
                                      completion:  { (contact : Contact?, error : NSError?) in
                                         if error == nil {
                                             complete(nil)
