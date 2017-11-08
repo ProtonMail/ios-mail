@@ -93,14 +93,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        if (self.tableView.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
-            self.tableView.separatorInset = UIEdgeInsets.zero
-        }
-        
-        if (self.tableView.responds(to: #selector(setter: UIView.layoutMargins))) {
-            self.tableView.layoutMargins = UIEdgeInsets.zero
-        }
+        self.tableView.zeroMargin()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -398,32 +391,66 @@ extension ContactEditViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        let row = indexPath.row
+        let sections = self.viewModel.getSections()
         if editingStyle == . insert {
-            //"insert".alertToast()
+            let s = sections[section]
+            switch s {
+            case .emails:
+//                self.viewModel.delete
+                break
+            case .encrypted_header:
+                break
+            case .cellphone:
+                break
+            case .home_address:
+                break
+            case .information:
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
+                //get left info types
+                let infoTypes = viewModel.getLeftInfoTypes()
+                for t in infoTypes {
+                    alertController.addAction(UIAlertAction(title: t.desc, style: .default, handler: { (action) -> Void in
+                        let _ = self.viewModel.newInformation(type: t)
+                        tableView.reloadSections([section], with: .automatic)
+                        tableView.deselectRow(at: indexPath, animated: true)
+                    }))
+                }
+                
+                let sender = tableView.cellForRow(at: indexPath)
+                alertController.popoverPresentationController?.sourceView = sender ?? self.view
+                alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
+                present(alertController, animated: true, completion: nil)
+            case .custom_field:
+                break
+            case .display_name, .notes, .delete:
+                break
+            }
         } else if editingStyle == .delete {
-            //            let s = sections[section]
-            //            switch s {
-            //            case .display_name:
-            //                return 0
-            //            case .emails:
-            //                return 1 + viewModel.getOrigEmails().count
-            //            case .encrypted_header:
-            //                return 0
-            //            case .cell:
-            //                return 1 //+ cells
-            //            case .home_address:
-            //                return 1 // + addresses
-            //            case .org:
-            //                return 1 // + orgs
-            //            case .custom_field:
-            //                return 1 // + fields
-            //            case .notes:
-            //                return 1
-            //            }
-            
-            "delete".alertToast()
+            let s = sections[section]
+            switch s {
+            case .emails:
+                break
+            case .encrypted_header:
+                break
+            case .cellphone:
+                break
+            case .home_address:
+                break
+            case .information:
+                break
+            case .custom_field:
+                break
+            case .display_name, .notes, .delete:
+                break
+            }
         }
         dismissKeyboard()
+        
+        tableView.reloadSections([section], with: .automatic)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

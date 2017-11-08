@@ -179,14 +179,7 @@ class LablesViewController : UIViewController {
 extension LablesViewController: UITableViewDataSource {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        if (self.tableView.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
-            self.tableView.separatorInset = UIEdgeInsets.zero
-        }
-        
-        if (self.tableView.responds(to: #selector(setter: UIView.layoutMargins))) {
-            self.tableView.layoutMargins = UIEdgeInsets.zero
-        }
+        self.tableView.zeroMargin()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -220,13 +213,7 @@ extension LablesViewController: UITableViewDataSource {
     }
     
     @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
-            cell.separatorInset = UIEdgeInsets.zero
-        }
-        
-        if (cell.responds(to: #selector(setter: UIView.layoutMargins))) {
-            cell.layoutMargins = UIEdgeInsets.zero
-        }
+        cell.zeroMargin()
     }
 }
 

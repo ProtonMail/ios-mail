@@ -17,8 +17,7 @@ class CountryCodeTableViewCell : UITableViewCell {
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-        self.layoutMargins = UIEdgeInsets.zero;
-        self.separatorInset = UIEdgeInsets.zero
+        self.zeroMargin()
     }
     
     override func awakeFromNib() {

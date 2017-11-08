@@ -20,11 +20,13 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     private let kInvalidEmailShakeOffset: CGFloat      = 10.0
     
     
-    fileprivate let kContactDetailsHeaderView : String = "ContactSectionHeadView"
-    fileprivate let kContactDetailsHeaderID : String   = "contact_section_head_view"
+    fileprivate let kContactDetailsHeaderView : String      = "ContactSectionHeadView"
+    fileprivate let kContactDetailsHeaderID : String        = "contact_section_head_view"
     
-    fileprivate let kEditContactSegue : String         = "toEditContactSegue"
-    fileprivate let kToComposeSegue : String           = "toComplseSegue"
+    fileprivate let kContactDetailsDisplayCell : String     = "contacts_details_display_cell"
+    
+    fileprivate let kEditContactSegue : String              = "toEditContactSegue"
+    fileprivate let kToComposeSegue : String                = "toComplseSegue"
     
     
     let sections: [ContactEditSectionType] = [.display_name,
@@ -41,7 +43,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate var doneItem: UIBarButtonItem!
     
     func inactiveViewModel() {
-        
     }
     
     func setViewModel(_ vm: Any) {
@@ -54,8 +55,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         self.doneItem = UIBarButtonItem(title: NSLocalizedString("Edit", comment: "Action"),
                                         style: UIBarButtonItemStyle.plain,
                                         target: self, action: #selector(ContactDetailViewController.didTapEditButton(sender:)))
-        
         self.navigationItem.rightBarButtonItem = doneItem
+        
         ActivityIndicatorHelper.showActivityIndicator(at: self.view)
         viewModel.getDetails(loading: {
             
@@ -68,7 +69,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         
         let nib = UINib(nibName: kContactDetailsHeaderView, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
-        
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 60.0
         tableView.noSeparatorsBelowFooter()
@@ -76,14 +76,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        if (self.tableView.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
-            self.tableView.separatorInset = UIEdgeInsets.zero
-        }
-        
-        if (self.tableView.responds(to: #selector(setter: UIView.layoutMargins))) {
-            self.tableView.layoutMargins = UIEdgeInsets.zero
-        }
+        self.tableView.zeroMargin()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -178,14 +171,11 @@ extension ContactDetailViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell  = tableView.dequeueReusableCell(withIdentifier: "contacts_details_display_cell", for: indexPath) as! ContactDetailsDisplayCell
-        
+        let cell  = tableView.dequeueReusableCell(withIdentifier: "kContactDetailsDisplayCell", for: indexPath) as! ContactDetailsDisplayCell
         let section = indexPath.section
         let row = indexPath.row
         let s = sections[section]
-        
         cell.selectionStyle = .none
-        
         switch s {
         case .display_name:
             let profile = viewModel.getProfile();
@@ -259,8 +249,6 @@ extension ContactDetailViewController: UITableViewDelegate {
         let row = indexPath.row
         let s = sections[section]
         switch s {
-        case .display_name:
-            break
         case .emails:
             let emails = viewModel.getOrigEmails()
             let email = emails[row]
@@ -268,14 +256,10 @@ extension ContactDetailViewController: UITableViewDelegate {
         case .encrypted_header:
             break
         case .cellphone:
+            //TODO::bring up the phone call
             break
         case .home_address:
-            break
-        case .information:
-            break
-        case .custom_field:
-            break
-        case .notes:
+            //TODO::switch to map
             break
         default:
             break

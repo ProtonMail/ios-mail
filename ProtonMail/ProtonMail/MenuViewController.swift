@@ -76,8 +76,7 @@ class MenuViewController: UIViewController {
             name: NSNotification.Name(rawValue: MenuViewController.ObserverSwitchView),
             object: nil)
         
-        tableView.separatorInset = UIEdgeInsets.zero
-        tableView.layoutMargins = UIEdgeInsets.zero
+        self.tableView.zeroMargin()
         
         sharedLabelsDataService.fetchLabels();
     }

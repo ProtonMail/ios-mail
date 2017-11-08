@@ -769,6 +769,8 @@
 		756DAC421C923D4500F3486C /* MailboxRateReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756DAC401C9236D000F3486C /* MailboxRateReviewCell.xib */; };
 		756DAC451C92B30300F3486C /* FeedbackPopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC441C92B30300F3486C /* FeedbackPopViewController.swift */; };
 		756DAC471C93691900F3486C /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC461C93691900F3486C /* FeedbackViewController.swift */; };
+		756E9EFA1FB3970C0032E424 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756E9EF91FB3970B0032E424 /* UITableViewCell+Extension.swift */; };
+		756E9EFB1FB3998C0032E424 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756E9EF91FB3970B0032E424 /* UITableViewCell+Extension.swift */; };
 		7578B7831CADD1EA006B523B /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7821CADD1EA006B523B /* PMImagePickerController.swift */; };
 		7578B7841CADD1EA006B523B /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7821CADD1EA006B523B /* PMImagePickerController.swift */; };
 		7578B7861CADD20A006B523B /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */; };
@@ -1418,6 +1420,7 @@
 		756DAC401C9236D000F3486C /* MailboxRateReviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MailboxRateReviewCell.xib; sourceTree = "<group>"; };
 		756DAC441C92B30300F3486C /* FeedbackPopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackPopViewController.swift; sourceTree = "<group>"; };
 		756DAC461C93691900F3486C /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		756E9EF91FB3970B0032E424 /* UITableViewCell+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extension.swift"; sourceTree = "<group>"; };
 		757824A41CCFE0D900136CF3 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7578B7821CADD1EA006B523B /* PMImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMImagePickerController.swift; sourceTree = "<group>"; };
 		7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMDocumentPickerViewController.swift; sourceTree = "<group>"; };
@@ -2171,6 +2174,7 @@
 				7528FF771FA7FE80005F66A3 /* UIScrollView+Extension.swift */,
 				7528FF801FA7FE82005F66A3 /* UIStoryboard+Extension.swift */,
 				7528FF8C1FA7FE84005F66A3 /* UITableView+Extension.swift */,
+				756E9EF91FB3970B0032E424 /* UITableViewCell+Extension.swift */,
 				7528FFC51FA7FEC2005F66A3 /* UIView+Extension.swift */,
 				7528FF8E1FA7FE85005F66A3 /* Date+Extension.swift */,
 				7528FF7E1FA7FE81005F66A3 /* UIDevice+InfoExtension.swift */,
@@ -3707,6 +3711,7 @@
 				07CB23561AB0F24700699068 /* ReportBugsViewController.swift in Sources */,
 				7510AE761AB8989E00EF3C41 /* DomainsTableViewCell.swift in Sources */,
 				75BDECA91CBCCE4400982089 /* PinCodeModel.swift in Sources */,
+				756E9EFA1FB3970C0032E424 /* UITableViewCell+Extension.swift in Sources */,
 				7528FFDB1FA7FEC3005F66A3 /* ContactAddViewModelImpl.swift in Sources */,
 				07A0E1AD1A9D3C64005FD04B /* UserInfo.swift in Sources */,
 				755638CB1CA1F446003FA2D0 /* MessageViewModelImpl.swift in Sources */,
@@ -4347,6 +4352,7 @@
 				75256C8B1F16DFBD00F2771E /* MessageSpamScore.swift in Sources */,
 				75256C8C1F16DFBD00F2771E /* MessageLocation.swift in Sources */,
 				75256C8D1F16DFBD00F2771E /* MessageHelper.swift in Sources */,
+				756E9EFB1FB3998C0032E424 /* UITableViewCell+Extension.swift in Sources */,
 				75256C8E1F16DFBD00F2771E /* Label.swift in Sources */,
 				75256C8F1F16DFBD00F2771E /* LabelExtension.swift in Sources */,
 				75256C901F16DFBD00F2771E /* EncryptTypes.swift in Sources */,

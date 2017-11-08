@@ -40,6 +40,19 @@ extension UITableView {
         tableFooterView = LoadingView.viewForOwner(self)
         tableFooterView?.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
     }
+    
+    /**
+     reset table view inset and margins to .zero
+     **/
+    func zeroMargin() {
+        if (self.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
+            self.separatorInset = .zero
+        }
+        
+        if (self.responds(to: #selector(setter: UIView.layoutMargins))) {
+            self.layoutMargins = .zero
+        }
+    }
 }
 
 
