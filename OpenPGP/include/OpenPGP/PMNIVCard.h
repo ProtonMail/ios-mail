@@ -31,11 +31,15 @@
 
 - (void)setFormattedName:(nullable PMNIFormattedName *)formattedName;
 
+- (void)clearFormattedName;
+
 - (nonnull NSArray<PMNITelephone *> *)getTelephoneNumbers;
 
 - (void)addTelephone:(nullable PMNITelephone *)cell;
 
 - (void)setTelephones:(nonnull NSArray<PMNITelephone *> *)cells;
+
+- (void)clearTelephones;
 
 - (nonnull NSArray<PMNIEmail *> *)getEmails;
 
@@ -43,6 +47,8 @@
 
 /**set will replace all exsiting */
 - (void)setEmails:(nonnull NSArray<PMNIEmail *> *)emails;
+
+- (void)clearEmails;
 
 - (nullable PMNIUid *)getUid;
 
@@ -54,23 +60,33 @@
 
 - (void)setAddresses:(nonnull NSArray<PMNIAddress *> *)addrs;
 
+- (void)clearAddresses;
+
 - (nullable PMNIOrganization *)getOrganization;
 
 - (void)addOrganization:(nullable PMNIOrganization *)org;
 
 - (void)setOrganizations:(nonnull NSArray<PMNIOrganization *> *)orgs;
 
+- (void)clearOrganizations;
+
 - (nullable PMNINote *)getNote;
 
 - (void)setNote:(nullable PMNINote *)note;
+
+- (void)clearNote;
 
 - (nullable PMNINickname *)getNickname;
 
 - (void)setNickname:(nullable PMNINickname *)nickname;
 
+- (void)clearNickname;
+
 - (nullable PMNITitle *)getTitle;
 
 - (void)setTitle:(nullable PMNITitle *)title;
+
+- (void)clearTitle;
 
 - (nonnull NSArray<PMNIBirthday *> *)getBirthdays;
 
@@ -78,11 +94,15 @@
 
 - (void)setBirthdays:(nonnull NSArray<PMNIBirthday *> *)birthdays;
 
+- (void)clearBirthdays;
+
 - (nonnull NSArray<PMNIPMCustom *> *)getCustoms;
 
 - (void)addCustom:(nullable PMNIPMCustom *)custom;
 
-- (void)setCustoms:(nonnull NSArray<PMNIPMCustom *> *)custom;
+- (void)setCustoms:(nonnull NSArray<PMNIPMCustom *> *)customs;
+
+- (void)clearCustoms;
 
 - (nonnull NSArray<PMNIUrl *> *)getUrls;
 
@@ -90,9 +110,13 @@
 
 - (void)setUrls:(nonnull NSArray<PMNIUrl *> *)urls;
 
+- (void)clearUrls;
+
 - (nullable PMNIStructuredName *)getStructuredName;
 
 - (void)setStructuredName:(nullable PMNIStructuredName *)name;
+
+- (void)clearStructuredName;
 
 + (nullable PMNIVCard *)createInstance;
 

@@ -29,7 +29,7 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO!) {
+    func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO?) {
         fatalError("This method must be overridden")
     }
     

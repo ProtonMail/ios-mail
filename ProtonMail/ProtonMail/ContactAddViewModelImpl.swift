@@ -17,7 +17,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
                                               .cellphone,
                                               .home_address,
                                               .information,
-                                              .custom_field,
+//                                              .custom_field,
                                               .notes]
     
     var contact : Contact? //optional if nil add new contact
@@ -161,7 +161,9 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             return; //with error
         }
         PMLog.D(vcard2Str);
-        let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key, plainText: vcard2Str, passphras: sharedUserDataService.mailboxPassword!)
+        let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key,
+                                                       plainText: vcard2Str,
+                                                       passphras: sharedUserDataService.mailboxPassword!)
         
         //card 2 object
         let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)

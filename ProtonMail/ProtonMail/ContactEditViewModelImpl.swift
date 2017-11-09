@@ -17,7 +17,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                                .cellphone,
                                                .home_address,
                                                .information,
-                                               .custom_field,
+//                                               .custom_field,
                                                .notes,
                                                .delete]
 
@@ -295,11 +295,23 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         return email
     }
     
+    override func deleteEmail(at index: Int) {
+        if emails.count > index {
+            emails.remove(at: index)
+        }
+    }
+    
     override func newPhone() -> ContactEditPhone {
         let newType = getNewType(types: ContactPhoneType.allValues, typeInterfaces: cells)
         let cell = ContactEditPhone(n_order: emails.count, n_type: newType, n_phone:"")
         cells.append(cell)
         return cell
+    }
+    
+    override func deletePhone(at index: Int) {
+        if cells.count > index {
+            cells.remove(at: index)
+        }
     }
     
     override func newAddress() -> ContactEditAddress {
@@ -308,6 +320,12 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         addresses.append(addr)
         return addr
     }
+    
+    override func deleteAddress(at index: Int) {
+        if addresses.count > index {
+            addresses.remove(at: index)
+        }
+    }
 
     override func newInformation(type: InformationType) -> ContactEditInformation {
         let info = ContactEditInformation(type: type, value: "")
@@ -315,11 +333,23 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         return info
     }
     
+    override func deleteInformation(at index: Int) {
+        if informations.count > index {
+            informations.remove(at: index)
+        }
+    }
+    
     override func newField() -> ContactEditField {
         let newType = getNewType(types: ContactFieldType.allValues, typeInterfaces: fields)
         let field = ContactEditField(n_order: emails.count, n_type: newType, n_field:"")
         fields.append(field)
         return field
+    }
+    
+    override func deleteField(at index: Int) {
+        if fields.count > index {
+            fields.remove(at: index)
+        }
     }
     
     override func done(complete : @escaping ContactEditSaveComplete) {
@@ -390,7 +420,11 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     isCard3Set = true
                 }
                 //replace all cells
-                vcard3.setTelephones(newCells)
+                if newCells.count > 0 {
+                    vcard3.setTelephones(newCells)
+                } else {
+                    vcard3.clearTelephones()
+                }
                 
                 var newAddrs:[PMNIAddress] = []
                 for addr in addresses {
@@ -405,8 +439,15 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     isCard3Set = true
                 }
                 //replace all addresses
-                vcard3.setAddresses(newAddrs)
+                if newAddrs.count > 0 {
+                    vcard3.setAddresses(newAddrs)
+                } else {
+                    vcard3.clearAddresses()
+                }
                 
+                vcard3.clearOrganizations()
+                vcard3.clearNickname()
+                vcard3.clearTitle()
                 for info in informations {
                     switch info.infoType {
                     case .organization:

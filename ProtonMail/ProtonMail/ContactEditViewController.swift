@@ -71,13 +71,11 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         }
         
         UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
-        
-        self.displayNameField.delegate = self
-        self.tableView.isEditing = true
-
         self.displayNameField.text = viewModel.getProfile().newDisplayName
+        self.displayNameField.delegate = self
         
-        tableView.noSeparatorsBelowFooter()
+        self.tableView.isEditing = true
+        self.tableView.noSeparatorsBelowFooter()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -188,7 +186,6 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditNotesCe
         self.activeText = textField
     }
 }
-
 
 //
 extension ContactEditViewController: ContactTypeViewControllerDelegate {
@@ -398,14 +395,11 @@ extension ContactEditViewController: UITableViewDataSource {
             let s = sections[section]
             switch s {
             case .emails:
-//                self.viewModel.delete
-                break
-            case .encrypted_header:
-                break
+                let _ = self.viewModel.newEmail()
             case .cellphone:
-                break
+                let _ = self.viewModel.newPhone()
             case .home_address:
-                break
+                let _ = self.viewModel.newAddress()
             case .information:
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
@@ -424,26 +418,24 @@ extension ContactEditViewController: UITableViewDataSource {
                 alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
                 present(alertController, animated: true, completion: nil)
             case .custom_field:
-                break
-            case .display_name, .notes, .delete:
+                let _ = self.viewModel.newField()
+            default:
                 break
             }
         } else if editingStyle == .delete {
             let s = sections[section]
             switch s {
             case .emails:
-                break
-            case .encrypted_header:
-                break
+                self.viewModel.deleteEmail(at: row)
             case .cellphone:
-                break
+                self.viewModel.deletePhone(at: row)
             case .home_address:
-                break
+                self.viewModel.deleteAddress(at: row)
             case .information:
-                break
+                self.viewModel.deleteInformation(at: row)
             case .custom_field:
-                break
-            case .display_name, .notes, .delete:
+                self.viewModel.deleteField(at: row)
+            default:
                 break
             }
         }

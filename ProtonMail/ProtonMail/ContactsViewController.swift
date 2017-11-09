@@ -316,6 +316,8 @@ extension ContactsViewController: UITableViewDelegate {
             let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController)
         } else if (segue.identifier == "toCompose") {
+            
+   
 //            let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
 //            sharedVMService.newDraftViewModelWithContact(composeViewController, contact: self.selectedContact)
         }

@@ -131,16 +131,35 @@ class ContactEditViewModel {
     func newEmail() -> ContactEditEmail {
         fatalError("This method must be overridden")
     }
+    func deleteEmail(at index : Int) -> Void {
+        fatalError("This method must be overridden")
+    }
+    
     func newPhone() -> ContactEditPhone {
         fatalError("This method must be overridden")
     }
+    func deletePhone(at index : Int) -> Void {
+        fatalError("This method must be overridden")
+    }
+    
     func newAddress() -> ContactEditAddress {
         fatalError("This method must be overridden")
     }
+    func deleteAddress(at index : Int) -> Void {
+        fatalError("This method must be overridden")
+    }
+    
     func newInformation(type: InformationType) -> ContactEditInformation {
         fatalError("This method must be overridden")
     }
+    func deleteInformation(at index : Int) -> Void {
+        fatalError("This method must be overridden")
+    }
+    
     func newField() -> ContactEditField {
+        fatalError("This method must be overridden")
+    }
+    func deleteField(at index : Int) -> Void {
         fatalError("This method must be overridden")
     }
     

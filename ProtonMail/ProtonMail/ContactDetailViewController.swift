@@ -26,7 +26,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactDetailsDisplayCell : String     = "contacts_details_display_cell"
     
     fileprivate let kEditContactSegue : String              = "toEditContactSegue"
-    fileprivate let kToComposeSegue : String                = "toComplseSegue"
+    fileprivate let kToComposeSegue : String                = "toCompose"
     
     
     let sections: [ContactEditSectionType] = [.display_name,
@@ -54,7 +54,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         super.viewDidLoad()
         self.doneItem = UIBarButtonItem(title: NSLocalizedString("Edit", comment: "Action"),
                                         style: UIBarButtonItemStyle.plain,
-                                        target: self, action: #selector(ContactDetailViewController.didTapEditButton(sender:)))
+                                        target: self, action: #selector(didTapEditButton(sender:)))
         self.navigationItem.rightBarButtonItem = doneItem
         
         ActivityIndicatorHelper.showActivityIndicator(at: self.view)
@@ -86,8 +86,9 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             addContactViewController.delegate = self
             sharedVMService.contactEditViewModel(addContactViewController, contact: contact)
         } else if (segue.identifier == kToComposeSegue) {
-            //            let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
-            //            sharedVMService.newDraftViewModelWithContact(composeViewController, contact: self.selectedContact)
+            let composeViewController = segue.destination.childViewControllers[0] as! ComposeEmailViewController
+            let contact = sender as? ContactVO
+            sharedVMService.newDraftViewModelWithContact(composeViewController, contact: contact)
         }
     }
     
@@ -171,7 +172,7 @@ extension ContactDetailViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell  = tableView.dequeueReusableCell(withIdentifier: "kContactDetailsDisplayCell", for: indexPath) as! ContactDetailsDisplayCell
+        let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsDisplayCell, for: indexPath) as! ContactDetailsDisplayCell
         let section = indexPath.section
         let row = indexPath.row
         let s = sections[section]
@@ -252,7 +253,12 @@ extension ContactDetailViewController: UITableViewDelegate {
         case .emails:
             let emails = viewModel.getOrigEmails()
             let email = emails[row]
-            (email.newEmail + " selected").alertToast()
+            let contact = viewModel.getContact()
+            let contactVO = ContactVO(id: contact.contactID,
+                                      name: contact.name,
+                                      email: email.newEmail,
+                                      isProtonMailContact: false)
+            self.performSegue(withIdentifier: kToComposeSegue, sender: contactVO)
         case .encrypted_header:
             break
         case .cellphone:

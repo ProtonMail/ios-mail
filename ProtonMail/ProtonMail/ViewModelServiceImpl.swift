@@ -46,10 +46,12 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     
-    override func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO!) {
+    override func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO?) {
         activeViewController = vmp
         latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft);
-        latestComposerViewModel?.addToContacts(contact)
+        if let c = contact {
+            latestComposerViewModel?.addToContacts(c)
+        }
         vmp.setViewModel(latestComposerViewModel!)
     }
     
