@@ -242,6 +242,7 @@ extension ContactsViewController: UITableViewDelegate {
     }
     
     @objc func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
     }
     
     @objc func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -303,9 +304,9 @@ extension ContactsViewController: UITableViewDelegate {
 //            self.performSegue(withIdentifier: "toEditContact", sender: self)
         }
         
-        let deleteAction = UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: "Action"), handler: deleteClosure)
-        let editAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Edit", comment: "Action"), handler: editClosure)
-        return [deleteAction, editAction]
+//        let deleteAction = UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: "Action"), handler: deleteClosure)
+//        let editAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Edit", comment: "Action"), handler: editClosure)
+        return [] // [deleteAction, editAction]
     }
     
     @objc func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
