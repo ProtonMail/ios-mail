@@ -130,6 +130,21 @@ final class ContactEditEmail: ContactEditTypeInterface {
     }
 }
 
+class staticStrings {
+    static let home = NSLocalizedString("Home", comment: "default vcard types")
+    static let work = NSLocalizedString("Work", comment: "default vcard types")
+    static let mobile = NSLocalizedString("Mobile", comment: "default vcard types")
+    static let email = NSLocalizedString("Email", comment: "default vcard types")
+    static let main = NSLocalizedString("Main", comment: "default vcard types")
+    static let homefax = NSLocalizedString("Home Fax", comment: "default vcard types")
+    static let workfax = NSLocalizedString("Work Fax", comment: "default vcard types")
+    static let other = NSLocalizedString("Other", comment: "default vcard types")
+    static let voice = NSLocalizedString("Voice", comment: "default vcard types")
+    static let fax = NSLocalizedString("Fax", comment: "default vcard types")
+    
+}
+
+
 //phone part
 enum ContactPhoneType : String {
     case Home = "Home"
