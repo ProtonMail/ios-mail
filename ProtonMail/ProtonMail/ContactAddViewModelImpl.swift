@@ -100,11 +100,23 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         return email
     }
     
+    override func deleteEmail(at index: Int) {
+        if emails.count > index {
+            emails.remove(at: index)
+        }
+    }
+    
     override func newPhone() -> ContactEditPhone {
         let newType = getNewType(types: ContactPhoneType.allValues, typeInterfaces: cells)
         let cell = ContactEditPhone(n_order: emails.count, n_type: newType, n_phone:"")
         cells.append(cell)
         return cell
+    }
+    
+    override func deletePhone(at index: Int) {
+        if cells.count > index {
+            cells.remove(at: index)
+        }
     }
     
     override func newAddress() -> ContactEditAddress {
@@ -114,10 +126,22 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         return addr
     }
     
+    override func deleteAddress(at index: Int) {
+        if addresses.count > index {
+            addresses.remove(at: index)
+        }
+    }
+    
     override func newInformation(type: InformationType) -> ContactEditInformation {
         let info = ContactEditInformation(type: type, value:"")
         informations.append(info)
         return info
+    }
+    
+    override func deleteInformation(at index: Int) {
+        if informations.count > index {
+            informations.remove(at: index)
+        }
     }
     
     override func newField() -> ContactEditField {
@@ -125,6 +149,12 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         let field = ContactEditField(n_order: emails.count, n_type: newType, n_field:"")
         fields.append(field)
         return field
+    }
+    
+    override func deleteField(at index: Int) {
+        if fields.count > index {
+            fields.remove(at: index)
+        }
     }
     
     override func done(complete : @escaping ContactEditSaveComplete) {
