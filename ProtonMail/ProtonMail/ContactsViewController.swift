@@ -293,10 +293,6 @@ extension ContactsViewController: UITableViewDelegate {
                         ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                         if let err = error {
                             err.alert(at : self.view)
-                        } else {
-//                            self.navigationController?.dismiss(animated: false, completion: {
-//
-//                            })
                         }
                     })
                 }))
@@ -307,7 +303,7 @@ extension ContactsViewController: UITableViewDelegate {
             }
         }
         
-        let editClosure = { (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
+//        let editClosure = { (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
 //            var contact: ContactVO
 //            if (self.searchController.isActive) {
 //                contact = self.searchResults[indexPath.row]
@@ -324,7 +320,7 @@ extension ContactsViewController: UITableViewDelegate {
 //            
 //            self.selectedContact = contact
 //            self.performSegue(withIdentifier: "toEditContact", sender: self)
-        }
+//        }
         
         let deleteAction = UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: "Action"), handler: deleteClosure)
 //        let editAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Edit", comment: "Action"), handler: editClosure)

@@ -57,7 +57,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.doneItem = UIBarButtonItem(title: "Done",
+        self.doneItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: "action"),
                                         style: UIBarButtonItemStyle.plain,
                                         target: self, action: #selector(ContactEditViewController.doneAction))
         self.navigationItem.rightBarButtonItem = doneItem
@@ -253,7 +253,7 @@ extension ContactEditViewController: UITableViewDataSource {
             let emailCount = viewModel.getOrigEmails().count
             if row == emailCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: "Add new email")
+                cell.configCell(value: NSLocalizedString("Add new email", comment: "action"))
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
@@ -268,7 +268,7 @@ extension ContactEditViewController: UITableViewDataSource {
             let cellCount = viewModel.getOrigCells().count
             if row == cellCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: "Add new phone number")
+                cell.configCell(value: NSLocalizedString("Add new phone number", comment: "action"))
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
@@ -281,7 +281,7 @@ extension ContactEditViewController: UITableViewDataSource {
             let addrCount = viewModel.getOrigAddresses().count
             if row == addrCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: "Add new address")
+                cell.configCell(value: NSLocalizedString("Add new address", comment: "action"))
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
@@ -294,7 +294,7 @@ extension ContactEditViewController: UITableViewDataSource {
             let orgCount = viewModel.getOrigInformations().count
             if row == orgCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: "Add Information")
+                cell.configCell(value: NSLocalizedString("Add Information", comment: "action"))
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
@@ -307,7 +307,7 @@ extension ContactEditViewController: UITableViewDataSource {
             let fieldCount = viewModel.getOrigFields().count
             if row == fieldCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: "Add new custom field")
+                cell.configCell(value: NSLocalizedString("Add new custom field", comment: "action"))
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
@@ -323,7 +323,7 @@ extension ContactEditViewController: UITableViewDataSource {
             outCell = cell
         case .delete:
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditDeleteCell, for: indexPath) as! ContactEditAddCell
-            cell.configCell(value: "Delete Contact")
+            cell.configCell(value: NSLocalizedString("Delete Contact", comment: "action"))
             cell.selectionStyle = .default
             outCell = cell
         }
@@ -452,7 +452,7 @@ extension ContactEditViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let sections = viewModel.getSections()
         if sections[section] == .encrypted_header {
-            return "Encrypted Contact Details"
+            return NSLocalizedString("Encrypted Contact Details", comment: "title")
         }
         return "" //"Contact Details"
     }

@@ -38,7 +38,7 @@ final class ContactTypeAddCustomCell: UITableViewCell {
     }
     
     func getValue() -> String {
-        return inputField.text ?? "Custom"
+        return inputField.text ?? NSLocalizedString("Custom", comment: "default label type")
     }
     
     

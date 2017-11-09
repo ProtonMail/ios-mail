@@ -150,12 +150,12 @@ extension ContactDetailViewController: UITableViewDataSource {
         switch s {
         case .display_name:
             let signed = viewModel.statusType2()
-            cell?.ConfigHeader(title: "Contact Details", signed: signed)
+            cell?.ConfigHeader(title: NSLocalizedString("Contact Details", comment: "contact section title"), signed: signed)
         case .encrypted_header:
             let signed = viewModel.statusType3()
-            cell?.ConfigHeader(title: "Encrypted Contact Details", signed: signed)
+            cell?.ConfigHeader(title: NSLocalizedString("Encrypted Contact Details", comment: "contact section title"), signed: signed)
         default:
-            cell?.ConfigHeader(title: "Contact Details", signed: false)
+            cell?.ConfigHeader(title: NSLocalizedString("Contact Details", comment: "contact section title"), signed: false)
         }
         if .display_name == s {
             
@@ -183,7 +183,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         switch s {
         case .display_name:
             let profile = viewModel.getProfile();
-            cell.configCell(title: "Display Name", value: profile.newDisplayName)
+            cell.configCell(title: NSLocalizedString("Display Name", comment: "title"), value: profile.newDisplayName)
             cell.selectionStyle = .none
         case .emails:
             let emails = viewModel.getOrigEmails()
@@ -219,7 +219,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         case .notes:
             let notes = viewModel.getOrigNotes()
             let note = notes[row]
-            cell.configCell(title: "Notes", value: note.newNote)
+            cell.configCell(title: NSLocalizedString("Notes", comment: "title"), value: note.newNote)
             cell.selectionStyle = .default
             break
         default:

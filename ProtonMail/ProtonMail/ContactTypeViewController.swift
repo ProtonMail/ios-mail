@@ -89,10 +89,10 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
                     if let addCell = cell as? ContactTypeAddCustomCell {
                         type = addCell.getValue()
                     } else {
-                        type = cell.textLabel?.text ?? "Custom"
+                        type = cell.textLabel?.text ?? NSLocalizedString("Custom", comment: "custom label type default")
                     }
                 } else {
-                    type = "Custom"
+                    type = NSLocalizedString("Custom", comment: "custom label type default")
                 }
             }
             viewModel.updateType(t: type)
@@ -181,7 +181,7 @@ extension ContactTypeViewController: UITableViewDataSource {
         } else {
             if row == 0 {
                 let addCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeAddCustomCell", for: indexPath) as! ContactTypeAddCustomCell
-                addCell.configCell(v: "Add Custom Label")
+                addCell.configCell(v: NSLocalizedString("Add Custom Label", comment: "action"))
                 return addCell
             } else if row == 1 {
                 let outCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeCell", for: indexPath)
