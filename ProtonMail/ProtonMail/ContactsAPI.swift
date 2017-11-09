@@ -52,11 +52,11 @@ class ContactEmailsResponse : ApiResponse {
                     for (index, var c) in contacts.enumerated() {
                         if let obj = c["ID"] as? String, obj == contactID {
                             found = true
-                            if var emails = c["Emails"] as? [Dictionary<String, Any>] {
+                            if var emails = c["ContactEmails"] as? [Dictionary<String, Any>] {
                                 emails.append(contact)
-                                c["Emails"] = emails
+                                c["ContactEmails"] = emails
                             } else {
-                                c["Emails"] = [contact]
+                                c["ContactEmailsE"] = [contact]
                             }
                             contacts[index] = c
                         }
@@ -65,7 +65,7 @@ class ContactEmailsResponse : ApiResponse {
                         let newContact : Dictionary<String, Any> = [
                             "ID" : contactID,
                             "Name" : name,
-                            "Emails" : [contact]
+                            "ContactEmails" : [contact]
                         ]
                         self.contacts.append(newContact)
                     }
@@ -161,6 +161,18 @@ final class CardData : Package {
             "Type": self.type.rawValue,
             "Signature": self.sign
         ]
+    }
+}
+
+extension Array where Element: CardData {
+    func toDictionary() -> [Dictionary<String, Any>] {
+        var dicts = [Dictionary<String, Any>]()
+        for element in self {
+            if let e = element.toDictionary() {
+                dicts.append(e)
+            }
+        }
+        return dicts
     }
 }
 

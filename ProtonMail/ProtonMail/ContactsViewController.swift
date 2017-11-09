@@ -83,7 +83,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         
         refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
-        refreshControl.addTarget(self, action: #selector(ContactsViewController.retrieveAllContacts), for: UIControlEvents.valueChanged)
+        refreshControl.addTarget(self, action: #selector(retrieveAllContacts), for: UIControlEvents.valueChanged)
         
         //tableView.addSubview(self.refreshControl)  //TODO::enable it later
         tableView.dataSource = self
@@ -111,6 +111,10 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         tableView.setEditing(false, animated: true)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
@@ -118,6 +122,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
     
     // MARK: - Private methods
+    //this need to change for fetch event logs
     @objc internal func retrieveAllContacts() {
         sharedContactDataService.fetchContacts { (contacts, error) -> Void in
             if let error = error as NSError? {
@@ -198,7 +203,7 @@ extension ContactsViewController: UITableViewDataSource {
 //        return contacts.count
     }
     
-    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ContactsTableViewCell = tableView.dequeueReusableCell(withIdentifier: kContactCellIdentifier, for: indexPath) as! ContactsTableViewCell
         
         if let contact = contactAtIndexPath(indexPath) {
@@ -345,8 +350,6 @@ extension ContactsViewController: UITableViewDelegate {
 extension ContactsViewController : NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
-//        self.showNewMessageCount(self.newMessageCount)
-//        selectMessageIDIfNeeded()
     }
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -375,16 +378,6 @@ extension ContactsViewController : NSFetchedResultsControllerDelegate {
             if let newIndexPath = newIndexPath {
                 PMLog.D("Section: \(newIndexPath.section) Row: \(newIndexPath.row) ")
                 tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
-//                if self.needToShowNewMessage == true {
-//                    if let newMsg = anObject as? Message {
-//                        if let msgTime = newMsg.time, !newMsg.isRead {
-//                            let updateTime = viewModel.lastUpdateTime()
-//                            if msgTime.compare(updateTime.start as Date) != ComparisonResult.orderedAscending {
-//                                self.newMessageCount += 1
-//                            }
-//                        }
-//                    }
-//                }
             }
         case .update:
             if let indexPath = indexPath {
@@ -399,10 +392,6 @@ extension ContactsViewController : NSFetchedResultsControllerDelegate {
         default:
             return
         }
-        
-//        if self.noResultLabel.isHidden == false {
-//            self.showNoResultLabel()
-//        }
     }
 }
 

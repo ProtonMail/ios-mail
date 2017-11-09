@@ -69,7 +69,12 @@ class ContactDataService {
         api.call { (task, response, hasError) in
             if let error = response?.resError {
                 completion?(nil, error)
-            } else if let contactDict = response?.contact {
+            } else if var contactDict = response?.contact {
+                //api is not returning the cards data so set it use request cards data
+                //check is contactDict has cards if doesnt exsit set it here
+                if contactDict["Cards"] == nil {
+                    contactDict["Cards"] = cards.toDictionary()
+                }
                 let context = sharedCoreDataService.newManagedObjectContext()
                 context.performAndWait() {
                     do {
@@ -110,7 +115,12 @@ class ContactDataService {
         api.call { (task, response, hasError) in
             if hasError {
                 completion?(nil, response?.error)
-            } else if let contactDict = response?.contact {
+            } else if var contactDict = response?.contact {
+                //api is not returning the cards data so set it use request cards data
+                //check is contactDict has cards if doesnt exsit set it here
+                if contactDict["Cards"] == nil {
+                    contactDict["Cards"] = cards.toDictionary()
+                }
                 let context = sharedCoreDataService.newManagedObjectContext()
                 context.performAndWait() {
                     do {

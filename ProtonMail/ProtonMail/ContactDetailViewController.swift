@@ -57,9 +57,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
                                         target: self, action: #selector(didTapEditButton(sender:)))
         self.navigationItem.rightBarButtonItem = doneItem
         
-        ActivityIndicatorHelper.showActivityIndicator(at: self.view)
         viewModel.getDetails(loading: {
-            
+            ActivityIndicatorHelper.showActivityIndicator(at: self.view)
         }) { (contact, error) in
             if nil != contact {
                 self.tableView.reloadData()
@@ -72,6 +71,10 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 60.0
         tableView.noSeparatorsBelowFooter()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     override func viewDidLayoutSubviews() {

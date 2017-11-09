@@ -73,7 +73,7 @@
         </attribute>
         <relationship name="emails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Email" inverseName="contact" inverseEntity="Email" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="Emails"/>
+                <entry key="JSONKeyPath" value="ContactEmails"/>
             </userInfo>
         </relationship>
         <userInfo>
