@@ -21,4 +21,9 @@ class ContactsViewModel {
     }
     
     
+    func delete(contactID: String, complete : @escaping ContactDeleteComplete) {
+        fatalError("This method must be overridden")
+    }
+    
+    
 }

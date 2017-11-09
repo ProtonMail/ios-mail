@@ -18,13 +18,16 @@ import Foundation
 import CoreData
 
 let sharedContactDataService = ContactDataService()
+
+
+typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
+typealias ContactAddComplete = ((Contact?, NSError?) -> Void)
+typealias ContactDeleteComplete = ((NSError?) -> Void)
+typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
+typealias ContactDetailsComplete = ((Contact?, NSError?) -> Void)
+
+
 class ContactDataService {
-    
-    typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
-    typealias ContactAddComplete = ((Contact?, NSError?) -> Void)
-    typealias ContactDeleteComplete = ((NSError?) -> Void)
-    typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
-    typealias ContactDetailsComplete = ((Contact?, NSError?) -> Void)
     
     /**
      wraper of main context

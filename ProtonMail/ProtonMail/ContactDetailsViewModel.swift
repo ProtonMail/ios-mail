@@ -10,7 +10,6 @@ import Foundation
 
 
 typealias LoadingProgress = () -> Void
-typealias ContactDetailsComplete = (_ contact: Contact?, _ error: NSError?) -> Void
 
 class ContactDetailsViewModel {
     

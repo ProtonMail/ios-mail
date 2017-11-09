@@ -283,6 +283,28 @@ extension ContactsViewController: UITableViewDelegate {
 //                self.contacts.remove(at: indexPath.row)
 //                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
 //            }
+            
+            if let contact = self.contactAtIndexPath(indexPath) {
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Contact", comment: "Title-Contacts"), style: .destructive, handler: { (action) -> Void in
+                    ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                    self.viewModel.delete(contactID: contact.contactID, complete: { (error) in
+                        ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                        if let err = error {
+                            err.alert(at : self.view)
+                        } else {
+//                            self.navigationController?.dismiss(animated: false, completion: {
+//
+//                            })
+                        }
+                    })
+                }))
+                
+                alertController.popoverPresentationController?.sourceView = self.view
+                alertController.popoverPresentationController?.sourceRect = self.view.frame
+                self.present(alertController, animated: true, completion: nil)
+            }
         }
         
         let editClosure = { (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
@@ -304,9 +326,9 @@ extension ContactsViewController: UITableViewDelegate {
 //            self.performSegue(withIdentifier: "toEditContact", sender: self)
         }
         
-//        let deleteAction = UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: "Action"), handler: deleteClosure)
+        let deleteAction = UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: "Action"), handler: deleteClosure)
 //        let editAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Edit", comment: "Action"), handler: editClosure)
-        return [] // [deleteAction, editAction]
+        return [deleteAction] // [deleteAction, editAction]
     }
     
     @objc func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

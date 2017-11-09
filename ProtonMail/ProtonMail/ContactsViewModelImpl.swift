@@ -23,4 +23,17 @@ final class ContactsViewModelImpl : ContactsViewModel {
         }
         return nil
     }
+    
+
+    
+    override func delete(contactID: String!, complete : @escaping ContactDeleteComplete) {
+        sharedContactDataService.delete(contactID: contactID, completion: { (error) in
+            if let err = error {
+                complete(err)
+            } else {
+                complete(nil)
+            }
+        })
+        
+    }
 }
