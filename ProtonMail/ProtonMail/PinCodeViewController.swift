@@ -54,7 +54,7 @@ class PinCodeViewController : UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.view.layoutIfNeeded()
-        NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground), name:  NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(PinCodeViewController.doEnterForeground), name:  NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         pinCodeView.updateCorner()
     }
     
@@ -71,7 +71,7 @@ class PinCodeViewController : UIViewController {
         return UIStatusBarStyle.lightContent;
     }
     
-    func doEnterForeground(){
+    @objc func doEnterForeground() {
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             authenticateUser()
         }

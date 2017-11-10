@@ -58,8 +58,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     fileprivate let kPasswordSegue : String = "to_eo_password_segue"
     
     deinit {
-        self.webView.delegate = nil
-        self.webView.stopLoading()
+        if let wv = self.webView {
+            wv.delegate = nil
+            wv.stopLoading()
+        }
     }
     
     override func viewDidLoad() {
