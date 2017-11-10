@@ -289,7 +289,7 @@ class ShareUnlockViewController: UIViewController {
     }
     
     func authenticateUser() {
-        let savedEmail = userCachedStatus.touchIDEmail
+        let savedEmail = userCachedStatus.codedEmail()
         // Get the local authentication context.
         let context = LAContext()
         // Declare a NSError variable.

@@ -218,6 +218,17 @@ extension UserCachedStatus {
         }
     }
     
+    func codedEmail() -> String {
+        let email = touchIDEmail
+        let count = email.count
+        if count > 0 {
+            var out : String = String(email[0])
+            out = out.padding(toLength: count, withPad: "*", startingAt: 0)
+            return out
+        }
+        return "****"
+    }
+    
     func resetTouchIDEmail() {
         setValue("", forKey: Key.touchIDEmail)
     }

@@ -5,7 +5,6 @@
 //  Created by Yanfeng Zhang on 4/6/16.
 //  Copyright (c) 2016 ProtonMail. All rights reserved.
 //
-
 import Foundation
 
 import UIKit
@@ -78,7 +77,7 @@ class PinCodeViewController : UIViewController {
     }
     
     func authenticateUser() {
-        let savedEmail = userCachedStatus.touchIDEmail
+        let savedEmail = userCachedStatus.codedEmail()
         // Get the local authentication context.
         let context = LAContext()
         // Declare a NSError variable.
