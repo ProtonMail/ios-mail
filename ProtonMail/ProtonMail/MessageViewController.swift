@@ -120,7 +120,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         }
     }
     
-    internal func reachabilityChanged(_ note : Notification) {
+    @objc internal func reachabilityChanged(_ note : Notification) {
         if let curReach = note.object as? Reachability {
             self.updateInterfaceWithReachability(curReach)
         } else {
@@ -358,7 +358,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
 
         
         NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.statusBarHit(_:)), name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(MailboxViewController.reachabilityChanged(_:)), name: NSNotification.Name.reachabilityChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.reachabilityChanged(_:)), name: NSNotification.Name.reachabilityChanged, object: nil)
         
         if message != nil {
             if let context = message.managedObjectContext {
