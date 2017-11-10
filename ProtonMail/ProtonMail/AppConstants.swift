@@ -26,14 +26,14 @@ class AppConstants {
     //static let URL_Protocol : String = "http://"
     
     //live api
-    //static let URL_HOST : String = "api.protonmail.ch"
+    static let URL_HOST : String = "api.protonmail.ch"
     
     //live test api
     //static let URL_HOST : String = "test-api.protonmail.ch"
     
     //live dev api
     //static let URL_HOST : String = "dev-api.protonmail.ch"
-    static let URL_HOST : String = "dev.protonmail.com"
+//    static let URL_HOST : String = "dev.protonmail.com"
     
     //blue test
 //    static let URL_HOST : String = "protonmail.blue"
@@ -44,8 +44,8 @@ class AppConstants {
     //static let URL_HOST : String = "http://protonmail.xyz"  //http
     
     //api options
-    static let API_PATH : String = "/api"
-    //static let API_PATH : String = ""
+//    static let API_PATH : String = "/api"
+    static let API_PATH : String = ""
     
     static var API_HOST_URL : String {
         get {
