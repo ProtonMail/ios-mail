@@ -11,6 +11,10 @@ import Foundation
 
 
 extension Email {
+    struct Attributes {
+        static let entityName = "Email"
+    }
+    
     func log() {
         PMLog.D("EmailID: \(self.emailID)")
         print("ContactID: \(self.contactID)")

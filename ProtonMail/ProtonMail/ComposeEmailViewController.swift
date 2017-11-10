@@ -95,7 +95,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         updateMessageView()
         
         // load all contacts
-        //self.contacts = sharedContactDataService.allContactVOs()
+        self.contacts = sharedContactDataService.allContactVOs()
         retrieveAllContacts()
         
         self.expirationPicker.alpha = 0.0
@@ -136,13 +136,13 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     
     internal func retrieveAllContacts() {
-        sharedContactDataService.fetchContacts { (contacts, error) in
+        sharedContactDataService.getContactVOs { (contacts, error) in
             if let error = error {
                 PMLog.D(" error: \(error)")
             }
             
             //TODO::
-            //self.contacts = contacts
+            self.contacts = contacts
             
             self.composeView.toContactPicker.reloadData()
             self.composeView.ccContactPicker.reloadData()
