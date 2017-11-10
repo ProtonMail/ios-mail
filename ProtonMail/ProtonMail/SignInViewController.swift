@@ -293,7 +293,7 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
-    @objc func doEnterForeground(){
+    @objc func doEnterForeground() {
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             authenticateUser()
         }

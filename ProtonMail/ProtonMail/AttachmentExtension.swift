@@ -197,8 +197,12 @@ extension UIImage {
                 attachment.isTemp = false
                 attachment.keyPacket = ""
                 attachment.localURL = nil
-                
+            
                 attachment.message = message
+                
+                let number = message.numAttachments.int32Value
+                let newNum = number > 0 ? number + 1 : 1
+                message.numAttachments = NSNumber(value: newNum)
                 
                 var error: NSError? = nil
                 error = context.saveUpstreamIfNeeded()
@@ -230,6 +234,10 @@ extension Data {
         attachment.localURL = nil
         
         attachment.message = message
+        
+        let number = message.numAttachments.int32Value
+        let newNum = number > 0 ? number + 1 : 1
+        message.numAttachments = NSNumber(value: newNum)
         
         var error: NSError? = nil
         error = attachment.managedObjectContext?.saveUpstreamIfNeeded()

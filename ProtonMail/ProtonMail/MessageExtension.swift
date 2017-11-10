@@ -500,10 +500,12 @@ extension Message {
         
         newMessage.addressID = message.getAddressID
         newMessage.messageStatus = message.messageStatus
+        newMessage.numAttachments = message.numAttachments
         
         if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
         }
+        
         
         for (index, attachment) in message.attachments.enumerated() {
             PMLog.D("index: \(index)")
