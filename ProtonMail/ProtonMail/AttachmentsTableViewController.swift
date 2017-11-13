@@ -416,7 +416,7 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                             self.tableView.reloadData()
                         }
                     }
-                    guard let image_data = imagedata, /* let _ = dataUTI,*/ let info = info, image_data.count > 0 else {
+                    guard var image_data = imagedata, /* let _ = dataUTI,*/ let info = info, image_data.count > 0 else {
                         DispatchQueue.main.async() {
                             picker.dismiss(animated: true, completion: nil)
                             self.showErrorAlert(NSLocalizedString("Can't open the file", comment: "Error"))
@@ -428,6 +428,16 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                     if let url = info["PHImageFileURLKey"] as? NSURL, let url_filename = url.lastPathComponent {
                         fileName = url_filename
                     }
+                    
+                    if fileName.preg_match(".(heif|heic)") {
+                        if let rawImage = UIImage(data: image_data) {
+                            if let newData = UIImageJPEGRepresentation(rawImage, 1.0), newData.count > 0 {
+                                image_data =  newData
+                                fileName = fileName.preg_replace(".(heif|heic)", replaceto: ".jpeg")
+                            }
+                        }
+                    }
+                    
                     let uti = fileName.mimeType()
                     let length = image_data.count
                     if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
