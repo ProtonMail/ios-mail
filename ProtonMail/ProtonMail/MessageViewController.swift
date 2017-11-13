@@ -69,6 +69,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         self.emailView!.topMessageView.delegate = self
         self.emailView?.viewDelegate = self
         self.emailView?.emailHeader.updateAttConstraints(false)
+        self.updateBadgeNumberWhenRead(message, changeToRead: true)
         loadMessageDetailes()
     }
     
@@ -319,7 +320,6 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         }
         if location == .inbox {
             UIApplication.setBadge(badge: count)
-            //UIApplication.shared.applicationIconBadgeNumber = count
         }
     }
     
