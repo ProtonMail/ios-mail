@@ -1335,7 +1335,7 @@
                                         </constraints>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" red="0.24604520201683044" green="0.24387916922569275" blue="0.30707395076751709" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1613,7 +1613,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg7-zN-Dhr">
-                                                    <rect key="frame" x="23" y="33" width="38" height="14"/>
+                                                    <rect key="frame" x="23" y="33" width="40.5" height="14"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="14" id="W6o-E0-l3x"/>
                                                     </constraints>
@@ -4808,7 +4808,7 @@
         <segue reference="3FM-PP-oeV"/>
         <segue reference="uj7-oW-fwS"/>
         <segue reference="rru-oY-8Lv"/>
-        <segue reference="hZj-FM-cPb"/>
+        <segue reference="w5b-0j-26v"/>
         <segue reference="zIE-XJ-wkG"/>
         <segue reference="F9J-SM-saL"/>
     </inferredMetricsTieBreakers>
