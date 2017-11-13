@@ -10,7 +10,6 @@ import Foundation
 import CoreData
 
 
-
 public class Label: NSManagedObject {
     
     @NSManaged public var color: String

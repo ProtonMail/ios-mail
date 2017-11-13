@@ -46,7 +46,7 @@ class ShareUnlockViewController: UIViewController {
                                                                 target: self,
                                                                 action: #selector(ShareUnlockViewController.cancelButtonTapped(sender:)))
         
-        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+        ActivityIndicatorHelper.showActivityIndicator(at: view)
         
         var is_inputs_error : Bool = true
         //this part need move to a seperate function
@@ -67,7 +67,7 @@ class ShareUnlockViewController: UIViewController {
                                                          kUTTypeFileURL as String]
                             
                             if  itemProvider.loadItem(types: file_types,  handler: { (fileData : FileData?, error : NSError?) in
-                                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                                 
                                 if error != nil || fileData == nil {
                                     self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
@@ -102,7 +102,7 @@ class ShareUnlockViewController: UIViewController {
                                 itemProvider.loadItem(forTypeIdentifier: url_key, options: nil, completionHandler: { (url, error) -> Void in
                                     
                                     {
-                                        ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                                        ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                                         if let shareURL = url as? NSURL {
                                             self.inputSubject = plainText ?? ""
                                             let url = shareURL.absoluteString ?? ""
@@ -121,7 +121,7 @@ class ShareUnlockViewController: UIViewController {
                                 inputSubject = ""
                                 inputContent = pt
                                 
-                                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                                 self.loginCheck()
                                 
                             } else {
@@ -289,7 +289,7 @@ class ShareUnlockViewController: UIViewController {
     }
     
     func authenticateUser() {
-        let savedEmail = userCachedStatus.touchIDEmail
+        let savedEmail = userCachedStatus.codedEmail()
         // Get the local authentication context.
         let context = LAContext()
         // Declare a NSError variable.
@@ -368,7 +368,7 @@ class ShareUnlockViewController: UIViewController {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
-        let navigationBarTitleFont = UIFont.systemFont(ofSize: UIFont.Size.h2)
+        let navigationBarTitleFont = Fonts.h2.regular
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: navigationBarTitleFont

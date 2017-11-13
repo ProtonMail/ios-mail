@@ -8,14 +8,7 @@
 
 import Foundation
 
-//extension Int {
-//    func setBadge() {
-//        UIApplication.shared.applicationIconBadgeNumber = self
-//    }
-//}
-
 extension UIApplication {
-    
     class func setBadge(badge:Int) {
         UIApplication.shared.applicationIconBadgeNumber = badge
     }

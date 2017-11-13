@@ -16,7 +16,8 @@ extension NSError {
     class func CreateError(_ domain : String,
                            code: Int,
                            localizedDescription: String,
-                           localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
+                           localizedFailureReason: String?,
+                           localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(
             domain: domain,
             code: code,

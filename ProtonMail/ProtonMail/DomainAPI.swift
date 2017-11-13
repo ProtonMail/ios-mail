@@ -19,7 +19,7 @@ final class GetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
         return nil
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
     
@@ -31,7 +31,7 @@ final class GetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
         return DomainsAPI.Path + "/available"
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return DomainsAPI.V_AvailableDomainsRequest
     }
 }

@@ -61,10 +61,10 @@ class LableEditViewController : UIViewController {
     
     @IBAction func applyAction(_ sender: AnyObject) {
         //show loading
-        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+        ActivityIndicatorHelper.showActivityIndicator(at: view)
         let color = viewModel.color(at: selected?.row ?? 0)
         viewModel.apply(withName: newLabelInput.text!, color: color, error: { (code, errorMessage) -> Void in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
             if code == 14005 {
                 let alert = NSLocalizedString("The maximum number of labels is 20.", comment: "Description").alertController()
                 alert.addOKAction()

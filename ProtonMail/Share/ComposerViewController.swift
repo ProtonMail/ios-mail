@@ -93,7 +93,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         // update content values
         updateMessageView()
-        self.contacts = sharedContactDataService.allContactVOs()
+        //self.contacts = sharedContactDataService.allContactVOs()
         retrieveAllContacts()
         
         self.expirationPicker.alpha = 0.0
@@ -161,7 +161,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     internal func updateEmbedImages() {
         if let atts = viewModel.getAttachments() {
             for att in atts {
-                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
+                if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
                     att.base64AttachmentData({ (based64String) in
                         if !based64String.isEmpty {
                             self.updateEmbedImage(byCID: "cid:\(content_id)", blob:  "data:\(att.mimeType);base64,\(based64String)");
@@ -251,7 +251,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
-        let navigationBarTitleFont = UIFont.systemFont(ofSize: UIFont.Size.h2)
+        let navigationBarTitleFont = Fonts.h2.regular
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: navigationBarTitleFont
@@ -259,31 +259,31 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     fileprivate func retrieveAllContacts() {
-        sharedContactDataService.getContactVOs { (contacts, error) -> Void in
-            if let error = error {
-                PMLog.D(" error: \(error)")
-            }
-            self.contacts = contacts
-            
-            self.composeView.toContactPicker.reloadData()
-            self.composeView.ccContactPicker.reloadData()
-            self.composeView.bccContactPicker.reloadData()
-            
-            self.composeView.toContactPicker.contactCollectionView!.layoutIfNeeded()
-            self.composeView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
-            self.composeView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
-            
-            switch self.viewModel.messageAction!
-            {
-            case .openDraft, .reply, .replyAll:
-                self.focus();
-                self.composeView.notifyViewSize(true)
-                break
-            default:
-                self.composeView.toContactPicker.becomeFirstResponder()
-                break
-            }
-        }
+//        sharedContactDataService.getContactVOs { (contacts, error) -> Void in
+//            if let error = error {
+//                PMLog.D(" error: \(error)")
+//            }
+//            self.contacts = contacts
+//
+//            self.composeView.toContactPicker.reloadData()
+//            self.composeView.ccContactPicker.reloadData()
+//            self.composeView.bccContactPicker.reloadData()
+//
+//            self.composeView.toContactPicker.contactCollectionView!.layoutIfNeeded()
+//            self.composeView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
+//            self.composeView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
+//
+//            switch self.viewModel.messageAction!
+//            {
+//            case .openDraft, .reply, .replyAll:
+//                self.focus();
+//                self.composeView.notifyViewSize(true)
+//                break
+//            default:
+//                self.composeView.toContactPicker.becomeFirstResponder()
+//                break
+//            }
+//        }
     }
     
     fileprivate func updateContentLayout(_ animation: Bool) {
@@ -344,7 +344,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         PMLog.D(edited)
         if let atts = viewModel.getAttachments() {
             for att in atts {
-                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
+                if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
                     PMLog.D(content_id)
                     if orignal.contains(content_id) {
                         if !edited.contains(content_id) {
@@ -358,7 +358,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
-            if self.composeView.hasOutSideEmails && self.encryptionPassword.characters.count <= 0 {
+            if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
                 self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
                 return;
             }
@@ -623,7 +623,7 @@ extension ComposerViewController: AttachmentsTableViewControllerDelegate {
     func attachments(_ attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
         self.collectDraft()
 
-        if let content_id = attachment.getContentID(), !content_id.isEmpty && attachment.isInline() {
+        if let content_id = attachment.contentID(), !content_id.isEmpty && attachment.inline() {
             self.removeEmbedImage(byCID: "cid:\(content_id)")
         }
         

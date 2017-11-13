@@ -32,14 +32,7 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate, UI
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        if (self.tableView.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
-            self.tableView.separatorInset = UIEdgeInsets.zero
-        }
-        
-        if (self.tableView.responds(to: #selector(setter: UIView.layoutMargins))) {
-            self.tableView.layoutMargins = UIEdgeInsets.zero
-        }
+        self.tableView.zeroMargin()
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -205,12 +198,6 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate, UI
     }
     
     @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
-            cell.separatorInset = UIEdgeInsets.zero
-        }
-        
-        if (cell.responds(to: #selector(setter: UIView.layoutMargins))) {
-            cell.layoutMargins = UIEdgeInsets.zero
-        }
+        cell.zeroMargin()
     }
 }

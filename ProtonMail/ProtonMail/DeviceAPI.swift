@@ -9,7 +9,7 @@
 import Foundation
 
 
-open class DeviceUtil {
+final class DeviceUtil {
     
     fileprivate struct DeviceKey {
         static let token = "DeviceTokenKey"
@@ -19,7 +19,7 @@ open class DeviceUtil {
         return UIDevice.current.identifierForVendor?.uuidString ?? ""
     }
     
-     static var deviceToken: String? {
+    static var deviceToken: String? {
         get {
             return SharedCacheBase.getDefault().string(forKey: DeviceKey.token)
         }
@@ -27,7 +27,7 @@ open class DeviceUtil {
             SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.token)
         }
     }
-
+    
 }
 
 
@@ -84,7 +84,7 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         return parameters
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
     
@@ -92,11 +92,11 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         return .post
     }
     
-    override open func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return DeviceAPI.Path
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return DeviceAPI.V_RegisterDeviceRequest
     }
 }
@@ -123,11 +123,11 @@ final class UnRegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         return .delete
     }
 
-    override open func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return DeviceAPI.Path
     }
 
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return DeviceAPI.V_UnRegisterDeviceRequest
     }
 }

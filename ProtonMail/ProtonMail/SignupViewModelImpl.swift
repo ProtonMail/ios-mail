@@ -8,7 +8,8 @@
 
 import Foundation
 
-class SignupViewModelImpl : SignupViewModel {
+
+final class SignupViewModelImpl : SignupViewModel {
     fileprivate var userName : String = ""
     fileprivate var token : String = ""
     fileprivate var isExpired : Bool = true

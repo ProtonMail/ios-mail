@@ -243,9 +243,6 @@ class MessageDataService {
             sharedAPIService.GET(request, completion: completionWrapper)
         }
     }
-    
-    
-    
     func fetchMessagesForLocationWithEventReset(_ location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
         queue {
             let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
@@ -259,9 +256,10 @@ class MessageDataService {
                         completion?(task, responseDict, error)
                     }
                     self.cleanMessage()
-                    sharedContactDataService.cleanUp()
+                    sharedContactDataService.clean()
                     self.fetchMessagesForLocation(location, MessageID: MessageID, Time: Time, foucsClean: false, completion: completionWrapper)
-                    sharedContactDataService.fetchContacts(nil)
+                    
+                    sharedContactDataService.fetchContacts(completion: nil)
                     sharedLabelsDataService.fetchLabels();
                 }  else {
                     completion?(task, nil, nil)
@@ -297,9 +295,9 @@ class MessageDataService {
                                     completion?(task, responseDict, error)
                                 }
                                 self.cleanMessage()
-                                sharedContactDataService.cleanUp()
+                                sharedContactDataService.clean()
                                 self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-                                sharedContactDataService.fetchContacts(nil)
+                                sharedContactDataService.fetchContacts(completion: nil)
                                 sharedLabelsDataService.fetchLabels();
                             } else {
                                 completion?(task, nil, nil)
@@ -369,9 +367,9 @@ class MessageDataService {
                                 completion?(task, nil, error)
                             }
                             self.cleanMessage()
-                            sharedContactDataService.cleanUp()
+                            sharedContactDataService.clean()
                             self.fetchMessagesForLabels(labelID, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-                            sharedContactDataService.fetchContacts(nil)
+                            sharedContactDataService.fetchContacts(completion: nil)
                             sharedLabelsDataService.fetchLabels();
                         }
                     }
@@ -431,9 +429,12 @@ class MessageDataService {
                         }
                     case .some(IncrementalContactUpdateType.insert), .some(IncrementalContactUpdateType.update) :
                         do {
-                            if let insert_update_contacts = contactObj.contact {
-                                try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: insert_update_contacts, in: context)
-                            }
+                            _ = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                 fromJSONArray: contactObj.contacts,
+                                                                 in: context)
+//                            if let insert_update_contacts = contactObj.contact {
+//                                try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: insert_update_contacts, in: context)
+//                            }
                         } catch let ex as NSError {
                             PMLog.D(" error: \(ex)")
                         }
@@ -1060,7 +1061,7 @@ class MessageDataService {
         sharedFailedQueue.clear()
         
         //tempary for clean contact cache
-        sharedContactDataService.cleanUp()
+        sharedContactDataService.clean() //here need move to a general data service manager
         sharedLabelsDataService.cleanUp()
         
         UIApplication.setBadge(badge: 0)
@@ -1153,7 +1154,7 @@ class MessageDataService {
                     self.fetchMessagesWithIDs(badMessages);
                 }
             } catch let ex as NSError {
-                ex.uploadFabricAnswer("purgeOldMessages")
+                ex.upload(toFabric: "purgeOldMessages")
                 PMLog.D("error : \(ex)")
             }
         }
@@ -1200,7 +1201,7 @@ class MessageDataService {
             var tempAtts : [TempAttachment]! = []
             for att in atts {
                 if att.managedObjectContext != nil {
-                    if let sessionKey = try att.getSessionKey() {
+                    if let sessionKey = try att.sessionKey() {
                         tempAtts.append(TempAttachment(id: att.attachmentID, key: sessionKey))
                     }
                 }
@@ -1448,7 +1449,7 @@ class MessageDataService {
                     }
                     
                     //
-                    let encrypt_data = attachment.encryptAttachment(default_address_id)
+                    let encrypt_data = attachment.encrypt(byAddrID: default_address_id)
                     //TODO:: here need check is encryptdata is nil and return the error to user.
                     let keyPacket = encrypt_data?.keyPackage
                     let dataPacket = encrypt_data?.dataPackage
@@ -1545,7 +1546,7 @@ class MessageDataService {
                         if message.managedObjectContext == nil {
                             NSError.alertLocalCacheErrorToast()
                             let err =  NSError.badDraft()
-                            err.uploadFabricAnswer(CacheErrorTitle)
+                            err.upload(toFabric: CacheErrorTitle)
                             errorBlock(task, nil, err)
                             return ;
                         }
@@ -1631,7 +1632,7 @@ class MessageDataService {
                                     //error?.alertErrorToast()
                                 }
                                 //NSError.alertMessageSentErrorToast()
-                                error?.uploadFabricAnswer(SendingErrorTitle)
+                                error?.upload(toFabric: SendingErrorTitle)
                             }
                             completion?(task, response, error)
                             return
@@ -1761,13 +1762,13 @@ class MessageDataService {
                 } else if statusCode == 200 && error?.code > 1000 {
                     //show error
                     let _ = sharedMessageQueue.remove(elementID)
-                    error?.uploadFabricAnswer(QueueErrorTitle)
+                    error?.upload(toFabric: QueueErrorTitle)
                 }
                 
                 if statusCode != 200 && statusCode != 404 && statusCode != 500 && !isInternetIssue {
                     //show error
                     let _ = sharedMessageQueue.remove(elementID)
-                    error?.uploadFabricAnswer(QueueErrorTitle)
+                    error?.upload(toFabric: QueueErrorTitle)
                 }
                 
                 if !isInternetIssue {

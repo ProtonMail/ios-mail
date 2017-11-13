@@ -60,7 +60,6 @@ class AddressBookService {
                 for emailIndex in 0 ..< count {
                     let index = UInt(emailIndex)
                     if let emailAsString = emails.value(at: index) as? String {
-                        
                         DispatchQueue.main.sync {
                             if (emailAsString.isValidEmail()) {
                                 let email = emailAsString
@@ -75,7 +74,7 @@ class AddressBookService {
             }
         } else {
             let err =  NSError.getContactsError()
-            err.uploadFabricAnswer(ContactsErrorTitle)
+            err.upload(toFabric: ContactsErrorTitle)
         }
         return contactVOs
     }

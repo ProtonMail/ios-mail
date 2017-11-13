@@ -93,6 +93,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         // update content values
         updateMessageView()
+        
+        // load all contacts
         self.contacts = sharedContactDataService.allContactVOs()
         retrieveAllContacts()
         
@@ -134,10 +136,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     
     internal func retrieveAllContacts() {
-        sharedContactDataService.getContactVOs { (contacts, error) -> Void in
+        sharedContactDataService.getContactVOs { (contacts, error) in
             if let error = error {
                 PMLog.D(" error: \(error)")
             }
+            
+            //TODO::
             self.contacts = contacts
             
             self.composeView.toContactPicker.reloadData()
@@ -164,7 +168,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     internal func updateEmbedImages() {
         if let atts = viewModel.getAttachments() {
             for att in atts {
-                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
+                if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
                     att.base64AttachmentData({ (based64String) in
                         if !based64String.isEmpty {
                             self.updateEmbedImage(byCID: "cid:\(content_id)", blob:  "data:\(att.mimeType);base64,\(based64String)")
@@ -231,7 +235,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
-        let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
+        let navigationBarTitleFont = Fonts.h2.light
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: navigationBarTitleFont
@@ -310,14 +314,14 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
-            if self.composeView.hasOutSideEmails && self.encryptionPassword.characters.count <= 0 {
+            if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
                 let emails = self.composeView.allEmails
                 //show loading
-                ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+                ActivityIndicatorHelper.showActivityIndicator(at: view)
                 let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
                 api.call({ (task, response: EmailsCheckResponse?, hasError : Bool) in
                     //hide loading
-                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                     if let res = response, res.hasOutsideEmails == false {
                         self.sendMessageStepTwo()
                     } else {
@@ -410,7 +414,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
     }
     
-    @objc func autoSaveTimer() {
+    @objc func autoSaveTimer()
+    {
         self.collectDraft()
         self.viewModel.updateDraft()
     }
@@ -436,7 +441,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         PMLog.D(edited)
         if let atts = viewModel.getAttachments() {
             for att in atts {
-                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
+                if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
                     PMLog.D(content_id)
                     if orignal.contains(content_id) {
                         if !edited.contains(content_id) {
@@ -686,7 +691,7 @@ extension ComposeEmailViewController: AttachmentsTableViewControllerDelegate {
     func attachments(_ attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
         self.collectDraft()
         
-        if let content_id = attachment.getContentID(), !content_id.isEmpty && attachment.isInline() {
+        if let content_id = attachment.contentID(), !content_id.isEmpty && attachment.inline() {
             self.removeEmbedImage(byCID: "cid:\(content_id)")
         }
         

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 final class LabelApplyViewModelImpl : LabelViewModel {
     fileprivate var messages : [Message]!
     fileprivate var labelMessages : Dictionary<String, LabelMessageModel>!

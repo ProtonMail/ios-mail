@@ -20,7 +20,7 @@ final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
         return KeysAPI.Path + "/salts" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return KeysAPI.V_GetKeysSaltsRequest
     }
 }
@@ -39,11 +39,11 @@ final class KeySaltResponse : ApiResponse {
 final class PasswordAuth : Package {
 
     let AuthVersion : Int = 4
-    let ModulusID : String! //encrypted id
-    let salt : String! //base64 encoded
-    let verifer : String! //base64 encoded
+    let ModulusID : String //encrypted id
+    let salt : String //base64 encoded
+    let verifer : String //base64 encoded
     
-    init(modulus_id : String!, salt :String!, verifer : String!) {
+    init(modulus_id : String, salt :String, verifer : String) {
         self.ModulusID = modulus_id
         self.salt = salt
         self.verifer = verifer

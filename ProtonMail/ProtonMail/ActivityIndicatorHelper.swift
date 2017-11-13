@@ -16,7 +16,7 @@ private let ACTIVITY_INDICATOR_FADE_ANIMATION_DURATION = 0.25
 
 class ActivityIndicatorHelper {
     
-    class func showActivityIndicatorAtView(_ view: UIView, style: UIActivityIndicatorViewStyle) {
+    class func showActivityIndicator(at view: UIView, style: UIActivityIndicatorViewStyle) {
         view.isUserInteractionEnabled = false
         let block = { () -> Void in
             var activityIndicator: UIActivityIndicatorView?
@@ -27,14 +27,12 @@ class ActivityIndicatorHelper {
             }
             
             if (activityIndicator == nil) {
-                activityIndicator = ActivityIndicatorHelper.setupActivityIndicator(style)
-                
+                activityIndicator = ActivityIndicatorHelper.setupActivityIndicator(by: style)
                 view.addSubview(activityIndicator!)
-                
                 activityIndicator!.mas_makeConstraints { (make) -> Void in
-                    let _ = make?.center.equalTo()(view)
-                    let _ = make?.width.equalTo()(ACTIVITY_INDICATOR_SIZE)
-                    let _ = make?.height.equalTo()(ACTIVITY_INDICATOR_SIZE)
+                    make?.center.equalTo()(view)
+                    make?.width.equalTo()(ACTIVITY_INDICATOR_SIZE)
+                    make?.height.equalTo()(ACTIVITY_INDICATOR_SIZE)
                 }
             }
             
@@ -55,11 +53,11 @@ class ActivityIndicatorHelper {
     }
     
     
-    class func showActivityIndicatorAtView(_ view: UIView) {
-        showActivityIndicatorAtView(view, style: UIActivityIndicatorViewStyle.whiteLarge)
+    class func showActivityIndicator(at view: UIView) {
+        showActivityIndicator(at: view, style: UIActivityIndicatorViewStyle.whiteLarge)
     }
     
-    class func hideActivityIndicatorAtView(_ view: UIView) {
+    class func hideActivityIndicator(at view: UIView) {
         DispatchQueue.main.async(execute: { () -> Void in
             view.isUserInteractionEnabled = true
             
@@ -82,7 +80,7 @@ class ActivityIndicatorHelper {
         })
     }
     
-    fileprivate class func setupActivityIndicator(_ style: UIActivityIndicatorViewStyle?) -> UIActivityIndicatorView {
+    fileprivate class func setupActivityIndicator(by style: UIActivityIndicatorViewStyle?) -> UIActivityIndicatorView {
         var activityIndicator: UIActivityIndicatorView!
         
         if let indicatorStyle = style {

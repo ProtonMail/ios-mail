@@ -76,8 +76,7 @@ class MenuViewController: UIViewController {
             name: NSNotification.Name(rawValue: MenuViewController.ObserverSwitchView),
             object: nil)
         
-        tableView.separatorInset = UIEdgeInsets.zero
-        tableView.layoutMargins = UIEdgeInsets.zero
+        self.tableView.zeroMargin()
         
         sharedLabelsDataService.fetchLabels();
     }
@@ -132,6 +131,10 @@ class MenuViewController: UIViewController {
                         //}
                     } else {
                     }
+                }
+            } else if (segue.identifier == kSegueToContacts ) {
+                if let contactViewController = navigationController.viewControllers.first as? ViewModelProtocol {
+                    sharedVMService.contactsViewModel(contactViewController)
                 }
             }
         }

@@ -150,6 +150,19 @@ extension PMNOpenPgp {
         
         return outKey
     }
+    
+    
+    func signVerify(detached signature: String, publicKey: String, plainText: String ) -> Bool {
+        var check = false
+        do {
+            try ObjC.catchException {
+                check = self.signDetachedVerify(publicKey, signature: signature, plainText: plainText)
+            }
+        } catch {
+            
+        }
+        return check
+    }
 }
 
 // MARK: - OpenPGP String extension
@@ -215,7 +228,6 @@ extension String {
         try ObjC.catchException {
             out_dncrypted = sharedOpenPGP.decryptMessageAes(self, password: passphrase)
         }
-        
         return out_dncrypted
     }
 }

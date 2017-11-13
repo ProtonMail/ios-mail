@@ -21,7 +21,7 @@ final class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
         return EventAPI.Path + "/\(self.eventID)" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return EventAPI.V_EventCheckRequest
     }
 }
@@ -33,7 +33,7 @@ final class EventLatestIDRequest<T : ApiResponse> : ApiRequest<T>{
         return EventAPI.Path + "/latest" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return EventAPI.V_LatestEventRequest
     }
 }
@@ -93,7 +93,7 @@ final class EventCheckResponse : ApiResponse {
     }
 }
 
-open class MessageEvent {
+final class MessageEvent {
     
     var Action : Int!
     var ID : String!;
@@ -108,20 +108,46 @@ open class MessageEvent {
     }
 }
 
-open class ContactEvent {
+final class ContactEvent {
     
     var Action : Int!
     var ID : String!;
     var contact : Dictionary<String, Any>?
-    
+    var contacts : [Dictionary<String, Any>] = []
     init(event: Dictionary<String, Any>!) {
         self.Action = event["Action"] as! Int
         self.contact =  event["Contact"] as? Dictionary<String, Any>
         self.ID =  event["ID"] as! String
+        
+        if let contact = self.contact {
+            if let contactID = contact["ContactID"] as? String, let name = contact["Name"] as? String {
+                var found = false
+                for (index, var c) in contacts.enumerated() {
+                    if let obj = c["ID"] as? String, obj == contactID {
+                        found = true
+                        if var emails = c["Emails"] as? [Dictionary<String, Any>] {
+                            emails.append(contact)
+                            c["Emails"] = emails
+                        } else {
+                            c["Emails"] = [contact]
+                        }
+                        contacts[index] = c
+                    }
+                }
+                if !found {
+                    let newContact : Dictionary<String, Any> = [
+                        "ID" : contactID,
+                        "Name" : name,
+                        "Emails" : [contact]
+                    ]
+                    self.contacts.append(newContact)
+                }
+            }
+        }
     }
 }
 
-open class LabelEvent {
+final class LabelEvent {
     
     var Action : Int!
     var ID : String!;

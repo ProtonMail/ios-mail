@@ -433,7 +433,7 @@ class JKBCrypt: NSObject {
         var off            : Int = 0
         
         // If the salt length is too short, it is invalid
-        if salt.characters.count < BCRYPT_SALT_LEN {
+        if salt.count < BCRYPT_SALT_LEN {
             return nil
         }
         
@@ -609,7 +609,7 @@ class JKBCrypt: NSObject {
      */
     class fileprivate func decode_base64(_ s: String, ofMaxLength maxolen: Int) -> Data? {
         var off : Int = 0
-        let slen : Int = s.characters.count
+        let slen : Int = s.count
         var olen : Int = 0
         var result : [Int8] = [Int8](repeating: 0, count: maxolen)
         

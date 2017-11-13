@@ -52,6 +52,15 @@ extension NSError {
         hud.hide(true, afterDelay: 3)
     }
     
+    public func alert(at view: UIView) ->Void {
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: view, animated: true)
+        hud.mode = MBProgressHUDMode.text
+        hud.labelText = NSLocalizedString("Alert", comment: "Title");
+        hud.detailsLabelText = localizedDescription
+        hud.removeFromSuperViewOnHide = true
+        hud.hide(true, afterDelay: 3)
+    }
+    
     public func alertErrorToast() ->Void {
         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)

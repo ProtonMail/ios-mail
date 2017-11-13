@@ -64,7 +64,7 @@ class AttachmentsTableViewController: UITableViewController {
         normalAttachments.removeAll()
         inlineAttachments.removeAll()
         for att in attachments {
-            if att.isInline() {
+            if att.inline() {
                 inlineAttachments.append(att)
             } else {
                 normalAttachments.append(att)
@@ -108,7 +108,7 @@ class AttachmentsTableViewController: UITableViewController {
         navigationController.navigationBar.isTranslucent = false
         navigationController.navigationBar.tintColor = UIColor.white
         
-        let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
+        let navigationBarTitleFont = Fonts.h2.light
         navigationController.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: navigationBarTitleFont
@@ -294,7 +294,7 @@ class AttachmentsTableViewController: UITableViewController {
     @objc override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
     {
         let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.font = UIFont.systemFont(ofSize: 12)
+        header.textLabel?.font = Fonts.h6.regular
         header.textLabel?.textColor = UIColor.gray
     }
 }

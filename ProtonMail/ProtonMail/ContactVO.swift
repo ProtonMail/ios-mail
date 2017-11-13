@@ -48,7 +48,7 @@ public class ContactVO: NSObject, MBContactPickerModelProtocol {
     }
 }
 
-
+//Extension::Array - contact vo
 extension Array where Element: ContactVO {
     mutating func distinctMerge(_ check : [Element]) {
         for element in check {

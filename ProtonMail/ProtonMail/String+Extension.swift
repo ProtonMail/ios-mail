@@ -10,14 +10,16 @@ import Foundation
 
 extension String {
     
-     func contains(check s: String) -> Bool {
+    func contains(check s: String) -> Bool {
         return self.range(of: s, options: NSString.CompareOptions.caseInsensitive) != nil ? true : false
     }
     
-     func isMatch(_ regex: String, options: NSRegularExpression.Options) -> Bool {
+    func isMatch(_ regex: String, options: NSRegularExpression.Options) -> Bool {
         do {
             let exp = try NSRegularExpression(pattern: regex, options: options)
-            let matchCount = exp.numberOfMatches(in: self, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSMakeRange(0, self.characters.count))
+            let matchCount = exp.numberOfMatches(in: self,
+                                                 options: .reportProgress,
+                                                 range: NSMakeRange(0, self.count))
             return matchCount > 0
         } catch {
             PMLog.D("\(error)")
@@ -28,8 +30,8 @@ extension String {
     
     func hasRe () -> Bool {
         let re = NSLocalizedString("Re:", comment: "Title")
-        let checkCount = re.characters.count
-        if self.characters.count < checkCount {
+        let checkCount = re.count
+        if self.count < checkCount {
             return false;
         }
         let index = self.index(self.startIndex, offsetBy: checkCount)
@@ -39,8 +41,8 @@ extension String {
     
     func hasFwd () -> Bool {
         let fwd = NSLocalizedString("Fwd:", comment: "Title")
-        let checkCount = fwd.characters.count
-        if self.characters.count < checkCount {
+        let checkCount = fwd.count
+        if self.count < checkCount {
             return false;
         }
         let index = self.index(self.startIndex, offsetBy: checkCount)
@@ -54,7 +56,7 @@ extension String {
      
      :returns: true | false
      */
-     func isValidEmail() -> Bool {
+    func isValidEmail() -> Bool {
         //"[A-Z0-9a-z]+([._%+-]{1}[A-Z0-9a-z]+)*@[A-Z0-9a-z]+([.-]{1}[A-Z0-9a-z]+)*(\\.[A-Za-z]{2,4}){0,1}"       //"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
         let emailRegEx = "^(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?(?:(?:(?:[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+(?:\\.[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+)*)|(?:\"(?:(?:(?:(?: )*(?:(?:[!#-Z^-~]|\\[|\\])|(?:\\\\(?:\\t|[ -~]))))+(?: )*)|(?: )+)\"))(?:@)(?:(?:(?:[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)(?:\\.[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)*)|(?:\\[(?:(?:(?:(?:(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))\\.){3}(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))))|(?:(?:(?: )*[!-Z^-~])*(?: )*)|(?:[Vv][0-9A-Fa-f]+\\.[-A-Za-z0-9._~!$&'()*+,;=:]+))\\])))(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?$"
         if let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx) as NSPredicate? {
@@ -71,7 +73,7 @@ extension String {
      
      :returns: trimed string value
      */
-     func trim() -> String {
+    func trim() -> String {
         return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
@@ -81,11 +83,12 @@ extension String {
      
      :returns: [ [String:String] ]
      */
-     func parseJson() -> [[String:String]]? {
+    func parseJson() -> [[String:String]]? {
         if self.isEmpty {
             return [];
         }
-
+        
+        print(self)
         do {
             if let data = self.data(using: String.Encoding.utf8) {
                 let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [[String:String]]
@@ -103,7 +106,7 @@ extension String {
      
      :returns: parsed address
      */
-     func getDisplayAddress() -> String {
+    func getDisplayAddress() -> String {
         var lists: [String] = []
         let recipients : [[String : String]] = self.parseJson()!
         for dict:[String : String] in recipients {
@@ -125,7 +128,7 @@ extension String {
      
      :returns: [String]
      */
-     func splitByComma() -> [String] {
+    func splitByComma() -> [String] {
         return self.components(separatedBy: ",")
     }
     
@@ -133,11 +136,11 @@ extension String {
         return  self.replacingOccurrences(of: "\r\n", with: "<br />")
     }
     
-     func rmln() -> String {
+    func rmln() -> String {
         return  self.replacingOccurrences(of: "\n", with: "")
     }
     
-     func lr2lrln() -> String {
+    func lr2lrln() -> String {
         return  self.replacingOccurrences(of: "\r", with: "\r\n")
     }
     
@@ -146,7 +149,7 @@ extension String {
      
      :returns: String
      */
-     func formatJsonContact(_ mailto : Bool = false) -> String {
+    func formatJsonContact(_ mailto : Bool = false) -> String {
         var lists: [String] = []
         
         let recipients : [[String : String]] = self.parseJson()!
@@ -165,7 +168,7 @@ extension String {
      
      :returns: String
      */
-     func decodeHtml() -> String {
+    func decodeHtml() -> String {
         var result = self.replacingOccurrences(of: "&amp;", with: "&", options: NSString.CompareOptions.caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: "&quot;", with: "\"", options: NSString.CompareOptions.caseInsensitive, range: nil)
         result = result.replacingOccurrences(of: "&#039;", with: "'", options: NSString.CompareOptions.caseInsensitive, range: nil)
@@ -175,26 +178,29 @@ extension String {
         return result
     }
     
-     func encodeHtml() -> String {
-        var result = self.replacingOccurrences(of: "&", with: "&amp;", options: NSString.CompareOptions.caseInsensitive, range: nil)
-        result = result.replacingOccurrences(of: "\"", with: "&quot;", options: NSString.CompareOptions.caseInsensitive, range: nil)
-        result = result.replacingOccurrences(of: "'", with: "&#039;", options: NSString.CompareOptions.caseInsensitive, range: nil)
-        result = result.replacingOccurrences(of: "<", with: "&lt;", options: NSString.CompareOptions.caseInsensitive, range: nil)
-        result = result.replacingOccurrences(of: ">", with: "&gt;", options: NSString.CompareOptions.caseInsensitive, range: nil)
+    func encodeHtml() -> String {
+        var result = self.replacingOccurrences(of: "&", with: "&amp;", options: .caseInsensitive, range: nil)
+        result = result.replacingOccurrences(of: "\"", with: "&quot;", options: .caseInsensitive, range: nil)
+        result = result.replacingOccurrences(of: "'", with: "&#039;", options: .caseInsensitive, range: nil)
+        result = result.replacingOccurrences(of: "<", with: "&lt;", options: .caseInsensitive, range: nil)
+        result = result.replacingOccurrences(of: ">", with: "&gt;", options: .caseInsensitive, range: nil)
         return result
     }
     
-     func plainText() -> String {
+    func plainText() -> String {
         return self;
     }
     
     
-     func stringByStrippingStyleHTML() -> String {
+    func stringByStrippingStyleHTML() -> String {
         let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
             let regex = try NSRegularExpression(pattern: "<style[^>]*?>.*?</style>", options:options)
-            let replacedString = regex.stringByReplacingMatches(in: self, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location: 0, length: self.characters.count), withTemplate: "")
-            if !replacedString.isEmpty && replacedString.characters.count > 0 {
+            let replacedString = regex.stringByReplacingMatches(in: self,
+                                                                options: NSRegularExpression.MatchingOptions(rawValue: 0),
+                                                                range: NSRange(location: 0, length: self.count),
+                                                                withTemplate: "")
+            if !replacedString.isEmpty && replacedString.count > 0 {
                 return replacedString;
             }
         } catch let ex as NSError {
@@ -203,16 +209,19 @@ extension String {
         return self
     }
     
-     func preg_replace_none_regex (_ partten: String, replaceto:String) -> String {
+    func preg_replace_none_regex (_ partten: String, replaceto:String) -> String {
         return self.replacingOccurrences(of: partten, with: replaceto, options: NSString.CompareOptions.caseInsensitive, range: nil)
     }
     
-     func preg_replace (_ partten: String, replaceto:String) -> String {
+    func preg_replace (_ partten: String, replaceto:String) -> String {
         let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
             let regex = try NSRegularExpression(pattern: partten, options:options)
-            let replacedString = regex.stringByReplacingMatches(in: self, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location: 0, length: self.characters.count), withTemplate: replaceto)
-            if !replacedString.isEmpty && replacedString.characters.count > 0 {
+            let replacedString = regex.stringByReplacingMatches(in: self,
+                                                                options: NSRegularExpression.MatchingOptions(rawValue: 0),
+                                                                range: NSRange(location: 0, length: self.count),
+                                                                withTemplate: replaceto)
+            if !replacedString.isEmpty && replacedString.count > 0 {
                 return replacedString;
             }
         } catch let ex as NSError {
@@ -221,12 +230,13 @@ extension String {
         return self
     }
     
-     func preg_match (_ partten: String) -> Bool {
+    func preg_match (_ partten: String) -> Bool {
         let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
             let regex = try NSRegularExpression(pattern: partten, options:options)
-            return regex.firstMatch(in: self, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location: 0, length: self.characters.count)) != nil
-            
+            return regex.firstMatch(in: self,
+                                    options: NSRegularExpression.MatchingOptions(rawValue: 0),
+                                    range: NSRange(location: 0, length: self.count)) != nil
         } catch let ex as NSError {
             PMLog.D("\(ex)")
         }
@@ -234,7 +244,7 @@ extension String {
         return false
     }
     //<link rel=“stylesheet” type=“text/css” href=“http://url/“>
-     func hasImage () -> Bool {
+    func hasImage () -> Bool {
         
         if self.preg_match("\\ssrc='(?!cid:)") {
             return true
@@ -257,9 +267,9 @@ extension String {
         return false
     }
     
-     func stringByPurifyImages () -> String {
+    func stringByPurifyImages () -> String {
         //src=\"(?!cid:)(.*?)(^|>|\"|\\s)
-       //let out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)|srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
+        //let out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)|srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
         
         var out = self.preg_replace("\\ssrc='(?!cid:)", replaceto: " data-src='")
         out = out.preg_replace("\\ssrc=\"(?!cid:)", replaceto: " data-src=\"")
@@ -271,14 +281,14 @@ extension String {
         
         
         // this is get http part and replace
-//        if self.preg_match("(<link\\b.*href=[\"'])(http.*.[\"'])(.*>)") {
-//            return true
-//        }
+        //        if self.preg_match("(<link\\b.*href=[\"'])(http.*.[\"'])(.*>)") {
+        //            return true
+        //        }
         
         return out
     }
     
-     func stringFixImages () -> String {
+    func stringFixImages () -> String {
         var out = self.preg_replace(" data-src='", replaceto: " src='")
         out = out.preg_replace(" data-src=\"", replaceto: " src=\"")
         out = out.preg_replace(" data-srcset=", replaceto: " srcset=")
@@ -290,47 +300,47 @@ extension String {
         return out
     }
     
-     func stringBySetupInlineImage(_ from : String, to: String) -> String {
+    func stringBySetupInlineImage(_ from : String, to: String) -> String {
         return self.preg_replace_none_regex(from, replaceto:to);
     }
     
-     func stringByPurifyHTML() -> String {
+    func stringByPurifyHTML() -> String {
         //|<(\\/?link.*?)>   <[^>]*?alert.*?>| |<[^>]*?confirm.*?> //the comment out part case hpylink have those key works been filtered out
         let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>|<img.*?.onerror=alert.*?>|<link[^>]*.href.[^>]*>", replaceto: " ")
         
-//        var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
-//        //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
-//        out = out.preg_replace("<(\\/?script.*?)>", replaceto: "")
-//        
-//        out = out.preg_replace("<(\\/?meta.*?)>", replaceto: "");
-//        out = out.preg_replace("<object(.*?)<\\/object>", replaceto: "")
-//        out = out.preg_replace("<(\\/?object.*?)>", replaceto: "")
-//        //out = out.preg_replace("<(object.*?)>(.*?)<(\\/object.*?)>", replaceto: "");
-//        //out = out.preg_replace("<(\\/?objec.*?)>", replaceto: "");
-//        out = out.preg_replace("<input(.*?)<\\/input>", replaceto: "")
-//        out = out.preg_replace("<(\\/?input.*?)>", replaceto: "");
-//        
-//        //remove inline style optinal later
-//        //out = out.preg_replace("(<[a-z ]*)(style=(\"|\')(.*?)(\"|\'))([a-z ]*>)", replaceto: "");
-//        out = out.preg_replace("<(\\/?link.*?)>", replaceto: "");
-//        
-//        out = out.preg_replace("<iframe(.*?)<\\/iframe>", replaceto: "");
-//        //out = out.preg_replace("<style(.*?)<\\/style>", replaceto: "");
-//        //out = out.preg_replace("\\s+", replaceto:" ")
-//        //out = out.preg_replace("<[ ]+", replaceto:"<")
-//        //out = out.preg_replace("<(style.*?)>(.*?)<(\\/style.*?)>", replaceto: "");
-//        //out = out.preg_replace("<(\\/?style.*?)>", replaceto: "");
-//        //        out = out.preg_replace("javascript", replaceto: "Javascript")
-//        //        out = out.preg_replace("vbscript", replaceto: "Vbscript")
-//        //        out = out.preg_replace("&#", replaceto: "&＃")
-//        //        out = out.preg_replace("<(noframes.*?)>(.*?)<(\\/noframes.*?)>", replaceto: "")
-//        //        out = out.preg_replace("<(\\/?noframes.*?)>", replaceto: "")
-//        //        out = out.preg_replace("<(i?frame.*?)>(.*?)<(\\/i?frame.*?)>", replaceto: "")
-//        //        out = out.preg_replace("<(\\/?i?frame.*?)>", replaceto: "")
-//        
-//        //optional later
-//        out = out.preg_replace("<video(.*?)<\\/video>", replaceto: "")
-//        out = out.preg_replace("<audio(.*?)<\\/audio>", replaceto: "")
+        //        var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
+        //        //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
+        //        out = out.preg_replace("<(\\/?script.*?)>", replaceto: "")
+        //
+        //        out = out.preg_replace("<(\\/?meta.*?)>", replaceto: "");
+        //        out = out.preg_replace("<object(.*?)<\\/object>", replaceto: "")
+        //        out = out.preg_replace("<(\\/?object.*?)>", replaceto: "")
+        //        //out = out.preg_replace("<(object.*?)>(.*?)<(\\/object.*?)>", replaceto: "");
+        //        //out = out.preg_replace("<(\\/?objec.*?)>", replaceto: "");
+        //        out = out.preg_replace("<input(.*?)<\\/input>", replaceto: "")
+        //        out = out.preg_replace("<(\\/?input.*?)>", replaceto: "");
+        //
+        //        //remove inline style optinal later
+        //        //out = out.preg_replace("(<[a-z ]*)(style=(\"|\')(.*?)(\"|\'))([a-z ]*>)", replaceto: "");
+        //        out = out.preg_replace("<(\\/?link.*?)>", replaceto: "");
+        //
+        //        out = out.preg_replace("<iframe(.*?)<\\/iframe>", replaceto: "");
+        //        //out = out.preg_replace("<style(.*?)<\\/style>", replaceto: "");
+        //        //out = out.preg_replace("\\s+", replaceto:" ")
+        //        //out = out.preg_replace("<[ ]+", replaceto:"<")
+        //        //out = out.preg_replace("<(style.*?)>(.*?)<(\\/style.*?)>", replaceto: "");
+        //        //out = out.preg_replace("<(\\/?style.*?)>", replaceto: "");
+        //        //        out = out.preg_replace("javascript", replaceto: "Javascript")
+        //        //        out = out.preg_replace("vbscript", replaceto: "Vbscript")
+        //        //        out = out.preg_replace("&#", replaceto: "&＃")
+        //        //        out = out.preg_replace("<(noframes.*?)>(.*?)<(\\/noframes.*?)>", replaceto: "")
+        //        //        out = out.preg_replace("<(\\/?noframes.*?)>", replaceto: "")
+        //        //        out = out.preg_replace("<(i?frame.*?)>(.*?)<(\\/i?frame.*?)>", replaceto: "")
+        //        //        out = out.preg_replace("<(\\/?i?frame.*?)>", replaceto: "")
+        //
+        //        //optional later
+        //        out = out.preg_replace("<video(.*?)<\\/video>", replaceto: "")
+        //        out = out.preg_replace("<audio(.*?)<\\/audio>", replaceto: "")
         
         
         return out;
@@ -372,22 +382,24 @@ extension String {
         //        }
     }
     
-     func stringByStrippingBodyStyle() -> String {
+    func stringByStrippingBodyStyle() -> String {
         let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
             let regexBody = try NSRegularExpression(pattern: "<body[^>]*>", options:options)
-            let matches = regexBody.matches(in: self, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location: 0, length: self.characters.count))
+            let matches = regexBody.matches(in: self,
+                                            options: NSRegularExpression.MatchingOptions(rawValue: 0),
+                                            range: NSRange(location: 0, length: self.count))
             if let first = matches.first {
                 if first.numberOfRanges > 0 {
                     let range = first.range(at: 0)
                     if let nRange = self.range(from: range) {
                         var bodyTag = String(self[nRange])
-                        if !bodyTag.isEmpty && bodyTag.characters.count > 0  {
+                        if !bodyTag.isEmpty && bodyTag.count > 0  {
                             let regexStyle = try NSRegularExpression(pattern: "style=\"[^\"]*\"", options:options)
-                            bodyTag = regexStyle.stringByReplacingMatches(in: bodyTag, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location: 0, length: bodyTag.characters.count), withTemplate: "")
-                            if !bodyTag.isEmpty && bodyTag.characters.count > 0  {
+                            bodyTag = regexStyle.stringByReplacingMatches(in: bodyTag, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location: 0, length: bodyTag.count), withTemplate: "")
+                            if !bodyTag.isEmpty && bodyTag.count > 0  {
                                 let newBody = self.replacingCharacters(in: nRange, with: bodyTag)
-                                if !newBody.isEmpty && newBody.characters.count > 0  {
+                                if !newBody.isEmpty && newBody.count > 0  {
                                     return newBody
                                 }
                             }
@@ -412,7 +424,7 @@ extension String {
         return randomString as String
     }
     
-     func range(from nsRange: NSRange) -> Range<String.Index>? {
+    func range(from nsRange: NSRange) -> Range<String.Index>? {
         guard
             let from16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex),
             let to16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location + nsRange.length, limitedBy: utf16.endIndex),
@@ -422,13 +434,13 @@ extension String {
         return from ..< to
     }
     
-     func encodeBase64() -> String {
+    func encodeBase64() -> String {
         let utf8str = self.data(using: String.Encoding.utf8)
         let base64Encoded = utf8str!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         return base64Encoded
     }
     
-     func decodeBase64() -> String {
+    func decodeBase64() -> String {
         let decodedData = Data(base64Encoded: self, options: NSData.Base64DecodingOptions(rawValue: 0))
         let decodedString = NSString(data: decodedData!, encoding: String.Encoding.utf8.rawValue)
         PMLog.D(any: decodedString!) // foo
@@ -436,13 +448,13 @@ extension String {
         return decodedString! as String
     }
     
-     func decodeBase64() -> Data {
+    func decodeBase64() -> Data {
         let decodedData = Data(base64Encoded: self, options: NSData.Base64DecodingOptions(rawValue: 0))
         return decodedData!
     }
     
     //
-     func toContacts() -> [ContactVO] {
+    func toContacts() -> [ContactVO] {
         var out : [ContactVO] = [ContactVO]();
         let recipients : [[String : String]] = self.parseJson()!
         for dict:[String : String] in recipients {
@@ -451,7 +463,7 @@ extension String {
         return out
     }
     
-     func toContact() -> ContactVO? {
+    func toContact() -> ContactVO? {
         var out : ContactVO? = nil
         let recipients : [String : String] = self.parseObject()
         
@@ -464,7 +476,7 @@ extension String {
         return out
     }
     
-     func parseObject () -> [String:String] {
+    func parseObject () -> [String:String] {
         if self.isEmpty {
             return ["" : ""];
         }
@@ -478,7 +490,7 @@ extension String {
         return ["":""]
     }
     
-     func stringByAppendingPathComponent(_ pathComponent: String) -> String {
+    func stringByAppendingPathComponent(_ pathComponent: String) -> String {
         return (self as NSString).appendingPathComponent(pathComponent)
     }
     
@@ -488,7 +500,7 @@ extension String {
 extension String {
     
     subscript (i: Int) -> Character {
-        return self[self.characters.index(self.startIndex, offsetBy: i)]
+        return self[self.index(self.startIndex, offsetBy: i)]
     }
     
     subscript (i: Int) -> String {

@@ -11,11 +11,11 @@ import Foundation
 extension APIService {
     
     fileprivate struct TransType {
-        static let boolean = "BoolTransformer"
-        static let date = "DateTransformer"
-        static let number = "NumberTransformer"
-        static let jsonString = "JsonStringTransformer"
-        static let jsonObject = "JsonToObjectTransformer"
+        static let boolean     = "BoolTransformer"
+        static let date        = "DateTransformer"
+        static let number      = "NumberTransformer"
+        static let jsonString  = "JsonStringTransformer"
+        static let jsonObject  = "JsonToObjectTransformer"
         static let encodedData = "EncodedDataTransformer"
     }
     

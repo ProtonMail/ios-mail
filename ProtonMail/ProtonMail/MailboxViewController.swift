@@ -57,7 +57,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
     
-    fileprivate var viewModel: MailboxViewModel!
+    internal var viewModel: MailboxViewModel!
+    //TODO:: this need release the delegate after use
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
     // this is for when user click the notification email
@@ -75,9 +76,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate var undoMessage : UndoMessage?
     
     fileprivate var isShowUndo : Bool = false
-    //private var notificationMessageID : String? = nil
-    
-    
     fileprivate var isCheckingHuman: Bool = false
     
     fileprivate var ratingMessage : Message?
@@ -239,19 +237,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        if (self.tableView.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
-            self.tableView.separatorInset = UIEdgeInsets.zero
-        }
-        
-        if (self.tableView.responds(to: #selector(setter: UIView.layoutMargins))) {
-            self.tableView.layoutMargins = UIEdgeInsets.zero
-        }
+        self.tableView.zeroMargin()
     }
     
     fileprivate func addSubViews() {
         self.navigationTitleLabel.backgroundColor = UIColor.clear
-        self.navigationTitleLabel.font = UIFont.robotoRegular(size: UIFont.Size.h2)
+        self.navigationTitleLabel.font = Fonts.h2.regular
         self.navigationTitleLabel.textAlignment = NSTextAlignment.center
         self.navigationTitleLabel.textColor = UIColor.white
         self.navigationTitleLabel.text = self.title ?? NSLocalizedString("INBOX", comment: "Title")
@@ -1247,7 +1238,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         animation.duration = 0.25
         animation.type = kCATransitionFade
         self.navigationController?.navigationBar.layer.add(animation, forKey: "fadeText")
-        if let t = text, t.characters.count > 0 {
+        if let t = text, t.count > 0 {
             self.title = t
             self.navigationTitleLabel.text = t
         } else {
@@ -1494,12 +1485,7 @@ extension MailboxViewController: UITableViewDataSource {
     }
     
     @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
-            cell.separatorInset = UIEdgeInsets.zero
-        }
-        if (cell.responds(to: #selector(setter: UIView.layoutMargins))) {
-            cell.layoutMargins = UIEdgeInsets.zero
-        }
+        cell.zeroMargin()
         fetchMessagesIfNeededForIndexPath(indexPath)
     }
 }

@@ -64,7 +64,7 @@ final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
         return AuthAPI.Path + "/info" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
 }
@@ -80,11 +80,11 @@ final class AuthModulusRequest<T : ApiResponse> : ApiRequest<T> {
         return AuthAPI.Path + "/modulus" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return AuthAPI.V_AuthModulusRequest
     }
 }
@@ -137,7 +137,7 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
         return AuthAPI.Path + AppConstants.DEBUG_OPTION
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
 }
@@ -176,7 +176,7 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
         return AuthAPI.Path + "/refresh" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
 }

@@ -10,11 +10,11 @@ import Foundation
 
 struct NotificationDefined {
     
-    static public let CustomizeURLSchema = "customize_url_schema"
-    static public let TouchStatusBar = "touchStatusBarClick"
+    static let CustomizeURLSchema = "customize_url_schema"
+    static let TouchStatusBar     = "touchStatusBarClick"
     
-    static public let didSignOut = "UserDataServiceDidSignOutNotification"
-    static public let didSignIn = "UserDataServiceDidSignInNotification"
+    static let didSignOut         = "UserDataServiceDidSignOutNotification"
+    static let didSignIn          = "UserDataServiceDidSignInNotification"
     
     //static public let languageWillChange = "PM_LANGUAGE_WILL_CHANGE"
     static public let languageDidChange = "PM_LANGUAGE_DID_CHANGE"

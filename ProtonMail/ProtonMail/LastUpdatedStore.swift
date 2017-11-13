@@ -83,6 +83,9 @@ final class LastUpdatedStore : SharedCacheBase {
         static let lastEventID = "lastEventID"  //
         static let lastCantactsUpdated = "LastCantactsUpdated" //
         
+        //added 1.8.0 new contacts
+        static let isContactsCached = "isContactsCached"  //
+        
         //Removed at 1.5.5 still need for cleanup
         static let mailboxUnreadCount = "MailboxUnreadCount"
         static let lastInboxesUpdated = "LastInboxesUpdated"
@@ -119,6 +122,16 @@ final class LastUpdatedStore : SharedCacheBase {
         }
     }
     
+    var contactsCached: Int {
+        get {
+            return getShared().integer(forKey: Key.isContactsCached)
+        }
+        set {
+            getShared().setValue(newValue, forKey: Key.isContactsCached)
+            getShared().synchronize()
+        }
+    }
+    
     var totalUnread: Int! {
         get {
             return getShared().integer(forKey: Key.unreadMessageCount) 
@@ -140,6 +153,7 @@ final class LastUpdatedStore : SharedCacheBase {
         getShared().removeObject(forKey: Key.lastEventID)
         getShared().removeObject(forKey: Key.unreadMessageCount)
         getShared().removeObject(forKey: Key.labelsUnreadCount)
+        getShared().removeObject(forKey: Key.isContactsCached)
         
         //removed
         getShared().removeObject(forKey: Key.mailboxUnreadCount)

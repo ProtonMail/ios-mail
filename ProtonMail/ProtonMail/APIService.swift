@@ -216,12 +216,12 @@ class APIService {
                 }
             }
         }
-
+        
     }
     
     
     // MARK: - Request methods
-
+    
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     //TODO:: update completion
     internal func download(byUrl url: String,
@@ -275,7 +275,7 @@ class APIService {
             authBlock(nil, nil)
         }
     }
-
+    
     
     /**
      this function only for upload attachments for now.
@@ -302,7 +302,7 @@ class APIService {
                     let data: AFMultipartFormData = formData
                     data.appendPart(withFileData: keyPackets, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
                     data.appendPart(withFileData: dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" ) }, error: nil)
-
+                
                 if let header = headers {
                     for (k, v) in header {
                         request.setValue("\(v)", forHTTPHeaderField: k)
@@ -394,7 +394,5 @@ class APIService {
             authBlock(nil, nil)
         }
     }
-
-    
 }
 

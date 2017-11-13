@@ -89,7 +89,7 @@ class GetUserInfoResponse : ApiResponse {
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
         guard let res = response["User"] as? Dictionary<String, Any> else {
             let err = NSError.badUserInfoResponse("\(response)")
-            err.uploadFabricAnswer(FetchUserInfoErrorTitle)
+            err.upload(toFabric: FetchUserInfoErrorTitle)
             return false
         }
         self.userInfo = UserInfo(response: res)
@@ -134,11 +134,11 @@ class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
         return .get
     }
     
-    override open func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return UsersAPI.Path + "/human"
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return UsersAPI.V_GetHumanRequest
     }
 }
@@ -192,7 +192,7 @@ class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
         return nil
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
     
@@ -226,7 +226,7 @@ class DirectRequest<T : ApiResponse> : ApiRequest<T> {
         return nil
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
     
@@ -299,7 +299,7 @@ class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
     
@@ -307,11 +307,11 @@ class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
         return .post
     }
     
-    override open func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return UsersAPI.Path + "/code"
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return UsersAPI.V_SendVerificationCodeRequest
     }
 }

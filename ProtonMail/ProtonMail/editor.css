@@ -26,11 +26,11 @@ html {
 }
 
 button,html,input,select,textarea {
-    font-family: "San Francisco", "Roboto-Regular",sans-serif;
+    font-family: "San Francisco",sans-serif;
 }
 
 body {
-    font-family: "San Francisco", "Roboto-Regular",Helvetica,Arial,sans-serif;
+    font-family: "San Francisco",Helvetica,Arial,sans-serif;
     font-weight: 400;
     margin: 0;
     width: 100%;

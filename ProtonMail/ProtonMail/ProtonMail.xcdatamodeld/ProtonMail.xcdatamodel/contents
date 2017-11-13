@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13240" systemVersion="16G29" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
-    <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="17B48" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="Attachment" representedClassName="ProtonMail.Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ID"/>
@@ -41,28 +41,85 @@
             <entry key="identityAttribute" value="attachmentID"/>
         </userInfo>
     </entity>
-    <entity name="Contact" representedClassName=".Contact" syncable="YES">
+    <entity name="Contact" representedClassName="ProtonMail.Contact" syncable="YES">
+        <attribute name="cardData" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Cards"/>
+                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+            </userInfo>
+        </attribute>
         <attribute name="contactID" attributeType="String" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ID"/>
             </userInfo>
         </attribute>
-        <attribute name="email" attributeType="String" indexed="YES" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="Email"/>
-            </userInfo>
-        </attribute>
+        <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isDownloaded" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="modifyTIme" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
         </attribute>
+        <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Size"/>
+            </userInfo>
+        </attribute>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="UID"/>
+            </userInfo>
+        </attribute>
+        <relationship name="emails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Email" inverseName="contact" inverseEntity="Email" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ContactEmails"/>
+            </userInfo>
+        </relationship>
         <userInfo>
             <entry key="identityAttribute" value="contactID"/>
         </userInfo>
     </entity>
     <entity name="Conversation" syncable="YES"/>
-    <entity name="Label" representedClassName=".Label" syncable="YES">
+    <entity name="Email" representedClassName="ProtonMail.Email" syncable="YES">
+        <attribute name="contactID" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ContactID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Email"/>
+            </userInfo>
+        </attribute>
+        <attribute name="emailID" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Name"/>
+            </userInfo>
+        </attribute>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Order"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Type"/>
+                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+            </userInfo>
+        </attribute>
+        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="emails" inverseEntity="Contact" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="emailID"/>
+        </userInfo>
+    </entity>
+    <entity name="Label" representedClassName="ProtonMail.Label" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Color"/>
@@ -318,8 +375,9 @@
     </entity>
     <elements>
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="195"/>
-        <element name="Contact" positionX="1521" positionY="-3564" width="128" height="90"/>
+        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="180"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
+        <element name="Email" positionX="1539" positionY="-3582" width="128" height="150"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="165"/>
         <element name="Message" positionX="1717" positionY="-3867" width="128" height="750"/>
     </elements>

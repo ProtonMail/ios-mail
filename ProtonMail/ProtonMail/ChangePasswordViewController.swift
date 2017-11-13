@@ -156,10 +156,10 @@ class ChangePasswordViewController: UIViewController {
             NotificationCenter.default.removeKeyboardObserver(self)
             self.performSegue(withIdentifier: self.kAsk2FASegue, sender: self)
         } else {
-            ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+            ActivityIndicatorHelper.showActivityIndicator(at: view)
             viewModel.setNewPassword(currentPwdEditor.text!, new_pwd: newPwdEditor.text!, confirm_new_pwd: confirmPwdEditor.text!, tfaCode: self.cached2faCode, complete: { value, error in
                 self.cached2faCode = nil
-                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                 if let error = error {
                     if error.code == APIErrorCode.UserErrorCode.currentWrong {
                         self.currentPwdEditor.becomeFirstResponder()
