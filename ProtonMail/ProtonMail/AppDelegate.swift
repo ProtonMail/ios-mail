@@ -126,6 +126,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         Fabric.with([Crashlytics()])
+       // FirebaseApp.configure()
         
         shareViewModelFactoy = ViewModelFactoryProduction()
         

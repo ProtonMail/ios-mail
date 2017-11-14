@@ -6,6 +6,8 @@ inhibit_all_warnings!
 
 #target 'ProtonMail','ProtonMailDev','ProtonMailTests'
 def pm_pods
+    pod 'Firebase/Core'
+    pod 'Firebase/Messaging'
 	pod 'Groot/ObjC', '2.0'
 	pod 'OpenPGP', :path => '../OpenPGP'
 	pod 'ZSSRichTextEditor', :path => '../ZSSRichTextEditor'
@@ -67,14 +69,6 @@ end
 
 target 'ShareDev' do
     pm_extensions
-end
-
-target 'Push' do
-    pm_push
-end
-
-target 'PushDev' do
-    pm_push
 end
 
 target 'PushService' do
