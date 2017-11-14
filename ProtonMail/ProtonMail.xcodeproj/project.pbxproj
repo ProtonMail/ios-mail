@@ -2835,6 +2835,7 @@
 			buildConfigurationList = 751CDEAA1FBB95B5005E3EB1 /* Build configuration list for PBXNativeTarget "PushServiceDev" */;
 			buildPhases = (
 				FE47B341FFCB8819570B4663 /* [CP] Check Pods Manifest.lock */,
+				7566E4F41FBB9C640036B36B /* Setup Version Number */,
 				751CDE9E1FBB95B3005E3EB1 /* Sources */,
 				751CDE9F1FBB95B3005E3EB1 /* Frameworks */,
 				751CDEA01FBB95B3005E3EB1 /* Resources */,
@@ -2958,7 +2959,7 @@
 				75DE7D821CAAEA4900F5443E /* Frameworks */,
 				75DE7D881CAAEA4900F5443E /* Resources */,
 				75DE7DA81CAAEA4900F5443E /* [CP] Copy Pods Resources */,
-				75DE7DA91CAAEA4900F5443E /* Run Script */,
+				75DE7DA91CAAEA4900F5443E /* Setup Fabric */,
 				9C600B3B587864959ECA81AA /* [CP] Embed Pods Frameworks */,
 				75FE233A1F04347C00DF12C1 /* Embed App Extensions */,
 				75352E7B1F05784500B41443 /* Embed Frameworks */,
@@ -3414,6 +3415,20 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
 		};
+		7566E4F41FBB9C640036B36B /* Setup Version Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Setup Version Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
+		};
 		7575CA6A1BCC5E6400A97F6C /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3579,14 +3594,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		75DE7DA91CAAEA4900F5443E /* Run Script */ = {
+		75DE7DA91CAAEA4900F5443E /* Setup Fabric */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Script";
+			name = "Setup Fabric";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
