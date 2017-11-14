@@ -2722,7 +2722,7 @@
 			buildConfigurationList = 075E3E081A5F4ECF00E001A7 /* Build configuration list for PBXNativeTarget "ProtonMail" */;
 			buildPhases = (
 				D5F434AFF2C00C9ABE6BB23E /* [CP] Check Pods Manifest.lock */,
-				7575CA6A1BCC5E6400A97F6C /* ShellScript */,
+				7575CA6A1BCC5E6400A97F6C /* Setup Version Number */,
 				075E3DE21A5F4ECF00E001A7 /* Sources */,
 				075E3DE31A5F4ECF00E001A7 /* Frameworks */,
 				075E3DE41A5F4ECF00E001A7 /* Resources */,
@@ -2769,7 +2769,7 @@
 			buildConfigurationList = 75482BE31F7F09E100B0BFFB /* Build configuration list for PBXNativeTarget "Share" */;
 			buildPhases = (
 				E4DB375294B99572FFD5ADC1 /* [CP] Check Pods Manifest.lock */,
-				75482BE21F7F09E100B0BFFB /* ShellScript */,
+				75482BE21F7F09E100B0BFFB /* Setup Version Number */,
 				75482B2D1F7F09E100B0BFFB /* Sources */,
 				75482BC11F7F09E100B0BFFB /* Frameworks */,
 				75482BC61F7F09E100B0BFFB /* Resources */,
@@ -2789,7 +2789,7 @@
 			buildConfigurationList = 758ED7CC1F05A4000028D1A5 /* Build configuration list for PBXNativeTarget "ShareDev" */;
 			buildPhases = (
 				07C487A7A08BCBFD76F9A5CF /* [CP] Check Pods Manifest.lock */,
-				75DAB3FC1F71B46F008F9997 /* ShellScript */,
+				75DAB3FC1F71B46F008F9997 /* Setup Version Number */,
 				758ED7BD1F05A3FF0028D1A5 /* Sources */,
 				758ED7BE1F05A3FF0028D1A5 /* Frameworks */,
 				758ED7BF1F05A3FF0028D1A5 /* Resources */,
@@ -2809,6 +2809,7 @@
 			buildConfigurationList = 75AFD2FD1FBA7CF000EAEA61 /* Build configuration list for PBXNativeTarget "Push" */;
 			buildPhases = (
 				692D7DFF71CAD1B9CD56BEFA /* [CP] Check Pods Manifest.lock */,
+				7561DC271FBB77B90099AFF5 /* Setup Version Number */,
 				75AFD2E71FBA7CF000EAEA61 /* Sources */,
 				75AFD2E81FBA7CF000EAEA61 /* Frameworks */,
 				75AFD2E91FBA7CF000EAEA61 /* Resources */,
@@ -2828,6 +2829,7 @@
 			buildConfigurationList = 75AFD30F1FBA7D7500EAEA61 /* Build configuration list for PBXNativeTarget "PushDev" */;
 			buildPhases = (
 				9B2B8DC848901CA25BE82A55 /* [CP] Check Pods Manifest.lock */,
+				7561DC281FBB77DE0099AFF5 /* Setup Version Number */,
 				75AFD2FE1FBA7D7500EAEA61 /* Sources */,
 				75AFD2FF1FBA7D7500EAEA61 /* Frameworks */,
 				75AFD3001FBA7D7500EAEA61 /* Resources */,
@@ -2847,7 +2849,7 @@
 			buildConfigurationList = 75DE7DAA1CAAEA4900F5443E /* Build configuration list for PBXNativeTarget "ProtonMailDev" */;
 			buildPhases = (
 				75DE7D811CAAEA4900F5443E /* [CP] Check Pods Manifest.lock */,
-				75DE7CB31CAAEA4900F5443E /* ShellScript */,
+				75DE7CB31CAAEA4900F5443E /* Setup Version Number */,
 				75DE7CB41CAAEA4900F5443E /* Sources */,
 				75DE7D821CAAEA4900F5443E /* Frameworks */,
 				75DE7D881CAAEA4900F5443E /* Resources */,
@@ -3222,26 +3224,56 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		75482BE21F7F09E100B0BFFB /* ShellScript */ = {
+		75482BE21F7F09E100B0BFFB /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Setup Version Number";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
 		};
-		7575CA6A1BCC5E6400A97F6C /* ShellScript */ = {
+		7561DC271FBB77B90099AFF5 /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Setup Version Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
+		};
+		7561DC281FBB77DE0099AFF5 /* Setup Version Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Setup Version Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
+		};
+		7575CA6A1BCC5E6400A97F6C /* Setup Version Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Setup Version Number";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3262,26 +3294,28 @@
 			shellPath = /bin/sh;
 			shellScript = "./Fabric.framework/run 982063ac8b41a8754cf79640ebab8b392ebe7e86 e66156cd496bbb89d6374b216ff8adf504838a4c1bf02c34c5390d289840bd02";
 		};
-		75DAB3FC1F71B46F008F9997 /* ShellScript */ = {
+		75DAB3FC1F71B46F008F9997 /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Setup Version Number";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
 		};
-		75DE7CB31CAAEA4900F5443E /* ShellScript */ = {
+		75DE7CB31CAAEA4900F5443E /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Setup Version Number";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
