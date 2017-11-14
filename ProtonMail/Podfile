@@ -37,6 +37,18 @@ def pm_extensions
     pod 'MCSwipeTableViewCell', '~> 2.1.4'
 end
 
+def pm_push
+    pod 'Groot/ObjC', '2.0'
+    pod 'OpenPGP', :path => '../OpenPGP'
+    pod 'AFNetworking', '3.1.0'
+    pod 'AFNetworkActivityLogger', :git => 'https://github.com/AFNetworking/AFNetworkActivityLogger.git', :branch => '3_0_0'
+    #based on 1.0.4
+#    pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
+    pod 'UICKeyChainStore', '2.1.0'
+#    pod 'Masonry', '1.1.0'
+#    pod 'UIColor+Hex', '1.0.1'
+end
+
 target 'ProtonMail' do
 	pm_pods
 end
@@ -55,6 +67,14 @@ end
 
 target 'ShareDev' do
     pm_extensions
+end
+
+target 'Push' do
+    pm_push
+end
+
+target 'PushDev' do
+    pm_push
 end
 
 post_install do | installer |

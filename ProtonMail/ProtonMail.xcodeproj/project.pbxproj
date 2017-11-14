@@ -66,6 +66,7 @@
 		07DD68A51A97DE9F00ED130C /* APIService+AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */; };
 		07DD68A71A9815DF00ED130C /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A61A9815DF00ED130C /* URL+Extension.swift */; };
 		07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */; };
+		45BC0DF5EBB24F8AC1D0DE13 /* libPods-Push.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD8B432606FF1E56020D86C /* libPods-Push.a */; };
 		4E0220EFD2D3FFE70AC21C16 /* libPods-ProtonMailTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EF314E2219A1089E6DAF06 /* libPods-ProtonMailTests.a */; };
 		701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE7F1AA64DEB0038149C /* MBContactPicker.m */; };
 		701DDE901AA64DEB0038149C /* MBContactCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE821AA64DEB0038149C /* MBContactCollectionView.m */; };
@@ -746,6 +747,8 @@
 		755F921B1C7E6D1F00BAEDF9 /* OnboardingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */; };
 		755F921D1C7E7FF300BAEDF9 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755F921C1C7E7FF300BAEDF9 /* Onboarding.swift */; };
 		7561836B1F1D262C00EF02DA /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713171DCD616D0084BF34 /* SignInViewModel.swift */; };
+		7561DC251FBB6FC10099AFF5 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75AFD2EE1FBA7CF000EAEA61 /* UserNotificationsUI.framework */; };
+		7561DC261FBB6FC70099AFF5 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A42B6A1F0439690025F52C /* libstdc++.tbd */; };
 		7564898E1B7DBE64007EA207 /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898D1B7DBE64007EA207 /* LabelAPI.swift */; };
 		756489901B7DBE8C007EA207 /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */; };
 		756489921B7DC8B8007EA207 /* LabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756489911B7DC8B8007EA207 /* LabelExtension.swift */; };
@@ -863,7 +866,6 @@
 		75AFD2F51FBA7CF000EAEA61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75AFD2F31FBA7CF000EAEA61 /* MainInterface.storyboard */; };
 		75AFD2F91FBA7CF000EAEA61 /* Push.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 75AFD2EB1FBA7CF000EAEA61 /* Push.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		75AFD3031FBA7D7500EAEA61 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75AFD2EC1FBA7CF000EAEA61 /* UserNotifications.framework */; };
-		75AFD3041FBA7D7500EAEA61 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75AFD2EE1FBA7CF000EAEA61 /* UserNotificationsUI.framework */; };
 		75AFD3071FBA7D7500EAEA61 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AFD3061FBA7D7500EAEA61 /* NotificationViewController.swift */; };
 		75AFD30A1FBA7D7500EAEA61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75AFD3081FBA7D7500EAEA61 /* MainInterface.storyboard */; };
 		75AFD30E1FBA7D7500EAEA61 /* PushDev.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 75AFD3021FBA7D7500EAEA61 /* PushDev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -1077,6 +1079,7 @@
 		75FC06731C88F8B50013422D /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FC06721C88F8B50013422D /* LocalAuthentication.framework */; };
 		75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */; };
 		985AB7B245E33C222F0D5F50 /* libPods-Share.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BA86F05A8DC2B4E0BE3890A /* libPods-Share.a */; };
+		9C9E580BEDC10BDFE9CB86C2 /* libPods-PushDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAC5AB60FBA59317594F99CA /* libPods-PushDev.a */; };
 		E0543BDD2F4BC3F59ABC6EC6 /* libPods-ProtonMail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7825C5C162EAD55A62734859 /* libPods-ProtonMail.a */; };
 		E2B40018E0A64B49A01B3DF6 /* libPods-ProtonMailDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 802280F25581311CFBC3C8E3 /* libPods-ProtonMailDev.a */; };
 		EAF4B9D23FDBAA4F2F237B3A /* (null) in Frameworks */ = {isa = PBXBuildFile; };
@@ -1234,8 +1237,10 @@
 		2723A6BEC97254756259C1CF /* libPods-ShareDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShareDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2753871EAB4E48C75B953246 /* Pods-ShareDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		32E074A6A514A1E79DAA0126 /* Pods-ShareDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.release.xcconfig"; sourceTree = "<group>"; };
+		381846D6D6FF1657692EEFB9 /* Pods-PushDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-PushDev/Pods-PushDev.release.xcconfig"; sourceTree = "<group>"; };
 		41169F68B3FE8907F2C72783 /* Pods-ProtonMailTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54F29596C87DC71ECEC2B74B /* Pods-ProtonMailDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.distribution.xcconfig"; sourceTree = "<group>"; };
+		5FD8B432606FF1E56020D86C /* libPods-Push.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Push.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ABD3AECB53A1BEFDC5C3B7A /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
 		701DDE7F1AA64DEB0038149C /* MBContactPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBContactPicker.m; sourceTree = "<group>"; };
 		701DDE811AA64DEB0038149C /* MBContactCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBContactCollectionView.h; sourceTree = "<group>"; };
@@ -1430,6 +1435,7 @@
 		755F92181C7E6D0D00BAEDF9 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingView.xib; sourceTree = "<group>"; };
 		755F921C1C7E7FF300BAEDF9 /* Onboarding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		7561DC231FBB6FAA0099AFF5 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		7564898D1B7DBE64007EA207 /* LabelAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAPI.swift; sourceTree = "<group>"; };
 		7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelsDataService.swift; sourceTree = "<group>"; };
 		756489911B7DC8B8007EA207 /* LabelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelExtension.swift; sourceTree = "<group>"; };
@@ -1606,9 +1612,15 @@
 		7BBE5AA309996CC3AE0CB72A /* Pods-ProtonMailTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.release.xcconfig"; sourceTree = "<group>"; };
 		802280F25581311CFBC3C8E3 /* libPods-ProtonMailDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A7CF350E37E2333C78D200A /* Pods-ProtonMailDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.debug.xcconfig"; sourceTree = "<group>"; };
+		8EB93BCCAB25E0FE1E01047F /* Pods-PushDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PushDev/Pods-PushDev.debug.xcconfig"; sourceTree = "<group>"; };
+		9A0647614600A77D29CF67E3 /* Pods-Push.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Push.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Push/Pods-Push.debug.xcconfig"; sourceTree = "<group>"; };
 		ADEE9DF404B6CD14E9C04A8D /* Pods-ShareDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.debug.xcconfig"; sourceTree = "<group>"; };
 		C87DB98FF3BD404B025BC4DC /* Pods-ProtonMail.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.debug.xcconfig"; sourceTree = "<group>"; };
+		CF396E3827B6C1C1519B37F2 /* Pods-PushDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PushDev/Pods-PushDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		D150620E49C5EDEC5065FEA1 /* Pods-ProtonMailTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.distribution.xcconfig"; sourceTree = "<group>"; };
+		EAC5AB60FBA59317594F99CA /* libPods-PushDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1D5BA77D4E64EF228015D41 /* Pods-Push.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Push.release.xcconfig"; path = "Pods/Target Support Files/Pods-Push/Pods-Push.release.xcconfig"; sourceTree = "<group>"; };
+		F22C4F83A4A68611C264C166 /* Pods-Push.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Push.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-Push/Pods-Push.distribution.xcconfig"; sourceTree = "<group>"; };
 		F3EF314E2219A1089E6DAF06 /* libPods-ProtonMailTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBC1646570583EAA04408D7D /* Pods-Share.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.distribution.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1664,6 +1676,7 @@
 			files = (
 				75AFD2EF1FBA7CF000EAEA61 /* UserNotificationsUI.framework in Frameworks */,
 				75AFD2ED1FBA7CF000EAEA61 /* UserNotifications.framework in Frameworks */,
+				45BC0DF5EBB24F8AC1D0DE13 /* libPods-Push.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1671,8 +1684,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75AFD3041FBA7D7500EAEA61 /* UserNotificationsUI.framework in Frameworks */,
+				7561DC261FBB6FC70099AFF5 /* libstdc++.tbd in Frameworks */,
+				7561DC251FBB6FC10099AFF5 /* UserNotificationsUI.framework in Frameworks */,
 				75AFD3031FBA7D7500EAEA61 /* UserNotifications.framework in Frameworks */,
+				9C9E580BEDC10BDFE9CB86C2 /* libPods-PushDev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1934,6 +1949,12 @@
 				0C8F2DF59046AC07D54D3A1D /* Pods-Share.debug.xcconfig */,
 				6ABD3AECB53A1BEFDC5C3B7A /* Pods-Share.release.xcconfig */,
 				FBC1646570583EAA04408D7D /* Pods-Share.distribution.xcconfig */,
+				9A0647614600A77D29CF67E3 /* Pods-Push.debug.xcconfig */,
+				F1D5BA77D4E64EF228015D41 /* Pods-Push.release.xcconfig */,
+				F22C4F83A4A68611C264C166 /* Pods-Push.distribution.xcconfig */,
+				8EB93BCCAB25E0FE1E01047F /* Pods-PushDev.debug.xcconfig */,
+				381846D6D6FF1657692EEFB9 /* Pods-PushDev.release.xcconfig */,
+				CF396E3827B6C1C1519B37F2 /* Pods-PushDev.distribution.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -2673,6 +2694,7 @@
 		EDDC3A27CB6370D84ADB05EA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7561DC231FBB6FAA0099AFF5 /* libc++.tbd */,
 				75A42B6A1F0439690025F52C /* libstdc++.tbd */,
 				75A42B681F0439570025F52C /* libz.tbd */,
 				7590F08C1C9894E1009C5059 /* Social.framework */,
@@ -2686,6 +2708,8 @@
 				0BA86F05A8DC2B4E0BE3890A /* libPods-Share.a */,
 				75AFD2EC1FBA7CF000EAEA61 /* UserNotifications.framework */,
 				75AFD2EE1FBA7CF000EAEA61 /* UserNotificationsUI.framework */,
+				5FD8B432606FF1E56020D86C /* libPods-Push.a */,
+				EAC5AB60FBA59317594F99CA /* libPods-PushDev.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2784,9 +2808,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 75AFD2FD1FBA7CF000EAEA61 /* Build configuration list for PBXNativeTarget "Push" */;
 			buildPhases = (
+				692D7DFF71CAD1B9CD56BEFA /* [CP] Check Pods Manifest.lock */,
 				75AFD2E71FBA7CF000EAEA61 /* Sources */,
 				75AFD2E81FBA7CF000EAEA61 /* Frameworks */,
 				75AFD2E91FBA7CF000EAEA61 /* Resources */,
+				A5F13E37A3C7ABB6F3BB6218 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2801,9 +2827,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 75AFD30F1FBA7D7500EAEA61 /* Build configuration list for PBXNativeTarget "PushDev" */;
 			buildPhases = (
+				9B2B8DC848901CA25BE82A55 /* [CP] Check Pods Manifest.lock */,
 				75AFD2FE1FBA7D7500EAEA61 /* Sources */,
 				75AFD2FF1FBA7D7500EAEA61 /* Frameworks */,
 				75AFD3001FBA7D7500EAEA61 /* Resources */,
+				9FA139A2A33C0C727F960CA5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3143,6 +3171,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		692D7DFF71CAD1B9CD56BEFA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Push-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		699B2164D0A6890D3758CAAB /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3365,6 +3411,24 @@
 			shellPath = /bin/sh;
 			shellScript = "./Fabric.framework/run 982063ac8b41a8754cf79640ebab8b392ebe7e86 e66156cd496bbb89d6374b216ff8adf504838a4c1bf02c34c5390d289840bd02";
 		};
+		9B2B8DC848901CA25BE82A55 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PushDev-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		9C600B3B587864959ECA81AA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3378,6 +3442,97 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9FA139A2A33C0C727F960CA5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PushDev/Pods-PushDev-resources.sh",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PushDev/Pods-PushDev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A063DD28565AD9C70A47288F /* [CP] Copy Pods Resources */ = {
@@ -3469,6 +3624,97 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Share/Pods-Share-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A5F13E37A3C7ABB6F3BB6218 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Push/Pods-Push-resources.sh",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Push/Pods-Push-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A7038E57DA5EA382DAD3045B /* [CP] Copy Pods Resources */ = {
@@ -5322,6 +5568,7 @@
 		};
 		75AFD2FA1FBA7CF000EAEA61 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A0647614600A77D29CF67E3 /* Pods-Push.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -5349,6 +5596,7 @@
 		};
 		75AFD2FB1FBA7CF000EAEA61 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F1D5BA77D4E64EF228015D41 /* Pods-Push.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -5376,6 +5624,7 @@
 		};
 		75AFD2FC1FBA7CF000EAEA61 /* Distribution */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F22C4F83A4A68611C264C166 /* Pods-Push.distribution.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -5403,6 +5652,7 @@
 		};
 		75AFD3101FBA7D7500EAEA61 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8EB93BCCAB25E0FE1E01047F /* Pods-PushDev.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -5429,6 +5679,7 @@
 		};
 		75AFD3111FBA7D7500EAEA61 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 381846D6D6FF1657692EEFB9 /* Pods-PushDev.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -5455,6 +5706,7 @@
 		};
 		75AFD3121FBA7D7500EAEA61 /* Distribution */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF396E3827B6C1C1519B37F2 /* Pods-PushDev.distribution.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
