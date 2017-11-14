@@ -66,8 +66,10 @@
 		07DD68A51A97DE9F00ED130C /* APIService+AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */; };
 		07DD68A71A9815DF00ED130C /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A61A9815DF00ED130C /* URL+Extension.swift */; };
 		07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */; };
+		11666412392E8305031C3020 /* libPods-PushServiceDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E178BA2BA1D1BC4898C0A04 /* libPods-PushServiceDev.a */; };
 		45BC0DF5EBB24F8AC1D0DE13 /* libPods-Push.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD8B432606FF1E56020D86C /* libPods-Push.a */; };
 		4E0220EFD2D3FFE70AC21C16 /* libPods-ProtonMailTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EF314E2219A1089E6DAF06 /* libPods-ProtonMailTests.a */; };
+		6761F486B65EC4AAD1B69189 /* libPods-PushService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 389631FC40D4EC4D6C3D336C /* libPods-PushService.a */; };
 		701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE7F1AA64DEB0038149C /* MBContactPicker.m */; };
 		701DDE901AA64DEB0038149C /* MBContactCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE821AA64DEB0038149C /* MBContactCollectionView.m */; };
 		701DDE911AA64DEB0038149C /* MBContactCollectionViewContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE841AA64DEB0038149C /* MBContactCollectionViewContactCell.m */; };
@@ -223,6 +225,11 @@
 		751900771F1D832C00DB68ED /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
 		751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B446D1B81245100B68CD6 /* TableCellLabelView.swift */; };
 		751C5FEA1C49C17700949FBF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
+		751CDEA51FBB95B4005E3EB1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CDEA41FBB95B4005E3EB1 /* NotificationService.swift */; };
+		751CDEA91FBB95B4005E3EB1 /* PushServiceDev.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 751CDEA21FBB95B3005E3EB1 /* PushServiceDev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		751CDEB51FBB95F6005E3EB1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CDEB41FBB95F6005E3EB1 /* NotificationService.swift */; };
+		751CDEB91FBB95F6005E3EB1 /* PushService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 751CDEB21FBB95F6005E3EB1 /* PushService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		751CDEBE1FBB96D5005E3EB1 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A42B6A1F0439690025F52C /* libstdc++.tbd */; };
 		751CE0261DDFBD0600D5EC66 /* ServerNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */; };
 		751CE0271DDFBD0600D5EC66 /* ServerNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */; };
 		751D49F01BE356180008E75C /* LabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751D49EF1BE356180008E75C /* LabelsView.swift */; };
@@ -864,11 +871,9 @@
 		75AFD2EF1FBA7CF000EAEA61 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75AFD2EE1FBA7CF000EAEA61 /* UserNotificationsUI.framework */; };
 		75AFD2F21FBA7CF000EAEA61 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AFD2F11FBA7CF000EAEA61 /* NotificationViewController.swift */; };
 		75AFD2F51FBA7CF000EAEA61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75AFD2F31FBA7CF000EAEA61 /* MainInterface.storyboard */; };
-		75AFD2F91FBA7CF000EAEA61 /* Push.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 75AFD2EB1FBA7CF000EAEA61 /* Push.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		75AFD3031FBA7D7500EAEA61 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75AFD2EC1FBA7CF000EAEA61 /* UserNotifications.framework */; };
 		75AFD3071FBA7D7500EAEA61 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AFD3061FBA7D7500EAEA61 /* NotificationViewController.swift */; };
 		75AFD30A1FBA7D7500EAEA61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75AFD3081FBA7D7500EAEA61 /* MainInterface.storyboard */; };
-		75AFD30E1FBA7D7500EAEA61 /* PushDev.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 75AFD3021FBA7D7500EAEA61 /* PushDev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		75B047B31AE708CC005C6D1A /* ComposeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */; };
 		75B0529D1F1FE032008E483A /* ViewModelServiceImpl+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B0529C1F1FE032008E483A /* ViewModelServiceImpl+Share.swift */; };
 		75B0529F1F1FE1FC008E483A /* ViewDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B0529E1F1FE1FC008E483A /* ViewDefined.swift */; };
@@ -1093,6 +1098,20 @@
 			remoteGlobalIDString = 075E3DE51A5F4ECF00E001A7;
 			remoteInfo = ProtonMail;
 		};
+		751CDEA71FBB95B4005E3EB1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 075E3DDE1A5F4ECF00E001A7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 751CDEA11FBB95B3005E3EB1;
+			remoteInfo = PushServiceDev;
+		};
+		751CDEB71FBB95F6005E3EB1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 075E3DDE1A5F4ECF00E001A7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 751CDEB11FBB95F6005E3EB1;
+			remoteInfo = PushService;
+		};
 		75482BEE1F7F10B500B0BFFB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 075E3DDE1A5F4ECF00E001A7 /* Project object */;
@@ -1114,20 +1133,6 @@
 			remoteGlobalIDString = 75DE7CB21CAAEA4900F5443E;
 			remoteInfo = ProtonMailDev;
 		};
-		75AFD2F71FBA7CF000EAEA61 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 075E3DDE1A5F4ECF00E001A7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 75AFD2EA1FBA7CF000EAEA61;
-			remoteInfo = Push;
-		};
-		75AFD30C1FBA7D7500EAEA61 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 075E3DDE1A5F4ECF00E001A7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 75AFD3011FBA7D7500EAEA61;
-			remoteInfo = PushDev;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1147,8 +1152,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				75AFD2F91FBA7CF000EAEA61 /* Push.appex in Embed App Extensions */,
 				75482BED1F7F10B500B0BFFB /* Share.appex in Embed App Extensions */,
+				751CDEB91FBB95F6005E3EB1 /* PushService.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1159,8 +1164,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				75AFD30E1FBA7D7500EAEA61 /* PushDev.appex in Embed App Extensions */,
 				758ED7CB1F05A4000028D1A5 /* ShareDev.appex in Embed App Extensions */,
+				751CDEA91FBB95B4005E3EB1 /* PushServiceDev.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1233,13 +1238,21 @@
 		07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSManagedObjectExtension.swift; path = ../ProtonMail/NSManagedObjectExtension.swift; sourceTree = "<group>"; };
 		0BA86F05A8DC2B4E0BE3890A /* libPods-Share.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Share.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C8F2DF59046AC07D54D3A1D /* Pods-Share.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.debug.xcconfig"; sourceTree = "<group>"; };
+		0E178BA2BA1D1BC4898C0A04 /* libPods-PushServiceDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushServiceDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		115E552EAACD2D1515556B02 /* Pods-PushService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.release.xcconfig"; path = "Pods/Target Support Files/Pods-PushService/Pods-PushService.release.xcconfig"; sourceTree = "<group>"; };
+		23103C742561D70ADA6DFCC2 /* Pods-PushService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PushService/Pods-PushService.debug.xcconfig"; sourceTree = "<group>"; };
 		244A62D4C89F2BB7DF4957E0 /* Pods-ProtonMail.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.release.xcconfig"; sourceTree = "<group>"; };
 		2723A6BEC97254756259C1CF /* libPods-ShareDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShareDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2753871EAB4E48C75B953246 /* Pods-ShareDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.distribution.xcconfig"; sourceTree = "<group>"; };
+		2ADC2E3C5202DB9853B4F9D1 /* Pods-PushServiceDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushServiceDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		32E074A6A514A1E79DAA0126 /* Pods-ShareDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.release.xcconfig"; sourceTree = "<group>"; };
 		381846D6D6FF1657692EEFB9 /* Pods-PushDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-PushDev/Pods-PushDev.release.xcconfig"; sourceTree = "<group>"; };
+		386DA5BF7321BBC55CBFD95D /* Pods-PushServiceDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushServiceDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev.release.xcconfig"; sourceTree = "<group>"; };
+		389631FC40D4EC4D6C3D336C /* libPods-PushService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41169F68B3FE8907F2C72783 /* Pods-ProtonMailTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54F29596C87DC71ECEC2B74B /* Pods-ProtonMailDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.distribution.xcconfig"; sourceTree = "<group>"; };
+		5B978E55A8597768196CE0FB /* Pods-PushService.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PushService/Pods-PushService.distribution.xcconfig"; sourceTree = "<group>"; };
+		5D0E6650D28C4FAB06310B35 /* Pods-PushServiceDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushServiceDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev.debug.xcconfig"; sourceTree = "<group>"; };
 		5FD8B432606FF1E56020D86C /* libPods-Push.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Push.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ABD3AECB53A1BEFDC5C3B7A /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
 		701DDE7F1AA64DEB0038149C /* MBContactPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBContactPicker.m; sourceTree = "<group>"; };
@@ -1308,6 +1321,12 @@
 		751B446D1B81245100B68CD6 /* TableCellLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCellLabelView.swift; sourceTree = "<group>"; };
 		751C5FE81C49C17700949FBF /* SwiftTryCatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwiftTryCatch.m; sourceTree = "<group>"; };
 		751C5FE91C49C17700949FBF /* SwiftTryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftTryCatch.h; sourceTree = "<group>"; };
+		751CDEA21FBB95B3005E3EB1 /* PushServiceDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushServiceDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		751CDEA41FBB95B4005E3EB1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		751CDEA61FBB95B4005E3EB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		751CDEB21FBB95F6005E3EB1 /* PushService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		751CDEB41FBB95F6005E3EB1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		751CDEB61FBB95F6005E3EB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerNotice.swift; sourceTree = "<group>"; };
 		751D49EF1BE356180008E75C /* LabelsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelsView.swift; sourceTree = "<group>"; };
 		75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SrpClientExtension.swift; sourceTree = "<group>"; };
@@ -1648,6 +1667,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		751CDE9F1FBB95B3005E3EB1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				751CDEBE1FBB96D5005E3EB1 /* libstdc++.tbd in Frameworks */,
+				11666412392E8305031C3020 /* libPods-PushServiceDev.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		751CDEAF1FBB95F6005E3EB1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6761F486B65EC4AAD1B69189 /* libPods-PushService.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		75482BC11F7F09E100B0BFFB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1785,6 +1821,8 @@
 				075E3E011A5F4ECF00E001A7 /* ProtonMailTests */,
 				75AFD2F01FBA7CF000EAEA61 /* Push */,
 				75AFD3051FBA7D7500EAEA61 /* PushDev */,
+				751CDEB31FBB95F6005E3EB1 /* PushService */,
+				751CDEA31FBB95B4005E3EB1 /* PushServiceDev */,
 				075E3DE71A5F4ECF00E001A7 /* Products */,
 				518B9570F3E0BF19912099F3 /* Pods */,
 				EDDC3A27CB6370D84ADB05EA /* Frameworks */,
@@ -1801,6 +1839,8 @@
 				75482BE71F7F09E100B0BFFB /* Share.appex */,
 				75AFD2EB1FBA7CF000EAEA61 /* Push.appex */,
 				75AFD3021FBA7D7500EAEA61 /* PushDev.appex */,
+				751CDEA21FBB95B3005E3EB1 /* PushServiceDev.appex */,
+				751CDEB21FBB95F6005E3EB1 /* PushService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1955,6 +1995,12 @@
 				8EB93BCCAB25E0FE1E01047F /* Pods-PushDev.debug.xcconfig */,
 				381846D6D6FF1657692EEFB9 /* Pods-PushDev.release.xcconfig */,
 				CF396E3827B6C1C1519B37F2 /* Pods-PushDev.distribution.xcconfig */,
+				5D0E6650D28C4FAB06310B35 /* Pods-PushServiceDev.debug.xcconfig */,
+				386DA5BF7321BBC55CBFD95D /* Pods-PushServiceDev.release.xcconfig */,
+				2ADC2E3C5202DB9853B4F9D1 /* Pods-PushServiceDev.distribution.xcconfig */,
+				23103C742561D70ADA6DFCC2 /* Pods-PushService.debug.xcconfig */,
+				115E552EAACD2D1515556B02 /* Pods-PushService.release.xcconfig */,
+				5B978E55A8597768196CE0FB /* Pods-PushService.distribution.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -2170,6 +2216,24 @@
 				751303DA1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		751CDEA31FBB95B4005E3EB1 /* PushServiceDev */ = {
+			isa = PBXGroup;
+			children = (
+				751CDEA41FBB95B4005E3EB1 /* NotificationService.swift */,
+				751CDEA61FBB95B4005E3EB1 /* Info.plist */,
+			);
+			path = PushServiceDev;
+			sourceTree = "<group>";
+		};
+		751CDEB31FBB95F6005E3EB1 /* PushService */ = {
+			isa = PBXGroup;
+			children = (
+				751CDEB41FBB95F6005E3EB1 /* NotificationService.swift */,
+				751CDEB61FBB95F6005E3EB1 /* Info.plist */,
+			);
+			path = PushService;
 			sourceTree = "<group>";
 		};
 		75230C211B9A392500EC2AC2 /* Cells */ = {
@@ -2710,6 +2774,8 @@
 				75AFD2EE1FBA7CF000EAEA61 /* UserNotificationsUI.framework */,
 				5FD8B432606FF1E56020D86C /* libPods-Push.a */,
 				EAC5AB60FBA59317594F99CA /* libPods-PushDev.a */,
+				0E178BA2BA1D1BC4898C0A04 /* libPods-PushServiceDev.a */,
+				389631FC40D4EC4D6C3D336C /* libPods-PushService.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2735,7 +2801,7 @@
 			);
 			dependencies = (
 				75482BEF1F7F10B500B0BFFB /* PBXTargetDependency */,
-				75AFD2F81FBA7CF000EAEA61 /* PBXTargetDependency */,
+				751CDEB81FBB95F6005E3EB1 /* PBXTargetDependency */,
 			);
 			name = ProtonMail;
 			productName = ProtonMail;
@@ -2763,6 +2829,44 @@
 			productName = ProtonMailTests;
 			productReference = 075E3DFE1A5F4ECF00E001A7 /* ProtonMailTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		751CDEA11FBB95B3005E3EB1 /* PushServiceDev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 751CDEAA1FBB95B5005E3EB1 /* Build configuration list for PBXNativeTarget "PushServiceDev" */;
+			buildPhases = (
+				FE47B341FFCB8819570B4663 /* [CP] Check Pods Manifest.lock */,
+				751CDE9E1FBB95B3005E3EB1 /* Sources */,
+				751CDE9F1FBB95B3005E3EB1 /* Frameworks */,
+				751CDEA01FBB95B3005E3EB1 /* Resources */,
+				F3045A78A3496ADCF4DF8D0D /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PushServiceDev;
+			productName = PushServiceDev;
+			productReference = 751CDEA21FBB95B3005E3EB1 /* PushServiceDev.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		751CDEB11FBB95F6005E3EB1 /* PushService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 751CDEBA1FBB95F6005E3EB1 /* Build configuration list for PBXNativeTarget "PushService" */;
+			buildPhases = (
+				38B60CD6B108FDCD1280DBE3 /* [CP] Check Pods Manifest.lock */,
+				751CDEAE1FBB95F6005E3EB1 /* Sources */,
+				751CDEAF1FBB95F6005E3EB1 /* Frameworks */,
+				751CDEB01FBB95F6005E3EB1 /* Resources */,
+				A7FD039EDB3656E14D300015 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PushService;
+			productName = PushService;
+			productReference = 751CDEB21FBB95F6005E3EB1 /* PushService.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		75482B2B1F7F09E100B0BFFB /* Share */ = {
 			isa = PBXNativeTarget;
@@ -2863,7 +2967,7 @@
 			);
 			dependencies = (
 				758ED7CA1F05A4000028D1A5 /* PBXTargetDependency */,
-				75AFD30D1FBA7D7500EAEA61 /* PBXTargetDependency */,
+				751CDEA81FBB95B4005E3EB1 /* PBXTargetDependency */,
 			);
 			name = ProtonMailDev;
 			productName = ProtonMail;
@@ -2899,6 +3003,16 @@
 						CreatedOnToolsVersion = 6.1.1;
 						LastSwiftMigration = 0900;
 						TestTargetID = 75DE7CB21CAAEA4900F5443E;
+					};
+					751CDEA11FBB95B3005E3EB1 = {
+						CreatedOnToolsVersion = 9.1;
+						DevelopmentTeam = 6UN54H93QT;
+						ProvisioningStyle = Automatic;
+					};
+					751CDEB11FBB95F6005E3EB1 = {
+						CreatedOnToolsVersion = 9.1;
+						DevelopmentTeam = 2SB5Z68H26;
+						ProvisioningStyle = Automatic;
 					};
 					75482B2B1F7F09E100B0BFFB = {
 						DevelopmentTeam = 2SB5Z68H26;
@@ -2981,10 +3095,12 @@
 				075E3DE51A5F4ECF00E001A7 /* ProtonMail */,
 				75482B2B1F7F09E100B0BFFB /* Share */,
 				75AFD2EA1FBA7CF000EAEA61 /* Push */,
+				751CDEB11FBB95F6005E3EB1 /* PushService */,
 				075E3DFD1A5F4ECF00E001A7 /* ProtonMailTests */,
 				75DE7CB21CAAEA4900F5443E /* ProtonMailDev */,
 				758ED7C01F05A3FF0028D1A5 /* ShareDev */,
 				75AFD3011FBA7D7500EAEA61 /* PushDev */,
+				751CDEA11FBB95B3005E3EB1 /* PushServiceDev */,
 			);
 		};
 /* End PBXProject section */
@@ -3034,6 +3150,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		075E3DFC1A5F4ECF00E001A7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		751CDEA01FBB95B3005E3EB1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		751CDEB01FBB95F6005E3EB1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3167,6 +3297,24 @@
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-ShareDev-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		38B60CD6B108FDCD1280DBE3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PushService-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3842,6 +3990,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A7FD039EDB3656E14D300015 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PushService/Pods-PushService-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		D5F434AFF2C00C9ABE6BB23E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4060,6 +4223,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F3045A78A3496ADCF4DF8D0D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		FE011C26F8EC7B0DB3ABA23C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4073,6 +4251,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FE47B341FFCB8819570B4663 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PushServiceDev-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -4405,6 +4601,22 @@
 				759223371D9DD5A70064DAA1 /* SrpTests.swift in Sources */,
 				7567B0711B3351C200A72A1E /* ComposeViewModelTests.swift in Sources */,
 				75ECCE041B31F5F600A8C800 /* AuthAPITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		751CDE9E1FBB95B3005E3EB1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				751CDEA51FBB95B4005E3EB1 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		751CDEAE1FBB95F6005E3EB1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				751CDEB51FBB95F6005E3EB1 /* NotificationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5066,6 +5278,16 @@
 			target = 075E3DE51A5F4ECF00E001A7 /* ProtonMail */;
 			targetProxy = 075E3DFF1A5F4ECF00E001A7 /* PBXContainerItemProxy */;
 		};
+		751CDEA81FBB95B4005E3EB1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 751CDEA11FBB95B3005E3EB1 /* PushServiceDev */;
+			targetProxy = 751CDEA71FBB95B4005E3EB1 /* PBXContainerItemProxy */;
+		};
+		751CDEB81FBB95F6005E3EB1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 751CDEB11FBB95F6005E3EB1 /* PushService */;
+			targetProxy = 751CDEB71FBB95F6005E3EB1 /* PBXContainerItemProxy */;
+		};
 		75482BEF1F7F10B500B0BFFB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 75482B2B1F7F09E100B0BFFB /* Share */;
@@ -5080,16 +5302,6 @@
 			isa = PBXTargetDependency;
 			target = 75DE7CB21CAAEA4900F5443E /* ProtonMailDev */;
 			targetProxy = 759223381D9DD6D60064DAA1 /* PBXContainerItemProxy */;
-		};
-		75AFD2F81FBA7CF000EAEA61 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 75AFD2EA1FBA7CF000EAEA61 /* Push */;
-			targetProxy = 75AFD2F71FBA7CF000EAEA61 /* PBXContainerItemProxy */;
-		};
-		75AFD30D1FBA7D7500EAEA61 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 75AFD3011FBA7D7500EAEA61 /* PushDev */;
-			targetProxy = 75AFD30C1FBA7D7500EAEA61 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -5378,6 +5590,165 @@
 			};
 			name = Release;
 		};
+		751CDEAB1FBB95B5005E3EB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5D0E6650D28C4FAB06310B35 /* Pods-PushServiceDev.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6UN54H93QT;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = PushServiceDev/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		751CDEAC1FBB95B5005E3EB1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 386DA5BF7321BBC55CBFD95D /* Pods-PushServiceDev.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 6UN54H93QT;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = PushServiceDev/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		751CDEAD1FBB95B5005E3EB1 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2ADC2E3C5202DB9853B4F9D1 /* Pods-PushServiceDev.distribution.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 6UN54H93QT;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = PushServiceDev/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Distribution;
+		};
+		751CDEBB1FBB95F6005E3EB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 23103C742561D70ADA6DFCC2 /* Pods-PushService.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = PushService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		751CDEBC1FBB95F6005E3EB1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 115E552EAACD2D1515556B02 /* Pods-PushService.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = PushService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		751CDEBD1FBB95F6005E3EB1 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5B978E55A8597768196CE0FB /* Pods-PushService.distribution.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 2SB5Z68H26;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = PushService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Distribution;
+		};
 		75482BE41F7F09E100B0BFFB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0C8F2DF59046AC07D54D3A1D /* Pods-Share.debug.xcconfig */;
@@ -5616,7 +5987,7 @@
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Push/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5645,7 +6016,7 @@
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Push/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5673,7 +6044,7 @@
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Push/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5700,7 +6071,7 @@
 				DEVELOPMENT_TEAM = 6UN54H93QT;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushDev/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5728,7 +6099,7 @@
 				DEVELOPMENT_TEAM = 6UN54H93QT;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushDev/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5754,7 +6125,7 @@
 				DEVELOPMENT_TEAM = 6UN54H93QT;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushDev/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6008,6 +6379,26 @@
 				075E3E0C1A5F4ECF00E001A7 /* Debug */,
 				075E3E0D1A5F4ECF00E001A7 /* Release */,
 				C321D6ED1A65D2730036EFFB /* Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		751CDEAA1FBB95B5005E3EB1 /* Build configuration list for PBXNativeTarget "PushServiceDev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				751CDEAB1FBB95B5005E3EB1 /* Debug */,
+				751CDEAC1FBB95B5005E3EB1 /* Release */,
+				751CDEAD1FBB95B5005E3EB1 /* Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		751CDEBA1FBB95F6005E3EB1 /* Build configuration list for PBXNativeTarget "PushService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				751CDEBB1FBB95F6005E3EB1 /* Debug */,
+				751CDEBC1FBB95F6005E3EB1 /* Release */,
+				751CDEBD1FBB95F6005E3EB1 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

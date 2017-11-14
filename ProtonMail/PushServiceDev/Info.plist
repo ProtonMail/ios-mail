@@ -19,20 +19,13 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.8.0</string>
 	<key>CFBundleVersion</key>
-	<string>Debug</string>
+	<string>1</string>
 	<key>NSExtension</key>
 	<dict>
-		<key>NSExtensionAttributes</key>
-		<dict>
-			<key>UNNotificationExtensionCategory</key>
-			<string>myNotificationCategory</string>
-			<key>UNNotificationExtensionInitialContentSizeRatio</key>
-			<real>1</real>
-		</dict>
-		<key>NSExtensionMainStoryboard</key>
-		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.usernotifications.content-extension</string>
+		<string>com.apple.usernotifications.service</string>
+		<key>NSExtensionPrincipalClass</key>
+		<string>$(PRODUCT_MODULE_NAME).NotificationService</string>
 	</dict>
 </dict>
 </plist>

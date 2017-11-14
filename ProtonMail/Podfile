@@ -77,6 +77,14 @@ target 'PushDev' do
     pm_push
 end
 
+target 'PushService' do
+    pm_push
+end
+
+target 'PushServiceDev' do
+    pm_push
+end
+
 post_install do | installer |
     require 'fileutils'
     FileUtils.cp_r('Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-Acknowledgements.plist', 'ProtonMail/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
