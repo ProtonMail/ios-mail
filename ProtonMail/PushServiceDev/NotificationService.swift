@@ -21,6 +21,12 @@ class NotificationService: UNNotificationServiceExtension {
         if let bestAttemptContent = bestAttemptContent {
             // Modify the notification content here...
             bestAttemptContent.title = "\(bestAttemptContent.title) [modified]"
+            
+            bestAttemptContent.badge = 100
+            bestAttemptContent.sound = UNNotificationSound.default()
+            bestAttemptContent.subtitle = "Subtitle test! " + " [modified]"
+            bestAttemptContent.body = "Give it back if you finished you tests! [modified]"
+            
             contentHandler(bestAttemptContent)
         }
     }
