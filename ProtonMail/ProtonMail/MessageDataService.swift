@@ -889,7 +889,7 @@ class MessageDataService {
             }
         } else {
             DispatchQueue.main.async {
-                completion(nil, nil, nil, nil)
+                completion(nil, nil, message, nil)
             }
         }
     }
