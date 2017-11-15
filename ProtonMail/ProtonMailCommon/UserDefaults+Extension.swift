@@ -21,15 +21,19 @@ extension UserDefaults {
     func customObjectForKey(_ key: String) -> Any? {
         if let data = object(forKey: key) as? Data {
             NSKeyedUnarchiver.setClass(UserInfo.classForKeyedArchiver(), forClassName: "ProtonMail.UserInfo")
+            NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "Share.UserInfo")
             NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ShareDev.UserInfo")
             
             NSKeyedUnarchiver.setClass(Address.classForKeyedArchiver(), forClassName: "ProtonMail.Address")
+            NSKeyedUnarchiver.setClass(Address.classForKeyedArchiver(), forClassName: "Share.Address")
             NSKeyedUnarchiver.setClass(Address.classForKeyedArchiver(), forClassName: "ShareDev.Address")
             
             NSKeyedUnarchiver.setClass(Key.classForKeyedArchiver(), forClassName: "ProtonMail.Key")
+            NSKeyedUnarchiver.setClass(Key.classForKeyedArchiver(), forClassName: "Share.Key")
             NSKeyedUnarchiver.setClass(Key.classForKeyedArchiver(), forClassName: "ShareDev.Key")
             
             NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedArchiver(), forClassName: "ProtonMail.UpdateTime")
+            NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedArchiver(), forClassName: "Share.UpdateTime")
             NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedArchiver(), forClassName: "ShareDev.UpdateTime")
             
             return NSKeyedUnarchiver.unarchiveObject(with: data)
