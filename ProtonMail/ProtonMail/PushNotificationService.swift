@@ -100,8 +100,14 @@ public class PushNotificationService {
                                 completionHandler(.newData)
                             }
                         });
+                    } else {
+                        completionHandler(.failed)
                     }
+                } else {
+                    completionHandler(.failed)
                 }
+            } else {
+                completionHandler(.failed)
             }
         }
     }
