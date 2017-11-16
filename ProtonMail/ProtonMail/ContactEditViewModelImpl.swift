@@ -397,7 +397,6 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 // add others later
                 let vcard2Str = PMNIEzvcard.write(vcard2)
-                PMLog.D(vcard2Str);
                 let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key, plainText: vcard2Str, passphras: sharedUserDataService.mailboxPassword!)
                 
                 //card 2 object
