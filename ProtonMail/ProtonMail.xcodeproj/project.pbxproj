@@ -752,6 +752,12 @@
 		7564899E1B7F2C9F007EA207 /* ComposeViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564899D1B7F2C9F007EA207 /* ComposeViewModelImpl.swift */; };
 		7565998F1AC4809B00C187E4 /* EncryptTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7565998E1AC4809B00C187E4 /* EncryptTypes.swift */; };
 		75662BA71B543A5B006C538E /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75662BA61B543A5B006C538E /* SettingsAPI.swift */; };
+		7566E4FA1FC3B0880036B36B /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566E4F91FC3B0880036B36B /* MenuViewModel.swift */; };
+		7566E4FB1FC3B0880036B36B /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566E4F91FC3B0880036B36B /* MenuViewModel.swift */; };
+		7566E4FD1FC3B0A00036B36B /* MenuViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566E4FC1FC3B0A00036B36B /* MenuViewModelImpl.swift */; };
+		7566E4FE1FC3B0A00036B36B /* MenuViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566E4FC1FC3B0A00036B36B /* MenuViewModelImpl.swift */; };
+		7566E5001FC4C8B70036B36B /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566E4FF1FC4C8B70036B36B /* UINavigationController+Extension.swift */; };
+		7566E5011FC4C8B70036B36B /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566E4FF1FC4C8B70036B36B /* UINavigationController+Extension.swift */; };
 		7567B06B1B334AF200A72A1E /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */; };
 		7567B06D1B334FA400A72A1E /* ViewModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06C1B334FA400A72A1E /* ViewModelService.swift */; };
 		7567B06F1B334FD300A72A1E /* ViewModelServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */; };
@@ -1403,6 +1409,9 @@
 		75662BA61B543A5B006C538E /* SettingsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAPI.swift; sourceTree = "<group>"; };
 		7566AE871F394CEA006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		7566AE891F394CEC006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7566E4F91FC3B0880036B36B /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
+		7566E4FC1FC3B0A00036B36B /* MenuViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModelImpl.swift; sourceTree = "<group>"; };
+		7566E4FF1FC4C8B70036B36B /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
 		7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		7567B06C1B334FA400A72A1E /* ViewModelService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelService.swift; sourceTree = "<group>"; };
 		7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelServiceImpl.swift; sourceTree = "<group>"; };
@@ -1939,7 +1948,6 @@
 				756489931B7E77AC007EA207 /* MenuLabelViewCell.swift */,
 				7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */,
 				70945E6B1A8133B8002B6837 /* MoreOptionsView.swift */,
-				7514FC281B79825F00DDD297 /* MenuItem.swift */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -2161,6 +2169,7 @@
 				7528FF901FA7FE85005F66A3 /* UIApplication+InfoExtension.swift */,
 				75B431BA1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift */,
 				75B431BC1F7AF406009DD520 /* UIApplication+BadgeNumber+Share.swift */,
+				7566E4FF1FC4C8B70036B36B /* UINavigationController+Extension.swift */,
 				7528FF751FA7FE80005F66A3 /* NSFetchedResultsController+Extension.swift */,
 				0713239B1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift */,
 				07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */,
@@ -2260,6 +2269,16 @@
 				755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */,
 			);
 			name = Onboarding;
+			sourceTree = "<group>";
+		};
+		7566E4F81FC3B05A0036B36B /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				7514FC281B79825F00DDD297 /* MenuItem.swift */,
+				7566E4F91FC3B0880036B36B /* MenuViewModel.swift */,
+				7566E4FC1FC3B0A00036B36B /* MenuViewModelImpl.swift */,
+			);
+			name = Menu;
 			sourceTree = "<group>";
 		};
 		756CDE3B1D9C754D004455F6 /* SRP */ = {
@@ -2495,6 +2514,7 @@
 				750AAEB21FA91A1700CBFCA3 /* Contacts */,
 				757F4A071E67A0B8001CDE71 /* Labels */,
 				7545083F1E149B3900265CD0 /* Mailbox */,
+				7566E4F81FC3B05A0036B36B /* Menu */,
 				75DD3E551E81BFCD005A7B93 /* MessageDetail */,
 				75BDECA71CBCCC5A00982089 /* PinCode */,
 				754713161DCD61510084BF34 /* SignIn */,
@@ -3677,6 +3697,7 @@
 				757945D81B6702A2004EEDCA /* EmailView.swift in Sources */,
 				7528FFAD1FA7FE85005F66A3 /* UIApplication+InfoExtension.swift in Sources */,
 				759337851D18917400004A3D /* PMWebView.swift in Sources */,
+				7566E5001FC4C8B70036B36B /* UINavigationController+Extension.swift in Sources */,
 				757F4A151E68F817001CDE71 /* FolderCreatingViewModelImpl.swift in Sources */,
 				756489941B7E77AC007EA207 /* MenuLabelViewCell.swift in Sources */,
 				7567B0791B33880500A72A1E /* APIServiceResponse.swift in Sources */,
@@ -3811,6 +3832,7 @@
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
 				75921C7B1F747BC90028DAC9 /* String+Mime.swift in Sources */,
 				753E30A71F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */,
+				7566E4FA1FC3B0880036B36B /* MenuViewModel.swift in Sources */,
 				758625D31CD80C6D0037DFA7 /* SettingsNavigationController.swift in Sources */,
 				07520CFC1AA67D38000D2175 /* PushNotificationService.swift in Sources */,
 				75510BAB1B82BDEB001348FF /* LabelTableViewCell.swift in Sources */,
@@ -3916,6 +3938,7 @@
 				7528FFCF1FA7FEC3005F66A3 /* ContactEditInformationCell.swift in Sources */,
 				75BDECAD1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift in Sources */,
 				70945E6C1A8133B8002B6837 /* MoreOptionsView.swift in Sources */,
+				7566E4FD1FC3B0A00036B36B /* MenuViewModelImpl.swift in Sources */,
 				7565998F1AC4809B00C187E4 /* EncryptTypes.swift in Sources */,
 				7510AE7E1AB8D69B00EF3C41 /* ChangePasswordViewController.swift in Sources */,
 				7567B0751B3383F900A72A1E /* MessageAPI.swift in Sources */,
@@ -4318,6 +4341,7 @@
 				752800121FA7FEF6005F66A3 /* PHAsset+Extension.swift in Sources */,
 				75256C6F1F16DFBD00F2771E /* FolderApplyViewModelImpl.swift in Sources */,
 				75256C701F16DFBD00F2771E /* LabelManagerViewModelImpl.swift in Sources */,
+				7566E5011FC4C8B70036B36B /* UINavigationController+Extension.swift in Sources */,
 				75256C711F16DFBD00F2771E /* LabelEditViewModel.swift in Sources */,
 				75256C721F16DFBD00F2771E /* LabelEditingViewModelImpl.swift in Sources */,
 				7528000E1FA7FEF6005F66A3 /* NotificationCenter+KeyboardExtension.swift in Sources */,
@@ -4452,6 +4476,7 @@
 				75DE7CC81CAAEA4900F5443E /* QuickViewViewController.swift in Sources */,
 				7528FFF01FA7FEF6005F66A3 /* ContactEditFieldCell.swift in Sources */,
 				75DE7CCA1CAAEA4900F5443E /* TouchIDCell.swift in Sources */,
+				7566E4FB1FC3B0880036B36B /* MenuViewModel.swift in Sources */,
 				75DE7CCC1CAAEA4900F5443E /* SettingTableViewController.swift in Sources */,
 				7528FFF31FA7FEF6005F66A3 /* ContactEditPhoneCell.swift in Sources */,
 				75DE7CD11CAAEA4900F5443E /* ProtonMailViewController.swift in Sources */,
@@ -4557,6 +4582,7 @@
 				75DE7D6C1CAAEA4900F5443E /* ContactsTableViewCell.swift in Sources */,
 				752800181FA7FEF6005F66A3 /* Fonts+Constants.swift in Sources */,
 				75DE7D6D1CAAEA4900F5443E /* MenuTableViewCell.swift in Sources */,
+				7566E4FE1FC3B0A00036B36B /* MenuViewModelImpl.swift in Sources */,
 				75DE7D6F1CAAEA4900F5443E /* FeedbackItem.swift in Sources */,
 				75DE7D721CAAEA4900F5443E /* MoreOptionsView.swift in Sources */,
 				752800131FA7FEF6005F66A3 /* TimeInterval+Extension.swift in Sources */,

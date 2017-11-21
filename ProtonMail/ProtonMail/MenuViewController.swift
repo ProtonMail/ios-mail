@@ -13,63 +13,63 @@
 import UIKit
 import CoreData
 
+
+
 class MenuViewController: UIViewController {
     internal static let ObserverSwitchView:String = "Push_Switch_View"
     
     // MARK - Views Outlets
-    
     @IBOutlet weak var displayNameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    
     @IBOutlet weak var headerView: UIView!
     
     // MARK: - Private constants
+    //here need to change to set by view model factory
+    fileprivate let viewModel : MenuViewModel! = MenuViewModelImpl()
     
-    fileprivate let inboxItems : [MenuItem] = [.inbox, .drafts, .sent, .starred, .archive, .spam, .trash, .allmail]
-    fileprivate var otherItems : [MenuItem] = [.contacts, .settings, .bugs, /*MenuItem.feedback,*/ .signout]
-    fileprivate var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
-    fileprivate var signingOut: Bool = false
+    //
+    fileprivate var signingOut: Bool                 = false
     
-    fileprivate let kMenuCellHeight: CGFloat = 44.0
-    fileprivate let kMenuOptionsWidth: CGFloat = 300.0 //227.0
+    fileprivate let kMenuCellHeight: CGFloat         = 44.0
+    fileprivate let kMenuOptionsWidth: CGFloat       = 300.0 //227.0
     fileprivate let kMenuOptionsWidthOffset: CGFloat = 80.0
     
-    fileprivate let kSegueToMailbox: String = "toMailboxSegue"
-    fileprivate let kSegueToLabelbox: String = "toLabelboxSegue"
-    fileprivate let kSegueToSettings: String = "toSettingsSegue"
-    fileprivate let kSegueToBugs: String = "toBugsSegue"
-    fileprivate let kSegueToContacts: String = "toContactsSegue"
-    fileprivate let kSegueToFeedback: String = "toFeedbackSegue"
-    fileprivate let kMenuTableCellId = "menu_table_cell"
-    fileprivate let kLabelTableCellId = "menu_label_cell"
+    fileprivate let kSegueToMailbox: String   = "toMailboxSegue"
+    fileprivate let kSegueToLabelbox: String  = "toLabelboxSegue"
+    fileprivate let kSegueToSettings: String  = "toSettingsSegue"
+    fileprivate let kSegueToBugs: String      = "toBugsSegue"
+    fileprivate let kSegueToContacts: String  = "toContactsSegue"
+    fileprivate let kSegueToFeedback: String  = "toFeedbackSegue"
+    fileprivate let kMenuTableCellId: String  = "menu_table_cell"
+    fileprivate let kLabelTableCellId: String = "menu_label_cell"
     
     // temp vars
-    fileprivate var lastSegue: String = "toMailboxSegue"
-    fileprivate var lastMenuItem: MenuItem = MenuItem.inbox
-    fileprivate var sectionClicked : Bool = false
+    fileprivate var lastSegue: String      = "toMailboxSegue"
+    fileprivate var lastMenuItem: MenuItem = .inbox
+    fileprivate var sectionClicked : Bool  = false
     
     // private data
-    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
     }
     
     deinit{
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: MenuViewController.ObserverSwitchView), object: nil)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupFetchedResultsController()
+        //setup labels fetch controller
+        self.viewModel.setupLabels(delegate: self)
         
-        let w = UIScreen.main.applicationFrame.width;
-        let offset =  (w - kMenuOptionsWidthOffset)
-        self.revealViewController().rearViewRevealWidth = kMenuOptionsWidth > offset ? offset : kMenuOptionsWidth
+        //setup rear view reveal width based on screen size
+        self.updateRevealWidth()
         
         tableView.dataSource = self
         tableView.delegate = self
+        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(MenuViewController.performLastSegue(_:)),
@@ -81,27 +81,16 @@ class MenuViewController: UIViewController {
         sharedLabelsDataService.fetchLabels();
     }
     
-    @objc func performLastSegue(_ notification: Notification) {
-        self.performSegue(withIdentifier: lastSegue, sender: IndexPath(row: 0, section: 0))
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        let w = UIScreen.main.applicationFrame.width;
-        let offset =  (w - kMenuOptionsWidthOffset)
-        self.revealViewController().rearViewRevealWidth = kMenuOptionsWidth > offset ? offset : kMenuOptionsWidth
+        self.updateRevealWidth()
         
         self.revealViewController().frontViewController.view.isUserInteractionEnabled = false
         self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         
         self.sectionClicked = false
         
-        if ((userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty) || (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled)) {
-            otherItems = [.contacts, .settings, .bugs, /*MenuItem.feedback,*/ .lockapp, .signout]
-        } else {
-            otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, /*MenuItem.feedback,*/ MenuItem.signout]
-        }
+        self.viewModel.setupMenu()
         
         updateEmailLabel()
         updateDisplayNameLabel()
@@ -113,54 +102,61 @@ class MenuViewController: UIViewController {
         self.revealViewController().frontViewController.view.isUserInteractionEnabled = true
     }
     
+    override func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool {
+        return true
+    }
+    
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let navigationController = segue.destination as! UINavigationController
-        if let firstViewController: UIViewController = navigationController.viewControllers.first as UIViewController? {
-            if (firstViewController.isKind(of: MailboxViewController.self)) {
-                let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
+        if let navigation = segue.destination as? UINavigationController {
+            let segueID = segue.identifier
+            //right now all mailbox view controller all could process together.
+            if let mailbox: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
                 if let indexPath = sender as? IndexPath {
-                    PMLog.D("Menu Table Clicked -- Done")
-                    if indexPath.section == 0 {
-                        self.lastMenuItem = self.itemForIndexPath(indexPath)
-                        sharedVMService.mailbox(fromMenu: mailboxViewController, location: self.lastMenuItem.menuToLocation)
-                    } else if indexPath.section == 1 {
-                    } else if indexPath.section == 2 {
-                        //if indexPath.row < fetchedLabels?.fetchedObjects?.count {
-                        let label = self.fetchedLabels?.object(at: IndexPath(row: indexPath.row, section: 0)) as! Label
-                        sharedVMService.labelbox(fromMenu: mailboxViewController, label: label)
-                        //}
-                    } else {
+                    let s = indexPath.section
+                    let row = indexPath.row
+                    let section = self.viewModel.section(at: s)
+                    switch section {
+                    case .inboxes:
+                        self.lastMenuItem = self.viewModel.item(inboxes: row)
+                        sharedVMService.mailbox(fromMenu: mailbox, location: self.lastMenuItem.menuToLocation)
+                    case .labels:
+                        if  let label = self.viewModel.label(at: row) {
+                            sharedVMService.labelbox(fromMenu: mailbox, label: label)
+                        }
+                    default:
+                        break
                     }
                 }
-            } else if (segue.identifier == kSegueToContacts ) {
-                if let contactViewController = navigationController.viewControllers.first as? ViewModelProtocol {
+            } else if (segueID == kSegueToContacts ) {
+                if let contactViewController = navigation.firstViewController() as? ViewModelProtocol {
                     sharedVMService.contactsViewModel(contactViewController)
                 }
             }
         }
     }
     
-    override func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool {
-        PMLog.D("Menu Table Clicked -- Checked")
-        return true
-    }
-    
     // MARK: - Methods
-    fileprivate func setupFetchedResultsController() {
-        self.fetchedLabels = sharedLabelsDataService.fetchedResultsController(.all)
-        self.fetchedLabels?.delegate = self
-        PMLog.D("INFO: \(String(describing: fetchedLabels?.sections))")
-        if let fetchedResultsController = fetchedLabels {
-            do {
-                try fetchedResultsController.performFetch()
-            } catch let ex as NSError {
-                PMLog.D("error: \(ex)")
-            }
+    func updateDisplayNameLabel() {
+        let displayName = sharedUserDataService.defaultDisplayName
+        if !displayName.isEmpty {
+            displayNameLabel.text = displayName
+        } else {
+            displayNameLabel.text = emailLabel.text
         }
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
+    func updateEmailLabel() {
+        emailLabel.text = sharedUserDataService.defaultEmail;
+    }
+    
+    func updateRevealWidth() {
+        let w = UIScreen.main.applicationFrame.width;
+        let offset =  (w - kMenuOptionsWidthOffset)
+        self.revealViewController().rearViewRevealWidth = kMenuOptionsWidth > offset ? offset : kMenuOptionsWidth
     }
     
     func handleSignOut(_ sender : UIView?) {
@@ -178,52 +174,38 @@ class MenuViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    func itemForIndexPath(_ indexPath: IndexPath) -> MenuItem {
-        return inboxItems[indexPath.row]
-    }
-    
-    func updateDisplayNameLabel() {
-        let displayName = sharedUserDataService.defaultDisplayName
-        if !displayName.isEmpty {
-            displayNameLabel.text = displayName
-            return
-        }
-        displayNameLabel.text = emailLabel.text
-    }
-    
-    func updateEmailLabel() {
-        emailLabel.text = sharedUserDataService.defaultEmail;
+    //@objc for #seclector()
+    @objc func performLastSegue(_ notification: Notification) {
+        self.performSegue(withIdentifier: lastSegue, sender: IndexPath(row: 0, section: 0))
     }
 }
 
 extension MenuViewController: UITableViewDelegate {
-    
     func closeMenu() {
         self.revealViewController().revealToggle(animated: true)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return self.viewModel.sectionCount()
     }
     
-    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return kMenuCellHeight
     }
-    
-    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if !self.sectionClicked {
-            self.sectionClicked = true
-        } else {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if self.sectionClicked {
             return
         }
-        
-        PMLog.D("Menu Table Clicked")
-        if indexPath.section == 0 { //inbox
+        self.sectionClicked = true
+        let s = indexPath.section
+        let row = indexPath.row
+        let section = self.viewModel.section(at: s)
+        switch section {
+        case .inboxes:
             self.performSegue(withIdentifier: kSegueToMailbox, sender: indexPath);
-        } else if (indexPath.section == 1) {
-            //others
-            let item = otherItems[indexPath.row]
+        case .others:
+            let item = self.viewModel.item(others: row)
             if item == .signout {
                 tableView.deselectRow(at: indexPath, animated: true)
                 let cell = tableView.cellForRow(at: indexPath)
@@ -241,56 +223,68 @@ extension MenuViewController: UITableViewDelegate {
                 (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: true)
                 sharedVMService.resetView()
             }
-        } else if (indexPath.section == 2) {
-            //labels
+        case .labels:
             self.performSegue(withIdentifier: kSegueToLabelbox, sender: indexPath);
+        default:
+            break
         }
     }
 }
 
 extension MenuViewController: UITableViewDataSource {
     
-    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return inboxItems.count
-        } else if (section == 1) {
-            return otherItems.count
-        } else if (section == 2) {
-            let count = fetchedLabels?.numberOfRows(in: 0) ?? 0
-            return count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let section = self.viewModel.section(at: section)
+        switch section {
+        case .inboxes:
+            return self.viewModel.inboxesCount()
+        case .others:
+            return self.viewModel.othersCount()
+        case .labels:
+            return self.viewModel.labelsCount()
+        default:
+            return 0
         }
-        return 0
     }
     
-    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let s = indexPath.section
+        let row = indexPath.row
+        let section = self.viewModel.section(at: s)
+        switch section {
+        case .inboxes:
             let cell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell
-            cell.configCell(inboxItems[indexPath.row])
+            cell.configCell(self.viewModel.item(inboxes: row))
             cell.configUnreadCount()
             return cell
-        } else if indexPath.section == 1 {
+        case .others:
             let cell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell
-            cell.configCell(otherItems[indexPath.row])
+            cell.configCell(self.viewModel.item(others: row))
             cell.hideCount()
             return cell
-        } else if indexPath.section == 2 {
+        case .labels:
             let cell = tableView.dequeueReusableCell(withIdentifier: kLabelTableCellId, for: indexPath) as! MenuLabelViewCell
-            if  fetchedLabels?.fetchedObjects?.count ?? 0 > indexPath.row {
-                if let data = fetchedLabels?.object(at: IndexPath(row: indexPath.row, section: 0)) as? Label {
-                    cell.configCell(data)
-                    cell.configUnreadCount()
-                }
+            if let data = self.viewModel.label(at: row) {
+                cell.configCell(data)
+                cell.configUnreadCount()
             }
             return cell
-        } else {
+        default:
             let cell: MenuTableViewCell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell
             return cell
         }
     }
-    
-    @objc func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 1.0
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        let s = self.viewModel.section(at: section)
+        switch s {
+        case .labels:
+            return 0.0
+        default:
+            return 1.0
+        }
     }
+
 }
 
 
@@ -341,11 +335,9 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
                 if let indexPath = indexPath {
                     let index = IndexPath(row: indexPath.row, section: 2)
                     if let cell = tableView.cellForRow(at: index) as? MenuLabelViewCell {
-                        if  fetchedLabels?.fetchedObjects?.count ?? 0 > indexPath.row {
-                            if let label = fetchedLabels?.object(at: indexPath) as? Label {
-                                cell.configCell(label);
-                                cell.configUnreadCount()
-                            }
+                        if let data = self.viewModel.label(at: index.row) {
+                            cell.configCell(data)
+                            cell.configUnreadCount()
                         }
                     }
                 }
