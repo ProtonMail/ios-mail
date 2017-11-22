@@ -43,7 +43,7 @@ extension NSError {
     
     
     public func alertToast() ->Void {
-        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.labelText = NSLocalizedString("Alert", comment: "Title");
@@ -62,7 +62,7 @@ extension NSError {
     }
     
     public func alertErrorToast() ->Void {
-        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.labelText = NSLocalizedString(localizedDescription, comment: "Title");
@@ -73,7 +73,7 @@ extension NSError {
     
     
     public func alertHumanCheckErrorToast() ->Void {
-        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabelText = "\(NSLocalizedString("Human Check Failed", comment: "Description")): \(self.localizedDescription)"
@@ -85,7 +85,7 @@ extension NSError {
     
     
     public class func alertOfflineToast() ->Void {
-        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.labelText = NSLocalizedString("Alert", comment: "Title");
@@ -95,7 +95,7 @@ extension NSError {
     }
     
     public class func alertMessageSendingToast() ->Void {
-        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabelText = NSLocalizedString("Sending Message", comment: "Description");
@@ -105,9 +105,19 @@ extension NSError {
         hud.hide(true, afterDelay: 1)
     }
     
+    public class func sendingToast(at view: UIView) ->Void {
+        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
+        hud.detailsLabelText = NSLocalizedString("Sending Message", comment: "Description");
+        hud.removeFromSuperViewOnHide = true
+        hud.margin = 10
+        hud.yOffset = 250.0
+        hud.hide(true, afterDelay: 1)
+    }
     
     public class func alertMessageSentErrorToast() ->Void {
-        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabelText = NSLocalizedString("Message sending failed please try again", comment: "Description");

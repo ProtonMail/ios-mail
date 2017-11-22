@@ -14,7 +14,7 @@ extension NSError {
     
     
     public class func alertMessageSentToast() ->Void {
-        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabelText = NSLocalizedString("Message sent", comment: "Description");
@@ -26,7 +26,7 @@ extension NSError {
     
     
     public func alertSentErrorToast() ->Void {
-        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         let _ = NSLocalizedString("Sending Failed", comment: "Description")
@@ -39,7 +39,7 @@ extension NSError {
     
     
     public class func alertLocalCacheErrorToast() ->Void {
-        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabelText = NSLocalizedString("The draft cache is broken please try again", comment: "Description");
@@ -51,7 +51,7 @@ extension NSError {
     
     
     public class func alertBadTokenToast() ->Void {
-        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.labelText = NSLocalizedString("Alert", comment: "Title");
@@ -63,7 +63,7 @@ extension NSError {
     
     
     public class func alertUpdatedToast() ->Void {
-        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.labelText = NSLocalizedString("Alert", comment: "Title");

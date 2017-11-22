@@ -1,29 +1,13 @@
 // MailboxViewController.swift
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
+// Created by Yanfeng Zhang on 8/16/15.
+// Copyright © 2016 ProtonMail. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
 
-
-class UndoMessage {
-    var messageID : String!
-    var oldLocation : MessageLocation!
-    
-    required init(msgID:String!, oldLocation : MessageLocation!) {
-        self.messageID = msgID
-        self.oldLocation = oldLocation
-    }
-}
 
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
@@ -364,13 +348,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     
     // MARK: - Button Targets
-    
     @objc internal func composeButtonTapped() {
         if checkHuman() {
             self.performSegue(withIdentifier: kSegueToCompose, sender: self)
         }
     }
-    
     @objc internal func searchButtonTapped() {
         self.performSegue(withIdentifier: kSegueToSearchController, sender: self)
     }

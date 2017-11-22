@@ -223,7 +223,7 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.configCell(itme.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
-                                    let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+                                    let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
                                     ActivityIndicatorHelper.showActivityIndicator(at: window)
                                     sharedUserDataService.updateAutoLoadImage(newStatus == true ? 1 : 0) { _, _, error in
                                         ActivityIndicatorHelper.hideActivityIndicator(at: window)
@@ -508,7 +508,6 @@ class SettingTableViewController: ProtonMailViewController {
                     case .cleanCache:
                         if !cleaning {
                             cleaning = true
-                            //let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
                             let nview = self.navigationController?.view
                             let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
                             hud.labelText = NSLocalizedString("Resetting message cache ...", comment: "Title")
@@ -601,7 +600,7 @@ class SettingTableViewController: ProtonMailViewController {
                                                 order += 1
                                             }
                                         }
-                                        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+                                        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
                                         ActivityIndicatorHelper.showActivityIndicator(at: window)
                                         sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
                                             tableView.reloadData()
@@ -640,7 +639,7 @@ class SettingTableViewController: ProtonMailViewController {
                         if swipeAction != currentAction {
                             alertController.addAction(UIAlertAction(title: swipeAction.description, style: .default, handler: { (action) -> Void in
                                 let _ = self.navigationController?.popViewController(animated: true)
-                                let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+                                let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
                                 ActivityIndicatorHelper.showActivityIndicator(at: window)
                                 sharedUserDataService.updateUserSwipeAction(action_item == .left, action: swipeAction, completion: { (task, response, error) -> Void in
                                     tableView.reloadData()

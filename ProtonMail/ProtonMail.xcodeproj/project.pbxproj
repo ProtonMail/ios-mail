@@ -2016,11 +2016,11 @@
 			isa = PBXGroup;
 			children = (
 				75230C211B9A392500EC2AC2 /* Cells */,
-				70945E691A80F351002B6837 /* MailboxViewController.swift */,
-				706628201A715A0900164117 /* MailboxTableViewCell.swift */,
-				751B446D1B81245100B68CD6 /* TableCellLabelView.swift */,
 				7545083C1E14861E00265CD0 /* MailboxCaptchaViewController.swift */,
 				754508391E14860500265CD0 /* MailboxHumanCheckMenuVC.swift */,
+				706628201A715A0900164117 /* MailboxTableViewCell.swift */,
+				70945E691A80F351002B6837 /* MailboxViewController.swift */,
+				751B446D1B81245100B68CD6 /* TableCellLabelView.swift */,
 			);
 			name = Mailbox;
 			sourceTree = "<group>";

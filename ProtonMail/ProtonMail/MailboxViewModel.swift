@@ -15,6 +15,16 @@ enum SwipeResponse {
     case showGeneral
 }
 
+class UndoMessage {
+    var messageID : String!
+    var oldLocation : MessageLocation!
+    
+    required init(msgID:String!, oldLocation : MessageLocation!) {
+        self.messageID = msgID
+        self.oldLocation = oldLocation
+    }
+}
+
 class MailboxViewModel {
     typealias CompletionBlock = APIService.CompletionBlock
     
