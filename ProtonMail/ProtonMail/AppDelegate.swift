@@ -42,20 +42,17 @@ class AppDelegate: UIResponder {
                     if !animated {
                         window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
                     } else {
-                        UIView.animate(withDuration: ViewDefined.animationDuration/2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+                        UIView.animate(withDuration: ViewDefined.animationDuration/2, delay: 0,
+                                       options: UIViewAnimationOptions(), animations: { () -> Void in
                             rootViewController.view.alpha = 0
                             }, completion: { (finished) -> Void in
                                 let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
                                 
                                 if let oldView = window.rootViewController as? SWRevealViewController {
-                                    if let nav = oldView.frontViewController as? UINavigationController {
-                                        if let firstViewController: UIViewController = nav.viewControllers.first as UIViewController? {
-                                            if (firstViewController.isKind(of: MailboxViewController.self)) {
-                                                if let mailboxViewController: MailboxViewController = firstViewController as? MailboxViewController {
-                                                    mailboxViewController.resetFetchedResultsController()
-                                                    //TODO:: fix later, this logic change to viewModel service 
-                                                }
-                                            }
+                                    if let navigation = oldView.frontViewController as? UINavigationController {
+                                        if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
+                                            mailboxViewController.resetFetchedResultsController()
+                                            //TODO:: fix later, this logic change to viewModel service
                                         }
                                     }
                                 }
@@ -81,10 +78,8 @@ extension SWRevealViewController {
     
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "sw_front") {
-            let navigationController = segue.destination as! UINavigationController
-            if let firstViewController: UIViewController = navigationController.viewControllers.first as UIViewController? {
-                if (firstViewController.isKind(of: MailboxViewController.self)) {
-                    let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
+            if let navigation = segue.destination as? UINavigationController {
+                if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
                     sharedVMService.mailbox(fromMenu: mailboxViewController, location: .inbox)
                 }
             }
@@ -115,15 +110,12 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     func checkOrientation (_ viewController: UIViewController?) -> UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
             return UIInterfaceOrientationMask.all
-        } else if (viewController is UINavigationController) {
-            if let nav = viewController as? UINavigationController {
-                if (nav.topViewController!.isKind(of: PinCodeViewController.self)) {
-                    return UIInterfaceOrientationMask.portrait
-                }
+        } else if let nav = viewController as? UINavigationController {
+            if (nav.topViewController!.isKind(of: PinCodeViewController.self)) {
+                return UIInterfaceOrientationMask.portrait
             }
             return UIInterfaceOrientationMask.all
-        }
-        else {
+        } else {
             if let sw = viewController as? SWRevealViewController {
                 if let nav = sw.frontViewController as? UINavigationController {
                     if (nav.topViewController!.isKind(of: PinCodeViewController.self)) {
@@ -218,7 +210,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        
         //TODO::here need change to notify composer to save editing draft
         if let context = sharedCoreDataService.mainManagedObjectContext {
             context.perform {
@@ -231,8 +222,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         Answers.logCustomEvent(withName: "NotificationError", customAttributes:["error" : "\(error)"])
-        
-        // Crashlytics.sharedInstance().core.log(error);
         sharedPushNotificationService.didFailToRegisterForRemoteNotificationsWithError(error as NSError)
     }
     
