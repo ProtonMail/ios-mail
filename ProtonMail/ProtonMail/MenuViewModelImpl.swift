@@ -25,9 +25,9 @@ class MenuViewModelImpl : MenuViewModel {
     override func setupMenu() {
         if ((userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty) ||
             (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled)) {
-            otherItems = [.settings, .bugs, /*MenuItem.feedback,*/ .lockapp, .signout]
+            otherItems = [.contacts, .settings, .bugs, /*MenuItem.feedback,*/ .lockapp, .signout]
         } else {
-            otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, /*MenuItem.feedback,*/ MenuItem.signout]
+            otherItems = [.contacts, .settings, .bugs, /*MenuItem.feedback,*/ .signout]
         }
     }
     
