@@ -15,10 +15,28 @@ class ContactsViewModel {
     
     public init() { }
     
-    
-    func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func setupFetchedResults(delaget : NSFetchedResultsControllerDelegate?) {
         fatalError("This method must be overridden")
     }
+    
+    func search(text: String) {
+        fatalError("This method must be overridden")
+    }
+    
+    //
+    func sectionCount() -> Int {
+        fatalError("This method must be overridden")
+    }
+    
+    func rowCount(section: Int) -> Int {
+        fatalError("This method must be overridden")
+    }
+    
+    func item(index: IndexPath) -> Contact? {
+        fatalError("This method must be overridden")
+    }
+    
+    //
     
     
     func delete(contactID: String, complete : @escaping ContactDeleteComplete) {

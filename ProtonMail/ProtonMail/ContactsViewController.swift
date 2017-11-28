@@ -16,58 +16,49 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate let kContactCellIdentifier: String = "ContactCell"
     fileprivate let kProtonMailImage: UIImage      = UIImage(named: "encrypted_main")!
+    //
     fileprivate let kContactDetailsSugue : String  = "toContactDetailsSegue";
-    fileprivate let kAddContactSugue : String = "toAddContact"
+    fileprivate let kAddContactSugue : String      = "toAddContact"
     
     // Mark: - view model
     fileprivate var viewModel : ContactsViewModel!
     
     // MARK: - View Outlets
-    
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var searchBar: UISearchBar!
-    
-    // MARK: - fetch
-    fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
     // MARK: - Private attributes
-    
-    //fileprivate var contacts: [ContactVO] = [ContactVO]()
-    //fileprivate var searchResults: [ContactVO] = [ContactVO]()
-    //fileprivate var selectedContact: ContactVO!
     fileprivate var refreshControl: UIRefreshControl!
-    
     fileprivate var searchController : UISearchController!
     
     deinit {
-        self.setupFetchedResultsController()
     }
     
     func inactiveViewModel() {
-        
     }
     
     func setViewModel(_ vm: Any) {
         viewModel = vm as! ContactsViewModel
     }
     
-    
     // MARK: - View Controller Lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = NSLocalizedString("CONTACTS", comment: "Title")
-        tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: kContactCellIdentifier)
+        tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main),
+                           forCellReuseIdentifier: kContactCellIdentifier)
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = NSLocalizedString("Search", comment: "Placeholder")
-        searchController.searchBar.setValue(NSLocalizedString("Cancel", comment: "Action"), forKey:"_cancelButtonText")
+        searchController.searchBar.setValue(NSLocalizedString("Cancel", comment: "Action"),
+                                            forKey:"_cancelButtonText")
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
         self.searchController.hidesNavigationBarDuringPresentation = true
-        self.searchController.searchBar.tintColor = UIColor.black
+        self.searchController.searchBar.tintColor = UIColor.ProtonMail.Blue_475F77
         self.searchController.searchBar.backgroundColor = UIColor.clear
         self.searchController.searchBar.sizeToFit()
+        self.searchController.searchBar.keyboardType = .emailAddress
+        self.searchController.searchBar.autocapitalizationType = .none
         
         self.tableView.tableHeaderView = self.searchController.searchBar;
         self.definesPresentationContext = true;
@@ -83,7 +74,9 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         
         refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
-        refreshControl.addTarget(self, action: #selector(retrieveAllContacts), for: UIControlEvents.valueChanged)
+        refreshControl.addTarget(self,
+                                 action: #selector(retrieveAllContacts),
+                                 for: UIControlEvents.valueChanged)
         
         //tableView.addSubview(self.refreshControl)  //TODO::enable it later
         tableView.dataSource = self
@@ -93,17 +86,9 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         refreshControl.tintColorDidChange()
         
         //get all contacts
-        //contacts = sharedContactDataService.allContactVOs()
-        self.setupFetchedResultsController()
-        
+        self.viewModel.setupFetchedResults(delaget: self)
         tableView.reloadData()
-        
         retrieveAllContacts()
-    }
-    
-    fileprivate func setupFetchedResultsController() {
-        self.fetchedResultsController = self.viewModel.getFetchedResultsController()
-        self.fetchedResultsController?.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -120,6 +105,20 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.tableView.zeroMargin()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == kContactDetailsSugue) {
+            let contactDetailsViewController = segue.destination as! ContactDetailViewController
+            let contact = sender as? Contact
+            sharedVMService.contactDetailsViewModel(contactDetailsViewController, contact: contact!)
+        } else if (segue.identifier == kAddContactSugue) {
+            let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
+            sharedVMService.contactAddViewModel(addContactViewController)
+        } else if (segue.identifier == "toCompose") {
+            //let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
+            //sharedVMService.newDraftViewModelWithContact(composeViewController, contact: self.selectedContact)
+        }
+    }
+    
     
     // MARK: - Private methods
     //this need to change for fetch event logs
@@ -127,14 +126,11 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         sharedContactDataService.fetchContacts { (contacts, error) -> Void in
             if let error = error as NSError? {
                 PMLog.D(" error: \(error)")
-                
                 let alertController = error.alertController()
                 alertController.addOKAction()
-                
                 self.present(alertController, animated: true, completion: nil)
             }
             //TODO::
-           // self.contacts = contacts
             self.refreshControl.endRefreshing()
             self.tableView.reloadData()
         }
@@ -160,15 +156,7 @@ extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func filterContentForSearchText(_ searchText: String) {
-//        if searchText.isEmpty {
-//            searchResults = contacts
-//        } else {
-//            searchResults = contacts.filter({ (contact: ContactVO) -> Bool in
-//                let contactNameContainsFilteredText = contact.name.lowercased().range(of: searchText.lowercased()) != nil
-//                let contactEmailContainsFilteredText = contact.email.lowercased().range(of: searchText.lowercased()) != nil
-//                return contactNameContainsFilteredText || contactEmailContainsFilteredText
-//            })
-//        }
+        self.viewModel.search(text: searchText)
     }
     
 }
@@ -178,56 +166,35 @@ extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
 
 extension ContactsViewController: UITableViewDataSource {
     
-    func contactAtIndexPath(_ indexPath: IndexPath) -> Contact? {
-        //        if self.fetchedResultsController?.numberOfSections() > indexPath.section {
-        //            if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
-        if let contact = fetchedResultsController?.object(at: indexPath) as? Contact {
-            if contact.managedObjectContext != nil {
-                return contact
-            }
-        }
-        //            }
-        //        }
-        return nil
-    }
+//    func contactAtIndexPath(_ indexPath: IndexPath) -> Contact? {
+//
+//        if let contact = self.viewModel.row(at: IndexPath) {
+//            
+//        }
+//
+//        if let contact = fetchedResultsController?.object(at: indexPath) as? Contact {
+//            if contact.managedObjectContext != nil {
+//                return contact
+//            }
+//        }
+//        return nil
+//    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return fetchedResultsController?.numberOfSections() ?? 0
+        return self.viewModel.sectionCount()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController?.numberOfRows(in: section) ?? 0
-//        if (self.searchController.isActive) {
-//            return searchResults.count
-//        }
-//        return contacts.count
+        return self.viewModel.rowCount(section: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ContactsTableViewCell = tableView.dequeueReusableCell(withIdentifier: kContactCellIdentifier, for: indexPath) as! ContactsTableViewCell
         
-        if let contact = contactAtIndexPath(indexPath) {
+        if let contact = self.viewModel.item(index: indexPath) {
             cell.contactEmailLabel.text = contact.getDisplayEmails()
             cell.contactNameLabel.text = contact.name
         }
-        
-//        var contact: ContactVO
-//        
-//        if (self.searchController.isActive) {
-//            contact = searchResults[indexPath.row]
-//        } else {
-//            contact = contacts[indexPath.row]
-//        }
-        
-//        cell.contactEmailLabel.text = contact.email
-//        cell.contactNameLabel.text = contact.name
-//        
-//        // temporary solution to show the icon
-//        if (contact.isProtonMailContact) {
-//            cell.contactSourceImageView.image = kProtonMailImage
-//        } else {
-//            cell.contactSourceImageView.isHidden = true
-//        }
         
         return cell
     }
@@ -237,15 +204,15 @@ extension ContactsViewController: UITableViewDataSource {
 
 extension ContactsViewController: UITableViewDelegate {
     
-    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60.0
     }
     
-    @objc func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
     }
     
-    @objc func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteClosure = { (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
 //            var contact: ContactVO
 //            if (self.searchController.isActive) {
@@ -284,7 +251,7 @@ extension ContactsViewController: UITableViewDelegate {
 //                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
 //            }
             
-            if let contact = self.contactAtIndexPath(indexPath) {
+            if let contact = self.viewModel.item(index: indexPath) {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Contact", comment: "Title-Contacts"), style: .destructive, handler: { (action) -> Void in
@@ -327,25 +294,11 @@ extension ContactsViewController: UITableViewDelegate {
         return [deleteAction] // [deleteAction, editAction]
     }
     
-    @objc func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == kContactDetailsSugue) {
-            let contactDetailsViewController = segue.destination as! ContactDetailViewController
-            let contact = sender as? Contact
-            sharedVMService.contactDetailsViewModel(contactDetailsViewController, contact: contact!)
-        } else if (segue.identifier == kAddContactSugue) {
-            let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
-            sharedVMService.contactAddViewModel(addContactViewController)
-        } else if (segue.identifier == "toCompose") {
-            
-   
-//            let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
-//            sharedVMService.newDraftViewModelWithContact(composeViewController, contact: self.selectedContact)
-        }
-    }
+    
     
     fileprivate func showContactBelongsToAddressBookError() {
         let description = NSLocalizedString("This contact belongs to your Address Book.", comment: "")
@@ -357,7 +310,7 @@ extension ContactsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let contact = contactAtIndexPath(indexPath) {
+        if let contact = self.viewModel.item(index: indexPath) {
             self.performSegue(withIdentifier: kContactDetailsSugue, sender: contact)
         }
     }
@@ -401,7 +354,7 @@ extension ContactsViewController : NSFetchedResultsControllerDelegate {
         case .update:
             if let indexPath = indexPath {
                 if let cell = tableView.cellForRow(at: indexPath) as? ContactsTableViewCell {
-                    if let contact = contactAtIndexPath(indexPath) {
+                    if let contact = self.viewModel.item(index: indexPath) {
                         cell.contactEmailLabel.text = contact.getDisplayEmails()
                         cell.contactNameLabel.text = contact.name
                     }
