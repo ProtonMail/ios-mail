@@ -2660,6 +2660,7 @@
                         <outlet property="menuButton" destination="G3m-Jr-Xhu" id="iLB-dg-whJ"/>
                         <outlet property="searchDisplayController" destination="mKK-GV-NK5" id="yU5-XN-CG5"/>
                         <outlet property="tableView" destination="RIQ-6S-Rqf" id="ctQ-AU-tvT"/>
+                        <outlet property="tableViewBottomConstraint" destination="Rc8-Bf-RFt" id="FH3-BY-nIT"/>
                         <segue destination="d3P-H0-xNt" kind="presentation" identifier="toEditContact" id="Lm0-2L-Xlj"/>
                         <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="oQx-RX-nff"/>
                         <segue destination="Cjq-Ic-Ywz" kind="show" identifier="toContactDetailsSegue" id="QZE-iH-gR5"/>
@@ -4810,6 +4811,6 @@
         <segue reference="oQx-RX-nff"/>
         <segue reference="f3k-3A-WEA"/>
         <segue reference="CfN-TC-C8a"/>
-        <segue reference="LdN-DE-nXL"/>
+        <segue reference="YGe-pV-72F"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -25,6 +25,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
     // MARK: - View Outlets
     @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     
     // MARK: - Private attributes
     fileprivate var refreshControl: UIRefreshControl!
@@ -98,6 +99,12 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        NotificationCenter.default.addKeyboardObserver(self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeKeyboardObserver(self)
     }
     
     override func viewDidLayoutSubviews() {
@@ -298,8 +305,6 @@ extension ContactsViewController: UITableViewDelegate {
         return true
     }
 
-    
-    
     fileprivate func showContactBelongsToAddressBookError() {
         let description = NSLocalizedString("This contact belongs to your Address Book.", comment: "")
         let message = NSLocalizedString("Please, manage it in your phone.", comment: "Title")
@@ -316,9 +321,35 @@ extension ContactsViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - NSNotificationCenterKeyboardObserverProtocol
+extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
+    func keyboardWillHideNotification(_ notification: Notification) {
+        let keyboardInfo = notification.keyboardInfo
+        
+        UIView.animate(withDuration: keyboardInfo.duration,
+                       delay: 0,
+                       options: keyboardInfo.animationOption, animations: { () -> Void in
+            self.tableViewBottomConstraint.constant = 0
+//            self.tableView.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    func keyboardWillShowNotification(_ notification: Notification) {
+        let keyboardInfo = notification.keyboardInfo
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            UIView.animate(withDuration: keyboardInfo.duration,
+                           delay: 0,
+                           options: keyboardInfo.animationOption, animations: { () -> Void in
+                self.tableViewBottomConstraint.constant = keyboardSize.height;
+//                self.tableView.layoutIfNeeded()
+            }, completion: nil)
+        }
+
+    }
+}
 
 // MARK: - NSFetchedResultsControllerDelegate
-
 extension ContactsViewController : NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()

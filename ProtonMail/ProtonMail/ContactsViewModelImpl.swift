@@ -37,7 +37,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
         if text.isEmpty {
             fetchedResultsController?.fetchRequest.predicate = nil
         } else {
-            fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "name CONTAINS[cd] %@", argumentArray: [text])
+            fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@", argumentArray: [text, text])
             
             //            searchResults = contacts.filter({ (contact: ContactVO) -> Bool in
             //                let contactNameContainsFilteredText = contact.name.lowercased().range(of: searchText.lowercased()) != nil
