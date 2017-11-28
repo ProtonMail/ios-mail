@@ -113,7 +113,6 @@ class MessageDataService {
     
     // MARK : fetch functions
     
-    
     /**
      nonmaly fetching the message from server based on location and time.
      

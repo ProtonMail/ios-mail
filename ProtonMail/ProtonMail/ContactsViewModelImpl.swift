@@ -73,72 +73,76 @@ final class ContactsViewModelImpl : ContactsViewModel {
         })
     }
     
+    private var isFetching : Bool = false
+    private var fetchComplete : ContactFetchComplete? = nil
     override func fetchContacts(completion: ContactFetchComplete?) {
-        
-        
-        if let complete = completion {
-            complete([], nil)
+        if let c = completion {
+            fetchComplete = c
         }
-        
-        
-        
-        //        self.hideTopMessage()
-        //        if !fetchingMessage {
-        //            fetchingMessage = true
-        //
-        //            self.beginRefreshingManually()
-        //            let updateTime = viewModel.lastUpdateTime()
-        //            let complete : APIService.CompletionBlock = { (task, res, error) -> Void in
-        //                self.needToShowNewMessage = false
-        //                self.newMessageCount = 0
-        //                self.fetchingMessage = false
-        //
-        //                if self.fetchingStopped! == true {
-        //                    return;
-        //                }
-        //
-        //                if let error = error {
-        //                    self.handleRequestError(error)
-        //                }
-        //
-        //                if error == nil {
-        //                    self.onlineTimerReset()
-        //                    self.viewModel.resetNotificationMessage()
-        //                    if !updateTime.isNew {
-        //
-        //                    }
-        //                    if let notices = res?["Notices"] as? [String] {
-        //                        serverNotice.check(notices)
-        //                    }
-        //                }
-        //
-        //                delay(1.0, closure: {
-        //                    self.refreshControl.endRefreshing()
-        //                    if self.fetchingStopped! == true {
-        //                        return;
-        //                    }
-        //                    self.showNoResultLabel()
-        //                    self.tableView.reloadData()
-        //                    let _ = self.checkHuman()
-        //                })
-        //            }
-        //
-        //            if (updateTime.isNew) {
-        //                if lastUpdatedStore.lastEventID == "0" {
-        //                    viewModel.fetchMessagesForLocationWithEventReset("", Time: 0, completion: complete)
-        //                }
-        //                else {
-        //                    viewModel.fetchMessages("", Time: 0, foucsClean: false, completion: complete)
-        //                }
-        //            } else {
-        //                //fetch
-        //                self.needToShowNewMessage = true
-        //                viewModel.fetchNewMessages(self.viewModel.getNotificationMessage(),
-        //                                           Time: Int(updateTime.start.timeIntervalSince1970),
-        //                                           completion: complete)
-        //                self.checkEmptyMailbox()
-        //            }
-        //        }
+        if !isFetching {
+            isFetching = true
+            
+            
+            
+            
+            
+            
+            
+            
+            //            self.beginRefreshingManually()
+            //            let updateTime = viewModel.lastUpdateTime()
+            //            let complete : APIService.CompletionBlock = { (task, res, error) -> Void in
+            //                self.needToShowNewMessage = false
+            //                self.newMessageCount = 0
+            //                self.fetchingMessage = false
+            //
+            //                if self.fetchingStopped! == true {
+            //                    return;
+            //                }
+            //
+            //                if let error = error {
+            //                    self.handleRequestError(error)
+            //                }
+            //
+            //                if error == nil {
+            //                    self.onlineTimerReset()
+            //                    self.viewModel.resetNotificationMessage()
+            //                    if !updateTime.isNew {
+            //
+            //                    }
+            //                    if let notices = res?["Notices"] as? [String] {
+            //                        serverNotice.check(notices)
+            //                    }
+            //                }
+            //
+            //                delay(1.0, closure: {
+            //                    self.refreshControl.endRefreshing()
+            //                    if self.fetchingStopped! == true {
+            //                        return;
+            //                    }
+            //                    self.showNoResultLabel()
+            //                    self.tableView.reloadData()
+            //                    let _ = self.checkHuman()
+            //                })
+            //            }
+            //
+            //            if (updateTime.isNew) {
+            //                if lastUpdatedStore.lastEventID == "0" {
+            //                    viewModel.fetchMessagesForLocationWithEventReset("", Time: 0, completion: complete)
+            //                }
+            //                else {
+            //                    viewModel.fetchMessages("", Time: 0, foucsClean: false, completion: complete)
+            //                }
+            //            } else {
+            //                //fetch
+            //                self.needToShowNewMessage = true
+            //                viewModel.fetchNewMessages(self.viewModel.getNotificationMessage(),
+            //                                           Time: Int(updateTime.start.timeIntervalSince1970),
+            //                                           completion: complete)
+            //                self.checkEmptyMailbox()
+            //            }
+            //        }
+        }
     }
 
     // MARK: - timer overrride

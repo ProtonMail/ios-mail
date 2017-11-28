@@ -9,7 +9,6 @@
 import Foundation
 
 protocol Package {
-    
     /**
      conver requset object to dictionary
      
@@ -56,8 +55,7 @@ class ApiRequest<T : ApiResponse> : Package {
      :returns: String value
      */
     func getRequestPath () -> String {
-        NSException(name:NSExceptionName(rawValue: "Error"), reason:"Not Implement, you need override the function", userInfo:nil).raise()
-        return "";
+        fatalError("This method must be overridden")
     }
     
     /**
@@ -79,20 +77,17 @@ class ApiRequest<T : ApiResponse> : Package {
             } catch let ex as NSError {
                 PMLog.D("\(ex)")
             }
-            
         }
         return ""
     }
-    
     
     func getAPIMethod() -> APIService.HTTPMethod {
         return .get
     }
     
-    public func call(_ complete: ResponseCompletionBlock?) {
+    func call(_ complete: ResponseCompletionBlock?) {
         //TODO :: 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper:  APIService.CompletionBlock = { task, res, error in
-            
             let realType = T.self
             let apiRes = realType.init()
             
@@ -114,10 +109,14 @@ class ApiRequest<T : ApiResponse> : Package {
             if !hasError {
                 hasError = !apiRes.ParseResponse(res!)
             }
-            
             complete?(task, apiRes, hasError)
         }
-        sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), headers: ["x-pm-apiversion": self.getVersion()], authenticated: self.getIsAuthFunction(), completion: completionWrapper)
+        sharedAPIService.request(method: self.getAPIMethod(),
+                                 path: self.getRequestPath(),
+                                 parameters: self.toDictionary(),
+                                 headers: ["x-pm-apiversion": self.getVersion()],
+                                 authenticated: self.getIsAuthFunction(),
+                                 completion: completionWrapper)
     }
     
     
@@ -156,10 +155,15 @@ class ApiRequest<T : ApiResponse> : Package {
             }
             ret_res = apiRes
         }
-        sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), headers: ["x-pm-apiversion": self.getVersion()], authenticated: self.getIsAuthFunction(), completion: completionWrapper)
+        
+        sharedAPIService.request(method: self.getAPIMethod(),
+                                 path: self.getRequestPath(),
+                                 parameters: self.toDictionary(),
+                                 headers: ["x-pm-apiversion": self.getVersion()],
+                                 authenticated: self.getIsAuthFunction(),
+                                 completion: completionWrapper)
         //wait operations
         let _ = sema.wait(timeout: DispatchTime.distantFuture)
-        
         if let e = ret_error {
             throw e
         }

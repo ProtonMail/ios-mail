@@ -229,6 +229,8 @@
 		75230C241B9A3A3600EC2AC2 /* MailboxMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */; };
 		75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */; };
 		75230C271B9A430F00EC2AC2 /* TempXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C261B9A430F00EC2AC2 /* TempXIB.xib */; };
+		75252CDF1FCE23BF007972EF /* EventDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75252CDE1FCE23BF007972EF /* EventDataService.swift */; };
+		75252CE01FCE23BF007972EF /* EventDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75252CDE1FCE23BF007972EF /* EventDataService.swift */; };
 		75256C391F16DE0A00F2771E /* ProtonMail-Bridging-Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */; };
 		75256C3A1F16DFBD00F2771E /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
 		75256C3B1F16DFBD00F2771E /* ControllerDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0721B3363D000A72A1E /* ControllerDefined.swift */; };
@@ -1279,6 +1281,7 @@
 		75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxMessageCell.swift; sourceTree = "<group>"; };
 		75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MailboxMessageCell.xib; sourceTree = "<group>"; };
 		75230C261B9A430F00EC2AC2 /* TempXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TempXIB.xib; sourceTree = "<group>"; };
+		75252CDE1FCE23BF007972EF /* EventDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDataService.swift; sourceTree = "<group>"; };
 		7526AC8D1B6C4B3700E1967E /* backup.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = backup.css; sourceTree = "<group>"; };
 		7528FF751FA7FE80005F66A3 /* NSFetchedResultsController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSFetchedResultsController+Extension.swift"; path = "ProtonMailCommon/NSFetchedResultsController+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		7528FF761FA7FE80005F66A3 /* ContactTypeViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactTypeViewModelImpl.swift; path = ProtonMail/ContactTypeViewModelImpl.swift; sourceTree = SOURCE_ROOT; };
@@ -1688,13 +1691,14 @@
 				07655BBC1AB1036200CD3883 /* BugDataService.swift */,
 				073FE0181A955ED900825980 /* ContactDataService.swift */,
 				07CAB8051A894F8600C5E347 /* CoreDataService.swift */,
+				75252CDE1FCE23BF007972EF /* EventDataService.swift */,
+				7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */,
 				078A3A4B1A7FF4DC002C5FF3 /* MessageDataService.swift */,
 				07CF61971A8AE5AA00ED38AE /* MonitorSavesDataService.swift */,
 				072AB6901A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift */,
 				07520CFB1AA67D38000D2175 /* PushNotificationService.swift */,
-				073FD9311A71C60900EB0CAF /* UserDataService.swift */,
 				7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */,
-				7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */,
+				073FD9311A71C60900EB0CAF /* UserDataService.swift */,
 			);
 			name = DataServices;
 			path = ../ProtonMail;
@@ -3815,6 +3819,7 @@
 				7528FFE01FA7FEC3005F66A3 /* UIView+Extension.swift in Sources */,
 				75200C041DB6E3B6007E8A29 /* SrpClientExtension.swift in Sources */,
 				75662BA71B543A5B006C538E /* SettingsAPI.swift in Sources */,
+				75252CDF1FCE23BF007972EF /* EventDataService.swift in Sources */,
 				75F161911DCBB7E600912662 /* TwoFACodeViewController.swift in Sources */,
 				7507BBB61E0CAF9600056D66 /* SignUp+Error.swift in Sources */,
 				756DAC3F1C922C3800F3486C /* MailboxRateReviewCell.swift in Sources */,
@@ -4460,6 +4465,7 @@
 				75256CC61F16DFBD00F2771E /* MessageQueue.swift in Sources */,
 				75256CC71F16DFBD00F2771E /* PersistentQueue.swift in Sources */,
 				7528FFF61FA7FEF6005F66A3 /* ContactEditViewModelImpl.swift in Sources */,
+				75252CE01FCE23BF007972EF /* EventDataService.swift in Sources */,
 				75256CC81F16DFBD00F2771E /* QueueManager.swift in Sources */,
 				75256CC91F16DFBD00F2771E /* QueueConstant.swift in Sources */,
 				75DE7CB61CAAEA4900F5443E /* Snapshot.swift in Sources */,
