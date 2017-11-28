@@ -20,24 +20,27 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="encrypted_main" translatesAutoresizingMaskIntoConstraints="NO" id="Ueb-Ca-8K0">
-                        <rect key="frame" x="294" y="4" width="10" height="14"/>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="encrypted_main" translatesAutoresizingMaskIntoConstraints="NO" id="Ueb-Ca-8K0">
+                        <rect key="frame" x="294" y="10" width="10" height="14"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="10" id="LQQ-6k-KSB"/>
                             <constraint firstAttribute="height" constant="14" id="Rh5-pG-PgS"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="diegosantiviago@gmail.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYh-fi-hLy">
-                        <rect key="frame" x="62" y="29" width="254" height="20"/>
+                        <rect key="frame" x="62" y="33" width="254" height="16"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="Kdw-oJ-foG"/>
+                            <constraint firstAttribute="height" constant="16" id="Kdw-oJ-foG"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Diego Santiviago" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-Aj-VfK">
-                        <rect key="frame" x="62" y="11" width="232" height="11"/>
+                        <rect key="frame" x="62" y="11" width="232" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="ZAw-4s-C6Z"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -55,7 +58,7 @@
                     <constraint firstItem="j5t-Vq-0R8" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="Ex7-mr-qXU"/>
                     <constraint firstAttribute="bottomMargin" secondItem="j5t-Vq-0R8" secondAttribute="bottom" id="Mj0-h6-qvE"/>
                     <constraint firstItem="GKP-Aj-VfK" firstAttribute="trailing" secondItem="Ueb-Ca-8K0" secondAttribute="leading" id="Njc-SL-6MQ"/>
-                    <constraint firstItem="kYh-fi-hLy" firstAttribute="top" secondItem="GKP-Aj-VfK" secondAttribute="bottom" constant="7" id="Ufp-FO-nqD"/>
+                    <constraint firstItem="kYh-fi-hLy" firstAttribute="top" secondItem="GKP-Aj-VfK" secondAttribute="bottom" constant="5" id="Ufp-FO-nqD"/>
                     <constraint firstAttribute="trailing" secondItem="kYh-fi-hLy" secondAttribute="trailing" constant="4" id="XPN-zX-PYd"/>
                     <constraint firstItem="Ueb-Ca-8K0" firstAttribute="bottom" secondItem="GKP-Aj-VfK" secondAttribute="bottom" constant="-4" id="aEj-Zc-rlo"/>
                     <constraint firstItem="j5t-Vq-0R8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="bHR-te-r4K"/>

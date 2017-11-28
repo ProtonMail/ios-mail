@@ -57,7 +57,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.searchController.searchBar.tintColor = UIColor.ProtonMail.Blue_475F77
         self.searchController.searchBar.backgroundColor = UIColor.clear
         self.searchController.searchBar.sizeToFit()
-        self.searchController.searchBar.keyboardType = .emailAddress
+        self.searchController.searchBar.keyboardType = .default
         self.searchController.searchBar.autocapitalizationType = .none
         
         self.tableView.tableHeaderView = self.searchController.searchBar;

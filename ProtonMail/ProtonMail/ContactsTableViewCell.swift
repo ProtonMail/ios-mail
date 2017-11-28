@@ -42,7 +42,7 @@ final class ContactsTableViewCell: MCSwipeTableViewCell {
         let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: resultText)
         let pattern = "(\(searchTerm))"
         let range:NSRange = NSMakeRange(0, resultText.count)
-        let regex = try! NSRegularExpression( pattern: pattern, options: NSRegularExpression.Options())
+        let regex = try! NSRegularExpression( pattern: pattern, options: .caseInsensitive)
         regex.enumerateMatches(
             in: resultText,
             options: NSRegularExpression.MatchingOptions(),
