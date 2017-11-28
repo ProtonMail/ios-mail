@@ -52,8 +52,15 @@ class ContactDataService {
     func resultController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let moc = self.managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Contact.Attributes.name, ascending: true)]
-            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+            let strComp = NSSortDescriptor(key: Contact.Attributes.name,
+                                           ascending: true,
+                                           selector: #selector(NSString.caseInsensitiveCompare(_:)))
+            fetchRequest.sortDescriptors = [strComp]
+            
+            return NSFetchedResultsController(fetchRequest: fetchRequest,
+                                              managedObjectContext: moc,
+                                              sectionNameKeyPath: nil,
+                                              cacheName: nil)
         }
         return nil
     }

@@ -98,7 +98,6 @@ class CountryPickerViewController : UIViewController {
 }
 
 // MARK: - UITableViewDataSource
-
 extension CountryPickerViewController: UITableViewDataSource {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -110,7 +109,8 @@ extension CountryPickerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let countryCell = tableView.dequeueReusableCell(withIdentifier: self.contryCodeCell, for: indexPath) as! CountryCodeTableViewCell
+        let countryCell = tableView.dequeueReusableCell(withIdentifier: self.contryCodeCell,
+                                                        for: indexPath) as! CountryCodeTableViewCell
         if indexPath.row < countryCodes.count {
             let country = countryCodes[indexPath.row]
             countryCell.ConfigCell(country, vc: self)
@@ -128,7 +128,8 @@ extension CountryPickerViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         if let selectIndex = indexCache[title] {
-            tableView.scrollToRow(at: IndexPath(row: selectIndex, section: 0), at: UITableViewScrollPosition.top, animated: true)
+            tableView.scrollToRow(at: IndexPath(row: selectIndex, section: 0),
+                                  at: UITableViewScrollPosition.top, animated: true)
         }
         return -1
     }

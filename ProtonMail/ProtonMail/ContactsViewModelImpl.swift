@@ -32,18 +32,11 @@ final class ContactsViewModelImpl : ContactsViewModel {
         return nil
     }
     
-
     override func search(text: String) {
         if text.isEmpty {
             fetchedResultsController?.fetchRequest.predicate = nil
         } else {
             fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@", argumentArray: [text, text])
-            
-            //            searchResults = contacts.filter({ (contact: ContactVO) -> Bool in
-            //                let contactNameContainsFilteredText = contact.name.lowercased().range(of: searchText.lowercased()) != nil
-            //                let contactEmailContainsFilteredText = contact.email.lowercased().range(of: searchText.lowercased()) != nil
-            //                return contactNameContainsFilteredText || contactEmailContainsFilteredText
-            //            })
         }
         
         do {
@@ -60,6 +53,10 @@ final class ContactsViewModelImpl : ContactsViewModel {
     
     override func rowCount(section: Int) -> Int {
         return fetchedResultsController?.numberOfRows(in: section) ?? 0
+    }
+    
+    override func sectionIndexTitle() -> [String]? {
+        return fetchedResultsController?.sectionIndexTitles
     }
     
     override func item(index: IndexPath) -> Contact? {

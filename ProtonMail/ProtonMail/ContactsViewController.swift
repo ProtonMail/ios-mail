@@ -20,6 +20,8 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactDetailsSugue : String  = "toContactDetailsSegue";
     fileprivate let kAddContactSugue : String      = "toAddContact"
     
+    fileprivate var searchString : String = ""
+ 
     // Mark: - view model
     fileprivate var viewModel : ContactsViewModel!
     
@@ -30,9 +32,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     // MARK: - Private attributes
     fileprivate var refreshControl: UIRefreshControl!
     fileprivate var searchController : UISearchController!
-    
-    deinit {
-    }
     
     func inactiveViewModel() {
     }
@@ -126,8 +125,15 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         }
     }
     
-    
     // MARK: - Private methods
+    fileprivate func showContactBelongsToAddressBookError() {
+        let description = NSLocalizedString("This contact belongs to your Address Book.", comment: "")
+        let message = NSLocalizedString("Please, manage it in your phone.", comment: "Title")
+        let alertController = UIAlertController(title: description, message: message, preferredStyle: .alert)
+        alertController.addOKAction()
+        self.present(alertController, animated: true, completion: nil)
+    }
+
     //this need to change for fetch event logs
     @objc internal func retrieveAllContacts() {
         sharedContactDataService.fetchContacts { (contacts, error) -> Void in
@@ -142,8 +148,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             self.tableView.reloadData()
         }
     }
-    
-
 }
 
 
@@ -155,37 +159,15 @@ extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        let searchString = searchController.searchBar.text ?? "";
-        
-        filterContentForSearchText(searchString)
-        
+        self.searchString = searchController.searchBar.text ?? "";
+        self.viewModel.search(text: self.searchString)
         self.tableView.reloadData()
     }
-    
-    func filterContentForSearchText(_ searchText: String) {
-        self.viewModel.search(text: searchText)
-    }
-    
 }
 
 
 // MARK: - UITableViewDataSource
-
 extension ContactsViewController: UITableViewDataSource {
-    
-//    func contactAtIndexPath(_ indexPath: IndexPath) -> Contact? {
-//
-//        if let contact = self.viewModel.row(at: IndexPath) {
-//            
-//        }
-//
-//        if let contact = fetchedResultsController?.object(at: indexPath) as? Contact {
-//            if contact.managedObjectContext != nil {
-//                return contact
-//            }
-//        }
-//        return nil
-//    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sectionCount()
@@ -196,19 +178,18 @@ extension ContactsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: ContactsTableViewCell = tableView.dequeueReusableCell(withIdentifier: kContactCellIdentifier, for: indexPath) as! ContactsTableViewCell
-        
+        let cell: ContactsTableViewCell = tableView.dequeueReusableCell(withIdentifier: kContactCellIdentifier,
+                                                                        for: indexPath) as! ContactsTableViewCell
         if let contact = self.viewModel.item(index: indexPath) {
-            cell.contactEmailLabel.text = contact.getDisplayEmails()
-            cell.contactNameLabel.text = contact.name
+            cell.config(name: contact.name,
+                        email: contact.getDisplayEmails(),
+                        highlight: self.searchString)
         }
-        
         return cell
     }
 }
 
 // MARK: - UITableViewDelegate
-
 extension ContactsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -304,14 +285,6 @@ extension ContactsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-
-    fileprivate func showContactBelongsToAddressBookError() {
-        let description = NSLocalizedString("This contact belongs to your Address Book.", comment: "")
-        let message = NSLocalizedString("Please, manage it in your phone.", comment: "Title")
-        let alertController = UIAlertController(title: description, message: message, preferredStyle: .alert)
-        alertController.addOKAction()
-        self.present(alertController, animated: true, completion: nil)
-    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -319,18 +292,30 @@ extension ContactsViewController: UITableViewDelegate {
             self.performSegue(withIdentifier: kContactDetailsSugue, sender: contact)
         }
     }
+    
+//    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+////        if let selectIndex = indexCache[title] {
+////            tableView.scrollToRow(at: IndexPath(row: selectIndex, section: 0),
+////                                  at: UITableViewScrollPosition.top, animated: true)
+////        }
+//        return -1
+//    }
+//
+//    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+//        return self.viewModel.sectionIndexTitle()
+////        return ["0", "A", "B", "C", "#"]//[titleIndex];
+//    }
+    
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
-        
         UIView.animate(withDuration: keyboardInfo.duration,
                        delay: 0,
                        options: keyboardInfo.animationOption, animations: { () -> Void in
             self.tableViewBottomConstraint.constant = 0
-//            self.tableView.layoutIfNeeded()
         }, completion: nil)
     }
     
@@ -341,11 +326,9 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
             UIView.animate(withDuration: keyboardInfo.duration,
                            delay: 0,
                            options: keyboardInfo.animationOption, animations: { () -> Void in
-                self.tableViewBottomConstraint.constant = keyboardSize.height;
-//                self.tableView.layoutIfNeeded()
+                self.tableViewBottomConstraint.constant = keyboardSize.height
             }, completion: nil)
         }
-
     }
 }
 

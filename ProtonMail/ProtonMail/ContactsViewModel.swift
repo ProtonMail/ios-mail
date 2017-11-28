@@ -36,6 +36,10 @@ class ContactsViewModel {
         fatalError("This method must be overridden")
     }
     
+    func sectionIndexTitle() -> [String]? {
+        fatalError("This method must be overridden")
+    }
+    
     //
     func delete(contactID: String, complete : @escaping ContactDeleteComplete) {
         fatalError("This method must be overridden")
