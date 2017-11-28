@@ -767,6 +767,8 @@
 		7567B0771B3387F700A72A1E /* APIServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0761B3387F700A72A1E /* APIServiceRequest.swift */; };
 		7567B0791B33880500A72A1E /* APIServiceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0781B33880500A72A1E /* APIServiceResponse.swift */; };
 		7567B07B1B338EB900A72A1E /* MessageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B07A1B338EB900A72A1E /* MessageHelper.swift */; };
+		7568F3331FCE0F2B00F3DE03 /* ViewModelTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7568F3321FCE0F2B00F3DE03 /* ViewModelTimer.swift */; };
+		7568F3341FCE0F2B00F3DE03 /* ViewModelTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7568F3321FCE0F2B00F3DE03 /* ViewModelTimer.swift */; };
 		756A35151B20D9B80033BC7C /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
 		756CDE3D1D9C763D004455F6 /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */; };
 		756CDEF91D9DB374004455F6 /* JKBCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDEF81D9DB374004455F6 /* JKBCrypt.swift */; };
@@ -1421,6 +1423,7 @@
 		7567B0761B3387F700A72A1E /* APIServiceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIServiceRequest.swift; sourceTree = "<group>"; };
 		7567B0781B33880500A72A1E /* APIServiceResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIServiceResponse.swift; sourceTree = "<group>"; };
 		7567B07A1B338EB900A72A1E /* MessageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageHelper.swift; sourceTree = "<group>"; };
+		7568F3321FCE0F2B00F3DE03 /* ViewModelTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTimer.swift; sourceTree = "<group>"; };
 		756A35141B20D9B80033BC7C /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppConstants.swift; path = ../ProtonMail/AppConstants.swift; sourceTree = "<group>"; };
 		756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordUtils.swift; sourceTree = "<group>"; };
 		756CDEF81D9DB374004455F6 /* JKBCrypt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKBCrypt.swift; sourceTree = "<group>"; };
@@ -2521,6 +2524,7 @@
 				75E49EFE1CAB07BC00235ACC /* SignUp */,
 				75DD3E531E81BF94005A7B93 /* Settings */,
 				7547130F1DCD517E0084BF34 /* TwoFA */,
+				7568F3321FCE0F2B00F3DE03 /* ViewModelTimer.swift */,
 				759339BF1ABB45C700535F1B /* ViewModelFactory.swift */,
 				7567B06C1B334FA400A72A1E /* ViewModelService.swift */,
 				7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */,
@@ -3888,6 +3892,7 @@
 				071210E61AA91B4000B834F2 /* APIService+DeviceExtension.swift in Sources */,
 				07B797C01A6EDFF400244532 /* APIService.swift in Sources */,
 				75B549E61D02731300F21A30 /* Reachability.m in Sources */,
+				7568F3331FCE0F2B00F3DE03 /* ViewModelTimer.swift in Sources */,
 				755B6A701B38C0B800745872 /* Label.swift in Sources */,
 				7528FFD81FA7FEC3005F66A3 /* ContactEditCell+Delegates.swift in Sources */,
 				756CDE3D1D9C763D004455F6 /* PasswordUtils.swift in Sources */,
@@ -4532,6 +4537,7 @@
 				75DE7D271CAAEA4900F5443E /* SwitchTableViewCell.swift in Sources */,
 				75DE7D2A1CAAEA4900F5443E /* Onboarding.swift in Sources */,
 				752800061FA7FEF6005F66A3 /* ContactVO+Extension.swift in Sources */,
+				7568F3341FCE0F2B00F3DE03 /* ViewModelTimer.swift in Sources */,
 				75856D6A1CB5B5EC000D9F3B /* PinCodeViewController.swift in Sources */,
 				7528FFEE1FA7FEF6005F66A3 /* ContactEditCell+Delegates.swift in Sources */,
 				75DE7D2C1CAAEA4900F5443E /* FeedbackTableViewCell.swift in Sources */,

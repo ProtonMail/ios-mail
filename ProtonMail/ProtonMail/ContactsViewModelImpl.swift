@@ -8,17 +8,14 @@
 
 import Foundation
 
-
-
 final class ContactsViewModelImpl : ContactsViewModel {
-    // MARK: - fetch
+    // MARK: - fetch controller
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
     override func setupFetchedResults(delaget: NSFetchedResultsControllerDelegate?) {
         self.fetchedResultsController = self.getFetchedResultsController()
         self.fetchedResultsController?.delegate = delaget
     }
-    
     
     private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let fetchedResultsController = sharedContactDataService.resultController() {
@@ -46,7 +43,8 @@ final class ContactsViewModelImpl : ContactsViewModel {
         }
         
     }
-    //
+    
+    // MARK: - table view part
     override func sectionCount() -> Int {
         return fetchedResultsController?.numberOfSections() ?? 0
     }
@@ -63,6 +61,8 @@ final class ContactsViewModelImpl : ContactsViewModel {
         return fetchedResultsController?.object(at: index) as? Contact
     }
     
+    
+    // MARK: - api part
     override func delete(contactID: String!, complete : @escaping ContactDeleteComplete) {
         sharedContactDataService.delete(contactID: contactID, completion: { (error) in
             if let err = error {
@@ -71,6 +71,78 @@ final class ContactsViewModelImpl : ContactsViewModel {
                 complete(nil)
             }
         })
+    }
+    
+    override func fetchContacts(completion: ContactFetchComplete?) {
         
+        
+        if let complete = completion {
+            complete([], nil)
+        }
+        
+        
+        
+        //        self.hideTopMessage()
+        //        if !fetchingMessage {
+        //            fetchingMessage = true
+        //
+        //            self.beginRefreshingManually()
+        //            let updateTime = viewModel.lastUpdateTime()
+        //            let complete : APIService.CompletionBlock = { (task, res, error) -> Void in
+        //                self.needToShowNewMessage = false
+        //                self.newMessageCount = 0
+        //                self.fetchingMessage = false
+        //
+        //                if self.fetchingStopped! == true {
+        //                    return;
+        //                }
+        //
+        //                if let error = error {
+        //                    self.handleRequestError(error)
+        //                }
+        //
+        //                if error == nil {
+        //                    self.onlineTimerReset()
+        //                    self.viewModel.resetNotificationMessage()
+        //                    if !updateTime.isNew {
+        //
+        //                    }
+        //                    if let notices = res?["Notices"] as? [String] {
+        //                        serverNotice.check(notices)
+        //                    }
+        //                }
+        //
+        //                delay(1.0, closure: {
+        //                    self.refreshControl.endRefreshing()
+        //                    if self.fetchingStopped! == true {
+        //                        return;
+        //                    }
+        //                    self.showNoResultLabel()
+        //                    self.tableView.reloadData()
+        //                    let _ = self.checkHuman()
+        //                })
+        //            }
+        //
+        //            if (updateTime.isNew) {
+        //                if lastUpdatedStore.lastEventID == "0" {
+        //                    viewModel.fetchMessagesForLocationWithEventReset("", Time: 0, completion: complete)
+        //                }
+        //                else {
+        //                    viewModel.fetchMessages("", Time: 0, foucsClean: false, completion: complete)
+        //                }
+        //            } else {
+        //                //fetch
+        //                self.needToShowNewMessage = true
+        //                viewModel.fetchNewMessages(self.viewModel.getNotificationMessage(),
+        //                                           Time: Int(updateTime.start.timeIntervalSince1970),
+        //                                           completion: complete)
+        //                self.checkEmptyMailbox()
+        //            }
+        //        }
+    }
+
+    // MARK: - timer overrride
+    override internal func fireFetch() {
+        self.fetchContacts(completion: nil)
     }
 }

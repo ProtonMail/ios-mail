@@ -11,15 +11,19 @@ import Foundation
 
 
 
-class ContactsViewModel {
+class ContactsViewModel : ViewModelTimer {
     
-    public init() { }
+    override init() { }
     
     func setupFetchedResults(delaget : NSFetchedResultsControllerDelegate?) {
         fatalError("This method must be overridden")
     }
     
     func search(text: String) {
+        fatalError("This method must be overridden")
+    }
+    
+    func fetchContacts(completion: ContactFetchComplete?) {
         fatalError("This method must be overridden")
     }
     
@@ -36,6 +40,9 @@ class ContactsViewModel {
         fatalError("This method must be overridden")
     }
     
+    /**
+     section title index  ::Enable it later
+     **/
     func sectionIndexTitle() -> [String]? {
         fatalError("This method must be overridden")
     }

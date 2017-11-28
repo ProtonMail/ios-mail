@@ -75,10 +75,10 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
         refreshControl.addTarget(self,
-                                 action: #selector(retrieveAllContacts),
+                                 action: #selector(fireFetch),
                                  for: UIControlEvents.valueChanged)
         
-        //tableView.addSubview(self.refreshControl)  //TODO::enable it later
+        tableView.addSubview(self.refreshControl)
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -88,7 +88,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         //get all contacts
         self.viewModel.setupFetchedResults(delaget: self)
         tableView.reloadData()
-        retrieveAllContacts()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -98,11 +97,13 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.viewModel.setupTimer(true)
         NotificationCenter.default.addKeyboardObserver(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        self.viewModel.stopTimer()
         NotificationCenter.default.removeKeyboardObserver(self)
     }
     
@@ -133,17 +134,15 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         alertController.addOKAction()
         self.present(alertController, animated: true, completion: nil)
     }
-
-    //this need to change for fetch event logs
-    @objc internal func retrieveAllContacts() {
-        sharedContactDataService.fetchContacts { (contacts, error) -> Void in
+    
+    @objc internal func fireFetch() {
+        self.viewModel.fetchContacts { (contacts: [Contact]?, error: NSError?) in
             if let error = error as NSError? {
                 PMLog.D(" error: \(error)")
                 let alertController = error.alertController()
                 alertController.addOKAction()
                 self.present(alertController, animated: true, completion: nil)
             }
-            //TODO::
             self.refreshControl.endRefreshing()
             self.tableView.reloadData()
         }
