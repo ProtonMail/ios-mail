@@ -42,30 +42,29 @@ class AppDelegate: UIResponder {
                     if !animated {
                         window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
                     } else {
-                        UIView.animate(withDuration: ViewDefined.animationDuration/2, delay: 0,
-                                       options: UIViewAnimationOptions(), animations: { () -> Void in
-                            rootViewController.view.alpha = 0
-                            }, completion: { (finished) -> Void in
-                                let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-                                
-                                if let oldView = window.rootViewController as? SWRevealViewController {
-                                    if let navigation = oldView.frontViewController as? UINavigationController {
-                                        if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-                                            mailboxViewController.resetFetchedResultsController()
-                                            //TODO:: fix later, this logic change to viewModel service
-                                        }
+                        UIView.animate(withDuration: ViewDefined.animationDuration/2,
+                                       delay: 0,
+                                       options: UIViewAnimationOptions(),
+                                       animations: { () -> Void in
+                                            rootViewController.view.alpha = 0
+                        }, completion: { (finished) -> Void in
+                            let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+                            if let oldView = window.rootViewController as? SWRevealViewController {
+                                if let navigation = oldView.frontViewController as? UINavigationController {
+                                    if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
+                                        mailboxViewController.resetFetchedResultsController()
+                                        //TODO:: fix later, this logic change to viewModel service
                                     }
                                 }
-                                
-                                viewController.view.alpha = 0
-                                window.rootViewController = viewController
-                                
-                                UIView.animate(withDuration: ViewDefined.animationDuration/2,
-                                               delay: 0, options: UIViewAnimationOptions(),
-                                               animations: { () -> Void in
-                                                    viewController.view.alpha = 1.0
-                                                },
-                                               completion: nil)
+                            }
+                            viewController.view.alpha = 0
+                            window.rootViewController = viewController
+                            
+                            UIView.animate(withDuration: ViewDefined.animationDuration/2,
+                                           delay: 0, options: UIViewAnimationOptions(),
+                                           animations: { () -> Void in
+                                               viewController.view.alpha = 1.0
+                            }, completion: nil)
                         })
                     }
                 }
@@ -75,7 +74,6 @@ class AppDelegate: UIResponder {
 }
 
 extension SWRevealViewController {
-    
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "sw_front") {
             if let navigation = segue.destination as? UINavigationController {
@@ -94,7 +92,6 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 //let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
 
 extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServiceDelegate {
-    
     func onLogout(animated: Bool) {
         self.switchTo(storyboard: .signIn, animated: animated)
     }
@@ -138,42 +135,43 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
         
-        let tmp = UIApplication.shared.releaseMode()
-        //net work debug optionx
+        //get build mode if debug mode enable network logging
+        let mode = UIApplication.shared.releaseMode()
+        //network debug options
         if let logger = AFNetworkActivityLogger.shared().loggers.first as? AFNetworkActivityConsoleLogger {
             logger.level = .AFLoggerLevelDebug;
         }
         AFNetworkActivityLogger.shared().startLogging()
-        
-        //
+
+        //start network notifier
         sharedInternetReachability.startNotifier()
         
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
         sharedPushNotificationService.registerForRemoteNotifications()
         
-        if tmp != .dev && tmp != .sim {
+        if mode != .dev && mode != .sim {
             AFNetworkActivityLogger.shared().stopLogging()
         }
+        
+        //setup language
         LanguageManager.setupCurrentLanguage()
         
         return true
     }
     
-    func languageWillChange(notification:NSNotification){
-        //let targetLang = notification.object as! String
-        //Localization.setCurrentLanguage(language: targetLang)
-    }
-    
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
-        let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
-        if urlComponents?.host == "signup" {
-            if let queryItems = urlComponents?.queryItems {
-                if let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first {
-                    if let code = verifyObject.value {
-                        let info : [String:String] = ["verifyCode" : code]
-                        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: NotificationDefined.CustomizeURLSchema), object: nil, userInfo: info))
-                        PMLog.D("\(code)")
+        if let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+            if urlComponents.host == "signup" {
+                if let queryItems = urlComponents.queryItems {
+                    if let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first {
+                        if let code = verifyObject.value {
+                            let info : [String:String] = ["verifyCode" : code]
+                            let notification = Notification(name: Notification.Name(rawValue: NotificationDefined.CustomizeURLSchema),
+                                                            object: nil,
+                                                            userInfo: info)
+                            NotificationCenter.default.post(notification)
+                        }
                     }
                 }
             }
@@ -252,7 +250,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         } else {
             sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
         }
-        
     }
     
     func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
@@ -273,7 +270,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     func touchStatusBar() {
-        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: NotificationDefined.TouchStatusBar), object: nil, userInfo: nil))
+        let notification = Notification(name: Notification.Name(rawValue: NotificationDefined.TouchStatusBar), object: nil, userInfo: nil)
+        NotificationCenter.default.post(notification)
     }
 }
 

@@ -38,19 +38,19 @@ class Snapshot {
                     let snapshotView = launchScreen.first as? UIView {
                     snapshotView.tag = Tag.snapshot
                     Snapshot.cachedSnapshotView = snapshotView
-                    showView(window, view: snapshotView)
+                    show(at: window, with: snapshotView)
                 } else {
                     let v = getDefaultView()
                     Snapshot.cachedSnapshotView = v
-                    showView(window, view: v)
+                    show(at: window, with: v)
                 }
                 return
             }
-            showView(window, view: view)
+            show(at: window, with: view)
         }
     }
     
-    func showView(_ window: UIWindow, view: UIView) {
+    func show(at window: UIWindow, with view: UIView) {
         window.addSubview(view)
         view.mas_makeConstraints { (make) -> Void in
             make?.top.equalTo()(window)
