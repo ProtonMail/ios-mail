@@ -1,6 +1,6 @@
 //
 //  NotificationService.swift
-//  PushService
+//  PushServiceDev
 //
 //  Created by Yanfeng Zhang on 11/14/17.
 //  Copyright © 2017 ProtonMail. All rights reserved.
@@ -8,6 +8,9 @@
 
 import UserNotifications
 
+var sharedUserDataService : UserDataService!
+
+@available(iOSApplicationExtension 10.0, *)
 class NotificationService: UNNotificationServiceExtension {
 
     var contentHandler: ((UNNotificationContent) -> Void)?
@@ -18,8 +21,18 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
+            
+            sharedUserDataService = UserDataService()
+            
+            
+            
             // Modify the notification content here...
             bestAttemptContent.title = "\(bestAttemptContent.title) [modified]"
+            
+            bestAttemptContent.badge = 100
+            bestAttemptContent.sound = UNNotificationSound.default()
+            bestAttemptContent.subtitle = "Subtitle test! " + " [modified]"
+            bestAttemptContent.body = "Give it back if you finished you tests! [modified]"
             
             contentHandler(bestAttemptContent)
         }

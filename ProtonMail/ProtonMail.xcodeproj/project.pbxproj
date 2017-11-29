@@ -224,7 +224,6 @@
 		751900771F1D832C00DB68ED /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
 		751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B446D1B81245100B68CD6 /* TableCellLabelView.swift */; };
 		751C5FEA1C49C17700949FBF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
-		751CDEA51FBB95B4005E3EB1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CDEA41FBB95B4005E3EB1 /* NotificationService.swift */; };
 		751CDEA91FBB95B4005E3EB1 /* PushServiceDev.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 751CDEA21FBB95B3005E3EB1 /* PushServiceDev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		751CDEB51FBB95F6005E3EB1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CDEB41FBB95F6005E3EB1 /* NotificationService.swift */; };
 		751CDEB91FBB95F6005E3EB1 /* PushService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 751CDEB21FBB95F6005E3EB1 /* PushService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -457,6 +456,7 @@
 		75252DBE1FCF6EE6007972EF /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
 		75252DBF1FCF710D007972EF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
 		75252DC01FCF710E007972EF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
+		75252DC21FCF7422007972EF /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CDEB41FBB95F6005E3EB1 /* NotificationService.swift */; };
 		75256C391F16DE0A00F2771E /* ProtonMail-Bridging-Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */; };
 		75256C3A1F16DFBD00F2771E /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
 		75256C3B1F16DFBD00F2771E /* ControllerDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0721B3363D000A72A1E /* ControllerDefined.swift */; };
@@ -1087,8 +1087,6 @@
 		75AFD2F21FBA7CF000EAEA61 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AFD2F11FBA7CF000EAEA61 /* NotificationViewController.swift */; };
 		75AFD2F51FBA7CF000EAEA61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75AFD2F31FBA7CF000EAEA61 /* MainInterface.storyboard */; };
 		75AFD3031FBA7D7500EAEA61 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75AFD2EC1FBA7CF000EAEA61 /* UserNotifications.framework */; };
-		75AFD3071FBA7D7500EAEA61 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AFD3061FBA7D7500EAEA61 /* NotificationViewController.swift */; };
-		75AFD30A1FBA7D7500EAEA61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75AFD3081FBA7D7500EAEA61 /* MainInterface.storyboard */; };
 		75B047B31AE708CC005C6D1A /* ComposeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */; };
 		75B0529D1F1FE032008E483A /* ViewModelServiceImpl+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B0529C1F1FE032008E483A /* ViewModelServiceImpl+Share.swift */; };
 		75B0529F1F1FE1FC008E483A /* ViewDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B0529E1F1FE1FC008E483A /* ViewDefined.swift */; };
@@ -1535,8 +1533,7 @@
 		751C5FE81C49C17700949FBF /* SwiftTryCatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwiftTryCatch.m; sourceTree = "<group>"; };
 		751C5FE91C49C17700949FBF /* SwiftTryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftTryCatch.h; sourceTree = "<group>"; };
 		751CDEA21FBB95B3005E3EB1 /* PushServiceDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushServiceDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		751CDEA41FBB95B4005E3EB1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		751CDEA61FBB95B4005E3EB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		751CDEA61FBB95B4005E3EB1 /* InfoDev.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
 		751CDEB21FBB95F6005E3EB1 /* PushService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		751CDEB41FBB95F6005E3EB1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		751CDEB61FBB95F6005E3EB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1767,9 +1764,7 @@
 		75AFD2F41FBA7CF000EAEA61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		75AFD2F61FBA7CF000EAEA61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75AFD3021FBA7D7500EAEA61 /* PushDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		75AFD3061FBA7D7500EAEA61 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
-		75AFD3091FBA7D7500EAEA61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		75AFD30B1FBA7D7500EAEA61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		75AFD30B1FBA7D7500EAEA61 /* InfoDev.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
 		75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeEmailViewController.swift; sourceTree = "<group>"; };
 		75B0529C1F1FE032008E483A /* ViewModelServiceImpl+Share.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewModelServiceImpl+Share.swift"; sourceTree = "<group>"; };
 		75B0529E1F1FE1FC008E483A /* ViewDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewDefined.swift; path = ProtonMail/ViewDefined.swift; sourceTree = SOURCE_ROOT; };
@@ -2029,9 +2024,7 @@
 				75FE232C1F04347C00DF12C1 /* Share */,
 				075E3E011A5F4ECF00E001A7 /* ProtonMailTests */,
 				75AFD2F01FBA7CF000EAEA61 /* Push */,
-				75AFD3051FBA7D7500EAEA61 /* PushDev */,
 				751CDEB31FBB95F6005E3EB1 /* PushService */,
-				751CDEA31FBB95B4005E3EB1 /* PushServiceDev */,
 				075E3DE71A5F4ECF00E001A7 /* Products */,
 				518B9570F3E0BF19912099F3 /* Pods */,
 				EDDC3A27CB6370D84ADB05EA /* Frameworks */,
@@ -2422,20 +2415,12 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
-		751CDEA31FBB95B4005E3EB1 /* PushServiceDev */ = {
-			isa = PBXGroup;
-			children = (
-				751CDEA41FBB95B4005E3EB1 /* NotificationService.swift */,
-				751CDEA61FBB95B4005E3EB1 /* Info.plist */,
-			);
-			path = PushServiceDev;
-			sourceTree = "<group>";
-		};
 		751CDEB31FBB95F6005E3EB1 /* PushService */ = {
 			isa = PBXGroup;
 			children = (
 				751CDEB41FBB95F6005E3EB1 /* NotificationService.swift */,
 				751CDEB61FBB95F6005E3EB1 /* Info.plist */,
+				751CDEA61FBB95B4005E3EB1 /* InfoDev.plist */,
 			);
 			path = PushService;
 			sourceTree = "<group>";
@@ -2748,18 +2733,9 @@
 				75AFD2F11FBA7CF000EAEA61 /* NotificationViewController.swift */,
 				75AFD2F31FBA7CF000EAEA61 /* MainInterface.storyboard */,
 				75AFD2F61FBA7CF000EAEA61 /* Info.plist */,
+				75AFD30B1FBA7D7500EAEA61 /* InfoDev.plist */,
 			);
 			path = Push;
-			sourceTree = "<group>";
-		};
-		75AFD3051FBA7D7500EAEA61 /* PushDev */ = {
-			isa = PBXGroup;
-			children = (
-				75AFD3061FBA7D7500EAEA61 /* NotificationViewController.swift */,
-				75AFD3081FBA7D7500EAEA61 /* MainInterface.storyboard */,
-				75AFD30B1FBA7D7500EAEA61 /* Info.plist */,
-			);
-			path = PushDev;
 			sourceTree = "<group>";
 		};
 		75B1794D1B3775BA006044D4 /* General */ = {
@@ -3435,7 +3411,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75AFD30A1FBA7D7500EAEA61 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4762,6 +4737,7 @@
 				75252D9B1FCF6919007972EF /* Bundle+Extension.swift in Sources */,
 				75252D211FCF5D41007972EF /* UserCachedStatus.swift in Sources */,
 				75252D5D1FCF60A0007972EF /* EncryptTypes.swift in Sources */,
+				75252DC21FCF7422007972EF /* NotificationService.swift in Sources */,
 				75252CEA1FCF5A53007972EF /* UserInfo.swift in Sources */,
 				75252D8D1FCF63DD007972EF /* APIService+SettingsExtension.swift in Sources */,
 				75252DAD1FCF6A5E007972EF /* LabelsDataService.swift in Sources */,
@@ -4837,7 +4813,6 @@
 				75252D061FCF5B63007972EF /* UIColor+ProtonMail.swift in Sources */,
 				75252D191FCF5CCA007972EF /* DataService+Error.swift in Sources */,
 				75252DB31FCF6A9E007972EF /* APIService+AttachmentExtension.swift in Sources */,
-				751CDEA51FBB95B4005E3EB1 /* NotificationService.swift in Sources */,
 				75252D961FCF68DA007972EF /* TimeInterval+Extension.swift in Sources */,
 				75252D091FCF5B7A007972EF /* APIServiceDefined.swift in Sources */,
 				75252DB61FCF6AD8007972EF /* JKBCryptRandom.swift in Sources */,
@@ -5313,7 +5288,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75AFD3071FBA7D7500EAEA61 /* NotificationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5713,14 +5687,6 @@
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
-		75AFD3081FBA7D7500EAEA61 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				75AFD3091FBA7D7500EAEA61 /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -5972,7 +5938,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = PushServiceDev/Info.plist;
+				INFOPLIST_FILE = PushService/InfoDev.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
@@ -6004,7 +5970,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = PushServiceDev/Info.plist;
+				INFOPLIST_FILE = PushService/InfoDev.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
@@ -6034,7 +6000,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = PushServiceDev/Info.plist;
+				INFOPLIST_FILE = PushService/InfoDev.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
