@@ -39,7 +39,7 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         self.token = token
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let tokenString = token.stringFromToken()
         DeviceUtil.deviceToken = tokenString
         
@@ -71,7 +71,7 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             ver = version
         }
-        let parameters : Dictionary<String, Any> = [
+        let parameters : [String : Any] = [
             "DeviceUID" : DeviceUtil.deviceID,
             "DeviceToken" : tokenString,
             "DeviceName" : UIDevice.current.name,
@@ -108,7 +108,7 @@ final class UnRegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
     override init() {
     }
 
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         if let deviceToken = DeviceUtil.deviceToken {
             let parameters = [
                 "device_uid": DeviceUtil.deviceID,

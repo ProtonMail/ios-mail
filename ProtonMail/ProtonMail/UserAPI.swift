@@ -46,7 +46,7 @@ class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
         self.verifer = verifer
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         
         let auth : [String : Any] = [
             "Version" : 4,
@@ -86,8 +86,8 @@ class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
 class GetUserInfoResponse : ApiResponse {
     var userInfo : UserInfo?
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        guard let res = response["User"] as? Dictionary<String, Any> else {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        guard let res = response["User"] as? [String : Any] else {
             let err = NSError.badUserInfoResponse("\(response)")
             err.upload(toFabric: FetchUserInfoErrorTitle)
             return false
@@ -103,7 +103,7 @@ class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
     override init() {
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         return nil
     }
     
@@ -126,7 +126,7 @@ class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
     override init() {
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         return nil
     }
     
@@ -146,7 +146,7 @@ class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
 class GetHumanCheckResponse : ApiResponse {
     var token : String?
     var type : [String]?
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.type = response["VerifyMethods"] as? [String]
         self.token = response["Token"] as? String
         return true
@@ -162,7 +162,7 @@ class HumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
         self.type = type
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] =  ["Token":self.token, "TokenType":self.type ]
         return out
     }
@@ -188,7 +188,7 @@ class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
         self.userName = userName;
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         return nil
     }
     
@@ -212,7 +212,7 @@ class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
 class CheckUserExistResponse : ApiResponse {
     var isAvailable : Bool?
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
         isAvailable =  response["Available"] as? Bool
         return true
@@ -222,7 +222,7 @@ class CheckUserExistResponse : ApiResponse {
 
 class DirectRequest<T : ApiResponse> : ApiRequest<T> {
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         return nil
     }
     
@@ -246,7 +246,7 @@ class DirectRequest<T : ApiResponse> : ApiRequest<T> {
 class DirectResponse : ApiResponse {
     var isSignUpAvailable : Int = 1
     var signupFunctions : [String]?
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
         isSignUpAvailable =  response["Direct"] as? Int ?? 1
         
@@ -288,7 +288,7 @@ class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
         self.type = type
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let dest = type == .email ? ["Address" : destination] : ["Phone" : destination]
         let out : [String : Any] = [
             "Username" : userName,
@@ -346,7 +346,7 @@ class GetUserPublicKeysRequest<T : ApiResponse> : ApiRequest<T> {
 class PublicKeysResponse : ApiResponse {
 
     var publicKeys : [String : String] = [String : String]()
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         for (k,v) in response {
             if k != "Code" {
                 publicKeys[k] = (v as? String) ?? ""
@@ -359,7 +359,7 @@ class PublicKeysResponse : ApiResponse {
 class EmailsCheckResponse : PublicKeysResponse {
     var hasOutsideEmails : Bool = false
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         if super.ParseResponse(response) {
             for (_, v) in publicKeys {
                 if v.isEmpty {

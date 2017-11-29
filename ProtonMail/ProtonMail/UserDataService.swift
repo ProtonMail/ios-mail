@@ -203,8 +203,8 @@ class UserDataService {
         }
     }
     
-    var userAddresses: Array<Address> { //never be null
-        return userInfo?.userAddresses ?? Array<Address>()
+    var userAddresses: [Address] { //never be null
+        return userInfo?.userAddresses ?? [Address]()
     }
     
     var displayName: String {
@@ -650,7 +650,7 @@ class UserDataService {
         
     }
     
-    func updateUserDomiansOrder(_ email_domains: Array<Address>, newOrder : Array<Int>, completion: @escaping CompletionBlock) {
+    func updateUserDomiansOrder(_ email_domains: [Address], newOrder : [Int], completion: @escaping CompletionBlock) {
         let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)
         domainSetting.call() { task, response, hasError in
             if !hasError {

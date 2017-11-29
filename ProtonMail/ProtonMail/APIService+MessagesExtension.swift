@@ -164,11 +164,11 @@ extension APIService {
         passwordHint: String = "",
         expirationDate: Date? = nil,
         isEncrypted: NSNumber,
-        body: Dictionary<String,String>,
-        attachments: Array<Attachment>?,
+        body: [String : String],
+        attachments: [Attachment]?,
         completion: CompletionBlock?) {
             let path = "/messages/draft"
-            let parameters: Dictionary<String, Any> = [
+            let parameters: [String : Any] = [
                 "RecipientList" : recipientList,
                 "BCCList" : bccList,
                 "CCList" : ccList,
@@ -194,12 +194,12 @@ extension APIService {
         passwordHint: String = "",
         expirationDate: Date? = nil,
         isEncrypted: NSNumber,
-        body: Dictionary<String,String>,
-        attachments: Array<Attachment>?,
+        body: [String : String],
+        attachments: [Attachment]?,
         completion: CompletionBlock?) {
         
             let path = "/messages/\(messageID)/draft"
-            let parameters: Dictionary<String, Any> = [
+            let parameters: [String : Any] = [
                 "MessageID" : messageID,
                 "RecipientList" : recipientList,
                 "BCCList" : bccList,

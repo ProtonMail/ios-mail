@@ -94,7 +94,7 @@ class APIService {
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 if responseObject == nil {
                     completion(task, [:], nil)
-                } else if let responseDictionary = responseObject as? Dictionary<String, Any> {
+                } else if let responseDictionary = responseObject as? [String : Any] {
                     var error : NSError?
                     let responseCode = responseDictionary["Code"] as? Int
                     
@@ -137,7 +137,7 @@ class APIService {
             if error != nil {
                 completion?(task, nil, error)
             } else {
-                if let parsedResponse = response?[key] as? Dictionary<String, Any> {
+                if let parsedResponse = response?[key] as? [String : Any] {
                     completion?(task, parsedResponse, nil)
                 } else {
                     completion?(task, nil, NSError.unableToParseResponse(response))
@@ -326,7 +326,7 @@ class APIService {
                 uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request as URLRequest, progress: { (progress) in
                     //
                 }, completionHandler: { (response, responseObject, error) in
-                    let resObject = responseObject as? Dictionary<String, Any>
+                    let resObject = responseObject as? [String : Any]
                     completion(uploadTask, resObject, error as NSError?)
                 })
                 uploadTask?.resume()

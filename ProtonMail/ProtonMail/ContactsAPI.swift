@@ -21,13 +21,10 @@ class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        //    let path = ContactPath.base
-        //    //setApiVesion(1, appVersion: 1)
-        //    request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 1], completion: completion)
         return ContactsAPI.Path + "/emails" +  AppConstants.DEBUG_OPTION
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         return ["Page" : page, "PageSize" : max]
     }
     
@@ -42,16 +39,16 @@ class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
 
 
 class ContactEmailsResponse : ApiResponse {
-    var contacts : [Dictionary<String, Any>] = []
-    override func ParseResponse (_ response: Dictionary<String, Any>!) -> Bool {
-        if let tempContacts = response?["ContactEmails"] as? [Dictionary<String, Any>] {
+    var contacts : [[String : Any]] = []
+    override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        if let tempContacts = response?["ContactEmails"] as? [[String : Any]] {
             for contact in tempContacts {
                 if let contactID = contact["ContactID"] as? String, let name = contact["Name"] as? String {
                     var found = false
                     for (index, var c) in contacts.enumerated() {
                         if let obj = c["ID"] as? String, obj == contactID {
                             found = true
-                            if var emails = c["ContactEmails"] as? [Dictionary<String, Any>] {
+                            if var emails = c["ContactEmails"] as? [[String : Any]] {
                                 emails.append(contact)
                                 c["ContactEmails"] = emails
                             } else {
@@ -61,7 +58,7 @@ class ContactEmailsResponse : ApiResponse {
                         }
                     }
                     if !found {
-                        let newContact : Dictionary<String, Any> = [
+                        let newContact : [String : Any] = [
                             "ID" : contactID,
                             "Name" : name,
                             "ContactEmails" : [contact]
@@ -100,10 +97,10 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
 
 
 class ContactDetailResponse : ApiResponse {
-    var contact : Dictionary<String, Any>?
-    override func ParseResponse (_ response: Dictionary<String, Any>!) -> Bool {
+    var contact : [String : Any]?
+    override func ParseResponse (_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
-        contact = response["Contact"] as? Dictionary<String, Any>
+        contact = response["Contact"] as? [String : Any]
         return true
     }
 }
@@ -122,7 +119,7 @@ final class ContactEmail : Package {
         self.id = ""
     }
     
-    func toDictionary() -> Dictionary<String, Any>? {
+    func toDictionary() -> [String : Any]? {
         return [
             "ID" : self.id,
             "Email": self.email,
@@ -154,7 +151,7 @@ final class CardData : Package {
         self.sign = s
     }
     
-    func toDictionary() -> Dictionary<String, Any>? {
+    func toDictionary() -> [String : Any]? {
         return [
             "Data": self.data,
             "Type": self.type.rawValue,
@@ -164,8 +161,8 @@ final class CardData : Package {
 }
 
 extension Array where Element: CardData {
-    func toDictionary() -> [Dictionary<String, Any>] {
-        var dicts = [Dictionary<String, Any>]()
+    func toDictionary() -> [[String : Any]] {
+        var dicts = [[String : Any]]()
         for element in self {
             if let e = element.toDictionary() {
                 dicts.append(e)
@@ -194,7 +191,7 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
         return .post
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         var contacts : [Any] = [Any]()
         var cards_dict : [Any] = [Any] ()
         
@@ -222,11 +219,11 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
 final class ContactAddResponse : ApiResponse {
     var contact : [String : Any]?
     var resError : NSError?
-    override func ParseResponse (_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse (_ response: [String : Any]!) -> Bool {
         PMLog.D( response.json(prettyPrinted: true) )
-        if let responses = response["Responses"] as? [Dictionary<String, Any>] {
+        if let responses = response["Responses"] as? [[String : Any]] {
             for res in responses {
-                if let response = res["Response"] as? Dictionary<String, Any> {
+                if let response = res["Response"] as? [String : Any] {
                     let code = response["Code"] as? Int
                     let errorMessage = response["Error"] as? String
                     let errorDetails = response["ErrorDescription"] as? String
@@ -234,7 +231,7 @@ final class ContactAddResponse : ApiResponse {
                     if code != 1000 && code != 1001 {
                         resError = NSError.protonMailError(code ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
                     } else {
-                        contact = response["Contact"] as? Dictionary<String, Any>
+                        contact = response["Contact"] as? [String : Any]
                     }
                 }
             }
@@ -261,7 +258,7 @@ final class ContactDeleteRequest<T : ApiResponse> : ApiRequest<T> {
         return .put
     }
     
-    override func toDictionary() -> Dictionary<String, Any>?  {
+    override func toDictionary() -> [String : Any]?  {
         return ["IDs": IDs]
     }
 }
@@ -289,7 +286,7 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
         return .put
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         var cards_dict : [Any] = [Any] ()
         for c in self.Cards {
             if let dict = c.toDictionary() {

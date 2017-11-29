@@ -504,8 +504,6 @@
 		752FAA101CB5AEAF00F03228 /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */; };
 		752FAA121CB5AEC300F03228 /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA111CB5AEC300F03228 /* PinCodeView.swift */; };
 		752FAA141CB5B14500F03228 /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA131CB5B14500F03228 /* PinCodeViewController.swift */; };
-		7535D6911F05AD69009BB794 /* Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D6901F05AD69009BB794 /* Alert+Extension.swift */; };
-		7535D6921F05AD69009BB794 /* Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D6901F05AD69009BB794 /* Alert+Extension.swift */; };
 		75370A921CA50616005020F9 /* ComposePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75370A911CA50616005020F9 /* ComposePasswordViewController.swift */; };
 		753745041D6B7E8F00682C5A /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
 		753745071D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */; };
@@ -1350,7 +1348,6 @@
 		752FAA111CB5AEC300F03228 /* PinCodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeView.swift; sourceTree = "<group>"; };
 		752FAA131CB5B14500F03228 /* PinCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeViewController.swift; sourceTree = "<group>"; };
 		753480B11CADABCA00964965 /* ProtonMail.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ProtonMail.entitlements; sourceTree = "<group>"; };
-		7535D6901F05AD69009BB794 /* Alert+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alert+Extension.swift"; sourceTree = "<group>"; };
 		75370A911CA50616005020F9 /* ComposePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePasswordViewController.swift; sourceTree = "<group>"; };
 		753745031D6B7E8F00682C5A /* APIError+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIError+Auth.swift"; sourceTree = "<group>"; };
 		753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ResponseTransformer.swift"; sourceTree = "<group>"; };
@@ -1740,7 +1737,6 @@
 			children = (
 				075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */,
 				07CCCC2D1AA2BD8800ECA79E /* Snapshot.swift */,
-				7535D6901F05AD69009BB794 /* Alert+Extension.swift */,
 				70762C3A1A94EC30006B9693 /* ActivityIndicatorHelper.swift */,
 				706628241A71681300164117 /* Controller */,
 				75F1697F1AF7F49B00BE6E79 /* Utilities */,
@@ -3786,7 +3782,6 @@
 				7537450A1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */,
 				07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */,
 				75ECCDFE1B31F01000A8C800 /* APIServiceDefined.swift in Sources */,
-				7535D6911F05AD69009BB794 /* Alert+Extension.swift in Sources */,
 				75A4321B1B1D040A00D046B3 /* QueueManager.swift in Sources */,
 				7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */,
 				70945E6E1A813550002B6837 /* UIButton+ProtonMail.swift in Sources */,
@@ -4569,7 +4564,6 @@
 				75DE7D3F1CAAEA4900F5443E /* TableCellLabelView.swift in Sources */,
 				75475EA81CCEB97400588D41 /* BaseViewController.swift in Sources */,
 				75E090551CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */,
-				7535D6921F05AD69009BB794 /* Alert+Extension.swift in Sources */,
 				75E49F111CAB296900235ACC /* CountryPickerViewController.swift in Sources */,
 				75DE7D431CAAEA4900F5443E /* EmailAttachmentView.swift in Sources */,
 				75E3EF3B1F16F03800E14D1E /* Reachability.m in Sources */,

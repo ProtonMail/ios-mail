@@ -10,12 +10,12 @@ import Foundation
 
 final class LabelApplyViewModelImpl : LabelViewModel {
     fileprivate var messages : [Message]!
-    fileprivate var labelMessages : Dictionary<String, LabelMessageModel>!
+    fileprivate var labelMessages : [String : LabelMessageModel]!
     
     init(msg:[Message]!) {
         super.init()
         self.messages = msg
-        self.labelMessages = Dictionary<String, LabelMessageModel>()
+        self.labelMessages = [String : LabelMessageModel]()
     }
 
     override func showArchiveOption() -> Bool {

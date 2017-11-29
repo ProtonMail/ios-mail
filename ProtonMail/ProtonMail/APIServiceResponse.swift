@@ -27,7 +27,7 @@ public class ApiResponse {
         return code == 1000
     }
     
-    func ParseResponseError (_ response: Dictionary<String, Any>!) -> Bool {
+    func ParseResponseError (_ response: [String : Any]!) -> Bool {
         code = response["Code"] as? Int
         errorMessage = response["Error"] as? String
         errorDetails = response["ErrorDescription"] as? String
@@ -37,7 +37,10 @@ public class ApiResponse {
         }
 
         if code != 1000 && code != 1001 {
-            self.error = NSError.protonMailError(code ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
+            self.error = NSError.protonMailError(code ?? 1000,
+                                                 localizedDescription: errorMessage ?? "",
+                                                 localizedFailureReason: errorDetails,
+                                                 localizedRecoverySuggestion: nil)
         }
         return code != 1000 && code != 1001
     }
@@ -55,31 +58,7 @@ public class ApiResponse {
         self.error = error
     }
     
-    func ParseResponse (_ response: Dictionary<String, Any>!) -> Bool {
+    func ParseResponse (_ response: [String : Any]!) -> Bool {
         return true
     }
-    
-    
-//    /**
-//     base class for convert anyobject to a json string
-//     
-//     :param: value         AnyObject input value
-//     :param: prettyPrinted Bool is need pretty format
-//     
-//     :returns: String value
-//     */
-//    func JSONStringify(value: Any, prettyPrinted: Bool = false) -> String {
-//        let options = prettyPrinted ? JSONSerialization.WritingOptions.prettyPrinted : JSONSerialization.WritingOptions()
-//        if JSONSerialization.isValidJSONObject(value) {
-//            do {
-//                let data = try JSONSerialization.data(withJSONObject: value, options: options)
-//                if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
-//                    return string as String
-//                }
-//            } catch let ex as NSError {
-//                PMLog.D("\(ex)")
-//            }
-//        }
-//        return ""
-//    }
 }

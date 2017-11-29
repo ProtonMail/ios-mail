@@ -91,7 +91,7 @@ class EventDataService {
      :param: task       NSURL session task
      :param: completion complete call back
      */
-    fileprivate func processIncrementalUpdateMessages(_ notificationMessageID: String?, messages: Array<Dictionary<String, Any>>, task: URLSessionDataTask!, completion: CompletionBlock?) {
+    fileprivate func processIncrementalUpdateMessages(_ notificationMessageID: String?, messages: [[String : Any]], task: URLSessionDataTask!, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -159,7 +159,7 @@ class EventDataService {
 //                            }
 //                        }
 //                        do {
-//                            if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? Dictionary<String, Any>(), in: context) as? Message {
+//                            if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String : Any](), in: context) as? Message {
 //                                // apply the label changes
 //                                if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
 //                                    for delete in deleted {

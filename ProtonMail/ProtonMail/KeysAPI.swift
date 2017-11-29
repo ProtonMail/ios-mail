@@ -27,10 +27,10 @@ final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
 
 final class KeySaltResponse : ApiResponse {
     
-    var keySalts : [Dictionary<String, Any>]?
+    var keySalts : [[String : Any]]?
 
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        self.keySalts = response["KeySalts"] as? [Dictionary<String, Any>]
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        self.keySalts = response["KeySalts"] as? [[String : Any]]
         return true
     }
 }
@@ -50,12 +50,13 @@ final class PasswordAuth : Package {
     }
     
     // Mark : override class functions
-    func toDictionary() -> Dictionary<String,Any>? {
-        let out : Dictionary<String, Any> = [
+    func toDictionary() -> [String:Any]? {
+        let out : [String : Any] = [
             "Version" : self.AuthVersion,
             "ModulusID" : self.ModulusID,
             "Salt" : self.salt,
-            "Verifier" : self.verifer]
+            "Verifier" : self.verifer
+        ]
         return out
     }
 }
@@ -70,8 +71,8 @@ final class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
     let tfaCode : String? // optional
     let keySalt : String! //base64 encoded need random value
     
-    var userLevelKeys: Array<Key>!
-    var userAddressKeys: Array<Key>!
+    var userLevelKeys: [Key]!
+    var userAddressKeys: [Key]!
     let orgKey : String?
     
     let auth : PasswordAuth?
@@ -81,8 +82,8 @@ final class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
          clientProof: String!,
          SRPSession: String!,
          keySalt: String!,
-         userlevelKeys: Array<Key>!,
-         addressKeys: Array<Key>!,
+         userlevelKeys: [Key]!,
+         addressKeys: [Key]!,
          tfaCode : String?,
          orgKey: String?,
          
@@ -101,7 +102,7 @@ final class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
         self.auth = auth
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         var keysDict : [Any] = [Any]()
         for _key in userLevelKeys {
             if _key.is_updated {
@@ -167,7 +168,7 @@ final class SetupKeyRequest<T : ApiResponse> : ApiRequest<T> {
         self.auth = auth
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let address : [String: Any] = [
             "AddressID" : self.addressID,
             "PrivateKey" : self.privateKey

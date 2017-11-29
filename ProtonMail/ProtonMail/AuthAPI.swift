@@ -44,7 +44,7 @@ final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
         self.username = username;
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
             AuthKey.clientID : Constants.clientID,
             AuthKey.clientSecret : Constants.clientSecret,
@@ -109,7 +109,7 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
         self.serverProof = serverProof
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = [
             AuthKey.clientID : Constants.clientID,
             AuthKey.clientSecret : Constants.clientSecret,
@@ -152,7 +152,7 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
         self.Uid = uid
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
             "ClientID": Constants.clientID,
             "ResponseType": "token",
@@ -223,7 +223,7 @@ final public class AuthResponse : ApiResponse {
     
     var userStatus : Int = 0
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         
         PMLog.D(response.json(prettyPrinted: true))
         self.encPrivateKey = response["EncPrivateKey"] as? String
@@ -256,7 +256,7 @@ final public class AuthInfoResponse : ApiResponse {
     var SRPSession : String?
     var TwoFactor : Int = 0   //0 is off
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         
         PMLog.D(response.json(prettyPrinted: true))
         
@@ -277,7 +277,7 @@ final class AuthModulusResponse : ApiResponse {
     var Modulus : String?
     var ModulusID : String?
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.Modulus = response["Modulus"] as? String
         self.ModulusID = response["ModulusID"] as? String
         return true

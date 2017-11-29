@@ -121,7 +121,7 @@ class ComposeViewModel {
         fatalError("This method must be overridden")
     }
     
-    func getAddresses () -> Array<Address> {
+    func getAddresses () -> [Address] {
         fatalError("This method must be overridden")
     }
    

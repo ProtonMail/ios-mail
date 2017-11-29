@@ -27,7 +27,7 @@ extension PMNOpenPgp {
         case badProtonMailPGPMessage = 10006
     }
     
-    func setAddresses (_ addresses : Array<PMNAddress>!) {
+    func setAddresses (_ addresses : [PMNAddress]!) {
         self.cleanAddresses();
         for addr in addresses {
             self.add(addr)
@@ -52,9 +52,9 @@ extension PMNOpenPgp {
         return out_new_key
     }
     
-    class func updateKeysPassword(_ old_keys : Array<Key>, old_pass: String, new_pass: String ) throws -> Array<Key> {
+    class func updateKeysPassword(_ old_keys : [Key], old_pass: String, new_pass: String ) throws -> [Key] {
         let pm_keys = old_keys.toPMNPgpKeys()
-        var out_keys : Array<Key>?
+        var out_keys : [Key]?
         try ObjC.catchException {
             let new_keys = PMNOpenPgp.updateKeysPassphrase(pm_keys, oldPassphrase: old_pass, newPassphrase: new_pass)
             out_keys = new_keys.toKeys()
@@ -81,10 +81,10 @@ extension PMNOpenPgp {
     }
     
     
-    class func updateAddrKeysPassword(_ old_addresses : Array<Address>, old_pass: String, new_pass: String ) throws -> Array<Address> {
-        var out_addresses = Array<Address>()
+    class func updateAddrKeysPassword(_ old_addresses : [Address], old_pass: String, new_pass: String ) throws -> [Address] {
+        var out_addresses = [Address]()
         for addr in old_addresses {
-            var out_keys : Array<Key>?
+            var out_keys : [Key]?
             let pm_keys = addr.keys.toPMNPgpKeys()
             
             try ObjC.catchException {

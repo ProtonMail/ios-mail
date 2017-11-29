@@ -30,7 +30,7 @@ final class OrgKeyResponse : ApiResponse {
     var pubKey : String?
     var privKey : String?
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.pubKey = response["PublicKey"] as? String
         self.privKey = response["PrivateKey"] as? String
         return true

@@ -20,7 +20,7 @@ final class UpdateAddressRequest<T : ApiResponse> : ApiRequest<T> {
         self.signature = signature;
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = ["DisplayName" : displayName, "Signature":signature]
         return out
     }
@@ -44,7 +44,7 @@ final class SetupAddressRequest<T : ApiResponse> : ApiRequest<T> {
         self.domain = domain_name
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = ["Domain": self.domain]
         return out
     }
@@ -63,13 +63,13 @@ final class SetupAddressRequest<T : ApiResponse> : ApiRequest<T> {
 }
 
 final class SetupAddressResponse : ApiResponse {
-    var addresses: [Address] = Array<Address>()
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    var addresses: [Address] = [Address]()
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         
-        if let res = response["Address"] as? Dictionary<String, Any> {
+        if let res = response["Address"] as? [String : Any] {
             
-            var keys: [Key] = Array<Key>()
-            if let address_keys = res["Keys"] as? Array<Dictionary<String, Any>> {
+            var keys: [Key] = [Key]()
+            if let address_keys = res["Keys"] as? [[String : Any]] {
                 for key_res in address_keys {
                     keys.append(Key(
                         key_id: key_res["ID"] as? String,

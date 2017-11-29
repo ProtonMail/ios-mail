@@ -15,7 +15,7 @@ final class GetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
     override init() {
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         return nil
     }
     
@@ -38,7 +38,7 @@ final class GetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
 
 final class AvailableDomainsResponse : ApiResponse {
     var domains : [String]?
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.domains = response?["Domains"] as? [String]
         return true
     }

@@ -19,14 +19,14 @@ enum UIApplicationReleaseMode: Int {
 
 extension UIApplication {
     
-    func getMobileProvision() -> Dictionary<String, Any>? {
+    func getMobileProvision() -> [String : Any]? {
         struct MP {
-            static var mobileProvision : Dictionary<String, Any>? = nil;
+            static var mobileProvision : [String : Any]? = nil;
         }
         
         if MP.mobileProvision == nil {
             guard let provisioningPath = Bundle.main.path(forResource: "embedded", ofType: "mobileprovision") else {
-                MP.mobileProvision = Dictionary<String, String>() as Dictionary<String, Any>?;
+                MP.mobileProvision = [String : String]() as [String : Any]?;
                 return MP.mobileProvision;
             }
             
@@ -49,7 +49,7 @@ extension UIApplication {
                 // juggle latin1 back to utf-8!
                 let plistdata_latin1 : Data = newStr.data(using: String.Encoding.isoLatin1, allowLossyConversion: false)!
                 
-                MP.mobileProvision = try PropertyListSerialization.propertyList(from: plistdata_latin1, options: PropertyListSerialization.ReadOptions(rawValue: 0), format: nil) as? Dictionary<String, Any>
+                MP.mobileProvision = try PropertyListSerialization.propertyList(from: plistdata_latin1, options: PropertyListSerialization.ReadOptions(rawValue: 0), format: nil) as? [String : Any]
             } catch {
                 PMLog.D("error parsing extracted plist — \(error)");
                 MP.mobileProvision = nil;
@@ -79,7 +79,7 @@ extension UIApplication {
         } else if self.checkProvisionsDevices(mobileProvision!) {
             // development contains UDIDs and get-task-allow is true
             // ad hoc contains UDIDs and get-task-allow is false
-            let entitlements : Dictionary<String, Any>? = mobileProvision!["Entitlements"] as? Dictionary<String, Any>
+            let entitlements : [String : Any]? = mobileProvision!["Entitlements"] as? [String : Any]
             if (entitlements == nil) {
                 return .adHoc
             }
@@ -95,7 +95,7 @@ extension UIApplication {
         }
     }
     
-    func checkProvisionsAllDevices(_ dict : Dictionary<String, Any>) -> Bool {
+    func checkProvisionsAllDevices(_ dict : [String : Any]) -> Bool {
         if let check : Bool = dict["ProvisionsAllDevices"] as? Bool {
             return check
         } else {
@@ -103,7 +103,7 @@ extension UIApplication {
         }
     }
     
-    func checkProvisionsDevices(_ dict : Dictionary<String, Any>) -> Bool {
+    func checkProvisionsDevices(_ dict : [String : Any]) -> Bool {
         if let devices : [Any] = dict["ProvisionedDevices"] as? [Any] {
             if devices.count > 0 {
                 return true

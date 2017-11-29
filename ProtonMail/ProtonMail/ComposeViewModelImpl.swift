@@ -112,7 +112,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
     }
     
-    override func getAddresses() -> Array<Address> {
+    override func getAddresses() -> [Address] {
         return sharedUserDataService.userAddresses
     }
     

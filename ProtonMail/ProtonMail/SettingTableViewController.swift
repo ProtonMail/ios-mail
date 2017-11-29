@@ -41,7 +41,7 @@ class SettingTableViewController: ProtonMailViewController {
     var protection_auto_logout : [Int]                   = [-1, 0, 1, 2, 5,
                                                             10, 15, 30, 60]
     
-    var multi_domains: Array<Address>!
+    var multi_domains: [Address]!
     var userInfo = sharedUserDataService.userInfo
     
     /// segues
@@ -585,8 +585,8 @@ class SettingTableViewController: ProtonMailViewController {
                                     needsShow = true
                                     alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
                                         let _ = self.navigationController?.popViewController(animated: true)
-                                        var newAddrs = Array<Address>()
-                                        var newOrder = Array<Int>()
+                                        var newAddrs = [Address]()
+                                        var newOrder = [Int]()
                                         newAddrs.append(addr)
                                         newOrder.append(addr.order)
                                         var order = 1

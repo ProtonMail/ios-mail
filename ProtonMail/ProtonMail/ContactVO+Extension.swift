@@ -12,13 +12,13 @@ import Foundation
 extension ContactVO {
     
     /**
-    ContactVO extension for check is contactVO contained by a Array<Address>
+    ContactVO extension for check is contactVO contained by a array of Address
 
     :param: addresses check addresses
     
     :returns: true | false
     */
-    func isDuplicated(_ addresses : Array<Address>) -> Bool
+    func isDuplicated(_ addresses : [Address]) -> Bool
     {
         if addresses.map({ $0.email }).index(of: self.email) != nil {
             return true

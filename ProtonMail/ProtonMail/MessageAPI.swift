@@ -21,9 +21,9 @@ final class MessageCountRequest<T : ApiResponse> : ApiRequest<T> {
 }
 
 final class MessageCountResponse : ApiResponse {
-    var counts : [Dictionary<String, Any>]?
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        self.counts = response?["Counts"] as? [Dictionary<String, Any>]
+    var counts : [[String : Any]]?
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        self.counts = response?["Counts"] as? [[String : Any]]
         return true
     }
 }
@@ -41,7 +41,7 @@ final class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
         self.startTime = 0
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = ["Sort" : "Time"]
         if self.location == MessageLocation.starred {
             out["Starred"] = 1
@@ -112,7 +112,7 @@ final class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
         self.startTime = 0
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = ["Sort" : "Time"]
         out["Label"] = self.labelID
         if(self.endTime > 0)
@@ -146,7 +146,7 @@ class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
         self.message = message
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let address_id : String                 = message.getAddressID
         var messsageDict : [String : Any] = [
             "AddressID" : address_id,
@@ -204,10 +204,10 @@ final class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> {
 
 
 final class MessageResponse : ApiResponse {
-    var message : Dictionary<String, Any>?
+    var message : [String : Any]?
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        self.message = response?["Message"] as? Dictionary<String, Any>
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        self.message = response?["Message"] as? [String : Any]
         return true
     }
 }
@@ -238,7 +238,7 @@ final class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
         self.messages = [Message]()
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out = ["IDs" : self.ids]
         // PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
@@ -265,7 +265,7 @@ final class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
         self.location = location
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         return nil
     }
     
@@ -300,7 +300,7 @@ final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
         self.expirationTime = expirationTime
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         
         var out : [String : Any] = [String : Any]()
         
@@ -393,12 +393,12 @@ final class MessagePackage : Package {
     }
     
     // Mark : override class functions
-    func toDictionary() -> Dictionary<String, Any>? {
+    func toDictionary() -> [String : Any]? {
         var atts : [Any] = [Any]()
         for attPacket in attPackets {
             atts.append(attPacket.toDictionary()!)
         }
-        var out : Dictionary<String, Any> = [
+        var out : [String : Any] = [
             "Address" : self.address,
             "Type" : self.type,
             "Body" : self.body,
@@ -431,7 +431,7 @@ final class AttachmentKeyPackage : Package {
         self.algo = Algo
     }
     
-    func toDictionary() -> Dictionary<String, Any>? {
+    func toDictionary() -> [String : Any]? {
         var out : [String : Any] = [ "ID" : self.ID ]
         if !self.algo.isEmpty {
             out["Algo"] = self.algo
@@ -471,11 +471,11 @@ public struct Contacts {
     let name: String
     
     init(email: String, name: String) {
-        self.name                               = name
-        self.email                              = email
+        self.name = name
+        self.email = email
     }
     
-    func asJSON() -> Dictionary<String, Any> {
+    func asJSON() -> [String : Any] {
         return [
             "Name" : self.name,
             "Email" : self.email]
@@ -485,17 +485,17 @@ public struct Contacts {
 //    public struct Attachment {
 //        let fileName: String
 //        let mimeType: String
-//        let fileData: Dictionary<String,String>
+//        let fileData: [String:String]
 //        let fileSize: Int
 //
-//        init(fileName: String, mimeType: String, fileData: Dictionary<String,String>, fileSize: Int) {
+//        init(fileName: String, mimeType: String, fileData: [String:String], fileSize: Int) {
 //            self.fileName                           = fileName
 //            self.mimeType                           = mimeType
 //            self.fileData                           = fileData
 //            self.fileSize                           = fileSize
 //        }
 //
-//        func asJSON() -> Dictionary<String,AnyObject> {
+//        func asJSON() -> [String:Any] {
 //            return [
 //                "FileName" : fileName,
 //                "MIMEType" : mimeType,

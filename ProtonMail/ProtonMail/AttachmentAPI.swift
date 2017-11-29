@@ -15,10 +15,10 @@ final class AttachmentDeleteRequest<T : ApiResponse> : ApiRequest<T> {
         self.body = body
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let data : Data! = body.data(using: String.Encoding.utf8)
         do {
-            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? Dictionary<String, Any>
+            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String : Any]
             //PMLog.D(self.JSONStringify(body, prettyPrinted: true))
             return decoded
         } catch let ex as NSError {

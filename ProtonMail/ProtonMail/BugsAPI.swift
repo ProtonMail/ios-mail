@@ -30,7 +30,7 @@ final class BugReportRequest<T : ApiResponse> : ApiRequest<T> {
         self.email = email
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
             "OS": self.os,
             "OSVersion" : self.osVersion,

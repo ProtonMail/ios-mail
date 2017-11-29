@@ -54,7 +54,7 @@ class CountryPickerViewController : UIViewController {
         }
         
         let parsedObject: Any? = try! JSONSerialization.jsonObject(with: country_code.data(using: String.Encoding.utf8, allowLossyConversion: false)!, options: JSONSerialization.ReadingOptions.allowFragments) as Any?
-        if let objects = parsedObject as? [Dictionary<String,Any>] {
+        if let objects = parsedObject as? [[String : Any]] {
             countryCodes = CountryCode.getCountryCodes(objects)
         }
         countryCodes.sort(by: { (v1, v2) -> Bool in

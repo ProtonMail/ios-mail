@@ -124,7 +124,7 @@ class MessageDataService {
     func fetchMessagesForLocation(_ location: MessageLocation, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
-                if let messagesArray = responseDict?["Messages"] as? [Dictionary<String, Any>] {
+                if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
                     PMLog.D("\(messagesArray)")
                     let messcount = responseDict?["Total"] as? Int ?? 0
                     let context = sharedCoreDataService.newMainManagedObjectContext()
@@ -196,7 +196,7 @@ class MessageDataService {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 // TODO :: need abstract the respons error checking
-                if let messagesArray = responseDict?["Messages"] as? [Dictionary<String, Any>] {
+                if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
                     let messcount = responseDict?["Total"] as? Int ?? 0
                     let context = sharedCoreDataService.newMainManagedObjectContext()
                     context.perform() {
@@ -407,7 +407,7 @@ class MessageDataService {
         }
     }
     
-    func processIncrementalUpdateContacts(_ contacts: [Dictionary<String, Any>]?) {
+    func processIncrementalUpdateContacts(_ contacts: [[String : Any]]?) {
         struct IncrementalContactUpdateType {
             static let delete = 0
             static let insert = 1
@@ -448,7 +448,7 @@ class MessageDataService {
         }
     }
     
-    func processIncrementalUpdateTotal(_ totals: Dictionary<String, Any>?) {
+    func processIncrementalUpdateTotal(_ totals: [String : Any]?) {
         
         if let star = totals?["Starred"] as? Int {
             let updateTime = lastUpdatedStore.inboxLastForKey(MessageLocation.starred)
@@ -456,7 +456,7 @@ class MessageDataService {
             lastUpdatedStore.updateInboxForKey(MessageLocation.starred, updateTime: updateTime)
         }
         
-        if let locations = totals?["Locations"] as? [Dictionary<String, Any>] {
+        if let locations = totals?["Locations"] as? [[String : Any]] {
             for location:[String : Any] in locations {
                 if let l = location["Location"] as? Int {
                     if let c = location["Count"] as? Int {
@@ -471,14 +471,14 @@ class MessageDataService {
         }
     }
     
-    func processIncrementalUpdateUserInfo(_ userinfo: Dictionary<String, Any>?) {
+    func processIncrementalUpdateUserInfo(_ userinfo: [String : Any]?) {
         if let userData = userinfo {
             let userInfo = UserInfo( response: userData )
             sharedUserDataService.updateUserInfoFromEventLog(userInfo);
         }
     }
     
-    func processIncrementalUpdateLabels(_ labels: [Dictionary<String, Any>]?) {
+    func processIncrementalUpdateLabels(_ labels: [[String : Any]]?) {
         
         struct IncrementalUpdateType {
             static let delete = 0
@@ -521,7 +521,7 @@ class MessageDataService {
         }
     }
     
-    func processMessageCounts(_ msgCounts: [Dictionary<String, Any>]?) {
+    func processMessageCounts(_ msgCounts: [[String : Any]]?) {
         guard let messageCounts = msgCounts, messageCounts.count > 0 else {
             return
         }
@@ -574,7 +574,7 @@ class MessageDataService {
      :param: task       NSURL session task
      :param: completion complete call back
      */
-    fileprivate func processIncrementalUpdateMessages(_ notificationMessageID: String?, messages: Array<Dictionary<String, Any>>, task: URLSessionDataTask!, completion: CompletionBlock?) {
+    fileprivate func processIncrementalUpdateMessages(_ notificationMessageID: String?, messages: [[String : Any]], task: URLSessionDataTask!, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -642,7 +642,7 @@ class MessageDataService {
                             }
                         }
                         do {
-                            if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? Dictionary<String, Any>(), in: context) as? Message {
+                            if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String : Any](), in: context) as? Message {
                                 // apply the label changes
                                 if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
                                     for delete in deleted {
@@ -714,7 +714,7 @@ class MessageDataService {
         if messages.count > 0 {
             queue {
                 let completionWrapper: CompletionBlock = { task, responseDict, error in
-                    if let messagesArray = responseDict?["Messages"] as? [Dictionary<String, Any>] {
+                    if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
                         let context = sharedCoreDataService.newMainManagedObjectContext()
                         context.perform() {
                             do {
@@ -788,7 +788,7 @@ class MessageDataService {
                     var error: NSError?
                     if response != nil {
                         //TODO need check the respons code
-                        if var msg: Dictionary<String,Any> = response?["Message"] as? Dictionary<String, Any> {
+                        if var msg: [String:Any] = response?["Message"] as? [String : Any] {
                             msg.removeValue(forKey: "Location")
                             msg.removeValue(forKey: "Starred")
                             msg.removeValue(forKey: "test")
@@ -837,7 +837,7 @@ class MessageDataService {
                             if response != nil {
                                 //TODO need check the respons code
                                 PMLog.D("\(String(describing: response))")
-                                if var msg: Dictionary<String, Any> = response?["Message"] as? Dictionary<String, Any> {
+                                if var msg: [String : Any] = response?["Message"] as? [String : Any] {
                                     msg.removeValue(forKey: "Location")
                                     msg.removeValue(forKey: "Starred")
                                     msg.removeValue(forKey: "test")
@@ -902,7 +902,7 @@ class MessageDataService {
                     context.perform() {
                         if response != nil {
                             //TODO need check the respons code
-                            if var msg: Dictionary<String,Any> = response?["Message"] as? Dictionary<String,Any> {
+                            if var msg: [String : Any] = response?["Message"] as? [String : Any] {
                                 msg.removeValue(forKey: "Location")
                                 msg.removeValue(forKey: "Starred")
                                 msg.removeValue(forKey: "test")
@@ -1083,7 +1083,7 @@ class MessageDataService {
                 }
                 
                 if let context = sharedCoreDataService.mainManagedObjectContext {
-                    if let messagesArray = response?["Messages"] as? [Dictionary<String, Any>] {
+                    if let messagesArray = response?["Messages"] as? [[String : Any]] {
                         context.perform() {
                             do {
                                 if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
