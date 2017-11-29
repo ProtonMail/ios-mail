@@ -242,6 +242,221 @@
 		75252CE31FCE320C007972EF /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75252CE11FCE320B007972EF /* Dictionary+JSON+Extension.swift */; };
 		75252CE41FCE3220007972EF /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75252CE11FCE320B007972EF /* Dictionary+JSON+Extension.swift */; };
 		75252CE51FCE3220007972EF /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75252CE11FCE320B007972EF /* Dictionary+JSON+Extension.swift */; };
+		75252CE61FCF5A2F007972EF /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9311A71C60900EB0CAF /* UserDataService.swift */; };
+		75252CE71FCF5A30007972EF /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9311A71C60900EB0CAF /* UserDataService.swift */; };
+		75252CE81FCF5A43007972EF /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797BF1A6EDFF400244532 /* APIService.swift */; };
+		75252CE91FCF5A44007972EF /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797BF1A6EDFF400244532 /* APIService.swift */; };
+		75252CEA1FCF5A53007972EF /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */; };
+		75252CEB1FCF5A54007972EF /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */; };
+		75252CEC1FCF5A61007972EF /* NSCoder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CCCC2F1AA4E26000ECA79E /* NSCoder+Extension.swift */; };
+		75252CED1FCF5A62007972EF /* NSCoder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CCCC2F1AA4E26000ECA79E /* NSCoder+Extension.swift */; };
+		75252CEE1FCF5A73007972EF /* NSError+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99631A6F076A000FD6F8 /* NSError+Extension.swift */; };
+		75252CEF1FCF5A74007972EF /* NSError+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99631A6F076A000FD6F8 /* NSError+Extension.swift */; };
+		75252CF01FCF5A93007972EF /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FC90D91A9BC11F00498B42 /* String+Extension.swift */; };
+		75252CF11FCF5A94007972EF /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FC90D91A9BC11F00498B42 /* String+Extension.swift */; };
+		75252CF21FCF5AA1007972EF /* ContactVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE961AA651100038149C /* ContactVO.swift */; };
+		75252CF31FCF5AA2007972EF /* ContactVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE961AA651100038149C /* ContactVO.swift */; };
+		75252CF41FCF5ABB007972EF /* APIService+DefinedExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F7756F1D63AA5B00FD3893 /* APIService+DefinedExtension.swift */; };
+		75252CF51FCF5ABC007972EF /* APIService+DefinedExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F7756F1D63AA5B00FD3893 /* APIService+DefinedExtension.swift */; };
+		75252CF61FCF5ACB007972EF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323991A7C02AB0043DB41 /* Message.swift */; };
+		75252CF71FCF5ACC007972EF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323991A7C02AB0043DB41 /* Message.swift */; };
+		75252CF81FCF5AEE007972EF /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C41A6EE5FF00244532 /* AuthCredential.swift */; };
+		75252CF91FCF5AF0007972EF /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C41A6EE5FF00244532 /* AuthCredential.swift */; };
+		75252CFA1FCF5AFC007972EF /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECCE011B31F44600A8C800 /* AuthAPI.swift */; };
+		75252CFB1FCF5AFD007972EF /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECCE011B31F44600A8C800 /* AuthAPI.swift */; };
+		75252CFC1FCF5B13007972EF /* APIServiceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0781B33880500A72A1E /* APIServiceResponse.swift */; };
+		75252CFD1FCF5B14007972EF /* APIServiceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0781B33880500A72A1E /* APIServiceResponse.swift */; };
+		75252CFE1FCF5B1B007972EF /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
+		75252CFF1FCF5B1C007972EF /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
+		75252D001FCF5B2A007972EF /* APIServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0761B3387F700A72A1E /* APIServiceRequest.swift */; };
+		75252D011FCF5B2B007972EF /* APIServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0761B3387F700A72A1E /* APIServiceRequest.swift */; };
+		75252D021FCF5B47007972EF /* APIService+UserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD92B1A719B7900EB0CAF /* APIService+UserExtension.swift */; };
+		75252D031FCF5B47007972EF /* APIService+UserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD92B1A719B7900EB0CAF /* APIService+UserExtension.swift */; };
+		75252D041FCF5B58007972EF /* MessageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F0A531ABF5E3E00E6B9AE /* MessageAction.swift */; };
+		75252D061FCF5B63007972EF /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */; };
+		75252D071FCF5B65007972EF /* MessageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F0A531ABF5E3E00E6B9AE /* MessageAction.swift */; };
+		75252D091FCF5B7A007972EF /* APIServiceDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECCDFD1B31F01000A8C800 /* APIServiceDefined.swift */; };
+		75252D0A1FCF5B7B007972EF /* APIServiceDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECCDFD1B31F01000A8C800 /* APIServiceDefined.swift */; };
+		75252D0B1FCF5B8C007972EF /* SharedCacheBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */; };
+		75252D0C1FCF5B8D007972EF /* SharedCacheBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */; };
+		75252D0D1FCF5B9C007972EF /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F1697D1AF7F43A00BE6E79 /* Logger.swift */; };
+		75252D0E1FCF5B9D007972EF /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F1697D1AF7F43A00BE6E79 /* Logger.swift */; };
+		75252D0F1FCF5BAA007972EF /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF811FA7FE82005F66A3 /* Dictionary+Extension.swift */; };
+		75252D101FCF5BAB007972EF /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF811FA7FE82005F66A3 /* Dictionary+Extension.swift */; };
+		75252D111FCF5C22007972EF /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751900731F1D4A5700DB68ED /* KeychainWrapper.swift */; };
+		75252D121FCF5C23007972EF /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751900731F1D4A5700DB68ED /* KeychainWrapper.swift */; };
+		75252D131FCF5C3B007972EF /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF7F1FA7FE82005F66A3 /* UserDefaults+Extension.swift */; };
+		75252D141FCF5C3C007972EF /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF7F1FA7FE82005F66A3 /* UserDefaults+Extension.swift */; };
+		75252D151FCF5C4A007972EF /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
+		75252D161FCF5C4A007972EF /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
+		75252D181FCF5C68007972EF /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */; };
+		75252D191FCF5CCA007972EF /* DataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E220311DDA642500078D6C /* DataService+Error.swift */; };
+		75252D1A1FCF5CCB007972EF /* DataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E220311DDA642500078D6C /* DataService+Error.swift */; };
+		75252D1B1FCF5CEB007972EF /* Compare+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */; };
+		75252D1C1FCF5CEC007972EF /* Compare+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */; };
+		75252D1D1FCF5D20007972EF /* NSString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF7A1FA7FE81005F66A3 /* NSString+Extension.swift */; };
+		75252D1E1FCF5D21007972EF /* NSString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF7A1FA7FE81005F66A3 /* NSString+Extension.swift */; };
+		75252D1F1FCF5D30007972EF /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */; };
+		75252D201FCF5D31007972EF /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */; };
+		75252D211FCF5D41007972EF /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */; };
+		75252D221FCF5D4D007972EF /* LastUpdatedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A21A96CFB800ED130C /* LastUpdatedStore.swift */; };
+		75252D231FCF5D4E007972EF /* LastUpdatedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A21A96CFB800ED130C /* LastUpdatedStore.swift */; };
+		75252D241FCF5D59007972EF /* MessageLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F0A511ABF5DB500E6B9AE /* MessageLocation.swift */; };
+		75252D251FCF5D5A007972EF /* MessageLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F0A511ABF5DB500E6B9AE /* MessageLocation.swift */; };
+		75252D261FCF5DC0007972EF /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750778CD1BE98900009F516C /* UserAPI.swift */; };
+		75252D271FCF5DC1007972EF /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750778CD1BE98900009F516C /* UserAPI.swift */; };
+		75252D281FCF5DCC007972EF /* APIService+ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */; };
+		75252D291FCF5DCD007972EF /* APIService+ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */; };
+		75252D2A1FCF5E05007972EF /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217591AD6F1B800978579 /* Fabric.framework */; };
+		75252D2B1FCF5E05007972EF /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217581AD6F1B800978579 /* Crashlytics.framework */; };
+		75252D2C1FCF5E48007972EF /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */; };
+		75252D2D1FCF5E49007972EF /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */; };
+		75252D2E1FCF5E57007972EF /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
+		75252D2F1FCF5E58007972EF /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
+		75252D301FCF5E67007972EF /* SrpClientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */; };
+		75252D311FCF5E68007972EF /* SrpClientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */; };
+		75252D321FCF5E77007972EF /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */; };
+		75252D331FCF5E78007972EF /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */; };
+		75252D341FCF5E8A007972EF /* ViewModelServiceImpl+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B0529C1F1FE032008E483A /* ViewModelServiceImpl+Share.swift */; };
+		75252D351FCF5E8B007972EF /* ViewModelServiceImpl+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B0529C1F1FE032008E483A /* ViewModelServiceImpl+Share.swift */; };
+		75252D361FCF5EB2007972EF /* ViewModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06C1B334FA400A72A1E /* ViewModelService.swift */; };
+		75252D371FCF5EB3007972EF /* ViewModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06C1B334FA400A72A1E /* ViewModelService.swift */; };
+		75252D381FCF5ECF007972EF /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */; };
+		75252D391FCF5ED0007972EF /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */; };
+		75252D3A1FCF5EDC007972EF /* ControllerDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0721B3363D000A72A1E /* ControllerDefined.swift */; };
+		75252D3B1FCF5EDD007972EF /* ControllerDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0721B3363D000A72A1E /* ControllerDefined.swift */; };
+		75252D3C1FCF5EEC007972EF /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755B6A6F1B38C0B800745872 /* Label.swift */; };
+		75252D3D1FCF5EED007972EF /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755B6A6F1B38C0B800745872 /* Label.swift */; };
+		75252D3E1FCF5F00007972EF /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FE01C1A9561F600825980 /* Contact.swift */; };
+		75252D3F1FCF5F01007972EF /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FE01C1A9561F600825980 /* Contact.swift */; };
+		75252D401FCF5F1C007972EF /* ContactsDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF831FA7FE82005F66A3 /* ContactsDefined.swift */; };
+		75252D411FCF5F1D007972EF /* ContactsDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF831FA7FE82005F66A3 /* ContactsDefined.swift */; };
+		75252D421FCF5F2C007972EF /* ContactEditVIewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFC91FA7FEC3005F66A3 /* ContactEditVIewModel.swift */; };
+		75252D431FCF5F2D007972EF /* ContactEditVIewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFC91FA7FEC3005F66A3 /* ContactEditVIewModel.swift */; };
+		75252D441FCF5F3A007972EF /* ContactsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFBB1FA7FEBF005F66A3 /* ContactsAPI.swift */; };
+		75252D451FCF5F3A007972EF /* ContactsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFBB1FA7FEBF005F66A3 /* ContactsAPI.swift */; };
+		75252D461FCF5F4B007972EF /* ComposeViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564899D1B7F2C9F007EA207 /* ComposeViewModelImpl.swift */; };
+		75252D471FCF5F4C007972EF /* ComposeViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564899D1B7F2C9F007EA207 /* ComposeViewModelImpl.swift */; };
+		75252D481FCF5F5E007972EF /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CFC9D31A81A2B0007A72B7 /* Attachment.swift */; };
+		75252D491FCF5F5E007972EF /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CFC9D31A81A2B0007A72B7 /* Attachment.swift */; };
+		75252D4A1FCF5F73007972EF /* NotificationDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B00971B7AB91400F180BD /* NotificationDefined.swift */; };
+		75252D4B1FCF5F74007972EF /* NotificationDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B00971B7AB91400F180BD /* NotificationDefined.swift */; };
+		75252D4C1FCF5F9A007972EF /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2202D1DDA532900078D6C /* Threading.swift */; };
+		75252D4D1FCF5F9B007972EF /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2202D1DDA532900078D6C /* Threading.swift */; };
+		75252D4E1FCF5FAE007972EF /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75662BA61B543A5B006C538E /* SettingsAPI.swift */; };
+		75252D4F1FCF5FAF007972EF /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75662BA61B543A5B006C538E /* SettingsAPI.swift */; };
+		75252D501FCF5FE8007972EF /* MessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61931A89895600ED38AE /* MessageExtension.swift */; };
+		75252D511FCF5FE9007972EF /* MessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61931A89895600ED38AE /* MessageExtension.swift */; };
+		75252D521FCF601A007972EF /* MIMEMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C7A1F747BC80028DAC9 /* MIMEMessage.swift */; };
+		75252D531FCF601B007972EF /* MIMEMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C7A1F747BC80028DAC9 /* MIMEMessage.swift */; };
+		75252D541FCF602A007972EF /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C781F747BC80028DAC9 /* Part.swift */; };
+		75252D551FCF602B007972EF /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C781F747BC80028DAC9 /* Part.swift */; };
+		75252D561FCF6032007972EF /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C791F747BC80028DAC9 /* Header.swift */; };
+		75252D571FCF6033007972EF /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C791F747BC80028DAC9 /* Header.swift */; };
+		75252D581FCF603E007972EF /* MessageSpamScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA199E1EC6474D00153A1A /* MessageSpamScore.swift */; };
+		75252D591FCF603F007972EF /* MessageSpamScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA199E1EC6474D00153A1A /* MessageSpamScore.swift */; };
+		75252D5A1FCF6095007972EF /* Data+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C771F747BC80028DAC9 /* Data+Mime.swift */; };
+		75252D5B1FCF6096007972EF /* Data+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C771F747BC80028DAC9 /* Data+Mime.swift */; };
+		75252D5C1FCF609F007972EF /* EncryptTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7565998E1AC4809B00C187E4 /* EncryptTypes.swift */; };
+		75252D5D1FCF60A0007972EF /* EncryptTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7565998E1AC4809B00C187E4 /* EncryptTypes.swift */; };
+		75252D5E1FCF60B3007972EF /* MessageDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078A3A4B1A7FF4DC002C5FF3 /* MessageDataService.swift */; };
+		75252D5F1FCF60B4007972EF /* MessageDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078A3A4B1A7FF4DC002C5FF3 /* MessageDataService.swift */; };
+		75252D601FCF60D1007972EF /* UInt8+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C761F747BC80028DAC9 /* UInt8+Mime.swift */; };
+		75252D611FCF60D2007972EF /* UInt8+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C761F747BC80028DAC9 /* UInt8+Mime.swift */; };
+		75252D621FCF60F4007972EF /* String+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C751F747BC80028DAC9 /* String+Mime.swift */; };
+		75252D631FCF60F4007972EF /* String+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C751F747BC80028DAC9 /* String+Mime.swift */; };
+		75252D641FCF6100007972EF /* MessageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B07A1B338EB900A72A1E /* MessageHelper.swift */; };
+		75252D651FCF6101007972EF /* MessageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B07A1B338EB900A72A1E /* MessageHelper.swift */; };
+		75252D661FCF615A007972EF /* LabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756489911B7DC8B8007EA207 /* LabelExtension.swift */; };
+		75252D671FCF615A007972EF /* LabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756489911B7DC8B8007EA207 /* LabelExtension.swift */; };
+		75252D681FCF6187007972EF /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF851FA7FE83005F66A3 /* Data+Extension.swift */; };
+		75252D691FCF6188007972EF /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF851FA7FE83005F66A3 /* Data+Extension.swift */; };
+		75252D6A1FCF6190007972EF /* OrganizationsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758DB00D1DDBBCA8007B83D3 /* OrganizationsAPI.swift */; };
+		75252D6B1FCF6191007972EF /* OrganizationsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758DB00D1DDBBCA8007B83D3 /* OrganizationsAPI.swift */; };
+		75252D6C1FCF61D8007972EF /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713239B1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift */; };
+		75252D6D1FCF61D8007972EF /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713239B1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift */; };
+		75252D6E1FCF61FF007972EF /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB8051A894F8600C5E347 /* CoreDataService.swift */; };
+		75252D6F1FCF6200007972EF /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB8051A894F8600C5E347 /* CoreDataService.swift */; };
+		75252D701FCF620C007972EF /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB8011A8815DF00C5E347 /* FileManager+Extension.swift */; };
+		75252D711FCF620C007972EF /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB8011A8815DF00C5E347 /* FileManager+Extension.swift */; };
+		75252D721FCF622B007972EF /* AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61911A8988F100ED38AE /* AttachmentExtension.swift */; };
+		75252D731FCF622C007972EF /* AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61911A8988F100ED38AE /* AttachmentExtension.swift */; };
+		75252D741FCF623C007972EF /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A61A9815DF00ED130C /* URL+Extension.swift */; };
+		75252D751FCF623D007972EF /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A61A9815DF00ED130C /* URL+Extension.swift */; };
+		75252D761FCF626D007972EF /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */; };
+		75252D771FCF626E007972EF /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */; };
+		75252D781FCF6280007972EF /* MessageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0741B3383F900A72A1E /* MessageAPI.swift */; };
+		75252D791FCF6281007972EF /* MessageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0741B3383F900A72A1E /* MessageAPI.swift */; };
+		75252D7A1FCF62B6007972EF /* AddressAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7549F0B01D07827A00643C64 /* AddressAPI.swift */; };
+		75252D7B1FCF62B7007972EF /* AddressAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7549F0B01D07827A00643C64 /* AddressAPI.swift */; };
+		75252D7C1FCF62C6007972EF /* ContactVO+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8D1FA7FE84005F66A3 /* ContactVO+Extension.swift */; };
+		75252D7D1FCF62C7007972EF /* ContactVO+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8D1FA7FE84005F66A3 /* ContactVO+Extension.swift */; };
+		75252D7E1FCF62FF007972EF /* MonitorSavesDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61971A8AE5AA00ED38AE /* MonitorSavesDataService.swift */; };
+		75252D7F1FCF6300007972EF /* MonitorSavesDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61971A8AE5AA00ED38AE /* MonitorSavesDataService.swift */; };
+		75252D801FCF630C007972EF /* MessageQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC3F921A941C7A0005E39F /* MessageQueue.swift */; };
+		75252D811FCF630D007972EF /* MessageQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC3F921A941C7A0005E39F /* MessageQueue.swift */; };
+		75252D831FCF6338007972EF /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
+		75252D841FCF6347007972EF /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8E1FA7FE85005F66A3 /* Date+Extension.swift */; };
+		75252D851FCF6348007972EF /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8E1FA7FE85005F66A3 /* Date+Extension.swift */; };
+		75252D861FCF6354007972EF /* PersistentQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB7FD1A880B1200C5E347 /* PersistentQueue.swift */; };
+		75252D871FCF6355007972EF /* PersistentQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB7FD1A880B1200C5E347 /* PersistentQueue.swift */; };
+		75252D881FCF6372007972EF /* JKBCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDEF81D9DB374004455F6 /* JKBCrypt.swift */; };
+		75252D891FCF6372007972EF /* JKBCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDEF81D9DB374004455F6 /* JKBCrypt.swift */; };
+		75252D8A1FCF6391007972EF /* KeysAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2202A1DD6728200078D6C /* KeysAPI.swift */; };
+		75252D8B1FCF6392007972EF /* KeysAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2202A1DD6728200078D6C /* KeysAPI.swift */; };
+		75252D8C1FCF63DC007972EF /* APIService+SettingsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */; };
+		75252D8D1FCF63DD007972EF /* APIService+SettingsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */; };
+		75252D8E1FCF63E5007972EF /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B9C6071DA2D39A001DE21E /* Hash.swift */; };
+		75252D8F1FCF63E6007972EF /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B9C6071DA2D39A001DE21E /* Hash.swift */; };
+		75252D901FCF63F4007972EF /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321C1B1D042C00D046B3 /* QueueConstant.swift */; };
+		75252D911FCF63F5007972EF /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321C1B1D042C00D046B3 /* QueueConstant.swift */; };
+		75252D921FCF6840007972EF /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */; };
+		75252D931FCF6841007972EF /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */; };
+		75252D941FCF6852007972EF /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
+		75252D951FCF6852007972EF /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
+		75252D961FCF68DA007972EF /* TimeInterval+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8F1FA7FE85005F66A3 /* TimeInterval+Extension.swift */; };
+		75252D971FCF68DB007972EF /* TimeInterval+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF8F1FA7FE85005F66A3 /* TimeInterval+Extension.swift */; };
+		75252D981FCF68F4007972EF /* NSError+Alert+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7516B1A91F7B6ADE00DC5229 /* NSError+Alert+Share.swift */; };
+		75252D991FCF68F5007972EF /* NSError+Alert+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7516B1A91F7B6ADE00DC5229 /* NSError+Alert+Share.swift */; };
+		75252D9A1FCF6918007972EF /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07655BC01AB10D7100CD3883 /* Bundle+Extension.swift */; };
+		75252D9B1FCF6919007972EF /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07655BC01AB10D7100CD3883 /* Bundle+Extension.swift */; };
+		75252D9C1FCF693E007972EF /* APIService+MessagesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323911A7ADA590043DB41 /* APIService+MessagesExtension.swift */; };
+		75252D9D1FCF693F007972EF /* APIService+MessagesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323911A7ADA590043DB41 /* APIService+MessagesExtension.swift */; };
+		75252D9E1FCF695B007972EF /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518393E1B3DCA3000C714A6 /* EventAPI.swift */; };
+		75252D9F1FCF695C007972EF /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518393E1B3DCA3000C714A6 /* EventAPI.swift */; };
+		75252DA01FCF6990007972EF /* ContactDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FE0181A955ED900825980 /* ContactDataService.swift */; };
+		75252DA11FCF6992007972EF /* ContactDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FE0181A955ED900825980 /* ContactDataService.swift */; };
+		75252DA21FCF69A6007972EF /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF821FA7FE82005F66A3 /* Email.swift */; };
+		75252DA31FCF69A6007972EF /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF821FA7FE82005F66A3 /* Email.swift */; };
+		75252DA41FCF69B0007972EF /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
+		75252DA51FCF69B2007972EF /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
+		75252DA61FCF69CB007972EF /* ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FE01E1A95620D00825980 /* ContactExtension.swift */; };
+		75252DA71FCF69CC007972EF /* ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FE01E1A95620D00825980 /* ContactExtension.swift */; };
+		75252DA81FCF69FF007972EF /* EmailExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF891FA7FE84005F66A3 /* EmailExtension.swift */; };
+		75252DA91FCF6A01007972EF /* EmailExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF891FA7FE84005F66A3 /* EmailExtension.swift */; };
+		75252DAA1FCF6A2B007972EF /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */; };
+		75252DAB1FCF6A2C007972EF /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */; };
+		75252DAC1FCF6A5E007972EF /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */; };
+		75252DAD1FCF6A5E007972EF /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */; };
+		75252DAE1FCF6A71007972EF /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898D1B7DBE64007EA207 /* LabelAPI.swift */; };
+		75252DAF1FCF6A72007972EF /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898D1B7DBE64007EA207 /* LabelAPI.swift */; };
+		75252DB01FCF6A8F007972EF /* UIApplication+BadgeNumber+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B431BC1F7AF406009DD520 /* UIApplication+BadgeNumber+Share.swift */; };
+		75252DB11FCF6A90007972EF /* UIApplication+BadgeNumber+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B431BC1F7AF406009DD520 /* UIApplication+BadgeNumber+Share.swift */; };
+		75252DB21FCF6A9D007972EF /* APIService+AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */; };
+		75252DB31FCF6A9E007972EF /* APIService+AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */; };
+		75252DB41FCF6ABF007972EF /* MonitorSavesDataServiceMessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6901A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift */; };
+		75252DB51FCF6AC0007972EF /* MonitorSavesDataServiceMessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6901A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift */; };
+		75252DB61FCF6AD8007972EF /* JKBCryptRandom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDEFB1D9DB3A0004455F6 /* JKBCryptRandom.swift */; };
+		75252DB71FCF6AD8007972EF /* JKBCryptRandom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDEFB1D9DB3A0004455F6 /* JKBCryptRandom.swift */; };
+		75252DB81FCF6AFC007972EF /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB65751BD5C88800F9432D /* AttachmentAPI.swift */; };
+		75252DB91FCF6AFD007972EF /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB65751BD5C88800F9432D /* AttachmentAPI.swift */; };
+		75252DBA1FCF6D06007972EF /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 752902A71EE5F71C00B46D36 /* LanguageManager.m */; };
+		75252DBB1FCF6D06007972EF /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 752902A71EE5F71C00B46D36 /* LanguageManager.m */; };
+		75252DBC1FCF6D1F007972EF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 75B549E51D02731300F21A30 /* Reachability.m */; };
+		75252DBD1FCF6D20007972EF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 75B549E51D02731300F21A30 /* Reachability.m */; };
+		75252DBE1FCF6EE6007972EF /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
+		75252DBF1FCF710D007972EF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
+		75252DC01FCF710E007972EF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
 		75256C391F16DE0A00F2771E /* ProtonMail-Bridging-Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */; };
 		75256C3A1F16DFBD00F2771E /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
 		75256C3B1F16DFBD00F2771E /* ControllerDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0721B3363D000A72A1E /* ControllerDefined.swift */; };
@@ -1665,6 +1880,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75252D2A1FCF5E05007972EF /* Fabric.framework in Frameworks */,
+				75252D2B1FCF5E05007972EF /* Crashlytics.framework in Frameworks */,
 				751CDEBE1FBB96D5005E3EB1 /* libstdc++.tbd in Frameworks */,
 				11666412392E8305031C3020 /* libPods-PushServiceDev.a in Frameworks */,
 			);
@@ -3777,9 +3994,85 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PushService/Pods-PushService-resources.sh",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4010,9 +4303,85 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev-resources.sh",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4389,7 +4758,114 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75252D6E1FCF61FF007972EF /* CoreDataService.swift in Sources */,
+				75252D9B1FCF6919007972EF /* Bundle+Extension.swift in Sources */,
+				75252D211FCF5D41007972EF /* UserCachedStatus.swift in Sources */,
+				75252D5D1FCF60A0007972EF /* EncryptTypes.swift in Sources */,
+				75252CEA1FCF5A53007972EF /* UserInfo.swift in Sources */,
+				75252D8D1FCF63DD007972EF /* APIService+SettingsExtension.swift in Sources */,
+				75252DAD1FCF6A5E007972EF /* LabelsDataService.swift in Sources */,
+				75252D2C1FCF5E48007972EF /* APIService+AuthenticationExtension.swift in Sources */,
+				75252D7B1FCF62B7007972EF /* AddressAPI.swift in Sources */,
+				75252D261FCF5DC0007972EF /* UserAPI.swift in Sources */,
+				75252CF51FCF5ABC007972EF /* APIService+DefinedExtension.swift in Sources */,
+				75252D431FCF5F2D007972EF /* ContactEditVIewModel.swift in Sources */,
+				75252DA81FCF69FF007972EF /* EmailExtension.swift in Sources */,
+				75252D341FCF5E8A007972EF /* ViewModelServiceImpl+Share.swift in Sources */,
+				75252CF11FCF5A94007972EF /* String+Extension.swift in Sources */,
+				75252DBC1FCF6D1F007972EF /* Reachability.m in Sources */,
+				75252D501FCF5FE8007972EF /* MessageExtension.swift in Sources */,
+				75252D8E1FCF63E5007972EF /* Hash.swift in Sources */,
+				75252D491FCF5F5E007972EF /* Attachment.swift in Sources */,
+				75252D951FCF6852007972EF /* UserTempCachedStatus.swift in Sources */,
+				75252D7F1FCF6300007972EF /* MonitorSavesDataService.swift in Sources */,
+				75252DA21FCF69A6007972EF /* Email.swift in Sources */,
+				75252DBA1FCF6D06007972EF /* LanguageManager.m in Sources */,
+				75252CFD1FCF5B14007972EF /* APIServiceResponse.swift in Sources */,
+				75252D661FCF615A007972EF /* LabelExtension.swift in Sources */,
+				75252D2E1FCF5E57007972EF /* APIError+Auth.swift in Sources */,
+				75252DB01FCF6A8F007972EF /* UIApplication+BadgeNumber+Share.swift in Sources */,
+				75252D1B1FCF5CEB007972EF /* Compare+Extension.swift in Sources */,
+				75252D851FCF6348007972EF /* Date+Extension.swift in Sources */,
+				75252D621FCF60F4007972EF /* String+Mime.swift in Sources */,
+				75252D581FCF603E007972EF /* MessageSpamScore.swift in Sources */,
+				75252DA61FCF69CB007972EF /* ContactExtension.swift in Sources */,
+				75252D0D1FCF5B9C007972EF /* Logger.swift in Sources */,
+				75252D101FCF5BAB007972EF /* Dictionary+Extension.swift in Sources */,
+				75252D521FCF601A007972EF /* MIMEMessage.swift in Sources */,
+				75252CE61FCF5A2F007972EF /* UserDataService.swift in Sources */,
+				75252D3D1FCF5EED007972EF /* Label.swift in Sources */,
+				75252D221FCF5D4D007972EF /* LastUpdatedStore.swift in Sources */,
+				75252D721FCF622B007972EF /* AttachmentExtension.swift in Sources */,
+				75252D8B1FCF6392007972EF /* KeysAPI.swift in Sources */,
+				75252CFA1FCF5AFC007972EF /* AuthAPI.swift in Sources */,
+				75252D5A1FCF6095007972EF /* Data+Mime.swift in Sources */,
+				75252D041FCF5B58007972EF /* MessageAction.swift in Sources */,
+				75252D9D1FCF693F007972EF /* APIService+MessagesExtension.swift in Sources */,
+				75252CF91FCF5AF0007972EF /* AuthCredential.swift in Sources */,
+				75252CF21FCF5AA1007972EF /* ContactVO.swift in Sources */,
+				75252D241FCF5D59007972EF /* MessageLocation.swift in Sources */,
+				75252D651FCF6101007972EF /* MessageHelper.swift in Sources */,
+				75252D561FCF6032007972EF /* Header.swift in Sources */,
+				75252D321FCF5E77007972EF /* PasswordUtils.swift in Sources */,
+				75252D1F1FCF5D30007972EF /* APIErrors.swift in Sources */,
+				75252D871FCF6355007972EF /* PersistentQueue.swift in Sources */,
+				75252D401FCF5F1C007972EF /* ContactsDefined.swift in Sources */,
+				75252D7D1FCF62C7007972EF /* ContactVO+Extension.swift in Sources */,
+				75252CEC1FCF5A61007972EF /* NSCoder+Extension.swift in Sources */,
+				75252D361FCF5EB2007972EF /* ViewModelService.swift in Sources */,
+				75252D9F1FCF695C007972EF /* EventAPI.swift in Sources */,
+				75252CE81FCF5A43007972EF /* APIService.swift in Sources */,
+				75252D151FCF5C4A007972EF /* OpenPGPExtension.swift in Sources */,
+				75252CF61FCF5ACB007972EF /* Message.swift in Sources */,
+				75252D6A1FCF6190007972EF /* OrganizationsAPI.swift in Sources */,
+				75252DA51FCF69B2007972EF /* Settings+Defined.swift in Sources */,
+				75252D451FCF5F3A007972EF /* ContactsAPI.swift in Sources */,
+				75252D891FCF6372007972EF /* JKBCrypt.swift in Sources */,
+				75252D991FCF68F5007972EF /* NSError+Alert+Share.swift in Sources */,
+				75252D031FCF5B47007972EF /* APIService+UserExtension.swift in Sources */,
+				75252DAE1FCF6A71007972EF /* LabelAPI.swift in Sources */,
+				75252D3E1FCF5F00007972EF /* Contact.swift in Sources */,
+				75252CFF1FCF5B1C007972EF /* AppConstants.swift in Sources */,
+				75252D4D1FCF5F9B007972EF /* Threading.swift in Sources */,
+				75252D911FCF63F5007972EF /* QueueConstant.swift in Sources */,
+				75252D4F1FCF5FAF007972EF /* SettingsAPI.swift in Sources */,
+				75252D541FCF602A007972EF /* Part.swift in Sources */,
+				75252D281FCF5DCC007972EF /* APIService+ErrorExtension.swift in Sources */,
+				75252D3B1FCF5EDD007972EF /* ControllerDefined.swift in Sources */,
+				75252D771FCF626E007972EF /* NSManagedObjectExtension.swift in Sources */,
+				75252D061FCF5B63007972EF /* UIColor+ProtonMail.swift in Sources */,
+				75252D191FCF5CCA007972EF /* DataService+Error.swift in Sources */,
+				75252DB31FCF6A9E007972EF /* APIService+AttachmentExtension.swift in Sources */,
 				751CDEA51FBB95B4005E3EB1 /* NotificationService.swift in Sources */,
+				75252D961FCF68DA007972EF /* TimeInterval+Extension.swift in Sources */,
+				75252D091FCF5B7A007972EF /* APIServiceDefined.swift in Sources */,
+				75252DB61FCF6AD8007972EF /* JKBCryptRandom.swift in Sources */,
+				75252D681FCF6187007972EF /* Data+Extension.swift in Sources */,
+				75252CEE1FCF5A73007972EF /* NSError+Extension.swift in Sources */,
+				75252DBF1FCF710D007972EF /* SwiftTryCatch.m in Sources */,
+				75252D921FCF6840007972EF /* APIService+ResponseTransformer.swift in Sources */,
+				75252D1D1FCF5D20007972EF /* NSString+Extension.swift in Sources */,
+				75252D471FCF5F4C007972EF /* ComposeViewModelImpl.swift in Sources */,
+				75252DBE1FCF6EE6007972EF /* BCrypt+Extension.swift in Sources */,
+				75252DB81FCF6AFC007972EF /* AttachmentAPI.swift in Sources */,
+				75252D301FCF5E67007972EF /* SrpClientExtension.swift in Sources */,
+				75252DAB1FCF6A2C007972EF /* AddressBookService.swift in Sources */,
+				75252DB41FCF6ABF007972EF /* MonitorSavesDataServiceMessageExtension.swift in Sources */,
+				75252D0B1FCF5B8C007972EF /* SharedCacheBase.swift in Sources */,
+				75252D011FCF5B2B007972EF /* APIServiceRequest.swift in Sources */,
+				75252D791FCF6281007972EF /* MessageAPI.swift in Sources */,
+				75252DA11FCF6992007972EF /* ContactDataService.swift in Sources */,
+				75252D4A1FCF5F73007972EF /* NotificationDefined.swift in Sources */,
+				75252D801FCF630C007972EF /* MessageQueue.swift in Sources */,
+				75252D711FCF620C007972EF /* FileManager+Extension.swift in Sources */,
+				75252D131FCF5C3B007972EF /* UserDefaults+Extension.swift in Sources */,
+				75252D601FCF60D1007972EF /* UInt8+Mime.swift in Sources */,
+				75252D6C1FCF61D8007972EF /* NSManagedObjectContextExtension.swift in Sources */,
+				75252D121FCF5C23007972EF /* KeychainWrapper.swift in Sources */,
+				75252D381FCF5ECF007972EF /* ComposeViewModel.swift in Sources */,
+				75252D5E1FCF60B3007972EF /* MessageDataService.swift in Sources */,
+				75252D741FCF623C007972EF /* URL+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4397,7 +4873,113 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75252D731FCF622C007972EF /* AttachmentExtension.swift in Sources */,
+				75252D9E1FCF695B007972EF /* EventAPI.swift in Sources */,
+				75252D671FCF615A007972EF /* LabelExtension.swift in Sources */,
+				75252D881FCF6372007972EF /* JKBCrypt.swift in Sources */,
+				75252D4C1FCF5F9A007972EF /* Threading.swift in Sources */,
+				75252DBB1FCF6D06007972EF /* LanguageManager.m in Sources */,
+				75252D181FCF5C68007972EF /* UserCachedStatus.swift in Sources */,
+				75252D271FCF5DC1007972EF /* UserAPI.swift in Sources */,
+				75252D2D1FCF5E49007972EF /* APIService+AuthenticationExtension.swift in Sources */,
+				75252D441FCF5F3A007972EF /* ContactsAPI.swift in Sources */,
+				75252D571FCF6033007972EF /* Header.swift in Sources */,
+				75252D481FCF5F5E007972EF /* Attachment.swift in Sources */,
+				75252D941FCF6852007972EF /* UserTempCachedStatus.swift in Sources */,
+				75252D0A1FCF5B7B007972EF /* APIServiceDefined.swift in Sources */,
+				75252D8C1FCF63DC007972EF /* APIService+SettingsExtension.swift in Sources */,
+				75252CEB1FCF5A54007972EF /* UserInfo.swift in Sources */,
+				75252CF41FCF5ABB007972EF /* APIService+DefinedExtension.swift in Sources */,
+				75252D831FCF6338007972EF /* BCrypt+Extension.swift in Sources */,
+				75252DB91FCF6AFD007972EF /* AttachmentAPI.swift in Sources */,
+				75252D1C1FCF5CEC007972EF /* Compare+Extension.swift in Sources */,
+				75252D331FCF5E78007972EF /* PasswordUtils.swift in Sources */,
+				75252D861FCF6354007972EF /* PersistentQueue.swift in Sources */,
+				75252DA91FCF6A01007972EF /* EmailExtension.swift in Sources */,
+				75252D111FCF5C22007972EF /* KeychainWrapper.swift in Sources */,
+				75252CF01FCF5A93007972EF /* String+Extension.swift in Sources */,
+				75252CFC1FCF5B13007972EF /* APIServiceResponse.swift in Sources */,
+				75252CE71FCF5A30007972EF /* UserDataService.swift in Sources */,
+				75252D761FCF626D007972EF /* NSManagedObjectExtension.swift in Sources */,
+				75252D691FCF6188007972EF /* Data+Extension.swift in Sources */,
+				75252CFB1FCF5AFD007972EF /* AuthAPI.swift in Sources */,
+				75252D901FCF63F4007972EF /* QueueConstant.swift in Sources */,
+				75252D5B1FCF6096007972EF /* Data+Mime.swift in Sources */,
+				75252D611FCF60D2007972EF /* UInt8+Mime.swift in Sources */,
+				75252D0C1FCF5B8D007972EF /* SharedCacheBase.swift in Sources */,
+				75252D3A1FCF5EDC007972EF /* ControllerDefined.swift in Sources */,
+				75252D0F1FCF5BAA007972EF /* Dictionary+Extension.swift in Sources */,
+				75252D981FCF68F4007972EF /* NSError+Alert+Share.swift in Sources */,
+				75252D781FCF6280007972EF /* MessageAPI.swift in Sources */,
+				75252D9A1FCF6918007972EF /* Bundle+Extension.swift in Sources */,
+				75252D291FCF5DCD007972EF /* APIService+ErrorExtension.swift in Sources */,
+				75252D6D1FCF61D8007972EF /* NSManagedObjectContextExtension.swift in Sources */,
+				75252D7A1FCF62B6007972EF /* AddressAPI.swift in Sources */,
+				75252D7E1FCF62FF007972EF /* MonitorSavesDataService.swift in Sources */,
+				75252D461FCF5F4B007972EF /* ComposeViewModelImpl.swift in Sources */,
+				75252DAF1FCF6A72007972EF /* LabelAPI.swift in Sources */,
+				75252D3F1FCF5F01007972EF /* Contact.swift in Sources */,
+				75252D2F1FCF5E58007972EF /* APIError+Auth.swift in Sources */,
+				75252D6B1FCF6191007972EF /* OrganizationsAPI.swift in Sources */,
+				75252D201FCF5D31007972EF /* APIErrors.swift in Sources */,
+				75252D231FCF5D4E007972EF /* LastUpdatedStore.swift in Sources */,
+				75252DA01FCF6990007972EF /* ContactDataService.swift in Sources */,
+				75252DA31FCF69A6007972EF /* Email.swift in Sources */,
+				75252D8A1FCF6391007972EF /* KeysAPI.swift in Sources */,
+				75252DB51FCF6AC0007972EF /* MonitorSavesDataServiceMessageExtension.swift in Sources */,
+				75252D9C1FCF693E007972EF /* APIService+MessagesExtension.swift in Sources */,
+				75252D751FCF623D007972EF /* URL+Extension.swift in Sources */,
+				75252D071FCF5B65007972EF /* MessageAction.swift in Sources */,
+				75252D4E1FCF5FAE007972EF /* SettingsAPI.swift in Sources */,
+				75252D841FCF6347007972EF /* Date+Extension.swift in Sources */,
+				75252D511FCF5FE9007972EF /* MessageExtension.swift in Sources */,
+				75252D631FCF60F4007972EF /* String+Mime.swift in Sources */,
+				75252D351FCF5E8B007972EF /* ViewModelServiceImpl+Share.swift in Sources */,
+				75252CF81FCF5AEE007972EF /* AuthCredential.swift in Sources */,
+				75252CF31FCF5AA2007972EF /* ContactVO.swift in Sources */,
+				75252D5C1FCF609F007972EF /* EncryptTypes.swift in Sources */,
+				75252CED1FCF5A62007972EF /* NSCoder+Extension.swift in Sources */,
+				75252CE91FCF5A44007972EF /* APIService.swift in Sources */,
+				75252DA41FCF69B0007972EF /* Settings+Defined.swift in Sources */,
+				75252D971FCF68DB007972EF /* TimeInterval+Extension.swift in Sources */,
+				75252D931FCF6841007972EF /* APIService+ResponseTransformer.swift in Sources */,
+				75252D3C1FCF5EEC007972EF /* Label.swift in Sources */,
+				75252D141FCF5C3C007972EF /* UserDefaults+Extension.swift in Sources */,
+				75252CF71FCF5ACC007972EF /* Message.swift in Sources */,
+				75252D701FCF620C007972EF /* FileManager+Extension.swift in Sources */,
+				75252D411FCF5F1D007972EF /* ContactsDefined.swift in Sources */,
+				75252DB21FCF6A9D007972EF /* APIService+AttachmentExtension.swift in Sources */,
+				75252D251FCF5D5A007972EF /* MessageLocation.swift in Sources */,
+				75252D1A1FCF5CCB007972EF /* DataService+Error.swift in Sources */,
+				75252D811FCF630D007972EF /* MessageQueue.swift in Sources */,
+				75252D421FCF5F2C007972EF /* ContactEditVIewModel.swift in Sources */,
+				75252D7C1FCF62C6007972EF /* ContactVO+Extension.swift in Sources */,
+				75252D6F1FCF6200007972EF /* CoreDataService.swift in Sources */,
+				75252D021FCF5B47007972EF /* APIService+UserExtension.swift in Sources */,
+				75252D371FCF5EB3007972EF /* ViewModelService.swift in Sources */,
+				75252D8F1FCF63E6007972EF /* Hash.swift in Sources */,
+				75252D531FCF601B007972EF /* MIMEMessage.swift in Sources */,
+				75252DA71FCF69CC007972EF /* ContactExtension.swift in Sources */,
+				75252DB11FCF6A90007972EF /* UIApplication+BadgeNumber+Share.swift in Sources */,
+				75252D311FCF5E68007972EF /* SrpClientExtension.swift in Sources */,
+				75252D5F1FCF60B4007972EF /* MessageDataService.swift in Sources */,
+				75252D0E1FCF5B9D007972EF /* Logger.swift in Sources */,
+				75252CFE1FCF5B1B007972EF /* AppConstants.swift in Sources */,
+				75252DB71FCF6AD8007972EF /* JKBCryptRandom.swift in Sources */,
+				75252D1E1FCF5D21007972EF /* NSString+Extension.swift in Sources */,
+				75252D391FCF5ED0007972EF /* ComposeViewModel.swift in Sources */,
 				751CDEB51FBB95F6005E3EB1 /* NotificationService.swift in Sources */,
+				75252CEF1FCF5A74007972EF /* NSError+Extension.swift in Sources */,
+				75252D591FCF603F007972EF /* MessageSpamScore.swift in Sources */,
+				75252D4B1FCF5F74007972EF /* NotificationDefined.swift in Sources */,
+				75252DAC1FCF6A5E007972EF /* LabelsDataService.swift in Sources */,
+				75252DC01FCF710E007972EF /* SwiftTryCatch.m in Sources */,
+				75252D001FCF5B2A007972EF /* APIServiceRequest.swift in Sources */,
+				75252D641FCF6100007972EF /* MessageHelper.swift in Sources */,
+				75252DBD1FCF6D20007972EF /* Reachability.m in Sources */,
+				75252D551FCF602B007972EF /* Part.swift in Sources */,
+				75252D161FCF5C4A007972EF /* OpenPGPExtension.swift in Sources */,
+				75252DAA1FCF6A2B007972EF /* AddressBookService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5379,7 +5961,6 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -5387,7 +5968,10 @@
 				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 6UN54H93QT;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = PushServiceDev/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -5408,7 +5992,6 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -5417,7 +6000,10 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6UN54H93QT;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = PushServiceDev/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -5437,7 +6023,6 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -5445,7 +6030,10 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6UN54H93QT;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = PushServiceDev/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -5465,7 +6053,6 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -5473,7 +6060,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -5492,7 +6078,6 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -5500,7 +6085,6 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -5518,7 +6102,6 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -5526,7 +6109,6 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PushService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";

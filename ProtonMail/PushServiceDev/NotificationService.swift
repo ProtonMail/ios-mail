@@ -8,6 +8,8 @@
 
 import UserNotifications
 
+var sharedUserDataService : UserDataService!
+
 @available(iOSApplicationExtension 10.0, *)
 class NotificationService: UNNotificationServiceExtension {
 
@@ -19,6 +21,11 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
+            
+            sharedUserDataService = UserDataService()
+            
+            
+            
             // Modify the notification content here...
             bestAttemptContent.title = "\(bestAttemptContent.title) [modified]"
             
