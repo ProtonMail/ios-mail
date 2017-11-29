@@ -71,7 +71,7 @@ class MessageDataService {
                 PMLog.D(" error: \(error)")
             }
         }
-        let _ = sharedMessageQueue.addMessage(out.JSONStringify(false), action: .deleteAtt)
+        let _ = sharedMessageQueue.addMessage(out.json(prettyPrinted: false), action: .deleteAtt)
         dequeueIfNeeded()
     }
     

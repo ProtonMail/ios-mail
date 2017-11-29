@@ -23,15 +23,15 @@ final class GetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
         return false
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return DomainsAPI.Path + "/available"
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return DomainsAPI.V_AvailableDomainsRequest
     }
 }

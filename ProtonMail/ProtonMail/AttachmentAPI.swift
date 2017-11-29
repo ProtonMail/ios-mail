@@ -27,15 +27,15 @@ final class AttachmentDeleteRequest<T : ApiResponse> : ApiRequest<T> {
         return nil
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return AttachmentAPI.Path + "/remove" + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return AttachmentAPI.V_AttachmentRemoveRequest
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
 }

@@ -45,15 +45,15 @@ final class BugReportRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return BugsAPI.Path + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return BugsAPI.V_BugsReportRequest
     }
 }

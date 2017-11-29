@@ -14,15 +14,15 @@ final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
     override init() {
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return LabelAPI.Path + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return LabelAPI.V_LabelFetchRequest
     }
 }
@@ -53,15 +53,15 @@ final class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return LabelAPI.Path + "/apply/" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return LabelAPI.V_ApplyLabelToMessageRequest
     }
 }
@@ -85,15 +85,15 @@ final class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return LabelAPI.Path + "/remove/" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return LabelAPI.V_RemoveLabelFromMessageRequest
     }
 }
@@ -123,15 +123,15 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return LabelAPI.Path + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return LabelAPI.V_CreateLabelRequest
     }
 }
@@ -159,15 +159,15 @@ final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return LabelAPI.Path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return LabelAPI.V_UpdateLabelRequest
     }
 }
@@ -191,15 +191,15 @@ final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
         labelID = lable_id
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .delete
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return LabelAPI.Path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return LabelAPI.V_DeleteLabelRequest
     }
 }

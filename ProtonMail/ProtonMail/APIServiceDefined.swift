@@ -14,7 +14,6 @@ struct MessageAPI {
     /// base message api path
     static let Path :String = AppConstants.API_PATH + "/messages"
     
-    
     /// fetch message request version
     static let V_MessageFetchRequest : Int = 1
     
@@ -27,7 +26,6 @@ struct MessageAPI {
     static let V_MessageEmptyRequest : Int = 1
     
     static let V_MessageSendRequest : Int = 1
-    
 }
 
 struct AttachmentAPI {

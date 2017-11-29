@@ -12,15 +12,15 @@ import Foundation
 //MARK : get keys salt  #not in used
 final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return KeysAPI.Path + "/salts" + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return KeysAPI.V_GetKeysSaltsRequest
     }
 }
@@ -134,15 +134,15 @@ final class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return KeysAPI.Path + "/private" + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return KeysAPI.V_UpdatePrivateKeyRequest
     }
 }
@@ -183,15 +183,15 @@ final class SetupKeyRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return KeysAPI.Path + "/setup" + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return KeysAPI.V_KeysSeuptRequest
     }
 }

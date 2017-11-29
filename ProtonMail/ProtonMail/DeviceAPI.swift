@@ -88,15 +88,15 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         return false
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return DeviceAPI.Path
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return DeviceAPI.V_RegisterDeviceRequest
     }
 }
@@ -119,15 +119,15 @@ final class UnRegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         return nil
     }
 
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .delete
     }
 
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return DeviceAPI.Path
     }
 
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return DeviceAPI.V_UnRegisterDeviceRequest
     }
 }

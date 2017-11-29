@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Dictionary { //email name
+extension Dictionary where Key: ExpressibleByStringLiteral, Value: ExpressibleByStringLiteral { //email name
     public func getDisplayName() -> String {    //this function only for the To CC BCC list parsing
         if let key = "Name" as? Key {
             let name = self[key] as? String ?? ""
@@ -35,31 +35,5 @@ extension Dictionary { //email name
         }
         return ""
     }
-    
-    
-    /**
-    base class for convert anyobject to a json string
-    
-    :param: value         AnyObject input value
-    :param: prettyPrinted Bool is need pretty format
-    
-    :returns: String value
-    */
-    public func JSONStringify(_ prettyPrinted: Bool = false) -> String {
-        let options : JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : JSONSerialization.WritingOptions()
-        let anyObject: Any = self
-        if JSONSerialization.isValidJSONObject(anyObject) {
-            do {
-                let data = try JSONSerialization.data(withJSONObject: anyObject, options: options)
-                if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
-                    return string as String
-                }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
-            }
-        }
-        return ""
-    }
-    
 }
 

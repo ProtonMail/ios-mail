@@ -25,15 +25,15 @@ final class UpdateAddressRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return AddressesAPI.Path + "/" + addressid + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return AddressesAPI.V_AddressesUpdateRequest
     }
 }
@@ -49,15 +49,15 @@ final class SetupAddressRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return AddressesAPI.Path + "/setup"
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return AddressesAPI.V_AddressesSetupRequest
     }
 }

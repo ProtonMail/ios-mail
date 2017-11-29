@@ -17,11 +17,11 @@ final class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
         self.eventID = eventID
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return EventAPI.Path + "/\(self.eventID)" + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return EventAPI.V_EventCheckRequest
     }
 }
@@ -29,11 +29,11 @@ final class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
 
 final class EventLatestIDRequest<T : ApiResponse> : ApiRequest<T>{
 
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return EventAPI.Path + "/latest" + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return EventAPI.V_LatestEventRequest
     }
 }
@@ -43,7 +43,7 @@ final class EventLatestIDResponse : ApiResponse {
 
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
         
-        PMLog.D(response.JSONStringify(true))
+        PMLog.D(response.json(prettyPrinted: true))
         self.eventID = response["EventID"] as? String ?? ""
 
         return true

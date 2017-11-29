@@ -11,10 +11,11 @@ import Foundation
 
 // MARK : Get messages part
 final class MessageCountRequest<T : ApiResponse> : ApiRequest<T> {
-    override open func getRequestPath() -> String {
+    
+    override open func path() -> String {
         return MessageAPI.Path + "/count" + AppConstants.DEBUG_OPTION
     }
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return MessageAPI.V_MessageFetchRequest
     }
 }
@@ -52,15 +53,17 @@ final class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
             let newTime = self.endTime - 1
             out["End"] = newTime
         }
-        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        
+        PMLog.D( out.json(prettyPrinted: true) )
+        
         return out
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return MessageAPI.Path + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return MessageAPI.V_MessageFetchRequest
     }
 }
@@ -88,11 +91,11 @@ final class MessageFetchByIDsRequest<T : ApiResponse> : ApiRequest<T> {
         return out;
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return MessageAPI.Path + self.buildURL()
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return MessageAPI.V_MessageFetchRequest
     }
 }
@@ -117,15 +120,17 @@ final class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
             let newTime = self.endTime - 1
             out["End"] = newTime
         }
-        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        
+        
+        PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return MessageAPI.Path + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return MessageAPI.V_MessageFetchRequest
     }
 }
@@ -160,20 +165,20 @@ class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
                 out["Action"] = message.action ?? "0"  //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
             }
         }
-        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        PMLog.D( out.json(prettyPrinted: true) )
         return out
         
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return MessageAPI.Path + "/draft"
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return MessageAPI.V_MessageDraftRequest
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
 }
@@ -184,15 +189,15 @@ final class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> {
         super.init(message: message)
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return MessageAPI.Path + "/draft/" + message.messageID + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return MessageAPI.V_MessageUpdateDraftRequest
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
 }
@@ -239,15 +244,15 @@ final class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
         return out
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return MessageAPI.Path + "/" + self.action + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return MessageAPI.V_MessageActionRequest
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
 }
@@ -264,15 +269,15 @@ final class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
         return nil
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return MessageAPI.Path + "/" + location + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return MessageAPI.V_MessageEmptyRequest
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .delete
     }
 }
@@ -326,19 +331,19 @@ final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
             }
         }
         out["Packages"] = package
-        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return MessageAPI.Path + "/send/" + self.messageID + AppConstants.DEBUG_OPTION
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return MessageAPI.V_MessageSendRequest
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
 }

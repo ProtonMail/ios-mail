@@ -70,15 +70,15 @@ class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
         return false
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_CreateUsersRequest
     }
 }
@@ -107,15 +107,15 @@ class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
         return nil
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_GetUserInfoRequest
     }
 }
@@ -130,15 +130,15 @@ class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
         return nil
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path + "/human"
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_GetHumanRequest
     }
 }
@@ -167,15 +167,15 @@ class HumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path + "/human"
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_HumanCheckRequest
     }
 }
@@ -196,15 +196,15 @@ class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
         return false
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path + "/available/" + userName
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_CheckUserExistRequest
     }
 }
@@ -213,7 +213,7 @@ class CheckUserExistResponse : ApiResponse {
     var isAvailable : Bool?
     
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        PMLog.D(response.JSONStringify(true))
+        PMLog.D(response.json(prettyPrinted: true))
         isAvailable =  response["Available"] as? Bool
         return true
     }
@@ -230,15 +230,15 @@ class DirectRequest<T : ApiResponse> : ApiRequest<T> {
         return false
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path + "/direct"
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_DirectRequest
     }
 }
@@ -247,7 +247,7 @@ class DirectResponse : ApiResponse {
     var isSignUpAvailable : Int = 1
     var signupFunctions : [String]?
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        PMLog.D(response.JSONStringify(true))
+        PMLog.D(response.json(prettyPrinted: true))
         isSignUpAvailable =  response["Direct"] as? Int ?? 1
         
         if let functions = response["VerifyMethods"] as? [String] {
@@ -303,15 +303,15 @@ class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
         return false
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path + "/code"
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_SendVerificationCodeRequest
     }
 }
@@ -330,15 +330,15 @@ class GetUserPublicKeysRequest<T : ApiResponse> : ApiRequest<T> {
         }
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return requestPath
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_GetUserPublicKeysRequest
     }
 }

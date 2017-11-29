@@ -12,7 +12,6 @@ import Foundation
 
 // MARK : Get messages part
 class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
-    
     var page : Int = 0
     var max : Int = 100
     
@@ -21,7 +20,7 @@ class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
         self.max = pageSize
     }
     
-    override public func getRequestPath() -> String {
+    override public func path() -> String {
         //    let path = ContactPath.base
         //    //setApiVesion(1, appVersion: 1)
         //    request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 1], completion: completion)
@@ -32,11 +31,11 @@ class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
         return ["Page" : page, "PageSize" : max]
     }
     
-    override public func getVersion() -> Int {
+    override public func apiVersion() -> Int {
         return ContactsAPI.V_ContactEmailsRequest
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
 }
@@ -72,7 +71,7 @@ class ContactEmailsResponse : ApiResponse {
                 }
             }
         }
-        PMLog.D(self.JSONStringify(value: self.contacts, prettyPrinted: true))
+        PMLog.D( self.contacts.json(prettyPrinted: true) )
         return true
     }
 }
@@ -86,15 +85,15 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
         self.contactID = cid
     }
 
-    override public func getRequestPath() -> String {
+    override public func path() -> String {
         return ContactsAPI.Path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
     }
     
-    override public func getVersion() -> Int {
+    override public func apiVersion() -> Int {
         return ContactsAPI.V_ContactDetailRequest
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
 }
@@ -103,7 +102,7 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
 class ContactDetailResponse : ApiResponse {
     var contact : Dictionary<String, Any>?
     override func ParseResponse (_ response: Dictionary<String, Any>!) -> Bool {
-        PMLog.D(JSONStringify(value: response))
+        PMLog.D(response.json(prettyPrinted: true))
         contact = response["Contact"] as? Dictionary<String, Any>
         return true
     }
@@ -183,15 +182,15 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
         self.Cards = cards
     }
     
-    override public func getRequestPath() -> String {
+    override public func path() -> String {
         return ContactsAPI.Path +  AppConstants.DEBUG_OPTION
     }
     
-    override public func getVersion() -> Int {
+    override public func apiVersion() -> Int {
         return ContactsAPI.V_ContactAddRequest
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
@@ -224,7 +223,7 @@ final class ContactAddResponse : ApiResponse {
     var contact : [String : Any]?
     var resError : NSError?
     override func ParseResponse (_ response: Dictionary<String, Any>!) -> Bool {
-        PMLog.D(JSONStringify(value: response))
+        PMLog.D( response.json(prettyPrinted: true) )
         if let responses = response["Responses"] as? [Dictionary<String, Any>] {
             for res in responses {
                 if let response = res["Response"] as? Dictionary<String, Any> {
@@ -250,15 +249,15 @@ final class ContactDeleteRequest<T : ApiResponse> : ApiRequest<T> {
         IDs = ids
     }
     
-    override public func getRequestPath() -> String {
+    override public func path() -> String {
         return ContactsAPI.Path + "/delete" +  AppConstants.DEBUG_OPTION
     }
     
-    override public func getVersion() -> Int {
+    override public func apiVersion() -> Int {
         return ContactsAPI.V_ContactDeleteRequest
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
@@ -278,15 +277,15 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
         self.Cards = cards
     }
     
-    override public func getRequestPath() -> String {
+    override public func path() -> String {
         return ContactsAPI.Path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
     }
     
-    override public func getVersion() -> Int {
+    override public func apiVersion() -> Int {
         return ContactsAPI.V_ContactUpdateRequest
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
