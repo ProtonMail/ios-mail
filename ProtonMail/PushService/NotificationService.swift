@@ -25,11 +25,14 @@ class NotificationService: UNNotificationServiceExtension {
             sharedUserDataService = UserDataService()
             
             
+            if sharedUserDataService.isUserCredentialStored {
+                 bestAttemptContent.badge = 100
+            } else {
+                 bestAttemptContent.badge = 99
+            }
             
             // Modify the notification content here...
             bestAttemptContent.title = "\(bestAttemptContent.title) [modified]"
-            
-            bestAttemptContent.badge = 100
             bestAttemptContent.sound = UNNotificationSound.default()
             bestAttemptContent.subtitle = "Subtitle test! " + " [modified]"
             bestAttemptContent.body = "Give it back if you finished you tests! [modified]"
