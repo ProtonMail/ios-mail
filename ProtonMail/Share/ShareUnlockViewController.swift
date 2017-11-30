@@ -423,7 +423,6 @@ extension NSItemProvider {
                     } else {
                         DispatchQueue.main.async {
                             handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
-                            PMLog.D("Unexpected data:", Swift.type(of: data))
                         }
                     }
                 }

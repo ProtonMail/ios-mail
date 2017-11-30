@@ -21,11 +21,24 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-            
             sharedUserDataService = UserDataService()
-            
             if sharedUserDataService.isUserCredentialStored {
-                 bestAttemptContent.badge = 100
+                bestAttemptContent.badge = 100
+                if let encrypted = bestAttemptContent.userInfo["encryptedMessage"] as? String {
+                    if let userkey = sharedUserDataService.userInfo?.firstUserKey(), let password = sharedUserDataService.mailboxPassword {
+                        do {
+                            let plaintext = try encrypted.decryptMessageWithSinglKey(userkey.private_key, passphrase: password)
+                            print(plaintext)
+                        } catch let error {
+                            print(error)
+                        }
+                    }
+                    
+                    
+                }
+                
+                
+                
             } else {
                  bestAttemptContent.badge = 99
             }
