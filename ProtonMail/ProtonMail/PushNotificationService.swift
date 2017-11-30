@@ -112,9 +112,9 @@ public class PushNotificationService {
         }
     }
     
-    public func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data) {
+    public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
         sharedAPIService.cleanBadKey(deviceToken)
-        sharedAPIService.deviceRegisterWithToken(deviceToken, completion: { (_, _, error) -> Void in
+        sharedAPIService.device(registerWith: deviceToken, completion: { (_, _, error) -> Void in
             if let error = error {
                 PMLog.D(" error: \(error)")
             }

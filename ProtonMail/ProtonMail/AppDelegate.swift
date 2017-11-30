@@ -279,10 +279,10 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
-        sharedPushNotificationService.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
-        
-        let token = Messaging.messaging().fcmToken
-        print("FCM token: \(token ?? "")")
+        if let token = Messaging.messaging().fcmToken {
+            PMLog.D("FCM token: \(token)")
+            sharedPushNotificationService.didRegisterForRemoteNotifications(withDeviceToken: token)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -303,7 +303,9 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
 extension AppDelegate : MessagingDelegate {
     // [START refresh_token]
     func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
-        print("Firebase registration token: \(fcmToken)")
+        PMLog.D("Firebase registration token: \(fcmToken)")
+        
+        sharedPushNotificationService.didRegisterForRemoteNotifications(withDeviceToken: fcmToken)
         // TODO: If necessary send token to application server.
         // Note: This callback is fired at each app startup and whenever a new token is generated.
     }

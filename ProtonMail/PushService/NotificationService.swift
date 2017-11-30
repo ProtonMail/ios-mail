@@ -24,7 +24,6 @@ class NotificationService: UNNotificationServiceExtension {
             
             sharedUserDataService = UserDataService()
             
-            
             if sharedUserDataService.isUserCredentialStored {
                  bestAttemptContent.badge = 100
             } else {

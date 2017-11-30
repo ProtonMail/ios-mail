@@ -457,6 +457,8 @@
 		75252DBF1FCF710D007972EF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
 		75252DC01FCF710E007972EF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
 		75252DC21FCF7422007972EF /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CDEB41FBB95F6005E3EB1 /* NotificationService.swift */; };
+		75252DC41FCF7CD2007972EF /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75252CE11FCE320B007972EF /* Dictionary+JSON+Extension.swift */; };
+		75252DC51FCF7CD3007972EF /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75252CE11FCE320B007972EF /* Dictionary+JSON+Extension.swift */; };
 		75256C391F16DE0A00F2771E /* ProtonMail-Bridging-Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */; };
 		75256C3A1F16DFBD00F2771E /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
 		75256C3B1F16DFBD00F2771E /* ControllerDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0721B3363D000A72A1E /* ControllerDefined.swift */; };
@@ -980,13 +982,13 @@
 		7564899E1B7F2C9F007EA207 /* ComposeViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564899D1B7F2C9F007EA207 /* ComposeViewModelImpl.swift */; };
 		7565998F1AC4809B00C187E4 /* EncryptTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7565998E1AC4809B00C187E4 /* EncryptTypes.swift */; };
 		75662BA71B543A5B006C538E /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75662BA61B543A5B006C538E /* SettingsAPI.swift */; };
+		7566E4F61FBBA26F0036B36B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7566E4F51FBBA26E0036B36B /* GoogleService-Info.plist */; };
 		7566E4FA1FC3B0880036B36B /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566E4F91FC3B0880036B36B /* MenuViewModel.swift */; };
 		7566E4FB1FC3B0880036B36B /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566E4F91FC3B0880036B36B /* MenuViewModel.swift */; };
 		7566E4FD1FC3B0A00036B36B /* MenuViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566E4FC1FC3B0A00036B36B /* MenuViewModelImpl.swift */; };
 		7566E4FE1FC3B0A00036B36B /* MenuViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566E4FC1FC3B0A00036B36B /* MenuViewModelImpl.swift */; };
 		7566E5001FC4C8B70036B36B /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566E4FF1FC4C8B70036B36B /* UINavigationController+Extension.swift */; };
 		7566E5011FC4C8B70036B36B /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566E4FF1FC4C8B70036B36B /* UINavigationController+Extension.swift */; };
-		7566E4F61FBBA26F0036B36B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7566E4F51FBBA26E0036B36B /* GoogleService-Info.plist */; };
 		7567B06B1B334AF200A72A1E /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */; };
 		7567B06D1B334FA400A72A1E /* ViewModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06C1B334FA400A72A1E /* ViewModelService.swift */; };
 		7567B06F1B334FD300A72A1E /* ViewModelServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */; };
@@ -1678,10 +1680,10 @@
 		75662BA61B543A5B006C538E /* SettingsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAPI.swift; sourceTree = "<group>"; };
 		7566AE871F394CEA006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		7566AE891F394CEC006D84F9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7566E4F51FBBA26E0036B36B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7566E4F91FC3B0880036B36B /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
 		7566E4FC1FC3B0A00036B36B /* MenuViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModelImpl.swift; sourceTree = "<group>"; };
 		7566E4FF1FC4C8B70036B36B /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
-		7566E4F51FBBA26E0036B36B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		7567B06C1B334FA400A72A1E /* ViewModelService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelService.swift; sourceTree = "<group>"; };
 		7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelServiceImpl.swift; sourceTree = "<group>"; };
@@ -4823,6 +4825,7 @@
 				75252D061FCF5B63007972EF /* UIColor+ProtonMail.swift in Sources */,
 				75252D191FCF5CCA007972EF /* DataService+Error.swift in Sources */,
 				75252DB31FCF6A9E007972EF /* APIService+AttachmentExtension.swift in Sources */,
+				75252DC41FCF7CD2007972EF /* Dictionary+JSON+Extension.swift in Sources */,
 				75252D961FCF68DA007972EF /* TimeInterval+Extension.swift in Sources */,
 				75252D091FCF5B7A007972EF /* APIServiceDefined.swift in Sources */,
 				75252DB61FCF6AD8007972EF /* JKBCryptRandom.swift in Sources */,
@@ -4903,6 +4906,7 @@
 				75252D7E1FCF62FF007972EF /* MonitorSavesDataService.swift in Sources */,
 				75252D461FCF5F4B007972EF /* ComposeViewModelImpl.swift in Sources */,
 				75252DAF1FCF6A72007972EF /* LabelAPI.swift in Sources */,
+				75252DC51FCF7CD3007972EF /* Dictionary+JSON+Extension.swift in Sources */,
 				75252D3F1FCF5F01007972EF /* Contact.swift in Sources */,
 				75252D2F1FCF5E58007972EF /* APIError+Auth.swift in Sources */,
 				75252D6B1FCF6191007972EF /* OrganizationsAPI.swift in Sources */,
