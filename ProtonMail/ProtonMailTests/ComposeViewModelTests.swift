@@ -31,7 +31,7 @@ class ComposeViewModelTests: XCTestCase {
       //  do {
       //      try! compose.uploadDraft()
 //        } catch {
-//            print("Something went wrong!")
+//            PMLog.D("Something went wrong!")
 //        }
         //compose.creatDraft()
         

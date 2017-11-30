@@ -17,12 +17,12 @@ extension Email {
     
     func log() {
         PMLog.D("EmailID: \(self.emailID)")
-        print("ContactID: \(self.contactID)")
-        print("Email: \(self.email)")
-        print("Name: \(self.name)")
-        //print("Encrypt: \(self.encrypt)")
-        print("Order: \(self.order)")
-        print("Type: \(self.type)")
+        PMLog.D("ContactID: \(self.contactID)")
+        PMLog.D("Email: \(self.email)")
+        PMLog.D("Name: \(self.name)")
+        //PMLog.D("Encrypt: \(self.encrypt)")
+        PMLog.D("Order: \(self.order)")
+        PMLog.D("Type: \(self.type)")
     }
     
     func emailType() -> String {

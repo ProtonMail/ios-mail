@@ -401,7 +401,7 @@ extension NSItemProvider {
                 self.loadItem(forTypeIdentifier: type, options: nil) { data, error in
                     if error != nil {
                         handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
-                        print("Unable to add as a URL")
+                        PMLog.D("Unable to add as a URL")
                     } else if let url = data as? URL {
                         let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
                         var error : NSError?
@@ -423,7 +423,7 @@ extension NSItemProvider {
                     } else {
                         DispatchQueue.main.async {
                             handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
-                            print("Unexpected data:", Swift.type(of: data))
+                            PMLog.D("Unexpected data:", Swift.type(of: data))
                         }
                     }
                 }
