@@ -67,7 +67,21 @@ public class PushNotificationService {
     }
     
     public func setNotificationOptions (_ userInfo: [AnyHashable: Any]?) {
-        self.launchOptions = userInfo;
+        self.launchOptions = userInfo
+        guard let revealViewController =  UIApplication.shared.keyWindow?.rootViewController as? SWRevealViewController else {
+            return
+        }
+        guard let front = revealViewController.frontViewController as? UINavigationController else {
+            return
+        }
+        
+        if let view = front.viewControllers.first {
+            if view.isKind(of: MailboxViewController.self) ||
+                view.isKind(of: ContactsViewController.self) ||
+                view.isKind(of: SettingsViewController.self) {
+                self.launchOptions = nil
+            }
+        }
     }
     
     public func processCachedLaunchOptions() {
@@ -141,7 +155,28 @@ public class PushNotificationService {
     // MARK: - Private methods
     
     fileprivate func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
-        let messageArray = userInfo["message_id"] as? NSArray
-        return messageArray?.firstObject as? String
+      
+        if let encrypted = userInfo["encryptedMessage"] as? String {
+            guard let userkey = sharedUserDataService.userInfo?.firstUserKey(), let password = sharedUserDataService.mailboxPassword else {
+                return nil
+            }
+            do
+            {
+                guard let plaintext = try encrypted.decryptMessageWithSinglKey(userkey.private_key, passphrase: password) else {
+                    return nil
+                }
+                guard let push = PushData.parse(with: plaintext) else {
+                    return nil
+                }
+                return push.msgID
+            } catch {
+                return nil
+            }
+        } else {
+            guard let messageArray = userInfo["message_id"] as? NSArray else {
+                return nil
+            }
+            return messageArray.firstObject as? String
+        }
     }
 }

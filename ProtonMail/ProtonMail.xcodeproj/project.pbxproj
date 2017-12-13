@@ -728,6 +728,10 @@
 		752FAA101CB5AEAF00F03228 /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */; };
 		752FAA121CB5AEC300F03228 /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA111CB5AEC300F03228 /* PinCodeView.swift */; };
 		752FAA141CB5B14500F03228 /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA131CB5B14500F03228 /* PinCodeViewController.swift */; };
+		7535D49F1FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
+		7535D4A01FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
+		7535D4A11FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
+		7535D4A21FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
 		75370A921CA50616005020F9 /* ComposePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75370A911CA50616005020F9 /* ComposePasswordViewController.swift */; };
 		753745041D6B7E8F00682C5A /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
 		753745071D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */; };
@@ -1611,6 +1615,7 @@
 		752FAA111CB5AEC300F03228 /* PinCodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeView.swift; sourceTree = "<group>"; };
 		752FAA131CB5B14500F03228 /* PinCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeViewController.swift; sourceTree = "<group>"; };
 		753480B11CADABCA00964965 /* ProtonMail.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ProtonMail.entitlements; sourceTree = "<group>"; };
+		7535D49E1FE1CFE60059DED9 /* PushData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushData.swift; sourceTree = "<group>"; };
 		75370A911CA50616005020F9 /* ComposePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePasswordViewController.swift; sourceTree = "<group>"; };
 		753745031D6B7E8F00682C5A /* APIError+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIError+Auth.swift"; sourceTree = "<group>"; };
 		753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ResponseTransformer.swift"; sourceTree = "<group>"; };
@@ -1988,9 +1993,10 @@
 			isa = PBXGroup;
 			children = (
 				75E0904E1CAC6D7600751136 /* CoreData */,
-				7565998E1AC4809B00C187E4 /* EncryptTypes.swift */,
-				07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */,
 				75E0904F1CAC6E8E00751136 /* CountryCode.swift */,
+				7565998E1AC4809B00C187E4 /* EncryptTypes.swift */,
+				7535D49E1FE1CFE60059DED9 /* PushData.swift */,
+				07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */,
 			);
 			name = DataModels;
 			sourceTree = "<group>";
@@ -4664,6 +4670,7 @@
 				7528FFD41FA7FEC3005F66A3 /* Array+Extension.swift in Sources */,
 				073FE01B1A955F4A00825980 /* APIService+ContactExtension.swift in Sources */,
 				750AAAC41C23E5CF00BAC444 /* RecaptchaViewController.swift in Sources */,
+				7535D49F1FE1CFE60059DED9 /* PushData.swift in Sources */,
 				758C44841C6D09FE00E6E867 /* EncryptionSetupViewController.swift in Sources */,
 				073FD92C1A719B7900EB0CAF /* APIService+UserExtension.swift in Sources */,
 				750AAAC71C2490DB00BAC444 /* SignUpEmailViewController.swift in Sources */,
@@ -4824,6 +4831,7 @@
 				75252D771FCF626E007972EF /* NSManagedObjectExtension.swift in Sources */,
 				75252D061FCF5B63007972EF /* UIColor+ProtonMail.swift in Sources */,
 				75252D191FCF5CCA007972EF /* DataService+Error.swift in Sources */,
+				7535D4A21FE1CFE60059DED9 /* PushData.swift in Sources */,
 				75252DB31FCF6A9E007972EF /* APIService+AttachmentExtension.swift in Sources */,
 				75252DC41FCF7CD2007972EF /* Dictionary+JSON+Extension.swift in Sources */,
 				75252D961FCF68DA007972EF /* TimeInterval+Extension.swift in Sources */,
@@ -4931,6 +4939,7 @@
 				75252CE91FCF5A44007972EF /* APIService.swift in Sources */,
 				75252DA41FCF69B0007972EF /* Settings+Defined.swift in Sources */,
 				75252D971FCF68DB007972EF /* TimeInterval+Extension.swift in Sources */,
+				7535D4A01FE1CFE60059DED9 /* PushData.swift in Sources */,
 				75252D931FCF6841007972EF /* APIService+ResponseTransformer.swift in Sources */,
 				75252D3C1FCF5EEC007972EF /* Label.swift in Sources */,
 				75252D141FCF5C3C007972EF /* UserDefaults+Extension.swift in Sources */,
@@ -5558,6 +5567,7 @@
 				75DE7D2F1CAAEA4900F5443E /* MenuItem.swift in Sources */,
 				75DE7D301CAAEA4900F5443E /* SettingsViewController.swift in Sources */,
 				75DE7D321CAAEA4900F5443E /* LabelTableViewCell.swift in Sources */,
+				7535D4A11FE1CFE60059DED9 /* PushData.swift in Sources */,
 				75DE7D351CAAEA4900F5443E /* AttachmentCollectionViewCell.swift in Sources */,
 				75DE7D361CAAEA4900F5443E /* TouchID.swift in Sources */,
 				75DE7D381CAAEA4900F5443E /* SplashSignInSegue.swift in Sources */,
@@ -6512,7 +6522,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
-				PROVISIONING_PROFILE = "77892474-473f-453f-80fa-bdf70fdc3300";
+				PROVISIONING_PROFILE = "d1725c70-8dc3-43c0-956a-6a9007dfda37";
 				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Development";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
