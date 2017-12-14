@@ -109,7 +109,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.tableView.zeroMargin()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -292,18 +291,13 @@ extension ContactsViewController: UITableViewDelegate {
         }
     }
     
-//    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-////        if let selectIndex = indexCache[title] {
-////            tableView.scrollToRow(at: IndexPath(row: selectIndex, section: 0),
-////                                  at: UITableViewScrollPosition.top, animated: true)
-////        }
-//        return -1
-//    }
-//
-//    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-//        return self.viewModel.sectionIndexTitle()
-////        return ["0", "A", "B", "C", "#"]//[titleIndex];
-//    }
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return self.viewModel.sectionForSectionIndexTitle(title: title, atIndex: index)
+    }
+
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return self.viewModel.sectionIndexTitle()
+    }
     
 }
 

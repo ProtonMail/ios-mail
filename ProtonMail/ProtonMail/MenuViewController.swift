@@ -284,9 +284,7 @@ extension MenuViewController: UITableViewDataSource {
             return 1.0
         }
     }
-
 }
-
 
 extension MenuViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

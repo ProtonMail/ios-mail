@@ -11,6 +11,7 @@ import Foundation
 final class ContactsViewModelImpl : ContactsViewModel {
     // MARK: - fetch controller
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    fileprivate var isSearching: Bool = false
     
     override func setupFetchedResults(delaget: NSFetchedResultsControllerDelegate?) {
         self.fetchedResultsController = self.getFetchedResultsController()
@@ -31,8 +32,10 @@ final class ContactsViewModelImpl : ContactsViewModel {
     
     override func search(text: String) {
         if text.isEmpty {
+            isSearching = false
             fetchedResultsController?.fetchRequest.predicate = nil
         } else {
+            isSearching = true
             fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@", argumentArray: [text, text])
         }
         
@@ -54,7 +57,17 @@ final class ContactsViewModelImpl : ContactsViewModel {
     }
     
     override func sectionIndexTitle() -> [String]? {
+        if isSearching {
+            return nil
+        }
         return fetchedResultsController?.sectionIndexTitles
+    }
+    
+    override func sectionForSectionIndexTitle(title: String, atIndex: Int) -> Int {
+        if isSearching {
+            return -1
+        }
+        return fetchedResultsController?.section(forSectionIndexTitle: title, at: atIndex) ?? -1
     }
     
     override func item(index: IndexPath) -> Contact? {
@@ -81,13 +94,6 @@ final class ContactsViewModelImpl : ContactsViewModel {
         }
         if !isFetching {
             isFetching = true
-            
-            
-            
-            
-            
-            
-            
             
             //            self.beginRefreshingManually()
             //            let updateTime = viewModel.lastUpdateTime()

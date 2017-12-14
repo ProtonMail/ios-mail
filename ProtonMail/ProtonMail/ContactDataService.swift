@@ -59,7 +59,7 @@ class ContactDataService {
             
             return NSFetchedResultsController(fetchRequest: fetchRequest,
                                               managedObjectContext: moc,
-                                              sectionNameKeyPath: nil,
+                                              sectionNameKeyPath: Contact.Attributes.name,
                                               cacheName: nil)
         }
         return nil
