@@ -27,7 +27,6 @@ extension APIService {
         deviceToken = token
         deviceUID = deviceID
         
-//        var env = 5
         var env = 4
         if #available(iOS 10.0, *) { //encrypt
             env = 4

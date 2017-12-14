@@ -69,6 +69,46 @@ public class PushData {
         return self.parse(dict: obj)
     }
     
+    static func parse(dataString json: String, version: Int?, type: String?) -> PushData? {
+        guard let obj: [String: Any] = json.parseObjectAny() else {
+            return nil
+        }
+        return self.parse(dataDict: obj, version: version, type: type)
+    }
+    
+    static func parse(dataDict data: [String: Any], version: Int?, type: String?) -> PushData? {
+
+        guard let title = data["title"] as? String else {
+            return nil
+        }
+        
+        guard let msgID = data["messageId"] as? String else {
+            return nil
+        }
+        
+        let subtitle = data["subtitle"] as? String
+        let body = data["body"] as? String
+        let vibrate = data["vibrate"] as? Int
+        let sound = data["sound"] as? Int
+        let lIcon = data["largeIcon"] as? String
+        let sIcon = data["smallIcon"] as? String
+        let badge = data["badge"] as? NSNumber
+        let cusID = data["customId"] as? String
+        
+        return PushData(title: title,
+                        subTitle: subtitle,
+                        body: body,
+                        vibrate: vibrate,
+                        sound: sound,
+                        largeIcon: lIcon,
+                        smallIcon: sIcon,
+                        badge: badge,
+                        msgID: msgID,
+                        customID: cusID,
+                        type: type,
+                        version: version)
+    }
+    
     static func parse(dict obj: [String: Any]) -> PushData? {
         
         let v = obj["version"] as? Int
