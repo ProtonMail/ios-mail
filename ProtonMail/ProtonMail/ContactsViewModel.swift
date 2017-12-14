@@ -15,6 +15,10 @@ class ContactsViewModel : ViewModelTimer {
     
     override init() { }
     
+    func set(searching isSearching: Bool) {
+        fatalError("This method must be overridden")
+    }
+    
     func setupFetchedResults(delaget : NSFetchedResultsControllerDelegate?) {
         fatalError("This method must be overridden")
     }

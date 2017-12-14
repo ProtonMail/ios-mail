@@ -29,6 +29,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
     // MARK: - Private attributes
     fileprivate var refreshControl: UIRefreshControl!
     fileprivate var searchController : UISearchController!
@@ -54,6 +55,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
         self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.automaticallyAdjustsScrollViewInsets = true
         self.searchController.searchBar.tintColor = UIColor.ProtonMail.Blue_475F77
         self.searchController.searchBar.backgroundColor = UIColor.clear
         self.searchController.searchBar.sizeToFit()
@@ -160,6 +162,17 @@ extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
         self.searchString = searchController.searchBar.text ?? "";
         self.viewModel.search(text: self.searchString)
         self.tableView.reloadData()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        refreshControl.endRefreshing()
+        refreshControl.removeFromSuperview()
+        self.viewModel.set(searching: true)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        tableView.addSubview(refreshControl)
+        self.viewModel.set(searching: false)
     }
 }
 

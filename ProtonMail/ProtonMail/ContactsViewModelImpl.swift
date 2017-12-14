@@ -30,12 +30,14 @@ final class ContactsViewModelImpl : ContactsViewModel {
         return nil
     }
     
+    override func set(searching isSearching: Bool) {
+        self.isSearching = isSearching
+    }
+    
     override func search(text: String) {
         if text.isEmpty {
-            isSearching = false
             fetchedResultsController?.fetchRequest.predicate = nil
         } else {
-            isSearching = true
             fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@", argumentArray: [text, text])
         }
         
