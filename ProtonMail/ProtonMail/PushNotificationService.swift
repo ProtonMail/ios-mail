@@ -58,11 +58,17 @@ public class PushNotificationService {
         PMLog.D(" \(error)")
     }
     
-    public func setLaunchOptions (_ launchOptions: [AnyHashable: Any]?) {
+    public func setLaunchOptions (_ launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
         if let launchoption = launchOptions {
-            if let option = launchoption["UIApplicationLaunchOptionsRemoteNotificationKey"] as? [AnyHashable: Any] {
-                self.launchOptions = option;
+//            if let option = launchoption["UIApplicationLaunchOptionsRemoteNotificationKey"] as? [AnyHashable: Any] {
+//                self.launchOptions = option;
+//            }
+//
+            
+            if let remoteNotification = launchOptions![UIApplicationLaunchOptionsKey.remoteNotification ] as? [AnyHashable: Any] {
+                self.launchOptions = remoteNotification
             }
+            
         }
     }
     

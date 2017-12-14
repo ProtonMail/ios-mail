@@ -147,7 +147,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
 //            application.registerUserNotificationSettings(settings)
 //        }
 //        application.registerForRemoteNotifications()
-//
         
         shareViewModelFactoy = ViewModelFactoryProduction()
         sharedVMService.cleanLegacy()
@@ -177,6 +176,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         
         //setup language
         LanguageManager.setupCurrentLanguage()
+        
+        sharedPushNotificationService.setLaunchOptions(launchOptions)
         
         return true
     }
