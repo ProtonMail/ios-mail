@@ -19,6 +19,11 @@ final class ContactsTableViewCell: MCSwipeTableViewCell {
     @IBOutlet var contactEmailLabel: UILabel!
     @IBOutlet var contactSourceImageView: UIImageView!
     
+    @IBOutlet weak var shortName: UILabel!
+    
+    override func awakeFromNib() {
+        self.shortName.layer.cornerRadius = 20
+    }
     
     func config(name: String, email: String, highlight: String) {
         if highlight.isEmpty {
@@ -29,11 +34,22 @@ final class ContactsTableViewCell: MCSwipeTableViewCell {
         } else {
             self.contactNameLabel.attributedText = self.highlightedAttributedString(text: name,
                                                                                     search: highlight,
-                                                                                    font: Fonts.h3.bold)
+                                                                                    font: Fonts.h2.bold)
             self.contactEmailLabel.attributedText = self.highlightedAttributedString(text: email,
                                                                                      search: highlight,
-                                                                                     font: Fonts.h5.bold)
+                                                                                     font: Fonts.h4.bold)
         }
+        
+        var shortn: String = ""
+        if !name.isEmpty {
+            let index = name.index(name.startIndex, offsetBy: 1)
+            shortn = String(name[..<index])
+        } else if !email.isEmpty {
+            let index = email.index(email.startIndex, offsetBy: 1)
+            shortn = String(email[..<index])
+        }
+        
+        shortName.text = shortn.uppercased()
     }
     
     private func highlightedAttributedString(text: String, search: String, font: UIFont) -> NSMutableAttributedString{
