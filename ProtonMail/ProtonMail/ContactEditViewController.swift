@@ -22,6 +22,9 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     private let kInvalidEmailShakeOffset: CGFloat     = 10.0
     fileprivate var origFrameHeight : CGFloat         = 0.0
     
+    fileprivate let kContactDetailsHeaderView : String      = "ContactSectionHeadView"
+    fileprivate let kContactDetailsHeaderID : String        = "contact_section_head_view"
+    
     //const cell identifier
     fileprivate let kContactEditAddCell: String       = "ContactEditAddCell"
     fileprivate let kContactEditDeleteCell: String    = "ContactEditDeleteCell"
@@ -73,6 +76,10 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
         self.displayNameField.text = viewModel.getProfile().newDisplayName
         self.displayNameField.delegate = self
+        
+        let nib = UINib(nibName: kContactDetailsHeaderView, bundle: nil)
+        self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
+        self.tableView.rowHeight = UITableViewAutomaticDimension
         
         self.tableView.isEditing = true
         self.tableView.noSeparatorsBelowFooter()
@@ -230,14 +237,6 @@ extension ContactEditViewController: UITableViewDataSource {
         case .delete:
             return 1
         }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let sections = self.viewModel.getSections()
-        if sections[section] == .encrypted_header {
-            return 36.0
-        }
-        return 10.0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -449,13 +448,25 @@ extension ContactEditViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension ContactEditViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView else {
+            return nil
+        }
         let sections = viewModel.getSections()
         if sections[section] == .encrypted_header {
-            return NSLocalizedString("Encrypted Contact Details", comment: "title")
+            cell.ConfigHeader(title: NSLocalizedString("Encrypted Contact Details", comment: "title"), signed: false)
         }
-        return "" //"Contact Details"
+        return cell
     }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let sections = viewModel.getSections()
+        if sections[section] == .encrypted_header {
+            return 38.0
+        }
+        return 0.0
+    }
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let sections = viewModel.getSections()

@@ -97,6 +97,9 @@ final class ContactsViewModelImpl : ContactsViewModel {
         if !isFetching {
             isFetching = true
             
+            fetchComplete?(nil, nil)
+            isFetching = false
+            
             //            self.beginRefreshingManually()
             //            let updateTime = viewModel.lastUpdateTime()
             //            let complete : APIService.CompletionBlock = { (task, res, error) -> Void in

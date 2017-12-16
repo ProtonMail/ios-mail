@@ -59,15 +59,15 @@ extension UIView {
     }
     
     func gradient() {
-
+        self.backgroundColor = .clear
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = self.bounds
-//        
+        
 //        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
 //        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-//        
-        gradientLayer.locations = [0.0, 0.3]
-        gradientLayer.colors    = [UIColor.white.cgColor, UIColor.lightGray.cgColor]
+//
+        gradientLayer.locations = [0.0,1.0]
+        gradientLayer.colors    = [UIColor.clear.cgColor,UIColor.white.cgColor]
         
         self.layer.addSublayer(gradientLayer)
     }
