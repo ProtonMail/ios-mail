@@ -67,6 +67,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.extendedLayoutIncludesOpaqueBars = true
         self.automaticallyAdjustsScrollViewInsets = false
         self.tableView.noSeparatorsBelowFooter()
+        self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
         
         let back = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Action"),
                                    style: UIBarButtonItemStyle.plain,

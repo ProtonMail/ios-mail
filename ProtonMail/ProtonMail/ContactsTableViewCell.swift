@@ -37,7 +37,7 @@ final class ContactsTableViewCell: MCSwipeTableViewCell {
                                                                                     font: Fonts.h2.bold)
             self.contactEmailLabel.attributedText = self.highlightedAttributedString(text: email,
                                                                                      search: highlight,
-                                                                                     font: Fonts.h4.bold)
+                                                                                     font: Fonts.h5.bold)
         }
         
         var shortn: String = ""

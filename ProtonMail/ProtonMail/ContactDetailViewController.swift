@@ -169,7 +169,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         let s = sections[section]
         if (s == .encrypted_header ||
             s == .display_name) {
-            return 32.0
+            return 38.0
         }
         return 0.0
     }

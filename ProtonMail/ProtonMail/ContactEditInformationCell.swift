@@ -17,11 +17,13 @@ final class ContactEditInformationCell: UITableViewCell {
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
     
+    @IBOutlet weak var sepratorView: UIView!
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
         self.typeButton.isHidden = true
         self.typeButton.isEnabled = false
+        sepratorView.gradient()
     }
     
     func configCell(obj : ContactEditInformation, callback : ContactEditCellDelegate?) {

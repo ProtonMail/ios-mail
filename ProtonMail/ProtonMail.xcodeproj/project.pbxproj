@@ -2329,9 +2329,9 @@
 				7048B9F61A9E3B1B00D45F57 /* Cell */,
 				701DDE7C1AA64D430038149C /* MBContactPicker */,
 				706962061A71399D001443B2 /* ContactsViewController.swift */,
-				7528FFC11FA7FEC0005F66A3 /* ContactTypeViewController.swift */,
 				7528FFB01FA7FEBD005F66A3 /* ContactDetailViewController.swift */,
 				7528FFBF1FA7FEC0005F66A3 /* ContactEditViewController.swift */,
+				7528FFC11FA7FEC0005F66A3 /* ContactTypeViewController.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
