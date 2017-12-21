@@ -24,8 +24,8 @@ final class ContactEditEmailCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
-        sepratorView.gradient()
     }
+
     
     func configCell(obj : ContactEditEmail, callback : ContactEditCellDelegate?) {
         self.email = obj
@@ -42,6 +42,7 @@ final class ContactEditEmailCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        sepratorView.gradient()
     }
 }
 

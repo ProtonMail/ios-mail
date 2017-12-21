@@ -23,6 +23,10 @@ final class ContactEditInformationCell: UITableViewCell {
         self.valueField.delegate = self
         self.typeButton.isHidden = true
         self.typeButton.isEnabled = false
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
         sepratorView.gradient()
     }
     

@@ -23,9 +23,29 @@ final class ContactEditAddressCell: UITableViewCell {
     @IBOutlet weak var zipField: UITextField!
     @IBOutlet weak var countyField: UITextField!
     
+    @IBOutlet weak var vline1: UIView!
+    @IBOutlet weak var vline2: UIView!
+    @IBOutlet weak var vline3: UIView!
+    @IBOutlet weak var vline4: UIView!
+    @IBOutlet weak var vline5: UIView!
+    @IBOutlet weak var vline6: UIView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
+    }
+    
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        vline1.gradient()
+        vline2.gradient()
+        vline3.gradient()
+        vline4.gradient()
+        vline5.gradient()
+        vline6.gradient()
     }
     
     func configCell(obj : ContactEditAddress, callback : ContactEditCellDelegate?) {

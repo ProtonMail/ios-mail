@@ -35,7 +35,6 @@ extension UIView {
             shakeAnimation.autoreverses = true
             shakeAnimation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - offset, y: self.center.y))
             shakeAnimation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + offset, y: self.center.y))
-            PMLog.D("\(self.center)");
             self.layer.add(shakeAnimation, forKey: "position")
         })
     }
@@ -43,7 +42,6 @@ extension UIView {
     func add(border side: BorderSide, color: UIColor, borderWidth: CGFloat) {
         let border = CALayer()
         border.backgroundColor = color.cgColor
-        
         switch side {
         case .top:
             border.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: borderWidth)
@@ -54,20 +52,30 @@ extension UIView {
         case .right:
             border.frame = CGRect(x: self.frame.size.width - borderWidth, y: 0, width: borderWidth, height: self.frame.size.height)
         }
-        
         self.layer.addSublayer(border)
     }
     
     func gradient() {
-        self.backgroundColor = .clear
+        if let sls = self.layer.sublayers {
+            for s in sls {
+                if let slay = s as? CAGradientLayer {
+                    slay.frame = self.bounds
+                    return
+                }
+            }
+        }
+    
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = self.bounds
+
+        let topColor = UIColor(hexColorCode: "#fbfbfb").cgColor
+        let top2Color = UIColor(hexColorCode: "#cfcfcf").cgColor
+        let midPoint = UIColor(hexColorCode: "#aaa9aa").cgColor
+        let bottomColor = UIColor(hexColorCode: "#c7c7c7").cgColor
         
-//        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-//        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-//
-        gradientLayer.locations = [0.0,1.0]
-        gradientLayer.colors    = [UIColor.clear.cgColor,UIColor.white.cgColor]
+        gradientLayer.locations = [0.0, 0.3, 0.5, 0.8, 1]
+        
+        gradientLayer.colors = [topColor, top2Color, midPoint, midPoint, bottomColor]
         
         self.layer.addSublayer(gradientLayer)
     }

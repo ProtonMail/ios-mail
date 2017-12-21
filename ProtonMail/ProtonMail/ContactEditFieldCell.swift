@@ -22,6 +22,10 @@ final class ContactEditFieldCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
         sepratorView.gradient()
     }
     
