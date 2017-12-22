@@ -504,11 +504,17 @@ extension ComposeEmailViewController : ComposeViewDelegate {
                 if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
                     needsShow = true
                     alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
-                        if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
-                            self.updateSignature("\(signature)")
+                        if addr.send == 0 {
+                            let alertController = String(format: NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error"), addr.email).alertController()
+                            alertController.addOKAction()
+                            self.present(alertController, animated: true, completion: nil)
+                        } else {
+                            if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
+                                self.updateSignature("\(signature)")
+                            }
+                            self.viewModel.updateAddressID(addr.address_id)
+                            self.composeView.updateFromValue(addr.email, pickerEnabled: true)
                         }
-                        self.viewModel.updateAddressID(addr.address_id)
-                        self.composeView.updateFromValue(addr.email, pickerEnabled: true)
                     }))
                 }
             }
