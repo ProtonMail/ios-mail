@@ -75,9 +75,7 @@ class MenuViewController: UIViewController {
             selector: #selector(MenuViewController.performLastSegue(_:)),
             name: NSNotification.Name(rawValue: MenuViewController.ObserverSwitchView),
             object: nil)
-        
-        self.tableView.zeroMargin()
-        
+
         sharedLabelsDataService.fetchLabels();
     }
     

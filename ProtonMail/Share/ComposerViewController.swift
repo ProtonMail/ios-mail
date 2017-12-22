@@ -306,9 +306,6 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     // MARK: - Private methods
     fileprivate func setupAutoSave() {
         self.timer = Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(ComposerViewController.autoSaveTimer), userInfo: nil, repeats: true)
-        if viewModel.getActionType() != .openDraft {
-            self.timer.fire()
-        }
     }
     
     fileprivate func stopAutoSave() {

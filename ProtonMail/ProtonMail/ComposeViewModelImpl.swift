@@ -275,16 +275,11 @@ final class ComposeViewModelImpl : ComposeViewModel {
             MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil)
             
             if let context = message!.managedObjectContext {
-                context.perform {
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    }
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
                 }
             }
         }
-        
-        PMLog.D(any: message!);
-        
     }
     
     override func updateDraft() {

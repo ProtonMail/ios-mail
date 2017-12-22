@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="17B48" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
-    <entity name="Attachment" representedClassName="ProtonMail.Attachment" syncable="YES">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C88" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ID"/>
@@ -41,7 +41,7 @@
             <entry key="identityAttribute" value="attachmentID"/>
         </userInfo>
     </entity>
-    <entity name="Contact" representedClassName="ProtonMail.Contact" syncable="YES">
+    <entity name="Contact" representedClassName=".Contact" syncable="YES">
         <attribute name="cardData" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Cards"/>
@@ -80,8 +80,8 @@
             <entry key="identityAttribute" value="contactID"/>
         </userInfo>
     </entity>
-    <entity name="Conversation" syncable="YES"/>
-    <entity name="Email" representedClassName="ProtonMail.Email" syncable="YES">
+    <entity name="Conversation" representedClassName="." syncable="YES"/>
+    <entity name="Email" representedClassName=".Email" syncable="YES">
         <attribute name="contactID" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ContactID"/>
@@ -119,7 +119,7 @@
             <entry key="identityAttribute" value="emailID"/>
         </userInfo>
     </entity>
-    <entity name="Label" representedClassName="ProtonMail.Label" syncable="YES">
+    <entity name="Label" representedClassName=".Label" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Color"/>

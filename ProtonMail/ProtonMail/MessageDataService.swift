@@ -1288,7 +1288,10 @@ class MessageDataService {
     // MARK : old functions
     
     fileprivate func attachmentsForMessage(_ message: Message) -> [Attachment] {
-        return message.attachments.allObjects as! [Attachment]
+        if let all = message.attachments.allObjects as? [Attachment] {
+            return all
+        }
+        return []
     }
     
     fileprivate func messageBodyForMessage(_ message: Message, response: [String : Any]?) throws -> [String : String] {
