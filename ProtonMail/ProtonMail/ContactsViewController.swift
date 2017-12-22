@@ -34,6 +34,10 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate var refreshControl: UIRefreshControl!
     fileprivate var searchController : UISearchController!
     
+    
+    fileprivate var addBarButtonItem : UIBarButtonItem!
+    fileprivate var moreBarButtonItem : UIBarButtonItem!
+    
     func inactiveViewModel() {
     }
     
@@ -74,6 +78,25 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
                                    target: nil,
                                    action: nil)
         self.navigationItem.backBarButtonItem = back
+        
+        
+        if (self.moreBarButtonItem == nil) {
+            self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"),
+                                                     style: UIBarButtonItemStyle.plain,
+                                                     target: self,
+                                                     action: #selector(self.moreButtonTapped))
+        }
+        
+        if self.addBarButtonItem == nil {
+            self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
+                                                         target: self,
+                                                         action: #selector(self.addContactTapped))
+        }
+        
+        
+
+        self.navigationItem.setRightBarButtonItems([self.addBarButtonItem, self.moreBarButtonItem], animated: true)
+        
         
         refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
@@ -148,6 +171,33 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             self.refreshControl.endRefreshing()
             self.tableView.reloadData()
         }
+    }
+    
+    @objc internal func addContactTapped() {
+        self.performSegue(withIdentifier: kAddContactSugue, sender: self)
+    }
+    
+    @objc internal func moreButtonTapped() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel",  comment: "Action"), style: .cancel, handler: nil))
+        
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Upload Contacts",  comment: "Action"), style: .default, handler: { (action) -> Void in
+            self.navigationController?.popViewController(animated: true)
+            
+            let alertController = UIAlertController(title: NSLocalizedString("Contacts", comment: "Action"),
+                                                    message: NSLocalizedString("Upload iOS contacts to protonmail?", comment: "Description"),
+                                                    preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Action"), style: .default, handler: { (action) -> Void in
+                
+            }))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+        }))
+    
+    
+        alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 
