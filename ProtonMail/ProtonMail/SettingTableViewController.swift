@@ -376,7 +376,7 @@ class SettingTableViewController: ProtonMailViewController {
                     switch address_item {
                     case .addresses:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingDomainsCell, for: indexPath) as! DomainsTableViewCell
-                        if let addr = multi_domains.getDefaultAddress() {
+                        if let addr = multi_domains.defaultAddress() {
                             cell.domainText.text = addr.email
                         } else {
                             cell.domainText.text = NSLocalizedString("Unknown", comment: "")
@@ -387,7 +387,7 @@ class SettingTableViewController: ProtonMailViewController {
                     case .displayName:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = address_item.description
-                        if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+                        if let addr = sharedUserDataService.userAddresses.defaultAddress() {
                             cell.RightText.text = addr.display_name
                         } else {
                             cell.RightText.text = sharedUserDataService.displayName
@@ -578,7 +578,7 @@ class SettingTableViewController: ProtonMailViewController {
                         var needsShow : Bool = false
                         let alertController = UIAlertController(title: NSLocalizedString("Change default address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
                         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
-                        let defaultAddress : Address? = multi_domains.getDefaultAddress()
+                        let defaultAddress : Address? = multi_domains.defaultAddress()
                         for addr in multi_domains {
                             if addr.status == 1 && addr.receive == 1 {
                                 if defaultAddress != addr {

@@ -1441,7 +1441,7 @@ class MessageDataService {
                         "MIMEType" : attachment.mimeType,
                         ]
                     
-                    var default_address_id = sharedUserDataService.userAddresses.getDefaultAddress()?.address_id ?? ""
+                    var default_address_id = sharedUserDataService.userAddresses.defaultSendAddress()?.address_id ?? ""
                     //TODO::here need to fix sometime message is not valid'
                     if attachment.message.managedObjectContext == nil {
                         params["MessageID"] =  ""

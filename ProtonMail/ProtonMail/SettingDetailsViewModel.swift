@@ -138,14 +138,14 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     }
     
     func getCurrentValue() -> String {
-        if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+        if let addr = sharedUserDataService.userAddresses.defaultAddress() {
             return addr.display_name
         }
         return sharedUserDataService.displayName
     }
     
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
-        if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+        if let addr = sharedUserDataService.userAddresses.defaultAddress() {
             sharedUserDataService.updateAddress(addr.address_id, displayName: new_value, signature: addr.signature, completion: { (_, _, error) in
                 if let error = error {
                     complete(false, error)
@@ -222,14 +222,14 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func getCurrentValue() -> String {
-        if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+        if let addr = sharedUserDataService.userAddresses.defaultAddress() {
             return addr.signature
         }
         return sharedUserDataService.signature
     }
     
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
-        if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+        if let addr = sharedUserDataService.userAddresses.defaultAddress() {
             sharedUserDataService.updateAddress(addr.address_id, displayName: addr.display_name, signature: new_value.ln2br(), completion: { (_, _, error) in
                 if let error = error {
                     complete(false, error)

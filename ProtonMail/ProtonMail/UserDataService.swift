@@ -178,14 +178,14 @@ class UserDataService {
     // MARK: - Public variables
     
     var defaultEmail : String {
-        if let addr = userAddresses.getDefaultAddress() {
+        if let addr = userAddresses.defaultAddress() {
             return addr.email;
         }
         return "";
     }
     
     var defaultDisplayName : String {
-        if let addr = userAddresses.getDefaultAddress() {
+        if let addr = userAddresses.defaultAddress() {
             return addr.display_name;
         }
         return displayName;

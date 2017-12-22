@@ -196,7 +196,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     fileprivate func updateMessageView() {
-        self.composeView.updateFromValue(self.viewModel.getDefaultAddress()?.email ?? "", pickerEnabled: true)
+        self.composeView.updateFromValue(self.viewModel.getDefaultSendAddress()?.email ?? "", pickerEnabled: true)
         self.composeView.subject.text = self.viewModel.getSubject()
         self.shouldShowKeyboard = false
         self.setHTML(self.viewModel.getHtmlBody())
@@ -498,7 +498,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             let alertController = UIAlertController(title: NSLocalizedString("Change sender address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
             let multi_domains = self.viewModel.getAddresses()
-            let defaultAddr = self.viewModel.getDefaultAddress()
+            let defaultAddr = self.viewModel.getDefaultSendAddress()
             for addr in multi_domains {
                 if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
                     needsShow = true

@@ -116,9 +116,9 @@ final class ComposeViewModelImpl : ComposeViewModel {
         return sharedUserDataService.userAddresses
     }
     
-    override func getDefaultAddress() -> Address? {
+    override func getDefaultSendAddress() -> Address? {
         if self.message == nil {
-            if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+            if let addr = sharedUserDataService.userAddresses.defaultSendAddress() {
                 return addr
             }
         }
@@ -308,7 +308,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
     
     override func getHtmlBody() -> String {
         //sharedUserDataService.signature
-        let signature = self.getDefaultAddress()?.signature ?? "\(sharedUserDataService.signature)"
+        let signature = self.getDefaultSendAddress()?.signature ?? "\(sharedUserDataService.signature)"
         
         let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
         
