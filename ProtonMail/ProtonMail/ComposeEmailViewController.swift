@@ -314,7 +314,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         present(alertController, animated: true, completion: nil)
     }
     
-    func sendMessage () {
+    internal func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
             if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
                 let emails = self.composeView.allEmails
@@ -336,7 +336,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         delay(0.3) {
             self.sendMessageStepTwo()
         }
-        
     }
     
     internal func sendMessageStepTwo() {

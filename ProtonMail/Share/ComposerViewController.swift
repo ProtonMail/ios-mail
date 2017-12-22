@@ -71,7 +71,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.sendButton = UIBarButtonItem(image: UIImage(named:"sent_compose"),
                                           style: .plain,
                                           target: self,
-                                          action: #selector(ComposerViewController.sendButtonTapped(sender:)))
+                                          action: #selector(ComposerViewController.send_clicked(sender:)))
         self.navigationItem.leftBarButtonItem = self.cancelButton
         self.navigationItem.rightBarButtonItem = self.sendButton
         
@@ -117,9 +117,23 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         // Dispose of any resources that can be recreated.
     }
     
-    @objc func sendButtonTapped(sender: UIBarButtonItem) {
+    @objc func send_clicked(sender: UIBarButtonItem) {
         self.dismissKeyboard()
-        self.sendMessage()
+        if let suject = self.composeView.subject.text {
+            if !suject.isEmpty {
+                self.sendMessage()
+                return
+            }
+        }
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Compose", comment: "Action"),
+                                                message: NSLocalizedString("Send message without subject?", comment: "Description"),
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send", comment: "Action"), style: .destructive, handler: { (action) -> Void in
+            self.sendMessage()
+        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        present(alertController, animated: true, completion: nil)
     }
     
     @objc func cancelButtonTapped(sender: UIBarButtonItem) {
@@ -353,14 +367,31 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
     }
     
-    func sendMessage () {
+    internal func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
             if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
-                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
-                return;
+                let emails = self.composeView.allEmails
+                //show loading
+                ActivityIndicatorHelper.showActivityIndicator(at: view)
+                let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
+                api.call({ (task, response: EmailsCheckResponse?, hasError : Bool) in
+                    //hide loading
+                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                    if let res = response, res.hasOutsideEmails == false {
+                        self.sendMessageStepTwo()
+                    } else {
+                        self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
+                    }
+                })
+                return
             }
         }
-        
+        delay(0.3) {
+            self.sendMessageStepTwo()
+        }
+    }
+    
+    internal func sendMessageStepTwo() {
         if self.viewModel.toSelectedContacts.count <= 0 &&
             self.viewModel.ccSelectedContacts.count <= 0 &&
             self.viewModel.bccSelectedContacts.count <= 0 {
@@ -369,27 +400,12 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
                                           preferredStyle: .alert)
             alert.addAction((UIAlertAction.okAction()))
             present(alert, animated: true, completion: nil)
-            return;
+            return
         }
         
         stopAutoSave()
         self.collectDraft()
-        
-        //start send show loading
         self.viewModel.sendMessage()
-        
-        
-        // done show error or dismiss if sucessed
-        
-//        // show messagex
-//        delay(0.5) {
-//            NSError.alertMessageSendingToast();
-//        }
-//        if presentingViewController != nil {
-//            dismiss(animated: true, completion: nil)
-//        } else {
-//            let _ = navigationController?.popToRootViewController(animated: true)
-//        }
         
         self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
             self.extensionContext!.completeRequest(returningItems: nil, completionHandler: nil)
