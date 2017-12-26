@@ -23,6 +23,9 @@ class ContactSectionHeadView: UITableViewHeaderFooterView {
     func ConfigHeader(title : String, signed : Bool) {
         headerLabel.text = title
         signMark.isHidden = !signed
+        
+        //disable for now 
+        signMark.isHidden = true
     }
 
 }
