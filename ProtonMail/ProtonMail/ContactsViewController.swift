@@ -278,7 +278,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         //build boday first
         do {
             let contacts = self.contacts
-            
             for contact in contacts {
                 //check is uuid in the exsiting contacts
                 let identifier = contact.identifier

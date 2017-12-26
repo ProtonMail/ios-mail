@@ -15,6 +15,12 @@ extension Email {
         static let entityName = "Email"
     }
     
+    /// Removes all messages from the store.
+    class func deleteAll(inContext context: NSManagedObjectContext) {
+        context.deleteAll(Attributes.entityName)
+    }
+    
+    
     func log() {
         PMLog.D("EmailID: \(self.emailID)")
         PMLog.D("ContactID: \(self.contactID)")

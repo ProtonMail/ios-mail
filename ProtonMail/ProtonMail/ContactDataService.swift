@@ -42,6 +42,7 @@ class ContactDataService {
     func clean() {
         if let context = self.managedObjectContext {
             Contact.deleteAll(inContext: context)
+            Email.deleteAll(inContext: context)
         }
     }
     
@@ -115,35 +116,6 @@ class ContactDataService {
                     }
                 }
             }
-//            if let error = response?.resError {
-//                completion?(nil, error)
-//            } else if var contactDict = response?.contact {
-//                //api is not returning the cards data so set it use request cards data
-//                //check is contactDict has cards if doesnt exsit set it here
-//                if contactDict["Cards"] == nil {
-//                    //contactDict["Cards"] = cards.toDictionary()
-//                }
-//                let context = sharedCoreDataService.newManagedObjectContext()
-//                context.performAndWait() {
-//                    do {
-//                        if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName,
-//                                                                         fromJSONDictionary: contactDict,
-//                                                                         in: context) as? Contact {
-//                            if let error = context.saveUpstreamIfNeeded() {
-//                                PMLog.D(" error: \(error)")
-//                                completion?(nil, error)
-//                            } else {
-//                               completion?(contact, nil)
-//                            }
-//                        }
-//                    } catch let ex as NSError {
-//                        PMLog.D(" error: \(ex)")
-//                        completion?(nil, ex)
-//                    }
-//                }
-//            } else {
-//                completion?(nil, NSError.unableToParseResponse(response))
-//            }
         }
     }
     

@@ -273,31 +273,33 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     fileprivate func retrieveAllContacts() {
-//        sharedContactDataService.getContactVOs { (contacts, error) -> Void in
-//            if let error = error {
-//                PMLog.D(" error: \(error)")
-//            }
-//            self.contacts = contacts
-//
-//            self.composeView.toContactPicker.reloadData()
-//            self.composeView.ccContactPicker.reloadData()
-//            self.composeView.bccContactPicker.reloadData()
-//
-//            self.composeView.toContactPicker.contactCollectionView!.layoutIfNeeded()
-//            self.composeView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
-//            self.composeView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
-//
-//            switch self.viewModel.messageAction!
-//            {
-//            case .openDraft, .reply, .replyAll:
-//                self.focus();
-//                self.composeView.notifyViewSize(true)
-//                break
-//            default:
-//                self.composeView.toContactPicker.becomeFirstResponder()
-//                break
-//            }
-//        }
+        sharedContactDataService.getContactVOs { (contacts, error) in
+            if let error = error {
+                PMLog.D(" error: \(error)")
+            }
+            
+            //TODO::
+            self.contacts = contacts
+            
+            self.composeView.toContactPicker.reloadData()
+            self.composeView.ccContactPicker.reloadData()
+            self.composeView.bccContactPicker.reloadData()
+            
+            self.composeView.toContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.composeView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.composeView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
+            
+            switch self.viewModel.messageAction!
+            {
+            case .openDraft, .reply, .replyAll:
+                self.focus()
+                self.composeView.notifyViewSize(true)
+                break
+            default:
+                self.composeView.toContactPicker.becomeFirstResponder()
+                break
+            }
+        }
     }
     
     fileprivate func updateContentLayout(_ animation: Bool) {
