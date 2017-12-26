@@ -204,33 +204,61 @@ class ContactDataService {
      - Parameter completion: async complete response
      **/
     func fetchContacts(completion: ContactFetchComplete?) {
-        //TODO::here need change to fetch by page until got total
-        let api = ContactEmailsRequest<ContactEmailsResponse>(page: 0, pageSize: 800)
-        api.call { (task, response, hasError) in
-            if let contactsArray = response?.contacts {
-                let context = sharedCoreDataService.newManagedObjectContext()
-                context.performAndWait() {
-                    do {
-                        if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
-                                                                           fromJSONArray: contactsArray, 
-                                                                           in: context) as? [Contact] {
+        
+        {
+            do {
+                //TODO::here need change to fetch by page until got total
+                let contactsApi = ContactsRequest<ContactsResponse>()
+                let response = try contactsApi.syncCall()
+                if let contacs = response?.contacts {
+                    let context = sharedCoreDataService.newManagedObjectContext()
+                    context.performAndWait() {
+                        do {
+                            let _ = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                     fromJSONArray: contacs,
+                                                                     in: context) as? [Contact]
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")
-                                completion?(nil, error)
-                            } else {
-                                completion?(contacts, nil)
-                                //completion?(self.allContacts(), nil)
                             }
+                            
+                        } catch let ex as NSError {
+                            PMLog.D(" error: \(ex)")
                         }
-                    } catch let ex as NSError {
-                        PMLog.D(" error: \(ex)")
-                        completion?(nil, ex)
                     }
                 }
-            } else {
-                completion?(nil, NSError.unableToParseResponse(response))
+                
+                
+                let api = ContactEmailsRequest<ContactEmailsResponse>(page: 0, pageSize: 800)
+                api.call { (task, response, hasError) in
+                    if let contactsArray = response?.contacts {
+                        let context = sharedCoreDataService.newManagedObjectContext()
+                        context.performAndWait() {
+                            do {
+                                if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                                   fromJSONArray: contactsArray,
+                                                                                   in: context) as? [Contact] {
+                                    if let error = context.saveUpstreamIfNeeded() {
+                                        PMLog.D(" error: \(error)")
+                                        completion?(nil, error)
+                                    } else {
+                                        completion?(contacts, nil)
+                                        //completion?(self.allContacts(), nil)
+                                    }
+                                }
+                            } catch let ex as NSError {
+                                PMLog.D(" error: \(ex)")
+                                completion?(nil, ex)
+                            }
+                        }
+                    } else {
+                        completion?(nil, NSError.unableToParseResponse(response))
+                    }
+                }
+                
+            } catch let ex as NSError {
+                completion?(nil, ex)
             }
-        }
+        } ~> .async
     }
     
     /**

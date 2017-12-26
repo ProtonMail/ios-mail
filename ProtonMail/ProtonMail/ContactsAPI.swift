@@ -11,6 +11,30 @@ import Foundation
 
 
 // MARK : Get messages part
+class ContactsRequest<T : ApiResponse> : ApiRequest<T> {
+
+    override public func path() -> String {
+        return ContactsAPI.Path +  AppConstants.DEBUG_OPTION
+    }
+    
+    override public func apiVersion() -> Int {
+        return ContactsAPI.V_ContactsRequest
+    }
+
+    override func method() -> APIService.HTTPMethod {
+        return .get
+    }
+}
+
+class ContactsResponse : ApiResponse {
+    var contacts : [[String : Any]]?
+    override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        self.contacts = response?["Contacts"] as? [[String : Any]]
+        return true
+    }
+}
+
+// MARK : Get messages part
 class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
     var page : Int = 0
     var max : Int = 100
@@ -52,7 +76,7 @@ class ContactEmailsResponse : ApiResponse {
                                 emails.append(contact)
                                 c["ContactEmails"] = emails
                             } else {
-                                c["ContactEmailsE"] = [contact]
+                                c["ContactEmails"] = [contact]
                             }
                             contacts[index] = c
                         }

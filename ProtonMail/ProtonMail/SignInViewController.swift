@@ -611,6 +611,7 @@ class SignInViewController: ProtonMailViewController {
     
     func loadContactsAfterInstall() {
         sharedUserDataService.fetchUserInfo()
+        //TODO:: here need to be changed
         sharedContactDataService.fetchContacts { (contacts, error) in
             if error != nil {
                 PMLog.D("\(String(describing: error))")
