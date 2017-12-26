@@ -44,6 +44,10 @@ class ContactsViewModel : ViewModelTimer {
         fatalError("This method must be overridden")
     }
     
+    func isExsit(uuid: String) -> Bool {
+        fatalError("This method must be overridden")
+    }
+    
     /**
      section title index  ::Enable it later
      **/
@@ -57,6 +61,11 @@ class ContactsViewModel : ViewModelTimer {
     
     //
     func delete(contactID: String, complete : @escaping ContactDeleteComplete) {
+        fatalError("This method must be overridden")
+    }
+    
+    
+    func importContacts() {
         fatalError("This method must be overridden")
     }
     

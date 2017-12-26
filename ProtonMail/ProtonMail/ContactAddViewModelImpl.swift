@@ -274,8 +274,8 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             cards.append(card3)
         }
         
-        sharedContactDataService.add(cards: cards,
-                                     completion:  { (contact : Contact?, error : NSError?) in
+        sharedContactDataService.add(cards: [cards],
+                                     completion:  { (contacts : [Contact]?, error : NSError?) in
                                         if error == nil {
                                             complete(nil)
                                         } else {

@@ -76,6 +76,16 @@ final class ContactsViewModelImpl : ContactsViewModel {
         return fetchedResultsController?.object(at: index) as? Contact
     }
     
+    override func isExsit(uuid: String) -> Bool {
+        if let contacts = fetchedResultsController?.fetchedObjects as? [Contact] {
+            for c in contacts {
+                if c.uuid == uuid {
+                    return true
+                }
+            }
+        }
+        return false
+    }
     
     // MARK: - api part
     override func delete(contactID: String!, complete : @escaping ContactDeleteComplete) {

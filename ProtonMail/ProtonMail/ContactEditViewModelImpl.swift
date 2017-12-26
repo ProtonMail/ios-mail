@@ -505,7 +505,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             
             sharedContactDataService.update(contactID: c.contactID,
                                             cards: cards,
-                                            completion: { (contact : Contact?, error : NSError?) in
+                                            completion: { (contacts : [Contact]?, error : NSError?) in
                                                 if error == nil {
                                                     complete(nil)
                                                 } else {

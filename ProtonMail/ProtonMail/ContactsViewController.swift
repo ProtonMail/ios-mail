@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import Contacts
 
 class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
@@ -80,22 +81,26 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.navigationItem.backBarButtonItem = back
         
         
-        if (self.moreBarButtonItem == nil) {
-            self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"),
-                                                     style: UIBarButtonItemStyle.plain,
-                                                     target: self,
-                                                     action: #selector(self.moreButtonTapped))
-        }
+
         
         if self.addBarButtonItem == nil {
             self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
                                                          target: self,
                                                          action: #selector(self.addContactTapped))
         }
+        var rightButtons: [UIBarButtonItem] = [self.addBarButtonItem]
         
-        
+        if #available(iOS 9.0, *) {
+            if (self.moreBarButtonItem == nil) {
+                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"),
+                                                         style: UIBarButtonItemStyle.plain,
+                                                         target: self,
+                                                         action: #selector(self.moreButtonTapped))
+            }
+            rightButtons.append(self.moreBarButtonItem)
+        }
 
-        self.navigationItem.setRightBarButtonItems([self.addBarButtonItem, self.moreBarButtonItem], animated: true)
+        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
         
         
         refreshControl = UIRefreshControl()
@@ -177,6 +182,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.performSegue(withIdentifier: kAddContactSugue, sender: self)
     }
     
+    @available(iOS 9.0, *)
     @objc internal func moreButtonTapped() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel",  comment: "Action"), style: .cancel, handler: nil))
@@ -188,7 +194,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
                                                     message: NSLocalizedString("Upload iOS contacts to protonmail?", comment: "Description"),
                                                     preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Action"), style: .default, handler: { (action) -> Void in
-                
+                self.getContacts()
             }))
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
             self.present(alertController, animated: true, completion: nil)
@@ -199,7 +205,172 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         alertController.popoverPresentationController?.sourceRect = self.view.frame
         self.present(alertController, animated: true, completion: nil)
     }
+    
+    
+    @available(iOS 9.0, *)
+    internal func getContacts() {
+        let store = CNContactStore()
+        switch CNContactStore.authorizationStatus(for: .contacts) {
+        case .notDetermined:
+            store.requestAccess(for: .contacts, completionHandler: { (authorized, error) in
+                if authorized {
+                    self.retrieveContactsWithStore(store: store)
+                } else {
+                   "Contacts access is not authorized".alertToast()
+                }
+            })
+        case .authorized:
+             self.retrieveContactsWithStore(store: store)
+        case .denied:
+            "Contacts access denied, please allow access from settings".alertToast()
+        case .restricted:
+            "The application is not authorized to access contact data".alertToast()
+        }
+    }
+    
+    @available(iOS 9.0, *)
+    lazy var contacts: [CNContact] = {
+        let contactStore = CNContactStore()
+        let keysToFetch : [CNKeyDescriptor] = [
+            CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
+            CNContactEmailAddressesKey as CNKeyDescriptor,
+            CNContactPhoneNumbersKey as CNKeyDescriptor,
+            CNContactImageDataAvailableKey as CNKeyDescriptor,
+            CNContactThumbnailImageDataKey as CNKeyDescriptor,
+            CNContactIdentifierKey as CNKeyDescriptor,
+            CNContactVCardSerialization.descriptorForRequiredKeys()]
+        
+        // Get all the containers
+        var allContainers: [CNContainer] = []
+        do {
+            allContainers = try contactStore.containers(matching: nil)
+        } catch {
+            print("Error fetching containers")
+        }
+        
+        var results: [CNContact] = []
+        
+        // Iterate all containers and append their contacts to our results array
+        for container in allContainers {
+            let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
+            do {
+                let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch)
+                results.append(contentsOf: containerResults)
+            } catch {
+                print("Error fetching results for container")
+            }
+        }
+        
+        return results
+    }()
+    
+    @available(iOS 9.0, *)
+    internal func retrieveContactsWithStore(store: CNContactStore) {
+        let nview = self.navigationController?.view
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
+        hud.labelText = NSLocalizedString("Reading device contacts data...", comment: "Title")
+        hud.mode = MBProgressHUDMode.indeterminate
+        hud.removeFromSuperViewOnHide = true
+       
+        var pre_contacts : [[CardData]] = []
+        
+        var found: Int = 0
+        //build boday first
+        do {
+            let contacts = self.contacts
+            
+            for contact in contacts {
+                //check is uuid in the exsiting contacts
+                let identifier = contact.identifier
+                
+                if !self.viewModel.isExsit(uuid: identifier) {
+                    found += 1
+                    hud.labelText = "Encrypting contacts...\(found)" //NSLocalizedString("Done", comment: "Title")
+                    
+                    let rawData = try CNContactVCardSerialization.data(with: [contact])
+                    let vcardStr = String(data: rawData, encoding: .utf8)!
+                    
+                    if let vcard3 = PMNIEzvcard.parseFirst(vcardStr) {
+                        
+                        let uuid = PMNIUid.createInstance(identifier)
+                        guard let vcard2 = PMNIVCard.createInstance() else {
+                            continue //with error
+                        }
+                        
+                        if let fn = vcard3.getFormattedName() {
+                            vcard2.setFormattedName(fn)
+                            vcard3.clearFormattedName()
+                        }
+                        let emails = vcard3.getEmails()
+                        var i : Int = 1
+                        for e in emails {
+                            let ng = "EItem\(i)"
+                            let group = e.getGroup()
+                            if group.isEmpty {
+                                e.setGroup(ng)
+                                i += 1
+                            }
+                        }
+                        
+                        vcard2.setEmails(emails)
+                        vcard3.clearEmails()
+                        vcard2.setUid(uuid)
+                        
+                        // add others later
+                        let vcard2Str = PMNIEzvcard.write(vcard2)
+                        guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
+                            continue //with error
+                        }
+                        PMLog.D(vcard2Str);
+                        let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key,
+                                                                       plainText: vcard2Str,
+                                                                       passphras: sharedUserDataService.mailboxPassword!)
+                        
+                        //card 2 object
+                        let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
+                        
+                        vcard3.setUid(uuid)
+                        vcard3.setVersion(PMNIVCardVersion.vCard40())
+                        let vcard3Str = PMNIEzvcard.write(vcard3)
+                        PMLog.D(vcard3Str);
+                        let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str)
+                        PMLog.D(encrypted_vcard3);
+                        let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
+                                                                       plainText: vcard3Str,
+                                                                       passphras: sharedUserDataService.mailboxPassword!)
+                        //card 3 object
+                        let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
+                        
+                        let cards : [CardData] = [card2, card3]
+                        
+                        pre_contacts.append(cards)
+                    }
+                }
+            }
+        } catch let error as NSError {
+            error.alertToast()
+        }
+        
+        if !pre_contacts.isEmpty {
+            sharedContactDataService.add(cards: pre_contacts, completion:  { (contacts : [Contact]?, error : NSError?) in
+                if error == nil {
+                    let count = contacts?.count ?? 0
+                    hud.labelText = "You have imported \(count) of \(found) contacts!" // NSLocalizedString("You have imported \(count) of \(pre_contacts.count) contacts!", comment: "Title")
+                    hud.hide(true, afterDelay: 2)
+                   // "You have imported \(count) of \(pre_contacts.count) contacts!".alertToast()
+                } else {
+                    hud.hide(true)
+                    error?.alertToast()
+                }
+            })
+        } else {
+            hud.labelText = NSLocalizedString("All contacts are imported", comment: "Title")
+            hud.hide(true, afterDelay: 1)
+        }
+    }
 }
+
+
 
 
 //Search part

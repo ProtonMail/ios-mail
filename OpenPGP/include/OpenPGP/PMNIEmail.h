@@ -13,6 +13,10 @@
 
 - (nonnull NSArray<NSString *> *)getTypes;
 
+- (nonnull NSString *)getGroup;
+
+- (void)setGroup:(nonnull NSString *)g;
+
 + (nullable PMNIEmail *)createInstance:(nonnull NSString *)type
                                  email:(nonnull NSString *)email
                                  group:(nonnull NSString *)group;
