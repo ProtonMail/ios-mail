@@ -29,11 +29,13 @@ final class ContactEditProfile {
     
     var newDisplayName : String = ""
     
-    init(n_displayname:String) {
+    init(n_displayname: String) {
         self.newDisplayName = n_displayname
         self.isNew = true
     }
+    
     init(n_displayname: String, isNew: Bool) {
+        self.origDisplayName = n_displayname
         self.newDisplayName = n_displayname
         self.isNew = isNew
     }
@@ -85,7 +87,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
         self.isNew = true
     }
     
-    init(o_order: Int, o_type: String, o_email:String) {
+    init(o_order: Int, o_type: String, o_email: String) {
         self.origOrder = o_order
         self.origType = o_type
         self.origEmail = o_email
@@ -220,19 +222,55 @@ enum ContactAddressType : String {
 final class ContactEditAddress: ContactEditTypeInterface {
     var origOrder : Int = 0
     var origType : String = ""
+    var origPoxbox : String = ""
     var origStreet : String = ""
+    var origLocality : String = ""
+    var origRegion : String = ""
+    var origPostal : String = ""
+    var origCountry : String = ""
     var isNew : Bool = false
     
     var newOrder : Int = 0
     var newType : String = ""
+    var newPoxbox : String = ""
     var newStreet : String = ""
+    var newLocality : String = ""
+    var newRegion : String = ""
+    var newPostal : String = ""
+    var newCountry : String = ""
     
-    init(n_order: Int, n_type: String, n_street:String) {
-        self.newType = n_type
-        self.newOrder = n_order
-        self.newStreet = n_street
-        self.isNew = true
+    init(order: Int, type: String,
+         pobox: String, street: String, locality: String,
+         region: String, postal: String, country: String, isNew: Bool) {
+        
+        self.newOrder = order
+        self.newType = type
+        self.newPoxbox = pobox
+        self.newStreet = street
+        self.newLocality = locality
+        self.newRegion = region
+        self.newPostal = postal
+        self.newCountry = country
+        
+        self.isNew = isNew
+        
+        if !self.isNew {
+            self.origOrder = self.newOrder
+            self.origType = self.newType
+            self.origPoxbox = self.newPoxbox
+            self.origStreet = self.newStreet
+            self.origLocality = self.newLocality
+            self.origRegion = self.newRegion
+            self.origPostal = self.newPostal
+            self.origCountry = self.newCountry
+        }
     }
+    
+    convenience init(order: Int, type: String) {
+        self.init(order: order, type: type, pobox: "", street: "", locality: "", region: "", postal: "", country: "", isNew: true)
+    }
+    
+    
     
     //
     func getCurrentType() -> String {
@@ -246,6 +284,25 @@ final class ContactEditAddress: ContactEditTypeInterface {
     }
     func types() -> [String] {
         return ContactAddressType.allValues
+    }
+    
+    func fullAddress() -> String {
+        var full : String = newPoxbox
+        if full.isEmpty {
+            full = newStreet
+        } else {
+            full += " "
+            full += newStreet
+        }
+        full += " "
+        full += newLocality
+        full += " "
+        full += newRegion
+        full += " "
+        full += newPostal
+        full += " "
+        full += newCountry
+        return full
     }
     
     func needsUpdate() -> Bool {

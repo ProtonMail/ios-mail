@@ -121,7 +121,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     
     override func newAddress() -> ContactEditAddress {
         let newType = getNewType(types: ContactAddressType.allValues, typeInterfaces: addresses)
-        let addr = ContactEditAddress(n_order: emails.count, n_type: newType, n_street:"")
+        let addr = ContactEditAddress(order: emails.count, type: newType)
         addresses.append(addr)
         return addr
     }
@@ -212,10 +212,10 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         for addr in addresses {
             let a = PMNIAddress.createInstance(addr.newType,
                                                street: addr.newStreet,
-                                               locality: "",
-                                               region: "",
-                                               zip: "",
-                                               country: "",
+                                               locality: addr.newLocality,
+                                               region: addr.newRegion,
+                                               zip: addr.newPostal,
+                                               country: addr.newCountry,
                                                pobox: "")
             vcard3.add(a)
             isCard3Set = true

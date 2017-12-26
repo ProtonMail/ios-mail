@@ -54,6 +54,11 @@ final class ContactEditAddressCell: UITableViewCell {
         typeLabel.text = self.addr.newType
         valueField.text = self.addr.newStreet
         
+        cityField.text = self.addr.newLocality
+        stateField.text = self.addr.newRegion
+        zipField.text = self.addr.newPostal
+        countyField.text = self.addr.newCountry
+        
         self.delegate = callback
     }
     
@@ -72,6 +77,24 @@ extension ContactEditAddressCell: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {
-        addr.newStreet = valueField.text!
+        if textField == valueField {
+            addr.newStreet = valueField.text!
+        }
+        
+        if textField == cityField {
+            addr.newLocality = cityField.text!
+        }
+    
+        if textField == stateField {
+            addr.newRegion = stateField.text!
+        }
+        
+        if textField == zipField {
+            addr.newPostal = zipField.text!
+        }
+        
+        if textField == countyField {
+            addr.newCountry = countyField.text!
+        }
     }
 }

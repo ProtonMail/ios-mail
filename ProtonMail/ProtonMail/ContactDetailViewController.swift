@@ -77,6 +77,10 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         super.viewWillAppear(animated)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
@@ -201,7 +205,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         case .home_address:
             let addrs = viewModel.getOrigAddresses()
             let addr = addrs[row]
-            cell.configCell(title: addr.newType, value: addr.newStreet)
+            cell.configCell(title: addr.newType, value: addr.fullAddress())
             cell.selectionStyle = .default
             break
         case .information:

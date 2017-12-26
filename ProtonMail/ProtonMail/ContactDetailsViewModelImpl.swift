@@ -97,8 +97,17 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             for a in addresses {
                                 let types = a.getTypes()
                                 let type = types.count > 0 ? types.first! : ""
-                                let address = a.getPoBoxes().joined(separator: ",")
-                                let ca = ContactEditAddress(n_order: order, n_type:type, n_street:address)
+                                let pobox = a.getPoBoxes().joined(separator: ",")
+                                let street = a.getStreetAddress()
+                                //let extention =
+                                let locality = a.getLocality()
+                                let region = a.getRegion()
+                                let postal = a.getPostalCode()
+                                let country = a.getCountry()
+                                
+                                let ca = ContactEditAddress(order: order, type: type, pobox: pobox, street: street,
+                                                            locality: locality, region: region,
+                                                            postal: postal, country: country, isNew: false)
                                 origAddresses.append(ca)
                                 order += 1
                             }
