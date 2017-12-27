@@ -236,6 +236,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             CNContactEmailAddressesKey as CNKeyDescriptor,
             CNContactPhoneNumbersKey as CNKeyDescriptor,
             CNContactImageDataAvailableKey as CNKeyDescriptor,
+            CNContactImageDataKey as CNKeyDescriptor,
             CNContactThumbnailImageDataKey as CNKeyDescriptor,
             CNContactIdentifierKey as CNKeyDescriptor,
             CNContactVCardSerialization.descriptorForRequiredKeys()]
@@ -288,9 +289,11 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
                     
                     let rawData = try CNContactVCardSerialization.data(with: [contact])
                     let vcardStr = String(data: rawData, encoding: .utf8)!
+//                    if contact.imageDataAvailable {
+//                        PMLog.D("\(contact.imageData!.count)")
+//                    }
                     
                     if let vcard3 = PMNIEzvcard.parseFirst(vcardStr) {
-                        
                         let uuid = PMNIUid.createInstance(identifier)
                         guard let vcard2 = PMNIVCard.createInstance() else {
                             continue //with error
