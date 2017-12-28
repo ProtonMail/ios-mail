@@ -87,6 +87,8 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         if #available(iOS 11.0, *) {
             self.searchViewConstraint.constant = 0.0
             self.searchView.isHidden = true
+            self.navigationController?.navigationBar.prefersLargeTitles = false
+            self.navigationItem.largeTitleDisplayMode = .never
             self.navigationItem.hidesSearchBarWhenScrolling = false
             self.navigationItem.searchController = self.searchController
         } else {
