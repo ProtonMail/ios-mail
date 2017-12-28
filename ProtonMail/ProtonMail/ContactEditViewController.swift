@@ -453,18 +453,35 @@ extension ContactEditViewController: UITableViewDelegate {
             return nil
         }
         let sections = viewModel.getSections()
-        if sections[section] == .encrypted_header {
+        let sc = sections[section]
+        if sc == .encrypted_header {
             cell.ConfigHeader(title: NSLocalizedString("Encrypted Contact Details", comment: "title"), signed: false)
+        } else if sc == .delete {
+            return nil
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let sections = viewModel.getSections()
-        if sections[section] == .encrypted_header {
+        let s = sections[section]
+        switch s {
+        case .encrypted_header, .delete:
             return 38.0
+        default:
+            return 0.0
         }
-        return 0.0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        let sections = viewModel.getSections()
+        let s = sections[section]
+        switch s {
+        case .delete:
+            return 60
+        default:
+            return 0.0
+        }
     }
     
     
