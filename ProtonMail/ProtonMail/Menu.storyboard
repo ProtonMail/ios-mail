@@ -2626,7 +2626,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RIQ-6S-Rqf">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="108" width="375" height="559"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactsCell" id="Ewr-ha-VvA">
@@ -2639,13 +2639,23 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AOf-GB-wad" userLabel="search container">
+                                <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="vIq-jf-Eon"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="AOf-GB-wad" secondAttribute="trailing" id="Cyl-fc-cBL"/>
+                            <constraint firstItem="AOf-GB-wad" firstAttribute="leading" secondItem="S4B-4p-Yy3" secondAttribute="leading" id="J2h-xG-OFx"/>
                             <constraint firstAttribute="bottom" secondItem="RIQ-6S-Rqf" secondAttribute="bottom" id="Rc8-Bf-RFt"/>
                             <constraint firstAttribute="trailing" secondItem="RIQ-6S-Rqf" secondAttribute="trailing" id="Y24-4r-1jf"/>
+                            <constraint firstItem="AOf-GB-wad" firstAttribute="top" secondItem="60O-Ao-olg" secondAttribute="bottom" id="aAJ-gg-tP0"/>
+                            <constraint firstItem="RIQ-6S-Rqf" firstAttribute="top" secondItem="AOf-GB-wad" secondAttribute="bottom" id="iVg-Sh-xUy"/>
                             <constraint firstItem="RIQ-6S-Rqf" firstAttribute="leading" secondItem="S4B-4p-Yy3" secondAttribute="leading" id="q6w-PW-q3f"/>
-                            <constraint firstItem="RIQ-6S-Rqf" firstAttribute="top" secondItem="60O-Ao-olg" secondAttribute="bottom" id="vfZ-45-WtN"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="CONTACTS" id="dNI-3f-weZ">
@@ -2659,9 +2669,10 @@
                     <connections>
                         <outlet property="menuButton" destination="G3m-Jr-Xhu" id="iLB-dg-whJ"/>
                         <outlet property="searchDisplayController" destination="mKK-GV-NK5" id="yU5-XN-CG5"/>
+                        <outlet property="searchView" destination="AOf-GB-wad" id="T02-fR-U3L"/>
+                        <outlet property="searchViewConstraint" destination="vIq-jf-Eon" id="U2r-b7-7AF"/>
                         <outlet property="tableView" destination="RIQ-6S-Rqf" id="ctQ-AU-tvT"/>
                         <outlet property="tableViewBottomConstraint" destination="Rc8-Bf-RFt" id="FH3-BY-nIT"/>
-                        <outlet property="tableViewTopConstraint" destination="vfZ-45-WtN" id="bqo-kh-bNl"/>
                         <segue destination="d3P-H0-xNt" kind="presentation" identifier="toEditContact" id="Lm0-2L-Xlj"/>
                         <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="oQx-RX-nff"/>
                         <segue destination="Cjq-Ic-Ywz" kind="show" identifier="toContactDetailsSegue" id="QZE-iH-gR5"/>
@@ -2677,7 +2688,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="2258" y="3604"/>
+            <point key="canvasLocation" x="2256.8000000000002" y="3603.1484257871066"/>
         </scene>
         <!--Contact Edit -->
         <scene sceneID="Lgo-jO-tY2">
@@ -4870,7 +4881,7 @@
         <segue reference="Dpt-T7-EMY"/>
         <segue reference="gwz-B9-War"/>
         <segue reference="0zg-HM-MdK"/>
-        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="Lm0-2L-Xlj"/>
         <segue reference="PpL-SW-U8F"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="uj7-oW-fwS"/>

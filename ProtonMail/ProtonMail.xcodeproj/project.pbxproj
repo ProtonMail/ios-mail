@@ -1087,6 +1087,8 @@
 		75A2F44E1C97D6B400BF4306 /* ComposeErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75A2F44D1C97D6B400BF4306 /* ComposeErrorView.xib */; };
 		75A4321B1B1D040A00D046B3 /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321A1B1D040A00D046B3 /* QueueManager.swift */; };
 		75A4321D1B1D042C00D046B3 /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321C1B1D042C00D046B3 /* QueueConstant.swift */; };
+		75A84D491FF59EDE00F2A54B /* UISearchBar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A84D481FF59EDE00F2A54B /* UISearchBar+Extension.swift */; };
+		75A84D4A1FF59EDE00F2A54B /* UISearchBar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A84D481FF59EDE00F2A54B /* UISearchBar+Extension.swift */; };
 		75AD87321E975CC600B8265B /* FolderEditingViewModelImpl .swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AD87311E975CC600B8265B /* FolderEditingViewModelImpl .swift */; };
 		75AFD2ED1FBA7CF000EAEA61 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75AFD2EC1FBA7CF000EAEA61 /* UserNotifications.framework */; };
 		75AFD2EF1FBA7CF000EAEA61 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75AFD2EE1FBA7CF000EAEA61 /* UserNotificationsUI.framework */; };
@@ -1764,6 +1766,7 @@
 		75A42B711F044B750025F52C /* ShareExtensionEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareExtensionEntry.swift; sourceTree = "<group>"; };
 		75A4321A1B1D040A00D046B3 /* QueueManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueManager.swift; sourceTree = "<group>"; };
 		75A4321C1B1D042C00D046B3 /* QueueConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueConstant.swift; sourceTree = "<group>"; };
+		75A84D481FF59EDE00F2A54B /* UISearchBar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UISearchBar+Extension.swift"; path = "ProtonMail/UISearchBar+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		75AD87311E975CC600B8265B /* FolderEditingViewModelImpl .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FolderEditingViewModelImpl .swift"; sourceTree = "<group>"; };
 		75AFD2EB1FBA7CF000EAEA61 /* Push.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Push.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		75AFD2EC1FBA7CF000EAEA61 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -2551,6 +2554,7 @@
 				07CC99651A6F1380000FD6F8 /* Foundation+Extension.swift */,
 				07655BC01AB10D7100CD3883 /* Bundle+Extension.swift */,
 				07CCCC2F1AA4E26000ECA79E /* NSCoder+Extension.swift */,
+				75A84D481FF59EDE00F2A54B /* UISearchBar+Extension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -4704,6 +4708,7 @@
 				75150ED11B1E74A20013B476 /* SettingDebugTableViewController.swift in Sources */,
 				7548D0961CC10DFB001C3AEC /* UserTempCachedStatus.swift in Sources */,
 				752D3DC11BD18CA800103DC8 /* AttachmentsTableViewController.swift in Sources */,
+				75A84D491FF59EDE00F2A54B /* UISearchBar+Extension.swift in Sources */,
 				756A35151B20D9B80033BC7C /* AppConstants.swift in Sources */,
 				7048B9F41A9E385B00D45F57 /* ContactsTableViewCell.swift in Sources */,
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
@@ -5601,6 +5606,7 @@
 				752800101FA7FEF6005F66A3 /* NSSet+Extension.swift in Sources */,
 				75DE7D5D1CAAEA4900F5443E /* SearchViewController.swift in Sources */,
 				7547131C1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */,
+				75A84D4A1FF59EDE00F2A54B /* UISearchBar+Extension.swift in Sources */,
 				75DE7D5F1CAAEA4900F5443E /* SplashViewController.swift in Sources */,
 				75DE7D621CAAEA4900F5443E /* MBContactCollectionViewEntryCell.m in Sources */,
 				7578B7841CADD1EA006B523B /* PMImagePickerController.swift in Sources */,

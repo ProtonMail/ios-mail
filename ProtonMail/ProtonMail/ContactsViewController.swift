@@ -35,6 +35,8 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate var refreshControl: UIRefreshControl!
     fileprivate var searchController : UISearchController!
     
+    @IBOutlet weak var searchView: UIView!
+    @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
     
     fileprivate var addBarButtonItem : UIBarButtonItem!
     fileprivate var moreBarButtonItem : UIBarButtonItem!
@@ -61,47 +63,13 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.searchController.searchBar.delegate = self
         self.searchController.hidesNavigationBarDuringPresentation = true
         self.searchController.automaticallyAdjustsScrollViewInsets = true
-        self.searchController.searchBar.tintColor = UIColor.ProtonMail.Blue_475F77
-        self.searchController.searchBar.backgroundColor = UIColor.clear
         self.searchController.searchBar.sizeToFit()
         self.searchController.searchBar.keyboardType = .default
         self.searchController.searchBar.autocapitalizationType = .none
-        
-        self.tableView.tableHeaderView = self.searchController.searchBar;
-        self.definesPresentationContext = true;
-        self.extendedLayoutIncludesOpaqueBars = true
-        self.automaticallyAdjustsScrollViewInsets = false
-        self.tableView.noSeparatorsBelowFooter()
-        self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
-        
-        let back = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Action"),
-                                   style: UIBarButtonItemStyle.plain,
-                                   target: nil,
-                                   action: nil)
-        self.navigationItem.backBarButtonItem = back
-        
-        
-
-        
-        if self.addBarButtonItem == nil {
-            self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
-                                                         target: self,
-                                                         action: #selector(self.addContactTapped))
-        }
-        var rightButtons: [UIBarButtonItem] = [self.addBarButtonItem]
-        
-        if #available(iOS 9.0, *) {
-            if (self.moreBarButtonItem == nil) {
-                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"),
-                                                         style: UIBarButtonItemStyle.plain,
-                                                         target: self,
-                                                         action: #selector(self.moreButtonTapped))
-            }
-            rightButtons.append(self.moreBarButtonItem)
-        }
-
-        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
-        
+        self.searchController.searchBar.isTranslucent = false
+        self.searchController.searchBar.tintColor = .white
+        self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
+        self.searchController.searchBar.backgroundColor = .clear
         
         refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
@@ -115,6 +83,52 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         
         refreshControl.tintColor = UIColor.gray
         refreshControl.tintColorDidChange()
+        
+        if #available(iOS 11.0, *) {
+            self.searchViewConstraint.constant = 0.0
+            self.searchView.isHidden = true
+            self.navigationItem.hidesSearchBarWhenScrolling = false
+            self.navigationItem.searchController = self.searchController
+        } else {
+            self.searchViewConstraint.constant = self.searchController.searchBar.frame.height
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background), for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
+            self.navigationController?.navigationBar.shadowImage = UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background)
+            
+            self.refreshControl.backgroundColor = .white
+            
+            self.searchView.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
+            self.searchView.addSubview(self.searchController.searchBar)
+            self.searchController.searchBar.contactSearchSetup(textfieldBG: UIColor.init(hexColorCode: "#82829C"), placeholderColor: UIColor.init(hexColorCode: "#BBBBC9"), textColor: .white)
+        }
+        self.definesPresentationContext = true;
+        self.extendedLayoutIncludesOpaqueBars = true
+        self.automaticallyAdjustsScrollViewInsets = false
+        self.tableView.noSeparatorsBelowFooter()
+        self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
+        
+        let back = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Action"),
+                                   style: UIBarButtonItemStyle.plain,
+                                   target: nil,
+                                   action: nil)
+        self.navigationItem.backBarButtonItem = back
+        
+        if self.addBarButtonItem == nil {
+            self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
+                                                         target: self,
+                                                         action: #selector(self.addContactTapped))
+        }
+        var rightButtons: [UIBarButtonItem] = [self.addBarButtonItem]
+        if #available(iOS 9.0, *) {
+            if (self.moreBarButtonItem == nil) {
+                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"),
+                                                         style: UIBarButtonItemStyle.plain,
+                                                         target: self,
+                                                         action: #selector(self.moreButtonTapped))
+            }
+            rightButtons.append(self.moreBarButtonItem)
+        }
+
+        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
         
         //get all contacts
         self.viewModel.setupFetchedResults(delaget: self)
