@@ -28,7 +28,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kEditContactSegue : String              = "toEditContactSegue"
     fileprivate let kToComposeSegue : String                = "toCompose"
     
-    
     let sections: [ContactEditSectionType] = [.display_name,
                                               .emails,
                                               .encrypted_header,
@@ -74,8 +73,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .never
-        } else {
-            // Fallback on earlier versions
         }
     }
     
@@ -126,6 +123,8 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
 
 // MARK: - UITableViewDataSource
 extension ContactDetailViewController: UITableViewDataSource {
+
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -248,7 +247,60 @@ extension ContactDetailViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension ContactDetailViewController: UITableViewDelegate {
-   
+
+    func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        if (action == #selector(UIResponderStandardEditActions.copy(_:))) {
+            return true
+        }
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
+        if (action == #selector(UIResponderStandardEditActions.copy(_:))) {
+            var copyString = ""
+            let section = indexPath.section
+            let row = indexPath.row
+            let s = sections[section]
+            switch s {
+            case .display_name:
+                let profile = viewModel.getProfile();
+                copyString = profile.newDisplayName
+            case .emails:
+                let emails = viewModel.getOrigEmails()
+                let email = emails[row]
+                copyString = email.newEmail
+            case .cellphone:
+                let cells = viewModel.getOrigCells()
+                let tel = cells[row]
+                copyString = tel.newPhone
+            case .home_address:
+                let addrs = viewModel.getOrigAddresses()
+                let addr = addrs[row]
+                copyString = addr.fullAddress()
+            case .information:
+                let infos = viewModel.getOrigInformations()
+                let info = infos[row]
+                copyString = info.newValue
+            case .custom_field:
+                let fields = viewModel.getOrigFields()
+                let field = fields[row]
+                copyString = field.newField
+            case .notes:
+                let notes = viewModel.getOrigNotes()
+                let note = notes[row]
+                copyString = note.newNote
+            default:
+                break
+            }
+            
+            UIPasteboard.general.string = copyString
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let s = sections[indexPath.section]
         switch s {
@@ -290,7 +342,7 @@ extension ContactDetailViewController: UITableViewDelegate {
         default:
             break
         }
-        tableView.reloadSections([section], with: .automatic)
+        //tableView.reloadSections([section], with: .automatic)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

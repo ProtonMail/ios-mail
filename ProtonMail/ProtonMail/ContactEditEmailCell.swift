@@ -25,7 +25,6 @@ final class ContactEditEmailCell: UITableViewCell {
         super.awakeFromNib()
         self.valueField.delegate = self
     }
-
     
     func configCell(obj : ContactEditEmail, callback : ContactEditCellDelegate?) {
         self.email = obj
