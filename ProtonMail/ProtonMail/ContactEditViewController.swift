@@ -67,11 +67,10 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
        
         if viewModel.isNew() {
             self.title = NSLocalizedString("Add Contact", comment: "Contacts add new contact")
-            doneItem.title = NSLocalizedString("Add", comment: "Action-Contacts")
         } else {
             self.title = NSLocalizedString("Update Contact", comment: "Contacts Update contact")
-            doneItem.title = NSLocalizedString("Update", comment: "Action-Contacts")
         }
+        doneItem.title = NSLocalizedString("Save", comment: "Action-Contacts")
         
         UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
         self.displayNameField.text = viewModel.getProfile().newDisplayName

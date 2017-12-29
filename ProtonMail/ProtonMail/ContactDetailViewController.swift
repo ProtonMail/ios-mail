@@ -177,11 +177,18 @@ extension ContactDetailViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let s = sections[section]
-        if (s == .encrypted_header ||
-            s == .display_name) {
+        switch s {
+        case .display_name:
             return 38.0
+        case .encrypted_header:
+            if viewModel.hasEncryptedContacts() {
+                return 38.0
+            } else {
+                return 0
+            }
+        default:
+            return 0
         }
-        return 0.0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -193,7 +200,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         switch s {
         case .display_name:
             let profile = viewModel.getProfile();
-            cell.configCell(title: NSLocalizedString("Display Name", comment: "title"), value: profile.newDisplayName)
+            cell.configCell(title: NSLocalizedString("Name", comment: "title"), value: profile.newDisplayName)
             cell.selectionStyle = .none
         case .emails:
             let emails = viewModel.getOrigEmails()

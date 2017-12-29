@@ -115,6 +115,8 @@ class ContactDataService {
                         completion?(nil, ex)
                     }
                 }
+            } else {
+                completion?(nil, lasterror)
             }
         }
     }

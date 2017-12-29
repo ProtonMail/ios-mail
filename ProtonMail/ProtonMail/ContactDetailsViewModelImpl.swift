@@ -34,6 +34,26 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         return verifyType3
     }
     
+    override func hasEncryptedContacts() -> Bool {
+        if self.getOrigCells().count > 0 {
+            return true
+        }
+        if self.getOrigAddresses().count > 0 {
+            return true
+        }
+        if self.getOrigInformations().count > 0 {
+            return true
+        }
+        if self.getOrigFields().count > 0 {
+            return true
+        }
+        if self.getOrigNotes().count > 0 {
+            return true
+        }
+        
+        return false
+    }
+    
     private func setupEmails() {
         //  origEmails
         let cards = self.contact.getCardData()

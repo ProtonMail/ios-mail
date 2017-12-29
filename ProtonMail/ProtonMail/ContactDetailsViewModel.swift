@@ -23,6 +23,10 @@ class ContactDetailsViewModel {
         fatalError("This method must be overridden")
     }
     
+    func hasEncryptedContacts() -> Bool {
+        fatalError("This method must be overridden")
+    }
+    
     func getDetails(loading : LoadingProgress, complete: @escaping ContactDetailsComplete) {
         fatalError("This method must be overridden")
     }
