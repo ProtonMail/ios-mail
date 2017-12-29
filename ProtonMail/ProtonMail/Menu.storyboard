@@ -2820,7 +2820,7 @@
                                                     <rect key="frame" x="75" y="0.0" width="292" height="43.5"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" textContentType="email"/>
                                                 </textField>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6c6-wV-4ha">
                                                     <rect key="frame" x="185.5" y="0.0" width="4" height="43.5"/>
@@ -2893,7 +2893,7 @@
                                                     <rect key="frame" x="75" y="0.0" width="292" height="43.5"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" textContentType="tel"/>
                                                 </textField>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jqp-ea-xPM">
                                                     <rect key="frame" x="185.5" y="0.0" width="4" height="43.5"/>
@@ -2966,37 +2966,37 @@
                                                     <rect key="frame" x="66.5" y="0.0" width="300.5" height="36"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" textContentType="address-line1"/>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Street" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="VPS-nJ-szb">
                                                     <rect key="frame" x="66.5" y="36" width="300.5" height="35.5"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" textContentType="address-line2"/>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="City" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="hkL-sf-2Wz">
                                                     <rect key="frame" x="66.5" y="71.5" width="300.5" height="36.5"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" textContentType="address-level2"/>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="State" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="hLG-E3-2q0">
                                                     <rect key="frame" x="66.5" y="108" width="148.5" height="35.5"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" textContentType="address-level1"/>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="ZIP" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="xeK-xP-8RH">
                                                     <rect key="frame" x="219" y="108" width="148" height="35.5"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" textContentType="postal-code"/>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Country" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3kn-W2-Uht">
                                                     <rect key="frame" x="66.5" y="143.5" width="300.5" height="36"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" textContentType="country-name"/>
                                                 </textField>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XRh-8U-og7" userLabel="hidden line">
                                                     <rect key="frame" x="185.5" y="0.0" width="4" height="179.5"/>
@@ -3338,8 +3338,50 @@
                                             <outlet property="valueField" destination="0DL-dX-nF2" id="bW1-FT-icz"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactEditTextViewCell" rowHeight="120" id="lLk-AS-LyP" userLabel="ContactEditTextViewCell" customClass="ContactEditTextViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="590" width="375" height="120"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lLk-AS-LyP" id="Ljt-vz-Dfp">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VLD-CF-uN6">
+                                                    <rect key="frame" x="14" y="12" width="352" height="21.5"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="22" id="QZe-aX-nnO"/>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="e68-S5-U2t"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="Notes" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="XzN-1Y-uam">
+                                                    <rect key="frame" x="10" y="35.5" width="356" height="78"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Cgs-kw-ICB"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="VLD-CF-uN6" firstAttribute="top" secondItem="Ljt-vz-Dfp" secondAttribute="top" constant="12" id="BVY-CV-m1M"/>
+                                                <constraint firstAttribute="trailing" secondItem="XzN-1Y-uam" secondAttribute="trailing" constant="9" id="Bu0-Mc-fBO"/>
+                                                <constraint firstItem="XzN-1Y-uam" firstAttribute="leading" secondItem="Ljt-vz-Dfp" secondAttribute="leading" constant="10" id="FHg-jZ-Slh"/>
+                                                <constraint firstAttribute="trailing" secondItem="VLD-CF-uN6" secondAttribute="trailing" constant="9" id="NaW-GV-9Ax"/>
+                                                <constraint firstItem="XzN-1Y-uam" firstAttribute="top" secondItem="VLD-CF-uN6" secondAttribute="bottom" constant="2" id="mWT-Sm-nGb"/>
+                                                <constraint firstAttribute="bottom" secondItem="XzN-1Y-uam" secondAttribute="bottom" constant="6" id="nvB-uQ-fTM"/>
+                                                <constraint firstItem="VLD-CF-uN6" firstAttribute="leading" secondItem="Ljt-vz-Dfp" secondAttribute="leading" constant="14" id="tkg-9t-UBD"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="textView" destination="XzN-1Y-uam" id="zpm-TJ-fvR"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Instructions" textLabel="FrN-tO-378" style="IBUITableViewCellStyleDefault" id="I69-c4-NG7">
-                                        <rect key="frame" x="0.0" y="590" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="710" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I69-c4-NG7" id="bUD-xx-OlS">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -3356,7 +3398,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="RecipeType" editingAccessoryType="detailDisclosureButton" textLabel="7j2-it-Hcu" style="IBUITableViewCellStyleDefault" id="ffb-ei-Iss">
-                                        <rect key="frame" x="0.0" y="634" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="754" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ffb-ei-Iss" id="4Ak-c4-c3N">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>

@@ -34,6 +34,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactEditCellInfoCell: String  = "ContactEditInformationCell"
     fileprivate let kContactEditFieldCell: String     = "ContactEditFieldCell"
     fileprivate let kContactEditNotesCell: String     = "ContactEditNotesCell"
+    fileprivate let kContactEditTextViewCell: String     = "ContactEditTextViewCell"
     
     //const segue
     fileprivate let ktoContactTypeSegue : String      = "toContactTypeSegue"
@@ -48,7 +49,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     var delegate : ContactEditViewControllerDelegate?
     
-    var activeText : UITextField? = nil
+    var activeText : UIResponder? = nil
     
     func inactiveViewModel() {
     }
@@ -78,6 +79,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         
         let nib = UINib(nibName: kContactDetailsHeaderView, bundle: nil)
         self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
+        self.tableView.estimatedRowHeight = 70
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
         self.tableView.isEditing = true
@@ -87,6 +89,12 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -183,7 +191,7 @@ extension ContactEditViewController: UITextFieldDelegate {
 
 
 //type picker
-extension ContactEditViewController: ContactEditCellDelegate, ContactEditNotesCellDelegate {
+extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextViewCellDelegate {
     func pick(typeInterface: ContactEditTypeInterface, sender: UITableViewCell) {
         self.performSegue(withIdentifier: ktoContactTypeSegue, sender: typeInterface)
     }
@@ -191,6 +199,16 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditNotesCe
     func beginEditing(textField: UITextField) {
         self.activeText = textField
     }
+    
+    func beginEditing(textView: UITextView) {
+        self.activeText = textView
+    }
+    
+    func didChanged(textView: UITextView) {
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
+    }
+    
 }
 
 //
@@ -315,7 +333,7 @@ extension ContactEditViewController: UITableViewDataSource {
                 outCell = cell
             }
         case .notes:
-            let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditNotesCell, for: indexPath) as! ContactEditNotesCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditTextViewCell, for: indexPath) as! ContactEditTextViewCell
             cell.configCell(obj: viewModel.getOrigNotes(), callback: self)
             cell.selectionStyle = .none
             outCell = cell
@@ -487,7 +505,7 @@ extension ContactEditViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let sections = viewModel.getSections()
         if sections[indexPath.section] == .notes {
-            //return 80.0
+            return UITableViewAutomaticDimension
         }
         if sections[indexPath.section] == .home_address {
             let count = viewModel.getOrigAddresses().count
@@ -495,6 +513,7 @@ extension ContactEditViewController: UITableViewDelegate {
                 return 180.0
             }
         }
+        
         return 48.0
     }
     
