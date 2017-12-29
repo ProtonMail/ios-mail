@@ -206,8 +206,10 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
     }
     
     func didChanged(textView: UITextView) {
+        UIView.setAnimationsEnabled(false)
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
+        UIView.setAnimationsEnabled(true)
     }
     
 }
@@ -474,7 +476,7 @@ extension ContactEditViewController: UITableViewDelegate {
         let sc = sections[section]
         if sc == .encrypted_header {
             cell.ConfigHeader(title: NSLocalizedString("Encrypted Contact Details", comment: "title"), signed: false)
-        } else if sc == .delete {
+        } else if sc == .delete || sc == .notes {
             return nil
         }
         return cell
@@ -497,6 +499,12 @@ extension ContactEditViewController: UITableViewDelegate {
         switch s {
         case .delete:
             return 60
+        case .notes:
+            if viewModel.isNew() {
+                return 0.0
+            } else {
+                return 0.0
+            }
         default:
             return 0.0
         }
