@@ -127,9 +127,10 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     }
     @IBAction func doneAction(_ sender: UIBarButtonItem) {
         dismissKeyboard()
-        ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+        let v : UIView = self.navigationController?.view ?? self.view
+        ActivityIndicatorHelper.showActivityIndicator(at: v)
         viewModel.done { (error : NSError?) in
-            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+            ActivityIndicatorHelper.hideActivityIndicator(at: v)
             if error == nil {
                 self.delegate?.updated()
                 self.dismiss(animated: true, completion: nil)
@@ -310,7 +311,7 @@ extension ContactEditViewController: UITableViewDataSource {
             let orgCount = viewModel.getOrigInformations().count
             if row == orgCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: NSLocalizedString("Add Information", comment: "action"))
+                cell.configCell(value: NSLocalizedString("Add new field", comment: "action"))
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
@@ -578,9 +579,10 @@ extension ContactEditViewController: UITableViewDelegate {
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Contact", comment: "Title-Contacts"), style: .destructive, handler: { (action) -> Void in
-                ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                let v : UIView = self.navigationController?.view ?? self.view
+                ActivityIndicatorHelper.showActivityIndicator(at: v)
                 self.viewModel.delete(complete: { (error) in
-                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                    ActivityIndicatorHelper.hideActivityIndicator(at: v)
                     if let err = error {
                         err.alertToast()
                     } else {
