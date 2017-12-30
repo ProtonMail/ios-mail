@@ -185,13 +185,13 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             return; //with error
         }
         for cell in cells {
-            let c = PMNITelephone.createInstance(cell.newType.rawValue, number: cell.newPhone)
+            let c = PMNITelephone.createInstance(cell.newType.vcardType, number: cell.newPhone)
             vcard3.add(c)
             isCard3Set = true
         }
         
         for addr in addresses {
-            let a = PMNIAddress.createInstance(addr.newType.rawValue,
+            let a = PMNIAddress.createInstance(addr.newType.vcardType,
                                                street: addr.newStreet,
                                                locality: addr.newLocality,
                                                region: addr.newRegion,
@@ -230,7 +230,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         }
         
         for field in fields{
-            let f = PMNIPMCustom.createInstance(field.newType.rawValue, value: field.newField)
+            let f = PMNIPMCustom.createInstance(field.newType.vcardType, value: field.newField)
             vcard3.add(f)
             isCard3Set = true
         }

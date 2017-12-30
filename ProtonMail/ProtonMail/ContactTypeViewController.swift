@@ -42,7 +42,7 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
         //self.displayNameField.delegate = self
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) { //TODO::
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
         
@@ -88,12 +88,12 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
             } else if index.section == 1 {
                 if let cell = self.tableView.cellForRow(at: index) {
                     if let addCell = cell as? ContactTypeAddCustomCell {
-                        type = ContactFieldType.get(raw: addCell.getValue(), section: .custom("CUSTOM"))
+                        type = ContactFieldType.get(raw: addCell.getValue())
                     } else {
-                        type = ContactFieldType.get(raw: cell.textLabel?.text ?? NSLocalizedString("Custom", comment: "custom label type default"), section: .custom("CUSTOM") )
+                        type = ContactFieldType.get(raw: cell.textLabel?.text ?? NSLocalizedString("Custom", comment: "custom label type default") )
                     }
                 } else {
-                    type = ContactFieldType.get(raw: NSLocalizedString("Custom", comment: "custom label type default"), section: .custom("CUSTOM") )
+                    type = ContactFieldType.get(raw: NSLocalizedString("Custom", comment: "custom label type default") )
                 }
             }
             viewModel.updateType(t: type)

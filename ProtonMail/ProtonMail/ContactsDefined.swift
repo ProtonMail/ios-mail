@@ -99,7 +99,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     
     //to
     func toContactEmail() -> ContactEmail {
-        return ContactEmail(e: newEmail, t: newType.rawValue)
+        return ContactEmail(e: newEmail, t: newType.vcardType)
     }
     
     func needsUpdate() -> Bool {

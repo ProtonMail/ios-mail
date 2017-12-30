@@ -46,7 +46,7 @@ class AddressBookService {
         if let email = email {
             filteredPeople.addObjects(from: addressBook.people(withEmail: email))
         }
-        
+
         return filteredPeople
     }
     

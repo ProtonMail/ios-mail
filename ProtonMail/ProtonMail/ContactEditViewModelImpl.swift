@@ -52,7 +52,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         for e in emails {
                             let types = e.getTypes()
                             let typeRaw = types.count > 0 ? types.first! : ""
-                            let type = ContactFieldType.get(raw: typeRaw, section: .email)
+                            let type = ContactFieldType.get(raw: typeRaw)
                             let ce = ContactEditEmail(order: order, type:type, email:e.getValue(), isNew: false)
                             self.emails.append(ce)
                             order += 1
@@ -68,7 +68,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         for e in emails {
                             let types = e.getTypes()
                             let typeRaw = types.count > 0 ? types.first! : ""
-                            let type = ContactFieldType.get(raw: typeRaw, section: .email)
+                            let type = ContactFieldType.get(raw: typeRaw)
                             let ce = ContactEditEmail(order: order, type:type, email:e.getValue(), isNew: false)
                             self.emails.append(ce)
                             order += 1
@@ -88,7 +88,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                 for t in telephones {
                                     let types = t.getTypes()
                                     let typeRaw = types.count > 0 ? types.first! : ""
-                                    let type = ContactFieldType.get(raw: typeRaw, section: .phone)
+                                    let type = ContactFieldType.get(raw: typeRaw)
                                     let cp = ContactEditPhone(order: order, type:type, phone:t.getText(), isNew:false)
                                     self.cells.append(cp)
                                     order += 1
@@ -100,7 +100,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                 for a in addresses {
                                     let types = a.getTypes()
                                     let typeRaw = types.count > 0 ? types.first! : ""
-                                    let type = ContactFieldType.get(raw: typeRaw, section: .address)
+                                    let type = ContactFieldType.get(raw: typeRaw)
 
                                     let pobox = a.getPoBoxes().joined(separator: ",")
                                     let street = a.getStreetAddress()
@@ -203,7 +203,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         var order : Int = 1
                         for t in customs {
                             let typeRaw = t.getType()
-                            let type = ContactFieldType.get(raw: typeRaw, section: .custom("CUSTOM"))
+                            let type = ContactFieldType.get(raw: typeRaw)
                             let cp = ContactEditField(order: order, type: type, field: t.getValue(), isNew:false)
                          self.fields.append(cp)
                             order += 1
@@ -410,7 +410,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             if let vcard3 = origvCard3 {
                 var newCells:[PMNITelephone] = []
                 for cell in cells {
-                    let c = PMNITelephone.createInstance(cell.newType.rawValue, number: cell.newPhone)!
+                    let c = PMNITelephone.createInstance(cell.newType.vcardType, number: cell.newPhone)!
                     newCells.append(c)
                     isCard3Set = true
                 }
@@ -423,7 +423,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 var newAddrs:[PMNIAddress] = []
                 for addr in addresses {
-                    let a = PMNIAddress.createInstance(addr.newType.rawValue,
+                    let a = PMNIAddress.createInstance(addr.newType.vcardType,
                                                        street: addr.newStreet,
                                                        locality: addr.newLocality,
                                                        region: addr.newRegion,
@@ -473,7 +473,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 
                 for field in fields{
-                    let f = PMNIPMCustom.createInstance(field.newType.rawValue, value: field.newField)
+                    let f = PMNIPMCustom.createInstance(field.newType.vcardType, value: field.newField)
                     vcard3.add(f)
                     isCard3Set = true
                 }

@@ -30,7 +30,7 @@ enum ContactFieldType {
     case empty
     case custom(String)
     
-    var rawValue : String {
+    var rawString : String {
         switch self {
         case .home:
             return "HOME"
@@ -48,9 +48,27 @@ enum ContactFieldType {
             return "FAX"
         case .address:
             return "ADDRESS"
-            
         //default
         case .empty:
+            return ""
+        case .custom(let value):
+            return value
+        }
+    }
+    
+    var vcardType : String {
+        switch self {
+        case .home:
+            return "HOME"
+        case .work:
+            return "WORK"
+        case .other:
+            return "OTHER"
+        case .mobile:
+            return "MOBILE"
+        case .fax:
+            return "FAX"
+        case .email, .address, .phone, .empty:
             return ""
         case .custom(let value):
             return value
@@ -70,7 +88,7 @@ enum ContactFieldType {
             return NSLocalizedString("Other", comment: "default vcard types")
             
         default:
-            return self.rawValue
+            return self.rawString
         }
     }
     
@@ -101,23 +119,23 @@ extension ContactFieldType {
     static func get(raw: String) -> ContactFieldType {
         let uper = raw.uppercased()
         switch uper {
-        case ContactFieldType.home.rawValue:
+        case ContactFieldType.home.rawString:
             return .home
-        case ContactFieldType.work.rawValue:
+        case ContactFieldType.work.rawString:
             return .work
-        case ContactFieldType.email.rawValue:
+        case ContactFieldType.email.rawString:
             return .email
-        case ContactFieldType.other.rawValue:
+        case ContactFieldType.other.rawString:
             return .other
-        case ContactFieldType.phone.rawValue:
+        case ContactFieldType.phone.rawString:
             return .phone
-        case ContactFieldType.mobile.rawValue:
+        case ContactFieldType.mobile.rawString:
             return .mobile
-        case ContactFieldType.fax.rawValue:
+        case ContactFieldType.fax.rawString:
             return .fax
-        case ContactFieldType.address.rawValue:
+        case ContactFieldType.address.rawString:
             return .address
-        case ContactFieldType.empty.rawValue:
+        case ContactFieldType.empty.rawString:
             return .empty
         default:
             return ContactFieldType.custom(raw)

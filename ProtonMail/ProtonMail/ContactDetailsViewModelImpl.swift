@@ -66,7 +66,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     for e in emails {
                         let types = e.getTypes()
                         let typeRaw = types.count > 0 ? types.first! : ""
-                        let type = ContactFieldType.get(raw: typeRaw, section: .email)
+                        let type = ContactFieldType.get(raw: typeRaw)
                         let ce = ContactEditEmail(order: order, type:type, email:e.getValue(), isNew: false)
                         origEmails.append(ce)
                         order += 1
@@ -85,7 +85,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     for e in emails {
                         let types = e.getTypes()
                         let typeRaw = types.count > 0 ? types.first! : ""
-                        let type = ContactFieldType.get(raw: typeRaw, section: .email)
+                        let type = ContactFieldType.get(raw: typeRaw)
                         let ce = ContactEditEmail(order: order, type:type, email:e.getValue(), isNew: false)
                         origEmails.append(ce)
                         order += 1
@@ -108,7 +108,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             for t in telephones {
                                 let types = t.getTypes()
                                 let typeRaw = types.count > 0 ? types.first! : ""
-                                let type = ContactFieldType.get(raw: typeRaw, section: .phone)
+                                let type = ContactFieldType.get(raw: typeRaw)
                                 let cp = ContactEditPhone(order: order, type:type, phone:t.getText(), isNew: false)
                                 origTelephons.append(cp)
                                 order += 1
@@ -120,7 +120,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             for a in addresses {
                                 let types = a.getTypes()
                                 let typeRaw = types.count > 0 ? types.first! : ""
-                                let type = ContactFieldType.get(raw: typeRaw, section: .address)
+                                let type = ContactFieldType.get(raw: typeRaw)
                                 let pobox = a.getPoBoxes().joined(separator: ",")
                                 let street = a.getStreetAddress()
                                 //let extention =
@@ -222,7 +222,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     var order : Int = 1
                     for t in customs {
                         let typeRaw = t.getType()
-                        let type = ContactFieldType.get(raw: typeRaw, section: .custom("CUSTOM"))
+                        let type = ContactFieldType.get(raw: typeRaw)
                         let cp = ContactEditField(order: order, type: type, field: t.getValue(), isNew: false)
                         origFields.append(cp)
                         order += 1
