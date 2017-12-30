@@ -31,7 +31,7 @@ final class ContactEditPhoneCell: UITableViewCell {
     func configCell(obj : ContactEditPhone, callback : ContactEditCellDelegate?) {
         self.phone = obj
         
-        typeLabel.text = self.phone.newType
+        typeLabel.text = self.phone.newType.title
         valueField.text = self.phone.newPhone
         
         self.delegate = callback

@@ -11,10 +11,10 @@ import Foundation
 
 
 protocol ContactEditTypeInterface {
-    func getCurrentType() -> String
+    func getCurrentType() -> ContactFieldType
     func getSectionType() -> ContactEditSectionType
-    func updateType(type: String) -> Void
-    func types() -> [String]
+    func updateType(type: ContactFieldType) -> Void
+    func types() -> [ContactFieldType]
     func needsUpdate() -> Bool
 }
 
@@ -58,29 +58,18 @@ final class ContactEditProfile {
 }
 
 
-//email part
-enum ContactEmailType : String {
-    case Home = "Home"
-    case Work = "Work"
-    case Email = "Email"
-    case Other = "Other"
-    static let allValues = [Home.rawValue,
-                            Work.rawValue,
-                            Email.rawValue,
-                            Other.rawValue] as [String]
-}
 
 final class ContactEditEmail: ContactEditTypeInterface {
     var origOrder : Int = 0
-    var origType : String = ""
+    var origType : ContactFieldType = .empty
     var origEmail : String = ""
     var isNew : Bool = false
     
     var newOrder : Int = 0
-    var newType : String = ""
+    var newType : ContactFieldType = .empty
     var newEmail : String = ""
     
-    init(order: Int, type: String, email: String, isNew: Bool) {
+    init(order: Int, type: ContactFieldType, email: String, isNew: Bool) {
         self.newOrder = order
         self.newType = type
         self.newEmail = email
@@ -94,23 +83,23 @@ final class ContactEditEmail: ContactEditTypeInterface {
     }
     
     //
-    func getCurrentType() -> String {
+    func getCurrentType() -> ContactFieldType {
         return newType
     }
     func getSectionType() -> ContactEditSectionType {
         return .emails
     }
-    func updateType(type: String) -> Void {
+    func updateType(type: ContactFieldType) -> Void {
         newType = type
     }
     
-    func types() -> [String] {
-        return ContactEmailType.allValues
+    func types() -> [ContactFieldType] {
+        return ContactFieldType.emailTypes
     }
     
     //to
     func toContactEmail() -> ContactEmail {
-        return ContactEmail(e: newEmail, t: newType)
+        return ContactEmail(e: newEmail, t: newType.rawValue)
     }
     
     func needsUpdate() -> Bool {
@@ -126,51 +115,17 @@ final class ContactEditEmail: ContactEditTypeInterface {
     }
 }
 
-class staticStrings {
-    static let home = NSLocalizedString("Home", comment: "default vcard types")
-    static let work = NSLocalizedString("Work", comment: "default vcard types")
-    static let mobile = NSLocalizedString("Mobile", comment: "default vcard types")
-    static let email = NSLocalizedString("Email", comment: "default vcard types")
-    static let main = NSLocalizedString("Main", comment: "default vcard types")
-    static let homefax = NSLocalizedString("Home Fax", comment: "default vcard types")
-    static let workfax = NSLocalizedString("Work Fax", comment: "default vcard types")
-    static let other = NSLocalizedString("Other", comment: "default vcard types")
-    static let voice = NSLocalizedString("Voice", comment: "default vcard types")
-    static let fax = NSLocalizedString("Fax", comment: "default vcard types")
-    
-}
-
-
-//phone part
-enum ContactPhoneType : String {
-    case Home = "Home"
-    case Work = "Work"
-    case Mobile = "Mobile"
-    case iPhone = "Email"
-    case Main = "Main"
-    case FHome = "Home Fax"
-    case FWork = "Work Fax"
-    case Other = "Other"
-    static let allValues = [Home.rawValue,
-                            Work.rawValue,
-                            Mobile.rawValue,
-                            iPhone.rawValue,
-                            Main.rawValue,
-                            FHome.rawValue,
-                            FWork.rawValue,
-                            Other.rawValue] as [String]
-}
 final class ContactEditPhone: ContactEditTypeInterface {
     var origOrder : Int = 0
-    var origType : String = ""
+    var origType : ContactFieldType = .empty
     var origPhone : String = ""
     var isNew : Bool = false
     
     var newOrder : Int = 0
-    var newType : String = ""
+    var newType : ContactFieldType = .empty
     var newPhone : String = ""
     
-    init(order: Int, type: String, phone:String, isNew: Bool) {
+    init(order: Int, type: ContactFieldType, phone:String, isNew: Bool) {
         self.newType = type
         self.newOrder = order
         self.origOrder = self.newOrder
@@ -183,17 +138,17 @@ final class ContactEditPhone: ContactEditTypeInterface {
     }
     
     //
-    func getCurrentType() -> String {
+    func getCurrentType() -> ContactFieldType {
         return newType
     }
     func getSectionType() -> ContactEditSectionType {
         return .cellphone
     }
-    func updateType(type: String) -> Void {
+    func updateType(type: ContactFieldType) -> Void {
         newType = type
     }
-    func types() -> [String] {
-        return ContactPhoneType.allValues
+    func types() -> [ContactFieldType] {
+        return ContactFieldType.phoneTypes
     }
     
     func needsUpdate() -> Bool {
@@ -210,17 +165,9 @@ final class ContactEditPhone: ContactEditTypeInterface {
 }
 
 //address
-enum ContactAddressType : String {
-    case Home = "Home"
-    case Work = "Work"
-    case Other = "Other"
-    static let allValues = [Home.rawValue,
-                            Work.rawValue,
-                            Other.rawValue] as [String]
-}
 final class ContactEditAddress: ContactEditTypeInterface {
     var origOrder : Int = 0
-    var origType : String = ""
+    var origType : ContactFieldType = .empty
     var origPoxbox : String = ""
     var origStreet : String = ""
     var origLocality : String = ""
@@ -230,7 +177,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
     var isNew : Bool = false
     
     var newOrder : Int = 0
-    var newType : String = ""
+    var newType : ContactFieldType = .empty
     var newPoxbox : String = ""
     var newStreet : String = ""
     var newLocality : String = ""
@@ -238,7 +185,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
     var newPostal : String = ""
     var newCountry : String = ""
     
-    init(order: Int, type: String,
+    init(order: Int, type: ContactFieldType,
          pobox: String, street: String, locality: String,
          region: String, postal: String, country: String, isNew: Bool) {
         
@@ -265,22 +212,22 @@ final class ContactEditAddress: ContactEditTypeInterface {
         }
     }
     
-    convenience init(order: Int, type: String) {
+    convenience init(order: Int, type: ContactFieldType) {
         self.init(order: order, type: type, pobox: "", street: "", locality: "", region: "", postal: "", country: "", isNew: true)
     }
     
     //
-    func getCurrentType() -> String {
+    func getCurrentType() -> ContactFieldType {
         return newType
     }
     func getSectionType() -> ContactEditSectionType {
         return .home_address
     }
-    func updateType(type: String) -> Void {
+    func updateType(type: ContactFieldType) -> Void {
         newType = type
     }
-    func types() -> [String] {
-        return ContactAddressType.allValues
+    func types() -> [ContactFieldType] {
+        return ContactFieldType.addrTypes
     }
     
     func fullAddress() -> String {
@@ -356,25 +303,17 @@ final class ContactEditInformation: ContactEditNoTypeInterface {
 }
 
 //custom field
-enum ContactFieldType : String {
-    case Home = "Home"
-    case Work = "Work"
-    case Other = "Other"
-    static let allValues = [Home.rawValue,
-                            Work.rawValue,
-                            Other.rawValue] as [String]
-}
 final class ContactEditField: ContactEditTypeInterface {
     var origOrder : Int = 0
-    var origType : String = ""
+    var origType : ContactFieldType = .empty
     var origField : String = ""
     var isNew : Bool = false
     
     var newOrder : Int = 0
-    var newType : String = ""
+    var newType : ContactFieldType = .empty
     var newField : String = ""
     
-    init(order: Int, type: String, field:String, isNew: Bool) {
+    init(order: Int, type: ContactFieldType, field:String, isNew: Bool) {
         self.newType = type
         self.newOrder = order
         self.newField = field
@@ -388,21 +327,21 @@ final class ContactEditField: ContactEditTypeInterface {
     }
     
     //
-    func getCurrentType() -> String {
+    func getCurrentType() -> ContactFieldType {
         return newType
     }
     func getSectionType() -> ContactEditSectionType {
         return .custom_field
     }
-    func updateType(type: String) -> Void {
+    func updateType(type: ContactFieldType) -> Void {
         newType = type
     }
-    func types() -> [String] {
-        return ContactFieldType.allValues
+    func types() -> [ContactFieldType] {
+        return ContactFieldType.fieldTypes
     }
     
     func needsUpdate() -> Bool {
-        if isNew && self.newField.isEmpty && self.newType.isEmpty {
+        if isNew && self.newField.isEmpty && self.newType == .empty {
             return false
         }
         if origOrder == newOrder &&

@@ -94,6 +94,27 @@ class ContactEditViewModel {
         return out
     }
     
+    func pick(newType supported: [ContactFieldType], pickedTypes: [ContactEditTypeInterface]) -> ContactFieldType {
+        //TODO:: need to check the size
+        var newType = supported[0] //get default
+        for type in supported {
+            var found = false
+            for e in pickedTypes {
+                if e.getCurrentType() == type {
+                    found = true
+                    break
+                }
+            }
+            
+            if !found {
+                newType = type
+                break
+            }
+        }
+        return newType
+    }
+    
+    
     func getOrigInformations() -> [ContactEditInformation] {
         fatalError("This method must be overridden")
     }

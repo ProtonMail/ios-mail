@@ -87,6 +87,9 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
+        var insets = self.tableView.contentInset
+        insets.bottom = 100
+        self.tableView.contentInset = insets
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -204,20 +207,20 @@ extension ContactDetailViewController: UITableViewDataSource {
         case .emails:
             let emails = viewModel.getOrigEmails()
             let email = emails[row]
-            cell.configCell(title: email.newType, value: email.newEmail)
+            cell.configCell(title: email.newType.title, value: email.newEmail)
             cell.selectionStyle = .default
         case .encrypted_header:
             assert(false, "Code should not be here")
         case .cellphone:
             let cells = viewModel.getOrigCells()
             let tel = cells[row]
-            cell.configCell(title: tel.newType, value: tel.newPhone)
+            cell.configCell(title: tel.newType.title, value: tel.newPhone)
             cell.selectionStyle = .default
             break
         case .home_address:
             let addrs = viewModel.getOrigAddresses()
             let addr = addrs[row]
-            cell.configCell(title: addr.newType, value: addr.fullAddress())
+            cell.configCell(title: addr.newType.title, value: addr.fullAddress())
             cell.selectionStyle = .default
             break
         case .information:
@@ -229,7 +232,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         case .custom_field:
             let fields = viewModel.getOrigFields()
             let field = fields[row]
-            cell.configCell(title: field.newType, value: field.newField)
+            cell.configCell(title: field.newType.title, value: field.newField)
             cell.selectionStyle = .default
             break
         case .notes:

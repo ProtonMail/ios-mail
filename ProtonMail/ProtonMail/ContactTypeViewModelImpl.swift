@@ -15,32 +15,30 @@ class ContactTypeViewModelImpl : ContactTypeViewModel {
         self.typeInterface = t
     }
     
-    override func getPickedType() -> String {
+    override func getPickedType() -> ContactFieldType {
         return typeInterface.getCurrentType()
     }
 
-    override func getDefinedTypes() -> [String] {
+    override func getDefinedTypes() -> [ContactFieldType] {
         return typeInterface.types()
     }
     
-    override func getCustomType() -> String {
+    override func getCustomType() -> ContactFieldType {
         let type = typeInterface.getCurrentType()
-        if type != "" {
-            let types = getDefinedTypes()
-            if let _ = types.index(of: type) {
-
-            } else {
-                return type
-            }
+        let types = getDefinedTypes()
+        if let _ = types.index(of: type) {
+            
+        } else {
+            return type
         }
-        return ""
+        return .empty
     }
     
     override func getSectionType() -> ContactEditSectionType {
         return typeInterface.getSectionType()
     }
     
-    override func updateType(t: String) {
+    override func updateType(t: ContactFieldType) {
         typeInterface.updateType(type: t)
     }
     

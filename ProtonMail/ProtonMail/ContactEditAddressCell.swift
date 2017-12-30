@@ -51,7 +51,7 @@ final class ContactEditAddressCell: UITableViewCell {
     func configCell(obj : ContactEditAddress, callback : ContactEditCellDelegate?) {
         self.addr = obj
         
-        typeLabel.text = self.addr.newType
+        typeLabel.text = self.addr.newType.title
         valueField.text = self.addr.newStreet
         
         cityField.text = self.addr.newLocality

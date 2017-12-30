@@ -136,7 +136,7 @@ final class ContactEmail : Package {
     let type : String
 
     // e email  //    "Email": "feng@protonmail.com",
-    // t type   //    "Type": "Email"
+    // t type   //    "Type": "Email" //This type is raw value it is vcard type!!!
     init(e : String, t: String) {
         self.email = e
         self.type = t

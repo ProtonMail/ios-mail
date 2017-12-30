@@ -72,30 +72,11 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     override func getProfile() -> ContactEditProfile {
         return profile
     }
-    
-    func getNewType(types: [String], typeInterfaces: [ContactEditTypeInterface]) -> String {
-        var newType = types[0]
-        for type in types {
-            var found = false
-            for e in typeInterfaces {
-                if e.getCurrentType() == type {
-                    found = true
-                    break
-                }
-            }
-            
-            if !found {
-                newType = type
-                break
-            }
-        }
-        return newType
-    }
-    
+
     //new functions
     override func newEmail() -> ContactEditEmail {
-        let newType = getNewType(types: ContactEmailType.allValues, typeInterfaces: emails)
-        let email = ContactEditEmail(order: emails.count, type: newType, email:"", isNew: true)
+        let type = pick(newType: ContactFieldType.emailTypes, pickedTypes: emails)
+        let email = ContactEditEmail(order: emails.count, type: type, email:"", isNew: true)
         emails.append(email)
         return email
     }
@@ -107,8 +88,8 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     
     override func newPhone() -> ContactEditPhone {
-        let newType = getNewType(types: ContactPhoneType.allValues, typeInterfaces: cells)
-        let cell = ContactEditPhone(order: emails.count, type: newType, phone:"", isNew: true)
+        let type = pick(newType: ContactFieldType.phoneTypes, pickedTypes: cells)
+        let cell = ContactEditPhone(order: emails.count, type: type, phone:"", isNew: true)
         cells.append(cell)
         return cell
     }
@@ -120,8 +101,8 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     
     override func newAddress() -> ContactEditAddress {
-        let newType = getNewType(types: ContactAddressType.allValues, typeInterfaces: addresses)
-        let addr = ContactEditAddress(order: emails.count, type: newType)
+        let type = pick(newType: ContactFieldType.addrTypes, pickedTypes: addresses)
+        let addr = ContactEditAddress(order: emails.count, type: type)
         addresses.append(addr)
         return addr
     }
@@ -145,8 +126,8 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     
     override func newField() -> ContactEditField {
-        let newType = getNewType(types: ContactFieldType.allValues, typeInterfaces: fields)
-        let field = ContactEditField(order: emails.count, type: newType, field:"", isNew: true)
+        let type = pick(newType: ContactFieldType.fieldTypes, pickedTypes: fields)
+        let field = ContactEditField(order: emails.count, type: type, field:"", isNew: true)
         fields.append(field)
         return field
     }
@@ -204,13 +185,13 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             return; //with error
         }
         for cell in cells {
-            let c = PMNITelephone.createInstance(cell.newType, number: cell.newPhone)
+            let c = PMNITelephone.createInstance(cell.newType.rawValue, number: cell.newPhone)
             vcard3.add(c)
             isCard3Set = true
         }
         
         for addr in addresses {
-            let a = PMNIAddress.createInstance(addr.newType,
+            let a = PMNIAddress.createInstance(addr.newType.rawValue,
                                                street: addr.newStreet,
                                                locality: addr.newLocality,
                                                region: addr.newRegion,
@@ -249,13 +230,10 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         }
         
         for field in fields{
-            let f = PMNIPMCustom.createInstance(field.newType, value: field.newField)
+            let f = PMNIPMCustom.createInstance(field.newType.rawValue, value: field.newField)
             vcard3.add(f)
             isCard3Set = true
         }
-        //            override func getProfile() -> ContactEditProfile {
-        //                return profile
-        //            }
         
         vcard3.setUid(uuid)
         
