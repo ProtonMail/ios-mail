@@ -106,6 +106,9 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
+        var insets = self.tableView.contentInset
+        insets.bottom = 100
+        self.tableView.contentInset = insets
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -229,6 +232,11 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
         UIView.setAnimationsEnabled(true)
+//        if let active = self.activeText, active == textView {
+//            if let cell = textView.superview?.superview as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell) {
+//                self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+//            }
+//        }
     }
     
 }
@@ -426,6 +434,8 @@ extension ContactEditViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        dismissKeyboard()
+
         let section = indexPath.section
         let row = indexPath.row
         let sections = self.viewModel.getSections()
@@ -434,10 +444,13 @@ extension ContactEditViewController: UITableViewDataSource {
             switch s {
             case .emails:
                 let _ = self.viewModel.newEmail()
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .cellphone:
                 let _ = self.viewModel.newPhone()
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .home_address:
                 let _ = self.viewModel.newAddress()
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .information:
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
@@ -446,8 +459,7 @@ extension ContactEditViewController: UITableViewDataSource {
                 for t in infoTypes {
                     alertController.addAction(UIAlertAction(title: t.desc, style: .default, handler: { (action) -> Void in
                         let _ = self.viewModel.newInformation(type: t)
-                        tableView.reloadSections([section], with: .automatic)
-                        tableView.deselectRow(at: indexPath, animated: true)
+                        self.tableView.insertRows(at: [indexPath], with: .automatic)
                     }))
                 }
                 
@@ -457,6 +469,7 @@ extension ContactEditViewController: UITableViewDataSource {
                 present(alertController, animated: true, completion: nil)
             case .custom_field:
                 let _ = self.viewModel.newField()
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             default:
                 break
             }
@@ -465,22 +478,23 @@ extension ContactEditViewController: UITableViewDataSource {
             switch s {
             case .emails:
                 self.viewModel.deleteEmail(at: row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             case .cellphone:
                 self.viewModel.deletePhone(at: row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             case .home_address:
                 self.viewModel.deleteAddress(at: row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             case .information:
                 self.viewModel.deleteInformation(at: row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             case .custom_field:
                 self.viewModel.deleteField(at: row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             default:
                 break
             }
         }
-        dismissKeyboard()
-        
-        tableView.reloadSections([section], with: .automatic)
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
@@ -517,7 +531,7 @@ extension ContactEditViewController: UITableViewDelegate {
         let s = sections[section]
         switch s {
         case .delete:
-            return 60
+            return 0.0
         case .notes:
             if viewModel.isNew() {
                 return 0.0
@@ -550,6 +564,9 @@ extension ContactEditViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dismissKeyboard()
+        tableView.deselectRow(at: indexPath, animated: true)
+        
         let sections = viewModel.getSections()
         let section = indexPath.section
         let row = indexPath.row
@@ -561,6 +578,7 @@ extension ContactEditViewController: UITableViewDelegate {
             let emailCount = viewModel.getOrigEmails().count
             if row == emailCount {
                 let _ = viewModel.newEmail()
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .encrypted_header:
             assert(false, "Code should not be here")
@@ -568,28 +586,27 @@ extension ContactEditViewController: UITableViewDelegate {
             let cellCount = viewModel.getOrigCells().count
             if row == cellCount {
                 let _ = viewModel.newPhone()
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .home_address:
             let addrCount = viewModel.getOrigAddresses().count
             if row == addrCount {
                 let _ = viewModel.newAddress()
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .information:
             let orgCount = viewModel.getOrigInformations().count
             if row == orgCount {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
-                
                 //get left info types
                 let infoTypes = viewModel.getLeftInfoTypes()
                 for t in infoTypes {
                     alertController.addAction(UIAlertAction(title: t.desc, style: .default, handler: { (action) -> Void in
                         let _ = self.viewModel.newInformation(type: t)
-                        tableView.reloadSections([section], with: .automatic)
-                        tableView.deselectRow(at: indexPath, animated: true)
+                        self.tableView.insertRows(at: [indexPath], with: .automatic)
                     }))
                 }
-                
                 let sender = tableView.cellForRow(at: indexPath)
                 alertController.popoverPresentationController?.sourceView = sender ?? self.view
                 alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
@@ -599,6 +616,7 @@ extension ContactEditViewController: UITableViewDelegate {
             let fieldCount = viewModel.getOrigFields().count
             if row == fieldCount {
                 let _ = viewModel.newField()
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .notes:
             assert(true, "Code should not be here")
@@ -625,10 +643,6 @@ extension ContactEditViewController: UITableViewDelegate {
             present(alertController, animated: true, completion: nil)
         }
         
-        dismissKeyboard()
-        
-        tableView.reloadSections([section], with: .automatic)
-        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }
