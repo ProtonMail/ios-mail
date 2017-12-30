@@ -86,11 +86,19 @@ enum ContactFieldType {
             return NSLocalizedString("Email", comment: "default vcard types")
         case .other:
             return NSLocalizedString("Other", comment: "default vcard types")
-            
+        case .phone:
+            return NSLocalizedString("Phone", comment: "default vcard types")
+        case .mobile:
+            return NSLocalizedString("Mobile", comment: "default vcard types")
+        case .fax:
+            return NSLocalizedString("Fax", comment: "default vcard types")
+        case .address:
+            return NSLocalizedString("Address", comment: "default vcard types")
         default:
             return self.rawString
         }
     }
+
     
     var isCustom: Bool {
         switch self {
@@ -193,20 +201,4 @@ extension ContactFieldType {
     static let fieldTypes : [ContactFieldType] = [ .other ]
     
 }
-
-
-//
-//class staticStrings {
-//    static let home = NSLocalizedString("Home", comment: "default vcard types")
-//    static let work = NSLocalizedString("Work", comment: "default vcard types")
-//    static let mobile = NSLocalizedString("Mobile", comment: "default vcard types")
-//    static let email = NSLocalizedString("Email", comment: "default vcard types")
-//    static let main = NSLocalizedString("Main", comment: "default vcard types")
-//    static let homefax = NSLocalizedString("Home Fax", comment: "default vcard types")
-//    static let workfax = NSLocalizedString("Work Fax", comment: "default vcard types")
-//    static let other = NSLocalizedString("Other", comment: "default vcard types")
-//    static let voice = NSLocalizedString("Voice", comment: "default vcard types")
-//    static let fax = NSLocalizedString("Fax", comment: "default vcard types")
-//
-//}
 

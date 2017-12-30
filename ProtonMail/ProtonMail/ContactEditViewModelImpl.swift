@@ -53,7 +53,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                             let types = e.getTypes()
                             let typeRaw = types.count > 0 ? types.first! : ""
                             let type = ContactFieldType.get(raw: typeRaw)
-                            let ce = ContactEditEmail(order: order, type:type, email:e.getValue(), isNew: false)
+                            let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -69,7 +69,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                             let types = e.getTypes()
                             let typeRaw = types.count > 0 ? types.first! : ""
                             let type = ContactFieldType.get(raw: typeRaw)
-                            let ce = ContactEditEmail(order: order, type:type, email:e.getValue(), isNew: false)
+                            let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -89,7 +89,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                     let types = t.getTypes()
                                     let typeRaw = types.count > 0 ? types.first! : ""
                                     let type = ContactFieldType.get(raw: typeRaw)
-                                    let cp = ContactEditPhone(order: order, type:type, phone:t.getText(), isNew:false)
+                                    let cp = ContactEditPhone(order: order, type:type == .empty ? .phone : type, phone:t.getText(), isNew:false)
                                     self.cells.append(cp)
                                     order += 1
                                 }
@@ -110,7 +110,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                     let postal = a.getPostalCode()
                                     let country = a.getCountry()
                                     
-                                    let ca = ContactEditAddress(order: order, type: type, pobox: pobox, street: street,
+                                    let ca = ContactEditAddress(order: order, type: type == .empty ? .address : type, pobox: pobox, street: street,
                                                                 locality: locality, region: region,
                                                                 postal: postal, country: country, isNew: false)
                                     self.addresses.append(ca)
