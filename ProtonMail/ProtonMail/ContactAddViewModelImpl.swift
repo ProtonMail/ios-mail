@@ -26,7 +26,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     var addresses : [ContactEditAddress] = []
     var informations: [ContactEditInformation] = []
     var fields : [ContactEditField] = []
-    var notes : ContactEditNote = ContactEditNote(n_note: "")
+    var notes : ContactEditNote = ContactEditNote(note: "", isNew: true)
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
     
     override init() {

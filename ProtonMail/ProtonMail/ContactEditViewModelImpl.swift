@@ -27,7 +27,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     var addresses : [ContactEditAddress] = []
     var informations : [ContactEditInformation] = []
     var fields : [ContactEditField] = []
-    var notes : ContactEditNote = ContactEditNote(n_note: "")
+    var notes : ContactEditNote = ContactEditNote(note: "", isNew: false)
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
     
     var origvCard2 : PMNIVCard?
@@ -205,7 +205,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         }
                         
                         if let note = vcard.getNote() {
-                            let n = ContactEditNote(n_note: note.getNote())
+                            let n = ContactEditNote(note: note.getNote(), isNew: false)
                             n.isNew = false
                             self.notes = n
                         }

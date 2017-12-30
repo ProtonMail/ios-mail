@@ -224,7 +224,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     }
                     
                     if let note = vcard.getNote() {
-                        let n = ContactEditNote(n_note: note.getNote())
+                        let n = ContactEditNote(note: note.getNote(), isNew: false)
                         n.isNew = false
                         origNotes.append(n)
                         

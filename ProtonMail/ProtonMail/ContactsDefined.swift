@@ -419,9 +419,12 @@ final class ContactEditNote {
     var isNew : Bool = false
     
     var newNote : String = ""
-    init(n_note:String) {
-        self.newNote = n_note
-        self.isNew = true
+    init(note:String, isNew: Bool) {
+        self.newNote = note
+        self.isNew = isNew
+        if !self.isNew {
+            self.origNote = self.newNote
+        }
     }
     
     func needsUpdate() -> Bool {
