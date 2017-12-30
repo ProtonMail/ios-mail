@@ -47,7 +47,7 @@ final class ContactEditProfile {
     }
     
     func needsUpdate() -> Bool {
-        if isNew {
+        if isNew && newDisplayName.isEmpty {
             return false
         }
         if origDisplayName == newDisplayName {
@@ -80,23 +80,17 @@ final class ContactEditEmail: ContactEditTypeInterface {
     var newType : String = ""
     var newEmail : String = ""
     
-    init(n_order: Int, n_type: String, n_email:String) {
-        self.newType = n_type
-        self.newOrder = n_order
-        self.newEmail = n_email
-        self.isNew = true
-    }
-    
-    init(o_order: Int, o_type: String, o_email: String) {
-        self.origOrder = o_order
-        self.origType = o_type
-        self.origEmail = o_email
+    init(order: Int, type: String, email: String, isNew: Bool) {
+        self.newOrder = order
+        self.newType = type
+        self.newEmail = email
+        self.origOrder = self.newOrder
         
-        self.newOrder = o_order
-        self.newType = o_type
-        self.newEmail = o_email
-        
-        self.isNew = false
+        self.isNew = isNew
+        if !self.isNew {
+            self.origType = self.newType
+            self.origEmail = self.newEmail
+        }
     }
     
     //
@@ -120,7 +114,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     }
     
     func needsUpdate() -> Bool {
-        if isNew {
+        if isNew && newEmail.isEmpty {
             return false
         }
         if origOrder == newOrder &&
@@ -176,11 +170,16 @@ final class ContactEditPhone: ContactEditTypeInterface {
     var newType : String = ""
     var newPhone : String = ""
     
-    init(n_order: Int, n_type: String, n_phone:String) {
-        self.newType = n_type
-        self.newOrder = n_order
-        self.newPhone = n_phone
-        self.isNew = true
+    init(order: Int, type: String, phone:String, isNew: Bool) {
+        self.newType = type
+        self.newOrder = order
+        self.origOrder = self.newOrder
+        self.newPhone = phone
+        self.isNew = isNew
+        if !self.isNew {
+            self.origType = self.newType
+            self.origPhone = self.newPhone
+        }
     }
     
     //
@@ -198,7 +197,7 @@ final class ContactEditPhone: ContactEditTypeInterface {
     }
     
     func needsUpdate() -> Bool {
-        if isNew {
+        if isNew && newPhone.isEmpty {
             return false
         }
         if origOrder == newOrder &&
@@ -244,6 +243,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
          region: String, postal: String, country: String, isNew: Bool) {
         
         self.newOrder = order
+        self.origOrder = self.newOrder
         self.newType = type
         self.newPoxbox = pobox
         self.newStreet = street
@@ -255,7 +255,6 @@ final class ContactEditAddress: ContactEditTypeInterface {
         self.isNew = isNew
         
         if !self.isNew {
-            self.origOrder = self.newOrder
             self.origType = self.newType
             self.origPoxbox = self.newPoxbox
             self.origStreet = self.newStreet
@@ -269,8 +268,6 @@ final class ContactEditAddress: ContactEditTypeInterface {
     convenience init(order: Int, type: String) {
         self.init(order: order, type: type, pobox: "", street: "", locality: "", region: "", postal: "", country: "", isNew: true)
     }
-    
-    
     
     //
     func getCurrentType() -> String {
@@ -306,12 +303,24 @@ final class ContactEditAddress: ContactEditTypeInterface {
     }
     
     func needsUpdate() -> Bool {
-        if isNew {
+        if isNew &&
+            self.newPoxbox.isEmpty &&
+            self.newStreet.isEmpty &&
+            self.newLocality.isEmpty &&
+            self.newRegion.isEmpty &&
+            self.newPostal.isEmpty &&
+            self.newCountry.isEmpty {
             return false
         }
-        if origOrder == newOrder &&
-            origType == newType &&
-            origStreet == newStreet {
+        
+        if  self.origType == self.newType &&
+            self.origPoxbox == self.newPoxbox &&
+            self.origStreet == self.newStreet &&
+            self.origLocality == self.newLocality &&
+            self.origRegion == self.newRegion &&
+            self.origPostal == self.newPostal &&
+            self.origCountry == self.newCountry &&
+            self.origOrder == self.newOrder {
             return false
         }
         return true
@@ -336,10 +345,10 @@ final class ContactEditInformation: ContactEditNoTypeInterface {
         return .information
     }
     func needsUpdate() -> Bool {
-        if isNew {
+        if isNew && newValue.isEmpty {
             return false
         }
-        if origValue == origValue {
+        if self.origValue == self.newValue {
             return false
         }
         return true
@@ -365,11 +374,17 @@ final class ContactEditField: ContactEditTypeInterface {
     var newType : String = ""
     var newField : String = ""
     
-    init(n_order: Int, n_type: String, n_field:String) {
-        self.newType = n_type
-        self.newOrder = n_order
-        self.newField = n_field
-        self.isNew = true
+    init(order: Int, type: String, field:String, isNew: Bool) {
+        self.newType = type
+        self.newOrder = order
+        self.newField = field
+        self.isNew = isNew
+        self.origOrder = self.newOrder
+        
+        if !self.isNew {
+            self.origType = self.newType
+            self.origField = self.newField
+        }
     }
     
     //
@@ -387,7 +402,7 @@ final class ContactEditField: ContactEditTypeInterface {
     }
     
     func needsUpdate() -> Bool {
-        if isNew {
+        if isNew && self.newField.isEmpty && self.newType.isEmpty {
             return false
         }
         if origOrder == newOrder &&
@@ -410,10 +425,10 @@ final class ContactEditNote {
     }
     
     func needsUpdate() -> Bool {
-        if isNew {
+        if isNew && self.newNote.isEmpty {
             return false
         }
-        if origNote == newNote {
+        if self.origNote == self.newNote {
             return false
         }
         return true

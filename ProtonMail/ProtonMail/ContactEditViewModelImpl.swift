@@ -52,7 +52,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         for e in emails {
                             let types = e.getTypes()
                             let type = types.count > 0 ? types.first! : ""
-                            let ce = ContactEditEmail(n_order: order, n_type:type, n_email:e.getValue())
+                            let ce = ContactEditEmail(order: order, type:type, email:e.getValue(), isNew: false)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -67,7 +67,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         for e in emails {
                             let types = e.getTypes()
                             let type = types.count > 0 ? types.first! : ""
-                            let ce = ContactEditEmail(n_order: order, n_type:type, n_email:e.getValue())
+                            let ce = ContactEditEmail(order: order, type:type, email:e.getValue(), isNew: false)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -86,7 +86,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                 for t in telephones {
                                     let types = t.getTypes()
                                     let type = types.count > 0 ? types.first! : ""
-                                    let cp = ContactEditPhone(n_order: order, n_type:type, n_phone:t.getText())
+                                    let cp = ContactEditPhone(order: order, type:type, phone:t.getText(), isNew:false)
                                     self.cells.append(cp)
                                     order += 1
                                 }
@@ -199,7 +199,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         var order : Int = 1
                         for t in customs {
                             let type = t.getType()
-                            let cp = ContactEditField(n_order: order, n_type: type, n_field: t.getValue() )
+                            let cp = ContactEditField(order: order, type: type, field: t.getValue(), isNew:false)
                          self.fields.append(cp)
                             order += 1
                         }
@@ -300,7 +300,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     //new functions
     override func newEmail() -> ContactEditEmail {
         let newType = getNewType(types: ContactEmailType.allValues, typeInterfaces: emails)
-        let email = ContactEditEmail(n_order: emails.count, n_type: newType, n_email:"")
+        let email = ContactEditEmail(order: emails.count, type: newType, email:"", isNew: true)
         emails.append(email)
         return email
     }
@@ -313,7 +313,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     
     override func newPhone() -> ContactEditPhone {
         let newType = getNewType(types: ContactPhoneType.allValues, typeInterfaces: cells)
-        let cell = ContactEditPhone(n_order: emails.count, n_type: newType, n_phone:"")
+        let cell = ContactEditPhone(order: emails.count, type: newType, phone:"", isNew:true)
         cells.append(cell)
         return cell
     }
@@ -351,7 +351,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     
     override func newField() -> ContactEditField {
         let newType = getNewType(types: ContactFieldType.allValues, typeInterfaces: fields)
-        let field = ContactEditField(n_order: emails.count, n_type: newType, n_field:"")
+        let field = ContactEditField(order: emails.count, type: newType, field:"", isNew:true)
         fields.append(field)
         return field
     }

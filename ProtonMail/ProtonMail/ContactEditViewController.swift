@@ -119,7 +119,26 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
         dismissKeyboard()
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        
+        //show confirmation first if anything changed
+        if self.viewModel.needsUpdate() {
+            let alertController = UIAlertController(title: NSLocalizedString("Do you want to save the unsaved changes?", comment: "Title"),
+                                                    message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save", comment: "Action"), style: .default, handler: { (action) -> Void in
+                //save and dismiss
+                self.doneAction(self.doneItem)
+            }))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard changes", comment: "Action"), style: .destructive, handler: { (action) -> Void in
+                //discard and dismiss
+                self.dismiss(animated: true, completion: nil)
+            }))
+            alertController.popoverPresentationController?.barButtonItem = sender
+            alertController.popoverPresentationController?.sourceRect = self.view.frame
+            present(alertController, animated: true, completion: nil)
+        } else {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {

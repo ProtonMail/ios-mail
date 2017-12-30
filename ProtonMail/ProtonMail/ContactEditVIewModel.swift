@@ -163,6 +163,47 @@ class ContactEditViewModel {
         fatalError("This method must be overridden")
     }
     
+    func needsUpdate() -> Bool {
+        let profile = self.getProfile()
+        if profile.needsUpdate() {
+            return true
+        }
+        for e in getOrigEmails() {
+            if e.needsUpdate() {
+                return true
+            }
+        }
+        
+        //encrypted part
+        for cell in getOrigCells() {
+            if cell.needsUpdate() {
+                return true
+            }
+        }
+        for addr in getOrigAddresses() {
+            if addr.needsUpdate() {
+                return true
+            }
+        }
+        for info in getOrigInformations() {
+            if info.needsUpdate() {
+                return true
+            }
+        }
+        let note = getOrigNotes()
+        if note.needsUpdate() {
+            return true
+        }
+
+        for field in getOrigFields() {
+            if field.needsUpdate() {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
     // actions
     func done(complete : @escaping ContactEditSaveComplete) -> Void {
         fatalError("This method must be overridden")

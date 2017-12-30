@@ -95,7 +95,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     //new functions
     override func newEmail() -> ContactEditEmail {
         let newType = getNewType(types: ContactEmailType.allValues, typeInterfaces: emails)
-        let email = ContactEditEmail(n_order: emails.count, n_type: newType, n_email:"")
+        let email = ContactEditEmail(order: emails.count, type: newType, email:"", isNew: true)
         emails.append(email)
         return email
     }
@@ -108,7 +108,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     
     override func newPhone() -> ContactEditPhone {
         let newType = getNewType(types: ContactPhoneType.allValues, typeInterfaces: cells)
-        let cell = ContactEditPhone(n_order: emails.count, n_type: newType, n_phone:"")
+        let cell = ContactEditPhone(order: emails.count, type: newType, phone:"", isNew: true)
         cells.append(cell)
         return cell
     }
@@ -146,7 +146,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     
     override func newField() -> ContactEditField {
         let newType = getNewType(types: ContactFieldType.allValues, typeInterfaces: fields)
-        let field = ContactEditField(n_order: emails.count, n_type: newType, n_field:"")
+        let field = ContactEditField(order: emails.count, type: newType, field:"", isNew: true)
         fields.append(field)
         return field
     }

@@ -66,7 +66,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     for e in emails {
                         let types = e.getTypes()
                         let type = types.count > 0 ? types.first! : ""
-                        let ce = ContactEditEmail(n_order: order, n_type:type, n_email:e.getValue())
+                        let ce = ContactEditEmail(order: order, type:type, email:e.getValue(), isNew: false)
                         origEmails.append(ce)
                         order += 1
                     }
@@ -84,7 +84,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     for e in emails {
                         let types = e.getTypes()
                         let type = types.count > 0 ? types.first! : ""
-                        let ce = ContactEditEmail(n_order: order, n_type:type, n_email:e.getValue())
+                        let ce = ContactEditEmail(order: order, type:type, email:e.getValue(), isNew: false)
                         origEmails.append(ce)
                         order += 1
                     }
@@ -106,7 +106,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             for t in telephones {
                                 let types = t.getTypes()
                                 let type = types.count > 0 ? types.first! : ""
-                                let cp = ContactEditPhone(n_order: order, n_type:type, n_phone:t.getText())
+                                let cp = ContactEditPhone(order: order, type:type, phone:t.getText(), isNew: false)
                                 origTelephons.append(cp)
                                 order += 1
                             }
@@ -218,7 +218,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     var order : Int = 1
                     for t in customs {
                         let type = t.getType() 
-                        let cp = ContactEditField(n_order: order, n_type: type, n_field: t.getValue() )
+                        let cp = ContactEditField(order: order, type: type, field: t.getValue(), isNew: false)
                         origFields.append(cp)
                         order += 1
                     }
