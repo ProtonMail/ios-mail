@@ -428,12 +428,14 @@ class MessageDataService {
                         }
                     case .some(IncrementalContactUpdateType.insert), .some(IncrementalContactUpdateType.update) :
                         do {
-                            _ = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                            if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
                                                                  fromJSONArray: contactObj.contacts,
-                                                                 in: context)
-//                            if let insert_update_contacts = contactObj.contact {
-//                                try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: insert_update_contacts, in: context)
-//                            }
+                                                                 in: context) as? [Contact] {
+                                for c in outContacts {
+                                    c.isDownloaded = false
+                                }
+                            }
+
                         } catch let ex as NSError {
                             PMLog.D(" error: \(ex)")
                         }
