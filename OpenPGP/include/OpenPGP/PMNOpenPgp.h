@@ -86,10 +86,13 @@
 
 /**encrypt message */
 - (nonnull NSString *)encryptMessage:(nonnull NSString *)addressId
-                           plainText:(nonnull NSString *)plainText;
+                           plainText:(nonnull NSString *)plainText
+                           passphras:(nonnull NSString *)passphras;
 
 - (nonnull NSString *)encryptMessageSingleKey:(nonnull NSString *)publicKey
-                                    plainText:(nonnull NSString *)plainText;
+                                    plainText:(nonnull NSString *)plainText
+                                   privateKey:(nonnull NSString *)privateKey
+                                    passphras:(nonnull NSString *)passphras;
 
 - (nonnull NSString *)decryptMessage:(nonnull NSString *)encryptText
                            passphras:(nonnull NSString *)passphras;
@@ -120,11 +123,14 @@
 
 - (nonnull PMNEncryptPackage *)encryptAttachment:(nonnull NSString *)addressId
                                    unencryptData:(nonnull NSData *)unencryptData
-                                        fileName:(nonnull NSString *)fileName;
+                                        fileName:(nonnull NSString *)fileName
+                                       passphras:(nonnull NSString *)passphras;
 
 - (nonnull PMNEncryptPackage *)encryptAttachmentSingleKey:(nonnull NSString *)publicKey
                                             unencryptData:(nonnull NSData *)unencryptData
-                                                 fileName:(nonnull NSString *)fileName;
+                                                 fileName:(nonnull NSString *)fileName
+                                               privateKey:(nonnull NSString *)privateKey
+                                                passphras:(nonnull NSString *)passphras;
 
 - (nonnull NSData *)decryptAttachment:(nonnull NSData *)key
                                  data:(nonnull NSData *)data

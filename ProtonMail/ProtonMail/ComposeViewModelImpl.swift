@@ -18,14 +18,12 @@ final class ComposeViewModelImpl : ComposeViewModel {
         self.setSubject(subject)
         self.setBody(body)
         self.messageAction = action
-        
+
         self.collectDraft(subject,
                           body: body,
                           expir: 0,
                           pwd: "",
                           pwdHit: "")
-        
-        
         self.updateDraft()
         
         for f in files {
@@ -240,7 +238,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
-
         self.setSubject(title)
         
         if message == nil || message?.managedObjectContext == nil {
@@ -254,8 +251,8 @@ final class ComposeViewModelImpl : ComposeViewModel {
                                                              expirationTimeInterval: expir,
                                                              body: body,
                                                              attachments: nil,
+                                                             mailbox_pwd: sharedUserDataService.mailboxPassword!, //better to check nil later
                                                              inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
-            
             self.message?.password = pwd
             self.message?.isRead = true
             self.message?.passwordHint = pwdHit
@@ -272,7 +269,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
             self.message?.setLabelLocation(.draft)
-            MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil)
+            MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil, mailbox_pwd: sharedUserDataService.mailboxPassword!)
             
             if let context = message!.managedObjectContext {
                 if let error = context.saveUpstreamIfNeeded() {

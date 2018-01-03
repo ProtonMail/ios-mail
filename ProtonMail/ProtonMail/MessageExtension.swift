@@ -398,12 +398,12 @@ extension Message {
         }
     }
     
-    func encryptBody(_ body: String, error: NSErrorPointer?) {
+    func encryptBody(_ body: String, mailbox_pwd: String, error: NSErrorPointer?) {
         let address_id = self.getAddressID;
         if address_id.isEmpty {
             return
         }
-        self.body = try! body.encryptMessage(address_id) ?? ""
+        self.body = try! body.encryptMessage(address_id, mailbox_pwd: mailbox_pwd) ?? ""
     }
     
     func checkIsEncrypted() -> Bool! {

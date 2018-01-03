@@ -487,7 +487,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 let vcard3Str = PMNIEzvcard.write(vcard3)
                 PMLog.D(vcard3Str);
-                let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str)
+                let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "")
                 PMLog.D(encrypted_vcard3);
                 let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
                                                                plainText: vcard3Str,

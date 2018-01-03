@@ -1211,6 +1211,9 @@ class MessageDataService {
             var out : [MessagePackage] = []
             var needsPlainText : Bool = false
             
+            let privKey = message.defaultAddress?.keys[0].private_key ?? ""
+            let pwd = sharedUserDataService.mailboxPassword ?? ""
+            
             if let body = try message.decryptBody() {
                 if let keys = keys {
                     for (key, v) in keys{
@@ -1255,7 +1258,7 @@ class MessageDataService {
                                 attPack.append(attPacket)
                             }
                             //create inside packet
-                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey) {
+                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey, privateKey: privKey, mailbox_pwd: pwd) {
                                 let pack = MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
                                 out.append(pack)
                             }
@@ -1298,13 +1301,17 @@ class MessageDataService {
     
     fileprivate func messageBodyForMessage(_ message: Message, response: [String : Any]?) throws -> [String : String] {
         var messageBody: [String : String] = ["self" : message.body]
+        
+        let privKey = message.defaultAddress?.keys[0].private_key ?? ""
+        let pwd = sharedUserDataService.mailboxPassword ?? ""
+        
         do {
             if let keys = response?["keys"] as? [[String : String]] {
                 if let body = try message.decryptBody() {
                     // encrypt body with each key
                     for publicKeys in keys {
                         for (email, publicKey) in publicKeys {
-                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey) {
+                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey, privateKey: privKey, mailbox_pwd: pwd) {
                                 messageBody[email] = encryptedBody
                             }
                         }
@@ -1452,8 +1459,8 @@ class MessageDataService {
                         default_address_id = attachment.message.getAddressID
                     }
                     
-                    //
-                    let encrypt_data = attachment.encrypt(byAddrID: default_address_id)
+                    let pwd = sharedUserDataService.mailboxPassword ?? ""
+                    let encrypt_data = attachment.encrypt(byAddrID: default_address_id, mailbox_pwd: pwd)
                     //TODO:: here need check is encryptdata is nil and return the error to user.
                     let keyPacket = encrypt_data?.keyPackage
                     let dataPacket = encrypt_data?.dataPackage
@@ -1567,7 +1574,7 @@ class MessageDataService {
                         let reskeys = response;
                         
                         // parse the response for keys
-                        _ = try? self.messageBodyForMessage(message, response: response)
+                        //_ = try? self.messageBodyForMessage(message, response: response)
                         
                         let completionWrapper: CompletionBlock = { task, response, error in
                             PMLog.D("SendAttachmentDebug == finish send email!")
