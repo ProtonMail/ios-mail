@@ -32,6 +32,13 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     override init() {
         super.init()
         self.contact = nil
+        
+        if !paidUser() {
+            sections = [.display_name,
+                        .emails,
+                        .encrypted_header,
+                        .upgrade]
+        }
     }
     
     override func getSections() -> [ContactEditSectionType] {

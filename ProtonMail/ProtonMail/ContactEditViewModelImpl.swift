@@ -37,6 +37,14 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         super.init()
         self.contact = c
         self.prepareContactData()
+        
+        if !paidUser() {
+            sections = [.display_name,
+                        .emails,
+                        .encrypted_header,
+                        .upgrade,
+                        .delete]
+        }
     }
     
     private func prepareContactData() {

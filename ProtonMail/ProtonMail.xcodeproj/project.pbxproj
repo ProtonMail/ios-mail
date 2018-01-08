@@ -1108,6 +1108,10 @@
 		75B0529F1F1FE1FC008E483A /* ViewDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B0529E1F1FE1FC008E483A /* ViewDefined.swift */; };
 		75B052A01F1FE1FC008E483A /* ViewDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B0529E1F1FE1FC008E483A /* ViewDefined.swift */; };
 		75B052A11F1FE1FC008E483A /* ViewDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B0529E1F1FE1FC008E483A /* ViewDefined.swift */; };
+		75B2223B2003C14800E35033 /* ContactDetailsUpgradeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B2223A2003C14800E35033 /* ContactDetailsUpgradeCell.swift */; };
+		75B2223C2003C14800E35033 /* ContactDetailsUpgradeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B2223A2003C14800E35033 /* ContactDetailsUpgradeCell.swift */; };
+		75B2223E2003C6AE00E35033 /* ContactEditUpgradeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B2223D2003C6AE00E35033 /* ContactEditUpgradeCell.swift */; };
+		75B2223F2003C6AE00E35033 /* ContactEditUpgradeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B2223D2003C6AE00E35033 /* ContactEditUpgradeCell.swift */; };
 		75B431BB1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B431BA1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift */; };
 		75B431BE1F7AF661009DD520 /* UIApplication+BadgeNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B431BA1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift */; };
 		75B431BF1F7AF66B009DD520 /* UIApplication+BadgeNumber+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B431BC1F7AF406009DD520 /* UIApplication+BadgeNumber+Share.swift */; };
@@ -1789,6 +1793,8 @@
 		75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeEmailViewController.swift; sourceTree = "<group>"; };
 		75B0529C1F1FE032008E483A /* ViewModelServiceImpl+Share.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewModelServiceImpl+Share.swift"; sourceTree = "<group>"; };
 		75B0529E1F1FE1FC008E483A /* ViewDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewDefined.swift; path = ProtonMail/ViewDefined.swift; sourceTree = SOURCE_ROOT; };
+		75B2223A2003C14800E35033 /* ContactDetailsUpgradeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailsUpgradeCell.swift; sourceTree = "<group>"; };
+		75B2223D2003C6AE00E35033 /* ContactEditUpgradeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUpgradeCell.swift; sourceTree = "<group>"; };
 		75B431BA1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIApplication+BadgeNumber.swift"; path = "ProtonMail/UIApplication+BadgeNumber.swift"; sourceTree = SOURCE_ROOT; };
 		75B431BC1F7AF406009DD520 /* UIApplication+BadgeNumber+Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIApplication+BadgeNumber+Share.swift"; path = "ProtonMail/UIApplication+BadgeNumber+Share.swift"; sourceTree = SOURCE_ROOT; };
 		75B549E41D02731300F21A30 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -2281,6 +2287,7 @@
 				7528FFB61FA7FEBE005F66A3 /* ContactSectionHeadView.xib */,
 				7528FFAF1FA7FEBD005F66A3 /* ContactTypeAddCustomCell.swift */,
 				7528FFC81FA7FEC2005F66A3 /* ContactDetailsDisplayCell.swift */,
+				75B2223A2003C14800E35033 /* ContactDetailsUpgradeCell.swift */,
 				7528FFB31FA7FEBE005F66A3 /* ContactEditAddCell.swift */,
 				753934C61FAB961200EBFBA5 /* ContactEditAddressCell.swift */,
 				7528FFBD1FA7FEC0005F66A3 /* ContactEditCell+Delegates.swift */,
@@ -2290,6 +2297,7 @@
 				7528FFB51FA7FEBE005F66A3 /* ContactEditNotesCell.swift */,
 				7528FFC41FA7FEC1005F66A3 /* ContactEditPhoneCell.swift */,
 				75A84D4B1FF601C700F2A54B /* ContactEditTextViewCell.swift */,
+				75B2223D2003C6AE00E35033 /* ContactEditUpgradeCell.swift */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -4731,10 +4739,12 @@
 				754B70C81C975271004F991A /* FeedbackItem.swift in Sources */,
 				75D3C2311F140BD9004B8FD7 /* UserDataService.swift in Sources */,
 				7528FFCF1FA7FEC3005F66A3 /* ContactEditInformationCell.swift in Sources */,
+				75B2223E2003C6AE00E35033 /* ContactEditUpgradeCell.swift in Sources */,
 				75BDECAD1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift in Sources */,
 				70945E6C1A8133B8002B6837 /* MoreOptionsView.swift in Sources */,
 				7566E4FD1FC3B0A00036B36B /* MenuViewModelImpl.swift in Sources */,
 				7565998F1AC4809B00C187E4 /* EncryptTypes.swift in Sources */,
+				75B2223B2003C14800E35033 /* ContactDetailsUpgradeCell.swift in Sources */,
 				7510AE7E1AB8D69B00EF3C41 /* ChangePasswordViewController.swift in Sources */,
 				7567B0751B3383F900A72A1E /* MessageAPI.swift in Sources */,
 				7528FF991FA7FE85005F66A3 /* UIImage+Extension.swift in Sources */,
@@ -5635,10 +5645,12 @@
 				75DE7D681CAAEA4900F5443E /* SettingDebugTableViewController.swift in Sources */,
 				75DE7D6A1CAAEA4900F5443E /* AttachmentsTableViewController.swift in Sources */,
 				75DE7D6C1CAAEA4900F5443E /* ContactsTableViewCell.swift in Sources */,
+				75B2223F2003C6AE00E35033 /* ContactEditUpgradeCell.swift in Sources */,
 				752800181FA7FEF6005F66A3 /* Fonts+Constants.swift in Sources */,
 				75DE7D6D1CAAEA4900F5443E /* MenuTableViewCell.swift in Sources */,
 				7566E4FE1FC3B0A00036B36B /* MenuViewModelImpl.swift in Sources */,
 				75DE7D6F1CAAEA4900F5443E /* FeedbackItem.swift in Sources */,
+				75B2223C2003C14800E35033 /* ContactDetailsUpgradeCell.swift in Sources */,
 				75DE7D721CAAEA4900F5443E /* MoreOptionsView.swift in Sources */,
 				752800131FA7FEF6005F66A3 /* TimeInterval+Extension.swift in Sources */,
 				752800071FA7FEF6005F66A3 /* Data+Extension.swift in Sources */,

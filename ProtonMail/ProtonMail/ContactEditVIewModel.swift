@@ -57,6 +57,7 @@ enum ContactEditSectionType : Int {
     case custom_field = 6 //string field
     case notes = 7
     case delete = 8
+    case upgrade = 9
 }
 
 
@@ -69,6 +70,14 @@ class ContactEditViewModel {
     typealias ContactEditSaveComplete = ((_ error: NSError?) -> Void)
 
     public init() { }
+    
+    func paidUser() -> Bool {
+        if let role = sharedUserDataService.userInfo?.role, role > 0 {
+            return true
+        }
+        return false
+    }
+    
     
     // table view 
     func getSections() -> [ContactEditSectionType] {

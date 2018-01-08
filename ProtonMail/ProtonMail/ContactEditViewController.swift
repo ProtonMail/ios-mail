@@ -35,10 +35,11 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactEditFieldCell: String     = "ContactEditFieldCell"
     fileprivate let kContactEditNotesCell: String     = "ContactEditNotesCell"
     fileprivate let kContactEditTextViewCell: String     = "ContactEditTextViewCell"
+    fileprivate let kContactEditUpgradeCell: String     = "ContactEditUpgradeCell"
     
     //const segue
     fileprivate let ktoContactTypeSegue : String      = "toContactTypeSegue"
-    
+    fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
     //
     fileprivate var doneItem: UIBarButtonItem!
     @IBOutlet weak var cancelItem: UIBarButtonItem!
@@ -283,6 +284,8 @@ extension ContactEditViewController: UITableViewDataSource {
             return 1
         case .delete:
             return 1
+        case .upgrade:
+            return 1
         }
     }
     
@@ -372,6 +375,10 @@ extension ContactEditViewController: UITableViewDataSource {
             cell.configCell(value: NSLocalizedString("Delete Contact", comment: "action"))
             cell.selectionStyle = .default
             outCell = cell
+        case .upgrade:
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditUpgradeCell, for: indexPath)
+            cell.selectionStyle = .none
+            outCell = cell
         }
         
         if outCell == nil { //default
@@ -427,7 +434,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 return .delete
             }
-        case .notes, .delete:
+        case .notes, .delete, .upgrade:
             return .none
         }
         return .none
@@ -556,6 +563,10 @@ extension ContactEditViewController: UITableViewDelegate {
             }
         }
         
+        if sections[indexPath.section] == .upgrade {
+             return 280.0
+        }
+        
         return 48.0
     }
     
@@ -641,6 +652,8 @@ extension ContactEditViewController: UITableViewDelegate {
             alertController.popoverPresentationController?.sourceView = self.view
             alertController.popoverPresentationController?.sourceRect = self.view.frame
             present(alertController, animated: true, completion: nil)
+        case .upgrade:
+            break
         }
         
     }

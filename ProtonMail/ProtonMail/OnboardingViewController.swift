@@ -15,7 +15,7 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var learnmoreButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
     
-     fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
+    fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
     
     var pageWidth : CGFloat = 0.0;
     

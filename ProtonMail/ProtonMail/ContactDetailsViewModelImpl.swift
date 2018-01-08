@@ -21,9 +21,38 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     
     var verifyType2 : Bool = false
     var verifyType3 : Bool = false
-    
+
+    //default
+    var typeSection: [ContactEditSectionType] = [.display_name,
+                                                 .emails,
+                                                 .encrypted_header,
+                                                 .cellphone,
+                                                 .home_address,
+                                                 .information,
+                                                 .custom_field,
+                                                 .notes]
     init(c : Contact) {
+        super.init()
         self.contact = c
+        if paidUser() {
+            typeSection = [.display_name,
+                           .emails,
+                           .encrypted_header,
+                           .cellphone,
+                           .home_address,
+                           .information,
+                           .custom_field,
+                           .notes]
+        } else {
+            typeSection = [.display_name,
+                           .emails,
+                           .encrypted_header,
+                           .upgrade]
+        }
+    }
+
+    override func sections() -> [ContactEditSectionType] {
+        return typeSection
     }
     
     override func statusType2() -> Bool {
@@ -51,6 +80,10 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
             return true
         }
         
+        if !paidUser() {
+            return true
+        }
+        
         return false
     }
     
@@ -67,7 +100,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         let types = e.getTypes()
                         let typeRaw = types.count > 0 ? types.first! : ""
                         let type = ContactFieldType.get(raw: typeRaw)
-                        let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false)
+                        let ce = ContactEditEmail(order: order, type: type == .empty ? .email : type, email:e.getValue(), isNew: false)
                         origEmails.append(ce)
                         order += 1
                     }

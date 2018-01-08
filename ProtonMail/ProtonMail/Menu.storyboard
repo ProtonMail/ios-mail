@@ -3423,6 +3423,60 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="ContactEditUpgradeCell" rowHeight="281" id="PCJ-Vb-ZB9" customClass="ContactEditUpgradeCell" customModule="ProtonMail" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="798" width="375" height="281"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PCJ-Vb-ZB9" id="RHt-qH-5fg">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="280.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S2N-LN-nye">
+                                                    <rect key="frame" x="37" y="50" width="300" height="180"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please upgrade to access encrypted contact details" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Sp-9Q-PMs">
+                                                            <rect key="frame" x="32.5" y="8" width="235" height="72"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="72" id="D4l-aQ-DIT"/>
+                                                                <constraint firstAttribute="width" constant="235" id="TFe-Gg-bEF"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                            <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TqV-Iy-F0t">
+                                                            <rect key="frame" x="80" y="88" width="140" height="46"/>
+                                                            <color key="backgroundColor" red="0.58039215690000001" green="0.59215686270000001" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="46" id="Dol-h3-iud"/>
+                                                                <constraint firstAttribute="width" constant="140" id="P4S-pm-Xg8"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                            <state key="normal" title="Upgrade">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </state>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="180" id="9Td-Jl-JN3"/>
+                                                        <constraint firstItem="1Sp-9Q-PMs" firstAttribute="top" secondItem="S2N-LN-nye" secondAttribute="top" constant="8" id="EXj-I4-cgg"/>
+                                                        <constraint firstAttribute="width" constant="300" id="Eq8-pE-dD3"/>
+                                                        <constraint firstItem="TqV-Iy-F0t" firstAttribute="top" secondItem="1Sp-9Q-PMs" secondAttribute="bottom" constant="8" id="FGi-bC-uB6"/>
+                                                        <constraint firstItem="TqV-Iy-F0t" firstAttribute="centerX" secondItem="S2N-LN-nye" secondAttribute="centerX" id="MP9-fp-pWC"/>
+                                                        <constraint firstItem="1Sp-9Q-PMs" firstAttribute="centerX" secondItem="S2N-LN-nye" secondAttribute="centerX" id="v1o-pk-FKC"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="S2N-LN-nye" firstAttribute="centerX" secondItem="RHt-qH-5fg" secondAttribute="centerX" id="Dys-k2-y94"/>
+                                                <constraint firstItem="S2N-LN-nye" firstAttribute="centerY" secondItem="RHt-qH-5fg" secondAttribute="centerY" id="k7h-Bf-R27"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="frameView" destination="S2N-LN-nye" id="IWC-8V-CQf"/>
+                                            <outlet property="upgradeButton" destination="TqV-Iy-F0t" id="qTg-M2-WVh"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="ZBC-AC-6J6" id="8eZ-9J-msw"/>
@@ -4759,6 +4813,60 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="contacts_details_upgrade_cell" rowHeight="281" id="d8V-wu-oLa" customClass="ContactDetailsUpgradeCell" customModule="ProtonMail" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="141" width="375" height="281"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="d8V-wu-oLa" id="bQq-fg-BKe">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="280.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Fh-FP-jJj">
+                                                    <rect key="frame" x="37" y="50" width="300" height="180"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please upgrade to access encrypted contact details" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yBe-po-q9q">
+                                                            <rect key="frame" x="32.5" y="8" width="235" height="72"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="235" id="Ruu-cQ-WtE"/>
+                                                                <constraint firstAttribute="height" constant="72" id="uom-Qj-uoU"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5f-Bc-ZM6">
+                                                            <rect key="frame" x="80" y="88" width="140" height="46"/>
+                                                            <color key="backgroundColor" red="0.58039215686274503" green="0.59215686274509804" blue="0.80784313725490198" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="140" id="3e0-7g-zeL"/>
+                                                                <constraint firstAttribute="height" constant="46" id="zHM-Yk-aK4"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                            <state key="normal" title="Upgrade">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </state>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="yBe-po-q9q" firstAttribute="centerX" secondItem="7Fh-FP-jJj" secondAttribute="centerX" id="Vqf-Wo-VFZ"/>
+                                                        <constraint firstItem="x5f-Bc-ZM6" firstAttribute="top" secondItem="yBe-po-q9q" secondAttribute="bottom" constant="8" id="WjA-63-S3p"/>
+                                                        <constraint firstItem="yBe-po-q9q" firstAttribute="top" secondItem="7Fh-FP-jJj" secondAttribute="top" constant="8" id="fnW-JQ-Ztk"/>
+                                                        <constraint firstItem="x5f-Bc-ZM6" firstAttribute="centerX" secondItem="7Fh-FP-jJj" secondAttribute="centerX" id="ge4-Wu-b0Y"/>
+                                                        <constraint firstAttribute="width" constant="300" id="hKe-co-S9b"/>
+                                                        <constraint firstAttribute="height" constant="180" id="ozR-Ym-yC1"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="7Fh-FP-jJj" firstAttribute="centerX" secondItem="bQq-fg-BKe" secondAttribute="centerX" id="ZiS-MJ-09M"/>
+                                                <constraint firstItem="7Fh-FP-jJj" firstAttribute="centerY" secondItem="bQq-fg-BKe" secondAttribute="centerY" id="lEQ-R3-haU"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="frameView" destination="7Fh-FP-jJj" id="C9K-M4-WJg"/>
+                                            <outlet property="upgradeButton" destination="x5f-Bc-ZM6" id="9Q5-Ou-M6W"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="Cjq-Ic-Ywz" id="LXY-M1-0NM"/>
@@ -4786,7 +4894,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TF4-Th-N3Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2257" y="4442"/>
+            <point key="canvasLocation" x="2256.8000000000002" y="4441.5292353823088"/>
         </scene>
         <!--Contact Type-->
         <scene sceneID="kfF-I9-UhM">

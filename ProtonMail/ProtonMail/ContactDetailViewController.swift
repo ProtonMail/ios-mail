@@ -25,18 +25,14 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate let kContactDetailsDisplayCell : String     = "contacts_details_display_cell"
     
+    
+    fileprivate let kContactDetailsUpgradeCell : String     = "contacts_details_upgrade_cell"
+    
     fileprivate let kEditContactSegue : String              = "toEditContactSegue"
     fileprivate let kToComposeSegue : String                = "toCompose"
     
-    let sections: [ContactEditSectionType] = [.display_name,
-                                              .emails,
-                                              .encrypted_header,
-                                              .cellphone,
-                                              .home_address,
-                                              .information,
-                                              .custom_field,
-                                              .notes]
-    
+    fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
+
     @IBOutlet weak var tableView: UITableView!
     
     fileprivate var doneItem: UIBarButtonItem!
@@ -129,11 +125,11 @@ extension ContactDetailViewController: UITableViewDataSource {
 
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return viewModel.sections().count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let s = sections[section]
+        let s = viewModel.sections()[section]
         switch s {
         case .display_name:
             return 1
@@ -151,6 +147,8 @@ extension ContactDetailViewController: UITableViewDataSource {
             return viewModel.getOrigFields().count
         case .notes:
             return viewModel.getOrigNotes().count
+        case .upgrade:
+            return 1
         default:
             return 0
         }
@@ -158,7 +156,7 @@ extension ContactDetailViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView       
-        let s = sections[section]
+        let s = viewModel.sections()[section]
         switch s {
         case .display_name:
             let signed = viewModel.statusType2()
@@ -178,7 +176,7 @@ extension ContactDetailViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let s = sections[section]
+        let s = viewModel.sections()[section]
         switch s {
         case .display_name:
             return 38.0
@@ -194,10 +192,18 @@ extension ContactDetailViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsDisplayCell, for: indexPath) as! ContactDetailsDisplayCell
+        
         let section = indexPath.section
         let row = indexPath.row
-        let s = sections[section]
+        let s = viewModel.sections()[section]
+        
+        if s == .upgrade {
+            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsUpgradeCell, for: indexPath)
+            cell.selectionStyle = .none
+            return cell
+        }
+        
+        let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsDisplayCell, for: indexPath) as! ContactDetailsDisplayCell
         cell.selectionStyle = .none
         switch s {
         case .display_name:
@@ -267,7 +273,7 @@ extension ContactDetailViewController: UITableViewDelegate {
             var copyString = ""
             let section = indexPath.section
             let row = indexPath.row
-            let s = sections[section]
+            let s = viewModel.sections()[section]
             switch s {
             case .display_name:
                 let profile = viewModel.getProfile();
@@ -305,12 +311,14 @@ extension ContactDetailViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let s = sections[indexPath.section]
+        let s = viewModel.sections()[indexPath.section]
         switch s {
         case .display_name, .emails, .cellphone, .home_address, .information, .custom_field, .notes:
             return UITableViewAutomaticDimension
         case .encrypted_header:
             return 0
+        case .upgrade:
+            return 280
         default:
             return 0
         }
@@ -323,7 +331,7 @@ extension ContactDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
         let row = indexPath.row
-        let s = sections[section]
+        let s = viewModel.sections()[section]
         switch s {
         case .emails:
             let emails = viewModel.getOrigEmails()
