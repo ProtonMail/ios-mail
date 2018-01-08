@@ -31,7 +31,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kEditContactSegue : String              = "toEditContactSegue"
     fileprivate let kToComposeSegue : String                = "toCompose"
     
-    fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
 
     @IBOutlet weak var tableView: UITableView!
     
