@@ -15,6 +15,13 @@ class ContactsViewModel : ViewModelTimer {
     
     override init() { }
     
+    func paidUser() -> Bool {
+        if let role = sharedUserDataService.userInfo?.role, role > 0 {
+            return true
+        }
+        return false
+    }
+    
     func set(searching isSearching: Bool) {
         fatalError("This method must be overridden")
     }

@@ -440,6 +440,18 @@ extension ContactEditViewController: UITableViewDataSource {
         return .none
     }
     
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        let section = indexPath.section
+        let sections = self.viewModel.getSections()
+        let s = sections[section]
+        switch s {
+        case .upgrade:
+            return false
+        default:
+            return true
+        }
+    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         dismissKeyboard()
 
