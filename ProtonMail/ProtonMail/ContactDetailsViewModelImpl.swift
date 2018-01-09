@@ -42,12 +42,14 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                            .home_address,
                            .information,
                            .custom_field,
-                           .notes]
+                           .notes,
+                           .share]
         } else {
             typeSection = [.display_name,
                            .emails,
                            .encrypted_header,
-                           .upgrade]
+                           .upgrade,
+                           .share]
         }
     }
 
@@ -315,5 +317,67 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     
     override func getContact() -> Contact {
         return self.contact
+    }
+    
+    override func export() -> String {
+
+        let cards = self.contact.getCardData()
+        
+        var vcard : PMNIVCard? = nil
+        
+        for c in cards {
+            if c.type == .SignAndEncrypt {
+                guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
+                    return "";
+                }
+                let pt_contact = sharedOpenPGP.decryptMessage(c.data, passphras: sharedUserDataService.mailboxPassword!)
+                vcard = PMNIEzvcard.parseFirst(pt_contact)
+            }
+        }
+        
+        for c in cards {
+            if c.type == .PlainText {
+                if let card = PMNIEzvcard.parseFirst(c.data) {
+                    let emails = card.getEmails()
+                    let fn = card.getFormattedName()
+                    if vcard != nil {
+                        vcard!.setEmails(emails)
+                        vcard!.setFormattedName(fn)
+                    } else {
+                        vcard = card
+                    }
+                }
+            }
+        }
+        
+        for c in cards {
+            if c.type == .SignedOnly {
+                if let card = PMNIEzvcard.parseFirst(c.data) {
+                    let emails = card.getEmails()
+                    let fn = card.getFormattedName()
+                    if vcard != nil {
+                        vcard!.setEmails(emails)
+                        vcard!.setFormattedName(fn)
+                    } else {
+                        vcard = card
+                    }
+                }
+            }
+        }
+        
+        
+        guard let outVCard = vcard else {
+            return ""
+        }
+        
+        return PMNIEzvcard.write(outVCard)
+    }
+    
+    override func exportName() -> String {
+        let name = contact.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !name.isEmpty {
+            return name + ".vcf"
+        }
+        return "exported.vcf"
     }
 }

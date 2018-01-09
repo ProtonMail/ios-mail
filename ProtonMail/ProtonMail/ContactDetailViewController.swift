@@ -22,11 +22,9 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate let kContactDetailsHeaderView : String      = "ContactSectionHeadView"
     fileprivate let kContactDetailsHeaderID : String        = "contact_section_head_view"
-    
     fileprivate let kContactDetailsDisplayCell : String     = "contacts_details_display_cell"
-    
-    
     fileprivate let kContactDetailsUpgradeCell : String     = "contacts_details_upgrade_cell"
+    fileprivate let kContactsDetailsShareCell: String       = "contacts_details_share_cell"
     
     fileprivate let kEditContactSegue : String              = "toEditContactSegue"
     fileprivate let kToComposeSegue : String                = "toCompose"
@@ -130,12 +128,8 @@ extension ContactDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let s = viewModel.sections()[section]
         switch s {
-        case .display_name:
-            return 1
         case .emails:
             return viewModel.getOrigEmails().count
-        case .encrypted_header:
-            return 0
         case .cellphone:
             return viewModel.getOrigCells().count
         case .home_address:
@@ -146,9 +140,9 @@ extension ContactDetailViewController: UITableViewDataSource {
             return viewModel.getOrigFields().count
         case .notes:
             return viewModel.getOrigNotes().count
-        case .upgrade:
+        case .display_name, .upgrade, .share:
             return 1
-        default:
+        case .encrypted_header, .delete:
             return 0
         }
     }
@@ -164,12 +158,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             let signed = viewModel.statusType3()
             cell?.ConfigHeader(title: NSLocalizedString("Encrypted Contact Details", comment: "contact section title"), signed: signed)
         default:
-            cell?.ConfigHeader(title: NSLocalizedString("Contact Details", comment: "contact section title"), signed: false)
-        }
-        if .display_name == s {
-            
-        } else {
-            
+            cell?.ConfigHeader(title: "", signed: false)
         }
         return cell;
     }
@@ -177,7 +166,7 @@ extension ContactDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let s = viewModel.sections()[section]
         switch s {
-        case .display_name:
+        case .display_name, .share:
             return 38.0
         case .encrypted_header:
             if viewModel.hasEncryptedContacts() {
@@ -200,6 +189,11 @@ extension ContactDetailViewController: UITableViewDataSource {
             let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsUpgradeCell, for: indexPath)
             cell.selectionStyle = .none
             return cell
+        } else if s == .share {
+            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsShareCell, for: indexPath) as! ContactEditAddCell
+            cell.configCell(value: NSLocalizedString("Share Contact", comment: "action"))
+            cell.selectionStyle = .default
+            return cell
         }
         
         let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsDisplayCell, for: indexPath) as! ContactDetailsDisplayCell
@@ -214,38 +208,31 @@ extension ContactDetailViewController: UITableViewDataSource {
             let email = emails[row]
             cell.configCell(title: email.newType.title, value: email.newEmail)
             cell.selectionStyle = .default
-        case .encrypted_header:
-            assert(false, "Code should not be here")
         case .cellphone:
             let cells = viewModel.getOrigCells()
             let tel = cells[row]
             cell.configCell(title: tel.newType.title, value: tel.newPhone)
             cell.selectionStyle = .default
-            break
         case .home_address:
             let addrs = viewModel.getOrigAddresses()
             let addr = addrs[row]
             cell.configCell(title: addr.newType.title, value: addr.fullAddress())
             cell.selectionStyle = .default
-            break
         case .information:
             let infos = viewModel.getOrigInformations()
             let info = infos[row]
             cell.configCell(title: info.infoType.type, value: info.newValue)
             cell.selectionStyle = .default
-            break
         case .custom_field:
             let fields = viewModel.getOrigFields()
             let field = fields[row]
             cell.configCell(title: field.newType.title, value: field.newField)
             cell.selectionStyle = .default
-            break
         case .notes:
             let notes = viewModel.getOrigNotes()
             let note = notes[row]
             cell.configCell(title: NSLocalizedString("Notes", comment: "title"), value: note.newNote)
             cell.selectionStyle = .default
-            break
         default:
             break
         }
@@ -312,14 +299,17 @@ extension ContactDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let s = viewModel.sections()[indexPath.section]
         switch s {
-        case .display_name, .emails, .cellphone, .home_address, .information, .custom_field, .notes:
+        case .display_name, .emails, .cellphone, .home_address,
+             .information, .custom_field, .notes:
             return UITableViewAutomaticDimension
         case .encrypted_header:
-            return 0
+            return 0.0
         case .upgrade:
-            return 280
+            return 280.0
+        case .share:
+            return 38.0
         default:
-            return 0
+            return 0.0
         }
     }
     
@@ -347,12 +337,51 @@ extension ContactDetailViewController: UITableViewDelegate {
             //TODO::bring up the phone call
             break
         case .home_address:
-            //TODO::switch to map
-            break
+            let addrs = viewModel.getOrigAddresses()
+            let addr = addrs[row]
+            let fulladdr = addr.fullAddress()
+            if !fulladdr.isEmpty {
+                let fullUrl = "http://maps.apple.com/?q=\(fulladdr)"
+                if let strUrl = fullUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                    let url = URL(string: strUrl) {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+        case .share:
+            
+            let exported = viewModel.export()
+            if !exported.isEmpty {
+                let filename = viewModel.exportName()
+                let tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
+                
+                try? exported.write(to: tempFileUri, atomically: true, encoding: String.Encoding.utf8)
+                
+                // set up activity view controller
+                let urlToShare = [ tempFileUri ]
+                let activityViewController = UIActivityViewController(activityItems: urlToShare, applicationActivities: nil)
+                activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+                
+                // exclude some activity types from the list (optional)
+                activityViewController.excludedActivityTypes = [ .postToFacebook,
+                                                                 .postToTwitter,
+                                                                 .postToWeibo,
+                                                                 .copyToPasteboard,
+                                                                 .saveToCameraRoll,
+                                                                 .addToReadingList,
+                                                                 .postToFlickr,
+                                                                 .postToVimeo,
+                                                                 .postToTencentWeibo,
+                                                                 .assignToContact]
+                if #available(iOS 11.0, *) {
+                    activityViewController.excludedActivityTypes?.append(.markupAsPDF)
+                    activityViewController.excludedActivityTypes?.append(.openInIBooks)
+                }
+                self.present(activityViewController, animated: true, completion: nil)
+            }
+            
         default:
             break
         }
-        //tableView.reloadSections([section], with: .automatic)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

@@ -286,6 +286,8 @@ extension ContactEditViewController: UITableViewDataSource {
             return 1
         case .upgrade:
             return 1
+        default:
+            return 0
         }
     }
     
@@ -379,6 +381,8 @@ extension ContactEditViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditUpgradeCell, for: indexPath)
             cell.selectionStyle = .none
             outCell = cell
+        default:
+            break
         }
         
         if outCell == nil { //default
@@ -434,7 +438,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 return .delete
             }
-        case .notes, .delete, .upgrade:
+        case .notes, .delete, .upgrade, .share:
             return .none
         }
         return .none
@@ -664,7 +668,7 @@ extension ContactEditViewController: UITableViewDelegate {
             alertController.popoverPresentationController?.sourceView = self.view
             alertController.popoverPresentationController?.sourceRect = self.view.frame
             present(alertController, animated: true, completion: nil)
-        case .upgrade:
+        case .upgrade, .share:
             break
         }
         

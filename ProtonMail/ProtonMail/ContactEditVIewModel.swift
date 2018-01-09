@@ -58,6 +58,7 @@ enum ContactEditSectionType : Int {
     case notes = 7
     case delete = 8
     case upgrade = 9
+    case share = 10
 }
 
 

@@ -74,4 +74,11 @@ class ContactDetailsViewModel {
         fatalError("This method must be overridden")
     }
     
+    func export() -> String {
+        fatalError("This method must be overridden")
+    }
+    
+    func exportName() -> String {
+        fatalError("This method must be overridden")
+    }
 }
