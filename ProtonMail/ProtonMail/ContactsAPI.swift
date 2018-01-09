@@ -63,8 +63,10 @@ class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
 
 
 class ContactEmailsResponse : ApiResponse {
+    var total : Int = -1
     var contacts : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        self.total = response?["Total"] as? Int ?? -1
         if let tempContacts = response?["ContactEmails"] as? [[String : Any]] {
             for contact in tempContacts {
                 if let contactID = contact["ContactID"] as? String, let name = contact["Name"] as? String {

@@ -558,12 +558,12 @@ class MessageDataService {
                     completion?(task, nil, error)
                 }
                 
-                //if foucsClean {
                 self.cleanMessage()
-                //}
+                sharedContactDataService.clean()
                 sharedLabelsDataService.fetchLabels();
                 self.fetchMessagesForLocation(MessageLocation.inbox, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-                
+               
+                sharedContactDataService.fetchContacts(completion: nil)
             }
         }
     }
