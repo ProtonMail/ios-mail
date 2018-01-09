@@ -276,7 +276,7 @@ class MessageDataService {
      :param: completion complete handler
      */
     
-    func fetchNewMessagesForLocation(_ location: MessageLocation, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
+    func fetchNewMessagesForLocation(_ location: MessageLocation, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, _eventsRes, _hasEventsError in
@@ -347,7 +347,7 @@ class MessageDataService {
         }
     }
     
-    func fetchNewMessagesForLabels(_ labelID: String, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
+    func fetchNewMessagesForLabels(_ labelID: String, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response, hasError in

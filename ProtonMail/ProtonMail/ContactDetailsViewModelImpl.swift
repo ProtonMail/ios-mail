@@ -327,9 +327,9 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         
         for c in cards {
             if c.type == .SignAndEncrypt {
-                guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
-                    return "";
-                }
+//                guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
+//                    return "";
+//                }
                 let pt_contact = sharedOpenPGP.decryptMessage(c.data, passphras: sharedUserDataService.mailboxPassword!)
                 vcard = PMNIEzvcard.parseFirst(pt_contact)
             }
