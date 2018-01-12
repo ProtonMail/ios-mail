@@ -196,6 +196,11 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         case "Anniversary":
                             break
                         case "Gender":
+                            if let gender = vcard.getGender() {
+                                let info = ContactEditInformation(type: .gender, value: gender.getGender() )
+                                origInformations.append(info)
+                            }
+                        case "Url":
                             let urls = vcard.getUrls()
                             var order : Int = 1
                             for url in urls {
@@ -206,7 +211,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                 origUrls.append(cu)
                                 order += 1
                             }
-                        case "Url":
                             break
                             
                             
@@ -266,7 +270,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             //"ExpertiseScribe());
                             //"OrgDirectoryScribe());
                             //"InterestScribe());
-                        //"HobbyScribe());
+                            //"HobbyScribe());
                         default:
                             break
                         }
