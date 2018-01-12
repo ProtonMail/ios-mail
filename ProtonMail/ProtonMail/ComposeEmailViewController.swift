@@ -59,6 +59,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     fileprivate let kPasswordSegue : String = "to_eo_password_segue"
     
+    fileprivate var isShowingConfirm : Bool = false
+    
     deinit {
         if let wv = self.webView {
             wv.delegate = nil
@@ -157,11 +159,15 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             switch self.viewModel.messageAction!
             {
             case .openDraft, .reply, .replyAll:
-                self.focus()
+                if !self.isShowingConfirm {
+                    self.focus()
+                }
                 self.composeView.notifyViewSize(true)
                 break
             default:
-                self.composeView.toContactPicker.becomeFirstResponder()
+                if !self.isShowingConfirm {
+                    self.composeView.toContactPicker.becomeFirstResponder()
+                }
                 break
             }
         }
@@ -368,6 +374,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     @IBAction func cancel_clicked(_ sender: UIBarButtonItem) {
         let dismiss: (() -> Void) = {
+            self.isShowingConfirm = false
             self.dismissKeyboard()
             if self.presentingViewController != nil {
                 self.dismiss(animated: true, completion: nil)
@@ -377,6 +384,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
         
         if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
+            self.isShowingConfirm = true
             let alertController = UIAlertController(title: NSLocalizedString("Confirmation", comment: "Title"),
                                                     message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft", comment: "Action"), style: .default, handler: { (action) -> Void in
@@ -385,7 +393,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
                 self.viewModel.updateDraft()
                 dismiss()
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+            
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: { (action) ->
+                Void in
+                self.isShowingConfirm = false
+            }))
+            
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft", comment: "Action"), style: .destructive, handler: { (action) -> Void in
                 self.stopAutoSave()
                 self.viewModel.deleteDraft()
