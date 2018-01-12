@@ -164,6 +164,56 @@ final class ContactEditPhone: ContactEditTypeInterface {
     }
 }
 
+//url
+final class ContactEditUrl: ContactEditTypeInterface {
+    var origOrder : Int = 0
+    var origType : ContactFieldType = .empty
+    var origUrl : String = ""
+    var isNew : Bool = false
+    
+    var newOrder : Int = 0
+    var newType : ContactFieldType = .empty
+    var newUrl : String = ""
+    
+    init(order: Int, type: ContactFieldType, url: String, isNew: Bool) {
+        self.newType = type
+        self.newOrder = order
+        self.origOrder = self.newOrder
+        self.newUrl = url
+        self.isNew = isNew
+        if !self.isNew {
+            self.origType = self.newType
+            self.origUrl = self.newUrl
+        }
+    }
+    
+    //
+    func getCurrentType() -> ContactFieldType {
+        return newType
+    }
+    func getSectionType() -> ContactEditSectionType {
+        return .cellphone
+    }
+    func updateType(type: ContactFieldType) -> Void {
+        newType = type
+    }
+    func types() -> [ContactFieldType] {
+        return ContactFieldType.phoneTypes
+    }
+    
+    func needsUpdate() -> Bool {
+        if isNew && newUrl.isEmpty {
+            return false
+        }
+        if origOrder == newOrder &&
+            origType == newType &&
+            origUrl == newUrl {
+            return false
+        }
+        return true
+    }
+}
+
 //address
 final class ContactEditAddress: ContactEditTypeInterface {
     var origOrder : Int = 0

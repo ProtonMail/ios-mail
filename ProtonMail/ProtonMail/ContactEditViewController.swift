@@ -431,6 +431,8 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 return .delete
             }
+        case .url:
+            return .none
         case .custom_field:
             let fieldCount = viewModel.getOrigFields().count
             if row == fieldCount {
@@ -668,7 +670,7 @@ extension ContactEditViewController: UITableViewDelegate {
             alertController.popoverPresentationController?.sourceView = self.view
             alertController.popoverPresentationController?.sourceRect = self.view.frame
             present(alertController, animated: true, completion: nil)
-        case .upgrade, .share:
+        case .upgrade, .share, .url:
             break
         }
         

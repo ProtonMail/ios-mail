@@ -26,6 +26,9 @@ enum ContactFieldType {
     //
     case address
     
+    //
+    case url
+    
     //default
     case empty
     case custom(String)
@@ -48,6 +51,8 @@ enum ContactFieldType {
             return "FAX"
         case .address:
             return "ADDRESS"
+        case .url:
+            return "URL"
         //default
         case .empty:
             return ""
@@ -68,7 +73,7 @@ enum ContactFieldType {
             return "MOBILE"
         case .fax:
             return "FAX"
-        case .email, .address, .phone, .empty:
+        case .email, .address, .phone, .empty, .url:
             return ""
         case .custom(let value):
             return value
@@ -94,6 +99,8 @@ enum ContactFieldType {
             return NSLocalizedString("Fax", comment: "default vcard types")
         case .address:
             return NSLocalizedString("Address", comment: "default vcard types")
+        case .url:
+            return NSLocalizedString("Url", comment: "default vcard types")
         default:
             return self.rawString
         }
@@ -196,6 +203,11 @@ extension ContactFieldType {
                                                   .home,
                                                   .work,
                                                   .other]
+    
+    static let urlTypes : [ContactFieldType] = [ .url,
+                                                 .home,
+                                                 .work,
+                                                 .other]
     
     //custom field
     static let fieldTypes : [ContactFieldType] = [ .other ]

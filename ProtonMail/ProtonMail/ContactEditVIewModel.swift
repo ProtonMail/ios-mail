@@ -64,6 +64,7 @@ enum ContactEditSectionType : Int {
     case delete = 8
     case upgrade = 9
     case share = 10
+    case url = 11 //links
 }
 
 

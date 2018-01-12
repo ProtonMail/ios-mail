@@ -129,17 +129,19 @@ extension ContactDetailViewController: UITableViewDataSource {
         let s = viewModel.sections()[section]
         switch s {
         case .emails:
-            return viewModel.getOrigEmails().count
+            return viewModel.getEmails().count
         case .cellphone:
-            return viewModel.getOrigCells().count
+            return viewModel.getPhones().count
         case .home_address:
-            return viewModel.getOrigAddresses().count
+            return viewModel.getAddresses().count
         case .information:
-            return viewModel.getOrigInformations().count
+            return viewModel.getInformations().count
         case .custom_field:
-            return viewModel.getOrigFields().count
+            return viewModel.getFields().count
         case .notes:
-            return viewModel.getOrigNotes().count
+            return viewModel.getNotes().count
+        case .url:
+            return viewModel.getUrls().count
         case .display_name, .upgrade, .share:
             return 1
         case .encrypted_header, .delete:
@@ -204,36 +206,42 @@ extension ContactDetailViewController: UITableViewDataSource {
             cell.configCell(title: NSLocalizedString("Name", comment: "title"), value: profile.newDisplayName)
             cell.selectionStyle = .none
         case .emails:
-            let emails = viewModel.getOrigEmails()
+            let emails = viewModel.getEmails()
             let email = emails[row]
             cell.configCell(title: email.newType.title, value: email.newEmail)
             cell.selectionStyle = .default
         case .cellphone:
-            let cells = viewModel.getOrigCells()
+            let cells = viewModel.getPhones()
             let tel = cells[row]
             cell.configCell(title: tel.newType.title, value: tel.newPhone)
             cell.selectionStyle = .default
         case .home_address:
-            let addrs = viewModel.getOrigAddresses()
+            let addrs = viewModel.getAddresses()
             let addr = addrs[row]
             cell.configCell(title: addr.newType.title, value: addr.fullAddress())
             cell.selectionStyle = .default
         case .information:
-            let infos = viewModel.getOrigInformations()
+            let infos = viewModel.getInformations()
             let info = infos[row]
             cell.configCell(title: info.infoType.type, value: info.newValue)
             cell.selectionStyle = .default
         case .custom_field:
-            let fields = viewModel.getOrigFields()
+            let fields = viewModel.getFields()
             let field = fields[row]
             cell.configCell(title: field.newType.title, value: field.newField)
             cell.selectionStyle = .default
         case .notes:
-            let notes = viewModel.getOrigNotes()
+            let notes = viewModel.getNotes()
             let note = notes[row]
             cell.configCell(title: NSLocalizedString("Notes", comment: "title"), value: note.newNote)
             cell.selectionStyle = .default
-        default:
+        case .url:
+            let urls = viewModel.getUrls()
+            let url = urls[row]
+            cell.configCell(title: url.newType.title, value: url.newUrl)
+            cell.selectionStyle = .default
+            
+        case .encrypted_header, .delete, .upgrade, .share:
             break
         }
         return cell
@@ -265,29 +273,33 @@ extension ContactDetailViewController: UITableViewDelegate {
                 let profile = viewModel.getProfile();
                 copyString = profile.newDisplayName
             case .emails:
-                let emails = viewModel.getOrigEmails()
+                let emails = viewModel.getEmails()
                 let email = emails[row]
                 copyString = email.newEmail
             case .cellphone:
-                let cells = viewModel.getOrigCells()
+                let cells = viewModel.getPhones()
                 let tel = cells[row]
                 copyString = tel.newPhone
             case .home_address:
-                let addrs = viewModel.getOrigAddresses()
+                let addrs = viewModel.getAddresses()
                 let addr = addrs[row]
                 copyString = addr.fullAddress()
             case .information:
-                let infos = viewModel.getOrigInformations()
+                let infos = viewModel.getInformations()
                 let info = infos[row]
                 copyString = info.newValue
             case .custom_field:
-                let fields = viewModel.getOrigFields()
+                let fields = viewModel.getFields()
                 let field = fields[row]
                 copyString = field.newField
             case .notes:
-                let notes = viewModel.getOrigNotes()
+                let notes = viewModel.getNotes()
                 let note = notes[row]
                 copyString = note.newNote
+            case .url:
+                let urls = viewModel.getUrls()
+                let url = urls[row]
+                copyString = url.newUrl
             default:
                 break
             }
@@ -300,16 +312,14 @@ extension ContactDetailViewController: UITableViewDelegate {
         let s = viewModel.sections()[indexPath.section]
         switch s {
         case .display_name, .emails, .cellphone, .home_address,
-             .information, .custom_field, .notes:
+             .information, .custom_field, .notes, .url:
             return UITableViewAutomaticDimension
-        case .encrypted_header:
+        case .encrypted_header, .delete:
             return 0.0
         case .upgrade:
             return 280.0
         case .share:
             return 38.0
-        default:
-            return 0.0
         }
     }
     
@@ -323,7 +333,7 @@ extension ContactDetailViewController: UITableViewDelegate {
         let s = viewModel.sections()[section]
         switch s {
         case .emails:
-            let emails = viewModel.getOrigEmails()
+            let emails = viewModel.getEmails()
             let email = emails[row]
             let contact = viewModel.getContact()
             let contactVO = ContactVO(id: contact.contactID,
@@ -337,7 +347,7 @@ extension ContactDetailViewController: UITableViewDelegate {
             //TODO::bring up the phone call
             break
         case .home_address:
-            let addrs = viewModel.getOrigAddresses()
+            let addrs = viewModel.getAddresses()
             let addr = addrs[row]
             let fulladdr = addr.fullAddress()
             if !fulladdr.isEmpty {

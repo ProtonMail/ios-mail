@@ -19,6 +19,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     var origFields : [ContactEditField] = []
     var origNotes: [ContactEditNote] = []
     
+    var origUrls: [ContactEditUrl] = []
+    
     var verifyType2 : Bool = false
     var verifyType3 : Bool = false
 
@@ -28,6 +30,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                  .encrypted_header,
                                                  .cellphone,
                                                  .home_address,
+                                                 .url,
                                                  .information,
                                                  .custom_field,
                                                  .notes]
@@ -40,6 +43,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                            .encrypted_header,
                            .cellphone,
                            .home_address,
+                           .url,
                            .information,
                            .custom_field,
                            .notes,
@@ -66,19 +70,22 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     }
     
     override func hasEncryptedContacts() -> Bool {
-        if self.getOrigCells().count > 0 {
+        if self.getPhones().count > 0 {
             return true
         }
-        if self.getOrigAddresses().count > 0 {
+        if self.getAddresses().count > 0 {
             return true
         }
-        if self.getOrigInformations().count > 0 {
+        if self.getInformations().count > 0 {
             return true
         }
-        if self.getOrigFields().count > 0 {
+        if self.getFields().count > 0 {
             return true
         }
-        if self.getOrigNotes().count > 0 {
+        if self.getNotes().count > 0 {
+            return true
+        }
+        if self.getUrls().count > 0 {
             return true
         }
         
@@ -148,7 +155,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                 origTelephons.append(cp)
                                 order += 1
                             }
-                            break
                         case "Address":
                             let addresses = vcard.getAddresses()
                             var order : Int = 1
@@ -170,7 +176,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                 origAddresses.append(ca)
                                 order += 1
                             }
-                            
                         case "Organization":
                             let org = vcard.getOrganization()
                             let info = ContactEditInformation(type: .organization, value:org?.getValue() ?? "")
@@ -191,7 +196,16 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         case "Anniversary":
                             break
                         case "Gender":
-                            break
+                            let urls = vcard.getUrls()
+                            var order : Int = 1
+                            for url in urls {
+                                let typeRaw = url.getType()
+                                //let typeRaw = types.count > 0 ? types.first! : ""
+                                let type = ContactFieldType.get(raw: typeRaw)
+                                let cu = ContactEditUrl(order: order, type:type == .empty ? .url : type, url:url.getValue(), isNew: false)
+                                origUrls.append(cu)
+                                order += 1
+                            }
                         case "Url":
                             break
                             
@@ -296,28 +310,32 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         return ContactEditProfile(n_displayname: contact.name, isNew: false)
     }
     
-    override func getOrigEmails() -> [ContactEditEmail] {
+    override func getEmails() -> [ContactEditEmail] {
         return self.origEmails
     }
     
-    override func getOrigCells() -> [ContactEditPhone] {
+    override func getPhones() -> [ContactEditPhone] {
         return self.origTelephons
     }
     
-    override func getOrigAddresses() -> [ContactEditAddress] {
+    override func getAddresses() -> [ContactEditAddress] {
         return self.origAddresses
     }
     
-    override func getOrigInformations() -> [ContactEditInformation] {
+    override func getInformations() -> [ContactEditInformation] {
         return self.origInformations
     }
     
-    override func getOrigFields() -> [ContactEditField] {
+    override func getFields() -> [ContactEditField] {
         return self.origFields
     }
     
-    override func getOrigNotes() -> [ContactEditNote] {
+    override func getNotes() -> [ContactEditNote] {
         return self.origNotes
+    }
+    
+    override func getUrls() -> [ContactEditUrl] {
+        return self.origUrls
     }
     
     override func getContact() -> Contact {

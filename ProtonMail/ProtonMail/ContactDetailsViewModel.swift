@@ -50,27 +50,31 @@ class ContactDetailsViewModel {
         fatalError("This method must be overridden")
     }
     
-    func getOrigEmails() -> [ContactEditEmail] {
+    func getEmails() -> [ContactEditEmail] {
         fatalError("This method must be overridden")
     }
     
-    func getOrigCells() -> [ContactEditPhone] {
+    func getPhones() -> [ContactEditPhone] {
         fatalError("This method must be overridden")
     }
     
-    func getOrigAddresses() -> [ContactEditAddress] {
+    func getAddresses() -> [ContactEditAddress] {
         fatalError("This method must be overridden")
     }
     
-    func getOrigInformations() -> [ContactEditInformation] {
+    func getInformations() -> [ContactEditInformation] {
         fatalError("This method must be overridden")
     }
     
-    func getOrigFields() -> [ContactEditField] {
+    func getFields() -> [ContactEditField] {
         fatalError("This method must be overridden")
     }
     
-    func getOrigNotes() -> [ContactEditNote] {
+    func getNotes() -> [ContactEditNote] {
+        fatalError("This method must be overridden")
+    }
+    
+    func getUrls() -> [ContactEditUrl] {
         fatalError("This method must be overridden")
     }
     
