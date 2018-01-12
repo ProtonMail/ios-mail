@@ -15,6 +15,7 @@ enum InformationType : Int {
     case title = 2
     case birthday = 3
     case anniversary = 4
+    case gender = 5
     
     var desc : String {
         switch self {
@@ -28,6 +29,8 @@ enum InformationType : Int {
             return NSLocalizedString("Add Birthday", comment: "new contacts add Birthday")
         case .anniversary:
             return NSLocalizedString("Add Anniversary", comment: "new contacts add Anniversary")
+        case .gender:
+            return NSLocalizedString("Add Gender", comment: "new contacts add Gender")
         }
     }
     
@@ -43,6 +46,8 @@ enum InformationType : Int {
             return NSLocalizedString("Birthday", comment: "contacts talbe cell Birthday title")
         case .anniversary:
             return NSLocalizedString("Anniversary", comment: "contacts talbe cell Anniversary title")
+        case .gender:
+            return NSLocalizedString("Gender", comment: "contacts talbe cell gender title")
         }
     }
 }

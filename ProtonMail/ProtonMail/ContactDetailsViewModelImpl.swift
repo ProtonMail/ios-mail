@@ -190,6 +190,12 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             break
                         case "Anniversary":
                             break
+                        case "Gender":
+                            break
+                        case "Url":
+                            break
+                            
+                            
                             //case "Agent":
                             //case "Birthday":
                             //case "CalendarRequestUri":
@@ -200,7 +206,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             //case "Email": //this in type2
                             //case "FreeBusyUrl":
                             //case "FormattedName":
-                            //case "Gender":
                             //case "Geo":
                             //case "Impp":
                             

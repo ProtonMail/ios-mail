@@ -469,6 +469,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         break
                     case .anniversary:
                         break
+                    case .gender:
+                        break
                     }
                 }
                 

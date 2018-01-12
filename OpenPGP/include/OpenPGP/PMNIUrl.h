@@ -9,6 +9,9 @@
 
 - (nonnull NSString *)getValue;
 
-+ (nullable PMNIUrl *)createInstance;
+- (nonnull NSString *)getType;
+
++ (nullable PMNIUrl *)createInstance:(nonnull NSString *)type
+                               value:(nonnull NSString *)value;
 
 @end
