@@ -117,7 +117,7 @@ class ContactEditViewModel {
         for type in supported {
             var found = false
             for e in pickedTypes {
-                if e.getCurrentType() == type {
+                if e.getCurrentType().rawString == type.rawString {
                     found = true
                     break
                 }

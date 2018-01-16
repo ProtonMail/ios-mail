@@ -145,6 +145,22 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                 break
                             case "Anniversary":
                                 break
+                            case "Gender":
+                                if let gender = vcard.getGender() {
+                                    let info = ContactEditInformation(type: .gender, value: gender.getGender() )
+                                    self.informations.append(info)
+                                }
+                            case "Url":
+                                let urls = vcard.getUrls()
+                                var order : Int = 1
+                                for url in urls {
+                                    let typeRaw = url.getType()
+                                    //let typeRaw = types.count > 0 ? types.first! : ""
+                                    let type = ContactFieldType.get(raw: typeRaw)
+                                    let cu = ContactEditUrl(order: order, type:type == .empty ? .url : type, url:url.getValue(), isNew: false)
+                                    self.urls.append(cu)
+                                    order += 1
+                                }
                                 //case "Agent":
                                 //case "Birthday":
                                 //case "CalendarRequestUri":
