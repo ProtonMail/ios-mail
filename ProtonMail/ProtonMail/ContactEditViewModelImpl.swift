@@ -141,7 +141,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                             case "Birthday":
                                 let births = vcard.getBirthdays()
                                 for b in births {
-                                    let info = ContactEditInformation(type: .birthday, value:b.getDate(), isNew: false)
+                                    let info = ContactEditInformation(type: .birthday, value:b.getText(), isNew: false)
                                     self.informations.append(info)
                                     break //only change first
                                 }
