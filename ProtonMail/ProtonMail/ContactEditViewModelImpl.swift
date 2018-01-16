@@ -492,6 +492,11 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     }
                 }
                 
+                for url in urls {
+                    let f = PMNIUrl.createInstance(url.newType.vcardType, value: url.newUrl)
+                    vcard3.add(f)
+                    isCard3Set = true
+                }
                 
                 if notes.newNote != "" {
                     let n = PMNINote.createInstance("", note: notes.newNote)!
