@@ -34,7 +34,7 @@ enum InformationType : Int {
         }
     }
     
-    var type : String {
+    var title : String {
         switch self {
         case .organization:
             return NSLocalizedString("Organization", comment: "contacts talbe cell Organization title")
@@ -72,7 +72,8 @@ class ContactEditViewModel {
     
     var allowed_types: [InformationType] = [.organization,
                                             .nickname,
-                                            .title]
+                                            .title,
+                                            .gender]
     
     typealias ContactEditSaveComplete = ((_ error: NSError?) -> Void)
 
@@ -98,7 +99,7 @@ class ContactEditViewModel {
         var out : [InformationType] = []
         for allowed in allowed_types {
             var found : Bool = false
-            for info in getOrigInformations() {
+            for info in getInformations() {
                 if allowed == info.infoType {
                     found = true
                 }
@@ -131,7 +132,7 @@ class ContactEditViewModel {
     }
     
     
-    func getOrigInformations() -> [ContactEditInformation] {
+    func getInformations() -> [ContactEditInformation] {
         fatalError("This method must be overridden")
     }
     
@@ -140,23 +141,23 @@ class ContactEditViewModel {
         fatalError("This method must be overridden")
     }
     
-    func getOrigEmails() -> [ContactEditEmail] {
+    func getEmails() -> [ContactEditEmail] {
          fatalError("This method must be overridden")
     }
     
-    func getOrigCells() -> [ContactEditPhone] {
+    func getCells() -> [ContactEditPhone] {
         fatalError("This method must be overridden")
     }
     
-    func getOrigAddresses() -> [ContactEditAddress] {
+    func getAddresses() -> [ContactEditAddress] {
         fatalError("This method must be overridden")
     }
     
-    func getOrigFields() -> [ContactEditField] {
+    func getFields() -> [ContactEditField] {
         fatalError("This method must be overridden")
     }
     
-    func getOrigNotes() -> ContactEditNote {
+    func getNotes() -> ContactEditNote {
         fatalError("This method must be overridden")
     }
     
@@ -164,7 +165,17 @@ class ContactEditViewModel {
         fatalError("This method must be overridden")
     }
     
+    func getUrls() -> [ContactEditUrl] {
+        fatalError("This method must be overridden")
+    }
+    
     //
+    func newUrl() -> ContactEditUrl {
+        fatalError("This method must be overridden")
+    }
+    func deleteUrl(at index : Int) -> Void {
+        fatalError("This method must be overridden")
+    }
     func newEmail() -> ContactEditEmail {
         fatalError("This method must be overridden")
     }
@@ -205,34 +216,40 @@ class ContactEditViewModel {
         if profile.needsUpdate() {
             return true
         }
-        for e in getOrigEmails() {
+        for e in getEmails() {
             if e.needsUpdate() {
                 return true
             }
         }
         
         //encrypted part
-        for cell in getOrigCells() {
+        for cell in getCells() {
             if cell.needsUpdate() {
                 return true
             }
         }
-        for addr in getOrigAddresses() {
+        for addr in getAddresses() {
             if addr.needsUpdate() {
                 return true
             }
         }
-        for info in getOrigInformations() {
+        for info in getInformations() {
             if info.needsUpdate() {
                 return true
             }
         }
-        let note = getOrigNotes()
+        for url in getUrls() {
+            if url.needsUpdate() {
+                return true
+            }
+        }
+        
+        let note = getNotes()
         if note.needsUpdate() {
             return true
         }
 
-        for field in getOrigFields() {
+        for field in getFields() {
             if field.needsUpdate() {
                 return true
             }

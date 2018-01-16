@@ -223,7 +223,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         case .information:
             let infos = viewModel.getInformations()
             let info = infos[row]
-            cell.configCell(title: info.infoType.type, value: info.newValue)
+            cell.configCell(title: info.infoType.title, value: info.newValue)
             cell.selectionStyle = .default
         case .custom_field:
             let fields = viewModel.getFields()

@@ -1077,6 +1077,8 @@
 		75978BDB1B28F63100D07501 /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 75978BDA1B28F63100D07501 /* editor.css */; };
 		7599B1721CC8124300B2CB8D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
 		7599B1761CC8124C00B2CB8D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
+		759B6F19200E1C9500FEE122 /* ContactEditUrlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759B6F18200E1C1700FEE122 /* ContactEditUrlCell.swift */; };
+		759B6F1A200E1C9900FEE122 /* ContactEditUrlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759B6F18200E1C1700FEE122 /* ContactEditUrlCell.swift */; };
 		759BBDC01BA0C55E002608B5 /* LabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759BBDBF1BA0C55E002608B5 /* LabelDisplayView.swift */; };
 		759BBDC21BA0C586002608B5 /* LabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 759BBDC11BA0C586002608B5 /* LabelDisplayView.xib */; };
 		759BBDC41BA0D18A002608B5 /* MultiLabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 759BBDC31BA0D18A002608B5 /* MultiLabelDisplayView.xib */; };
@@ -1764,6 +1766,7 @@
 		7599B1731CC8124300B2CB8D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7599B1751CC8124A00B2CB8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7599B1781CC8130600B2CB8D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		759B6F18200E1C1700FEE122 /* ContactEditUrlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUrlCell.swift; sourceTree = "<group>"; };
 		759BBDBF1BA0C55E002608B5 /* LabelDisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelDisplayView.swift; sourceTree = "<group>"; };
 		759BBDC11BA0C586002608B5 /* LabelDisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelDisplayView.xib; sourceTree = "<group>"; };
 		759BBDC31BA0D18A002608B5 /* MultiLabelDisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiLabelDisplayView.xib; sourceTree = "<group>"; };
@@ -2293,6 +2296,7 @@
 				7528FFBD1FA7FEC0005F66A3 /* ContactEditCell+Delegates.swift */,
 				7528FFC61FA7FEC2005F66A3 /* ContactEditEmailCell.swift */,
 				7528FFC31FA7FEC1005F66A3 /* ContactEditFieldCell.swift */,
+				759B6F18200E1C1700FEE122 /* ContactEditUrlCell.swift */,
 				7528FFB41FA7FEBE005F66A3 /* ContactEditInformationCell.swift */,
 				7528FFB51FA7FEBE005F66A3 /* ContactEditNotesCell.swift */,
 				7528FFC41FA7FEC1005F66A3 /* ContactEditPhoneCell.swift */,
@@ -4669,6 +4673,7 @@
 				751562551B68E8050066FE38 /* EmailAttachmentView.swift in Sources */,
 				073FE0191A955ED900825980 /* ContactDataService.swift in Sources */,
 				70945E6A1A80F351002B6837 /* MailboxViewController.swift in Sources */,
+				759B6F19200E1C9500FEE122 /* ContactEditUrlCell.swift in Sources */,
 				7528FFCE1FA7FEC3005F66A3 /* ContactEditAddCell.swift in Sources */,
 				0713239A1A7C02AB0043DB41 /* Message.swift in Sources */,
 				75E49F131CAB2D2100235ACC /* SignupViewModelImpl.swift in Sources */,
@@ -5575,6 +5580,7 @@
 				7528001B1FA7FEF6005F66A3 /* UIStoryboard+Extension.swift in Sources */,
 				754713121DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */,
 				7528FFF71FA7FEF6005F66A3 /* ContactsAPI.swift in Sources */,
+				759B6F1A200E1C9900FEE122 /* ContactEditUrlCell.swift in Sources */,
 				752800031FA7FEF6005F66A3 /* ContactsViewModelImpl.swift in Sources */,
 				75DE7D0E1CAAEA4900F5443E /* SignUpUserNameViewController.swift in Sources */,
 				75DE7D0F1CAAEA4900F5443E /* LoadingView.swift in Sources */,

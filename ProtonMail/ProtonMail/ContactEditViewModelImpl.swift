@@ -16,8 +16,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                                .encrypted_header,
                                                .cellphone,
                                                .home_address,
+                                               .url,
                                                .information,
-//                                               .custom_field,
                                                .notes,
                                                .delete]
 
@@ -29,6 +29,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     var fields : [ContactEditField] = []
     var notes : ContactEditNote = ContactEditNote(note: "", isNew: false)
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
+    var urls : [ContactEditUrl] = []
     
     var origvCard2 : PMNIVCard?
     var origvCard3 : PMNIVCard?
@@ -263,27 +264,27 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         return contact == nil || contact!.managedObjectContext == nil
     }
     
-    override func getOrigEmails() -> [ContactEditEmail] {
+    override func getEmails() -> [ContactEditEmail] {
         return emails
     }
     
-    override func getOrigCells() -> [ContactEditPhone] {
+    override func getCells() -> [ContactEditPhone] {
         return cells
     }
     
-    override func getOrigAddresses() -> [ContactEditAddress] {
+    override func getAddresses() -> [ContactEditAddress] {
         return addresses
     }
     
-    override func getOrigInformations() -> [ContactEditInformation] {
+    override func getInformations() -> [ContactEditInformation] {
         return informations
     }
     
-    override func getOrigFields() -> [ContactEditField] {
+    override func getFields() -> [ContactEditField] {
         return fields
     }
     
-    override func getOrigNotes() -> ContactEditNote {
+    override func getNotes() -> ContactEditNote {
         return notes
     }
     
@@ -291,7 +292,22 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         return profile
     }
     
+    override func getUrls() -> [ContactEditUrl] {
+        return urls
+    }
+    
     //new functions
+    override func newUrl() -> ContactEditUrl {
+        let type = pick(newType: ContactFieldType.urlTypes, pickedTypes: urls)
+        let url = ContactEditUrl(order: urls.count, type: type, url:"", isNew: true)
+        urls.append(url)
+        return url
+    }
+    override func deleteUrl(at index: Int) {
+        if urls.count > index {
+            urls.remove(at: index)
+        }
+    }
     override func newEmail() -> ContactEditEmail {
         let type = pick(newType: ContactFieldType.emailTypes, pickedTypes: emails)
         let email = ContactEditEmail(order: emails.count, type: type, email:"", isNew: true)
@@ -360,7 +376,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         if let c = contact, c.managedObjectContext != nil {
             //update
             var a_emails: [ContactEmail] = []
-            for e in getOrigEmails() {
+            for e in getEmails() {
                 a_emails.append(e.toContactEmail())
             }
             if origvCard2 == nil {
@@ -470,7 +486,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     case .anniversary:
                         break
                     case .gender:
-                        break
+                        let g = PMNIGender.createInstance(info.newValue, text: "")!
+                        vcard3.setGender(g)
+                        isCard3Set = true
                     }
                 }
                 

@@ -16,13 +16,14 @@ class ContactAddViewModelImpl : ContactEditViewModel {
                                               .encrypted_header,
                                               .cellphone,
                                               .home_address,
+                                              .url,
                                               .information,
-//                                              .custom_field,
                                               .notes]
     
     var contact : Contact? //optional if nil add new contact
     var emails : [ContactEditEmail] = []
     var cells : [ContactEditPhone] = []
+    var urls : [ContactEditUrl] = []
     var addresses : [ContactEditAddress] = []
     var informations: [ContactEditInformation] = []
     var fields : [ContactEditField] = []
@@ -52,35 +53,50 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         return true
     }
     
-    override func getOrigEmails() -> [ContactEditEmail] {
+    override func getEmails() -> [ContactEditEmail] {
         return emails
     }
     
-    override func getOrigCells() -> [ContactEditPhone] {
+    override func getCells() -> [ContactEditPhone] {
         return cells
     }
     
-    override func getOrigAddresses() -> [ContactEditAddress] {
+    override func getAddresses() -> [ContactEditAddress] {
         return addresses
     }
     
-    override func getOrigInformations() -> [ContactEditInformation] {
+    override func getInformations() -> [ContactEditInformation] {
         return informations
     }
     
-    override func getOrigFields() -> [ContactEditField] {
+    override func getFields() -> [ContactEditField] {
         return fields
     }
     
-    override func getOrigNotes() -> ContactEditNote {
+    override func getNotes() -> ContactEditNote {
         return notes
     }
     
     override func getProfile() -> ContactEditProfile {
         return profile
     }
+    
+    override func getUrls() -> [ContactEditUrl] {
+        return urls
+    }
 
     //new functions
+    override func newUrl() -> ContactEditUrl {
+        let type = pick(newType: ContactFieldType.urlTypes, pickedTypes: urls)
+        let url = ContactEditUrl(order: urls.count, type: type, url:"", isNew: true)
+        urls.append(url)
+        return url
+    }
+    override func deleteUrl(at index: Int) {
+        if urls.count > index {
+            urls.remove(at: index)
+        }
+    }
     override func newEmail() -> ContactEditEmail {
         let type = pick(newType: ContactFieldType.emailTypes, pickedTypes: emails)
         let email = ContactEditEmail(order: emails.count, type: type, email:"", isNew: true)
@@ -148,10 +164,9 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     override func done(complete : @escaping ContactEditSaveComplete) {
         //add
         var a_emails: [ContactEmail] = []
-        for e in getOrigEmails() {
+        for e in getEmails() {
             a_emails.append(e.toContactEmail())
         }
-        //            let a_data: ContactDate
         guard let vcard2 = PMNIVCard.createInstance() else {
             return; //with error
         }
@@ -228,7 +243,9 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             case .anniversary:
                 break
             case .gender:
-                break
+                let g = PMNIGender.createInstance(info.newValue, text: "")!
+                vcard3.setGender(g)
+                isCard3Set = true
             }
         }
         

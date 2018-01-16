@@ -198,7 +198,7 @@ final class ContactEditUrl: ContactEditTypeInterface {
         newType = type
     }
     func types() -> [ContactFieldType] {
-        return ContactFieldType.phoneTypes
+        return ContactFieldType.urlTypes
     }
     
     func needsUpdate() -> Bool {

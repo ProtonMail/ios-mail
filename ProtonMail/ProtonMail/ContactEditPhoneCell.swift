@@ -21,6 +21,7 @@ final class ContactEditPhoneCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
+        self.valueField.placeholder = NSLocalizedString("Phone number", comment: "contact placeholder")
     }
     
     override func layoutSubviews() {

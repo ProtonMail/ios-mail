@@ -34,6 +34,15 @@ final class ContactEditAddressCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
+        
+        
+        valueField.placeholder = NSLocalizedString("Street", comment: "contact placeholder")
+        street_two.placeholder = NSLocalizedString("Street", comment: "contact placeholder")
+        cityField.placeholder = NSLocalizedString("City", comment: "contact placeholder")
+        stateField.placeholder = NSLocalizedString("State", comment: "contact placeholder")
+        zipField.placeholder = NSLocalizedString("ZIP", comment: "contact placeholder")
+        countyField.placeholder = NSLocalizedString("Country", comment: "contact placeholder")
+        
     }
     
     

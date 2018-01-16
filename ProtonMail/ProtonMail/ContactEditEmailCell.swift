@@ -24,6 +24,7 @@ final class ContactEditEmailCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
+        self.valueField.placeholder = NSLocalizedString("Email address", comment: "contact placeholder")
     }
     
     func configCell(obj : ContactEditEmail, callback : ContactEditCellDelegate?) {

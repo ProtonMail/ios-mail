@@ -1,16 +1,17 @@
 //
-//  ContactEditOrgCell.swift
+//  ContactEditField.swift
 //  ProtonMail
 //
-//  Created by Yanfeng Zhang on 5/24/17.
+//  Created by Yanfeng Zhang on 5/25/17.
 //  Copyright © 2017 ProtonMail. All rights reserved.
 //
 
 import Foundation
 
-final class ContactEditInformationCell: UITableViewCell {
+
+final class ContactEditUrlCell: UITableViewCell {
     
-    fileprivate var information : ContactEditInformation!
+    fileprivate var url : ContactEditUrl!
     fileprivate var delegate : ContactEditCellDelegate?
     
     @IBOutlet weak var typeLabel: UILabel!
@@ -21,8 +22,7 @@ final class ContactEditInformationCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
-        self.typeButton.isHidden = true
-        self.typeButton.isEnabled = false
+        self.valueField.placeholder = NSLocalizedString("Url", comment: "default vcard types")
     }
     
     override func layoutSubviews() {
@@ -30,22 +30,21 @@ final class ContactEditInformationCell: UITableViewCell {
         sepratorView.gradient()
     }
     
-    func configCell(obj : ContactEditInformation, callback : ContactEditCellDelegate?) {
-        self.information = obj
+    func configCell(obj : ContactEditUrl, callback: ContactEditCellDelegate?) {
+        self.url = obj
         
-        typeLabel.text = self.information.infoType.title
-        valueField.placeholder = self.information.infoType.title
-        valueField.text = self.information.newValue
+        typeLabel.text = self.url.newType.title
+        valueField.text = self.url.newUrl
         
         self.delegate = callback
     }
     
     @IBAction func typeAction(_ sender: UIButton) {
-        //delegate?.pick(typeInterface: org, sender: self)
+        delegate?.pick(typeInterface: url, sender: self)
     }
 }
 
-extension ContactEditInformationCell: UITextFieldDelegate {
+extension ContactEditUrlCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
@@ -55,6 +54,6 @@ extension ContactEditInformationCell: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {
-        information.newValue = valueField.text!
+        url.newUrl = valueField.text!
     }
 }
