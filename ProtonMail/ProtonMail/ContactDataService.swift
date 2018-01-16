@@ -206,11 +206,12 @@ class ContactDataService {
      
      - Parameter completion: async complete response
      **/
+    fileprivate var isFetching : Bool = false
     func fetchContacts(completion: ContactFetchComplete?) {
-        if lastUpdatedStore.contactsCached == 1 {
+        if lastUpdatedStore.contactsCached == 1 || isFetching {
             return
         }
-        
+        self.isFetching = true
         {
             do {
                 //TODO::here need change to fetch by page until got total
@@ -281,6 +282,7 @@ class ContactDataService {
                 }
                 
                 lastUpdatedStore.contactsCached = 1
+                self.isFetching = false
             } catch let ex as NSError {
                 completion?(nil, ex)
             }
