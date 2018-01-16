@@ -206,7 +206,7 @@ final class ContactEditUrl: ContactEditTypeInterface {
             return false
         }
         if origOrder == newOrder &&
-            origType == newType &&
+            origType.rawString == newType.rawString &&
             origUrl == newUrl {
             return false
         }
@@ -333,10 +333,14 @@ final class ContactEditInformation: ContactEditNoTypeInterface {
     
     var newValue : String = ""
     
-    init(type: InformationType, value: String) {
+    init(type: InformationType, value: String, isNew: Bool) {
         self.infoType = type
         self.newValue = value
-        self.isNew = true
+        self.isNew = isNew
+        
+        if !self.isNew {
+            self.origValue = self.newValue
+        }
     }
     func getSectionType() -> ContactEditSectionType {
         return .information

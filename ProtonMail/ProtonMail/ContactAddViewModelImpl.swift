@@ -137,7 +137,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     
     override func newInformation(type: InformationType) -> ContactEditInformation {
-        let info = ContactEditInformation(type: type, value:"")
+        let info = ContactEditInformation(type: type, value:"", isNew: true)
         informations.append(info)
         return info
     }

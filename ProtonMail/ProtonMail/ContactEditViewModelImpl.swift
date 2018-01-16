@@ -128,15 +128,15 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                 
                             case "Organization":
                                 let org = vcard.getOrganization()
-                                let info = ContactEditInformation(type: .organization, value:org?.getValue() ?? "")
+                                let info = ContactEditInformation(type: .organization, value:org?.getValue() ?? "", isNew: false)
                                 self.informations.append(info)
                             case "Title":
                                 let title = vcard.getTitle()
-                                let info = ContactEditInformation(type: .title, value:title?.getTitle() ?? "")
+                                let info = ContactEditInformation(type: .title, value:title?.getTitle() ?? "", isNew: false)
                                 self.informations.append(info)
                             case "Nickname":
                                 let nick = vcard.getNickname()
-                                let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "")
+                                let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "", isNew: false)
                                 self.informations.append(info)
                             case "Birthday":
                                 //                            let nick = vcard.ge
@@ -147,7 +147,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                 break
                             case "Gender":
                                 if let gender = vcard.getGender() {
-                                    let info = ContactEditInformation(type: .gender, value: gender.getGender() )
+                                    let info = ContactEditInformation(type: .gender, value: gender.getGender(), isNew: false)
                                     self.informations.append(info)
                                 }
                             case "Url":
@@ -364,7 +364,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     }
 
     override func newInformation(type: InformationType) -> ContactEditInformation {
-        let info = ContactEditInformation(type: type, value: "")
+        let info = ContactEditInformation(type: type, value: "", isNew: true)
         self.informations.append(info)
         return info
     }
@@ -508,10 +508,18 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     }
                 }
                 
+                var newUrls:[PMNIUrl] = []
                 for url in urls {
-                    let f = PMNIUrl.createInstance(url.newType.vcardType, value: url.newUrl)
-                    vcard3.add(f)
-                    isCard3Set = true
+                    if let u = PMNIUrl.createInstance(url.newType.vcardType, value: url.newUrl) {
+                        newUrls.append(u)
+                        isCard3Set = true
+                    }
+                }
+                //replace all urls
+                if newUrls.count > 0 {
+                    vcard3.setUrls(newUrls)
+                } else {
+                    vcard3.clearUrls()
                 }
                 
                 if notes.newNote != "" {

@@ -34,6 +34,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate var doneItem: UIBarButtonItem!
     
+    fileprivate var loaded : Bool = false
+    
     func inactiveViewModel() {
     }
     
@@ -54,6 +56,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         }) { (contact, error) in
             if nil != contact {
                 self.tableView.reloadData()
+                self.loaded = true
             }
             ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
         }
@@ -71,6 +74,10 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if loaded {
+            self.viewModel.rebuild()
+            self.tableView.reloadData()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -120,7 +127,6 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
 // MARK: - UITableViewDataSource
 extension ContactDetailViewController: UITableViewDataSource {
 
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sections().count
     }

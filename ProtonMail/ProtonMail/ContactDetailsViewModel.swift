@@ -22,6 +22,10 @@ class ContactDetailsViewModel {
         return false
     }
     
+    func rebuild() {
+        fatalError("This method must be overridden")
+    }
+    
     func sections() -> [ContactEditSectionType] {
         fatalError("This method must be overridden")
     }

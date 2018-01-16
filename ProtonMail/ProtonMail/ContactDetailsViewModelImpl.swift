@@ -96,6 +96,21 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         return false
     }
     
+    override func rebuild() {
+        origEmails = []
+        origAddresses = []
+        origTelephons = []
+        origInformations = []
+        origFields = []
+        origNotes = []
+        
+        origUrls = []
+        
+        verifyType2 = false
+        verifyType3 = false
+        self.setupEmails()
+    }
+    
     private func setupEmails() {
         //  origEmails
         let cards = self.contact.getCardData()
@@ -178,15 +193,15 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             }
                         case "Organization":
                             let org = vcard.getOrganization()
-                            let info = ContactEditInformation(type: .organization, value:org?.getValue() ?? "")
+                            let info = ContactEditInformation(type: .organization, value:org?.getValue() ?? "", isNew: false)
                             origInformations.append(info)
                         case "Title":
                             let title = vcard.getTitle()
-                            let info = ContactEditInformation(type: .title, value:title?.getTitle() ?? "")
+                            let info = ContactEditInformation(type: .title, value:title?.getTitle() ?? "", isNew: false)
                             origInformations.append(info)
                         case "Nickname":
                             let nick = vcard.getNickname()
-                            let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "")
+                            let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "", isNew: false)
                             origInformations.append(info)
                         case "Birthday":
 //                            let nick = vcard.ge
@@ -197,7 +212,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             break
                         case "Gender":
                             if let gender = vcard.getGender() {
-                                let info = ContactEditInformation(type: .gender, value: gender.getGender() )
+                                let info = ContactEditInformation(type: .gender, value: gender.getGender(), isNew: false)
                                 origInformations.append(info)
                             }
                         case "Url":
