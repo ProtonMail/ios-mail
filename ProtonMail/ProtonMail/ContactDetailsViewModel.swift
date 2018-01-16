@@ -22,7 +22,7 @@ class ContactDetailsViewModel {
         return false
     }
     
-    func rebuild() {
+    func rebuild() -> Bool {
         fatalError("This method must be overridden")
     }
     

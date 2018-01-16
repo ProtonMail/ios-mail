@@ -74,8 +74,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if loaded {
-            self.viewModel.rebuild()
+        if loaded && self.viewModel.rebuild() {
             self.tableView.reloadData()
         }
     }

@@ -62,6 +62,7 @@
                 <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
         </attribute>
+        <attribute name="needsRebuild" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Size"/>
@@ -376,7 +377,7 @@
     </entity>
     <elements>
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="195"/>
-        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="195"/>
+        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="210"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
         <element name="Email" positionX="1539" positionY="-3582" width="128" height="150"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="165"/>

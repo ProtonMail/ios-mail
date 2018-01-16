@@ -23,6 +23,7 @@ public class Contact: NSManagedObject {
     //local ver 
     @NSManaged var isDownloaded : Bool
     @NSManaged var isCorrected : Bool
+    @NSManaged var needsRebuild : Bool
 
     // relation
     @NSManaged var emails: NSSet

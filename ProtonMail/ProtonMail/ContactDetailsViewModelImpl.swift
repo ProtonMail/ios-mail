@@ -96,19 +96,23 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         return false
     }
     
-    override func rebuild() {
-        origEmails = []
-        origAddresses = []
-        origTelephons = []
-        origInformations = []
-        origFields = []
-        origNotes = []
-        
-        origUrls = []
-        
-        verifyType2 = false
-        verifyType3 = false
-        self.setupEmails()
+    override func rebuild() -> Bool {
+        if self.contact.needsRebuild {
+            origEmails = []
+            origAddresses = []
+            origTelephons = []
+            origInformations = []
+            origFields = []
+            origNotes = []
+            
+            origUrls = []
+            
+            verifyType2 = false
+            verifyType3 = false
+            self.setupEmails()
+            return true
+        }
+        return false
     }
     
     private func setupEmails() {
@@ -311,6 +315,9 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 break
             }
         }
+    
+        self.contact.needsRebuild = false
+        let _ = self.contact.managedObjectContext?.saveUpstreamIfNeeded()
     }
     
     override func getDetails(loading: () -> Void, complete: @escaping (Contact?, NSError?) -> Void) {

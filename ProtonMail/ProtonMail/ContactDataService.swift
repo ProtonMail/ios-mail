@@ -150,6 +150,7 @@ class ContactDataService {
                         if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName,
                                                                          fromJSONDictionary: contactDict,
                                                                          in: context) as? Contact {
+                            contact.needsRebuild = true
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")
                                 completion?(nil, error)
