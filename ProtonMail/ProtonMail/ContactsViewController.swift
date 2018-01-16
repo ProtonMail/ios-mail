@@ -230,7 +230,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    
     @available(iOS 9.0, *)
     internal func getContacts() {
         let store = CNContactStore()
@@ -396,9 +395,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     }
 }
 
-
-
-
 //Search part
 extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
     
@@ -423,7 +419,6 @@ extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
         self.viewModel.set(searching: false)
     }
 }
-
 
 // MARK: - UITableViewDataSource
 extension ContactsViewController: UITableViewDataSource {
@@ -461,43 +456,6 @@ extension ContactsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteClosure = { (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
-//            var contact: ContactVO
-//            if (self.searchController.isActive) {
-//                if indexPath.row < self.searchResults.count {
-//                    contact = self.searchResults[indexPath.row]
-//                } else {
-//                    return
-//                }
-//            } else {
-//                if indexPath.row < self.contacts.count {
-//                    contact = self.contacts[indexPath.row]
-//                } else {
-//                    return
-//                }
-//            }
-//            
-//            self.selectedContact = contact
-//            
-//            if (!contact.isProtonMailContact) {
-//                self.showContactBelongsToAddressBookError()
-//                return
-//            }
-//            
-//            if (contact.contactId.count > 0) {
-//                //TODO:: delete contact
-////                sharedContactDataService.deleteContact(contact.contactId, completion: { (contacts, error) -> Void in
-////                    self.retrieveAllContacts()
-////                })
-//            }
-//            
-//            if (self.searchController.isActive) {
-//                self.searchResults.remove(at: indexPath.row)
-//                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-//            } else {
-//                self.contacts.remove(at: indexPath.row)
-//                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-//            }
-            
             if let contact = self.viewModel.item(index: indexPath) {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
@@ -517,28 +475,8 @@ extension ContactsViewController: UITableViewDelegate {
             }
         }
         
-//        let editClosure = { (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
-//            var contact: ContactVO
-//            if (self.searchController.isActive) {
-//                contact = self.searchResults[indexPath.row]
-//            } else {
-//                contact = self.contacts[indexPath.row]
-//            }
-//            
-//            self.selectedContact = contact
-//            
-//            if (!contact.isProtonMailContact) {
-//                self.showContactBelongsToAddressBookError()
-//                return
-//            }
-//            
-//            self.selectedContact = contact
-//            self.performSegue(withIdentifier: "toEditContact", sender: self)
-//        }
-        
         let deleteAction = UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: "Action"), handler: deleteClosure)
-//        let editAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Edit", comment: "Action"), handler: editClosure)
-        return [deleteAction] // [deleteAction, editAction]
+        return [deleteAction]
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
