@@ -21,7 +21,8 @@ public class Contact: NSManagedObject {
     @NSManaged var modifyTIme : Data?
     
     //local ver 
-    @NSManaged var isDownloaded: Bool
+    @NSManaged var isDownloaded : Bool
+    @NSManaged var isCorrected : Bool
 
     // relation
     @NSManaged var emails: NSSet

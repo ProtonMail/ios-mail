@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C88" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C205" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -54,6 +54,7 @@
             </userInfo>
         </attribute>
         <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isCorrected" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isDownloaded" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="modifyTIme" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" indexed="YES" syncable="YES">
@@ -375,7 +376,7 @@
     </entity>
     <elements>
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="195"/>
-        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="180"/>
+        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="195"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
         <element name="Email" positionX="1539" positionY="-3582" width="128" height="150"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="165"/>

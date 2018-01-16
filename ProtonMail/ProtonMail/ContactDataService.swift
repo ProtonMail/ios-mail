@@ -54,13 +54,14 @@ class ContactDataService {
     func resultController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let moc = self.managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
-//            let strComp = NSSortDescriptor(key: Contact.Attributes.name,
-//                                           ascending: true,
-//                                           selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-//            fetchRequest.sortDescriptors = [strComp]
+            let strComp = NSSortDescriptor(key: Contact.Attributes.name,
+                                           ascending: true,
+                                           selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
+            fetchRequest.sortDescriptors = [strComp]
+            
             return NSFetchedResultsController(fetchRequest: fetchRequest,
                                               managedObjectContext: moc,
-                                              sectionNameKeyPath: nil,
+                                              sectionNameKeyPath: Contact.Attributes.name,
                                               cacheName: nil)
         }
         return nil
@@ -238,7 +239,10 @@ class ContactDataService {
                 var loop = 1
                 var total = 0
                 
-                while (loop > 0 || fetched >= total) {
+                while (true) {
+                    if loop <= 0 || fetched >= total {
+                        break
+                    }
                     loop = loop - 1
                     let api = ContactEmailsRequest<ContactEmailsResponse>(page: currentPage, pageSize: pageSize)
                     if let contactsRes = try api.syncCall() {
@@ -254,9 +258,12 @@ class ContactDataService {
                         let context = sharedCoreDataService.newManagedObjectContext()
                         context.performAndWait() {
                             do {
-                                if let _ = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
                                                                             fromJSONArray: contactsArray,
                                                                             in: context) as? [Contact] {
+                                    for contact in contacts {
+                                        let _ = contact.fixName(force: true)
+                                    }
                                     if let error = context.saveUpstreamIfNeeded() {
                                         PMLog.D(" error: \(error)")
                                         //                                        completion?(nil, error)
@@ -295,6 +302,7 @@ class ContactDataService {
                     do {
                         if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: contactDict, in: context) as? Contact {
                             contact.isDownloaded = true
+                            let _ = contact.fixName(force: true)
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")
                                 completion?(nil, error)

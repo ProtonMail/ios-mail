@@ -15,13 +15,24 @@ final class ContactsViewModelImpl : ContactsViewModel {
     
     override func setupFetchedResults(delaget: NSFetchedResultsControllerDelegate?) {
         self.fetchedResultsController = self.getFetchedResultsController()
+        self.correctCachedData()
         self.fetchedResultsController?.delegate = delaget
-        self.prebuildIndex()
     }
     
-    func prebuildIndex() {
+    func correctCachedData() {
         if let objects = fetchedResultsController?.fetchedObjects as? [Contact] {
-            
+            if let context = self.fetchedResultsController?.managedObjectContext {
+                var needsSave = false
+                for obj in objects {
+                    if obj.fixName() {
+                        needsSave = true
+                    }
+                }
+                if needsSave {
+                    let _ = context.saveUpstreamIfNeeded()
+                    self.fetchedResultsController = self.getFetchedResultsController()
+                }
+            }
         }
     }
     

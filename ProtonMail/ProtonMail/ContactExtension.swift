@@ -54,6 +54,22 @@ extension Contact {
         })
     }
     
+    func fixName(force: Bool = false) -> Bool {
+        if !self.isCorrected || force {
+            let name = self.name
+            if !name.isEmpty {
+                self.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+            } else {
+                if let emails = self.getEmailsArray(), let email = emails.first {
+                    self.name = email.email.trimmingCharacters(in: .whitespacesAndNewlines)
+                }
+            }
+            self.isCorrected = true
+            return true
+        }
+        return false
+    }
+    
     func getDisplayEmails() -> String {
         if let emails = getEmailsArray()?.order() {
             let arrayMap: Array = emails.map(){ $0.email }
