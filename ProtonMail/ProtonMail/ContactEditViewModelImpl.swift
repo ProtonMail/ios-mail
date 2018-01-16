@@ -139,10 +139,12 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                 let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "", isNew: false)
                                 self.informations.append(info)
                             case "Birthday":
-                                //                            let nick = vcard.ge
-                                //                            let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "")
-                                //                            origInformations.append(info)
-                                break
+                                let births = vcard.getBirthdays()
+                                for b in births {
+                                    let info = ContactEditInformation(type: .birthday, value:b.getDate(), isNew: false)
+                                    self.informations.append(info)
+                                    break //only change first
+                                }
                             case "Anniversary":
                                 break
                             case "Gender":
@@ -498,8 +500,13 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         vcard3.setTitle(t)
                         isCard3Set = true
                     case .birthday:
-                        break
+                        let b = PMNIBirthday.createInstance("", date: info.newValue)!
+                        vcard3.setBirthdays([b])
+                        isCard3Set = true
                     case .anniversary:
+//                        let a = PMNIAnniversary.createInstance("", date: info.newValue)!
+//                        vcard3.seta
+//                        isCard3Set = true
                         break
                     case .gender:
                         let g = PMNIGender.createInstance(info.newValue, text: "")!

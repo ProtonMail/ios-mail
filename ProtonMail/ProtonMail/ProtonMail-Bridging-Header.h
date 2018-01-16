@@ -77,6 +77,8 @@
 #import <OpenPGP/PMNINickname.h>
 #import <OpenPGP/PMNITitle.h>
 #import <OpenPGP/PMNIGender.h>
+#import <OpenPGP/PMNIBirthday.h>
+#import <OpenPGP/PMNIAnniversary.h>
 
 
 

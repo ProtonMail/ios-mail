@@ -208,10 +208,11 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "", isNew: false)
                             origInformations.append(info)
                         case "Birthday":
-//                            let nick = vcard.ge
-//                            let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "")
-//                            origInformations.append(info)
-                            break
+                            let births = vcard.getBirthdays()
+                            for b in births {
+                                let info = ContactEditInformation(type: .birthday, value:b.getDate(), isNew: false)
+                                origInformations.append(info)
+                            }
                         case "Anniversary":
                             break
                         case "Gender":
@@ -224,7 +225,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             var order : Int = 1
                             for url in urls {
                                 let typeRaw = url.getType()
-                                //let typeRaw = types.count > 0 ? types.first! : ""
                                 let type = ContactFieldType.get(raw: typeRaw)
                                 let cu = ContactEditUrl(order: order, type:type == .empty ? .url : type, url:url.getValue(), isNew: false)
                                 origUrls.append(cu)
@@ -234,7 +234,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             
                             
                             //case "Agent":
-                            //case "Birthday":
                             //case "CalendarRequestUri":
                             //case "CalendarUri":
                             //case "Categories":
@@ -246,17 +245,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             //case "Geo":
                             //case "Impp":
                             
-                            //[0] = "Telephone"
-                            //[1] = "Organization"
-                            //[2] = "Address"
-                            //[3] = "Nickname"
-                            //[4] = "RawProperty"
-                            //[5] = "Title"
-                            //[6] = "Birthday"
-                            //[7] = "Url"
-                            //[8] = "Note"
-                            
-                            //
                             //"Key":
                             //"KindScribe());
                             //"LabelScribe());

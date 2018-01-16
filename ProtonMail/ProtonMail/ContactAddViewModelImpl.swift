@@ -239,7 +239,9 @@ class ContactAddViewModelImpl : ContactEditViewModel {
                 vcard3.setTitle(t)
                 isCard3Set = true
             case .birthday:
-                break
+                let b = PMNIBirthday.createInstance("", date: info.newValue)!
+                vcard3.setBirthdays([b])
+                isCard3Set = true
             case .anniversary:
                 break
             case .gender:

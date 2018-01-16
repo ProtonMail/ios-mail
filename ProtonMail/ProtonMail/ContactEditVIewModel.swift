@@ -73,7 +73,8 @@ class ContactEditViewModel {
     var allowed_types: [InformationType] = [.organization,
                                             .nickname,
                                             .title,
-                                            .gender]
+                                            .gender,
+                                            .birthday]
     
     typealias ContactEditSaveComplete = ((_ error: NSError?) -> Void)
 
