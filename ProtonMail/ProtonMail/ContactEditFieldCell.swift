@@ -29,13 +29,19 @@ final class ContactEditFieldCell: UITableViewCell {
         sepratorView.gradient()
     }
     
-    func configCell(obj : ContactEditField, callback: ContactEditCellDelegate?) {
+    func configCell(obj : ContactEditField, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.field = obj
         
         typeLabel.text = self.field.newType.title
         valueField.text = self.field.newField
         
         self.delegate = callback
+        
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
+        }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {

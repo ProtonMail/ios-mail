@@ -2820,7 +2820,7 @@
                                                     <rect key="frame" x="75" y="0.0" width="292" height="43.5"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                                 </textField>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6c6-wV-4ha">
                                                     <rect key="frame" x="185.5" y="0.0" width="4" height="43.5"/>

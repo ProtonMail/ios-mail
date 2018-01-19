@@ -57,7 +57,7 @@ final class ContactEditAddressCell: UITableViewCell {
         vline6.gradient()
     }
     
-    func configCell(obj : ContactEditAddress, callback : ContactEditCellDelegate?) {
+    func configCell(obj : ContactEditAddress, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.addr = obj
         
         typeLabel.text = self.addr.newType.title
@@ -69,6 +69,12 @@ final class ContactEditAddressCell: UITableViewCell {
         countyField.text = self.addr.newCountry
         
         self.delegate = callback
+        
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
+        }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {

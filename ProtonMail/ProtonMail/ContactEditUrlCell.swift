@@ -30,13 +30,19 @@ final class ContactEditUrlCell: UITableViewCell {
         sepratorView.gradient()
     }
     
-    func configCell(obj : ContactEditUrl, callback: ContactEditCellDelegate?) {
+    func configCell(obj : ContactEditUrl, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.url = obj
         
         typeLabel.text = self.url.newType.title
         valueField.text = self.url.newUrl
         
         self.delegate = callback
+        
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
+        }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {

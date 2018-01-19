@@ -27,13 +27,18 @@ final class ContactEditEmailCell: UITableViewCell {
         self.valueField.placeholder = NSLocalizedString("Email address", comment: "contact placeholder")
     }
     
-    func configCell(obj : ContactEditEmail, callback : ContactEditCellDelegate?) {
+    func configCell(obj : ContactEditEmail, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.email = obj
         
         typeLabel.text = self.email.newType.title
         valueField.text = self.email.newEmail
-        
         self.delegate = callback
+        
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
+        }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {

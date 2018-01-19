@@ -30,7 +30,7 @@ final class ContactEditInformationCell: UITableViewCell {
         sepratorView.gradient()
     }
     
-    func configCell(obj : ContactEditInformation, callback : ContactEditCellDelegate?) {
+    func configCell(obj : ContactEditInformation, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.information = obj
         
         typeLabel.text = self.information.infoType.title
@@ -38,6 +38,12 @@ final class ContactEditInformationCell: UITableViewCell {
         valueField.text = self.information.newValue
         
         self.delegate = callback
+        
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
+        }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {

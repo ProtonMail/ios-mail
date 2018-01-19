@@ -53,6 +53,8 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     var activeText : UIResponder? = nil
     
+    var newIndexPath : IndexPath? = nil
+    
     func inactiveViewModel() {
     }
     
@@ -193,6 +195,8 @@ extension ContactEditViewController: NSNotificationCenterKeyboardObserverProtoco
         if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             tableViewBottomOffset.constant = keyboardSize.height
         }
+        self.view.setNeedsUpdateConstraints()
+        self.view.setNeedsLayout()
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
         }, completion: nil)
@@ -310,6 +314,13 @@ extension ContactEditViewController: UITableViewDataSource {
         let section = indexPath.section
         let row = indexPath.row
         let s = sections[section]
+        
+        var firstResponder : Bool = false
+        if let index = newIndexPath, index == indexPath {
+            firstResponder = true
+            newIndexPath = nil
+        }
+        
         switch s {
         case .display_name, .encrypted_header:
             assert(false, "Code should not be here")
@@ -323,7 +334,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditEmailCell, for: indexPath) as! ContactEditEmailCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getEmails()[row], callback: self)
+                cell.configCell(obj: viewModel.getEmails()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .cellphone:
@@ -336,7 +347,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditCellphoneCell, for: indexPath) as! ContactEditPhoneCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getCells()[row], callback: self)
+                cell.configCell(obj: viewModel.getCells()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .home_address:
@@ -349,7 +360,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddressCell, for: indexPath) as! ContactEditAddressCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getAddresses()[row], callback: self)
+                cell.configCell(obj: viewModel.getAddresses()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .url:
@@ -362,7 +373,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditUrlCell, for: indexPath) as! ContactEditUrlCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getUrls()[row], callback: self)
+                cell.configCell(obj: viewModel.getUrls()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .information:
@@ -375,7 +386,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditCellInfoCell, for: indexPath) as! ContactEditInformationCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getInformations()[row], callback: self)
+                cell.configCell(obj: viewModel.getInformations()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .custom_field:
@@ -388,7 +399,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditFieldCell, for: indexPath) as! ContactEditFieldCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getFields()[row], callback: self)
+                cell.configCell(obj: viewModel.getFields()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .notes:
@@ -496,12 +507,15 @@ extension ContactEditViewController: UITableViewDataSource {
             switch s {
             case .emails:
                 let _ = self.viewModel.newEmail()
+                self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .cellphone:
                 let _ = self.viewModel.newPhone()
+                self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .home_address:
                 let _ = self.viewModel.newAddress()
+                self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .information:
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -511,6 +525,7 @@ extension ContactEditViewController: UITableViewDataSource {
                 for t in infoTypes {
                     alertController.addAction(UIAlertAction(title: t.desc, style: .default, handler: { (action) -> Void in
                         let _ = self.viewModel.newInformation(type: t)
+                        self.newIndexPath = indexPath
                         self.tableView.insertRows(at: [indexPath], with: .automatic)
                     }))
                 }
@@ -521,6 +536,7 @@ extension ContactEditViewController: UITableViewDataSource {
                 present(alertController, animated: true, completion: nil)
             case .custom_field:
                 let _ = self.viewModel.newField()
+                self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             default:
                 break
@@ -638,24 +654,28 @@ extension ContactEditViewController: UITableViewDelegate {
             let emailCount = viewModel.getEmails().count
             if row == emailCount {
                 let _ = viewModel.newEmail()
+                self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .cellphone:
             let cellCount = viewModel.getCells().count
             if row == cellCount {
                 let _ = viewModel.newPhone()
+                self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .home_address:
             let addrCount = viewModel.getAddresses().count
             if row == addrCount {
                 let _ = viewModel.newAddress()
+                self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .url:
             let urlCount = viewModel.getUrls().count
             if row == urlCount {
                 let _ = viewModel.newUrl()
+                self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .information:
@@ -668,6 +688,7 @@ extension ContactEditViewController: UITableViewDelegate {
                 for t in infoTypes {
                     alertController.addAction(UIAlertAction(title: t.desc, style: .default, handler: { (action) -> Void in
                         let _ = self.viewModel.newInformation(type: t)
+                        self.newIndexPath = indexPath
                         self.tableView.insertRows(at: [indexPath], with: .automatic)
                     }))
                 }
@@ -680,6 +701,7 @@ extension ContactEditViewController: UITableViewDelegate {
             let fieldCount = viewModel.getFields().count
             if row == fieldCount {
                 let _ = viewModel.newField()
+                self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .delete:
