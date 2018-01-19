@@ -46,7 +46,9 @@ extension ContactEditTextViewCell: UITextViewDelegate {
         delegate?.beginEditing(textView: textView)
     }
     func textViewDidChange(_ textView: UITextView) {
-         note.newNote = textView.text!
-        self.delegate?.didChanged(textView: textView)
+        if let text = textView.text, text != note.newNote {
+            note.newNote = text
+            self.delegate?.didChanged(textView: textView)
+        }
     }
 }

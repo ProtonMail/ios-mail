@@ -230,15 +230,29 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
     }
     
     func didChanged(textView: UITextView) {
-        UIView.setAnimationsEnabled(false)
-        self.tableView.beginUpdates()
-        self.tableView.endUpdates()
-        UIView.setAnimationsEnabled(true)
-//        if let active = self.activeText, active == textView {
-//            if let cell = textView.superview?.superview as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell) {
-//                self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-//            }
-//        }
+        if #available(iOS 11.0, *) {
+            UIView.setAnimationsEnabled(false)
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+            UIView.setAnimationsEnabled(true)
+        } else {
+            synced(self, closure: {
+                UIView.setAnimationsEnabled(false)
+                if let active = self.activeText, active == textView {
+                    if let cell = textView.superview?.superview as? UITableViewCell, let _ = self.tableView.indexPath(for: cell) {
+                        self.tableView.beginUpdates()
+                        self.tableView.endUpdates()
+                    }
+                }
+                UIView.setAnimationsEnabled(true)
+            })
+        }
+    }
+    
+    func synced(_ lock: Any, closure: () -> ()) {
+        objc_sync_enter(lock)
+        closure()
+        objc_sync_exit(lock)
     }
     
 }
@@ -618,7 +632,8 @@ extension ContactEditViewController: UITableViewDelegate {
         let s = sections[section]
         switch s {
         case .display_name, .encrypted_header, .notes:
-            assert(false, "Code should not be here")
+            break
+        //assert(false, "Code should not be here")
         case .emails:
             let emailCount = viewModel.getEmails().count
             if row == emailCount {
