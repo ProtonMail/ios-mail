@@ -100,7 +100,7 @@ enum ContactFieldType {
         case .address:
             return NSLocalizedString("Address", comment: "default vcard types")
         case .url:
-            return NSLocalizedString("Url", comment: "default vcard types")
+            return NSLocalizedString("URL", comment: "default vcard types")
         default:
             return self.rawString
         }
