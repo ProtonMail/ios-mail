@@ -52,6 +52,22 @@ final class ContactsTableViewCell: MCSwipeTableViewCell {
         shortName.text = shortn.uppercased()
     }
     
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+        if highlighted {
+            shortName.backgroundColor = UIColor(hexColorCode: "#BFBFBF")
+        }
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        if selected {
+            shortName.backgroundColor = UIColor(hexColorCode: "#BFBFBF")
+        } else {
+            shortName.backgroundColor = UIColor(hexColorCode: "#9497CE")
+        }
+    }
+    
     private func highlightedAttributedString(text: String, search: String, font: UIFont) -> NSMutableAttributedString{
         let searchTerm = search /* SEARCH_TERM */
         let resultText = text /* YOUR_RESULT_TEXT */

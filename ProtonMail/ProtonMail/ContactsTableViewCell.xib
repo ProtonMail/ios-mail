@@ -55,7 +55,7 @@
                     </button>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S8m-bp-7Jy">
                         <rect key="frame" x="14" y="10" width="40" height="40"/>
-                        <color key="backgroundColor" red="0.57910037040710449" green="0.59150081872940063" blue="0.80702751874923706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.58039215686274503" green="0.59215686274509804" blue="0.80784313725490198" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="6F3-Yc-x6G"/>
                             <constraint firstAttribute="width" constant="40" id="qOQ-4t-8gv"/>
