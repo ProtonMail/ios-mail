@@ -215,7 +215,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             self.navigationController?.popViewController(animated: true)
             
             let alertController = UIAlertController(title: NSLocalizedString("Contacts", comment: "Action"),
-                                                    message: NSLocalizedString("Upload iOS contacts to protonmail?", comment: "Description"),
+                                                    message: NSLocalizedString("Upload iOS contacts to ProtonMail?", comment: "Description"),
                                                     preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Action"), style: .default, handler: { (action) -> Void in
                 self.getContacts()
