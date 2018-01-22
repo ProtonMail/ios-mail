@@ -54,8 +54,17 @@
 /* (No Comment) */
 "Add" = "Ajouter";
 
-/* edit contact navigation title */
+/* new contacts add Anniversary */
+"Add Anniversary" = "Ajouter la date de mariage";
+
+/* new contacts add Birthday */
+"Add Birthday" = "Ajouter l'anniversaire";
+
+/* Contacts add new contact */
 "Add Contact" = "Ajouter un contact";
+
+/* action */
+"Add Custom Label" = "Ajouter un label personnalisé";
 
 /* Action */
 "Add Folder" = "Ajouter un dossier";
@@ -69,8 +78,35 @@
 /* Title */
 "Add New Label" = "Ajouter un nouveau label";
 
+/* new contacts add Nickname */
+"Add Nickname" = "Ajouter un surnom";
+
+/* new contacts add Organization */
+"Add Organization" = "Ajouter une organisation";
+
 /* Action */
 "Add Star" = "Ajouter aux favoris";
+
+/* new contacts add Title */
+"Add Title" = "Ajouter un titre";
+
+/* action */
+"Add new address" = "Ajouter une nouvelle adresse";
+
+/* action */
+"Add new custom field" = "Ajouter un nouveau champ personnalisé";
+
+/* action */
+"Add new email" = "Ajouter un nouvel email";
+
+/* action */
+"Add new field" = "Ajouter un nouveau champ";
+
+/* action */
+"Add new phone number" = "Ajouter un nouveau numéro de téléphone";
+
+/* default vcard types */
+"Address" = "Adresse";
 
 /* alert title
    Error
@@ -80,6 +116,9 @@
 /* Title */
 "All Mail" = "Tous les messages";
 
+/* Title */
+"All contacts are imported" = "Tous les contacts sont importés";
+
 /* Description */
 "All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Tous vos emails chiffrés existants seront définitivement perdus, mais vous pourrez toujours consulter vos emails non chiffrés.\n\nCETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 
@@ -88,6 +127,9 @@
 
 /* Description */
 "Also used to reset a forgotten password." = "Également utilisé pour réinitialiser un mot de passe oublié.";
+
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "Date de mariage";
 
 /* No comment provided by engineer. */
 "AppVersion" = "Version de l'application";
@@ -119,6 +161,9 @@
 /* Description */
 "Authentication was cancelled by the system" = "L'authentification a été annulée par le système";
 
+/* Description */
+"Authentication was cancelled by the user" = "L'authentification a été annulée par l'utilisateur";
+
 /* settings protection section title */
 "Auto Lock Time" = "Durée avant verrouillage automatique";
 
@@ -146,6 +191,9 @@
 
 /* Title */
 "Bcc" = "CCI";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "Anniversaire";
 
 /* Title */
 "Bug Description" = "Description du bug";
@@ -195,11 +243,17 @@
 "Can't find this attachment!" = "Impossible de trouver cette pièce-jointe !";
 
 /* update password error = typo:Modulus */
+"Can't get a Moduls ID!" = "Impossible d’obtenir un identifiant Moduls !";
+
+/* update password error = typo:Modulus */
 "Can't get a Moduls!" = "Impossible d’obtenir un Moduls !";
 
 /* update notification email error
    update password error */
 "Can't get user auth info" = "Impossible de récupérer les informations d'authentification de l'utilisateur";
+
+/* Description */
+"Can't load share content!" = "Impossible de charger le contenu partagé !";
 
 /* Error */
 "Can't load the file" = "Impossible de charger le fichier";
@@ -304,10 +358,14 @@
 /* view top title */
 "Congratulations!" = "Félicitation !";
 
+/* contact section title */
+"Contact Details" = "Détails du contact";
+
 /* Title */
 "Contact the ProtonMail team" = "Contacter l'équipe ProtonMail";
 
-/* Title */
+/* Action
+   Title */
 "Contacts" = "Contacts";
 
 /* Action
@@ -344,6 +402,10 @@
 /* Placeholder
    Title */
 "Current password" = "Mot de passe actuel";
+
+/* custom label type default
+   default label type */
+"Custom" = "Champ personnalisé";
 
 /* Title */
 "DECRYPT MAILBOX" = "DÉCHIFFRER LA BOÎTE DE RÉCEPTION";
@@ -390,11 +452,18 @@
 /* swipe title when swipe cell on mailbox message list */
 "Delete" = "Supprimer";
 
+/* action
+   Title-Contacts */
+"Delete Contact" = "Supprimer le contact";
+
 /* Title */
 "Deleted" = "Supprimé";
 
 /* Title */
 "Details" = "Détails";
+
+/* Action */
+"Discard changes" = "Annuler les changements";
 
 /* Title */
 "Discard draft" = "Supprimer le brouillon";
@@ -407,6 +476,9 @@
 
 /* Title */
 "DisplayName" = "Libellé";
+
+/* Title */
+"Do you want to save the unsaved changes?" = "Voulez-vous enregistrer les modifications ?";
 
 /* Title */
 "Don't Show Again" = "Ne plus montrer";
@@ -427,7 +499,7 @@
 /* Action */
 "Edit" = "Modifier";
 
-/* edit contact navigation title */
+/* (No Comment) */
 "Edit Contact" = "Modifier le contact";
 
 /* Title */
@@ -436,13 +508,14 @@
 /* Title */
 "Edit Label" = "Modifier le label";
 
-/* Placeholder */
+/* default vcard types */
 "Email" = "E-mail";
 
 /* human check option button */
 "Email Verification" = "Email de vérification";
 
-/* Title */
+/* contact placeholder
+   Title */
 "Email address" = "Adresse email";
 
 /* Title */
@@ -475,6 +548,10 @@
 /* settings protection section title */
 "Enable TouchID" = "Activer TouchID";
 
+/* contact section title
+   title */
+"Encrypted Contact Details" = "Détails des contacts chiffrés";
+
 /* Title */
 "Encrypted for outside" = "Chiffré pour l’extérieur";
 
@@ -489,6 +566,9 @@
 
 /* Title */
 "Encrypted from outside pgp mime" = "Chiffré en dehors du mime PGP";
+
+/* Alert */
+"Encrypting contacts... %d" = "Chiffrement des contacts... %d";
 
 /* key setup top title */
 "Encryption Setup" = "Configuration du chiffrement";
@@ -538,6 +618,9 @@
 
 /* Description */
 "Failed to initialize the application's saved data" = "L'initialisation des données enregistrées de l’application a échoué";
+
+/* default vcard types */
+"Fax" = "Fax";
 
 /* Title */
 "Feedback" = "Vos commentaires";
@@ -658,6 +741,9 @@
    update password error */
 "Invalid hashed password!" = "Mot de passe haché invalide !";
 
+/* Action */
+"Italian" = "Italien";
+
 /* Title */
 "Keep me updated about new features" = "M'informer des nouvelles fonctionnalités";
 
@@ -776,6 +862,9 @@
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Les messages que vous envoyez peuvent être réglés pour s'auto-supprimer après un certain temps.";
 
+/* default vcard types */
+"Mobile" = "Portable";
+
 /* Title */
 "Mobile Signature" = "Signature Mobile";
 
@@ -816,7 +905,7 @@
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Inscrivez-vous gratuitement";
 
-/* Placeholder */
+/* title */
 "Name" = "Nom";
 
 /* Test */
@@ -831,6 +920,12 @@
 /* Placeholder
    Title */
 "New password" = "Nouveau mot de passe";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Surnom";
+
+/* message when mailbox doesnt have emailsß */
+"No Messages" = "Aucun message";
 
 /* Error
    Title */
@@ -857,6 +952,10 @@
 /* setup password notes */
 "Note: This is used to log you into your account." = "Remarque : Ceci est utilisé pour vous connecter à votre compte.";
 
+/* title
+   Title */
+"Notes" = "Notes";
+
 /* Title */
 "Notification / Recovery Email" = "Email de Notification / Récupération";
 
@@ -870,10 +969,19 @@
 "On" = "Activé";
 
 /* Description */
+"Only a paid user can modify default mobile signature or turn it off!" = "Seuls les utilisateurs payant peuvent modifier ou désactiver la signature mobile !";
+
+/* Description */
 "Only plus user could modify default mobile signature or turn it off!" = "Seuls les utilisateurs Plus peuvent modifier ou désactiver la signature mobile !";
 
 /* Action */
 "OpenDraft" = "Ouvrir le brouillon";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Organisation";
+
+/* default vcard types */
+"Other" = "Autre";
 
 /* Title */
 "Outbox" = "Boîte d'envoi";
@@ -899,6 +1007,12 @@
 /* update notification email error
    update password error */
 "Password update failed" = "Echec de la mise à jour du mot de passe";
+
+/* default vcard types */
+"Personal" = "Personnel";
+
+/* default vcard types */
+"Phone" = "Téléphone";
 
 /* human check option button */
 "Phone Verification" = "Vérification par téléphone";
@@ -958,8 +1072,17 @@
 /* (No Comment) */
 "Please try again." = "Veuillez essayer à nouveau";
 
+/* Alert */
+"Please upgrade to access encrypted contact details." = "Veuillez mettre à niveau votre compte afin d'utiliser le chiffrement des informations de contact.";
+
+/* Description */
+"Please use ProtonMail App login first" = "Veuillez d'abord vous connecter à ProtonMail App";
+
 /* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Veuillez utiliser la version web de ProtonMail pour changer le mot de passe de votre boîte mail!";
+
+/* Alert */
+"Please use the web version of ProtonMail to change your passwords!" = "Veuillez utiliser la version web de ProtonMail pour changer vos mots de passe !";
 
 /* Alert */
 "Please use the web version of ProtonMail to change your passwords.!" = "Veuillez utiliser la version web de ProtonMail pour changer vos mots de passe.!";
@@ -975,6 +1098,9 @@
 
 /* Action */
 "Polish" = "Polonais";
+
+/* Action */
+"Portuguese Brazil" = "Portugais du Brésil";
 
 /* Title */
 "Protection" = "Protection";
@@ -1014,6 +1140,9 @@
 
 /* Title */
 "Re:" = "Re:";
+
+/* Title */
+"Reading device contacts data..." = "Lecture des données des contacts de l'appareil...";
 
 /* Title */
 "Recovery Code" = "Code de récupération";
@@ -1083,6 +1212,7 @@
 "STARRED" = "Favoris";
 
 /* Action
+   Action-Contacts
    Title */
 "Save" = "Enregistrer";
 
@@ -1115,6 +1245,9 @@
 "Send plain but stored enc" = "Envoyer brut mais stocker chiffré";
 
 /* Description */
+"Sending Failed" = "Échec de l'envoi";
+
+/* Description */
 "Sending Message" = "Envoi du message";
 
 /* Title */
@@ -1137,6 +1270,9 @@
 
 /* Title */
 "Settings" = "Paramètres";
+
+/* Title */
+"Share Alert" = "Alerte de partage";
 
 /* Title */
 "Share it with your friends" = "Partagez-le avec vos amis";
@@ -1164,6 +1300,9 @@
 
 /* Action */
 "Spanish" = "Espagnol";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Mot de passe unique SRP keysalt invalide!";
 
 /* Title */
 "Star" = "Ajouter aux favoris";
@@ -1303,6 +1442,9 @@
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Cet email semble avoir comme origine une adresse ProtonMail mais il provient de l'extérieur de notre système et à échoué aux requis d'authentification. Il a peut-être été falsifié ou transféré incorrectement !";
 
+/* contacts talbe cell Title title */
+"Title" = "Titre";
+
 /* Title */
 "To" = "À";
 
@@ -1407,8 +1549,20 @@
    top right action text */
 "Update" = "Mettre à jour";
 
+/* Contacts Update contact */
+"Update Contact" = "Mettre à jour le contact";
+
 /* update notification email error title */
 "Update Notification Email" = "Mettre à jour l'email de notification";
+
+/* Action */
+"Upgrade" = "Changer d'offre";
+
+/* Error */
+"Upgrade to a paid plan to send from your %@ address" = "Passez à une offre payante pour envoyer depuis votre adresse %@";
+
+/* Action */
+"Upload Contacts" = "Importer des contacts";
 
 /* error when user already exist */
 "User already exist!" = "Nom d'utilisateur déjà pris";
@@ -1458,6 +1612,9 @@
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Quand vous envoyez un email, c'est le nom qui apparaît dans le champ d'expéditeur.";
 
+/* default vcard types */
+"Work" = "Professionnel";
+
 /* (No Comment) */
 "Wrong verification code" = "Code de vérification erroné";
 
@@ -1472,6 +1629,12 @@
 
 /* Title */
 "You have a new email!" = "Vous avez un nouveau message !";
+
+/* Alert */
+"You have imported %d of %d contacts!" = "Vous avez importé %1$d de %2$d contacts !";
+
+/* Title */
+"You have imported (count) of (pre_contacts.count) contacts!" = "Vous avez importé (count) sur (pre_contacts.count) contacts !";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Vous avez des modifications non enregistrées. Voulez vous les enregistrer ?";

@@ -1,0 +1,503 @@
+/* no object error, local only , this could be not translated! */
+"<no object>" = "<no object>";
+
+/* Title */
+"ARCHIVE" = "ARCHIVE";
+
+/* new contacts add Anniversary */
+"Add Anniversary" = "Add Anniversary";
+
+/* new contacts add Birthday */
+"Add Birthday" = "Add Birthday";
+
+/* new contacts add Nickname */
+"Add Nickname" = "Add Nickname";
+
+/* new contacts add Organization */
+"Add Organization" = "Add Organization";
+
+/* Action */
+"Add Star" = "Add Star";
+
+/* new contacts add Title */
+"Add Title" = "Add Title";
+
+/* default vcard types */
+"Address" = "Address";
+
+/* Error */
+"Alert" = "Alert";
+
+/* Title */
+"All Mail" = "All Mail";
+
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "Anniversary";
+
+/* Title */
+"Archive" = "Archive";
+
+/* Description */
+"Authentication Failed Wrong username or password" = "Authentication Failed Wrong username or password";
+
+/* settings protection section title */
+"Auto Lock Time" = "Auto Lock Time";
+
+/* settings general section title */
+"Auto Show Images" = "Auto Show Images";
+
+/* Error */
+"Bad auth cache" = "Bad auth cache";
+
+/* Description */
+"Bad parameter" = "Bad parameter";
+
+/* Description */
+"Bad parameter: %@" = "Bad parameter: %@";
+
+/* Description */
+"Bad path" = "Bad path";
+
+/* Description */
+"Bad response" = "Bad response";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "Birthday";
+
+/* update notification email error
+   update password error */
+"Can't create a SRP Client" = "Can't create a SRP Client";
+
+/* update notification email error
+   update password error */
+"Can't create a SRP verifier!" = "Can't create a SRP verifier!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls ID!" = "Can't get a Moduls ID!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls!" = "Can't get a Moduls!";
+
+/* update notification email error
+   update password error */
+"Can't get user auth info" = "Can't get user auth info";
+
+/* Description */
+"Can't not find the value from the response body" = "Can't not find the value from the response body";
+
+/* Title */
+"Cc:" = "Cc:";
+
+/* update password error title */
+"Change Password" = "Change Password";
+
+/* settings protection section title */
+"Change Pin" = "Change Pin";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Change left swipe action";
+
+/* settings swipe actions section action description */
+"Change right swipe action" = "Change right swipe action";
+
+/* settings general section title */
+"Clear Local Message Cache" = "Clear Local Message Cache";
+
+/* Action */
+"Close" = "Close";
+
+/* Title */
+"DRAFTS" = "DRAFTS";
+
+/* Title */
+"Date:" = "Date:";
+
+/* Title */
+"Debug" = "Debug";
+
+/* Title */
+"Deleted" = "Deleted";
+
+/* Title */
+"Display Name" = "Display Name";
+
+/* Action
+   Title */
+"Draft" = "Draft";
+
+/* Action */
+"Dutch" = "Dutch";
+
+/* default vcard types */
+"Email" = "Email";
+
+/* settings protection section title */
+"Enable Pin Protection" = "Enable Pin Protection";
+
+/* settings protection section title */
+"Enable TouchID" = "Enable TouchID";
+
+/* Title */
+"Encrypted for outside" = "Encrypted for outside";
+
+/* Title */
+"Encrypted for outside reply" = "Encrypted for outside reply";
+
+/* Title */
+"Encrypted from outside" = "Encrypted from outside";
+
+/* Title */
+"Encrypted from outside pgp inline" = "Encrypted from outside pgp inline";
+
+/* Title */
+"Encrypted from outside pgp mime" = "Encrypted from outside pgp mime";
+
+/* Action */
+"English" = "English";
+
+/* settings debug section title */
+"Error Logs" = "Error Logs";
+
+/* Description */
+"Failed to initialize the application's saved data" = "Failed to initialize the application's saved data";
+
+/* default vcard types */
+"Fax" = "Fax";
+
+/* Action */
+"Forward" = "Forward";
+
+/* Title */
+"Forwarded message" = "Forwarded message";
+
+/* Action */
+"French" = "French";
+
+/* Title */
+"From:" = "From:";
+
+/* Title */
+"Fwd:" = "Fwd:";
+
+/* Title */
+"General Settings" = "General Settings";
+
+/* Action */
+"German" = "German";
+
+/* Title */
+"INBOX" = "INBOX";
+
+/* Title */
+"Inbox" = "Inbox";
+
+/* Error */
+"Invalid Password" = "Invalid Password";
+
+/* Error */
+"Invalid UserName" = "Invalid UserName";
+
+/* update notification email error
+   update password error when input invalid username */
+"Invalid UserName!" = "Invalid UserName!";
+
+/* Error */
+"Invalid credential" = "Invalid credential";
+
+/* update notification email error
+   update password error */
+"Invalid hashed password!" = "Invalid hashed password!";
+
+/* Action */
+"Italian" = "Italian";
+
+/* Title */
+"Labels/Folders" = "Labels/Folders";
+
+/* Title */
+"Language" = "Language";
+
+/* Description */
+"Local cache can't find mailbox password" = "Local cache can't find mailbox password";
+
+/* settings general section title */
+"Login Password" = "Login Password";
+
+/* settings general section title */
+"Mailbox Password" = "Mailbox Password";
+
+/* Title */
+"Manage Labels/Folders" = "Manage Labels/Folders";
+
+/* settings debug section title */
+"Message Queue" = "Message Queue";
+
+/* Title */
+"Message Swipe Actions" = "Message Swipe Actions";
+
+/* default vcard types */
+"Mobile" = "Mobile";
+
+/* Title */
+"Mobile Signature" = "Mobile Signature";
+
+/* Action */
+"Move to AllMail" = "Move to AllMail";
+
+/* Action */
+"Move to Archive" = "Move to Archive";
+
+/* Action */
+"Move to Draft" = "Move to Draft";
+
+/* Action */
+"Move to Inbox" = "Move to Inbox";
+
+/* Action */
+"Move to Outbox" = "Move to Outbox";
+
+/* Action */
+"Move to Spam" = "Move to Spam";
+
+/* Action */
+"Move to Trash" = "Move to Trash";
+
+/* Title */
+"Multiple Addresses" = "Multiple Addresses";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Nickname";
+
+/* Description */
+"No managed object context" = "No managed object context";
+
+/* Description */
+"No managed object context." = "No managed object context.";
+
+/* this is a system object can't find, this could be not trasnlated */
+"No managedObjectContext" = "No managedObjectContext";
+
+/* settings general section title */
+"Notification Email" = "Notification Email";
+
+/* Title */
+"On" = "On";
+
+/* Action */
+"OpenDraft" = "OpenDraft";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Organization";
+
+/* default vcard types */
+"Other" = "Other";
+
+/* Title */
+"Outbox" = "Outbox";
+
+/* update notification email error
+   update password error */
+"Password update failed" = "Password update failed";
+
+/* default vcard types */
+"Personal" = "Personal";
+
+/* default vcard types */
+"Phone" = "Phone";
+
+/* Title */
+"Plain text" = "Plain text";
+
+/* Action */
+"Polish" = "Polish";
+
+/* Action */
+"Portuguese Brazil" = "Portuguese Brazil";
+
+/* Title */
+"Protection" = "Protection";
+
+/* settings protection section title */
+"Protection Entire App" = "Protection Entire App";
+
+/* Title */
+"ProtonMail encrypted emails" = "ProtonMail encrypted emails";
+
+/* Title */
+"Re:" = "Re:";
+
+/* Action */
+"Reply" = "Reply";
+
+/* Action */
+"ReplyAll" = "ReplyAll";
+
+/* Action */
+"Russian" = "Russian";
+
+/* Title */
+"SENT" = "SENT";
+
+/* Title */
+"SPAM" = "SPAM";
+
+/* Error */
+"SRP Client" = "SRP Client";
+
+/* Error */
+"SRP Server" = "SRP Server";
+
+/* Title */
+"STARRED" = "STARRED";
+
+/* Title */
+"Send plain but stored enc" = "Send plain but stored enc";
+
+/* Description */
+"Server proofs not valid!" = "Server proofs not valid!";
+
+/* Title */
+"Signature" = "Signature";
+
+/* settings general section title */
+"Single Password" = "Single Password";
+
+/* Title */
+"Spam" = "Spam";
+
+/* Action */
+"Spanish" = "Spanish";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Srp single password keyslat invalid!";
+
+/* Title */
+"Star" = "Star";
+
+/* Title */
+"Starred" = "Starred";
+
+/* Title */
+"Storage" = "Storage";
+
+/* Title */
+"Subject:" = "Subject:";
+
+/* settings swipe actions section title */
+"Swipe Left to Right" = "Swipe Left to Right";
+
+/* settings swipe actions section title */
+"Swipe Right to Left" = "Swipe Right to Left";
+
+/* Title */
+"TRASH" = "TRASH";
+
+/* update password error */
+"The Password is wrong." = "The Password is wrong.";
+
+/* Error Description */
+"The UserName have been taken." = "The UserName have been taken.";
+
+/* Description */
+"The authentication credentials are invalid." = "The authentication credentials are invalid.";
+
+/* Description */
+"The authentication token has expired." = "The authentication token has expired.";
+
+/* error when sending the message */
+"The draft format incorrectly sending failed!" = "The draft format incorrectly sending failed!";
+
+/* update password error */
+"The new password can't empty." = "The new password can't empty.";
+
+/* update password error */
+"The new password not match." = "The new password not match.";
+
+/* update password error */
+"The private update failed." = "The private update failed.";
+
+/* Description */
+"The user info fetch is wrong" = "The user info fetch is wrong";
+
+/* Description */
+"There was an error creating or loading the application's saved data." = "There was an error creating or loading the application's saved data.";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!";
+
+/* spam score warning */
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
+
+/* contacts talbe cell Title title */
+"Title" = "Title";
+
+/* Title */
+"To:" = "To:";
+
+/* Error */
+"Token expired" = "Token expired";
+
+/* Action
+   Title */
+"Trash" = "Trash";
+
+/* Action */
+"Turkish" = "Turkish";
+
+/* Action */
+"Ukrainian" = "Ukrainian";
+
+/* Description */
+"Unable to connect to the server" = "Unable to connect to the server";
+
+/* Description */
+"Unable to construct a valid URL with the following path: %@" = "Unable to construct a valid URL with the following path: %@";
+
+/* Description */
+"Unable to create SRP Client!" = "Unable to create SRP Client!";
+
+/* Description */
+"Unable to generate hash password!" = "Unable to generate hash password!";
+
+/* Error */
+"Unable to get contacts" = "Unable to get contacts";
+
+/* Description */
+"Unable to parse authentication info!" = "Unable to parse authentication info!";
+
+/* Description */
+"Unable to parse authentication token!" = "Unable to parse authentication token!";
+
+/* Description */
+"Unable to parse cased authentication token!" = "Unable to parse cased authentication token!";
+
+/* Description */
+"Unable to parse response" = "Unable to parse response";
+
+/* Description */
+"Unable to parse the response object:\n%@" = "Unable to parse the response object:\n%@";
+
+/* Error */
+"Unable to parse token" = "Unable to parse token";
+
+/* error when sending the message */
+"Unable to send the email" = "Unable to send the email";
+
+/* Description */
+"Unknow Error" = "Unknow Error";
+
+/* update notification email error title */
+"Update Notification Email" = "Update Notification Email";
+
+/* default vcard types */
+"Work" = "Work";
+
+/* Title */
+"at" = "at";
+
+/* contacts api error when fetch */
+"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "get contacts() failed, peopleOrderedByUsersPreference return null!!";
+
+/* Title */
+"wrote:" = "wrote:";
+
