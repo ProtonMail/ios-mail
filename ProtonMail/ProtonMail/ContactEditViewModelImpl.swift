@@ -408,21 +408,27 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             var uid : PMNIUid? = nil
             var cards : [CardData] = []
             if let vcard2 = origvCard2 {
-                if let fn = PMNIFormattedName.createInstance(profile.newDisplayName) {
-                    vcard2.setFormattedName(fn)
-                }
                 
+                var defaultName = NSLocalizedString("Unknown", comment: "title, default display name")
                 //TODO::need to check the old email's group id
                 var i : Int = 1;
                 var newEmails:[PMNIEmail] = []
                 for email in a_emails {
                     let group = "Item\(i)"
-                    let m = PMNIEmail.createInstance(email.type, email: email.email, group: group)!
-                    newEmails.append(m)
-                    i += 1
+                    let em = email.email
+                    if !em.isEmpty {
+                        defaultName = em
+                        let m = PMNIEmail.createInstance(email.type, email: email.email, group: group)!
+                        newEmails.append(m)
+                        i += 1
+                    }
                 }
                 //replace emails
                 vcard2.setEmails(newEmails)
+                
+                if let fn = PMNIFormattedName.createInstance(profile.newDisplayName.isEmpty ? defaultName : profile.newDisplayName) {
+                    vcard2.setFormattedName(fn)
+                }
                 
                 //get uid first if null create a new one
                 uid = vcard2.getUid()
