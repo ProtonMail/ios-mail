@@ -66,6 +66,7 @@ final class ContactEditAddressCell: UITableViewCell {
         
         typeLabel.text = self.addr.newType.title
         valueField.text = self.addr.newStreet
+        street_two.text = self.addr.newStreetTwo
         
         cityField.text = self.addr.newLocality
         stateField.text = self.addr.newRegion
