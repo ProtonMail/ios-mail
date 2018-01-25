@@ -34,14 +34,18 @@ final class ContactEditAddressCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
+        self.street_two.delegate = self
+        self.cityField.delegate = self
+        self.stateField.delegate = self
+        self.zipField.delegate = self
+        self.countyField.delegate = self
         
-        
-        valueField.placeholder = NSLocalizedString("Street", comment: "contact placeholder")
-        street_two.placeholder = NSLocalizedString("Street", comment: "contact placeholder")
-        cityField.placeholder = NSLocalizedString("City", comment: "contact placeholder")
-        stateField.placeholder = NSLocalizedString("State", comment: "contact placeholder")
-        zipField.placeholder = NSLocalizedString("ZIP", comment: "contact placeholder")
-        countyField.placeholder = NSLocalizedString("Country", comment: "contact placeholder")
+        self.valueField.placeholder = NSLocalizedString("Street", comment: "contact placeholder")
+        self.street_two.placeholder = NSLocalizedString("Street", comment: "contact placeholder")
+        self.cityField.placeholder = NSLocalizedString("City", comment: "contact placeholder")
+        self.stateField.placeholder = NSLocalizedString("State", comment: "contact placeholder")
+        self.zipField.placeholder = NSLocalizedString("ZIP", comment: "contact placeholder")
+        self.countyField.placeholder = NSLocalizedString("Country", comment: "contact placeholder")
         
     }
     
@@ -99,6 +103,12 @@ extension ContactEditAddressCell: UITextFieldDelegate {
         if textField == cityField {
             addr.newLocality = cityField.text!
         }
+        
+        if textField == street_two {
+            addr.newStreet = cityField.text!
+        }
+        
+        self.street_two.delegate = self
     
         if textField == stateField {
             addr.newRegion = stateField.text!

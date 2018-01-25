@@ -183,13 +183,14 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                 let type = ContactFieldType.get(raw: typeRaw)
                                 let pobox = a.getPoBoxes().joined(separator: ",")
                                 let street = a.getStreetAddress()
-                                //let extention =
+                                let extention = a.getExtendedAddress()
                                 let locality = a.getLocality()
                                 let region = a.getRegion()
                                 let postal = a.getPostalCode()
                                 let country = a.getCountry()
                                 
-                                let ca = ContactEditAddress(order: order, type: type == .empty ? .address : type , pobox: pobox, street: street,
+                                let ca = ContactEditAddress(order: order, type: type == .empty ? .address : type,
+                                                            pobox: pobox, street: street, streetTwo: extention,
                                                             locality: locality, region: region,
                                                             postal: postal, country: country, isNew: false)
                                 origAddresses.append(ca)

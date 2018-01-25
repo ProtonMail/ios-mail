@@ -223,6 +223,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         for addr in addresses {
             let a = PMNIAddress.createInstance(addr.newType.vcardType,
                                                street: addr.newStreet,
+                                               extendstreet: addr.newStreetTwo,
                                                locality: addr.newLocality,
                                                region: addr.newRegion,
                                                zip: addr.newPostal,

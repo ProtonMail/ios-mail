@@ -113,13 +113,14 @@ class ContactEditViewModelImpl : ContactEditViewModel {
 
                                     let pobox = a.getPoBoxes().joined(separator: ",")
                                     let street = a.getStreetAddress()
-                                    //let extention =
+                                    let extention = a.getExtendedAddress()
                                     let locality = a.getLocality()
                                     let region = a.getRegion()
                                     let postal = a.getPostalCode()
                                     let country = a.getCountry()
                                     
-                                    let ca = ContactEditAddress(order: order, type: type == .empty ? .address : type, pobox: pobox, street: street,
+                                    let ca = ContactEditAddress(order: order, type: type == .empty ? .address : type,
+                                                                pobox: pobox, street: street, streetTwo: extention,
                                                                 locality: locality, region: region,
                                                                 postal: postal, country: country, isNew: false)
                                     self.addresses.append(ca)
@@ -473,6 +474,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 for addr in addresses {
                     let a = PMNIAddress.createInstance(addr.newType.vcardType,
                                                        street: addr.newStreet,
+                                                       extendstreet: addr.newStreetTwo,
                                                        locality: addr.newLocality,
                                                        region: addr.newRegion,
                                                        zip: addr.newPostal,

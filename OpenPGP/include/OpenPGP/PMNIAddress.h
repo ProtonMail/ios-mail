@@ -9,6 +9,8 @@
 
 - (nonnull NSString *)getStreetAddress;
 
+- (nonnull NSString *)getExtendedAddress;
+
 - (nonnull NSString *)getLocality;
 
 - (nonnull NSString *)getRegion;
@@ -25,6 +27,7 @@
 
 + (nullable PMNIAddress *)createInstance:(nonnull NSString *)type
                                   street:(nonnull NSString *)street
+                            extendstreet:(nonnull NSString *)extendstreet
                                 locality:(nonnull NSString *)locality
                                   region:(nonnull NSString *)region
                                      zip:(nonnull NSString *)zip

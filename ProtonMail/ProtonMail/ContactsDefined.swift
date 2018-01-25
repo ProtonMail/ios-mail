@@ -220,6 +220,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
     var origType : ContactFieldType = .empty
     var origPoxbox : String = ""
     var origStreet : String = ""
+    var origStreetTwo: String = ""
     var origLocality : String = ""
     var origRegion : String = ""
     var origPostal : String = ""
@@ -230,13 +231,14 @@ final class ContactEditAddress: ContactEditTypeInterface {
     var newType : ContactFieldType = .empty
     var newPoxbox : String = ""
     var newStreet : String = ""
+    var newStreetTwo: String = ""
     var newLocality : String = ""
     var newRegion : String = ""
     var newPostal : String = ""
     var newCountry : String = ""
     
     init(order: Int, type: ContactFieldType,
-         pobox: String, street: String, locality: String,
+         pobox: String, street: String, streetTwo: String, locality: String,
          region: String, postal: String, country: String, isNew: Bool) {
         
         self.newOrder = order
@@ -244,6 +246,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
         self.newType = type
         self.newPoxbox = pobox
         self.newStreet = street
+        self.newStreetTwo = streetTwo
         self.newLocality = locality
         self.newRegion = region
         self.newPostal = postal
@@ -255,6 +258,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
             self.origType = self.newType
             self.origPoxbox = self.newPoxbox
             self.origStreet = self.newStreet
+            self.origStreetTwo = self.newStreetTwo
             self.origLocality = self.newLocality
             self.origRegion = self.newRegion
             self.origPostal = self.newPostal
@@ -263,7 +267,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
     }
     
     convenience init(order: Int, type: ContactFieldType) {
-        self.init(order: order, type: type, pobox: "", street: "", locality: "", region: "", postal: "", country: "", isNew: true)
+        self.init(order: order, type: type, pobox: "", street: "", streetTwo: "", locality: "", region: "", postal: "", country: "", isNew: true)
     }
     
     //
@@ -288,6 +292,12 @@ final class ContactEditAddress: ContactEditTypeInterface {
             full += " "
             full += newStreet
         }
+        
+        if !newStreetTwo.isEmpty {
+            full += " "
+            full += newStreetTwo
+        }
+        
         full += " "
         full += newLocality
         full += " "
@@ -303,6 +313,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
         if isNew &&
             self.newPoxbox.isEmpty &&
             self.newStreet.isEmpty &&
+            self.newStreetTwo.isEmpty &&
             self.newLocality.isEmpty &&
             self.newRegion.isEmpty &&
             self.newPostal.isEmpty &&
@@ -313,6 +324,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
         if  self.origType == self.newType &&
             self.origPoxbox == self.newPoxbox &&
             self.origStreet == self.newStreet &&
+            self.origStreetTwo == self.newStreetTwo &&
             self.origLocality == self.newLocality &&
             self.origRegion == self.newRegion &&
             self.origPostal == self.newPostal &&
