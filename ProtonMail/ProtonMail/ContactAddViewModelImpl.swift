@@ -212,9 +212,12 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             return; //with error
         }
         for cell in cells {
-            let c = PMNITelephone.createInstance(cell.newType.vcardType, number: cell.newPhone)
-            vcard3.add(c)
-            isCard3Set = true
+            let value = cell.newPhone
+            if !value.isEmpty {
+                let c = PMNITelephone.createInstance(cell.newType.vcardType, number: value)
+                vcard3.add(c)
+                isCard3Set = true
+            }
         }
         
         for addr in addresses {
@@ -232,34 +235,52 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         for info in informations {
             switch info.infoType {
             case .organization:
-                let org = PMNIOrganization.createInstance("", value: info.newValue)
-                vcard3.add(org)
-                isCard3Set = true
+                let value = info.newValue
+                if !value.isEmpty {
+                    let org = PMNIOrganization.createInstance("", value: value)
+                    vcard3.add(org)
+                    isCard3Set = true
+                }
             case .nickname:
-                let nn = PMNINickname.createInstance("", value: info.newValue)
-                vcard3.setNickname(nn)
-                isCard3Set = true
+                let value = info.newValue
+                if !value.isEmpty {
+                    let nn = PMNINickname.createInstance("", value: value)
+                    vcard3.setNickname(nn)
+                    isCard3Set = true
+                }
             case .title:
-                let t = PMNITitle.createInstance("", value: info.newValue)
-                vcard3.setTitle(t)
-                isCard3Set = true
+                let value = info.newValue
+                if !value.isEmpty {
+                    let t = PMNITitle.createInstance("", value: value)
+                    vcard3.setTitle(t)
+                    isCard3Set = true
+                }
             case .birthday:
-                let b = PMNIBirthday.createInstance("", date: info.newValue)!
-                vcard3.setBirthdays([b])
-                isCard3Set = true
+                let value = info.newValue
+                if !value.isEmpty {
+                    let b = PMNIBirthday.createInstance("", date: value)!
+                    vcard3.setBirthdays([b])
+                    isCard3Set = true
+                }
             case .anniversary:
                 break
             case .gender:
-                let g = PMNIGender.createInstance(info.newValue, text: "")!
-                vcard3.setGender(g)
-                isCard3Set = true
+                let value = info.newValue
+                if !value.isEmpty {
+                    let g = PMNIGender.createInstance(value, text: "")!
+                    vcard3.setGender(g)
+                    isCard3Set = true
+                }
             }
         }
         
         for url in urls {
-            let f = PMNIUrl.createInstance(url.newType.vcardType, value: url.newUrl)
-            vcard3.add(f)
-            isCard3Set = true
+            let value = url.newUrl
+            if !value.isEmpty {
+                let f = PMNIUrl.createInstance(url.newType.vcardType, value: value)
+                vcard3.add(f)
+                isCard3Set = true
+            }
         }
         
         if notes.newNote != "" {
@@ -299,18 +320,6 @@ class ContactAddViewModelImpl : ContactEditViewModel {
                                             complete(error)
                                         }
         })
-        
-        
-        //            var contact : Contact? //optional if nil add new contact
-        //            var emails : [ContactEditEmail] = []
-        //
-        //            //those should be in the
-        //            var cells : [ContactEditPhone] = []
-        //            var addresses : [ContactEditAddress] = []
-        //            var orgs : [ContactEditOrg] = []
-        //            var fields : [ContactEditField] = []
-        //            var notes : ContactEditNote = ContactEditNote(n_note: "")
-        //            var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
     }
     
     override func delete(complete: @escaping ContactEditViewModel.ContactEditSaveComplete) {
