@@ -75,9 +75,7 @@ class MenuViewController: UIViewController {
             selector: #selector(MenuViewController.performLastSegue(_:)),
             name: NSNotification.Name(rawValue: MenuViewController.ObserverSwitchView),
             object: nil)
-        
-        self.tableView.zeroMargin()
-        
+
         sharedLabelsDataService.fetchLabels();
     }
     
@@ -284,9 +282,7 @@ extension MenuViewController: UITableViewDataSource {
             return 1.0
         }
     }
-
 }
-
 
 extension MenuViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

@@ -21,7 +21,7 @@ let sharedContactDataService = ContactDataService()
 
 
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
-typealias ContactAddComplete = ((Contact?, NSError?) -> Void)
+typealias ContactAddComplete = (([Contact]?, NSError?) -> Void)
 typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 typealias ContactDetailsComplete = ((Contact?, NSError?) -> Void)
@@ -40,8 +40,10 @@ class ContactDataService {
      clean contact local cache
      **/
     func clean() {
+        lastUpdatedStore.contactsCached = 0
         if let context = self.managedObjectContext {
             Contact.deleteAll(inContext: context)
+            Email.deleteAll(inContext: context)
         }
     }
     
@@ -54,12 +56,12 @@ class ContactDataService {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
             let strComp = NSSortDescriptor(key: Contact.Attributes.name,
                                            ascending: true,
-                                           selector: #selector(NSString.caseInsensitiveCompare(_:)))
+                                           selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
             fetchRequest.sortDescriptors = [strComp]
             
             return NSFetchedResultsController(fetchRequest: fetchRequest,
                                               managedObjectContext: moc,
-                                              sectionNameKeyPath: nil,
+                                              sectionNameKeyPath: Contact.Attributes.name,
                                               cacheName: nil)
         }
         return nil
@@ -73,29 +75,40 @@ class ContactDataService {
      - Parameter cards: vcard contact data -- 4 different types
      - Parameter completion: async add contact complete response
      **/
-    func add(cards: [CardData],
+    func add(cards: [[CardData]],
              completion: ContactAddComplete?) {
         let api = ContactAddRequest<ContactAddResponse>(cards: cards)
         api.call { (task, response, hasError) in
-            if let error = response?.resError {
-                completion?(nil, error)
-            } else if var contactDict = response?.contact {
-                //api is not returning the cards data so set it use request cards data
-                //check is contactDict has cards if doesnt exsit set it here
-                if contactDict["Cards"] == nil {
-                    contactDict["Cards"] = cards.toDictionary()
+            var contacts_json : [[String : Any]] = []
+            var lasterror : NSError?
+            if let results = response?.results, !results.isEmpty {
+                let isCountMatch = cards.count == results.count
+                var i : Int = 0
+                for res in results {
+                    if let error = res as? NSError {
+                        lasterror = error
+                    } else if var contact = res as? [String: Any] {
+                        if isCountMatch {
+                            contact["Cards"] = cards[i].toDictionary()
+                            contacts_json.append(contact)
+                        }
+                    }
+                    i += 1
                 }
+            }
+            
+            if !contacts_json.isEmpty {
                 let context = sharedCoreDataService.newManagedObjectContext()
                 context.performAndWait() {
                     do {
-                        if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName,
-                                                                         fromJSONDictionary: contactDict,
-                                                                         in: context) as? Contact {
+                        if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                           fromJSONArray: contacts_json,
+                                                                           in: context) as? [Contact] {
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")
                                 completion?(nil, error)
                             } else {
-                               completion?(contact, nil)
+                                completion?(contacts, lasterror)
                             }
                         }
                     } catch let ex as NSError {
@@ -104,7 +117,7 @@ class ContactDataService {
                     }
                 }
             } else {
-                completion?(nil, NSError.unableToParseResponse(response))
+                completion?(nil, lasterror)
             }
         }
     }
@@ -137,11 +150,12 @@ class ContactDataService {
                         if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName,
                                                                          fromJSONDictionary: contactDict,
                                                                          in: context) as? Contact {
+                            contact.needsRebuild = true
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")
                                 completion?(nil, error)
                             } else {
-                                completion?(contact, nil)
+                                completion?([contact], nil)
                             }
                         }
                     } catch let ex as NSError {
@@ -186,41 +200,94 @@ class ContactDataService {
             }
         }
     }
-
+    
     
     /**
      get all contacts from server
      
      - Parameter completion: async complete response
      **/
+    fileprivate var isFetching : Bool = false
     func fetchContacts(completion: ContactFetchComplete?) {
-        //TODO::here need change to fetch by page until got total
-        let api = ContactEmailsRequest<ContactEmailsResponse>(page: 0, pageSize: 800)
-        api.call { (task, response, hasError) in
-            if let contactsArray = response?.contacts {
-                let context = sharedCoreDataService.newManagedObjectContext()
-                context.performAndWait() {
-                    do {
-                        if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
-                                                                           fromJSONArray: contactsArray, 
-                                                                           in: context) as? [Contact] {
+        if lastUpdatedStore.contactsCached == 1 || isFetching {
+            return
+        }
+        self.isFetching = true
+        {
+            do {
+                //TODO::here need change to fetch by page until got total
+                let contactsApi = ContactsRequest<ContactsResponse>()
+                let response = try contactsApi.syncCall()
+                if let contacs = response?.contacts {
+                    let context = sharedCoreDataService.newManagedObjectContext()
+                    context.performAndWait() {
+                        do {
+                            let _ = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                     fromJSONArray: contacs,
+                                                                     in: context) as? [Contact]
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")
-                                completion?(nil, error)
-                            } else {
-                                completion?(contacts, nil)
-                                //completion?(self.allContacts(), nil)
                             }
+                            
+                        } catch let ex as NSError {
+                            PMLog.D(" error: \(ex)")
                         }
-                    } catch let ex as NSError {
-                        PMLog.D(" error: \(ex)")
-                        completion?(nil, ex)
                     }
                 }
-            } else {
-                completion?(nil, NSError.unableToParseResponse(response))
+                
+                var currentPage = 0
+                var fetched = -1
+                let pageSize = 1000
+                var loop = 1
+                var total = 0
+                
+                while (true) {
+                    if loop <= 0 || fetched >= total {
+                        break
+                    }
+                    loop = loop - 1
+                    let api = ContactEmailsRequest<ContactEmailsResponse>(page: currentPage, pageSize: pageSize)
+                    if let contactsRes = try api.syncCall() {
+                        currentPage = currentPage + 1
+                        let contactsArray = contactsRes.contacts
+                        if fetched == -1 {
+                            fetched = contactsArray.count
+                            total = contactsRes.total
+                            loop = (total / pageSize) - (total % pageSize == 0 ? 1 : 0)
+                        } else {
+                            fetched = fetched + contactsArray.count
+                        }
+                        let context = sharedCoreDataService.newManagedObjectContext()
+                        context.performAndWait() {
+                            do {
+                                if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                            fromJSONArray: contactsArray,
+                                                                            in: context) as? [Contact] {
+                                    for contact in contacts {
+                                        let _ = contact.fixName(force: true)
+                                    }
+                                    if let error = context.saveUpstreamIfNeeded() {
+                                        PMLog.D(" error: \(error)")
+                                        //                                        completion?(nil, error)
+                                    } else {
+                                        //                                        completion?(contacts, nil)
+                                        //completion?(self.allContacts(), nil)
+                                    }
+                                }
+                            } catch let ex as NSError {
+                                PMLog.D(" error: \(ex)")
+                                //                                completion?(nil, ex)
+                            }
+                        }
+                    }
+                }
+                
+                lastUpdatedStore.contactsCached = 1
+                self.isFetching = false
+            } catch let ex as NSError {
+                completion?(nil, ex)
             }
-        }
+        } ~> .async
     }
     
     /**
@@ -238,6 +305,7 @@ class ContactDataService {
                     do {
                         if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: contactDict, in: context) as? Contact {
                             contact.isDownloaded = true
+                            let _ = contact.fixName(force: true)
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")
                                 completion?(nil, error)
@@ -295,8 +363,8 @@ extension ContactDataService {
     func fetchContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
         // fetch latest contacts from server
         //getContacts { (_, error) -> Void in
-            self.requestAccessToAddressBookIfNeeded(completion)
-            self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: nil, completion: completion)
+        self.requestAccessToAddressBookIfNeeded(completion)
+        self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: nil, completion: completion)
         //}
     }
     

@@ -59,6 +59,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     fileprivate let kPasswordSegue : String = "to_eo_password_segue"
     
+    fileprivate var isShowingConfirm : Bool = false
+    
     deinit {
         if let wv = self.webView {
             wv.delegate = nil
@@ -157,11 +159,15 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             switch self.viewModel.messageAction!
             {
             case .openDraft, .reply, .replyAll:
-                self.focus()
+                if !self.isShowingConfirm {
+                    self.focus()
+                }
                 self.composeView.notifyViewSize(true)
                 break
             default:
-                self.composeView.toContactPicker.becomeFirstResponder()
+                if !self.isShowingConfirm {
+                    self.composeView.toContactPicker.becomeFirstResponder()
+                }
                 break
             }
         }
@@ -196,7 +202,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     fileprivate func updateMessageView() {
-        self.composeView.updateFromValue(self.viewModel.getDefaultAddress()?.email ?? "", pickerEnabled: true)
+        self.composeView.updateFromValue(self.viewModel.getDefaultSendAddress()?.email ?? "", pickerEnabled: true)
         self.composeView.subject.text = self.viewModel.getSubject()
         self.shouldShowKeyboard = false
         self.setHTML(self.viewModel.getHtmlBody())
@@ -314,7 +320,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         present(alertController, animated: true, completion: nil)
     }
     
-    func sendMessage () {
+    internal func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
             if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
                 let emails = self.composeView.allEmails
@@ -336,7 +342,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         delay(0.3) {
             self.sendMessageStepTwo()
         }
-        
     }
     
     internal func sendMessageStepTwo() {
@@ -369,6 +374,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     @IBAction func cancel_clicked(_ sender: UIBarButtonItem) {
         let dismiss: (() -> Void) = {
+            self.isShowingConfirm = false
             self.dismissKeyboard()
             if self.presentingViewController != nil {
                 self.dismiss(animated: true, completion: nil)
@@ -378,6 +384,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
         
         if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
+            self.isShowingConfirm = true
             let alertController = UIAlertController(title: NSLocalizedString("Confirmation", comment: "Title"),
                                                     message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft", comment: "Action"), style: .default, handler: { (action) -> Void in
@@ -386,7 +393,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
                 self.viewModel.updateDraft()
                 dismiss()
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+            
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: { (action) ->
+                Void in
+                self.isShowingConfirm = false
+            }))
+            
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft", comment: "Action"), style: .destructive, handler: { (action) -> Void in
                 self.stopAutoSave()
                 self.viewModel.deleteDraft()
@@ -499,16 +511,22 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             let alertController = UIAlertController(title: NSLocalizedString("Change sender address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
             let multi_domains = self.viewModel.getAddresses()
-            let defaultAddr = self.viewModel.getDefaultAddress()
+            let defaultAddr = self.viewModel.getDefaultSendAddress()
             for addr in multi_domains {
                 if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
                     needsShow = true
                     alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
-                        if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
-                            self.updateSignature("\(signature)")
+                        if addr.send == 0 {
+                            let alertController = String(format: NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error"), addr.email).alertController()
+                            alertController.addOKAction()
+                            self.present(alertController, animated: true, completion: nil)
+                        } else {
+                            if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
+                                self.updateSignature("\(signature)")
+                            }
+                            self.viewModel.updateAddressID(addr.address_id)
+                            self.composeView.updateFromValue(addr.email, pickerEnabled: true)
                         }
-                        self.viewModel.updateAddressID(addr.address_id)
-                        self.composeView.updateFromValue(addr.email, pickerEnabled: true)
                     }))
                 }
             }

@@ -22,6 +22,9 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     private let kInvalidEmailShakeOffset: CGFloat     = 10.0
     fileprivate var origFrameHeight : CGFloat         = 0.0
     
+    fileprivate let kContactDetailsHeaderView : String      = "ContactSectionHeadView"
+    fileprivate let kContactDetailsHeaderID : String        = "contact_section_head_view"
+    
     //const cell identifier
     fileprivate let kContactEditAddCell: String       = "ContactEditAddCell"
     fileprivate let kContactEditDeleteCell: String    = "ContactEditDeleteCell"
@@ -31,10 +34,13 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactEditCellInfoCell: String  = "ContactEditInformationCell"
     fileprivate let kContactEditFieldCell: String     = "ContactEditFieldCell"
     fileprivate let kContactEditNotesCell: String     = "ContactEditNotesCell"
+    fileprivate let kContactEditTextViewCell: String  = "ContactEditTextViewCell"
+    fileprivate let kContactEditUpgradeCell: String   = "ContactEditUpgradeCell"
+    fileprivate let kContactEditUrlCell: String       = "ContactEditUrlCell"
     
     //const segue
     fileprivate let ktoContactTypeSegue : String      = "toContactTypeSegue"
-    
+    fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
     //
     fileprivate var doneItem: UIBarButtonItem!
     @IBOutlet weak var cancelItem: UIBarButtonItem!
@@ -45,7 +51,9 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     var delegate : ContactEditViewControllerDelegate?
     
-    var activeText : UITextField? = nil
+    var activeText : UIResponder? = nil
+    
+    var newIndexPath : IndexPath? = nil
     
     func inactiveViewModel() {
     }
@@ -64,15 +72,19 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
        
         if viewModel.isNew() {
             self.title = NSLocalizedString("Add Contact", comment: "Contacts add new contact")
-            doneItem.title = NSLocalizedString("Add", comment: "Action-Contacts")
         } else {
             self.title = NSLocalizedString("Update Contact", comment: "Contacts Update contact")
-            doneItem.title = NSLocalizedString("Update", comment: "Action-Contacts")
         }
+        doneItem.title = NSLocalizedString("Save", comment: "Action-Contacts")
         
         UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
         self.displayNameField.text = viewModel.getProfile().newDisplayName
         self.displayNameField.delegate = self
+        
+        let nib = UINib(nibName: kContactDetailsHeaderView, bundle: nil)
+        self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
+        self.tableView.estimatedRowHeight = 70
+        self.tableView.rowHeight = UITableViewAutomaticDimension
         
         self.tableView.isEditing = true
         self.tableView.noSeparatorsBelowFooter()
@@ -81,6 +93,12 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -92,6 +110,9 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
+        var insets = self.tableView.contentInset
+        insets.bottom = 100
+        self.tableView.contentInset = insets
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -105,7 +126,26 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
         dismissKeyboard()
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        
+        //show confirmation first if anything changed
+        if self.viewModel.needsUpdate() {
+            let alertController = UIAlertController(title: NSLocalizedString("Do you want to save the unsaved changes?", comment: "Title"),
+                                                    message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save", comment: "Action"), style: .default, handler: { (action) -> Void in
+                //save and dismiss
+                self.doneAction(self.doneItem)
+            }))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard changes", comment: "Action"), style: .destructive, handler: { (action) -> Void in
+                //discard and dismiss
+                self.dismiss(animated: true, completion: nil)
+            }))
+            alertController.popoverPresentationController?.barButtonItem = sender
+            alertController.popoverPresentationController?.sourceRect = self.view.frame
+            present(alertController, animated: true, completion: nil)
+        } else {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
@@ -113,9 +153,10 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     }
     @IBAction func doneAction(_ sender: UIBarButtonItem) {
         dismissKeyboard()
-        ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+        let v : UIView = self.navigationController?.view ?? self.view
+        ActivityIndicatorHelper.showActivityIndicator(at: v)
         viewModel.done { (error : NSError?) in
-            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+            ActivityIndicatorHelper.hideActivityIndicator(at: v)
             if error == nil {
                 self.delegate?.updated()
                 self.dismiss(animated: true, completion: nil)
@@ -154,6 +195,8 @@ extension ContactEditViewController: NSNotificationCenterKeyboardObserverProtoco
         if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             tableViewBottomOffset.constant = keyboardSize.height
         }
+        self.view.setNeedsUpdateConstraints()
+        self.view.setNeedsLayout()
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
         }, completion: nil)
@@ -177,7 +220,7 @@ extension ContactEditViewController: UITextFieldDelegate {
 
 
 //type picker
-extension ContactEditViewController: ContactEditCellDelegate, ContactEditNotesCellDelegate {
+extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextViewCellDelegate {
     func pick(typeInterface: ContactEditTypeInterface, sender: UITableViewCell) {
         self.performSegue(withIdentifier: ktoContactTypeSegue, sender: typeInterface)
     }
@@ -185,6 +228,37 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditNotesCe
     func beginEditing(textField: UITextField) {
         self.activeText = textField
     }
+    
+    func beginEditing(textView: UITextView) {
+        self.activeText = textView
+    }
+    
+    func didChanged(textView: UITextView) {
+        if #available(iOS 11.0, *) {
+            UIView.setAnimationsEnabled(false)
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+            UIView.setAnimationsEnabled(true)
+        } else {
+            synced(self, closure: {
+                UIView.setAnimationsEnabled(false)
+                if let active = self.activeText, active == textView {
+                    if let cell = textView.superview?.superview as? UITableViewCell, let _ = self.tableView.indexPath(for: cell) {
+                        self.tableView.beginUpdates()
+                        self.tableView.endUpdates()
+                    }
+                }
+                UIView.setAnimationsEnabled(true)
+            })
+        }
+    }
+    
+    func synced(_ lock: Any, closure: () -> ()) {
+        objc_sync_enter(lock)
+        closure()
+        objc_sync_exit(lock)
+    }
+    
 }
 
 //
@@ -211,33 +285,27 @@ extension ContactEditViewController: UITableViewDataSource {
         let sections = self.viewModel.getSections()
         let s = sections[section]
         switch s {
-        case .display_name:
+        case .display_name, .encrypted_header, .share:
             return 0
         case .emails:
-            return 1 + viewModel.getOrigEmails().count
-        case .encrypted_header:
-            return 0
+            return 1 + viewModel.getEmails().count
         case .cellphone:
-            return 1 + viewModel.getOrigCells().count
+            return 1 + viewModel.getCells().count
         case .home_address:
-            return 1 + viewModel.getOrigAddresses().count
+            return 1 + viewModel.getAddresses().count
+        case .url:
+            return 1 + viewModel.getUrls().count
         case .information:
-            return 1 + viewModel.getOrigInformations().count
+            return 1 + viewModel.getInformations().count
         case .custom_field:
-            return 1 + viewModel.getOrigFields().count
+            return 1 + viewModel.getFields().count
         case .notes:
             return 1
         case .delete:
             return 1
+        case .upgrade:
+            return 1
         }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let sections = self.viewModel.getSections()
-        if sections[section] == .encrypted_header {
-            return 36.0
-        }
-        return 10.0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -246,11 +314,18 @@ extension ContactEditViewController: UITableViewDataSource {
         let section = indexPath.section
         let row = indexPath.row
         let s = sections[section]
+        
+        var firstResponder : Bool = false
+        if let index = newIndexPath, index == indexPath {
+            firstResponder = true
+            newIndexPath = nil
+        }
+        
         switch s {
-        case .display_name:
+        case .display_name, .encrypted_header:
             assert(false, "Code should not be here")
         case .emails:
-            let emailCount = viewModel.getOrigEmails().count
+            let emailCount = viewModel.getEmails().count
             if row == emailCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
                 cell.configCell(value: NSLocalizedString("Add new email", comment: "action"))
@@ -259,13 +334,11 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditEmailCell, for: indexPath) as! ContactEditEmailCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getOrigEmails()[row], callback: self)
+                cell.configCell(obj: viewModel.getEmails()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
-        case .encrypted_header:
-            assert(false, "Code should not be here")
         case .cellphone:
-            let cellCount = viewModel.getOrigCells().count
+            let cellCount = viewModel.getCells().count
             if row == cellCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
                 cell.configCell(value: NSLocalizedString("Add new phone number", comment: "action"))
@@ -274,11 +347,11 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditCellphoneCell, for: indexPath) as! ContactEditPhoneCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getOrigCells()[row], callback: self)
+                cell.configCell(obj: viewModel.getCells()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .home_address:
-            let addrCount = viewModel.getOrigAddresses().count
+            let addrCount = viewModel.getAddresses().count
             if row == addrCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
                 cell.configCell(value: NSLocalizedString("Add new address", comment: "action"))
@@ -287,24 +360,37 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddressCell, for: indexPath) as! ContactEditAddressCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getOrigAddresses()[row], callback: self)
+                cell.configCell(obj: viewModel.getAddresses()[row], callback: self, becomeFirstResponder: firstResponder)
+                outCell = cell
+            }
+        case .url:
+            let urlCount = viewModel.getUrls().count
+            if row == urlCount {
+                let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
+                cell.configCell(value: NSLocalizedString("Add new url", comment: "action"))
+                cell.selectionStyle = .default
+                outCell = cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditUrlCell, for: indexPath) as! ContactEditUrlCell
+                cell.selectionStyle = .none
+                cell.configCell(obj: viewModel.getUrls()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .information:
-            let orgCount = viewModel.getOrigInformations().count
+            let orgCount = viewModel.getInformations().count
             if row == orgCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: NSLocalizedString("Add Information", comment: "action"))
+                cell.configCell(value: NSLocalizedString("Add new field", comment: "action"))
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditCellInfoCell, for: indexPath) as! ContactEditInformationCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getOrigInformations()[row], callback: self)
+                cell.configCell(obj: viewModel.getInformations()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .custom_field:
-            let fieldCount = viewModel.getOrigFields().count
+            let fieldCount = viewModel.getFields().count
             if row == fieldCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
                 cell.configCell(value: NSLocalizedString("Add new custom field", comment: "action"))
@@ -313,12 +399,12 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditFieldCell, for: indexPath) as! ContactEditFieldCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getOrigFields()[row], callback: self)
+                cell.configCell(obj: viewModel.getFields()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .notes:
-            let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditNotesCell, for: indexPath) as! ContactEditNotesCell
-            cell.configCell(obj: viewModel.getOrigNotes(), callback: self)
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditTextViewCell, for: indexPath) as! ContactEditTextViewCell
+            cell.configCell(obj: viewModel.getNotes(), callback: self)
             cell.selectionStyle = .none
             outCell = cell
         case .delete:
@@ -326,6 +412,12 @@ extension ContactEditViewController: UITableViewDataSource {
             cell.configCell(value: NSLocalizedString("Delete Contact", comment: "action"))
             cell.selectionStyle = .default
             outCell = cell
+        case .upgrade:
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditUpgradeCell, for: indexPath)
+            cell.selectionStyle = .none
+            outCell = cell
+        default:
+            break
         }
         
         if outCell == nil { //default
@@ -342,52 +434,71 @@ extension ContactEditViewController: UITableViewDataSource {
         let sections = self.viewModel.getSections()
         let s = sections[section]
         switch s {
-        case .display_name:
+        case .display_name, .encrypted_header:
             assert(false, "Code should not be here")
         case .emails:
-            let emailCount = viewModel.getOrigEmails().count
+            let emailCount = viewModel.getEmails().count
             if row == emailCount {
                 return .insert
             } else {
                 return .delete
             }
-        case .encrypted_header:
-            assert(false, "Code should not be here")
         case .cellphone:
-            let cellCount = viewModel.getOrigCells().count
+            let cellCount = viewModel.getCells().count
             if row == cellCount {
                 return .insert
             } else {
                 return .delete
             }
         case .home_address:
-            let addrCount = viewModel.getOrigAddresses().count
+            let addrCount = viewModel.getAddresses().count
             if row == addrCount {
                 return .insert
             } else {
                 return .delete
             }
         case .information:
-            let orgCount = viewModel.getOrigInformations().count
+            let orgCount = viewModel.getInformations().count
             if row == orgCount {
                 return .insert
             } else {
                 return .delete
             }
+        case .url:
+            let urlCount = viewModel.getUrls().count
+            if row == urlCount {
+                return .insert
+            } else {
+                return .delete
+            }
         case .custom_field:
-            let fieldCount = viewModel.getOrigFields().count
+            let fieldCount = viewModel.getFields().count
             if row == fieldCount {
                 return .insert
             } else {
                 return .delete
             }
-        case .notes, .delete:
+        case .notes, .delete, .upgrade, .share:
             return .none
         }
         return .none
     }
     
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        let section = indexPath.section
+        let sections = self.viewModel.getSections()
+        let s = sections[section]
+        switch s {
+        case .upgrade:
+            return false
+        default:
+            return true
+        }
+    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        dismissKeyboard()
+
         let section = indexPath.section
         let row = indexPath.row
         let sections = self.viewModel.getSections()
@@ -396,10 +507,16 @@ extension ContactEditViewController: UITableViewDataSource {
             switch s {
             case .emails:
                 let _ = self.viewModel.newEmail()
+                self.newIndexPath = indexPath
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .cellphone:
                 let _ = self.viewModel.newPhone()
+                self.newIndexPath = indexPath
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .home_address:
                 let _ = self.viewModel.newAddress()
+                self.newIndexPath = indexPath
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .information:
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
@@ -408,8 +525,8 @@ extension ContactEditViewController: UITableViewDataSource {
                 for t in infoTypes {
                     alertController.addAction(UIAlertAction(title: t.desc, style: .default, handler: { (action) -> Void in
                         let _ = self.viewModel.newInformation(type: t)
-                        tableView.reloadSections([section], with: .automatic)
-                        tableView.deselectRow(at: indexPath, animated: true)
+                        self.newIndexPath = indexPath
+                        self.tableView.insertRows(at: [indexPath], with: .automatic)
                     }))
                 }
                 
@@ -419,6 +536,8 @@ extension ContactEditViewController: UITableViewDataSource {
                 present(alertController, animated: true, completion: nil)
             case .custom_field:
                 let _ = self.viewModel.newField()
+                self.newIndexPath = indexPath
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             default:
                 break
             }
@@ -427,47 +546,91 @@ extension ContactEditViewController: UITableViewDataSource {
             switch s {
             case .emails:
                 self.viewModel.deleteEmail(at: row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             case .cellphone:
                 self.viewModel.deletePhone(at: row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             case .home_address:
                 self.viewModel.deleteAddress(at: row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             case .information:
                 self.viewModel.deleteInformation(at: row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             case .custom_field:
                 self.viewModel.deleteField(at: row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            case .url:
+                self.viewModel.deleteUrl(at: row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             default:
                 break
             }
         }
-        dismissKeyboard()
-        
-        tableView.reloadSections([section], with: .automatic)
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
 // MARK: - UITableViewDelegate
 extension ContactEditViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let sections = viewModel.getSections()
-        if sections[section] == .encrypted_header {
-            return NSLocalizedString("Encrypted Contact Details", comment: "title")
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView else {
+            return nil
         }
-        return "" //"Contact Details"
+        let sections = viewModel.getSections()
+        let sc = sections[section]
+        if sc == .encrypted_header {
+            cell.ConfigHeader(title: NSLocalizedString("Encrypted Contact Details", comment: "title"), signed: false)
+        } else if sc == .delete || sc == .notes {
+            return nil
+        }
+        return cell
     }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let sections = viewModel.getSections()
+        let s = sections[section]
+        switch s {
+        case .encrypted_header, .delete:
+            return 38.0
+        default:
+            return 0.0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        let sections = viewModel.getSections()
+        let s = sections[section]
+        switch s {
+        case .delete:
+            return 0.0
+        case .notes:
+            if viewModel.isNew() {
+                return 0.0
+            } else {
+                return 0.0
+            }
+        default:
+            return 0.0
+        }
+    }
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let sections = viewModel.getSections()
         if sections[indexPath.section] == .notes {
-            //return 80.0
+            return UITableViewAutomaticDimension
         }
         if sections[indexPath.section] == .home_address {
-            let count = viewModel.getOrigAddresses().count
+            let count = viewModel.getAddresses().count
             if indexPath.row != count {
                 return 180.0
             }
         }
+        
+        if sections[indexPath.section] == .upgrade {
+             return 280.0
+        }
+        
         return 48.0
     }
     
@@ -476,65 +639,79 @@ extension ContactEditViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dismissKeyboard()
+        tableView.deselectRow(at: indexPath, animated: true)
+        
         let sections = viewModel.getSections()
         let section = indexPath.section
         let row = indexPath.row
         let s = sections[section]
         switch s {
-        case .display_name:
-            assert(false, "Code should not be here")
+        case .display_name, .encrypted_header, .notes:
+            break
+        //assert(false, "Code should not be here")
         case .emails:
-            let emailCount = viewModel.getOrigEmails().count
+            let emailCount = viewModel.getEmails().count
             if row == emailCount {
                 let _ = viewModel.newEmail()
+                self.newIndexPath = indexPath
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
-        case .encrypted_header:
-            assert(false, "Code should not be here")
         case .cellphone:
-            let cellCount = viewModel.getOrigCells().count
+            let cellCount = viewModel.getCells().count
             if row == cellCount {
                 let _ = viewModel.newPhone()
+                self.newIndexPath = indexPath
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .home_address:
-            let addrCount = viewModel.getOrigAddresses().count
+            let addrCount = viewModel.getAddresses().count
             if row == addrCount {
                 let _ = viewModel.newAddress()
+                self.newIndexPath = indexPath
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
+            }
+        case .url:
+            let urlCount = viewModel.getUrls().count
+            if row == urlCount {
+                let _ = viewModel.newUrl()
+                self.newIndexPath = indexPath
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .information:
-            let orgCount = viewModel.getOrigInformations().count
+            let orgCount = viewModel.getInformations().count
             if row == orgCount {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
-                
                 //get left info types
                 let infoTypes = viewModel.getLeftInfoTypes()
                 for t in infoTypes {
                     alertController.addAction(UIAlertAction(title: t.desc, style: .default, handler: { (action) -> Void in
                         let _ = self.viewModel.newInformation(type: t)
-                        tableView.reloadSections([section], with: .automatic)
-                        tableView.deselectRow(at: indexPath, animated: true)
+                        self.newIndexPath = indexPath
+                        self.tableView.insertRows(at: [indexPath], with: .automatic)
                     }))
                 }
-                
                 let sender = tableView.cellForRow(at: indexPath)
                 alertController.popoverPresentationController?.sourceView = sender ?? self.view
                 alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
                 present(alertController, animated: true, completion: nil)
             }
         case .custom_field:
-            let fieldCount = viewModel.getOrigFields().count
+            let fieldCount = viewModel.getFields().count
             if row == fieldCount {
                 let _ = viewModel.newField()
+                self.newIndexPath = indexPath
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
-        case .notes:
-            assert(true, "Code should not be here")
         case .delete:
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Contact", comment: "Title-Contacts"), style: .destructive, handler: { (action) -> Void in
-                ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                let v : UIView = self.navigationController?.view ?? self.view
+                ActivityIndicatorHelper.showActivityIndicator(at: v)
                 self.viewModel.delete(complete: { (error) in
-                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                    ActivityIndicatorHelper.hideActivityIndicator(at: v)
                     if let err = error {
                         err.alertToast()
                     } else {
@@ -548,12 +725,10 @@ extension ContactEditViewController: UITableViewDelegate {
             alertController.popoverPresentationController?.sourceView = self.view
             alertController.popoverPresentationController?.sourceRect = self.view.frame
             present(alertController, animated: true, completion: nil)
+        case .upgrade, .share:
+            break
         }
         
-        dismissKeyboard()
-        
-        tableView.reloadSections([section], with: .automatic)
-        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }

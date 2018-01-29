@@ -50,9 +50,9 @@ extension Attachment {
     
     
     // Mark : public functions
-    func encrypt(byAddrID sender_address_id : String) -> PMNEncryptPackage? {
+    func encrypt(byAddrID sender_address_id : String, mailbox_pwd: String) -> PMNEncryptPackage? {
         do {
-            guard let out =  try fileData?.encryptAttachment(sender_address_id, fileName: self.fileName) else {
+            guard let out =  try fileData?.encryptAttachment(sender_address_id, fileName: self.fileName, mailbox_pwd: mailbox_pwd) else {
                 return nil
             }
             return out

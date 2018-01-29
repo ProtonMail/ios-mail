@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 //MARK : update display name
 final class UpdateAddressRequest<T : ApiResponse> : ApiRequest<T> {
     let addressid : String!

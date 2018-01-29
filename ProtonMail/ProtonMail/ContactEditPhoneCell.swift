@@ -16,19 +16,32 @@ final class ContactEditPhoneCell: UITableViewCell {
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
+    @IBOutlet weak var sepratorView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
+        self.valueField.placeholder = NSLocalizedString("Phone number", comment: "contact placeholder")
     }
     
-    func configCell(obj : ContactEditPhone, callback : ContactEditCellDelegate?) {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        sepratorView.gradient()
+    }
+    
+    func configCell(obj : ContactEditPhone, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.phone = obj
         
-        typeLabel.text = self.phone.newType
+        typeLabel.text = self.phone.newType.title
         valueField.text = self.phone.newPhone
         
         self.delegate = callback
+        
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
+        }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {

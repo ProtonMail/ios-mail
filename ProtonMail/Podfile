@@ -6,6 +6,8 @@ inhibit_all_warnings!
 
 #target 'ProtonMail','ProtonMailDev','ProtonMailTests'
 def pm_pods
+    pod 'Firebase/Core'
+    pod 'Firebase/Messaging'
 	pod 'Groot/ObjC', '2.0'
 	pod 'OpenPGP', :path => '../OpenPGP'
 	pod 'ZSSRichTextEditor', :path => '../ZSSRichTextEditor'
@@ -23,6 +25,21 @@ def pm_pods
 end
 
 def pm_extensions
+    pod 'Groot/ObjC', '2.0'
+    pod 'OpenPGP', :path => '../OpenPGP'
+    pod 'ZSSRichTextEditor', :path => '../ZSSRichTextEditor'
+    pod 'AFNetworking', '3.1.0'
+    pod 'AFNetworkActivityLogger', :git => 'https://github.com/AFNetworking/AFNetworkActivityLogger.git', :branch => '3_0_0'
+    #based on 1.0.4
+    pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
+    pod 'UICKeyChainStore', '2.1.0'
+    pod 'Masonry', '1.1.0'
+    pod 'RHAddressBook', '1.1.1'
+    pod 'UIColor+Hex', '1.0.1'
+    pod 'MCSwipeTableViewCell', '~> 2.1.4'
+end
+
+def pm_push
     pod 'Groot/ObjC', '2.0'
     pod 'OpenPGP', :path => '../OpenPGP'
     pod 'ZSSRichTextEditor', :path => '../ZSSRichTextEditor'
@@ -55,6 +72,14 @@ end
 
 target 'ShareDev' do
     pm_extensions
+end
+
+target 'PushService' do
+    pm_push
+end
+
+target 'PushServiceDev' do
+    pm_push
 end
 
 post_install do | installer |

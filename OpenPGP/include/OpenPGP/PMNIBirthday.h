@@ -11,6 +11,8 @@
 
 - (nonnull NSString *)getType;
 
+- (nonnull NSString *)getText;
+
 + (nullable PMNIBirthday *)createInstance:(nonnull NSString *)type
                                      date:(nonnull NSString *)date;
 

@@ -16,6 +16,8 @@
 import UIKit
 import Fabric
 import Crashlytics
+import Firebase
+
 
 let sharedUserDataService = UserDataService()
 
@@ -126,9 +128,27 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         Fabric.with([Crashlytics()])
+        FirebaseApp.configure()
+        
+        // set_messaging_delegate
+        Messaging.messaging().delegate = self
+
+//        if #available(iOS 10.0, *) {
+//            // For iOS 10 display notification (sent via APNS)
+//            UNUserNotificationCenter.current().delegate = self
+//
+//            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+//            UNUserNotificationCenter.current().requestAuthorization(
+//                options: authOptions,
+//                completionHandler: {_, _ in })
+//        } else {
+//            let settings: UIUserNotificationSettings =
+//                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+//            application.registerUserNotificationSettings(settings)
+//        }
+//        application.registerForRemoteNotifications()
         
         shareViewModelFactoy = ViewModelFactoryProduction()
-        
         sharedVMService.cleanLegacy()
         sharedAPIService.delegate = self
         sharedUserDataService.delegate = self
@@ -156,6 +176,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         
         //setup language
         LanguageManager.setupCurrentLanguage()
+        
+        sharedPushNotificationService.setLaunchOptions(launchOptions)
         
         return true
     }
@@ -257,7 +279,11 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        sharedPushNotificationService.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
+        Messaging.messaging().apnsToken = deviceToken
+        if let token = Messaging.messaging().fcmToken {
+            PMLog.D("FCM token: \(token)")
+            sharedPushNotificationService.didRegisterForRemoteNotifications(withDeviceToken: token)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -273,5 +299,24 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         let notification = Notification(name: Notification.Name(rawValue: NotificationDefined.TouchStatusBar), object: nil, userInfo: nil)
         NotificationCenter.default.post(notification)
     }
+}
+
+extension AppDelegate : MessagingDelegate {
+    // [START refresh_token]
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        PMLog.D("Firebase registration token: \(fcmToken)")
+        
+        sharedPushNotificationService.didRegisterForRemoteNotifications(withDeviceToken: fcmToken)
+        // TODO: If necessary send token to application server.
+        // Note: This callback is fired at each app startup and whenever a new token is generated.
+    }
+    // [END refresh_token]
+    // [START ios_10_data_message]
+    // Receive data messages on iOS 10+ directly from FCM (bypassing APNs) when the app is in the foreground.
+    // To enable direct data messages, you can set Messaging.messaging().shouldEstablishDirectChannel to true.
+    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+        PMLog.D("Received data message: \(remoteMessage.appData)")
+    }
+    // [END ios_10_data_message]
 }
 

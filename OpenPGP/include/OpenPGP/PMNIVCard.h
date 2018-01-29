@@ -6,6 +6,7 @@
 @class PMNIBirthday;
 @class PMNIEmail;
 @class PMNIFormattedName;
+@class PMNIGender;
 @class PMNINickname;
 @class PMNINote;
 @class PMNIOrganization;
@@ -111,6 +112,12 @@
 - (void)setUrls:(nonnull NSArray<PMNIUrl *> *)urls;
 
 - (void)clearUrls;
+
+- (nullable PMNIGender *)getGender;
+
+- (void)setGender:(nullable PMNIGender *)gender;
+
+- (void)clearGender;
 
 - (nullable PMNIStructuredName *)getStructuredName;
 

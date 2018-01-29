@@ -125,7 +125,7 @@ class ComposeViewModel {
         fatalError("This method must be overridden")
     }
    
-    func getDefaultAddress () -> Address? {
+    func getDefaultSendAddress() -> Address? {
         fatalError("This method must be overridden")
     }
     

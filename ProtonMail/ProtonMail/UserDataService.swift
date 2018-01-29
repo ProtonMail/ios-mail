@@ -178,14 +178,14 @@ class UserDataService {
     // MARK: - Public variables
     
     var defaultEmail : String {
-        if let addr = userAddresses.getDefaultAddress() {
+        if let addr = userAddresses.defaultAddress() {
             return addr.email;
         }
         return "";
     }
     
     var defaultDisplayName : String {
-        if let addr = userAddresses.getDefaultAddress() {
+        if let addr = userAddresses.defaultAddress() {
             return addr.display_name;
         }
         return displayName;
@@ -609,14 +609,14 @@ class UserDataService {
                     
                     do {
                         let update_res = try UpdatePrivateKeyRequest<ApiResponse>(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
-                                                                                  clientProof:srpClient.clientProof.encodeBase64(),
-                                                                                  SRPSession: session,
-                                                                                  keySalt: new_mpwd_salt.encodeBase64(),
-                                                                                  userlevelKeys: updated_userlevel_keys,
-                                                                                  addressKeys: updated_address_keys.toKeys(),
-                                                                                  tfaCode: twoFACode,
-                                                                                  orgKey: new_org_key,
-                                                                                  auth: authPacket).syncCall()
+                              clientProof:srpClient.clientProof.encodeBase64(),
+                              SRPSession: session,
+                              keySalt: new_mpwd_salt.encodeBase64(),
+                              userlevelKeys: updated_userlevel_keys,
+                              addressKeys: updated_address_keys.toKeys(),
+                              tfaCode: twoFACode,
+                              orgKey: new_org_key,
+                              auth: authPacket).syncCall()
                         guard update_res?.code == 1000 else {
                             throw UpdatePasswordError.default.toError()
                         }

@@ -58,16 +58,30 @@ public class PushNotificationService {
         PMLog.D(" \(error)")
     }
     
-    public func setLaunchOptions (_ launchOptions: [AnyHashable: Any]?) {
+    public func setLaunchOptions (_ launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
         if let launchoption = launchOptions {
-            if let option = launchoption["UIApplicationLaunchOptionsRemoteNotificationKey"] as? [AnyHashable: Any] {
-                self.launchOptions = option;
+            if let remoteNotification = launchoption[UIApplicationLaunchOptionsKey.remoteNotification ] as? [AnyHashable: Any] {
+                self.launchOptions = remoteNotification
             }
         }
     }
     
     public func setNotificationOptions (_ userInfo: [AnyHashable: Any]?) {
-        self.launchOptions = userInfo;
+        self.launchOptions = userInfo
+        guard let revealViewController =  UIApplication.shared.keyWindow?.rootViewController as? SWRevealViewController else {
+            return
+        }
+        guard let front = revealViewController.frontViewController as? UINavigationController else {
+            return
+        }
+        
+        if let view = front.viewControllers.first {
+            if view.isKind(of: MailboxViewController.self) ||
+                view.isKind(of: ContactsViewController.self) ||
+                view.isKind(of: SettingsViewController.self) {
+                self.launchOptions = nil
+            }
+        }
     }
     
     public func processCachedLaunchOptions() {
@@ -100,15 +114,21 @@ public class PushNotificationService {
                                 completionHandler(.newData)
                             }
                         });
+                    } else {
+                        completionHandler(.failed)
                     }
+                } else {
+                    completionHandler(.failed)
                 }
+            } else {
+                completionHandler(.failed)
             }
         }
     }
     
-    public func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data) {
+    public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
         sharedAPIService.cleanBadKey(deviceToken)
-        sharedAPIService.deviceRegisterWithToken(deviceToken, completion: { (_, _, error) -> Void in
+        sharedAPIService.device(registerWith: deviceToken, completion: { (_, _, error) -> Void in
             if let error = error {
                 PMLog.D(" error: \(error)")
             }
@@ -135,7 +155,48 @@ public class PushNotificationService {
     // MARK: - Private methods
     
     fileprivate func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
-        let messageArray = userInfo["message_id"] as? NSArray
-        return messageArray?.firstObject as? String
+        
+        if let encrypted = userInfo["encryptedMessage"] as? String {
+            guard let userkey = sharedUserDataService.userInfo?.firstUserKey(), let password = sharedUserDataService.mailboxPassword else {
+                return nil
+            }
+            do
+            {
+                guard let plaintext = try encrypted.decryptMessageWithSinglKey(userkey.private_key, passphrase: password) else {
+                    return nil
+                }
+                guard let push = PushData.parse(with: plaintext) else {
+                    return nil
+                }
+                return push.msgID
+            } catch {
+                return nil
+            }
+        } else if let object = userInfo["data"] as? [String: Any]  {
+            var v : Int?
+            if let version = userInfo["version"] as? String {
+                v = Int(version)
+            }
+            let type = userInfo["type"] as? String
+            guard let push = PushData.parse(dataDict: object, version: v, type: type) else {
+                return nil
+            }
+            return push.msgID
+        } else if let object = userInfo["data"] as? String {
+            var v : Int?
+            if let version = userInfo["version"] as? String {
+                v = Int(version)
+            }
+            let type = userInfo["type"] as? String
+            guard let push = PushData.parse(dataString: object, version: v, type: type) else {
+                return nil
+            }
+            return push.msgID
+        } else {
+            guard let messageArray = userInfo["message_id"] as? NSArray else {
+                return nil
+            }
+            return messageArray.firstObject as? String
+        }
     }
 }

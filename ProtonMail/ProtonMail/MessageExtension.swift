@@ -398,12 +398,12 @@ extension Message {
         }
     }
     
-    func encryptBody(_ body: String, error: NSErrorPointer?) {
+    func encryptBody(_ body: String, mailbox_pwd: String, error: NSErrorPointer?) {
         let address_id = self.getAddressID;
         if address_id.isEmpty {
             return
         }
-        self.body = try! body.encryptMessage(address_id) ?? ""
+        self.body = try! body.encryptMessage(address_id, mailbox_pwd: mailbox_pwd) ?? ""
     }
     
     func checkIsEncrypted() -> Bool! {
@@ -445,22 +445,16 @@ extension Message {
     //this function need to factor
     var defaultAddress : Address? {
         get {
-            if let addressID = addressID {
-                if !addressID.isEmpty {
-                    if let add = sharedUserDataService.userAddresses.indexOfAddress(addressID) {
-                        return add;
-                    } else {
-                        if let add = sharedUserDataService.userAddresses.getDefaultAddress() {
-                            return add;
-                        }
-                    }
+            if let addressID = addressID, !addressID.isEmpty {
+                if let add = sharedUserDataService.userAddresses.indexOfAddress(addressID), add.send == 1 {
+                    return add;
                 } else {
-                    if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
-                        return addr
+                    if let add = sharedUserDataService.userAddresses.defaultSendAddress() {
+                        return add;
                     }
                 }
             } else {
-                if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+                if let addr = sharedUserDataService.userAddresses.defaultSendAddress() {
                     return addr
                 }
             }

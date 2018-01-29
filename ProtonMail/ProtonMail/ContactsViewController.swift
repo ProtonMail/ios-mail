@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import Contacts
 
 class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
@@ -29,9 +30,16 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
     // MARK: - Private attributes
     fileprivate var refreshControl: UIRefreshControl!
     fileprivate var searchController : UISearchController!
+    
+    @IBOutlet weak var searchView: UIView!
+    @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
+    
+    fileprivate var addBarButtonItem : UIBarButtonItem!
+    fileprivate var moreBarButtonItem : UIBarButtonItem!
     
     func inactiveViewModel() {
     }
@@ -54,23 +62,14 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
         self.searchController.hidesNavigationBarDuringPresentation = true
-        self.searchController.searchBar.tintColor = UIColor.ProtonMail.Blue_475F77
-        self.searchController.searchBar.backgroundColor = UIColor.clear
+        self.searchController.automaticallyAdjustsScrollViewInsets = true
         self.searchController.searchBar.sizeToFit()
         self.searchController.searchBar.keyboardType = .default
         self.searchController.searchBar.autocapitalizationType = .none
-        
-        self.tableView.tableHeaderView = self.searchController.searchBar;
-        self.definesPresentationContext = true;
-        self.extendedLayoutIncludesOpaqueBars = true
-        self.automaticallyAdjustsScrollViewInsets = false
-        self.tableView.noSeparatorsBelowFooter()
-        
-        let back = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Action"),
-                                   style: UIBarButtonItemStyle.plain,
-                                   target: nil,
-                                   action: nil)
-        self.navigationItem.backBarButtonItem = back
+        self.searchController.searchBar.isTranslucent = false
+        self.searchController.searchBar.tintColor = .white
+        self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
+        self.searchController.searchBar.backgroundColor = .clear
         
         refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
@@ -85,9 +84,65 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         refreshControl.tintColor = UIColor.gray
         refreshControl.tintColorDidChange()
         
+        if #available(iOS 11.0, *) {
+            self.searchViewConstraint.constant = 0.0
+            self.searchView.isHidden = true
+            self.navigationController?.navigationBar.prefersLargeTitles = false
+            self.navigationItem.largeTitleDisplayMode = .never
+            self.navigationItem.hidesSearchBarWhenScrolling = false
+            self.navigationItem.searchController = self.searchController
+        } else {
+            self.searchViewConstraint.constant = self.searchController.searchBar.frame.height
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background), for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
+            self.navigationController?.navigationBar.shadowImage = UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background)
+            
+            self.refreshControl.backgroundColor = .white
+            
+            self.searchView.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
+            self.searchView.addSubview(self.searchController.searchBar)
+            self.searchController.searchBar.contactSearchSetup(textfieldBG: UIColor.init(hexColorCode: "#82829C"), placeholderColor: UIColor.init(hexColorCode: "#BBBBC9"), textColor: .white)
+        }
+        self.definesPresentationContext = true;
+        self.extendedLayoutIncludesOpaqueBars = true
+        self.automaticallyAdjustsScrollViewInsets = false
+        self.tableView.noSeparatorsBelowFooter()
+        self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
+        
+        let back = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Action"),
+                                   style: UIBarButtonItemStyle.plain,
+                                   target: nil,
+                                   action: nil)
+        self.navigationItem.backBarButtonItem = back
+        
+        if self.addBarButtonItem == nil {
+            self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
+                                                         target: self,
+                                                         action: #selector(self.addContactTapped))
+        }
+        var rightButtons: [UIBarButtonItem] = [self.addBarButtonItem]
+        if #available(iOS 9.0, *) {
+            if (self.moreBarButtonItem == nil) {
+                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"),
+                                                         style: UIBarButtonItemStyle.plain,
+                                                         target: self,
+                                                         action: #selector(self.moreButtonTapped))
+            }
+            rightButtons.append(self.moreBarButtonItem)
+        }
+
+        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
+        
         //get all contacts
         self.viewModel.setupFetchedResults(delaget: self)
         tableView.reloadData()
+        
+        
+        //TODO::
+        let _ = NSLocalizedString("Please upgrade to access encrypted contact details.", comment: "Alert")
+        let _ = NSLocalizedString("Upgrade", comment: "Action")
+        let _ = NSLocalizedString("Notes", comment: "Title")
+        let _ = NSLocalizedString("Encrypting contacts... %d", comment: "Alert")
+        let _ = NSLocalizedString("You have imported %d of %d contacts!", comment: "Alert")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -109,7 +164,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.tableView.zeroMargin()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -147,8 +201,199 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             self.tableView.reloadData()
         }
     }
+    
+    @objc internal func addContactTapped() {
+        self.performSegue(withIdentifier: kAddContactSugue, sender: self)
+    }
+    
+    @available(iOS 9.0, *)
+    @objc internal func moreButtonTapped() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel",  comment: "Action"), style: .cancel, handler: nil))
+        
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Upload Contacts",  comment: "Action"), style: .default, handler: { (action) -> Void in
+            self.navigationController?.popViewController(animated: true)
+            
+            let alertController = UIAlertController(title: NSLocalizedString("Contacts", comment: "Action"),
+                                                    message: NSLocalizedString("Upload iOS contacts to ProtonMail?", comment: "Description"),
+                                                    preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Action"), style: .default, handler: { (action) -> Void in
+                self.getContacts()
+            }))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+        }))
+    
+    
+        alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @available(iOS 9.0, *)
+    internal func getContacts() {
+        let store = CNContactStore()
+        switch CNContactStore.authorizationStatus(for: .contacts) {
+        case .notDetermined:
+            store.requestAccess(for: .contacts, completionHandler: { (authorized, error) in
+                if authorized {
+                    self.retrieveContactsWithStore(store: store)
+                } else {
+                   "Contacts access is not authorized".alertToast()
+                }
+            })
+        case .authorized:
+             self.retrieveContactsWithStore(store: store)
+        case .denied:
+            "Contacts access denied, please allow access from settings".alertToast()
+        case .restricted:
+            "The application is not authorized to access contact data".alertToast()
+        }
+    }
+    
+    @available(iOS 9.0, *)
+    lazy var contacts: [CNContact] = {
+        let contactStore = CNContactStore()
+        let keysToFetch : [CNKeyDescriptor] = [
+            CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
+            CNContactEmailAddressesKey as CNKeyDescriptor,
+            CNContactPhoneNumbersKey as CNKeyDescriptor,
+            CNContactImageDataAvailableKey as CNKeyDescriptor,
+            CNContactImageDataKey as CNKeyDescriptor,
+            CNContactThumbnailImageDataKey as CNKeyDescriptor,
+            CNContactIdentifierKey as CNKeyDescriptor,
+            CNContactVCardSerialization.descriptorForRequiredKeys()]
+        
+        // Get all the containers
+        var allContainers: [CNContainer] = []
+        do {
+            allContainers = try contactStore.containers(matching: nil)
+        } catch {
+            print("Error fetching containers")
+        }
+        
+        var results: [CNContact] = []
+        
+        // Iterate all containers and append their contacts to our results array
+        for container in allContainers {
+            let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
+            do {
+                let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch)
+                results.append(contentsOf: containerResults)
+            } catch {
+                print("Error fetching results for container")
+            }
+        }
+        
+        return results
+    }()
+    
+    @available(iOS 9.0, *)
+    internal func retrieveContactsWithStore(store: CNContactStore) {
+        let nview = self.navigationController?.view
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
+        hud.labelText = NSLocalizedString("Reading device contacts data...", comment: "Title")
+        hud.mode = MBProgressHUDMode.indeterminate
+        hud.removeFromSuperViewOnHide = true
+       
+        var pre_contacts : [[CardData]] = []
+        
+        var found: Int = 0
+        //build boday first
+        do {
+            let contacts = self.contacts
+            for contact in contacts {
+                //check is uuid in the exsiting contacts
+                let identifier = contact.identifier
+                
+                if !self.viewModel.isExsit(uuid: identifier) {
+                    found += 1
+                    hud.labelText = "Encrypting contacts...\(found)" //NSLocalizedString("Done", comment: "Title")
+                    
+                    let rawData = try CNContactVCardSerialization.data(with: [contact])
+                    let vcardStr = String(data: rawData, encoding: .utf8)!
+//                    if contact.imageDataAvailable {
+//                        PMLog.D("\(contact.imageData!.count)")
+//                    }
+                    
+                    if let vcard3 = PMNIEzvcard.parseFirst(vcardStr) {
+                        let uuid = PMNIUid.createInstance(identifier)
+                        guard let vcard2 = PMNIVCard.createInstance() else {
+                            continue //with error
+                        }
+                        
+                        if let fn = vcard3.getFormattedName() {
+                            vcard2.setFormattedName(fn)
+                            vcard3.clearFormattedName()
+                        }
+                        let emails = vcard3.getEmails()
+                        var i : Int = 1
+                        for e in emails {
+                            let ng = "EItem\(i)"
+                            let group = e.getGroup()
+                            if group.isEmpty {
+                                e.setGroup(ng)
+                                i += 1
+                            }
+                        }
+                        
+                        vcard2.setEmails(emails)
+                        vcard3.clearEmails()
+                        vcard2.setUid(uuid)
+                        
+                        // add others later
+                        let vcard2Str = PMNIEzvcard.write(vcard2)
+                        guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
+                            continue //with error
+                        }
+                        PMLog.D(vcard2Str);
+                        let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key,
+                                                                       plainText: vcard2Str,
+                                                                       passphras: sharedUserDataService.mailboxPassword!)
+                        
+                        //card 2 object
+                        let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
+                        
+                        vcard3.setUid(uuid)
+                        vcard3.setVersion(PMNIVCardVersion.vCard40())
+                        let vcard3Str = PMNIEzvcard.write(vcard3)
+                        PMLog.D(vcard3Str);
+                        let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "")
+                        PMLog.D(encrypted_vcard3);
+                        let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
+                                                                       plainText: vcard3Str,
+                                                                       passphras: sharedUserDataService.mailboxPassword!)
+                        //card 3 object
+                        let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
+                        
+                        let cards : [CardData] = [card2, card3]
+                        
+                        pre_contacts.append(cards)
+                    }
+                }
+            }
+        } catch let error as NSError {
+            error.alertToast()
+        }
+        
+        if !pre_contacts.isEmpty {
+            sharedContactDataService.add(cards: pre_contacts, completion:  { (contacts : [Contact]?, error : NSError?) in
+                if error == nil {
+                    let count = contacts?.count ?? 0
+                    hud.labelText = "You have imported \(count) of \(found) contacts!" // NSLocalizedString("You have imported \(count) of \(pre_contacts.count) contacts!", comment: "Title")
+                    hud.hide(true, afterDelay: 2)
+                   // "You have imported \(count) of \(pre_contacts.count) contacts!".alertToast()
+                } else {
+                    hud.hide(true)
+                    error?.alertToast()
+                }
+            })
+        } else {
+            hud.labelText = NSLocalizedString("All contacts are imported", comment: "Title")
+            hud.hide(true, afterDelay: 1)
+        }
+    }
 }
-
 
 //Search part
 extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
@@ -162,8 +407,18 @@ extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
         self.viewModel.search(text: self.searchString)
         self.tableView.reloadData()
     }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        refreshControl.endRefreshing()
+        refreshControl.removeFromSuperview()
+        self.viewModel.set(searching: true)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        tableView.addSubview(refreshControl)
+        self.viewModel.set(searching: false)
+    }
 }
-
 
 // MARK: - UITableViewDataSource
 extension ContactsViewController: UITableViewDataSource {
@@ -201,43 +456,6 @@ extension ContactsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteClosure = { (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
-//            var contact: ContactVO
-//            if (self.searchController.isActive) {
-//                if indexPath.row < self.searchResults.count {
-//                    contact = self.searchResults[indexPath.row]
-//                } else {
-//                    return
-//                }
-//            } else {
-//                if indexPath.row < self.contacts.count {
-//                    contact = self.contacts[indexPath.row]
-//                } else {
-//                    return
-//                }
-//            }
-//            
-//            self.selectedContact = contact
-//            
-//            if (!contact.isProtonMailContact) {
-//                self.showContactBelongsToAddressBookError()
-//                return
-//            }
-//            
-//            if (contact.contactId.count > 0) {
-//                //TODO:: delete contact
-////                sharedContactDataService.deleteContact(contact.contactId, completion: { (contacts, error) -> Void in
-////                    self.retrieveAllContacts()
-////                })
-//            }
-//            
-//            if (self.searchController.isActive) {
-//                self.searchResults.remove(at: indexPath.row)
-//                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-//            } else {
-//                self.contacts.remove(at: indexPath.row)
-//                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-//            }
-            
             if let contact = self.viewModel.item(index: indexPath) {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
@@ -257,28 +475,8 @@ extension ContactsViewController: UITableViewDelegate {
             }
         }
         
-//        let editClosure = { (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
-//            var contact: ContactVO
-//            if (self.searchController.isActive) {
-//                contact = self.searchResults[indexPath.row]
-//            } else {
-//                contact = self.contacts[indexPath.row]
-//            }
-//            
-//            self.selectedContact = contact
-//            
-//            if (!contact.isProtonMailContact) {
-//                self.showContactBelongsToAddressBookError()
-//                return
-//            }
-//            
-//            self.selectedContact = contact
-//            self.performSegue(withIdentifier: "toEditContact", sender: self)
-//        }
-        
         let deleteAction = UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: "Action"), handler: deleteClosure)
-//        let editAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Edit", comment: "Action"), handler: editClosure)
-        return [deleteAction] // [deleteAction, editAction]
+        return [deleteAction]
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -292,18 +490,39 @@ extension ContactsViewController: UITableViewDelegate {
         }
     }
     
-//    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-////        if let selectIndex = indexCache[title] {
-////            tableView.scrollToRow(at: IndexPath(row: selectIndex, section: 0),
-////                                  at: UITableViewScrollPosition.top, animated: true)
-////        }
-//        return -1
-//    }
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        //TODO:: add this later
+//        - (void)viewDidLoad
+//            {
+//                [super viewDidLoad];
+//                self.indexArray = @[@"{search}", @"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J",@"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
+//            }
 //
-//    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-//        return self.viewModel.sectionIndexTitle()
-////        return ["0", "A", "B", "C", "#"]//[titleIndex];
-//    }
+//            - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+//        {
+//            NSString *letter = [self.indexArray objectAtIndex:index];
+//            NSUInteger sectionIndex = [[self.fetchedResultsController sectionIndexTitles] indexOfObject:letter];
+//            while (sectionIndex > [self.indexArray count]) {
+//                if (index <= 0) {
+//                    sectionIndex = 0;
+//                    break;
+//                }
+//                sectionIndex = [self tableView:tableView sectionForSectionIndexTitle:title atIndex:index - 1];
+//            }
+//
+//            return sectionIndex;
+//            }
+//
+//            - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+//        {
+//            return self.indexArray;
+//        }
+        return self.viewModel.sectionForSectionIndexTitle(title: title, atIndex: index)
+    }
+
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return self.viewModel.sectionIndexTitle()
+    }
     
 }
 

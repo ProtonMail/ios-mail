@@ -276,7 +276,7 @@ class MessageDataService {
      :param: completion complete handler
      */
     
-    func fetchNewMessagesForLocation(_ location: MessageLocation, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
+    func fetchNewMessagesForLocation(_ location: MessageLocation, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, _eventsRes, _hasEventsError in
@@ -347,7 +347,7 @@ class MessageDataService {
         }
     }
     
-    func fetchNewMessagesForLabels(_ labelID: String, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
+    func fetchNewMessagesForLabels(_ labelID: String, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response, hasError in
@@ -428,12 +428,14 @@ class MessageDataService {
                         }
                     case .some(IncrementalContactUpdateType.insert), .some(IncrementalContactUpdateType.update) :
                         do {
-                            _ = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                            if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
                                                                  fromJSONArray: contactObj.contacts,
-                                                                 in: context)
-//                            if let insert_update_contacts = contactObj.contact {
-//                                try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: insert_update_contacts, in: context)
-//                            }
+                                                                 in: context) as? [Contact] {
+                                for c in outContacts {
+                                    c.isDownloaded = false
+                                }
+                            }
+
                         } catch let ex as NSError {
                             PMLog.D(" error: \(ex)")
                         }
@@ -556,12 +558,12 @@ class MessageDataService {
                     completion?(task, nil, error)
                 }
                 
-                //if foucsClean {
                 self.cleanMessage()
-                //}
+                sharedContactDataService.clean()
                 sharedLabelsDataService.fetchLabels();
                 self.fetchMessagesForLocation(MessageLocation.inbox, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-                
+               
+                sharedContactDataService.fetchContacts(completion: nil)
             }
         }
     }
@@ -1209,6 +1211,9 @@ class MessageDataService {
             var out : [MessagePackage] = []
             var needsPlainText : Bool = false
             
+            let privKey = message.defaultAddress?.keys[0].private_key ?? ""
+            let pwd = sharedUserDataService.mailboxPassword ?? ""
+            
             if let body = try message.decryptBody() {
                 if let keys = keys {
                     for (key, v) in keys{
@@ -1253,7 +1258,7 @@ class MessageDataService {
                                 attPack.append(attPacket)
                             }
                             //create inside packet
-                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey) {
+                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey, privateKey: privKey, mailbox_pwd: pwd) {
                                 let pack = MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
                                 out.append(pack)
                             }
@@ -1288,18 +1293,25 @@ class MessageDataService {
     // MARK : old functions
     
     fileprivate func attachmentsForMessage(_ message: Message) -> [Attachment] {
-        return message.attachments.allObjects as! [Attachment]
+        if let all = message.attachments.allObjects as? [Attachment] {
+            return all
+        }
+        return []
     }
     
     fileprivate func messageBodyForMessage(_ message: Message, response: [String : Any]?) throws -> [String : String] {
         var messageBody: [String : String] = ["self" : message.body]
+        
+        let privKey = message.defaultAddress?.keys[0].private_key ?? ""
+        let pwd = sharedUserDataService.mailboxPassword ?? ""
+        
         do {
             if let keys = response?["keys"] as? [[String : String]] {
                 if let body = try message.decryptBody() {
                     // encrypt body with each key
                     for publicKeys in keys {
                         for (email, publicKey) in publicKeys {
-                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey) {
+                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey, privateKey: privKey, mailbox_pwd: pwd) {
                                 messageBody[email] = encryptedBody
                             }
                         }
@@ -1438,7 +1450,7 @@ class MessageDataService {
                         "MIMEType" : attachment.mimeType,
                         ]
                     
-                    var default_address_id = sharedUserDataService.userAddresses.getDefaultAddress()?.address_id ?? ""
+                    var default_address_id = sharedUserDataService.userAddresses.defaultSendAddress()?.address_id ?? ""
                     //TODO::here need to fix sometime message is not valid'
                     if attachment.message.managedObjectContext == nil {
                         params["MessageID"] =  ""
@@ -1447,8 +1459,8 @@ class MessageDataService {
                         default_address_id = attachment.message.getAddressID
                     }
                     
-                    //
-                    let encrypt_data = attachment.encrypt(byAddrID: default_address_id)
+                    let pwd = sharedUserDataService.mailboxPassword ?? ""
+                    let encrypt_data = attachment.encrypt(byAddrID: default_address_id, mailbox_pwd: pwd)
                     //TODO:: here need check is encryptdata is nil and return the error to user.
                     let keyPacket = encrypt_data?.keyPackage
                     let dataPacket = encrypt_data?.dataPackage
@@ -1562,7 +1574,7 @@ class MessageDataService {
                         let reskeys = response;
                         
                         // parse the response for keys
-                        _ = try? self.messageBodyForMessage(message, response: response)
+                        //_ = try? self.messageBodyForMessage(message, response: response)
                         
                         let completionWrapper: CompletionBlock = { task, response, error in
                             PMLog.D("SendAttachmentDebug == finish send email!")

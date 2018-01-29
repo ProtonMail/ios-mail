@@ -11,10 +11,29 @@ import Foundation
 final class ContactsViewModelImpl : ContactsViewModel {
     // MARK: - fetch controller
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    fileprivate var isSearching: Bool = false
     
     override func setupFetchedResults(delaget: NSFetchedResultsControllerDelegate?) {
         self.fetchedResultsController = self.getFetchedResultsController()
+        self.correctCachedData()
         self.fetchedResultsController?.delegate = delaget
+    }
+    
+    func correctCachedData() {
+        if let objects = fetchedResultsController?.fetchedObjects as? [Contact] {
+            if let context = self.fetchedResultsController?.managedObjectContext {
+                var needsSave = false
+                for obj in objects {
+                    if obj.fixName() {
+                        needsSave = true
+                    }
+                }
+                if needsSave {
+                    let _ = context.saveUpstreamIfNeeded()
+                    self.fetchedResultsController = self.getFetchedResultsController()
+                }
+            }
+        }
     }
     
     private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
@@ -27,6 +46,10 @@ final class ContactsViewModelImpl : ContactsViewModel {
             return fetchedResultsController
         }
         return nil
+    }
+    
+    override func set(searching isSearching: Bool) {
+        self.isSearching = isSearching
     }
     
     override func search(text: String) {
@@ -54,13 +77,33 @@ final class ContactsViewModelImpl : ContactsViewModel {
     }
     
     override func sectionIndexTitle() -> [String]? {
+        if isSearching {
+            return nil
+        }
         return fetchedResultsController?.sectionIndexTitles
+    }
+    
+    override func sectionForSectionIndexTitle(title: String, atIndex: Int) -> Int {
+        if isSearching {
+            return -1
+        }
+        return fetchedResultsController?.section(forSectionIndexTitle: title, at: atIndex) ?? -1
     }
     
     override func item(index: IndexPath) -> Contact? {
         return fetchedResultsController?.object(at: index) as? Contact
     }
     
+    override func isExsit(uuid: String) -> Bool {
+        if let contacts = fetchedResultsController?.fetchedObjects as? [Contact] {
+            for c in contacts {
+                if c.uuid == uuid {
+                    return true
+                }
+            }
+        }
+        return false
+    }
     
     // MARK: - api part
     override func delete(contactID: String!, complete : @escaping ContactDeleteComplete) {
@@ -81,67 +124,17 @@ final class ContactsViewModelImpl : ContactsViewModel {
         }
         if !isFetching {
             isFetching = true
-            
-            
-            
-            
-            
-            
-            
-            
-            //            self.beginRefreshingManually()
-            //            let updateTime = viewModel.lastUpdateTime()
-            //            let complete : APIService.CompletionBlock = { (task, res, error) -> Void in
-            //                self.needToShowNewMessage = false
-            //                self.newMessageCount = 0
-            //                self.fetchingMessage = false
-            //
-            //                if self.fetchingStopped! == true {
-            //                    return;
-            //                }
-            //
-            //                if let error = error {
-            //                    self.handleRequestError(error)
-            //                }
-            //
-            //                if error == nil {
-            //                    self.onlineTimerReset()
-            //                    self.viewModel.resetNotificationMessage()
-            //                    if !updateTime.isNew {
-            //
-            //                    }
-            //                    if let notices = res?["Notices"] as? [String] {
-            //                        serverNotice.check(notices)
-            //                    }
-            //                }
-            //
-            //                delay(1.0, closure: {
-            //                    self.refreshControl.endRefreshing()
-            //                    if self.fetchingStopped! == true {
-            //                        return;
-            //                    }
-            //                    self.showNoResultLabel()
-            //                    self.tableView.reloadData()
-            //                    let _ = self.checkHuman()
-            //                })
-            //            }
-            //
-            //            if (updateTime.isNew) {
-            //                if lastUpdatedStore.lastEventID == "0" {
-            //                    viewModel.fetchMessagesForLocationWithEventReset("", Time: 0, completion: complete)
-            //                }
-            //                else {
-            //                    viewModel.fetchMessages("", Time: 0, foucsClean: false, completion: complete)
-            //                }
-            //            } else {
-            //                //fetch
-            //                self.needToShowNewMessage = true
-            //                viewModel.fetchNewMessages(self.viewModel.getNotificationMessage(),
-            //                                           Time: Int(updateTime.start.timeIntervalSince1970),
-            //                                           completion: complete)
-            //                self.checkEmptyMailbox()
-            //            }
-            //        }
+
+            let time = lastUpdatedStore.inboxLastForKey(.inbox)
+            if !time.isNew {
+                sharedMessageDataService.fetchNewMessagesForLocation(.inbox, notificationMessageID: nil, completion: { (task, res, error) in
+                    self.isFetching = false
+                    self.fetchComplete?(nil, nil)
+                })
+            } else {
+                self.isFetching = false
+                self.fetchComplete?(nil, nil)
+            }
         }
     }
 

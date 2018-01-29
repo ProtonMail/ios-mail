@@ -66,6 +66,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>Debug</string>
+	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
+	<true/>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>

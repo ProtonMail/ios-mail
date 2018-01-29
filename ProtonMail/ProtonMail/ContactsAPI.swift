@@ -11,6 +11,30 @@ import Foundation
 
 
 // MARK : Get messages part
+class ContactsRequest<T : ApiResponse> : ApiRequest<T> {
+
+    override public func path() -> String {
+        return ContactsAPI.Path +  AppConstants.DEBUG_OPTION
+    }
+    
+    override public func apiVersion() -> Int {
+        return ContactsAPI.V_ContactsRequest
+    }
+
+    override func method() -> APIService.HTTPMethod {
+        return .get
+    }
+}
+
+class ContactsResponse : ApiResponse {
+    var contacts : [[String : Any]]?
+    override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        self.contacts = response?["Contacts"] as? [[String : Any]]
+        return true
+    }
+}
+
+// MARK : Get messages part
 class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
     var page : Int = 0
     var max : Int = 100
@@ -39,8 +63,10 @@ class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
 
 
 class ContactEmailsResponse : ApiResponse {
+    var total : Int = -1
     var contacts : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        self.total = response?["Total"] as? Int ?? -1
         if let tempContacts = response?["ContactEmails"] as? [[String : Any]] {
             for contact in tempContacts {
                 if let contactID = contact["ContactID"] as? String, let name = contact["Name"] as? String {
@@ -52,7 +78,7 @@ class ContactEmailsResponse : ApiResponse {
                                 emails.append(contact)
                                 c["ContactEmails"] = emails
                             } else {
-                                c["ContactEmailsE"] = [contact]
+                                c["ContactEmails"] = [contact]
                             }
                             contacts[index] = c
                         }
@@ -112,7 +138,7 @@ final class ContactEmail : Package {
     let type : String
 
     // e email  //    "Email": "feng@protonmail.com",
-    // t type   //    "Type": "Email"
+    // t type   //    "Type": "Email" //This type is raw value it is vcard type!!!
     init(e : String, t: String) {
         self.email = e
         self.type = t
@@ -174,9 +200,13 @@ extension Array where Element: CardData {
 
 
 final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
-    let Cards : [CardData]
+    let cardsList : [[CardData]]
     init(cards: [CardData]) {
-        self.Cards = cards
+        self.cardsList = [cards]
+    }
+    
+    init(cards: [[CardData]]) {
+        self.cardsList = cards
     }
     
     override public func path() -> String {
@@ -193,19 +223,20 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> [String : Any]? {
         var contacts : [Any] = [Any]()
-        var cards_dict : [Any] = [Any] ()
+       
         
-        for c in self.Cards {
-            if let dict = c.toDictionary() {
-                cards_dict.append(dict)
+        for cards in self.cardsList {
+            var cards_dict : [Any] = [Any] ()
+            for c in cards {
+                if let dict = c.toDictionary() {
+                    cards_dict.append(dict)
+                }
             }
+            let contact : [String : Any] = [
+                "Cards": cards_dict
+            ]
+            contacts.append(contact)
         }
-        
-        let contact : [String : Any]  = [
-            "Cards": cards_dict
-        ]
-        
-        contacts.append(contact)
         
         return [
             "Contacts" : contacts,
@@ -217,8 +248,9 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
 }
 
 final class ContactAddResponse : ApiResponse {
-    var contact : [String : Any]?
-    var resError : NSError?
+    
+    var results : [Any?] = []
+
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
         PMLog.D( response.json(prettyPrinted: true) )
         if let responses = response["Responses"] as? [[String : Any]] {
@@ -229,9 +261,9 @@ final class ContactAddResponse : ApiResponse {
                     let errorDetails = response["ErrorDescription"] as? String
                     
                     if code != 1000 && code != 1001 {
-                        resError = NSError.protonMailError(code ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
+                        results.append(NSError.protonMailError(code ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil))
                     } else {
-                        contact = response["Contact"] as? [String : Any]
+                        results.append(response["Contact"])
                     }
                 }
             }

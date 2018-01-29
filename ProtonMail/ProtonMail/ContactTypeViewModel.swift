@@ -13,15 +13,15 @@ class ContactTypeViewModel {
     
     public init() { }
     
-    func getDefinedTypes() -> [String] {
+    func getDefinedTypes() -> [ContactFieldType] {
         fatalError("This method must be overridden")
     }
     
-    func getCustomType() -> String {
+    func getCustomType() -> ContactFieldType {
         fatalError("This method must be overridden")
     }
     
-    func getPickedType() -> String {
+    func getPickedType() -> ContactFieldType {
         fatalError("This method must be overridden")
     }
     
@@ -29,7 +29,7 @@ class ContactTypeViewModel {
         fatalError("This method must be overridden")
     }
     
-    func updateType(t : String) {
+    func updateType(t : ContactFieldType) {
         fatalError("This method must be overridden")
     }
 }

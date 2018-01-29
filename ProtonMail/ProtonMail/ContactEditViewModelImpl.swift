@@ -16,8 +16,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                                .encrypted_header,
                                                .cellphone,
                                                .home_address,
+                                               .url,
                                                .information,
-//                                               .custom_field,
                                                .notes,
                                                .delete]
 
@@ -27,8 +27,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     var addresses : [ContactEditAddress] = []
     var informations : [ContactEditInformation] = []
     var fields : [ContactEditField] = []
-    var notes : ContactEditNote = ContactEditNote(n_note: "")
+    var notes : ContactEditNote = ContactEditNote(note: "", isNew: false)
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
+    var urls : [ContactEditUrl] = []
     
     var origvCard2 : PMNIVCard?
     var origvCard3 : PMNIVCard?
@@ -37,6 +38,14 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         super.init()
         self.contact = c
         self.prepareContactData()
+        
+        if !paidUser() {
+            sections = [.display_name,
+                        .emails,
+                        .encrypted_header,
+                        .upgrade,
+                        .delete]
+        }
     }
     
     private func prepareContactData() {
@@ -51,8 +60,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         var order : Int = 1
                         for e in emails {
                             let types = e.getTypes()
-                            let type = types.count > 0 ? types.first! : ""
-                            let ce = ContactEditEmail(n_order: order, n_type:type, n_email:e.getValue())
+                            let typeRaw = types.count > 0 ? types.first! : ""
+                            let type = ContactFieldType.get(raw: typeRaw)
+                            let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -66,8 +76,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         var order : Int = 1
                         for e in emails {
                             let types = e.getTypes()
-                            let type = types.count > 0 ? types.first! : ""
-                            let ce = ContactEditEmail(n_order: order, n_type:type, n_email:e.getValue())
+                            let typeRaw = types.count > 0 ? types.first! : ""
+                            let type = ContactFieldType.get(raw: typeRaw)
+                            let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -85,8 +96,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                 var order : Int = 1
                                 for t in telephones {
                                     let types = t.getTypes()
-                                    let type = types.count > 0 ? types.first! : ""
-                                    let cp = ContactEditPhone(n_order: order, n_type:type, n_phone:t.getText())
+                                    let typeRaw = types.count > 0 ? types.first! : ""
+                                    let type = ContactFieldType.get(raw: typeRaw)
+                                    let cp = ContactEditPhone(order: order, type:type == .empty ? .phone : type, phone:t.getText(), isNew:false)
                                     self.cells.append(cp)
                                     order += 1
                                 }
@@ -96,32 +108,62 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                 var order : Int = 1
                                 for a in addresses {
                                     let types = a.getTypes()
-                                    let type = types.count > 0 ? types.first! : ""
-                                    let address = a.getPoBoxes().joined(separator: ",")
-                                    let ca = ContactEditAddress(n_order: order, n_type:type, n_street:address)
+                                    let typeRaw = types.count > 0 ? types.first! : ""
+                                    let type = ContactFieldType.get(raw: typeRaw)
+
+                                    let pobox = a.getPoBoxes().joined(separator: ",")
+                                    let street = a.getStreetAddress()
+                                    let extention = a.getExtendedAddress()
+                                    let locality = a.getLocality()
+                                    let region = a.getRegion()
+                                    let postal = a.getPostalCode()
+                                    let country = a.getCountry()
+                                    
+                                    let ca = ContactEditAddress(order: order, type: type == .empty ? .address : type,
+                                                                pobox: pobox, street: street, streetTwo: extention,
+                                                                locality: locality, region: region,
+                                                                postal: postal, country: country, isNew: false)
                                     self.addresses.append(ca)
                                     order += 1
                                 }
                                 
                             case "Organization":
                                 let org = vcard.getOrganization()
-                                let info = ContactEditInformation(type: .organization, value:org?.getValue() ?? "")
+                                let info = ContactEditInformation(type: .organization, value:org?.getValue() ?? "", isNew: false)
                                 self.informations.append(info)
                             case "Title":
                                 let title = vcard.getTitle()
-                                let info = ContactEditInformation(type: .title, value:title?.getTitle() ?? "")
+                                let info = ContactEditInformation(type: .title, value:title?.getTitle() ?? "", isNew: false)
                                 self.informations.append(info)
                             case "Nickname":
                                 let nick = vcard.getNickname()
-                                let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "")
+                                let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "", isNew: false)
                                 self.informations.append(info)
                             case "Birthday":
-                                //                            let nick = vcard.ge
-                                //                            let info = ContactEditInformation(type: .nickname, value:nick?.getNickname() ?? "")
-                                //                            origInformations.append(info)
-                                break
+                                let births = vcard.getBirthdays()
+                                for b in births {
+                                    let info = ContactEditInformation(type: .birthday, value:b.getText(), isNew: false)
+                                    self.informations.append(info)
+                                    break //only change first
+                                }
                             case "Anniversary":
                                 break
+                            case "Gender":
+                                if let gender = vcard.getGender() {
+                                    let info = ContactEditInformation(type: .gender, value: gender.getGender(), isNew: false)
+                                    self.informations.append(info)
+                                }
+                            case "Url":
+                                let urls = vcard.getUrls()
+                                var order : Int = 1
+                                for url in urls {
+                                    let typeRaw = url.getType()
+                                    //let typeRaw = types.count > 0 ? types.first! : ""
+                                    let type = ContactFieldType.get(raw: typeRaw)
+                                    let cu = ContactEditUrl(order: order, type:type == .empty ? .url : type, url:url.getValue(), isNew: false)
+                                    self.urls.append(cu)
+                                    order += 1
+                                }
                                 //case "Agent":
                                 //case "Birthday":
                                 //case "CalendarRequestUri":
@@ -188,14 +230,15 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         let customs = vcard.getCustoms()
                         var order : Int = 1
                         for t in customs {
-                            let type = t.getType()
-                            let cp = ContactEditField(n_order: order, n_type: type, n_field: t.getValue() )
+                            let typeRaw = t.getType()
+                            let type = ContactFieldType.get(raw: typeRaw)
+                            let cp = ContactEditField(order: order, type: type, field: t.getValue(), isNew:false)
                          self.fields.append(cp)
                             order += 1
                         }
                         
                         if let note = vcard.getNote() {
-                            let n = ContactEditNote(n_note: note.getNote())
+                            let n = ContactEditNote(note: note.getNote(), isNew: false)
                             n.isNew = false
                             self.notes = n
                         }
@@ -240,27 +283,27 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         return contact == nil || contact!.managedObjectContext == nil
     }
     
-    override func getOrigEmails() -> [ContactEditEmail] {
+    override func getEmails() -> [ContactEditEmail] {
         return emails
     }
     
-    override func getOrigCells() -> [ContactEditPhone] {
+    override func getCells() -> [ContactEditPhone] {
         return cells
     }
     
-    override func getOrigAddresses() -> [ContactEditAddress] {
+    override func getAddresses() -> [ContactEditAddress] {
         return addresses
     }
     
-    override func getOrigInformations() -> [ContactEditInformation] {
+    override func getInformations() -> [ContactEditInformation] {
         return informations
     }
     
-    override func getOrigFields() -> [ContactEditField] {
+    override func getFields() -> [ContactEditField] {
         return fields
     }
     
-    override func getOrigNotes() -> ContactEditNote {
+    override func getNotes() -> ContactEditNote {
         return notes
     }
     
@@ -268,29 +311,25 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         return profile
     }
     
-    func getNewType(types: [String], typeInterfaces: [ContactEditTypeInterface]) -> String {
-        var newType = types[0]
-        for type in types {
-            var found = false
-            for e in typeInterfaces {
-                if e.getCurrentType() == type {
-                    found = true
-                    break
-                }
-            }
-            
-            if !found {
-                newType = type
-                break
-            }
-        }
-        return newType
+    override func getUrls() -> [ContactEditUrl] {
+        return urls
     }
     
     //new functions
+    override func newUrl() -> ContactEditUrl {
+        let type = pick(newType: ContactFieldType.urlTypes, pickedTypes: urls)
+        let url = ContactEditUrl(order: urls.count, type: type, url:"", isNew: true)
+        urls.append(url)
+        return url
+    }
+    override func deleteUrl(at index: Int) {
+        if urls.count > index {
+            urls.remove(at: index)
+        }
+    }
     override func newEmail() -> ContactEditEmail {
-        let newType = getNewType(types: ContactEmailType.allValues, typeInterfaces: emails)
-        let email = ContactEditEmail(n_order: emails.count, n_type: newType, n_email:"")
+        let type = pick(newType: ContactFieldType.emailTypes, pickedTypes: emails)
+        let email = ContactEditEmail(order: emails.count, type: type, email:"", isNew: true)
         emails.append(email)
         return email
     }
@@ -302,8 +341,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     }
     
     override func newPhone() -> ContactEditPhone {
-        let newType = getNewType(types: ContactPhoneType.allValues, typeInterfaces: cells)
-        let cell = ContactEditPhone(n_order: emails.count, n_type: newType, n_phone:"")
+        let type = pick(newType: ContactFieldType.phoneTypes, pickedTypes: cells)
+        let cell = ContactEditPhone(order: emails.count, type: type, phone:"", isNew:true)
         cells.append(cell)
         return cell
     }
@@ -315,8 +354,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     }
     
     override func newAddress() -> ContactEditAddress {
-        let newType = getNewType(types: ContactAddressType.allValues, typeInterfaces: addresses)
-        let addr = ContactEditAddress(n_order: emails.count, n_type: newType, n_street:"")
+        let type = pick(newType: ContactFieldType.addrTypes, pickedTypes: addresses)
+        let addr = ContactEditAddress(order: emails.count, type: type)
         addresses.append(addr)
         return addr
     }
@@ -328,7 +367,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     }
 
     override func newInformation(type: InformationType) -> ContactEditInformation {
-        let info = ContactEditInformation(type: type, value: "")
+        let info = ContactEditInformation(type: type, value: "", isNew: true)
         self.informations.append(info)
         return info
     }
@@ -340,8 +379,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     }
     
     override func newField() -> ContactEditField {
-        let newType = getNewType(types: ContactFieldType.allValues, typeInterfaces: fields)
-        let field = ContactEditField(n_order: emails.count, n_type: newType, n_field:"")
+        let type = pick(newType: ContactFieldType.fieldTypes, pickedTypes: fields)
+        let field = ContactEditField(order: emails.count, type: type, field:"", isNew:true)
         fields.append(field)
         return field
     }
@@ -356,7 +395,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         if let c = contact, c.managedObjectContext != nil {
             //update
             var a_emails: [ContactEmail] = []
-            for e in getOrigEmails() {
+            for e in getEmails() {
                 a_emails.append(e.toContactEmail())
             }
             if origvCard2 == nil {
@@ -370,21 +409,27 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             var uid : PMNIUid? = nil
             var cards : [CardData] = []
             if let vcard2 = origvCard2 {
-                if let fn = PMNIFormattedName.createInstance(profile.newDisplayName) {
-                    vcard2.setFormattedName(fn)
-                }
                 
+                var defaultName = NSLocalizedString("Unknown", comment: "title, default display name")
                 //TODO::need to check the old email's group id
                 var i : Int = 1;
                 var newEmails:[PMNIEmail] = []
                 for email in a_emails {
                     let group = "Item\(i)"
-                    let m = PMNIEmail.createInstance(email.type, email: email.email, group: group)!
-                    newEmails.append(m)
-                    i += 1
+                    let em = email.email
+                    if !em.isEmpty {
+                        defaultName = em
+                        let m = PMNIEmail.createInstance(email.type, email: email.email, group: group)!
+                        newEmails.append(m)
+                        i += 1
+                    }
                 }
                 //replace emails
                 vcard2.setEmails(newEmails)
+                
+                if let fn = PMNIFormattedName.createInstance(profile.newDisplayName.isEmpty ? defaultName : profile.newDisplayName) {
+                    vcard2.setFormattedName(fn)
+                }
                 
                 //get uid first if null create a new one
                 uid = vcard2.getUid()
@@ -414,7 +459,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             if let vcard3 = origvCard3 {
                 var newCells:[PMNITelephone] = []
                 for cell in cells {
-                    let c = PMNITelephone.createInstance(cell.newType, number: cell.newPhone)!
+                    let c = PMNITelephone.createInstance(cell.newType.vcardType, number: cell.newPhone)!
                     newCells.append(c)
                     isCard3Set = true
                 }
@@ -427,12 +472,13 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 var newAddrs:[PMNIAddress] = []
                 for addr in addresses {
-                    let a = PMNIAddress.createInstance(addr.newType,
+                    let a = PMNIAddress.createInstance(addr.newType.vcardType,
                                                        street: addr.newStreet,
-                                                       locality: "",
-                                                       region: "",
-                                                       zip: "",
-                                                       country: "",
+                                                       extendstreet: addr.newStreetTwo,
+                                                       locality: addr.newLocality,
+                                                       region: addr.newRegion,
+                                                       zip: addr.newPostal,
+                                                       country: addr.newCountry,
                                                        pobox: "")!
                     newAddrs.append(a)
                     isCard3Set = true
@@ -462,12 +508,34 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         vcard3.setTitle(t)
                         isCard3Set = true
                     case .birthday:
-                        break
+                        let b = PMNIBirthday.createInstance("", date: info.newValue)!
+                        vcard3.setBirthdays([b])
+                        isCard3Set = true
                     case .anniversary:
+//                        let a = PMNIAnniversary.createInstance("", date: info.newValue)!
+//                        vcard3.seta
+//                        isCard3Set = true
                         break
+                    case .gender:
+                        let g = PMNIGender.createInstance(info.newValue, text: "")!
+                        vcard3.setGender(g)
+                        isCard3Set = true
                     }
                 }
                 
+                var newUrls:[PMNIUrl] = []
+                for url in urls {
+                    if let u = PMNIUrl.createInstance(url.newType.vcardType, value: url.newUrl) {
+                        newUrls.append(u)
+                        isCard3Set = true
+                    }
+                }
+                //replace all urls
+                if newUrls.count > 0 {
+                    vcard3.setUrls(newUrls)
+                } else {
+                    vcard3.clearUrls()
+                }
                 
                 if notes.newNote != "" {
                     let n = PMNINote.createInstance("", note: notes.newNote)!
@@ -477,7 +545,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 
                 for field in fields{
-                    let f = PMNIPMCustom.createInstance(field.newType, value: field.newField)
+                    let f = PMNIPMCustom.createInstance(field.newType.vcardType, value: field.newField)
                     vcard3.add(f)
                     isCard3Set = true
                 }
@@ -491,7 +559,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 let vcard3Str = PMNIEzvcard.write(vcard3)
                 PMLog.D(vcard3Str);
-                let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str)
+                let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "")
                 PMLog.D(encrypted_vcard3);
                 let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
                                                                plainText: vcard3Str,
@@ -505,7 +573,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             
             sharedContactDataService.update(contactID: c.contactID,
                                             cards: cards,
-                                            completion: { (contact : Contact?, error : NSError?) in
+                                            completion: { (contacts : [Contact]?, error : NSError?) in
                                                 if error == nil {
                                                     complete(nil)
                                                 } else {

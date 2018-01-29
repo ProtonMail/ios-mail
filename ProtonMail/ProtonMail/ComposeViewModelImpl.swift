@@ -18,14 +18,12 @@ final class ComposeViewModelImpl : ComposeViewModel {
         self.setSubject(subject)
         self.setBody(body)
         self.messageAction = action
-        
+
         self.collectDraft(subject,
                           body: body,
                           expir: 0,
                           pwd: "",
                           pwdHit: "")
-        
-        
         self.updateDraft()
         
         for f in files {
@@ -116,9 +114,9 @@ final class ComposeViewModelImpl : ComposeViewModel {
         return sharedUserDataService.userAddresses
     }
     
-    override func getDefaultAddress() -> Address? {
+    override func getDefaultSendAddress() -> Address? {
         if self.message == nil {
-            if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+            if let addr = sharedUserDataService.userAddresses.defaultSendAddress() {
                 return addr
             }
         }
@@ -240,7 +238,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
-
         self.setSubject(title)
         
         if message == nil || message?.managedObjectContext == nil {
@@ -254,8 +251,8 @@ final class ComposeViewModelImpl : ComposeViewModel {
                                                              expirationTimeInterval: expir,
                                                              body: body,
                                                              attachments: nil,
+                                                             mailbox_pwd: sharedUserDataService.mailboxPassword!, //better to check nil later
                                                              inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
-            
             self.message?.password = pwd
             self.message?.isRead = true
             self.message?.passwordHint = pwdHit
@@ -272,19 +269,14 @@ final class ComposeViewModelImpl : ComposeViewModel {
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
             self.message?.setLabelLocation(.draft)
-            MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil)
+            MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil, mailbox_pwd: sharedUserDataService.mailboxPassword!)
             
             if let context = message!.managedObjectContext {
-                context.perform {
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    }
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
                 }
             }
         }
-        
-        PMLog.D(any: message!);
-        
     }
     
     override func updateDraft() {
@@ -313,7 +305,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
     
     override func getHtmlBody() -> String {
         //sharedUserDataService.signature
-        let signature = self.getDefaultAddress()?.signature ?? "\(sharedUserDataService.signature)"
+        let signature = self.getDefaultSendAddress()?.signature ?? "\(sharedUserDataService.signature)"
         
         let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
         

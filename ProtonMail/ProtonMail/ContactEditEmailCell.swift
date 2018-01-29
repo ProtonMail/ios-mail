@@ -19,23 +19,35 @@ final class ContactEditEmailCell: UITableViewCell {
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
+    @IBOutlet weak var sepratorView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
+        self.valueField.placeholder = NSLocalizedString("Email address", comment: "contact placeholder")
     }
     
-    func configCell(obj : ContactEditEmail, callback : ContactEditCellDelegate?) {
+    func configCell(obj : ContactEditEmail, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.email = obj
         
-        typeLabel.text = self.email.newType
+        typeLabel.text = self.email.newType.title
         valueField.text = self.email.newEmail
-        
         self.delegate = callback
+        
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
+        }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {
         delegate?.pick(typeInterface: email, sender: self)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        sepratorView.gradient()
     }
 }
 

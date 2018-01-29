@@ -15,6 +15,17 @@ class ContactsViewModel : ViewModelTimer {
     
     override init() { }
     
+    func paidUser() -> Bool {
+        if let role = sharedUserDataService.userInfo?.role, role > 0 {
+            return true
+        }
+        return false
+    }
+    
+    func set(searching isSearching: Bool) {
+        fatalError("This method must be overridden")
+    }
+    
     func setupFetchedResults(delaget : NSFetchedResultsControllerDelegate?) {
         fatalError("This method must be overridden")
     }
@@ -40,6 +51,10 @@ class ContactsViewModel : ViewModelTimer {
         fatalError("This method must be overridden")
     }
     
+    func isExsit(uuid: String) -> Bool {
+        fatalError("This method must be overridden")
+    }
+    
     /**
      section title index  ::Enable it later
      **/
@@ -47,8 +62,17 @@ class ContactsViewModel : ViewModelTimer {
         fatalError("This method must be overridden")
     }
     
+    func sectionForSectionIndexTitle(title: String, atIndex: Int) -> Int {
+        fatalError("This method must be overridden")
+    }
+    
     //
     func delete(contactID: String, complete : @escaping ContactDeleteComplete) {
+        fatalError("This method must be overridden")
+    }
+    
+    
+    func importContacts() {
         fatalError("This method must be overridden")
     }
     

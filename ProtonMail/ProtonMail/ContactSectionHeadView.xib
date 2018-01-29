@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,10 +19,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="365" height="65"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Encrypted Contact Details" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uor-VI-44p">
-                            <rect key="frame" x="0.0" y="0.0" width="365" height="65"/>
-                            <color key="backgroundColor" red="0.57647058819999997" green="0.59215686270000001" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <rect key="frame" x="16" y="0.0" width="349" height="65"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <nil key="textColor"/>
+                            <color key="textColor" red="0.52391308550000004" green="0.53953999279999998" blue="0.78824073080000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_lock-pgpmime" translatesAutoresizingMaskIntoConstraints="NO" id="y7u-Sb-7HT">
@@ -33,9 +33,10 @@
                             </constraints>
                         </imageView>
                     </subviews>
+                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="uor-VI-44p" secondAttribute="bottom" id="4Ms-Zl-cCm"/>
-                        <constraint firstItem="uor-VI-44p" firstAttribute="leading" secondItem="yaY-1h-iLG" secondAttribute="leading" id="9hq-Tq-bCR"/>
+                        <constraint firstItem="uor-VI-44p" firstAttribute="leading" secondItem="yaY-1h-iLG" secondAttribute="leading" constant="16" id="9hq-Tq-bCR"/>
                         <constraint firstAttribute="trailing" secondItem="y7u-Sb-7HT" secondAttribute="trailing" constant="16" id="DHa-EO-qaX"/>
                         <constraint firstAttribute="trailing" secondItem="uor-VI-44p" secondAttribute="trailing" id="TQg-2N-T1Y"/>
                         <constraint firstItem="uor-VI-44p" firstAttribute="top" secondItem="yaY-1h-iLG" secondAttribute="top" id="cON-F5-BZx"/>

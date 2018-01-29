@@ -88,7 +88,7 @@ extension String {
             return [];
         }
         
-        print(self)
+        PMLog.D(self)
         do {
             if let data = self.data(using: String.Encoding.utf8) {
                 let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [[String:String]]
@@ -488,6 +488,20 @@ extension String {
             PMLog.D("\(ex)")
         }
         return ["":""]
+    }
+    
+    func parseObjectAny () -> [String:Any]? {
+        if self.isEmpty {
+            return nil
+        }
+        do {
+            let data : Data! = self.data(using: String.Encoding.utf8)
+            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:Any]
+            return decoded
+        } catch let ex as NSError {
+            PMLog.D("\(ex)")
+        }
+        return nil
     }
     
     func stringByAppendingPathComponent(_ pathComponent: String) -> String {

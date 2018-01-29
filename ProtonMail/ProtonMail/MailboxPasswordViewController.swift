@@ -131,7 +131,7 @@ class MailboxPasswordViewController: UIViewController {
         OnePasswordExtension.shared().findLogin(forURLString: "https://protonmail.com", for: self, sender: sender, completion: { (loginDictionary, error) -> Void in
             if loginDictionary == nil {
                 if (error as NSError?)?.code != Int(AppExtensionErrorCodeCancelledByUser) {
-                    print("Error invoking Password App Extension for find login: \(String(describing: error))")
+                    PMLog.D("Error invoking Password App Extension for find login: \(String(describing: error))")
                 }
                 return
             }

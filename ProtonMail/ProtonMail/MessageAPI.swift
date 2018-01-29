@@ -382,7 +382,6 @@ final class MessagePackage : Package {
     :returns: self
     */
     init(address:String, type : Int, body :String!, attPackets:[AttachmentKeyPackage]=[AttachmentKeyPackage](), token : String! = "", encToken : String! = "", passwordHint : String! = "") {
-        
         self.address = address
         self.type = type
         self.body = body

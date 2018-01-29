@@ -45,13 +45,14 @@ public class ApiResponse {
         return code != 1000 && code != 1001
     }
     
-    func ParseHttpError (_ error: NSError) {
+    func ParseHttpError (_ error: NSError) {//TODO::need refactor.
         self.code = 404
         if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
             self.code = detail.statusCode
         }
         else {
             internetCode = error.code
+            self.code = internetCode
         }
         self.errorMessage = error.localizedDescription
         self.errorDetails = error.debugDescription

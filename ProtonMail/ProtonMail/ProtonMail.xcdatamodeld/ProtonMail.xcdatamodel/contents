@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="17B48" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
-    <entity name="Attachment" representedClassName="ProtonMail.Attachment" syncable="YES">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C205" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ID"/>
@@ -41,7 +41,7 @@
             <entry key="identityAttribute" value="attachmentID"/>
         </userInfo>
     </entity>
-    <entity name="Contact" representedClassName="ProtonMail.Contact" syncable="YES">
+    <entity name="Contact" representedClassName=".Contact" syncable="YES">
         <attribute name="cardData" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Cards"/>
@@ -54,6 +54,7 @@
             </userInfo>
         </attribute>
         <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isCorrected" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isDownloaded" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="modifyTIme" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" indexed="YES" syncable="YES">
@@ -61,6 +62,7 @@
                 <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
         </attribute>
+        <attribute name="needsRebuild" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Size"/>
@@ -80,8 +82,8 @@
             <entry key="identityAttribute" value="contactID"/>
         </userInfo>
     </entity>
-    <entity name="Conversation" syncable="YES"/>
-    <entity name="Email" representedClassName="ProtonMail.Email" syncable="YES">
+    <entity name="Conversation" representedClassName="." syncable="YES"/>
+    <entity name="Email" representedClassName=".Email" syncable="YES">
         <attribute name="contactID" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ContactID"/>
@@ -119,7 +121,7 @@
             <entry key="identityAttribute" value="emailID"/>
         </userInfo>
     </entity>
-    <entity name="Label" representedClassName="ProtonMail.Label" syncable="YES">
+    <entity name="Label" representedClassName=".Label" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Color"/>
@@ -375,7 +377,7 @@
     </entity>
     <elements>
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="195"/>
-        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="180"/>
+        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="210"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
         <element name="Email" positionX="1539" positionY="-3582" width="128" height="150"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="165"/>

@@ -17,6 +17,7 @@ final class ContactEditInformationCell: UITableViewCell {
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
     
+    @IBOutlet weak var sepratorView: UIView!
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
@@ -24,14 +25,25 @@ final class ContactEditInformationCell: UITableViewCell {
         self.typeButton.isEnabled = false
     }
     
-    func configCell(obj : ContactEditInformation, callback : ContactEditCellDelegate?) {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        sepratorView.gradient()
+    }
+    
+    func configCell(obj : ContactEditInformation, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.information = obj
         
-        typeLabel.text = self.information.infoType.type
-        valueField.placeholder = self.information.infoType.type
+        typeLabel.text = self.information.infoType.title
+        valueField.placeholder = self.information.infoType.title
         valueField.text = self.information.newValue
         
         self.delegate = callback
+        
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
+        }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {

@@ -144,7 +144,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     override func fetchNewMessages(_ notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
-        sharedMessageDataService.fetchNewMessagesForLabels(self.getLabelID(), Time: Time, notificationMessageID: notificationMessageID, completion: completion)
+        sharedMessageDataService.fetchNewMessagesForLabels(self.getLabelID(), notificationMessageID: notificationMessageID, completion: completion)
     }
     
     override func getNotificationMessage() -> String? {

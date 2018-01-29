@@ -42,20 +42,21 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
         //self.displayNameField.delegate = self
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) { //TODO::
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
         
         let type = viewModel.getPickedType()
         let types = viewModel.getDefinedTypes()
-        if type != "", let index = types.index(of: type) {
+        
+        if let index = types.index(where: { ( left ) -> Bool in return left.rawString == type.rawString }) {
             let indexPath = IndexPath(row: index, section: 0)
             self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
             tableView(self.tableView, didSelectRowAt: indexPath);
         } else {
             let custom = viewModel.getCustomType()
-            if custom != "" {
-                let indexPath = IndexPath(row: 1, section: 1)
+            if !custom.isEmpty {
+                let indexPath = IndexPath(row: 0, section: 1)
                 self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
                 tableView(self.tableView, didSelectRowAt: indexPath);
             }
@@ -80,19 +81,19 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
     @IBAction func doneAction(_ sender: UIBarButtonItem) {
         dismissKeyboard()
         if let index = selected {
-            var type = ""
+            var type : ContactFieldType = .empty
             if index.section == 0 {
                 let types = viewModel.getDefinedTypes()
                 type = types[index.row]
             } else if index.section == 1 {
                 if let cell = self.tableView.cellForRow(at: index) {
                     if let addCell = cell as? ContactTypeAddCustomCell {
-                        type = addCell.getValue()
+                        type = ContactFieldType.get(raw: addCell.getValue())
                     } else {
-                        type = cell.textLabel?.text ?? NSLocalizedString("Custom", comment: "custom label type default")
+                        type = ContactFieldType.get(raw: cell.textLabel?.text ?? NSLocalizedString("Custom", comment: "custom label type default") )
                     }
                 } else {
-                    type = NSLocalizedString("Custom", comment: "custom label type default")
+                    type = ContactFieldType.get(raw: NSLocalizedString("Custom", comment: "custom label type default") )
                 }
             }
             viewModel.updateType(t: type)
@@ -150,7 +151,6 @@ extension ContactTypeViewController: UITextFieldDelegate {
 extension ContactTypeViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
         return 2
     }
     
@@ -159,35 +159,34 @@ extension ContactTypeViewController: UITableViewDataSource {
             let l = viewModel.getDefinedTypes()
             return l.count
         }
-        
         let custom = viewModel.getCustomType()
-        if custom != "" {
-            return 2
+        if !custom.isEmpty {
+            return 1
         }
-        return 1
+        return 0
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let section = indexPath.section
         let row = indexPath.row
         if section == 0 {
             let outCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeCell", for: indexPath)
             outCell.selectionStyle = .default
             let l = viewModel.getDefinedTypes()
-            outCell.textLabel?.text = l[indexPath.row]
+            outCell.textLabel?.text = l[indexPath.row].title
             return outCell
         } else {
+//            if row == 0 {
+//                let addCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeAddCustomCell", for: indexPath) as! ContactTypeAddCustomCell
+//                addCell.configCell(v: NSLocalizedString("Add Custom Label", comment: "action"))
+//                return addCell
+//            } else if row == 1 {
             if row == 0 {
-                let addCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeAddCustomCell", for: indexPath) as! ContactTypeAddCustomCell
-                addCell.configCell(v: NSLocalizedString("Add Custom Label", comment: "action"))
-                return addCell
-            } else if row == 1 {
                 let outCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeCell", for: indexPath)
                 outCell.selectionStyle = .default
                 let text = viewModel.getCustomType()
-                outCell.textLabel?.text = text
+                outCell.textLabel?.text = text.title
                 return outCell
             }
         }

@@ -439,9 +439,18 @@ extension Array where Element : Address {
         return out_array;
     }
     
-    func getDefaultAddress () -> Address? {
+    func defaultAddress() -> Address? {
         for addr in self {
             if addr.status == 1 && addr.receive == 1 {
+                return addr;
+            }
+        }
+        return nil;
+    }
+    
+    func defaultSendAddress() -> Address? {
+        for addr in self {
+            if addr.status == 1 && addr.receive == 1 && addr.send == 1{
                 return addr;
             }
         }

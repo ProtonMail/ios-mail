@@ -54,6 +54,22 @@ extension Contact {
         })
     }
     
+    func fixName(force: Bool = false) -> Bool {
+        if !self.isCorrected || force {
+            let name = self.name
+            if !name.isEmpty {
+                self.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+            } else {
+                if let emails = self.getEmailsArray(), let email = emails.first {
+                    self.name = email.email.trimmingCharacters(in: .whitespacesAndNewlines)
+                }
+            }
+            self.isCorrected = true
+            return true
+        }
+        return false
+    }
+    
     func getDisplayEmails() -> String {
         if let emails = getEmailsArray()?.order() {
             let arrayMap: Array = emails.map(){ $0.email }
@@ -72,12 +88,12 @@ extension Contact {
     
     func log() {
         PMLog.D("ContactID: \(self.contactID)")
-        print("Name: \(self.name)")
-        print("Cards: \(self.cardData)")
-        print("Size: \(self.size)")
-        print("UUID: \(self.uuid)")
-        print("CreateTime: \(String(describing: self.createTime))")
-        print("ModifyTime: \(String(describing: self.modifyTIme))")
+        PMLog.D("Name: \(self.name)")
+        PMLog.D("Cards: \(self.cardData)")
+        PMLog.D("Size: \(self.size)")
+        PMLog.D("UUID: \(self.uuid)")
+        PMLog.D("CreateTime: \(String(describing: self.createTime))")
+        PMLog.D("ModifyTime: \(String(describing: self.modifyTIme))")
     }
     
     func getCardData() -> [CardData] {

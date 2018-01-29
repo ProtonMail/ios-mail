@@ -16,14 +16,46 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - Firebase/Core (4.4.0):
+    - FirebaseAnalytics (= 4.0.4)
+    - FirebaseCore (= 4.0.9)
+  - Firebase/Messaging (4.4.0):
+    - Firebase/Core
+    - FirebaseMessaging (= 2.0.5)
+  - FirebaseAnalytics (4.0.4):
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - nanopb (~> 0.3)
+  - FirebaseCore (4.0.9):
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - nanopb (~> 0.3)
+  - FirebaseInstanceID (2.0.5)
+  - FirebaseMessaging (2.0.5):
+    - FirebaseAnalytics (~> 4.0)
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - Protobuf (~> 3.1)
+  - GoogleToolboxForMac/Defines (2.1.3)
+  - GoogleToolboxForMac/Logger (2.1.3):
+    - GoogleToolboxForMac/Defines (= 2.1.3)
+  - GoogleToolboxForMac/NSData+zlib (2.1.3):
+    - GoogleToolboxForMac/Defines (= 2.1.3)
   - Groot/ObjC (2.0)
   - Masonry (1.1.0)
   - MBProgressHUD (0.9.2)
   - MCSwipeTableViewCell (2.1.4)
+  - nanopb (0.3.8):
+    - nanopb/decode (= 0.3.8)
+    - nanopb/encode (= 0.3.8)
+  - nanopb/decode (0.3.8)
+  - nanopb/encode (0.3.8)
   - NSDate+Helper (1.0.4)
   - OpenPGP (1.0.5):
     - OpenSSL
   - OpenSSL (1.0.210)
+  - Protobuf (3.4.0)
   - RHAddressBook (1.1.1)
   - SWRevealViewController (2.3.0)
   - UICKeyChainStore (2.1.0)
@@ -36,6 +68,8 @@ PODS:
 DEPENDENCIES:
   - AFNetworkActivityLogger (from `https://github.com/AFNetworking/AFNetworkActivityLogger.git`, branch `3_0_0`)
   - AFNetworking (= 3.1.0)
+  - Firebase/Core
+  - Firebase/Messaging
   - Groot/ObjC (= 2.0)
   - Masonry (= 1.1.0)
   - MBProgressHUD (= 0.9.2)
@@ -71,19 +105,27 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AFNetworkActivityLogger: e77f68d014becb33c4306a23f56a64906ff72670
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  Firebase: 3e92884a63e8f76d107c43a67d2ab9071e1eda10
+  FirebaseAnalytics: 722b53c7b32bfc7806b06e0093a2f5180d4f2c5a
+  FirebaseCore: ebe73f64302705e693b1de9919a76edbdd17a19d
+  FirebaseInstanceID: f2b688c66b972f30d7fa9f5f9f91455454a03b47
+  FirebaseMessaging: e25dc87045e76dfe9e920a5741dc3fe7e3ef2268
+  GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   Groot: 7543f84980bfb1613750818029d9b927d4378211
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
+  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   NSDate+Helper: 78f517ac1c67914096433466fa7d20b812b9d86c
   OpenPGP: 1ebfe5276a372469ef6c6bf0a9e08b861984d1d6
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
+  Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UICKeyChainStore: f1cbd42216a113f0165de1e733e62905b8823432
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: b61bdcb41a0b5609d523efadc680f0d6b022c3dd
 
-PODFILE CHECKSUM: 8e20d3e4589b5d75e0e12d33b7d2e7cc6f0d9553
+PODFILE CHECKSUM: 7ed55e28827802be8e6a6df0603e0cef45c1a697
 
 COCOAPODS: 1.3.1

@@ -1,3 +1,4 @@
+
 //
 //  OpenPGPExtension.swift
 //  ProtonMail
@@ -196,19 +197,19 @@ extension String {
         return out_decrypted;
     }
     
-    func encryptMessage(_ address_id: String) throws -> String? {
+    func encryptMessage(_ address_id: String, mailbox_pwd: String) throws -> String? {
         var out_encrypted : String?
         try ObjC.catchException {
-            out_encrypted = sharedOpenPGP.encryptMessage(address_id, plainText: self)
+            out_encrypted = sharedOpenPGP.encryptMessage(address_id, plainText: self, passphras: mailbox_pwd)
         }
         
         return out_encrypted
     }
     
-    func encryptMessageWithSingleKey(_ publicKey: String) throws -> String? {
+    func encryptMessageWithSingleKey(_ publicKey: String, privateKey: String, mailbox_pwd: String) throws -> String? {
         var out_encrypted : String?
         try ObjC.catchException {
-            out_encrypted = sharedOpenPGP.encryptMessageSingleKey(publicKey, plainText: self)
+            out_encrypted = sharedOpenPGP.encryptMessageSingleKey(publicKey, plainText: self, privateKey: privateKey, passphras: mailbox_pwd)
         }
         
         return out_encrypted
@@ -235,6 +236,7 @@ extension String {
 extension Data {
     func decryptAttachment(_ keyPackage:Data!, passphrase: String) throws -> Data? {
         var dec_out_att : Data?
+        
         try ObjC.catchException {
             dec_out_att = sharedOpenPGP.decryptAttachment(keyPackage, data: self, passphras: passphrase)
         }
@@ -251,19 +253,19 @@ extension Data {
         return dec_out_att
     }
     
-    func encryptAttachment(_ address_id: String, fileName:String) throws -> PMNEncryptPackage? {
+    func encryptAttachment(_ address_id: String, fileName:String, mailbox_pwd: String) throws -> PMNEncryptPackage? {
         var out_enc_data : PMNEncryptPackage?
         try ObjC.catchException {
-            out_enc_data = sharedOpenPGP.encryptAttachment(address_id, unencryptData: self, fileName: fileName)
+            out_enc_data = sharedOpenPGP.encryptAttachment(address_id, unencryptData: self, fileName: fileName, passphras: mailbox_pwd)
         }
         
         return out_enc_data
     }
     
-    func encryptAttachmentWithSingleKey(_ publicKey: String, fileName:String) throws -> PMNEncryptPackage? {
+    func encryptAttachmentWithSingleKey(_ publicKey: String, fileName:String, privateKey: String, mailbox_pwd: String) throws -> PMNEncryptPackage? {
         var out_enc_data : PMNEncryptPackage?
         try ObjC.catchException {
-            out_enc_data = sharedOpenPGP.encryptAttachmentSingleKey(publicKey, unencryptData: self, fileName: fileName)
+            out_enc_data = sharedOpenPGP.encryptAttachmentSingleKey(publicKey, unencryptData: self, fileName: fileName, privateKey: privateKey, passphras: mailbox_pwd)
         }
         
         return out_enc_data
