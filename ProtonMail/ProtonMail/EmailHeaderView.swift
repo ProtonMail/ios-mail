@@ -1125,20 +1125,30 @@ class EmailHeaderView: UIView {
             UIView.transition(with: self.emailFrom, duration: 0.3, options: kAnimationOption, animations: { () -> Void in
                 self.emailFrom.attributedText = self.fromSinglelineAttr
                 self.emailTo.attributedText = self.toSinglelineAttr
-                self.emailFromTable.alpha = 0.0
+                self.emailFromTable.alpha = 1.0
                 self.emailTo.alpha = self.showTo ? 1.0 : 0.0
                 self.emailToTable.alpha = 0.0;
                 self.emailCc.alpha = 0.0;
                 self.emailCcTable.alpha = 0.0
                 }, completion: nil)
             
+//            emailFromTable.mas_updateConstraints { (make) -> Void in
+//                make?.removeExisting = true
+//                let _ = make?.left.equalTo()(36)
+//                let _ = make?.right.equalTo()(self.emailHeaderView)
+//                let _ = make?.top.equalTo()(self.emailFrom)
+//                let _ = make?.height.equalTo()(self.emailFrom)
+//            }
+//
+            let efh = emailFromTable.getContentSize().height;
             emailFromTable.mas_updateConstraints { (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.left.equalTo()(36)
                 let _ = make?.right.equalTo()(self.emailHeaderView)
-                let _ = make?.top.equalTo()(self.emailFrom)
-                let _ = make?.height.equalTo()(self.emailFrom)
+                let _ = make?.top.equalTo()(self.emailTitle.mas_bottom)?.with().offset()(self.kEmailRecipientsViewMarginTop)
+                let _ = make?.height.equalTo()(efh)
             }
+            //
             
             let toOffset = self.showTo ? kEmailRecipientsViewMarginTop : 0
             let toHeight = self.showTo ? 16 : 0
@@ -1181,15 +1191,15 @@ class EmailHeaderView: UIView {
                 let _ = make?.top.equalTo()(self.emailShortTime)
                 let _ = make?.width.equalTo()(self.emailDetailButton)
             })
-            
-            self.emailFrom.sizeToFit();
-            emailFrom.mas_updateConstraints { (make) -> Void in
-                make?.removeExisting = true
-                let _ = make?.left.equalTo()(self.emailHeaderView)
-                let _ = make?.width.equalTo()(self.emailFrom.frame.size.width)
-                let _ = make?.height.equalTo()(self.emailFrom.frame.size.height)
-                let _ = make?.top.equalTo()(self.emailTitle.mas_bottom)?.with().offset()(self.kEmailRecipientsViewMarginTop)
-            }
+
+//            self.emailFrom.sizeToFit();
+//            emailFrom.mas_updateConstraints { (make) -> Void in
+//                make?.removeExisting = true
+//                let _ = make?.left.equalTo()(self.emailHeaderView)
+//                let _ = make?.width.equalTo()(self.emailFrom.frame.size.width)
+//                let _ = make?.height.equalTo()(self.emailFrom.frame.size.height)
+//                let _ = make?.top.equalTo()(self.emailTitle.mas_bottom)?.with().offset()(self.kEmailRecipientsViewMarginTop)
+//            }
             
             self.emailTo.sizeToFit();
             emailTo.mas_updateConstraints { (make) -> Void in
@@ -1197,7 +1207,8 @@ class EmailHeaderView: UIView {
                 let _ = make?.left.equalTo()(self.emailHeaderView)
                 let _ = make?.width.equalTo()(self.emailTo.frame.size.width)
                 let _ = make?.height.equalTo()(self.emailTo.frame.size.height)
-                let _ = make?.top.equalTo()(self.emailFrom.mas_bottom)?.with().offset()(toOffset)
+                //let _ = make?.top.equalTo()(self.emailFrom.mas_bottom)?.with().offset()(toOffset)
+                let _ = make?.top.equalTo()(self.emailFromTable.mas_bottom)?.with().offset()(toOffset)
             }
             
             self.emailShortTime.sizeToFit()
