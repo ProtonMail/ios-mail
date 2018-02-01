@@ -351,11 +351,11 @@ final class ContactEditAddress: ContactEditTypeInterface {
     }
     
     func isEmpty() -> Bool {
-        if self.newStreet.isEmpty ||
-            self.newStreetTwo.isEmpty ||
-            self.newLocality.isEmpty ||
-            self.newRegion.isEmpty ||
-            self.newPostal.isEmpty ||
+        if self.newStreet.isEmpty &&
+            self.newStreetTwo.isEmpty &&
+            self.newLocality.isEmpty &&
+            self.newRegion.isEmpty &&
+            self.newPostal.isEmpty &&
             self.newCountry.isEmpty {
             return true
         }

@@ -46,7 +46,6 @@ final class ContactEditAddressCell: UITableViewCell {
         self.stateField.placeholder = NSLocalizedString("State", comment: "contact placeholder")
         self.zipField.placeholder = NSLocalizedString("ZIP", comment: "contact placeholder")
         self.countyField.placeholder = NSLocalizedString("Country", comment: "contact placeholder")
-        
     }
     
     
@@ -106,10 +105,8 @@ extension ContactEditAddressCell: UITextFieldDelegate {
         }
         
         if textField == street_two {
-            addr.newStreet = cityField.text!
+            addr.newStreetTwo = street_two.text!
         }
-        
-        self.street_two.delegate = self
     
         if textField == stateField {
             addr.newRegion = stateField.text!
