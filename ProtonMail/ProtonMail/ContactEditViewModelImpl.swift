@@ -497,6 +497,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 vcard3.clearOrganizations()
                 vcard3.clearNickname()
                 vcard3.clearTitle()
+                vcard3.clearBirthdays()
+                vcard3.clearGender()
+                
                 for info in informations {
                     if !info.isEmpty() {
                         switch info.infoType {
