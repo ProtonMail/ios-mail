@@ -16,11 +16,14 @@ protocol ContactEditTypeInterface {
     func updateType(type: ContactFieldType) -> Void
     func types() -> [ContactFieldType]
     func needsUpdate() -> Bool
+    
+    func isEmpty() -> Bool
 }
 
 protocol ContactEditNoTypeInterface {
     func getSectionType() -> ContactEditSectionType
     func needsUpdate() -> Bool
+    func isEmpty() -> Bool
 }
 
 final class ContactEditProfile {
@@ -113,6 +116,10 @@ final class ContactEditEmail: ContactEditTypeInterface {
         }
         return true
     }
+    
+    func isEmpty() -> Bool {
+        return newEmail.isEmpty
+    }
 }
 
 final class ContactEditPhone: ContactEditTypeInterface {
@@ -161,6 +168,10 @@ final class ContactEditPhone: ContactEditTypeInterface {
             return false
         }
         return true
+    }
+    
+    func isEmpty() -> Bool {
+        return newPhone.isEmpty
     }
 }
 
@@ -211,6 +222,10 @@ final class ContactEditUrl: ContactEditTypeInterface {
             return false
         }
         return true
+    }
+    
+    func isEmpty() -> Bool {
+        return newUrl.isEmpty
     }
 }
 
@@ -334,11 +349,24 @@ final class ContactEditAddress: ContactEditTypeInterface {
         }
         return true
     }
+    
+    func isEmpty() -> Bool {
+        if self.newStreet.isEmpty ||
+            self.newStreetTwo.isEmpty ||
+            self.newLocality.isEmpty ||
+            self.newRegion.isEmpty ||
+            self.newPostal.isEmpty ||
+            self.newCountry.isEmpty {
+            return true
+        }
+        return false
+    }
 }
 
 
 //informations part
 final class ContactEditInformation: ContactEditNoTypeInterface {
+    
     var infoType : InformationType
     var origValue : String = ""
     var isNew : Bool = false
@@ -354,9 +382,11 @@ final class ContactEditInformation: ContactEditNoTypeInterface {
             self.origValue = self.newValue
         }
     }
+    
     func getSectionType() -> ContactEditSectionType {
         return .information
     }
+    
     func needsUpdate() -> Bool {
         if isNew && newValue.isEmpty {
             return false
@@ -366,10 +396,15 @@ final class ContactEditInformation: ContactEditNoTypeInterface {
         }
         return true
     }
+    
+    func isEmpty() -> Bool {
+        return newValue.isEmpty
+    }
 }
 
 //custom field
 final class ContactEditField: ContactEditTypeInterface {
+    
     var origOrder : Int = 0
     var origType : ContactFieldType = .empty
     var origField : String = ""
@@ -416,6 +451,10 @@ final class ContactEditField: ContactEditTypeInterface {
             return false
         }
         return true
+    }
+    
+    func isEmpty() -> Bool {
+        return newField.isEmpty
     }
 }
 

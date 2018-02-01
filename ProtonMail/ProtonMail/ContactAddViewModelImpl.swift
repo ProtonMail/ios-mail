@@ -221,16 +221,18 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         }
         
         for addr in addresses {
-            let a = PMNIAddress.createInstance(addr.newType.vcardType,
-                                               street: addr.newStreet,
-                                               extendstreet: addr.newStreetTwo,
-                                               locality: addr.newLocality,
-                                               region: addr.newRegion,
-                                               zip: addr.newPostal,
-                                               country: addr.newCountry,
-                                               pobox: "")
-            vcard3.add(a)
-            isCard3Set = true
+            if !addr.isEmpty() {
+                let a = PMNIAddress.createInstance(addr.newType.vcardType,
+                                                   street: addr.newStreet,
+                                                   extendstreet: addr.newStreetTwo,
+                                                   locality: addr.newLocality,
+                                                   region: addr.newRegion,
+                                                   zip: addr.newPostal,
+                                                   country: addr.newCountry,
+                                                   pobox: "")
+                vcard3.add(a)
+                isCard3Set = true
+            }
         }
         
         for info in informations {

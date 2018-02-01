@@ -459,9 +459,11 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             if let vcard3 = origvCard3 {
                 var newCells:[PMNITelephone] = []
                 for cell in cells {
-                    let c = PMNITelephone.createInstance(cell.newType.vcardType, number: cell.newPhone)!
-                    newCells.append(c)
-                    isCard3Set = true
+                    if !cell.isEmpty() {
+                        let c = PMNITelephone.createInstance(cell.newType.vcardType, number: cell.newPhone)!
+                        newCells.append(c)
+                        isCard3Set = true
+                    }
                 }
                 //replace all cells
                 if newCells.count > 0 {
@@ -472,16 +474,18 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 var newAddrs:[PMNIAddress] = []
                 for addr in addresses {
-                    let a = PMNIAddress.createInstance(addr.newType.vcardType,
-                                                       street: addr.newStreet,
-                                                       extendstreet: addr.newStreetTwo,
-                                                       locality: addr.newLocality,
-                                                       region: addr.newRegion,
-                                                       zip: addr.newPostal,
-                                                       country: addr.newCountry,
-                                                       pobox: "")!
-                    newAddrs.append(a)
-                    isCard3Set = true
+                    if !addr.isEmpty() {
+                        let a = PMNIAddress.createInstance(addr.newType.vcardType,
+                                                           street: addr.newStreet,
+                                                           extendstreet: addr.newStreetTwo,
+                                                           locality: addr.newLocality,
+                                                           region: addr.newRegion,
+                                                           zip: addr.newPostal,
+                                                           country: addr.newCountry,
+                                                           pobox: "")!
+                        newAddrs.append(a)
+                        isCard3Set = true
+                    }
                 }
                 //replace all addresses
                 if newAddrs.count > 0 {
@@ -494,40 +498,44 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 vcard3.clearNickname()
                 vcard3.clearTitle()
                 for info in informations {
-                    switch info.infoType {
-                    case .organization:
-                        let org = PMNIOrganization.createInstance("", value: info.newValue)!
-                        vcard3.setOrganizations([org])
-                        isCard3Set = true
-                    case .nickname:
-                        let nn = PMNINickname.createInstance("", value: info.newValue)!
-                        vcard3.setNickname(nn)
-                        isCard3Set = true
-                    case .title:
-                        let t = PMNITitle.createInstance("", value: info.newValue)!
-                        vcard3.setTitle(t)
-                        isCard3Set = true
-                    case .birthday:
-                        let b = PMNIBirthday.createInstance("", date: info.newValue)!
-                        vcard3.setBirthdays([b])
-                        isCard3Set = true
-                    case .anniversary:
-//                        let a = PMNIAnniversary.createInstance("", date: info.newValue)!
-//                        vcard3.seta
-//                        isCard3Set = true
-                        break
-                    case .gender:
-                        let g = PMNIGender.createInstance(info.newValue, text: "")!
-                        vcard3.setGender(g)
-                        isCard3Set = true
+                    if !info.isEmpty() {
+                        switch info.infoType {
+                        case .organization:
+                            let org = PMNIOrganization.createInstance("", value: info.newValue)!
+                            vcard3.setOrganizations([org])
+                            isCard3Set = true
+                        case .nickname:
+                            let nn = PMNINickname.createInstance("", value: info.newValue)!
+                            vcard3.setNickname(nn)
+                            isCard3Set = true
+                        case .title:
+                            let t = PMNITitle.createInstance("", value: info.newValue)!
+                            vcard3.setTitle(t)
+                            isCard3Set = true
+                        case .birthday:
+                            let b = PMNIBirthday.createInstance("", date: info.newValue)!
+                            vcard3.setBirthdays([b])
+                            isCard3Set = true
+                        case .anniversary:
+                            //                        let a = PMNIAnniversary.createInstance("", date: info.newValue)!
+                            //                        vcard3.seta
+                            //                        isCard3Set = true
+                            break
+                        case .gender:
+                            let g = PMNIGender.createInstance(info.newValue, text: "")!
+                            vcard3.setGender(g)
+                            isCard3Set = true
+                        }
                     }
                 }
                 
                 var newUrls:[PMNIUrl] = []
                 for url in urls {
-                    if let u = PMNIUrl.createInstance(url.newType.vcardType, value: url.newUrl) {
-                        newUrls.append(u)
-                        isCard3Set = true
+                    if !url.isEmpty() {
+                        if let u = PMNIUrl.createInstance(url.newType.vcardType, value: url.newUrl) {
+                            newUrls.append(u)
+                            isCard3Set = true
+                        }
                     }
                 }
                 //replace all urls
