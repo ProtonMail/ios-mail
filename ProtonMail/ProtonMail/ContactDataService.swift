@@ -180,6 +180,18 @@ class ContactDataService {
         let api = ContactDeleteRequest<ApiResponse>(ids: [contactID])
         api.call { (task, response, hasError) in
             if hasError {
+                if let err = response?.error, err.code == 13043 { //not exsit
+                    if let context = sharedCoreDataService.mainManagedObjectContext {
+                        context.performAndWait() {
+                            if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
+                                context.delete(contact)
+                            }
+                            if let error = context.saveUpstreamIfNeeded() {
+                                PMLog.D(" error: \(error)")
+                            }
+                        }
+                    }
+                }
                 completion(response?.error)
             } else {
                 if let context = sharedCoreDataService.mainManagedObjectContext {

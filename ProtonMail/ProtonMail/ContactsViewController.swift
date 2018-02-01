@@ -296,102 +296,124 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         hud.mode = MBProgressHUDMode.indeterminate
         hud.removeFromSuperViewOnHide = true
        
-        var pre_contacts : [[CardData]] = []
-        
-        var found: Int = 0
-        //build boday first
-        do {
-            let contacts = self.contacts
-            for contact in contacts {
-                //check is uuid in the exsiting contacts
-                let identifier = contact.identifier
-                
-                if !self.viewModel.isExsit(uuid: identifier) {
-                    found += 1
-                    hud.labelText = "Encrypting contacts...\(found)" //NSLocalizedString("Done", comment: "Title")
+        {
+            var pre_contacts : [[CardData]] = []
+            var found: Int = 0
+            //build boday first
+            do {
+                let contacts = self.contacts
+                for contact in contacts {
+                    //check is uuid in the exsiting contacts
+                    let identifier = contact.identifier
                     
-                    let rawData = try CNContactVCardSerialization.data(with: [contact])
-                    let vcardStr = String(data: rawData, encoding: .utf8)!
-//                    if contact.imageDataAvailable {
-//                        PMLog.D("\(contact.imageData!.count)")
-//                    }
-                    
-                    if let vcard3 = PMNIEzvcard.parseFirst(vcardStr) {
-                        let uuid = PMNIUid.createInstance(identifier)
-                        guard let vcard2 = PMNIVCard.createInstance() else {
-                            continue //with error
-                        }
+                    if !self.viewModel.isExsit(uuid: identifier) {
+                        found += 1
                         
-                        if let fn = vcard3.getFormattedName() {
-                            vcard2.setFormattedName(fn)
-                            vcard3.clearFormattedName()
-                        }
-                        let emails = vcard3.getEmails()
-                        var i : Int = 1
-                        for e in emails {
-                            let ng = "EItem\(i)"
-                            let group = e.getGroup()
-                            if group.isEmpty {
-                                e.setGroup(ng)
-                                i += 1
+                        {
+                            hud.labelText = "Encrypting contacts...\(found)" //NSLocalizedString("Done", comment: "Title")
+                         
+                        } ~> .main
+                        
+                        let rawData = try CNContactVCardSerialization.data(with: [contact])
+                        let vcardStr = String(data: rawData, encoding: .utf8)!
+                        //                    if contact.imageDataAvailable {
+                        //                        PMLog.D("\(contact.imageData!.count)")
+                        //                    }
+                        
+                        if let vcard3 = PMNIEzvcard.parseFirst(vcardStr) {
+                            let uuid = PMNIUid.createInstance(identifier)
+                            guard let vcard2 = PMNIVCard.createInstance() else {
+                                continue //with error
                             }
+                            var defaultName = NSLocalizedString("Unknown", comment: "title, default display name")
+                            let emails = vcard3.getEmails()
+                            var i : Int = 1
+                            for e in emails {
+                                let ng = "EItem\(i)"
+                                let group = e.getGroup()
+                                if group.isEmpty {
+                                    e.setGroup(ng)
+                                    i += 1
+                                }
+                                let em = e.getValue()
+                                if !em.isEmpty {
+                                    defaultName = em
+                                }
+                            }
+                            
+                            if let fn = vcard3.getFormattedName() {
+                                let name = fn.getValue().trim()
+                                if name.isEmpty {
+                                    if let fn = PMNIFormattedName.createInstance(defaultName) {
+                                        vcard2.setFormattedName(fn)
+                                    }
+                                } else {
+                                    vcard2.setFormattedName(fn)
+                                }
+                                vcard3.clearFormattedName()
+                            } else {
+                                if let fn = PMNIFormattedName.createInstance(defaultName) {
+                                    vcard2.setFormattedName(fn)
+                                }
+                            }
+                            
+                            vcard2.setEmails(emails)
+                            vcard3.clearEmails()
+                            vcard2.setUid(uuid)
+                            
+                            // add others later
+                            let vcard2Str = PMNIEzvcard.write(vcard2)
+                            guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
+                                continue //with error
+                            }
+                            PMLog.D(vcard2Str);
+                            let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key,
+                                                                           plainText: vcard2Str,
+                                                                           passphras: sharedUserDataService.mailboxPassword!)
+                            
+                            //card 2 object
+                            let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
+                            
+                            vcard3.setUid(uuid)
+                            vcard3.setVersion(PMNIVCardVersion.vCard40())
+                            let vcard3Str = PMNIEzvcard.write(vcard3)
+                            PMLog.D(vcard3Str);
+                            let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "")
+                            PMLog.D(encrypted_vcard3);
+                            let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
+                                                                           plainText: vcard3Str,
+                                                                           passphras: sharedUserDataService.mailboxPassword!)
+                            //card 3 object
+                            let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
+                            
+                            let cards : [CardData] = [card2, card3]
+                            
+                            pre_contacts.append(cards)
                         }
-                        
-                        vcard2.setEmails(emails)
-                        vcard3.clearEmails()
-                        vcard2.setUid(uuid)
-                        
-                        // add others later
-                        let vcard2Str = PMNIEzvcard.write(vcard2)
-                        guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
-                            continue //with error
-                        }
-                        PMLog.D(vcard2Str);
-                        let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                                       plainText: vcard2Str,
-                                                                       passphras: sharedUserDataService.mailboxPassword!)
-                        
-                        //card 2 object
-                        let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
-                        
-                        vcard3.setUid(uuid)
-                        vcard3.setVersion(PMNIVCardVersion.vCard40())
-                        let vcard3Str = PMNIEzvcard.write(vcard3)
-                        PMLog.D(vcard3Str);
-                        let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "")
-                        PMLog.D(encrypted_vcard3);
-                        let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                                       plainText: vcard3Str,
-                                                                       passphras: sharedUserDataService.mailboxPassword!)
-                        //card 3 object
-                        let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
-                        
-                        let cards : [CardData] = [card2, card3]
-                        
-                        pre_contacts.append(cards)
                     }
                 }
+            } catch let error as NSError {
+                error.alertToast()
             }
-        } catch let error as NSError {
-            error.alertToast()
-        }
-        
-        if !pre_contacts.isEmpty {
-            sharedContactDataService.add(cards: pre_contacts, completion:  { (contacts : [Contact]?, error : NSError?) in
-                if error == nil {
-                    let count = contacts?.count ?? 0
-                    hud.labelText = "You have imported \(count) of \(found) contacts!" // NSLocalizedString("You have imported \(count) of \(pre_contacts.count) contacts!", comment: "Title")
-                    hud.hide(true, afterDelay: 2)
-                   // "You have imported \(count) of \(pre_contacts.count) contacts!".alertToast()
-                } else {
-                    hud.hide(true)
-                    error?.alertToast()
-                }
-            })
-        } else {
-            hud.labelText = NSLocalizedString("All contacts are imported", comment: "Title")
-            hud.hide(true, afterDelay: 1)
-        }
+            
+            if !pre_contacts.isEmpty {
+                sharedContactDataService.add(cards: pre_contacts, completion:  { (contacts : [Contact]?, error : NSError?) in
+                    if error == nil {
+                        let count = contacts?.count ?? 0
+                        hud.labelText = "You have imported \(count) of \(found) contacts!" // NSLocalizedString("You have imported \(count) of \(pre_contacts.count) contacts!", comment: "Title")
+                        hud.hide(true, afterDelay: 2)
+                        // "You have imported \(count) of \(pre_contacts.count) contacts!".alertToast()
+                    } else {
+                        hud.hide(true)
+                        error?.alertToast()
+                    }
+                })
+            } else {
+                hud.labelText = NSLocalizedString("All contacts are imported", comment: "Title")
+                hud.hide(true, afterDelay: 1)
+            }
+        } ~> .main
+       
     }
 }
 
