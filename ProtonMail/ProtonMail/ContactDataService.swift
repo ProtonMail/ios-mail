@@ -123,6 +123,81 @@ class ContactDataService {
     }
     
     /**
+     import a new conact
+     
+     - Parameter name: contact name
+     - Parameter emails: contact email list
+     - Parameter cards: vcard contact data -- 4 different types
+     - Parameter completion: async add contact complete response
+     **/
+    func imports(cards: [[CardData]], completion: ContactAddComplete?) {
+        
+        {
+            var lasterror : NSError?
+            let count : Int = cards.count
+            var processed : Int = 0
+            var tempCards : [[CardData]] = []
+            var importedContacts : [Contact] = []
+            for card in cards {
+                tempCards.append(card)
+                processed += 1
+                if processed == count || tempCards.count >= 100 {
+                    
+                    let api = ContactAddRequest<ContactAddResponse>(cards: tempCards)
+                    do {
+                        let response = try api.syncCall()
+                        tempCards.removeAll()
+                        var contacts_json : [[String : Any]] = []
+                        if let results = response?.results, !results.isEmpty {
+                            let isCountMatch = cards.count == results.count
+                            var i : Int = 0
+                            for res in results {
+                                if let error = res as? NSError {
+                                    lasterror = error
+                                } else if var contact = res as? [String: Any] {
+                                    if isCountMatch {
+                                        contact["Cards"] = cards[i].toDictionary()
+                                        contacts_json.append(contact)
+                                    }
+                                }
+                                i += 1
+                            }
+                        }
+                        
+                        if !contacts_json.isEmpty {
+                            let context = sharedCoreDataService.newManagedObjectContext()
+                            context.performAndWait() {
+                                do {
+                                    if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                                       fromJSONArray: contacts_json,
+                                                                                       in: context) as? [Contact] {
+                                        
+                                        if let error = context.saveUpstreamIfNeeded() {
+                                            PMLog.D(" error: \(error)")
+                                        } else {
+                                            importedContacts.append(contentsOf: contacts)
+                                        }
+                                    }
+                                } catch let ex as NSError {
+                                    PMLog.D(" error: \(ex)")
+                                }
+                            }
+                        }
+                    } catch let ex as NSError {
+                        PMLog.D(" error: \(ex)")
+                    }
+                }
+            }
+            
+            {
+                completion?(importedContacts, lasterror)
+            
+            } ~> .main
+            
+        } ~> .async
+    }
+    
+    /**
      update a exsiting conact
      
      - Parameter contactID: delete contact id

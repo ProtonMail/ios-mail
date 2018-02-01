@@ -397,10 +397,11 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             }
             
             if !pre_contacts.isEmpty {
-                sharedContactDataService.add(cards: pre_contacts, completion:  { (contacts : [Contact]?, error : NSError?) in
+                sharedContactDataService.imports(cards: pre_contacts, completion:  { (contacts : [Contact]?, error : NSError?) in
                     if error == nil {
                         let count = contacts?.count ?? 0
-                        hud.labelText = "You have imported \(count) of \(found) contacts!" // NSLocalizedString("You have imported \(count) of \(pre_contacts.count) contacts!", comment: "Title")
+                        // NSLocalizedString("You have imported \(count) of \(pre_contacts.count) contacts!", comment: "Title")
+                        hud.labelText = "You have imported \(count) of \(found) contacts!"
                         hud.hide(true, afterDelay: 2)
                         // "You have imported \(count) of \(pre_contacts.count) contacts!".alertToast()
                     } else {
