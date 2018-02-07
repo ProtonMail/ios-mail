@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04A1270696CC8F117036D2BC /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		06CC130B33FBCEAB5E406DB8 /* libPods-ShareDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2723A6BEC97254756259C1CF /* libPods-ShareDev.a */; };
+		069644D237B4EDCBCE8B0916 /* libPods-ProtonMailDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C78D7DE38EA5253CD8278A67 /* libPods-ProtonMailDev.a */; };
 		07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07009EFE1A659AD400129B07 /* SignIn.storyboard */; };
 		07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F001A65CF4800129B07 /* SignInViewController.swift */; };
 		071210E61AA91B4000B834F2 /* APIService+DeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071210E51AA91B4000B834F2 /* APIService+DeviceExtension.swift */; };
@@ -66,9 +65,8 @@
 		07DD68A51A97DE9F00ED130C /* APIService+AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */; };
 		07DD68A71A9815DF00ED130C /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A61A9815DF00ED130C /* URL+Extension.swift */; };
 		07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */; };
-		11666412392E8305031C3020 /* libPods-PushServiceDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E178BA2BA1D1BC4898C0A04 /* libPods-PushServiceDev.a */; };
-		4E0220EFD2D3FFE70AC21C16 /* libPods-ProtonMailTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EF314E2219A1089E6DAF06 /* libPods-ProtonMailTests.a */; };
-		6761F486B65EC4AAD1B69189 /* libPods-PushService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 389631FC40D4EC4D6C3D336C /* libPods-PushService.a */; };
+		2CF1376001A9DA83EB4D29DB /* libPods-ShareDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D96F24804A74E2C888A4E9A8 /* libPods-ShareDev.a */; };
+		3F0FE24CAF93202239A3BAE3 /* libPods-PushServiceDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 131FE53EEA297E1FD7F9844A /* libPods-PushServiceDev.a */; };
 		701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE7F1AA64DEB0038149C /* MBContactPicker.m */; };
 		701DDE901AA64DEB0038149C /* MBContactCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE821AA64DEB0038149C /* MBContactCollectionView.m */; };
 		701DDE911AA64DEB0038149C /* MBContactCollectionViewContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE841AA64DEB0038149C /* MBContactCollectionViewContactCell.m */; };
@@ -1316,13 +1314,15 @@
 		75F4638E1C60172300918B46 /* SignUpUserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F4638D1C60172300918B46 /* SignUpUserNameViewController.swift */; };
 		75F54C651B3B552200290F73 /* LastUpdateCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F54C641B3B552200290F73 /* LastUpdateCacheTests.swift */; };
 		75F775701D63AA5B00FD3893 /* APIService+DefinedExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F7756F1D63AA5B00FD3893 /* APIService+DefinedExtension.swift */; };
+		75F8B00A202AEC8B00A7CB0F /* ContactImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F8B009202AEC8B00A7CB0F /* ContactImportViewController.swift */; };
+		75F8B00B202AEC8B00A7CB0F /* ContactImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F8B009202AEC8B00A7CB0F /* ContactImportViewController.swift */; };
 		75F906101B1FBECA00107509 /* DebugDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */; };
 		75FC06731C88F8B50013422D /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FC06721C88F8B50013422D /* LocalAuthentication.framework */; };
 		75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */; };
-		985AB7B245E33C222F0D5F50 /* libPods-Share.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BA86F05A8DC2B4E0BE3890A /* libPods-Share.a */; };
-		E0543BDD2F4BC3F59ABC6EC6 /* libPods-ProtonMail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7825C5C162EAD55A62734859 /* libPods-ProtonMail.a */; };
-		E2B40018E0A64B49A01B3DF6 /* libPods-ProtonMailDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 802280F25581311CFBC3C8E3 /* libPods-ProtonMailDev.a */; };
-		EAF4B9D23FDBAA4F2F237B3A /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		8C211895E29D2B1CACBAFBC3 /* libPods-ProtonMailTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA49136F43EA19DF7050D27A /* libPods-ProtonMailTests.a */; };
+		AF9FDD3D083F670052D7DAAA /* libPods-ProtonMail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D73B784D1A1E768D7AFCDB4B /* libPods-ProtonMail.a */; };
+		D9A2F933C307BEC0765464BA /* libPods-PushService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B28E771ECD203453213C64 /* libPods-PushService.a */; };
+		E6E74D475EFA5D107F6BF9C8 /* libPods-Share.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250F51BC5C8B2E27AF0FFAAF /* libPods-Share.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1471,18 +1471,16 @@
 		07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+AttachmentExtension.swift"; sourceTree = "<group>"; };
 		07DD68A61A9815DF00ED130C /* URL+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "URL+Extension.swift"; path = "../ProtonMail/URL+Extension.swift"; sourceTree = "<group>"; };
 		07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSManagedObjectExtension.swift; path = ../ProtonMail/NSManagedObjectExtension.swift; sourceTree = "<group>"; };
-		0BA86F05A8DC2B4E0BE3890A /* libPods-Share.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Share.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C8F2DF59046AC07D54D3A1D /* Pods-Share.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.debug.xcconfig"; sourceTree = "<group>"; };
-		0E178BA2BA1D1BC4898C0A04 /* libPods-PushServiceDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushServiceDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		115E552EAACD2D1515556B02 /* Pods-PushService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.release.xcconfig"; path = "Pods/Target Support Files/Pods-PushService/Pods-PushService.release.xcconfig"; sourceTree = "<group>"; };
+		131FE53EEA297E1FD7F9844A /* libPods-PushServiceDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushServiceDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23103C742561D70ADA6DFCC2 /* Pods-PushService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PushService/Pods-PushService.debug.xcconfig"; sourceTree = "<group>"; };
 		244A62D4C89F2BB7DF4957E0 /* Pods-ProtonMail.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.release.xcconfig"; sourceTree = "<group>"; };
-		2723A6BEC97254756259C1CF /* libPods-ShareDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShareDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		250F51BC5C8B2E27AF0FFAAF /* libPods-Share.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Share.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2753871EAB4E48C75B953246 /* Pods-ShareDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		2ADC2E3C5202DB9853B4F9D1 /* Pods-PushServiceDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushServiceDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		32E074A6A514A1E79DAA0126 /* Pods-ShareDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.release.xcconfig"; sourceTree = "<group>"; };
 		386DA5BF7321BBC55CBFD95D /* Pods-PushServiceDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushServiceDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev.release.xcconfig"; sourceTree = "<group>"; };
-		389631FC40D4EC4D6C3D336C /* libPods-PushService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41169F68B3FE8907F2C72783 /* Pods-ProtonMailTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54F29596C87DC71ECEC2B74B /* Pods-ProtonMailDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		5B978E55A8597768196CE0FB /* Pods-PushService.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PushService/Pods-PushService.distribution.xcconfig"; sourceTree = "<group>"; };
@@ -1881,19 +1879,22 @@
 		75F4638D1C60172300918B46 /* SignUpUserNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpUserNameViewController.swift; sourceTree = "<group>"; };
 		75F54C641B3B552200290F73 /* LastUpdateCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastUpdateCacheTests.swift; sourceTree = "<group>"; };
 		75F7756F1D63AA5B00FD3893 /* APIService+DefinedExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+DefinedExtension.swift"; sourceTree = "<group>"; };
+		75F8B009202AEC8B00A7CB0F /* ContactImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactImportViewController.swift; sourceTree = "<group>"; };
 		75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugDetailsViewController.swift; sourceTree = "<group>"; };
 		75FC06721C88F8B50013422D /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		75FE23321F04347C00DF12C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIErrors.swift; sourceTree = "<group>"; };
-		7825C5C162EAD55A62734859 /* libPods-ProtonMail.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMail.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BBE5AA309996CC3AE0CB72A /* Pods-ProtonMailTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.release.xcconfig"; sourceTree = "<group>"; };
-		802280F25581311CFBC3C8E3 /* libPods-ProtonMailDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A7CF350E37E2333C78D200A /* Pods-ProtonMailDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.debug.xcconfig"; sourceTree = "<group>"; };
 		ADEE9DF404B6CD14E9C04A8D /* Pods-ShareDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.debug.xcconfig"; sourceTree = "<group>"; };
+		C78D7DE38EA5253CD8278A67 /* libPods-ProtonMailDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C87DB98FF3BD404B025BC4DC /* Pods-ProtonMail.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.debug.xcconfig"; sourceTree = "<group>"; };
 		D150620E49C5EDEC5065FEA1 /* Pods-ProtonMailTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.distribution.xcconfig"; sourceTree = "<group>"; };
+		D73B784D1A1E768D7AFCDB4B /* libPods-ProtonMail.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMail.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8B28E771ECD203453213C64 /* libPods-PushService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D96F24804A74E2C888A4E9A8 /* libPods-ShareDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShareDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA49136F43EA19DF7050D27A /* libPods-ProtonMailTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC5AB60FBA59317594F99CA /* libPods-PushDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F3EF314E2219A1089E6DAF06 /* libPods-ProtonMailTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBC1646570583EAA04408D7D /* Pods-Share.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.distribution.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1906,7 +1907,7 @@
 				75FC06731C88F8B50013422D /* LocalAuthentication.framework in Frameworks */,
 				75C2175A1AD6F1B800978579 /* Crashlytics.framework in Frameworks */,
 				75C2175B1AD6F1B800978579 /* Fabric.framework in Frameworks */,
-				E0543BDD2F4BC3F59ABC6EC6 /* libPods-ProtonMail.a in Frameworks */,
+				AF9FDD3D083F670052D7DAAA /* libPods-ProtonMail.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1914,9 +1915,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAF4B9D23FDBAA4F2F237B3A /* (null) in Frameworks */,
-				04A1270696CC8F117036D2BC /* (null) in Frameworks */,
-				4E0220EFD2D3FFE70AC21C16 /* libPods-ProtonMailTests.a in Frameworks */,
+				8C211895E29D2B1CACBAFBC3 /* libPods-ProtonMailTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1927,7 +1926,7 @@
 				75252D2A1FCF5E05007972EF /* Fabric.framework in Frameworks */,
 				75252D2B1FCF5E05007972EF /* Crashlytics.framework in Frameworks */,
 				751CDEBE1FBB96D5005E3EB1 /* libstdc++.tbd in Frameworks */,
-				11666412392E8305031C3020 /* libPods-PushServiceDev.a in Frameworks */,
+				3F0FE24CAF93202239A3BAE3 /* libPods-PushServiceDev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1935,7 +1934,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6761F486B65EC4AAD1B69189 /* libPods-PushService.a in Frameworks */,
+				D9A2F933C307BEC0765464BA /* libPods-PushService.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1946,7 +1945,7 @@
 				75482BC21F7F09E100B0BFFB /* Fabric.framework in Frameworks */,
 				75482BC31F7F09E100B0BFFB /* Crashlytics.framework in Frameworks */,
 				75482BC41F7F09E100B0BFFB /* libstdc++.tbd in Frameworks */,
-				985AB7B245E33C222F0D5F50 /* libPods-Share.a in Frameworks */,
+				E6E74D475EFA5D107F6BF9C8 /* libPods-Share.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1957,7 +1956,7 @@
 				7512A9EE1F17D5B400D84955 /* Fabric.framework in Frameworks */,
 				7512A9EF1F17D5B400D84955 /* Crashlytics.framework in Frameworks */,
 				758ED7D01F05A43B0028D1A5 /* libstdc++.tbd in Frameworks */,
-				06CC130B33FBCEAB5E406DB8 /* libPods-ShareDev.a in Frameworks */,
+				2CF1376001A9DA83EB4D29DB /* libPods-ShareDev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1988,7 +1987,7 @@
 				75DE7D841CAAEA4900F5443E /* LocalAuthentication.framework in Frameworks */,
 				75DE7D851CAAEA4900F5443E /* Crashlytics.framework in Frameworks */,
 				75DE7D871CAAEA4900F5443E /* Fabric.framework in Frameworks */,
-				E2B40018E0A64B49A01B3DF6 /* libPods-ProtonMailDev.a in Frameworks */,
+				069644D237B4EDCBCE8B0916 /* libPods-ProtonMailDev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2374,6 +2373,7 @@
 				7048B9F61A9E3B1B00D45F57 /* Cell */,
 				701DDE7C1AA64D430038149C /* MBContactPicker */,
 				706962061A71399D001443B2 /* ContactsViewController.swift */,
+				75F8B009202AEC8B00A7CB0F /* ContactImportViewController.swift */,
 				7528FFB01FA7FEBD005F66A3 /* ContactDetailViewController.swift */,
 				7528FFBF1FA7FEC0005F66A3 /* ContactEditViewController.swift */,
 				7528FFC11FA7FEC0005F66A3 /* ContactTypeViewController.swift */,
@@ -3003,17 +3003,17 @@
 				75FC06721C88F8B50013422D /* LocalAuthentication.framework */,
 				75C217581AD6F1B800978579 /* Crashlytics.framework */,
 				75C217591AD6F1B800978579 /* Fabric.framework */,
-				7825C5C162EAD55A62734859 /* libPods-ProtonMail.a */,
-				802280F25581311CFBC3C8E3 /* libPods-ProtonMailDev.a */,
-				F3EF314E2219A1089E6DAF06 /* libPods-ProtonMailTests.a */,
-				2723A6BEC97254756259C1CF /* libPods-ShareDev.a */,
-				0BA86F05A8DC2B4E0BE3890A /* libPods-Share.a */,
 				75AFD2EC1FBA7CF000EAEA61 /* UserNotifications.framework */,
 				75AFD2EE1FBA7CF000EAEA61 /* UserNotificationsUI.framework */,
 				5FD8B432606FF1E56020D86C /* libPods-Push.a */,
 				EAC5AB60FBA59317594F99CA /* libPods-PushDev.a */,
-				0E178BA2BA1D1BC4898C0A04 /* libPods-PushServiceDev.a */,
-				389631FC40D4EC4D6C3D336C /* libPods-PushService.a */,
+				D73B784D1A1E768D7AFCDB4B /* libPods-ProtonMail.a */,
+				C78D7DE38EA5253CD8278A67 /* libPods-ProtonMailDev.a */,
+				EA49136F43EA19DF7050D27A /* libPods-ProtonMailTests.a */,
+				D8B28E771ECD203453213C64 /* libPods-PushService.a */,
+				131FE53EEA297E1FD7F9844A /* libPods-PushServiceDev.a */,
+				250F51BC5C8B2E27AF0FFAAF /* libPods-Share.a */,
+				D96F24804A74E2C888A4E9A8 /* libPods-ShareDev.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -3571,9 +3571,44 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/RHAddressBook/RHAddressBook.framework",
+				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
+				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
+				"${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworkActivityLogger.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AwaitKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RHAddressBook.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZSSRichTextEditor.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3839,9 +3874,44 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/RHAddressBook/RHAddressBook.framework",
+				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
+				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
+				"${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworkActivityLogger.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AwaitKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RHAddressBook.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZSSRichTextEditor.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4436,9 +4506,44 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/RHAddressBook/RHAddressBook.framework",
+				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
+				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
+				"${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworkActivityLogger.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AwaitKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RHAddressBook.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZSSRichTextEditor.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4582,6 +4687,7 @@
 				7528FF951FA7FE85005F66A3 /* ContactsViewModel.swift in Sources */,
 				75BDECAB1CBCCE5B00982089 /* SetPinCodeModelImpl.swift in Sources */,
 				7528FFA81FA7FE85005F66A3 /* UIAlertController+Extension.swift in Sources */,
+				75F8B00A202AEC8B00A7CB0F /* ContactImportViewController.swift in Sources */,
 				75DCB2071BA2A1560085BE8C /* RecipientCell.swift in Sources */,
 				751900741F1D4A5700DB68ED /* KeychainWrapper.swift in Sources */,
 				756489901B7DBE8C007EA207 /* LabelsDataService.swift in Sources */,
@@ -5489,6 +5595,7 @@
 				752800151FA7FEF6005F66A3 /* UIAlertController+Extension.swift in Sources */,
 				75256C9D1F16DFBD00F2771E /* LabelAPI.swift in Sources */,
 				75256C9E1F16DFBD00F2771E /* AttachmentAPI.swift in Sources */,
+				75F8B00B202AEC8B00A7CB0F /* ContactImportViewController.swift in Sources */,
 				75256C9F1F16DFBD00F2771E /* UserAPI.swift in Sources */,
 				75256CA01F16DFBD00F2771E /* DomainAPI.swift in Sources */,
 				75256CA11F16DFBD00F2771E /* DeviceAPI.swift in Sources */,

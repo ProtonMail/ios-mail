@@ -1,0 +1,6 @@
+framework module SWRevealViewController {
+  umbrella header "SWRevealViewController-umbrella.h"
+
+  export *
+  module * { export * }
+}

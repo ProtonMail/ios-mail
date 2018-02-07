@@ -21,6 +21,8 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactDetailsSugue : String  = "toContactDetailsSegue";
     fileprivate let kAddContactSugue : String      = "toAddContact"
     
+    fileprivate let kSegueToImportView : String    = "toImportContacts"
+    
     fileprivate var searchString : String = ""
  
     // Mark: - view model
@@ -177,6 +179,12 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         } else if (segue.identifier == "toCompose") {
             //let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
             //sharedVMService.newDraftViewModelWithContact(composeViewController, contact: self.selectedContact)
+        } else if segue.identifier == kSegueToImportView{
+            let popup = segue.destination as! ContactImportViewController
+//            popup.viewModel = CaptchaViewModelImpl()
+//            popup.delegate = self
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+            
         }
     }
     
@@ -218,7 +226,8 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
                                                     message: NSLocalizedString("Upload iOS contacts to ProtonMail?", comment: "Description"),
                                                     preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Action"), style: .default, handler: { (action) -> Void in
-                self.getContacts()
+                self.performSegue(withIdentifier: self.kSegueToImportView, sender: self)
+//                self.getContacts()
             }))
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
             self.present(alertController, animated: true, completion: nil)
