@@ -56,11 +56,11 @@ class ProtonMailViewController: UIViewController {
         return true
     }
     
-    func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController)
+    func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController, style : UIModalPresentationStyle = .overCurrentContext)
     {
         presentingController.providesPresentationContextTransitionStyle = true;
         presentingController.definesPresentationContext = true;
-        presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        presentingController.modalPresentationStyle = style
     }
 
 }

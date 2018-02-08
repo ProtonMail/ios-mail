@@ -124,17 +124,11 @@ final class ContactsViewModelImpl : ContactsViewModel {
         }
         if !isFetching {
             isFetching = true
-
-            let time = lastUpdatedStore.inboxLastForKey(.inbox)
-            if !time.isNew {
-                sharedMessageDataService.fetchNewMessagesForLocation(.inbox, notificationMessageID: nil, completion: { (task, res, error) in
-                    self.isFetching = false
-                    self.fetchComplete?(nil, nil)
-                })
-            } else {
+            
+            sharedMessageDataService.fetchNewMessagesForLocation(.inbox, notificationMessageID: nil, completion: { (task, res, error) in
                 self.isFetching = false
                 self.fetchComplete?(nil, nil)
-            }
+            })
         }
     }
 

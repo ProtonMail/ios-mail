@@ -183,7 +183,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             let popup = segue.destination as! ContactImportViewController
 //            popup.viewModel = CaptchaViewModelImpl()
 //            popup.delegate = self
-            self.setPresentationStyleForSelfController(self, presentingController: popup)
+            self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
             
         }
     }
