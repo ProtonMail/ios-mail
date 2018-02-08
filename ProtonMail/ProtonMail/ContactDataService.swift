@@ -22,6 +22,8 @@ let sharedContactDataService = ContactDataService()
 
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
 typealias ContactAddComplete = (([Contact]?, NSError?) -> Void)
+typealias ContactAddUpdate = ((Int) -> Void)
+
 typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 typealias ContactDetailsComplete = ((Contact?, NSError?) -> Void)
@@ -130,7 +132,7 @@ class ContactDataService {
      - Parameter cards: vcard contact data -- 4 different types
      - Parameter completion: async add contact complete response
      **/
-    func imports(cards: [[CardData]], completion: ContactAddComplete?) {
+    func imports(cards: [[CardData]], update: ContactAddUpdate?, completion: ContactAddComplete?) {
         
         {
             var lasterror : NSError?
@@ -141,15 +143,17 @@ class ContactDataService {
             for card in cards {
                 tempCards.append(card)
                 processed += 1
-                if processed == count || tempCards.count >= 100 {
+                if processed == count || tempCards.count >= 3 {
                     
                     let api = ContactAddRequest<ContactAddResponse>(cards: tempCards)
                     do {
                         let response = try api.syncCall()
-                        tempCards.removeAll()
+                        
+                        update?(processed)
+                        
                         var contacts_json : [[String : Any]] = []
                         if let results = response?.results, !results.isEmpty {
-                            let isCountMatch = cards.count == results.count
+                            let isCountMatch = tempCards.count == results.count
                             var i : Int = 0
                             for res in results {
                                 if let error = res as? NSError {
@@ -163,6 +167,8 @@ class ContactDataService {
                                 i += 1
                             }
                         }
+                        
+                        tempCards.removeAll()
                         
                         if !contacts_json.isEmpty {
                             let context = sharedCoreDataService.newManagedObjectContext()
@@ -188,12 +194,7 @@ class ContactDataService {
                     }
                 }
             }
-            
-            {
-                completion?(importedContacts, lasterror)
-            
-            } ~> .main
-            
+            completion?(importedContacts, lasterror)
         } ~> .async
     }
     

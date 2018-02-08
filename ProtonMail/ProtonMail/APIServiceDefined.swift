@@ -97,7 +97,7 @@ struct EventAPI {
     static let Path :String = AppConstants.API_PATH + "/events"
     
     /// current event api version
-    static let V_EventCheckRequest : Int = 1
+    static let V_EventCheckRequest : Int = 3
     static let V_LatestEventRequest : Int = 1
 
 }

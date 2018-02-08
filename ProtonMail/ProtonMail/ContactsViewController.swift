@@ -406,7 +406,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             }
             
             if !pre_contacts.isEmpty {
-                sharedContactDataService.imports(cards: pre_contacts, completion:  { (contacts : [Contact]?, error : NSError?) in
+                sharedContactDataService.imports(cards: pre_contacts, update: nil, completion:  { (contacts : [Contact]?, error : NSError?) in
                     if error == nil {
                         let count = contacts?.count ?? 0
                         // NSLocalizedString("You have imported \(count) of \(pre_contacts.count) contacts!", comment: "Title")

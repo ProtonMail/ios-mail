@@ -179,7 +179,7 @@ class ContactImportViewController: UIViewController {
                         found += 1
                         {
                             self.messageLabel.text = "Encrypting contacts...\(found)" //NSLocalizedString("Done", comment: "Title")
-                            } ~> .main
+                        } ~> .main
                         
                         let rawData = try CNContactVCardSerialization.data(with: [contact])
                         let vcardStr = String(data: rawData, encoding: .utf8)!
@@ -260,29 +260,43 @@ class ContactImportViewController: UIViewController {
             }
             
             if !pre_contacts.isEmpty {
+                let pre_count = pre_contacts.count
                 if self.cancelled {
                     {
                         self.messageLabel.text = NSLocalizedString("Cancelling", comment: "Title")
                     } ~> .main
                     return
                 }
-                
+
                 {
-                    self.messageLabel.text = "uploading contacts "
-                    //            sharedContactDataService.imports(cards: pre_contacts, completion:  { (contacts : [Contact]?, error : NSError?) in
-                    //                if error == nil {
-                    //                    let count = contacts?.count ?? 0
-                    //                    // NSLocalizedString("You have imported \(count) of \(pre_contacts.count) contacts!", comment: "Title")
-                    //                    self.messageLabel.text = "You have imported \(count) of \(found) contacts!"
-                    //                    // "You have imported \(count) of \(pre_contacts.count) contacts!".alertToast()
-                    //                } else {
-                    //                    error?.alertToast()
-                    //                }
-                    //            })
-                    
-                    self.messageLabel.text = "You have imported \(found) of \(found) contacts!"
-                    self.dismiss()
+                    self.progressView.setProgress(0.0, animated: false)
+                    self.messageLabel.text = "Uploading contacts. 0/\(pre_count)"
                 } ~> .main
+                
+                sharedContactDataService.imports(cards: pre_contacts, update: { (processed) in
+                    {
+                        let uploadOffset = Float(processed) / Float(pre_count)
+                        self.progressView.setProgress(uploadOffset, animated: true)
+                        self.messageLabel.text = "Uploading contacts. \(processed)/\(pre_count)"
+                    } ~> .main
+                
+                }, completion: { (contacts : [Contact]?, error : NSError?) in
+                    {
+                        if let conts = contacts {
+                            let count = conts.count
+                            self.progressView.setProgress(1, animated: true)
+                            self.messageLabel.text = "You have imported \(count) of \(found) contacts!"
+                        }
+                        
+                        if error == nil {
+                            //show error
+                        }
+                        
+                        self.dismiss()
+                        
+                    } ~> .main
+                })
+                
             } else {
                 {
                     self.messageLabel.text = NSLocalizedString("All contacts are imported", comment: "Title")
