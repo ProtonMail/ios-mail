@@ -22,8 +22,10 @@ let sharedContactDataService = ContactDataService()
 
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
 typealias ContactAddComplete = (([Contact]?, NSError?) -> Void)
-typealias ContactAddUpdate = ((Int) -> Void)
-typealias ContactAddCancel = (() -> Bool)
+
+typealias ContactImportComplete = (([Contact]?, String) -> Void)
+typealias ContactImportUpdate = ((Int) -> Void)
+typealias ContactImportCancel = (() -> Bool)
 
 typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
@@ -133,10 +135,10 @@ class ContactDataService {
      - Parameter cards: vcard contact data -- 4 different types
      - Parameter completion: async add contact complete response
      **/
-    func imports(cards: [[CardData]], cancel: ContactAddCancel?, update: ContactAddUpdate?, completion: ContactAddComplete?) {
+    func imports(cards: [[CardData]], cancel: ContactImportCancel?, update: ContactImportUpdate?, completion: ContactImportComplete?) {
         
         {
-            var lasterror : NSError?
+            var lasterror : [String] = []
             let count : Int = cards.count
             var processed : Int = 0
             var tempCards : [[CardData]] = []
@@ -144,7 +146,7 @@ class ContactDataService {
             for card in cards {
                 
                 if let isCancel = cancel?(), isCancel == true {
-                    completion?(importedContacts, lasterror)
+                    completion?(importedContacts, "")
                     return
                 }
                 
@@ -164,12 +166,12 @@ class ContactDataService {
                             var i : Int = 0
                             for res in results {
                                 if let error = res as? NSError {
-                                    lasterror = error
+                                    lasterror.append(error.description)
                                 } else if var contact = res as? [String: Any] {
                                     if isCountMatch {
-                                        contact["Cards"] = cards[i].toDictionary()
-                                        contacts_json.append(contact)
+                                        contact["Cards"] = tempCards[i].toDictionary()
                                     }
+                                    contacts_json.append(contact)
                                 }
                                 i += 1
                             }
@@ -201,7 +203,7 @@ class ContactDataService {
                     }
                 }
             }
-            completion?(importedContacts, lasterror)
+            completion?(importedContacts, lasterror.joined(separator: "\n"))
         } ~> .async
     }
     

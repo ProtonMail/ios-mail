@@ -10,7 +10,8 @@ import UIKit
 import Contacts
 
 protocol ContactImportVCDelegate {
-    func done()
+    func cancel()
+    func done(error: String)
 }
 
 class ContactImportViewController: UIViewController {
@@ -202,7 +203,7 @@ class ContactImportViewController: UIViewController {
                     if !self.isExsit(uuid: identifier) {
                         found += 1
                         {
-                            self.messageLabel.text = "Encrypting contacts...\(found)" //NSLocalizedString("Done", comment: "Title")
+                            self.messageLabel.text = "Encrypting contacts...\(found)"
                         } ~> .main
                         
                         let rawData = try CNContactVCardSerialization.data(with: [contact])
@@ -210,7 +211,7 @@ class ContactImportViewController: UIViewController {
                         if let vcard3 = PMNIEzvcard.parseFirst(vcardStr) {
                             let uuid = PMNIUid.createInstance(identifier)
                             guard let vcard2 = PMNIVCard.createInstance() else {
-                                continue //with error
+                                continue
                             }
                             var defaultName = NSLocalizedString("Unknown", comment: "title, default display name")
                             let emails = vcard3.getEmails()
@@ -258,7 +259,6 @@ class ContactImportViewController: UIViewController {
                             guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
                                 continue //with error
                             }
-//                            PMLog.D(vcard2Str);
                             let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key,
                                                                            plainText: vcard2Str,
                                                                            passphras: sharedUserDataService.mailboxPassword!)
@@ -269,9 +269,7 @@ class ContactImportViewController: UIViewController {
                             vcard3.setUid(uuid)
                             vcard3.setVersion(PMNIVCardVersion.vCard40())
                             let vcard3Str = PMNIEzvcard.write(vcard3)
-//                            PMLog.D(vcard3Str);
                             let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "")
-//                            PMLog.D(encrypted_vcard3);
                             let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
                                                                            plainText: vcard3Str,
                                                                            passphras: sharedUserDataService.mailboxPassword!)
@@ -310,7 +308,7 @@ class ContactImportViewController: UIViewController {
                         self.progressView.setProgress(uploadOffset, animated: true)
                         self.messageLabel.text = "Uploading contacts. \(processed)/\(pre_count)"
                     } ~> .main
-                }, completion: { (contacts : [Contact]?, error : NSError?) in
+                }, completion: { (contacts : [Contact]?, error : String) in
                     {
                         self.finished = true
                         if let conts = contacts {
@@ -319,12 +317,17 @@ class ContactImportViewController: UIViewController {
                             self.messageLabel.text = "You have imported \(count) of \(found) contacts!"
                         }
                         
-                        if error == nil {
-                            //show error
+                        if error.isEmpty {
+                            self.dismiss()
+                        } else {
+                            let alertController = UIAlertController(title: NSLocalizedString("Import Error", comment: "Action"),
+                                                                    message: error,
+                                                                    preferredStyle: .alert)
+                            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Action"), style: .default, handler: {(action) -> Void in
+                                self.dismiss()
+                            }))
+                            self.present(alertController, animated: true, completion: nil)
                         }
-                        
-                        self.dismiss()
-                        
                     } ~> .main
                 })
                 
