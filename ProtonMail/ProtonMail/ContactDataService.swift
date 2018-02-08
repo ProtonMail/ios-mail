@@ -23,6 +23,7 @@ let sharedContactDataService = ContactDataService()
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
 typealias ContactAddComplete = (([Contact]?, NSError?) -> Void)
 typealias ContactAddUpdate = ((Int) -> Void)
+typealias ContactAddCancel = (() -> Bool)
 
 typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
@@ -132,7 +133,7 @@ class ContactDataService {
      - Parameter cards: vcard contact data -- 4 different types
      - Parameter completion: async add contact complete response
      **/
-    func imports(cards: [[CardData]], update: ContactAddUpdate?, completion: ContactAddComplete?) {
+    func imports(cards: [[CardData]], cancel: ContactAddCancel?, update: ContactAddUpdate?, completion: ContactAddComplete?) {
         
         {
             var lasterror : NSError?
@@ -141,6 +142,12 @@ class ContactDataService {
             var tempCards : [[CardData]] = []
             var importedContacts : [Contact] = []
             for card in cards {
+                
+                if let isCancel = cancel?(), isCancel == true {
+                    completion?(importedContacts, lasterror)
+                    return
+                }
+                
                 tempCards.append(card)
                 processed += 1
                 if processed == count || tempCards.count >= 3 {

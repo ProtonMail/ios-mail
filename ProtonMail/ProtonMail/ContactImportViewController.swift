@@ -76,8 +76,15 @@ class ContactImportViewController: UIViewController {
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
-        self.cancelled = true
-        self.dismiss()
+        let alertController = UIAlertController(title: NSLocalizedString("Contacts", comment: "Action"),
+                                                message: NSLocalizedString("Do you want to cancel the process?", comment: "Description"),
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Action"), style: .destructive, handler: { (action) -> Void in
+            self.cancelled = true
+            self.dismiss()
+        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     private func dismiss() {
@@ -190,6 +197,7 @@ class ContactImportViewController: UIViewController {
                             }
                             var defaultName = NSLocalizedString("Unknown", comment: "title, default display name")
                             let emails = vcard3.getEmails()
+                            var vcard2Emails: [PMNIEmail] = []
                             var i : Int = 1
                             for e in emails {
                                 let ng = "EItem\(i)"
@@ -201,6 +209,10 @@ class ContactImportViewController: UIViewController {
                                 let em = e.getValue()
                                 if !em.isEmpty {
                                     defaultName = em
+                                }
+                                
+                                if em.isValidEmail() {
+                                    vcard2Emails.append(e)
                                 }
                             }
                             
@@ -220,7 +232,7 @@ class ContactImportViewController: UIViewController {
                                 }
                             }
                             
-                            vcard2.setEmails(emails)
+                            vcard2.setEmails(vcard2Emails)
                             vcard3.clearEmails()
                             vcard2.setUid(uuid)
                             
@@ -273,13 +285,14 @@ class ContactImportViewController: UIViewController {
                     self.messageLabel.text = "Uploading contacts. 0/\(pre_count)"
                 } ~> .main
                 
-                sharedContactDataService.imports(cards: pre_contacts, update: { (processed) in
+                sharedContactDataService.imports(cards: pre_contacts, cancel: { () -> Bool in
+                    return self.cancelled
+                }, update: { (processed) in
                     {
                         let uploadOffset = Float(processed) / Float(pre_count)
                         self.progressView.setProgress(uploadOffset, animated: true)
                         self.messageLabel.text = "Uploading contacts. \(processed)/\(pre_count)"
                     } ~> .main
-                
                 }, completion: { (contacts : [Contact]?, error : NSError?) in
                     {
                         if let conts = contacts {
