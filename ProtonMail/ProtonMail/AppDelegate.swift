@@ -127,11 +127,11 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-//        Fabric.with([Crashlytics()])
-//        FirebaseApp.configure()
-//
-//        // set_messaging_delegate
-//        Messaging.messaging().delegate = self
+        Fabric.with([Crashlytics()])
+        FirebaseApp.configure()
+
+        // set_messaging_delegate
+        Messaging.messaging().delegate = self
 
 //        if #available(iOS 10.0, *) {
 //            // For iOS 10 display notification (sent via APNS)
