@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -143,7 +143,7 @@
                                 <constraint firstAttribute="height" constant="48" id="IpN-S8-Y9f"/>
                                 <constraint firstAttribute="width" constant="52" id="XzH-29-5vD"/>
                             </constraints>
-                            <state key="normal" image="expiration_compose_white">
+                            <state key="normal" image="compose_expiration">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
@@ -175,7 +175,7 @@
                                 <constraint firstAttribute="width" constant="52" id="Tmt-hU-Ru0"/>
                                 <constraint firstAttribute="height" constant="48" id="eOb-yZ-g4D"/>
                             </constraints>
-                            <state key="normal" image="encrypted_compose_white">
+                            <state key="normal" image="compose_expiration">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
@@ -286,8 +286,6 @@
         <image name="compose_expiration" width="44" height="44"/>
         <image name="compose_lock" width="44" height="44"/>
         <image name="compose_pluscontact" width="24" height="24"/>
-        <image name="encrypted_compose_white" width="20" height="27"/>
-        <image name="expiration_compose_white" width="22" height="22"/>
         <image name="mail_attachment-closed" width="14" height="14"/>
     </resources>
 </document>

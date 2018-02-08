@@ -14,7 +14,6 @@ protocol ContactEditViewControllerDelegate {
 }
 
 class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
-    
     fileprivate var viewModel : ContactEditViewModel!
     
     //
