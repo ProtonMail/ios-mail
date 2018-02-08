@@ -22,6 +22,8 @@ class ContactImportViewController: UIViewController {
     @IBOutlet weak var progressView: UIProgressView!
     
     private var cancelled : Bool = false
+    private var showedCancel : Bool = false
+    private var finished : Bool = false
     
     // MARK: - fetch controller
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
@@ -76,15 +78,24 @@ class ContactImportViewController: UIViewController {
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
+        
+        if self.finished {
+            return
+        }
+        
         let alertController = UIAlertController(title: NSLocalizedString("Contacts", comment: "Action"),
                                                 message: NSLocalizedString("Do you want to cancel the process?", comment: "Description"),
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Action"), style: .destructive, handler: { (action) -> Void in
+            self.showedCancel = false
             self.cancelled = true
             self.dismiss()
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: {(action) -> Void in
+            self.showedCancel = false
+        }))
         self.present(alertController, animated: true, completion: nil)
+        self.showedCancel = true
     }
     
     private func dismiss() {
@@ -92,6 +103,12 @@ class ContactImportViewController: UIViewController {
             self.dismiss(animated: true, completion: {
                 
             })
+            
+            if self.showedCancel {
+                self.dismiss(animated: true, completion: {
+                    
+                })
+            }
         }
     }
     
@@ -295,6 +312,7 @@ class ContactImportViewController: UIViewController {
                     } ~> .main
                 }, completion: { (contacts : [Contact]?, error : NSError?) in
                     {
+                        self.finished = true
                         if let conts = contacts {
                             let count = conts.count
                             self.progressView.setProgress(1, animated: true)
@@ -312,6 +330,7 @@ class ContactImportViewController: UIViewController {
                 
             } else {
                 {
+                    self.finished = true
                     self.messageLabel.text = NSLocalizedString("All contacts are imported", comment: "Title")
                     self.dismiss()
                 } ~> .main
