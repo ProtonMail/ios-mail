@@ -27,13 +27,15 @@ extension APIService {
         deviceToken = token
         deviceUID = deviceID
         
-        var env = 4
-        if #available(iOS 10.0, *) { //encrypt
-            env = 4
-        } else { // not encrypt
-            env = 5
-        }
+        let env = 4
         
+//        var env = 4
+//        if #available(iOS 10.0, *) { //encrypt
+//            env = 4
+//        } else { // not encrypt
+//            env = 5
+//        }
+//
         var ver = "1.0.0"
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             ver = version

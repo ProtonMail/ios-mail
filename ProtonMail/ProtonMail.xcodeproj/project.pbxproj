@@ -222,7 +222,6 @@
 		751900771F1D832C00DB68ED /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
 		751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B446D1B81245100B68CD6 /* TableCellLabelView.swift */; };
 		751C5FEA1C49C17700949FBF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
-		751CDEA91FBB95B4005E3EB1 /* PushServiceDev.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 751CDEA21FBB95B3005E3EB1 /* PushServiceDev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		751CDEB51FBB95F6005E3EB1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CDEB41FBB95F6005E3EB1 /* NotificationService.swift */; };
 		751CDEB91FBB95F6005E3EB1 /* PushService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 751CDEB21FBB95F6005E3EB1 /* PushService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		751CDEBE1FBB96D5005E3EB1 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A42B6A1F0439690025F52C /* libstdc++.tbd */; };
@@ -1333,13 +1332,6 @@
 			remoteGlobalIDString = 075E3DE51A5F4ECF00E001A7;
 			remoteInfo = ProtonMail;
 		};
-		751CDEA71FBB95B4005E3EB1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 075E3DDE1A5F4ECF00E001A7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 751CDEA11FBB95B3005E3EB1;
-			remoteInfo = PushServiceDev;
-		};
 		751CDEB71FBB95F6005E3EB1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 075E3DDE1A5F4ECF00E001A7 /* Project object */;
@@ -1400,7 +1392,6 @@
 			dstSubfolderSpec = 13;
 			files = (
 				758ED7CB1F05A4000028D1A5 /* ShareDev.appex in Embed App Extensions */,
-				751CDEA91FBB95B4005E3EB1 /* PushServiceDev.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3202,7 +3193,6 @@
 			);
 			dependencies = (
 				758ED7CA1F05A4000028D1A5 /* PBXTargetDependency */,
-				751CDEA81FBB95B4005E3EB1 /* PBXTargetDependency */,
 			);
 			name = ProtonMailDev;
 			productName = ProtonMail;
@@ -5810,11 +5800,6 @@
 			isa = PBXTargetDependency;
 			target = 075E3DE51A5F4ECF00E001A7 /* ProtonMail */;
 			targetProxy = 075E3DFF1A5F4ECF00E001A7 /* PBXContainerItemProxy */;
-		};
-		751CDEA81FBB95B4005E3EB1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 751CDEA11FBB95B3005E3EB1 /* PushServiceDev */;
-			targetProxy = 751CDEA71FBB95B4005E3EB1 /* PBXContainerItemProxy */;
 		};
 		751CDEB81FBB95F6005E3EB1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
