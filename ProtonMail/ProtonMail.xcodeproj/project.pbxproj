@@ -1146,6 +1146,8 @@
 		75C7FF3A1F2FE1F800F15792 /* String+Toast+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7FF391F2FE1F800F15792 /* String+Toast+Extension.swift */; };
 		75C7FF3B1F2FE1F800F15792 /* String+Toast+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C7FF391F2FE1F800F15792 /* String+Toast+Extension.swift */; };
 		75C7FF3C1F2FE20C00F15792 /* String+Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7512AA461F18035500D84955 /* String+Alert+Extension.swift */; };
+		75C916C1203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C916C0203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift */; };
+		75C916C2203DBA9500A7FD1F /* ContactsDetailsWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C916C0203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift */; };
 		75CFA26F1B223DBB006E4465 /* SharedCacheBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */; };
 		75D0CA411C6BE97F00D9F21C /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */; };
 		75D3C2311F140BD9004B8FD7 /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9311A71C60900EB0CAF /* UserDataService.swift */; };
@@ -1819,6 +1821,7 @@
 		75C217581AD6F1B800978579 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		75C217591AD6F1B800978579 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		75C7FF391F2FE1F800F15792 /* String+Toast+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Toast+Extension.swift"; sourceTree = "<group>"; };
+		75C916C0203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsDetailsWarningCell.swift; sourceTree = "<group>"; };
 		75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharedCacheBase.swift; path = ../ProtonMail/SharedCacheBase.swift; sourceTree = "<group>"; };
 		75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAPI.swift; sourceTree = "<group>"; };
 		75DCB2051BA2A1560085BE8C /* RecipientCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientCell.swift; sourceTree = "<group>"; };
@@ -2302,6 +2305,7 @@
 				7528FFC41FA7FEC1005F66A3 /* ContactEditPhoneCell.swift */,
 				75A84D4B1FF601C700F2A54B /* ContactEditTextViewCell.swift */,
 				75B2223D2003C6AE00E35033 /* ContactEditUpgradeCell.swift */,
+				75C916C0203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -4626,6 +4630,7 @@
 				073FE01D1A9561F600825980 /* Contact.swift in Sources */,
 				073FE01F1A95620D00825980 /* ContactExtension.swift in Sources */,
 				754713181DCD616D0084BF34 /* SignInViewModel.swift in Sources */,
+				75C916C1203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift in Sources */,
 				7528FFA51FA7FE85005F66A3 /* Fonts+Constants.swift in Sources */,
 				75921C7F1F747BC90028DAC9 /* Header.swift in Sources */,
 				7528FFCD1FA7FEC3005F66A3 /* ContactDetailsViewModelImpl.swift in Sources */,
@@ -5534,6 +5539,7 @@
 				75256C7D1F16DFBD00F2771E /* ViewModelFactory.swift in Sources */,
 				75256C7E1F16DFBD00F2771E /* ViewModelService.swift in Sources */,
 				75256C7F1F16DFBD00F2771E /* ViewModelServiceImpl.swift in Sources */,
+				75C916C2203DBA9500A7FD1F /* ContactsDetailsWarningCell.swift in Sources */,
 				75256C801F16DFBD00F2771E /* SignUp+Error.swift in Sources */,
 				75256C811F16DFBD00F2771E /* DataService+Error.swift in Sources */,
 				75256C821F16DFBD00F2771E /* APIErrors.swift in Sources */,

@@ -5043,14 +5043,46 @@
                                             <outlet property="valueLabel" destination="mU1-LG-gJk" id="Zbl-IN-UGG"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="contacts_details_warning_cell" rowHeight="89" id="W1S-0H-6xT">
-                                        <rect key="frame" x="0.0" y="466" width="375" height="89"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="contacts_details_warning_cell" rowHeight="87" id="W1S-0H-6xT" customClass="ContactsDetailsWarningCell" customModule="ProtonMail" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="466" width="375" height="87"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="W1S-0H-6xT" id="tbH-ZS-w8d">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="88.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="86.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contacts_warnings" translatesAutoresizingMaskIntoConstraints="NO" id="F4x-zD-M7D">
+                                                    <rect key="frame" x="35" y="31.5" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="25" id="Ho1-PT-ilq"/>
+                                                        <constraint firstAttribute="width" constant="25" id="Vec-0z-FLP"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Decryption Error" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FCs-Fn-NMu">
+                                                    <rect key="frame" x="72" y="23" width="288" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="verification of this content's signature failed" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LVb-90-kgx">
+                                                    <rect key="frame" x="72" y="52" width="288" height="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="F4x-zD-M7D" firstAttribute="centerY" secondItem="tbH-ZS-w8d" secondAttribute="centerY" id="3oS-FP-Ra6"/>
+                                                <constraint firstItem="FCs-Fn-NMu" firstAttribute="top" secondItem="tbH-ZS-w8d" secondAttribute="topMargin" constant="12" id="EAN-tN-6SL"/>
+                                                <constraint firstItem="F4x-zD-M7D" firstAttribute="leading" secondItem="tbH-ZS-w8d" secondAttribute="leadingMargin" constant="20" id="Pi5-Bt-iEx"/>
+                                                <constraint firstItem="LVb-90-kgx" firstAttribute="top" secondItem="FCs-Fn-NMu" secondAttribute="bottom" constant="8" id="VyF-Wl-hf2"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="LVb-90-kgx" secondAttribute="bottom" constant="8" id="WlD-9i-IWi"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="FCs-Fn-NMu" secondAttribute="trailing" id="cFH-AA-I8q"/>
+                                                <constraint firstItem="FCs-Fn-NMu" firstAttribute="leading" secondItem="F4x-zD-M7D" secondAttribute="trailing" constant="12" id="jrt-Fy-K4Q"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="LVb-90-kgx" secondAttribute="trailing" id="tRo-kO-Ien"/>
+                                                <constraint firstItem="LVb-90-kgx" firstAttribute="leading" secondItem="F4x-zD-M7D" secondAttribute="trailing" constant="12" id="v0q-Gk-PK4"/>
+                                            </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.9507027268409729" green="0.37881278991699219" blue="0.0062189260497689247" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -5321,6 +5353,7 @@
         <image name="attached_main" width="14" height="16"/>
         <image name="bug_selected" width="52" height="52"/>
         <image name="contact_selected" width="20" height="27"/>
+        <image name="contacts_warnings" width="25" height="25"/>
         <image name="encrypted_main" width="15" height="20"/>
         <image name="favorite_main" width="19" height="19"/>
         <image name="favorite_main_selected" width="19" height="19"/>

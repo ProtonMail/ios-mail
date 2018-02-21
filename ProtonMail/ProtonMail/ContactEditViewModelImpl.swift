@@ -85,8 +85,22 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     }
                     break
                 case .SignAndEncrypt:
-                    let pt_contact = sharedOpenPGP.decryptMessage(c.data, passphras: sharedUserDataService.mailboxPassword!)
-                    origvCard3 = PMNIEzvcard.parseFirst(pt_contact)
+                    var pt_contact : String?
+                    if let userkeys = sharedUserDataService.userInfo?.userKeys {
+                        for key in userkeys {
+                            do {
+                                pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
+                                break
+                            } catch {
+                                
+                            }
+                        }
+                    }
+                    guard let pt_contact_vcard = pt_contact else {
+                        break
+                    }
+                    
+                    origvCard3 = PMNIEzvcard.parseFirst(pt_contact_vcard)
                     if let vcard = origvCard3 {
                         let types = vcard.getPropertyTypes()
                         for type in types {
