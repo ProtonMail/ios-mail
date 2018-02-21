@@ -5083,6 +5083,11 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.9507027268409729" green="0.37881278991699219" blue="0.0062189260497689247" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="errorDetails" destination="LVb-90-kgx" id="Syd-Eg-VLf"/>
+                                            <outlet property="errorTitle" destination="FCs-Fn-NMu" id="e3R-CE-pRa"/>
+                                            <outlet property="warningImage" destination="F4x-zD-M7D" id="gXp-Dt-49k"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>

@@ -405,18 +405,25 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     }
     
     override func export() -> String {
-
         let cards = self.contact.getCardData()
-        
         var vcard : PMNIVCard? = nil
-        
         for c in cards {
             if c.type == .SignAndEncrypt {
-//                guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
-//                    return "";
-//                }
-                let pt_contact = sharedOpenPGP.decryptMessage(c.data, passphras: sharedUserDataService.mailboxPassword!)
-                vcard = PMNIEzvcard.parseFirst(pt_contact)
+                var pt_contact : String?
+                if let userkeys = sharedUserDataService.userInfo?.userKeys {
+                    for key in userkeys {
+                        do {
+                            pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
+                            break
+                        } catch {
+                            
+                        }
+                    }
+                }
+                guard let pt_contact_vcard = pt_contact else {
+                    break
+                }
+                vcard = PMNIEzvcard.parseFirst(pt_contact_vcard)
             }
         }
         

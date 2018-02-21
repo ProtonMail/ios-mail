@@ -214,21 +214,18 @@ extension ContactDetailViewController: UITableViewDataSource {
         }
         
         if s == .type2_warning {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath)
-//                as! ContactEditAddCell
-//            cell.configCell(value: NSLocalizedString("Share Contact", comment: "action"))
+            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
+            cell.configCell(warning: .signatureWarning)
             cell.selectionStyle = .none
             return cell
         } else if s == .type3_error {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath)
-//                as! ContactEditAddCell
-//            cell.configCell(value: NSLocalizedString("Share Contact", comment: "action"))
+            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
+            cell.configCell(warning: .decryptionError)
             cell.selectionStyle = .none
             return cell
         } else if s == .type3_warning {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath)
-//                as! ContactEditAddCell
-//            cell.configCell(value: NSLocalizedString("Share Contact", comment: "action"))
+            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
+            cell.configCell(warning: .signatureWarning)
             cell.selectionStyle = .none
             return cell
         }
