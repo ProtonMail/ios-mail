@@ -23,6 +23,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     
     var verifyType2 : Bool = false
     var verifyType3 : Bool = false
+    
+    var decryptType3 : Bool = true
 
     //default
     var typeSection: [ContactEditSectionType] = [.display_name,
@@ -136,10 +138,14 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 break
             case .EncryptedOnly: break
             case .SignedOnly:
-                guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
-                    return; //with error
+                if let userkeys = sharedUserDataService.userInfo?.userKeys {
+                    for key in userkeys {
+                        self.verifyType2 = sharedOpenPGP.signVerify(detached: c.sign, publicKey: key.public_key, plainText: c.data)
+                        if self.verifyType2 {
+                            break
+                        }
+                    }
                 }
-                self.verifyType2 = sharedOpenPGP.signVerify(detached: c.sign, publicKey: userkey.public_key, plainText: c.data)
                 if let vcard = PMNIEzvcard.parseFirst(c.data) {
                     let emails = vcard.getEmails()
                     var order : Int = 1
@@ -154,12 +160,31 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 }
                 break
             case .SignAndEncrypt:
-                guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
+                guard let firstUserkey = sharedUserDataService.userInfo?.firstUserKey() else {
                     return; //with error
                 }
-                let pt_contact = sharedOpenPGP.decryptMessage(c.data, passphras: sharedUserDataService.mailboxPassword!)
-                self.verifyType3 = sharedOpenPGP.signDetachedVerify(userkey.public_key, signature: c.sign, plainText: pt_contact)
-                if let vcard = PMNIEzvcard.parseFirst(pt_contact) {
+                var pt_contact : String?
+                var signKey : Key?
+                if let userkeys = sharedUserDataService.userInfo?.userKeys {
+                    for key in userkeys {
+                        do {
+                            pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
+                            signKey = key
+                            self.decryptType3 = true
+                            break
+                        } catch {
+                            self.decryptType3 = false
+                        }
+                    }
+                }
+                
+                let key = signKey ?? firstUserkey
+                guard let pt_contact_vcard = pt_contact else {
+                    break
+                }
+                
+                self.verifyType3 = sharedOpenPGP.signDetachedVerify(key.public_key, signature: c.sign, plainText: pt_contact_vcard)
+                if let vcard = PMNIEzvcard.parseFirst(pt_contact_vcard) {
                     let types = vcard.getPropertyTypes()
                     for type in types {
                         switch type {
