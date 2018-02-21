@@ -25,6 +25,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactDetailsDisplayCell : String     = "contacts_details_display_cell"
     fileprivate let kContactDetailsUpgradeCell : String     = "contacts_details_upgrade_cell"
     fileprivate let kContactsDetailsShareCell: String       = "contacts_details_share_cell"
+    fileprivate let kContactsDetailsWarningCell: String     = "contacts_details_warning_cell"
     
     fileprivate let kEditContactSegue : String              = "toEditContactSegue"
     fileprivate let kToComposeSegue : String                = "toCompose"
@@ -133,6 +134,15 @@ extension ContactDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let s = viewModel.sections()[section]
         switch s {
+        case .type2_warning:
+            return viewModel.statusType2() ? 0 : 1
+        case .type3_warning:
+            if !viewModel.type3Error() {
+                return viewModel.statusType3() ? 0 : 1
+            }
+            return 0
+        case .type3_error:
+            return viewModel.type3Error() ? 1 : 0
         case .emails:
             return viewModel.getEmails().count
         case .cellphone:
@@ -149,7 +159,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             return viewModel.getUrls().count
         case .display_name, .upgrade, .share:
             return 1
-        case .encrypted_header, .delete:
+        case .email_header, .encrypted_header, .delete:
             return 0
         }
     }
@@ -158,7 +168,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView       
         let s = viewModel.sections()[section]
         switch s {
-        case .display_name:
+        case .email_header:
             let signed = viewModel.statusType2()
             cell?.ConfigHeader(title: NSLocalizedString("Contact Details", comment: "contact section title"), signed: signed)
         case .encrypted_header:
@@ -173,7 +183,7 @@ extension ContactDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let s = viewModel.sections()[section]
         switch s {
-        case .display_name, .share:
+        case .email_header, .share:
             return 38.0
         case .encrypted_header:
             if viewModel.hasEncryptedContacts() {
@@ -200,6 +210,26 @@ extension ContactDetailViewController: UITableViewDataSource {
             let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsShareCell, for: indexPath) as! ContactEditAddCell
             cell.configCell(value: NSLocalizedString("Share Contact", comment: "action"))
             cell.selectionStyle = .default
+            return cell
+        }
+        
+        if s == .type2_warning {
+            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath)
+//                as! ContactEditAddCell
+//            cell.configCell(value: NSLocalizedString("Share Contact", comment: "action"))
+            cell.selectionStyle = .none
+            return cell
+        } else if s == .type3_error {
+            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath)
+//                as! ContactEditAddCell
+//            cell.configCell(value: NSLocalizedString("Share Contact", comment: "action"))
+            cell.selectionStyle = .none
+            return cell
+        } else if s == .type3_warning {
+            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath)
+//                as! ContactEditAddCell
+//            cell.configCell(value: NSLocalizedString("Share Contact", comment: "action"))
+            cell.selectionStyle = .none
             return cell
         }
         
@@ -246,7 +276,8 @@ extension ContactDetailViewController: UITableViewDataSource {
             cell.configCell(title: url.newType.title, value: url.newUrl)
             cell.selectionStyle = .default
             
-        case .encrypted_header, .delete, .upgrade, .share:
+        case .email_header, .encrypted_header, .delete, .upgrade, .share,
+             .type2_warning, .type3_error, .type3_warning:
             break
         }
         return cell
@@ -317,9 +348,10 @@ extension ContactDetailViewController: UITableViewDelegate {
         let s = viewModel.sections()[indexPath.section]
         switch s {
         case .display_name, .emails, .cellphone, .home_address,
-             .information, .custom_field, .notes, .url:
+             .information, .custom_field, .notes, .url,
+             .type2_warning, .type3_error, .type3_warning:
             return UITableViewAutomaticDimension
-        case .encrypted_header, .delete:
+        case .email_header, .encrypted_header, .delete:
             return 0.0
         case .upgrade:
             return 280.0

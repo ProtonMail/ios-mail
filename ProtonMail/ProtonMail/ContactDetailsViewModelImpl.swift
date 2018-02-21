@@ -21,13 +21,14 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     
     var origUrls: [ContactEditUrl] = []
     
-    var verifyType2 : Bool = false
-    var verifyType3 : Bool = false
+    var verifyType2 : Bool = true
+    var verifyType3 : Bool = true
     
-    var decryptType3 : Bool = true
+    var decryptError : Bool = false
 
     //default
-    var typeSection: [ContactEditSectionType] = [.display_name,
+    var typeSection: [ContactEditSectionType] = [.email_header,
+                                                 .display_name,
                                                  .emails,
                                                  .encrypted_header,
                                                  .cellphone,
@@ -40,9 +41,13 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         super.init()
         self.contact = c
         if paidUser() {
-            typeSection = [.display_name,
+            typeSection = [.email_header,
+                           .type2_warning,
+                           .display_name,
                            .emails,
                            .encrypted_header,
+                           .type3_error,
+                           .type3_warning,
                            .cellphone,
                            .home_address,
                            .url,
@@ -51,7 +56,9 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                            .notes,
                            .share]
         } else {
-            typeSection = [.display_name,
+            typeSection = [.email_header,
+                           .type2_warning,
+                           .display_name,
                            .emails,
                            .encrypted_header,
                            .upgrade,
@@ -71,7 +78,19 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         return verifyType3
     }
     
+    override func type3Error() -> Bool {
+        return self.decryptError
+    }
+    
     override func hasEncryptedContacts() -> Bool {
+        if self.type3Error() {
+            return true
+        }
+        
+        if !self.statusType3() {
+            return true
+        }
+        
         if self.getPhones().count > 0 {
             return true
         }
@@ -109,8 +128,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
             
             origUrls = []
             
-            verifyType2 = false
-            verifyType3 = false
+            verifyType2 = true
+            verifyType3 = true
             self.setupEmails()
             return true
         }
@@ -142,6 +161,9 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     for key in userkeys {
                         self.verifyType2 = sharedOpenPGP.signVerify(detached: c.sign, publicKey: key.public_key, plainText: c.data)
                         if self.verifyType2 {
+                            if !PMNOpenPgp.checkPassphrase(sharedUserDataService.mailboxPassword!, forPrivateKey: key.private_key) {
+                                self.verifyType2 = false
+                            }
                             break
                         }
                     }
@@ -170,10 +192,10 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         do {
                             pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
                             signKey = key
-                            self.decryptType3 = true
+                            self.decryptError = false
                             break
                         } catch {
-                            self.decryptType3 = false
+                            self.decryptError = true
                         }
                     }
                 }

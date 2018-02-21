@@ -38,6 +38,10 @@ class ContactDetailsViewModel {
         fatalError("This method must be overridden")
     }
     
+    func type3Error() -> Bool {
+        fatalError("This method must be overridden")
+    }
+    
     func hasEncryptedContacts() -> Bool {
         fatalError("This method must be overridden")
     }

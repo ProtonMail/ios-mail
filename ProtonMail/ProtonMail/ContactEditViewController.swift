@@ -284,8 +284,10 @@ extension ContactEditViewController: UITableViewDataSource {
         let sections = self.viewModel.getSections()
         let s = sections[section]
         switch s {
-        case .display_name, .encrypted_header, .share:
+        case .email_header, .display_name, .encrypted_header, .share:
             return 0
+        case .type2_warning, .type3_error, .type3_warning:
+            return 1
         case .emails:
             return 1 + viewModel.getEmails().count
         case .cellphone:
@@ -433,7 +435,7 @@ extension ContactEditViewController: UITableViewDataSource {
         let sections = self.viewModel.getSections()
         let s = sections[section]
         switch s {
-        case .display_name, .encrypted_header:
+        case .email_header, .display_name, .encrypted_header:
             assert(false, "Code should not be here")
         case .emails:
             let emailCount = viewModel.getEmails().count
@@ -477,7 +479,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 return .delete
             }
-        case .notes, .delete, .upgrade, .share:
+        case .notes, .delete, .upgrade, .share, .type3_warning, .type3_error, .type2_warning:
             return .none
         }
         return .none
@@ -646,7 +648,7 @@ extension ContactEditViewController: UITableViewDelegate {
         let row = indexPath.row
         let s = sections[section]
         switch s {
-        case .display_name, .encrypted_header, .notes:
+        case .email_header, .display_name, .encrypted_header, .notes, .type2_warning, .type3_error, .type3_warning:
             break
         //assert(false, "Code should not be here")
         case .emails:

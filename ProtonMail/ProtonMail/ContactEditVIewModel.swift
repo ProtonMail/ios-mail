@@ -65,6 +65,10 @@ enum ContactEditSectionType : Int {
     case upgrade = 9
     case share = 10
     case url = 11 //links
+    case type2_warning = 12
+    case type3_error = 13
+    case type3_warning = 14
+    case email_header = 15
 }
 
 
