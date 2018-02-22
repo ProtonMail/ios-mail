@@ -25,7 +25,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     var verifyType3 : Bool = true
     
     var decryptError : Bool = false
-
+    
     //default
     var typeSection: [ContactEditSectionType] = [.email_header,
                                                  .display_name,
@@ -48,6 +48,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                            .encrypted_header,
                            .type3_error,
                            .type3_warning,
+                           .debuginfo,
                            .cellphone,
                            .home_address,
                            .url,
@@ -82,12 +83,22 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         return self.decryptError
     }
     
+    //TODO::need to be removed
+    override func debugging() -> Bool {
+        return true
+    }
+    
     override func hasEncryptedContacts() -> Bool {
         if self.type3Error() {
             return true
         }
         
         if !self.statusType3() {
+            return true
+        }
+        
+        //TODO::need to be removed
+        if self.debugging() {
             return true
         }
         
@@ -138,10 +149,12 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     
     private func setupEmails() {
         //  origEmails
+        self.start("Start Setup!")
         let cards = self.contact.getCardData()
         for c in cards {
             switch c.type {
             case .PlainText:
+                self.log(".PlainText")
                 if let vcard = PMNIEzvcard.parseFirst(c.data) {
                     let emails = vcard.getEmails()
                     var order : Int = 1
@@ -155,8 +168,11 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     }
                 }
                 break
-            case .EncryptedOnly: break
+            case .EncryptedOnly:
+                self.log(".EncryptedOnly -- shouldnt be here")
+                break
             case .SignedOnly:
+                self.log(".SignedOnly")
                 if let userkeys = sharedUserDataService.userInfo?.userKeys {
                     for key in userkeys {
                         self.verifyType2 = sharedOpenPGP.signVerify(detached: c.sign, publicKey: key.public_key, plainText: c.data)
@@ -182,7 +198,9 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 }
                 break
             case .SignAndEncrypt:
+                self.log(".SignAndEncrypt")
                 guard let firstUserkey = sharedUserDataService.userInfo?.firstUserKey() else {
+                    self.log("can't find first user key")
                     return; //with error
                 }
                 var pt_contact : String?
@@ -193,6 +211,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
                             signKey = key
                             self.decryptError = false
+                            self.log("Found Key!")
                             break
                         } catch {
                             self.decryptError = true
@@ -202,13 +221,19 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 
                 let key = signKey ?? firstUserkey
                 guard let pt_contact_vcard = pt_contact else {
+                    self.log("vcard is empty")
                     break
                 }
+                self.log("vcard body -------")
+                self.log(pt_contact_vcard)
+                self.log("------- end ")
                 
                 self.verifyType3 = sharedOpenPGP.signDetachedVerify(key.public_key, signature: c.sign, plainText: pt_contact_vcard)
                 if let vcard = PMNIEzvcard.parseFirst(pt_contact_vcard) {
+                    self.log("Parsed vcard")
                     let types = vcard.getPropertyTypes()
                     for type in types {
+                        self.log("Type:\(type)")
                         switch type {
                         case "Telephone":
                             let telephones = vcard.getTelephoneNumbers()
@@ -344,13 +369,17 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     if let note = vcard.getNote() {
                         let n = ContactEditNote(note: note.getNote(), isNew: false)
                         n.isNew = false
-                        origNotes.append(n)
-                        
+                        origNotes.append(n)    
                     }
+                    
+                }  else {
+                    self.log("can't parse contact vcard")
                 }
                 break
             }
         }
+        
+        self.end("end Logging")
     
         self.contact.needsRebuild = false
         let _ = self.contact.managedObjectContext?.saveUpstreamIfNeeded()

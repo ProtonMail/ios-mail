@@ -143,6 +143,8 @@ extension ContactDetailViewController: UITableViewDataSource {
             return 0
         case .type3_error:
             return viewModel.type3Error() ? 1 : 0
+        case .debuginfo:
+            return viewModel.debugging() ? 1 : 0
         case .emails:
             return viewModel.getEmails().count
         case .cellphone:
@@ -228,6 +230,11 @@ extension ContactDetailViewController: UITableViewDataSource {
             cell.configCell(warning: .signatureWarning)
             cell.selectionStyle = .none
             return cell
+        } else if s == .debuginfo {
+            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
+            cell.configCell(forlog: self.viewModel.logs)
+            cell.selectionStyle = .none
+            return cell
         }
         
         let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsDisplayCell, for: indexPath) as! ContactDetailsDisplayCell
@@ -274,7 +281,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             cell.selectionStyle = .default
             
         case .email_header, .encrypted_header, .delete, .upgrade, .share,
-             .type2_warning, .type3_error, .type3_warning:
+             .type2_warning, .type3_error, .type3_warning, .debuginfo:
             break
         }
         return cell
@@ -346,7 +353,7 @@ extension ContactDetailViewController: UITableViewDelegate {
         switch s {
         case .display_name, .emails, .cellphone, .home_address,
              .information, .custom_field, .notes, .url,
-             .type2_warning, .type3_error, .type3_warning:
+             .type2_warning, .type3_error, .type3_warning, .debuginfo:
             return UITableViewAutomaticDimension
         case .email_header, .encrypted_header, .delete:
             return 0.0

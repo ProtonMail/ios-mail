@@ -11,9 +11,9 @@ import Foundation
 
 typealias LoadingProgress = () -> Void
 
-class ContactDetailsViewModel {
+class ContactDetailsViewModel : ViewModelBase {
     
-    init() { }
+    override init() { }
     
     func paidUser() -> Bool {
         if let role = sharedUserDataService.userInfo?.role, role > 0 {
@@ -39,6 +39,10 @@ class ContactDetailsViewModel {
     }
     
     func type3Error() -> Bool {
+        fatalError("This method must be overridden")
+    }
+    
+    func debugging() -> Bool {
         fatalError("This method must be overridden")
     }
     

@@ -1148,6 +1148,8 @@
 		75C7FF3C1F2FE20C00F15792 /* String+Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7512AA461F18035500D84955 /* String+Alert+Extension.swift */; };
 		75C916C1203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C916C0203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift */; };
 		75C916C2203DBA9500A7FD1F /* ContactsDetailsWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C916C0203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift */; };
+		75C916C4203ECE1C00A7FD1F /* ViewModelBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C916C3203ECE1C00A7FD1F /* ViewModelBase.swift */; };
+		75C916C5203ECE1C00A7FD1F /* ViewModelBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C916C3203ECE1C00A7FD1F /* ViewModelBase.swift */; };
 		75CFA26F1B223DBB006E4465 /* SharedCacheBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */; };
 		75D0CA411C6BE97F00D9F21C /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */; };
 		75D3C2311F140BD9004B8FD7 /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9311A71C60900EB0CAF /* UserDataService.swift */; };
@@ -1822,6 +1824,7 @@
 		75C217591AD6F1B800978579 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		75C7FF391F2FE1F800F15792 /* String+Toast+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Toast+Extension.swift"; sourceTree = "<group>"; };
 		75C916C0203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsDetailsWarningCell.swift; sourceTree = "<group>"; };
+		75C916C3203ECE1C00A7FD1F /* ViewModelBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelBase.swift; sourceTree = "<group>"; };
 		75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharedCacheBase.swift; path = ../ProtonMail/SharedCacheBase.swift; sourceTree = "<group>"; };
 		75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAPI.swift; sourceTree = "<group>"; };
 		75DCB2051BA2A1560085BE8C /* RecipientCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientCell.swift; sourceTree = "<group>"; };
@@ -2917,6 +2920,7 @@
 				75E49EFE1CAB07BC00235ACC /* SignUp */,
 				75DD3E531E81BF94005A7B93 /* Settings */,
 				7547130F1DCD517E0084BF34 /* TwoFA */,
+				75C916C3203ECE1C00A7FD1F /* ViewModelBase.swift */,
 				7568F3321FCE0F2B00F3DE03 /* ViewModelTimer.swift */,
 				759339BF1ABB45C700535F1B /* ViewModelFactory.swift */,
 				7567B06C1B334FA400A72A1E /* ViewModelService.swift */,
@@ -4746,6 +4750,7 @@
 				754713111DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */,
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
 				75921C7B1F747BC90028DAC9 /* String+Mime.swift in Sources */,
+				75C916C4203ECE1C00A7FD1F /* ViewModelBase.swift in Sources */,
 				753E30A71F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */,
 				7566E4FA1FC3B0880036B36B /* MenuViewModel.swift in Sources */,
 				758625D31CD80C6D0037DFA7 /* SettingsNavigationController.swift in Sources */,
@@ -5655,6 +5660,7 @@
 				753E30A81F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */,
 				75DE7CC61CAAEA4900F5443E /* HumanCheckMenuViewController.swift in Sources */,
 				75DE7CC81CAAEA4900F5443E /* QuickViewViewController.swift in Sources */,
+				75C916C5203ECE1C00A7FD1F /* ViewModelBase.swift in Sources */,
 				7528FFF01FA7FEF6005F66A3 /* ContactEditFieldCell.swift in Sources */,
 				75DE7CCA1CAAEA4900F5443E /* TouchIDCell.swift in Sources */,
 				7566E4FB1FC3B0880036B36B /* MenuViewModel.swift in Sources */,

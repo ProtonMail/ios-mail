@@ -286,7 +286,7 @@ extension ContactEditViewController: UITableViewDataSource {
         switch s {
         case .email_header, .display_name, .encrypted_header, .share:
             return 0
-        case .type2_warning, .type3_error, .type3_warning:
+        case .type2_warning, .type3_error, .type3_warning, .debuginfo:
             return 1
         case .emails:
             return 1 + viewModel.getEmails().count
@@ -479,7 +479,8 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 return .delete
             }
-        case .notes, .delete, .upgrade, .share, .type3_warning, .type3_error, .type2_warning:
+        case .notes, .delete, .upgrade, .share,
+             .type3_warning, .type3_error, .type2_warning, .debuginfo:
             return .none
         }
         return .none
@@ -648,7 +649,8 @@ extension ContactEditViewController: UITableViewDelegate {
         let row = indexPath.row
         let s = sections[section]
         switch s {
-        case .email_header, .display_name, .encrypted_header, .notes, .type2_warning, .type3_error, .type3_warning:
+        case .email_header, .display_name, .encrypted_header, .notes,
+             .type2_warning, .type3_error, .type3_warning, .debuginfo:
             break
         //assert(false, "Code should not be here")
         case .emails:

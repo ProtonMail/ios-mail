@@ -69,6 +69,7 @@ enum ContactEditSectionType : Int {
     case type3_error = 13
     case type3_warning = 14
     case email_header = 15
+    case debuginfo = 16
 }
 
 

@@ -34,6 +34,11 @@ class ContactsDetailsWarningCell: UITableViewCell {
             self.errorDetails.text = NSLocalizedString("Decryption of this content failed", comment: "error details")
         }
     }
+    
+    func configCell(forlog: String) {
+        self.errorTitle.text = NSLocalizedString("Logs", comment: "error title")
+        self.errorDetails.text = forlog
+    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
