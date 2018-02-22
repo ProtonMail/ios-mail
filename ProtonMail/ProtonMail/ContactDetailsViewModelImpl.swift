@@ -48,7 +48,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                            .encrypted_header,
                            .type3_error,
                            .type3_warning,
-                           .debuginfo,
                            .cellphone,
                            .home_address,
                            .url,
@@ -149,12 +148,10 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     
     private func setupEmails() {
         //  origEmails
-        self.start("Start Setup!")
         let cards = self.contact.getCardData()
         for c in cards {
             switch c.type {
             case .PlainText:
-                self.log(".PlainText")
                 if let vcard = PMNIEzvcard.parseFirst(c.data) {
                     let emails = vcard.getEmails()
                     var order : Int = 1
@@ -169,10 +166,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 }
                 break
             case .EncryptedOnly:
-                self.log(".EncryptedOnly -- shouldnt be here")
                 break
             case .SignedOnly:
-                self.log(".SignedOnly")
                 if let userkeys = sharedUserDataService.userInfo?.userKeys {
                     for key in userkeys {
                         self.verifyType2 = sharedOpenPGP.signVerify(detached: c.sign, publicKey: key.public_key, plainText: c.data)
@@ -198,9 +193,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 }
                 break
             case .SignAndEncrypt:
-                self.log(".SignAndEncrypt")
                 guard let firstUserkey = sharedUserDataService.userInfo?.firstUserKey() else {
-                    self.log("can't find first user key")
                     return;
                 }
                 var pt_contact : String?
@@ -208,22 +201,15 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 
                 
                 if let userkeys = sharedUserDataService.userInfo?.userKeys {
-                    self.log("keys count: \(userkeys.count)")
                     for key in userkeys {
                         do {
                             if c.data.findKeyID(key.private_key) {
                                 pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
                                 signKey = key
                                 self.decryptError = false
-                                self.log("Found Key!")
-                                self.log("Key info -------")
-                                self.log("key_id: \(key.key_id)")
-                                self.log("fingerprint: \(key.fingerprint)")
-                                self.log("---------Key end")
                                 break
                             }
                         } catch {
-                            self.log("Key_ID Failed--\(key.key_id)")
                             self.decryptError = true
                         }
                     }
@@ -231,27 +217,14 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 
                 let key = signKey ?? firstUserkey
                 guard let pt_contact_vcard = pt_contact else {
-                    self.log("vcard is empty")
                     break
                 }
-                self.log("vcard body -------")
-                self.log(pt_contact_vcard)
-                self.log("------- end ")
                 
                 self.verifyType3 = sharedOpenPGP.signDetachedVerify(key.public_key, signature: c.sign, plainText: pt_contact_vcard)
                 
-                if self.verifyType3 {
-                    self.log("Signature passed!")
-                } else {
-                    self.log("Signature failed!")
-                }
-                
-                
                 if let vcard = PMNIEzvcard.parseFirst(pt_contact_vcard) {
-                    self.log("Parsed vcard")
                     let types = vcard.getPropertyTypes()
                     for type in types {
-                        self.log("Type:\(type)")
                         switch type {
                         case "Telephone":
                             let telephones = vcard.getTelephoneNumbers()
@@ -390,15 +363,10 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         origNotes.append(n)    
                     }
                     
-                }  else {
-                    self.log("can't parse contact vcard")
                 }
                 break
             }
         }
-        
-        self.end("end Logging")
-    
         self.contact.needsRebuild = false
         let _ = self.contact.managedObjectContext?.saveUpstreamIfNeeded()
     }
@@ -460,13 +428,15 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 if let userkeys = sharedUserDataService.userInfo?.userKeys {
                     for key in userkeys {
                         do {
-                            pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
-                            break
+                            if c.data.findKeyID(key.private_key) {
+                                pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
+                                break
+                            }
                         } catch {
-                            
                         }
                     }
                 }
+                
                 guard let pt_contact_vcard = pt_contact else {
                     break
                 }

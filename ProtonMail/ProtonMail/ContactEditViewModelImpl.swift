@@ -89,13 +89,15 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     if let userkeys = sharedUserDataService.userInfo?.userKeys {
                         for key in userkeys {
                             do {
-                                pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
-                                break
+                                if c.data.findKeyID(key.private_key) {
+                                    pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
+                                    break
+                                }
                             } catch {
-                                
                             }
                         }
                     }
+                    
                     guard let pt_contact_vcard = pt_contact else {
                         break
                     }
