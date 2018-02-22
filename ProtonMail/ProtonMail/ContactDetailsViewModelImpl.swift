@@ -201,23 +201,27 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 self.log(".SignAndEncrypt")
                 guard let firstUserkey = sharedUserDataService.userInfo?.firstUserKey() else {
                     self.log("can't find first user key")
-                    return; //with error
+                    return;
                 }
                 var pt_contact : String?
                 var signKey : Key?
+                
+                
                 if let userkeys = sharedUserDataService.userInfo?.userKeys {
                     self.log("keys count: \(userkeys.count)")
                     for key in userkeys {
                         do {
-                            pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
-                            signKey = key
-                            self.decryptError = false
-                            self.log("Found Key!")
-                            self.log("Key info -------")
-                            self.log("key_id: \(key.key_id)")
-                            self.log("fingerprint: \(key.fingerprint)")
-                            self.log("---------Key end")
-                            break
+                            if c.data.findKeyID(key.private_key) {
+                                pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
+                                signKey = key
+                                self.decryptError = false
+                                self.log("Found Key!")
+                                self.log("Key info -------")
+                                self.log("key_id: \(key.key_id)")
+                                self.log("fingerprint: \(key.fingerprint)")
+                                self.log("---------Key end")
+                                break
+                            }
                         } catch {
                             self.log("Key_ID Failed--\(key.key_id)")
                             self.decryptError = true

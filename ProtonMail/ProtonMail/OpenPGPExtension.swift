@@ -197,6 +197,11 @@ extension String {
         return out_decrypted;
     }
     
+    func findKeyID(_ privateKey : String) -> Bool {
+        let isMatch = PMNOpenPgp.findKeyid(self, privateKey: privateKey)
+        return isMatch
+    }
+    
     func encryptMessage(_ address_id: String, mailbox_pwd: String) throws -> String? {
         var out_encrypted : String?
         try ObjC.catchException {

@@ -121,6 +121,9 @@
                  signature:(nonnull NSString *)signature
                  plainText:(nonnull NSString *)plainText;
 
++ (BOOL)findKeyid:(nonnull NSString *)encryptText
+       privateKey:(nonnull NSString *)privateKey;
+
 - (nonnull PMNEncryptPackage *)encryptAttachment:(nonnull NSString *)addressId
                                    unencryptData:(nonnull NSData *)unencryptData
                                         fileName:(nonnull NSString *)fileName
