@@ -82,9 +82,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         return self.decryptError
     }
     
-    //TODO::need to be removed
     override func debugging() -> Bool {
-        return true
+        return false
     }
     
     override func hasEncryptedContacts() -> Bool {
@@ -93,11 +92,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         }
         
         if !self.statusType3() {
-            return true
-        }
-        
-        //TODO::need to be removed
-        if self.debugging() {
             return true
         }
         
