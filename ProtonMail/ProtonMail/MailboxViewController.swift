@@ -880,6 +880,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                     self.handleRequestError(error)
                 }
                 
+                var loadMore: Bool = false
                 if error == nil {
                     self.onlineTimerReset()
                     self.viewModel.resetNotificationMessage()
@@ -889,17 +890,26 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                     if let notices = res?["Notices"] as? [String] {
                         serverNotice.check(notices)
                     }
+                    
+                    if let more = res?["More"] as? Bool {
+                       loadMore = more
+                    }
                 }
                 
-                delay(1.0, closure: {
-                    self.refreshControl.endRefreshing()
-                    if self.fetchingStopped! == true {
-                        return;
-                    }
-                    self.showNoResultLabel()
-                    self.tableView.reloadData()
-                    let _ = self.checkHuman()
-                })
+                if loadMore {
+                     self.retry()
+                } else {
+                    delay(1.0, closure: {
+                        self.refreshControl.endRefreshing()
+                        if self.fetchingStopped! == true {
+                            return;
+                        }
+                        self.showNoResultLabel()
+                        self.tableView.reloadData()
+                        let _ = self.checkHuman()
+                    })
+                }
+                
             }
             
             if (updateTime.isNew) {
@@ -1316,7 +1326,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     internal func showNewMessageCount(_ count : Int) {
         if self.needToShowNewMessage == true {
             self.needToShowNewMessage = false
-            self.self.newMessageCount = 0
+            self.newMessageCount = 0
             if count > 0 {
                 self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
                 if count == 1 {
