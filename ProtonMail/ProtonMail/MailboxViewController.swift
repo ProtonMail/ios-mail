@@ -880,7 +880,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                     self.handleRequestError(error)
                 }
                 
-                var loadMore: Bool = false
+                var loadMore: Int = 0
                 if error == nil {
                     self.onlineTimerReset()
                     self.viewModel.resetNotificationMessage()
@@ -891,12 +891,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                         serverNotice.check(notices)
                     }
                     
-                    if let more = res?["More"] as? Bool {
+                    if let more = res?["More"] as? Int {
                        loadMore = more
                     }
                 }
                 
-                if loadMore {
+                if loadMore > 0 {
                      self.retry()
                 } else {
                     delay(1.0, closure: {

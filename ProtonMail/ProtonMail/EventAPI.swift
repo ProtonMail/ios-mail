@@ -62,7 +62,7 @@ struct RefreshStatus : OptionSet {
 final class EventCheckResponse : ApiResponse {
     var eventID : String = ""
     var refresh : RefreshStatus = .ok
-    var more : Bool = false
+    var more : Int = 0
     
     var messages : [[String : Any]]?
     var contacts : [[String : Any]]?
@@ -81,7 +81,7 @@ final class EventCheckResponse : ApiResponse {
         self.eventID = response["EventID"] as? String ?? ""
         self.messages =  response["Messages"] as? [[String : Any]]
         self.refresh = RefreshStatus(rawValue: response["Refresh"] as? Int ?? 0)
-        self.more = response["More"] as? Bool ?? false
+        self.more = response["More"] as? Int ?? 0
         
         self.userinfo = response["User"] as? [String : Any]
         
