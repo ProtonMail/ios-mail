@@ -275,14 +275,12 @@ class MessageDataService {
      :param: Time       latest message time
      :param: completion complete handler
      */
-    
     func fetchNewMessagesForLocation(_ location: MessageLocation, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, _eventsRes, _hasEventsError in
                 if let eventsRes = _eventsRes {
-                    PMLog.D("\(eventsRes)")
-                    if eventsRes.isRefresh || (_hasEventsError && eventsRes.code == 18001) {
+                    if eventsRes.refresh.contains(.all) ||  eventsRes.refresh.contains(.mail) || (_hasEventsError && eventsRes.code == 18001) {
                         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
                         getLatestEventID.call() { task, _IDRes, hasIDError in
                             if let IDRes = _IDRes, !hasIDError && !IDRes.eventID.isEmpty {
@@ -302,8 +300,10 @@ class MessageDataService {
                                 completion?(task, nil, nil)
                             }
                         }
-                    }
-                    else if eventsRes.messages != nil {
+                    } else if eventsRes.refresh.contains(.contacts) {
+                        sharedContactDataService.clean()
+                        sharedContactDataService.fetchContacts(completion: nil)
+                    } else if eventsRes.messages != nil {
                         self.processIncrementalUpdateMessages(notificationMessageID, messages: eventsRes.messages!, task: task) { task, res, error in
                             if error == nil {
                                 lastUpdatedStore.lastEventID = eventsRes.eventID
@@ -319,7 +319,7 @@ class MessageDataService {
                                         outMessages.append(msg)
                                     }
                                 }
-                                completion?(task, ["Messages": outMessages, "Notices": eventsRes.notices ?? [String]()], nil)
+                                completion?(task, ["Messages": outMessages, "Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
                             }
                             else {
                                 completion?(task, nil, error)
@@ -337,7 +337,7 @@ class MessageDataService {
                         if _hasEventsError {
                             completion?(task, nil, eventsRes.error)
                         } else {
-                            completion?(task, ["Notices": eventsRes.notices ?? [String]()], nil)
+                            completion?(task, ["Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
                         }
                     }
                 } else {
@@ -351,56 +351,68 @@ class MessageDataService {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response, hasError in
-                if response == nil {
-                    completion?(task, nil, nil)
-                } else if response!.isRefresh || (hasError && response!.code == 18001) {
-                    
-                    let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
-                    getLatestEventID.call() { task, response, hasError in
-                        if response != nil && !hasError && !response!.eventID.isEmpty {
-                            let completionWrapper: CompletionBlock = { task, responseDict, error in
-                                if error == nil {
-                                    lastUpdatedStore.clear();
-                                    lastUpdatedStore.lastEventID = response!.eventID
+                if let eventsRes = response {
+                    if eventsRes.refresh.contains(.all) ||  eventsRes.refresh.contains(.mail) || (hasError && eventsRes.code == 18001) {
+                        let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
+                        getLatestEventID.call() { task, _IDRes, hasIDError in
+                            if let IDRes = _IDRes, !hasIDError && !IDRes.eventID.isEmpty {
+                                let completionWrapper: CompletionBlock = { task, responseDict, error in
+                                    if error == nil {
+                                        lastUpdatedStore.clear()
+                                        lastUpdatedStore.lastEventID = IDRes.eventID
+                                    }
+                                    completion?(task, responseDict, error)
                                 }
+                                self.cleanMessage()
+                                sharedContactDataService.clean()
+                                self.fetchMessagesForLabels(labelID, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
+                                sharedContactDataService.fetchContacts(completion: nil)
+                                sharedLabelsDataService.fetchLabels();
+                            } else {
+                                completion?(task, nil, nil)
+                            }
+                        }
+                    } else if eventsRes.refresh.contains(.contacts) {
+                        sharedContactDataService.clean()
+                        sharedContactDataService.fetchContacts(completion: nil)
+                    } else if eventsRes.messages != nil {
+                        self.processIncrementalUpdateMessages(notificationMessageID, messages: eventsRes.messages!, task: task) { task, res, error in
+                            if error == nil {
+                                lastUpdatedStore.lastEventID = eventsRes.eventID
+                                self.processMessageCounts(eventsRes.messageCounts)
+                                self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
+                                self.processIncrementalUpdateLabels(eventsRes.labels)
+                                self.processIncrementalUpdateContacts(eventsRes.contacts)
+                                
+                                var outMessages : [Any] = [];
+                                for message in eventsRes.messages! {
+                                    let msg = MessageEvent(event: message)
+                                    if msg.Action == 1 {
+                                        outMessages.append(msg)
+                                    }
+                                }
+                                completion?(task, ["Messages": outMessages, "Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
+                            }
+                            else {
                                 completion?(task, nil, error)
                             }
-                            self.cleanMessage()
-                            sharedContactDataService.clean()
-                            self.fetchMessagesForLabels(labelID, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-                            sharedContactDataService.fetchContacts(completion: nil)
-                            sharedLabelsDataService.fetchLabels();
                         }
                     }
-                    completion?(task, nil, nil)
-                }
-                else if response!.messages != nil {
-                    self.processIncrementalUpdateMessages(notificationMessageID, messages: response!.messages!, task: task) { task, res, error in
-                        if error == nil {
-                            lastUpdatedStore.lastEventID = response!.eventID
-                            completion?(task, nil, nil)
+                    else {
+                        if eventsRes.code == 1000 {
+                            lastUpdatedStore.lastEventID = eventsRes.eventID
+                            self.processMessageCounts(eventsRes.messageCounts)
+                            self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
+                            self.processIncrementalUpdateLabels(eventsRes.labels)
+                            self.processIncrementalUpdateContacts(eventsRes.contacts)
                         }
-                        else {
-                            completion?(task, nil, error)
+                        if hasError {
+                            completion?(task, nil, eventsRes.error)
+                        } else {
+                            completion?(task, ["Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
                         }
                     }
-                    
-                    self.processMessageCounts(response!.messageCounts)
-                    
-                    self.processIncrementalUpdateUserInfo(response!.userinfo)
-                    self.processIncrementalUpdateLabels(response!.labels)
-                    self.processIncrementalUpdateContacts(response!.contacts)
-                }
-                else {
-                    if response!.code == 1000 {
-                        lastUpdatedStore.lastEventID = response!.eventID
-                        
-                        self.processMessageCounts(response!.messageCounts)
-                        
-                        self.processIncrementalUpdateUserInfo(response!.userinfo)
-                        self.processIncrementalUpdateLabels(response!.labels)
-                        self.processIncrementalUpdateContacts(response!.contacts)
-                    }
+                } else {
                     completion?(task, nil, nil)
                 }
             }

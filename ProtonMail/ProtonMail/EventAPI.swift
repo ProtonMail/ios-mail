@@ -50,9 +50,19 @@ final class EventLatestIDResponse : ApiResponse {
     }
 }
 
+struct RefreshStatus : OptionSet {
+    let rawValue: Int
+    //255 means throw out client cache and reload everything from server, 1 is mail, 2 is contacts
+    static let ok       = RefreshStatus(rawValue: 0)
+    static let mail     = RefreshStatus(rawValue: 1 << 0)
+    static let contacts = RefreshStatus(rawValue: 1 << 1)
+    static let all      = RefreshStatus(rawValue: 0xFF)
+}
+
 final class EventCheckResponse : ApiResponse {
     var eventID : String = ""
-    var isRefresh : Bool = false
+    var refresh : RefreshStatus = .ok
+    var more : Bool = false
     
     var messages : [[String : Any]]?
     var contacts : [[String : Any]]?
@@ -70,8 +80,8 @@ final class EventCheckResponse : ApiResponse {
         
         self.eventID = response["EventID"] as? String ?? ""
         self.messages =  response["Messages"] as? [[String : Any]]
-        
-        self.isRefresh = response["Refresh"] as? Bool ?? false
+        self.refresh = RefreshStatus(rawValue: response["Refresh"] as? Int ?? 0)
+        self.more = response["More"] as? Bool ?? false
         
         self.userinfo = response["User"] as? [String : Any]
         
