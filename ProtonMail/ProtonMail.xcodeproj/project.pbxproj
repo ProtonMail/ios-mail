@@ -92,6 +92,12 @@
 		70B28D0A1A9BA0AC002D9EC8 /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */; };
 		70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */; };
 		70FC90DA1A9BC11F00498B42 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FC90D91A9BC11F00498B42 /* String+Extension.swift */; };
+		7501D285204853D8009689C8 /* VCardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCardExtension.swift */; };
+		7501D286204853D8009689C8 /* VCardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCardExtension.swift */; };
+		7501D287204853D8009689C8 /* VCardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCardExtension.swift */; };
+		7501D288204853D8009689C8 /* VCardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCardExtension.swift */; };
+		7501D28A20485614009689C8 /* VCardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCardExtension.swift */; };
+		7501D28B20485615009689C8 /* VCardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCardExtension.swift */; };
 		750254DA1AB8157800050B12 /* GeneralSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */; };
 		750729531DEFA52D0021483D /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750729521DEFA52D0021483D /* MimeTypes.swift */; };
 		750729541DEFA52E0021483D /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750729521DEFA52D0021483D /* MimeTypes.swift */; };
@@ -1507,6 +1513,7 @@
 		70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+ProtonMail.swift"; path = "../ProtonMail/UIColor+ProtonMail.swift"; sourceTree = "<group>"; };
 		70FC90D91A9BC11F00498B42 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		72AC1531F9DC8F37E025D0ED /* Pods-ProtonMailDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.release.xcconfig"; sourceTree = "<group>"; };
+		7501D284204853D8009689C8 /* VCardExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCardExtension.swift; sourceTree = "<group>"; };
 		750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
 		750729521DEFA52D0021483D /* MimeTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MimeTypes.swift; path = ../ProtonMail/MimeTypes.swift; sourceTree = "<group>"; };
 		750778CD1BE98900009F516C /* UserAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
@@ -2012,6 +2019,7 @@
 				078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */,
 				75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */,
 				753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */,
+				7501D284204853D8009689C8 /* VCardExtension.swift */,
 			);
 			name = Encryption;
 			path = ../ProtonMail;
@@ -4815,6 +4823,7 @@
 				756CDE3D1D9C763D004455F6 /* PasswordUtils.swift in Sources */,
 				755F92171C7E685700BAEDF9 /* OnboardingViewController.swift in Sources */,
 				7528FFD41FA7FEC3005F66A3 /* Array+Extension.swift in Sources */,
+				7501D285204853D8009689C8 /* VCardExtension.swift in Sources */,
 				073FE01B1A955F4A00825980 /* APIService+ContactExtension.swift in Sources */,
 				75A84D4F1FF7569500F2A54B /* ContactFieldType.swift in Sources */,
 				750AAAC41C23E5CF00BAC444 /* RecaptchaViewController.swift in Sources */,
@@ -4915,6 +4924,7 @@
 				75252D7B1FCF62B7007972EF /* AddressAPI.swift in Sources */,
 				75252D261FCF5DC0007972EF /* UserAPI.swift in Sources */,
 				75252CF51FCF5ABC007972EF /* APIService+DefinedExtension.swift in Sources */,
+				7501D28B20485615009689C8 /* VCardExtension.swift in Sources */,
 				75252D431FCF5F2D007972EF /* ContactEditVIewModel.swift in Sources */,
 				75252DA81FCF69FF007972EF /* EmailExtension.swift in Sources */,
 				75252D341FCF5E8A007972EF /* ViewModelServiceImpl+Share.swift in Sources */,
@@ -5080,6 +5090,7 @@
 				75252D751FCF623D007972EF /* URL+Extension.swift in Sources */,
 				75252D071FCF5B65007972EF /* MessageAction.swift in Sources */,
 				75252D4E1FCF5FAE007972EF /* SettingsAPI.swift in Sources */,
+				7501D28A20485614009689C8 /* VCardExtension.swift in Sources */,
 				75252D841FCF6347007972EF /* Date+Extension.swift in Sources */,
 				75252D511FCF5FE9007972EF /* MessageExtension.swift in Sources */,
 				75252D631FCF60F4007972EF /* String+Mime.swift in Sources */,
@@ -5234,6 +5245,7 @@
 				75482B871F7F09E100B0BFFB /* APIService+DefinedExtension.swift in Sources */,
 				75482B881F7F09E100B0BFFB /* MailboxViewModel.swift in Sources */,
 				750AAEB81FA91EE200CBFCA3 /* ContactEditVIewModel.swift in Sources */,
+				7501D286204853D8009689C8 /* VCardExtension.swift in Sources */,
 				752800321FA800B4005F66A3 /* ContactsAPI.swift in Sources */,
 				752800301FA8008A005F66A3 /* Dictionary+Extension.swift in Sources */,
 				75482B891F7F09E100B0BFFB /* MBContactCollectionViewEntryCell.m in Sources */,
@@ -5394,6 +5406,7 @@
 				7528003B1FA80107005F66A3 /* UIAlertAction+Extension.swift in Sources */,
 				753E5ABF1F181C6A0090C0F9 /* MailboxViewModel.swift in Sources */,
 				750AAEB71FA91EE200CBFCA3 /* ContactEditVIewModel.swift in Sources */,
+				7501D288204853D8009689C8 /* VCardExtension.swift in Sources */,
 				7512AA141F17F8C200D84955 /* MBContactCollectionViewEntryCell.m in Sources */,
 				753E5AC51F181E500090C0F9 /* LabelAPI.swift in Sources */,
 				7512AA291F17FDAA00D84955 /* ContactDataService.swift in Sources */,
@@ -5725,6 +5738,7 @@
 				7528FFEE1FA7FEF6005F66A3 /* ContactEditCell+Delegates.swift in Sources */,
 				75DE7D2C1CAAEA4900F5443E /* FeedbackTableViewCell.swift in Sources */,
 				75DE7D2F1CAAEA4900F5443E /* MenuItem.swift in Sources */,
+				7501D287204853D8009689C8 /* VCardExtension.swift in Sources */,
 				75DE7D301CAAEA4900F5443E /* SettingsViewController.swift in Sources */,
 				75A84D501FF7569600F2A54B /* ContactFieldType.swift in Sources */,
 				75DE7D321CAAEA4900F5443E /* LabelTableViewCell.swift in Sources */,
