@@ -21,11 +21,15 @@ class SpamScoreWarningView: PMView {
     }
     
     func fitHeight() -> CGFloat {
-        let s = messageLabel.sizeThatFits(self.frame.size)
+        messageLabel.sizeToFit()
+        var size = self.frame.size
+        size.width -= 40
+        let s = messageLabel.sizeThatFits(size)
         return s.height + 16
     }
     
     override func setup() {
+        messageLabel.lineBreakMode = .byWordWrapping
         messageLabel.numberOfLines = 0
         messageLabel.sizeToFit()
         messageLabel.text = ""

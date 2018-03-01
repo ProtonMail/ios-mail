@@ -14,23 +14,23 @@ final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
     override init() {
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return LabelAPI.Path + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return LabelAPI.V_LabelFetchRequest
     }
 }
 
 final class GetLabelsResponse : ApiResponse {
-    var labels : [Dictionary<String, Any>]?
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        self.labels =  response["Labels"]  as? [Dictionary<String, Any>]
+    var labels : [[String : Any]]?
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        self.labels =  response["Labels"]  as? [[String : Any]]
         return true
     }
 }
@@ -46,22 +46,22 @@ final class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
         self.messages = messages
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = [String : Any]()
         out["MessageIDs"] = messages
         return out
     }
     
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return LabelAPI.Path + "/apply/" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return LabelAPI.V_ApplyLabelToMessageRequest
     }
 }
@@ -77,7 +77,7 @@ final class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
         self.messages = messages
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = [String : Any]()
         out["MessageIDs"] = messages
         //PMLog.D(self.JSONStringify(out, prettyPrinted: true))
@@ -85,15 +85,15 @@ final class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return LabelAPI.Path + "/remove/" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return LabelAPI.V_RemoveLabelFromMessageRequest
     }
 }
@@ -111,7 +111,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         self.exclusive = exclusive
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         
         let out : [String : Any] = [
             "Name": self.labelName,
@@ -123,15 +123,15 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return LabelAPI.Path + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return LabelAPI.V_CreateLabelRequest
     }
 }
@@ -150,7 +150,7 @@ final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         self.color = color
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
             "Name": self.labelName,
             "Color": self.color,
@@ -159,24 +159,24 @@ final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return LabelAPI.Path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return LabelAPI.V_UpdateLabelRequest
     }
 }
 
 final class CreateLabelRequestResponse : ApiResponse {
-    var label:Dictionary<String, Any>?
+    var label:[String : Any]?
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        self.label = response["Label"] as? Dictionary<String, Any>
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        self.label = response["Label"] as? [String : Any]
         return true
     }
 }
@@ -191,15 +191,15 @@ final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
         labelID = lable_id
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .delete
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return LabelAPI.Path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return LabelAPI.V_DeleteLabelRequest
     }
 }

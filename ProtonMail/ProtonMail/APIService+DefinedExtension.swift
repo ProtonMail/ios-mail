@@ -30,35 +30,31 @@ extension APIService {
         }
     }
     
-    struct GeneralResponse {
-        static let errorCode = "Code"
-        static let errorMsg = "Error"
-        static let errorDesc = "ErrorDescription"
-    }
-    
-    public typealias CompletionBlock = (_ task: URLSessionDataTask?, _ response: Dictionary<String, Any>?, _ error: NSError?) -> Void
-    public typealias CompletionFetchDetail = (_ task: URLSessionDataTask?, _ response: Dictionary<String, Any>?, _ message:Message?, _ error: NSError?) -> Void
-    
-    // MARK: - Internal variables
-    
-    internal typealias AFNetworkingFailureBlock = (URLSessionDataTask?, Error?) -> Void
-    internal typealias AFNetworkingSuccessBlock = (URLSessionDataTask?, Any?) -> Void
-    
-    
-    internal typealias AuthCredentialBlock = (AuthCredential?, NSError?) -> Void
-    internal typealias AuthInfo = (accessToken: String?, expiresId: TimeInterval?, refreshToken: String?, userID: String?)
-    
-    
-    internal typealias AuthComplete = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ hasError : NSError?) -> Void
-    internal typealias AuthRefreshComplete = (_ task: URLSessionDataTask?, _ auth:AuthCredential?, _ hasError : NSError?) -> Void
-    
-    
-    
     enum AuthStatus {
         case resCheck
         case ask2FA
     }
     
-    internal typealias AuthCompleteBlock = (URLSessionDataTask?, String?, AuthStatus, NSError?) -> Void
+    struct GeneralResponse {
+        static let errorCode                    = "Code"
+        static let errorMsg                     = "Error"
+        static let errorDesc                    = "ErrorDescription"
+    }
+    
+    internal typealias CompletionBlock = (_ task: URLSessionDataTask?, _ response: [String : Any]?, _ error: NSError?) -> Void
+    internal typealias CompletionFetchDetail = (_ task: URLSessionDataTask?, _ response: [String : Any]?, _ message:Message?, _ error: NSError?) -> Void
+
+    // MARK: - Internal variables
+    
+    internal typealias AFNetworkingFailureBlock = (URLSessionDataTask?, Error?) -> Void
+    internal typealias AFNetworkingSuccessBlock = (URLSessionDataTask?, Any?) -> Void
+
+    internal typealias AuthInfo                 = (accessToken: String?, expiresId: TimeInterval?, refreshToken: String?, userID: String?)
+    internal typealias AuthComplete             = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ hasError : NSError?) -> Void
+    internal typealias AuthRefreshComplete      = (_ task: URLSessionDataTask?, _ auth:AuthCredential?, _ hasError : NSError?) -> Void
+
+    
+    internal typealias AuthCredentialBlock      = (AuthCredential?, NSError?) -> Void
+    internal typealias AuthCompleteBlock        = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ authStatus: AuthStatus, _ error : NSError?) -> Void
 
 }

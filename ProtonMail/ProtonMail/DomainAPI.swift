@@ -15,30 +15,30 @@ final class GetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
     override init() {
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         return nil
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return DomainsAPI.Path + "/available"
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return DomainsAPI.V_AvailableDomainsRequest
     }
 }
 
 final class AvailableDomainsResponse : ApiResponse {
     var domains : [String]?
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.domains = response?["Domains"] as? [String]
         return true
     }

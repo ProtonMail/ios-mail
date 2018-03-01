@@ -75,22 +75,25 @@ extension UpdateTime : NSCoding {
 final class LastUpdatedStore : SharedCacheBase {
     
     fileprivate struct Key {
-        static let labelsUnreadCount = "LabelsUnreadCount"  //for inbox & labels
-        static let lastLabelsUpdated = "LastLabelsUpdated" //for inbox & labels
+        static let labelsUnreadCount   = "LabelsUnreadCount"  //for inbox & labels
+        static let lastLabelsUpdated   = "LastLabelsUpdated" //for inbox & labels
         
-        static let unreadMessageCount = "unreadMessageCount"  //total unread
+        static let unreadMessageCount  = "unreadMessageCount"  //total unread
         
-        static let lastEventID = "lastEventID"  //
+        static let lastEventID         = "lastEventID"  //
         static let lastCantactsUpdated = "LastCantactsUpdated" //
         
+        //added 1.8.0 new contacts
+        static let isContactsCached    = "isContactsCached"  //
+        
         //Removed at 1.5.5 still need for cleanup
-        static let mailboxUnreadCount = "MailboxUnreadCount"
-        static let lastInboxesUpdated = "LastInboxesUpdated"
+        static let mailboxUnreadCount  = "MailboxUnreadCount"
+        static let lastInboxesUpdated  = "LastInboxesUpdated"
     }
     
-    var lastLabelsUpdateds: Dictionary<String, UpdateTime> {
+    var lastLabelsUpdateds: [String : UpdateTime] {
         get {
-            return (getShared().customObjectForKey(Key.lastLabelsUpdated) as? Dictionary<String, UpdateTime>) ?? [:]
+            return (getShared().customObjectForKey(Key.lastLabelsUpdated) as? [String : UpdateTime]) ?? [:]
         }
         set {
             getShared().setCustomValue(newValue as NSCoding?, forKey: Key.lastLabelsUpdated)
@@ -98,9 +101,9 @@ final class LastUpdatedStore : SharedCacheBase {
         }
     }
     
-    var labelsUnreadCounts: Dictionary<String, Int> {
+    var labelsUnreadCounts: [String : Int] {
         get {
-            return (getShared().customObjectForKey(Key.labelsUnreadCount) as? Dictionary<String, Int>) ?? [:]
+            return (getShared().customObjectForKey(Key.labelsUnreadCount) as? [String : Int]) ?? [:]
         }
         set {
             getShared().setCustomValue(newValue as NSCoding?, forKey: Key.labelsUnreadCount)
@@ -115,6 +118,16 @@ final class LastUpdatedStore : SharedCacheBase {
         }
         set {
             getShared().setValue(newValue, forKey: Key.lastEventID)
+            getShared().synchronize()
+        }
+    }
+    
+    var contactsCached: Int {
+        get {
+            return getShared().integer(forKey: Key.isContactsCached)
+        }
+        set {
+            getShared().setValue(newValue, forKey: Key.isContactsCached)
             getShared().synchronize()
         }
     }
@@ -140,6 +153,7 @@ final class LastUpdatedStore : SharedCacheBase {
         getShared().removeObject(forKey: Key.lastEventID)
         getShared().removeObject(forKey: Key.unreadMessageCount)
         getShared().removeObject(forKey: Key.labelsUnreadCount)
+        getShared().removeObject(forKey: Key.isContactsCached)
         
         //removed
         getShared().removeObject(forKey: Key.mailboxUnreadCount)

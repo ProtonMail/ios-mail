@@ -1,29 +1,13 @@
 // MailboxViewController.swift
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
+// Created by Yanfeng Zhang on 8/16/15.
+// Copyright © 2016 ProtonMail. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
 
-
-class UndoMessage {
-    var messageID : String!
-    var oldLocation : MessageLocation!
-    
-    required init(msgID:String!, oldLocation : MessageLocation!) {
-        self.messageID = msgID
-        self.oldLocation = oldLocation
-    }
-}
 
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
@@ -57,7 +41,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
     
-    fileprivate var viewModel: MailboxViewModel!
+    internal var viewModel: MailboxViewModel!
+    //TODO:: this need release the delegate after use
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
     // this is for when user click the notification email
@@ -75,9 +60,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate var undoMessage : UndoMessage?
     
     fileprivate var isShowUndo : Bool = false
-    //private var notificationMessageID : String? = nil
-    
-    
     fileprivate var isCheckingHuman: Bool = false
     
     fileprivate var ratingMessage : Message?
@@ -239,19 +221,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        if (self.tableView.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
-            self.tableView.separatorInset = UIEdgeInsets.zero
-        }
-        
-        if (self.tableView.responds(to: #selector(setter: UIView.layoutMargins))) {
-            self.tableView.layoutMargins = UIEdgeInsets.zero
-        }
+        self.tableView.zeroMargin()
     }
     
     fileprivate func addSubViews() {
         self.navigationTitleLabel.backgroundColor = UIColor.clear
-        self.navigationTitleLabel.font = UIFont.robotoRegular(size: UIFont.Size.h2)
+        self.navigationTitleLabel.font = Fonts.h2.regular
         self.navigationTitleLabel.textAlignment = NSTextAlignment.center
         self.navigationTitleLabel.textColor = UIColor.white
         self.navigationTitleLabel.text = self.title ?? NSLocalizedString("INBOX", comment: "Title")
@@ -373,13 +348,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     
     // MARK: - Button Targets
-    
     @objc internal func composeButtonTapped() {
         if checkHuman() {
             self.performSegue(withIdentifier: kSegueToCompose, sender: self)
         }
     }
-    
     @objc internal func searchButtonTapped() {
         self.performSegue(withIdentifier: kSegueToSearchController, sender: self)
     }
@@ -907,6 +880,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                     self.handleRequestError(error)
                 }
                 
+                var loadMore: Int = 0
                 if error == nil {
                     self.onlineTimerReset()
                     self.viewModel.resetNotificationMessage()
@@ -916,17 +890,26 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                     if let notices = res?["Notices"] as? [String] {
                         serverNotice.check(notices)
                     }
+                    
+                    if let more = res?["More"] as? Int {
+                       loadMore = more
+                    }
                 }
                 
-                delay(1.0, closure: {
-                    self.refreshControl.endRefreshing()
-                    if self.fetchingStopped! == true {
-                        return;
-                    }
-                    self.showNoResultLabel()
-                    self.tableView.reloadData()
-                    let _ = self.checkHuman()
-                })
+                if loadMore > 0 {
+                     self.retry()
+                } else {
+                    delay(1.0, closure: {
+                        self.refreshControl.endRefreshing()
+                        if self.fetchingStopped! == true {
+                            return;
+                        }
+                        self.showNoResultLabel()
+                        self.tableView.reloadData()
+                        let _ = self.checkHuman()
+                    })
+                }
+                
             }
             
             if (updateTime.isNew) {
@@ -1247,7 +1230,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         animation.duration = 0.25
         animation.type = kCATransitionFade
         self.navigationController?.navigationBar.layer.add(animation, forKey: "fadeText")
-        if let t = text, t.characters.count > 0 {
+        if let t = text, t.count > 0 {
             self.title = t
             self.navigationTitleLabel.text = t
         } else {
@@ -1343,7 +1326,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     internal func showNewMessageCount(_ count : Int) {
         if self.needToShowNewMessage == true {
             self.needToShowNewMessage = false
-            self.self.newMessageCount = 0
+            self.newMessageCount = 0
             if count > 0 {
                 self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
                 if count == 1 {
@@ -1494,12 +1477,7 @@ extension MailboxViewController: UITableViewDataSource {
     }
     
     @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
-            cell.separatorInset = UIEdgeInsets.zero
-        }
-        if (cell.responds(to: #selector(setter: UIView.layoutMargins))) {
-            cell.layoutMargins = UIEdgeInsets.zero
-        }
+        cell.zeroMargin()
         fetchMessagesIfNeededForIndexPath(indexPath)
     }
 }

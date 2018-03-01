@@ -1,0 +1,6 @@
+framework module ZSSRichTextEditor {
+  umbrella header "ZSSRichTextEditor-umbrella.h"
+
+  export *
+  module * { export * }
+}

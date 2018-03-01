@@ -46,7 +46,7 @@ class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
         self.verifer = verifer
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         
         let auth : [String : Any] = [
             "Version" : 4,
@@ -70,15 +70,15 @@ class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
         return false
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_CreateUsersRequest
     }
 }
@@ -86,10 +86,10 @@ class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
 class GetUserInfoResponse : ApiResponse {
     var userInfo : UserInfo?
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        guard let res = response["User"] as? Dictionary<String, Any> else {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        guard let res = response["User"] as? [String : Any] else {
             let err = NSError.badUserInfoResponse("\(response)")
-            err.uploadFabricAnswer(FetchUserInfoErrorTitle)
+            err.upload(toFabric: FetchUserInfoErrorTitle)
             return false
         }
         self.userInfo = UserInfo(response: res)
@@ -103,19 +103,19 @@ class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
     override init() {
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         return nil
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_GetUserInfoRequest
     }
 }
@@ -126,19 +126,19 @@ class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
     override init() {
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         return nil
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override open func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path + "/human"
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_GetHumanRequest
     }
 }
@@ -146,7 +146,7 @@ class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
 class GetHumanCheckResponse : ApiResponse {
     var token : String?
     var type : [String]?
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.type = response["VerifyMethods"] as? [String]
         self.token = response["Token"] as? String
         return true
@@ -162,20 +162,20 @@ class HumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
         self.type = type
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] =  ["Token":self.token, "TokenType":self.type ]
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path + "/human"
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_HumanCheckRequest
     }
 }
@@ -188,23 +188,23 @@ class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
         self.userName = userName;
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         return nil
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path + "/available/" + userName
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_CheckUserExistRequest
     }
 }
@@ -212,8 +212,8 @@ class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
 class CheckUserExistResponse : ApiResponse {
     var isAvailable : Bool?
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        PMLog.D(response.JSONStringify(true))
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        PMLog.D(response.json(prettyPrinted: true))
         isAvailable =  response["Available"] as? Bool
         return true
     }
@@ -222,23 +222,23 @@ class CheckUserExistResponse : ApiResponse {
 
 class DirectRequest<T : ApiResponse> : ApiRequest<T> {
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         return nil
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path + "/direct"
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_DirectRequest
     }
 }
@@ -246,8 +246,8 @@ class DirectRequest<T : ApiResponse> : ApiRequest<T> {
 class DirectResponse : ApiResponse {
     var isSignUpAvailable : Int = 1
     var signupFunctions : [String]?
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        PMLog.D(response.JSONStringify(true))
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        PMLog.D(response.json(prettyPrinted: true))
         isSignUpAvailable =  response["Direct"] as? Int ?? 1
         
         if let functions = response["VerifyMethods"] as? [String] {
@@ -288,7 +288,7 @@ class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
         self.type = type
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let dest = type == .email ? ["Address" : destination] : ["Phone" : destination]
         let out : [String : Any] = [
             "Username" : userName,
@@ -299,19 +299,19 @@ class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override open func getRequestPath() -> String {
+    override func path() -> String {
         return UsersAPI.Path + "/code"
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_SendVerificationCodeRequest
     }
 }
@@ -330,15 +330,15 @@ class GetUserPublicKeysRequest<T : ApiResponse> : ApiRequest<T> {
         }
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return requestPath
     }
     
-    override func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return UsersAPI.V_GetUserPublicKeysRequest
     }
 }
@@ -346,7 +346,7 @@ class GetUserPublicKeysRequest<T : ApiResponse> : ApiRequest<T> {
 class PublicKeysResponse : ApiResponse {
 
     var publicKeys : [String : String] = [String : String]()
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         for (k,v) in response {
             if k != "Code" {
                 publicKeys[k] = (v as? String) ?? ""
@@ -359,7 +359,7 @@ class PublicKeysResponse : ApiResponse {
 class EmailsCheckResponse : PublicKeysResponse {
     var hasOutsideEmails : Bool = false
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         if super.ParseResponse(response) {
             for (_, v) in publicKeys {
                 if v.isEmpty {

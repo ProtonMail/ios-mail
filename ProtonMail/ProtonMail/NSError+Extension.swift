@@ -16,7 +16,6 @@
 
 import Foundation
 
-
 extension NSError {
     
     convenience init(domain: String, code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) {
@@ -33,11 +32,11 @@ extension NSError {
         self.init(domain: domain, code: code, userInfo: userInfo)
     }
     
-    public class func protonMailError(_ code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
+    class func protonMailError(_ code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(domain: protonMailErrorDomain(), code: code, localizedDescription: localizedDescription, localizedFailureReason: localizedFailureReason, localizedRecoverySuggestion: localizedRecoverySuggestion)
     }
     
-    public class func protonMailErrorDomain(_ subdomain: String? = nil) -> String {
+    class func protonMailErrorDomain(_ subdomain: String? = nil) -> String {
         var domain = Bundle.main.bundleIdentifier ?? "ch.protonmail"
         
         if let subdomain = subdomain {
@@ -45,8 +44,8 @@ extension NSError {
         }
         return domain
     }
-    
-    public func getCode() -> Int {
+ 
+    func getCode() -> Int {
         var defaultCode : Int = code;
         if defaultCode == Int.max {
             if let detail = self.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
@@ -56,14 +55,14 @@ extension NSError {
         return defaultCode
     }
     
-    public class func unknowError() -> NSError {
+    class func unknowError() -> NSError {
         return apiServiceError(
             code: -1,
             localizedDescription: NSLocalizedString("Unknow Error", comment: "Description"),
             localizedFailureReason: NSLocalizedString("Unknow Error", comment: "Description"))
     }
     
-    public func isInternetError() -> Bool {
+    func isInternetError() -> Bool {
         var isInternetIssue = false
         if let _ = self.userInfo ["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
         } else {
@@ -77,5 +76,5 @@ extension NSError {
         return isInternetIssue
     }
     
+    
 }
-

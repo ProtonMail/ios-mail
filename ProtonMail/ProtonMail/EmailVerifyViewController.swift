@@ -175,7 +175,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             }
-            print("\(isOK),   \(String(describing: error))")
+            PMLog.D("\(isOK),   \(String(describing: error))")
         }
     }
     

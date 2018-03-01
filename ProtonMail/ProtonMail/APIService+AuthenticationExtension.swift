@@ -141,7 +141,7 @@ extension APIService {
                 if hasError {
                     var needsRetry : Bool = false
                     if let err = res?.error {
-                        err.uploadFabricAnswer(AuthErrorTitle)
+                        err.upload(toFabric : AuthErrorTitle)
                         if err.code == NSURLErrorTimedOut ||
                             err.code == NSURLErrorNotConnectedToInternet ||
                             err.code == NSURLErrorCannotConnectToHost ||

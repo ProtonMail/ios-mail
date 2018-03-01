@@ -92,19 +92,15 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     }
     
     func changeStyleToReadDesign() {
-        //self.contentView.backgroundColor = UIColor.ProtonMail.MessageCell_Read_Color
         self.backgroundColor = UIColor.ProtonMail.MessageCell_Read_Color
-        self.title.font = UIFont.robotoLight(size: UIFont.Size.h4)
-        //self.sender.font = UIFont.robotoLight(size: UIFont.Size.h6)
-        self.time.font = UIFont.robotoLight(size: UIFont.Size.h6)
+        self.title.font = Fonts.h4.light
+        self.time.font = Fonts.h6.light
     }
     
     func changeStyleToUnreadDesign() {
-        //self.contentView.backgroundColor = UIColor.ProtonMail.MessageCell_UnRead_Color
         self.backgroundColor = UIColor.ProtonMail.MessageCell_UnRead_Color
-        self.title.font = UIFont.robotoMedium(size: UIFont.Size.h4)
-        //self.sender.font = UIFont.robotoMedium(size: UIFont.Size.h6)
-        self.time.font = UIFont.robotoMedium(size: UIFont.Size.h6)
+        self.title.font = Fonts.h4.medium
+        self.time.font = Fonts.h6.medium
     }
     
     

@@ -61,13 +61,13 @@ class SearchViewController: ProtonMailViewController {
         searchTextField.autocapitalizationType = UITextAutocapitalizationType.none
         searchTextField.returnKeyType = .search
         searchTextField.delegate = self
-        searchTextField.font = UIFont.robotoRegular(size: UIFont.Size.h4)
+        searchTextField.font = Fonts.h4.regular
         searchTextField.textColor = UIColor.white
         searchTextField.tintColor = UIColor.white
         searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Search", comment: "Title"), attributes:
             [
                 NSAttributedStringKey.foregroundColor: UIColor.white,
-                NSAttributedStringKey.font: UIFont.robotoLight(size: UIFont.Size.h3)
+                NSAttributedStringKey.font: Fonts.h3.light
             ])
         
         managedObjectContext = sharedCoreDataService.newMainManagedObjectContext()
@@ -92,14 +92,7 @@ class SearchViewController: ProtonMailViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        if (self.tableView.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
-            self.tableView.separatorInset = UIEdgeInsets.zero
-        }
-        
-        if (self.tableView.responds(to: #selector(setter: UIView.layoutMargins))) {
-            self.tableView.layoutMargins = UIEdgeInsets.zero
-        }
+        self.tableView.zeroMargin()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -315,14 +308,7 @@ extension SearchViewController: UITableViewDataSource {
     }
     
     @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
-            cell.separatorInset = UIEdgeInsets.zero
-        }
-        
-        if (cell.responds(to: #selector(setter: UIView.layoutMargins))) {
-            cell.layoutMargins = UIEdgeInsets.zero
-        }
-        
+        cell.zeroMargin()
         fetchMessagesIfNeededForIndexPath(indexPath)
     }
 }

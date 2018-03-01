@@ -10,27 +10,27 @@ import Foundation
 
 // MARK : update domain order
 final class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {
-    let newOrder : Array<Int>!
+    let newOrder : [Int]!
     
-    init(adds:Array<Int>!) {
+    init(adds : [Int]!) {
         self.newOrder = adds
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = ["Order" : self.newOrder]
         //PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return SettingsAPI.Path + "/addressorder" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateDomainRequest
     }
 }
@@ -44,20 +44,20 @@ final class UpdateNotify<T : ApiResponse> : ApiRequest<T> {
         self.notify = notify
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = ["Notify" : self.notify]
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return SettingsAPI.Path + "/notify" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateNotifyRequest
     }
 }
@@ -81,7 +81,7 @@ final class UpdateNotificationEmail<T : ApiResponse> : ApiRequest<T> {
         self.tfaCode = tfaCode
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         
         var out : [String : Any] = [
             "ClientEphemeral" : self.clientEphemeral,
@@ -96,15 +96,15 @@ final class UpdateNotificationEmail<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return SettingsAPI.Path + "/noticeemail" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateNotifyRequest
     }
 }
@@ -117,21 +117,21 @@ final class UpdateNewsRequest<T : ApiResponse> : ApiRequest<T> {
         self.news = news
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let receiveNews = self.news == true ? 1 : 0
         let out : [String : Any] = ["News" : receiveNews]
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return SettingsAPI.Path + "/news" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateNewsRequest
     }
 }
@@ -144,20 +144,20 @@ final class UpdateDisplayNameRequest<T : ApiResponse> : ApiRequest<T> {
         self.displayName = displayName
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = ["DisplayName" : displayName]
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return SettingsAPI.Path + "/display" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateDisplayNameRequest
     }
 }
@@ -170,20 +170,20 @@ final class UpdateShowImagesRequest<T : ApiResponse> : ApiRequest<T> {
         self.status = status
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = ["ShowImages" : status]
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return SettingsAPI.Path + "/showimages" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateShowImagesRequest
     }
 }
@@ -196,20 +196,20 @@ final class UpdateSwiftLeftAction<T : ApiResponse> : ApiRequest<T> {
         self.newAction = action;
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = ["SwipeLeft" : self.newAction.rawValue]
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return SettingsAPI.Path + "/swipeleft" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateSwipeLeftRequest
     }
 }
@@ -222,20 +222,20 @@ final class UpdateSwiftRightAction<T : ApiResponse> : ApiRequest<T> {
         self.newAction = action;
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = ["SwipeRight" : self.newAction.rawValue]
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return SettingsAPI.Path + "/swiperight" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateSwipeRightRequest
     }
 }
@@ -269,7 +269,7 @@ final class UpdateLoginPassword<T : ApiResponse> : ApiRequest<T> {
         self.verifer = verifer
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         
         let auth : [String : Any] = [
             "Version" : 4,
@@ -292,15 +292,15 @@ final class UpdateLoginPassword<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .put
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return SettingsAPI.Path + "/password" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateLoginPasswordRequest
     }
 }

@@ -23,10 +23,15 @@ class PersistentQueue {
         static let object = "object"
     }
     
+    fileprivate var queueURL: URL
+    fileprivate var queueName: String
+    
     fileprivate var queue: [Any] {
         didSet {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.background).sync { () -> Void in
                 let data = NSKeyedArchiver.archivedData(withRootObject: self.queue)
+                
+                
                 if !((try? data.write(to: self.queueURL, options: [.atomic])) != nil) {
                     PMLog.D("Unable to save queue: \(self.queue as NSArray)\n to \(self.queueURL.absoluteString)")
                 } else {
@@ -35,15 +40,13 @@ class PersistentQueue {
             }
         }
     }
-    fileprivate var queueURL: URL
-    fileprivate var queueName: String
     
     /// Number of objects in the Queue
     var count: Int {
         return self.queue.count
     }
     
-    func getQueue() -> [Any]
+    func queueArray() -> [Any]
     {
         return self.queue
     }

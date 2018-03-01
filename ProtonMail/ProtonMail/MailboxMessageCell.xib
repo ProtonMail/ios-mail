@@ -8,14 +8,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="Roboto-Medium.ttf">
-            <string>Roboto-Medium</string>
-        </array>
-        <array key="Roboto-Regular.ttf">
-            <string>Roboto-Regular</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -31,16 +23,16 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="Seu-kN-EFT"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="16"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                         <color key="textColor" red="0.24604520201683044" green="0.24387916922569275" blue="0.30707395076751709" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yr1-Vg-xT6">
-                        <rect key="frame" x="580" y="14" width="50" height="14"/>
+                        <rect key="frame" x="580" y="14" width="50" height="14.5"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="g31-AH-9IZ"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                         <color key="textColor" red="0.43910825252532959" green="0.45715746283531189" blue="0.52097928524017334" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -104,7 +96,7 @@
                             <constraint firstAttribute="height" constant="14" id="Zw4-wr-4Ql"/>
                             <constraint firstAttribute="width" constant="42" id="sRT-xH-c9B"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="9"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
                         <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="highlightedColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </label>

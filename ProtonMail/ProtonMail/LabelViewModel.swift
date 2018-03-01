@@ -9,16 +9,17 @@
 import Foundation
 import CoreData
 
+
 class LabelMessageModel {
-    public var label : Label!
-    public var totalMessages : [Message] = []
-    public var originalSelected : [Message] = []
-    public var origStatus : Int = 0
-    public var currentStatus : Int = 0
+    var label : Label!
+    var totalMessages : [Message] = []
+    var originalSelected : [Message] = []
+    var origStatus : Int = 0
+    var currentStatus : Int = 0
 }
 
 class LabelViewModel {
-    
+
     public typealias OkBlock = () -> Void
     public typealias ErrorBlock = (_ code : Int, _ errorMessage : String) -> Void
     

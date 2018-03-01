@@ -9,7 +9,7 @@
 import Foundation
 
 
-open class DeviceUtil {
+final class DeviceUtil {
     
     fileprivate struct DeviceKey {
         static let token = "DeviceTokenKey"
@@ -19,7 +19,7 @@ open class DeviceUtil {
         return UIDevice.current.identifierForVendor?.uuidString ?? ""
     }
     
-     static var deviceToken: String? {
+    static var deviceToken: String? {
         get {
             return SharedCacheBase.getDefault().string(forKey: DeviceKey.token)
         }
@@ -27,7 +27,7 @@ open class DeviceUtil {
             SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.token)
         }
     }
-
+    
 }
 
 
@@ -39,7 +39,7 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         self.token = token
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let tokenString = token.stringFromToken()
         DeviceUtil.deviceToken = tokenString
         
@@ -71,7 +71,7 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             ver = version
         }
-        let parameters : Dictionary<String, Any> = [
+        let parameters : [String : Any] = [
             "DeviceUID" : DeviceUtil.deviceID,
             "DeviceToken" : tokenString,
             "DeviceName" : UIDevice.current.name,
@@ -84,19 +84,19 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         return parameters
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override open func getRequestPath() -> String {
+    override func path() -> String {
         return DeviceAPI.Path
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return DeviceAPI.V_RegisterDeviceRequest
     }
 }
@@ -108,7 +108,7 @@ final class UnRegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
     override init() {
     }
 
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         if let deviceToken = DeviceUtil.deviceToken {
             let parameters = [
                 "device_uid": DeviceUtil.deviceID,
@@ -119,15 +119,15 @@ final class UnRegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         return nil
     }
 
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .delete
     }
 
-    override open func getRequestPath() -> String {
+    override func path() -> String {
         return DeviceAPI.Path
     }
 
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return DeviceAPI.V_UnRegisterDeviceRequest
     }
 }

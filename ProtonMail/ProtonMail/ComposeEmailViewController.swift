@@ -19,7 +19,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     func inactiveViewModel() {
         self.stopAutoSave()
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: NSNotification.Name.UIApplicationWillResignActive,
+                                                  object:nil)
         
         self.dismissKeyboard()
         if self.presentingViewController != nil {
@@ -57,6 +59,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     fileprivate let kPasswordSegue : String = "to_eo_password_segue"
     
+    fileprivate var isShowingConfirm : Bool = false
+    
     deinit {
         if let wv = self.webView {
             wv.delegate = nil
@@ -93,6 +97,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         // update content values
         updateMessageView()
+        
+        // load all contacts
         self.contacts = sharedContactDataService.allContactVOs()
         retrieveAllContacts()
         
@@ -134,10 +140,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     
     internal func retrieveAllContacts() {
-        sharedContactDataService.getContactVOs { (contacts, error) -> Void in
+        sharedContactDataService.getContactVOs { (contacts, error) in
             if let error = error {
                 PMLog.D(" error: \(error)")
             }
+            
+            //TODO::
             self.contacts = contacts
             
             self.composeView.toContactPicker.reloadData()
@@ -151,11 +159,15 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             switch self.viewModel.messageAction!
             {
             case .openDraft, .reply, .replyAll:
-                self.focus()
+                if !self.isShowingConfirm {
+                    self.focus()
+                }
                 self.composeView.notifyViewSize(true)
                 break
             default:
-                self.composeView.toContactPicker.becomeFirstResponder()
+                if !self.isShowingConfirm {
+                    self.composeView.toContactPicker.becomeFirstResponder()
+                }
                 break
             }
         }
@@ -164,7 +176,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     internal func updateEmbedImages() {
         if let atts = viewModel.getAttachments() {
             for att in atts {
-                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
+                if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
                     att.base64AttachmentData({ (based64String) in
                         if !based64String.isEmpty {
                             self.updateEmbedImage(byCID: "cid:\(content_id)", blob:  "data:\(att.mimeType);base64,\(based64String)")
@@ -190,7 +202,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     fileprivate func updateMessageView() {
-        self.composeView.updateFromValue(self.viewModel.getDefaultAddress()?.email ?? "", pickerEnabled: true)
+        self.composeView.updateFromValue(self.viewModel.getDefaultSendAddress()?.email ?? "", pickerEnabled: true)
         self.composeView.subject.text = self.viewModel.getSubject()
         self.shouldShowKeyboard = false
         self.setHTML(self.viewModel.getHtmlBody())
@@ -231,7 +243,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
-        let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
+        let navigationBarTitleFont = Fonts.h2.light
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: navigationBarTitleFont
@@ -308,16 +320,16 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         present(alertController, animated: true, completion: nil)
     }
     
-    func sendMessage () {
+    internal func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
-            if self.composeView.hasOutSideEmails && self.encryptionPassword.characters.count <= 0 {
+            if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
                 let emails = self.composeView.allEmails
                 //show loading
-                ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+                ActivityIndicatorHelper.showActivityIndicator(at: view)
                 let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
                 api.call({ (task, response: EmailsCheckResponse?, hasError : Bool) in
                     //hide loading
-                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                     if let res = response, res.hasOutsideEmails == false {
                         self.sendMessageStepTwo()
                     } else {
@@ -330,7 +342,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         delay(0.3) {
             self.sendMessageStepTwo()
         }
-        
     }
     
     internal func sendMessageStepTwo() {
@@ -363,6 +374,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     @IBAction func cancel_clicked(_ sender: UIBarButtonItem) {
         let dismiss: (() -> Void) = {
+            self.isShowingConfirm = false
             self.dismissKeyboard()
             if self.presentingViewController != nil {
                 self.dismiss(animated: true, completion: nil)
@@ -372,6 +384,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
         
         if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
+            self.isShowingConfirm = true
             let alertController = UIAlertController(title: NSLocalizedString("Confirmation", comment: "Title"),
                                                     message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft", comment: "Action"), style: .default, handler: { (action) -> Void in
@@ -380,7 +393,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
                 self.viewModel.updateDraft()
                 dismiss()
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+            
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: { (action) ->
+                Void in
+                self.isShowingConfirm = false
+            }))
+            
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft", comment: "Action"), style: .destructive, handler: { (action) -> Void in
                 self.stopAutoSave()
                 self.viewModel.deleteDraft()
@@ -410,7 +428,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
     }
     
-    @objc func autoSaveTimer() {
+    @objc func autoSaveTimer()
+    {
         self.collectDraft()
         self.viewModel.updateDraft()
     }
@@ -436,7 +455,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         PMLog.D(edited)
         if let atts = viewModel.getAttachments() {
             for att in atts {
-                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
+                if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
                     PMLog.D(content_id)
                     if orignal.contains(content_id) {
                         if !edited.contains(content_id) {
@@ -492,16 +511,22 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             let alertController = UIAlertController(title: NSLocalizedString("Change sender address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
             let multi_domains = self.viewModel.getAddresses()
-            let defaultAddr = self.viewModel.getDefaultAddress()
+            let defaultAddr = self.viewModel.getDefaultSendAddress()
             for addr in multi_domains {
                 if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
                     needsShow = true
                     alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
-                        if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
-                            self.updateSignature("\(signature)")
+                        if addr.send == 0 {
+                            let alertController = String(format: NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error"), addr.email).alertController()
+                            alertController.addOKAction()
+                            self.present(alertController, animated: true, completion: nil)
+                        } else {
+                            if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
+                                self.updateSignature("\(signature)")
+                            }
+                            self.viewModel.updateAddressID(addr.address_id)
+                            self.composeView.updateFromValue(addr.email, pickerEnabled: true)
                         }
-                        self.viewModel.updateAddressID(addr.address_id)
-                        self.composeView.updateFromValue(addr.email, pickerEnabled: true)
                     }))
                 }
             }
@@ -686,7 +711,7 @@ extension ComposeEmailViewController: AttachmentsTableViewControllerDelegate {
     func attachments(_ attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
         self.collectDraft()
         
-        if let content_id = attachment.getContentID(), !content_id.isEmpty && attachment.isInline() {
+        if let content_id = attachment.contentID(), !content_id.isEmpty && attachment.inline() {
             self.removeEmbedImage(byCID: "cid:\(content_id)")
         }
         

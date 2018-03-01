@@ -13,19 +13,16 @@ import Fabric
 import Crashlytics
 
 
-let AuthErrorTitle : String = "AuthRefresh-Error"
-let QueueErrorTitle : String = "Queue-Error"
-let CacheErrorTitle : String = "LocalCache-Error"
-let SendingErrorTitle : String = "Sending-Error"
-let ContactsErrorTitle : String = "Contacts-Error"
-
+let AuthErrorTitle : String          = "AuthRefresh-Error"
+let QueueErrorTitle : String         = "Queue-Error"
+let CacheErrorTitle : String         = "LocalCache-Error"
+let SendingErrorTitle : String       = "Sending-Error"
+let ContactsErrorTitle : String      = "Contacts-Error"
 let FetchUserInfoErrorTitle : String = "UserInfo-Error"
 
 extension NSError {
     
-
-    func uploadFabricAnswer(_ title : String ) -> Void {
-        
+    func upload(toFabric title : String ) -> Void {
         var ver = "1.0.0"
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             ver = version

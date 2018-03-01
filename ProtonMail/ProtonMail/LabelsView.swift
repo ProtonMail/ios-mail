@@ -54,31 +54,31 @@ class LabelsView: PMView {
         labelView1.numberOfLines = 0;
         labelView1.layer.borderWidth = 1
         labelView1.layer.cornerRadius = 2
-        labelView1.font = UIFont.robotoLight(size: 9)
+        labelView1.font = Fonts.h7.light
         labelView1.lineBreakMode = .byTruncatingTail
         
         labelView2.numberOfLines = 0;
         labelView2.layer.borderWidth = 1
         labelView2.layer.cornerRadius = 2
-        labelView2.font = UIFont.robotoLight(size: 9)
+        labelView2.font = Fonts.h7.light
         labelView2.lineBreakMode = .byTruncatingTail
         
         labelView3.numberOfLines = 0;
         labelView3.layer.borderWidth = 1
         labelView3.layer.cornerRadius = 2
-        labelView3.font = UIFont.robotoLight(size: 9)
+        labelView3.font = Fonts.h7.light
         labelView3.lineBreakMode = .byTruncatingTail
         
         labelView4.numberOfLines = 0;
         labelView4.layer.borderWidth = 1
         labelView4.layer.cornerRadius = 2
-        labelView4.font = UIFont.robotoLight(size: 9)
+        labelView4.font = Fonts.h7.light
         labelView4.lineBreakMode = .byTruncatingTail
         
         labelView5.numberOfLines = 0;
         labelView5.layer.borderWidth = 1
         labelView5.layer.cornerRadius = 2
-        labelView5.font = UIFont.robotoLight(size: 9)
+        labelView5.font = Fonts.h7.light
         labelView5.lineBreakMode = .byTruncatingTail
         
         labelViews.append(labelView1)
@@ -100,7 +100,7 @@ class LabelsView: PMView {
         imageViews.append(image5)
         
         leftLabelView.textAlignment = .left
-        leftLabelView.font = UIFont.robotoLight(size: UIFont.Size.h6)
+        leftLabelView.font = Fonts.h6.light
         leftLabelView.numberOfLines = 1;
         leftLabelView.textColor = UIColor(hexColorCode: "#838897")
         leftLabelView.lineBreakMode = .byTruncatingTail
@@ -176,7 +176,7 @@ class LabelsView: PMView {
                     } else {
                         if labels.count > i {
                             if check > sizeLimit {
-                                if let text = labelView.text?.trim(), text.characters.count > 0 {
+                                if let text = labelView.text?.trim(), text.count > 0 {
                                     labelView.text = "  " + text[0] + "  "
                                 }
                                 

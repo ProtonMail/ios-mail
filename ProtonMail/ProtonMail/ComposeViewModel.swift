@@ -49,7 +49,6 @@ class ComposeViewModel {
     
     func getSubject() -> String {
         return self.subject
-        //return self.message?.subject ?? ""
     }
     
     func setSubject(_ sub : String) {
@@ -122,11 +121,11 @@ class ComposeViewModel {
         fatalError("This method must be overridden")
     }
     
-    func getAddresses () -> Array<Address> {
+    func getAddresses () -> [Address] {
         fatalError("This method must be overridden")
     }
    
-    func getDefaultAddress () -> Address? {
+    func getDefaultSendAddress() -> Address? {
         fatalError("This method must be overridden")
     }
     

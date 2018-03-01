@@ -1,0 +1,503 @@
+/* no object error, local only , this could be not translated! */
+"<no object>" = "<нет объекта>";
+
+/* Title */
+"ARCHIVE" = "АРХИВ";
+
+/* new contacts add Anniversary */
+"Add Anniversary" = "Добавить годовщину";
+
+/* new contacts add Birthday */
+"Add Birthday" = "Добавить день рождения";
+
+/* new contacts add Nickname */
+"Add Nickname" = "Добавить псевдоним";
+
+/* new contacts add Organization */
+"Add Organization" = "Добавить организацию";
+
+/* Action */
+"Add Star" = "В избранное";
+
+/* new contacts add Title */
+"Add Title" = "Добавить название";
+
+/* default vcard types */
+"Address" = "Адрес";
+
+/* Error */
+"Alert" = "Внимание";
+
+/* Title */
+"All Mail" = "Все письма";
+
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "Годовщина";
+
+/* Title */
+"Archive" = "Архив";
+
+/* Description */
+"Authentication Failed Wrong username or password" = "Ошибка аутентификации: неправильное имя пользователя или пароль";
+
+/* settings protection section title */
+"Auto Lock Time" = "Время автоблокировки";
+
+/* settings general section title */
+"Auto Show Images" = "Автоматически показывать изображения";
+
+/* Error */
+"Bad auth cache" = "Неверный кэш аутентификации";
+
+/* Description */
+"Bad parameter" = "Неверный параметр";
+
+/* Description */
+"Bad parameter: %@" = "Неверный параметр: %@";
+
+/* Description */
+"Bad path" = "Неверный путь";
+
+/* Description */
+"Bad response" = "Неверный ответ";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "День рождения";
+
+/* update notification email error
+   update password error */
+"Can't create a SRP Client" = "Не удаётся создать SRP-клиент";
+
+/* update notification email error
+   update password error */
+"Can't create a SRP verifier!" = "Не удаётся создать SRP-верификатор!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls ID!" = "Не удаётся получить Modulus ID!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls!" = "Не удаётся получить Modulus!";
+
+/* update notification email error
+   update password error */
+"Can't get user auth info" = "Не удалось получить информацию пользователя для аутентификации";
+
+/* Description */
+"Can't not find the value from the response body" = "Не удаётся найти значение из тела ответа";
+
+/* Title */
+"Cc:" = "Копия:";
+
+/* update password error title */
+"Change Password" = "Смена пароля";
+
+/* settings protection section title */
+"Change Pin" = "Изменить PIN";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Изменить действие при сдвиге влево";
+
+/* settings swipe actions section action description */
+"Change right swipe action" = "Изменить действие при сдвиге вправо";
+
+/* settings general section title */
+"Clear Local Message Cache" = "Очистить локальный кэш сообщений";
+
+/* Action */
+"Close" = "Закрыть";
+
+/* Title */
+"DRAFTS" = "ЧЕРНОВИКИ";
+
+/* Title */
+"Date:" = "Дата:";
+
+/* Title */
+"Debug" = "Режим отладки";
+
+/* Title */
+"Deleted" = "Удалённые";
+
+/* Title */
+"Display Name" = "Отображаемое имя";
+
+/* Action
+   Title */
+"Draft" = "Черновик";
+
+/* Action */
+"Dutch" = "Голландский";
+
+/* default vcard types */
+"Email" = "Адрес эл. почты";
+
+/* settings protection section title */
+"Enable Pin Protection" = "Включить защиту PIN-кодом";
+
+/* settings protection section title */
+"Enable TouchID" = "Включить TouchID";
+
+/* Title */
+"Encrypted for outside" = "Зашифровано для сторонних пользователей";
+
+/* Title */
+"Encrypted for outside reply" = "Зашифровано для внешних ответов";
+
+/* Title */
+"Encrypted from outside" = "Зашифровано извне ProtonMail";
+
+/* Title */
+"Encrypted from outside pgp inline" = "Зашифровано вне ProtonMail, используя pgp-inline";
+
+/* Title */
+"Encrypted from outside pgp mime" = "Зашифровано вне ProtonMail, используя pgp-mime";
+
+/* Action */
+"English" = "Английский";
+
+/* settings debug section title */
+"Error Logs" = "Журнал ошибок";
+
+/* Description */
+"Failed to initialize the application's saved data" = "Не удалось инициализировать сохранённые данные приложения";
+
+/* default vcard types */
+"Fax" = "Факс";
+
+/* Action */
+"Forward" = "Переслать";
+
+/* Title */
+"Forwarded message" = "Пересланное сообщение";
+
+/* Action */
+"French" = "Французский";
+
+/* Title */
+"From:" = "От:";
+
+/* Title */
+"Fwd:" = "Fwd:";
+
+/* Title */
+"General Settings" = "Основные настройки";
+
+/* Action */
+"German" = "Немецкий";
+
+/* Title */
+"INBOX" = "ВХОДЯЩИЕ";
+
+/* Title */
+"Inbox" = "Входящие";
+
+/* Error */
+"Invalid Password" = "Неправильный пароль";
+
+/* Error */
+"Invalid UserName" = "Неправильное имя пользователя";
+
+/* update notification email error
+   update password error when input invalid username */
+"Invalid UserName!" = "Неправильное имя пользователя!";
+
+/* Error */
+"Invalid credential" = "Неверные учётные данные";
+
+/* update notification email error
+   update password error */
+"Invalid hashed password!" = "Неверный хешированный пароль!";
+
+/* Action */
+"Italian" = "Итальянский";
+
+/* Title */
+"Labels/Folders" = "Ярлыки/Папки";
+
+/* Title */
+"Language" = "Язык";
+
+/* Description */
+"Local cache can't find mailbox password" = "Невозможно найти в локальном кэше пароль почтового ящика";
+
+/* settings general section title */
+"Login Password" = "Пароль для входа";
+
+/* settings general section title */
+"Mailbox Password" = "Пароль почтового ящика";
+
+/* Title */
+"Manage Labels/Folders" = "Управление ярлыками/папками";
+
+/* settings debug section title */
+"Message Queue" = "Очередь сообщений";
+
+/* Title */
+"Message Swipe Actions" = "Действия при жестах на сообщении";
+
+/* default vcard types */
+"Mobile" = "Мобильный";
+
+/* Title */
+"Mobile Signature" = "Подпись для мобильного клиента";
+
+/* Action */
+"Move to AllMail" = "Переместить ко всем письмам";
+
+/* Action */
+"Move to Archive" = "Переместить в Архив";
+
+/* Action */
+"Move to Draft" = "Переместить к черновикам";
+
+/* Action */
+"Move to Inbox" = "Переместить во Входящие";
+
+/* Action */
+"Move to Outbox" = "Переместить в Исходящие";
+
+/* Action */
+"Move to Spam" = "Переместить к спаму";
+
+/* Action */
+"Move to Trash" = "Переместить в корзину";
+
+/* Title */
+"Multiple Addresses" = "Несколько адресов";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Псевдоним";
+
+/* Description */
+"No managed object context" = "Нет управляемого контекста объектов";
+
+/* Description */
+"No managed object context." = "Нет управляемого контекста объектов.";
+
+/* this is a system object can't find, this could be not trasnlated */
+"No managedObjectContext" = "Нет managedObjectContext";
+
+/* settings general section title */
+"Notification Email" = "Эл. почта для уведомлений";
+
+/* Title */
+"On" = "Вкл";
+
+/* Action */
+"OpenDraft" = "Открыть черновик";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Организация";
+
+/* default vcard types */
+"Other" = "Другое";
+
+/* Title */
+"Outbox" = "Исходящие";
+
+/* update notification email error
+   update password error */
+"Password update failed" = "Не удалось изменить пароль";
+
+/* default vcard types */
+"Personal" = "Личное";
+
+/* default vcard types */
+"Phone" = "Телефон";
+
+/* Title */
+"Plain text" = "Простой текст";
+
+/* Action */
+"Polish" = "Польский";
+
+/* Action */
+"Portuguese Brazil" = "Португальский (Бразилия)";
+
+/* Title */
+"Protection" = "Защита";
+
+/* settings protection section title */
+"Protection Entire App" = "Защита всего приложения";
+
+/* Title */
+"ProtonMail encrypted emails" = "Зашифрованная электронная почта ProtonMail";
+
+/* Title */
+"Re:" = "Re:";
+
+/* Action */
+"Reply" = "Ответить";
+
+/* Action */
+"ReplyAll" = "Ответить всем";
+
+/* Action */
+"Russian" = "Русский";
+
+/* Title */
+"SENT" = "ОТПРАВЛЕННЫЕ";
+
+/* Title */
+"SPAM" = "СПАМ";
+
+/* Error */
+"SRP Client" = "SRP-клиент";
+
+/* Error */
+"SRP Server" = "SRP-сервер";
+
+/* Title */
+"STARRED" = "ИЗБРАННЫЕ";
+
+/* Title */
+"Send plain but stored enc" = "Отправить простым, но сохранить зашифрованным";
+
+/* Description */
+"Server proofs not valid!" = "Сервер не прошел проверку!";
+
+/* Title */
+"Signature" = "Подпись";
+
+/* settings general section title */
+"Single Password" = "Один пароль";
+
+/* Title */
+"Spam" = "Спам";
+
+/* Action */
+"Spanish" = "Испанский";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Неверная соль пароля SRP!";
+
+/* Title */
+"Star" = "Добавить в Избранное";
+
+/* Title */
+"Starred" = "Избранное";
+
+/* Title */
+"Storage" = "Хранилище";
+
+/* Title */
+"Subject:" = "Тема:";
+
+/* settings swipe actions section title */
+"Swipe Left to Right" = "Смахивание слева направо";
+
+/* settings swipe actions section title */
+"Swipe Right to Left" = "Смахивание справа налево";
+
+/* Title */
+"TRASH" = "КОРЗИНА";
+
+/* update password error */
+"The Password is wrong." = "Пароль неверный.";
+
+/* Error Description */
+"The UserName have been taken." = "Имя пользователя занято.";
+
+/* Description */
+"The authentication credentials are invalid." = "Аутентификационные данные неверны.";
+
+/* Description */
+"The authentication token has expired." = "Срок действия аутентификационного токена истёк.";
+
+/* error when sending the message */
+"The draft format incorrectly sending failed!" = "Формат черновика неверен. Отправки не было!";
+
+/* update password error */
+"The new password can't empty." = "Новый пароль не может быть пустым.";
+
+/* update password error */
+"The new password not match." = "Новый пароль не совпадает.";
+
+/* update password error */
+"The private update failed." = "Конфиденциальное обновление не удалось.";
+
+/* Description */
+"The user info fetch is wrong" = "Ошибка при получении информации о пользователе";
+
+/* Description */
+"There was an error creating or loading the application's saved data." = "Произошла ошибка при создании или загрузке сохранённых данных приложения.";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Это письмо не соответствует требованиям подтверждения подлинности своего домена. Оно может быть поддельным, либо было переслано ненадлежащим образом!";
+
+/* spam score warning */
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Похоже, источником этого письма является адрес, относящийся к ProtonMail, но само письмо пришло извне нашей системы и не прошло проверку на соответствие нашим требованиям подтверждения подлинности. Оно может быть поддельным, либо было переслано ненадлежащим образом!";
+
+/* contacts talbe cell Title title */
+"Title" = "Должность";
+
+/* Title */
+"To:" = "Кому:";
+
+/* Error */
+"Token expired" = "Срок действия токена истёк";
+
+/* Action
+   Title */
+"Trash" = "Корзина";
+
+/* Action */
+"Turkish" = "Турецкий";
+
+/* Action */
+"Ukrainian" = "Украинский";
+
+/* Description */
+"Unable to connect to the server" = "Не удалось подключиться к серверу";
+
+/* Description */
+"Unable to construct a valid URL with the following path: %@" = "Не удаётся создать допустимый URL-адрес с указанным путём: %@";
+
+/* Description */
+"Unable to create SRP Client!" = "Не удаётся создать SRP-клиент!";
+
+/* Description */
+"Unable to generate hash password!" = "Не удаётся сгенерировать хеш пароля!";
+
+/* Error */
+"Unable to get contacts" = "Не удаётся получить контакты";
+
+/* Description */
+"Unable to parse authentication info!" = "Не удаётся разобрать аутентификационную информацию!";
+
+/* Description */
+"Unable to parse authentication token!" = "Не удаётся разобрать аутентификационный токен!";
+
+/* Description */
+"Unable to parse cased authentication token!" = "Не удаётся разобрать вложенный аутентификационный токен!";
+
+/* Description */
+"Unable to parse response" = "Не удаётся разобрать ответ";
+
+/* Description */
+"Unable to parse the response object:\n%@" = "Не удаётся разобрать ответный объект: %@";
+
+/* Error */
+"Unable to parse token" = "Не удалось разобрать токен";
+
+/* error when sending the message */
+"Unable to send the email" = "Не удаётся отправить письмо";
+
+/* Description */
+"Unknow Error" = "Неизвестная ошибка";
+
+/* update notification email error title */
+"Update Notification Email" = "Обновить адрес эл. почты для уведомлений";
+
+/* default vcard types */
+"Work" = "Рабочий";
+
+/* Title */
+"at" = "в";
+
+/* contacts api error when fetch */
+"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "получение contacts() не удалось, peopleOrderedByUsersPreference вернуло нулевое значение!!";
+
+/* Title */
+"wrote:" = "написал(а):";
+

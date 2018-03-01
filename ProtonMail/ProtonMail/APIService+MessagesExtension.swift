@@ -52,52 +52,72 @@ extension APIService {
     //new way to do the new work calls
     func POST<T> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         let parameterStrings = apiRequest.toDictionary()
-        //setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
-        request(method: .post, path: apiRequest.getRequestPath(), parameters: parameterStrings, headers: ["x-pm-apiversion": apiRequest.getVersion()], completion: completion)
+        request(method: .post,
+                path: apiRequest.path(),
+                parameters: parameterStrings,
+                headers: ["x-pm-apiversion": apiRequest.apiVersion()],
+                completion: completion)
     }
     
     func PUT<T> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         let parameterStrings = apiRequest.toDictionary()
-        //setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
-        request(method: .put, path: apiRequest.getRequestPath(), parameters: parameterStrings, headers: ["x-pm-apiversion": apiRequest.getVersion()], completion: completion)
+        request(method: .put,
+                path: apiRequest.path(),
+                parameters: parameterStrings,
+                headers: ["x-pm-apiversion":
+                    apiRequest.apiVersion()],
+                completion: completion)
     }
 
     func GET<T> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         let parameterStrings = apiRequest.toDictionary()
-        //setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
-        request(method: .get, path: apiRequest.getRequestPath(), parameters: parameterStrings, headers: ["x-pm-apiversion": apiRequest.getVersion()], completion: completion)
+        request(method: .get,
+                path: apiRequest.path(),
+                parameters: parameterStrings,
+                headers: ["x-pm-apiversion": apiRequest.apiVersion()],
+                completion: completion)
     }
     
     func Delete<T> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         let parameterStrings = apiRequest.toDictionary()
-        //setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
-        request(method: .delete, path: apiRequest.getRequestPath(), parameters: parameterStrings, headers: ["x-pm-apiversion": apiRequest.getVersion()], completion: completion)
+        request(method: .delete,
+                path: apiRequest.path(),
+                parameters: parameterStrings,
+                headers: ["x-pm-apiversion": apiRequest.apiVersion()],
+                completion: completion)
     }
-    
     
     // MARK : Need change soon tempry for no outside incoming emails
     func fetchLatestMessageList(_ time: Int, completion: @escaping CompletionBlock) {
         let path = MessagePath.base + "/latest/\(time)"
-        //setApiVesion(1, appVersion: 1)
-        request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 1], completion: completion)
+        request(method: .get,
+                path: path,
+                parameters: nil,
+                headers: ["x-pm-apiversion": 1],
+                completion: completion)
     }
     
     
     // MARK: - Public methods
-    
     func messageCheck(timestamp: TimeInterval, completion: CompletionBlock?) {
         let path = "/messages/check"
         let parameters = ["t" : timestamp]
-        //setApiVesion(1, appVersion: 1)
-        request(method: .get, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
+        request(method: .get,
+                path: path,
+                parameters: parameters,
+                headers: ["x-pm-apiversion": 1],
+                completion: completion)
     }
     
     func messageCountForLocation(_ location: Int, completion: CompletionBlock?) {
         let path = "/messages"
         let parameters = ["Location" : location]
         let completionWrapper = completionWrapperParseCompletion(completion, forKey: "MessageCount")
-        //setApiVesion(1, appVersion: 1)
-        request(method: .get, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completionWrapper)
+        request(method: .get,
+                path: path,
+                parameters: parameters,
+                headers: ["x-pm-apiversion": 1],
+                completion: completionWrapper)
     }
     
     func messageCreate(
@@ -129,7 +149,11 @@ extension APIService {
             parameters["IsEncrypted"] = isEncrypted.isEncrypted() ? 1 : 0
             parameters["MessageBody"] = body
         
-        request(method: .post, path: path, parameters: parameters, headers: ["x-pm-apiversion": 2], completion: completion)
+        request(method: .post,
+                path: path,
+                parameters: parameters,
+                headers: ["x-pm-apiversion": 2],
+                completion: completion)
     }
     
     func messageDraft(
@@ -140,11 +164,11 @@ extension APIService {
         passwordHint: String = "",
         expirationDate: Date? = nil,
         isEncrypted: NSNumber,
-        body: Dictionary<String,String>,
-        attachments: Array<Attachment>?,
+        body: [String : String],
+        attachments: [Attachment]?,
         completion: CompletionBlock?) {
             let path = "/messages/draft"
-            let parameters: Dictionary<String, Any> = [
+            let parameters: [String : Any] = [
                 "RecipientList" : recipientList,
                 "BCCList" : bccList,
                 "CCList" : ccList,
@@ -154,7 +178,11 @@ extension APIService {
                 "IsEncrypted" : isEncrypted,
                 "MessageBody" : body]
         
-            request(method: .post, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
+            request(method: .post,
+                    path: path,
+                    parameters: parameters,
+                    headers: ["x-pm-apiversion": 1],
+                    completion: completion)
     }
     
     func messageDraftUpdate(
@@ -166,12 +194,12 @@ extension APIService {
         passwordHint: String = "",
         expirationDate: Date? = nil,
         isEncrypted: NSNumber,
-        body: Dictionary<String,String>,
-        attachments: Array<Attachment>?,
+        body: [String : String],
+        attachments: [Attachment]?,
         completion: CompletionBlock?) {
         
             let path = "/messages/\(messageID)/draft"
-            let parameters: Dictionary<String, Any> = [
+            let parameters: [String : Any] = [
                 "MessageID" : messageID,
                 "RecipientList" : recipientList,
                 "BCCList" : bccList,
@@ -182,15 +210,22 @@ extension APIService {
                 "IsEncrypted" : isEncrypted,
                 "MessageBody" : body]
         
-            request(method: .post, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
+            request(method: .post,
+                    path: path,
+                    parameters: parameters,
+                    headers: ["x-pm-apiversion": 1],
+                    completion: completion)
     }
     
     
     func messageDetail(messageID: String, completion: @escaping CompletionBlock) {
         let path = MessagePath.base + "/\(messageID)"
         PMLog.D("path: \(path)")
-        //setApiVesion(1, appVersion: 1)
-        request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 1], completion: completion)
+        request(method: .get,
+                path: path,
+                parameters: nil,
+                headers: ["x-pm-apiversion": 1],
+                completion: completion)
     }
     
     func messageList(_ location: Int, page: Int, sortedColumn: SortedColumn, order: Order, filter: Filter, completion: @escaping CompletionBlock) {
@@ -203,26 +238,32 @@ extension APIService {
             "Order" : order.rawValue,
             "FilterUnread" : filter.rawValue] as [String : Any]
         
-       // setApiVesion(1, appVersion: 1)
-        request(method: .get, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
+        request(method: .get,
+                path: path,
+                parameters: parameters,
+                headers: ["x-pm-apiversion": 1],
+                completion: completion)
     }
     
     
     func messageSearch(_ query: String, page: Int, completion: CompletionBlock?) {
         let path = MessagePath.base
-        let parameters = [
+        let parameters :  [String : Any] = [
             "Keyword" : query,
-            "Page" : page] as [String : Any]
+            "Page" : page
+        ]
         
-        //setApiVesion(1, appVersion: 1)
-        request(method: .get, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
+        request(method: .get,
+                path: path,
+                parameters: parameters,
+                headers: ["x-pm-apiversion": 1],
+                completion: completion)
     }
     
     
     // MARK: - Private methods
     fileprivate func filteredMessageStringParameters(_ parameters: [String : String]) -> [String : String] {
         var filteredParameters: [String : String] = [:]
-        
         for (key, value) in parameters {
             if !value.isEmpty {
                 filteredParameters[key] = value

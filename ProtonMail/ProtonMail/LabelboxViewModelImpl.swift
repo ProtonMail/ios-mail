@@ -20,11 +20,11 @@ class LabelboxViewModelImpl : MailboxViewModel {
         self.label = label
     }
     
-    open override func showLocation () -> Bool {
+    override func showLocation () -> Bool {
         return true
     }
     
-    open override func ignoredLocationTitle() -> String {
+    override func ignoredLocationTitle() -> String {
         return self.label.exclusive ? self.label.name : ""
     }
     
@@ -35,11 +35,11 @@ class LabelboxViewModelImpl : MailboxViewModel {
         return true
     }
     
-    override open func getNavigationTitle() -> String {
+    override func getNavigationTitle() -> String {
         return self.label.name
     }
     
-    open override func getSwipeTitle(_ action: MessageSwipeAction) -> String {
+    override func getSwipeTitle(_ action: MessageSwipeAction) -> String {
         return action.description;
     }
     
@@ -144,7 +144,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     override func fetchNewMessages(_ notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
-        sharedMessageDataService.fetchNewMessagesForLabels(self.getLabelID(), Time: Time, notificationMessageID: notificationMessageID, completion: completion)
+        sharedMessageDataService.fetchNewMessagesForLabels(self.getLabelID(), notificationMessageID: notificationMessageID, completion: completion)
     }
     
     override func getNotificationMessage() -> String? {

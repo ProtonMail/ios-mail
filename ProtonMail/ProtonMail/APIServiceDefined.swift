@@ -14,7 +14,6 @@ struct MessageAPI {
     /// base message api path
     static let Path :String = AppConstants.API_PATH + "/messages"
     
-    
     /// fetch message request version
     static let V_MessageFetchRequest : Int = 1
     
@@ -27,7 +26,6 @@ struct MessageAPI {
     static let V_MessageEmptyRequest : Int = 1
     
     static let V_MessageSendRequest : Int = 1
-    
 }
 
 struct AttachmentAPI {
@@ -99,7 +97,7 @@ struct EventAPI {
     static let Path :String = AppConstants.API_PATH + "/events"
     
     /// current event api version
-    static let V_EventCheckRequest : Int = 1
+    static let V_EventCheckRequest : Int = 3
     static let V_LatestEventRequest : Int = 1
 
 }
@@ -157,3 +155,15 @@ struct DeviceAPI {
 }
 
 
+public struct ContactsAPI {
+    
+    static let Path : String = AppConstants.API_PATH + "/contacts"
+    
+    static let V_ContactsRequest : Int = 2
+    static let V_ContactEmailsRequest : Int = 2
+    static let V_ContactAddRequest : Int = 2
+    static let V_ContactDetailRequest : Int = 2
+    static let V_ContactDeleteRequest : Int = 2
+    static let V_ContactUpdateRequest : Int = 2
+    
+}

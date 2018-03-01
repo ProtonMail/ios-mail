@@ -194,7 +194,7 @@ class SettingDetailViewController: UIViewController {
         if viewModel.needAsk2FA() && cached2faCode == nil {
             self.performSegue(withIdentifier: self.kAsk2FASegue, sender: self)
         } else {
-            ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+            ActivityIndicatorHelper.showActivityIndicator(at: view)
             viewModel.updateNotification(self.switcher.isOn, complete: { (value, error) -> Void in
                 if let error = error {
                     let alertController = error.alertController()
@@ -203,7 +203,7 @@ class SettingDetailViewController: UIViewController {
                 } else {
                     self.viewModel.updateValue(self.getTextValue(), password: self.getPasswordValue(), tfaCode: self.cached2faCode, complete: { value, error in
                         self.cached2faCode = nil
-                        ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                        ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                         if let error = error {
                             let alertController = error.alertController()
                             alertController.addOKAction()
@@ -248,7 +248,6 @@ extension SettingDetailViewController: UITextFieldDelegate {
         else {
             self.navigationItem.rightBarButtonItem = doneButton
         }
-        
         return true
     }
     

@@ -31,7 +31,7 @@ extension APIService {
         request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
-    func userPublicKeysForEmails(_ emails: Array<String>, completion: CompletionBlock?) {
+    func userPublicKeysForEmails(_ emails: [String], completion: CompletionBlock?) {
         let emailsString = emails.joined(separator: ",")
         
         userPublicKeysForEmails(emailsString, completion: completion)

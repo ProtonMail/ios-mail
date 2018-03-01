@@ -15,8 +15,6 @@ enum PasswordError: Error {
 }
 
 final class PasswordUtils {
-    
-    
     static func getHashedPwd(_ authVersion: Int , password: String, username: String, decodedSalt : Data, decodedModulus : Data) -> Data? {
         var hashedPassword : Data?
         switch authVersion {
@@ -49,18 +47,18 @@ final class PasswordUtils {
         let real_salt = "$2a$10$" + salt
         let out_hash = PMNBCrypt(password: password, salt: real_salt)
         if !out_hash.isEmpty {
-            let size = out_hash.characters.count
+            let size = out_hash.count
             if size > 4 {
-                let index = out_hash.characters.index(out_hash.startIndex, offsetBy: 4)
+                let index = out_hash.index(out_hash.startIndex, offsetBy: 4)
                 return "$2y$" + String(out_hash[index...])
             }
         }
         
         //backup plan when native bcrypt return empty string
         if let out = JKBCrypt.hashPassword(password, withSalt: real_salt), !out.isEmpty {
-            let size = out.characters.count
+            let size = out.count
             if size > 4 {
-                let index = out.characters.index(out.startIndex, offsetBy: 4)
+                let index = out.index(out.startIndex, offsetBy: 4)
                 return "$2y$" + String(out[index...])
             } else {
                 throw PasswordError.hashSizeWrong
@@ -94,7 +92,7 @@ final class PasswordUtils {
         let encodedSalt = JKBCrypt.based64DotSlash(source)
         do {
             let out = try bcrypt_string(password, salt: encodedSalt)
-            let index = out.characters.index(out.startIndex, offsetBy: 29)
+            let index = out.index(out.startIndex, offsetBy: 29)
             let outStr = String(out[index...])
             return outStr
         } catch PasswordError.hashEmpty {

@@ -9,7 +9,8 @@
 import Foundation
 import CoreData
 
-open class MessageHelper {
+
+final class MessageHelper {
     
     static func messageWithLocation (
         _ location: MessageLocation,
@@ -22,6 +23,7 @@ open class MessageHelper {
         expirationTimeInterval: TimeInterval,
         body: String,
         attachments: [Any]?,
+        mailbox_pwd: String,
         inManagedObjectContext context: NSManagedObjectContext) -> Message {
             let message = Message(context: context)
             message.messageID = UUID().uuidString
@@ -41,7 +43,7 @@ open class MessageHelper {
             }
             
             do {
-                message.encryptBody(body, error: nil)
+                message.encryptBody(body, mailbox_pwd: mailbox_pwd, error: nil)
                 if !encryptionPassword.isEmpty {
                     if let encryptedBody = try body.encryptWithPassphrase(encryptionPassword) {
                         message.isEncrypted = true
@@ -74,13 +76,14 @@ open class MessageHelper {
     static func updateMessage (_ message: Message ,
         expirationTimeInterval: TimeInterval,
         body: String,
-        attachments: [Any]?)
+        attachments: [Any]?,
+        mailbox_pwd: String)
     {
         if expirationTimeInterval > 0 {
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)
         }
 
-            message.encryptBody(body, error: nil)
+        message.encryptBody(body, mailbox_pwd: mailbox_pwd, error: nil)
  
             //PMLog.D(" error: \(error)")
         

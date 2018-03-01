@@ -34,11 +34,11 @@ class EncryptionSetupViewController: UIViewController {
         topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
         topTitleLabel.text = NSLocalizedString("Encryption Setup", comment: "key setup top title")
         
-        let font = UIFont.boldSystemFont(ofSize: 16)
+        let font = Fonts.h4.bold
         let attrHigh = NSMutableAttributedString(
             string: " " + NSLocalizedString("High Security", comment: "Key size checkbox"),
             attributes: [NSAttributedStringKey.font:font])
-        let font1 = UIFont.systemFont(ofSize: 16)
+        let font1 = Fonts.h4.regular
         let attrHighSize = NSMutableAttributedString(
             string: " " + NSLocalizedString("(2048 bit)", comment: "Key size text"),
             attributes: [NSAttributedStringKey.font:font1])
@@ -56,11 +56,11 @@ class EncryptionSetupViewController: UIViewController {
         
         highSecurityLabel.text = NSLocalizedString("The current standard", comment: "key size notes")
         
-        let notesfont = UIFont.systemFont(ofSize: 13)
+        let notesfont = Fonts.s13.regular
         let attr1 = NSMutableAttributedString(
             string: NSLocalizedString("The highest level of encryption available.", comment: "key size note part 1") + " ",
             attributes: [NSAttributedStringKey.font:notesfont])
-        let notesfont1 = UIFont.boldSystemFont(ofSize: 13)
+        let notesfont1 = Fonts.s13.bold
         let attr2 = NSMutableAttributedString(
             string: NSLocalizedString("Can take several minutes to setup.", comment: "key size note part 2"),
             attributes: [NSAttributedStringKey.font:notesfont1])

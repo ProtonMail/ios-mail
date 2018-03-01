@@ -71,7 +71,7 @@ class MessageDataService {
                 PMLog.D(" error: \(error)")
             }
         }
-        let _ = sharedMessageQueue.addMessage(out.JSONStringify(false), action: .deleteAtt)
+        let _ = sharedMessageQueue.addMessage(out.json(prettyPrinted: false), action: .deleteAtt)
         dequeueIfNeeded()
     }
     
@@ -113,7 +113,6 @@ class MessageDataService {
     
     // MARK : fetch functions
     
-    
     /**
      nonmaly fetching the message from server based on location and time.
      
@@ -125,7 +124,7 @@ class MessageDataService {
     func fetchMessagesForLocation(_ location: MessageLocation, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
-                if let messagesArray = responseDict?["Messages"] as? [Dictionary<String, Any>] {
+                if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
                     PMLog.D("\(messagesArray)")
                     let messcount = responseDict?["Total"] as? Int ?? 0
                     let context = sharedCoreDataService.newMainManagedObjectContext()
@@ -197,7 +196,7 @@ class MessageDataService {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 // TODO :: need abstract the respons error checking
-                if let messagesArray = responseDict?["Messages"] as? [Dictionary<String, Any>] {
+                if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
                     let messcount = responseDict?["Total"] as? Int ?? 0
                     let context = sharedCoreDataService.newMainManagedObjectContext()
                     context.perform() {
@@ -243,9 +242,6 @@ class MessageDataService {
             sharedAPIService.GET(request, completion: completionWrapper)
         }
     }
-    
-    
-    
     func fetchMessagesForLocationWithEventReset(_ location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
         queue {
             let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
@@ -259,9 +255,10 @@ class MessageDataService {
                         completion?(task, responseDict, error)
                     }
                     self.cleanMessage()
-                    sharedContactDataService.cleanUp()
+                    sharedContactDataService.clean()
                     self.fetchMessagesForLocation(location, MessageID: MessageID, Time: Time, foucsClean: false, completion: completionWrapper)
-                    sharedContactDataService.fetchContacts(nil)
+                    
+                    sharedContactDataService.fetchContacts(completion: nil)
                     sharedLabelsDataService.fetchLabels();
                 }  else {
                     completion?(task, nil, nil)
@@ -278,14 +275,12 @@ class MessageDataService {
      :param: Time       latest message time
      :param: completion complete handler
      */
-    
-    func fetchNewMessagesForLocation(_ location: MessageLocation, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
+    func fetchNewMessagesForLocation(_ location: MessageLocation, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, _eventsRes, _hasEventsError in
                 if let eventsRes = _eventsRes {
-                    PMLog.D("\(eventsRes)")
-                    if eventsRes.isRefresh || (_hasEventsError && eventsRes.code == 18001) {
+                    if eventsRes.refresh.contains(.all) ||  eventsRes.refresh.contains(.mail) || (_hasEventsError && eventsRes.code == 18001) {
                         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
                         getLatestEventID.call() { task, _IDRes, hasIDError in
                             if let IDRes = _IDRes, !hasIDError && !IDRes.eventID.isEmpty {
@@ -297,16 +292,18 @@ class MessageDataService {
                                     completion?(task, responseDict, error)
                                 }
                                 self.cleanMessage()
-                                sharedContactDataService.cleanUp()
+                                sharedContactDataService.clean()
                                 self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-                                sharedContactDataService.fetchContacts(nil)
+                                sharedContactDataService.fetchContacts(completion: nil)
                                 sharedLabelsDataService.fetchLabels();
                             } else {
                                 completion?(task, nil, nil)
                             }
                         }
-                    }
-                    else if eventsRes.messages != nil {
+                    } else if eventsRes.refresh.contains(.contacts) {
+                        sharedContactDataService.clean()
+                        sharedContactDataService.fetchContacts(completion: nil)
+                    } else if eventsRes.messages != nil {
                         self.processIncrementalUpdateMessages(notificationMessageID, messages: eventsRes.messages!, task: task) { task, res, error in
                             if error == nil {
                                 lastUpdatedStore.lastEventID = eventsRes.eventID
@@ -322,7 +319,7 @@ class MessageDataService {
                                         outMessages.append(msg)
                                     }
                                 }
-                                completion?(task, ["Messages": outMessages, "Notices": eventsRes.notices ?? [String]()], nil)
+                                completion?(task, ["Messages": outMessages, "Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
                             }
                             else {
                                 completion?(task, nil, error)
@@ -340,7 +337,7 @@ class MessageDataService {
                         if _hasEventsError {
                             completion?(task, nil, eventsRes.error)
                         } else {
-                            completion?(task, ["Notices": eventsRes.notices ?? [String]()], nil)
+                            completion?(task, ["Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
                         }
                     }
                 } else {
@@ -350,67 +347,79 @@ class MessageDataService {
         }
     }
     
-    func fetchNewMessagesForLabels(_ labelID: String, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
+    func fetchNewMessagesForLabels(_ labelID: String, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response, hasError in
-                if response == nil {
-                    completion?(task, nil, nil)
-                } else if response!.isRefresh || (hasError && response!.code == 18001) {
-                    
-                    let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
-                    getLatestEventID.call() { task, response, hasError in
-                        if response != nil && !hasError && !response!.eventID.isEmpty {
-                            let completionWrapper: CompletionBlock = { task, responseDict, error in
-                                if error == nil {
-                                    lastUpdatedStore.clear();
-                                    lastUpdatedStore.lastEventID = response!.eventID
+                if let eventsRes = response {
+                    if eventsRes.refresh.contains(.all) ||  eventsRes.refresh.contains(.mail) || (hasError && eventsRes.code == 18001) {
+                        let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
+                        getLatestEventID.call() { task, _IDRes, hasIDError in
+                            if let IDRes = _IDRes, !hasIDError && !IDRes.eventID.isEmpty {
+                                let completionWrapper: CompletionBlock = { task, responseDict, error in
+                                    if error == nil {
+                                        lastUpdatedStore.clear()
+                                        lastUpdatedStore.lastEventID = IDRes.eventID
+                                    }
+                                    completion?(task, responseDict, error)
                                 }
+                                self.cleanMessage()
+                                sharedContactDataService.clean()
+                                self.fetchMessagesForLabels(labelID, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
+                                sharedContactDataService.fetchContacts(completion: nil)
+                                sharedLabelsDataService.fetchLabels();
+                            } else {
+                                completion?(task, nil, nil)
+                            }
+                        }
+                    } else if eventsRes.refresh.contains(.contacts) {
+                        sharedContactDataService.clean()
+                        sharedContactDataService.fetchContacts(completion: nil)
+                    } else if eventsRes.messages != nil {
+                        self.processIncrementalUpdateMessages(notificationMessageID, messages: eventsRes.messages!, task: task) { task, res, error in
+                            if error == nil {
+                                lastUpdatedStore.lastEventID = eventsRes.eventID
+                                self.processMessageCounts(eventsRes.messageCounts)
+                                self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
+                                self.processIncrementalUpdateLabels(eventsRes.labels)
+                                self.processIncrementalUpdateContacts(eventsRes.contacts)
+                                
+                                var outMessages : [Any] = [];
+                                for message in eventsRes.messages! {
+                                    let msg = MessageEvent(event: message)
+                                    if msg.Action == 1 {
+                                        outMessages.append(msg)
+                                    }
+                                }
+                                completion?(task, ["Messages": outMessages, "Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
+                            }
+                            else {
                                 completion?(task, nil, error)
                             }
-                            self.cleanMessage()
-                            sharedContactDataService.cleanUp()
-                            self.fetchMessagesForLabels(labelID, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-                            sharedContactDataService.fetchContacts(nil)
-                            sharedLabelsDataService.fetchLabels();
                         }
                     }
-                    completion?(task, nil, nil)
-                }
-                else if response!.messages != nil {
-                    self.processIncrementalUpdateMessages(notificationMessageID, messages: response!.messages!, task: task) { task, res, error in
-                        if error == nil {
-                            lastUpdatedStore.lastEventID = response!.eventID
-                            completion?(task, nil, nil)
+                    else {
+                        if eventsRes.code == 1000 {
+                            lastUpdatedStore.lastEventID = eventsRes.eventID
+                            self.processMessageCounts(eventsRes.messageCounts)
+                            self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
+                            self.processIncrementalUpdateLabels(eventsRes.labels)
+                            self.processIncrementalUpdateContacts(eventsRes.contacts)
                         }
-                        else {
-                            completion?(task, nil, error)
+                        if hasError {
+                            completion?(task, nil, eventsRes.error)
+                        } else {
+                            completion?(task, ["Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
                         }
                     }
-                    
-                    self.processMessageCounts(response!.messageCounts)
-                    
-                    self.processIncrementalUpdateUserInfo(response!.userinfo)
-                    self.processIncrementalUpdateLabels(response!.labels)
-                    self.processIncrementalUpdateContacts(response!.contacts)
-                }
-                else {
-                    if response!.code == 1000 {
-                        lastUpdatedStore.lastEventID = response!.eventID
-                        
-                        self.processMessageCounts(response!.messageCounts)
-                        
-                        self.processIncrementalUpdateUserInfo(response!.userinfo)
-                        self.processIncrementalUpdateLabels(response!.labels)
-                        self.processIncrementalUpdateContacts(response!.contacts)
-                    }
+                } else {
                     completion?(task, nil, nil)
                 }
             }
         }
     }
     
-    func processIncrementalUpdateContacts(_ contacts: [Dictionary<String, Any>]?) {
+    func processIncrementalUpdateContacts(_ contacts: [[String : Any]]?) {
         struct IncrementalContactUpdateType {
             static let delete = 0
             static let insert = 1
@@ -431,9 +440,14 @@ class MessageDataService {
                         }
                     case .some(IncrementalContactUpdateType.insert), .some(IncrementalContactUpdateType.update) :
                         do {
-                            if let insert_update_contacts = contactObj.contact {
-                                try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: insert_update_contacts, in: context)
+                            if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                 fromJSONArray: contactObj.contacts,
+                                                                 in: context) as? [Contact] {
+                                for c in outContacts {
+                                    c.isDownloaded = false
+                                }
                             }
+
                         } catch let ex as NSError {
                             PMLog.D(" error: \(ex)")
                         }
@@ -448,7 +462,7 @@ class MessageDataService {
         }
     }
     
-    func processIncrementalUpdateTotal(_ totals: Dictionary<String, Any>?) {
+    func processIncrementalUpdateTotal(_ totals: [String : Any]?) {
         
         if let star = totals?["Starred"] as? Int {
             let updateTime = lastUpdatedStore.inboxLastForKey(MessageLocation.starred)
@@ -456,7 +470,7 @@ class MessageDataService {
             lastUpdatedStore.updateInboxForKey(MessageLocation.starred, updateTime: updateTime)
         }
         
-        if let locations = totals?["Locations"] as? [Dictionary<String, Any>] {
+        if let locations = totals?["Locations"] as? [[String : Any]] {
             for location:[String : Any] in locations {
                 if let l = location["Location"] as? Int {
                     if let c = location["Count"] as? Int {
@@ -471,14 +485,14 @@ class MessageDataService {
         }
     }
     
-    func processIncrementalUpdateUserInfo(_ userinfo: Dictionary<String, Any>?) {
+    func processIncrementalUpdateUserInfo(_ userinfo: [String : Any]?) {
         if let userData = userinfo {
             let userInfo = UserInfo( response: userData )
             sharedUserDataService.updateUserInfoFromEventLog(userInfo);
         }
     }
     
-    func processIncrementalUpdateLabels(_ labels: [Dictionary<String, Any>]?) {
+    func processIncrementalUpdateLabels(_ labels: [[String : Any]]?) {
         
         struct IncrementalUpdateType {
             static let delete = 0
@@ -521,7 +535,7 @@ class MessageDataService {
         }
     }
     
-    func processMessageCounts(_ msgCounts: [Dictionary<String, Any>]?) {
+    func processMessageCounts(_ msgCounts: [[String : Any]]?) {
         guard let messageCounts = msgCounts, messageCounts.count > 0 else {
             return
         }
@@ -556,12 +570,12 @@ class MessageDataService {
                     completion?(task, nil, error)
                 }
                 
-                //if foucsClean {
                 self.cleanMessage()
-                //}
+                sharedContactDataService.clean()
                 sharedLabelsDataService.fetchLabels();
                 self.fetchMessagesForLocation(MessageLocation.inbox, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-                
+               
+                sharedContactDataService.fetchContacts(completion: nil)
             }
         }
     }
@@ -574,7 +588,7 @@ class MessageDataService {
      :param: task       NSURL session task
      :param: completion complete call back
      */
-    fileprivate func processIncrementalUpdateMessages(_ notificationMessageID: String?, messages: Array<Dictionary<String, Any>>, task: URLSessionDataTask!, completion: CompletionBlock?) {
+    fileprivate func processIncrementalUpdateMessages(_ notificationMessageID: String?, messages: [[String : Any]], task: URLSessionDataTask!, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -642,7 +656,7 @@ class MessageDataService {
                             }
                         }
                         do {
-                            if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? Dictionary<String, Any>(), in: context) as? Message {
+                            if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String : Any](), in: context) as? Message {
                                 // apply the label changes
                                 if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
                                     for delete in deleted {
@@ -714,7 +728,7 @@ class MessageDataService {
         if messages.count > 0 {
             queue {
                 let completionWrapper: CompletionBlock = { task, responseDict, error in
-                    if let messagesArray = responseDict?["Messages"] as? [Dictionary<String, Any>] {
+                    if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
                         let context = sharedCoreDataService.newMainManagedObjectContext()
                         context.perform() {
                             do {
@@ -788,7 +802,7 @@ class MessageDataService {
                     var error: NSError?
                     if response != nil {
                         //TODO need check the respons code
-                        if var msg: Dictionary<String,Any> = response?["Message"] as? Dictionary<String, Any> {
+                        if var msg: [String:Any] = response?["Message"] as? [String : Any] {
                             msg.removeValue(forKey: "Location")
                             msg.removeValue(forKey: "Starred")
                             msg.removeValue(forKey: "test")
@@ -837,7 +851,7 @@ class MessageDataService {
                             if response != nil {
                                 //TODO need check the respons code
                                 PMLog.D("\(String(describing: response))")
-                                if var msg: Dictionary<String, Any> = response?["Message"] as? Dictionary<String, Any> {
+                                if var msg: [String : Any] = response?["Message"] as? [String : Any] {
                                     msg.removeValue(forKey: "Location")
                                     msg.removeValue(forKey: "Starred")
                                     msg.removeValue(forKey: "test")
@@ -888,7 +902,7 @@ class MessageDataService {
             }
         } else {
             DispatchQueue.main.async {
-                completion(nil, nil, nil, nil)
+                completion(nil, nil, message, nil)
             }
         }
     }
@@ -902,7 +916,7 @@ class MessageDataService {
                     context.perform() {
                         if response != nil {
                             //TODO need check the respons code
-                            if var msg: Dictionary<String,Any> = response?["Message"] as? Dictionary<String,Any> {
+                            if var msg: [String : Any] = response?["Message"] as? [String : Any] {
                                 msg.removeValue(forKey: "Location")
                                 msg.removeValue(forKey: "Starred")
                                 msg.removeValue(forKey: "test")
@@ -1060,7 +1074,7 @@ class MessageDataService {
         sharedFailedQueue.clear()
         
         //tempary for clean contact cache
-        sharedContactDataService.cleanUp()
+        sharedContactDataService.clean() //here need move to a general data service manager
         sharedLabelsDataService.cleanUp()
         
         UIApplication.setBadge(badge: 0)
@@ -1083,7 +1097,7 @@ class MessageDataService {
                 }
                 
                 if let context = sharedCoreDataService.mainManagedObjectContext {
-                    if let messagesArray = response?["Messages"] as? [Dictionary<String, Any>] {
+                    if let messagesArray = response?["Messages"] as? [[String : Any]] {
                         context.perform() {
                             do {
                                 if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
@@ -1153,7 +1167,7 @@ class MessageDataService {
                     self.fetchMessagesWithIDs(badMessages);
                 }
             } catch let ex as NSError {
-                ex.uploadFabricAnswer("purgeOldMessages")
+                ex.upload(toFabric: "purgeOldMessages")
                 PMLog.D("error : \(ex)")
             }
         }
@@ -1200,7 +1214,7 @@ class MessageDataService {
             var tempAtts : [TempAttachment]! = []
             for att in atts {
                 if att.managedObjectContext != nil {
-                    if let sessionKey = try att.getSessionKey() {
+                    if let sessionKey = try att.sessionKey() {
                         tempAtts.append(TempAttachment(id: att.attachmentID, key: sessionKey))
                     }
                 }
@@ -1208,6 +1222,9 @@ class MessageDataService {
             
             var out : [MessagePackage] = []
             var needsPlainText : Bool = false
+            
+            let privKey = message.defaultAddress?.keys[0].private_key ?? ""
+            let pwd = sharedUserDataService.mailboxPassword ?? ""
             
             if let body = try message.decryptBody() {
                 if let keys = keys {
@@ -1253,7 +1270,7 @@ class MessageDataService {
                                 attPack.append(attPacket)
                             }
                             //create inside packet
-                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey) {
+                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey, privateKey: privKey, mailbox_pwd: pwd) {
                                 let pack = MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
                                 out.append(pack)
                             }
@@ -1288,18 +1305,25 @@ class MessageDataService {
     // MARK : old functions
     
     fileprivate func attachmentsForMessage(_ message: Message) -> [Attachment] {
-        return message.attachments.allObjects as! [Attachment]
+        if let all = message.attachments.allObjects as? [Attachment] {
+            return all
+        }
+        return []
     }
     
     fileprivate func messageBodyForMessage(_ message: Message, response: [String : Any]?) throws -> [String : String] {
         var messageBody: [String : String] = ["self" : message.body]
+        
+        let privKey = message.defaultAddress?.keys[0].private_key ?? ""
+        let pwd = sharedUserDataService.mailboxPassword ?? ""
+        
         do {
             if let keys = response?["keys"] as? [[String : String]] {
                 if let body = try message.decryptBody() {
                     // encrypt body with each key
                     for publicKeys in keys {
                         for (email, publicKey) in publicKeys {
-                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey) {
+                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey, privateKey: privKey, mailbox_pwd: pwd) {
                                 messageBody[email] = encryptedBody
                             }
                         }
@@ -1438,7 +1462,7 @@ class MessageDataService {
                         "MIMEType" : attachment.mimeType,
                         ]
                     
-                    var default_address_id = sharedUserDataService.userAddresses.getDefaultAddress()?.address_id ?? ""
+                    var default_address_id = sharedUserDataService.userAddresses.defaultSendAddress()?.address_id ?? ""
                     //TODO::here need to fix sometime message is not valid'
                     if attachment.message.managedObjectContext == nil {
                         params["MessageID"] =  ""
@@ -1447,8 +1471,8 @@ class MessageDataService {
                         default_address_id = attachment.message.getAddressID
                     }
                     
-                    //
-                    let encrypt_data = attachment.encryptAttachment(default_address_id)
+                    let pwd = sharedUserDataService.mailboxPassword ?? ""
+                    let encrypt_data = attachment.encrypt(byAddrID: default_address_id, mailbox_pwd: pwd)
                     //TODO:: here need check is encryptdata is nil and return the error to user.
                     let keyPacket = encrypt_data?.keyPackage
                     let dataPacket = encrypt_data?.dataPackage
@@ -1545,7 +1569,7 @@ class MessageDataService {
                         if message.managedObjectContext == nil {
                             NSError.alertLocalCacheErrorToast()
                             let err =  NSError.badDraft()
-                            err.uploadFabricAnswer(CacheErrorTitle)
+                            err.upload(toFabric: CacheErrorTitle)
                             errorBlock(task, nil, err)
                             return ;
                         }
@@ -1562,7 +1586,7 @@ class MessageDataService {
                         let reskeys = response;
                         
                         // parse the response for keys
-                        _ = try? self.messageBodyForMessage(message, response: response)
+                        //_ = try? self.messageBodyForMessage(message, response: response)
                         
                         let completionWrapper: CompletionBlock = { task, response, error in
                             PMLog.D("SendAttachmentDebug == finish send email!")
@@ -1631,7 +1655,7 @@ class MessageDataService {
                                     //error?.alertErrorToast()
                                 }
                                 //NSError.alertMessageSentErrorToast()
-                                error?.uploadFabricAnswer(SendingErrorTitle)
+                                error?.upload(toFabric: SendingErrorTitle)
                             }
                             completion?(task, response, error)
                             return
@@ -1761,13 +1785,13 @@ class MessageDataService {
                 } else if statusCode == 200 && error?.code > 1000 {
                     //show error
                     let _ = sharedMessageQueue.remove(elementID)
-                    error?.uploadFabricAnswer(QueueErrorTitle)
+                    error?.upload(toFabric: QueueErrorTitle)
                 }
                 
                 if statusCode != 200 && statusCode != 404 && statusCode != 500 && !isInternetIssue {
                     //show error
                     let _ = sharedMessageQueue.remove(elementID)
-                    error?.uploadFabricAnswer(QueueErrorTitle)
+                    error?.upload(toFabric: QueueErrorTitle)
                 }
                 
                 if !isInternetIssue {

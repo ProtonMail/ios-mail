@@ -1,0 +1,503 @@
+/* no object error, local only , this could be not translated! */
+"<no object>" = "<no object>";
+
+/* Title */
+"ARCHIVE" = "ARŞİV";
+
+/* new contacts add Anniversary */
+"Add Anniversary" = "Yıldönümü Ekle";
+
+/* new contacts add Birthday */
+"Add Birthday" = "Doğum günü ekle";
+
+/* new contacts add Nickname */
+"Add Nickname" = "Takma ad ekle";
+
+/* new contacts add Organization */
+"Add Organization" = "Organizasyon ekle";
+
+/* Action */
+"Add Star" = "Yıldız ekle";
+
+/* new contacts add Title */
+"Add Title" = "Başlık ekle";
+
+/* default vcard types */
+"Address" = "Adres";
+
+/* Error */
+"Alert" = "Alarm";
+
+/* Title */
+"All Mail" = "Tüm Postalar";
+
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "Yıldönümü";
+
+/* Title */
+"Archive" = "Arşiv";
+
+/* Description */
+"Authentication Failed Wrong username or password" = "Kimlik Doğrulama Başarısız Yanlış kullanıcı adı veya şifre";
+
+/* settings protection section title */
+"Auto Lock Time" = "Otomatik Kilit Süresi";
+
+/* settings general section title */
+"Auto Show Images" = "Görüntüleri Otomatik Olarak Göster";
+
+/* Error */
+"Bad auth cache" = "Bad auth cache";
+
+/* Description */
+"Bad parameter" = "Kötü parametre";
+
+/* Description */
+"Bad parameter: %@" = "Kötü parametre: %@";
+
+/* Description */
+"Bad path" = "Bad path";
+
+/* Description */
+"Bad response" = "Kötü cevap";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "Doğum günü";
+
+/* update notification email error
+   update password error */
+"Can't create a SRP Client" = "SRP İstemcisi oluşturulamıyor";
+
+/* update notification email error
+   update password error */
+"Can't create a SRP verifier!" = "SRP doğrulayıcısı oluşturulamıyor!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls ID!" = "Can't get a Moduls ID!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls!" = "Can't get a Moduls!";
+
+/* update notification email error
+   update password error */
+"Can't get user auth info" = "Kullanıcı kimlik bilgileri alınamıyor";
+
+/* Description */
+"Can't not find the value from the response body" = "Can't not find the value from the response body";
+
+/* Title */
+"Cc:" = "Cc:";
+
+/* update password error title */
+"Change Password" = "Parolayı değiştir";
+
+/* settings protection section title */
+"Change Pin" = "Pin'i değiştir";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Change left swipe action";
+
+/* settings swipe actions section action description */
+"Change right swipe action" = "Change right swipe action";
+
+/* settings general section title */
+"Clear Local Message Cache" = "Yerel İleti Önbelleğini Temizle";
+
+/* Action */
+"Close" = "Kapat";
+
+/* Title */
+"DRAFTS" = "TASLAKLAR";
+
+/* Title */
+"Date:" = "Tarih:";
+
+/* Title */
+"Debug" = "Hata ayıklama";
+
+/* Title */
+"Deleted" = "Silindi";
+
+/* Title */
+"Display Name" = "Görünen ad";
+
+/* Action
+   Title */
+"Draft" = "Taslak";
+
+/* Action */
+"Dutch" = "Flemenkçe";
+
+/* default vcard types */
+"Email" = "E-posta";
+
+/* settings protection section title */
+"Enable Pin Protection" = "Pin Korumasını Etkinleştir";
+
+/* settings protection section title */
+"Enable TouchID" = "TouchID etkinleştir";
+
+/* Title */
+"Encrypted for outside" = "Encrypted for outside";
+
+/* Title */
+"Encrypted for outside reply" = "Encrypted for outside reply";
+
+/* Title */
+"Encrypted from outside" = "Encrypted from outside";
+
+/* Title */
+"Encrypted from outside pgp inline" = "Encrypted from outside pgp inline";
+
+/* Title */
+"Encrypted from outside pgp mime" = "Encrypted from outside pgp mime";
+
+/* Action */
+"English" = "İngilizce";
+
+/* settings debug section title */
+"Error Logs" = "Hata Günlükleri";
+
+/* Description */
+"Failed to initialize the application's saved data" = "Failed to initialize the application's saved data";
+
+/* default vcard types */
+"Fax" = "Faks";
+
+/* Action */
+"Forward" = "Forward";
+
+/* Title */
+"Forwarded message" = "Yönlendirilmiş Mesaj";
+
+/* Action */
+"French" = "Fransızca";
+
+/* Title */
+"From:" = "Kimden:";
+
+/* Title */
+"Fwd:" = "Fwd:";
+
+/* Title */
+"General Settings" = "Genel Ayarlar";
+
+/* Action */
+"German" = "Almanca";
+
+/* Title */
+"INBOX" = "GELEN KUTUSU";
+
+/* Title */
+"Inbox" = "Gelen kutusu";
+
+/* Error */
+"Invalid Password" = "Geçersiz Parola";
+
+/* Error */
+"Invalid UserName" = "Geçersiz Kullanıcı Adı";
+
+/* update notification email error
+   update password error when input invalid username */
+"Invalid UserName!" = "Geçersiz Kullanıcı Adı!";
+
+/* Error */
+"Invalid credential" = "Geçersiz kimlik bilgileri";
+
+/* update notification email error
+   update password error */
+"Invalid hashed password!" = "Invalid hashed password!";
+
+/* Action */
+"Italian" = "İtalyanca";
+
+/* Title */
+"Labels/Folders" = "Etiketler/Klasörler";
+
+/* Title */
+"Language" = "Dil";
+
+/* Description */
+"Local cache can't find mailbox password" = "Yerel önbellek posta kutusu parolasını bulamıyor";
+
+/* settings general section title */
+"Login Password" = "Giriş Parolası";
+
+/* settings general section title */
+"Mailbox Password" = "Posta Kutusu Şifresi";
+
+/* Title */
+"Manage Labels/Folders" = "Etiketleri/Klasörleri Yönetin";
+
+/* settings debug section title */
+"Message Queue" = "Mesaj Sırası";
+
+/* Title */
+"Message Swipe Actions" = "Message Swipe Actions";
+
+/* default vcard types */
+"Mobile" = "Mobil";
+
+/* Title */
+"Mobile Signature" = "Mobil İmza";
+
+/* Action */
+"Move to AllMail" = "Move to AllMail";
+
+/* Action */
+"Move to Archive" = "Arşive Taşı";
+
+/* Action */
+"Move to Draft" = "Taslaklara Taşı";
+
+/* Action */
+"Move to Inbox" = "Gelen kutusuna Taşı";
+
+/* Action */
+"Move to Outbox" = "Giden Kutusuna Taşı";
+
+/* Action */
+"Move to Spam" = "Spam'a Taşı";
+
+/* Action */
+"Move to Trash" = "Çöp kutusuna taşı";
+
+/* Title */
+"Multiple Addresses" = "Çoklu Adresler";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Takma Ad";
+
+/* Description */
+"No managed object context" = "No managed object context";
+
+/* Description */
+"No managed object context." = "No managed object context.";
+
+/* this is a system object can't find, this could be not trasnlated */
+"No managedObjectContext" = "No managedObjectContext";
+
+/* settings general section title */
+"Notification Email" = "Bildirim e-postası";
+
+/* Title */
+"On" = "On";
+
+/* Action */
+"OpenDraft" = "OpenDraft";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Organizasyon";
+
+/* default vcard types */
+"Other" = "Diğer";
+
+/* Title */
+"Outbox" = "Giden Kutusu";
+
+/* update notification email error
+   update password error */
+"Password update failed" = "Parola Güncelleştirme Başarısız";
+
+/* default vcard types */
+"Personal" = "Kişisel";
+
+/* default vcard types */
+"Phone" = "Telefon";
+
+/* Title */
+"Plain text" = "Düz metin";
+
+/* Action */
+"Polish" = "Polish";
+
+/* Action */
+"Portuguese Brazil" = "Portekizce Brezilya";
+
+/* Title */
+"Protection" = "Koruma";
+
+/* settings protection section title */
+"Protection Entire App" = "Protection Entire App";
+
+/* Title */
+"ProtonMail encrypted emails" = "ProtonMail şifrelenmiş e-postalar";
+
+/* Title */
+"Re:" = "Cvp:";
+
+/* Action */
+"Reply" = "Yanıtla";
+
+/* Action */
+"ReplyAll" = "ReplyAll";
+
+/* Action */
+"Russian" = "Rusça";
+
+/* Title */
+"SENT" = "Gönderilen";
+
+/* Title */
+"SPAM" = "SPAM";
+
+/* Error */
+"SRP Client" = "SRP İstemci";
+
+/* Error */
+"SRP Server" = "SRP Sunucusu";
+
+/* Title */
+"STARRED" = "YILDIZLI";
+
+/* Title */
+"Send plain but stored enc" = "Send plain but stored enc";
+
+/* Description */
+"Server proofs not valid!" = "Server proofs not valid!";
+
+/* Title */
+"Signature" = "İmza";
+
+/* settings general section title */
+"Single Password" = "Tek Parola";
+
+/* Title */
+"Spam" = "Spam";
+
+/* Action */
+"Spanish" = "İspanyolca";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Srp single password keyslat invalid!";
+
+/* Title */
+"Star" = "Yıldız";
+
+/* Title */
+"Starred" = "Yıldızlı";
+
+/* Title */
+"Storage" = "Depolama";
+
+/* Title */
+"Subject:" = "Konu:";
+
+/* settings swipe actions section title */
+"Swipe Left to Right" = "Swipe Left to Right";
+
+/* settings swipe actions section title */
+"Swipe Right to Left" = "Swipe Right to Left";
+
+/* Title */
+"TRASH" = "ÇÖP KUTUSU";
+
+/* update password error */
+"The Password is wrong." = "Parola yanlış.";
+
+/* Error Description */
+"The UserName have been taken." = "Kullanıcı Adı alındı.";
+
+/* Description */
+"The authentication credentials are invalid." = "Kimlik doğrulama bilgileri geçersiz.";
+
+/* Description */
+"The authentication token has expired." = "The authentication token has expired.";
+
+/* error when sending the message */
+"The draft format incorrectly sending failed!" = "The draft format incorrectly sending failed!";
+
+/* update password error */
+"The new password can't empty." = "Yeni parola boş olamaz.";
+
+/* update password error */
+"The new password not match." = "Yeni Parola uyuşmuyor.";
+
+/* update password error */
+"The private update failed." = "Özel güncelleme başarısız oldu.";
+
+/* Description */
+"The user info fetch is wrong" = "Kullanıcı bilgisi alınamadı";
+
+/* Description */
+"There was an error creating or loading the application's saved data." = "Uygulamanın kayıtlı verileri oluşturulurken veya yüklenirken bir hata oluştu.";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!";
+
+/* spam score warning */
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!";
+
+/* contacts talbe cell Title title */
+"Title" = "Başlık";
+
+/* Title */
+"To:" = "Kime:";
+
+/* Error */
+"Token expired" = "Token expired";
+
+/* Action
+   Title */
+"Trash" = "Çöp Kutusu";
+
+/* Action */
+"Turkish" = "Türkçe";
+
+/* Action */
+"Ukrainian" = "Ukraynaca";
+
+/* Description */
+"Unable to connect to the server" = "Unable to connect to the server";
+
+/* Description */
+"Unable to construct a valid URL with the following path: %@" = "Unable to construct a valid URL with the following path: %@";
+
+/* Description */
+"Unable to create SRP Client!" = "Unable to create SRP Client!";
+
+/* Description */
+"Unable to generate hash password!" = "Unable to generate hash password!";
+
+/* Error */
+"Unable to get contacts" = "Unable to get contacts";
+
+/* Description */
+"Unable to parse authentication info!" = "Unable to parse authentication info!";
+
+/* Description */
+"Unable to parse authentication token!" = "Unable to parse authentication token!";
+
+/* Description */
+"Unable to parse cased authentication token!" = "Unable to parse cased authentication token!";
+
+/* Description */
+"Unable to parse response" = "Unable to parse response";
+
+/* Description */
+"Unable to parse the response object:\n%@" = "Unable to parse the response object:\n%@";
+
+/* Error */
+"Unable to parse token" = "Unable to parse token";
+
+/* error when sending the message */
+"Unable to send the email" = "Unable to send the email";
+
+/* Description */
+"Unknow Error" = "Bilinmeyen Hata";
+
+/* update notification email error title */
+"Update Notification Email" = "Bildirim E-postasını Güncelle";
+
+/* default vcard types */
+"Work" = "İş";
+
+/* Title */
+"at" = "de";
+
+/* contacts api error when fetch */
+"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "get contacts() failed, peopleOrderedByUsersPreference return null!!";
+
+/* Title */
+"wrote:" = "wrote:";
+

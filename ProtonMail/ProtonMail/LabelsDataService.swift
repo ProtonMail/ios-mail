@@ -79,7 +79,7 @@ class LabelsDataService {
         return nil
     }
     
-    func addNewLabel(_ response : Dictionary<String, Any>?) {
+    func addNewLabel(_ response : [String : Any]?) {
         if let label = response {
             let context = sharedCoreDataService.newMainManagedObjectContext()
             context.performAndWait() {

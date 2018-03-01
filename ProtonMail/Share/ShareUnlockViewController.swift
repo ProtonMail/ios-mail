@@ -22,6 +22,17 @@ class ShareUnlockViewController: UIViewController {
     fileprivate let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000
     fileprivate var currentAttachmentSize : Int = 0
     
+    
+    // pre - defined
+    private let file_types : [String]  = [kUTTypeImage as String,
+                                          kUTTypeMovie as String,
+                                          kUTTypeVideo as String,
+                                          kUTTypeFileURL as String]
+    private let propertylist_ket = kUTTypePropertyList as String
+    private let url_key = kUTTypeURL as String
+    
+    private var localized_errors: [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,105 +52,88 @@ class ShareUnlockViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         self.navigationItem.title = ""
-        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel,
                                                                 target: self,
                                                                 action: #selector(ShareUnlockViewController.cancelButtonTapped(sender:)))
         
-        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-        
-        var is_inputs_error : Bool = true
-        //this part need move to a seperate function
+        ActivityIndicatorHelper.showActivityIndicator(at: view)
         if let inputitems = self.extensionContext?.inputItems as? [NSExtensionItem] {
-            PMLog.D("\(inputitems)")
-            for item in inputitems {
-                let plainText = item.attributedContentText?.string
-                if let attachments = item.attachments {
-                    for att in attachments {
-                        if let itemProvider = att as? NSItemProvider {
-                            
-                            let propertylist_ket = kUTTypePropertyList as String
-                            let url_key = kUTTypeURL as String
-                            
-                            let file_types : [String] = [kUTTypeImage as String,
-                                                         kUTTypeMovie as String,
-                                                         kUTTypeVideo as String,
-                                                         kUTTypeFileURL as String]
-                            
-                            if  itemProvider.loadItem(types: file_types,  handler: { (fileData : FileData?, error : NSError?) in
-                                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            let group = DispatchGroup()
+            self.parse(items: inputitems, group: group)
+            group.notify(queue: .main) {
+                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                DispatchQueue.main.async {
+                    //go to composer
+                    if self.localized_errors.isEmpty {
+                        self.loginCheck()
+                    } else {
+                        if let e = self.localized_errors.first {
+                            self.showErrorAndQuit(errorMsg: e)
+                        } else {
+                            self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
+                        }
+                    }
+                }
+            }
+        } else {
+            self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
+        }
+    }
+    
+    private func parse(items: [NSExtensionItem], group: DispatchGroup) {
+        defer {
+            group.leave()//#0
+        }
+        PMLog.D("\(items)")
+        group.enter() //#0
+        for item in items {
+            let plainText = item.attributedContentText?.string
+            if let attachments = item.attachments {
+                for att in attachments {
+                    if let itemProvider = att as? NSItemProvider {
+                        if let type = itemProvider.hasItem(types: file_types) {
+                            group.enter() //#1
+                            itemProvider.loadItem(type: type, handler: { (fileData : FileData?, error : NSError?) in
+                                defer {
+                                     group.leave() //#1
+                                }
                                 
-                                if error != nil || fileData == nil {
-                                    self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
-                                } else {
+                                if let data = fileData {
                                     let length = fileData!.data.count
                                     if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
                                         self.files.append(fileData!)
-                                        self.loginCheck()
                                     } else {
-                                        self.showErrorAndQuit(errorMsg: NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description"))
+                                        self.localized_errors.append(NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description"))
                                     }
+                                } else if let err = error {
+                                    self.localized_errors.append(NSLocalizedString("Can't load share content!", comment: "Description"))
                                 }
-                                
-                            }) {
-                                is_inputs_error = false
-                            } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
-                                //is_inputs_error = false
-                                PMLog.D("1")
-                                break
-                                //                        [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypePropertyList
-                                //                            options:nil
-                                //                            completionHandler:^(NSDictionary *item, NSError *error) {
-                                //                            // If it's a "webpage". This type seems to be mostly shared by Safari.
-                                //                            // We can run custom JS if it's a webpage, so get more info that way
-                                //                            // e.g. page title, currently selected text, etc.
-                                //                            NSDictionary *results = [item objectForKey:NSExtensionJavaScriptPreprocessingResultsKey];
-                                //                            // Probably don't need sharedPlainText here since we can get
-                                //                            // lots of info from the page itself
-                                //                            }];
-                            } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
-                                is_inputs_error = false
-                                itemProvider.loadItem(forTypeIdentifier: url_key, options: nil, completionHandler: { (url, error) -> Void in
-                                    
-                                    {
-                                        ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                                        if let shareURL = url as? NSURL {
-                                            self.inputSubject = plainText ?? ""
-                                            let url = shareURL.absoluteString ?? ""
-                                            self.inputContent = "<a href=\"\(url)\">\(url)</a>"
-                                            self.loginCheck()
-                                            
-                                        } else {
-                                            self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
-                                        }
-                                        
-                                    } ~> .main
-                                    
-                                })
-                            } else if let pt = plainText {
-                                is_inputs_error = false
-                                inputSubject = ""
-                                inputContent = pt
-                                
-                                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                                self.loginCheck()
-                                
-                            } else {
-                                PMLog.D("4")
-                                break
-                                // Or maybe there's nothing at all <flanders.gif>
-                                // Not sure why this would happen, might be a beta bug.
-                                // I managed to get it when sharing the calendar event from apple.com/live :/
-                            }
+                            })
+                        } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
+                            PMLog.D("1")
+                        } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
+                            group.enter()//#2
+                            itemProvider.loadItem(forTypeIdentifier: url_key, options: nil, completionHandler: { (url, error) -> Void in
+                                defer {
+                                    group.leave()//#2
+                                }
+                                if let shareURL = url as? NSURL {
+                                    self.inputSubject = plainText ?? ""
+                                    let url = shareURL.absoluteString ?? ""
+                                    self.inputContent = self.inputContent  + "<a href=\"\(url)\">\(url)</a>"
+                                } else {
+                                    self.localized_errors.append(NSLocalizedString("Can't load share content!", comment: "Description"))
+                                }
+                            })
+                        } else if let pt = plainText {
+                            self.inputSubject = ""
+                            self.inputContent = self.inputContent + pt
+                        } else {
+                            PMLog.D("4")
                         }
                     }
-                    
                 }
             }
-        }
-        
-        if is_inputs_error {
-            self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
         }
     }
     
@@ -241,7 +235,7 @@ class ShareUnlockViewController: UIViewController {
         }
         else
         {
-             self.showErrorAndQuit(errorMsg: NSLocalizedString("Please use ProtonMail App login first", comment: "Description"))
+            self.showErrorAndQuit(errorMsg: NSLocalizedString("Please use ProtonMail App login first", comment: "Description"))
         }
     }
     
@@ -289,7 +283,7 @@ class ShareUnlockViewController: UIViewController {
     }
     
     func authenticateUser() {
-        let savedEmail = userCachedStatus.touchIDEmail
+        let savedEmail = userCachedStatus.codedEmail()
         // Get the local authentication context.
         let context = LAContext()
         // Declare a NSError variable.
@@ -368,7 +362,7 @@ class ShareUnlockViewController: UIViewController {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
-        let navigationBarTitleFont = UIFont.systemFont(ofSize: UIFont.Size.h2)
+        let navigationBarTitleFont = Fonts.h2.regular
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: navigationBarTitleFont
@@ -394,42 +388,57 @@ extension ShareUnlockViewController : SharePinUnlockViewControllerDelegate {
 typealias LoadComplete = (_ attachment: FileData?, _ error: NSError?) -> Void
 
 extension NSItemProvider {
-    func loadItem(types : [String], handler : @escaping LoadComplete) -> Bool {
+    
+    func hasItem(types: [String]) -> String? {
         for type in types {
             if self.hasItemConformingToTypeIdentifier(type) {
-                PMLog.D(type)
-                self.loadItem(forTypeIdentifier: type, options: nil) { data, error in
-                    if error != nil {
-                        handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
-                        print("Unable to add as a URL")
-                    } else if let url = data as? URL {
-                        let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
-                        var error : NSError?
-                        coordinator.coordinate(readingItemAt: url, options: NSFileCoordinator.ReadingOptions(), error: &error) { (new_url) -> Void in
-                            if let data = try? Data(contentsOf: url) {
-                                DispatchQueue.main.async {
-                                    //if data.count <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
-                                    let ext = url.mimeType()
-                                    let fileName = url.lastPathComponent
-                                    let filedata = FileData(name: fileName, ext: ext, data: data)
-                                    handler(filedata, nil)
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
-                                }
-                            }
+                return type
+            }
+        }
+        return nil
+    }
+    
+    
+    func loadItem(type : String, handler : @escaping LoadComplete) {
+        self.loadItem(forTypeIdentifier: type, options: nil) { data, error in
+            if error != nil {
+                handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
+            } else if let url = data as? URL {
+                let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
+                var error : NSError?
+                coordinator.coordinate(readingItemAt: url, options: NSFileCoordinator.ReadingOptions(), error: &error) { (new_url) -> Void in
+                    do {
+                        let data = try Data(contentsOf: url)
+                        DispatchQueue.main.async {
+                            let ext = url.mimeType()
+                            let fileName = url.lastPathComponent
+                            let filedata = FileData(name: fileName, ext: ext, data: data)
+                            handler(filedata, nil)
                         }
-                    } else {
+                    } catch {
                         DispatchQueue.main.async {
                             handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
-                            print("Unexpected data:", Swift.type(of: data))
                         }
                     }
                 }
-                return true
+            } else if let img = data as? UIImage {
+                let fileName = "\(NSUUID().uuidString).PNG"
+                let ext = "image/png"
+                if let fileData = UIImagePNGRepresentation(img) {
+                    DispatchQueue.main.async {
+                        let filedata = FileData(name: fileName, ext: ext, data: fileData)
+                        handler(filedata, nil)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
+                }
             }
         }
-        return false
     }
 }

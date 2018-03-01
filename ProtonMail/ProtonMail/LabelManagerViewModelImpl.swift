@@ -11,10 +11,10 @@ import Foundation
 
 // labels and folders manager
 final class LabelManagerViewModelImpl : LabelViewModel {
-    fileprivate var labelMessages : Dictionary<String, LabelMessageModel>!
+    fileprivate var labelMessages : [String : LabelMessageModel]!
     override init() {
         super.init()
-        self.labelMessages = Dictionary<String, LabelMessageModel>()
+        self.labelMessages = [String : LabelMessageModel]()
     }
     
     override func showArchiveOption() -> Bool {

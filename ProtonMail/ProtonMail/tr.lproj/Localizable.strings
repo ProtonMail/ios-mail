@@ -25,15 +25,13 @@
 /* no object error, local only , this could be not translated! */
 "<no object>" = "<obje yok>";
 
-/* (No Commment) */
+/* (No Comment) */
 "A message cannot have more than 5 labels" = "Bir mesaj 5'ten fazla etiket içeremez";
 
 /* Description */
 "A new version of ProtonMail app is available, please update to latest version." = "ProtonMail uygulamasının yeni bir sürümü mevcuttur, lütfen son sürüme güncelleyin.";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "A passcode has not been set, enable it in the system Settings" = "Şifre ayarlanmamış, şifrenizi sistem ayarlarından etkinleştirin";
 
 /* Error
@@ -47,27 +45,29 @@
    error message when acction disabled */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Ödeme yapılmadığı için bu hesaba erişim engellendi. Ödenmemiş faturalarınızı ödemek için lütfen protonmail.com üzerinden oturum açın.";
 
-/* (No Commment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Ödeme yapılmadığı için bu hesaba erişim engellendi.
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Ödeme yapılmadığı için bu hesaba erişim engellendi.\n\nDaha fazla bilgi için lütfen <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">bilgi tabanımızı</a> ziyaret edin.";
 
-Daha fazla bilgi için lütfen <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">bilgi tabanımızı</a> ziyaret edin.";
-
-/* error message title
-   Title */
+/* (No Comment) */
 "Account password invalid" = "Geçeriz hesap parolası";
 
-/* (No Commment) */
+/* (No Comment) */
 "Add" = "Ekle";
 
-/* edit contact navigation title */
+/* new contacts add Anniversary */
+"Add Anniversary" = "Yıldönümü ekle";
+
+/* new contacts add Birthday */
+"Add Birthday" = "Doğumgünü ekle";
+
+/* Contacts add new contact */
 "Add Contact" = "Kişi Ekle";
 
-/* Action
-   Apply label then also archive */
-"Add Folder" = "Klasör Ekle";
+/* action */
+"Add Custom Label" = "Özel etiket ekle";
 
-/* Apply label then also archive */
-"Also Archive" = "Ayrıca Arşiv";
+/* Action */
+"Add Folder" = "Klasör Ekle";
 
 /* Action */
 "Add Label" = "Etiket Ekle";
@@ -78,8 +78,35 @@ Daha fazla bilgi için lütfen <a href=\"https://protonmail.com/support/knowledg
 /* Title */
 "Add New Label" = "Yeni Etiket Ekle";
 
+/* new contacts add Nickname */
+"Add Nickname" = "Takma ad ekle";
+
+/* new contacts add Organization */
+"Add Organization" = "Organizasyon ekle";
+
 /* Action */
 "Add Star" = "Yıldız Ekle";
+
+/* new contacts add Title */
+"Add Title" = "Başlık ekle";
+
+/* action */
+"Add new address" = "Yeni adres ekle";
+
+/* action */
+"Add new custom field" = "Yeni özel alan ekle";
+
+/* action */
+"Add new email" = "Yeni e-posta ekle";
+
+/* action */
+"Add new field" = "Yeni alan ekle";
+
+/* action */
+"Add new phone number" = "Yeni telefon numarası ekle";
+
+/* default vcard types */
+"Address" = "Adres";
 
 /* alert title
    Error
@@ -89,21 +116,25 @@ Daha fazla bilgi için lütfen <a href=\"https://protonmail.com/support/knowledg
 /* Title */
 "All Mail" = "Tüm Postalar";
 
+/* Title */
+"All contacts are imported" = "All contacts are imported";
+
 /* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Mevcut şifreli e-postalarınızın tamamı sonsuza dek kaybolacak ancak şifrelenmemiş e-postalarınızı yine de görebileceksiniz.\n\nBU EYLEM GERİ ALINAMAZ!";
 
-THIS ACTION CANNOT BE UNDONE!" = "Mevcut şifreli e-postalarınızın tamamı sonsuza dek kaybolacak ancak şifrelenmemiş e-postalarınızı yine de görebileceksiniz.
-
-BU EYLEM GERİ ALINAMAZ!";
+/* Apply label then also archive */
+"Also Archive" = "Sonra Arşivle";
 
 /* Description */
 "Also used to reset a forgotten password." = "Unutulan bir şifreyi sıfırlamak için de kullanılır.";
 
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "Yıldönümü";
+
 /* No comment provided by engineer. */
 "AppVersion" = "Uygulama Sürümü";
 
-/* Action
-   folder apply - apply button text */
+/* Action */
 "Apply" = "Uygula";
 
 /* Title */
@@ -130,8 +161,10 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Description */
 "Authentication was cancelled by the system" = "Kimlik doğrulama sistem tarafından iptal edildi";
 
-/* settings protection section title
-   Title */
+/* Description */
+"Authentication was cancelled by the user" = "Doğrulama kullanıcı tarafından iptal edildi";
+
+/* settings protection section title */
 "Auto Lock Time" = "Otomatik kilit süresi";
 
 /* settings general section title */
@@ -159,6 +192,9 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Title */
 "Bcc" = "BCC";
 
+/* contacts talbe cell Birthday title */
+"Birthday" = "Doğum günü";
+
 /* Title */
 "Bug Description" = "Hata Açıklaması";
 
@@ -171,8 +207,7 @@ BU EYLEM GERİ ALINAMAZ!";
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
 
-/* Action
-   setup pin action */
+/* Action */
 "CONFIRM" = "ONAYLA";
 
 /* Title */
@@ -191,8 +226,7 @@ BU EYLEM GERİ ALINAMAZ!";
    update password error */
 "Can't create a SRP Client" = "SRP İstemcisi oluşturulamıyor";
 
-/* sign up user error
-   update notification email error
+/* update notification email error
    update password error */
 "Can't create a SRP verifier!" = "SRP Doğrulayıcısı oluşturulamıyor!";
 
@@ -208,17 +242,18 @@ BU EYLEM GERİ ALINAMAZ!";
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Bu ek bulunamıyor!";
 
-/* sign up user error when can't get moduls id
-   update password error */
+/* update password error = typo:Modulus */
 "Can't get a Moduls ID!" = "Modül kimliği alınamıyor!";
 
-/* sign up user error
-   update password error */
+/* update password error = typo:Modulus */
 "Can't get a Moduls!" = "Modül alınamıyor!";
 
 /* update notification email error
    update password error */
 "Can't get user auth info" = "Kullanıcı kimlik doğrulama bilgileri alınamıyor";
+
+/* Description */
+"Can't load share content!" = "Paylaşım içeriği yüklenemiyor!";
 
 /* Error */
 "Can't load the file" = "Dosya yüklenemiyor";
@@ -230,15 +265,13 @@ BU EYLEM GERİ ALINAMAZ!";
 "Can't open the file" = "Dosya açılamıyor";
 
 /* Action
-   folder apply - cancel button text
-   title
    Title */
 "Cancel" = "İptal";
 
 /* Action */
 "Cancel Check" = "Kontrolü İptal Et";
 
-/* (No Commment) */
+/* (No Comment) */
 "Cant' decrypt this attachment!" = "Bu ek dosyanın şifresi çözülemiyor.";
 
 /* Title */
@@ -289,8 +322,7 @@ BU EYLEM GERİ ALINAMAZ!";
 /* settings general section title */
 "Clear Local Message Cache" = "Yerel mesaj önbelleğini temizle";
 
-/* Action
-   lable manager close action */
+/* Action */
 "Close" = "Kapat";
 
 /* Action */
@@ -300,14 +332,13 @@ BU EYLEM GERİ ALINAMAZ!";
    Title */
 "Confirm" = "Onayla";
 
-/* (No Commment) */
+/* (No Comment) */
 "Confirm Login Password" = "Giriş parolasını onayla";
 
-/* (No Commment) */
+/* (No Comment) */
 "Confirm Mailbox Password" = "Posta kutusu parolasını onayla";
 
-/* place holder
-   Placeholder
+/* Placeholder
    Title */
 "Confirm Password" = "Parolayı onayla";
 
@@ -327,10 +358,14 @@ BU EYLEM GERİ ALINAMAZ!";
 /* view top title */
 "Congratulations!" = "Tebrikler!";
 
+/* contact section title */
+"Contact Details" = "Kişi Detayları";
+
 /* Title */
 "Contact the ProtonMail team" = "ProtonMail ekibiyle iletişime geçin";
 
-/* Title */
+/* Action
+   Title */
 "Contacts" = "Kişiler";
 
 /* Action
@@ -368,6 +403,10 @@ BU EYLEM GERİ ALINAMAZ!";
    Title */
 "Current password" = "Geçerli parola";
 
+/* custom label type default
+   default label type */
+"Custom" = "Özel";
+
 /* Title */
 "DECRYPT MAILBOX" = "POSTA KUTUSU ŞİFRESİNİ ÇÖZ";
 
@@ -377,13 +416,10 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Title */
 "DRAFTS" = "Taslaklar";
 
-/* like Date: 2017-10-10 */
-"Date" = "Tarih";
-
 /* Title */
 "Date:" = "Tarih:";
 
-/* No comment provided by engineer. */
+/* like Date: 2017-10-10 */
 "Date: %@" = "Tarih: %@";
 
 /* Title */
@@ -413,19 +449,23 @@ BU EYLEM GERİ ALINAMAZ!";
 /* place holder */
 "Define Password" = "Parola belirleyin";
 
-/* Action
-   lable manager delete action
-   swipe title when swipe cell on mailbox message list */
+/* swipe title when swipe cell on mailbox message list */
 "Delete" = "Sil";
 
-/* Description
-   Title */
+/* action
+   Title-Contacts */
+"Delete Contact" = "Kişiyi sil";
+
+/* Title */
 "Deleted" = "Silindi";
 
 /* Title */
 "Details" = "Detaylar";
 
 /* Action */
+"Discard changes" = "Discard changes";
+
+/* Title */
 "Discard draft" = "Taslağı iptal et";
 
 /* Title */
@@ -438,10 +478,12 @@ BU EYLEM GERİ ALINAMAZ!";
 "DisplayName" = "Görünen İsim";
 
 /* Title */
+"Do you want to save the unsaved changes?" = "Değişiklikleri kaydetmek istiyor musunuz?";
+
+/* Title */
 "Don't Show Again" = "Bir Daha Gösterme";
 
-/* Action
-   Title */
+/* Action */
 "Done" = "Bitti";
 
 /* Action
@@ -452,9 +494,12 @@ BU EYLEM GERİ ALINAMAZ!";
 "Drafts" = "Taslaklar";
 
 /* Action */
+"Dutch" = "Flemenkçe";
+
+/* Action */
 "Edit" = "Düzenle";
 
-/* edit contact navigation title */
+/* (No Comment) */
 "Edit Contact" = "Kişiyi düzenle";
 
 /* Title */
@@ -463,13 +508,14 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Title */
 "Edit Label" = "Etiketi Düzenle";
 
-/* Placeholder */
+/* default vcard types */
 "Email" = "E-Posta";
 
 /* human check option button */
 "Email Verification" = "E-Posta Doğrulaması";
 
-/* Title */
+/* contact placeholder
+   Title */
 "Email address" = "E-posta adresi";
 
 /* Title */
@@ -478,8 +524,7 @@ BU EYLEM GERİ ALINAMAZ!";
 /* place holder */
 "Email default signature" = "Varsayılan e-posta imzası";
 
-/* error message title
-   Title */
+/* (No Comment) */
 "Email domain invalid" = "Geçersiz e-posta alan adı";
 
 /* Action */
@@ -503,6 +548,10 @@ BU EYLEM GERİ ALINAMAZ!";
 /* settings protection section title */
 "Enable TouchID" = "TouchID'yi Etkinleştir";
 
+/* contact section title
+   title */
+"Encrypted Contact Details" = "Şifreli İletişim Bilgileri";
+
 /* Title */
 "Encrypted for outside" = "Dışarıya şifreli";
 
@@ -517,6 +566,9 @@ BU EYLEM GERİ ALINAMAZ!";
 
 /* Title */
 "Encrypted from outside pgp mime" = "Dışarıdan pgp mime şifreli";
+
+/* Alert */
+"Encrypting contacts... %d" = "Encrypting contacts... %d";
 
 /* key setup top title */
 "Encryption Setup" = "Şifreleme Kurulumu";
@@ -550,10 +602,9 @@ BU EYLEM GERİ ALINAMAZ!";
 "Error Logs" = "Hata günlükleri";
 
 /* No comment provided by engineer. */
-"Every time enter app" = "Her zaman uygulamaya gir";
+"Every time enter app" = "Her zaman uygulamaya girerken";
 
-/* Description
-   expiration time count down */
+/* expiration time count down */
 "Expires in %d days %d hours %d mins %d seconds" = "%d gün %d saat %d dakika %d saniye içinde sona eriyor";
 
 /* Title */
@@ -568,6 +619,9 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Description */
 "Failed to initialize the application's saved data" = "Uygulamanın kayıtlı verileri başlatılamadı";
 
+/* default vcard types */
+"Fax" = "Faks";
+
 /* Title */
 "Feedback" = "Geri Bildirim";
 
@@ -578,8 +632,7 @@ BU EYLEM GERİ ALINAMAZ!";
    place holder */
 "Folder Name" = "Klasör İsmi";
 
-/* Action
-   top left back button */
+/* Action */
 "Forward" = "Yönlendir";
 
 /* Title */
@@ -684,10 +737,12 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Error */
 "Invalid credential" = "Geçersiz kimlik bilgileri";
 
-/* sign up user error
-   update notification email error
+/* update notification email error
    update password error */
 "Invalid hashed password!" = "Geçersiz şifre karması!";
+
+/* Action */
+"Italian" = "İtalyanca";
 
 /* Title */
 "Keep me updated about new features" = "Yeni özellikler hakkında beni haberdar et";
@@ -735,17 +790,16 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Description */
 "Local cache can't find mailbox password" = "Yerel önbellek posta kutusu şifresini bulamıyor";
 
-/* (No Commment) */
+/* (No Comment) */
 "Localizable.strings" = "İngilizce";
 
 /* Title */
 "Lock The App" = "Uygulamayı Kilitle";
 
-/* touch id box title like Login: email@email.com */
+/* No comment provided by engineer. */
 "Login" = "Oturum Aç";
 
-/* Placeholder
-   settings general section title */
+/* settings general section title */
 "Login Password" = "Giriş parolası";
 
 /* Error */
@@ -757,13 +811,13 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Title */
 "MAILBOX PASSWORD" = "Posta kutusu parolası";
 
-/* Prompt text shown in the prompt cell */
+/* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* settings general section title */
 "Mailbox Password" = "Posta kutusu parolası";
 
-/* (No Commment) */
+/* (No Comment) */
 "Mailbox password doesn't match" = "Posta kutusu parolası uyuşmuyor";
 
 /* Title */
@@ -808,6 +862,9 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Gönderdiğiniz mesajlar belirli bir süre sonra otomatik olarak silinmeye ayarlanabilir.";
 
+/* default vcard types */
+"Mobile" = "Mobil";
+
 /* Title */
 "Mobile Signature" = "Mobil imza";
 
@@ -848,7 +905,7 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Ücretsiz kaydolun";
 
-/* Placeholder */
+/* title */
 "Name" = "İsim";
 
 /* Test */
@@ -863,6 +920,12 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Placeholder
    Title */
 "New password" = "Yeni parola";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Takma ad";
+
+/* message when mailbox doesnt have emailsß */
+"No Messages" = "Mesaj yok";
 
 /* Error
    Title */
@@ -889,11 +952,14 @@ BU EYLEM GERİ ALINAMAZ!";
 /* setup password notes */
 "Note: This is used to log you into your account." = "Not: Bu hesabınıza giriş yapmada kullanılır.";
 
+/* title
+   Title */
+"Notes" = "Notlar";
+
 /* Title */
 "Notification / Recovery Email" = "Bildirim/Kurtarma E-Postası";
 
-/* settings general section title
-   Title */
+/* settings general section title */
 "Notification Email" = "Bildirim e-postası";
 
 /* Action */
@@ -903,10 +969,19 @@ BU EYLEM GERİ ALINAMAZ!";
 "On" = "Açık";
 
 /* Description */
+"Only a paid user can modify default mobile signature or turn it off!" = "Yalnızca ücretli bir kullanıcı varsayılan mobil imza üzerinde değişiklik yapabilir veya kapatabilir!";
+
+/* Description */
 "Only plus user could modify default mobile signature or turn it off!" = "Yalnızca plus üye varsayılan mobil imza üzerinde değişiklik yapabilir veya kapatabilir!";
 
 /* Action */
 "OpenDraft" = "Taslağı aç";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Organizasyon";
+
+/* default vcard types */
+"Other" = "Diğer";
 
 /* Title */
 "Outbox" = "Giden Kutusu";
@@ -932,6 +1007,12 @@ BU EYLEM GERİ ALINAMAZ!";
 /* update notification email error
    update password error */
 "Password update failed" = "Parola güncelleştirme başarısız";
+
+/* default vcard types */
+"Personal" = "Kişisel";
+
+/* default vcard types */
+"Phone" = "Telefon";
 
 /* human check option button */
 "Phone Verification" = "Telefon Doğrulaması";
@@ -976,28 +1057,32 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Description */
 "Please set a password." = "Lütfen bir şifre ayarlayın.";
 
-/* Error
-   error message when create new user */
+/* (No Comment) */
 "Please try a different domain." = "Lütfen başka bir alan adı deneyin.";
 
-/* Error
-   error message when create new user */
+/* (No Comment) */
 "Please try a different email address." = "Lütfen başka bir e-posta adresi deneyin.";
 
-/* Error
-   error message when create new user */
+/* (No Comment) */
 "Please try a different password." = "Lütfen başka bir parola deneyin.";
 
-/* Error
-   error message when create new user */
+/* (No Comment) */
 "Please try a different user name." = "Lütfen başka bir kullanıcı adı deneyin.";
 
-/* Error
-   error message when create new user */
+/* (No Comment) */
 "Please try again." = "Lütfen tekrar deneyin";
 
-/* (No Commment) */
+/* Alert */
+"Please upgrade to access encrypted contact details." = "Please upgrade to access encrypted contact details.";
+
+/* Description */
+"Please use ProtonMail App login first" = "Lütfen önce ProtonMail uygulamasına giriş yapın";
+
+/* (No Comment) */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Posta kutusu şifrenizi değiştirmek için lütfen ProtonMail web sürümünü kullanın!";
+
+/* Alert */
+"Please use the web version of ProtonMail to change your passwords!" = "Lütfen şifrelerinizi değiştirmek için ProtonMail web sürümünü kullanın!";
 
 /* Alert */
 "Please use the web version of ProtonMail to change your passwords.!" = "Şifrelerinizi değiştirmek için lütfen ProtonMail web sürümünü kullanın!";
@@ -1010,6 +1095,12 @@ BU EYLEM GERİ ALINAMAZ!";
 
 /* Title */
 "Please, manage it in your phone." = "Lütfen, telefonunuzda yönetin.";
+
+/* Action */
+"Polish" = "Lehçe";
+
+/* Action */
+"Portuguese Brazil" = "Portekiz Brezilyası";
 
 /* Title */
 "Protection" = "Koruma";
@@ -1051,6 +1142,9 @@ BU EYLEM GERİ ALINAMAZ!";
 "Re:" = "Cvp:";
 
 /* Title */
+"Reading device contacts data..." = "Cihaz kayıt verileri okunuyor...";
+
+/* Title */
 "Recovery Code" = "Kurtarma Kodu";
 
 /* Title */
@@ -1068,14 +1162,13 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Action */
 "Remove Star" = "Yıldızı Kaldır";
 
-/* Action
-   top left back button */
+/* Action */
 "Reply" = "Yanıtla";
 
 /* top left back button */
 "Reply All" = "Tümünü Yanıtla";
 
-/* (No Commment) */
+/* (No Comment) */
 "Reply message" = "Mesajı cevapla";
 
 /* Action */
@@ -1083,9 +1176,6 @@ BU EYLEM GERİ ALINAMAZ!";
 
 /* Title */
 "Report Bugs" = "Hataları Bildir";
-
-/* (No Commment) */
-"Reseting message cache ..." = "Mesaj önbelleği temizleniyor...";
 
 /* Title */
 "Resetting message cache ..." = "Mesaj önbelleği temizleniyor...";
@@ -1122,13 +1212,14 @@ BU EYLEM GERİ ALINAMAZ!";
 "STARRED" = "Yıldızlı";
 
 /* Action
+   Action-Contacts
    Title */
 "Save" = "Kaydet";
 
 /* title */
 "Save Changes" = "Değişiklikleri Kaydet";
 
-/* Action */
+/* Title */
 "Save draft" = "Taslağı kaydet";
 
 /* Placeholder
@@ -1138,7 +1229,7 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Test */
 "Section Title - Test" = "Bölüm Başlığı - Test";
 
-/* (No Commment) */
+/* (No Comment) */
 "Select your language" = "Dilinizi seçin";
 
 /* Action */
@@ -1152,6 +1243,9 @@ BU EYLEM GERİ ALINAMAZ!";
 
 /* Title */
 "Send plain but stored enc" = "Düz gönder ama şifreli sakla";
+
+/* Description */
+"Sending Failed" = "Gönderim başarısız";
 
 /* Description */
 "Sending Message" = "Mesaj gönderiliyor";
@@ -1178,6 +1272,9 @@ BU EYLEM GERİ ALINAMAZ!";
 "Settings" = "Ayarlar";
 
 /* Title */
+"Share Alert" = "Paylaşım Alarmı";
+
+/* Title */
 "Share it with your friends" = "Arkadaşlarınızla paylaşın";
 
 /* Action */
@@ -1200,6 +1297,9 @@ BU EYLEM GERİ ALINAMAZ!";
 
 /* Description */
 "Spammed" = "Gereksiz";
+
+/* Action */
+"Spanish" = "İspanyolca";
 
 /* Description */
 "Srp single password keyslat invalid!" = "SRP tek şifre geçersiz!";
@@ -1278,7 +1378,7 @@ BU EYLEM GERİ ALINAMAZ!";
    Error */
 "The mailbox password is incorrect." = "Posta kutusu parolası hatalı.";
 
-/* (No Commment) */
+/* (No Comment) */
 "The maximum number of labels is %d." = "En fazla etiket sayısı %d.";
 
 /* Description */
@@ -1290,13 +1390,13 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Description */
 "The message password didn't match" = "Mesaj şifresi uyuşmadı";
 
-/* (No Commment) */
+/* (No Comment) */
 "The new password can't empty" = "Yeni parola boş olamaz";
 
 /* update password error */
 "The new password can't empty." = "Yeni parola boş olamaz.";
 
-/* (No Commment) */
+/* (No Comment) */
 "The new password not match" = "Parolalar birbiri ile eşleşmiyor";
 
 /* update password error */
@@ -1324,8 +1424,7 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Description */
 "The user info fetch is wrong" = "Kullanıcı bilgileri alınamadı";
 
-/* error message title
-   Title */
+/* (No Comment) */
 "The verification email invalid" = "Geçersiz doğrulama e-postası";
 
 /* Error */
@@ -1343,10 +1442,13 @@ BU EYLEM GERİ ALINAMAZ!";
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta bir ProtonMail adresinden gelmiş gibi görünüyor, ancak sistemimizin dışından geldi ve kimlik doğrulama gereksinimlerimiz başarısız oldu. Sahteciliğe yol açabilir veya yanlış yönlendirilebilir!";
 
+/* contacts talbe cell Title title */
+"Title" = "Başlık";
+
 /* Title */
 "To" = "Kime";
 
-/* (No Commment) */
+/* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Posta kutusu şifrenizi sıfırlamak için lütfen protonmail.com adresindeki ProtonMail web sürümünü kullanın";
 
 /* Description */
@@ -1358,14 +1460,10 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Error */
 "Token expired" = "Belirteç süresi doldu";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID etkin değil, sistem ayarlarından etkinleştirin";
 
-/* Description
-   settings touchid error
-   Touch id error message */
+/* Description */
 "TouchID not available" = "TouchID mevcut değil";
 
 /* Action
@@ -1375,6 +1473,9 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Title */
 "Trouble shooting guide" = "Sorun giderme kılavuzu";
 
+/* Action */
+"Turkish" = "Türkçe";
+
 /* Title */
 "Tweet about ProtonMail" = "ProtonMail hakkında tweet atın";
 
@@ -1383,6 +1484,9 @@ BU EYLEM GERİ ALINAMAZ!";
 
 /* Title */
 "USER LOGIN" = "Kullanıcı girişi";
+
+/* Action */
+"Ukrainian" = "Ukraynaca";
 
 /* Description */
 "Unable to connect to the server" = "Sunucuya bağlanılamıyor";
@@ -1415,8 +1519,7 @@ BU EYLEM GERİ ALINAMAZ!";
 "Unable to parse response" = "Yanıt ayrıştırılamadı";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Yanıt nesnesi ayrıştırılamadı: %@";
+"Unable to parse the response object:\n%@" = "Yanıt nesnesi ayrıştırılamadı: %@";
 
 /* Error */
 "Unable to parse token" = "Belirteç ayrıştırılamadı";
@@ -1430,7 +1533,7 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Description */
 "Unknow Error" = "Bilinmeyen hata";
 
-/* (No Commment) */
+/* (No Comment) */
 "Unknow file" = "Bilinmeyen dosya";
 
 /* No comment provided by engineer. */
@@ -1446,9 +1549,20 @@ BU EYLEM GERİ ALINAMAZ!";
    top right action text */
 "Update" = "Güncelle";
 
-/* update notification email error title
-   update notification email error title when signup */
+/* Contacts Update contact */
+"Update Contact" = "İletişim Bilgilerini Güncelle";
+
+/* update notification email error title */
 "Update Notification Email" = "Bildirim E-Postasını Güncelle";
+
+/* Action */
+"Upgrade" = "Yükselt";
+
+/* Error */
+"Upgrade to a paid plan to send from your %@ address" = "Upgrade to a paid plan to send from your %@ address";
+
+/* Action */
+"Upload Contacts" = "Kişileri Yükle";
 
 /* error when user already exist */
 "User already exist!" = "Kullanıcı adı önceden alınmış";
@@ -1456,12 +1570,10 @@ BU EYLEM GERİ ALINAMAZ!";
 /* No comment provided by engineer. */
 "User is available!" = "Kullanıcı adı uygun";
 
-/* error message title
-   Title */
+/* (No Comment) */
 "User name exist" = "Kullanıcı adı mevcut";
 
-/* error message title
-   Title */
+/* (No Comment) */
 "User name invalid" = "Geçersiz kullanıcı adı";
 
 /* Title */
@@ -1473,7 +1585,7 @@ BU EYLEM GERİ ALINAMAZ!";
 /* Title */
 "Verification code sent" = "Doğrulama kodu gönderildi";
 
-/* (No Commment) */
+/* (No Comment) */
 "Version %@ %@" = "Sürüm %@ %@";
 
 /* human check warning description */
@@ -1500,8 +1612,10 @@ BU EYLEM GERİ ALINAMAZ!";
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Bir e-posta gönderdiğinizde, bu, gönderen alanında görünen isimdir.";
 
-/* error message title
-   Title */
+/* default vcard types */
+"Work" = "İş";
+
+/* (No Comment) */
 "Wrong verification code" = "Yanlış doğrulama kodu";
 
 /* Description */
@@ -1515,6 +1629,12 @@ BU EYLEM GERİ ALINAMAZ!";
 
 /* Title */
 "You have a new email!" = "Yeni bir e-postanız var!";
+
+/* Alert */
+"You have imported %d of %d contacts!" = "You have imported %1$d of %2$d contacts!";
+
+/* Title */
+"You have imported (count) of (pre_contacts.count) contacts!" = "You have imported (count) of (pre_contacts.count) contacts!";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Kaydedilmemiş değişiklikleriniz var. Kaydetmek ister misiniz?";
@@ -1543,8 +1663,7 @@ BU EYLEM GERİ ALINAMAZ!";
 /* agree check box middle word */
 "and" = "ve";
 
-/* like at 10:00pm
-   Title */
+/* Title */
 "at" = ",";
 
 /* Error */
@@ -1565,7 +1684,7 @@ BU EYLEM GERİ ALINAMAZ!";
 /* contacts api error when fetch */
 "get contacts() failed, peopleOrderedByUsersPreference return null!!" = "contacts() getirilirken hata oluştu, peopleOrderedByUsersPreference boş sonuç döndürdü!!";
 
-/* (No Commment) */
+/* (No Comment) */
 "hours" = "Saat";
 
 /* Title */
@@ -1576,9 +1695,6 @@ BU EYLEM GERİ ALINAMAZ!";
 
 /* agree check box privacy */
 "privacy policy." = "gizlilik politikası.";
-
-/* Title */
-"reCAPTCHA verification failed" = "reCAPTCHA doğrulaması başarısız";
 
 /* agree check box terms */
 "terms and conditions" = "şartlar ve koşullar";

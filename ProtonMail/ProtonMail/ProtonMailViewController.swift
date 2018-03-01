@@ -45,7 +45,7 @@ class ProtonMailViewController: UIViewController {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
-        let navigationBarTitleFont = UIFont.robotoRegular(size: UIFont.Size.h2)
+        let navigationBarTitleFont = Fonts.h2.regular
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: navigationBarTitleFont
@@ -56,11 +56,11 @@ class ProtonMailViewController: UIViewController {
         return true
     }
     
-    func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController)
+    func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController, style : UIModalPresentationStyle = .overCurrentContext)
     {
         presentingController.providesPresentationContextTransitionStyle = true;
         presentingController.definesPresentationContext = true;
-        presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        presentingController.modalPresentationStyle = style
     }
 
 }

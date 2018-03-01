@@ -1,0 +1,6 @@
+framework module RHAddressBook {
+  umbrella header "RHAddressBook-umbrella.h"
+
+  export *
+  module * { export * }
+}

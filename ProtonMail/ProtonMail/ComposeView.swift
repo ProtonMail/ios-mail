@@ -313,9 +313,9 @@ class ComposeView: UIViewController {
     
     fileprivate func configureContactPickerTemplate() {
         MBContactCollectionViewContactCell.appearance().tintColor = UIColor.ProtonMail.Blue_6789AB
-        MBContactCollectionViewContactCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h6)
-        MBContactCollectionViewPromptCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h6)
-        MBContactCollectionViewEntryCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h6)
+        MBContactCollectionViewContactCell.appearance().font = Fonts.h6.light
+        MBContactCollectionViewPromptCell.appearance().font = Fonts.h6.light
+        MBContactCollectionViewEntryCell.appearance().font = Fonts.h6.light
     }
     
     ///
@@ -468,7 +468,7 @@ class ComposeView: UIViewController {
         } else {
             if (!hasExpirationSchedule) {
                 self.expirationButton.setImage(UIImage(named: "compose_expiration-active"), for: UIControlState())
-                self.confirmExpirationButton.setImage(UIImage(named: "cancel_compose"), for: UIControlState())
+                self.confirmExpirationButton.setImage(UIImage(named: "compose_expiration_cancel"), for: UIControlState())
             } else {
                 self.expirationDateTextField.text = ""
                 self.expirationTimeInterval  = 0;
@@ -571,7 +571,7 @@ class ComposeView: UIViewController {
         } else {
             fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight
         }
-        contactPicker.contactCollectionView!.addBorder(.bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
+        contactPicker.contactCollectionView!.add(border: .bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
     }
 }
 
@@ -686,12 +686,12 @@ extension MBContactPicker {
         }
         return contactList
     }
-    
+    //TODO:: the hard code at here should be moved to enum / struture
     var hasOutsideEmails: Bool {
         let contactsSelected = NSArray(array: self.contactsSelected)
         if let contacts = contactsSelected.value(forKey: ContactVO.Attributes.email) as? [String] {
             for contact in contacts {
-                if contact.lowercased().range(of: "@protonmail.ch") == nil && contact.lowercased().range(of: "@protonmail.com") == nil {
+                if contact.lowercased().range(of: "@protonmail.ch") == nil && contact.lowercased().range(of: "@protonmail.com") == nil && contact.lowercased().range(of: "@pm.me") == nil {
                     return true
                 }
             }

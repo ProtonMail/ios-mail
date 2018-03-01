@@ -23,7 +23,7 @@ class TableCellLabelView: UIView {
         textLabel.layer.borderWidth = 1
         textLabel.layer.cornerRadius = 2
         textLabel.layer.borderColor = UIColor.green.cgColor
-        textLabel.font = UIFont.robotoLight(size: 9)
+        textLabel.font = Fonts.h7.light
         self.contentView.addSubview(textLabel)
         self.addSubview(contentView)
         

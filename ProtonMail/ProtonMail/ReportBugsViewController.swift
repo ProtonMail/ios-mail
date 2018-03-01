@@ -67,10 +67,10 @@ class ReportBugsViewController: ProtonMailViewController {
     @IBAction fileprivate func sendAction(_ sender: UIBarButtonItem) {
         if let text = textView.text {
             if !text.isEmpty {
-                ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+                ActivityIndicatorHelper.showActivityIndicator(at: view)
                 sender.isEnabled = false
                 BugDataService().reportBug(text, completion: { error in
-                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                     sender.isEnabled = true
                     if let error = error {
                         let alert = error.alertController()

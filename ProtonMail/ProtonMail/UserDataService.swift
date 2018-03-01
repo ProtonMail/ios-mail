@@ -166,17 +166,26 @@ class UserDataService {
         return userInfo?.showImages == 0
     }
     
-    // MARK: - variables
+    var firstUserPublicKey: String? {
+        if let keys = userInfo?.userKeys, keys.count > 0 {
+            for k in keys {
+                return k.public_key
+            }
+        }
+        return nil
+    }
+    
+    // MARK: - Public variables
     
     var defaultEmail : String {
-        if let addr = userAddresses.getDefaultAddress() {
+        if let addr = userAddresses.defaultAddress() {
             return addr.email;
         }
         return "";
     }
     
     var defaultDisplayName : String {
-        if let addr = userAddresses.getDefaultAddress() {
+        if let addr = userAddresses.defaultAddress() {
             return addr.display_name;
         }
         return displayName;
@@ -194,8 +203,8 @@ class UserDataService {
         }
     }
     
-    var userAddresses: Array<Address> { //never be null
-        return userInfo?.userAddresses ?? Array<Address>()
+    var userAddresses: [Address] { //never be null
+        return userInfo?.userAddresses ?? [Address]()
     }
     
     var displayName: String {
@@ -499,7 +508,7 @@ class UserDataService {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                error.uploadFabricAnswer("UpdateLoginPassword")
+                error.upload(toFabric: "UpdateLoginPassword")
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async
@@ -600,14 +609,14 @@ class UserDataService {
                     
                     do {
                         let update_res = try UpdatePrivateKeyRequest<ApiResponse>(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
-                                                                                  clientProof:srpClient.clientProof.encodeBase64(),
-                                                                                  SRPSession: session,
-                                                                                  keySalt: new_mpwd_salt.encodeBase64(),
-                                                                                  userlevelKeys: updated_userlevel_keys,
-                                                                                  addressKeys: updated_address_keys.toKeys(),
-                                                                                  tfaCode: twoFACode,
-                                                                                  orgKey: new_org_key,
-                                                                                  auth: authPacket).syncCall()
+                              clientProof:srpClient.clientProof.encodeBase64(),
+                              SRPSession: session,
+                              keySalt: new_mpwd_salt.encodeBase64(),
+                              userlevelKeys: updated_userlevel_keys,
+                              addressKeys: updated_address_keys.toKeys(),
+                              tfaCode: twoFACode,
+                              orgKey: new_org_key,
+                              auth: authPacket).syncCall()
                         guard update_res?.code == 1000 else {
                             throw UpdatePasswordError.default.toError()
                         }
@@ -634,14 +643,14 @@ class UserDataService {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                error.uploadFabricAnswer("UpdateMailBoxPassword")
+                error.upload(toFabric: "UpdateMailBoxPassword")
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async
         
     }
     
-    func updateUserDomiansOrder(_ email_domains: Array<Address>, newOrder : Array<Int>, completion: @escaping CompletionBlock) {
+    func updateUserDomiansOrder(_ email_domains: [Address], newOrder : [Int], completion: @escaping CompletionBlock) {
         let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)
         domainSetting.call() { task, response, hasError in
             if !hasError {
@@ -737,7 +746,7 @@ class UserDataService {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                error.uploadFabricAnswer("UpdateLoginPassword")
+                error.upload(toFabric: "UpdateLoginPassword")
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="iNi-o2-nXB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="iNi-o2-nXB">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -17,9 +17,6 @@
         </array>
         <array key="HelveticaNeue.ttc">
             <string>HelveticaNeue</string>
-        </array>
-        <array key="Roboto-Regular.ttf">
-            <string>Roboto-Regular</string>
         </array>
     </customFonts>
     <scenes>
@@ -1590,7 +1587,7 @@
                     <view key="view" contentMode="scaleToFill" id="ib9-ql-cDZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ahz-jg-7f1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1600,7 +1597,7 @@
         <!--Pin View-->
         <scene sceneID="fxK-BO-32Y">
             <objects>
-                <viewController title="Pin View" id="sjf-fW-VP9" customClass="PinCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Pin View" extendedLayoutIncludesOpaqueBars="YES" id="sjf-fW-VP9" customClass="PinCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SJz-6C-Ach"/>
                         <viewControllerLayoutGuide type="bottom" id="g1e-fN-FVI"/>
@@ -1610,18 +1607,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g2O-1l-TS8" customClass="PinCodeView" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.24604520199999999" green="0.2438791692" blue="0.3070739508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="g2O-1l-TS8" firstAttribute="top" secondItem="Ucv-7o-Ovr" secondAttribute="top" id="813-dh-P35"/>
+                            <constraint firstItem="g2O-1l-TS8" firstAttribute="top" secondItem="SJz-6C-Ach" secondAttribute="bottom" id="813-dh-P35"/>
                             <constraint firstAttribute="bottom" secondItem="g2O-1l-TS8" secondAttribute="bottom" id="IAL-Sw-PSf"/>
                             <constraint firstAttribute="trailing" secondItem="g2O-1l-TS8" secondAttribute="trailing" id="WBh-yD-9BV"/>
                             <constraint firstItem="g2O-1l-TS8" firstAttribute="leading" secondItem="Ucv-7o-Ovr" secondAttribute="leading" id="gMH-rv-6gz"/>
                         </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <connections>
                         <outlet property="pinCodeView" destination="g2O-1l-TS8" id="5gA-oa-WXb"/>
                     </connections>
@@ -3046,7 +3043,7 @@ we need to verify that you are human.</string>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lq9-2T-Q4L">
                                                 <rect key="frame" x="0.0" y="1" width="171" height="44"/>
                                                 <color key="backgroundColor" red="0.96862745100000003" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <state key="normal" title="Cancel">
                                                     <color key="titleColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3058,7 +3055,7 @@ we need to verify that you are human.</string>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qt8-jt-XRz">
                                                 <rect key="frame" x="172" y="1" width="171" height="44"/>
                                                 <color key="backgroundColor" red="0.96862745100000003" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <state key="normal" title="Apply">
                                                     <color key="titleColor" red="0.57647058819999997" green="0.59215686270000001" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

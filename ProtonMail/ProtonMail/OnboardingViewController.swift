@@ -15,7 +15,7 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var learnmoreButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
     
-     fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
+    fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
     
     var pageWidth : CGFloat = 0.0;
     
@@ -35,7 +35,7 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
             let board = onboardingList[i]
             let xPoint : CGFloat =  pageWidth * CGFloat(i)
             let boardView = OnboardingView(frame: CGRect(x:xPoint, y: 0, width: pageWidth, height: h))
-            boardView.configView(board)
+            boardView.config(with: board)
             self.contentScrollView.addSubview(boardView);
         }
         contentScrollView.contentSize = CGSize (width: pageWidth * CGFloat(count), height: contentScrollView.contentSize.height);

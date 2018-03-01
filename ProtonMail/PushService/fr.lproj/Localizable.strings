@@ -1,0 +1,503 @@
+/* no object error, local only , this could be not translated! */
+"<no object>" = "<aucun sujet>";
+
+/* Title */
+"ARCHIVE" = "ARCHIVES";
+
+/* new contacts add Anniversary */
+"Add Anniversary" = "Ajouter la date de mariage";
+
+/* new contacts add Birthday */
+"Add Birthday" = "Ajouter la date d'anniversaire";
+
+/* new contacts add Nickname */
+"Add Nickname" = "Ajouter un surnom";
+
+/* new contacts add Organization */
+"Add Organization" = "Ajouter une organisation";
+
+/* Action */
+"Add Star" = "Ajouter aux favoris";
+
+/* new contacts add Title */
+"Add Title" = "Ajouter un titre";
+
+/* default vcard types */
+"Address" = "Adresse";
+
+/* Error */
+"Alert" = "Alerte";
+
+/* Title */
+"All Mail" = "Tous les messages";
+
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "Date de mariage";
+
+/* Title */
+"Archive" = "Archives";
+
+/* Description */
+"Authentication Failed Wrong username or password" = "Échec d'authentification, identifiant ou mot de passe incorrect";
+
+/* settings protection section title */
+"Auto Lock Time" = "Durée avant verrouillage automatique";
+
+/* settings general section title */
+"Auto Show Images" = "Afficher automatiquement les images";
+
+/* Error */
+"Bad auth cache" = "Mauvais cache d'authentification";
+
+/* Description */
+"Bad parameter" = "Paramètre invalide";
+
+/* Description */
+"Bad parameter: %@" = "Mauvais paramètre : %@";
+
+/* Description */
+"Bad path" = "Chemin erroné";
+
+/* Description */
+"Bad response" = "Mauvaise réponse";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "Anniversaire";
+
+/* update notification email error
+   update password error */
+"Can't create a SRP Client" = "Impossible de créer un client SRP";
+
+/* update notification email error
+   update password error */
+"Can't create a SRP verifier!" = "Impossible de créer un vérificateur SRP!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls ID!" = "Impossible d’obtenir un identifiant Moduls !";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls!" = "Impossible d’obtenir un Moduls !";
+
+/* update notification email error
+   update password error */
+"Can't get user auth info" = "Impossible de récupérer les informations d'authentification de l'utilisateur";
+
+/* Description */
+"Can't not find the value from the response body" = "Impossible de trouver la valeur du corps de la réponse";
+
+/* Title */
+"Cc:" = "Cc :";
+
+/* update password error title */
+"Change Password" = "Modifier le mot de passe";
+
+/* settings protection section title */
+"Change Pin" = "Changer le code PIN";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Modifier l’action de balayage vers la gauche";
+
+/* settings swipe actions section action description */
+"Change right swipe action" = "Modifier l’action de balayage vers la droite";
+
+/* settings general section title */
+"Clear Local Message Cache" = "Vider le cache des messages locaux";
+
+/* Action */
+"Close" = "Fermer";
+
+/* Title */
+"DRAFTS" = "BROUILLONS";
+
+/* Title */
+"Date:" = "Date :";
+
+/* Title */
+"Debug" = "Déboguer";
+
+/* Title */
+"Deleted" = "Supprimé";
+
+/* Title */
+"Display Name" = "Nom affiché";
+
+/* Action
+   Title */
+"Draft" = "Brouillon";
+
+/* Action */
+"Dutch" = "Néerlandais";
+
+/* default vcard types */
+"Email" = "Email";
+
+/* settings protection section title */
+"Enable Pin Protection" = "Activer la protection par code PIN";
+
+/* settings protection section title */
+"Enable TouchID" = "Activer TouchID";
+
+/* Title */
+"Encrypted for outside" = "Chiffré pour l’extérieur";
+
+/* Title */
+"Encrypted for outside reply" = "Chiffré pour réponse vers l'extérieur";
+
+/* Title */
+"Encrypted from outside" = "Chiffré de l’extérieur";
+
+/* Title */
+"Encrypted from outside pgp inline" = "Chiffré en dehors de la ligne PGP";
+
+/* Title */
+"Encrypted from outside pgp mime" = "Chiffré en dehors du mime PGP";
+
+/* Action */
+"English" = "Anglais";
+
+/* settings debug section title */
+"Error Logs" = "Journaux d'erreurs";
+
+/* Description */
+"Failed to initialize the application's saved data" = "L'initialisation des données enregistrées de l’application a échoué";
+
+/* default vcard types */
+"Fax" = "Fax";
+
+/* Action */
+"Forward" = "Transférer";
+
+/* Title */
+"Forwarded message" = "Message transféré";
+
+/* Action */
+"French" = "Français";
+
+/* Title */
+"From:" = "De :";
+
+/* Title */
+"Fwd:" = "Tr :";
+
+/* Title */
+"General Settings" = "Paramètres généraux";
+
+/* Action */
+"German" = "Allemand";
+
+/* Title */
+"INBOX" = "BOÎTE DE RÉCEPTION";
+
+/* Title */
+"Inbox" = "Boîte de réception";
+
+/* Error */
+"Invalid Password" = "Mot de passe invalide";
+
+/* Error */
+"Invalid UserName" = "Nom d'utilisateur invalide";
+
+/* update notification email error
+   update password error when input invalid username */
+"Invalid UserName!" = "Nom d'utilisateur invalide!";
+
+/* Error */
+"Invalid credential" = "Identifiants invalides";
+
+/* update notification email error
+   update password error */
+"Invalid hashed password!" = "Mot de passe haché invalide !";
+
+/* Action */
+"Italian" = "Italien";
+
+/* Title */
+"Labels/Folders" = "Labels/Dossiers";
+
+/* Title */
+"Language" = "Langue";
+
+/* Description */
+"Local cache can't find mailbox password" = "Le cache local ne peut pas trouver le mot de passe de la boîte mail";
+
+/* settings general section title */
+"Login Password" = "Mot de passe de connexion";
+
+/* settings general section title */
+"Mailbox Password" = "Mot de passe de la boîte de réception";
+
+/* Title */
+"Manage Labels/Folders" = "Gérer les labels/dossiers";
+
+/* settings debug section title */
+"Message Queue" = "Liste d'attente des messages";
+
+/* Title */
+"Message Swipe Actions" = "Actions de balayage pour les messages";
+
+/* default vcard types */
+"Mobile" = "Portable";
+
+/* Title */
+"Mobile Signature" = "Signature du mobile";
+
+/* Action */
+"Move to AllMail" = "Déplacer dans tous les emails";
+
+/* Action */
+"Move to Archive" = "Déplacer vers les archives";
+
+/* Action */
+"Move to Draft" = "Déplacer vers les brouillons";
+
+/* Action */
+"Move to Inbox" = "Déplacer dans la boîte de réception";
+
+/* Action */
+"Move to Outbox" = "Déplacer dans la boîte d'envoi";
+
+/* Action */
+"Move to Spam" = "Déplacer dans les indésirables";
+
+/* Action */
+"Move to Trash" = "Déplacer dans la corbeille";
+
+/* Title */
+"Multiple Addresses" = "Adresses multiples";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Surnom";
+
+/* Description */
+"No managed object context" = "Pas de contexte d'objet géré";
+
+/* Description */
+"No managed object context." = "Pas de contexte d'objet géré.";
+
+/* this is a system object can't find, this could be not trasnlated */
+"No managedObjectContext" = "No managedObjectContext";
+
+/* settings general section title */
+"Notification Email" = "Email de notification";
+
+/* Title */
+"On" = "Activé";
+
+/* Action */
+"OpenDraft" = "OpenDraft";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Organisation";
+
+/* default vcard types */
+"Other" = "Autre";
+
+/* Title */
+"Outbox" = "Boîte d'envoi";
+
+/* update notification email error
+   update password error */
+"Password update failed" = "Echec de la mise à jour du mot de passe";
+
+/* default vcard types */
+"Personal" = "Personnel";
+
+/* default vcard types */
+"Phone" = "Téléphone";
+
+/* Title */
+"Plain text" = "Texte brut";
+
+/* Action */
+"Polish" = "Polonais";
+
+/* Action */
+"Portuguese Brazil" = "Portugais du Brésil";
+
+/* Title */
+"Protection" = "Protection";
+
+/* settings protection section title */
+"Protection Entire App" = "Protection pour l'application entière";
+
+/* Title */
+"ProtonMail encrypted emails" = "Emails chiffrés ProtonMail";
+
+/* Title */
+"Re:" = "Re :";
+
+/* Action */
+"Reply" = "Répondre";
+
+/* Action */
+"ReplyAll" = "Répondre à tous";
+
+/* Action */
+"Russian" = "Russe";
+
+/* Title */
+"SENT" = "ENVOYÉ";
+
+/* Title */
+"SPAM" = "SPAM";
+
+/* Error */
+"SRP Client" = "Client SRP";
+
+/* Error */
+"SRP Server" = "Serveur SRP";
+
+/* Title */
+"STARRED" = "SUIVIS";
+
+/* Title */
+"Send plain but stored enc" = "Envoyé brut mais stocké chiffré";
+
+/* Description */
+"Server proofs not valid!" = "Serveur de preuves invalide !";
+
+/* Title */
+"Signature" = "Signature";
+
+/* settings general section title */
+"Single Password" = "Mot de passe unique";
+
+/* Title */
+"Spam" = "Indésirable";
+
+/* Action */
+"Spanish" = "Espagnol";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Mot de passe unique SRP keysalt invalide!";
+
+/* Title */
+"Star" = "Favori";
+
+/* Title */
+"Starred" = "Suivis";
+
+/* Title */
+"Storage" = "Stockage";
+
+/* Title */
+"Subject:" = "Objet :";
+
+/* settings swipe actions section title */
+"Swipe Left to Right" = "Glisser de gauche à droite";
+
+/* settings swipe actions section title */
+"Swipe Right to Left" = "Glisser de droite à gauche";
+
+/* Title */
+"TRASH" = "CORBEILLE";
+
+/* update password error */
+"The Password is wrong." = "Le mot de passe est incorrect.";
+
+/* Error Description */
+"The UserName have been taken." = "Le nom d'utilisateur est déjà pris.";
+
+/* Description */
+"The authentication credentials are invalid." = "Les informations d'authentification sont invalides.";
+
+/* Description */
+"The authentication token has expired." = "Le jeton d'authentification a expiré.";
+
+/* error when sending the message */
+"The draft format incorrectly sending failed!" = "Le format du brouillon est incorrect. L'envoi à échoué !";
+
+/* update password error */
+"The new password can't empty." = "Le nouveau mot de passe ne peut pas être vide.";
+
+/* update password error */
+"The new password not match." = "Le nouveau mot de passe ne correspond pas.";
+
+/* update password error */
+"The private update failed." = "La mise à jour privée a échoué.";
+
+/* Description */
+"The user info fetch is wrong" = "L'extraction des informations utilisateur est erronée";
+
+/* Description */
+"There was an error creating or loading the application's saved data." = "Une erreur s'est produite lors de la création ou du chargement des données enregistrées de l'application.";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Cet email a échoué aux tests d'authentification de son domaine. Il a peut-être été falsifié ou transféré incorrectement!";
+
+/* spam score warning */
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Cet email semble provenir d'une adresse ProtonMail, mais il est venu de l'extérieur de notre système et a échoué aux tests d'authentification. Il a peut-être été falsifié ou transféré incorrectement!";
+
+/* contacts talbe cell Title title */
+"Title" = "Titre";
+
+/* Title */
+"To:" = "À :";
+
+/* Error */
+"Token expired" = "Le jeton a expiré";
+
+/* Action
+   Title */
+"Trash" = "Corbeille";
+
+/* Action */
+"Turkish" = "Turc";
+
+/* Action */
+"Ukrainian" = "Ukrainien";
+
+/* Description */
+"Unable to connect to the server" = "Impossible de se connecter au serveur";
+
+/* Description */
+"Unable to construct a valid URL with the following path: %@" = "Impossible de construire une URL valide avec le chemin suivant : %@";
+
+/* Description */
+"Unable to create SRP Client!" = "Impossible de créer le Client SRP !";
+
+/* Description */
+"Unable to generate hash password!" = "Impossible de générer le mot de passe de hachage !";
+
+/* Error */
+"Unable to get contacts" = "Impossible de récupérer les contacts";
+
+/* Description */
+"Unable to parse authentication info!" = "Impossible d’analyser les informations d’authentification !";
+
+/* Description */
+"Unable to parse authentication token!" = "Impossible d’analyser le jeton d’authentification !";
+
+/* Description */
+"Unable to parse cased authentication token!" = "Impossible d'analyser le jeton d'authentification encapsulé !";
+
+/* Description */
+"Unable to parse response" = "Impossible d’analyser la réponse";
+
+/* Description */
+"Unable to parse the response object:\n%@" = "Impossible d’analyser l’objet de la réponse :\n%@";
+
+/* Error */
+"Unable to parse token" = "Impossible d’analyser le jeton";
+
+/* error when sending the message */
+"Unable to send the email" = "Impossible d'envoyer l'email";
+
+/* Description */
+"Unknow Error" = "Erreur inconnue";
+
+/* update notification email error title */
+"Update Notification Email" = "Mettre à jour l'email de notification";
+
+/* default vcard types */
+"Work" = "Travail";
+
+/* Title */
+"at" = "à";
+
+/* contacts api error when fetch */
+"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "Impossible d'obtenir les contacts(), peopleOrderedByUsersPreference ne renvoit rien!!";
+
+/* Title */
+"wrote:" = "a écrit :";
+

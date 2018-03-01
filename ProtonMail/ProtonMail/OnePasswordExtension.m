@@ -41,7 +41,6 @@ static NSString *const AppExtensionWebViewPageDetails = @"pageDetails";
 	if ([self isSystemAppExtensionAPIAvailable]) {
 		return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"org-appextension-feature-password-management://"]];
 	}
-
 	return NO;
 }
 

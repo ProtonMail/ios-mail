@@ -305,7 +305,7 @@ class SignInViewController: ProtonMailViewController {
         } else {
             return
         }
-        let savedEmail = userCachedStatus.touchIDEmail
+        let savedEmail = userCachedStatus.codedEmail()
         // Get the local authentication context.
         let context = LAContext()
         // Declare a NSError variable.
@@ -609,16 +609,16 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
-    func loadContactsAfterInstall()
-    {
+    func loadContactsAfterInstall() {
         sharedUserDataService.fetchUserInfo()
-        sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
+        //TODO:: here need to be changed
+        sharedContactDataService.fetchContacts { (contacts, error) in
             if error != nil {
                 PMLog.D("\(String(describing: error))")
             } else {
                 PMLog.D("Contacts count: \(contacts!.count)")
             }
-        })
+        }
     }
     
     func clean()

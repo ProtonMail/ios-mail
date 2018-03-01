@@ -118,10 +118,10 @@ class SettingsViewController: ProtonMailViewController {
     
     @IBAction func displayNameSaveButtonTapped(_ sender: UIButton) {
         dismissKeyboard()
-        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+        ActivityIndicatorHelper.showActivityIndicator(at: view)
         
         sharedUserDataService.updateDisplayName(displayNameTextField.text!) { _, _, error in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
             
             if let error = error {
                 let alertController = error.alertController()
@@ -140,10 +140,10 @@ class SettingsViewController: ProtonMailViewController {
     
     @IBAction func signatureSaveButtonTapped(_ sender: UIButton) {
         dismissKeyboard()
-        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+        ActivityIndicatorHelper.showActivityIndicator(at: view)
         
         sharedUserDataService.updateSignature(signatureTextView.text) { _, _, error in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
             
             if let error = error {
                 let alertController = error.alertController()
@@ -228,10 +228,10 @@ class SettingsViewController: ProtonMailViewController {
         if validatePasswordTextField(newLoginPasswordTextField, matchesConfirmPasswordTextField: confirmNewLoginPasswordTextField) {
             dismissKeyboard()
             
-            ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+            ActivityIndicatorHelper.showActivityIndicator(at: view)
             
             sharedUserDataService.updatePassword(currentLoginPasswordTextField.text!, new_password: newLoginPasswordTextField.text!, twoFACode: "123456") { _, _, error in
-                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                 
                 if let error = error {
                     let alertController = error.alertController()

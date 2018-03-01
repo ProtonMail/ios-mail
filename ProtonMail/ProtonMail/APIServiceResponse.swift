@@ -27,7 +27,7 @@ public class ApiResponse {
         return code == 1000
     }
     
-    func ParseResponseError (_ response: Dictionary<String, Any>!) -> Bool {
+    func ParseResponseError (_ response: [String : Any]!) -> Bool {
         code = response["Code"] as? Int
         errorMessage = response["Error"] as? String
         errorDetails = response["ErrorDescription"] as? String
@@ -35,28 +35,31 @@ public class ApiResponse {
         if code == nil {
             return false
         }
-        
+
         if code != 1000 && code != 1001 {
-            self.error = NSError.protonMailError(code ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
+            self.error = NSError.protonMailError(code ?? 1000,
+                                                 localizedDescription: errorMessage ?? "",
+                                                 localizedFailureReason: errorDetails,
+                                                 localizedRecoverySuggestion: nil)
         }
-        
         return code != 1000 && code != 1001
     }
     
-    func ParseHttpError (_ error: NSError) {
+    func ParseHttpError (_ error: NSError) {//TODO::need refactor.
         self.code = 404
         if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
             self.code = detail.statusCode
         }
         else {
             internetCode = error.code
+            self.code = internetCode
         }
         self.errorMessage = error.localizedDescription
         self.errorDetails = error.debugDescription
         self.error = error
     }
     
-    func ParseResponse (_ response: Dictionary<String, Any>!) -> Bool {
+    func ParseResponse (_ response: [String : Any]!) -> Bool {
         return true
     }
 }

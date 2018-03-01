@@ -27,8 +27,8 @@ final class UserInfo : NSObject {
     var signature: String
     let usedSpace: Int64
     let userStatus: Int
-    var userAddresses: Array<Address>
-    var userKeys: Array<Key>
+    var userAddresses: [Address]
+    var userKeys: [Key]
     
     // new values v1.0.8
     let autoSaveContact : Int
@@ -48,12 +48,12 @@ final class UserInfo : NSObject {
     required init(
         displayName: String?, maxSpace: Int64?, notificationEmail: String?,
         privateKey: String?, publicKey: String?, signature: String?,
-        usedSpace: Int64?, userStatus: Int?, userAddresses: Array<Address>?,
+        usedSpace: Int64?, userStatus: Int?, userAddresses: [Address]?,
         autoSC:Int?, language:String?, maxUpload:Int64?, notify:Int?, showImage:Int?,  //v1.0.8
         swipeL:Int?, swipeR:Int?,  //v1.1.4
         role:Int?,
         delinquent : Int?,
-        keys : Array<Key>?)
+        keys : [Key]?)
     {
         self.displayName = displayName ?? ""
         self.maxSpace = maxSpace ?? 0
@@ -63,7 +63,7 @@ final class UserInfo : NSObject {
         self.signature = signature ?? ""
         self.usedSpace = usedSpace ?? 0
         self.userStatus = userStatus ?? 0
-        self.userAddresses = userAddresses ?? Array<Address>()
+        self.userAddresses = userAddresses ?? [Address]()
         self.autoSaveContact  = autoSC ?? 0
         self.language = language ?? "en_US"
         self.maxUpload = maxUpload ?? 0
@@ -77,7 +77,14 @@ final class UserInfo : NSObject {
         
         self.delinquent = delinquent ?? 0
         
-        self.userKeys = keys ?? Array<Key>()
+        self.userKeys = keys ?? [Key]()
+    }
+    
+    func firstUserKey() -> Key? {
+        if self.userKeys.count > 0 {
+            return self.userKeys[0]
+        }
+        return nil
     }
 }
 
@@ -89,7 +96,7 @@ final class Address: NSObject {
     let receive: Int    // 1 is active address (Status =1 and has key), 0 is inactive (cannot send or receive)
     var order: Int      // address order replace send //1.6.7
     var send: Int       // v<1.6.7 address order  v>=1.6.7 not in use
-    let keys: Array<Key>
+    let keys: [Key]
     
     let mailbox: Int   //Not inuse
     var display_name: String  //not inuse
@@ -102,7 +109,7 @@ final class Address: NSObject {
                   mailbox: Int?,
                   display_name: String?,
                   signature: String?,
-                  keys: Array<Key>?,
+                  keys: [Key]?,
                   status: Int?,
                   type:Int?,
                   send: Int?) {
@@ -112,7 +119,7 @@ final class Address: NSObject {
         self.mailbox = mailbox ?? 0
         self.display_name = display_name ?? ""
         self.signature = signature ?? ""
-        self.keys = keys ?? Array<Key>()
+        self.keys = keys ?? [Key]()
         
         self.status = status ?? 0
         self.type = type ?? 0
@@ -141,9 +148,9 @@ final class Key : NSObject {
 
 extension UserInfo {
     /// Initializes the UserInfo with the response data
-    convenience init(response: Dictionary<String, Any>) {
-        var uKeys: Array<Key> = Array<Key>()
-        if let user_keys = response["Keys"] as? Array<Dictionary<String, Any>> {
+    convenience init(response: [String : Any]) {
+        var uKeys: [Key] = [Key]()
+        if let user_keys = response["Keys"] as? [[String : Any]] {
             for key_res in user_keys {
                 uKeys.append(Key(
                     key_id: key_res["ID"] as? String,
@@ -154,12 +161,12 @@ extension UserInfo {
             }
         }
         
-        var addresses: [Address] = Array<Address>()
-        if let address_response = response["Addresses"] as? Array<Dictionary<String, Any>> {
+        var addresses: [Address] = [Address]()
+        if let address_response = response["Addresses"] as? [[String : Any]] {
             for res in address_response
             {
-                var keys: [Key] = Array<Key>()
-                if let address_keys = res["Keys"] as? Array<Dictionary<String, Any>> {
+                var keys: [Key] = [Key]()
+                if let address_keys = res["Keys"] as? [[String : Any]] {
                     for key_res in address_keys {
                         keys.append(Key(
                             key_id: key_res["ID"] as? String,
@@ -256,7 +263,7 @@ extension UserInfo: NSCoding {
             signature: aDecoder.decodeStringForKey(CoderKey.signature),
             usedSpace: aDecoder.decodeInt64(forKey: CoderKey.usedSpace),
             userStatus: aDecoder.decodeInteger(forKey: CoderKey.userStatus),
-            userAddresses: aDecoder.decodeObject(forKey: CoderKey.userAddress) as? Array<Address>,
+            userAddresses: aDecoder.decodeObject(forKey: CoderKey.userAddress) as? [Address],
             
             autoSC:aDecoder.decodeInteger(forKey: CoderKey.autoSaveContact),
             language:aDecoder.decodeStringForKey(CoderKey.language),
@@ -271,7 +278,7 @@ extension UserInfo: NSCoding {
             
             delinquent : aDecoder.decodeInteger(forKey: CoderKey.delinquent),
             
-            keys: aDecoder.decodeObject(forKey: CoderKey.userKeys) as? Array<Key>
+            keys: aDecoder.decodeObject(forKey: CoderKey.userKeys) as? [Key]
         )
     }
     
@@ -330,7 +337,7 @@ extension Address: NSCoding {
             mailbox: aDecoder.decodeInteger(forKey: CoderKey.publicKey),
             display_name: aDecoder.decodeStringForKey(CoderKey.signature),
             signature: aDecoder.decodeStringForKey(CoderKey.usedSpace),
-            keys: aDecoder.decodeObject(forKey: CoderKey.userKeys) as?  Array<Key>,
+            keys: aDecoder.decodeObject(forKey: CoderKey.userKeys) as?  [Key],
             
             status : aDecoder.decodeInteger(forKey: CoderKey.addressStatus),
             type:aDecoder.decodeInteger(forKey: CoderKey.addressType),
@@ -401,7 +408,7 @@ extension PMNOpenPgpKey {
 
 extension Array where Element : Key {
     func toPMNPgpKeys() -> [PMNOpenPgpKey] {
-        var out_array = Array<PMNOpenPgpKey>()
+        var out_array = [PMNOpenPgpKey]()
         for i in 0 ..< self.count {
             let addr = self[i]
             out_array.append(addr.toPMNPgpKey())
@@ -412,7 +419,7 @@ extension Array where Element : Key {
 
 extension Array where Element : PMNOpenPgpKey {
     func toKeys() -> [Key] {
-        var out_array = Array<Key>()
+        var out_array = [Key]()
         for i in 0 ..< self.count {
             let addr = self[i]
             out_array.append(addr.toKey())
@@ -423,8 +430,8 @@ extension Array where Element : PMNOpenPgpKey {
 
 extension Array where Element : Address {
 
-    func toPMNAddresses() -> Array<PMNAddress> {
-        var out_array = Array<PMNAddress>()
+    func toPMNAddresses() -> [PMNAddress] {
+        var out_array = [PMNAddress]()
         for i in 0 ..< self.count {
             let addr = self[i]
             out_array.append(addr.toPMNAddress())
@@ -432,9 +439,18 @@ extension Array where Element : Address {
         return out_array;
     }
     
-    func getDefaultAddress () -> Address? {
+    func defaultAddress() -> Address? {
         for addr in self {
             if addr.status == 1 && addr.receive == 1 {
+                return addr;
+            }
+        }
+        return nil;
+    }
+    
+    func defaultSendAddress() -> Address? {
+        for addr in self {
+            if addr.status == 1 && addr.receive == 1 && addr.send == 1{
                 return addr;
             }
         }
@@ -450,18 +466,18 @@ extension Array where Element : Address {
         return nil;
     }
     
-    func getAddressOrder() -> Array<String> {
+    func getAddressOrder() -> [String] {
         let ids = self.map { $0.address_id }
         return ids;
     }
     
-    func getAddressNewOrder() -> Array<Int> {
+    func getAddressNewOrder() -> [Int] {
         let ids = self.map { $0.order }
         return ids;
     }
     
-    func toKeys() -> Array<Key> {
-        var out_array = Array<Key>()
+    func toKeys() -> [Key] {
+        var out_array = [Key]()
         for i in 0 ..< self.count {
             let addr = self[i]
             for k in addr.keys {

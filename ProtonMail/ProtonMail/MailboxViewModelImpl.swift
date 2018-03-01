@@ -164,7 +164,7 @@ class MailboxViewModelImpl : MailboxViewModel {
     }
     
     override func fetchNewMessages(_ notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
-        sharedMessageDataService.fetchNewMessagesForLocation(self.location, Time: Time, notificationMessageID: notificationMessageID, completion: completion)
+        sharedMessageDataService.fetchNewMessagesForLocation(self.location, notificationMessageID: notificationMessageID, completion: completion)
     }
     
     override func fetchMessagesForLocationWithEventReset(_ MessageID: String, Time: Int, completion: CompletionBlock?) {

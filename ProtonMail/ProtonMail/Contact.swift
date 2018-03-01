@@ -11,7 +11,20 @@ import CoreData
 
 public class Contact: NSManagedObject {
 
-    @NSManaged public var contactID: String
-    @NSManaged public var name: String
-    @NSManaged public var email: String
+    @NSManaged var contactID: String
+    @NSManaged var name: String
+//    @NSManaged var datas: String
+    @NSManaged var cardData: String
+    @NSManaged var size : NSNumber
+    @NSManaged var uuid: String
+    @NSManaged var createTime : Date?
+    @NSManaged var modifyTIme : Data?
+    
+    //local ver 
+    @NSManaged var isDownloaded : Bool
+    @NSManaged var isCorrected : Bool
+    @NSManaged var needsRebuild : Bool
+
+    // relation
+    @NSManaged var emails: NSSet
 }

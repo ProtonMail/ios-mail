@@ -23,37 +23,42 @@ extension APIService {
     fileprivate struct DevicePath {
         static let basePath = "/device"
     }
-    func deviceRegisterWithToken(_ token: Data, completion: CompletionBlock?) {
-        let tokenString = stringFromToken(token)
-        deviceToken = tokenString
+    func device(registerWith token: String, completion: CompletionBlock?) {
+        deviceToken = token
         deviceUID = deviceID
-
+        
+//        var env = 4
+//        if #available(iOS 10.0, *) { //encrypt
+//            env = 4
+//        } else { // not encrypt
+//            env = 5
+//        }
+//
         #if Enterprise
             
             #if DEBUG
-            let env = 20
+                let env = 20
             #else
-            let env = 21
+                let env = 21
             #endif
         #else
-            // for later 
+            // for later
             // const PROVIDER_FCM_IOS = 4;
             // const PROVIDER_FCM_IOS_BETA = 5;
             #if DEBUG
                 let env = 1
-                #else
+            #else
                 let env = 2
             #endif
             
         #endif
-        
         var ver = "1.0.0"
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             ver = version
         }
         let parameters = [
             "DeviceUID" : deviceID,
-            "DeviceToken" : tokenString,
+            "DeviceToken" : token,
             "DeviceName" : UIDevice.current.name,
             "DeviceModel" : UIDevice.current.model,
             "DeviceVersion" : UIDevice.current.systemVersion,
@@ -62,7 +67,11 @@ extension APIService {
         ] as [String : Any]
         
         //setApiVesion(1, appVersion: 1)
-        request(method: .post, path: AppConstants.API_PATH + DevicePath.basePath, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
+        request(method: .post,
+                path: AppConstants.API_PATH + DevicePath.basePath,
+                parameters: parameters,
+                headers: ["x-pm-apiversion": 1],
+                completion: completion)
     }
     
     func deviceUnregister() {
@@ -89,8 +98,8 @@ extension APIService {
         }
     }
     
-    func cleanBadKey(_ newToken : Data) {
-        let newTokenString = stringFromToken(newToken)
+    func cleanBadKey(_ newToken : String) {
+        let newTokenString = newToken // stringFromToken(newToken)
         let oldDeviceToken = self.deviceToken
         if !oldDeviceToken.isEmpty {
             if (!deviceUID.isEmpty && !deviceID.isEmpty && deviceUID != deviceID) || newTokenString != oldDeviceToken {

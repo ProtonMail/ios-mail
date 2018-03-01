@@ -131,7 +131,7 @@ class MailboxPasswordViewController: UIViewController {
         OnePasswordExtension.shared().findLogin(forURLString: "https://protonmail.com", for: self, sender: sender, completion: { (loginDictionary, error) -> Void in
             if loginDictionary == nil {
                 if (error as NSError?)?.code != Int(AppExtensionErrorCodeCancelledByUser) {
-                    print("Error invoking Password App Extension for find login: \(String(describing: error))")
+                    PMLog.D("Error invoking Password App Extension for find login: \(String(describing: error))")
                 }
                 return
             }
@@ -151,7 +151,7 @@ class MailboxPasswordViewController: UIViewController {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
-        let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
+        let navigationBarTitleFont = Fonts.h2.light
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: navigationBarTitleFont
@@ -228,15 +228,14 @@ class MailboxPasswordViewController: UIViewController {
         (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
     }
     
-    func loadContactsAfterInstall()
-    {
-        sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
+    func loadContactsAfterInstall() {
+        sharedContactDataService.fetchContacts { (contacts, error) in
             if error != nil {
                 PMLog.D("\(String(describing: error))")
             } else {
                 PMLog.D("Contacts count: \(contacts!.count)")
             }
-        })
+        }
     }
     
     func updateButton(_ button: UIButton) {

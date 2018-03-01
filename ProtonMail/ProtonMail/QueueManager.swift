@@ -7,30 +7,3 @@
 //
 
 import Foundation
-
-
-class ReadQueue {
-
-    //right not doing the sigal operation once, 
-    // later doing the parallels requests
-    
-    // read queue not necessary
-    
-    // message write queue
-//    private let writemessageQueue = MessageQueue(queueName: "writeQueue")
-//
-//    var readQueue : [AnyObject]!
-//    var retryQueue : [AnyObject]!
-//    
-//    init() {
-//    }
-//    deinit{
-//    }
-//    
-//    
-//    func addQueue()
-//    {
-//        
-//    }
-    
-}

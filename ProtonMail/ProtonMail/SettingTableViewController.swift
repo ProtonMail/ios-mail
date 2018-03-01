@@ -41,7 +41,7 @@ class SettingTableViewController: ProtonMailViewController {
     var protection_auto_logout : [Int]                   = [-1, 0, 1, 2, 5,
                                                             10, 15, 30, 60]
     
-    var multi_domains: Array<Address>!
+    var multi_domains: [Address]!
     var userInfo = sharedUserDataService.userInfo
     
     /// segues
@@ -223,10 +223,10 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.configCell(itme.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
-                                    let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
-                                    ActivityIndicatorHelper.showActivityIndicatorAtView(window)
+                                    let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
+                                    ActivityIndicatorHelper.showActivityIndicator(at: window)
                                     sharedUserDataService.updateAutoLoadImage(newStatus == true ? 1 : 0) { _, _, error in
-                                        ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
+                                        ActivityIndicatorHelper.hideActivityIndicator(at: window)
                                         if let error = error {
                                             feedback(false)
                                             let alertController = error.alertController()
@@ -376,7 +376,7 @@ class SettingTableViewController: ProtonMailViewController {
                     switch address_item {
                     case .addresses:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingDomainsCell, for: indexPath) as! DomainsTableViewCell
-                        if let addr = multi_domains.getDefaultAddress() {
+                        if let addr = multi_domains.defaultAddress() {
                             cell.domainText.text = addr.email
                         } else {
                             cell.domainText.text = NSLocalizedString("Unknown", comment: "")
@@ -387,7 +387,7 @@ class SettingTableViewController: ProtonMailViewController {
                     case .displayName:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = address_item.description
-                        if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+                        if let addr = sharedUserDataService.userAddresses.defaultAddress() {
                             cell.RightText.text = addr.display_name
                         } else {
                             cell.RightText.text = sharedUserDataService.displayName
@@ -508,7 +508,6 @@ class SettingTableViewController: ProtonMailViewController {
                     case .cleanCache:
                         if !cleaning {
                             cleaning = true
-                            //let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
                             let nview = self.navigationController?.view
                             let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
                             hud.labelText = NSLocalizedString("Resetting message cache ...", comment: "Title")
@@ -579,15 +578,15 @@ class SettingTableViewController: ProtonMailViewController {
                         var needsShow : Bool = false
                         let alertController = UIAlertController(title: NSLocalizedString("Change default address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
                         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
-                        let defaultAddress : Address? = multi_domains.getDefaultAddress()
+                        let defaultAddress : Address? = multi_domains.defaultAddress()
                         for addr in multi_domains {
                             if addr.status == 1 && addr.receive == 1 {
                                 if defaultAddress != addr {
                                     needsShow = true
                                     alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
                                         let _ = self.navigationController?.popViewController(animated: true)
-                                        var newAddrs = Array<Address>()
-                                        var newOrder = Array<Int>()
+                                        var newAddrs = [Address]()
+                                        var newOrder = [Int]()
                                         newAddrs.append(addr)
                                         newOrder.append(addr.order)
                                         var order = 1
@@ -601,11 +600,11 @@ class SettingTableViewController: ProtonMailViewController {
                                                 order += 1
                                             }
                                         }
-                                        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
-                                        ActivityIndicatorHelper.showActivityIndicatorAtView(window)
+                                        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
+                                        ActivityIndicatorHelper.showActivityIndicator(at: window)
                                         sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
                                             tableView.reloadData()
-                                            ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
+                                            ActivityIndicatorHelper.hideActivityIndicator(at: window)
                                             if error == nil {
                                                 self.multi_domains = newAddrs
                                                 tableView.reloadData()
@@ -640,11 +639,11 @@ class SettingTableViewController: ProtonMailViewController {
                         if swipeAction != currentAction {
                             alertController.addAction(UIAlertAction(title: swipeAction.description, style: .default, handler: { (action) -> Void in
                                 let _ = self.navigationController?.popViewController(animated: true)
-                                let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
-                                ActivityIndicatorHelper.showActivityIndicatorAtView(window)
+                                let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
+                                ActivityIndicatorHelper.showActivityIndicator(at: window)
                                 sharedUserDataService.updateUserSwipeAction(action_item == .left, action: swipeAction, completion: { (task, response, error) -> Void in
                                     tableView.reloadData()
-                                    ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
+                                    ActivityIndicatorHelper.hideActivityIndicator(at: window)
                                     if error == nil {
                                         tableView.reloadData()
                                     }

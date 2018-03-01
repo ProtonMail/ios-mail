@@ -35,8 +35,6 @@ struct Constants {
     static let rediectURL = "https://protonmail.ch"
 }
 
-
-
 final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
     
     var username : String!
@@ -46,7 +44,7 @@ final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
         self.username = username;
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
             AuthKey.clientID : Constants.clientID,
             AuthKey.clientSecret : Constants.clientSecret,
@@ -56,15 +54,15 @@ final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return AuthAPI.Path + "/info" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
 }
@@ -72,19 +70,19 @@ final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
 
 final class AuthModulusRequest<T : ApiResponse> : ApiRequest<T> {
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .get
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return AuthAPI.Path + "/modulus" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
     
-    override open func getVersion() -> Int {
+    override func apiVersion() -> Int {
         return AuthAPI.V_AuthModulusRequest
     }
 }
@@ -111,7 +109,7 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
         self.serverProof = serverProof
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = [
             AuthKey.clientID : Constants.clientID,
             AuthKey.clientSecret : Constants.clientSecret,
@@ -129,15 +127,15 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return AuthAPI.Path + AppConstants.DEBUG_OPTION
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
 }
@@ -154,7 +152,7 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
         self.Uid = uid
     }
     
-    override func toDictionary() -> Dictionary<String, Any>? {
+    override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
             "ClientID": Constants.clientID,
             "ResponseType": "token",
@@ -164,19 +162,21 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
             AuthKey.state : "\(UUID().uuidString)",
             "Uid" : self.Uid
         ]
-        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        
+        PMLog.D( out.json(prettyPrinted: true) )
+        
         return out
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .post
     }
     
-    override open func getRequestPath() -> String {
+    override open func path() -> String {
         return AuthAPI.Path + "/refresh" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
 }
@@ -189,11 +189,11 @@ final class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     override init() {
     }
     
-    override func getAPIMethod() -> APIService.HTTPMethod {
+    override func method() -> APIService.HTTPMethod {
         return .delete
     }
     
-    override func getRequestPath() -> String {
+    override func path() -> String {
         return AuthAPI.Path + AppConstants.DEBUG_OPTION
     }
     
@@ -223,9 +223,9 @@ final public class AuthResponse : ApiResponse {
     
     var userStatus : Int = 0
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         
-        PMLog.D(response.JSONStringify(true))
+        PMLog.D(response.json(prettyPrinted: true))
         self.encPrivateKey = response["EncPrivateKey"] as? String
         self.userID = response["Uid"] as? String
         self.accessToken = response["AccessToken"] as? String
@@ -256,9 +256,9 @@ final public class AuthInfoResponse : ApiResponse {
     var SRPSession : String?
     var TwoFactor : Int = 0   //0 is off
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         
-        PMLog.D(response.JSONStringify(true))
+        PMLog.D(response.json(prettyPrinted: true))
         
         self.Modulus = response["Modulus"] as? String
         self.ServerEphemeral = response["ServerEphemeral"] as? String
@@ -277,7 +277,7 @@ final class AuthModulusResponse : ApiResponse {
     var Modulus : String?
     var ModulusID : String?
     
-    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.Modulus = response["Modulus"] as? String
         self.ModulusID = response["ModulusID"] as? String
         return true

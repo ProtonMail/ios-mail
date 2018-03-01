@@ -64,7 +64,7 @@ class AttachmentsTableViewController: UITableViewController {
         normalAttachments.removeAll()
         inlineAttachments.removeAll()
         for att in attachments {
-            if att.isInline() {
+            if att.inline() {
                 inlineAttachments.append(att)
             } else {
                 normalAttachments.append(att)
@@ -108,7 +108,7 @@ class AttachmentsTableViewController: UITableViewController {
         navigationController.navigationBar.isTranslucent = false
         navigationController.navigationBar.tintColor = UIColor.white
         
-        let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
+        let navigationBarTitleFont = Fonts.h2.light
         navigationController.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: navigationBarTitleFont
@@ -294,7 +294,7 @@ class AttachmentsTableViewController: UITableViewController {
     @objc override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
     {
         let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.font = UIFont.systemFont(ofSize: 12)
+        header.textLabel?.font = Fonts.h6.regular
         header.textLabel?.textColor = UIColor.gray
     }
 }
@@ -416,7 +416,7 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                             self.tableView.reloadData()
                         }
                     }
-                    guard let image_data = imagedata, /* let _ = dataUTI,*/ let info = info, image_data.count > 0 else {
+                    guard var image_data = imagedata, /* let _ = dataUTI,*/ let info = info, image_data.count > 0 else {
                         DispatchQueue.main.async() {
                             picker.dismiss(animated: true, completion: nil)
                             self.showErrorAlert(NSLocalizedString("Can't open the file", comment: "Error"))
@@ -428,6 +428,16 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                     if let url = info["PHImageFileURLKey"] as? NSURL, let url_filename = url.lastPathComponent {
                         fileName = url_filename
                     }
+                    
+                    if fileName.preg_match(".(heif|heic)") {
+                        if let rawImage = UIImage(data: image_data) {
+                            if let newData = UIImageJPEGRepresentation(rawImage, 1.0), newData.count > 0 {
+                                image_data =  newData
+                                fileName = fileName.preg_replace(".(heif|heic)", replaceto: ".jpeg")
+                            }
+                        }
+                    }
+                    
                     let uti = fileName.mimeType()
                     let length = image_data.count
                     if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {

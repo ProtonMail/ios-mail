@@ -28,7 +28,7 @@ class QuickViewViewController: QLPreviewController {
         navigationController.navigationBar.isTranslucent = false
         navigationController.navigationBar.tintColor = UIColor.white
         
-        let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
+        let navigationBarTitleFont = Fonts.h2.light
         navigationController.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: navigationBarTitleFont
