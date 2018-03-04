@@ -235,13 +235,16 @@ class ContactImportViewController: UIViewController {
                             }
                             
                             if let fn = vcard3.getFormattedName() {
-                                let name = fn.getValue().trim()
+                                var name = fn.getValue().trim()
+                                name = name.preg_replace("  ", replaceto: " ")
                                 if name.isEmpty {
                                     if let fn = PMNIFormattedName.createInstance(defaultName) {
                                         vcard2.setFormattedName(fn)
                                     }
                                 } else {
-                                    vcard2.setFormattedName(fn)
+                                    if let fn = PMNIFormattedName.createInstance(name) {
+                                        vcard2.setFormattedName(fn)
+                                    }
                                 }
                                 vcard3.clearFormattedName()
                             } else {
