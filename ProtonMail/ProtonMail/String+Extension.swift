@@ -261,7 +261,7 @@ extension String {
         if self.preg_match("background=") {
             return true
         }
-        if self.preg_match("url\\(") {
+        if self.preg_match("url\\(|url&#40;|url&#x28;|url&lpar;") {
             return true
         }
         return false
@@ -277,7 +277,7 @@ extension String {
         out = out.preg_replace("xlink:href=", replaceto: " data-xlink:href=");
         out = out.preg_replace("poster=", replaceto: " data-poster=")
         out = out.preg_replace("background=", replaceto: " data-background=")
-        out = out.preg_replace("url\\(", replaceto: " data-url(")
+        out = out.preg_replace("url\\(|url&#40;|url&#x28;|url&lpar;", replaceto: " data-url(")
         
         
         // this is get http part and replace
@@ -295,7 +295,7 @@ extension String {
         out = out.preg_replace(" data-xlink:href=", replaceto: " xlink:href=");
         out = out.preg_replace(" data-poster=", replaceto: " poster=")
         out = out.preg_replace(" data-background=", replaceto: " background=")
-        out = out.preg_replace(" data-url(", replaceto: " url(")
+        out = out.preg_replace(" data-url\\(", replaceto: " url(")
         
         return out
     }
