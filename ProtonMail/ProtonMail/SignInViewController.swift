@@ -29,7 +29,7 @@ class SignInViewController: ProtonMailViewController {
     fileprivate let animationDuration: TimeInterval = 0.5
     fileprivate let keyboardPadding: CGFloat        = 12
     fileprivate let buttonDisabledAlpha: CGFloat    = 0.5
-    fileprivate let signUpURL                       = URL(string: "https://protonmail.com/invite")!
+//    fileprivate let signUpURL                       = URL(string: "https://protonmail.com/invite")!
     fileprivate let forgotPasswordURL               = URL(string: "https://mail.protonmail.com/help/reset-login-password")!
     
     fileprivate let kMailboxSegue                   = "mailboxSegue"

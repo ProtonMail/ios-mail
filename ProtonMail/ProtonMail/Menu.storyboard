@@ -4164,13 +4164,13 @@
                         <constraints>
                             <constraint firstItem="Amg-8j-09a" firstAttribute="top" secondItem="vpJ-dr-6fj" secondAttribute="top" id="0G9-8T-WlA"/>
                             <constraint firstAttribute="trailing" secondItem="Amg-8j-09a" secondAttribute="trailing" id="6rD-sS-Mhu"/>
-                            <constraint firstItem="8ib-9c-KcH" firstAttribute="top" secondItem="0H5-fc-aM9" secondAttribute="bottom" constant="20" id="Du7-aZ-Jie"/>
+                            <constraint firstItem="8ib-9c-KcH" firstAttribute="top" secondItem="0H5-fc-aM9" secondAttribute="bottom" constant="20" id="ADy-Uc-EsE"/>
                             <constraint firstAttribute="bottom" secondItem="Amg-8j-09a" secondAttribute="bottom" id="FxK-Kr-P1S"/>
                             <constraint firstAttribute="trailing" secondItem="0H5-fc-aM9" secondAttribute="trailing" constant="20" id="Gpx-jQ-SZt"/>
                             <constraint firstAttribute="centerX" secondItem="0H5-fc-aM9" secondAttribute="centerX" id="OqW-Qb-wg8"/>
                             <constraint firstItem="0H5-fc-aM9" firstAttribute="leading" secondItem="vpJ-dr-6fj" secondAttribute="leading" constant="20" id="SjR-Dd-Pqa"/>
-                            <constraint firstItem="0H5-fc-aM9" firstAttribute="top" secondItem="N6U-lc-OEn" secondAttribute="bottom" constant="20" id="fTZ-br-JAl"/>
                             <constraint firstItem="Amg-8j-09a" firstAttribute="leading" secondItem="vpJ-dr-6fj" secondAttribute="leading" id="m6p-Bw-DL9"/>
+                            <constraint firstItem="0H5-fc-aM9" firstAttribute="top" secondItem="N6U-lc-OEn" secondAttribute="bottom" constant="20" id="x08-60-y9W"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="FuR-k7-Yd0"/>

@@ -48,8 +48,9 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     var selected : Int = 0;
     
     fileprivate let kSegueToSignUpPassword = "sign_up_password_segue"
-    fileprivate let termsURL = URL(string: "https://protonmail.com/terms-and-conditions")!
-    fileprivate let policyURL = URL(string: "https://protonmail.com/privacy-policy")!
+    
+    fileprivate let kToTerms = "sign_up_username_to_terms"
+    fileprivate let kToPolicy = "sign_up_username_to_policy"
     
     fileprivate var startVerify : Bool = false
     fileprivate var checkUserStatus : Bool = false
@@ -129,6 +130,12 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         if segue.identifier == kSegueToSignUpPassword {
             let viewController = segue.destination as! SignUpPasswordViewController
             viewController.viewModel = self.viewModel
+        } else if segue.identifier == self.kToTerms {
+            let viewController = segue.destination as! WebViewController
+            sharedVMService.buildTermsWebViewModel(viewController)
+        } else if segue.identifier == self.kToPolicy {
+            let viewController = segue.destination as! WebViewController
+            sharedVMService.buildPolicyWebViewModel(viewController)
         }
     }
     @IBAction func checkAction(_ sender: AnyObject) {
@@ -339,12 +346,14 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     
     @IBAction func termsAction(_ sender: UIButton) {
         dismissKeyboard()
-        UIApplication.shared.openURL(termsURL)
+        self.performSegue(withIdentifier: kToTerms, sender: nil)
+//        UIApplication.shared.openURL(termsURL)
     }
     
     @IBAction func policyAction(_ sender: UIButton) {
         dismissKeyboard()
-        UIApplication.shared.openURL(policyURL)
+//        UIApplication.shared.openURL(policyURL)
+        self.performSegue(withIdentifier: kToPolicy, sender: nil)
     }
 }
 
