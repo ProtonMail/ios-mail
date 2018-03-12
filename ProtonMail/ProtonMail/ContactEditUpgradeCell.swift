@@ -13,7 +13,8 @@ final class ContactEditUpgradeCell : UITableViewCell {
     @IBOutlet weak var frameView: UIView!
     @IBOutlet weak var upgradeButton: UIButton!
     
-    fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
+    //fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
+    private var delegate:ContactUpgradeCellDelegate?
     
     override func awakeFromNib() {
         let color = UIColor(hexColorCode: "#9497CE")
@@ -23,7 +24,12 @@ final class ContactEditUpgradeCell : UITableViewCell {
         frameView.clipsToBounds = true
         upgradeButton.roundCorners()
     }
+    
     @IBAction func upgradeAction(_ sender: Any) {
-        UIApplication.shared.openURL(upgradePageUrl)
+        self.delegate?.upgrade()
+    }
+    
+    func configCell(delegate: ContactUpgradeCellDelegate?) {
+        self.delegate = delegate
     }
 }

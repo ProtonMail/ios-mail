@@ -1048,6 +1048,8 @@
 		758DB00E1DDBBCA8007B83D3 /* OrganizationsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758DB00D1DDBBCA8007B83D3 /* OrganizationsAPI.swift */; };
 		758E46B520573E8300111406 /* TermsWebViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758E46B420573B1B00111406 /* TermsWebViewModelImpl.swift */; };
 		758E46B720573E8400111406 /* TermsWebViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758E46B420573B1B00111406 /* TermsWebViewModelImpl.swift */; };
+		758E46B9205745A300111406 /* ContactUpgradeCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758E46B8205745A300111406 /* ContactUpgradeCellDelegate.swift */; };
+		758E46BA205745A300111406 /* ContactUpgradeCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758E46B8205745A300111406 /* ContactUpgradeCellDelegate.swift */; };
 		758ED7CB1F05A4000028D1A5 /* ShareDev.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 758ED7C11F05A3FF0028D1A5 /* ShareDev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		758ED7D01F05A43B0028D1A5 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A42B6A1F0439690025F52C /* libstdc++.tbd */; };
 		758ED7D21F05A55B0028D1A5 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07009EFE1A659AD400129B07 /* SignIn.storyboard */; };
@@ -1781,6 +1783,7 @@
 		758C44831C6D09FE00E6E867 /* EncryptionSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionSetupViewController.swift; sourceTree = "<group>"; };
 		758DB00D1DDBBCA8007B83D3 /* OrganizationsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrganizationsAPI.swift; sourceTree = "<group>"; };
 		758E46B420573B1B00111406 /* TermsWebViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsWebViewModelImpl.swift; sourceTree = "<group>"; };
+		758E46B8205745A300111406 /* ContactUpgradeCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUpgradeCellDelegate.swift; sourceTree = "<group>"; };
 		758ED7C11F05A3FF0028D1A5 /* ShareDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7590F08C1C9894E1009C5059 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		75921C751F747BC80028DAC9 /* String+Mime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mime.swift"; sourceTree = "<group>"; };
@@ -2344,6 +2347,7 @@
 				75A84D4B1FF601C700F2A54B /* ContactEditTextViewCell.swift */,
 				75B2223D2003C6AE00E35033 /* ContactEditUpgradeCell.swift */,
 				75C916C0203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift */,
+				758E46B8205745A300111406 /* ContactUpgradeCellDelegate.swift */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -4857,6 +4861,7 @@
 				7568F3331FCE0F2B00F3DE03 /* ViewModelTimer.swift in Sources */,
 				755B6A701B38C0B800745872 /* Label.swift in Sources */,
 				7528FFD81FA7FEC3005F66A3 /* ContactEditCell+Delegates.swift in Sources */,
+				758E46B9205745A300111406 /* ContactUpgradeCellDelegate.swift in Sources */,
 				756CDE3D1D9C763D004455F6 /* PasswordUtils.swift in Sources */,
 				755F92171C7E685700BAEDF9 /* OnboardingViewController.swift in Sources */,
 				7528FFD41FA7FEC3005F66A3 /* Array+Extension.swift in Sources */,
@@ -5786,6 +5791,7 @@
 				752800061FA7FEF6005F66A3 /* ContactVO+Extension.swift in Sources */,
 				7568F3341FCE0F2B00F3DE03 /* ViewModelTimer.swift in Sources */,
 				75856D6A1CB5B5EC000D9F3B /* PinCodeViewController.swift in Sources */,
+				758E46BA205745A300111406 /* ContactUpgradeCellDelegate.swift in Sources */,
 				7528FFEE1FA7FEF6005F66A3 /* ContactEditCell+Delegates.swift in Sources */,
 				75DE7D2C1CAAEA4900F5443E /* FeedbackTableViewCell.swift in Sources */,
 				75DE7D2F1CAAEA4900F5443E /* MenuItem.swift in Sources */,
