@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WebViewController: UIViewController, ViewModelProtocolNew {
+class WebViewController: UIViewController, ViewModelProtocolNew, UIWebViewDelegate {
     typealias argType = WebViewModel
     func setViewModel(_ vm: WebViewModel) {
          self.viewModel = vm
@@ -23,11 +23,14 @@ class WebViewController: UIViewController, ViewModelProtocolNew {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.webView.delegate = self
         // Do any additional setup after loading the view.
         let url = self.viewModel.url
         
         let request = URLRequest(url: url, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 60.0)
         webView.loadRequest(request)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +46,14 @@ class WebViewController: UIViewController, ViewModelProtocolNew {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        if navigationType == .other {
+            return true
+        }
+        return false
     }
     
 
