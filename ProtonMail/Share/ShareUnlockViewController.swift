@@ -120,14 +120,14 @@ class ShareUnlockViewController: UIViewController {
                                 if let shareURL = url as? NSURL {
                                     self.inputSubject = plainText ?? ""
                                     let url = shareURL.absoluteString ?? ""
-                                    self.inputContent = self.inputContent  + "<a href=\"\(url)\">\(url)</a>"
+                                    self.inputContent = self.inputContent + "\n" + "<a href=\"\(url)\">\(url)</a>"
                                 } else {
                                     self.localized_errors.append(NSLocalizedString("Can't load share content!", comment: "Description"))
                                 }
                             })
                         } else if let pt = plainText {
                             self.inputSubject = ""
-                            self.inputContent = self.inputContent + pt
+                            self.inputContent = self.inputContent + "\n"  + pt
                         } else {
                             PMLog.D("4")
                         }
