@@ -48,7 +48,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.8.0</string>
+	<string>1.8.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -65,7 +65,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2290</string>
+	<string>2297</string>
 	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
 	<true/>
 	<key>Fabric</key>
@@ -94,15 +94,15 @@
 		<true/>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>$(PRODUCT_NAME) media library use</string>
+	<string>$(PRODUCT_NAME) requires media library access for media attachments.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) camera use</string>
+	<string>$(PRODUCT_NAME) requires camera access to attach camera photos.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>$(PRODUCT_NAME) contact use</string>
+	<string>$(PRODUCT_NAME) requires contacts access for email autocomplete.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) save image to photos library</string>
+	<string>$(PRODUCT_NAME) requires photo library access to save image attachments.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) photo library use</string>
+	<string>$(PRODUCT_NAME) requires photo library access to attach camera photos.</string>
 	<key>UIAppFonts</key>
 	<array/>
 	<key>UIBackgroundModes</key>

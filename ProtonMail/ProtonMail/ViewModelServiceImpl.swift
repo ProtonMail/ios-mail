@@ -9,7 +9,7 @@
 import Foundation
 
 //keep this unique
-let sharedVMService : ViewModelService = ViewModelServiceImpl()
+let sharedVMService : ViewModelServiceImpl = ViewModelServiceImpl()
 class ViewModelServiceImpl: ViewModelService {
     //latest composer view model, not in used now.
     private var latestComposerViewModel : ComposeViewModel?
@@ -240,5 +240,15 @@ class ViewModelServiceImpl: ViewModelService {
         }
         activeViewController = vmp
         vmp.setViewModel(ContactTypeViewModelImpl(t: type))
+    }
+    
+    func buildTermsWebViewModel(_ vmp : WebViewController) {
+        let model = TermsWebViewModelImpl()
+        self.set(vmp, val: model)
+    }
+    
+    func buildPolicyWebViewModel(_ vmp : WebViewController) {
+        let model = PolicyWebViewModelImpl()
+        self.set(vmp, val: model)
     }
 }

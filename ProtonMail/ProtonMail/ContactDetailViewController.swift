@@ -123,6 +123,16 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
     }
 }
 
+extension ContactDetailViewController : ContactUpgradeCellDelegate {
+    func upgrade() {
+        let alertStr = NSLocalizedString("Please use the web application to upgrade.", comment: "Alert")
+        let alertController = alertStr.alertController()
+        alertController.addOKAction()
+        self.present(alertController, animated: true, completion: nil)
+    }
+}
+
+
 
 // MARK: - UITableViewDataSource
 extension ContactDetailViewController: UITableViewDataSource {
@@ -205,7 +215,8 @@ extension ContactDetailViewController: UITableViewDataSource {
         let s = viewModel.sections()[section]
         
         if s == .upgrade {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsUpgradeCell, for: indexPath)
+            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsUpgradeCell, for: indexPath) as! ContactDetailsUpgradeCell
+            cell.configCell(delegate: self)
             cell.selectionStyle = .none
             return cell
         } else if s == .share {

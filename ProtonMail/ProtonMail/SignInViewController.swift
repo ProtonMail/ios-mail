@@ -29,8 +29,8 @@ class SignInViewController: ProtonMailViewController {
     fileprivate let animationDuration: TimeInterval = 0.5
     fileprivate let keyboardPadding: CGFloat        = 12
     fileprivate let buttonDisabledAlpha: CGFloat    = 0.5
-    fileprivate let signUpURL                       = URL(string: "https://protonmail.com/invite")!
-    fileprivate let forgotPasswordURL               = URL(string: "https://mail.protonmail.com/help/reset-login-password")!
+//    fileprivate let signUpURL                       = URL(string: "https://protonmail.com/invite")!
+//    fileprivate let forgotPasswordURL               = URL(string: "https://mail.protonmail.com/help/reset-login-password")!
     
     fileprivate let kMailboxSegue                   = "mailboxSegue"
     fileprivate let kSignUpKeySegue                 = "sign_in_to_sign_up_segue"
@@ -653,30 +653,11 @@ class SignInViewController: ProtonMailViewController {
     
     @IBAction func fogorPasswordAction(_ sender: AnyObject) {
         dismissKeyboard()
-        UIApplication.shared.openURL(forgotPasswordURL)
-        // let displayName = Localize.displayNameForLanguage(language)
-        // let languageAction = UIAlertAction(title: displayName, style: .Default, handler: {
-        //      (alert: UIAlertAction!) -> Void in
-        //      Localize.setCurrentLanguage(language)
-        // })
-        // actionSheet.addAction(languageAction)
-        
-        // let alertController = UIAlertController(title: NSLocalizedString("Switch Language .."), message: nil, preferredStyle: .ActionSheet)
-        // alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-        // let languages : [String] = Localization.availableLanguages()
-        // for (var lan) in languages {
-        //     if lan == Localization.kBaseLanguage {
-        //         continue
-        //     }
-        //     alertController.addAction(UIAlertAction(title: (lan == Localization.currentLanguage() ? " * \(Localization.displayNameForLanguage(lan))" :  Localization.displayNameForLanguage(lan)), style: .Default, handler: { (action) -> Void in
-        //         self.navigationController?.popViewControllerAnimated(true)
-        //         self.setLanguage(lan)
-        //     }))
-        // }
-        // //    
-        // alertController.popoverPresentationController?.sourceView = sender ?? self.view
-        // alertController.popoverPresentationController?.sourceRect = sender.frame
-        // presentViewController(alertController, animated: true, completion: nil)
+//        UIApplication.shared.openURL(forgotPasswordURL)
+        let alertStr = NSLocalizedString("Please use the web application to reset your password.", comment: "Alert")
+        let alertController = alertStr.alertController()
+        alertController.addOKAction()
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func signUpAction(_ sender: UIButton) {

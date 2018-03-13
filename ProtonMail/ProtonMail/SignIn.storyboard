@@ -987,6 +987,8 @@
                         <outlet property="warningLabel" destination="tnH-Rl-0yc" id="I5d-KQ-Buz"/>
                         <outlet property="warningView" destination="hIQ-0Q-EVQ" id="oax-oz-4Yj"/>
                         <segue destination="cQW-e7-4Wy" kind="show" identifier="sign_up_password_segue" id="EKH-EH-539"/>
+                        <segue destination="vnW-x7-yJE" kind="show" identifier="sign_up_username_to_terms" id="4xr-eM-rQ2"/>
+                        <segue destination="vnW-x7-yJE" kind="show" identifier="sign_up_username_to_policy" id="gcc-KK-q6e"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ii9-cS-i5j" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1235,6 +1237,39 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-1407" y="2284"/>
+        </scene>
+        <!--Web View Controller-->
+        <scene sceneID="vC3-AR-PMO">
+            <objects>
+                <viewController id="vnW-x7-yJE" customClass="WebViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MFc-79-iIU"/>
+                        <viewControllerLayoutGuide type="bottom" id="uT3-or-HCu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="nge-DV-dwK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" allowsInlineMediaPlayback="NO" mediaPlaybackRequiresUserAction="NO" mediaPlaybackAllowsAirPlay="NO" keyboardDisplayRequiresUserAction="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HeJ-Jt-XDY">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="uT3-or-HCu" firstAttribute="top" secondItem="HeJ-Jt-XDY" secondAttribute="bottom" id="WT6-pU-cxu"/>
+                            <constraint firstAttribute="trailing" secondItem="HeJ-Jt-XDY" secondAttribute="trailing" id="iun-71-x2A"/>
+                            <constraint firstItem="HeJ-Jt-XDY" firstAttribute="leading" secondItem="nge-DV-dwK" secondAttribute="leading" id="piC-ol-XAH"/>
+                            <constraint firstItem="HeJ-Jt-XDY" firstAttribute="top" secondItem="MFc-79-iIU" secondAttribute="bottom" id="rk2-nG-ibQ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="HeJ-Jt-XDY" id="Bof-RF-Gvt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dyj-yn-3qB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2206" y="3080"/>
         </scene>
         <!--Sign Up Email View Controller-->
         <scene sceneID="uZK-2E-JjV">
@@ -3141,6 +3176,7 @@ we need to verify that you are human.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="u41-R8-jPf"/>
+        <segue reference="gcc-KK-q6e"/>
         <segue reference="lvd-zK-Trc"/>
     </inferredMetricsTieBreakers>
 </document>

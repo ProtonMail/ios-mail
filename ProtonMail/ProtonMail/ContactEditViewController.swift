@@ -39,7 +39,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     //const segue
     fileprivate let ktoContactTypeSegue : String      = "toContactTypeSegue"
-    fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
+    
     //
     fileprivate var doneItem: UIBarButtonItem!
     @IBOutlet weak var cancelItem: UIBarButtonItem!
@@ -272,6 +272,15 @@ extension ContactEditViewController: ContactTypeViewControllerDelegate {
     }
 }
 
+extension ContactEditViewController : ContactUpgradeCellDelegate {
+    func upgrade() {
+        let alertStr = NSLocalizedString("Please use the web application to upgrade.", comment: "Alert")
+        let alertController = alertStr.alertController()
+        alertController.addOKAction()
+        self.present(alertController, animated: true, completion: nil)
+    }
+}
+
 
 // MARK: - UITableViewDataSource
 extension ContactEditViewController: UITableViewDataSource {
@@ -414,7 +423,8 @@ extension ContactEditViewController: UITableViewDataSource {
             cell.selectionStyle = .default
             outCell = cell
         case .upgrade:
-            let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditUpgradeCell, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditUpgradeCell, for: indexPath) as! ContactEditUpgradeCell
+            cell.configCell(delegate: self)
             cell.selectionStyle = .none
             outCell = cell
         default:

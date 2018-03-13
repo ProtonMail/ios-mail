@@ -1046,6 +1046,10 @@
 		758993291F2953BE0030B5AC /* ActivityIndicatorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70762C3A1A94EC30006B9693 /* ActivityIndicatorHelper.swift */; };
 		758C44841C6D09FE00E6E867 /* EncryptionSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758C44831C6D09FE00E6E867 /* EncryptionSetupViewController.swift */; };
 		758DB00E1DDBBCA8007B83D3 /* OrganizationsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758DB00D1DDBBCA8007B83D3 /* OrganizationsAPI.swift */; };
+		758E46B520573E8300111406 /* TermsWebViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758E46B420573B1B00111406 /* TermsWebViewModelImpl.swift */; };
+		758E46B720573E8400111406 /* TermsWebViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758E46B420573B1B00111406 /* TermsWebViewModelImpl.swift */; };
+		758E46B9205745A300111406 /* ContactUpgradeCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758E46B8205745A300111406 /* ContactUpgradeCellDelegate.swift */; };
+		758E46BA205745A300111406 /* ContactUpgradeCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758E46B8205745A300111406 /* ContactUpgradeCellDelegate.swift */; };
 		758ED7CB1F05A4000028D1A5 /* ShareDev.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 758ED7C11F05A3FF0028D1A5 /* ShareDev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		758ED7D01F05A43B0028D1A5 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A42B6A1F0439690025F52C /* libstdc++.tbd */; };
 		758ED7D21F05A55B0028D1A5 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07009EFE1A659AD400129B07 /* SignIn.storyboard */; };
@@ -1317,6 +1321,24 @@
 		75F22BEF1E83335100677E67 /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F22BED1E83335000677E67 /* ToastMessageView.swift */; };
 		75F22BF11E83348100677E67 /* ToastMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75F22BF01E83348100677E67 /* ToastMessageView.xib */; };
 		75F22BF21E83348100677E67 /* ToastMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75F22BF01E83348100677E67 /* ToastMessageView.xib */; };
+		75F29E1120570CBE00C70AD2 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E1020570CBE00C70AD2 /* WebViewController.swift */; };
+		75F29E1220570CBE00C70AD2 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E1020570CBE00C70AD2 /* WebViewController.swift */; };
+		75F29E142057170C00C70AD2 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E132057170C00C70AD2 /* WebViewModel.swift */; };
+		75F29E152057170C00C70AD2 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E132057170C00C70AD2 /* WebViewModel.swift */; };
+		75F29E162057170C00C70AD2 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E132057170C00C70AD2 /* WebViewModel.swift */; };
+		75F29E192057195F00C70AD2 /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E182057195F00C70AD2 /* ViewModelProtocol.swift */; };
+		75F29E1A2057195F00C70AD2 /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E182057195F00C70AD2 /* ViewModelProtocol.swift */; };
+		75F29E1B2057195F00C70AD2 /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E182057195F00C70AD2 /* ViewModelProtocol.swift */; };
+		75F29E1C2057195F00C70AD2 /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E182057195F00C70AD2 /* ViewModelProtocol.swift */; };
+		75F29E1E20571E3D00C70AD2 /* ViewModelProtocolNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E1D20571DEF00C70AD2 /* ViewModelProtocolNew.swift */; };
+		75F29E1F20571E3D00C70AD2 /* ViewModelProtocolNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E1D20571DEF00C70AD2 /* ViewModelProtocolNew.swift */; };
+		75F29E2020571E3E00C70AD2 /* ViewModelProtocolNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E1D20571DEF00C70AD2 /* ViewModelProtocolNew.swift */; };
+		75F29E2120571E3E00C70AD2 /* ViewModelProtocolNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E1D20571DEF00C70AD2 /* ViewModelProtocolNew.swift */; };
+		75F29E2220571E4300C70AD2 /* PolicyWebViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E17205718A600C70AD2 /* PolicyWebViewModelImpl.swift */; };
+		75F29E2420571E4400C70AD2 /* PolicyWebViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E17205718A600C70AD2 /* PolicyWebViewModelImpl.swift */; };
+		75F29E2620571E4E00C70AD2 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E132057170C00C70AD2 /* WebViewModel.swift */; };
+		75F29E2720571E5300C70AD2 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E1020570CBE00C70AD2 /* WebViewController.swift */; };
+		75F29E2820571E5400C70AD2 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E1020570CBE00C70AD2 /* WebViewController.swift */; };
 		75F463881C5FEBF400918B46 /* HumanCheckMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F463871C5FEBF400918B46 /* HumanCheckMenuViewController.swift */; };
 		75F4638A1C60071B00918B46 /* EmailVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F463891C60071B00918B46 /* EmailVerifyViewController.swift */; };
 		75F4638E1C60172300918B46 /* SignUpUserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F4638D1C60172300918B46 /* SignUpUserNameViewController.swift */; };
@@ -1760,6 +1782,8 @@
 		7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureStore.swift; sourceTree = "<group>"; };
 		758C44831C6D09FE00E6E867 /* EncryptionSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionSetupViewController.swift; sourceTree = "<group>"; };
 		758DB00D1DDBBCA8007B83D3 /* OrganizationsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrganizationsAPI.swift; sourceTree = "<group>"; };
+		758E46B420573B1B00111406 /* TermsWebViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsWebViewModelImpl.swift; sourceTree = "<group>"; };
+		758E46B8205745A300111406 /* ContactUpgradeCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUpgradeCellDelegate.swift; sourceTree = "<group>"; };
 		758ED7C11F05A3FF0028D1A5 /* ShareDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7590F08C1C9894E1009C5059 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		75921C751F747BC80028DAC9 /* String+Mime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mime.swift"; sourceTree = "<group>"; };
@@ -1869,6 +1893,11 @@
 		75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserCachedStatus.swift; path = ../ProtonMail/UserCachedStatus.swift; sourceTree = "<group>"; };
 		75F22BED1E83335000677E67 /* ToastMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToastMessageView.swift; sourceTree = "<group>"; };
 		75F22BF01E83348100677E67 /* ToastMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToastMessageView.xib; sourceTree = "<group>"; };
+		75F29E1020570CBE00C70AD2 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		75F29E132057170C00C70AD2 /* WebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModel.swift; sourceTree = "<group>"; };
+		75F29E17205718A600C70AD2 /* PolicyWebViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyWebViewModelImpl.swift; sourceTree = "<group>"; };
+		75F29E182057195F00C70AD2 /* ViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelProtocol.swift; sourceTree = "<group>"; };
+		75F29E1D20571DEF00C70AD2 /* ViewModelProtocolNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelProtocolNew.swift; sourceTree = "<group>"; };
 		75F463871C5FEBF400918B46 /* HumanCheckMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckMenuViewController.swift; sourceTree = "<group>"; };
 		75F463891C60071B00918B46 /* EmailVerifyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailVerifyViewController.swift; sourceTree = "<group>"; };
 		75F4638D1C60172300918B46 /* SignUpUserNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpUserNameViewController.swift; sourceTree = "<group>"; };
@@ -2007,6 +2036,7 @@
 				75E49F0E1CAB288F00235ACC /* CountryPickerViewController.swift */,
 				750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */,
 				750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */,
+				75F29E1020570CBE00C70AD2 /* WebViewController.swift */,
 			);
 			name = "Sign In";
 			sourceTree = "<group>";
@@ -2317,6 +2347,7 @@
 				75A84D4B1FF601C700F2A54B /* ContactEditTextViewCell.swift */,
 				75B2223D2003C6AE00E35033 /* ContactEditUpgradeCell.swift */,
 				75C916C0203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift */,
+				758E46B8205745A300111406 /* ContactUpgradeCellDelegate.swift */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -2900,6 +2931,9 @@
 			children = (
 				75F023AE1C4E0271008F6276 /* SignupViewModel.swift */,
 				75E49F121CAB2D2100235ACC /* SignupViewModelImpl.swift */,
+				75F29E132057170C00C70AD2 /* WebViewModel.swift */,
+				758E46B420573B1B00111406 /* TermsWebViewModelImpl.swift */,
+				75F29E17205718A600C70AD2 /* PolicyWebViewModelImpl.swift */,
 			);
 			name = SignUp;
 			sourceTree = "<group>";
@@ -2931,6 +2965,8 @@
 				75C916C3203ECE1C00A7FD1F /* ViewModelBase.swift */,
 				7568F3321FCE0F2B00F3DE03 /* ViewModelTimer.swift */,
 				759339BF1ABB45C700535F1B /* ViewModelFactory.swift */,
+				75F29E182057195F00C70AD2 /* ViewModelProtocol.swift */,
+				75F29E1D20571DEF00C70AD2 /* ViewModelProtocolNew.swift */,
 				7567B06C1B334FA400A72A1E /* ViewModelService.swift */,
 				7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */,
 				75B0529C1F1FE032008E483A /* ViewModelServiceImpl+Share.swift */,
@@ -4585,6 +4621,7 @@
 				071323901A79BD8F0043DB41 /* TextInsetTextField.swift in Sources */,
 				75A021A41C617D3F00A22A25 /* DomainAPI.swift in Sources */,
 				078FF4D01A92CE15008321D1 /* APIService+SettingsExtension.swift in Sources */,
+				75F29E2220571E4300C70AD2 /* PolicyWebViewModelImpl.swift in Sources */,
 				75921C801F747BC90028DAC9 /* MIMEMessage.swift in Sources */,
 				75230C241B9A3A3600EC2AC2 /* MailboxMessageCell.swift in Sources */,
 				071323921A7ADA590043DB41 /* APIService+MessagesExtension.swift in Sources */,
@@ -4652,6 +4689,7 @@
 				7528FFAC1FA7FE85005F66A3 /* TimeInterval+Extension.swift in Sources */,
 				759BBDC81BA0D1E3002608B5 /* PMView.swift in Sources */,
 				75AD87321E975CC600B8265B /* FolderEditingViewModelImpl .swift in Sources */,
+				75F29E192057195F00C70AD2 /* ViewModelProtocol.swift in Sources */,
 				7528FF941FA7FE85005F66A3 /* UIScrollView+Extension.swift in Sources */,
 				75BA199F1EC6474D00153A1A /* MessageSpamScore.swift in Sources */,
 				07CB23561AB0F24700699068 /* ReportBugsViewController.swift in Sources */,
@@ -4662,6 +4700,7 @@
 				07A0E1AD1A9D3C64005FD04B /* UserInfo.swift in Sources */,
 				755638CB1CA1F446003FA2D0 /* MessageViewModelImpl.swift in Sources */,
 				70762C3B1A94EC30006B9693 /* ActivityIndicatorHelper.swift in Sources */,
+				75F29E1120570CBE00C70AD2 /* WebViewController.swift in Sources */,
 				75117C4A1BA22F6200A0CE68 /* RecipientView.swift in Sources */,
 				7518393F1B3DCA3000C714A6 /* EventAPI.swift in Sources */,
 				7588BB401BFBE05A00EC8EFD /* SecureStore.swift in Sources */,
@@ -4671,6 +4710,7 @@
 				75252CE21FCE320C007972EF /* Dictionary+JSON+Extension.swift in Sources */,
 				07CAB7FE1A880B1200C5E347 /* PersistentQueue.swift in Sources */,
 				7567B0771B3387F700A72A1E /* APIServiceRequest.swift in Sources */,
+				758E46B520573E8300111406 /* TermsWebViewModelImpl.swift in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
 				75E2202E1DDA532900078D6C /* Threading.swift in Sources */,
 				7567B07B1B338EB900A72A1E /* MessageHelper.swift in Sources */,
@@ -4723,6 +4763,7 @@
 				75BA199B1EC631A300153A1A /* SpamScoreWarningView.swift in Sources */,
 				75A4321D1B1D042C00D046B3 /* QueueConstant.swift in Sources */,
 				75ECC2381AB9F28100B8FC78 /* ChangePasswordViewModel.swift in Sources */,
+				75F29E142057170C00C70AD2 /* WebViewModel.swift in Sources */,
 				7528FF9C1FA7FE85005F66A3 /* UserDefaults+Extension.swift in Sources */,
 				7528FF971FA7FE85005F66A3 /* NSString+Extension.swift in Sources */,
 				755638C51CA1AE6B003FA2D0 /* ExpirationView.swift in Sources */,
@@ -4820,6 +4861,7 @@
 				7568F3331FCE0F2B00F3DE03 /* ViewModelTimer.swift in Sources */,
 				755B6A701B38C0B800745872 /* Label.swift in Sources */,
 				7528FFD81FA7FEC3005F66A3 /* ContactEditCell+Delegates.swift in Sources */,
+				758E46B9205745A300111406 /* ContactUpgradeCellDelegate.swift in Sources */,
 				756CDE3D1D9C763D004455F6 /* PasswordUtils.swift in Sources */,
 				755F92171C7E685700BAEDF9 /* OnboardingViewController.swift in Sources */,
 				7528FFD41FA7FEC3005F66A3 /* Array+Extension.swift in Sources */,
@@ -4853,6 +4895,7 @@
 				7578B7831CADD1EA006B523B /* PMImagePickerController.swift in Sources */,
 				7567B0731B3363D000A72A1E /* ControllerDefined.swift in Sources */,
 				75BDCCF21EC4E35C00EF04C5 /* LabelManagerViewModelImpl.swift in Sources */,
+				75F29E1E20571E3D00C70AD2 /* ViewModelProtocolNew.swift in Sources */,
 				75BF9A521B5F0F500087AD2E /* BugsAPI.swift in Sources */,
 				751CE0261DDFBD0600D5EC66 /* ServerNotice.swift in Sources */,
 				755405B21B1648D2003BFC0A /* ComposeView.swift in Sources */,
@@ -5172,6 +5215,7 @@
 				75482B421F7F09E100B0BFFB /* LabelboxViewModelImpl.swift in Sources */,
 				75482B431F7F09E100B0BFFB /* AttachmentsTableViewController.swift in Sources */,
 				75482B441F7F09E100B0BFFB /* APIServiceResponse.swift in Sources */,
+				75F29E152057170C00C70AD2 /* WebViewModel.swift in Sources */,
 				75482B451F7F09E100B0BFFB /* AddressAPI.swift in Sources */,
 				75482B461F7F09E100B0BFFB /* MessageQueue.swift in Sources */,
 				75482B471F7F09E100B0BFFB /* String+Alert+Extension.swift in Sources */,
@@ -5211,6 +5255,7 @@
 				75482B661F7F09E100B0BFFB /* AttachmentExtension.swift in Sources */,
 				75482B671F7F09E100B0BFFB /* PinCodeView.swift in Sources */,
 				75482B691F7F09E100B0BFFB /* SettingsAPI.swift in Sources */,
+				75F29E1F20571E3D00C70AD2 /* ViewModelProtocolNew.swift in Sources */,
 				75482B6A1F7F09E100B0BFFB /* CoreDataService.swift in Sources */,
 				75482B6B1F7F09E100B0BFFB /* Foundation+Extension.swift in Sources */,
 				75482B6C1F7F09E100B0BFFB /* NSError+Alert+Share.swift in Sources */,
@@ -5264,8 +5309,10 @@
 				75BA4F521F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */,
 				75482B971F7F09E100B0BFFB /* PersistentQueue.swift in Sources */,
 				75482B981F7F09E100B0BFFB /* PMDocumentPickerViewController.swift in Sources */,
+				75F29E2820571E5400C70AD2 /* WebViewController.swift in Sources */,
 				75482B991F7F09E100B0BFFB /* MIMEMessage.swift in Sources */,
 				75482B9A1F7F09E100B0BFFB /* SrpClientExtension.swift in Sources */,
+				75F29E1A2057195F00C70AD2 /* ViewModelProtocol.swift in Sources */,
 				75482B9B1F7F09E100B0BFFB /* Message.swift in Sources */,
 				75482B9D1F7F09E100B0BFFB /* ViewDefined.swift in Sources */,
 				75482B9E1F7F09E100B0BFFB /* APIService+AuthenticationExtension.swift in Sources */,
@@ -5388,6 +5435,7 @@
 				7512AA631F1808C100D84955 /* KeysAPI.swift in Sources */,
 				758993291F2953BE0030B5AC /* ActivityIndicatorHelper.swift in Sources */,
 				752800251FA8001F005F66A3 /* Date+Extension.swift in Sources */,
+				75F29E2620571E4E00C70AD2 /* WebViewModel.swift in Sources */,
 				75252CE41FCE3220007972EF /* Dictionary+JSON+Extension.swift in Sources */,
 				75921C981F747E270028DAC9 /* String+Mime.swift in Sources */,
 				753E5AB41F181A2D0090C0F9 /* MessageAPI.swift in Sources */,
@@ -5415,6 +5463,7 @@
 				7512AA511F1805F400D84955 /* FileManager+Extension.swift in Sources */,
 				7512A9F91F17E1CE00D84955 /* ShareUnlockViewController.swift in Sources */,
 				753E5AC11F181D4F0090C0F9 /* APIService+DeviceExtension.swift in Sources */,
+				75F29E2120571E3E00C70AD2 /* ViewModelProtocolNew.swift in Sources */,
 				752800311FA800B4005F66A3 /* ContactsAPI.swift in Sources */,
 				753E5AC01F181D480090C0F9 /* APIService+AttachmentExtension.swift in Sources */,
 				75555BBE1F1840DB000C0C10 /* PMImagePickerController.swift in Sources */,
@@ -5425,12 +5474,14 @@
 				753E5ABB1F181BAD0090C0F9 /* PersistentQueue.swift in Sources */,
 				75C7FF361F2FB3FF00F15792 /* PMDocumentPickerViewController.swift in Sources */,
 				75921C961F747E270028DAC9 /* MIMEMessage.swift in Sources */,
+				75F29E2720571E5300C70AD2 /* WebViewController.swift in Sources */,
 				7512AA601F18084D00D84955 /* SrpClientExtension.swift in Sources */,
 				752800231FA80004005F66A3 /* ContactVO+Extension.swift in Sources */,
 				7512AA041F17EAAE00D84955 /* Message.swift in Sources */,
 				75B052A11F1FE1FC008E483A /* ViewDefined.swift in Sources */,
 				7528002B1FA80069005F66A3 /* UIAlertController+Extension.swift in Sources */,
 				7512AA3B1F1801EB00D84955 /* APIService+AuthenticationExtension.swift in Sources */,
+				75F29E1C2057195F00C70AD2 /* ViewModelProtocol.swift in Sources */,
 				75921C941F747E270028DAC9 /* Data+Mime.swift in Sources */,
 				7512AA071F17EAC700D84955 /* MessageAction.swift in Sources */,
 				7512AA0F1F17F77E00D84955 /* PMView.swift in Sources */,
@@ -5500,6 +5551,7 @@
 				7528000B1FA7FEF6005F66A3 /* EmailExtension.swift in Sources */,
 				75256C401F16DFBD00F2771E /* JKBCrypt.swift in Sources */,
 				75921C8A1F747BD10028DAC9 /* Part.swift in Sources */,
+				75F29E2420571E4400C70AD2 /* PolicyWebViewModelImpl.swift in Sources */,
 				75256C411F16DFBD00F2771E /* JKBCryptRandom.swift in Sources */,
 				75256C421F16DFBD00F2771E /* SRPClient.swift in Sources */,
 				7528FFE91FA7FEF6005F66A3 /* ContactDetailsViewModel.swift in Sources */,
@@ -5567,6 +5619,7 @@
 				75256C851F16DFBD00F2771E /* AttachmentExtension.swift in Sources */,
 				75256C871F16DFBD00F2771E /* Contact.swift in Sources */,
 				75256C881F16DFBD00F2771E /* ContactExtension.swift in Sources */,
+				75F29E1B2057195F00C70AD2 /* ViewModelProtocol.swift in Sources */,
 				75256C891F16DFBD00F2771E /* Message.swift in Sources */,
 				75256C8A1F16DFBD00F2771E /* MessageExtension.swift in Sources */,
 				75256C8B1F16DFBD00F2771E /* MessageSpamScore.swift in Sources */,
@@ -5577,6 +5630,7 @@
 				75256C8F1F16DFBD00F2771E /* LabelExtension.swift in Sources */,
 				75256C901F16DFBD00F2771E /* EncryptTypes.swift in Sources */,
 				75256C911F16DFBD00F2771E /* UserInfo.swift in Sources */,
+				75F29E1220570CBE00C70AD2 /* WebViewController.swift in Sources */,
 				75256C921F16DFBD00F2771E /* CountryCode.swift in Sources */,
 				75256C931F16DFBD00F2771E /* APIServiceDefined.swift in Sources */,
 				75256C941F16DFBD00F2771E /* APIServiceRequest.swift in Sources */,
@@ -5586,6 +5640,7 @@
 				75252CE31FCE320C007972EF /* Dictionary+JSON+Extension.swift in Sources */,
 				75256C971F16DFBD00F2771E /* AuthAPI.swift in Sources */,
 				75256CCD1F16E29E00F2771E /* AppDelegate.swift in Sources */,
+				758E46B720573E8400111406 /* TermsWebViewModelImpl.swift in Sources */,
 				75256C981F16DFBD00F2771E /* KeysAPI.swift in Sources */,
 				75256C991F16DFBD00F2771E /* MessageAPI.swift in Sources */,
 				7528FFEB1FA7FEF6005F66A3 /* ContactDetailViewController.swift in Sources */,
@@ -5638,6 +5693,7 @@
 				75256CB71F16DFBD00F2771E /* DeviceInfoCache.swift in Sources */,
 				75256CB81F16DFBD00F2771E /* BugReportCache.swift in Sources */,
 				75256CB91F16DFBD00F2771E /* APIService.swift in Sources */,
+				75F29E162057170C00C70AD2 /* WebViewModel.swift in Sources */,
 				75256CBA1F16DFBD00F2771E /* APIService+ErrorExtension.swift in Sources */,
 				75256CBC1F16DFBD00F2771E /* APIService+DefinedExtension.swift in Sources */,
 				75256CBD1F16DFBD00F2771E /* APIService+ResponseTransformer.swift in Sources */,
@@ -5735,6 +5791,7 @@
 				752800061FA7FEF6005F66A3 /* ContactVO+Extension.swift in Sources */,
 				7568F3341FCE0F2B00F3DE03 /* ViewModelTimer.swift in Sources */,
 				75856D6A1CB5B5EC000D9F3B /* PinCodeViewController.swift in Sources */,
+				758E46BA205745A300111406 /* ContactUpgradeCellDelegate.swift in Sources */,
 				7528FFEE1FA7FEF6005F66A3 /* ContactEditCell+Delegates.swift in Sources */,
 				75DE7D2C1CAAEA4900F5443E /* FeedbackTableViewCell.swift in Sources */,
 				75DE7D2F1CAAEA4900F5443E /* MenuItem.swift in Sources */,
@@ -5768,6 +5825,7 @@
 				757F4A061E677E1D001CDE71 /* LabelEditViewController.swift in Sources */,
 				75DE7D561CAAEA4900F5443E /* EncryptionSetupViewController.swift in Sources */,
 				75F161921DCBB7E600912662 /* TwoFACodeViewController.swift in Sources */,
+				75F29E2020571E3E00C70AD2 /* ViewModelProtocolNew.swift in Sources */,
 				75BA199D1EC632E400153A1A /* SpamScoreWarningView.swift in Sources */,
 				7528001C1FA7FEF6005F66A3 /* UITableView+Extension.swift in Sources */,
 				75DE7D581CAAEA4900F5443E /* SignUpEmailViewController.swift in Sources */,
