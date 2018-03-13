@@ -3580,7 +3580,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S2N-LN-nye">
-                                                    <rect key="frame" x="37" y="50" width="300" height="180"/>
+                                                    <rect key="frame" x="37" y="90" width="300" height="100"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please upgrade to access encrypted contact details." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Sp-9Q-PMs">
                                                             <rect key="frame" x="33" y="8" width="235" height="72"/>
@@ -3592,7 +3592,7 @@
                                                             <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TqV-Iy-F0t">
+                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TqV-Iy-F0t">
                                                             <rect key="frame" x="80" y="88" width="140" height="46"/>
                                                             <color key="backgroundColor" red="0.58039215690000001" green="0.59215686270000001" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
@@ -3610,7 +3610,7 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="180" id="9Td-Jl-JN3"/>
+                                                        <constraint firstAttribute="height" constant="100" id="9Td-Jl-JN3"/>
                                                         <constraint firstItem="1Sp-9Q-PMs" firstAttribute="top" secondItem="S2N-LN-nye" secondAttribute="top" constant="8" id="EXj-I4-cgg"/>
                                                         <constraint firstAttribute="width" constant="300" id="Eq8-pE-dD3"/>
                                                         <constraint firstItem="TqV-Iy-F0t" firstAttribute="top" secondItem="1Sp-9Q-PMs" secondAttribute="bottom" constant="8" id="FGi-bC-uB6"/>
@@ -4973,7 +4973,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Fh-FP-jJj">
-                                                    <rect key="frame" x="37" y="50" width="300" height="180"/>
+                                                    <rect key="frame" x="37" y="90" width="300" height="100"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please upgrade to access encrypted contact details." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yBe-po-q9q">
                                                             <rect key="frame" x="33" y="8" width="235" height="72"/>
@@ -4985,7 +4985,7 @@
                                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5f-Bc-ZM6">
+                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5f-Bc-ZM6">
                                                             <rect key="frame" x="80" y="88" width="140" height="46"/>
                                                             <color key="backgroundColor" red="0.58039215686274503" green="0.59215686274509804" blue="0.80784313725490198" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
@@ -5008,7 +5008,7 @@
                                                         <constraint firstItem="yBe-po-q9q" firstAttribute="top" secondItem="7Fh-FP-jJj" secondAttribute="top" constant="8" id="fnW-JQ-Ztk"/>
                                                         <constraint firstItem="x5f-Bc-ZM6" firstAttribute="centerX" secondItem="7Fh-FP-jJj" secondAttribute="centerX" id="ge4-Wu-b0Y"/>
                                                         <constraint firstAttribute="width" constant="300" id="hKe-co-S9b"/>
-                                                        <constraint firstAttribute="height" constant="180" id="ozR-Ym-yC1"/>
+                                                        <constraint firstAttribute="height" constant="100" id="ozR-Ym-yC1"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>

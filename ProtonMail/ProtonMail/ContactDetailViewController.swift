@@ -369,7 +369,7 @@ extension ContactDetailViewController: UITableViewDelegate {
         case .email_header, .encrypted_header, .delete:
             return 0.0
         case .upgrade:
-            return 280.0
+            return 200 //  280.0
         case .share:
             return 38.0
         }

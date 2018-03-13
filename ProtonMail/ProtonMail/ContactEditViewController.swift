@@ -640,7 +640,7 @@ extension ContactEditViewController: UITableViewDelegate {
         }
         
         if sections[indexPath.section] == .upgrade {
-             return 280.0
+             return 200 //  280.0
         }
         
         return 48.0
