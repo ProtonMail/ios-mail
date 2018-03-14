@@ -24,12 +24,6 @@ extension APIService {
     fileprivate struct UserPath {
         static let base = AppConstants.API_PATH + "/users"
     }
-
-    func userPublicKeyForUsername(_ username: String, completion: CompletionBlock?) {
-        let path = UserPath.base + "/pubkey" + "/\(username)"
-        //setApiVesion(1, appVersion: 1)
-        request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 1], completion: completion)
-    }
     
     func userPublicKeysForEmails(_ emails: [String], completion: CompletionBlock?) {
         let emailsString = emails.joined(separator: ",")
@@ -65,7 +59,7 @@ extension APIService {
             "PublicKey" : publicKey,
             "PrivateKey" : privateKey
         ]
-        //setApiVesion(2, appVersion: 1)
+        
         request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 2], completion: completion)
     }
     

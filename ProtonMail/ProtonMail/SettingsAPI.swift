@@ -8,34 +8,6 @@
 
 import Foundation
 
-// MARK : update domain order
-final class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {
-    let newOrder : [Int]!
-    
-    init(adds : [Int]!) {
-        self.newOrder = adds
-    }
-    
-    override func toDictionary() -> [String : Any]? {
-        let out : [String : Any] = ["Order" : self.newOrder]
-        //PMLog.D(self.JSONStringify(out, prettyPrinted: true))
-        return out
-    }
-    
-    override func method() -> APIService.HTTPMethod {
-        return .put
-    }
-    
-    override open func path() -> String {
-        return SettingsAPI.Path + "/addressorder" + AppConstants.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return SettingsAPI.V_SettingsUpdateDomainRequest
-    }
-}
-
-
 // MARK : update email notifiy
 final class UpdateNotify<T : ApiResponse> : ApiRequest<T> {
     let notify : Int

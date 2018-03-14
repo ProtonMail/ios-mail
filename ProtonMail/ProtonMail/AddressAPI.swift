@@ -8,6 +8,34 @@
 
 import Foundation
 
+
+// MARK : update addresses order
+final class UpdateAddressOrder<T : ApiResponse> : ApiRequest<T> {
+    let newOrder : [String]!
+    
+    init(adds : [String]!) {
+        self.newOrder = adds
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        let out : [String : Any] = ["AddressIDs" : self.newOrder]
+        return out
+    }
+    
+    override func method() -> APIService.HTTPMethod {
+        return .put
+    }
+    
+    override open func path() -> String {
+        return SettingsAPI.Path + "/order" + AppConstants.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return AddressesAPI.V_AddressesOrderUpdate
+    }
+}
+
+
 //MARK : update display name
 final class UpdateAddressRequest<T : ApiResponse> : ApiRequest<T> {
     let addressid : String!
@@ -36,6 +64,8 @@ final class UpdateAddressRequest<T : ApiResponse> : ApiRequest<T> {
         return AddressesAPI.V_AddressesUpdateRequest
     }
 }
+
+
 
 final class SetupAddressRequest<T : ApiResponse> : ApiRequest<T> {
     let domain: String!

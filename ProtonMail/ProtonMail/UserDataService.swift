@@ -650,9 +650,9 @@ class UserDataService {
         
     }
     
-    func updateUserDomiansOrder(_ email_domains: [Address], newOrder : [Int], completion: @escaping CompletionBlock) {
-        let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)
-        domainSetting.call() { task, response, hasError in
+    func updateUserDomiansOrder(_ email_domains: [Address], newOrder : [String], completion: @escaping CompletionBlock) {
+        let addressOrder = UpdateAddressOrder<ApiResponse>(adds: newOrder)
+        addressOrder.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
                     userInfo.userAddresses = email_domains

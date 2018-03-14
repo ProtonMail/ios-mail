@@ -586,16 +586,16 @@ class SettingTableViewController: ProtonMailViewController {
                                     alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
                                         let _ = self.navigationController?.popViewController(animated: true)
                                         var newAddrs = [Address]()
-                                        var newOrder = [Int]()
+                                        var newOrder = [String]()
                                         newAddrs.append(addr)
-                                        newOrder.append(addr.order)
+                                        newOrder.append(addr.address_id)
                                         var order = 1
                                         addr.order = order
                                         order += 1
                                         for oldAddr in self.multi_domains {
                                             if oldAddr != addr {
                                                 newAddrs.append(oldAddr)
-                                                newOrder.append(oldAddr.order)
+                                                newOrder.append(oldAddr.address_id)
                                                 oldAddr.order = order
                                                 order += 1
                                             }
