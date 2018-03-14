@@ -23,11 +23,11 @@ final class UpdateAddressOrder<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func method() -> APIService.HTTPMethod {
-        return .put
+        return .post
     }
     
     override open func path() -> String {
-        return SettingsAPI.Path + "/order" + AppConstants.DEBUG_OPTION
+        return AddressesAPI.Path + "/order" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
