@@ -11,6 +11,7 @@ import Foundation
 protocol ContactEditTextViewCellDelegate {
     func beginEditing(textView: UITextView)
     func didChanged(textView: UITextView)
+    func featureBlocked(textView: UITextView)
 }
 
 final class ContactEditTextViewCell: UITableViewCell {
@@ -20,19 +21,20 @@ final class ContactEditTextViewCell: UITableViewCell {
     
     @IBOutlet weak var textView: UITextView!
     
+    fileprivate var isPaid : Bool = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         //self.valueField.delegate = self
         self.textView.delegate = self
     }
     
-    func configCell(obj : ContactEditNote, callback : ContactEditTextViewCellDelegate?) {
+    func configCell(obj : ContactEditNote, paid: Bool, callback : ContactEditTextViewCellDelegate?) {
         self.note = obj
-        
+        self.isPaid = paid
         self.textView.text = self.note.newNote
         self.textView.sizeToFit()
         self.delegate = callback
-        
         
         self.delegate?.didChanged(textView: textView)
     }
@@ -43,9 +45,17 @@ extension ContactEditTextViewCell: UITextViewDelegate {
         return true
     }
     func textViewDidBeginEditing(_ textView: UITextView) {
-        delegate?.beginEditing(textView: textView)
+        self.delegate?.beginEditing(textView: textView)
+        guard self.isPaid else {
+            self.delegate?.featureBlocked(textView: textView)
+            return
+        }
     }
     func textViewDidChange(_ textView: UITextView) {
+        guard self.isPaid else {
+            self.delegate?.featureBlocked(textView: textView)
+            return
+        }
         if let text = textView.text, text != note.newNote {
             note.newNote = text
             self.delegate?.didChanged(textView: textView)

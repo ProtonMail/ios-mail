@@ -263,32 +263,38 @@ extension ContactDetailViewController: UITableViewDataSource {
         case .cellphone:
             let cells = viewModel.getPhones()
             let tel = cells[row]
-            cell.configCell(title: tel.newType.title, value: tel.newPhone)
+            let value = self.viewModel.paidUser() ? tel.newPhone : "************"
+            cell.configCell(title: tel.newType.title, value: value)
             cell.selectionStyle = .default
         case .home_address:
             let addrs = viewModel.getAddresses()
             let addr = addrs[row]
-            cell.configCell(title: addr.newType.title, value: addr.fullAddress())
+            let value = self.viewModel.paidUser() ? addr.fullAddress() : "************"
+            cell.configCell(title: addr.newType.title, value: value)
             cell.selectionStyle = .default
         case .information:
             let infos = viewModel.getInformations()
             let info = infos[row]
-            cell.configCell(title: info.infoType.title, value: info.newValue)
+            let value = self.viewModel.paidUser() ? info.newValue : "************"
+            cell.configCell(title: info.infoType.title, value: value)
             cell.selectionStyle = .default
         case .custom_field:
             let fields = viewModel.getFields()
             let field = fields[row]
-            cell.configCell(title: field.newType.title, value: field.newField)
+            let value = self.viewModel.paidUser() ? field.newField : "************"
+            cell.configCell(title: field.newType.title, value: value)
             cell.selectionStyle = .default
         case .notes:
             let notes = viewModel.getNotes()
             let note = notes[row]
-            cell.configCell(title: NSLocalizedString("Notes", comment: "title"), value: note.newNote)
+            let value = self.viewModel.paidUser() ? note.newNote : "************"
+            cell.configCell(title: NSLocalizedString("Notes", comment: "title"), value: value)
             cell.selectionStyle = .default
         case .url:
             let urls = viewModel.getUrls()
             let url = urls[row]
-            cell.configCell(title: url.newType.title, value: url.newUrl)
+            let value = self.viewModel.paidUser() ? url.newUrl : "************"
+            cell.configCell(title: url.newType.title, value: value)
             cell.selectionStyle = .default
             
         case .email_header, .encrypted_header, .delete, .upgrade, .share,
@@ -319,6 +325,17 @@ extension ContactDetailViewController: UITableViewDelegate {
             let section = indexPath.section
             let row = indexPath.row
             let s = viewModel.sections()[section]
+            
+            switch s {
+            case .display_name, .emails:
+                break;
+            default:
+                guard viewModel.paidUser() else {
+                    self.upgrade()
+                    return
+                }
+            }
+            
             switch s {
             case .display_name:
                 let profile = viewModel.getProfile();
@@ -380,6 +397,10 @@ extension ContactDetailViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        defer {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        
         let section = indexPath.section
         let row = indexPath.row
         let s = viewModel.sections()[section]
@@ -399,6 +420,10 @@ extension ContactDetailViewController: UITableViewDelegate {
             //TODO::bring up the phone call
             break
         case .home_address:
+            guard viewModel.paidUser() else {
+                self.upgrade()
+                return
+            }
             let addrs = viewModel.getAddresses()
             let addr = addrs[row]
             let fulladdr = addr.fullAddress()
@@ -444,7 +469,6 @@ extension ContactDetailViewController: UITableViewDelegate {
         default:
             break
         }
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

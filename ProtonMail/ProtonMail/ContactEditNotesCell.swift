@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+//Not in used
 
 protocol ContactEditNotesCellDelegate {
     func beginEditing(textField: UITextField)

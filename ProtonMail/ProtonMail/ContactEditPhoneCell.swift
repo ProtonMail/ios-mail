@@ -18,6 +18,8 @@ final class ContactEditPhoneCell: UITableViewCell {
     @IBOutlet weak var valueField: UITextField!
     @IBOutlet weak var sepratorView: UIView!
     
+    fileprivate var isPaid: Bool = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
@@ -29,22 +31,29 @@ final class ContactEditPhoneCell: UITableViewCell {
         sepratorView.gradient()
     }
     
-    func configCell(obj : ContactEditPhone, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+    func configCell(obj : ContactEditPhone, paid: Bool, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.phone = obj
+        self.isPaid = paid
         
         typeLabel.text = self.phone.newType.title
         valueField.text = self.phone.newPhone
         
         self.delegate = callback
         
-        if becomeFirstResponder {
-            delay(0.25, closure: {
-                self.valueField.becomeFirstResponder()
-            })
+        if self.isPaid {
+            if becomeFirstResponder {
+                delay(0.25, closure: {
+                    self.valueField.becomeFirstResponder()
+                })
+            }
         }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {
+        guard self.isPaid else {
+            delegate?.featureBlocked()
+            return
+        }
         delegate?.pick(typeInterface: phone, sender: self)
     }
 }
@@ -56,9 +65,19 @@ extension ContactEditPhoneCell: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.beginEditing(textField: textField)
+        
+        guard self.isPaid else {
+            delegate?.featureBlocked()
+            return
+        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {
+        guard self.isPaid else {
+            delegate?.featureBlocked()
+            return
+        }
+        
         phone.newPhone = valueField.text!
     }
 }
