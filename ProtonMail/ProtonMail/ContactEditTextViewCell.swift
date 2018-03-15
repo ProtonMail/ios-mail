@@ -32,10 +32,14 @@ final class ContactEditTextViewCell: UITableViewCell {
     func configCell(obj : ContactEditNote, paid: Bool, callback : ContactEditTextViewCellDelegate?) {
         self.note = obj
         self.isPaid = paid
-        self.textView.text = self.note.newNote
-        self.textView.sizeToFit()
         self.delegate = callback
         
+        if self.isPaid {
+            self.textView.text = self.note.newNote
+        } else {
+            self.textView.text = self.note.newNote.hiden()
+        }
+        self.textView.sizeToFit()
         self.delegate?.didChanged(textView: textView)
     }
 }

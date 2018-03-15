@@ -35,12 +35,15 @@ final class ContactEditInformationCell: UITableViewCell {
     func configCell(obj : ContactEditInformation, paid: Bool, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.information = obj
         self.isPaid = paid
+        self.delegate = callback
         
         typeLabel.text = self.information.infoType.title
         valueField.placeholder = self.information.infoType.title
-        valueField.text = self.information.newValue
-        
-        self.delegate = callback
+        if self.isPaid {
+            valueField.text = self.information.newValue
+        } else {
+            valueField.text = self.information.newValue.hiden()
+        }
         
         if self.isPaid {
             if becomeFirstResponder {

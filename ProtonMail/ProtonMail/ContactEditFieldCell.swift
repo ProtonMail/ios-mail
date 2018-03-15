@@ -35,11 +35,14 @@ final class ContactEditFieldCell: UITableViewCell {
     func configCell(obj : ContactEditField, paid: Bool, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.field = obj
         self.isPaid = paid
+        self.delegate = callback
         
         typeLabel.text = self.field.newType.title
-        valueField.text = self.field.newField
-        
-        self.delegate = callback
+        if self.isPaid {
+            valueField.text = self.field.newField
+        } else {
+            valueField.text = self.field.newField.hiden()
+        }
         
         if self.isPaid {
             if becomeFirstResponder {

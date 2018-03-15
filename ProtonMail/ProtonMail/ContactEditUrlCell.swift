@@ -35,11 +35,14 @@ final class ContactEditUrlCell: UITableViewCell {
     func configCell(obj : ContactEditUrl, paid: Bool, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.url = obj
         self.isPaid = paid
+        self.delegate = callback
         
         typeLabel.text = self.url.newType.title
-        valueField.text = self.url.newUrl
-        
-        self.delegate = callback
+        if self.isPaid {
+            valueField.text = self.url.newUrl
+        } else {
+            valueField.text = self.url.newUrl.hiden()
+        }
         
         if self.isPaid {
             if becomeFirstResponder {

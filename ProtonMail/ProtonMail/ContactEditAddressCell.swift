@@ -64,17 +64,26 @@ final class ContactEditAddressCell: UITableViewCell {
     func configCell(obj : ContactEditAddress, paid: Bool, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.addr = obj
         self.isPaid = paid
+        self.delegate = callback
         
         typeLabel.text = self.addr.newType.title
-        valueField.text = self.addr.newStreet
-        street_two.text = self.addr.newStreetTwo
-        
-        cityField.text = self.addr.newLocality
-        stateField.text = self.addr.newRegion
-        zipField.text = self.addr.newPostal
-        countyField.text = self.addr.newCountry
-        
-        self.delegate = callback
+        if self.isPaid {
+            valueField.text = self.addr.newStreet
+            street_two.text = self.addr.newStreetTwo
+            
+            cityField.text = self.addr.newLocality
+            stateField.text = self.addr.newRegion
+            zipField.text = self.addr.newPostal
+            countyField.text = self.addr.newCountry
+        } else {
+            valueField.text = self.addr.newStreet.hiden()
+            street_two.text = self.addr.newStreetTwo.hiden()
+            
+            cityField.text = self.addr.newLocality.hiden()
+            stateField.text = self.addr.newRegion.hiden()
+            zipField.text = self.addr.newPostal.hiden()
+            countyField.text = self.addr.newCountry.hiden()
+        }
         
         if self.isPaid {
             if becomeFirstResponder {
