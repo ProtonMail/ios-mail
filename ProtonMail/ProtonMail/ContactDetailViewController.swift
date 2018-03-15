@@ -30,6 +30,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kEditContactSegue : String              = "toEditContactSegue"
     fileprivate let kToComposeSegue : String                = "toCompose"
     
+    fileprivate let kToUpgradeAlertSegue : String           = "toUpgradeAlertSegue"
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -102,6 +103,11 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             let composeViewController = segue.destination.childViewControllers[0] as! ComposeEmailViewController
             let contact = sender as? ContactVO
             sharedVMService.newDraftViewModelWithContact(composeViewController, contact: contact)
+        } else if segue.identifier == kToUpgradeAlertSegue {
+            let popup = segue.destination as! UpgradeAlertViewController
+            //            popup.viewModel = CaptchaViewModelImpl()
+            //            popup.delegate = self
+            self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
         }
     }
     
@@ -125,10 +131,11 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
 
 extension ContactDetailViewController : ContactUpgradeCellDelegate {
     func upgrade() {
-        let alertStr = NSLocalizedString("Please use the web application to upgrade.", comment: "Alert")
-        let alertController = alertStr.alertController()
-        alertController.addOKAction()
-        self.present(alertController, animated: true, completion: nil)
+//        let alertStr = NSLocalizedString("Please use the web application to upgrade.", comment: "Alert")
+//        let alertController = alertStr.alertController()
+//        alertController.addOKAction()
+//        self.present(alertController, animated: true, completion: nil)
+        self.performSegue(withIdentifier: self.kToUpgradeAlertSegue, sender: self)
     }
 }
 
