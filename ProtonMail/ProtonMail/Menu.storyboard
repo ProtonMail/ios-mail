@@ -3466,35 +3466,8 @@
                                             <outlet property="valueField" destination="6g1-n3-vzu" id="9du-VU-pg3"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactEditNotesCell" id="Uba-0u-pxS" customClass="ContactEditNotesCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="634" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uba-0u-pxS" id="6z4-R7-1HD">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Notes" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0DL-dX-nF2">
-                                                    <rect key="frame" x="8" y="0.0" width="359" height="43.5"/>
-                                                    <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="0DL-dX-nF2" secondAttribute="trailing" constant="8" id="2Kq-KT-k1o"/>
-                                                <constraint firstItem="0DL-dX-nF2" firstAttribute="top" secondItem="6z4-R7-1HD" secondAttribute="top" id="Gze-Hf-xMC"/>
-                                                <constraint firstItem="0DL-dX-nF2" firstAttribute="centerY" secondItem="6z4-R7-1HD" secondAttribute="centerY" id="sJ3-fa-GZz"/>
-                                                <constraint firstItem="0DL-dX-nF2" firstAttribute="leading" secondItem="6z4-R7-1HD" secondAttribute="leading" constant="8" id="ujZ-uh-ekh"/>
-                                                <constraint firstAttribute="bottom" secondItem="0DL-dX-nF2" secondAttribute="bottom" id="zbj-6M-yB8"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <outlet property="valueField" destination="0DL-dX-nF2" id="bW1-FT-icz"/>
-                                        </connections>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactEditTextViewCell" rowHeight="120" id="lLk-AS-LyP" userLabel="ContactEditTextViewCell" customClass="ContactEditTextViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="678" width="375" height="120"/>
+                                        <rect key="frame" x="0.0" y="634" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lLk-AS-LyP" id="Ljt-vz-Dfp">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="119.5"/>
@@ -3537,7 +3510,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Instructions" textLabel="FrN-tO-378" style="IBUITableViewCellStyleDefault" id="I69-c4-NG7">
-                                        <rect key="frame" x="0.0" y="798" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="754" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I69-c4-NG7" id="bUD-xx-OlS">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -3555,7 +3528,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="RecipeType" editingAccessoryType="detailDisclosureButton" textLabel="7j2-it-Hcu" style="IBUITableViewCellStyleDefault" id="ffb-ei-Iss">
-                                        <rect key="frame" x="0.0" y="842" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="798" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ffb-ei-Iss" id="4Ak-c4-c3N">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -3573,7 +3546,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="ContactEditUpgradeCell" rowHeight="281" id="PCJ-Vb-ZB9" customClass="ContactEditUpgradeCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="886" width="375" height="281"/>
+                                        <rect key="frame" x="0.0" y="842" width="375" height="281"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PCJ-Vb-ZB9" id="RHt-qH-5fg">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="280.5"/>
@@ -5369,128 +5342,79 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="popup_behind_image" translatesAutoresizingMaskIntoConstraints="NO" id="2OZ-hp-2zg">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RBp-km-OgD" userLabel="view one">
-                                <rect key="frame" x="27.5" y="154" width="320" height="319.5"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PREMIUM FEATURE" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6r-RW-O63">
-                                        <rect key="frame" x="33" y="70" width="255.5" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="yY0-Nc-yXy"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="30"/>
-                                        <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="signup_logo" translatesAutoresizingMaskIntoConstraints="NO" id="nS9-tY-lmi">
-                                        <rect key="frame" x="111" y="42" width="98" height="16"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="98" id="8oQ-rv-jsf"/>
-                                            <constraint firstAttribute="height" constant="16" id="yEw-Gx-3Xr"/>
-                                        </constraints>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You discovered a Premium feature!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ml-Ps-8rE">
-                                        <rect key="frame" x="12" y="134" width="296" height="19.5"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You must have a Premium subscription to unlock it" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dRp-Kx-UFA">
-                                        <rect key="frame" x="12" y="177.5" width="296" height="36"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="af6-4T-jSR">
-                                        <rect key="frame" x="40" y="237.5" width="240" height="40"/>
-                                        <color key="backgroundColor" red="0.52391308550000004" green="0.53953999279999998" blue="0.78824073080000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="GEQ-Vn-ROW"/>
-                                            <constraint firstAttribute="width" constant="240" id="y7J-Pd-h2E"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                        <state key="normal" title="GOT IT">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="cancelTapped:" destination="bwU-38-Jat" eventType="touchUpInside" id="wcQ-jJ-whh"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstItem="dRp-Kx-UFA" firstAttribute="top" secondItem="8ml-Ps-8rE" secondAttribute="bottom" constant="24" id="14e-ID-6Wd"/>
-                                    <constraint firstItem="8ml-Ps-8rE" firstAttribute="leading" secondItem="RBp-km-OgD" secondAttribute="leading" constant="12" id="BcG-fA-3gN"/>
-                                    <constraint firstAttribute="bottom" secondItem="af6-4T-jSR" secondAttribute="bottom" constant="42" id="HT3-a2-Zsr"/>
-                                    <constraint firstItem="e6r-RW-O63" firstAttribute="top" secondItem="nS9-tY-lmi" secondAttribute="bottom" constant="12" id="Idg-pg-uWC"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="900" constant="200" id="LYK-fs-zv0"/>
-                                    <constraint firstItem="af6-4T-jSR" firstAttribute="top" secondItem="dRp-Kx-UFA" secondAttribute="bottom" constant="24" id="Wn5-71-Udj"/>
-                                    <constraint firstItem="dRp-Kx-UFA" firstAttribute="leading" secondItem="RBp-km-OgD" secondAttribute="leading" constant="12" id="bdb-OV-9Nr"/>
-                                    <constraint firstItem="e6r-RW-O63" firstAttribute="centerX" secondItem="RBp-km-OgD" secondAttribute="centerX" id="h6x-yw-HgZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="dRp-Kx-UFA" secondAttribute="trailing" constant="12" id="hzM-Kg-fnd"/>
-                                    <constraint firstItem="af6-4T-jSR" firstAttribute="centerX" secondItem="RBp-km-OgD" secondAttribute="centerX" id="l2A-tb-Q3T"/>
-                                    <constraint firstAttribute="trailing" secondItem="8ml-Ps-8rE" secondAttribute="trailing" constant="12" id="ncA-X5-7da"/>
-                                    <constraint firstItem="nS9-tY-lmi" firstAttribute="top" secondItem="RBp-km-OgD" secondAttribute="top" constant="42" id="o95-3I-hcW"/>
-                                    <constraint firstItem="nS9-tY-lmi" firstAttribute="centerX" secondItem="RBp-km-OgD" secondAttribute="centerX" id="qrb-FD-iir"/>
-                                    <constraint firstAttribute="width" constant="320" id="uk0-ll-pjY"/>
-                                    <constraint firstItem="8ml-Ps-8rE" firstAttribute="top" secondItem="e6r-RW-O63" secondAttribute="bottom" constant="24" id="xey-zc-Ft1"/>
-                                </constraints>
-                            </view>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lgq-Ou-c3G" userLabel="view two">
-                                <rect key="frame" x="27.5" y="124" width="320" height="379.5"/>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lgq-Ou-c3G" userLabel="view">
+                                <rect key="frame" x="27.5" y="95.5" width="320" height="438"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Looking to secure your contact's details?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R7J-I8-Xgw">
-                                        <rect key="frame" x="12" y="70" width="296" height="72"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                        <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <rect key="frame" x="12" y="100" width="296" height="67"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="28"/>
+                                        <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="signup_logo" translatesAutoresizingMaskIntoConstraints="NO" id="SU9-co-hSJ">
-                                        <rect key="frame" x="111" y="42" width="98" height="16"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="98" id="R2g-gW-sdR"/>
-                                            <constraint firstAttribute="height" constant="16" id="woW-Jv-mqg"/>
-                                        </constraints>
-                                    </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KHJ-yB-jUs">
-                                        <rect key="frame" x="16" y="166" width="288" height="107.5"/>
-                                        <string key="text">ProtonMail Plus lets you add contact details beyond just your contact's name and email. Of course by using ProtonMail, this data will be as secure as your end-to-end encrypted emails. Upgrading to Plus isn't available in the app.</string>
+                                        <rect key="frame" x="16" y="193" width="288" height="90"/>
+                                        <string key="text">ProtonMail Plus lets you add contact details beyond just your contact's name and email. Of course by using ProtonMail, this data will be as secure as your end-to-end encrypted emails.</string>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4f-uF-PgO">
-                                        <rect key="frame" x="40" y="297.5" width="240" height="40"/>
-                                        <color key="backgroundColor" red="0.52391308550000004" green="0.53953999279999998" blue="0.78824073080000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <rect key="frame" x="110" y="352" width="100" height="40"/>
+                                        <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="Mse-4r-ISa"/>
-                                            <constraint firstAttribute="width" constant="240" id="QPW-ck-xrN"/>
+                                            <constraint firstAttribute="width" constant="100" id="QPW-ck-xrN"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" title="GOT IT">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="titleColor" red="0.57647058819999997" green="0.59215686270000001" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="cancelTapped:" destination="bwU-38-Jat" eventType="touchUpInside" id="wkw-Fa-et6"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PREMIUM FEATURE" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6r-RW-O63">
+                                        <rect key="frame" x="72" y="34" width="177" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lAS-Va-wqt">
+                                        <rect key="frame" x="282" y="8" width="30" height="30"/>
+                                        <state key="normal" title="X">
+                                            <color key="titleColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="cancelTapped:" destination="bwU-38-Jat" eventType="touchUpInside" id="eZY-Ac-m6s"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upgrading to Plus isn't available in the app." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Oa-DQ-njR">
+                                        <rect key="frame" x="24" y="309" width="273.5" height="17"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                        <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.52391308550000004" green="0.53953999279999998" blue="0.78824073080000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="e6r-RW-O63" firstAttribute="top" secondItem="Lgq-Ou-c3G" secondAttribute="top" constant="34" id="5jq-Do-Oy2"/>
                                     <constraint firstAttribute="trailing" secondItem="KHJ-yB-jUs" secondAttribute="trailing" constant="16" id="6qf-Ae-TMk"/>
-                                    <constraint firstItem="SU9-co-hSJ" firstAttribute="centerX" secondItem="Lgq-Ou-c3G" secondAttribute="centerX" id="B0O-PA-H6h"/>
                                     <constraint firstItem="z4f-uF-PgO" firstAttribute="centerX" secondItem="Lgq-Ou-c3G" secondAttribute="centerX" id="B51-8T-GwR"/>
-                                    <constraint firstItem="SU9-co-hSJ" firstAttribute="top" secondItem="Lgq-Ou-c3G" secondAttribute="top" constant="42" id="Hci-6m-Q2S"/>
+                                    <constraint firstItem="4Oa-DQ-njR" firstAttribute="top" secondItem="KHJ-yB-jUs" secondAttribute="bottom" constant="26" id="BoE-hb-ibn"/>
+                                    <constraint firstItem="e6r-RW-O63" firstAttribute="centerX" secondItem="Lgq-Ou-c3G" secondAttribute="centerX" id="FdH-Du-Xr7"/>
+                                    <constraint firstAttribute="trailing" secondItem="lAS-Va-wqt" secondAttribute="trailing" constant="8" id="Lif-UY-xtr"/>
                                     <constraint firstItem="R7J-I8-Xgw" firstAttribute="centerX" secondItem="Lgq-Ou-c3G" secondAttribute="centerX" id="QJf-dx-Rf3"/>
-                                    <constraint firstAttribute="bottom" secondItem="z4f-uF-PgO" secondAttribute="bottom" constant="42" id="SZF-Fg-C7t"/>
+                                    <constraint firstAttribute="bottom" secondItem="z4f-uF-PgO" secondAttribute="bottom" constant="46" id="SZF-Fg-C7t"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="900" constant="200" id="UDo-DP-anM"/>
+                                    <constraint firstItem="4Oa-DQ-njR" firstAttribute="centerX" secondItem="Lgq-Ou-c3G" secondAttribute="centerX" id="Vgg-31-Iv0"/>
+                                    <constraint firstItem="z4f-uF-PgO" firstAttribute="top" secondItem="4Oa-DQ-njR" secondAttribute="bottom" constant="26" id="bVa-QE-h7G"/>
                                     <constraint firstItem="KHJ-yB-jUs" firstAttribute="leading" secondItem="Lgq-Ou-c3G" secondAttribute="leading" constant="16" id="cGF-1G-B11"/>
                                     <constraint firstItem="R7J-I8-Xgw" firstAttribute="leading" secondItem="Lgq-Ou-c3G" secondAttribute="leading" constant="12" id="eQN-yj-VpS"/>
-                                    <constraint firstItem="R7J-I8-Xgw" firstAttribute="top" secondItem="SU9-co-hSJ" secondAttribute="bottom" constant="12" id="fC6-H4-J4S"/>
                                     <constraint firstAttribute="width" constant="320" id="fa6-IM-Htc"/>
-                                    <constraint firstItem="z4f-uF-PgO" firstAttribute="top" secondItem="KHJ-yB-jUs" secondAttribute="bottom" constant="24" id="onK-tZ-4Vj"/>
-                                    <constraint firstItem="KHJ-yB-jUs" firstAttribute="top" secondItem="R7J-I8-Xgw" secondAttribute="bottom" constant="24" id="u9M-Ja-yOS"/>
+                                    <constraint firstItem="lAS-Va-wqt" firstAttribute="top" secondItem="Lgq-Ou-c3G" secondAttribute="top" constant="8" id="ncU-UJ-g4a"/>
+                                    <constraint firstItem="KHJ-yB-jUs" firstAttribute="top" secondItem="R7J-I8-Xgw" secondAttribute="bottom" constant="26" id="u9M-Ja-yOS"/>
+                                    <constraint firstItem="R7J-I8-Xgw" firstAttribute="top" secondItem="e6r-RW-O63" secondAttribute="bottom" constant="42" id="wQ4-NH-Kvw"/>
                                     <constraint firstAttribute="trailing" secondItem="R7J-I8-Xgw" secondAttribute="trailing" constant="12" id="ybl-HS-efb"/>
                                 </constraints>
                             </view>
@@ -5502,21 +5426,20 @@
                             <constraint firstAttribute="trailing" secondItem="2OZ-hp-2zg" secondAttribute="trailing" id="NtS-Gp-NBU"/>
                             <constraint firstAttribute="bottom" secondItem="2OZ-hp-2zg" secondAttribute="bottom" id="RcH-Vp-R90"/>
                             <constraint firstItem="2OZ-hp-2zg" firstAttribute="top" secondItem="MpL-0x-ZC2" secondAttribute="top" id="WNM-R9-kSn"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="RBp-km-OgD" secondAttribute="trailing" constant="24" id="WmO-9I-qFe"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Lgq-Ou-c3G" secondAttribute="trailing" constant="24" id="X3E-2r-TAM"/>
                             <constraint firstItem="2OZ-hp-2zg" firstAttribute="leading" secondItem="MpL-0x-ZC2" secondAttribute="leading" id="a4X-pe-EKL"/>
-                            <constraint firstItem="RBp-km-OgD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="MpL-0x-ZC2" secondAttribute="leading" constant="24" id="fNq-2f-ZTb"/>
                             <constraint firstItem="Lgq-Ou-c3G" firstAttribute="centerY" secondItem="MpL-0x-ZC2" secondAttribute="centerY" constant="-20" id="r6I-Vr-7Qb"/>
-                            <constraint firstItem="RBp-km-OgD" firstAttribute="centerY" secondItem="MpL-0x-ZC2" secondAttribute="centerY" constant="-20" id="sar-g4-s9m"/>
-                            <constraint firstItem="RBp-km-OgD" firstAttribute="centerX" secondItem="MpL-0x-ZC2" secondAttribute="centerX" id="uLe-63-57n"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Pkp-6u-K5p"/>
                     <connections>
-                        <outlet property="buttonOne" destination="af6-4T-jSR" id="urM-zw-q6q"/>
-                        <outlet property="buttonTwo" destination="z4f-uF-PgO" id="gYw-CO-o47"/>
-                        <outlet property="viewOne" destination="RBp-km-OgD" id="vpo-a2-jpL"/>
-                        <outlet property="viewTwo" destination="Lgq-Ou-c3G" id="6q0-ze-nK9"/>
+                        <outlet property="closeButton" destination="lAS-Va-wqt" id="ArU-Am-ohI"/>
+                        <outlet property="messageLabel" destination="KHJ-yB-jUs" id="X2w-fS-mZu"/>
+                        <outlet property="messageLabelTwo" destination="4Oa-DQ-njR" id="ZSd-O7-PRq"/>
+                        <outlet property="okButton" destination="z4f-uF-PgO" id="IWf-3K-5zt"/>
+                        <outlet property="titleLabel" destination="e6r-RW-O63" id="SSk-Sz-7QU"/>
+                        <outlet property="titleLabelTwo" destination="R7J-I8-Xgw" id="Q2s-Nv-F5G"/>
+                        <outlet property="viewContainer" destination="Lgq-Ou-c3G" id="99P-KL-wMO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gGY-Y2-bBq" userLabel="First Responder" sceneMemberID="firstResponder"/>

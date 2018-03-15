@@ -39,12 +39,8 @@ final class ContactEditInformationCell: UITableViewCell {
         
         typeLabel.text = self.information.infoType.title
         valueField.placeholder = self.information.infoType.title
-        if self.isPaid {
-            valueField.text = self.information.newValue
-        } else {
-            valueField.text = self.information.newValue.hiden()
-        }
-        
+        valueField.text = self.information.newValue
+
         if self.isPaid {
             if becomeFirstResponder {
                 delay(0.25, closure: {

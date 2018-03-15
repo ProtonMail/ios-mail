@@ -15,41 +15,25 @@ protocol UpgradeAlertVCDelegate {
 
 class UpgradeAlertViewController: UIViewController {
     
-    private static var randomNum : Int = 0
-    @IBOutlet weak var viewOne: UIView!
-    @IBOutlet weak var viewTwo: UIView!
-    
-    @IBOutlet weak var buttonOne: UIButton!
-    @IBOutlet weak var buttonTwo: UIButton!
-    
     var delegate : UpgradeAlertVCDelegate?
+
+    @IBOutlet weak var viewContainer: UIView!
+    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var okButton: UIButton!
     
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabelTwo: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var progressView: UIProgressView!
-    
-    private var cancelled : Bool = false
-    private var showedCancel : Bool = false
-    private var finished : Bool = false
+    @IBOutlet weak var messageLabelTwo: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewOne.layer.cornerRadius = 4.0
-        viewTwo.layer.cornerRadius = 4.0
+        viewContainer.layer.cornerRadius = 4.0
+        okButton.layer.cornerRadius = 8.0
         
-        buttonOne.layer.cornerRadius = 20.0
-        buttonTwo.layer.cornerRadius = 20.0
+        //set text
         
-        if UpgradeAlertViewController.randomNum == 0 {
-            viewOne.isHidden = true
-            UpgradeAlertViewController.randomNum = 1
-        } else {
-            viewTwo.isHidden = true
-            UpgradeAlertViewController.randomNum = 0
-        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -62,7 +46,6 @@ class UpgradeAlertViewController: UIViewController {
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
-        
         self.dismiss()
     }
     

@@ -37,12 +37,8 @@ final class ContactEditPhoneCell: UITableViewCell {
         self.delegate = callback
         
         typeLabel.text = self.phone.newType.title
-        if self.isPaid {
-            valueField.text = self.phone.newPhone
-        } else {
-            valueField.text = self.phone.newPhone.hiden()
-        }
-        
+        valueField.text = self.phone.newPhone
+
         if self.isPaid {
             if becomeFirstResponder {
                 delay(0.25, closure: {

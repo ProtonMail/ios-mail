@@ -36,14 +36,10 @@ final class ContactEditFieldCell: UITableViewCell {
         self.field = obj
         self.isPaid = paid
         self.delegate = callback
-        
+    
         typeLabel.text = self.field.newType.title
-        if self.isPaid {
-            valueField.text = self.field.newField
-        } else {
-            valueField.text = self.field.newField.hiden()
-        }
-        
+        valueField.text = self.field.newField
+
         if self.isPaid {
             if becomeFirstResponder {
                 delay(0.25, closure: {

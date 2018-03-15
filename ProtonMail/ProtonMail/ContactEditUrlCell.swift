@@ -38,12 +38,8 @@ final class ContactEditUrlCell: UITableViewCell {
         self.delegate = callback
         
         typeLabel.text = self.url.newType.title
-        if self.isPaid {
-            valueField.text = self.url.newUrl
-        } else {
-            valueField.text = self.url.newUrl.hiden()
-        }
-        
+        valueField.text = self.url.newUrl
+
         if self.isPaid {
             if becomeFirstResponder {
                 delay(0.25, closure: {

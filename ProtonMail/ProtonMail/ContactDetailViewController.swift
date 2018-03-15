@@ -29,13 +29,11 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate let kEditContactSegue : String              = "toEditContactSegue"
     fileprivate let kToComposeSegue : String                = "toCompose"
-    
     fileprivate let kToUpgradeAlertSegue : String           = "toUpgradeAlertSegue"
 
     @IBOutlet weak var tableView: UITableView!
     
     fileprivate var doneItem: UIBarButtonItem!
-    
     fileprivate var loaded : Bool = false
     
     func inactiveViewModel() {
@@ -105,8 +103,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             sharedVMService.newDraftViewModelWithContact(composeViewController, contact: contact)
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController
-            //            popup.viewModel = CaptchaViewModelImpl()
-            //            popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
         }
     }
@@ -131,10 +127,6 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
 
 extension ContactDetailViewController : ContactUpgradeCellDelegate {
     func upgrade() {
-//        let alertStr = NSLocalizedString("Please use the web application to upgrade.", comment: "Alert")
-//        let alertController = alertStr.alertController()
-//        alertController.addOKAction()
-//        self.present(alertController, animated: true, completion: nil)
         self.performSegue(withIdentifier: self.kToUpgradeAlertSegue, sender: self)
     }
 }
@@ -270,41 +262,32 @@ extension ContactDetailViewController: UITableViewDataSource {
         case .cellphone:
             let cells = viewModel.getPhones()
             let tel = cells[row]
-            let title = self.viewModel.paidUser() ? tel.newType.title : tel.newType.title + "-" + NSLocalizedString("Phone", comment: "default vcard types")
-            let value = self.viewModel.paidUser() ? tel.newPhone : tel.newPhone.hiden()
-            cell.configCell(title: title, value: value)
+            cell.configCell(title: tel.newType.title, value: tel.newPhone)
             cell.selectionStyle = .default
         case .home_address:
             let addrs = viewModel.getAddresses()
             let addr = addrs[row]
-            let title = self.viewModel.paidUser() ? addr.newType.title : addr.newType.title + "-" + NSLocalizedString("Address", comment: "default vcard types")
-            let value = self.viewModel.paidUser() ? addr.fullAddress() : addr.fullAddress().hiden()
-            cell.configCell(title: title, value: value)
+            cell.configCell(title: addr.newType.title, value: addr.fullAddress())
             cell.selectionStyle = .default
         case .information:
             let infos = viewModel.getInformations()
             let info = infos[row]
-            let value = self.viewModel.paidUser() ? info.newValue : info.newValue.hiden()
-            cell.configCell(title: info.infoType.title, value: value)
+            cell.configCell(title: info.infoType.title, value: info.newValue)
             cell.selectionStyle = .default
         case .custom_field:
             let fields = viewModel.getFields()
             let field = fields[row]
-            let value = self.viewModel.paidUser() ? field.newField : field.newField.hiden()
-            cell.configCell(title: field.newType.title, value: value)
+            cell.configCell(title: field.newType.title, value: field.newField)
             cell.selectionStyle = .default
         case .notes:
             let notes = viewModel.getNotes()
             let note = notes[row]
-            let value = self.viewModel.paidUser() ? note.newNote : "************"
-            cell.configCell(title: NSLocalizedString("Notes", comment: "title"), value: value)
+            cell.configCell(title: NSLocalizedString("Notes", comment: "title"), value: note.newNote)
             cell.selectionStyle = .default
         case .url:
             let urls = viewModel.getUrls()
             let url = urls[row]
-            let title = self.viewModel.paidUser() ? url.newType.title : url.newType.title + "-" + NSLocalizedString("URL", comment: "default vcard types")
-            let value = self.viewModel.paidUser() ? url.newUrl : url.newUrl.hiden()
-            cell.configCell(title: title, value: value)
+            cell.configCell(title: url.newType.title, value: url.newUrl)
             cell.selectionStyle = .default
             
         case .email_header, .encrypted_header, .delete, .upgrade, .share,
@@ -335,17 +318,6 @@ extension ContactDetailViewController: UITableViewDelegate {
             let section = indexPath.section
             let row = indexPath.row
             let s = viewModel.sections()[section]
-            
-            switch s {
-            case .display_name, .emails:
-                break;
-            default:
-                guard viewModel.paidUser() else {
-                    self.upgrade()
-                    return
-                }
-            }
-            
             switch s {
             case .display_name:
                 let profile = viewModel.getProfile();
@@ -430,10 +402,6 @@ extension ContactDetailViewController: UITableViewDelegate {
             //TODO::bring up the phone call
             break
         case .home_address:
-            guard viewModel.paidUser() else {
-                self.upgrade()
-                return
-            }
             let addrs = viewModel.getAddresses()
             let addr = addrs[row]
             let fulladdr = addr.fullAddress()

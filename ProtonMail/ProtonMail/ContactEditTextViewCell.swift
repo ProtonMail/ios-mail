@@ -25,7 +25,6 @@ final class ContactEditTextViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        //self.valueField.delegate = self
         self.textView.delegate = self
     }
     
@@ -34,11 +33,7 @@ final class ContactEditTextViewCell: UITableViewCell {
         self.isPaid = paid
         self.delegate = callback
         
-        if self.isPaid {
-            self.textView.text = self.note.newNote
-        } else {
-            self.textView.text = self.note.newNote.hiden()
-        }
+        self.textView.text = self.note.newNote
         self.textView.sizeToFit()
         self.delegate?.didChanged(textView: textView)
     }
@@ -60,6 +55,7 @@ extension ContactEditTextViewCell: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         self.delegate?.beginEditing(textView: textView)
     }
+    
     func textViewDidChange(_ textView: UITextView) {
         guard self.isPaid else {
             self.delegate?.featureBlocked(textView: textView)

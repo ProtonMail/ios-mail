@@ -32,7 +32,6 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactEditAddressCell: String   = "ContactEditAddressCell"
     fileprivate let kContactEditCellInfoCell: String  = "ContactEditInformationCell"
     fileprivate let kContactEditFieldCell: String     = "ContactEditFieldCell"
-//    fileprivate let kContactEditNotesCell: String     = "ContactEditNotesCell"
     fileprivate let kContactEditTextViewCell: String  = "ContactEditTextViewCell"
     fileprivate let kContactEditUpgradeCell: String   = "ContactEditUpgradeCell"
     fileprivate let kContactEditUrlCell: String       = "ContactEditUrlCell"
