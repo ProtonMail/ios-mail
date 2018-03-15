@@ -67,12 +67,16 @@ extension ContactEditFieldCell: UITextFieldDelegate {
         return true
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        delegate?.beginEditing(textField: textField)
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         guard self.isPaid else {
             self.delegate?.featureBlocked()
-            return
+            return false
         }
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        delegate?.beginEditing(textField: textField)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {

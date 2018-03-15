@@ -66,13 +66,16 @@ extension ContactEditUrlCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        guard self.isPaid else {
+            self.delegate?.featureBlocked()
+            return false
+        }
+        return true
+    }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.beginEditing(textField: textField)
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return
-        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {

@@ -227,7 +227,7 @@ extension ContactEditViewController: UITextFieldDelegate {
 
 //type picker
 extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextViewCellDelegate {
-
+    
     func pick(typeInterface: ContactEditTypeInterface, sender: UITableViewCell) {
         dismissKeyboard()
         self.performSegue(withIdentifier: kToContactTypeSegue, sender: typeInterface)
@@ -242,7 +242,7 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
     }
     
     func featureBlocked() {
-        dismissKeyboard()
+        self.dismissKeyboard()
         self.upgrade()
     }
     
@@ -549,9 +549,7 @@ extension ContactEditViewController: UITableViewDataSource {
                 self.upgrade()
                 return
             }
-            
         }
-        
         
         if editingStyle == . insert {
             switch s {

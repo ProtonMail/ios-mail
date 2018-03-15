@@ -48,12 +48,17 @@ extension ContactEditTextViewCell: UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        self.delegate?.beginEditing(textView: textView)
+    
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         guard self.isPaid else {
             self.delegate?.featureBlocked(textView: textView)
-            return
+            return false
         }
+        return true
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        self.delegate?.beginEditing(textView: textView)
     }
     func textViewDidChange(_ textView: UITextView) {
         guard self.isPaid else {
