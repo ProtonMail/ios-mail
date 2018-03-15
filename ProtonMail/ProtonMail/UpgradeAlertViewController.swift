@@ -11,7 +11,6 @@ import Contacts
 
 protocol UpgradeAlertVCDelegate {
     func cancel()
-    func done(error: String)
 }
 
 class UpgradeAlertViewController: UIViewController {
@@ -20,9 +19,10 @@ class UpgradeAlertViewController: UIViewController {
     @IBOutlet weak var viewOne: UIView!
     @IBOutlet weak var viewTwo: UIView!
     
-    
     @IBOutlet weak var buttonOne: UIButton!
     @IBOutlet weak var buttonTwo: UIButton!
+    
+    var delegate : UpgradeAlertVCDelegate?
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
@@ -68,7 +68,7 @@ class UpgradeAlertViewController: UIViewController {
     
     private func dismiss() {
         self.dismiss(animated: true, completion: {
-            
+            self.delegate?.cancel()
         })
     }
 }

@@ -38,7 +38,8 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactEditUrlCell: String       = "ContactEditUrlCell"
     
     //const segue
-    fileprivate let ktoContactTypeSegue : String      = "toContactTypeSegue"
+    fileprivate let kToContactTypeSegue : String      = "toContactTypeSegue"
+    fileprivate let kToUpgradeAlertSegue : String     = "toUpgradeAlertSegue"
     
     //
     fileprivate var doneItem: UIBarButtonItem!
@@ -117,11 +118,15 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ktoContactTypeSegue {
+        if segue.identifier == kToContactTypeSegue {
             let contactTypeViewController = segue.destination as! ContactTypeViewController
             contactTypeViewController.deleget = self
             let type = sender as! ContactEditTypeInterface
             sharedVMService.contactTypeViewModel(contactTypeViewController, type: type)
+        } else if segue.identifier == kToUpgradeAlertSegue {
+            let popup = segue.destination as! UpgradeAlertViewController
+            popup.delegate = self
+            self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
         }
     }
     
@@ -225,7 +230,7 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
 
     func pick(typeInterface: ContactEditTypeInterface, sender: UITableViewCell) {
         dismissKeyboard()
-        self.performSegue(withIdentifier: ktoContactTypeSegue, sender: typeInterface)
+        self.performSegue(withIdentifier: kToContactTypeSegue, sender: typeInterface)
     }
     //reuseable
     func beginEditing(textField: UITextField) {
@@ -237,12 +242,10 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
     }
     
     func featureBlocked() {
-        dismissKeyboard()
         self.upgrade()
     }
     
     func featureBlocked(textView: UITextView) {
-        dismissKeyboard()
         self.upgrade()
     }
     
@@ -290,15 +293,15 @@ extension ContactEditViewController : ContactUpgradeCellDelegate {
     func upgrade() {
         if !showingUpgrade {
             self.showingUpgrade = true
-            let alertStr = NSLocalizedString("Please use the web application to upgrade.", comment: "Alert")
-            let alertController = alertStr.alertController()
-            alertController.addOKAction( handler: { _ in
-                self.showingUpgrade = false
-            })
-            self.present(alertController, animated: true, completion: {
-                //
-            })
+            dismissKeyboard()
+            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
         }
+    }
+}
+
+extension ContactEditViewController : UpgradeAlertVCDelegate {
+    func cancel() {
+        self.showingUpgrade = false
     }
 }
 

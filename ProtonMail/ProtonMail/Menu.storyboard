@@ -3660,7 +3660,7 @@
                         <outlet property="tableView" destination="ZVw-UR-yrE" id="lYg-7O-sqP"/>
                         <outlet property="tableViewBottomOffset" destination="yM3-h1-tMh" id="Y65-ln-Ddx"/>
                         <segue destination="8FT-3K-fbA" kind="show" identifier="toContactTypeSegue" id="6uY-cJ-FnB"/>
-                        <segue destination="bwU-38-Jat" kind="presentation" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="oC7-Qd-EW1"/>
+                        <segue destination="bwU-38-Jat" kind="presentation" identifier="toUpgradeAlertSegue" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="oC7-Qd-EW1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uqF-zP-yCE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5553,7 +5553,7 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="sDR-N5-yCe"/>
+        <segue reference="oC7-Qd-EW1"/>
         <segue reference="oa9-8b-dT8"/>
         <segue reference="gwz-B9-War"/>
         <segue reference="0zg-HM-MdK"/>
