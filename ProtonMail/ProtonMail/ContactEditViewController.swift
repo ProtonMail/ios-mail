@@ -242,10 +242,12 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
     }
     
     func featureBlocked() {
+        dismissKeyboard()
         self.upgrade()
     }
     
     func featureBlocked(textView: UITextView) {
+        dismissKeyboard()
         self.upgrade()
     }
     
@@ -293,7 +295,6 @@ extension ContactEditViewController : ContactUpgradeCellDelegate {
     func upgrade() {
         if !showingUpgrade {
             self.showingUpgrade = true
-            dismissKeyboard()
             self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
         }
     }
