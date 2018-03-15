@@ -10,6 +10,19 @@ import Foundation
 
 extension String {
     
+    func hiden() -> String {
+        var newString : String = ""
+        for c in self {
+            switch c {
+            case "(", ")", " ", "-", ".", "@", ":":
+                newString.append(c)
+            default:
+                newString.append("*")
+            }
+        }
+        return newString
+    }
+    
     func contains(check s: String) -> Bool {
         return self.range(of: s, options: NSString.CompareOptions.caseInsensitive) != nil ? true : false
     }

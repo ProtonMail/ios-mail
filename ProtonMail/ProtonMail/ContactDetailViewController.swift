@@ -263,25 +263,27 @@ extension ContactDetailViewController: UITableViewDataSource {
         case .cellphone:
             let cells = viewModel.getPhones()
             let tel = cells[row]
-            let value = self.viewModel.paidUser() ? tel.newPhone : "************"
-            cell.configCell(title: tel.newType.title, value: value)
+            let title = self.viewModel.paidUser() ? tel.newType.title : tel.newType.title + "-" + NSLocalizedString("Phone", comment: "default vcard types")
+            let value = self.viewModel.paidUser() ? tel.newPhone : tel.newPhone.hiden()
+            cell.configCell(title: title, value: value)
             cell.selectionStyle = .default
         case .home_address:
             let addrs = viewModel.getAddresses()
             let addr = addrs[row]
-            let value = self.viewModel.paidUser() ? addr.fullAddress() : "************"
-            cell.configCell(title: addr.newType.title, value: value)
+            let title = self.viewModel.paidUser() ? addr.newType.title : addr.newType.title + "-" + NSLocalizedString("Address", comment: "default vcard types")
+            let value = self.viewModel.paidUser() ? addr.fullAddress() : addr.fullAddress().hiden()
+            cell.configCell(title: title, value: value)
             cell.selectionStyle = .default
         case .information:
             let infos = viewModel.getInformations()
             let info = infos[row]
-            let value = self.viewModel.paidUser() ? info.newValue : "************"
+            let value = self.viewModel.paidUser() ? info.newValue : info.newValue.hiden()
             cell.configCell(title: info.infoType.title, value: value)
             cell.selectionStyle = .default
         case .custom_field:
             let fields = viewModel.getFields()
             let field = fields[row]
-            let value = self.viewModel.paidUser() ? field.newField : "************"
+            let value = self.viewModel.paidUser() ? field.newField : field.newField.hiden()
             cell.configCell(title: field.newType.title, value: value)
             cell.selectionStyle = .default
         case .notes:
@@ -293,8 +295,9 @@ extension ContactDetailViewController: UITableViewDataSource {
         case .url:
             let urls = viewModel.getUrls()
             let url = urls[row]
-            let value = self.viewModel.paidUser() ? url.newUrl : "************"
-            cell.configCell(title: url.newType.title, value: value)
+            let title = self.viewModel.paidUser() ? url.newType.title : url.newType.title + "-" + NSLocalizedString("URL", comment: "default vcard types")
+            let value = self.viewModel.paidUser() ? url.newUrl : url.newUrl.hiden()
+            cell.configCell(title: title, value: value)
             cell.selectionStyle = .default
             
         case .email_header, .encrypted_header, .delete, .upgrade, .share,

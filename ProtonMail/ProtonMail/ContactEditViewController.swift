@@ -54,6 +54,8 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     var newIndexPath : IndexPath? = nil
     
+    fileprivate var showingUpgrade : Bool = false
+    
     func inactiveViewModel() {
     }
     
@@ -222,6 +224,7 @@ extension ContactEditViewController: UITextFieldDelegate {
 extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextViewCellDelegate {
 
     func pick(typeInterface: ContactEditTypeInterface, sender: UITableViewCell) {
+        dismissKeyboard()
         self.performSegue(withIdentifier: ktoContactTypeSegue, sender: typeInterface)
     }
     //reuseable
@@ -285,10 +288,17 @@ extension ContactEditViewController: ContactTypeViewControllerDelegate {
 
 extension ContactEditViewController : ContactUpgradeCellDelegate {
     func upgrade() {
-        let alertStr = NSLocalizedString("Please use the web application to upgrade.", comment: "Alert")
-        let alertController = alertStr.alertController()
-        alertController.addOKAction()
-        self.present(alertController, animated: true, completion: nil)
+        if !showingUpgrade {
+            self.showingUpgrade = true
+            let alertStr = NSLocalizedString("Please use the web application to upgrade.", comment: "Alert")
+            let alertController = alertStr.alertController()
+            alertController.addOKAction( handler: { _ in
+                self.showingUpgrade = false
+            })
+            self.present(alertController, animated: true, completion: {
+                //
+            })
+        }
     }
 }
 

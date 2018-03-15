@@ -65,9 +65,8 @@ extension ContactEditPhoneCell: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.beginEditing(textField: textField)
-        
         guard self.isPaid else {
-            delegate?.featureBlocked()
+            self.delegate?.featureBlocked()
             return
         }
     }
