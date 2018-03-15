@@ -5343,30 +5343,39 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lgq-Ou-c3G" userLabel="view">
-                                <rect key="frame" x="27.5" y="95.5" width="320" height="438"/>
+                                <rect key="frame" x="25" y="106.5" width="325" height="454.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Looking to secure your contact's details?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R7J-I8-Xgw">
-                                        <rect key="frame" x="12" y="100" width="296" height="67"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="upgrade_background" translatesAutoresizingMaskIntoConstraints="NO" id="YLB-Me-Guw">
+                                        <rect key="frame" x="0.0" y="0.0" width="325" height="454.5"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Looking to secure your contact’s details?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R7J-I8-Xgw">
+                                        <rect key="frame" x="30" y="108" width="265" height="67"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="28"/>
                                         <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KHJ-yB-jUs">
-                                        <rect key="frame" x="16" y="193" width="288" height="90"/>
-                                        <string key="text">ProtonMail Plus lets you add contact details beyond just your contact's name and email. Of course by using ProtonMail, this data will be as secure as your end-to-end encrypted emails.</string>
-                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
+                                        <rect key="frame" x="30" y="201" width="265" height="107.5"/>
+                                        <string key="text">ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email. </string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upgrading is not possible in the app." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Oa-DQ-njR">
+                                        <rect key="frame" x="29" y="334.5" width="267" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4f-uF-PgO">
-                                        <rect key="frame" x="110" y="352" width="100" height="40"/>
+                                        <rect key="frame" x="117.5" y="378.5" width="90" height="36"/>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="Mse-4r-ISa"/>
-                                            <constraint firstAttribute="width" constant="100" id="QPW-ck-xrN"/>
+                                            <constraint firstAttribute="height" constant="36" id="Mse-4r-ISa"/>
+                                            <constraint firstAttribute="width" constant="90" id="QPW-ck-xrN"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <state key="normal" title="GOT IT">
+                                        <state key="normal" title="Got it">
                                             <color key="titleColor" red="0.57647058819999997" green="0.59215686270000001" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -5375,13 +5384,14 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PREMIUM FEATURE" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6r-RW-O63">
-                                        <rect key="frame" x="72" y="34" width="177" height="24"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <rect key="frame" x="89.5" y="40" width="147" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" weight="black" pointSize="15"/>
                                         <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lAS-Va-wqt">
-                                        <rect key="frame" x="282" y="8" width="30" height="30"/>
+                                        <rect key="frame" x="287" y="8" width="30" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                         <state key="normal" title="X">
                                             <color key="titleColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -5389,33 +5399,32 @@
                                             <action selector="cancelTapped:" destination="bwU-38-Jat" eventType="touchUpInside" id="eZY-Ac-m6s"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upgrading to Plus isn't available in the app." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Oa-DQ-njR">
-                                        <rect key="frame" x="24" y="309" width="273.5" height="17"/>
-                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
-                                        <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.52391308550000004" green="0.53953999279999998" blue="0.78824073080000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="e6r-RW-O63" firstAttribute="top" secondItem="Lgq-Ou-c3G" secondAttribute="top" constant="34" id="5jq-Do-Oy2"/>
-                                    <constraint firstAttribute="trailing" secondItem="KHJ-yB-jUs" secondAttribute="trailing" constant="16" id="6qf-Ae-TMk"/>
+                                    <constraint firstItem="4Oa-DQ-njR" firstAttribute="leading" secondItem="Lgq-Ou-c3G" secondAttribute="leading" constant="29" id="2Ws-sL-cOi"/>
+                                    <constraint firstItem="YLB-Me-Guw" firstAttribute="top" secondItem="Lgq-Ou-c3G" secondAttribute="top" id="4Dj-Ya-y8A"/>
+                                    <constraint firstItem="e6r-RW-O63" firstAttribute="top" secondItem="Lgq-Ou-c3G" secondAttribute="top" constant="40" id="5jq-Do-Oy2"/>
+                                    <constraint firstAttribute="trailing" secondItem="KHJ-yB-jUs" secondAttribute="trailing" constant="30" id="6qf-Ae-TMk"/>
                                     <constraint firstItem="z4f-uF-PgO" firstAttribute="centerX" secondItem="Lgq-Ou-c3G" secondAttribute="centerX" id="B51-8T-GwR"/>
                                     <constraint firstItem="4Oa-DQ-njR" firstAttribute="top" secondItem="KHJ-yB-jUs" secondAttribute="bottom" constant="26" id="BoE-hb-ibn"/>
                                     <constraint firstItem="e6r-RW-O63" firstAttribute="centerX" secondItem="Lgq-Ou-c3G" secondAttribute="centerX" id="FdH-Du-Xr7"/>
+                                    <constraint firstAttribute="trailing" secondItem="4Oa-DQ-njR" secondAttribute="trailing" constant="29" id="Kmw-tA-ger"/>
+                                    <constraint firstItem="YLB-Me-Guw" firstAttribute="leading" secondItem="Lgq-Ou-c3G" secondAttribute="leading" id="L9k-Me-4Fn"/>
                                     <constraint firstAttribute="trailing" secondItem="lAS-Va-wqt" secondAttribute="trailing" constant="8" id="Lif-UY-xtr"/>
-                                    <constraint firstItem="R7J-I8-Xgw" firstAttribute="centerX" secondItem="Lgq-Ou-c3G" secondAttribute="centerX" id="QJf-dx-Rf3"/>
-                                    <constraint firstAttribute="bottom" secondItem="z4f-uF-PgO" secondAttribute="bottom" constant="46" id="SZF-Fg-C7t"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="900" constant="200" id="UDo-DP-anM"/>
+                                    <constraint firstAttribute="bottom" secondItem="z4f-uF-PgO" secondAttribute="bottom" constant="40" id="SZF-Fg-C7t"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="900" constant="430" id="UDo-DP-anM"/>
                                     <constraint firstItem="4Oa-DQ-njR" firstAttribute="centerX" secondItem="Lgq-Ou-c3G" secondAttribute="centerX" id="Vgg-31-Iv0"/>
                                     <constraint firstItem="z4f-uF-PgO" firstAttribute="top" secondItem="4Oa-DQ-njR" secondAttribute="bottom" constant="26" id="bVa-QE-h7G"/>
-                                    <constraint firstItem="KHJ-yB-jUs" firstAttribute="leading" secondItem="Lgq-Ou-c3G" secondAttribute="leading" constant="16" id="cGF-1G-B11"/>
-                                    <constraint firstItem="R7J-I8-Xgw" firstAttribute="leading" secondItem="Lgq-Ou-c3G" secondAttribute="leading" constant="12" id="eQN-yj-VpS"/>
-                                    <constraint firstAttribute="width" constant="320" id="fa6-IM-Htc"/>
+                                    <constraint firstAttribute="trailing" secondItem="YLB-Me-Guw" secondAttribute="trailing" id="cAL-Ix-c4D"/>
+                                    <constraint firstItem="KHJ-yB-jUs" firstAttribute="leading" secondItem="Lgq-Ou-c3G" secondAttribute="leading" constant="30" id="cGF-1G-B11"/>
+                                    <constraint firstAttribute="bottom" secondItem="YLB-Me-Guw" secondAttribute="bottom" id="d58-YS-W5O"/>
+                                    <constraint firstItem="R7J-I8-Xgw" firstAttribute="leading" secondItem="Lgq-Ou-c3G" secondAttribute="leading" constant="30" id="eQN-yj-VpS"/>
+                                    <constraint firstAttribute="width" constant="325" id="fa6-IM-Htc"/>
                                     <constraint firstItem="lAS-Va-wqt" firstAttribute="top" secondItem="Lgq-Ou-c3G" secondAttribute="top" constant="8" id="ncU-UJ-g4a"/>
                                     <constraint firstItem="KHJ-yB-jUs" firstAttribute="top" secondItem="R7J-I8-Xgw" secondAttribute="bottom" constant="26" id="u9M-Ja-yOS"/>
-                                    <constraint firstItem="R7J-I8-Xgw" firstAttribute="top" secondItem="e6r-RW-O63" secondAttribute="bottom" constant="42" id="wQ4-NH-Kvw"/>
-                                    <constraint firstAttribute="trailing" secondItem="R7J-I8-Xgw" secondAttribute="trailing" constant="12" id="ybl-HS-efb"/>
+                                    <constraint firstItem="R7J-I8-Xgw" firstAttribute="top" secondItem="e6r-RW-O63" secondAttribute="bottom" constant="50" id="wQ4-NH-Kvw"/>
+                                    <constraint firstAttribute="trailing" secondItem="R7J-I8-Xgw" secondAttribute="trailing" constant="30" id="ybl-HS-efb"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -5428,11 +5437,12 @@
                             <constraint firstItem="2OZ-hp-2zg" firstAttribute="top" secondItem="MpL-0x-ZC2" secondAttribute="top" id="WNM-R9-kSn"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Lgq-Ou-c3G" secondAttribute="trailing" constant="24" id="X3E-2r-TAM"/>
                             <constraint firstItem="2OZ-hp-2zg" firstAttribute="leading" secondItem="MpL-0x-ZC2" secondAttribute="leading" id="a4X-pe-EKL"/>
-                            <constraint firstItem="Lgq-Ou-c3G" firstAttribute="centerY" secondItem="MpL-0x-ZC2" secondAttribute="centerY" constant="-20" id="r6I-Vr-7Qb"/>
+                            <constraint firstItem="Lgq-Ou-c3G" firstAttribute="centerY" secondItem="MpL-0x-ZC2" secondAttribute="centerY" id="r6I-Vr-7Qb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Pkp-6u-K5p"/>
                     <connections>
+                        <outlet property="backgroundView" destination="YLB-Me-Guw" id="b4F-Cx-Cxg"/>
                         <outlet property="closeButton" destination="lAS-Va-wqt" id="ArU-Am-ohI"/>
                         <outlet property="messageLabel" destination="KHJ-yB-jUs" id="X2w-fS-mZu"/>
                         <outlet property="messageLabelTwo" destination="4Oa-DQ-njR" id="ZSd-O7-PRq"/>
@@ -5474,6 +5484,7 @@
         <image name="signup_logo" width="98" height="16"/>
         <image name="top_menu" width="24" height="24"/>
         <image name="unchecked" width="22" height="22"/>
+        <image name="upgrade_background" width="325" height="437"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="oC7-Qd-EW1"/>

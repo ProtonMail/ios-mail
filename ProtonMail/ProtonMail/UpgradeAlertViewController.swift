@@ -17,6 +17,7 @@ class UpgradeAlertViewController: UIViewController {
     
     var delegate : UpgradeAlertVCDelegate?
 
+    @IBOutlet weak var backgroundView: UIImageView!
     @IBOutlet weak var viewContainer: UIView!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var okButton: UIButton!
@@ -29,10 +30,16 @@ class UpgradeAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewContainer.layer.cornerRadius = 4.0
-        okButton.layer.cornerRadius = 8.0
+        self.viewContainer.layer.cornerRadius = 4.0
+        self.okButton.layer.cornerRadius = 8.0
         
         //set text
+        self.okButton.setTitle(NSLocalizedString("Got it", comment: "Action"), for: UIControlState.normal)
+        
+        self.titleLabel.text = NSLocalizedString("PREMIUM FEATURE", comment: "Upgrade warning title")
+        self.titleLabelTwo.text = NSLocalizedString("Looking to secure your contact's details?", comment: "Upgrade warning title")
+        self.messageLabel.text = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.", comment: "Upgrade warning message")
+        self.messageLabelTwo.text = NSLocalizedString("Upgrading is not possible in the app.", comment: "Upgrade warning message")
         
     }
     
