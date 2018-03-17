@@ -11,9 +11,6 @@ import Foundation
 // MARK : Get messages part
 final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
     
-    override init() {
-    }
-    
     override func method() -> APIService.HTTPMethod {
         return .get
     }

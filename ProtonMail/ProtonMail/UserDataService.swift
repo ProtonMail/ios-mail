@@ -650,8 +650,9 @@ class UserDataService {
         
     }
     
+    //TODO:: refactor newOrders. 
     func updateUserDomiansOrder(_ email_domains: [Address], newOrder : [String], completion: @escaping CompletionBlock) {
-        let addressOrder = UpdateAddressOrder<ApiResponse>(adds: newOrder)
+        let addressOrder = UpdateAddressOrder(adds: newOrder)
         addressOrder.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {

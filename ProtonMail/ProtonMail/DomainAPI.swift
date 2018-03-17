@@ -10,21 +10,10 @@ import Foundation
 
 
 // MARK : update right swipe action
-final class GetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
-    
-    override init() {
-    }
-    
-    override func toDictionary() -> [String : Any]? {
-        return nil
-    }
-    
+final class GetAvailableDomainsRequest : ApiRequest<AvailableDomainsResponse> {
+
     override func getIsAuthFunction() -> Bool {
         return false
-    }
-    
-    override func method() -> APIService.HTTPMethod {
-        return .get
     }
     
     override open func path() -> String {
@@ -36,6 +25,7 @@ final class GetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
+//Responses
 final class AvailableDomainsResponse : ApiResponse {
     var domains : [String]?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {

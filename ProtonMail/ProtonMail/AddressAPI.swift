@@ -12,16 +12,8 @@ import Foundation
 // Mark : get addresses
 final class GetAddressesRequest : ApiRequest<AddressesResponse> {
     
-    override func method() -> APIService.HTTPMethod {
-        return .get
-    }
-    
     override func path() -> String {
-        return AddressesAPI.path
-    }
-    
-    override func toDictionary() -> [String : Any]? {
-        return nil
+        return AddressesAPI.path + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -30,7 +22,7 @@ final class GetAddressesRequest : ApiRequest<AddressesResponse> {
 }
 
 // MARK : update addresses order
-final class UpdateAddressOrder<T : ApiResponse> : ApiRequest<T> {
+final class UpdateAddressOrder : ApiRequest<ApiResponse> {
     let newOrder : [String]!
     
     init(adds : [String]!) {
@@ -55,9 +47,8 @@ final class UpdateAddressOrder<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-
 //MARK : update display name
-final class UpdateAddressRequest<T : ApiResponse> : ApiRequest<T> {
+final class UpdateAddressRequest : ApiRequest<ApiResponse> {
     let addressid : String!
     let displayName : String!
     let signature : String!
@@ -68,7 +59,8 @@ final class UpdateAddressRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func toDictionary() -> [String : Any]? {
-        let out : [String : Any] = ["DisplayName" : displayName, "Signature":signature]
+        let out : [String : Any] = ["DisplayName" : displayName,
+                                    "Signature":signature]
         return out
     }
     
@@ -85,6 +77,8 @@ final class UpdateAddressRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
+
+//Mark setup address when signup after create the user
 final class SetupAddressRequest : ApiRequest<AddressesResponse> {
     let domain: String!
     init(domain_name: String) {
@@ -101,7 +95,7 @@ final class SetupAddressRequest : ApiRequest<AddressesResponse> {
     }
     
     override func path() -> String {
-        return AddressesAPI.path + "/setup"
+        return AddressesAPI.path + "/setup" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -109,6 +103,8 @@ final class SetupAddressRequest : ApiRequest<AddressesResponse> {
     }
 }
 
+
+//Responses
 final class AddressesResponse : ApiResponse {
     var addresses: [Address] = [Address]()
     override func ParseResponse(_ response: [String : Any]!) -> Bool {

@@ -25,7 +25,6 @@ struct AuthKey {
     static let proof = "ClientProof"
     static let session = "SRPSession"
     static let twoFactor = "TwoFactorCode"
-    
 }
 
 struct Constants {
@@ -50,7 +49,6 @@ final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
             AuthKey.clientSecret : Constants.clientSecret,
             AuthKey.userName : username
         ]
-        //PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
     
@@ -162,9 +160,6 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
             AuthKey.state : "\(UUID().uuidString)",
             "Uid" : self.Uid
         ]
-        
-        PMLog.D( out.json(prettyPrinted: true) )
-        
         return out
     }
     
@@ -185,9 +180,6 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
 
 // MARK :delete auth token
 final class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
-    
-    override init() {
-    }
     
     override func method() -> APIService.HTTPMethod {
         return .delete
@@ -257,8 +249,6 @@ final public class AuthInfoResponse : ApiResponse {
     var TwoFactor : Int = 0   //0 is off
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        
-        PMLog.D(response.json(prettyPrinted: true))
         
         self.Modulus = response["Modulus"] as? String
         self.ServerEphemeral = response["ServerEphemeral"] as? String

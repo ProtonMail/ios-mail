@@ -333,7 +333,7 @@ final class SignupViewModelImpl : SignupViewModel {
     
     override func getDomains(_ complete : @escaping AvailableDomainsComplete) -> Void {
         let defaultDomains = ["protonmail.com", "protonmail.ch"]
-        let api = GetAvailableDomainsRequest<AvailableDomainsResponse>()
+        let api = GetAvailableDomainsRequest()
         api.call({ (task, response, hasError) -> Void in
             if hasError {
                 complete(defaultDomains)

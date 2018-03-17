@@ -9,7 +9,6 @@
 import Foundation
 
 
-
 // MARK : Get messages part
 class ContactsRequest<T : ApiResponse> : ApiRequest<T> {
 
@@ -20,12 +19,9 @@ class ContactsRequest<T : ApiResponse> : ApiRequest<T> {
     override public func apiVersion() -> Int {
         return ContactsAPI.V_ContactsRequest
     }
-
-    override func method() -> APIService.HTTPMethod {
-        return .get
-    }
 }
 
+//
 class ContactsResponse : ApiResponse {
     var contacts : [[String : Any]]?
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
@@ -121,7 +117,7 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-
+//
 class ContactDetailResponse : ApiResponse {
     var contact : [String : Any]?
     override func ParseResponse (_ response: [String : Any]!) -> Bool {

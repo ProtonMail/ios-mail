@@ -41,7 +41,6 @@ final class BugReportRequest<T : ApiResponse> : ApiRequest<T> {
             "Username": self.userName,
             "Email": self.email
         ]
-        //PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
     
