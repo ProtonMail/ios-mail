@@ -28,11 +28,11 @@ final class GetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return DomainsAPI.Path + "/available"
+        return DomainsAPI.path + "/available"
     }
     
     override func apiVersion() -> Int {
-        return DomainsAPI.V_AvailableDomainsRequest
+        return DomainsAPI.v_available_domains
     }
 }
 

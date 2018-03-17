@@ -177,7 +177,7 @@ final class SignupViewModelImpl : SignupViewModel {
                                             try AuthCredential.setupToken(self.keypwd_with_keysalt, isRememberMailbox: true)
                                             
                                             //need setup address
-                                            let setupAddrApi = try SetupAddressRequest<SetupAddressResponse>(domain_name: self.domain).syncCall()
+                                            let setupAddrApi = try SetupAddressRequest(domain_name: self.domain).syncCall()
                                             
                                             //need setup keys
                                             let authModuls_for_key = try AuthModulusRequest<AuthModulusResponse>().syncCall()

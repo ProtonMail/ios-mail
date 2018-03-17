@@ -212,6 +212,8 @@ class APIService {
                         UserTempCachedStatus.backup()
                         sharedUserDataService.signOut(true)
                         userCachedStatus.signOut()
+                    } else {
+                        completion(nil, NSError.AuthCachePassEmpty())
                     }
                 }
             }

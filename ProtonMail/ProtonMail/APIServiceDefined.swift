@@ -17,15 +17,24 @@ import Foundation
 //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_addresses.md
 struct AddressesAPI {
     /// base message api path
-    static let Path :String = AppConstants.API_PATH + "/addresses"
-    
-    static let V_AddressesUpdateRequest : Int = 1
-    static let V_AddressesSetupRequest : Int = 1
+    static let path :String = AppConstants.API_PATH + "/addresses"
     
     //Create new address [POST /addresses] locked
     
     //Order Addresses [/addresses/order]
-    static let V_AddressesOrderUpdate : Int = 3
+    static let v_update_order : Int = 3
+    
+    //Setup new non-subuser address [POST /addresses/setup]
+    static let v_setup : Int = 3
+    
+    //Get Addresses [GET /addresses]
+    static let v_get_addresses : Int = 3
+    //Get Address [GET /addresses/{address_id}]
+    
+    //Update address [PUT]
+    static let v_update_address : Int = 3
+    
+    
 }
 
 
@@ -165,11 +174,24 @@ struct OrganizationsAPI {
     static let V_GetOrgKeysRequest : Int = 1
 }
 
+//Domains API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_domains.md
 struct DomainsAPI {
     
-    static let Path : String = AppConstants.API_PATH + "/domains"
+    static let path : String = AppConstants.API_PATH + "/domains"
     
-    static let V_AvailableDomainsRequest : Int = 1  //
+    //Get all domains for this user's organization and check their DNS's [GET]
+    
+    //Get a specific domains and its check DNS [GET]
+    
+    //Get Available Domains [GET /domains/available]
+    static let v_available_domains : Int = 3
+    
+    //Get Premium Domains [GET /domains/premium]
+    
+    //Create Domain [POST /domains]
+    
+    //Delete Domain [DELETE /domains/{domainid}]
 }
 
 struct DeviceAPI {
