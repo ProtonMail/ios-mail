@@ -529,8 +529,10 @@ static NSString *_defaultService;
 #if TARGET_OS_IOS
     if (floor(NSFoundationVersionNumber) > floor(1144.17)) { // iOS 9+
         query[(__bridge __strong id)kSecUseAuthenticationUI] = (__bridge id)kSecUseAuthenticationUIFail;
+#if  __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0
     } else if (floor(NSFoundationVersionNumber) > floor(1047.25)) { // iOS 8+
         query[(__bridge __strong id)kSecUseNoAuthenticationUI] = (__bridge id)kCFBooleanTrue;
+#endif
     }
 #elif TARGET_OS_WATCH || TARGET_OS_TV
     query[(__bridge __strong id)kSecUseAuthenticationUI] = (__bridge id)kSecUseAuthenticationUIFail;
@@ -768,7 +770,10 @@ static NSString *_defaultService;
     NSArray *items = [self.class prettify:[self itemClassObject] items:[self items]];
     NSMutableArray *keys = [[NSMutableArray alloc] init];
     for (NSDictionary *item in items) {
-        [keys addObject:item[@"key"]];
+        NSString *key = item[@"key"];
+        if (key) {
+            [keys addObject:key];
+        }
     }
     return keys.copy;
 }
@@ -1064,23 +1069,10 @@ static NSString *_defaultService;
 
 + (NSString *)generatePassword
 {
-    return CFBridgingRelease(SecCreateSharedWebCredentialPassword());
+    return (NSString *)CFBridgingRelease(SecCreateSharedWebCredentialPassword());
 }
 
 #endif
-
-#pragma mark -
-
-- (void)synchronize
-{
-    // Deprecated, calling this method is no longer required
-}
-
-- (BOOL)synchronizeWithError:(NSError *__autoreleasing *)error
-{
-    // Deprecated, calling this method is no longer required
-    return true;
-}
 
 #pragma mark -
 
@@ -1380,6 +1372,21 @@ static NSString *_defaultService;
     NSError *error = [NSError errorWithDomain:UICKeyChainStoreErrorDomain code:-99999 userInfo:@{NSLocalizedDescriptionKey: message}];
     NSLog(@"error: [%@] %@", @(error.code), error.localizedDescription);
     return error;
+}
+
+@end
+
+@implementation UICKeyChainStore (Deprecation)
+
+- (void)synchronize
+{
+    // Deprecated, calling this method is no longer required
+}
+
+- (BOOL)synchronizeWithError:(NSError *__autoreleasing *)error
+{
+    // Deprecated, calling this method is no longer required
+    return true;
 }
 
 @end
