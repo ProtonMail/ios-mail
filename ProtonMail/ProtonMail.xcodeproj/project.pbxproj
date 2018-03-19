@@ -1015,6 +1015,10 @@
 		756DAC471C93691900F3486C /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC461C93691900F3486C /* FeedbackViewController.swift */; };
 		756E9EFA1FB3970C0032E424 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756E9EF91FB3970B0032E424 /* UITableViewCell+Extension.swift */; };
 		756E9EFB1FB3998C0032E424 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756E9EF91FB3970B0032E424 /* UITableViewCell+Extension.swift */; };
+		7571102F2060699F0093DC57 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571102E2060699F0093DC57 /* UserAgent.swift */; };
+		757110302060699F0093DC57 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571102E2060699F0093DC57 /* UserAgent.swift */; };
+		757110312060699F0093DC57 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571102E2060699F0093DC57 /* UserAgent.swift */; };
+		757110322060699F0093DC57 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571102E2060699F0093DC57 /* UserAgent.swift */; };
 		7578B7831CADD1EA006B523B /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7821CADD1EA006B523B /* PMImagePickerController.swift */; };
 		7578B7841CADD1EA006B523B /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7821CADD1EA006B523B /* PMImagePickerController.swift */; };
 		7578B7861CADD20A006B523B /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */; };
@@ -1747,6 +1751,7 @@
 		756DAC441C92B30300F3486C /* FeedbackPopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackPopViewController.swift; sourceTree = "<group>"; };
 		756DAC461C93691900F3486C /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		756E9EF91FB3970B0032E424 /* UITableViewCell+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extension.swift"; sourceTree = "<group>"; };
+		7571102E2060699F0093DC57 /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
 		757824A41CCFE0D900136CF3 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7578B7821CADD1EA006B523B /* PMImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMImagePickerController.swift; sourceTree = "<group>"; };
 		7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMDocumentPickerViewController.swift; sourceTree = "<group>"; };
@@ -2566,6 +2571,7 @@
 				75F1697D1AF7F43A00BE6E79 /* Logger.swift */,
 				75E2202D1DDA532900078D6C /* Threading.swift */,
 				75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */,
+				7571102E2060699F0093DC57 /* UserAgent.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -4980,6 +4986,7 @@
 				7528FFD81FA7FEC3005F66A3 /* ContactEditCell+Delegates.swift in Sources */,
 				758E46B9205745A300111406 /* ContactUpgradeCellDelegate.swift in Sources */,
 				756CDE3D1D9C763D004455F6 /* PasswordUtils.swift in Sources */,
+				7571102F2060699F0093DC57 /* UserAgent.swift in Sources */,
 				755F92171C7E685700BAEDF9 /* OnboardingViewController.swift in Sources */,
 				7528FFD41FA7FEC3005F66A3 /* Array+Extension.swift in Sources */,
 				7501D285204853D8009689C8 /* VCardExtension.swift in Sources */,
@@ -5451,6 +5458,7 @@
 				752800201FA7FFDE005F66A3 /* NotificationCenter+KeyboardExtension.swift in Sources */,
 				752800281FA80040005F66A3 /* Fonts+Constants.swift in Sources */,
 				75482BB01F7F09E100B0BFFB /* AttachmentAPI.swift in Sources */,
+				757110302060699F0093DC57 /* UserAgent.swift in Sources */,
 				75482BB11F7F09E100B0BFFB /* DataService+Error.swift in Sources */,
 				75482BB21F7F09E100B0BFFB /* LastUpdatedStore.swift in Sources */,
 				75482BB31F7F09E100B0BFFB /* ComposeViewModel.swift in Sources */,
@@ -5616,6 +5624,7 @@
 				75B0529D1F1FE032008E483A /* ViewModelServiceImpl+Share.swift in Sources */,
 				752800271FA8003F005F66A3 /* Fonts+Constants.swift in Sources */,
 				753E5AC61F181ED90090C0F9 /* AttachmentAPI.swift in Sources */,
+				757110322060699F0093DC57 /* UserAgent.swift in Sources */,
 				7512AA491F18039700D84955 /* DataService+Error.swift in Sources */,
 				7512AA6A1F180DAD00D84955 /* LastUpdatedStore.swift in Sources */,
 				7512AA251F17FD4A00D84955 /* ComposeViewModel.swift in Sources */,
@@ -5910,6 +5919,7 @@
 				75856D6A1CB5B5EC000D9F3B /* PinCodeViewController.swift in Sources */,
 				758E46BA205745A300111406 /* ContactUpgradeCellDelegate.swift in Sources */,
 				7528FFEE1FA7FEF6005F66A3 /* ContactEditCell+Delegates.swift in Sources */,
+				757110312060699F0093DC57 /* UserAgent.swift in Sources */,
 				75DE7D2C1CAAEA4900F5443E /* FeedbackTableViewCell.swift in Sources */,
 				75DE7D2F1CAAEA4900F5443E /* MenuItem.swift in Sources */,
 				7501D287204853D8009689C8 /* VCardExtension.swift in Sources */,
