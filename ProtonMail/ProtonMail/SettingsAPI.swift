@@ -8,6 +8,57 @@
 
 import Foundation
 
+
+//"News" : 255 // 0 - 255 bitmask., . 16, 32, 64, and 128 are currently unused.
+struct News : OptionSet {
+    let rawValue: Int
+    //255 means throw out client cache and reload everything from server, 1 is mail, 2 is contacts
+    static let announcements     = RefreshStatus(rawValue: 1 << 0) //1 is announcements
+    static let features         = RefreshStatus(rawValue: 1 << 1) //2 is features
+    static let newsletter         = RefreshStatus(rawValue: 1 << 2) //4 is newsletter
+    static let all      = RefreshStatus(rawValue: 0xFF)
+}
+
+
+
+
+// Mark : get all settings
+final class GetSettings : ApiRequest<SettingsResponse> {
+    override open func path() -> String {
+        return SettingsAPI.path + AppConstants.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return SettingsAPI.v_get_settings
+    }
+}
+
+final class SettingsResponse : ApiResponse {
+    //
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        //        {
+        //            "Code": 1000,
+        //            "UserSettings": {
+        //                "PasswordMode": 1,
+        //                "Email": {
+        //                    "Value": "abc@gmail.com",
+        //                    "Status": 0,
+        //                    "Notify": 1,
+        //                    "Reset": 0
+        //                },
+        //                "News": 244,
+        //                "Locale": "en_US",
+        //                "LogAuth": 2,
+        //                "InvoiceText": "रिवार में हुआ। ज檷\r\nCartoon Law Services\r\n1 DisneyWorld Lane\r\nOrlando, FL, 12345\r\nVAT blahblahlblahblah",
+        //                "TwoFactor": 0
+        //            }
+        //        }
+        return true
+    }
+}
+
+
+
 // MARK : update email notifiy
 final class UpdateNotify<T : ApiResponse> : ApiRequest<T> {
     let notify : Int
@@ -26,7 +77,7 @@ final class UpdateNotify<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.Path + "/notify" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/notify" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -73,7 +124,7 @@ final class UpdateNotificationEmail<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.Path + "/noticeemail" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/noticeemail" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -100,7 +151,7 @@ final class UpdateNewsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.Path + "/news" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/news" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -126,7 +177,7 @@ final class UpdateDisplayNameRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.Path + "/display" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/display" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -152,7 +203,7 @@ final class UpdateShowImagesRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.Path + "/showimages" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/showimages" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -178,7 +229,7 @@ final class UpdateSwiftLeftAction<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.Path + "/swipeleft" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/swipeleft" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -204,7 +255,7 @@ final class UpdateSwiftRightAction<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.Path + "/swiperight" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/swiperight" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -269,7 +320,7 @@ final class UpdateLoginPassword<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.Path + "/password" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/password" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

@@ -111,10 +111,13 @@ struct AuthAPI {
 
 
 struct SettingsAPI {
-    /// base message api path
-    static let Path :String = AppConstants.API_PATH + "/settings"
+    /// base settings api path
+    static let path :String = AppConstants.API_PATH + "/settings"
     
-    /// fetch message request version
+    static let v_get_settings : Int = 3
+    
+    
+
     //static let V_SettingsUpdateDomainRequest : Int = 1 departured
     
     static let V_SettingsUpdateNotifyRequest : Int = 1

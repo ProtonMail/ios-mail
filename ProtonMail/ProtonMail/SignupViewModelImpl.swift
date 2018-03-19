@@ -207,7 +207,7 @@ final class SignupViewModelImpl : SignupViewModel {
                                             
                                             
                                             //setup swipe function
-                                            let _ = try UpdateSwiftLeftAction<ApiResponse>(action: MessageSwipeAction.spam).syncCall()
+                                            let _ = try UpdateSwiftLeftAction<ApiResponse>(action: MessageSwipeAction.archive).syncCall()
                                             let _ = try UpdateSwiftRightAction<ApiResponse>(action: MessageSwipeAction.trash).syncCall()
 
                                             
