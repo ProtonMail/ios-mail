@@ -16,8 +16,10 @@ final class ContactEditInformationCell: UITableViewCell {
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
-    
     @IBOutlet weak var sepratorView: UIView!
+    
+    fileprivate var isPaid : Bool = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
@@ -30,19 +32,21 @@ final class ContactEditInformationCell: UITableViewCell {
         sepratorView.gradient()
     }
     
-    func configCell(obj : ContactEditInformation, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+    func configCell(obj : ContactEditInformation, paid: Bool, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.information = obj
+        self.isPaid = paid
+        self.delegate = callback
         
         typeLabel.text = self.information.infoType.title
         valueField.placeholder = self.information.infoType.title
         valueField.text = self.information.newValue
-        
-        self.delegate = callback
-        
-        if becomeFirstResponder {
-            delay(0.25, closure: {
-                self.valueField.becomeFirstResponder()
-            })
+
+        if self.isPaid {
+            if becomeFirstResponder {
+                delay(0.25, closure: {
+                    self.valueField.becomeFirstResponder()
+                })
+            }
         }
     }
     
@@ -56,11 +60,23 @@ extension ContactEditInformationCell: UITextFieldDelegate {
         return true
     }
     
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        guard self.isPaid else {
+            self.delegate?.featureBlocked()
+            return false
+        }
+        return true
+    }
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.beginEditing(textField: textField)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {
+        guard self.isPaid else {
+            self.delegate?.featureBlocked()
+            return
+        }
         information.newValue = valueField.text!
     }
 }

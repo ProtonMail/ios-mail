@@ -39,13 +39,13 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         self.contact = c
         self.prepareContactData()
         
-        if !paidUser() {
-            sections = [.display_name,
-                        .emails,
-                        .encrypted_header,
-                        .upgrade,
-                        .delete]
-        }
+//        if !paidUser() {
+//            sections = [.display_name,
+//                        .emails,
+//                        .encrypted_header,
+//                        .upgrade,
+//                        .delete]
+//        }
     }
     
     private func prepareContactData() {

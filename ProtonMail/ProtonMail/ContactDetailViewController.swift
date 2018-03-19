@@ -29,12 +29,11 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate let kEditContactSegue : String              = "toEditContactSegue"
     fileprivate let kToComposeSegue : String                = "toCompose"
-    
+    fileprivate let kToUpgradeAlertSegue : String           = "toUpgradeAlertSegue"
 
     @IBOutlet weak var tableView: UITableView!
     
     fileprivate var doneItem: UIBarButtonItem!
-    
     fileprivate var loaded : Bool = false
     
     func inactiveViewModel() {
@@ -102,6 +101,9 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             let composeViewController = segue.destination.childViewControllers[0] as! ComposeEmailViewController
             let contact = sender as? ContactVO
             sharedVMService.newDraftViewModelWithContact(composeViewController, contact: contact)
+        } else if segue.identifier == kToUpgradeAlertSegue {
+            let popup = segue.destination as! UpgradeAlertViewController
+            self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
         }
     }
     
@@ -125,10 +127,7 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
 
 extension ContactDetailViewController : ContactUpgradeCellDelegate {
     func upgrade() {
-        let alertStr = NSLocalizedString("Please use the web application to upgrade.", comment: "Alert")
-        let alertController = alertStr.alertController()
-        alertController.addOKAction()
-        self.present(alertController, animated: true, completion: nil)
+        self.performSegue(withIdentifier: self.kToUpgradeAlertSegue, sender: self)
     }
 }
 
@@ -369,7 +368,7 @@ extension ContactDetailViewController: UITableViewDelegate {
         case .email_header, .encrypted_header, .delete:
             return 0.0
         case .upgrade:
-            return 280.0
+            return 200 //  280.0
         case .share:
             return 38.0
         }
@@ -380,6 +379,10 @@ extension ContactDetailViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        defer {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        
         let section = indexPath.section
         let row = indexPath.row
         let s = viewModel.sections()[section]
@@ -444,7 +447,6 @@ extension ContactDetailViewController: UITableViewDelegate {
         default:
             break
         }
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

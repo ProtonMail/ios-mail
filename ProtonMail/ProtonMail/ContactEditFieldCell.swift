@@ -19,6 +19,9 @@ final class ContactEditFieldCell: UITableViewCell {
     @IBOutlet weak var valueField: UITextField!
     
     @IBOutlet weak var sepratorView: UIView!
+    
+    fileprivate var isPaid : Bool = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
@@ -29,22 +32,28 @@ final class ContactEditFieldCell: UITableViewCell {
         sepratorView.gradient()
     }
     
-    func configCell(obj : ContactEditField, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+    func configCell(obj : ContactEditField, paid: Bool, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.field = obj
-        
+        self.isPaid = paid
+        self.delegate = callback
+    
         typeLabel.text = self.field.newType.title
         valueField.text = self.field.newField
-        
-        self.delegate = callback
-        
-        if becomeFirstResponder {
-            delay(0.25, closure: {
-                self.valueField.becomeFirstResponder()
-            })
+
+        if self.isPaid {
+            if becomeFirstResponder {
+                delay(0.25, closure: {
+                    self.valueField.becomeFirstResponder()
+                })
+            }
         }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {
+        guard self.isPaid else {
+            self.delegate?.featureBlocked()
+            return
+        }
         delegate?.pick(typeInterface: field, sender: self)
     }
 }
@@ -54,11 +63,23 @@ extension ContactEditFieldCell: UITextFieldDelegate {
         return true
     }
     
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        guard self.isPaid else {
+            self.delegate?.featureBlocked()
+            return false
+        }
+        return true
+    }
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.beginEditing(textField: textField)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {
+        guard self.isPaid else {
+            self.delegate?.featureBlocked()
+            return
+        }
         field.newField = valueField.text!
     }
 }
