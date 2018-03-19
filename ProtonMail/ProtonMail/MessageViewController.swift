@@ -265,6 +265,10 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .default, .spam : .default, .archive : .default]
         for (location, style) in locations {
             if !message.hasLocation(location: location) {
+                if self.message.location == .outbox && location == .inbox {
+                    continue
+                }
+                
                 alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
                     self.message.removeLocationFromLabels(currentlocation: self.message.location, location: location, keepSent: true)
                     self.messagesSetValue(setValue: location.rawValue, forKey: Message.Attributes.locationNumber)

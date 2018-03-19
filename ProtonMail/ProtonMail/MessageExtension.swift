@@ -194,7 +194,6 @@ extension Message {
             context.performAndWait() {
                 let labelObjs = self.mutableSetValue(forKey: "labels")
                 if keepSent && currentlocation == .outbox {
-                    
                 } else {
                     let fromLabelID = String(currentlocation.rawValue)
                     for l in labelObjs {
