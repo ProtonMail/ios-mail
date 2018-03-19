@@ -19,7 +19,6 @@ final class AttachmentDeleteRequest<T : ApiResponse> : ApiRequest<T> {
         let data : Data! = body.data(using: String.Encoding.utf8)
         do {
             let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String : Any]
-            //PMLog.D(self.JSONStringify(body, prettyPrinted: true))
             return decoded
         } catch let ex as NSError {
             PMLog.D("\(ex)")

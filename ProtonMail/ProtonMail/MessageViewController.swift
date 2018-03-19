@@ -11,6 +11,8 @@ import QuickLook
 import Foundation
 import CoreData
 import PassKit
+import Crashlytics
+import Fabric
 
 class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     
@@ -71,6 +73,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         self.emailView?.emailHeader.updateAttConstraints(false)
         self.updateBadgeNumberWhenRead(message, changeToRead: true)
         loadMessageDetailes()
+        
     }
     
     internal func loadMessageDetailes () {

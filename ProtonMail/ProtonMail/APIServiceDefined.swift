@@ -43,6 +43,23 @@ struct AdminAPI {
     //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_admin.md
 }
 
+//Not impl yet, maybe use in the future
+struct AdminVPNAPI {
+    //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_admin_vpn.md
+}
+
+
+//Attachment API
+//Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_attachments.md
+struct AttachmentAPI {
+    /// base message api path
+    static let Path :String = AppConstants.API_PATH + "/attachments"
+    
+    /// fetch message request version
+    static let V_AttachmentRemoveRequest : Int = 1
+    
+}
+
 
 
 
@@ -68,19 +85,6 @@ struct MessageAPI {
     static let V_MessageSendRequest : Int = 1
 }
 
-
-//Attachment API
-//
-struct AttachmentAPI {
-    /// base message api path
-    static let Path :String = AppConstants.API_PATH + "/attachments"
-    
-    
-    /// fetch message request version
-    static let V_AttachmentRemoveRequest : Int = 1
-
-    
-}
 
 struct LabelAPI {
     static let Path :String = AppConstants.API_PATH + "/labels"
