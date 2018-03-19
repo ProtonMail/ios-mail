@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UICKeyChainStore
 
 //keep this unique
 let sharedVMService : ViewModelServiceImpl = ViewModelServiceImpl()

@@ -3,6 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
 inhibit_all_warnings!
+use_frameworks!
 
 def common_pods
     
@@ -20,6 +21,9 @@ def common_pods
     pod 'RHAddressBook', '1.1.1'
     pod 'UIColor+Hex', '1.0.1'
     pod 'MCSwipeTableViewCell', '~> 2.1.4'
+    
+    pod 'PromiseKit', '~> 6.0'
+    pod 'AwaitKit', '~> 5.0.0'
     
 end
 
@@ -83,6 +87,14 @@ post_install do | installer |
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
             config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '8.0'
+            if config.name == 'Release'
+                config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
+                else
+                config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Onone'
+            end
         end
     end
 end
+
+
+

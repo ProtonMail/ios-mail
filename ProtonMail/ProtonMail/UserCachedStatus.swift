@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UICKeyChainStore
 
 let userCachedStatus = UserCachedStatus()
 

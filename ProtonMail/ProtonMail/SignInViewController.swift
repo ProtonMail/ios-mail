@@ -18,6 +18,7 @@ import UIKit
 import Fabric
 import Crashlytics
 import LocalAuthentication
+import MBProgressHUD
 
 
 //class SignInViewController: BaseViewController {

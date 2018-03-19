@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ZSSRichTextEditor
 
 class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     

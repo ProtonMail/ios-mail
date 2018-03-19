@@ -16,8 +16,9 @@
 import UIKit
 import Fabric
 import Crashlytics
-//import Firebase
-
+import SWRevealViewController
+import AFNetworking
+import AFNetworkActivityLogger
 
 let sharedUserDataService = UserDataService()
 

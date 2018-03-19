@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     

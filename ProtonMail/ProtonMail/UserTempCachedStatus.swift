@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import UICKeyChainStore
 
 let userDebugCached =  SharedCacheBase.getDefault()
 class UserTempCachedStatus: NSObject, NSCoding {

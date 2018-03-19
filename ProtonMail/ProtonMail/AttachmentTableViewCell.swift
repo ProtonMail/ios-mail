@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import MCSwipeTableViewCell
 
 class AttachmentTableViewCell: MCSwipeTableViewCell {
     struct Constant {

@@ -16,6 +16,8 @@ PODS:
   - AFNetworking/Serialization (3.2.0)
   - AFNetworking/UIKit (3.2.0):
     - AFNetworking/NSURLSession
+  - AwaitKit (5.0.0):
+    - PromiseKit (~> 6)
   - Groot/ObjC (2.0)
   - Masonry (1.1.0)
   - MBProgressHUD (0.9.2)
@@ -24,6 +26,15 @@ PODS:
   - OpenPGP (1.0.5):
     - OpenSSL
   - OpenSSL (1.0.210)
+  - PromiseKit (6.2.1):
+    - PromiseKit/CorePromise (= 6.2.1)
+    - PromiseKit/Foundation (= 6.2.1)
+    - PromiseKit/UIKit (= 6.2.1)
+  - PromiseKit/CorePromise (6.2.1)
+  - PromiseKit/Foundation (6.2.1):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (6.2.1):
+    - PromiseKit/CorePromise
   - RHAddressBook (1.1.1)
   - SWRevealViewController (2.3.0)
   - UICKeyChainStore (2.1.0)
@@ -36,12 +47,14 @@ PODS:
 DEPENDENCIES:
   - AFNetworkActivityLogger (from `https://github.com/AFNetworking/AFNetworkActivityLogger.git`, branch `3_0_0`)
   - AFNetworking (= 3.2.0)
+  - AwaitKit (~> 5.0.0)
   - Groot/ObjC (= 2.0)
   - Masonry (= 1.1.0)
   - MBProgressHUD (= 0.9.2)
   - MCSwipeTableViewCell (~> 2.1.4)
   - NSDate+Helper (from `https://github.com/ProtonMail/nsdate-helper.git`, branch `master`)
   - OpenPGP (from `../OpenPGP`)
+  - PromiseKit (~> 6.0)
   - RHAddressBook (= 1.1.1)
   - SWRevealViewController (= 2.3.0)
   - UICKeyChainStore (= 2.1.0)
@@ -71,6 +84,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AFNetworkActivityLogger: e77f68d014becb33c4306a23f56a64906ff72670
   AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
+  AwaitKit: d8a6e30eeb2da916630270b44636b31033388bd8
   Groot: 7543f84980bfb1613750818029d9b927d4378211
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
@@ -78,12 +92,13 @@ SPEC CHECKSUMS:
   NSDate+Helper: 78f517ac1c67914096433466fa7d20b812b9d86c
   OpenPGP: 1462a488aa857e65e3a9b810867032f80aee1009
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
+  PromiseKit: edaca6f0a7ed73b08c287600537d13867a7fabc7
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UICKeyChainStore: f1cbd42216a113f0165de1e733e62905b8823432
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: 53fd660ed37df3ccc3752ab15a04a4fdca35e6d2
 
-PODFILE CHECKSUM: abcee02f10b5bf2030532e93375e41db278f5dd5
+PODFILE CHECKSUM: 15b721fb8d841aa41eb1118774a25ea3aa06d1a2
 
 COCOAPODS: 1.4.0

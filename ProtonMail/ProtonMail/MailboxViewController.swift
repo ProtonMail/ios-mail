@@ -6,8 +6,7 @@
 
 import UIKit
 import CoreData
-
-
+import MCSwipeTableViewCell
 
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     

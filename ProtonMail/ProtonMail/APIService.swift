@@ -16,10 +16,10 @@
 
 import CoreData
 import Foundation
-
+import AFNetworking
+import AFNetworkActivityLogger
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
-
 
 protocol APIServiceDelegate {
     func onError(error: NSError)

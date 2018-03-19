@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import SWRevealViewController
 
 public let sharedPushNotificationService = PushNotificationService()
 

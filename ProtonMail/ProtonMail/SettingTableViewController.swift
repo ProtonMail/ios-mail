@@ -8,6 +8,7 @@
 
 import UIKit
 import LocalAuthentication
+import MBProgressHUD
 
 class SettingTableViewController: ProtonMailViewController {
     

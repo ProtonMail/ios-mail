@@ -9,6 +9,7 @@
 import UIKit
 import AssetsLibrary
 import Photos
+import MCSwipeTableViewCell
 
 protocol AttachmentsTableViewControllerDelegate {
     
