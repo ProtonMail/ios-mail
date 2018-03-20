@@ -503,11 +503,11 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
 // MARK : - view extensions
 extension ComposeEmailViewController : ComposeViewDelegate {
     func composeViewPickFrom(_ composeView: ComposeView) {
-        if attachments?.count > 0 {
-            let alertController = NSLocalizedString("Please remove all attachments before changing sender!", comment: "Error").alertController()
-            alertController.addOKAction()
-            self.present(alertController, animated: true, completion: nil)
-        } else {
+//        if attachments?.count > 0 {
+//            let alertController = NSLocalizedString("Please remove all attachments before changing sender!", comment: "Error").alertController()
+//            alertController.addOKAction()
+//            self.present(alertController, animated: true, completion: nil)
+//        } else {
             var needsShow : Bool = false
             let alertController = UIAlertController(title: NSLocalizedString("Change sender address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
@@ -536,7 +536,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
                 alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
                 present(alertController, animated: true, completion: nil)
             }
-        }
+//        }
     }
     
     func ComposeViewDidSizeChanged(_ size: CGSize) {

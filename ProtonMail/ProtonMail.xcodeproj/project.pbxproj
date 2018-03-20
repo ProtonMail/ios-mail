@@ -102,6 +102,7 @@
 		750729531DEFA52D0021483D /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750729521DEFA52D0021483D /* MimeTypes.swift */; };
 		750729541DEFA52E0021483D /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750729521DEFA52D0021483D /* MimeTypes.swift */; };
 		750778CE1BE98900009F516C /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750778CD1BE98900009F516C /* UserAPI.swift */; };
+		75079CAA2061CCC500182008 /* Greeter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75079CA92061CCC500182008 /* Greeter.framework */; };
 		7507BBB61E0CAF9600056D66 /* SignUp+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7507BBB51E0CAF9600056D66 /* SignUp+Error.swift */; };
 		750AAAC41C23E5CF00BAC444 /* RecaptchaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */; };
 		750AAAC71C2490DB00BAC444 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */; };
@@ -1535,6 +1536,7 @@
 		750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
 		750729521DEFA52D0021483D /* MimeTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MimeTypes.swift; path = ../ProtonMail/MimeTypes.swift; sourceTree = "<group>"; };
 		750778CD1BE98900009F516C /* UserAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
+		75079CA92061CCC500182008 /* Greeter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Greeter.framework; sourceTree = "<group>"; };
 		7507BBB51E0CAF9600056D66 /* SignUp+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignUp+Error.swift"; sourceTree = "<group>"; };
 		750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecaptchaViewController.swift; sourceTree = "<group>"; };
 		750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpEmailViewController.swift; sourceTree = "<group>"; };
@@ -2007,6 +2009,7 @@
 				75DE7D851CAAEA4900F5443E /* Crashlytics.framework in Frameworks */,
 				75DE7D871CAAEA4900F5443E /* Fabric.framework in Frameworks */,
 				0158665D7AB47DDA8C0653E4 /* Pods_ProtonMailDev.framework in Frameworks */,
+				75079CAA2061CCC500182008 /* Greeter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3028,6 +3031,7 @@
 		EDDC3A27CB6370D84ADB05EA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				75079CA92061CCC500182008 /* Greeter.framework */,
 				7561DC231FBB6FAA0099AFF5 /* libc++.tbd */,
 				75A42B6A1F0439690025F52C /* libstdc++.tbd */,
 				75A42B681F0439570025F52C /* libz.tbd */,

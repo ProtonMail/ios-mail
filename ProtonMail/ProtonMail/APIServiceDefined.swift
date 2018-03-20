@@ -67,14 +67,13 @@ struct AttachmentAPI {
 //Doc: V1 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages.md
 //Doc: V3 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages_v3.md
 struct MessageAPI {
-    
     /// base message api path
-    static let Path :String = AppConstants.API_PATH + "/messages"
+    static let path :String = AppConstants.API_PATH + "/messages"
     
     /// fetch message request version
     static let V_MessageFetchRequest : Int = 1
     
-    static let V_MessageDraftRequest : Int = 1
+    static let v_create_draft : Int = 3
     
     static let V_MessageUpdateDraftRequest : Int = 1
     

@@ -106,6 +106,14 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func updateAddressID(_ address_id: String) {
+        //update attachments
+        if let atts = self.getAttachments() {
+            for att in atts {
+                print("\(att.keyData)")
+                att.keyData = ".data"
+            }
+        }
+        
         self.message?.addressID = address_id
         self.updateDraft()
     }

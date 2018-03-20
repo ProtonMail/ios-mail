@@ -29,5 +29,7 @@ class Attachment: NSManagedObject {
     
     @NSManaged var headerInfo: String?
     
+    @NSManaged var keyData: String? //tempary for sending this is only in memory
+    
     @NSManaged var message: Message
 }
