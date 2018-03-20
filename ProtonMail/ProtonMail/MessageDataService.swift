@@ -312,6 +312,7 @@ class MessageDataService {
                                 self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
                                 self.processIncrementalUpdateLabels(eventsRes.labels)
                                 self.processIncrementalUpdateContacts(eventsRes.contacts)
+                                self.processIncrementalUpdateContactEmails(eventsRes.contactEmails)
                                 
                                 var outMessages : [Any] = [];
                                 for message in eventsRes.messages! {
@@ -334,6 +335,7 @@ class MessageDataService {
                             self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
                             self.processIncrementalUpdateLabels(eventsRes.labels)
                             self.processIncrementalUpdateContacts(eventsRes.contacts)
+                            self.processIncrementalUpdateContactEmails(eventsRes.contactEmails)
                         }
                         if _hasEventsError {
                             completion?(task, nil, eventsRes.error)
@@ -384,6 +386,7 @@ class MessageDataService {
                                 self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
                                 self.processIncrementalUpdateLabels(eventsRes.labels)
                                 self.processIncrementalUpdateContacts(eventsRes.contacts)
+                                self.processIncrementalUpdateContactEmails(eventsRes.contactEmails)
                                 
                                 var outMessages : [Any] = [];
                                 for message in eventsRes.messages! {
@@ -406,6 +409,7 @@ class MessageDataService {
                             self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
                             self.processIncrementalUpdateLabels(eventsRes.labels)
                             self.processIncrementalUpdateContacts(eventsRes.contacts)
+                            self.processIncrementalUpdateContactEmails(eventsRes.contactEmails)
                         }
                         if hasError {
                             completion?(task, nil, eventsRes.error)
@@ -421,25 +425,19 @@ class MessageDataService {
     }
     
     func processIncrementalUpdateContacts(_ contacts: [[String : Any]]?) {
-        struct IncrementalContactUpdateType {
-            static let delete = 0
-            static let insert = 1
-            static let update = 2
-        }
-        
         if let contacts = contacts {
             let context = sharedCoreDataService.newMainManagedObjectContext()
             context.perform { () -> Void in
                 for contact in contacts {
                     let contactObj = ContactEvent(event: contact)
-                    switch(contactObj.Action) {
-                    case .some(IncrementalContactUpdateType.delete):
+                    switch(contactObj.action) {
+                    case .delete:
                         if let contactID = contactObj.ID {
                             if let tempContact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
                                 context.delete(tempContact)
                             }
                         }
-                    case .some(IncrementalContactUpdateType.insert), .some(IncrementalContactUpdateType.update) :
+                    case .insert, .update:
                         do {
                             if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
                                                                  fromJSONArray: contactObj.contacts,
@@ -462,6 +460,47 @@ class MessageDataService {
             }
         }
     }
+    
+    func processIncrementalUpdateContactEmails(_ contactEmails: [[String : Any]]?) {
+        guard let emails = contactEmails else {
+            return
+        }
+        
+        let context = sharedCoreDataService.newMainManagedObjectContext()
+        context.perform { () -> Void in
+            for email in emails {
+                let emailObj = EmailEvent(event: email)
+                switch(emailObj.action) {
+                case .delete:
+                    if let emailID = emailObj.ID {
+                        if let tempEmail = Email.EmailForID(emailID, inManagedObjectContext: context) {
+                            context.delete(tempEmail)
+                        }
+                    }
+                case .insert, .update:
+                    do {
+                        if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                              fromJSONArray: emailObj.contacts,
+                                                                              in: context) as? [Contact] {
+                            for c in outContacts {
+                                c.isDownloaded = false
+                            }
+                        }
+                        
+                    } catch let ex as NSError {
+                        PMLog.D(" error: \(ex)")
+                    }
+                default:
+                    PMLog.D(" unknown type in contact: \(email)")
+                }
+            }
+            
+            if let error = context.saveUpstreamIfNeeded()  {
+                PMLog.D(" error: \(error)")
+            }
+        }
+    }
+    
     
     func processIncrementalUpdateTotal(_ totals: [String : Any]?) {
         
