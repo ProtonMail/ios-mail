@@ -247,10 +247,17 @@ class ShareUnlockViewController: UIViewController {
     func goto_composer() {
         let composer = ComposerViewController(nibName: "ComposerViewController", bundle: nil)
         //TODO:: here need to setup the composer with input items
-        sharedVMService.newShareDraftViewModel(composer,
-                                               subject: self.inputSubject,
-                                               content: self.inputContent,
-                                               files: self.files)
+        
+        sharedVMService.buildComposer(composer,
+                                      subject: self.inputSubject,
+                                      content: self.inputContent,
+                                      files: self.files)
+        
+//        sharedVMService.newShareDraftViewModel(composer,
+//                                               subject: self.inputSubject,
+//                                               content: self.inputContent,
+//                                               files: self.files)
+        
         let w = UIScreen.main.applicationFrame.width;
         composer.view.frame = CGRect(x: 0, y: 0, width: w, height: 186 + 60)
         self.navigationController?.pushViewController(composer, animated:true)

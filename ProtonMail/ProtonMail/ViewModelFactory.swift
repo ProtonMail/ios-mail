@@ -8,6 +8,7 @@
 
 import Foundation
 
+//should split for different purpose
 var shareViewModelFactoy: ViewModelFactory!
 
 // need supprot dev factory live factory

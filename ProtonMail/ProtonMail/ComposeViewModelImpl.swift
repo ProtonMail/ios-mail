@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import PromiseKit
+import AwaitKit
 
 final class ComposeViewModelImpl : ComposeViewModel {
     
@@ -105,17 +107,37 @@ final class ComposeViewModelImpl : ComposeViewModel {
         return self.message?.attachments.allObjects as? [Attachment]
     }
     
-    override func updateAddressID(_ address_id: String) {
-        //update attachments
-        if let atts = self.getAttachments() {
-            for att in atts {
-                print("\(att.keyData)")
-                att.keyData = ".data"
+    override func updateAddressID(_ address_id: String) -> Promise<Void> {
+        return async {
+            let public_key : String = "publicKey"
+            if let atts = self.getAttachments() {
+                for att in atts {
+                    do {
+                        guard let session = try att.sessionKey() else {
+                            continue
+                        }
+                        
+                        guard let newKeyPack = try session.getPublicSessionKeyPackage(public_key)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                            continue
+                        }
+                        
+                        att.keyPacket = newKeyPack
+                    } catch {
+                        
+                    }
+                }
+                
+                if let context = self.message?.managedObjectContext {
+                    let _ = context.saveUpstreamIfNeeded()
+                }
+                
             }
+            
+            self.message?.addressID = address_id
+            self.updateDraft()
+            
         }
         
-        self.message?.addressID = address_id
-        self.updateDraft()
     }
     
     override func getAddresses() -> [Address] {

@@ -7,7 +7,8 @@
 //
 
 import Foundation
-
+import PromiseKit
+import AwaitKit
 
 
 struct FileData {
@@ -117,7 +118,7 @@ class ComposeViewModel {
         fatalError("This method must be overridden")
     }
     
-    func updateAddressID (_ address_id : String) {
+    func updateAddressID (_ address_id : String) -> Promise<Void>  {
         fatalError("This method must be overridden")
     }
     

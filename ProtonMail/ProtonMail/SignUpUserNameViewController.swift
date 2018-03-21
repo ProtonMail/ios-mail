@@ -133,10 +133,10 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
             viewController.viewModel = self.viewModel
         } else if segue.identifier == self.kToTerms {
             let viewController = segue.destination as! WebViewController
-            sharedVMService.buildTermsWebViewModel(viewController)
+            sharedVMService.buildTerms(viewController)
         } else if segue.identifier == self.kToPolicy {
             let viewController = segue.destination as! WebViewController
-            sharedVMService.buildPolicyWebViewModel(viewController)
+            sharedVMService.buildPolicy(viewController)
         }
     }
     @IBAction func checkAction(_ sender: AnyObject) {
