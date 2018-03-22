@@ -526,7 +526,9 @@ extension ComposeEmailViewController : ComposeViewDelegate {
                         self.viewModel.updateAddressID(addr.address_id).done {
                             self.composeView.updateFromValue(addr.email, pickerEnabled: true)
                         }.catch { (error ) in
-                            print( error.localizedDescription)
+                            let alertController = error.localizedDescription.alertController()
+                            alertController.addOKAction()
+                            self.present(alertController, animated: true, completion: nil)
                         }.finally {
                             ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                         }
