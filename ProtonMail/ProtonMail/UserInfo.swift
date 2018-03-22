@@ -415,6 +415,13 @@ extension Array where Element : Key {
         }
         return out_array;
     }
+    
+    var first : Key? {
+        guard self.count > 0 else {
+            return nil
+        }
+        return self[0]
+    }
 }
 
 extension Array where Element : PMNOpenPgpKey {

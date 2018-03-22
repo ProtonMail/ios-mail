@@ -175,6 +175,11 @@ class UserDataService {
         return nil
     }
     
+    func get_address_pub_key(address_id : String) -> String {
+    
+        return ""
+    }
+    
     // MARK: - Public variables
     
     var defaultEmail : String {

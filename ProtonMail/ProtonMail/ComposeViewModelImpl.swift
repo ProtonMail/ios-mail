@@ -12,10 +12,33 @@ import AwaitKit
 
 final class ComposeViewModelImpl : ComposeViewModel {
     
+    enum RuntimeError : String, Error, CustomErrorVar {
+        
+        case no_address = "Can't find the public key for this address"
+        
+        var code: Int {
+            get {
+                return -1010
+            }
+        }
+        
+        var desc: String {
+            get {
+                return self.rawValue
+            }
+        }
+        
+        var reason: String {
+            get {
+                return self.rawValue
+            }
+        }
+        
+    }
+    
     
     init(subject: String, body: String, files: [FileData], action : ComposeMessageAction!) {
         super.init()
-        
         self.message = nil
         self.setSubject(subject)
         self.setBody(body)
@@ -109,19 +132,24 @@ final class ComposeViewModelImpl : ComposeViewModel {
     
     override func updateAddressID(_ address_id: String) -> Promise<Void> {
         return async {
-            let public_key : String = "publicKey"
+            guard let userinfo = sharedUserDataService.userInfo,
+                let addr = userinfo.userAddresses.indexOfAddress(address_id),
+                let key = addr.keys.first else {
+                throw RuntimeError.no_address.toError()
+            }
+            
             if let atts = self.getAttachments() {
                 for att in atts {
                     do {
                         guard let session = try att.sessionKey() else {
                             continue
                         }
-                        
-                        guard let newKeyPack = try session.getPublicSessionKeyPackage(public_key)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                        guard let newKeyPack = try session.getPublicSessionKeyPackage(key.public_key)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
                             continue
                         }
                         
                         att.keyPacket = newKeyPack
+                        att.keyChanged = true
                     } catch {
                         
                     }
@@ -135,7 +163,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
             
             self.message?.addressID = address_id
             self.updateDraft()
-            
         }
         
     }

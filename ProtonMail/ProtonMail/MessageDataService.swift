@@ -1211,38 +1211,6 @@ class MessageDataService {
                 PMLog.D("error : \(ex)")
             }
         }
-        
-        //clean old messags
-        //        if let context = sharedCoreDataService.mainManagedObjectContext {
-        //            let cutoffTimeInterval: NSTimeInterval = 3 * 86400 // days converted to seconds
-        //            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-        //
-        //            var error: NSError?
-        //            let count = context.countForFetchRequest(fetchRequest, error: &error)
-        //
-        //            if error != nil {
-        //                PMLog.D(" error: \(error)")
-        //            } else if count > maximumCachedMessageCount {
-        //                 TODO:: disable this need add later
-        //                                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, MessageLocation.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
-        //
-        //                                if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
-        //                                    for message in oldMessages {
-        //                                        context.deleteObject(message)
-        //                                    }
-        //
-        //                                    PMLog.D(" \(oldMessages.count) old messages purged.")
-        //
-        //                                    if let error = context.saveUpstreamIfNeeded() {
-        //                                        PMLog.D(" error: \(error)")
-        //                                    }
-        //                                } else {
-        //                                    PMLog.D(" error: \(error)")
-        //                                }
-        //            } else {
-        //                PMLog.D(" cached message count: \(count)")
-        //            }
-        //        }
     }
     
     // MARK: - Private methods
@@ -1400,6 +1368,7 @@ class MessageDataService {
                                                 hasTemp = true;
                                                 context.delete(att)
                                             }
+                                            att.keyChanged = false
                                         }
                                     }
                                     

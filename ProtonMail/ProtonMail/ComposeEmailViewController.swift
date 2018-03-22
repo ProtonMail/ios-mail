@@ -8,6 +8,8 @@
 
 import UIKit
 import ZSSRichTextEditor
+import PromiseKit
+import AwaitKit
 
 class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
@@ -520,13 +522,14 @@ extension ComposeEmailViewController : ComposeViewDelegate {
                         if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
                             self.updateSignature("\(signature)")
                         }
-                        
-                        //show loading
                         ActivityIndicatorHelper.showActivityIndicator(at: self.view)
-                        
-                        
-                        self.viewModel.updateAddressID(addr.address_id)
-                        self.composeView.updateFromValue(addr.email, pickerEnabled: true)
+                        self.viewModel.updateAddressID(addr.address_id).done {
+                            self.composeView.updateFromValue(addr.email, pickerEnabled: true)
+                        }.catch { (error ) in
+                            print( error.localizedDescription)
+                        }.finally {
+                            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                        }
                     }
                 }))
             }

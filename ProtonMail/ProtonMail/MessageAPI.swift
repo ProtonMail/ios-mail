@@ -163,11 +163,19 @@ class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
             if !orginalMsgID.isEmpty {
                 out["ParentID"] = message.orginalMessageID
                 out["Action"] = message.action ?? "0"  //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2 m
-                var atts : [String : String] = [:]
-                atts[""] = ""
-                out["AttachmentKeyPackets"] = atts
             }
         }
+        
+        if let attachments = self.message?.attachments.allObjects as? [Attachment] {
+            var atts : [String : String] = [:]
+            for att in attachments {
+                if att.keyChanged {
+                    atts[att.attachmentID] = att.keyPacket
+                }
+            }
+            out["AttachmentKeyPackets"] = atts
+        }
+        
         PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
@@ -192,11 +200,11 @@ final class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> {
     }
     
     override func path() -> String {
-        return MessageAPI.path + "/draft/" + message.messageID + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/" + message.messageID + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageUpdateDraftRequest
+        return MessageAPI.v_update_draft
     }
     
     override func method() -> APIService.HTTPMethod {

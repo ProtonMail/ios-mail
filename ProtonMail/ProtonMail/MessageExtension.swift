@@ -499,13 +499,12 @@ extension Message {
             PMLog.D("error: \(error)")
         }
         
-        
         for (index, attachment) in message.attachments.enumerated() {
             PMLog.D("index: \(index)")
             if let att = attachment as? Attachment {
                 if att.inline() || copyAtts {
                     let attachment = Attachment(context: newMessage.managedObjectContext!)
-                    attachment.attachmentID = "0"
+                    attachment.attachmentID = att.attachmentID
                     attachment.message = newMessage
                     attachment.fileName = att.fileName
                     attachment.mimeType = "image/jpg"
@@ -515,6 +514,7 @@ extension Message {
                     attachment.localURL = att.localURL
                     attachment.keyPacket = att.keyPacket
                     attachment.isTemp = true
+                    attachment.keyChanged = true
                     if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
                         PMLog.D("error: \(error)")
                     }

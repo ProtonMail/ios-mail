@@ -75,7 +75,7 @@ struct MessageAPI {
     
     static let v_create_draft : Int = 3
     
-    static let V_MessageUpdateDraftRequest : Int = 1
+    static let v_update_draft : Int = 3
     
     static let V_MessageActionRequest : Int = 1
     
