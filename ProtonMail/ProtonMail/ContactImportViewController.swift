@@ -235,13 +235,16 @@ class ContactImportViewController: UIViewController {
                             }
                             
                             if let fn = vcard3.getFormattedName() {
-                                let name = fn.getValue().trim()
+                                var name = fn.getValue().trim()
+                                name = name.preg_replace("  ", replaceto: " ")
                                 if name.isEmpty {
                                     if let fn = PMNIFormattedName.createInstance(defaultName) {
                                         vcard2.setFormattedName(fn)
                                     }
                                 } else {
-                                    vcard2.setFormattedName(fn)
+                                    if let fn = PMNIFormattedName.createInstance(name) {
+                                        vcard2.setFormattedName(fn)
+                                    }
                                 }
                                 vcard3.clearFormattedName()
                             } else {
@@ -254,31 +257,43 @@ class ContactImportViewController: UIViewController {
                             vcard3.clearEmails()
                             vcard2.setUid(uuid)
                             
-                            // add others later
-                            let vcard2Str = PMNIEzvcard.write(vcard2)
-                            guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
-                                continue //with error
+                            do {
+                                // add others later
+                                guard let vcard2Str = try vcard2.write() else {
+                                    continue
+                                }
+                                
+                                guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
+                                    continue //with error
+                                }
+                                
+                                let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key,
+                                                                               plainText: vcard2Str,
+                                                                               passphras: sharedUserDataService.mailboxPassword!)
+                                
+                                //card 2 object
+                                let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
+                                
+                                vcard3.setUid(uuid)
+                                vcard3.setVersion(PMNIVCardVersion.vCard40())
+                                
+                                guard let vcard3Str = try vcard3.write() else {
+                                    continue
+                                }
+                                let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "")
+                                let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
+                                                                               plainText: vcard3Str,
+                                                                               passphras: sharedUserDataService.mailboxPassword!)
+                                //card 3 object
+                                let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
+                                
+                                let cards : [CardData] = [card2, card3]
+                                
+                                pre_contacts.append(cards)
+                            } catch {
+                                // upload vcardStr when see error
+                                BugDataService().debugReport("VCARD", vcardStr, completion: nil)
                             }
-                            let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                                           plainText: vcard2Str,
-                                                                           passphras: sharedUserDataService.mailboxPassword!)
-                            
-                            //card 2 object
-                            let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
-                            
-                            vcard3.setUid(uuid)
-                            vcard3.setVersion(PMNIVCardVersion.vCard40())
-                            let vcard3Str = PMNIEzvcard.write(vcard3)
-                            let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "")
-                            let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                                           plainText: vcard3Str,
-                                                                           passphras: sharedUserDataService.mailboxPassword!)
-                            //card 3 object
-                            let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
-                            
-                            let cards : [CardData] = [card2, card3]
-                            
-                            pre_contacts.append(cards)
                         }
                     }
                 }

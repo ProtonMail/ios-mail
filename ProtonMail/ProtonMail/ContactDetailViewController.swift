@@ -29,12 +29,11 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate let kEditContactSegue : String              = "toEditContactSegue"
     fileprivate let kToComposeSegue : String                = "toCompose"
-    
+    fileprivate let kToUpgradeAlertSegue : String           = "toUpgradeAlertSegue"
 
     @IBOutlet weak var tableView: UITableView!
     
     fileprivate var doneItem: UIBarButtonItem!
-    
     fileprivate var loaded : Bool = false
     
     func inactiveViewModel() {
@@ -102,6 +101,9 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             let composeViewController = segue.destination.childViewControllers[0] as! ComposeEmailViewController
             let contact = sender as? ContactVO
             sharedVMService.newDraftViewModelWithContact(composeViewController, contact: contact)
+        } else if segue.identifier == kToUpgradeAlertSegue {
+            let popup = segue.destination as! UpgradeAlertViewController
+            self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
         }
     }
     
@@ -122,6 +124,13 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
         self.tableView.reloadData()
     }
 }
+
+extension ContactDetailViewController : ContactUpgradeCellDelegate {
+    func upgrade() {
+        self.performSegue(withIdentifier: self.kToUpgradeAlertSegue, sender: self)
+    }
+}
+
 
 
 // MARK: - UITableViewDataSource
@@ -205,7 +214,8 @@ extension ContactDetailViewController: UITableViewDataSource {
         let s = viewModel.sections()[section]
         
         if s == .upgrade {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsUpgradeCell, for: indexPath)
+            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsUpgradeCell, for: indexPath) as! ContactDetailsUpgradeCell
+            cell.configCell(delegate: self)
             cell.selectionStyle = .none
             return cell
         } else if s == .share {
@@ -358,7 +368,7 @@ extension ContactDetailViewController: UITableViewDelegate {
         case .email_header, .encrypted_header, .delete:
             return 0.0
         case .upgrade:
-            return 280.0
+            return 200 //  280.0
         case .share:
             return 38.0
         }
@@ -369,6 +379,10 @@ extension ContactDetailViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        defer {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        
         let section = indexPath.section
         let row = indexPath.row
         let s = viewModel.sections()[section]
@@ -433,7 +447,6 @@ extension ContactDetailViewController: UITableViewDelegate {
         default:
             break
         }
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

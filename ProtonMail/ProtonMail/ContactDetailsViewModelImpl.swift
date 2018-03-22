@@ -40,7 +40,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     init(c : Contact) {
         super.init()
         self.contact = c
-        if paidUser() {
+//        if paidUser() {
             typeSection = [.email_header,
                            .type2_warning,
                            .display_name,
@@ -55,15 +55,15 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                            .custom_field,
                            .notes,
                            .share]
-        } else {
-            typeSection = [.email_header,
-                           .type2_warning,
-                           .display_name,
-                           .emails,
-                           .encrypted_header,
-                           .upgrade,
-                           .share]
-        }
+//        } else {
+//            typeSection = [.email_header,
+//                           .type2_warning,
+//                           .display_name,
+//                           .emails,
+//                           .encrypted_header,
+//                           .upgrade,
+//                           .share]
+//        }
     }
 
     override func sections() -> [ContactEditSectionType] {

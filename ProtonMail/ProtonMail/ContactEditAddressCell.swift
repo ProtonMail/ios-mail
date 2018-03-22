@@ -30,6 +30,7 @@ final class ContactEditAddressCell: UITableViewCell {
     @IBOutlet weak var vline5: UIView!
     @IBOutlet weak var vline6: UIView!
     
+    fileprivate var isPaid : Bool = false
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -60,28 +61,33 @@ final class ContactEditAddressCell: UITableViewCell {
         vline6.gradient()
     }
     
-    func configCell(obj : ContactEditAddress, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+    func configCell(obj : ContactEditAddress, paid: Bool, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.addr = obj
+        self.isPaid = paid
+        self.delegate = callback
         
         typeLabel.text = self.addr.newType.title
         valueField.text = self.addr.newStreet
         street_two.text = self.addr.newStreetTwo
-        
         cityField.text = self.addr.newLocality
         stateField.text = self.addr.newRegion
         zipField.text = self.addr.newPostal
         countyField.text = self.addr.newCountry
-        
-        self.delegate = callback
-        
-        if becomeFirstResponder {
-            delay(0.25, closure: {
-                self.valueField.becomeFirstResponder()
-            })
+            
+        if self.isPaid {
+            if becomeFirstResponder {
+                delay(0.25, closure: {
+                    self.valueField.becomeFirstResponder()
+                })
+            }
         }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {
+        guard self.isPaid else {
+            self.delegate?.featureBlocked()
+            return
+        }
         delegate?.pick(typeInterface: addr, sender: self)
     }
 }
@@ -91,11 +97,23 @@ extension ContactEditAddressCell: UITextFieldDelegate {
         return true
     }
     
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        guard self.isPaid else {
+            self.delegate?.featureBlocked()
+            return false
+        }
+        return true
+    }
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.beginEditing(textField: textField)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {
+        guard self.isPaid else {
+            self.delegate?.featureBlocked()
+            return
+        }
         if textField == valueField {
             addr.newStreet = valueField.text!
         }
