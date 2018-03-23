@@ -786,6 +786,14 @@
 		754713191DCD616D0084BF34 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713171DCD616D0084BF34 /* SignInViewModel.swift */; };
 		7547131B1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */; };
 		7547131C1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */; };
+		75471759206489EC00C3F21D /* editor.html in Resources */ = {isa = PBXBuildFile; fileRef = 75471757206489EB00C3F21D /* editor.html */; };
+		7547175A206489EC00C3F21D /* editor.html in Resources */ = {isa = PBXBuildFile; fileRef = 75471757206489EB00C3F21D /* editor.html */; };
+		7547175B206489EC00C3F21D /* editor.html in Resources */ = {isa = PBXBuildFile; fileRef = 75471757206489EB00C3F21D /* editor.html */; };
+		7547175C206489EC00C3F21D /* editor.html in Resources */ = {isa = PBXBuildFile; fileRef = 75471757206489EB00C3F21D /* editor.html */; };
+		7547175D206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 75471758206489EB00C3F21D /* ZSSRichTextEditor.js */; };
+		7547175E206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 75471758206489EB00C3F21D /* ZSSRichTextEditor.js */; };
+		7547175F206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 75471758206489EB00C3F21D /* ZSSRichTextEditor.js */; };
+		75471760206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 75471758206489EB00C3F21D /* ZSSRichTextEditor.js */; };
 		75475EA71CCEB97400588D41 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75475EA61CCEB97400588D41 /* BaseViewController.swift */; };
 		75475EA81CCEB97400588D41 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75475EA61CCEB97400588D41 /* BaseViewController.swift */; };
 		75475EAB1CCEE21C00588D41 /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */; };
@@ -1683,6 +1691,8 @@
 		754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = General2FAViewModelImpl.swift; sourceTree = "<group>"; };
 		754713171DCD616D0084BF34 /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModelImpl.swift; sourceTree = "<group>"; };
+		75471757206489EB00C3F21D /* editor.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = editor.html; path = ../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html; sourceTree = "<group>"; };
+		75471758206489EB00C3F21D /* ZSSRichTextEditor.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = ZSSRichTextEditor.js; path = ../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js; sourceTree = "<group>"; };
 		75475EA61CCEB97400588D41 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		75475EA91CCEE21C00588D41 /* NSBundle+Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Language.h"; sourceTree = "<group>"; };
 		75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Language.m"; sourceTree = "<group>"; };
@@ -2797,6 +2807,8 @@
 		75978BD91B28F5F800D07501 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				75471757206489EB00C3F21D /* editor.html */,
+				75471758206489EB00C3F21D /* ZSSRichTextEditor.js */,
 				75E49F081CAB200000235ACC /* flags.bundle */,
 				075E3DF51A5F4ECF00E001A7 /* Images.xcassets */,
 				75978BDA1B28F63100D07501 /* editor.css */,
@@ -3396,8 +3408,10 @@
 				759BBDC21BA0C586002608B5 /* LabelDisplayView.xib in Resources */,
 				7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */,
 				7599B1721CC8124300B2CB8D /* Localizable.strings in Resources */,
+				7547175D206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */,
 				75E49F091CAB200000235ACC /* flags.bundle in Resources */,
 				7528FFD11FA7FEC3005F66A3 /* ContactSectionHeadView.xib in Resources */,
+				75471759206489EC00C3F21D /* editor.html in Resources */,
 				7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */,
 				07B123781AB8CD90006EA38C /* Attachments.storyboard in Resources */,
 				755638C11CA1AE42003FA2D0 /* ShowImageView.xib in Resources */,
@@ -3449,6 +3463,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75482BC81F7F09E100B0BFFB /* PasswordEncryptViewController.xib in Resources */,
+				7547175A206489EC00C3F21D /* editor.html in Resources */,
 				75482BC91F7F09E100B0BFFB /* Attachments.storyboard in Resources */,
 				75482BCA1F7F09E100B0BFFB /* ShareUnlockViewController.xib in Resources */,
 				75482BCB1F7F09E100B0BFFB /* Images.xcassets in Resources */,
@@ -3462,6 +3477,7 @@
 				75482BD71F7F09E100B0BFFB /* Settings.bundle in Resources */,
 				75482BD81F7F09E100B0BFFB /* ComposeErrorView.xib in Resources */,
 				75482BD91F7F09E100B0BFFB /* AttachmentTableViewCell.xib in Resources */,
+				7547175E206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */,
 				75482BDB1F7F09E100B0BFFB /* flags.bundle in Resources */,
 				75482BDC1F7F09E100B0BFFB /* ComposeView.xib in Resources */,
 				75482BDD1F7F09E100B0BFFB /* SharePinUnlockViewController.xib in Resources */,
@@ -3475,6 +3491,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				751303DC1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib in Resources */,
+				7547175C206489EC00C3F21D /* editor.html in Resources */,
 				755E0D061F2FACF9004D2873 /* Attachments.storyboard in Resources */,
 				7512A9FA1F17E1CE00D84955 /* ShareUnlockViewController.xib in Resources */,
 				758ED7D41F05A5610028D1A5 /* Images.xcassets in Resources */,
@@ -3488,6 +3505,7 @@
 				7512AA411F18028400D84955 /* Settings.bundle in Resources */,
 				7512AA0D1F17F77600D84955 /* ComposeErrorView.xib in Resources */,
 				75C7FF371F2FB4A000F15792 /* AttachmentTableViewCell.xib in Resources */,
+				75471760206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */,
 				7512AA221F17FB3200D84955 /* flags.bundle in Resources */,
 				7512AA0C1F17F76F00D84955 /* ComposeView.xib in Resources */,
 				75E5F7A61F295DFD00001B4F /* SharePinUnlockViewController.xib in Resources */,
@@ -3516,12 +3534,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				75256CCA1F16E00800F2771E /* ProtonMail.xcdatamodeld in Resources */,
+				7547175F206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */,
 				75DE7D891CAAEA4900F5443E /* MailboxRateReviewCell.xib in Resources */,
 				75187BB21CAC54DD00C84382 /* phone_country_code.geojson in Resources */,
 				75E49F0A1CAB220600235ACC /* flags.bundle in Resources */,
 				75DE7D8A1CAAEA4900F5443E /* ExpirationView.xib in Resources */,
 				75DE7D8B1CAAEA4900F5443E /* OnboardingView.xib in Resources */,
 				75DE7D8C1CAAEA4900F5443E /* editor.css in Resources */,
+				7547175B206489EC00C3F21D /* editor.html in Resources */,
 				75DE7D8D1CAAEA4900F5443E /* ComposeView.xib in Resources */,
 				75F22BF21E83348100677E67 /* ToastMessageView.xib in Resources */,
 				75DE7EB21CAAEF9000F5443E /* Images.xcassets in Resources */,
