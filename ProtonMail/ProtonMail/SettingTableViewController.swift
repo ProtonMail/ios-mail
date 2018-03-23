@@ -585,7 +585,16 @@ class SettingTableViewController: ProtonMailViewController {
                                 if defaultAddress != addr {
                                     needsShow = true
                                     alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
-                                        let _ = self.navigationController?.popViewController(animated: true)
+                                        if addr.send == 0 {
+                                            if addr.email.lowercased().range(of: "@pm.me") != nil {
+                                                let msg = String(format: NSLocalizedString("You can't set %@ address as default because it is a paid feature.", comment: "pm.me upgrade warning in composer"), addr.email)
+                                                let alertController = msg.alertController()
+                                                alertController.addOKAction()
+                                                self.present(alertController, animated: true, completion: nil)
+                                            }
+                                            return
+                                        }
+                                        
                                         var newAddrs = [Address]()
                                         var newOrder = [String]()
                                         newAddrs.append(addr)
