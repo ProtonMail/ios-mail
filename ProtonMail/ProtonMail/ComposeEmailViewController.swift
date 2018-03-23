@@ -222,9 +222,15 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
                 })
                 
                 if origAddr.email.lowercased().range(of: "@pm.me") != nil {
+                    guard userCachedStatus.isPMMEWarningDisabled == false else {
+                        return
+                    }
                     let msg = "Sending messages from \(origAddr.email) address is a paid feature. Your message will be sent from your default address \(addr.email)"
                     let alertController = msg.alertController()
                     alertController.addOKAction()
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("DON'T REMIND ME AGAIN", comment: "Action"), style: .destructive, handler: { action in
+                        userCachedStatus.isPMMEWarningDisabled = true
+                    }))
                     self.present(alertController, animated: true, completion: nil)
                 }
             }

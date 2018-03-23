@@ -21,6 +21,7 @@ final class UserCachedStatus : SharedCacheBase {
         static let lastAuthCacheVersion = "last_auth_cache_version" //user cache
         static let cachedServerNotices = "cachedServerNotices" //user cache
         static let showServerNoticesNextTime = "showServerNoticesNextTime" //user cache
+        static let isPM_MEWarningDisabled = "isPM_MEWarningDisabledKey" //user cache -- maybe could be global
         
         // touch id 
         static let isTouchIDEnabled = "isTouchIDEnabled" //global cache
@@ -59,6 +60,15 @@ final class UserCachedStatus : SharedCacheBase {
         }
         set {
             setValue(newValue, forKey: Key.isCheckSpaceDisabled)
+        }
+    }
+    
+    var isPMMEWarningDisabled : Bool {
+        get {
+            return getShared().bool(forKey: Key.isPM_MEWarningDisabled)
+        }
+        set {
+            setValue(newValue, forKey: Key.isPM_MEWarningDisabled)
         }
     }
     
@@ -155,15 +165,16 @@ final class UserCachedStatus : SharedCacheBase {
     
     func signOut()
     {
-        getShared().removeObject(forKey: Key.lastFetchMessageID);
-        getShared().removeObject(forKey: Key.lastFetchMessageTime);
-        getShared().removeObject(forKey: Key.lastUpdateTime);
-        getShared().removeObject(forKey: Key.historyTimeStamp);
-        getShared().removeObject(forKey: Key.lastCacheVersion);
-        getShared().removeObject(forKey: Key.isCheckSpaceDisabled);
-        getShared().removeObject(forKey: Key.cachedServerNotices);
-        getShared().removeObject(forKey: Key.showServerNoticesNextTime);
-        getShared().removeObject(forKey: Key.lastAuthCacheVersion);
+        getShared().removeObject(forKey: Key.lastFetchMessageID)
+        getShared().removeObject(forKey: Key.lastFetchMessageTime)
+        getShared().removeObject(forKey: Key.lastUpdateTime)
+        getShared().removeObject(forKey: Key.historyTimeStamp)
+        getShared().removeObject(forKey: Key.lastCacheVersion)
+        getShared().removeObject(forKey: Key.isCheckSpaceDisabled)
+        getShared().removeObject(forKey: Key.cachedServerNotices)
+        getShared().removeObject(forKey: Key.showServerNoticesNextTime)
+        getShared().removeObject(forKey: Key.lastAuthCacheVersion)
+        getShared().removeObject(forKey: Key.isPM_MEWarningDisabled)
         
         //touch id
         getShared().removeObject(forKey: Key.touchIDEmail);
