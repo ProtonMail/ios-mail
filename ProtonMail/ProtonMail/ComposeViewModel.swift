@@ -130,6 +130,10 @@ class ComposeViewModel {
         fatalError("This method must be overridden")
     }
     
+    func fromAddress() -> Address? {
+        fatalError("This method must be overridden")
+    }
+    
     func getCurrrentSignature(_ addr_id : String) -> String? {
         fatalError("This method must be overridden")
     }

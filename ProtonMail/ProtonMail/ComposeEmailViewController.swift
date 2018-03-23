@@ -205,10 +205,30 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     fileprivate func updateMessageView() {
-        self.composeView.updateFromValue(self.viewModel.getDefaultSendAddress()?.email ?? "", pickerEnabled: true)
         self.composeView.subject.text = self.viewModel.getSubject()
         self.shouldShowKeyboard = false
         self.setHTML(self.viewModel.getHtmlBody())
+        
+        guard let addr = self.viewModel.getDefaultSendAddress() else {
+            return
+        }
+        self.composeView.updateFromValue(addr.email, pickerEnabled: true)
+        if let origAddr = self.viewModel.fromAddress() {
+            if origAddr.send == 0 {
+                self.viewModel.updateAddressID(addr.address_id).done {
+                    //
+                }.catch({ (_) in
+                    
+                })
+                
+                if origAddr.email.lowercased().range(of: "@pm.me") != nil {
+                    let msg = "Sending messages from \(origAddr.email) address is a paid feature. Your message will be sent from your default address \(addr.email)"
+                    let alertController = msg.alertController()
+                    alertController.addOKAction()
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

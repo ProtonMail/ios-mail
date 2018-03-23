@@ -156,7 +156,11 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 }
                 
                 if let context = self.message?.managedObjectContext {
-                    let _ = context.saveUpstreamIfNeeded()
+                    context.perform {
+                        if let error = context.saveUpstreamIfNeeded() {
+                            PMLog.D("error: \(error)")
+                        }
+                    }
                 }
                 
             }
@@ -178,6 +182,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
             }
         }
         return self.message?.defaultAddress
+    }
+    
+    override func fromAddress() -> Address? {
+        return self.message?.fromAddress
     }
     
     override func getCurrrentSignature(_ addr_id : String) -> String? {
@@ -329,8 +337,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
             MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil, mailbox_pwd: sharedUserDataService.mailboxPassword!)
             
             if let context = message!.managedObjectContext {
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
+                context.perform {
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)")
+                    }
                 }
             }
         }

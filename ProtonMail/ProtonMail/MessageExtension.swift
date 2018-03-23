@@ -162,30 +162,24 @@ extension Message {
     
     func setLabelLocation(_ location : MessageLocation) {
         if let context = self.managedObjectContext {
-            context.performAndWait() {
-                let toLableID = String(location.rawValue)
-                let labelObjs = self.mutableSetValue(forKey: "labels")
-                
-                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
-                    var exsited = false
-                    for l in labelObjs {
-                        if let label = l as? Label {
-                            if label == toLabel {
-                                exsited = true
-                                break
-                            }
+            let toLableID = String(location.rawValue)
+            let labelObjs = self.mutableSetValue(forKey: "labels")
+            
+            if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+                var exsited = false
+                for l in labelObjs {
+                    if let label = l as? Label {
+                        if label == toLabel {
+                            exsited = true
+                            break
                         }
                     }
-                    if !exsited {
-                        labelObjs.add(toLabel)
-                    }
                 }
-                
-                self.setValue(labelObjs, forKey: "labels")
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
+                if !exsited {
+                    labelObjs.add(toLabel)
                 }
             }
+            self.setValue(labelObjs, forKey: "labels")
         }
     }
     
@@ -461,6 +455,17 @@ extension Message {
         }
     }
     
+    var fromAddress : Address? {
+        get {
+            if let addressID = addressID, !addressID.isEmpty {
+                if let add = sharedUserDataService.userAddresses.indexOfAddress(addressID) {
+                    return add;
+                }
+            }
+            return nil
+        }
+    }
+    
     var senderContactVO : ContactVO! {
         var sender : ContactVO!
         //        if let beforeParsed = self.newSender, paserdNewSender = beforeParsed.toContact() {
@@ -491,7 +496,7 @@ extension Message {
         newMessage.orginalMessageID = message.messageID
         newMessage.expirationOffset = 0
         
-        newMessage.addressID = message.getAddressID
+        newMessage.addressID = message.addressID
         newMessage.messageStatus = message.messageStatus
         newMessage.numAttachments = message.numAttachments
         

@@ -641,6 +641,13 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     func starredChanged(_ isStarred: Bool) {
         if isStarred {
             self.message.setLabelLocation(.starred)
+            if let context = message.managedObjectContext {
+                context.perform {
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D("error: \(error)")
+                    }
+                }
+            }
         } else {
             self.message.removeLocationFromLabels(currentlocation: .starred, location: .deleted, keepSent: true)
         }

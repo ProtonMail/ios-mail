@@ -1178,10 +1178,12 @@ class MessageDataService {
     
     func saveDraft(_ message : Message!) {
         if let context = message.managedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            } else {
-                self.queue(message, action: .saveDraft)
+            context.performAndWait {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                } else {
+                    self.queue(message, action: .saveDraft)
+                }
             }
         }
     }

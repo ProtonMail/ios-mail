@@ -480,21 +480,23 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     internal func cleanRateReviewCell () {
         if let context = fetchedResultsController?.managedObjectContext {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K == 1", Message.Attributes.messageType)
-            do {
-                if let messages = try context.fetch(fetchRequest) as? [Message] {
-                    for msg in messages {
-                        if msg.managedObjectContext != nil {
-                            context.delete(msg)
+            context.perform {
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+                fetchRequest.predicate = NSPredicate(format: "%K == 1", Message.Attributes.messageType)
+                do {
+                    if let messages = try context.fetch(fetchRequest) as? [Message] {
+                        for msg in messages {
+                            if msg.managedObjectContext != nil {
+                                context.delete(msg)
+                            }
+                        }
+                        if let error = context.saveUpstreamIfNeeded() {
+                            PMLog.D("error: \(error)")
                         }
                     }
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    }
+                } catch let ex as NSError {
+                    PMLog.D("error: \(ex)")
                 }
-            } catch let ex as NSError {
-                PMLog.D("error: \(ex)")
             }
         }
     }
