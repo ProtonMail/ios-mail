@@ -86,7 +86,7 @@ struct MessageAPI {
 
 
 struct LabelAPI {
-    static let Path :String = AppConstants.API_PATH + "/labels"
+    static let path :String = AppConstants.API_PATH + "/labels"
     
     //
     static let V_LabelFetchRequest : Int = 1
@@ -95,6 +95,9 @@ struct LabelAPI {
     static let V_CreateLabelRequest : Int = 1
     static let V_UpdateLabelRequest : Int = 1
     static let V_DeleteLabelRequest : Int = 1
+    
+    //doesn't impl yet
+    static let v_order_labels : Int = 3
 }
 
 struct AuthAPI {
@@ -115,8 +118,6 @@ struct SettingsAPI {
     
     static let v_get_settings : Int = 3
     
-    
-
     //static let V_SettingsUpdateDomainRequest : Int = 1 departured
     
     static let V_SettingsUpdateNotifyRequest : Int = 1
