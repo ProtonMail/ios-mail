@@ -135,7 +135,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             guard let userinfo = sharedUserDataService.userInfo,
                 let addr = userinfo.userAddresses.indexOfAddress(address_id),
                 let key = addr.keys.first else {
-                throw RuntimeError.no_address.toError()
+                throw RuntimeError.no_address.error
             }
             
             if let atts = self.getAttachments() {

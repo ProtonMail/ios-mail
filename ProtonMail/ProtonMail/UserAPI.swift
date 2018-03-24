@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Crashlytics
 
 typealias CheckUserNameBlock = (Bool, NSError?) -> Void
 typealias CreateUserBlock = (Bool, Bool, String, Error?) -> Void
@@ -83,29 +84,7 @@ class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-class GetUserInfoResponse : ApiResponse {
-    var userInfo : UserInfo?
-    
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        guard let res = response["User"] as? [String : Any] else {
-            let err = NSError.badUserInfoResponse("\(response)")
-            err.upload(toFabric: FetchUserInfoErrorTitle)
-            return false
-        }
-        self.userInfo = UserInfo(response: res)
-        return true
-    }
-}
-
-
-class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
-    
-    override init() {
-    }
-    
-    override func toDictionary() -> [String : Any]? {
-        return nil
-    }
+final class GetUserInfoRequest : ApiRequest<GetUserInfoResponse> {
     
     override func method() -> APIService.HTTPMethod {
         return .get
@@ -116,9 +95,26 @@ class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return UsersAPI.V_GetUserInfoRequest
+        return UsersAPI.v_get_userinfo
     }
 }
+
+
+final class GetUserInfoResponse : ApiResponse {
+    var userInfo : UserInfo?
+    
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        guard let res = response["User"] as? [String : Any] else {
+            let err = NSError.badUserInfoResponse("\(response)")
+            Crashlytics.sharedInstance().recordError(err)
+            err.upload(toFabric: FetchUserInfoErrorTitle)
+            return false
+        }
+        self.userInfo = UserInfo(response: res)
+        return true
+    }
+}
+
 
 
 class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {

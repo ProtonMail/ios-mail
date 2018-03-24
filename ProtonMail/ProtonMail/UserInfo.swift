@@ -80,6 +80,10 @@ final class UserInfo : NSObject {
         self.userKeys = keys ?? [Key]()
     }
     
+    func setAddresses(addresses : [Address]) {
+        self.userAddresses = addresses
+    }
+    
     func firstUserKey() -> Key? {
         if self.userKeys.count > 0 {
             return self.userKeys[0]

@@ -156,8 +156,9 @@ struct UsersAPI {
     
     static let path : String = AppConstants.API_PATH + "/users"
     
+    static let v_get_userinfo : Int = 3
+    
     static let V_CreateUsersRequest : Int = 1
-    static let V_GetUserInfoRequest : Int = 1
     static let V_GetHumanRequest : Int = 1
     static let V_HumanCheckRequest : Int = 1
     static let V_CheckUserExistRequest : Int = 1

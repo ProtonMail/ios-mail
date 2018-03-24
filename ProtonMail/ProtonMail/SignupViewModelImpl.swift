@@ -134,19 +134,19 @@ final class SignupViewModelImpl : SignupViewModel {
                 do {
                     let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
                     guard let moduls_id = authModuls?.ModulusID else {
-                        throw SignUpCreateUserError.invalidModulsID.toError()
+                        throw SignUpCreateUserError.invalidModulsID.error
                     }
                     guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
-                        throw SignUpCreateUserError.invalidModuls.toError()
+                        throw SignUpCreateUserError.invalidModuls.error
                     }
                     //generat new verifier
                     let new_decodedModulus : Data = new_encodedModulus.decodeBase64()
                     let new_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
                     guard let new_hashed_password = PasswordUtils.hashPasswordVersion4(self.plaintext_password, salt: new_salt, modulus: new_decodedModulus) else {
-                        throw SignUpCreateUserError.cantHashPassword.toError()
+                        throw SignUpCreateUserError.cantHashPassword.error
                     }
                     guard let verifier = try generateVerifier(2048, modulus: new_decodedModulus, hashedPassword: new_hashed_password) else {
-                        throw SignUpCreateUserError.cantGenerateVerifier.toError()
+                        throw SignUpCreateUserError.cantGenerateVerifier.error
                     }
                     
                     let api = CreateNewUserRequest<ApiResponse>(token: self.token,
@@ -182,19 +182,19 @@ final class SignupViewModelImpl : SignupViewModel {
                                             //need setup keys
                                             let authModuls_for_key = try AuthModulusRequest<AuthModulusResponse>().syncCall()
                                             guard let moduls_id_for_key = authModuls_for_key?.ModulusID else {
-                                                throw SignUpCreateUserError.invalidModulsID.toError()
+                                                throw SignUpCreateUserError.invalidModulsID.error
                                             }
                                             guard let new_moduls_for_key = authModuls_for_key?.Modulus, let new_encodedModulus_for_key = try new_moduls_for_key.getSignature() else {
-                                                throw SignUpCreateUserError.invalidModuls.toError()
+                                                throw SignUpCreateUserError.invalidModuls.error
                                             }
                                             //generat new verifier
                                             let new_decodedModulus_for_key : Data = new_encodedModulus_for_key.decodeBase64()
                                             let new_salt_for_key : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
                                             guard let new_hashed_password_for_key = PasswordUtils.hashPasswordVersion4(self.plaintext_password, salt: new_salt_for_key, modulus: new_decodedModulus_for_key) else {
-                                                throw SignUpCreateUserError.cantHashPassword.toError()
+                                                throw SignUpCreateUserError.cantHashPassword.error
                                             }
                                             guard let verifier_for_key = try generateVerifier(2048, modulus: new_decodedModulus_for_key, hashedPassword: new_hashed_password_for_key) else {
-                                                throw SignUpCreateUserError.cantGenerateVerifier.toError()
+                                                throw SignUpCreateUserError.cantGenerateVerifier.error
                                             }
                                             
                                             let addr_id = setupAddrApi?.addresses.first?.address_id
