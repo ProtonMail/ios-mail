@@ -75,7 +75,7 @@ class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return UsersAPI.Path
+        return UsersAPI.path
     }
     
     override func apiVersion() -> Int {
@@ -112,7 +112,7 @@ class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return UsersAPI.Path
+        return UsersAPI.path
     }
     
     override func apiVersion() -> Int {
@@ -135,7 +135,7 @@ class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return UsersAPI.Path + "/human"
+        return UsersAPI.path + "/human"
     }
     
     override func apiVersion() -> Int {
@@ -172,7 +172,7 @@ class HumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return UsersAPI.Path + "/human"
+        return UsersAPI.path + "/human"
     }
     
     override func apiVersion() -> Int {
@@ -201,7 +201,7 @@ class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return UsersAPI.Path + "/available/" + userName
+        return UsersAPI.path + "/available/" + userName
     }
     
     override func apiVersion() -> Int {
@@ -235,7 +235,7 @@ class DirectRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return UsersAPI.Path + "/direct"
+        return UsersAPI.path + "/direct"
     }
     
     override func apiVersion() -> Int {
@@ -308,7 +308,7 @@ class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return UsersAPI.Path + "/code"
+        return UsersAPI.path + "/code"
     }
     
     override func apiVersion() -> Int {
@@ -319,13 +319,13 @@ class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
 
 class GetUserPublicKeysRequest<T : ApiResponse> : ApiRequest<T> {
     var emails : String
-    var requestPath : String =  UsersAPI.Path + "/pubkeys"
+    var requestPath : String =  UsersAPI.path + "/pubkeys"
     
     init(emails : String) {
         self.emails = emails
         if let base64Emails = emails.base64Encoded() {
             let escapedValue : String? = base64Emails.addingPercentEncoding(withAllowedCharacters: CharacterSet(charactersIn: "/+=\n").inverted)
-            self.requestPath = UsersAPI.Path.stringByAppendingPathComponent("pubkeys").stringByAppendingPathComponent(escapedValue ?? base64Emails)
+            self.requestPath = UsersAPI.path.stringByAppendingPathComponent("pubkeys").stringByAppendingPathComponent(escapedValue ?? base64Emails)
             PMLog.D(self.requestPath)
         }
     }

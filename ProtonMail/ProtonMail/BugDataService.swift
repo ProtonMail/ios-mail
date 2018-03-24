@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import Crashlytics
 
 public class BugDataService {
     public init() {
@@ -35,16 +36,15 @@ public class BugDataService {
     }
     
     public func debugReport(_ title: String, _ bug: String, completion: ((NSError?) -> Void)?) {
-        let systemVersion = UIDevice.current.systemVersion;
-        let model = UIDevice.current.model
-        let mainBundle = Bundle.main
-        let username = sharedUserDataService.username ?? ""
-        let useremail = sharedUserDataService.defaultEmail
-        let butAPI = BugReportRequest(os: model, osVersion: "\(systemVersion)", 
-            clientVersion: mainBundle.appVersion, title: "ProtonMail App bug debugging \(title)", desc: bug, userName: username, email: useremail)
+        let userInfo = [
+            NSLocalizedDescriptionKey: "ProtonMail App bug debugging.",
+            NSLocalizedFailureReasonErrorKey: "Parser issue.",
+            NSLocalizedRecoverySuggestionErrorKey: "Parser failed.",
+            "Title": title,
+            "Value": bug
+        ]
         
-        butAPI.call { (task, response, hasError) -> Void in
-            completion?(response?.error)
-        }
+        let errors = NSError(domain: dataServiceDomain, code: -10000000, userInfo: userInfo)
+        Crashlytics.sharedInstance().recordError(errors)
     }
 }

@@ -145,16 +145,16 @@ struct EventAPI {
 }
 
 
-struct BugsAPI {
-    static let Path :String = AppConstants.API_PATH + "/bugs"
-    
-    static let V_BugsReportRequest : Int = 1
+struct ReportsAPI {
+    static let path :String = AppConstants.API_PATH + "/reports"
+
+    static let v_reports_bug : Int = 3
 }
 
 
 struct UsersAPI {
     
-    static let Path : String = AppConstants.API_PATH + "/users"
+    static let path : String = AppConstants.API_PATH + "/users"
     
     static let V_CreateUsersRequest : Int = 1
     static let V_GetUserInfoRequest : Int = 1

@@ -539,7 +539,7 @@
 		75256C991F16DFBD00F2771E /* MessageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0741B3383F900A72A1E /* MessageAPI.swift */; };
 		75256C9A1F16DFBD00F2771E /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518393E1B3DCA3000C714A6 /* EventAPI.swift */; };
 		75256C9B1F16DFBD00F2771E /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75662BA61B543A5B006C538E /* SettingsAPI.swift */; };
-		75256C9C1F16DFBD00F2771E /* BugsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF9A511B5F0F500087AD2E /* BugsAPI.swift */; };
+		75256C9C1F16DFBD00F2771E /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF9A511B5F0F500087AD2E /* ReportsAPI.swift */; };
 		75256C9D1F16DFBD00F2771E /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898D1B7DBE64007EA207 /* LabelAPI.swift */; };
 		75256C9E1F16DFBD00F2771E /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB65751BD5C88800F9432D /* AttachmentAPI.swift */; };
 		75256C9F1F16DFBD00F2771E /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750778CD1BE98900009F516C /* UserAPI.swift */; };
@@ -1157,7 +1157,7 @@
 		75BDECAF1CBCD0FA00982089 /* SetPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECAA1CBCCE5B00982089 /* SetPinCodeModelImpl.swift */; };
 		75BDECB01CBCD0FA00982089 /* UnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECAC1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift */; };
 		75BF8F461DA6E49D000F350F /* SRPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF8F451DA6E49D000F350F /* SRPClient.swift */; };
-		75BF9A521B5F0F500087AD2E /* BugsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF9A511B5F0F500087AD2E /* BugsAPI.swift */; };
+		75BF9A521B5F0F500087AD2E /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF9A511B5F0F500087AD2E /* ReportsAPI.swift */; };
 		75C037461C1F94D20071E04B /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C037451C1F94D20071E04B /* SplashViewController.swift */; };
 		75C037481C1F9A940071E04B /* SplashSignInSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C037471C1F9A940071E04B /* SplashSignInSegue.swift */; };
 		75C2175A1AD6F1B800978579 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217581AD6F1B800978579 /* Crashlytics.framework */; };
@@ -1856,7 +1856,7 @@
 		75BDECAA1CBCCE5B00982089 /* SetPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPinCodeModelImpl.swift; sourceTree = "<group>"; };
 		75BDECAC1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockPinCodeModelImpl.swift; sourceTree = "<group>"; };
 		75BF8F451DA6E49D000F350F /* SRPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRPClient.swift; sourceTree = "<group>"; };
-		75BF9A511B5F0F500087AD2E /* BugsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugsAPI.swift; sourceTree = "<group>"; };
+		75BF9A511B5F0F500087AD2E /* ReportsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportsAPI.swift; sourceTree = "<group>"; };
 		75C037451C1F94D20071E04B /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		75C037471C1F9A940071E04B /* SplashSignInSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashSignInSegue.swift; sourceTree = "<group>"; };
 		75C217581AD6F1B800978579 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -2997,7 +2997,7 @@
 				7549F0B01D07827A00643C64 /* AddressAPI.swift */,
 				75BB65751BD5C88800F9432D /* AttachmentAPI.swift */,
 				75ECCE011B31F44600A8C800 /* AuthAPI.swift */,
-				75BF9A511B5F0F500087AD2E /* BugsAPI.swift */,
+				75BF9A511B5F0F500087AD2E /* ReportsAPI.swift */,
 				7528FFBB1FA7FEBF005F66A3 /* ContactsAPI.swift */,
 				75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */,
 				75A021A31C617D3F00A22A25 /* DomainAPI.swift */,
@@ -5044,7 +5044,7 @@
 				7567B0731B3363D000A72A1E /* ControllerDefined.swift in Sources */,
 				75BDCCF21EC4E35C00EF04C5 /* LabelManagerViewModelImpl.swift in Sources */,
 				75F29E1E20571E3D00C70AD2 /* ViewModelProtocolNew.swift in Sources */,
-				75BF9A521B5F0F500087AD2E /* BugsAPI.swift in Sources */,
+				75BF9A521B5F0F500087AD2E /* ReportsAPI.swift in Sources */,
 				751CE0261DDFBD0600D5EC66 /* ServerNotice.swift in Sources */,
 				755405B21B1648D2003BFC0A /* ComposeView.swift in Sources */,
 				7528FFDF1FA7FEC3005F66A3 /* ContactEditPhoneCell.swift in Sources */,
@@ -5799,7 +5799,7 @@
 				75256C9B1F16DFBD00F2771E /* SettingsAPI.swift in Sources */,
 				752800021FA7FEF6005F66A3 /* ContactsViewModel.swift in Sources */,
 				7528000F1FA7FEF6005F66A3 /* NSFetchedResultsController+Extension.swift in Sources */,
-				75256C9C1F16DFBD00F2771E /* BugsAPI.swift in Sources */,
+				75256C9C1F16DFBD00F2771E /* ReportsAPI.swift in Sources */,
 				752800151FA7FEF6005F66A3 /* UIAlertController+Extension.swift in Sources */,
 				75256C9D1F16DFBD00F2771E /* LabelAPI.swift in Sources */,
 				75256C9E1F16DFBD00F2771E /* AttachmentAPI.swift in Sources */,

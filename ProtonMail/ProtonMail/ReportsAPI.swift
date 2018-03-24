@@ -49,11 +49,11 @@ final class BugReportRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return BugsAPI.Path + AppConstants.DEBUG_OPTION
+        return ReportsAPI.path + "/bug" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
-        return BugsAPI.V_BugsReportRequest
+        return ReportsAPI.v_reports_bug
     }
 }
 
