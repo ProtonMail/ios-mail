@@ -233,18 +233,18 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         self.toSelectedContacts.append(cont)
                     }
                 } else {
-                    var sender : ContactVO!
-                    if let replyToContact = self.toContact(self.message!.replyTo ?? "") {
-                        sender = replyToContact
+                    var senders = [ContactVO]()
+                    let replytos = self.toContacts(self.message?.replyTos ?? "")
+                    if replytos.count > 0 {
+                        senders.append(contentsOf: replytos)
                     } else {
                         if let newSender = self.toContact(self.message!.senderObject ?? "") {
-                            sender = newSender
+                            senders.append(newSender)
                         } else {
-                            sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress)
+                            senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
                         }
                     }
-                    
-                    self.toSelectedContacts.append(sender)
+                    self.toSelectedContacts.append(contentsOf: senders)
                 }
             case .replyAll:
                 if oldLocation == .outbox {
@@ -258,19 +258,22 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     }
                 } else {
                     let userAddress = sharedUserDataService.userAddresses
-                    var sender : ContactVO!
-                    if let replyToContact = self.toContact(self.message!.replyTo ?? "") {
-                        sender = replyToContact
+                    var senders = [ContactVO]()
+                    let replytos = self.toContacts(self.message?.replyTos ?? "")
+                    if replytos.count > 0 {
+                        senders.append(contentsOf: replytos)
                     } else {
                         if let newSender = self.toContact(self.message!.senderObject ?? "") {
-                            sender = newSender
+                            senders.append(newSender)
                         } else {
-                            sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress)
+                            senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
                         }
                     }
                     
-                    if  !sender.isDuplicated(userAddress) {
-                        self.toSelectedContacts.append(sender)
+                    for sender in senders {
+                        if !sender.isDuplicated(userAddress) {
+                            self.toSelectedContacts.append(sender)
+                        }
                     }
                     
                     let toContacts = self.toContacts(self.message!.recipientList)
@@ -280,7 +283,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
                     if self.toSelectedContacts.count <= 0 {
-                        self.toSelectedContacts.append(sender)
+                        self.toSelectedContacts.append(contentsOf: senders)
                     }
                     let senderContacts = self.toContacts(self.message!.ccList)
                     for cont in senderContacts {

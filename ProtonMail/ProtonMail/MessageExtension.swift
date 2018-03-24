@@ -491,6 +491,7 @@ extension Message {
         newMessage.senderName = message.senderName
         newMessage.senderObject = message.senderObject
         newMessage.replyTo = message.replyTo
+        newMessage.replyTos = message.replyTos
         
         newMessage.orginalTime = message.time
         newMessage.orginalMessageID = message.messageID
