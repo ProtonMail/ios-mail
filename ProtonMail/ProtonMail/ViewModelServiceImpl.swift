@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UICKeyChainStore
 
 //keep this unique
 let sharedVMService : ViewModelServiceImpl = ViewModelServiceImpl()
@@ -242,13 +243,21 @@ class ViewModelServiceImpl: ViewModelService {
         vmp.setViewModel(ContactTypeViewModelImpl(t: type))
     }
     
-    func buildTermsWebViewModel(_ vmp : WebViewController) {
-        let model = TermsWebViewModelImpl()
-        self.set(vmp, val: model)
+    override func buildComposer<T>(_ vmp: T, subject: String, content: String, files: [FileData]) where T : ViewModelProtocolNew {
+        latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare);
+        guard let viewModel = latestComposerViewModel as? T.argType else {
+            return
+        }
+        vmp.setViewModel(viewModel)
     }
     
-    func buildPolicyWebViewModel(_ vmp : WebViewController) {
+    func buildTerms(_ base : ViewModelProtocolBase) {
+        let model = TermsWebViewModelImpl()
+        base.setModel(vm: model)
+    }
+    
+    func buildPolicy(_ base : ViewModelProtocolBase) {
         let model = PolicyWebViewModelImpl()
-        self.set(vmp, val: model)
+        base.setModel(vm: model)
     }
 }

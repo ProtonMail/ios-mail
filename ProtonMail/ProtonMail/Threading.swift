@@ -17,6 +17,12 @@ enum ThreadType {
     case async
 }
 
+public func main(_ left: @escaping () -> Void) {
+    OperationQueue.main.addOperation {
+        left()
+    }
+}
+
 /** Serial dispatch queue used by the ~> operator. */
 private let async_q : DispatchQueue = DispatchQueue(label: "Async queue", attributes: DispatchQueue.Attributes.concurrent)
 

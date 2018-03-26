@@ -7,11 +7,9 @@
 //
 
 import Foundation
-
-
+import MBProgressHUD
 
 extension NSError {
-    
     
     public class func alertMessageSentToast() ->Void {
         let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!

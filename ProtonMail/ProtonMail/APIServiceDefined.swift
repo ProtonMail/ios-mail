@@ -8,18 +8,74 @@
 
 import Foundation
 
+//*******************************************************************************************
+//ProtonMail API Doc : https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api.md
+//*******************************************************************************************
 
-struct MessageAPI {
-    
+
+//Addresses API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_addresses.md
+struct AddressesAPI {
     /// base message api path
-    static let Path :String = AppConstants.API_PATH + "/messages"
+    static let path :String = AppConstants.API_PATH + "/addresses"
+    
+    //Create new address [POST /addresses] locked
+    
+    //Order Addresses [/addresses/order]
+    static let v_update_order : Int = 3
+    
+    //Setup new non-subuser address [POST /addresses/setup]
+    static let v_setup : Int = 3
+    
+    //Get Addresses [GET /addresses]
+    static let v_get_addresses : Int = 3
+    //Get Address [GET /addresses/{address_id}]
+    
+    //Update address [PUT]
+    static let v_update_address : Int = 3
+    
+    
+}
+
+
+//Not impl yet, maybe use in the future
+struct AdminAPI {
+    //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_admin.md
+}
+
+//Not impl yet, maybe use in the future
+struct AdminVPNAPI {
+    //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_admin_vpn.md
+}
+
+
+//Attachment API
+//Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_attachments.md
+struct AttachmentAPI {
+    /// base message api path
+    static let Path :String = AppConstants.API_PATH + "/attachments"
+    
+    /// fetch message request version
+    static let V_AttachmentRemoveRequest : Int = 1
+    
+}
+
+
+
+
+//Message API
+//Doc: V1 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages.md
+//Doc: V3 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages_v3.md
+struct MessageAPI {
+    /// base message api path
+    static let path :String = AppConstants.API_PATH + "/messages"
     
     /// fetch message request version
     static let V_MessageFetchRequest : Int = 1
     
-    static let V_MessageDraftRequest : Int = 1
+    static let v_create_draft : Int = 3
     
-    static let V_MessageUpdateDraftRequest : Int = 1
+    static let v_update_draft : Int = 3
     
     static let V_MessageActionRequest : Int = 1
     
@@ -28,19 +84,9 @@ struct MessageAPI {
     static let V_MessageSendRequest : Int = 1
 }
 
-struct AttachmentAPI {
-    /// base message api path
-    static let Path :String = AppConstants.API_PATH + "/attachments"
-    
-    
-    /// fetch message request version
-    static let V_AttachmentRemoveRequest : Int = 1
-
-    
-}
 
 struct LabelAPI {
-    static let Path :String = AppConstants.API_PATH + "/labels"
+    static let path :String = AppConstants.API_PATH + "/labels"
     
     //
     static let V_LabelFetchRequest : Int = 1
@@ -49,6 +95,9 @@ struct LabelAPI {
     static let V_CreateLabelRequest : Int = 1
     static let V_UpdateLabelRequest : Int = 1
     static let V_DeleteLabelRequest : Int = 1
+    
+    //doesn't impl yet
+    static let v_order_labels : Int = 3
 }
 
 struct AuthAPI {
@@ -64,11 +113,13 @@ struct AuthAPI {
 
 
 struct SettingsAPI {
-    /// base message api path
-    static let Path :String = AppConstants.API_PATH + "/settings"
+    /// base settings api path
+    static let path :String = AppConstants.API_PATH + "/settings"
     
-    /// fetch message request version
-    static let V_SettingsUpdateDomainRequest : Int = 1
+    static let v_get_settings : Int = 3
+    
+    //static let V_SettingsUpdateDomainRequest : Int = 1 departured
+    
     static let V_SettingsUpdateNotifyRequest : Int = 1
     
     static let V_SettingsUpdateSwipeLeftRequest : Int = 1
@@ -82,15 +133,6 @@ struct SettingsAPI {
     static let V_SettingsUpdateLoginPasswordRequest : Int = 1
 }
 
-struct AddressesAPI {
-    /// base message api path
-    static let Path :String = AppConstants.API_PATH + "/addresses"
-    
-    /// fetch message request version
-    static let V_AddressesUpdateRequest : Int = 1
-    
-    static let V_AddressesSetupRequest : Int = 1
-}
 
 struct EventAPI {
     /// base event api path
@@ -103,19 +145,20 @@ struct EventAPI {
 }
 
 
-struct BugsAPI {
-    static let Path :String = AppConstants.API_PATH + "/bugs"
-    
-    static let V_BugsReportRequest : Int = 1
+struct ReportsAPI {
+    static let path :String = AppConstants.API_PATH + "/reports"
+
+    static let v_reports_bug : Int = 3
 }
 
 
 struct UsersAPI {
     
-    static let Path : String = AppConstants.API_PATH + "/users"
+    static let path : String = AppConstants.API_PATH + "/users"
+    
+    static let v_get_userinfo : Int = 3
     
     static let V_CreateUsersRequest : Int = 1
-    static let V_GetUserInfoRequest : Int = 1
     static let V_GetHumanRequest : Int = 1
     static let V_HumanCheckRequest : Int = 1
     static let V_CheckUserExistRequest : Int = 1
@@ -139,11 +182,24 @@ struct OrganizationsAPI {
     static let V_GetOrgKeysRequest : Int = 1
 }
 
+//Domains API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_domains.md
 struct DomainsAPI {
     
-    static let Path : String = AppConstants.API_PATH + "/domains"
+    static let path : String = AppConstants.API_PATH + "/domains"
     
-    static let V_AvailableDomainsRequest : Int = 1
+    //Get all domains for this user's organization and check their DNS's [GET]
+    
+    //Get a specific domains and its check DNS [GET]
+    
+    //Get Available Domains [GET /domains/available]
+    static let v_available_domains : Int = 3
+    
+    //Get Premium Domains [GET /domains/premium]
+    
+    //Create Domain [POST /domains]
+    
+    //Delete Domain [DELETE /domains/{domainid}]
 }
 
 struct DeviceAPI {
@@ -154,8 +210,7 @@ struct DeviceAPI {
     static let V_UnRegisterDeviceRequest : Int = 1
 }
 
-
-public struct ContactsAPI {
+struct ContactsAPI {
     
     static let Path : String = AppConstants.API_PATH + "/contacts"
     
@@ -165,5 +220,5 @@ public struct ContactsAPI {
     static let V_ContactDetailRequest : Int = 2
     static let V_ContactDeleteRequest : Int = 2
     static let V_ContactUpdateRequest : Int = 2
-    
 }
+

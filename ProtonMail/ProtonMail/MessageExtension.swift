@@ -162,30 +162,24 @@ extension Message {
     
     func setLabelLocation(_ location : MessageLocation) {
         if let context = self.managedObjectContext {
-            context.performAndWait() {
-                let toLableID = String(location.rawValue)
-                let labelObjs = self.mutableSetValue(forKey: "labels")
-                
-                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
-                    var exsited = false
-                    for l in labelObjs {
-                        if let label = l as? Label {
-                            if label == toLabel {
-                                exsited = true
-                                break
-                            }
+            let toLableID = String(location.rawValue)
+            let labelObjs = self.mutableSetValue(forKey: "labels")
+            
+            if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+                var exsited = false
+                for l in labelObjs {
+                    if let label = l as? Label {
+                        if label == toLabel {
+                            exsited = true
+                            break
                         }
                     }
-                    if !exsited {
-                        labelObjs.add(toLabel)
-                    }
                 }
-                
-                self.setValue(labelObjs, forKey: "labels")
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
+                if !exsited {
+                    labelObjs.add(toLabel)
                 }
             }
+            self.setValue(labelObjs, forKey: "labels")
         }
     }
     
@@ -194,7 +188,6 @@ extension Message {
             context.performAndWait() {
                 let labelObjs = self.mutableSetValue(forKey: "labels")
                 if keepSent && currentlocation == .outbox {
-                    
                 } else {
                     let fromLabelID = String(currentlocation.rawValue)
                     for l in labelObjs {
@@ -462,6 +455,17 @@ extension Message {
         }
     }
     
+    var fromAddress : Address? {
+        get {
+            if let addressID = addressID, !addressID.isEmpty {
+                if let add = sharedUserDataService.userAddresses.indexOfAddress(addressID) {
+                    return add;
+                }
+            }
+            return nil
+        }
+    }
+    
     var senderContactVO : ContactVO! {
         var sender : ContactVO!
         //        if let beforeParsed = self.newSender, paserdNewSender = beforeParsed.toContact() {
@@ -487,12 +491,13 @@ extension Message {
         newMessage.senderName = message.senderName
         newMessage.senderObject = message.senderObject
         newMessage.replyTo = message.replyTo
+        newMessage.replyTos = message.replyTos
         
         newMessage.orginalTime = message.time
         newMessage.orginalMessageID = message.messageID
         newMessage.expirationOffset = 0
         
-        newMessage.addressID = message.getAddressID
+        newMessage.addressID = message.addressID
         newMessage.messageStatus = message.messageStatus
         newMessage.numAttachments = message.numAttachments
         
@@ -500,13 +505,12 @@ extension Message {
             PMLog.D("error: \(error)")
         }
         
-        
         for (index, attachment) in message.attachments.enumerated() {
             PMLog.D("index: \(index)")
             if let att = attachment as? Attachment {
                 if att.inline() || copyAtts {
                     let attachment = Attachment(context: newMessage.managedObjectContext!)
-                    attachment.attachmentID = "0"
+                    attachment.attachmentID = att.attachmentID
                     attachment.message = newMessage
                     attachment.fileName = att.fileName
                     attachment.mimeType = "image/jpg"
@@ -516,6 +520,7 @@ extension Message {
                     attachment.localURL = att.localURL
                     attachment.keyPacket = att.keyPacket
                     attachment.isTemp = true
+                    attachment.keyChanged = true
                     if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
                         PMLog.D("error: \(error)")
                     }

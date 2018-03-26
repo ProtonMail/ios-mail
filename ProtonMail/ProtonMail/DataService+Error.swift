@@ -36,11 +36,17 @@ protocol CustomErrorVar {
 }
 
 extension CustomErrorVar {
-    func toError() -> NSError {
+    private func toError() -> NSError {
         return NSError.CreateError(dataServiceDomain,
                                    code: code,
                                    localizedDescription: desc,
                                    localizedFailureReason: reason)
+    }
+    
+    var error : NSError {
+        get {
+            return self.toError()
+        }
     }
 }
 

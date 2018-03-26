@@ -12,6 +12,7 @@
 
 import UIKit
 import Contacts
+import CoreData
 
 class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     

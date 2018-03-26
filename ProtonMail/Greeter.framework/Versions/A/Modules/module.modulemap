@@ -1,0 +1,8 @@
+framework module "Greeter" {
+	header "ref.h"
+    header "Greeter.objc.h"
+    header "universe.objc.h"
+    header "Greeter.h"
+
+    export *
+}

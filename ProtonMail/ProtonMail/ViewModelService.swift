@@ -9,10 +9,10 @@
 import Foundation
 
 
-// this is abstract ViewModel service
+// this is abstract ViewModel service for tracking the ui flow
 class ViewModelService {
     
-    open func set<T : ViewModelProtocolNew>(_ vpm: T, val :T.argType) {
+    open func set<T : ViewModelProtocolNew>(vpm: T, val :T.argType) {
         vpm.setViewModel(val)
     }
     
@@ -20,9 +20,13 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func newShareDraftViewModel(_ vmp : ViewModelProtocol, subject: String, content: String, files : [FileData]) {
+    func buildComposer<T : ViewModelProtocolNew>(_ vpm: T, subject: String, content: String, files : [FileData]) {
         fatalError("This method must be overridden")
     }
+
+//    func newShareDraftViewModel(_ vmp : ViewModelProtocolNew, subject: String, content: String, files : [FileData]) {
+//        fatalError("This method must be overridden")
+//    }
     
     func newDraftViewModel(_ vmp : ViewModelProtocol) {
         fatalError("This method must be overridden")

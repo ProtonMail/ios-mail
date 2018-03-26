@@ -6,6 +6,7 @@
 //  Copyright © 2017 ProtonMail. All rights reserved.
 //
 import Foundation
+import CoreData
 
 enum MenuViewError: Error {
     

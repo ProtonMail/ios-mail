@@ -27,6 +27,10 @@ final class ContactEditTextViewCell: UITableViewCell {
         super.awakeFromNib()
         self.textView.delegate = self
     }
+    @IBAction func notesClicked(_ sender: Any) {
+        
+        self.textView.becomeFirstResponder()
+    }
     
     func configCell(obj : ContactEditNote, paid: Bool, callback : ContactEditTextViewCellDelegate?) {
         self.note = obj

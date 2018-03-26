@@ -7,12 +7,14 @@
 //
 
 import Foundation
-
+import CoreData
 
 
 extension Email {
     struct Attributes {
         static let entityName = "Email"
+        static let contactID = "contactID"
+        static let emailID = "emailID"
     }
     
     /// Removes all messages from the store.
@@ -20,6 +22,9 @@ extension Email {
         context.deleteAll(Attributes.entityName)
     }
     
+    class func EmailForID(_ emailID: String, inManagedObjectContext context: NSManagedObjectContext) -> Email? {
+        return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.emailID, matchingValue: emailID) as? Email
+    }
     
     func log() {
         PMLog.D("EmailID: \(self.emailID)")

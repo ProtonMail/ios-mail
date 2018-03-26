@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MCSwipeTableViewCell
 
 class MailboxMessageCell: MCSwipeTableViewCell {
     /**

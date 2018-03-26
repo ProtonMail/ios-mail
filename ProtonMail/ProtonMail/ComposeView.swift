@@ -7,6 +7,7 @@
 //
 import Foundation
 import UIKit
+import Masonry
 
 protocol ComposeViewDelegate {
     func ComposeViewDidSizeChanged(_ size: CGSize)

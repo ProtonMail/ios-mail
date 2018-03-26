@@ -53,13 +53,13 @@ public class ChangeLoginPWDViewModel : ChangePWDViewModel{
         let confirmpwd = confirm_new_pwd //.trim();
         
         if curr_pwd != sharedUserDataService.password {
-            complete(false, UpdatePasswordError.currentPasswordWrong.toError())
+            complete(false, UpdatePasswordError.currentPasswordWrong.error)
         }
         else if newpwd == "" || confirmpwd == "" {
-            complete(false, UpdatePasswordError.passwordEmpty.toError())
+            complete(false, UpdatePasswordError.passwordEmpty.error)
         }
         else if newpwd != confirmpwd {
-            complete(false, UpdatePasswordError.newNotMatch.toError());
+            complete(false, UpdatePasswordError.newNotMatch.error);
         }
         else if curr_pwd == newpwd {
             complete(true, nil)
@@ -108,10 +108,10 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
         
 
         if newpwd == "" || confirmpwd == "" {
-            complete(false, UpdatePasswordError.passwordEmpty.toError())
+            complete(false, UpdatePasswordError.passwordEmpty.error)
         }
         else if newpwd != confirmpwd {
-            complete(false, UpdatePasswordError.newNotMatch.toError())
+            complete(false, UpdatePasswordError.newNotMatch.error)
         }
 //        else if curr_pwd == newpwd {
 //            complete(true, nil)
@@ -161,10 +161,10 @@ class ChangeSinglePasswordViewModel : ChangePWDViewModel{
         
         
         if newpwd == "" || confirmpwd == "" {
-            complete(false, UpdatePasswordError.passwordEmpty.toError())
+            complete(false, UpdatePasswordError.passwordEmpty.error)
         }
         else if newpwd != confirmpwd {
-            complete(false, UpdatePasswordError.newNotMatch.toError())
+            complete(false, UpdatePasswordError.newNotMatch.error)
         }
             //        else if curr_pwd == newpwd {
             //            complete(true, nil)
@@ -213,13 +213,13 @@ class ChangePWDViewModelTest : ChangePWDViewModel{
         let confirmpwd = confirm_new_pwd//.trim();
         
         if curr_pwd != sharedUserDataService.mailboxPassword || !sharedUserDataService.isMailboxPasswordValid(curr_pwd, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
-            complete(false, UpdatePasswordError.currentPasswordWrong.toError())
+            complete(false, UpdatePasswordError.currentPasswordWrong.error)
         }
         else if newpwd == "" || confirmpwd == "" {
-            complete(false, UpdatePasswordError.passwordEmpty.toError())
+            complete(false, UpdatePasswordError.passwordEmpty.error)
         }
         else if newpwd != confirmpwd {
-            complete(false, UpdatePasswordError.newNotMatch.toError())
+            complete(false, UpdatePasswordError.newNotMatch.error)
         }
         else if curr_pwd == newpwd {
             complete(true, nil)
