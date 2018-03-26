@@ -456,7 +456,7 @@ class SignInViewController: ProtonMailViewController {
         
         
         if biometricType == .faceID {
-            self.touchIDButton.setImage(UIImage(named: "next"), for: .normal)
+            self.touchIDButton.setImage(UIImage(named: "face_id_icon"), for: .normal)
         }
         
     }
