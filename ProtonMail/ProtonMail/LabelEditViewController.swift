@@ -65,22 +65,12 @@ class LableEditViewController : UIViewController {
         let color = viewModel.color(at: selected?.row ?? 0)
         viewModel.apply(withName: newLabelInput.text!, color: color, error: { (code, errorMessage) -> Void in
             ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-            if code == 14005 {
-                let alert = NSLocalizedString("The maximum number of labels is 20.", comment: "Description").alertController()
-                alert.addOKAction()
-                self.present(alert, animated: true, completion: nil)
-            } else if code == 14002 {
-                let alert = NSLocalizedString("The label name is duplicate", comment: "Description").alertController()
-                alert.addOKAction()
-                self.present(alert, animated: true, completion: nil)
-            } else {
-                let alert = errorMessage.alertController()
-                alert.addOKAction()
-                self.present(alert, animated: true, completion: nil)
-            }
-            }, complete: { () -> Void in
-                self.dismiss(animated: true, completion: nil)
-                self.delegate?.dismissed()
+            let alert = errorMessage.alertController()
+            alert.addOKAction()
+            self.present(alert, animated: true, completion: nil)
+        }, complete: { () -> Void in
+            self.dismiss(animated: true, completion: nil)
+            self.delegate?.dismissed()
         })
     }
     
