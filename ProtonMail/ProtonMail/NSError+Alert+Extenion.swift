@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MBProgressHUD
 
 
 extension NSError {

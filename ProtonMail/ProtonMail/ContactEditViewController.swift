@@ -676,7 +676,7 @@ extension ContactEditViewController: UITableViewDelegate {
         if sections[indexPath.section] == .upgrade {
              return 200 //  280.0
         }
-        
+
         return 48.0
     }
     
@@ -686,9 +686,8 @@ extension ContactEditViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismissKeyboard()
-        defer {
-            tableView.deselectRow(at: indexPath, animated: true)
-        }
+        tableView.deselectRow(at: indexPath, animated: true)
+        
         let sections = viewModel.getSections()
         let section = indexPath.section
         let row = indexPath.row

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 final class ContactsViewModelImpl : ContactsViewModel {
     // MARK: - fetch controller

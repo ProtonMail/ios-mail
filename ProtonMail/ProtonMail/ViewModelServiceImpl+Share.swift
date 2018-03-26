@@ -13,11 +13,17 @@ let sharedVMService : ViewModelService = ViewModelServiceShareImpl()
 final class ViewModelServiceShareImpl: ViewModelService {
     
     private var latestComposerViewModel : ComposeViewModel?
-//    private var activeViewController : ViewModelProtocol?
     
-    override func newShareDraftViewModel(_ vmp : ViewModelProtocol, subject: String, content: String, files : [FileData]) {
-        //        activeViewController = vmp
-        latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare);
-        vmp.setViewModel(latestComposerViewModel!)
+    override func buildComposer<T>(_ vmp: T, subject: String, content: String, files: [FileData]) where T : ViewModelProtocolNew {
+        latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)
+        guard let viewModel = latestComposerViewModel as? T.argType else {
+            fatalError("This method must be overridden")
+        }
+        vmp.setViewModel(viewModel)
     }
+    
+//    override func newShareDraftViewModel(_ vmp : ViewModelProtocol, subject: String, content: String, files : [FileData]) {
+//        latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare);
+//        vmp.setViewModel(latestComposerViewModel!)
+//    }
 }

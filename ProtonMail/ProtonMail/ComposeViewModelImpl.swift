@@ -7,13 +7,38 @@
 //
 
 import Foundation
+import PromiseKit
+import AwaitKit
 
 final class ComposeViewModelImpl : ComposeViewModel {
+    
+    enum RuntimeError : String, Error, CustomErrorVar {
+        
+        case no_address = "Can't find the public key for this address"
+        
+        var code: Int {
+            get {
+                return -1010
+            }
+        }
+        
+        var desc: String {
+            get {
+                return self.rawValue
+            }
+        }
+        
+        var reason: String {
+            get {
+                return self.rawValue
+            }
+        }
+        
+    }
     
     
     init(subject: String, body: String, files: [FileData], action : ComposeMessageAction!) {
         super.init()
-        
         self.message = nil
         self.setSubject(subject)
         self.setBody(body)
@@ -105,9 +130,45 @@ final class ComposeViewModelImpl : ComposeViewModel {
         return self.message?.attachments.allObjects as? [Attachment]
     }
     
-    override func updateAddressID(_ address_id: String) {
-        self.message?.addressID = address_id
-        self.updateDraft()
+    override func updateAddressID(_ address_id: String) -> Promise<Void> {
+        return async {
+            guard let userinfo = sharedUserDataService.userInfo,
+                let addr = userinfo.userAddresses.indexOfAddress(address_id),
+                let key = addr.keys.first else {
+                throw RuntimeError.no_address.error
+            }
+            
+            if let atts = self.getAttachments() {
+                for att in atts {
+                    do {
+                        guard let session = try att.sessionKey() else {
+                            continue
+                        }
+                        guard let newKeyPack = try session.getPublicSessionKeyPackage(key.public_key)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                            continue
+                        }
+                        
+                        att.keyPacket = newKeyPack
+                        att.keyChanged = true
+                    } catch {
+                        
+                    }
+                }
+                
+                if let context = self.message?.managedObjectContext {
+                    context.perform {
+                        if let error = context.saveUpstreamIfNeeded() {
+                            PMLog.D("error: \(error)")
+                        }
+                    }
+                }
+                
+            }
+            
+            self.message?.addressID = address_id
+            self.updateDraft()
+        }
+        
     }
     
     override func getAddresses() -> [Address] {
@@ -121,6 +182,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
             }
         }
         return self.message?.defaultAddress
+    }
+    
+    override func fromAddress() -> Address? {
+        return self.message?.fromAddress
     }
     
     override func getCurrrentSignature(_ addr_id : String) -> String? {
@@ -168,18 +233,18 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         self.toSelectedContacts.append(cont)
                     }
                 } else {
-                    var sender : ContactVO!
-                    if let replyToContact = self.toContact(self.message!.replyTo ?? "") {
-                        sender = replyToContact
+                    var senders = [ContactVO]()
+                    let replytos = self.toContacts(self.message?.replyTos ?? "")
+                    if replytos.count > 0 {
+                        senders.append(contentsOf: replytos)
                     } else {
                         if let newSender = self.toContact(self.message!.senderObject ?? "") {
-                            sender = newSender
+                            senders.append(newSender)
                         } else {
-                            sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress)
+                            senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
                         }
                     }
-                    
-                    self.toSelectedContacts.append(sender)
+                    self.toSelectedContacts.append(contentsOf: senders)
                 }
             case .replyAll:
                 if oldLocation == .outbox {
@@ -193,19 +258,22 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     }
                 } else {
                     let userAddress = sharedUserDataService.userAddresses
-                    var sender : ContactVO!
-                    if let replyToContact = self.toContact(self.message!.replyTo ?? "") {
-                        sender = replyToContact
+                    var senders = [ContactVO]()
+                    let replytos = self.toContacts(self.message?.replyTos ?? "")
+                    if replytos.count > 0 {
+                        senders.append(contentsOf: replytos)
                     } else {
                         if let newSender = self.toContact(self.message!.senderObject ?? "") {
-                            sender = newSender
+                            senders.append(newSender)
                         } else {
-                            sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress)
+                            senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
                         }
                     }
                     
-                    if  !sender.isDuplicated(userAddress) {
-                        self.toSelectedContacts.append(sender)
+                    for sender in senders {
+                        if !sender.isDuplicated(userAddress) {
+                            self.toSelectedContacts.append(sender)
+                        }
                     }
                     
                     let toContacts = self.toContacts(self.message!.recipientList)
@@ -215,7 +283,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
                     if self.toSelectedContacts.count <= 0 {
-                        self.toSelectedContacts.append(sender)
+                        self.toSelectedContacts.append(contentsOf: senders)
                     }
                     let senderContacts = self.toContacts(self.message!.ccList)
                     for cont in senderContacts {
@@ -272,8 +340,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
             MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil, mailbox_pwd: sharedUserDataService.mailboxPassword!)
             
             if let context = message!.managedObjectContext {
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
+                context.perform {
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)")
+                    }
                 }
             }
         }

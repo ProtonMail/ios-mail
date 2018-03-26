@@ -18,6 +18,7 @@ import UIKit
 import Fabric
 import Crashlytics
 import LocalAuthentication
+import MBProgressHUD
 
 
 //class SignInViewController: BaseViewController {
@@ -652,8 +653,9 @@ class SignInViewController: ProtonMailViewController {
     }
     
     @IBAction func fogorPasswordAction(_ sender: AnyObject) {
-        dismissKeyboard()
-//        UIApplication.shared.openURL(forgotPasswordURL)
+        dismissKeyboard();
+
+        //UIApplication.shared.openURL(forgotPasswordURL)
         let alertStr = NSLocalizedString("Please use the web application to reset your password.", comment: "Alert")
         let alertController = alertStr.alertController()
         alertController.addOKAction()

@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import SWRevealViewController
 
 class ProtonMailViewController: UIViewController {
     

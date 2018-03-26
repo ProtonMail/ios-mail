@@ -12,6 +12,7 @@
 
 import Foundation
 import UIKit
+import MCSwipeTableViewCell
 
 final class ContactsTableViewCell: MCSwipeTableViewCell {
 

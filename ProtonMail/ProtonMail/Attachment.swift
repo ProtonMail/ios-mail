@@ -26,6 +26,7 @@ class Attachment: NSManagedObject {
     @NSManaged var localURL: URL?
     @NSManaged var mimeType: String
     @NSManaged var isTemp: Bool
+    @NSManaged var keyChanged: Bool
     
     @NSManaged var headerInfo: String?
     

@@ -16,8 +16,9 @@
 import UIKit
 import Fabric
 import Crashlytics
-//import Firebase
-
+import SWRevealViewController
+import AFNetworking
+import AFNetworkActivityLogger
 
 let sharedUserDataService = UserDataService()
 
@@ -147,6 +148,17 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
 //            application.registerUserNotificationSettings(settings)
 //        }
 //        application.registerForRemoteNotifications()
+//
+//        let userInfo = [
+//            NSLocalizedDescriptionKey: "The request failed.",
+//            NSLocalizedFailureReasonErrorKey: "The response returned a 505ß.",
+//            NSLocalizedRecoverySuggestionErrorKey: "Does this page exist?",
+//            "ProductID": "123456",
+//            "UserID": "Feng"
+//        ]
+//
+//        let errors = NSError(domain: dataServiceDomain, code: -101010, userInfo: userInfo)
+//        Crashlytics.sharedInstance().recordError(errors)
         
         shareViewModelFactoy = ViewModelFactoryProduction()
         sharedVMService.cleanLegacy()

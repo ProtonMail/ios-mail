@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import AwaitKit
 
 protocol UserDataServiceDelegate {
     func onLogout(animated: Bool)
@@ -22,6 +23,30 @@ protocol UserDataServiceDelegate {
 
 /// Stores information related to the user
 class UserDataService {
+    
+    enum RuntimeError : String, Error, CustomErrorVar {
+        case no_address = "Can't find address key"
+        case no_user = "Can't find user info"
+        
+        var code: Int {
+            get {
+                return -1001000
+            }
+        }
+        
+        var desc: String {
+            get {
+                return self.rawValue
+            }
+        }
+        
+        var reason: String {
+            get {
+                return self.rawValue
+            }
+        }
+        
+    }
     
     typealias CompletionBlock = APIService.CompletionBlock
     typealias UserInfoBlock = APIService.UserInfoBlock
@@ -175,6 +200,11 @@ class UserDataService {
         return nil
     }
     
+    func get_address_pub_key(address_id : String) -> String {
+    
+        return ""
+    }
+    
     // MARK: - Public variables
     
     var defaultEmail : String {
@@ -286,16 +316,32 @@ class UserDataService {
     }
     
     func fetchUserInfo(_ completion: UserInfoBlock? = nil) {
-        
-        let getUserInfo = GetUserInfoRequest<GetUserInfoResponse>()
-        getUserInfo.call { (task, response, hasError) -> Void in
-            if !hasError {
-                self.userInfo = response?.userInfo
+        async {
+            do {
+                let addrApi = GetAddressesRequest()
+                guard let addrRes = try addrApi.syncCall() else {
+                    throw RuntimeError.no_address.error
+                }
+                
+                let userApi = GetUserInfoRequest()
+                guard let userRes = try userApi.syncCall() else {
+                    throw RuntimeError.no_user.error
+                }
+                    
+                userRes.userInfo?.setAddresses(addresses: addrRes.addresses)
+                self.userInfo = userRes.userInfo
                 if let addresses = self.userInfo?.userAddresses.toPMNAddresses() {
                     sharedOpenPGP.setAddresses(addresses);
                 }
+                
+                main {
+                    completion?(self.userInfo, nil, nil)
+                }
+            } catch let error as NSError {
+                main {
+                    completion?(nil, nil, error)
+                }
             }
-            completion?(self.userInfo, nil, response?.error)
         }
     }
     
@@ -427,24 +473,24 @@ class UserDataService {
             do {
                 //generate new pwd and verifier
                 guard let _username = self.username else {
-                    throw UpdatePasswordError.invalidUserName.toError()
+                    throw UpdatePasswordError.invalidUserName.error
                 }
                 let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
                 guard let moduls_id = authModuls?.ModulusID else {
-                    throw UpdatePasswordError.invalidModulusID.toError()
+                    throw UpdatePasswordError.invalidModulusID.error
                 }
                 guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
-                    throw UpdatePasswordError.invalidModulus.toError()
+                    throw UpdatePasswordError.invalidModulus.error
                 }
                 //generat new verifier
                 let new_decodedModulus : Data = new_encodedModulus.decodeBase64()
                 let new_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
                 guard let new_hashed_password = PasswordUtils.hashPasswordVersion4(new_password, salt: new_salt, modulus: new_decodedModulus) else {
-                    throw UpdatePasswordError.cantHashPassword.toError()
+                    throw UpdatePasswordError.cantHashPassword.error
                 }
                 
                 guard let verifier = try generateVerifier(2048, modulus: new_decodedModulus, hashedPassword: new_hashed_password) else {
-                    throw UpdatePasswordError.cantGenerateVerifier.toError()
+                    throw UpdatePasswordError.cantGenerateVerifier.error
                 }
                 
                 //start check exsit srp
@@ -455,10 +501,10 @@ class UserDataService {
                     // get auto info
                     let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
                     guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
-                        throw UpdatePasswordError.invalideAuthInfo.toError()
+                        throw UpdatePasswordError.invalideAuthInfo.error
                     }
                     guard let encodedModulus = try modulus.getSignature() else {
-                        throw UpdatePasswordError.invalideAuthInfo.toError()
+                        throw UpdatePasswordError.invalideAuthInfo.error
                     }
                     
                     let decodedModulus : Data = encodedModulus.decodeBase64()
@@ -473,11 +519,11 @@ class UserDataService {
                     //init api calls
                     let hashVersion = forceRetry ? forceRetryVersion : authVersion
                     guard let hashedPassword = PasswordUtils.getHashedPwd(hashVersion, password: login_password , username: _username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
-                        throw UpdatePasswordError.cantHashPassword.toError()
+                        throw UpdatePasswordError.cantHashPassword.error
                     }
                     
                     guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword), srpClient.isValid() == true else {
-                        throw UpdatePasswordError.cantGenerateSRPClient.toError()
+                        throw UpdatePasswordError.cantGenerateSRPClient.error
                     }
                     
                     do {
@@ -492,7 +538,7 @@ class UserDataService {
                             self.password = new_password
                             forceRetry = false
                         } else {
-                            throw UpdatePasswordError.default.toError()
+                            throw UpdatePasswordError.default.error
                         }
                     } catch let error as NSError {
                         if error.isInternetError() {
@@ -518,15 +564,15 @@ class UserDataService {
         {//asyn
             do {
                 guard let _username = self.username else {
-                    throw UpdatePasswordError.invalidUserName.toError()
+                    throw UpdatePasswordError.invalidUserName.error
                 }
                 
                 guard let user_info = self.userInfo else {
-                    throw UpdatePasswordError.default.toError()
+                    throw UpdatePasswordError.default.error
                 }
                 
                 guard let old_password = self.mailboxPassword else {
-                    throw UpdatePasswordError.currentPasswordWrong.toError()
+                    throw UpdatePasswordError.currentPasswordWrong.error
                 }
                 
                 //generat keysalt
@@ -554,19 +600,19 @@ class UserDataService {
                 if buildAuth {
                     let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
                     guard let moduls_id = authModuls?.ModulusID else {
-                        throw UpdatePasswordError.invalidModulusID.toError()
+                        throw UpdatePasswordError.invalidModulusID.error
                     }
                     guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
-                        throw UpdatePasswordError.invalidModulus.toError()
+                        throw UpdatePasswordError.invalidModulus.error
                     }
                     //generat new verifier
                     let new_decodedModulus : Data = new_encodedModulus.decodeBase64()
                     let new_lpwd_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
                     guard let new_hashed_password = PasswordUtils.hashPasswordVersion4(new_password, salt: new_lpwd_salt, modulus: new_decodedModulus) else {
-                        throw UpdatePasswordError.cantHashPassword.toError()
+                        throw UpdatePasswordError.cantHashPassword.error
                     }
                     guard let verifier = try generateVerifier(2048, modulus: new_decodedModulus, hashedPassword: new_hashed_password) else {
-                        throw UpdatePasswordError.cantGenerateVerifier.toError()
+                        throw UpdatePasswordError.cantGenerateVerifier.error
                     }
                     
                     authPacket = PasswordAuth(modulus_id: moduls_id,
@@ -582,10 +628,10 @@ class UserDataService {
                     // get auto info
                     let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
                     guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
-                        throw UpdatePasswordError.invalideAuthInfo.toError()
+                        throw UpdatePasswordError.invalideAuthInfo.error
                     }
                     guard let encodedModulus = try modulus.getSignature() else {
-                        throw UpdatePasswordError.invalideAuthInfo.toError()
+                        throw UpdatePasswordError.invalideAuthInfo.error
                     }
                     
                     let decodedModulus : Data = encodedModulus.decodeBase64()
@@ -600,11 +646,11 @@ class UserDataService {
                     //init api calls
                     let hashVersion = forceRetry ? forceRetryVersion : authVersion
                     guard let hashedPassword = PasswordUtils.getHashedPwd(hashVersion, password: login_password , username: _username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
-                        throw UpdatePasswordError.cantHashPassword.toError()
+                        throw UpdatePasswordError.cantHashPassword.error
                     }
                     
                     guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword), srpClient.isValid() == true else {
-                        throw UpdatePasswordError.cantGenerateSRPClient.toError()
+                        throw UpdatePasswordError.cantGenerateSRPClient.error
                     }
                     
                     do {
@@ -618,7 +664,7 @@ class UserDataService {
                               orgKey: new_org_key,
                               auth: authPacket).syncCall()
                         guard update_res?.code == 1000 else {
-                            throw UpdatePasswordError.default.toError()
+                            throw UpdatePasswordError.default.error
                         }
                         //update local keys
                         user_info.userKeys = updated_userlevel_keys
@@ -650,9 +696,10 @@ class UserDataService {
         
     }
     
-    func updateUserDomiansOrder(_ email_domains: [Address], newOrder : [Int], completion: @escaping CompletionBlock) {
-        let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)
-        domainSetting.call() { task, response, hasError in
+    //TODO:: refactor newOrders. 
+    func updateUserDomiansOrder(_ email_domains: [Address], newOrder : [String], completion: @escaping CompletionBlock) {
+        let addressOrder = UpdateAddressOrder(adds: newOrder)
+        addressOrder.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
                     userInfo.userAddresses = email_domains
@@ -681,7 +728,7 @@ class UserDataService {
         {//asyn
             do {
                 guard let _username = self.username else {
-                    throw UpdateNotificationEmailError.invalidUserName.toError()
+                    throw UpdateNotificationEmailError.invalidUserName.error
                 }
                 
                 //start check exsit srp
@@ -692,10 +739,10 @@ class UserDataService {
                     // get auto info
                     let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
                     guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
-                        throw UpdateNotificationEmailError.invalideAuthInfo.toError()
+                        throw UpdateNotificationEmailError.invalideAuthInfo.error
                     }
                     guard let encodedModulus = try modulus.getSignature() else {
-                        throw UpdateNotificationEmailError.invalideAuthInfo.toError()
+                        throw UpdateNotificationEmailError.invalideAuthInfo.error
                     }
                     
                     let decodedModulus : Data = encodedModulus.decodeBase64()
@@ -710,11 +757,11 @@ class UserDataService {
                     //init api calls
                     let hashVersion = forceRetry ? forceRetryVersion : authVersion
                     guard let hashedPassword = PasswordUtils.getHashedPwd(hashVersion, password: login_password , username: _username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
-                        throw UpdateNotificationEmailError.cantHashPassword.toError()
+                        throw UpdateNotificationEmailError.cantHashPassword.error
                     }
                     
                     guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword), srpClient.isValid() == true else {
-                        throw UpdateNotificationEmailError.cantGenerateSRPClient.toError()
+                        throw UpdateNotificationEmailError.cantGenerateSRPClient.error
                     }
                     
                     do {
@@ -730,7 +777,7 @@ class UserDataService {
                             }
                             forceRetry = false
                         } else {
-                            throw UpdateNotificationEmailError.default.toError()
+                            throw UpdateNotificationEmailError.default.error
                         }
                     } catch let error as NSError {
                         if error.isInternetError() {

@@ -8,6 +8,7 @@
 
 import UIKit
 import Contacts
+import CoreData
 
 protocol ContactImportVCDelegate {
     func cancel()

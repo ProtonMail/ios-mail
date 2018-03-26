@@ -11,6 +11,7 @@
 //
 
 import Foundation
+import RHAddressBook
 
 let sharedAddressBookService = AddressBookService()
 

@@ -8,6 +8,7 @@
 
 
 import UIKit
+import MCSwipeTableViewCell
 
 protocol MailboxRateReviewCellDelegate {
     func mailboxRateReviewCell(_ cell: UITableViewCell, yesORno: Bool)

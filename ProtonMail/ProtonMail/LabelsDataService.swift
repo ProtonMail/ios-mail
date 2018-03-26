@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import Groot
 
 let sharedLabelsDataService = LabelsDataService()
 

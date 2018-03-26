@@ -13,7 +13,7 @@ import Foundation
 final class MessageCountRequest<T : ApiResponse> : ApiRequest<T> {
     
     override open func path() -> String {
-        return MessageAPI.Path + "/count" + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/count" + AppConstants.DEBUG_OPTION
     }
     override func apiVersion() -> Int {
         return MessageAPI.V_MessageFetchRequest
@@ -60,7 +60,7 @@ final class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return MessageAPI.Path + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -92,7 +92,7 @@ final class MessageFetchByIDsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return MessageAPI.Path + self.buildURL()
+        return MessageAPI.path + self.buildURL()
     }
     
     override func apiVersion() -> Int {
@@ -127,7 +127,7 @@ final class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return MessageAPI.Path + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -154,28 +154,38 @@ class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
             "Subject" : message.title,
             "IsRead" : message.isRead]
         
-        messsageDict["ToList"]                  = message.recipientList.parseJson()
-        messsageDict["CCList"]                  = message.ccList.parseJson()
-        messsageDict["BCCList"]                 = message.bccList.parseJson()
+        messsageDict["ToList"]  = message.recipientList.parseJson()
+        messsageDict["CCList"]  = message.ccList.parseJson()
+        messsageDict["BCCList"] = message.bccList.parseJson()
         var out : [String : Any] = ["Message" : messsageDict]
         
         if let orginalMsgID = message.orginalMessageID {
             if !orginalMsgID.isEmpty {
                 out["ParentID"] = message.orginalMessageID
-                out["Action"] = message.action ?? "0"  //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
+                out["Action"] = message.action ?? "0"  //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2 m
             }
         }
+        
+        if let attachments = self.message?.attachments.allObjects as? [Attachment] {
+            var atts : [String : String] = [:]
+            for att in attachments {
+                if att.keyChanged {
+                    atts[att.attachmentID] = att.keyPacket
+                }
+            }
+            out["AttachmentKeyPackets"] = atts
+        }
+        
         PMLog.D( out.json(prettyPrinted: true) )
         return out
-        
     }
     
     override func path() -> String {
-        return MessageAPI.Path + "/draft"
+        return MessageAPI.path
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageDraftRequest
+        return MessageAPI.v_create_draft
     }
     
     override func method() -> APIService.HTTPMethod {
@@ -190,11 +200,11 @@ final class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> {
     }
     
     override func path() -> String {
-        return MessageAPI.Path + "/draft/" + message.messageID + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/" + message.messageID + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageUpdateDraftRequest
+        return MessageAPI.v_update_draft
     }
     
     override func method() -> APIService.HTTPMethod {
@@ -245,7 +255,7 @@ final class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
     }
     
     override func path() -> String {
-        return MessageAPI.Path + "/" + self.action + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/" + self.action + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -270,7 +280,7 @@ final class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
     }
     
     override func path() -> String {
-        return MessageAPI.Path + "/" + location + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/" + location + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -336,7 +346,7 @@ final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return MessageAPI.Path + "/send/" + self.messageID + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/send/" + self.messageID + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

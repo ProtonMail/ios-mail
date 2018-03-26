@@ -8,6 +8,7 @@
 
 import Foundation
 
+//Timer for view model could merge with Base
 class ViewModelTimer {
     
     private var timer : Timer?

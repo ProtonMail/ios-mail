@@ -40,7 +40,8 @@ final public class Message: NSManagedObject {
     @NSManaged public var passwordEncryptedBody: String
     @NSManaged public var password: String
     @NSManaged public var passwordHint: String
-    @NSManaged public var replyTo: String?
+    @NSManaged public var replyTo: String?   //Deprecated, use replyTos instead
+    @NSManaged public var replyTos: String?
     @NSManaged public var senderObject: String?
     @NSManaged public var recipientList: String
     @NSManaged public var recipientNameList: String

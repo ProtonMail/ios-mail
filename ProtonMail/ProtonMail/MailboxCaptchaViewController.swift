@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MBProgressHUD
 
 protocol MailboxCaptchaVCDelegate {
     func cancel()

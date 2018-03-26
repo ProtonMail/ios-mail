@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+//logging for view model could merge with timer
 class ViewModelBase {
     
     private var debugInfo : [String] = []
@@ -38,6 +38,4 @@ class ViewModelBase {
             return debugInfo.joined(separator: "\r\n")
         }
     }
-
-
 }

@@ -379,10 +379,7 @@ extension ContactDetailViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        defer {
-            tableView.deselectRow(at: indexPath, animated: true)
-        }
-        
+        tableView.deselectRow(at: indexPath, animated: true)
         let section = indexPath.section
         let row = indexPath.row
         let s = viewModel.sections()[section]

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 final class LabelApplyViewModelImpl : LabelViewModel {
     fileprivate var messages : [Message]!

@@ -11,6 +11,8 @@ import QuickLook
 import Foundation
 import CoreData
 import PassKit
+import Crashlytics
+import Fabric
 
 class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     
@@ -71,6 +73,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         self.emailView?.emailHeader.updateAttConstraints(false)
         self.updateBadgeNumberWhenRead(message, changeToRead: true)
         loadMessageDetailes()
+        
     }
     
     internal func loadMessageDetailes () {
@@ -262,6 +265,10 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .default, .spam : .default, .archive : .default]
         for (location, style) in locations {
             if !message.hasLocation(location: location) {
+                if self.message.location == .outbox && location == .inbox {
+                    continue
+                }
+                
                 alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
                     self.message.removeLocationFromLabels(currentlocation: self.message.location, location: location, keepSent: true)
                     self.messagesSetValue(setValue: location.rawValue, forKey: Message.Attributes.locationNumber)
@@ -634,6 +641,13 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     func starredChanged(_ isStarred: Bool) {
         if isStarred {
             self.message.setLabelLocation(.starred)
+            if let context = message.managedObjectContext {
+                context.perform {
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D("error: \(error)")
+                    }
+                }
+            }
         } else {
             self.message.removeLocationFromLabels(currentlocation: .starred, location: .deleted, keepSent: true)
         }

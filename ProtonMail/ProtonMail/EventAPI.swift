@@ -66,6 +66,7 @@ final class EventCheckResponse : ApiResponse {
     
     var messages : [[String : Any]]?
     var contacts : [[String : Any]]?
+    var contactEmails : [[String : Any]]?
     var userinfo : [String : Any]?
     var unreads : [String : Any]?
     var total : [String : Any]?
@@ -95,6 +96,8 @@ final class EventCheckResponse : ApiResponse {
         
         self.contacts = response["Contacts"] as? [[String : Any]]
         
+        self.contactEmails = response["ContactEmails"] as? [[String : Any]]
+        
         self.notices = response["Notices"] as? [String]
         
         self.messageCounts = response["MessageCounts"] as? [[String : Any]]
@@ -119,42 +122,68 @@ final class MessageEvent {
 }
 
 final class ContactEvent {
+    enum UpdateType : Int {
+        case delete = 0
+        case insert = 1
+        case update = 2
+        
+        case unknown = 255
+    }
+    var action : UpdateType
     
-    var Action : Int!
     var ID : String!;
     var contact : [String : Any]?
     var contacts : [[String : Any]] = []
     init(event: [String : Any]!) {
-        self.Action = event["Action"] as! Int
+        let actionInt = event["Action"] as? Int ?? 255
+        self.action = UpdateType(rawValue: actionInt) ?? .unknown
         self.contact =  event["Contact"] as? [String : Any]
         self.ID =  event["ID"] as! String
         
-        if let contact = self.contact {
-            if let contactID = contact["ContactID"] as? String, let name = contact["Name"] as? String {
-                var found = false
-                for (index, var c) in contacts.enumerated() {
-                    if let obj = c["ID"] as? String, obj == contactID {
-                        found = true
-                        if var emails = c["Emails"] as? [[String : Any]] {
-                            emails.append(contact)
-                            c["Emails"] = emails
-                        } else {
-                            c["Emails"] = [contact]
-                        }
-                        contacts[index] = c
-                    }
-                }
-                if !found {
-                    let newContact : [String : Any] = [
-                        "ID" : contactID,
-                        "Name" : name,
-                        "Emails" : [contact]
-                    ]
-                    self.contacts.append(newContact)
-                }
-            }
+        guard let contact = self.contact else {
+            return
         }
+        
+        self.contacts.append(contact)
     }
+}
+
+final class EmailEvent {
+    enum UpdateType : Int {
+        case delete = 0
+        case insert = 1
+        case update = 2
+        
+        case unknown = 255
+    }
+    
+    var action : UpdateType
+    var ID : String!  //emailID
+    var email : [String : Any]?
+    var contacts : [[String : Any]] = []
+    init(event: [String : Any]!) {
+        let actionInt = event["Action"] as? Int ?? 255
+        self.action = UpdateType(rawValue: actionInt) ?? .unknown
+        self.email =  event["ContactEmail"] as? [String : Any]
+        self.ID =  event["ID"] as? String ?? ""
+        
+        guard let email = self.email else {
+            return
+        }
+        
+        guard let contactID = email["ContactID"],
+            let name = email["Name"] else {
+            return
+        }
+
+        let newContact : [String : Any] = [
+            "ID" : contactID,
+            "Name" : name,
+            "ContactEmails" : [email]
+        ]
+        self.contacts.append(newContact)
+    }
+    
 }
 
 final class LabelEvent {

@@ -120,14 +120,14 @@ class ShareUnlockViewController: UIViewController {
                                 if let shareURL = url as? NSURL {
                                     self.inputSubject = plainText ?? ""
                                     let url = shareURL.absoluteString ?? ""
-                                    self.inputContent = self.inputContent  + "<a href=\"\(url)\">\(url)</a>"
+                                    self.inputContent = self.inputContent + "\n" + "<a href=\"\(url)\">\(url)</a>"
                                 } else {
                                     self.localized_errors.append(NSLocalizedString("Can't load share content!", comment: "Description"))
                                 }
                             })
                         } else if let pt = plainText {
                             self.inputSubject = ""
-                            self.inputContent = self.inputContent + pt
+                            self.inputContent = self.inputContent + "\n"  + pt
                         } else {
                             PMLog.D("4")
                         }
@@ -247,10 +247,17 @@ class ShareUnlockViewController: UIViewController {
     func goto_composer() {
         let composer = ComposerViewController(nibName: "ComposerViewController", bundle: nil)
         //TODO:: here need to setup the composer with input items
-        sharedVMService.newShareDraftViewModel(composer,
-                                               subject: self.inputSubject,
-                                               content: self.inputContent,
-                                               files: self.files)
+        
+        sharedVMService.buildComposer(composer,
+                                      subject: self.inputSubject,
+                                      content: self.inputContent,
+                                      files: self.files)
+        
+//        sharedVMService.newShareDraftViewModel(composer,
+//                                               subject: self.inputSubject,
+//                                               content: self.inputContent,
+//                                               files: self.files)
+        
         let w = UIScreen.main.applicationFrame.width;
         composer.view.frame = CGRect(x: 0, y: 0, width: w, height: 186 + 60)
         self.navigationController?.pushViewController(composer, animated:true)

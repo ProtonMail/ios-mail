@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		069644D237B4EDCBCE8B0916 /* libPods-ProtonMailDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C78D7DE38EA5253CD8278A67 /* libPods-ProtonMailDev.a */; };
+		0158665D7AB47DDA8C0653E4 /* Pods_ProtonMailDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79B8542F6B3931E00749819B /* Pods_ProtonMailDev.framework */; };
 		07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07009EFE1A659AD400129B07 /* SignIn.storyboard */; };
 		07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F001A65CF4800129B07 /* SignInViewController.swift */; };
 		071210E61AA91B4000B834F2 /* APIService+DeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071210E51AA91B4000B834F2 /* APIService+DeviceExtension.swift */; };
@@ -65,8 +65,8 @@
 		07DD68A51A97DE9F00ED130C /* APIService+AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */; };
 		07DD68A71A9815DF00ED130C /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A61A9815DF00ED130C /* URL+Extension.swift */; };
 		07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */; };
-		2CF1376001A9DA83EB4D29DB /* libPods-ShareDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D96F24804A74E2C888A4E9A8 /* libPods-ShareDev.a */; };
-		3F0FE24CAF93202239A3BAE3 /* libPods-PushServiceDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 131FE53EEA297E1FD7F9844A /* libPods-PushServiceDev.a */; };
+		1930358898FEFFCC8B8D4FEE /* Pods_ProtonMail.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9614A45F005375BA4552855 /* Pods_ProtonMail.framework */; };
+		62DFF778E71C9DEA28114F01 /* Pods_Share.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C96E84F0F719879E420125E5 /* Pods_Share.framework */; };
 		701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE7F1AA64DEB0038149C /* MBContactPicker.m */; };
 		701DDE901AA64DEB0038149C /* MBContactCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE821AA64DEB0038149C /* MBContactCollectionView.m */; };
 		701DDE911AA64DEB0038149C /* MBContactCollectionViewContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE841AA64DEB0038149C /* MBContactCollectionViewContactCell.m */; };
@@ -102,6 +102,7 @@
 		750729531DEFA52D0021483D /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750729521DEFA52D0021483D /* MimeTypes.swift */; };
 		750729541DEFA52E0021483D /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750729521DEFA52D0021483D /* MimeTypes.swift */; };
 		750778CE1BE98900009F516C /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750778CD1BE98900009F516C /* UserAPI.swift */; };
+		75079CAA2061CCC500182008 /* Greeter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75079CA92061CCC500182008 /* Greeter.framework */; };
 		7507BBB61E0CAF9600056D66 /* SignUp+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7507BBB51E0CAF9600056D66 /* SignUp+Error.swift */; };
 		750AAAC41C23E5CF00BAC444 /* RecaptchaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */; };
 		750AAAC71C2490DB00BAC444 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */; };
@@ -538,7 +539,7 @@
 		75256C991F16DFBD00F2771E /* MessageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0741B3383F900A72A1E /* MessageAPI.swift */; };
 		75256C9A1F16DFBD00F2771E /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518393E1B3DCA3000C714A6 /* EventAPI.swift */; };
 		75256C9B1F16DFBD00F2771E /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75662BA61B543A5B006C538E /* SettingsAPI.swift */; };
-		75256C9C1F16DFBD00F2771E /* BugsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF9A511B5F0F500087AD2E /* BugsAPI.swift */; };
+		75256C9C1F16DFBD00F2771E /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF9A511B5F0F500087AD2E /* ReportsAPI.swift */; };
 		75256C9D1F16DFBD00F2771E /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898D1B7DBE64007EA207 /* LabelAPI.swift */; };
 		75256C9E1F16DFBD00F2771E /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB65751BD5C88800F9432D /* AttachmentAPI.swift */; };
 		75256C9F1F16DFBD00F2771E /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750778CD1BE98900009F516C /* UserAPI.swift */; };
@@ -785,6 +786,14 @@
 		754713191DCD616D0084BF34 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713171DCD616D0084BF34 /* SignInViewModel.swift */; };
 		7547131B1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */; };
 		7547131C1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */; };
+		75471759206489EC00C3F21D /* editor.html in Resources */ = {isa = PBXBuildFile; fileRef = 75471757206489EB00C3F21D /* editor.html */; };
+		7547175A206489EC00C3F21D /* editor.html in Resources */ = {isa = PBXBuildFile; fileRef = 75471757206489EB00C3F21D /* editor.html */; };
+		7547175B206489EC00C3F21D /* editor.html in Resources */ = {isa = PBXBuildFile; fileRef = 75471757206489EB00C3F21D /* editor.html */; };
+		7547175C206489EC00C3F21D /* editor.html in Resources */ = {isa = PBXBuildFile; fileRef = 75471757206489EB00C3F21D /* editor.html */; };
+		7547175D206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 75471758206489EB00C3F21D /* ZSSRichTextEditor.js */; };
+		7547175E206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 75471758206489EB00C3F21D /* ZSSRichTextEditor.js */; };
+		7547175F206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 75471758206489EB00C3F21D /* ZSSRichTextEditor.js */; };
+		75471760206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 75471758206489EB00C3F21D /* ZSSRichTextEditor.js */; };
 		75475EA71CCEB97400588D41 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75475EA61CCEB97400588D41 /* BaseViewController.swift */; };
 		75475EA81CCEB97400588D41 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75475EA61CCEB97400588D41 /* BaseViewController.swift */; };
 		75475EAB1CCEE21C00588D41 /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */; };
@@ -1015,6 +1024,10 @@
 		756DAC471C93691900F3486C /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC461C93691900F3486C /* FeedbackViewController.swift */; };
 		756E9EFA1FB3970C0032E424 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756E9EF91FB3970B0032E424 /* UITableViewCell+Extension.swift */; };
 		756E9EFB1FB3998C0032E424 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756E9EF91FB3970B0032E424 /* UITableViewCell+Extension.swift */; };
+		7571102F2060699F0093DC57 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571102E2060699F0093DC57 /* UserAgent.swift */; };
+		757110302060699F0093DC57 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571102E2060699F0093DC57 /* UserAgent.swift */; };
+		757110312060699F0093DC57 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571102E2060699F0093DC57 /* UserAgent.swift */; };
+		757110322060699F0093DC57 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571102E2060699F0093DC57 /* UserAgent.swift */; };
 		7578B7831CADD1EA006B523B /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7821CADD1EA006B523B /* PMImagePickerController.swift */; };
 		7578B7841CADD1EA006B523B /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7821CADD1EA006B523B /* PMImagePickerController.swift */; };
 		7578B7861CADD20A006B523B /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */; };
@@ -1144,7 +1157,7 @@
 		75BDECAF1CBCD0FA00982089 /* SetPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECAA1CBCCE5B00982089 /* SetPinCodeModelImpl.swift */; };
 		75BDECB01CBCD0FA00982089 /* UnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECAC1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift */; };
 		75BF8F461DA6E49D000F350F /* SRPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF8F451DA6E49D000F350F /* SRPClient.swift */; };
-		75BF9A521B5F0F500087AD2E /* BugsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF9A511B5F0F500087AD2E /* BugsAPI.swift */; };
+		75BF9A521B5F0F500087AD2E /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF9A511B5F0F500087AD2E /* ReportsAPI.swift */; };
 		75C037461C1F94D20071E04B /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C037451C1F94D20071E04B /* SplashViewController.swift */; };
 		75C037481C1F9A940071E04B /* SplashSignInSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C037471C1F9A940071E04B /* SplashSignInSegue.swift */; };
 		75C2175A1AD6F1B800978579 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217581AD6F1B800978579 /* Crashlytics.framework */; };
@@ -1349,10 +1362,8 @@
 		75F906101B1FBECA00107509 /* DebugDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */; };
 		75FC06731C88F8B50013422D /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FC06721C88F8B50013422D /* LocalAuthentication.framework */; };
 		75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */; };
-		8C211895E29D2B1CACBAFBC3 /* libPods-ProtonMailTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA49136F43EA19DF7050D27A /* libPods-ProtonMailTests.a */; };
-		AF9FDD3D083F670052D7DAAA /* libPods-ProtonMail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D73B784D1A1E768D7AFCDB4B /* libPods-ProtonMail.a */; };
-		D9A2F933C307BEC0765464BA /* libPods-PushService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B28E771ECD203453213C64 /* libPods-PushService.a */; };
-		E6E74D475EFA5D107F6BF9C8 /* libPods-Share.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250F51BC5C8B2E27AF0FFAAF /* libPods-Share.a */; };
+		9F13485990B5ECAE0E458211 /* Pods_ProtonMailTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B592540B8A286228E3A5430A /* Pods_ProtonMailTests.framework */; };
+		AB36B253D49A42CC855932B0 /* Pods_ShareDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554FD2400ABE7FDFDC9156F4 /* Pods_ShareDev.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1486,19 +1497,13 @@
 		07DD68A61A9815DF00ED130C /* URL+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "URL+Extension.swift"; path = "../ProtonMail/URL+Extension.swift"; sourceTree = "<group>"; };
 		07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSManagedObjectExtension.swift; path = ../ProtonMail/NSManagedObjectExtension.swift; sourceTree = "<group>"; };
 		0C8F2DF59046AC07D54D3A1D /* Pods-Share.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.debug.xcconfig"; sourceTree = "<group>"; };
-		115E552EAACD2D1515556B02 /* Pods-PushService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.release.xcconfig"; path = "Pods/Target Support Files/Pods-PushService/Pods-PushService.release.xcconfig"; sourceTree = "<group>"; };
 		131FE53EEA297E1FD7F9844A /* libPods-PushServiceDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushServiceDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		23103C742561D70ADA6DFCC2 /* Pods-PushService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PushService/Pods-PushService.debug.xcconfig"; sourceTree = "<group>"; };
 		244A62D4C89F2BB7DF4957E0 /* Pods-ProtonMail.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.release.xcconfig"; sourceTree = "<group>"; };
-		250F51BC5C8B2E27AF0FFAAF /* libPods-Share.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Share.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2753871EAB4E48C75B953246 /* Pods-ShareDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.distribution.xcconfig"; sourceTree = "<group>"; };
-		2ADC2E3C5202DB9853B4F9D1 /* Pods-PushServiceDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushServiceDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		32E074A6A514A1E79DAA0126 /* Pods-ShareDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.release.xcconfig"; sourceTree = "<group>"; };
-		386DA5BF7321BBC55CBFD95D /* Pods-PushServiceDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushServiceDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev.release.xcconfig"; sourceTree = "<group>"; };
 		41169F68B3FE8907F2C72783 /* Pods-ProtonMailTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54F29596C87DC71ECEC2B74B /* Pods-ProtonMailDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.distribution.xcconfig"; sourceTree = "<group>"; };
-		5B978E55A8597768196CE0FB /* Pods-PushService.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PushService/Pods-PushService.distribution.xcconfig"; sourceTree = "<group>"; };
-		5D0E6650D28C4FAB06310B35 /* Pods-PushServiceDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushServiceDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev.debug.xcconfig"; sourceTree = "<group>"; };
+		554FD2400ABE7FDFDC9156F4 /* Pods_ShareDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FD8B432606FF1E56020D86C /* libPods-Push.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Push.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ABD3AECB53A1BEFDC5C3B7A /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
 		701DDE7F1AA64DEB0038149C /* MBContactPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBContactPicker.m; sourceTree = "<group>"; };
@@ -1539,6 +1544,7 @@
 		750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
 		750729521DEFA52D0021483D /* MimeTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MimeTypes.swift; path = ../ProtonMail/MimeTypes.swift; sourceTree = "<group>"; };
 		750778CD1BE98900009F516C /* UserAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
+		75079CA92061CCC500182008 /* Greeter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Greeter.framework; sourceTree = "<group>"; };
 		7507BBB51E0CAF9600056D66 /* SignUp+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignUp+Error.swift"; sourceTree = "<group>"; };
 		750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecaptchaViewController.swift; sourceTree = "<group>"; };
 		750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpEmailViewController.swift; sourceTree = "<group>"; };
@@ -1685,6 +1691,8 @@
 		754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = General2FAViewModelImpl.swift; sourceTree = "<group>"; };
 		754713171DCD616D0084BF34 /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModelImpl.swift; sourceTree = "<group>"; };
+		75471757206489EB00C3F21D /* editor.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = editor.html; path = ../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html; sourceTree = "<group>"; };
+		75471758206489EB00C3F21D /* ZSSRichTextEditor.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = ZSSRichTextEditor.js; path = ../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js; sourceTree = "<group>"; };
 		75475EA61CCEB97400588D41 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		75475EA91CCEE21C00588D41 /* NSBundle+Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Language.h"; sourceTree = "<group>"; };
 		75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Language.m"; sourceTree = "<group>"; };
@@ -1755,6 +1763,7 @@
 		756DAC441C92B30300F3486C /* FeedbackPopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackPopViewController.swift; sourceTree = "<group>"; };
 		756DAC461C93691900F3486C /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		756E9EF91FB3970B0032E424 /* UITableViewCell+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extension.swift"; sourceTree = "<group>"; };
+		7571102E2060699F0093DC57 /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
 		757824A41CCFE0D900136CF3 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7578B7821CADD1EA006B523B /* PMImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMImagePickerController.swift; sourceTree = "<group>"; };
 		7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMDocumentPickerViewController.swift; sourceTree = "<group>"; };
@@ -1847,7 +1856,7 @@
 		75BDECAA1CBCCE5B00982089 /* SetPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPinCodeModelImpl.swift; sourceTree = "<group>"; };
 		75BDECAC1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockPinCodeModelImpl.swift; sourceTree = "<group>"; };
 		75BF8F451DA6E49D000F350F /* SRPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRPClient.swift; sourceTree = "<group>"; };
-		75BF9A511B5F0F500087AD2E /* BugsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugsAPI.swift; sourceTree = "<group>"; };
+		75BF9A511B5F0F500087AD2E /* ReportsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportsAPI.swift; sourceTree = "<group>"; };
 		75C037451C1F94D20071E04B /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		75C037471C1F9A940071E04B /* SplashSignInSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashSignInSegue.swift; sourceTree = "<group>"; };
 		75C217581AD6F1B800978579 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -1908,17 +1917,17 @@
 		75FC06721C88F8B50013422D /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		75FE23321F04347C00DF12C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIErrors.swift; sourceTree = "<group>"; };
+		79B8542F6B3931E00749819B /* Pods_ProtonMailDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProtonMailDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BBE5AA309996CC3AE0CB72A /* Pods-ProtonMailTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.release.xcconfig"; sourceTree = "<group>"; };
 		8A7CF350E37E2333C78D200A /* Pods-ProtonMailDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.debug.xcconfig"; sourceTree = "<group>"; };
 		ADEE9DF404B6CD14E9C04A8D /* Pods-ShareDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.debug.xcconfig"; sourceTree = "<group>"; };
-		C78D7DE38EA5253CD8278A67 /* libPods-ProtonMailDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B592540B8A286228E3A5430A /* Pods_ProtonMailTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProtonMailTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C87DB98FF3BD404B025BC4DC /* Pods-ProtonMail.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.debug.xcconfig"; sourceTree = "<group>"; };
+		C96E84F0F719879E420125E5 /* Pods_Share.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Share.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D150620E49C5EDEC5065FEA1 /* Pods-ProtonMailTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.distribution.xcconfig"; sourceTree = "<group>"; };
-		D73B784D1A1E768D7AFCDB4B /* libPods-ProtonMail.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMail.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8B28E771ECD203453213C64 /* libPods-PushService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D96F24804A74E2C888A4E9A8 /* libPods-ShareDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShareDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EA49136F43EA19DF7050D27A /* libPods-ProtonMailTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC5AB60FBA59317594F99CA /* libPods-PushDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9614A45F005375BA4552855 /* Pods_ProtonMail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProtonMail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBC1646570583EAA04408D7D /* Pods-Share.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.distribution.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1931,7 +1940,7 @@
 				75FC06731C88F8B50013422D /* LocalAuthentication.framework in Frameworks */,
 				75C2175A1AD6F1B800978579 /* Crashlytics.framework in Frameworks */,
 				75C2175B1AD6F1B800978579 /* Fabric.framework in Frameworks */,
-				AF9FDD3D083F670052D7DAAA /* libPods-ProtonMail.a in Frameworks */,
+				1930358898FEFFCC8B8D4FEE /* Pods_ProtonMail.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1939,7 +1948,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C211895E29D2B1CACBAFBC3 /* libPods-ProtonMailTests.a in Frameworks */,
+				9F13485990B5ECAE0E458211 /* Pods_ProtonMailTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1950,7 +1959,6 @@
 				75252D2A1FCF5E05007972EF /* Fabric.framework in Frameworks */,
 				75252D2B1FCF5E05007972EF /* Crashlytics.framework in Frameworks */,
 				751CDEBE1FBB96D5005E3EB1 /* libstdc++.tbd in Frameworks */,
-				3F0FE24CAF93202239A3BAE3 /* libPods-PushServiceDev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1958,7 +1966,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9A2F933C307BEC0765464BA /* libPods-PushService.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1969,7 +1976,7 @@
 				75482BC21F7F09E100B0BFFB /* Fabric.framework in Frameworks */,
 				75482BC31F7F09E100B0BFFB /* Crashlytics.framework in Frameworks */,
 				75482BC41F7F09E100B0BFFB /* libstdc++.tbd in Frameworks */,
-				E6E74D475EFA5D107F6BF9C8 /* libPods-Share.a in Frameworks */,
+				62DFF778E71C9DEA28114F01 /* Pods_Share.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1980,7 +1987,7 @@
 				7512A9EE1F17D5B400D84955 /* Fabric.framework in Frameworks */,
 				7512A9EF1F17D5B400D84955 /* Crashlytics.framework in Frameworks */,
 				758ED7D01F05A43B0028D1A5 /* libstdc++.tbd in Frameworks */,
-				2CF1376001A9DA83EB4D29DB /* libPods-ShareDev.a in Frameworks */,
+				AB36B253D49A42CC855932B0 /* Pods_ShareDev.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2011,7 +2018,8 @@
 				75DE7D841CAAEA4900F5443E /* LocalAuthentication.framework in Frameworks */,
 				75DE7D851CAAEA4900F5443E /* Crashlytics.framework in Frameworks */,
 				75DE7D871CAAEA4900F5443E /* Fabric.framework in Frameworks */,
-				069644D237B4EDCBCE8B0916 /* libPods-ProtonMailDev.a in Frameworks */,
+				0158665D7AB47DDA8C0653E4 /* Pods_ProtonMailDev.framework in Frameworks */,
+				75079CAA2061CCC500182008 /* Greeter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2267,12 +2275,6 @@
 				0C8F2DF59046AC07D54D3A1D /* Pods-Share.debug.xcconfig */,
 				6ABD3AECB53A1BEFDC5C3B7A /* Pods-Share.release.xcconfig */,
 				FBC1646570583EAA04408D7D /* Pods-Share.distribution.xcconfig */,
-				5D0E6650D28C4FAB06310B35 /* Pods-PushServiceDev.debug.xcconfig */,
-				386DA5BF7321BBC55CBFD95D /* Pods-PushServiceDev.release.xcconfig */,
-				2ADC2E3C5202DB9853B4F9D1 /* Pods-PushServiceDev.distribution.xcconfig */,
-				23103C742561D70ADA6DFCC2 /* Pods-PushService.debug.xcconfig */,
-				115E552EAACD2D1515556B02 /* Pods-PushService.release.xcconfig */,
-				5B978E55A8597768196CE0FB /* Pods-PushService.distribution.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -2582,6 +2584,7 @@
 				75F1697D1AF7F43A00BE6E79 /* Logger.swift */,
 				75E2202D1DDA532900078D6C /* Threading.swift */,
 				75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */,
+				7571102E2060699F0093DC57 /* UserAgent.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -2804,6 +2807,8 @@
 		75978BD91B28F5F800D07501 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				75471757206489EB00C3F21D /* editor.html */,
+				75471758206489EB00C3F21D /* ZSSRichTextEditor.js */,
 				75E49F081CAB200000235ACC /* flags.bundle */,
 				075E3DF51A5F4ECF00E001A7 /* Images.xcassets */,
 				75978BDA1B28F63100D07501 /* editor.css */,
@@ -2990,19 +2995,19 @@
 				7567B0761B3387F700A72A1E /* APIServiceRequest.swift */,
 				7567B0781B33880500A72A1E /* APIServiceResponse.swift */,
 				7549F0B01D07827A00643C64 /* AddressAPI.swift */,
-				75ECCE011B31F44600A8C800 /* AuthAPI.swift */,
-				75E2202A1DD6728200078D6C /* KeysAPI.swift */,
-				7567B0741B3383F900A72A1E /* MessageAPI.swift */,
-				7518393E1B3DCA3000C714A6 /* EventAPI.swift */,
-				75662BA61B543A5B006C538E /* SettingsAPI.swift */,
-				75BF9A511B5F0F500087AD2E /* BugsAPI.swift */,
-				7564898D1B7DBE64007EA207 /* LabelAPI.swift */,
 				75BB65751BD5C88800F9432D /* AttachmentAPI.swift */,
-				750778CD1BE98900009F516C /* UserAPI.swift */,
-				75A021A31C617D3F00A22A25 /* DomainAPI.swift */,
-				75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */,
-				758DB00D1DDBBCA8007B83D3 /* OrganizationsAPI.swift */,
+				75ECCE011B31F44600A8C800 /* AuthAPI.swift */,
+				75BF9A511B5F0F500087AD2E /* ReportsAPI.swift */,
 				7528FFBB1FA7FEBF005F66A3 /* ContactsAPI.swift */,
+				75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */,
+				75A021A31C617D3F00A22A25 /* DomainAPI.swift */,
+				7518393E1B3DCA3000C714A6 /* EventAPI.swift */,
+				75E2202A1DD6728200078D6C /* KeysAPI.swift */,
+				7564898D1B7DBE64007EA207 /* LabelAPI.swift */,
+				7567B0741B3383F900A72A1E /* MessageAPI.swift */,
+				758DB00D1DDBBCA8007B83D3 /* OrganizationsAPI.swift */,
+				75662BA61B543A5B006C538E /* SettingsAPI.swift */,
+				750778CD1BE98900009F516C /* UserAPI.swift */,
 			);
 			name = APIService;
 			sourceTree = "<group>";
@@ -3038,6 +3043,7 @@
 		EDDC3A27CB6370D84ADB05EA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				75079CA92061CCC500182008 /* Greeter.framework */,
 				7561DC231FBB6FAA0099AFF5 /* libc++.tbd */,
 				75A42B6A1F0439690025F52C /* libstdc++.tbd */,
 				75A42B681F0439570025F52C /* libz.tbd */,
@@ -3049,13 +3055,13 @@
 				75AFD2EE1FBA7CF000EAEA61 /* UserNotificationsUI.framework */,
 				5FD8B432606FF1E56020D86C /* libPods-Push.a */,
 				EAC5AB60FBA59317594F99CA /* libPods-PushDev.a */,
-				D73B784D1A1E768D7AFCDB4B /* libPods-ProtonMail.a */,
-				C78D7DE38EA5253CD8278A67 /* libPods-ProtonMailDev.a */,
-				EA49136F43EA19DF7050D27A /* libPods-ProtonMailTests.a */,
 				D8B28E771ECD203453213C64 /* libPods-PushService.a */,
 				131FE53EEA297E1FD7F9844A /* libPods-PushServiceDev.a */,
-				250F51BC5C8B2E27AF0FFAAF /* libPods-Share.a */,
-				D96F24804A74E2C888A4E9A8 /* libPods-ShareDev.a */,
+				F9614A45F005375BA4552855 /* Pods_ProtonMail.framework */,
+				79B8542F6B3931E00749819B /* Pods_ProtonMailDev.framework */,
+				B592540B8A286228E3A5430A /* Pods_ProtonMailTests.framework */,
+				C96E84F0F719879E420125E5 /* Pods_Share.framework */,
+				554FD2400ABE7FDFDC9156F4 /* Pods_ShareDev.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -3113,12 +3119,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 751CDEAA1FBB95B5005E3EB1 /* Build configuration list for PBXNativeTarget "PushServiceDev" */;
 			buildPhases = (
-				FE47B341FFCB8819570B4663 /* [CP] Check Pods Manifest.lock */,
 				7566E4F41FBB9C640036B36B /* Setup Version Number */,
 				751CDE9E1FBB95B3005E3EB1 /* Sources */,
 				751CDE9F1FBB95B3005E3EB1 /* Frameworks */,
 				751CDEA01FBB95B3005E3EB1 /* Resources */,
-				F3045A78A3496ADCF4DF8D0D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3133,11 +3137,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 751CDEBA1FBB95F6005E3EB1 /* Build configuration list for PBXNativeTarget "PushService" */;
 			buildPhases = (
-				38B60CD6B108FDCD1280DBE3 /* [CP] Check Pods Manifest.lock */,
 				751CDEAE1FBB95F6005E3EB1 /* Sources */,
 				751CDEAF1FBB95F6005E3EB1 /* Frameworks */,
 				751CDEB01FBB95F6005E3EB1 /* Resources */,
-				A7FD039EDB3656E14D300015 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3406,8 +3408,10 @@
 				759BBDC21BA0C586002608B5 /* LabelDisplayView.xib in Resources */,
 				7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */,
 				7599B1721CC8124300B2CB8D /* Localizable.strings in Resources */,
+				7547175D206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */,
 				75E49F091CAB200000235ACC /* flags.bundle in Resources */,
 				7528FFD11FA7FEC3005F66A3 /* ContactSectionHeadView.xib in Resources */,
+				75471759206489EC00C3F21D /* editor.html in Resources */,
 				7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */,
 				07B123781AB8CD90006EA38C /* Attachments.storyboard in Resources */,
 				755638C11CA1AE42003FA2D0 /* ShowImageView.xib in Resources */,
@@ -3459,6 +3463,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75482BC81F7F09E100B0BFFB /* PasswordEncryptViewController.xib in Resources */,
+				7547175A206489EC00C3F21D /* editor.html in Resources */,
 				75482BC91F7F09E100B0BFFB /* Attachments.storyboard in Resources */,
 				75482BCA1F7F09E100B0BFFB /* ShareUnlockViewController.xib in Resources */,
 				75482BCB1F7F09E100B0BFFB /* Images.xcassets in Resources */,
@@ -3472,6 +3477,7 @@
 				75482BD71F7F09E100B0BFFB /* Settings.bundle in Resources */,
 				75482BD81F7F09E100B0BFFB /* ComposeErrorView.xib in Resources */,
 				75482BD91F7F09E100B0BFFB /* AttachmentTableViewCell.xib in Resources */,
+				7547175E206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */,
 				75482BDB1F7F09E100B0BFFB /* flags.bundle in Resources */,
 				75482BDC1F7F09E100B0BFFB /* ComposeView.xib in Resources */,
 				75482BDD1F7F09E100B0BFFB /* SharePinUnlockViewController.xib in Resources */,
@@ -3485,6 +3491,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				751303DC1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib in Resources */,
+				7547175C206489EC00C3F21D /* editor.html in Resources */,
 				755E0D061F2FACF9004D2873 /* Attachments.storyboard in Resources */,
 				7512A9FA1F17E1CE00D84955 /* ShareUnlockViewController.xib in Resources */,
 				758ED7D41F05A5610028D1A5 /* Images.xcassets in Resources */,
@@ -3498,6 +3505,7 @@
 				7512AA411F18028400D84955 /* Settings.bundle in Resources */,
 				7512AA0D1F17F77600D84955 /* ComposeErrorView.xib in Resources */,
 				75C7FF371F2FB4A000F15792 /* AttachmentTableViewCell.xib in Resources */,
+				75471760206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */,
 				7512AA221F17FB3200D84955 /* flags.bundle in Resources */,
 				7512AA0C1F17F76F00D84955 /* ComposeView.xib in Resources */,
 				75E5F7A61F295DFD00001B4F /* SharePinUnlockViewController.xib in Resources */,
@@ -3526,12 +3534,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				75256CCA1F16E00800F2771E /* ProtonMail.xcdatamodeld in Resources */,
+				7547175F206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */,
 				75DE7D891CAAEA4900F5443E /* MailboxRateReviewCell.xib in Resources */,
 				75187BB21CAC54DD00C84382 /* phone_country_code.geojson in Resources */,
 				75E49F0A1CAB220600235ACC /* flags.bundle in Resources */,
 				75DE7D8A1CAAEA4900F5443E /* ExpirationView.xib in Resources */,
 				75DE7D8B1CAAEA4900F5443E /* OnboardingView.xib in Resources */,
 				75DE7D8C1CAAEA4900F5443E /* editor.css in Resources */,
+				7547175B206489EC00C3F21D /* editor.html in Resources */,
 				75DE7D8D1CAAEA4900F5443E /* ComposeView.xib in Resources */,
 				75F22BF21E83348100677E67 /* ToastMessageView.xib in Resources */,
 				75DE7EB21CAAEF9000F5443E /* Images.xcassets in Resources */,
@@ -3587,24 +3597,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		38B60CD6B108FDCD1280DBE3 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PushService-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		699B2164D0A6890D3758CAAB /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3615,40 +3607,34 @@
 				"${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/RHAddressBook/RHAddressBook.framework",
 				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
 				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
 				"${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworkActivityLogger.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AwaitKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RHAddressBook.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZSSRichTextEditor.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3887,7 +3873,80 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSRichTextEditor.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor.html",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3918,40 +3977,34 @@
 				"${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/RHAddressBook/RHAddressBook.framework",
 				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
 				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
 				"${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworkActivityLogger.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AwaitKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RHAddressBook.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZSSRichTextEditor.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4042,7 +4095,80 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSRichTextEditor.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor.html",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4133,102 +4259,84 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSRichTextEditor.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor.html",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A7FD039EDB3656E14D300015 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PushService/Pods-PushService-resources.sh",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PushService/Pods-PushService-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D5F434AFF2C00C9ABE6BB23E /* [CP] Check Pods Manifest.lock */ = {
@@ -4351,7 +4459,80 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSRichTextEditor.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor.html",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4442,102 +4623,84 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSRichTextEditor.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor.html",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F3045A78A3496ADCF4DF8D0D /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev-resources.sh",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource@2x.png",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js",
-				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FE011C26F8EC7B0DB3ABA23C /* [CP] Embed Pods Frameworks */ = {
@@ -4550,62 +4713,38 @@
 				"${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/RHAddressBook/RHAddressBook.framework",
 				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
 				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
 				"${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworkActivityLogger.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AwaitKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RHAddressBook.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZSSRichTextEditor.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FE47B341FFCB8819570B4663 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PushServiceDev-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -4871,6 +5010,7 @@
 				7528FFD81FA7FEC3005F66A3 /* ContactEditCell+Delegates.swift in Sources */,
 				758E46B9205745A300111406 /* ContactUpgradeCellDelegate.swift in Sources */,
 				756CDE3D1D9C763D004455F6 /* PasswordUtils.swift in Sources */,
+				7571102F2060699F0093DC57 /* UserAgent.swift in Sources */,
 				755F92171C7E685700BAEDF9 /* OnboardingViewController.swift in Sources */,
 				7528FFD41FA7FEC3005F66A3 /* Array+Extension.swift in Sources */,
 				7501D285204853D8009689C8 /* VCardExtension.swift in Sources */,
@@ -4904,7 +5044,7 @@
 				7567B0731B3363D000A72A1E /* ControllerDefined.swift in Sources */,
 				75BDCCF21EC4E35C00EF04C5 /* LabelManagerViewModelImpl.swift in Sources */,
 				75F29E1E20571E3D00C70AD2 /* ViewModelProtocolNew.swift in Sources */,
-				75BF9A521B5F0F500087AD2E /* BugsAPI.swift in Sources */,
+				75BF9A521B5F0F500087AD2E /* ReportsAPI.swift in Sources */,
 				751CE0261DDFBD0600D5EC66 /* ServerNotice.swift in Sources */,
 				755405B21B1648D2003BFC0A /* ComposeView.swift in Sources */,
 				7528FFDF1FA7FEC3005F66A3 /* ContactEditPhoneCell.swift in Sources */,
@@ -5342,6 +5482,7 @@
 				752800201FA7FFDE005F66A3 /* NotificationCenter+KeyboardExtension.swift in Sources */,
 				752800281FA80040005F66A3 /* Fonts+Constants.swift in Sources */,
 				75482BB01F7F09E100B0BFFB /* AttachmentAPI.swift in Sources */,
+				757110302060699F0093DC57 /* UserAgent.swift in Sources */,
 				75482BB11F7F09E100B0BFFB /* DataService+Error.swift in Sources */,
 				75482BB21F7F09E100B0BFFB /* LastUpdatedStore.swift in Sources */,
 				75482BB31F7F09E100B0BFFB /* ComposeViewModel.swift in Sources */,
@@ -5507,6 +5648,7 @@
 				75B0529D1F1FE032008E483A /* ViewModelServiceImpl+Share.swift in Sources */,
 				752800271FA8003F005F66A3 /* Fonts+Constants.swift in Sources */,
 				753E5AC61F181ED90090C0F9 /* AttachmentAPI.swift in Sources */,
+				757110322060699F0093DC57 /* UserAgent.swift in Sources */,
 				7512AA491F18039700D84955 /* DataService+Error.swift in Sources */,
 				7512AA6A1F180DAD00D84955 /* LastUpdatedStore.swift in Sources */,
 				7512AA251F17FD4A00D84955 /* ComposeViewModel.swift in Sources */,
@@ -5657,7 +5799,7 @@
 				75256C9B1F16DFBD00F2771E /* SettingsAPI.swift in Sources */,
 				752800021FA7FEF6005F66A3 /* ContactsViewModel.swift in Sources */,
 				7528000F1FA7FEF6005F66A3 /* NSFetchedResultsController+Extension.swift in Sources */,
-				75256C9C1F16DFBD00F2771E /* BugsAPI.swift in Sources */,
+				75256C9C1F16DFBD00F2771E /* ReportsAPI.swift in Sources */,
 				752800151FA7FEF6005F66A3 /* UIAlertController+Extension.swift in Sources */,
 				75256C9D1F16DFBD00F2771E /* LabelAPI.swift in Sources */,
 				75256C9E1F16DFBD00F2771E /* AttachmentAPI.swift in Sources */,
@@ -5801,6 +5943,7 @@
 				75856D6A1CB5B5EC000D9F3B /* PinCodeViewController.swift in Sources */,
 				758E46BA205745A300111406 /* ContactUpgradeCellDelegate.swift in Sources */,
 				7528FFEE1FA7FEF6005F66A3 /* ContactEditCell+Delegates.swift in Sources */,
+				757110312060699F0093DC57 /* UserAgent.swift in Sources */,
 				75DE7D2C1CAAEA4900F5443E /* FeedbackTableViewCell.swift in Sources */,
 				75DE7D2F1CAAEA4900F5443E /* MenuItem.swift in Sources */,
 				7501D287204853D8009689C8 /* VCardExtension.swift in Sources */,
@@ -6090,7 +6233,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C87DB98FF3BD404B025BC4DC /* Pods-ProtonMail.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
 				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -6108,7 +6251,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_SWIFT_FLAGS = "-DDEBUG";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
@@ -6127,7 +6270,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 244A62D4C89F2BB7DF4957E0 /* Pods-ProtonMail.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
 				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -6144,10 +6287,11 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
-				PROVISIONING_PROFILE = "8d8d5b34-9991-4f46-a6e8-8795992c76f4";
+				PROVISIONING_PROFILE = "8f08b2e9-2dbe-4c92-974b-afd91f4875c6";
 				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Release";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
@@ -6206,7 +6350,6 @@
 		};
 		751CDEAB1FBB95B5005E3EB1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5D0E6650D28C4FAB06310B35 /* Pods-PushServiceDev.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -6238,7 +6381,6 @@
 		};
 		751CDEAC1FBB95B5005E3EB1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 386DA5BF7321BBC55CBFD95D /* Pods-PushServiceDev.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -6271,7 +6413,6 @@
 		};
 		751CDEAD1FBB95B5005E3EB1 /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2ADC2E3C5202DB9853B4F9D1 /* Pods-PushServiceDev.distribution.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -6303,7 +6444,6 @@
 		};
 		751CDEBB1FBB95F6005E3EB1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 23103C742561D70ADA6DFCC2 /* Pods-PushService.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -6328,7 +6468,6 @@
 		};
 		751CDEBC1FBB95F6005E3EB1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 115E552EAACD2D1515556B02 /* Pods-PushService.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -6352,7 +6491,6 @@
 		};
 		751CDEBD1FBB95F6005E3EB1 /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B978E55A8597768196CE0FB /* Pods-PushService.distribution.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -6397,7 +6535,7 @@
 				INFOPLIST_FILE = Share/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "ce278be1-8231-43a9-88c2-83c15ba0d9c5";
@@ -6435,6 +6573,7 @@
 				INFOPLIST_FILE = Share/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "3bfc2df7-8ddf-4739-8689-ba636aaa1c4e";
@@ -6472,6 +6611,7 @@
 				INFOPLIST_FILE = Share/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "3bfc2df7-8ddf-4739-8689-ba636aaa1c4e";
@@ -6508,7 +6648,7 @@
 				INFOPLIST_FILE = Share/InfoDev.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "6df69884-5b34-4203-9e92-60557780f9ac";
@@ -6546,6 +6686,7 @@
 				INFOPLIST_FILE = Share/InfoDev.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "ccb34a3a-b770-4733-97bc-b8d2d7dbde89";
@@ -6583,6 +6724,7 @@
 				INFOPLIST_FILE = Share/InfoDev.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "ccb34a3a-b770-4733-97bc-b8d2d7dbde89";
@@ -6758,7 +6900,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A7CF350E37E2333C78D200A /* Pods-ProtonMailDev.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev;
 				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -6776,14 +6918,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_SWIFT_FLAGS = "-DEnterprise";
-				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDEBUG -DEnterprise";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
 				PROVISIONING_PROFILE = "d1725c70-8dc3-43c0-956a-6a9007dfda37";
 				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Development";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG Enterprise";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -6795,7 +6937,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 72AC1531F9DC8F37E025D0ED /* Pods-ProtonMailDev.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev;
 				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -6813,13 +6955,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_SWIFT_FLAGS = "-DEnterprise";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
 				PROVISIONING_PROFILE = "4330f9d1-d7cb-4af0-b077-2fedea3a1c09";
 				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Distribution";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = Enterprise;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -6831,7 +6974,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 54F29596C87DC71ECEC2B74B /* Pods-ProtonMailDev.distribution.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev;
 				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -6848,13 +6991,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_SWIFT_FLAGS = "-DEnterprise";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
 				PROVISIONING_PROFILE = "4330f9d1-d7cb-4af0-b077-2fedea3a1c09";
 				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Distribution";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = Enterprise;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -6918,7 +7062,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 03DAAEEC4F9617D98B8AB393 /* Pods-ProtonMail.distribution.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
 				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -6935,10 +7079,11 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
-				PROVISIONING_PROFILE = "8d8d5b34-9991-4f46-a6e8-8795992c76f4";
+				PROVISIONING_PROFILE = "8f08b2e9-2dbe-4c92-974b-afd91f4875c6";
 				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Release";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;

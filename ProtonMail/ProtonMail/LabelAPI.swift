@@ -11,15 +11,12 @@ import Foundation
 // MARK : Get messages part
 final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
     
-    override init() {
-    }
-    
     override func method() -> APIService.HTTPMethod {
         return .get
     }
     
     override open func path() -> String {
-        return LabelAPI.Path + AppConstants.DEBUG_OPTION
+        return LabelAPI.path + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -58,7 +55,7 @@ final class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return LabelAPI.Path + "/apply/" + self.labelID + AppConstants.DEBUG_OPTION
+        return LabelAPI.path + "/apply/" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -90,7 +87,7 @@ final class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return LabelAPI.Path + "/remove/" + self.labelID + AppConstants.DEBUG_OPTION
+        return LabelAPI.path + "/remove/" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -128,7 +125,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return LabelAPI.Path + AppConstants.DEBUG_OPTION
+        return LabelAPI.path + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -164,7 +161,7 @@ final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return LabelAPI.Path + "/\(labelID)" + AppConstants.DEBUG_OPTION
+        return LabelAPI.path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -196,7 +193,7 @@ final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return LabelAPI.Path + "/\(labelID)" + AppConstants.DEBUG_OPTION
+        return LabelAPI.path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

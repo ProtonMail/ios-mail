@@ -18,13 +18,13 @@ Add the following to your `Podfile`:
 
 ``` ruby
 use_frameworks!
-pod ‘Groot’
+pod 'Groot'
 ```
 
 Or, if you need to support iOS 6 / OS X 10.8:
 
 ``` ruby
-pod ‘Groot/ObjC’
+pod 'Groot/ObjC'
 ```
 
 Then run `$ pod install`.
@@ -36,7 +36,7 @@ If you don’t have CocoaPods installed or integrated into your project, you can
 Add the following to your `Cartfile`:
 
 ```
-github “gonzalezreal/Groot”
+github "gonzalezreal/Groot"
 ```
 
 Then run `$ carthage update`.
@@ -128,6 +128,8 @@ ValueTransformer.setValueTransformer(withName: "StringToInteger", transform: toS
 To preserve the object graph and avoid duplicating information when serializing managed objects from JSON, Groot needs to know how to uniquely identify your model objects.
 
 In our example, we should add an `identityAttributes` entry to the `Character`, `Power` and `Publisher` entities user dictionaries with the value `identifier`.
+
+Adding the `identityAttributes` annotation to your entities can affect performance when serializing from JSON. For more information see [Object Uniquing Performance](#object-uniquing-performance).
 
 For more information about annotating your model have a look at [Annotations](Documentation/Annotations.md).
 
@@ -255,6 +257,22 @@ For more serialization alternatives check [Groot.swift](Groot/Groot.swift) and [
 Groot supports entity inheritance via the [entityMapperName](Documentation/Annotations.md#entitymappername) annotation.
 
 If you are using SQLite as your persistent store, Core Data implements entity inheritance by creating one table for the parent entity and all child entities, with a superset of all their attributes. This can obviously have unintended performance consequences if you have a lot of data in the entities, so use this feature wisely.
+
+### Object Uniquing Performance
+
+**Object uniquing** can affect performance when serialising from JSON, as it requires fetching data from the database before inserting.
+
+If you take a look on how **Groot** is implemented, there are three serialization strategies:
+
+* Insert
+* Uniquing
+* Composite Uniquing
+
+As you may guess, the first one is the most performant as it does not fetch from the database. If you know that there is no duplicate data in your data set, **DO NOT** set `identityAttributes` in your entity. This will make Groot use the *Insert* strategy.
+
+Groot will pick the *Uniquing* strategy if the `identityAttributes` annotation has a single attribute, otherwise it will pick the *Composite Uniquing* strategy.
+
+The *Uniquing* strategy requires one fetch for every array of JSON objects, whereas the *Composite Uniquing* strategy requires one fetch for every single JSON object (it is potentially the slowest of the three strategies).
 
 ### Serializing to JSON
 

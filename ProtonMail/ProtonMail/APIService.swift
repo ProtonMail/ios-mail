@@ -16,10 +16,10 @@
 
 import CoreData
 import Foundation
-
+import AFNetworking
+import AFNetworkActivityLogger
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
-
 
 protocol APIServiceDelegate {
     func onError(error: NSError)
@@ -212,6 +212,8 @@ class APIService {
                         UserTempCachedStatus.backup()
                         sharedUserDataService.signOut(true)
                         userCachedStatus.signOut()
+                    } else {
+                        completion(nil, NSError.AuthCachePassEmpty())
                     }
                 }
             }
@@ -256,6 +258,9 @@ class APIService {
                 
                 let clanguage = LanguageManager.currentLanguageEnum()
                 request.setValue(clanguage.localeString, forHTTPHeaderField: "x-pm-locale")
+                if let ua = UserAgent.default.ua {
+                    request.setValue(ua, forHTTPHeaderField: "User-Agent")
+                }
                 
                 let sessionDownloadTask = self.sessionManager.downloadTask(with: request as URLRequest, progress: { (progress) in
                     
@@ -321,6 +326,9 @@ class APIService {
                 
                 let clanguage = LanguageManager.currentLanguageEnum()
                 request.setValue(clanguage.localeString, forHTTPHeaderField: "x-pm-locale")
+                if let ua = UserAgent.default.ua {
+                    request.setValue(ua, forHTTPHeaderField: "User-Agent")
+                }
             
                 var uploadTask: URLSessionDataTask? = nil
                 uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request as URLRequest, progress: { (progress) in
@@ -340,13 +348,14 @@ class APIService {
         }
     }
     
+    
     //new requestion function
     func request(method: HTTPMethod,
                  path: String, parameters: Any?,
                  headers: [String : Any]?,
                  authenticated: Bool = true,
                  completion: CompletionBlock?) {
-        
+
         let authBlock: AuthCredentialBlock = { auth, error in
             if let error = error {
                 completion?(nil, nil, error)
@@ -371,6 +380,9 @@ class APIService {
                 
                 let clanguage = LanguageManager.currentLanguageEnum()
                 request.setValue(clanguage.localeString, forHTTPHeaderField: "x-pm-locale")
+                if let ua = UserAgent.default.ua {
+                    request.setValue(ua, forHTTPHeaderField: "User-Agent")
+                }
                 
                 var task: URLSessionDataTask? = nil
                 task = self.sessionManager.dataTask(with: request as URLRequest, uploadProgress: { (progress) in

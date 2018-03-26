@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UICKeyChainStore
 
 let sharedKeychain = KeychainWrapper()
 final class KeychainWrapper {

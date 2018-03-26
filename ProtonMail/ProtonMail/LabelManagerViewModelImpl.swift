@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 
 // labels and folders manager

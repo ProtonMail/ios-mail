@@ -8,6 +8,7 @@
 
 import UIKit
 import LocalAuthentication
+import MBProgressHUD
 
 class SettingTableViewController: ProtonMailViewController {
     
@@ -584,18 +585,27 @@ class SettingTableViewController: ProtonMailViewController {
                                 if defaultAddress != addr {
                                     needsShow = true
                                     alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
-                                        let _ = self.navigationController?.popViewController(animated: true)
+                                        if addr.send == 0 {
+                                            if addr.email.lowercased().range(of: "@pm.me") != nil {
+                                                let msg = String(format: NSLocalizedString("You can't set %@ address as default because it is a paid feature.", comment: "pm.me upgrade warning in composer"), addr.email)
+                                                let alertController = msg.alertController()
+                                                alertController.addOKAction()
+                                                self.present(alertController, animated: true, completion: nil)
+                                            }
+                                            return
+                                        }
+                                        
                                         var newAddrs = [Address]()
-                                        var newOrder = [Int]()
+                                        var newOrder = [String]()
                                         newAddrs.append(addr)
-                                        newOrder.append(addr.order)
+                                        newOrder.append(addr.address_id)
                                         var order = 1
                                         addr.order = order
                                         order += 1
                                         for oldAddr in self.multi_domains {
                                             if oldAddr != addr {
                                                 newAddrs.append(oldAddr)
-                                                newOrder.append(oldAddr.order)
+                                                newOrder.append(oldAddr.address_id)
                                                 oldAddr.order = order
                                                 order += 1
                                             }

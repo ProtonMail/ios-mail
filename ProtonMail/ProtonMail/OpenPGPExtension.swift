@@ -62,11 +62,11 @@ extension PMNOpenPgp {
         }
         
         guard let outKeys = out_keys, outKeys.count == old_keys.count else {
-            throw UpdatePasswordError.keyUpdateFailed.toError()
+            throw UpdatePasswordError.keyUpdateFailed.error
         }
         
         guard outKeys.count > 0 && outKeys[0].is_updated == true else {
-            throw UpdatePasswordError.keyUpdateFailed.toError()
+            throw UpdatePasswordError.keyUpdateFailed.error
         }
         
         for u_k in outKeys {
@@ -75,7 +75,7 @@ extension PMNOpenPgp {
             }
             let result = PMNOpenPgp.checkPassphrase(u_k.private_key, passphrase: new_pass)
             guard result == true else {
-                throw UpdatePasswordError.keyUpdateFailed.toError()
+                throw UpdatePasswordError.keyUpdateFailed.error
             }
         }
         return outKeys
@@ -94,11 +94,11 @@ extension PMNOpenPgp {
             }
             
             guard let outKeys = out_keys, outKeys.count == addr.keys.count else {
-                throw UpdatePasswordError.keyUpdateFailed.toError()
+                throw UpdatePasswordError.keyUpdateFailed.error
             }
             
             guard outKeys.count > 0 && outKeys[0].is_updated == true else {
-                throw UpdatePasswordError.keyUpdateFailed.toError()
+                throw UpdatePasswordError.keyUpdateFailed.error
             }
             
             for u_k in outKeys {
@@ -107,7 +107,7 @@ extension PMNOpenPgp {
                 }
                 let result = PMNOpenPgp.checkPassphrase(u_k.private_key, passphrase: new_pass)
                 guard result == true else {
-                    throw UpdatePasswordError.keyUpdateFailed.toError()
+                    throw UpdatePasswordError.keyUpdateFailed.error
                 }
             }
             
@@ -126,7 +126,7 @@ extension PMNOpenPgp {
         }
         
         guard out_addresses.count == old_addresses.count else {
-            throw UpdatePasswordError.keyUpdateFailed.toError()
+            throw UpdatePasswordError.keyUpdateFailed.error
         }
         
         return out_addresses
@@ -142,11 +142,11 @@ extension PMNOpenPgp {
         }
         
         guard let outKey = out_key else {
-            throw UpdatePasswordError.keyUpdateFailed.toError()
+            throw UpdatePasswordError.keyUpdateFailed.error
         }
         
         guard PMNOpenPgp.checkPassphrase(outKey, passphrase: new_pass) else {
-            throw UpdatePasswordError.keyUpdateFailed.toError()
+            throw UpdatePasswordError.keyUpdateFailed.error
         }
         
         return outKey

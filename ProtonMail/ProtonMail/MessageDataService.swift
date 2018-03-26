@@ -16,6 +16,7 @@
 
 import Foundation
 import CoreData
+import Groot
 
 let sharedMessageDataService = MessageDataService()
 
@@ -280,7 +281,7 @@ class MessageDataService {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, _eventsRes, _hasEventsError in
                 if let eventsRes = _eventsRes {
-                    if eventsRes.refresh.contains(.all) ||  eventsRes.refresh.contains(.mail) || (_hasEventsError && eventsRes.code == 18001) {
+                    if eventsRes.refresh.contains(.all) ||  eventsRes.refresh.contains(.mail) || (_hasEventsError && eventsRes.code == 18001) || (_hasEventsError && eventsRes.code == 400) {
                         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
                         getLatestEventID.call() { task, _IDRes, hasIDError in
                             if let IDRes = _IDRes, !hasIDError && !IDRes.eventID.isEmpty {
@@ -311,6 +312,7 @@ class MessageDataService {
                                 self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
                                 self.processIncrementalUpdateLabels(eventsRes.labels)
                                 self.processIncrementalUpdateContacts(eventsRes.contacts)
+                                self.processIncrementalUpdateContactEmails(eventsRes.contactEmails)
                                 
                                 var outMessages : [Any] = [];
                                 for message in eventsRes.messages! {
@@ -333,6 +335,7 @@ class MessageDataService {
                             self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
                             self.processIncrementalUpdateLabels(eventsRes.labels)
                             self.processIncrementalUpdateContacts(eventsRes.contacts)
+                            self.processIncrementalUpdateContactEmails(eventsRes.contactEmails)
                         }
                         if _hasEventsError {
                             completion?(task, nil, eventsRes.error)
@@ -383,6 +386,7 @@ class MessageDataService {
                                 self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
                                 self.processIncrementalUpdateLabels(eventsRes.labels)
                                 self.processIncrementalUpdateContacts(eventsRes.contacts)
+                                self.processIncrementalUpdateContactEmails(eventsRes.contactEmails)
                                 
                                 var outMessages : [Any] = [];
                                 for message in eventsRes.messages! {
@@ -405,6 +409,7 @@ class MessageDataService {
                             self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
                             self.processIncrementalUpdateLabels(eventsRes.labels)
                             self.processIncrementalUpdateContacts(eventsRes.contacts)
+                            self.processIncrementalUpdateContactEmails(eventsRes.contactEmails)
                         }
                         if hasError {
                             completion?(task, nil, eventsRes.error)
@@ -420,25 +425,19 @@ class MessageDataService {
     }
     
     func processIncrementalUpdateContacts(_ contacts: [[String : Any]]?) {
-        struct IncrementalContactUpdateType {
-            static let delete = 0
-            static let insert = 1
-            static let update = 2
-        }
-        
         if let contacts = contacts {
             let context = sharedCoreDataService.newMainManagedObjectContext()
             context.perform { () -> Void in
                 for contact in contacts {
                     let contactObj = ContactEvent(event: contact)
-                    switch(contactObj.Action) {
-                    case .some(IncrementalContactUpdateType.delete):
+                    switch(contactObj.action) {
+                    case .delete:
                         if let contactID = contactObj.ID {
                             if let tempContact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
                                 context.delete(tempContact)
                             }
                         }
-                    case .some(IncrementalContactUpdateType.insert), .some(IncrementalContactUpdateType.update) :
+                    case .insert, .update:
                         do {
                             if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
                                                                  fromJSONArray: contactObj.contacts,
@@ -461,6 +460,47 @@ class MessageDataService {
             }
         }
     }
+    
+    func processIncrementalUpdateContactEmails(_ contactEmails: [[String : Any]]?) {
+        guard let emails = contactEmails else {
+            return
+        }
+        
+        let context = sharedCoreDataService.newMainManagedObjectContext()
+        context.perform { () -> Void in
+            for email in emails {
+                let emailObj = EmailEvent(event: email)
+                switch(emailObj.action) {
+                case .delete:
+                    if let emailID = emailObj.ID {
+                        if let tempEmail = Email.EmailForID(emailID, inManagedObjectContext: context) {
+                            context.delete(tempEmail)
+                        }
+                    }
+                case .insert, .update:
+                    do {
+                        if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                              fromJSONArray: emailObj.contacts,
+                                                                              in: context) as? [Contact] {
+                            for c in outContacts {
+                                c.isDownloaded = false
+                            }
+                        }
+                        
+                    } catch let ex as NSError {
+                        PMLog.D(" error: \(ex)")
+                    }
+                default:
+                    PMLog.D(" unknown type in contact: \(email)")
+                }
+            }
+            
+            if let error = context.saveUpstreamIfNeeded()  {
+                PMLog.D(" error: \(error)")
+            }
+        }
+    }
+    
     
     func processIncrementalUpdateTotal(_ totals: [String : Any]?) {
         
@@ -1138,10 +1178,12 @@ class MessageDataService {
     
     func saveDraft(_ message : Message!) {
         if let context = message.managedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            } else {
-                self.queue(message, action: .saveDraft)
+            context.performAndWait {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                } else {
+                    self.queue(message, action: .saveDraft)
+                }
             }
         }
     }
@@ -1171,38 +1213,6 @@ class MessageDataService {
                 PMLog.D("error : \(ex)")
             }
         }
-        
-        //clean old messags
-        //        if let context = sharedCoreDataService.mainManagedObjectContext {
-        //            let cutoffTimeInterval: NSTimeInterval = 3 * 86400 // days converted to seconds
-        //            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-        //
-        //            var error: NSError?
-        //            let count = context.countForFetchRequest(fetchRequest, error: &error)
-        //
-        //            if error != nil {
-        //                PMLog.D(" error: \(error)")
-        //            } else if count > maximumCachedMessageCount {
-        //                 TODO:: disable this need add later
-        //                                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, MessageLocation.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
-        //
-        //                                if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
-        //                                    for message in oldMessages {
-        //                                        context.deleteObject(message)
-        //                                    }
-        //
-        //                                    PMLog.D(" \(oldMessages.count) old messages purged.")
-        //
-        //                                    if let error = context.saveUpstreamIfNeeded() {
-        //                                        PMLog.D(" error: \(error)")
-        //                                    }
-        //                                } else {
-        //                                    PMLog.D(" error: \(error)")
-        //                                }
-        //            } else {
-        //                PMLog.D(" cached message count: \(count)")
-        //            }
-        //        }
     }
     
     // MARK: - Private methods
@@ -1360,6 +1370,7 @@ class MessageDataService {
                                                 hasTemp = true;
                                                 context.delete(att)
                                             }
+                                            att.keyChanged = false
                                         }
                                     }
                                     

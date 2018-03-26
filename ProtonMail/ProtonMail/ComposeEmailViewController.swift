@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import ZSSRichTextEditor
+import PromiseKit
+import AwaitKit
 
 class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
@@ -202,10 +205,36 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     fileprivate func updateMessageView() {
-        self.composeView.updateFromValue(self.viewModel.getDefaultSendAddress()?.email ?? "", pickerEnabled: true)
         self.composeView.subject.text = self.viewModel.getSubject()
         self.shouldShowKeyboard = false
         self.setHTML(self.viewModel.getHtmlBody())
+        
+        guard let addr = self.viewModel.getDefaultSendAddress() else {
+            return
+        }
+        self.composeView.updateFromValue(addr.email, pickerEnabled: true)
+        if let origAddr = self.viewModel.fromAddress() {
+            if origAddr.send == 0 {
+                self.viewModel.updateAddressID(addr.address_id).done {
+                    //
+                }.catch({ (_) in
+                    
+                })
+                
+                if origAddr.email.lowercased().range(of: "@pm.me") != nil {
+                    guard userCachedStatus.isPMMEWarningDisabled == false else {
+                        return
+                    }
+                    let msg = String(format: NSLocalizedString("Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@", comment: "pm.me upgrade warning in composer"), origAddr.email, addr.email)
+                    let alertController = msg.alertController(NSLocalizedString("Notice", comment: "Alert"))
+                    alertController.addOKAction()
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Don't remind me again", comment: "Action"), style: .destructive, handler: { action in
+                        userCachedStatus.isPMMEWarningDisabled = true
+                    }))
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -502,39 +531,41 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
 // MARK : - view extensions
 extension ComposeEmailViewController : ComposeViewDelegate {
     func composeViewPickFrom(_ composeView: ComposeView) {
-        if attachments?.count > 0 {
-            let alertController = NSLocalizedString("Please remove all attachments before changing sender!", comment: "Error").alertController()
-            alertController.addOKAction()
-            self.present(alertController, animated: true, completion: nil)
-        } else {
-            var needsShow : Bool = false
-            let alertController = UIAlertController(title: NSLocalizedString("Change sender address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
-            let multi_domains = self.viewModel.getAddresses()
-            let defaultAddr = self.viewModel.getDefaultSendAddress()
-            for addr in multi_domains {
-                if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
-                    needsShow = true
-                    alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
-                        if addr.send == 0 {
-                            let alertController = String(format: NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error"), addr.email).alertController()
+        var needsShow : Bool = false
+        let alertController = UIAlertController(title: NSLocalizedString("Change sender address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        let multi_domains = self.viewModel.getAddresses()
+        let defaultAddr = self.viewModel.getDefaultSendAddress()
+        for addr in multi_domains {
+            if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
+                needsShow = true
+                alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
+                    if addr.send == 0 {
+                        let alertController = String(format: NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error"), addr.email).alertController()
+                        alertController.addOKAction()
+                        self.present(alertController, animated: true, completion: nil)
+                    } else {
+                        if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
+                            self.updateSignature("\(signature)")
+                        }
+                        ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                        self.viewModel.updateAddressID(addr.address_id).done {
+                            self.composeView.updateFromValue(addr.email, pickerEnabled: true)
+                        }.catch { (error ) in
+                            let alertController = error.localizedDescription.alertController()
                             alertController.addOKAction()
                             self.present(alertController, animated: true, completion: nil)
-                        } else {
-                            if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
-                                self.updateSignature("\(signature)")
-                            }
-                            self.viewModel.updateAddressID(addr.address_id)
-                            self.composeView.updateFromValue(addr.email, pickerEnabled: true)
+                        }.finally {
+                            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                         }
-                    }))
-                }
+                    }
+                }))
             }
-            if needsShow {
-                alertController.popoverPresentationController?.sourceView = self.composeView.fromView
-                alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
-                present(alertController, animated: true, completion: nil)
-            }
+        }
+        if needsShow {
+            alertController.popoverPresentationController?.sourceView = self.composeView.fromView
+            alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
+            present(alertController, animated: true, completion: nil)
         }
     }
     
