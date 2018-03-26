@@ -226,9 +226,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
                         return
                     }
                     let msg = String(format: NSLocalizedString("Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@", comment: "pm.me upgrade warning in composer"), origAddr.email, addr.email)
-                    let alertController = msg.alertController()
+                    let alertController = msg.alertController(NSLocalizedString("Notice", comment: "Alert"))
                     alertController.addOKAction()
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("DON'T REMIND ME AGAIN", comment: "Action"), style: .destructive, handler: { action in
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Don't remind me again", comment: "Action"), style: .destructive, handler: { action in
                         userCachedStatus.isPMMEWarningDisabled = true
                     }))
                     self.present(alertController, animated: true, completion: nil)
