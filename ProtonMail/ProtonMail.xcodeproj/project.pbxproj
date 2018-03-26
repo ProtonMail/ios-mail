@@ -979,6 +979,10 @@
 		7558C5481BE82D6300043009 /* LabelsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7558C5471BE82D6300043009 /* LabelsView.xib */; };
 		755B6A701B38C0B800745872 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755B6A6F1B38C0B800745872 /* Label.swift */; };
 		755E0D061F2FACF9004D2873 /* Attachments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B123771AB8CD90006EA38C /* Attachments.storyboard */; };
+		755ECCE520699C20003D45AE /* TouchID+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755ECCE420699C20003D45AE /* TouchID+Helper.swift */; };
+		755ECCE620699C20003D45AE /* TouchID+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755ECCE420699C20003D45AE /* TouchID+Helper.swift */; };
+		755ECCE720699C20003D45AE /* TouchID+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755ECCE420699C20003D45AE /* TouchID+Helper.swift */; };
+		755ECCE820699C20003D45AE /* TouchID+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755ECCE420699C20003D45AE /* TouchID+Helper.swift */; };
 		755F92171C7E685700BAEDF9 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755F92161C7E685700BAEDF9 /* OnboardingViewController.swift */; };
 		755F92191C7E6D0D00BAEDF9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755F92181C7E6D0D00BAEDF9 /* OnboardingView.swift */; };
 		755F921B1C7E6D1F00BAEDF9 /* OnboardingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */; };
@@ -1723,6 +1727,7 @@
 		755638CA1CA1F446003FA2D0 /* MessageViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewModelImpl.swift; sourceTree = "<group>"; };
 		7558C5471BE82D6300043009 /* LabelsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelsView.xib; sourceTree = "<group>"; };
 		755B6A6F1B38C0B800745872 /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		755ECCE420699C20003D45AE /* TouchID+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TouchID+Helper.swift"; sourceTree = "<group>"; };
 		755F92161C7E685700BAEDF9 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		755F92181C7E6D0D00BAEDF9 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingView.xib; sourceTree = "<group>"; };
@@ -2630,6 +2635,7 @@
 				07655BC01AB10D7100CD3883 /* Bundle+Extension.swift */,
 				07CCCC2F1AA4E26000ECA79E /* NSCoder+Extension.swift */,
 				75A84D481FF59EDE00F2A54B /* UISearchBar+Extension.swift */,
+				755ECCE420699C20003D45AE /* TouchID+Helper.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -4787,6 +4793,7 @@
 				07CF61981A8AE5AA00ED38AE /* MonitorSavesDataService.swift in Sources */,
 				752EEC1C1BB0A9D800770331 /* QuickViewViewController.swift in Sources */,
 				7528FFA61FA7FE85005F66A3 /* EmailExtension.swift in Sources */,
+				755ECCE520699C20003D45AE /* TouchID+Helper.swift in Sources */,
 				7546BE571C8D557C00FCEB0A /* TouchIDCell.swift in Sources */,
 				754508441E149BD000265CD0 /* CaptchaViewModelImpl.swift in Sources */,
 				757F4A0F1E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift in Sources */,
@@ -5414,6 +5421,7 @@
 				75482B721F7F09E100B0BFFB /* APIService+ErrorExtension.swift in Sources */,
 				75A84D521FF758AC00F2A54B /* ContactFieldType.swift in Sources */,
 				75482B731F7F09E100B0BFFB /* UIColor+ProtonMail.swift in Sources */,
+				755ECCE620699C20003D45AE /* TouchID+Helper.swift in Sources */,
 				75482B741F7F09E100B0BFFB /* Label.swift in Sources */,
 				7528002A1FA80049005F66A3 /* UIView+Extension.swift in Sources */,
 				75482B751F7F09E100B0BFFB /* EventAPI.swift in Sources */,
@@ -5580,6 +5588,7 @@
 				7512AA4E1F18053F00D84955 /* APIService+ErrorExtension.swift in Sources */,
 				7512AA081F17EACE00D84955 /* UIColor+ProtonMail.swift in Sources */,
 				7512AA061F17EABF00D84955 /* Label.swift in Sources */,
+				755ECCE820699C20003D45AE /* TouchID+Helper.swift in Sources */,
 				753E5AC31F181D940090C0F9 /* EventAPI.swift in Sources */,
 				7512AA631F1808C100D84955 /* KeysAPI.swift in Sources */,
 				758993291F2953BE0030B5AC /* ActivityIndicatorHelper.swift in Sources */,
@@ -5720,6 +5729,7 @@
 				75256C4D1F16DFBD00F2771E /* NSManagedObjectExtension.swift in Sources */,
 				75B052A01F1FE1FC008E483A /* ViewDefined.swift in Sources */,
 				75256C551F16DFBD00F2771E /* UIButton+ProtonMail.swift in Sources */,
+				755ECCE720699C20003D45AE /* TouchID+Helper.swift in Sources */,
 				75C7FF3B1F2FE1F800F15792 /* String+Toast+Extension.swift in Sources */,
 				75256C571F16DFBD00F2771E /* UILabel+ProtonMail.swift in Sources */,
 				75256C611F16DFBD00F2771E /* String+Extension.swift in Sources */,

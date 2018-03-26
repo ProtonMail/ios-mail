@@ -206,6 +206,7 @@ public enum SProtectionItems : Int, CustomStringConvertible {
     case updatePin = 2
     case autoLogout = 3
     case enterTime = 4
+    case faceID = 5
     
     public var description : String {
         switch(self){
@@ -219,6 +220,8 @@ public enum SProtectionItems : Int, CustomStringConvertible {
             return NSLocalizedString("Protection Entire App", comment: "settings protection section title")
         case .enterTime:
             return NSLocalizedString("Auto Lock Time", comment: "settings protection section title")
+        case .faceID:
+            return NSLocalizedString("Enable FaceID", comment: "settings protection section title")
         }
     }
 }
