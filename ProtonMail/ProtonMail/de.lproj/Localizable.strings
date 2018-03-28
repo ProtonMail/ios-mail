@@ -202,7 +202,7 @@
 "Bug Report Received" = "Fehlerbericht erhalten";
 
 /* agree check box first part words */
-"By using protonmail, you agree to our" = "Durch die Verwendung von ProtonMail stimmen Sie unseren #Please-Insert-Link zu";
+"By using protonmail, you agree to our" = "Durch die Verwendung von ProtonMail stimmen Sie unseren zu";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
