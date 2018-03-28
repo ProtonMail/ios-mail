@@ -661,10 +661,19 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                 if let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!) {
                     try? decryptData.write(to: tempFileUri!, options: [.atomic])
                     //TODO:: the hard code string need change it to enum later
-                    if type == "application/vnd.apple.pkpass", let pkfile = try? Data(contentsOf: tempFileUri!) {
-                        let pass : PKPass = PKPass(data: pkfile, error: nil)
-                        let vc = PKAddPassesViewController(pass: pass) as PKAddPassesViewController
-                        self.present(vc, animated: true, completion: nil)
+                    if (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
+                        let pkfile = try? Data(contentsOf: tempFileUri!) {
+                        var error : NSError? = nil
+                        let pass : PKPass = PKPass(data: pkfile, error: &error)
+                        if error != nil {
+                            let previewQL = QuickViewViewController()
+                            previewQL.dataSource = self
+                            latestPresentedView = previewQL
+                            self.present(previewQL, animated: true, completion: nil)
+                        } else {
+                            let vc = PKAddPassesViewController(pass: pass) as PKAddPassesViewController
+                            self.present(vc, animated: true, completion: nil)
+                        }
                     } else {
                         let previewQL = QuickViewViewController()
                         previewQL.dataSource = self
