@@ -423,7 +423,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 let sn : String! = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
                 let se : String! = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
                 
-                var replyHeader = time + ", " + sn! + " &lt;<a href=\"mailto:" + se + "\" class=\"\">" + se + "</a>&gt;"
+                var replyHeader = time + ", " + sn!
+                replyHeader = replyHeader + " &lt;<a href=\"mailto:"
+                replyHeader = replyHeader + se + "\" class=\"\">" + se + "</a>&gt;"
+                
                 replyHeader = replyHeader.stringByStrippingStyleHTML()
                 replyHeader = replyHeader.stringByStrippingBodyStyle()
                 replyHeader = replyHeader.stringByPurifyHTML()
