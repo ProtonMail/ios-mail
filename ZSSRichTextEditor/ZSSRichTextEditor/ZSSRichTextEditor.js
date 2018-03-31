@@ -114,6 +114,7 @@ zss_editor.debug = function(msg) {
 zss_editor.setScrollPosition = function() {
     var position = window.pageYOffset;
     window.location = 'scroll://'+position;
+    window.location = 'debug://' + zss_editor.contentHeight;
 }
 
 
@@ -173,9 +174,13 @@ zss_editor.calculateEditorHeightWithCaretPosition = function() {
     var newPos = window.pageYOffset;
     
     if (c < offsetY) {
+        window.location = 'debug://'+c + ':' + offsetY;
         newPos = c;
     } else if (c > (offsetY + height - padding)) {
+        
+        window.location = 'debug://'+c + ':' + offsetY + ':' + height + ':' + padding;
         var newPos = c - height + padding - 18;
+        
     }
     
     window.scrollTo(0, newPos);

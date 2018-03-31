@@ -1144,7 +1144,7 @@ static Class hackishFixClass = Nil;
     
     NSString *urlString = [[request URL] absoluteString];
 
-    //NSLog(@"%@", urlString);
+    NSLog(@"%@", urlString);
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
         return NO;
     } else if ([urlString rangeOfString:@"callback://0/"].location != NSNotFound) {
