@@ -1,6 +1,6 @@
 // AFNetworkActivityLogger.h
 //
-// Copyright (c) 2015 AFNetworking (http://afnetworking.com/)
+// Copyright (c) 2018 AFNetworking (http://afnetworking.com/)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -54,6 +54,10 @@
  */
 - (void)stopLogging;
 
+/**
+ Set the `AFHTTPRequestLoggerLevel` of all managed loggers.
+ */
+- (void)setLogLevel:(AFHTTPRequestLoggerLevel)level;
 
 /**
  Adds the given logger to be managed to the `loggers` set.
