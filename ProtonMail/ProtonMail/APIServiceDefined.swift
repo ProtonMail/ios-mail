@@ -73,13 +73,22 @@ struct AttachmentAPI {
 //Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_auth.md
 struct AuthAPI {
     /// base message api path
-    static let Path :String = AppConstants.API_PATH + "/auth"
+    static let path :String = AppConstants.API_PATH + "/auth"
     
-    /// fetch message request version
-    static let V_AuthRequest : Int = 1
+    /// user auth post
+    static let v_auth : Int = 3
     
+    /// refresh token post
+    static let v_auth_refresh : Int = 3
     
-    static let V_AuthModulusRequest : Int = 1
+    /// setup auth info post
+    static let v_auth_info : Int = 3
+    
+    /// get random srp modulus
+    static let v_get_auth_modulus : Int = 3
+    
+    /// delete auth
+    static let v_delete_auth : Int = 3
 }
 
 

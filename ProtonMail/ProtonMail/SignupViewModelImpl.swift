@@ -132,7 +132,7 @@ final class SignupViewModelImpl : SignupViewModel {
         if let key = self.newKey {
             {
                 do {
-                    let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
+                    let authModuls = try AuthModulusRequest().syncCall()
                     guard let moduls_id = authModuls?.ModulusID else {
                         throw SignUpCreateUserError.invalidModulsID.error
                     }
@@ -180,7 +180,7 @@ final class SignupViewModelImpl : SignupViewModel {
                                             let setupAddrApi = try SetupAddressRequest(domain_name: self.domain).syncCall()
                                             
                                             //need setup keys
-                                            let authModuls_for_key = try AuthModulusRequest<AuthModulusResponse>().syncCall()
+                                            let authModuls_for_key = try AuthModulusRequest().syncCall()
                                             guard let moduls_id_for_key = authModuls_for_key?.ModulusID else {
                                                 throw SignUpCreateUserError.invalidModulsID.error
                                             }

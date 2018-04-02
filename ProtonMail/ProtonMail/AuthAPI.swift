@@ -57,23 +57,7 @@ final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return AuthAPI.Path + "/info" + AppConstants.DEBUG_OPTION
-    }
-    
-    override func getIsAuthFunction() -> Bool {
-        return false
-    }
-}
-
-
-final class AuthModulusRequest<T : ApiResponse> : ApiRequest<T> {
-    
-    override func method() -> APIService.HTTPMethod {
-        return .get
-    }
-    
-    override open func path() -> String {
-        return AuthAPI.Path + "/modulus" + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + "/info" + AppConstants.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
@@ -81,7 +65,39 @@ final class AuthModulusRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return AuthAPI.V_AuthModulusRequest
+        return AuthAPI.v_auth_info
+    }
+}
+
+
+final class AuthModulusRequest : ApiRequest<AuthModulusResponse> {
+    
+    override func method() -> APIService.HTTPMethod {
+        return .get
+    }
+    
+    override open func path() -> String {
+        return AuthAPI.path + "/modulus" + AppConstants.DEBUG_OPTION
+    }
+    
+    override func getIsAuthFunction() -> Bool {
+        return false
+    }
+    
+    override func apiVersion() -> Int {
+        return AuthAPI.v_get_auth_modulus
+    }
+}
+
+final class AuthModulusResponse : ApiResponse {
+    
+    var Modulus : String?
+    var ModulusID : String?
+    
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        self.Modulus = response["Modulus"] as? String
+        self.ModulusID = response["ModulusID"] as? String
+        return true
     }
 }
 
@@ -130,11 +146,15 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return AuthAPI.Path + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + AppConstants.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
         return false
+    }
+    
+    override func apiVersion() -> Int {
+        return AuthAPI.v_auth
     }
 }
 
@@ -168,11 +188,15 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return AuthAPI.Path + "/refresh" + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + "/refresh" + AppConstants.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
         return false
+    }
+    
+    override func apiVersion() -> Int {
+        return AuthAPI.v_auth_refresh
     }
 }
 
@@ -186,11 +210,15 @@ final class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return AuthAPI.Path + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + AppConstants.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
         return false
+    }
+    
+    override func apiVersion() -> Int {
+        return AuthAPI.v_delete_auth
     }
 }
 
@@ -260,18 +288,4 @@ final public class AuthInfoResponse : ApiResponse {
         return true
     }
 }
-
-
-final class AuthModulusResponse : ApiResponse {
-    
-    var Modulus : String?
-    var ModulusID : String?
-    
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.Modulus = response["Modulus"] as? String
-        self.ModulusID = response["ModulusID"] as? String
-        return true
-    }
-}
-
 

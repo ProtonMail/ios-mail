@@ -475,7 +475,7 @@ class UserDataService {
                 guard let _username = self.username else {
                     throw UpdatePasswordError.invalidUserName.error
                 }
-                let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
+                let authModuls = try AuthModulusRequest().syncCall()
                 guard let moduls_id = authModuls?.ModulusID else {
                     throw UpdatePasswordError.invalidModulusID.error
                 }
@@ -598,7 +598,7 @@ class UserDataService {
                 
                 var authPacket : PasswordAuth?
                 if buildAuth {
-                    let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
+                    let authModuls = try AuthModulusRequest().syncCall()
                     guard let moduls_id = authModuls?.ModulusID else {
                         throw UpdatePasswordError.invalidModulusID.error
                     }
