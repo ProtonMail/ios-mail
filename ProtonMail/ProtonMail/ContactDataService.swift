@@ -312,34 +312,50 @@ class ContactDataService {
             return
         }
         self.isFetching = true
+        
         {
             do {
-                //TODO::here need change to fetch by page until got total
-                let contactsApi = ContactsRequest<ContactsResponse>()
-                let response = try contactsApi.syncCall()
-                if let contacs = response?.contacts {
-                    let context = sharedCoreDataService.newManagedObjectContext()
-                    context.performAndWait() {
-                        do {
-                            let _ = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
-                                                                     fromJSONArray: contacs,
-                                                                     in: context) as? [Contact]
-                            if let error = context.saveUpstreamIfNeeded() {
-                                PMLog.D(" error: \(error)")
-                            }
-                            
-                        } catch let ex as NSError {
-                            PMLog.D(" error: \(ex)")
-                        }
-                    }
-                }
-                
                 var currentPage = 0
                 var fetched = -1
                 let pageSize = 1000
                 var loop = 1
                 var total = 0
+                while (true) {
+                    if loop <= 0 || fetched >= total {
+                        break
+                    }
+                    loop = loop - 1
+                    
+                    let contactsApi = ContactsRequest(page: currentPage, pageSize: pageSize)
+                    if let response = try contactsApi.syncCall() {
+                        let contacts = response.contacts
+                        if fetched == -1 {
+                            fetched = contacts.count
+                            total = response.total
+                            loop = (total / pageSize) - (total % pageSize == 0 ? 1 : 0)
+                        } else {
+                            fetched = fetched + contacts.count
+                        }
+                        let context = sharedCoreDataService.newManagedObjectContext()
+                        context.performAndWait() {
+                            do {
+                                let _ = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                         fromJSONArray: contacts,
+                                                                         in: context) as? [Contact]
+                                if let error = context.saveUpstreamIfNeeded() {
+                                    PMLog.D(" error: \(error)")
+                                }
+                            } catch let ex as NSError {
+                                PMLog.D(" error: \(ex)")
+                            }
+                        }
+                    }
+                }
                 
+                currentPage = 0
+                fetched = -1
+                loop = 1
+                total = 0
                 while (true) {
                     if loop <= 0 || fetched >= total {
                         break
@@ -353,6 +369,9 @@ class ContactDataService {
                             fetched = contactsArray.count
                             total = contactsRes.total
                             loop = (total / pageSize) - (total % pageSize == 0 ? 1 : 0)
+                            if loop == 0 && fetched < total {
+                                loop = loop + 1
+                            }
                         } else {
                             fetched = fetched + contactsArray.count
                         }
@@ -360,22 +379,22 @@ class ContactDataService {
                         context.performAndWait() {
                             do {
                                 if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
-                                                                            fromJSONArray: contactsArray,
-                                                                            in: context) as? [Contact] {
+                                                                                   fromJSONArray: contactsArray,
+                                                                                   in: context) as? [Contact] {
                                     for contact in contacts {
                                         let _ = contact.fixName(force: true)
                                     }
                                     if let error = context.saveUpstreamIfNeeded() {
                                         PMLog.D(" error: \(error)")
-                                        //                                        completion?(nil, error)
+                                        //completion?(nil, error)
                                     } else {
-                                        //                                        completion?(contacts, nil)
+                                        //completion?(contacts, nil)
                                         //completion?(self.allContacts(), nil)
                                     }
                                 }
                             } catch let ex as NSError {
                                 PMLog.D(" error: \(ex)")
-                                //                                completion?(nil, ex)
+                                //completion?(nil, ex)
                             }
                         }
                     }

@@ -9,23 +9,32 @@
 import Foundation
 
 
-// MARK : Get messages part
-class ContactsRequest<T : ApiResponse> : ApiRequest<T> {
-
+// MARK : Get contacts part
+class ContactsRequest : ApiRequest<ContactsResponse> {
+    var page : Int = 0
+    var max : Int = 100
+    
+    init(page: Int, pageSize : Int) {
+        self.page = page
+        self.max = pageSize
+    }
+    
     override public func path() -> String {
-        return ContactsAPI.Path +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path +  AppConstants.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
-        return ContactsAPI.V_ContactsRequest
+        return ContactsAPI.v_get_contacts
     }
 }
 
 //
 class ContactsResponse : ApiResponse {
-    var contacts : [[String : Any]]?
+    var total : Int = -1
+    var contacts : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        self.contacts = response?["Contacts"] as? [[String : Any]]
+        self.total = response?["Total"] as? Int ?? -1
+        self.contacts = response?["Contacts"] as? [[String : Any]] ?? []
         return true
     }
 }
@@ -41,7 +50,7 @@ class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.Path + "/emails" +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/emails" +  AppConstants.DEBUG_OPTION
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -105,7 +114,7 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
     }
 
     override public func path() -> String {
-        return ContactsAPI.Path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
@@ -206,7 +215,7 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.Path +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path +  AppConstants.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
@@ -275,7 +284,7 @@ final class ContactDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.Path + "/delete" +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/delete" +  AppConstants.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
@@ -303,7 +312,7 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.Path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {

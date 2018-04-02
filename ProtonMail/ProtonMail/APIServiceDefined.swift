@@ -95,6 +95,20 @@ struct AuthAPI {
 }
 
 
+//Contact API
+//Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_contacts_v2.md
+struct ContactsAPI {
+    
+    static let path : String = AppConstants.API_PATH + "/contacts"
+    
+    static let v_get_contacts : Int = 3
+    static let V_ContactEmailsRequest : Int = 2
+    static let V_ContactAddRequest : Int = 2
+    static let V_ContactDetailRequest : Int = 2
+    static let V_ContactDeleteRequest : Int = 2
+    static let V_ContactUpdateRequest : Int = 2
+}
+
 
 
 
@@ -233,16 +247,3 @@ struct DeviceAPI {
     static let V_RegisterDeviceRequest : Int = 1
     static let V_UnRegisterDeviceRequest : Int = 1
 }
-
-struct ContactsAPI {
-    
-    static let Path : String = AppConstants.API_PATH + "/contacts"
-    
-    static let V_ContactsRequest : Int = 2
-    static let V_ContactEmailsRequest : Int = 2
-    static let V_ContactAddRequest : Int = 2
-    static let V_ContactDetailRequest : Int = 2
-    static let V_ContactDeleteRequest : Int = 2
-    static let V_ContactUpdateRequest : Int = 2
-}
-
