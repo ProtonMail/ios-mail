@@ -361,7 +361,7 @@ class ContactDataService {
                         break
                     }
                     loop = loop - 1
-                    let api = ContactEmailsRequest<ContactEmailsResponse>(page: currentPage, pageSize: pageSize)
+                    let api = ContactEmailsRequest(page: currentPage, pageSize: pageSize)
                     if let contactsRes = try api.syncCall() {
                         currentPage = currentPage + 1
                         let contactsArray = contactsRes.contacts

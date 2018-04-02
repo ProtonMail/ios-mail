@@ -101,12 +101,24 @@ struct ContactsAPI {
     
     static let path : String = AppConstants.API_PATH + "/contacts"
     
+    /// get contact list. no details. only name, email, labels for displaying
     static let v_get_contacts : Int = 3
-    static let V_ContactEmailsRequest : Int = 2
-    static let V_ContactAddRequest : Int = 2
-    static let V_ContactDetailRequest : Int = 2
-    static let V_ContactDeleteRequest : Int = 2
-    static let V_ContactUpdateRequest : Int = 2
+    /// get contact email list. this is for auto complete. combine with contacts would be full information without encrypted data.
+    static let v_get_contact_emails : Int = 3
+    /// add & import contact post
+    static let v_add_contacts : Int = 3
+    /// get contact details full date clear&encrypt data
+    static let v_get_details : Int = 3
+    /// update contact put
+    static let v_update_contact : Int = 3
+    /// delete contact put
+    static let v_delete_contacts : Int = 3
+    
+    /// group
+    
+    /// export
+    
+    /// clear contacts
 }
 
 

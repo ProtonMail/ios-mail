@@ -40,7 +40,7 @@ class ContactsResponse : ApiResponse {
 }
 
 // MARK : Get messages part
-class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
+class ContactEmailsRequest : ApiRequest<ContactEmailsResponse> {
     var page : Int = 0
     var max : Int = 100
     
@@ -58,7 +58,7 @@ class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func apiVersion() -> Int {
-        return ContactsAPI.V_ContactEmailsRequest
+        return ContactsAPI.v_get_contact_emails
     }
     
     override func method() -> APIService.HTTPMethod {
@@ -118,7 +118,7 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func apiVersion() -> Int {
-        return ContactsAPI.V_ContactDetailRequest
+        return ContactsAPI.v_get_details
     }
     
     override func method() -> APIService.HTTPMethod {
@@ -219,7 +219,7 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func apiVersion() -> Int {
-        return ContactsAPI.V_ContactAddRequest
+        return ContactsAPI.v_add_contacts
     }
     
     override func method() -> APIService.HTTPMethod {
@@ -288,7 +288,7 @@ final class ContactDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func apiVersion() -> Int {
-        return ContactsAPI.V_ContactDeleteRequest
+        return ContactsAPI.v_delete_contacts
     }
     
     override func method() -> APIService.HTTPMethod {
@@ -316,7 +316,7 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func apiVersion() -> Int {
-        return ContactsAPI.V_ContactUpdateRequest
+        return ContactsAPI.v_update_contact
     }
     
     override func method() -> APIService.HTTPMethod {
