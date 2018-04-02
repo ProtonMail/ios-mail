@@ -89,6 +89,9 @@ struct AuthAPI {
     
     /// delete auth
     static let v_delete_auth : Int = 3
+    
+    /// revoke other tokens
+    static let v_revoke_others : Int = 3
 }
 
 

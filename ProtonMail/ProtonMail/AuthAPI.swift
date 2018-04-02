@@ -203,7 +203,7 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
 
 
 // MARK :delete auth token
-final class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
+final class AuthDeleteRequest : ApiRequest<ApiResponse> {
     
     override func method() -> APIService.HTTPMethod {
         return .delete
@@ -214,7 +214,7 @@ final class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getIsAuthFunction() -> Bool {
-        return false
+        return true
     }
     
     override func apiVersion() -> Int {

@@ -398,7 +398,9 @@ class UserDataService {
     func signOut(_ animated: Bool) {
         sharedVMService.signOut()
         if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
-            AuthDeleteRequest().call { (task, response, hasError) in }
+            AuthDeleteRequest().call { (task, response, hasError) in
+                
+            }
         }
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignOut), object: self)
         clearAll()
@@ -410,7 +412,9 @@ class UserDataService {
     func signOutAfterSignUp() {
         sharedVMService.signOut()
         if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
-            AuthDeleteRequest().call { (task, response, hasError) in }
+            AuthDeleteRequest().call { (task, response, hasError) in
+                
+            }
         }
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignOut), object: self)
         clearAll()
