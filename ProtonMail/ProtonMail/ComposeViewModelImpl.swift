@@ -122,7 +122,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func deleteAtt(_ att: Attachment!) {
-        sharedMessageDataService.deleteAttachment(message?.messageID ?? "", att: att)
+        sharedMessageDataService.delete(att: att)
         self.updateDraft()
     }
     

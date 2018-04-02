@@ -34,7 +34,6 @@ struct AddressesAPI {
     //Update address [PUT]
     static let v_update_address : Int = 3
     
-    
 }
 
 
@@ -53,12 +52,36 @@ struct AdminVPNAPI {
 //Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_attachments.md
 struct AttachmentAPI {
     /// base message api path
-    static let Path :String = AppConstants.API_PATH + "/attachments"
+    static let path :String = AppConstants.API_PATH + "/attachments"
+
+    
+    /// get attachment by id
+    static let v_get_att_by_id : Int = 3
+    
+    /// upload attachment
+    static let v_upload_attach : Int = 3
+    
+    /// update draft attachment signature
+    static let v_update_att_sign : Int = 3
+    
+    /// delete attachment from draft
+    static let v_del_attachment : Int = 3
+}
+
+
+//Auth API
+//Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_auth.md
+struct AuthAPI {
+    /// base message api path
+    static let Path :String = AppConstants.API_PATH + "/auth"
     
     /// fetch message request version
-    static let V_AttachmentRemoveRequest : Int = 1
+    static let V_AuthRequest : Int = 1
     
+    
+    static let V_AuthModulusRequest : Int = 1
 }
+
 
 
 
@@ -98,17 +121,6 @@ struct LabelAPI {
     
     //doesn't impl yet
     static let v_order_labels : Int = 3
-}
-
-struct AuthAPI {
-    /// base message api path
-    static let Path :String = AppConstants.API_PATH + "/auth"
-    
-    /// fetch message request version
-    static let V_AuthRequest : Int = 1
-    
-    
-    static let V_AuthModulusRequest : Int = 1
 }
 
 

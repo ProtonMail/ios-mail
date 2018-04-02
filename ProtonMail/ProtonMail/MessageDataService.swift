@@ -64,15 +64,15 @@ class MessageDataService {
         }
     }
     
-    func deleteAttachment(_ messageid : String, att: Attachment!) {
-        let out : [String : Any] = ["MessageID" : messageid, "AttachmentID" : att.attachmentID]
+    func delete(att: Attachment!) {
+        let attachmentID = att.attachmentID
         if let context = sharedCoreDataService.mainManagedObjectContext {
             context.delete(att)
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D(" error: \(error)")
             }
         }
-        let _ = sharedMessageQueue.addMessage(out.json(prettyPrinted: false), action: .deleteAtt)
+        let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt)
         dequeueIfNeeded()
     }
     
@@ -1523,7 +1523,7 @@ class MessageDataService {
     
     fileprivate func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         if let _ = managedObjectContext {
-            let api = AttachmentDeleteRequest(body: deleteObject);
+            let api = DeleteAttachment(attID: deleteObject)
             api.call({ (task, response, hasError) -> Void in
                 completion?(task, nil, nil)
             })
