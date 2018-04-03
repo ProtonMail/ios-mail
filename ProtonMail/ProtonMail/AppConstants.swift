@@ -22,13 +22,11 @@ class AppConstants {
     static var AppVersion : Int              = 1
     
     //
-//    static let URL_Protocol : String = "https://"
-    static let URL_Protocol : String = "http://"
+    static let URL_Protocol : String = "https://"
+    //static let URL_Protocol : String = "http://"
     
     //live api
-//    static let URL_HOST : String = "api.protonmail.ch"
-    
-    static let URL_HOST : String = "104.238.182.51:8282"
+    static let URL_HOST : String = "api.protonmail.ch"
     
     //live test api
     //static let URL_HOST : String = "test-api.protonmail.ch"
@@ -46,8 +44,8 @@ class AppConstants {
     //static let URL_HOST : String = "http://protonmail.xyz"  //http
     
     //api options
-    static let API_PATH : String = "/api"
-//    static let API_PATH : String = ""
+//    static let API_PATH : String = "/api"
+    static let API_PATH : String = ""
     
     static var API_HOST_URL : String {
         get {
