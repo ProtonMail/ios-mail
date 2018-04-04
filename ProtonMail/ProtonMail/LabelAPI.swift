@@ -9,7 +9,7 @@
 import Foundation
 
 // MARK : Get messages part
-final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
+final class GetLabelsRequest : ApiRequest<GetLabelsResponse> {
     
     override func method() -> APIService.HTTPMethod {
         return .get
@@ -20,7 +20,7 @@ final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return LabelAPI.V_LabelFetchRequest
+        return LabelAPI.v_get_user_labels
     }
 }
 
@@ -129,7 +129,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return LabelAPI.V_CreateLabelRequest
+        return LabelAPI.v_create_label
     }
 }
 
@@ -165,7 +165,7 @@ final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return LabelAPI.V_UpdateLabelRequest
+        return LabelAPI.v_update_label
     }
 }
 
@@ -197,7 +197,7 @@ final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return LabelAPI.V_DeleteLabelRequest
+        return LabelAPI.v_delete_label
     }
 }
 

@@ -22,7 +22,7 @@ final class GetOrgKeys<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return OrganizationsAPI.V_GetOrgKeysRequest
+        return OrganizationsAPI.v_get_org_keys
     }
 }
 

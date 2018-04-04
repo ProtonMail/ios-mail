@@ -24,6 +24,7 @@ class NotificationService: UNNotificationServiceExtension {
             sharedUserDataService = UserDataService()
             if sharedUserDataService.isUserCredentialStored {
                 if let encrypted = bestAttemptContent.userInfo["encryptedMessage"] as? String {
+                    bestAttemptContent.body = encrypted
                     if let userkey = sharedUserDataService.userInfo?.firstUserKey(), let password = sharedUserDataService.mailboxPassword {
                         do {
                             if let plaintext = try encrypted.decryptMessageWithSinglKey(userkey.private_key, passphrase: password) {
@@ -47,7 +48,7 @@ class NotificationService: UNNotificationServiceExtension {
                                 }
                             }
                         } catch let error {
-                            print(error)
+                            PMLog.D(error.localizedDescription)
                         }
                     }
                 }

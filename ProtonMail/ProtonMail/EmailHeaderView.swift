@@ -1123,7 +1123,7 @@ class EmailHeaderView: UIView {
         } else {
             
             UIView.transition(with: self.emailFrom, duration: 0.3, options: kAnimationOption, animations: { () -> Void in
-                self.emailFrom.attributedText = self.fromSinglelineAttr
+                self.emailFrom.attributedText = self.fromShortAttr //self.fromSinglelineAttr
                 self.emailTo.attributedText = self.toSinglelineAttr
                 self.emailFromTable.alpha = 1.0
                 self.emailTo.alpha = self.showTo ? 1.0 : 0.0
@@ -1132,14 +1132,6 @@ class EmailHeaderView: UIView {
                 self.emailCcTable.alpha = 0.0
                 }, completion: nil)
             
-//            emailFromTable.mas_updateConstraints { (make) -> Void in
-//                make?.removeExisting = true
-//                let _ = make?.left.equalTo()(36)
-//                let _ = make?.right.equalTo()(self.emailHeaderView)
-//                let _ = make?.top.equalTo()(self.emailFrom)
-//                let _ = make?.height.equalTo()(self.emailFrom)
-//            }
-//
             let efh = emailFromTable.getContentSize().height;
             emailFromTable.mas_updateConstraints { (make) -> Void in
                 make?.removeExisting = true

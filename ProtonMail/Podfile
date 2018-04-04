@@ -77,9 +77,9 @@ end
 #    pm_push
 #end
 
-#target 'PushServiceDev' do
-#   pm_push
-#end
+target 'PushServiceDev' do
+   pm_push
+end
 
 post_install do | installer |
     require 'fileutils'

@@ -9,29 +9,8 @@
 import Foundation
 
 
-// MARK : Get messages part
-class ContactsRequest<T : ApiResponse> : ApiRequest<T> {
-
-    override public func path() -> String {
-        return ContactsAPI.Path +  AppConstants.DEBUG_OPTION
-    }
-    
-    override public func apiVersion() -> Int {
-        return ContactsAPI.V_ContactsRequest
-    }
-}
-
-//
-class ContactsResponse : ApiResponse {
-    var contacts : [[String : Any]]?
-    override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        self.contacts = response?["Contacts"] as? [[String : Any]]
-        return true
-    }
-}
-
-// MARK : Get messages part
-class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
+// MARK : Get contacts part
+class ContactsRequest : ApiRequest<ContactsResponse> {
     var page : Int = 0
     var max : Int = 100
     
@@ -41,7 +20,37 @@ class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.Path + "/emails" +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path +  AppConstants.DEBUG_OPTION
+    }
+    
+    override public func apiVersion() -> Int {
+        return ContactsAPI.v_get_contacts
+    }
+}
+
+//
+class ContactsResponse : ApiResponse {
+    var total : Int = -1
+    var contacts : [[String : Any]] = []
+    override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        self.total = response?["Total"] as? Int ?? -1
+        self.contacts = response?["Contacts"] as? [[String : Any]] ?? []
+        return true
+    }
+}
+
+// MARK : Get messages part
+class ContactEmailsRequest : ApiRequest<ContactEmailsResponse> {
+    var page : Int = 0
+    var max : Int = 100
+    
+    init(page: Int, pageSize : Int) {
+        self.page = page
+        self.max = pageSize
+    }
+    
+    override public func path() -> String {
+        return ContactsAPI.path + "/emails" +  AppConstants.DEBUG_OPTION
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -49,7 +58,7 @@ class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func apiVersion() -> Int {
-        return ContactsAPI.V_ContactEmailsRequest
+        return ContactsAPI.v_get_contact_emails
     }
     
     override func method() -> APIService.HTTPMethod {
@@ -105,11 +114,11 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
     }
 
     override public func path() -> String {
-        return ContactsAPI.Path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
-        return ContactsAPI.V_ContactDetailRequest
+        return ContactsAPI.v_get_details
     }
     
     override func method() -> APIService.HTTPMethod {
@@ -206,11 +215,11 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.Path +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path +  AppConstants.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
-        return ContactsAPI.V_ContactAddRequest
+        return ContactsAPI.v_add_contacts
     }
     
     override func method() -> APIService.HTTPMethod {
@@ -275,11 +284,11 @@ final class ContactDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.Path + "/delete" +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/delete" +  AppConstants.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
-        return ContactsAPI.V_ContactDeleteRequest
+        return ContactsAPI.v_delete_contacts
     }
     
     override func method() -> APIService.HTTPMethod {
@@ -303,11 +312,11 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.Path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
-        return ContactsAPI.V_ContactUpdateRequest
+        return ContactsAPI.v_update_contact
     }
     
     override func method() -> APIService.HTTPMethod {

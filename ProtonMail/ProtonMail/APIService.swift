@@ -355,7 +355,6 @@ class APIService {
                  headers: [String : Any]?,
                  authenticated: Bool = true,
                  completion: CompletionBlock?) {
-
         let authBlock: AuthCredentialBlock = { auth, error in
             if let error = error {
                 completion?(nil, nil, error)

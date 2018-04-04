@@ -146,6 +146,7 @@ class ContactImportViewController: UIViewController {
             CNContactImageDataKey as CNKeyDescriptor,
             CNContactThumbnailImageDataKey as CNKeyDescriptor,
             CNContactIdentifierKey as CNKeyDescriptor,
+            CNContactNoteKey as CNKeyDescriptor,
             CNContactVCardSerialization.descriptorForRequiredKeys()]
         
         // Get all the containers
@@ -207,6 +208,7 @@ class ContactImportViewController: UIViewController {
                             self.messageLabel.text = "Encrypting contacts...\(found)"
                         } ~> .main
                         
+                        let note = contact.note
                         let rawData = try CNContactVCardSerialization.data(with: [contact])
                         let vcardStr = String(data: rawData, encoding: .utf8)!
                         if let vcard3 = PMNIEzvcard.parseFirst(vcardStr) {
@@ -277,6 +279,10 @@ class ContactImportViewController: UIViewController {
                                 
                                 vcard3.setUid(uuid)
                                 vcard3.setVersion(PMNIVCardVersion.vCard40())
+                                
+                                if !note.isEmpty {
+                                    vcard3.setNote(PMNINote.createInstance("", note: note))
+                                }
                                 
                                 guard let vcard3Str = try vcard3.write() else {
                                     continue

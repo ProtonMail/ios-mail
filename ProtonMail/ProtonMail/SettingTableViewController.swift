@@ -29,7 +29,7 @@ class SettingTableViewController: ProtonMailViewController {
     var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
                                                             .star, .archive]
     
-    var setting_protection_items : [SProtectionItems]    = [.touchID, .pinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
+    var setting_protection_items : [SProtectionItems]    = [] // [.touchID, .pinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
     var setting_addresses_items : [SAddressItems]        = [.addresses,
                                                             .displayName,
                                                             .signature,
@@ -91,10 +91,7 @@ class SettingTableViewController: ProtonMailViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
-            setting_protection_items = [.touchID, .pinCode, .enterTime]
-        }
+        self.updateProtectionItems()
         
         if sharedUserDataService.passwordMode == 1 {
             setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .cleanCache]
@@ -147,12 +144,27 @@ class SettingTableViewController: ProtonMailViewController {
         }
     }
     
-    internal func updateTableProtectionSection() {
-        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
-            setting_protection_items = [.touchID, .pinCode, .enterTime]
-        } else {
-            setting_protection_items = [.touchID, .pinCode]
+    internal func updateProtectionItems() {
+        setting_protection_items = []
+        switch biometricType {
+        case .none:
+            break
+        case .touchID:
+            setting_protection_items.append(.touchID)
+            break
+        case .faceID:
+            setting_protection_items.append(.faceID)
+            break
         }
+        
+        setting_protection_items.append(.pinCode)
+        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
+            setting_protection_items.append(.enterTime)
+        }
+    }
+    
+    internal func updateTableProtectionSection() {
+        self.updateProtectionItems()
         self.settingTableView.reloadData()
     }
     
@@ -224,10 +236,10 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.configCell(itme.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
-                                    let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
-                                    ActivityIndicatorHelper.showActivityIndicator(at: window)
+                                    let view = UIApplication.shared.keyWindow
+                                    ActivityIndicatorHelper.show(at: view)
                                     sharedUserDataService.updateAutoLoadImage(newStatus == true ? 1 : 0) { _, _, error in
-                                        ActivityIndicatorHelper.hideActivityIndicator(at: window)
+                                        ActivityIndicatorHelper.hide(at: view)
                                         if let error = error {
                                             feedback(false)
                                             let alertController = error.alertController()
@@ -251,7 +263,7 @@ class SettingTableViewController: ProtonMailViewController {
                 if setting_protection_items.count > indexPath.row {
                     let item : SProtectionItems = setting_protection_items[indexPath.row]
                     switch item {
-                    case .touchID:
+                    case .touchID, .faceID:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
                         cell.accessoryType = UITableViewCellAccessoryType.none
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -277,6 +289,8 @@ class SettingTableViewController: ProtonMailViewController {
                                                 alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings", comment: "settings touchid error")
                                             case LAError.Code.passcodeNotSet.rawValue:
                                                 alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings", comment: "settings touchid error")
+                                            case -6:
+                                                alertString = error?.localizedDescription ?? NSLocalizedString("TouchID not available", comment: "settings touchid/faceid error")
                                             default:
                                                 // The LAError.TouchIDNotAvailable case.
                                                 alertString = NSLocalizedString("TouchID not available", comment: "settings touchid error")
@@ -539,7 +553,7 @@ class SettingTableViewController: ProtonMailViewController {
                 if setting_protection_items.count > indexPath.row {
                     let protection_item: SProtectionItems = setting_protection_items[indexPath.row]
                     switch protection_item {
-                    case .touchID:
+                    case .touchID, .faceID:
                         break
                     case .pinCode:
                         break
@@ -610,11 +624,11 @@ class SettingTableViewController: ProtonMailViewController {
                                                 order += 1
                                             }
                                         }
-                                        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
-                                        ActivityIndicatorHelper.showActivityIndicator(at: window)
+                                        let view = UIApplication.shared.keyWindow
+                                        ActivityIndicatorHelper.show(at: view)
                                         sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
                                             tableView.reloadData()
-                                            ActivityIndicatorHelper.hideActivityIndicator(at: window)
+                                            ActivityIndicatorHelper.hide(at: view)
                                             if error == nil {
                                                 self.multi_domains = newAddrs
                                                 tableView.reloadData()
@@ -649,11 +663,11 @@ class SettingTableViewController: ProtonMailViewController {
                         if swipeAction != currentAction {
                             alertController.addAction(UIAlertAction(title: swipeAction.description, style: .default, handler: { (action) -> Void in
                                 let _ = self.navigationController?.popViewController(animated: true)
-                                let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
-                                ActivityIndicatorHelper.showActivityIndicator(at: window)
+                                let view = UIApplication.shared.keyWindow
+                                ActivityIndicatorHelper.show(at: view)
                                 sharedUserDataService.updateUserSwipeAction(action_item == .left, action: swipeAction, completion: { (task, response, error) -> Void in
                                     tableView.reloadData()
-                                    ActivityIndicatorHelper.hideActivityIndicator(at: window)
+                                    ActivityIndicatorHelper.hide(at: view)
                                     if error == nil {
                                         tableView.reloadData()
                                     }

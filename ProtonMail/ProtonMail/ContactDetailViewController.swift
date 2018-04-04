@@ -397,6 +397,15 @@ extension ContactDetailViewController: UITableViewDelegate {
             break
         case .cellphone:
             //TODO::bring up the phone call
+            let phone = self.viewModel.getPhones()[row]
+            let formatedNumber = phone.newPhone.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
+            let phoneUrl = "tel://\(formatedNumber)"
+            if let phoneCallURL = URL(string: phoneUrl) {
+                let application:UIApplication = UIApplication.shared
+                if (application.canOpenURL(phoneCallURL)) {
+                    application.openURL(phoneCallURL)
+                }
+            }
             break
         case .home_address:
             let addrs = viewModel.getAddresses()

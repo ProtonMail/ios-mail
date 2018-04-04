@@ -276,11 +276,46 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
                 }))
             }
         }
+        
+//        alertController.addAction(UIAlertAction(title:NSLocalizedString("Print", comment: "Action"), style: .default, handler: { (action) -> Void in
+//            self.print(webView : self.emailView!.contentWebView)
+//        }))
+        
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
         
         latestPresentedView = alertController
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    
+    fileprivate func print(webView : UIWebView) {
+        //TODO:: here need reformat the size.
+        let render = UIPrintPageRenderer()
+        render.addPrintFormatter(webView.viewPrintFormatter(), startingAtPageAt: 0);
+        
+        // 4. Create PDF context and draw
+        let pdfData = NSMutableData()
+        UIGraphicsBeginPDFContextToData(pdfData, CGRect.zero, nil)
+        
+        let bounds = UIGraphicsGetPDFContextBounds()
+        let page = CGRect(x: 0, y: 10, width:bounds.width, height: bounds.height) // webView.frame.size.width, height: webView.frame.size.height) // take the size of the webView
+        let printable = page.insetBy(dx: 0, dy: 0)
+        render.setValue(NSValue(cgRect: page), forKey: "paperRect")
+        render.setValue(NSValue(cgRect: printable), forKey: "printableRect")
+        for i in 1...render.numberOfPages {
+            UIGraphicsBeginPDFPage();
+            PMLog.D("\(bounds)")
+            render.drawPage(at: i - 1, in: bounds)
+        }
+        UIGraphicsEndPDFContext();
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        PMLog.D(documentsPath)
+        pdfData.write(toFile: "\(documentsPath)/pdfName.pdf", atomically: true)
+        //TODO:: then open as pdf
+//        self.pdfPath = "\(documentsPath)/pdfName.pdf"
+//        self.pdfTitle = "pdfName"
+//        self.performSegue(withIdentifier: "showPDFSegue", sender: nil)
     }
     
     fileprivate func messagesSetValue(setValue value: Any?, forKey key: String) {
@@ -661,10 +696,19 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                 if let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!) {
                     try? decryptData.write(to: tempFileUri!, options: [.atomic])
                     //TODO:: the hard code string need change it to enum later
-                    if type == "application/vnd.apple.pkpass", let pkfile = try? Data(contentsOf: tempFileUri!) {
-                        let pass : PKPass = PKPass(data: pkfile, error: nil)
-                        let vc = PKAddPassesViewController(pass: pass) as PKAddPassesViewController
-                        self.present(vc, animated: true, completion: nil)
+                    if (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
+                        let pkfile = try? Data(contentsOf: tempFileUri!) {
+                        var error : NSError? = nil
+                        let pass : PKPass = PKPass(data: pkfile, error: &error)
+                        if error != nil {
+                            let previewQL = QuickViewViewController()
+                            previewQL.dataSource = self
+                            latestPresentedView = previewQL
+                            self.present(previewQL, animated: true, completion: nil)
+                        } else {
+                            let vc = PKAddPassesViewController(pass: pass) as PKAddPassesViewController
+                            self.present(vc, animated: true, completion: nil)
+                        }
                     } else {
                         let previewQL = QuickViewViewController()
                         previewQL.dataSource = self

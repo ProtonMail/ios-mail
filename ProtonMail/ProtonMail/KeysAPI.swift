@@ -17,18 +17,16 @@ final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return KeysAPI.Path + "/salts" + AppConstants.DEBUG_OPTION
+        return KeysAPI.path + "/salts" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
-        return KeysAPI.V_GetKeysSaltsRequest
+        return KeysAPI.v_get_key_salts
     }
 }
 
 final class KeySaltResponse : ApiResponse {
-    
     var keySalts : [[String : Any]]?
-
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.keySalts = response["KeySalts"] as? [[String : Any]]
         return true
@@ -140,11 +138,11 @@ final class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return KeysAPI.Path + "/private" + AppConstants.DEBUG_OPTION
+        return KeysAPI.path + "/private" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
-        return KeysAPI.V_UpdatePrivateKeyRequest
+        return KeysAPI.v_update_private_key
     }
 }
 
@@ -189,10 +187,10 @@ final class SetupKeyRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return KeysAPI.Path + "/setup" + AppConstants.DEBUG_OPTION
+        return KeysAPI.path + "/setup" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
-        return KeysAPI.V_KeysSeuptRequest
+        return KeysAPI.v_setup_key
     }
 }

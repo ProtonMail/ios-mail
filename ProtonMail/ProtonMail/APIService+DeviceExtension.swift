@@ -17,11 +17,11 @@
 import Foundation
 
 /// DeviceExtension
-
+//TODO:: here need a refactor
 extension APIService {
     
     fileprivate struct DevicePath {
-        static let basePath = "/device"
+        static let basePath = "/devices"
     }
     func device(registerWith token: String, completion: CompletionBlock?) {
         deviceToken = token
@@ -33,22 +33,25 @@ extension APIService {
 //        } else { // not encrypt
 //            env = 5
 //        }
-//
+        
         #if Enterprise
-            
             #if DEBUG
-                let env = 20
+//                let env = 20
+                let env = 7
             #else
-                let env = 21
+//                let env = 21
+                let env = 7
             #endif
         #else
             // for later
             // const PROVIDER_FCM_IOS = 4;
             // const PROVIDER_FCM_IOS_BETA = 5;
             #if DEBUG
-                let env = 1
+//                let env = 1
+                let env = 6
             #else
-                let env = 2
+//                let env = 2
+                let env = 6
             #endif
             
         #endif
@@ -66,11 +69,10 @@ extension APIService {
             "Environment" : env
         ] as [String : Any]
         
-        //setApiVesion(1, appVersion: 1)
         request(method: .post,
                 path: AppConstants.API_PATH + DevicePath.basePath,
                 parameters: parameters,
-                headers: ["x-pm-apiversion": 1],
+                headers: ["x-pm-apiversion": 3],
                 completion: completion)
     }
     
@@ -83,17 +85,18 @@ extension APIService {
                 ]
                 let completionWrapper: CompletionBlock = {task, response, error in
                     if error != nil {
-                        //PMLog.D("\(error)")
                         self.badToken = self.deviceToken
                         self.badUID = self.deviceUID
                     } else {
-                        //PMLog.D("\(response)")
                         self.deviceUID = ""
                         self.deviceToken = ""
                     }
                 }
-                //setApiVesion(1, appVersion: 1)
-                request(method: HTTPMethod.post, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completionWrapper)
+                request(method: .post,
+                        path: AppConstants.API_PATH + DevicePath.basePath + "/delete",
+                        parameters: parameters,
+                        headers: ["x-pm-apiversion": 3],
+                        completion: completionWrapper)
             }
         }
     }
@@ -109,9 +112,13 @@ extension APIService {
                 ]
                 
                 let completionWrapper: CompletionBlock = {task, response, error in
+                    
                 }
-               // setApiVesion(1, appVersion: 1)
-                request(method: HTTPMethod.post, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completionWrapper)
+                request(method: .post,
+                        path: AppConstants.API_PATH + DevicePath.basePath + "/delete",
+                        parameters: parameters,
+                        headers: ["x-pm-apiversion": 3],
+                        completion: completionWrapper)
             }
         }
         
@@ -121,8 +128,11 @@ extension APIService {
                 "DeviceToken": badToken
             ]
             
-           // setApiVesion(1, appVersion: 1)
-            request(method: HTTPMethod.post, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, headers: ["x-pm-apiversion": 1], completion:{ (task, response, error) -> Void in
+            request(method: .post,
+                    path: AppConstants.API_PATH + DevicePath.basePath + "/delete",
+                    parameters: parameters,
+                    headers: ["x-pm-apiversion": 3],
+                    completion:{ (task, response, error) -> Void in
                 if error == nil {
                     self.badToken = ""
                     self.badUID = ""

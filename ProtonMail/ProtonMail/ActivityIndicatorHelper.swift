@@ -52,9 +52,22 @@ class ActivityIndicatorHelper {
         }
     }
     
+    class func show(at view: UIView?) {
+        guard let v = view else {
+            return
+        }
+        showActivityIndicator(at: v, style: UIActivityIndicatorViewStyle.whiteLarge)
+    }
     
     class func showActivityIndicator(at view: UIView) {
         showActivityIndicator(at: view, style: UIActivityIndicatorViewStyle.whiteLarge)
+    }
+    
+    class func hide(at view: UIView?) {
+        guard let v = view else {
+            return
+        }
+        hideActivityIndicator(at: v)
     }
     
     class func hideActivityIndicator(at view: UIView) {
@@ -72,9 +85,9 @@ class ActivityIndicatorHelper {
                 activityIndicator!.startAnimating()
                 UIView.animate(withDuration: ACTIVITY_INDICATOR_FADE_ANIMATION_DURATION, animations: { () -> Void in
                     activityIndicator!.alpha = 0
-                    }, completion: { (finished) -> Void in
-                        activityIndicator!.stopAnimating()
-                        view.isUserInteractionEnabled = true
+                }, completion: { (finished) -> Void in
+                    activityIndicator!.stopAnimating()
+                    view.isUserInteractionEnabled = true
                 })
             }
         })

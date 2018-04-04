@@ -1,6 +1,6 @@
 // AFNetworkActivityLogger.h
 //
-// Copyright (c) 2015 AFNetworking (http://afnetworking.com/)
+// Copyright (c) 2018 AFNetworking (http://afnetworking.com/)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -82,6 +82,12 @@ static NSError * AFNetworkErrorFromNotification(NSNotification *notification) {
 
 - (void)removeLogger:(id<AFNetworkActivityLoggerProtocol>)logger {
     [self.mutableLoggers removeObject:logger];
+}
+
+- (void)setLogLevel:(AFHTTPRequestLoggerLevel)level {
+    for (id<AFNetworkActivityLoggerProtocol>logger in self.loggers) {
+        logger.level = level;
+    }
 }
 
 - (void)startLogging {

@@ -28,14 +28,14 @@ PODS:
   - OpenPGP (1.0.5):
     - OpenSSL
   - OpenSSL (1.0.210)
-  - PromiseKit (6.2.1):
-    - PromiseKit/CorePromise (= 6.2.1)
-    - PromiseKit/Foundation (= 6.2.1)
-    - PromiseKit/UIKit (= 6.2.1)
-  - PromiseKit/CorePromise (6.2.1)
-  - PromiseKit/Foundation (6.2.1):
+  - PromiseKit (6.2.3):
+    - PromiseKit/CorePromise (= 6.2.3)
+    - PromiseKit/Foundation (= 6.2.3)
+    - PromiseKit/UIKit (= 6.2.3)
+  - PromiseKit/CorePromise (6.2.3)
+  - PromiseKit/Foundation (6.2.3):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.2.1):
+  - PromiseKit/UIKit (6.2.3):
     - PromiseKit/CorePromise
   - RHAddressBook (1.1.1)
   - SWRevealViewController (2.3.0)
@@ -77,7 +77,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AFNetworkActivityLogger:
-    :commit: abc565fe804f210dfda3b028c9a64e7c32e44600
+    :commit: b7cce59a369788c409d218e8dab7f381a858cee4
     :git: https://github.com/AFNetworking/AFNetworkActivityLogger.git
   NSDate+Helper:
     :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
@@ -94,13 +94,13 @@ SPEC CHECKSUMS:
   NSDate+Helper: 78f517ac1c67914096433466fa7d20b812b9d86c
   OpenPGP: 1462a488aa857e65e3a9b810867032f80aee1009
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
-  PromiseKit: edaca6f0a7ed73b08c287600537d13867a7fabc7
+  PromiseKit: 62f37bb4900a9b0b7550d017e41497171d93face
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: 53fd660ed37df3ccc3752ab15a04a4fdca35e6d2
 
-PODFILE CHECKSUM: 8c56c1c065901be26a70fd1fe3aed1947168d6b9
+PODFILE CHECKSUM: 169613d5ce36243656f3a22ebfe69d41dc784fc0
 
 COCOAPODS: 1.4.0

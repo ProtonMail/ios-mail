@@ -19,6 +19,7 @@ enum EncryptTypes: Int, CustomStringConvertible {
     
     case outPGPInline = 7    // out side pgp inline
     case outPGPMime = 8    // out pgp mime
+    case outSignedPGPMime = 9 //PGP/MIME signed message
     
     // didn't in localizable string because no place show this yet
     var description : String {
@@ -41,6 +42,8 @@ enum EncryptTypes: Int, CustomStringConvertible {
             return NSLocalizedString("Encrypted from outside pgp inline", comment: "Title")
         case .outPGPMime:
             return NSLocalizedString("Encrypted from outside pgp mime", comment: "Title")
+        case .outSignedPGPMime:
+            return NSLocalizedString("Encrypted from outside signed pgp mime", comment: "Title")
         }
     }
     
@@ -59,7 +62,7 @@ enum EncryptTypes: Int, CustomStringConvertible {
             return .plainTextLock
         case .inner, .outEnc, .draftStoreEnc, .outEncReply:
             return .encryptLock
-        case .outPGPInline, .outPGPMime:
+        case .outPGPInline, .outPGPMime, .outSignedPGPMime:
             return .pgpLock
         }
     }

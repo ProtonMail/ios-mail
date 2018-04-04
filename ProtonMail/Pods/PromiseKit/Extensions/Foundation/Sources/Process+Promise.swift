@@ -91,7 +91,7 @@ extension Process {
 
 
 extension Process.PMKError: LocalizedError {
-    public var errorDescription: String {
+    public var errorDescription: String? {
         switch self {
         case .notExecutable(let path?):
             return "File not executable: \(path)"
@@ -103,6 +103,21 @@ extension Process.PMKError: LocalizedError {
     }
 }
 
+public extension Promise where T == (out: Pipe, err: Pipe) {
+    func print() -> Promise<T> {
+        return tap { result in
+            switch result {
+            case .fulfilled(let raw):
+                let stdout = String(data: raw.out.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)
+                let stderr = String(data: raw.err.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)
+                Swift.print("stdout: `\(stdout ?? "")`")
+                Swift.print("stderr: `\(stderr ?? "")`")
+            case .rejected(let err):
+                Swift.print(err)
+            }
+        }
+    }
+}
 
 extension Process {
     /// Provided because Foundation’s is USELESS

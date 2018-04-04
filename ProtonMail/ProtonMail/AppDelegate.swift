@@ -301,11 +301,12 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first as UITouch!
-        let point = touch?.location(in: self.window)
-        let statusBarFrame = UIApplication.shared.statusBarFrame
-        if (statusBarFrame.contains(point!)) {
-            self.touchStatusBar()
+        if let touch = touches.first {
+            let point = touch.location(in: self.window)
+            let statusBarFrame = UIApplication.shared.statusBarFrame
+            if (statusBarFrame.contains(point)) {
+                self.touchStatusBar()
+            }
         }
     }
     

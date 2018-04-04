@@ -30,8 +30,6 @@ class SignInViewController: ProtonMailViewController {
     fileprivate let animationDuration: TimeInterval = 0.5
     fileprivate let keyboardPadding: CGFloat        = 12
     fileprivate let buttonDisabledAlpha: CGFloat    = 0.5
-//    fileprivate let signUpURL                       = URL(string: "https://protonmail.com/invite")!
-//    fileprivate let forgotPasswordURL               = URL(string: "https://mail.protonmail.com/help/reset-login-password")!
     
     fileprivate let kMailboxSegue                   = "mailboxSegue"
     fileprivate let kSignUpKeySegue                 = "sign_in_to_sign_up_segue"
@@ -46,7 +44,6 @@ class SignInViewController: ProtonMailViewController {
     fileprivate let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0);
     fileprivate let showPriority: UILayoutPriority  = UILayoutPriority(rawValue: 750.0);
     
-    
     //views
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var usernameView: UIView!
@@ -55,14 +52,11 @@ class SignInViewController: ProtonMailViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     
     @IBOutlet weak var signInButton: UIButton!
-    
     @IBOutlet weak var onePasswordButton: UIButton!
-    
     @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var signInTitle: UILabel!
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var forgotPwdButton: UIButton!
-    
     @IBOutlet weak var languagesLabel: UILabel!
     
     // Constraints
@@ -70,14 +64,10 @@ class SignInViewController: ProtonMailViewController {
     @IBOutlet weak var userTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var userNameTopPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var loginMidlineConstraint: NSLayoutConstraint!
     @IBOutlet weak var loginWidthConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var signUpTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var touchIDButton: UIButton!
     
@@ -139,10 +129,8 @@ class SignInViewController: ProtonMailViewController {
     }
     
     fileprivate func setupVersionLabel () {
-
         let language: ELanguage =  LanguageManager.currentLanguageEnum()
         languagesLabel.text = language.description
-        
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
                 versionLabel.text = NSLocalizedString("v", comment: "versions first character ") + version + "(\(build))"
@@ -204,7 +192,7 @@ class SignInViewController: ProtonMailViewController {
         signUpTopConstraint.priority = UILayoutPriority(rawValue: 750)
         UIView.animate(withDuration: animated ? 0.25 : 0, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
             self.view.layoutIfNeeded()
-            }, completion: nil)
+        }, completion: nil)
     }
     
     func configConstraint(_ show : Bool) -> Void {
@@ -314,7 +302,6 @@ class SignInViewController: ProtonMailViewController {
         context.localizedFallbackTitle = ""
         // Set the reason string that will appear on the authentication alert.
         let reasonString = "\(NSLocalizedString("Login", comment: "touch id box title like Login: email@email.com")): \(savedEmail)"
-        
         // Check if the device can evaluate the policy.
         if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             context.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: Error?) in
@@ -353,6 +340,9 @@ class SignInViewController: ProtonMailViewController {
                 alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings", comment: "Description")
             case LAError.Code.passcodeNotSet.rawValue:
                 alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings", comment: "Description")
+            case -6:
+                alertString = error?.localizedDescription ?? NSLocalizedString("TouchID not available", comment: "Description")
+                break
             default:
                 // The LAError.TouchIDNotAvailable case.
                 alertString = NSLocalizedString("TouchID not available", comment: "Description")
@@ -463,6 +453,12 @@ class SignInViewController: ProtonMailViewController {
         
         signUpButton.setTitle(NSLocalizedString("NEED AN ACCOUNT? SIGN UP.", comment: "Action"), for: .normal)
         forgotPwdButton.setTitle(NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd"), for: .normal)
+        
+        
+        if biometricType == .faceID {
+            self.touchIDButton.setImage(UIImage(named: "face_id_icon"), for: .normal)
+        }
+        
     }
     
     fileprivate var cachedTwoCode : String?
