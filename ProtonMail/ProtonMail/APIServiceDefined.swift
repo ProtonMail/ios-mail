@@ -164,6 +164,20 @@ struct EventAPI {
     
 }
 
+//Keys API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_keys.md
+struct KeysAPI {
+    static let path : String = AppConstants.API_PATH + "/keys"
+    
+    //Update private keys only, use for mailbox password/single password updates PUT
+    static let v_update_private_key : Int = 3
+    
+    //Setup keys for new account, private user [POST]
+    static let v_setup_key : Int = 3
+    
+    //Get key salts, locked route [GET]
+    static let v_get_key_salts : Int = 3
+}
 
 
 
@@ -247,15 +261,6 @@ struct UsersAPI {
     static let V_SendVerificationCodeRequest : Int = 1
     static let V_DirectRequest : Int = 1
     static let V_GetUserPublicKeysRequest : Int = 2
-}
-
-struct KeysAPI {
-    static let Path : String = AppConstants.API_PATH + "/keys"
-    
-    //Update private keys only, use for mailbox password/single password updatesPUT
-    static let V_UpdatePrivateKeyRequest : Int = 1
-    static let V_KeysSeuptRequest : Int = 1
-    static let V_GetKeysSaltsRequest : Int = 1
 }
 
 struct OrganizationsAPI {
