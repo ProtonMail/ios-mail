@@ -196,6 +196,7 @@ struct LabelAPI {
     /// Delete a label [DELETE]
     static let v_delete_label : Int = 3
     
+    //TODO:: need move it into message when api to v3
     static let V_ApplyLabelToMessageRequest : Int = 1
     static let V_RemoveLabelFromMessageRequest : Int = 1
     
@@ -204,13 +205,11 @@ struct LabelAPI {
     static let v_order_labels : Int = 3
 }
 
-
-
-
 //Message API
 //Doc: V1 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages.md
 //Doc: V3 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages_v3.md
 struct MessageAPI {
+    //TODO:: need to finish
     /// base message api path
     static let path :String = AppConstants.API_PATH + "/messages"
     
@@ -226,6 +225,25 @@ struct MessageAPI {
     static let V_MessageEmptyRequest : Int = 1
     
     static let V_MessageSendRequest : Int = 1
+}
+
+//Organization API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_organizations.md
+struct OrganizationsAPI {
+    static let Path : String = AppConstants.API_PATH + "/organizations"
+    
+    /// Get organization keys [GET]
+    static let v_get_org_keys : Int = 3
+}
+
+
+//Reports API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md
+struct ReportsAPI {
+    static let path :String = AppConstants.API_PATH + "/reports"
+    
+    /// Report a bug [POST]
+    static let v_reports_bug : Int = 3
 }
 
 
@@ -251,12 +269,6 @@ struct SettingsAPI {
 }
 
 
-struct ReportsAPI {
-    static let path :String = AppConstants.API_PATH + "/reports"
-
-    static let v_reports_bug : Int = 3
-}
-
 
 struct UsersAPI {
     
@@ -271,10 +283,4 @@ struct UsersAPI {
     static let V_SendVerificationCodeRequest : Int = 1
     static let V_DirectRequest : Int = 1
     static let V_GetUserPublicKeysRequest : Int = 2
-}
-
-struct OrganizationsAPI {
-    static let Path : String = AppConstants.API_PATH + "/organizations"
-    
-    static let V_GetOrgKeysRequest : Int = 1
 }
