@@ -122,6 +122,19 @@ struct ContactsAPI {
 }
 
 
+//Device API
+//Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_devices.md
+struct DeviceAPI {
+    
+    static let path : String = AppConstants.API_PATH + "/devices"
+    
+    /// register a device POST
+    static let v_register_device : Int = 3
+    
+    /// delete a registered device post
+    static let v_delete_device : Int = 3
+}
+
 
 
 //Message API
@@ -250,12 +263,4 @@ struct DomainsAPI {
     //Create Domain [POST /domains]
     
     //Delete Domain [DELETE /domains/{domainid}]
-}
-
-struct DeviceAPI {
-    
-    static let Path : String = AppConstants.API_PATH + "/device"
-    
-    static let V_RegisterDeviceRequest : Int = 1
-    static let V_UnRegisterDeviceRequest : Int = 1
 }

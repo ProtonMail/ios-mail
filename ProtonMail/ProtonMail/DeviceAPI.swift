@@ -93,11 +93,11 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return DeviceAPI.Path
+        return DeviceAPI.path
     }
     
     override func apiVersion() -> Int {
-        return DeviceAPI.V_RegisterDeviceRequest
+        return DeviceAPI.v_register_device
     }
 }
 
@@ -124,10 +124,10 @@ final class UnRegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
     }
 
     override func path() -> String {
-        return DeviceAPI.Path
+        return DeviceAPI.path
     }
 
     override func apiVersion() -> Int {
-        return DeviceAPI.V_UnRegisterDeviceRequest
+        return DeviceAPI.v_delete_device
     }
 }
