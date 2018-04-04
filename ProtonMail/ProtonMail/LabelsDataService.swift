@@ -33,7 +33,7 @@ class LabelsDataService {
     }
     
     func fetchLabels() {
-        let eventAPI = GetLabelsRequest<GetLabelsResponse>()
+        let eventAPI = GetLabelsRequest()
         eventAPI.call() { task, response, hasError in
             if response == nil {
                 //TODO:: error

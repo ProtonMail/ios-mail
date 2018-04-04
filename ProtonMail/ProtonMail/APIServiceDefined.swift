@@ -179,6 +179,32 @@ struct KeysAPI {
     static let v_get_key_salts : Int = 3
 }
 
+//Labels API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_labels.md
+struct LabelAPI {
+    static let path :String = AppConstants.API_PATH + "/labels"
+    
+    /// Get user's labels [GET]
+    static let v_get_user_labels : Int = 3
+    
+    /// Create new label [POST]
+    static let v_create_label : Int = 3
+    
+    /// Update existing label [PUT]
+    static let v_update_label : Int = 3
+    
+    /// Delete a label [DELETE]
+    static let v_delete_label : Int = 3
+    
+    static let V_ApplyLabelToMessageRequest : Int = 1
+    static let V_RemoveLabelFromMessageRequest : Int = 1
+    
+    //doesn't impl yet
+    /// Change label priority [PUT]
+    static let v_order_labels : Int = 3
+}
+
+
 
 
 //Message API
@@ -200,22 +226,6 @@ struct MessageAPI {
     static let V_MessageEmptyRequest : Int = 1
     
     static let V_MessageSendRequest : Int = 1
-}
-
-
-struct LabelAPI {
-    static let path :String = AppConstants.API_PATH + "/labels"
-    
-    //
-    static let V_LabelFetchRequest : Int = 1
-    static let V_ApplyLabelToMessageRequest : Int = 1
-    static let V_RemoveLabelFromMessageRequest : Int = 1
-    static let V_CreateLabelRequest : Int = 1
-    static let V_UpdateLabelRequest : Int = 1
-    static let V_DeleteLabelRequest : Int = 1
-    
-    //doesn't impl yet
-    static let v_order_labels : Int = 3
 }
 
 
