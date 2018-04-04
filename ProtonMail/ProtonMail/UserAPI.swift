@@ -80,7 +80,7 @@ class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return UsersAPI.V_CreateUsersRequest
+        return UsersAPI.v_create_user
     }
 }
 
@@ -135,7 +135,7 @@ class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return UsersAPI.V_GetHumanRequest
+        return UsersAPI.v_get_human_verify_options
     }
 }
 
@@ -172,7 +172,7 @@ class HumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return UsersAPI.V_HumanCheckRequest
+        return UsersAPI.v_verify_human
     }
 }
 
@@ -201,7 +201,7 @@ class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return UsersAPI.V_CheckUserExistRequest
+        return UsersAPI.v_check_is_user_exist
     }
 }
 
@@ -231,11 +231,11 @@ class DirectRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return UsersAPI.path + "/direct"
+        return UsersAPI.path + "/direct"  //type (optional, integer, 1) ... 1 => mail, 2 => VPN
     }
     
     override func apiVersion() -> Int {
-        return UsersAPI.V_DirectRequest
+        return UsersAPI.v_get_user_direct
     }
 }
 
@@ -308,7 +308,7 @@ class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return UsersAPI.V_SendVerificationCodeRequest
+        return UsersAPI.v_send_verification_code
     }
 }
 

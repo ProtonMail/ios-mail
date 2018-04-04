@@ -268,19 +268,32 @@ struct SettingsAPI {
     static let V_SettingsUpdateLoginPasswordRequest : Int = 1
 }
 
-
-
+//Users API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_users.md
 struct UsersAPI {
-    
+    //
     static let path : String = AppConstants.API_PATH + "/users"
     
+    /// Check if username already taken [GET]
+    static let v_check_is_user_exist : Int = 3
+    
+    /// Check if direct user signups are enabled [GET]
+    static let v_get_user_direct : Int = 3
+    
+    /// Get user's info [GET]
     static let v_get_userinfo : Int = 3
     
-    static let V_CreateUsersRequest : Int = 1
-    static let V_GetHumanRequest : Int = 1
-    static let V_HumanCheckRequest : Int = 1
-    static let V_CheckUserExistRequest : Int = 1
-    static let V_SendVerificationCodeRequest : Int = 1
-    static let V_DirectRequest : Int = 1
-    static let V_GetUserPublicKeysRequest : Int = 2
+    /// Get options for human verification [GET]
+    static let v_get_human_verify_options : Int = 3
+    
+    /// Verify user is human [POST]
+    static let v_verify_human : Int = 3
+    
+    /// Create user [POST]
+    static let v_create_user : Int = 3
+    
+    /// Send a verification code [POST]
+    static let v_send_verification_code : Int = 3
+    
+    static let V_GetUserPublicKeysRequest : Int = 2  //TODO:: need move to message
 }
