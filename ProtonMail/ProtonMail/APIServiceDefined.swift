@@ -36,7 +36,6 @@ struct AddressesAPI {
     
 }
 
-
 //Not impl yet, maybe use in the future
 struct AdminAPI {
     //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_admin.md
@@ -46,7 +45,6 @@ struct AdminAPI {
 struct AdminVPNAPI {
     //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_admin_vpn.md
 }
-
 
 //Attachment API
 //Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_attachments.md
@@ -67,7 +65,6 @@ struct AttachmentAPI {
     /// delete attachment from draft
     static let v_del_attachment : Int = 3
 }
-
 
 //Auth API
 //Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_auth.md
@@ -93,7 +90,6 @@ struct AuthAPI {
     /// revoke other tokens
     static let v_revoke_others : Int = 3
 }
-
 
 //Contact API
 //Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_contacts_v2.md
@@ -121,7 +117,6 @@ struct ContactsAPI {
     /// clear contacts
 }
 
-
 //Device API
 //Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_devices.md
 struct DeviceAPI {
@@ -134,6 +129,41 @@ struct DeviceAPI {
     /// delete a registered device post
     static let v_delete_device : Int = 3
 }
+
+//Domains API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_domains.md
+struct DomainsAPI {
+    
+    static let path : String = AppConstants.API_PATH + "/domains"
+    
+    //Get all domains for this user's organization and check their DNS's [GET]
+    
+    //Get a specific domains and its check DNS [GET]
+    
+    //Get Available Domains [GET /domains/available]
+    static let v_available_domains : Int = 3
+    
+    //Get Premium Domains [GET /domains/premium]
+    
+    //Create Domain [POST /domains]
+    
+    //Delete Domain [DELETE /domains/{domainid}]
+}
+
+//Events API
+//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_events_v3.md
+struct EventAPI {
+    /// base event api path
+    static let path :String = AppConstants.API_PATH + "/events"
+    
+    /// get latest event id
+    static let v_get_latest_event_id : Int = 3
+    
+    /// get updated events based on latest event id
+    static let v_get_events : Int = 3
+    
+}
+
 
 
 
@@ -197,17 +227,6 @@ struct SettingsAPI {
 }
 
 
-struct EventAPI {
-    /// base event api path
-    static let Path :String = AppConstants.API_PATH + "/events"
-    
-    /// current event api version
-    static let V_EventCheckRequest : Int = 3
-    static let V_LatestEventRequest : Int = 1
-
-}
-
-
 struct ReportsAPI {
     static let path :String = AppConstants.API_PATH + "/reports"
 
@@ -243,24 +262,4 @@ struct OrganizationsAPI {
     static let Path : String = AppConstants.API_PATH + "/organizations"
     
     static let V_GetOrgKeysRequest : Int = 1
-}
-
-//Domains API
-//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_domains.md
-struct DomainsAPI {
-    
-    static let path : String = AppConstants.API_PATH + "/domains"
-    
-    //Get all domains for this user's organization and check their DNS's [GET]
-    
-    //Get a specific domains and its check DNS [GET]
-    
-    //Get Available Domains [GET /domains/available]
-    static let v_available_domains : Int = 3
-    
-    //Get Premium Domains [GET /domains/premium]
-    
-    //Create Domain [POST /domains]
-    
-    //Delete Domain [DELETE /domains/{domainid}]
 }
