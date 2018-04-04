@@ -31,6 +31,8 @@ extension PMNOpenPgp {
     func setAddresses (_ addresses : [PMNAddress]!) {
         self.cleanAddresses();
         for addr in addresses {
+//            PMLog.D(addr.addressName)
+//            PMLog.D(addr.keys.first?.publicKey ?? "")
             self.add(addr)
         }
     }

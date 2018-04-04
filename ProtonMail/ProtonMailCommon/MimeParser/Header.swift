@@ -21,6 +21,7 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         case listUnsubscribe = "list-unsubscribe"
         case contentType = "content-type"
         case contentTransferEncoding = "content-transfer-encoding"
+        case contentID = "content-id"
     }
     
     let raw: String

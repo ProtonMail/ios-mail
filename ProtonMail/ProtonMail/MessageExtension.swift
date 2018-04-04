@@ -372,9 +372,18 @@ extension Message {
             return body
         } else {
             if var body = try decryptBody() {
-                if isEncrypted == 8 {
+                if isEncrypted == 8 || isEncrypted == 9 {
                     if let mimeMsg = MIMEMessage(string: body) {
                         body = mimeMsg.htmlBody ?? ""
+                        if let cidPart = mimeMsg.mainPart.partCID(),
+                            var cid = cidPart.cid,
+                            let rawBody = cidPart.rawBodyString {
+                            cid = cid.preg_replace("<", replaceto: "")
+                            cid = cid.preg_replace(">", replaceto: "")
+                            let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
+                            let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
+                            body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
+                        }
                     } else { //backup plan
                         body = body.multipartGetHtmlContent ()
                     }

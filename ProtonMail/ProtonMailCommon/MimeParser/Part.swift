@@ -28,7 +28,15 @@ public struct Part: CustomStringConvertible {
         return string
     }
     
+    public var rawBodyString: String? {
+        guard let string = String(data: body, encoding: .utf8) ?? String(data: body, encoding: .ascii) else { return nil }
+        return string
+    }
+    
     public var contentType: String? { return self.headers[.contentType]?.body }
+    public var contentCID: String? { return self.headers[.contentID]?.name }
+    public var cid: String? { return self.headers[.contentID]?.body }
+    
     public var contentEncoding: ContentEncoding? { return ContentEncoding(rawValue: self.headers[.contentTransferEncoding]?.body ?? "") }
     func part(ofType type: String) -> Part? {
         if self.contentType?.contains(type) == true { return self }
@@ -38,6 +46,15 @@ public struct Part: CustomStringConvertible {
         }
         return nil
     }
+    
+    func partCID() -> Part? {
+        if self.contentCID?.contains("Content-ID") == true { return self }
+        for part in self.subParts {
+            if let sub = part.partCID() { return sub }
+        }
+        return nil
+    }
+    
     
     var data: Data {
         if self.contentEncoding == .base64,
