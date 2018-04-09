@@ -224,27 +224,27 @@ extension APIService {
         request(method: .get,
                 path: path,
                 parameters: nil,
-                headers: ["x-pm-apiversion": 1],
+                headers: ["x-pm-apiversion": 3],
                 completion: completion)
     }
     
-    func messageList(_ location: Int, page: Int, sortedColumn: SortedColumn, order: Order, filter: Filter, completion: @escaping CompletionBlock) {
-        let path = MessagePath.base
-        
-        let parameters = [
-            "Location" : location,
-            "Page" : page,
-            "SortedColumn" : sortedColumn.rawValue,
-            "Order" : order.rawValue,
-            "FilterUnread" : filter.rawValue] as [String : Any]
-        
-        request(method: .get,
-                path: path,
-                parameters: parameters,
-                headers: ["x-pm-apiversion": 1],
-                completion: completion)
-    }
-    
+//    func messageList(_ location: Int, page: Int, sortedColumn: SortedColumn, order: Order, filter: Filter, completion: @escaping CompletionBlock) {
+//        let path = MessagePath.base
+//        
+//        let parameters = [
+//            "Location" : location,
+//            "Page" : page,
+//            "SortedColumn" : sortedColumn.rawValue,
+//            "Order" : order.rawValue,
+//            "FilterUnread" : filter.rawValue] as [String : Any]
+//        
+//        request(method: .get,
+//                path: path,
+//                parameters: parameters,
+//                headers: ["x-pm-apiversion": 1],
+//                completion: completion)
+//    }
+//    
     
     func messageSearch(_ query: String, page: Int, completion: CompletionBlock?) {
         let path = MessagePath.base

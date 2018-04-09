@@ -1144,6 +1144,8 @@
 		75BA199C1EC632E100153A1A /* SpamScoreWarningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75BA19961EC631A300153A1A /* SpamScoreWarningView.xib */; };
 		75BA199D1EC632E400153A1A /* SpamScoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA19981EC631A300153A1A /* SpamScoreWarningView.swift */; };
 		75BA199F1EC6474D00153A1A /* MessageSpamScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA199E1EC6474D00153A1A /* MessageSpamScore.swift */; };
+		75BA3444207BECD900143E76 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA3443207BECD900143E76 /* TestAPI.swift */; };
+		75BA3445207BECD900143E76 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA3443207BECD900143E76 /* TestAPI.swift */; };
 		75BA4F511F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */; };
 		75BA4F521F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */; };
 		75BA4F531F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */; };
@@ -1871,6 +1873,7 @@
 		75BA19961EC631A300153A1A /* SpamScoreWarningView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpamScoreWarningView.xib; sourceTree = "<group>"; };
 		75BA19981EC631A300153A1A /* SpamScoreWarningView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpamScoreWarningView.swift; sourceTree = "<group>"; };
 		75BA199E1EC6474D00153A1A /* MessageSpamScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSpamScore.swift; sourceTree = "<group>"; };
+		75BA3443207BECD900143E76 /* TestAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAPI.swift; sourceTree = "<group>"; };
 		75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Compare+Extension.swift"; path = "ProtonMail/Compare+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		75BA55A61D087F6A0081DD88 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		75BB65751BD5C88800F9432D /* AttachmentAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentAPI.swift; sourceTree = "<group>"; };
@@ -3037,6 +3040,7 @@
 				758DB00D1DDBBCA8007B83D3 /* OrganizationsAPI.swift */,
 				75662BA61B543A5B006C538E /* SettingsAPI.swift */,
 				750778CD1BE98900009F516C /* UserAPI.swift */,
+				75BA3443207BECD900143E76 /* TestAPI.swift */,
 			);
 			name = APIService;
 			sourceTree = "<group>";
@@ -5143,6 +5147,7 @@
 				75DF17AB1AB9051F008A032B /* StorageViewCell.swift in Sources */,
 				07DD68A51A97DE9F00ED130C /* APIService+AttachmentExtension.swift in Sources */,
 				07411D8E1AAA407A002A4611 /* AttachmentTableViewCell.swift in Sources */,
+				75BA3444207BECD900143E76 /* TestAPI.swift in Sources */,
 				750AAAC81C2490DB00BAC444 /* SignUpPasswordViewController.swift in Sources */,
 				757F4A121E68F409001CDE71 /* LabelCreatingViewModelImple.swift in Sources */,
 				757945D61B66E38D004EEDCA /* MessageViewController.swift in Sources */,
@@ -6085,6 +6090,7 @@
 				75DE7D7A1CAAEA4900F5443E /* GeneralSettingViewCell.swift in Sources */,
 				75F1618F1DCBB1CA00912662 /* TwoFACodeView.swift in Sources */,
 				75E49F101CAB296500235ACC /* PhoneVerifyViewController.swift in Sources */,
+				75BA3445207BECD900143E76 /* TestAPI.swift in Sources */,
 				75DE7D7B1CAAEA4900F5443E /* StorageViewCell.swift in Sources */,
 				75DE7D7D1CAAEA4900F5443E /* AttachmentTableViewCell.swift in Sources */,
 				75DE7D7E1CAAEA4900F5443E /* SignUpPasswordViewController.swift in Sources */,

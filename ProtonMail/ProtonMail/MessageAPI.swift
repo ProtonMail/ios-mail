@@ -16,7 +16,7 @@ final class MessageCountRequest<T : ApiResponse> : ApiRequest<T> {
         return MessageAPI.path + "/count" + AppConstants.DEBUG_OPTION
     }
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageFetchRequest
+        return MessageAPI.v_message_count
     }
 }
 
@@ -64,7 +64,7 @@ final class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageFetchRequest
+        return MessageAPI.v_fetch_messages
     }
 }
 
@@ -96,7 +96,7 @@ final class MessageFetchByIDsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageFetchRequest
+        return MessageAPI.v_fetch_messages
     }
 }
 
@@ -131,7 +131,7 @@ final class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageFetchRequest
+        return MessageAPI.v_fetch_messages
     }
 }
 

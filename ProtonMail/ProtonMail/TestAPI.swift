@@ -7,3 +7,14 @@
 //
 
 import Foundation
+
+// Mark : get all settings
+final class TestOffline : ApiRequest<ApiResponse> {
+    override open func path() -> String {
+        return AppConstants.API_PATH + "/tests/offline"
+    }
+    override func apiVersion() -> Int {
+        return 3
+        
+    }
+}

@@ -260,6 +260,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     }
     
     @objc internal func moreButtonTapped(_ sender : UIBarButtonItem) {
+        let api = TestOffline()
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
         let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .default, .spam : .default, .archive : .default]

@@ -209,12 +209,14 @@ struct LabelAPI {
 //Doc: V1 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages.md
 //Doc: V3 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages_v3.md
 struct MessageAPI {
-    //TODO:: need to finish
     /// base message api path
     static let path :String = AppConstants.API_PATH + "/messages"
     
-    /// fetch message request version
-    static let V_MessageFetchRequest : Int = 1
+    //Get a list of message metadata [GET]
+    static let v_fetch_messages : Int = 3
+    
+    //Get grouped message count [GET]
+    static let v_message_count : Int = 3
     
     static let v_create_draft : Int = 3
     
@@ -297,3 +299,4 @@ struct UsersAPI {
     
     static let V_GetUserPublicKeysRequest : Int = 2  //TODO:: need move to message
 }
+
