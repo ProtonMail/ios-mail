@@ -7,10 +7,13 @@
 @class PMNIEmail;
 @class PMNIFormattedName;
 @class PMNIGender;
+@class PMNIKey;
 @class PMNINickname;
 @class PMNINote;
 @class PMNIOrganization;
 @class PMNIPMCustom;
+@class PMNIPMEncrypt;
+@class PMNIPMSign;
 @class PMNIStructuredName;
 @class PMNITelephone;
 @class PMNITitle;
@@ -50,6 +53,15 @@
 - (void)setEmails:(nonnull NSArray<PMNIEmail *> *)emails;
 
 - (void)clearEmails;
+
+- (nonnull NSArray<PMNIKey *> *)getKeys;
+
+- (void)addKey:(nullable PMNIKey *)key;
+
+/**set will replace all exsiting */
+- (void)setKeys:(nonnull NSArray<PMNIKey *> *)keys;
+
+- (void)clearKeys;
 
 - (nullable PMNIUid *)getUid;
 
@@ -104,6 +116,22 @@
 - (void)setCustoms:(nonnull NSArray<PMNIPMCustom *> *)customs;
 
 - (void)clearCustoms;
+
+- (nullable PMNIPMSign *)getPMSign;
+
+- (void)addPMSign:(nullable PMNIPMSign *)sign;
+
+- (void)setPMSign:(nullable PMNIPMSign *)sign;
+
+- (void)clearPMSign;
+
+- (nullable PMNIPMEncrypt *)getPMEncrypt;
+
+- (void)addPMEncrypt:(nullable PMNIPMEncrypt *)encrypt;
+
+- (void)setPMEncrypt:(nullable PMNIPMEncrypt *)encrypt;
+
+- (void)clearPMEncrypt;
 
 - (nonnull NSArray<PMNIUrl *> *)getUrls;
 
