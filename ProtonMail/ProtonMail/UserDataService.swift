@@ -16,6 +16,7 @@
 
 import Foundation
 import AwaitKit
+import PromiseKit
 
 protocol UserDataServiceDelegate {
     func onLogout(animated: Bool)
@@ -315,33 +316,22 @@ class UserDataService {
         launchCleanUp()
     }
     
-    func fetchUserInfo(_ completion: UserInfoBlock? = nil) {
-        async {
-            do {
-                let addrApi = GetAddressesRequest()
-                guard let addrRes = try addrApi.syncCall() else {
-                    throw RuntimeError.no_address.error
-                }
-                
-                let userApi = GetUserInfoRequest()
-                guard let userRes = try userApi.syncCall() else {
-                    throw RuntimeError.no_user.error
-                }
-                    
-                userRes.userInfo?.setAddresses(addresses: addrRes.addresses)
-                self.userInfo = userRes.userInfo
-                if let addresses = self.userInfo?.userAddresses.toPMNAddresses() {
-                    sharedOpenPGP.setAddresses(addresses);
-                }
-                
-                main {
-                    completion?(self.userInfo, nil, nil)
-                }
-            } catch let error as NSError {
-                main {
-                    completion?(nil, nil, error)
-                }
+    func fetchUserInfo() -> Promise<UserInfo?> {
+        return async {
+            
+            let addrApi = GetAddressesRequest()
+            let userApi = GetUserInfoRequest()
+            
+            let addrRes = try await(addrApi.call())
+            let userRes = try await(userApi.call())
+            
+            userRes.userInfo?.setAddresses(addresses: addrRes.addresses)
+            self.userInfo = userRes.userInfo
+            if let addresses = self.userInfo?.userAddresses.toPMNAddresses() {
+                sharedOpenPGP.setAddresses(addresses);
             }
+            
+            return self.userInfo
         }
     }
     
@@ -855,7 +845,14 @@ class UserDataService {
     func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
         return { task, response, error in
             if error == nil {
-                self.fetchUserInfo(completion)
+                self.fetchUserInfo().done { (userInfo) in
+                    
+//                    self.fetchUserInfo(completion)
+                }.catch { error in
+                    
+//                    self.fetchUserInfo(completion)
+                }
+                
             } else {
                 completion?(nil, nil, error)
             }

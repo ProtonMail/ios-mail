@@ -210,18 +210,17 @@ final class SignupViewModelImpl : SignupViewModel {
                                             let _ = try UpdateSwiftLeftAction<ApiResponse>(action: MessageSwipeAction.archive).syncCall()
                                             let _ = try UpdateSwiftRightAction<ApiResponse>(action: MessageSwipeAction.trash).syncCall()
 
-                                            
                                             sharedLabelsDataService.fetchLabels()
-                                            sharedUserDataService.fetchUserInfo() { info, _, error in
-                                                if error != nil {
-                                                    complete(false, true, NSLocalizedString("Fetch user info failed", comment: "Error"), error)
-                                                } else if info != nil {
+                                            sharedUserDataService.fetchUserInfo().done(on: .main) { info in
+                                                if info != nil {
                                                     sharedUserDataService.isNewUser = true
                                                     sharedUserDataService.setMailboxPassword(self.keypwd_with_keysalt, keysalt: nil, isRemembered: true)
                                                     complete(true, true, "", nil)
                                                 } else {
                                                     complete(false, true, NSLocalizedString("Unknown Error", comment: "Error"), nil)
                                                 }
+                                            }.catch(on: .main) { error in
+                                                complete(false, true, NSLocalizedString("Fetch user info failed", comment: "Error"), error)
                                             }
                                         } catch let ex as NSError {
                                             PMLog.D(any: ex)

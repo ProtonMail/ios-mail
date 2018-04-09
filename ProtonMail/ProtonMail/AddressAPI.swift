@@ -10,7 +10,7 @@ import Foundation
 
 
 // Mark : get addresses
-final class GetAddressesRequest : ApiRequest<AddressesResponse> {
+final class GetAddressesRequest : ApiRequestNew<AddressesResponse> {
     
     override func path() -> String {
         return AddressesAPI.path + AppConstants.DEBUG_OPTION

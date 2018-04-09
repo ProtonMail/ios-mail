@@ -84,7 +84,7 @@ class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-final class GetUserInfoRequest : ApiRequest<GetUserInfoResponse> {
+final class GetUserInfoRequest : ApiRequestNew<GetUserInfoResponse> {
     
     override func method() -> APIService.HTTPMethod {
         return .get

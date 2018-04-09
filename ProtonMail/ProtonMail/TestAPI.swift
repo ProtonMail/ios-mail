@@ -19,7 +19,7 @@ final class TestOffline : ApiRequest<ApiResponse> {
     }
 }
 
-final class TestBadRequest : ApiRequest<ApiResponse> {
+final class TestBadRequest : ApiRequestNew<ApiResponse> {
     override open func path() -> String {
         return AppConstants.API_PATH + "/tests/offline1"
     }
@@ -28,3 +28,13 @@ final class TestBadRequest : ApiRequest<ApiResponse> {
         
     }
 }
+
+
+//example
+//let api = TestBadRequest()
+//api.call().done(on: .main) { (res) in
+//    PMLog.D(any: res)
+//    }.catch(on: .main) { (error) in
+//        PMLog.D(any: error)
+//}
+

@@ -176,16 +176,9 @@ class MailboxPasswordViewController: UIViewController {
                     try AuthCredential.setupToken(mailbox_password, isRememberMailbox: self.isRemembered)
                     MBProgressHUD.showAdded(to: view, animated: true)
                     sharedLabelsDataService.fetchLabels()
-                    sharedUserDataService.fetchUserInfo() { info, _, error in
+                    sharedUserDataService.fetchUserInfo().done(on: .main) { info in
                         MBProgressHUD.hide(for: self.view, animated: true)
-                        if error != nil {
-                            let alertController = error!.alertController()
-                            alertController.addOKAction()
-                            self.present(alertController, animated: true, completion: nil)
-                            if error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                                let _ = self.navigationController?.popViewController(animated: true)
-                            }
-                        } else if info != nil {
+                        if info != nil {
                             if info!.delinquent < 3 {
                                 userCachedStatus.pinFailedCount = 0;
                                 sharedUserDataService.setMailboxPassword(mailbox_password, keysalt: nil, isRemembered: self.isRemembered)
@@ -203,6 +196,16 @@ class MailboxPasswordViewController: UIViewController {
                             let alertController = NSError.unknowError().alertController()
                             alertController.addOKAction()
                             self.present(alertController, animated: true, completion: nil)
+                        }
+                    }.catch(on: .main) { (error) in
+                        MBProgressHUD.hide(for: self.view, animated: true)
+                        if let error = error as NSError? {
+                            let alertController = error.alertController()
+                            alertController.addOKAction()
+                            self.present(alertController, animated: true, completion: nil)
+                            if error.domain == APIServiceErrorDomain && error.code == APIErrorCode.AuthErrorCode.localCacheBad {
+                                let _ = self.navigationController?.popViewController(animated: true)
+                            }
                         }
                     }
                 } catch let ex as NSError {
