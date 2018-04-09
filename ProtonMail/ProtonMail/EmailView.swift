@@ -10,6 +10,23 @@ import Foundation
 import UIKit
 import QuickLook
 
+extension UIDataDetectorTypes {
+//    public static var phoneNumber
+//    public static var link
+//    @available(iOS 4.0, *)
+//    public static var address
+//    @available(iOS 4.0, *)
+//    public static var calendarEvent
+//    @available(iOS 10.0, *)
+//    public static var shipmentTrackingNumber
+//    @available(iOS 10.0, *)
+//    public static var flightNumber
+//    @available(iOS 10.0, *)
+//    public static var lookupSuggestion
+
+    public static var pm_email: UIDataDetectorTypes = [.phoneNumber, .link]
+}
+
 protocol EmailViewProtocol {
     func mailto(_ url: URL?)
 }
@@ -159,6 +176,8 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.contentWebView = PMWebView()
         self.contentWebView.scalesPageToFit = true;
         self.addSubview(contentWebView)
+        
+        self.contentWebView.dataDetectorTypes = .pm_email
         self.contentWebView.backgroundColor = UIColor.white
         self.contentWebView.isUserInteractionEnabled = true
         self.contentWebView.scrollView.isScrollEnabled = true
