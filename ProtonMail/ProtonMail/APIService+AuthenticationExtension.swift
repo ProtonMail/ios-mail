@@ -122,19 +122,6 @@ extension APIService {
         tryAuth()
     }
     
-    func authRevoke(_ completion: AuthCredentialBlock?) {
-        if let authCredential = AuthCredential.fetchFromKeychain() {
-            let path = "/auth/revoke"
-            let parameters = ["access_token" : authCredential.token ?? ""]
-            let completionWrapper: CompletionBlock = { _, _, error in
-                completion?(nil, error)
-                return
-            }
-            request(method: .post, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completionWrapper)
-        } else {
-            completion?(nil, nil)
-        }
-    }
     func authRefresh(_ password:String, completion: AuthRefreshComplete?) {
         if let authCredential = AuthCredential.fetchFromKeychain() {
             AuthRefreshRequest<AuthResponse>(resfresh: authCredential.refreshToken, uid: authCredential.userID).call() { task, res , hasError in

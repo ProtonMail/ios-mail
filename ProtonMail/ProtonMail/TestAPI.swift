@@ -18,3 +18,13 @@ final class TestOffline : ApiRequest<ApiResponse> {
         
     }
 }
+
+final class TestBadRequest : ApiRequest<ApiResponse> {
+    override open func path() -> String {
+        return AppConstants.API_PATH + "/tests/offline1"
+    }
+    override func apiVersion() -> Int {
+        return 3
+        
+    }
+}

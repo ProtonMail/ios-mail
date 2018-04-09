@@ -27,7 +27,7 @@ extension APIService {
     func settingUpdateSignature(_ signature: String, completion: @escaping CompletionBlock) {
         let path = SettingPath.base + "/signature"
         let parameters = ["Signature" : signature]
-        request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
+        request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 3], completion: completion)
     }
 }
 
