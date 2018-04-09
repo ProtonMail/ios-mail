@@ -284,7 +284,7 @@ final class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageEmptyRequest
+        return MessageAPI.v_empty_label_folder
     }
     
     override func method() -> APIService.HTTPMethod {

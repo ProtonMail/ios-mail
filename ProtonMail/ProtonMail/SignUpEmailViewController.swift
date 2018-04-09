@@ -183,7 +183,7 @@ class SignUpEmailViewController: UIViewController {
     
     func loadContactsAfterInstall()
     {
-        sharedUserDataService.fetchUserInfo()
+        sharedUserDataService.fetchUserInfo().done() { _ in }.catch { _ in }
         sharedContactDataService.fetchContacts { (contacts, error) in
             if error != nil {
                 PMLog.D("\(String(describing: error))")

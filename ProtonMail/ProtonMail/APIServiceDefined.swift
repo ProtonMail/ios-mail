@@ -222,11 +222,25 @@ struct MessageAPI {
     
     static let v_update_draft : Int = 3
     
-    static let V_MessageActionRequest : Int = 1
-    
-    static let V_MessageEmptyRequest : Int = 1
+    // inlcude read/unread
+    static let V_MessageActionRequest : Int = 3
     
     static let V_MessageSendRequest : Int = 1
+    
+    //Label/move an array of messages [PUT]
+    static let v_label_move_msgs : Int = 3
+    
+    //Unlabel an array of messages [PUT]
+    static let v_unlabel_msgs : Int = 3
+    
+    //Delete all messages with a label/folder [DELETE]
+    static let v_empty_label_folder : Int = 3
+    
+    //Delete an array of messages [PUT]
+    static let v_delete_msgs : Int = 3
+    
+    //Undelete Messages [/messages/undelete]
+    static let v_undelete_msgs : Int = 3
 }
 
 //Organization API

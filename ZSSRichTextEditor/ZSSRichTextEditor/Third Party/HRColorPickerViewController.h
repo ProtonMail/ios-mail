@@ -66,7 +66,6 @@ typedef enum {
  */
 - (id)initWithColor:(UIColor*)defaultColor fullColor:(BOOL)fullColor saveStyle:(HCPCSaveStyle)saveStyle;
 
-/** @deprecated use -save: instead of this . */
 - (void)saveColor:(id)sender;
 
 - (void)save;
