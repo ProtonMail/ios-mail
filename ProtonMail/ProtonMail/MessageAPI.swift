@@ -9,8 +9,7 @@
 import Foundation
 
 // MARK : Get messages part
-final class MessageCountRequest<T : ApiResponse> : ApiRequest<T> {
-    
+final class MessageCount : ApiRequest<MessageCountResponse> {
     override open func path() -> String {
         return MessageAPI.path + "/count" + AppConstants.DEBUG_OPTION
     }
@@ -29,7 +28,7 @@ final class MessageCountResponse : ApiResponse {
 
 
 // MARK : Get messages part
-final class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
+final class FetchMessages : ApiRequest<ApiResponse> {
     let location : MessageLocation!
     let startTime : Int?
     let endTime : Int
@@ -67,7 +66,7 @@ final class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-final class MessageFetchByIDsRequest<T : ApiResponse> : ApiRequest<T> {
+final class FetchMessagesByID : ApiRequest<ApiResponse> {
     let messages : [Message]!
     init(messages: [Message]) {
         self.messages = messages
@@ -100,7 +99,7 @@ final class MessageFetchByIDsRequest<T : ApiResponse> : ApiRequest<T> {
 }
 
 
-final class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
+final class FetchMessagesByLabel : ApiRequest<ApiResponse> {
     let labelID : String!
     let startTime : Int?
     let endTime : Int
@@ -114,13 +113,10 @@ final class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
     override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = ["Sort" : "Time"]
         out["Label"] = self.labelID
-        if(self.endTime > 0)
-        {
+        if self.endTime > 0 {
             let newTime = self.endTime - 1
             out["End"] = newTime
         }
-        
-        
         PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
@@ -137,7 +133,7 @@ final class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
 // MARK : Create/Update Draft Part
 
 /// create draft message request class
-class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
+class CreateDraft : ApiRequest<MessageResponse> {
     
     let message : Message!;
     
@@ -193,11 +189,8 @@ class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
 }
 
 /// message update draft api request
-final class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> {
-    override init(message: Message!) {
-        super.init(message: message)
-    }
-    
+final class UpdateDraft : CreateDraft {
+
     override func path() -> String {
         return MessageAPI.path + "/" + message.messageID + AppConstants.DEBUG_OPTION
     }
@@ -214,7 +207,6 @@ final class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> {
 
 final class MessageResponse : ApiResponse {
     var message : [String : Any]?
-    
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.message = response?["Message"] as? [String : Any]
         return true
@@ -225,12 +217,11 @@ final class MessageResponse : ApiResponse {
 // MARK : Message actions part
 
 /// mesaage action request PUT method
-final class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
+final class MessageActionRequest : ApiRequest<ApiResponse> {
     let messages : [Message]!
     let action : String!
     var ids : [String] = [String] ()
-    
-    
+
     public init(action:String, messages: [Message]!) {
         self.messages = messages
         self.action = action
@@ -267,7 +258,7 @@ final class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
 }
 
 /// empty trash or spam
-final class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
+final class MessageEmptyRequest : ApiRequest <ApiResponse> {
     let location : String!
     
     public init(location: String! ) {

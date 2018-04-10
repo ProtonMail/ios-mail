@@ -161,7 +161,7 @@ class MessageDataService {
                                 
                                 //fetch inbox count
                                 if location == .inbox {
-                                    let counterApi = MessageCountRequest<MessageCountResponse>();
+                                    let counterApi = MessageCount()
                                     counterApi.call({ (task, response, hasError) in
                                         if !hasError {
                                             self.processMessageCounts(response?.counts)
@@ -188,7 +188,7 @@ class MessageDataService {
                 }
             }
             
-            let request = MessageFetchRequest(location: location, endTime: Time);
+            let request = FetchMessages(location: location, endTime: Time);
             sharedAPIService.GET(request, completion: completionWrapper)
         }
     }
@@ -239,7 +239,7 @@ class MessageDataService {
                     completion?(task, responseDict, NSError.unableToParseResponse(responseDict))
                 }
             }
-            let request = MessageByLabelRequest(labelID: labelID, endTime: Time);
+            let request = FetchMessagesByLabel(labelID: labelID, endTime: Time)
             sharedAPIService.GET(request, completion: completionWrapper)
         }
     }
@@ -791,7 +791,7 @@ class MessageDataService {
                     }
                 }
                 
-                let request = MessageFetchByIDsRequest(messages: messages)
+                let request = FetchMessagesByID(messages: messages)
                 sharedAPIService.GET(request, completion: completionWrapper)
             }
         }
@@ -1422,7 +1422,7 @@ class MessageDataService {
                         
                         PMLog.D("SendAttachmentDebug == start save draft!")
                         if message.isDetailDownloaded && message.messageID != "0" {
-                            let api = MessageUpdateDraftRequest<MessageResponse>(message: message);
+                            let api = UpdateDraft(message: message)
                             api.call({ (task, response, hasError) -> Void in
                                 if hasError {
                                     completionWrapper(task, nil, response?.error)
@@ -1431,7 +1431,7 @@ class MessageDataService {
                                 }
                             })
                         } else {
-                            let api = MessageDraftRequest<MessageResponse>(message: message)
+                            let api = CreateDraft(message: message)
                             api.call({ (task, response, hasError) -> Void in
                                 if hasError {
                                     completionWrapper(task, nil, response?.error)
@@ -1836,7 +1836,7 @@ class MessageDataService {
                 case .emptySpam:
                     emptyMessageWithLocation("spam", writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 default:
-                    sharedAPIService.PUT(MessageActionRequest<ApiResponse>(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    sharedAPIService.PUT(MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 }
             } else {
                 PMLog.D(" Unsupported action \(actionString), removing from queue.")

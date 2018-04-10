@@ -194,7 +194,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                 }
             }
             let ids = self.messages.map { ($0).messageID }
-            let api = MessageActionRequest<ApiResponse>(action: "archive", ids: ids)
+            let api = MessageActionRequest(action: "archive", ids: ids)
             api.call(nil)
         }
         
