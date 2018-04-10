@@ -299,7 +299,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
     override func sendMessage() {
         
         self.updateDraft()
-        sharedMessageDataService.send(self.message?.messageID)  { task, response, error in
+        sharedMessageDataService.send(inQueue: self.message?.messageID)  { task, response, error in
             
         }
         

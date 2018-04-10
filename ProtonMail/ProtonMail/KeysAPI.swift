@@ -9,6 +9,35 @@
 import Foundation
 
 
+final class UserPubKeys : ApiRequest<KeysResponse> {
+    let email : String
+    
+    init(email : String) {
+        self.email = email
+    }
+    override func toDictionary() -> [String : Any]? {
+        let out : [String : Any] = ["Email" : self.email]
+        return out
+    }
+    
+    override open func path() -> String {
+        return KeysAPI.path + "/Keys" + AppConstants.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return KeysAPI.v_get_emails_pub_key
+    }
+}
+
+final class KeysResponse : ApiResponse {
+    var keySalts : [[String : Any]]?
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        //self.keySalts = response["KeySalts"] as? [[String : Any]]
+        return true
+    }
+}
+
+
 //MARK : get keys salt  #not in used
 final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
     

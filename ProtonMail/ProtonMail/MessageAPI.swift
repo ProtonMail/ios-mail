@@ -313,16 +313,11 @@ final class EOAddressPackage : AddressPackage {
 
     let token : String!  //<random_token>
     let encToken : String! //<encrypted_random_token>
-    let auth : String!
-//    "Auth": {
-//    "Version" : 4,
-//    "ModulusID" : <encrypted_id>,
-//    "Salt" : <base64_encoded_salt>,
-//    "Verifier" : <base64_encoded_verifier>
-//    },
+    let auth : PasswordAuth! //
     let pwdHit : String?  //"PasswordHint" : "Example hint", // optional
 
-    init(token: String, encToken : String, auth :String, pwdHit : String?,
+    init(token: String, encToken : String,
+         auth : PasswordAuth, pwdHit : String?,
          email:String,
          bodyKeyPacket : String,
          attPackets:[AttachmentKeyPackage]=[AttachmentKeyPackage](),
@@ -341,12 +336,7 @@ final class EOAddressPackage : AddressPackage {
         var out = super.toDictionary() ?? [String : Any]()
         out["Token"] = self.token
         out["EncToken"] = self.encToken
-//        "Auth": {
-//            "Version" : 4,
-//            "ModulusID" : <encrypted_id>,
-//            "Salt" : <base64_encoded_salt>,
-//            "Verifier" : <base64_encoded_verifier>
-//        },
+        out["Auth"] = self.auth.toDictionary()
         if let hit = self.pwdHit {
             out["PasswordHint"] = hit
         }

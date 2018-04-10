@@ -169,14 +169,17 @@ struct EventAPI {
 struct KeysAPI {
     static let path : String = AppConstants.API_PATH + "/keys"
     
-    //Update private keys only, use for mailbox password/single password updates PUT
+    /// Update private keys only, use for mailbox password/single password updates PUT
     static let v_update_private_key : Int = 3
     
-    //Setup keys for new account, private user [POST]
+    /// Setup keys for new account, private user [POST]
     static let v_setup_key : Int = 3
     
-    //Get key salts, locked route [GET]
+    /// Get key salts, locked route [GET]
     static let v_get_key_salts : Int = 3
+    
+    /// Get public keys [GET]
+    static let v_get_emails_pub_key : Int = 3
 }
 
 //Labels API
