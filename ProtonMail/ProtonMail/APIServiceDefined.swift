@@ -225,7 +225,8 @@ struct MessageAPI {
     // inlcude read/unread
     static let V_MessageActionRequest : Int = 3
     
-    static let V_MessageSendRequest : Int = 1
+    //Send a message [POST]
+    static let v_send_message : Int = 3
     
     //Label/move an array of messages [PUT]
     static let v_label_move_msgs : Int = 3

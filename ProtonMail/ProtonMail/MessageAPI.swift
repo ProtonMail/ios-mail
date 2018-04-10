@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 // MARK : Get messages part
 final class MessageCountRequest<T : ApiResponse> : ApiRequest<T> {
     
@@ -294,6 +293,237 @@ final class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
 
 // MARK : Message Send part
 
+struct SendingTypes : OptionSet {
+    let rawValue: Int
+    
+    //address package one
+    
+    //internal email
+    static let intl    = SendingTypes(rawValue: 1 << 0)
+    //encrypt outside
+    static let eo      = SendingTypes(rawValue: 1 << 1)
+    //cleartext inline
+    static let cinln   = SendingTypes(rawValue: 1 << 2)
+    //inline pgp
+    static let inlnpgp = SendingTypes(rawValue: 1 << 3)
+    
+    //address package two MIME
+    
+    //pgp mime
+    static let pgpmime = SendingTypes(rawValue: 1 << 4)
+    //clear text mime
+    static let cmime   = SendingTypes(rawValue: 1 << 5)
+}
+
+
+
+/// message packages
+final class EOAddressPackage : AddressPackage {
+
+    let token : String!  //<random_token>
+    let encToken : String! //<encrypted_random_token>
+    let auth : String!
+//    "Auth": {
+//    "Version" : 4,
+//    "ModulusID" : <encrypted_id>,
+//    "Salt" : <base64_encoded_salt>,
+//    "Verifier" : <base64_encoded_verifier>
+//    },
+    let pwdHit : String?  //"PasswordHint" : "Example hint", // optional
+
+    init(token: String, encToken : String, auth :String, pwdHit : String?,
+         email:String,
+         bodyKeyPacket : String,
+         attPackets:[AttachmentKeyPackage]=[AttachmentKeyPackage](),
+         type: SendingTypes = SendingTypes.intl, //for base
+         sign : Int = 0) {
+        
+        self.token = token
+        self.encToken = encToken
+        self.auth = auth
+        self.pwdHit = pwdHit
+        
+        super.init(email: email, bodyKeyPacket: bodyKeyPacket, attPackets: attPackets, type: type, sign: sign)
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        var out = super.toDictionary() ?? [String : Any]()
+        out["Token"] = self.token
+        out["EncToken"] = self.encToken
+//        "Auth": {
+//            "Version" : 4,
+//            "ModulusID" : <encrypted_id>,
+//            "Salt" : <base64_encoded_salt>,
+//            "Verifier" : <base64_encoded_verifier>
+//        },
+        if let hit = self.pwdHit {
+            out["PasswordHint"] = hit
+        }
+        return out
+    }
+}
+
+class AddressPackage : ClearTextAddress {
+    let email : String
+    let bodyKeyPacket : String
+    let attPackets : [AttachmentKeyPackage]
+
+    init(email:String,
+         bodyKeyPacket : String,
+         attPackets:[AttachmentKeyPackage]=[AttachmentKeyPackage](),
+         type: SendingTypes = SendingTypes.intl, //for base
+         sign : Int = 0) {
+        self.email = email
+        self.bodyKeyPacket = bodyKeyPacket
+        self.attPackets = attPackets
+        super.init(type: type, sign: sign)
+    }
+
+    override func toDictionary() -> [String : Any]? {
+        var out = super.toDictionary() ?? [String : Any]()
+        out["BodyKeyPacket"] = self.bodyKeyPacket
+        
+        //change to == id : packet
+        var atts : [Any] = [Any]()
+        for attPacket in attPackets {
+            atts.append(attPacket.toDictionary()!)
+        }
+        out["AttachmentKeyPackets"] = atts
+        
+        return out
+    }
+}
+
+class ClearTextAddress : Package {
+    
+    let type : SendingTypes!
+    let sign : Int! //0 or 1
+    
+    init(type: SendingTypes, sign : Int) {
+        self.type = type
+        self.sign = sign
+    }
+    
+    func toDictionary() -> [String : Any]? {
+        return [
+            "Type" : type.rawValue,
+            "Signature" : sign
+        ]
+    }
+}
+
+
+
+/// send message reuqest
+final class SendMessage : ApiRequestNew<ApiResponse> {
+    var messagePackage : [MessagePackage]!     // message package
+    var attPackets : [AttachmentKeyPackage]!    //  for optside encrypt att.
+    var clearBody : String!                     //  optional for out side user
+    let messageID : String!
+    let expirationTime : Int32!
+    
+    init(messageID : String!, expirationTime: Int32?, messagePackage: [MessagePackage]!, clearBody : String! = "", attPackages:[AttachmentKeyPackage]! = nil) {
+        self.messageID = messageID
+        self.messagePackage = messagePackage
+        self.clearBody = clearBody
+        self.attPackets = attPackages
+        self.expirationTime = expirationTime ?? 0
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        var out : [String : Any] = [String : Any]()
+        out["ExpirationTime"] = "\(self.expirationTime)"
+        //optional this will override app setting
+        //out["AutoSaveContacts"] = "\(0 / 1)"
+
+        var packages : [Any] = [Any]()
+        
+        //not mime
+        var normalAddress : [String : Any] = [String : Any]()
+        
+        normalAddress["Addresses"] = "[:]()"
+        normalAddress["Type"] = "get from message list" //"Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
+        normalAddress["Body"] = "<base64_encoded_openpgp_encrypted_data_packet>"
+        normalAddress["MIMEType"] = "text/html"
+        
+        
+        normalAddress["BodyKey"] = "[:]" // Include only if cleartext recipients
+//        "BodyKey": {
+//            "Key": <base64_encoded_session_key>,
+//            "Algorithm": "aes256" // algorithm corresponding to session key
+//        },
+        
+        normalAddress["AttachmentKeys"] = "[:]" // Only include if cleartext recipients, optional if no attachments
+//        "AttachmentKeys": {
+//            "<attachment_id>" : {
+//                "Key": <base64_encoded_session_key>,
+//                "Algorithm": "aes256" // algorithm corresponding to session key
+//            }
+//        },
+        packages.append(normalAddress)
+        
+        //mime
+        var mimeAddress : [String : Any] = [String : Any]()
+        mimeAddress["Addresses"] = "[:]()"
+//        "bartqa2@pgp.me" : {
+//        "Type" : 16, // PGP/MIME
+//        "BodyKeyPacket" : <base64_encoded_key_packet>
+//        },
+//        "bartqa3@gmail.com" : {
+//        "Type" : 32, // cleartext MIME
+//        "Signature" : 0 // 1 = signature
+//        }
+        mimeAddress["Type"] = "get from message list" // 16|32 MIME sending cannot share packages with inline sending
+        mimeAddress["Body"] = "<base64_encoded_openpgp_encrypted_data_packet>"
+        mimeAddress["MIMEType"] = "multipart/mixed"
+        mimeAddress["BodyKey"] = "[:]" // Include only if cleartext MIME recipients
+        //        "BodyKey": {
+        //            "Key": <base64_encoded_session_key>,
+        //            "Algorithm": "aes256" // algorithm corresponding to session key
+        //        },
+        packages.append(mimeAddress)
+        out["Packages"] = [packages]
+        
+//        if !self.clearBody.isEmpty {
+//            out["ClearBody"] = self.clearBody
+//        }
+//
+//        if self.attPackets != nil {
+//            var attPack : [Any] = [Any]()
+//            for pack in self.attPackets {
+//                //TODO:: ! check
+//                attPack.append(pack.toDictionary()!)
+//            }
+//            out["AttachmentKeys"] = attPack
+//        }
+//
+//
+//        var package : [Any] = [Any]()
+//        if self.messagePackage != nil {
+//            for pack in self.messagePackage {
+//                //TODO:: ! check
+//                package.append(pack.toDictionary()!)
+//            }
+        //        }
+        PMLog.D( out.json(prettyPrinted: true) )
+        return out
+    }
+    
+    override func path() -> String {
+        return MessageAPI.path + "/" + self.messageID + AppConstants.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return MessageAPI.v_send_message
+    }
+    
+    override func method() -> APIService.HTTPMethod {
+        return .post
+    }
+}
+
+
+
 /// send message reuqest
 final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     var messagePackage : [MessagePackage]!     // message package
@@ -311,6 +541,7 @@ final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     }
     
     override func toDictionary() -> [String : Any]? {
+
         
         var out : [String : Any] = [String : Any]()
         
@@ -350,7 +581,7 @@ final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageSendRequest
+        return 1
     }
     
     override func method() -> APIService.HTTPMethod {

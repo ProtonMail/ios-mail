@@ -82,4 +82,17 @@ extension NSManagedObjectContext {
         }
         return error
     }
+    
+    func find(with objectID: NSManagedObjectID) -> NSManagedObject? {
+        var msgObject : NSManagedObject?
+        do {
+            msgObject = try self.existingObject(with: objectID)
+        } catch {
+            msgObject = nil
+        }
+//        if let obj = msgObject as? T {
+//            return obj
+//        }
+        return msgObject
+    }
 }

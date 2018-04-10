@@ -1560,130 +1560,129 @@ class MessageDataService {
             completion?(task, response, error)
         }
         
-        if let context = managedObjectContext {
-            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
-                var msgObject : NSManagedObject?
-                do {
-                    msgObject = try context.existingObject(with: objectID)
-                } catch {
-                    msgObject = nil
-                }
-                if let message = msgObject as? Message {
-                    PMLog.D("SendAttachmentDebug == start get key!")
-                    sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
-                        PMLog.D("SendAttachmentDebug == finish get key!")
-                        if error != nil && error!.code == APIErrorCode.badParameter {
-                            errorBlock(task, response, error)
-                            return
-                        }
-                        
-                        if message.managedObjectContext == nil {
-                            NSError.alertLocalCacheErrorToast()
-                            let err =  NSError.badDraft()
-                            err.upload(toFabric: CacheErrorTitle)
-                            errorBlock(task, nil, err)
-                            return ;
-                        }
-                        
-                        // is encrypt outside
-                        let isEncryptOutside = !message.password.isEmpty
-                        
-                        // get attachment
-                        let attachments = self.attachmentsForMessage(message)
-                        
-                        // create package for internal
-                        let sendMessage = self.generatMessagePackage(message, keys: response, atts:attachments, encrptOutside: isEncryptOutside)
-                        
-                        let reskeys = response;
-                        
-                        // parse the response for keys
-                        //_ = try? self.messageBodyForMessage(message, response: response)
-                        
-                        let completionWrapper: CompletionBlock = { task, response, error in
-                            PMLog.D("SendAttachmentDebug == finish send email!")
-                            // remove successful send from Core Data
-                            if error == nil {
-                                //context.deleteObject(message)MOBA-378
-                                if (message.location == MessageLocation.draft) {
-                                    var isOutsideUser = false
-                                    if let keys = reskeys {
-                                        for (key, v) in keys{
-                                            if key == "Code" {
-                                                continue
-                                            }
-                                            if let publicKey = v as? String {
-                                                if publicKey.isEmpty {
-                                                    isOutsideUser = true;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if isEncryptOutside {
-                                        if isOutsideUser {
-                                            message.isEncrypted =  NSNumber(value: EncryptTypes.outEnc.rawValue)
-                                        } else {
-                                            message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
-                                        }
-                                    } else {
-                                        if isOutsideUser {
-                                            message.isEncrypted = NSNumber(value: EncryptTypes.outPlain.rawValue);
-                                        } else {
-                                            message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
-                                        }
-                                    }
-                                    
-                                    if attachments.count > 0 {
-                                        message.hasAttachments = true;
-                                        message.numAttachments = NSNumber(value: attachments.count)
-                                    }
-                                    //TODO::fix later 1.7
-                                    message.mimeType = "text/html"
-                                    
-                                    message.needsUpdate = false
-                                    message.isRead = true
-                                    lastUpdatedStore.ReadMailboxMessage(message.location)
-                                    message.location = MessageLocation.outbox
-                                    message.isDetailDownloaded = false
-                                    message.removeLocationFromLabels(currentlocation: .draft, location: .outbox, keepSent: true)
-                                }
-
-                                NSError.alertMessageSentToast()
-                                if let error = context.saveUpstreamIfNeeded() {
-                                    PMLog.D(" error: \(error)")
-                                } else {
-                                    self.markReplyStatus(message.orginalMessageID, action: message.action)
-                                }
-                            }
-                            else {
-                                if error?.code == 9001 {
-                                    //here need let user to show the human check.
-                                    sharedMessageQueue.isRequiredHumanCheck = true
-                                    error?.alertSentErrorToast()
-                                } else if error?.code == 15198 {
-                                    error?.alertSentErrorToast()
-                                }  else {
-                                    //error?.alertErrorToast()
-                                }
-                                //NSError.alertMessageSentErrorToast()
-                                error?.upload(toFabric: SendingErrorTitle)
-                            }
-                            completion?(task, response, error)
-                            return
-                        }
-                        PMLog.D("SendAttachmentDebug == start send email!")
-                        sendMessage!.call({ (task, response, hasError) -> Void in
-                            if hasError {
-                                completionWrapper(task, nil, response?.error)
-                            } else {
-                                completionWrapper(task, nil, nil)
-                            }
-                        })
-                    })
-                    
+        if let context = managedObjectContext,
+            let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
+            let message = context.find(with: objectID) as? Message {
+            
+            
+            
+            
+            
+            PMLog.D("SendAttachmentDebug == start get key!")
+            sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
+                PMLog.D("SendAttachmentDebug == finish get key!")
+                if error != nil && error!.code == APIErrorCode.badParameter {
+                    errorBlock(task, response, error)
                     return
                 }
-            }
+                
+                if message.managedObjectContext == nil {
+                    NSError.alertLocalCacheErrorToast()
+                    let err =  NSError.badDraft()
+                    err.upload(toFabric: CacheErrorTitle)
+                    errorBlock(task, nil, err)
+                    return ;
+                }
+                
+                // is encrypt outside
+                let isEncryptOutside = !message.password.isEmpty
+                
+                // get attachment
+                let attachments = self.attachmentsForMessage(message)
+                
+                // create package for internal
+                let sendMessage = self.generatMessagePackage(message, keys: response, atts:attachments, encrptOutside: isEncryptOutside)
+                
+                let reskeys = response;
+                
+                // parse the response for keys
+                //_ = try? self.messageBodyForMessage(message, response: response)
+                
+                let completionWrapper: CompletionBlock = { task, response, error in
+                    PMLog.D("SendAttachmentDebug == finish send email!")
+                    // remove successful send from Core Data
+                    if error == nil {
+                        //context.deleteObject(message)MOBA-378
+                        if (message.location == MessageLocation.draft) {
+                            var isOutsideUser = false
+                            if let keys = reskeys {
+                                for (key, v) in keys{
+                                    if key == "Code" {
+                                        continue
+                                    }
+                                    if let publicKey = v as? String {
+                                        if publicKey.isEmpty {
+                                            isOutsideUser = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            if isEncryptOutside {
+                                if isOutsideUser {
+                                    message.isEncrypted =  NSNumber(value: EncryptTypes.outEnc.rawValue)
+                                } else {
+                                    message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
+                                }
+                            } else {
+                                if isOutsideUser {
+                                    message.isEncrypted = NSNumber(value: EncryptTypes.outPlain.rawValue);
+                                } else {
+                                    message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
+                                }
+                            }
+                            
+                            if attachments.count > 0 {
+                                message.hasAttachments = true;
+                                message.numAttachments = NSNumber(value: attachments.count)
+                            }
+                            //TODO::fix later 1.7
+                            message.mimeType = "text/html"
+                            
+                            message.needsUpdate = false
+                            message.isRead = true
+                            lastUpdatedStore.ReadMailboxMessage(message.location)
+                            message.location = MessageLocation.outbox
+                            message.isDetailDownloaded = false
+                            message.removeLocationFromLabels(currentlocation: .draft, location: .outbox, keepSent: true)
+                        }
+                        
+                        NSError.alertMessageSentToast()
+                        if let error = context.saveUpstreamIfNeeded() {
+                            PMLog.D(" error: \(error)")
+                        } else {
+                            self.markReplyStatus(message.orginalMessageID, action: message.action)
+                        }
+                    }
+                    else {
+                        if error?.code == 9001 {
+                            //here need let user to show the human check.
+                            sharedMessageQueue.isRequiredHumanCheck = true
+                            error?.alertSentErrorToast()
+                        } else if error?.code == 15198 {
+                            error?.alertSentErrorToast()
+                        }  else {
+                            //error?.alertErrorToast()
+                        }
+                        //NSError.alertMessageSentErrorToast()
+                        error?.upload(toFabric: SendingErrorTitle)
+                    }
+                    completion?(task, response, error)
+                    return
+                }
+                PMLog.D("SendAttachmentDebug == start send email!")
+                sendMessage!.call({ (task, response, hasError) -> Void in
+                    if hasError {
+                        completionWrapper(task, nil, response?.error)
+                    } else {
+                        completionWrapper(task, nil, nil)
+                    }
+                })
+            })
+            
+            return
+            //            }
+            
         }
         errorBlock(nil, nil, NSError.badParameter(messageID))
     }

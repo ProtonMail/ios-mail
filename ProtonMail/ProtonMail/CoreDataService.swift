@@ -134,14 +134,3 @@ class CoreDataService {
     }
     
 }
-
-// MARK: - NSError Core Data extensions
-//
-//extension NSError {
-//    class func noManagedObjectContext() -> NSError {
-//        return NSError.protonMailError(
-//            10000,
-//            localizedDescription: NSLocalizedString("No managed object context", comment: "Description"),
-//            localizedFailureReason: NSLocalizedString("No managed object context.", comment: "Description"))
-//    }
-//}

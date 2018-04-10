@@ -259,7 +259,15 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         }
     }
     
-    @objc internal func moreButtonTapped(_ sender : UIBarButtonItem) {        
+    @objc internal func moreButtonTapped(_ sender : UIBarButtonItem) {
+        
+        let test : Package = EOAddressPackage(token: "token", encToken: "encToken", auth: "auth", pwdHit: "hit", email: "test@gmail.com", bodyKeyPacket: "bodyKeypacket")
+        
+        let out = test.toDictionary()
+        
+        PMLog.D((out?.json(prettyPrinted: true))!)
+        
+        
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
         let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .default, .spam : .default, .archive : .default]

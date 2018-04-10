@@ -153,27 +153,16 @@ class ApiRequest<T : ApiResponse> : Package {
 }
 
 
-protocol PackageNew {
-    /**
-     conver requset object to dictionary
-     
-     :returns: request dictionary
-     */
-    func toDictionary() -> Promise<[String : Any]?>
-}
-
 //abstract api request base class
-class ApiRequestNew<T : ApiResponse> : PackageNew {
+class ApiRequestNew<T : ApiResponse> : Package {
     
     init () { }
     
     //add error response
-    public typealias ResponseCompletionBlock = (_ task: URLSessionDataTask?, _ response: T?, _ hasError : Bool) -> Void
+    //public typealias ResponseCompletionBlock = (_ task: URLSessionDataTask?, _ response: T?, _ hasError : Bool) -> Void
     
-    func toDictionary() -> Promise<[String : Any]?> {
-        return async {
-            return nil
-        }
+    func toDictionary() -> [String : Any]? {
+        return nil
     }
     
     /**
