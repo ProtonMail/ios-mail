@@ -178,6 +178,11 @@
 
 - (nonnull NSString *)readClearsignedMessage:(nonnull NSString *)signedMessage;
 
++ (nonnull PMNEncryptPackage *)splitMessage:(nonnull NSString *)encrypted;
+
++ (nonnull NSString *)combinePackages:(nonnull NSData *)key
+                                 data:(nonnull NSData *)data;
+
 /**test functions */
 - (int32_t)throwAnException;
 

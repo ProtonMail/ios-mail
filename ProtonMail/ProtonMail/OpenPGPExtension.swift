@@ -190,6 +190,15 @@ extension String {
         return out_decrypted
     }
     
+    func split() throws -> PMNEncryptPackage? {
+        var out_decrypted : PMNEncryptPackage?
+        try ObjC.catchException {
+            out_decrypted = PMNOpenPgp.splitMessage(self)
+        }
+        return out_decrypted
+    }
+    
+    
     func decryptMessageWithSinglKey(_ privateKey: String, passphrase: String) throws -> String? {
         var out_decrypted : String?
         try ObjC.catchException {

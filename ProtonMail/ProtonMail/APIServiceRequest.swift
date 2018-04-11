@@ -197,7 +197,7 @@ class ApiRequestNew<T : ApiResponse> : Package {
         return .get
     }
     
-    func call() -> Promise<T> {
+    func run() -> Promise<T> {
         // 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let deferred = Promise<T>.pending()
         let completionWrapper:  APIService.CompletionBlock = { task, res, error in

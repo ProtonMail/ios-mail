@@ -390,6 +390,7 @@ class APIService {
                         if authenticated && httpCode == 401 {
                             AuthCredential.expireOrClear(auth?.token)
                             if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
+                                completion?(nil, nil, error)
                                 self.delegate?.onError(error: error)
                                 UserTempCachedStatus.backup()
                                 sharedUserDataService.signOut(true);

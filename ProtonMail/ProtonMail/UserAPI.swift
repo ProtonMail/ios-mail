@@ -107,7 +107,6 @@ final class GetUserInfoResponse : ApiResponse {
         guard let res = response["User"] as? [String : Any] else {
             let err = NSError.badUserInfoResponse("\(response)")
             Crashlytics.sharedInstance().recordError(err)
-            err.upload(toFabric: FetchUserInfoErrorTitle)
             return false
         }
         self.userInfo = UserInfo(response: res)

@@ -322,8 +322,8 @@ class UserDataService {
             let addrApi = GetAddressesRequest()
             let userApi = GetUserInfoRequest()
             
-            let addrRes = try await(addrApi.call())
-            let userRes = try await(userApi.call())
+            let addrRes = try await(addrApi.run())
+            let userRes = try await(userApi.run())
             
             userRes.userInfo?.setAddresses(addresses: addrRes.addresses)
             self.userInfo = userRes.userInfo

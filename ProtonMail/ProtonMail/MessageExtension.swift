@@ -42,8 +42,16 @@ extension Message {
     }
     
     // MARK: - variables
-    
     var allEmailAddresses: String {
+        let lists: [String] = self.allEmails
+        if lists.isEmpty {
+            return ""
+        }
+        return lists.joined(separator: ",")
+    }
+    
+    // MARK: - variables
+    var allEmails: [String] {
         var lists: [String] = []
         
         if !recipientList.isEmpty {
@@ -67,13 +75,9 @@ extension Message {
             }
         }
         
-        if lists.isEmpty {
-            return ""
-        }
-        
-        PMLog.D("allEmailAddresses  ---  \(lists)" )
-        return lists.joined(separator: ",")
+        return lists
     }
+    
     
     var location: MessageLocation {
         get {
@@ -353,6 +357,14 @@ extension Message {
     // MARK: methods
     func decryptBody() throws -> String? {
         return try body.decryptMessage(passphrase)
+    }
+    
+    func split() throws -> PMNEncryptPackage? {
+        return try body.split()
+    }
+    
+    func getSessionKey() throws -> Data? {
+        return try split()?.keyPackage.getSessionKeyFromPubKeyPackage(passphrase)
     }
     
     func bodyToHtml() -> String {

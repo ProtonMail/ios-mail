@@ -7,9 +7,9 @@
 //
 
 import Foundation
+import PromiseKit
 
-
-final class UserPubKeys : ApiRequest<KeysResponse> {
+final class UserEmailPubKeys : ApiRequestNew<KeysResponse> {
     let email : String
     
     init(email : String) {
@@ -21,7 +21,7 @@ final class UserPubKeys : ApiRequest<KeysResponse> {
     }
     
     override open func path() -> String {
-        return KeysAPI.path + "/Keys" + AppConstants.DEBUG_OPTION
+        return KeysAPI.path + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -29,14 +29,54 @@ final class UserPubKeys : ApiRequest<KeysResponse> {
     }
 }
 
-final class KeysResponse : ApiResponse {
-    var keySalts : [[String : Any]]?
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        //self.keySalts = response["KeySalts"] as? [[String : Any]]
-        return true
+extension Array where Element : UserEmailPubKeys {
+    var pormises : [Promise<KeysResponse>] {
+        var out : [Promise<KeysResponse>] = [Promise<KeysResponse>]()
+        for it in self {
+             out.append(it.run())
+        }
+        return out
     }
 }
 
+
+final class KeyResponse {
+    var send : Int = 1 // 1 internal 2 external
+    var publicKey : String?
+   
+    init(send : Int, pubkey: String?) {
+        self.send = send
+        self.publicKey = pubkey
+    }
+}
+
+final class KeysResponse : ApiResponse {
+    var recipientType : Int = 1 // 1 internal 2 external
+    var mimeType : String?
+    var keys : [KeyResponse] = [KeyResponse]()
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        self.recipientType = response["RecipientType"] as? Int ?? 1
+        self.mimeType = response["MIMEType"] as? String
+        
+        if let keyRes = response["Keys"] as? [[String : Any]] {
+            for keyDict in keyRes {
+                let send = keyDict["Send"] as? Int ?? 0
+                let pubKey = keyDict["PublicKey"] as? String
+                self.keys.append(KeyResponse(send: send, pubkey: pubKey))
+            }
+        }
+        return true
+    }
+    
+    func firstKey () -> String? {
+        for k in keys {
+            if k.send == 1 {
+                return k.publicKey
+            }
+        }
+        return nil
+    }
+}
 
 //MARK : get keys salt  #not in used
 final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
