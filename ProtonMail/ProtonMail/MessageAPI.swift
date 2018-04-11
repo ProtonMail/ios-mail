@@ -326,11 +326,13 @@ class PreAddress {
 }
 
 class SendBuilder {
-    let bodyDataPacket : Data
-    let bodySession : Data
+    var bodyDataPacket : Data!
+    var bodySession : Data!
     var preAddresses : [PreAddress] = [PreAddress]()
+
+    init() { }
     
-    init(bodyData : Data, bodySession : Data) {
+    func update(bodyData : Data, bodySession : Data) {
         self.bodyDataPacket = bodyData
         self.bodySession = bodySession
     }
@@ -372,11 +374,30 @@ class SendBuilder {
     }
     
     var promises : [Promise<AddressPackageBase>] {
-        var out : [Promise<AddressPackageBase>] = [Promise<AddressPackageBase>]()
-        for it in builders {
-            out.append(it.build())
+        get {
+            var out : [Promise<AddressPackageBase>] = [Promise<AddressPackageBase>]()
+            for it in builders {
+                out.append(it.build())
+            }
+            return out
         }
-        return out
+    }
+    
+    var encodedBody : String {
+        get {
+            return self.bodyDataPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        }
+    }
+    
+    var outSideUser : Bool {
+        get {
+            for pre in preAddresses {
+                if pre.recipintType == 2 {
+                    return true
+                }
+            }
+            return false
+        }
     }
 }
 
@@ -419,10 +440,8 @@ class AddressBuilder : PackageBuilder {
     override func build() -> Promise<AddressPackageBase> {
         
         return async {
-            let newKeypacket = try self.session.getPublicSessionKeyPackage(self.preAddress.pubKey!)
-            let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-            //throw  error later
-            let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey)
+            
+            
             
             // encrypt keys use key
             //                            var attPack : [AttachmentKeyPackage] = []
@@ -437,6 +456,12 @@ class AddressBuilder : PackageBuilder {
             //                                let pack = MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
             //                                out.append(pack)
             //                            }
+            
+            let newKeypacket = try self.session.getPublicSessionKeyPackage(self.preAddress.pubKey!)
+            let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+            //throw  error later
+            let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey)
+
             
             return addr
         }

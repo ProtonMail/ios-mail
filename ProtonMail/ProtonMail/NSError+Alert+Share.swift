@@ -31,4 +31,12 @@ extension NSError {
     public class func alertUpdatedToast() ->Void {
 
     }
+    
+    public func alertErrorToast() ->Void {
+        
+    }
+    
+    public class func alertMessageSentErrorToast() ->Void {
+        
+    }
 }

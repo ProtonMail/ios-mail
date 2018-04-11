@@ -1601,22 +1601,19 @@ class MessageDataService {
             // get attachment
             let attachments = self.attachmentsForMessage(message)
             
-            
 //            let call0 = UserEmailPubKeys(email: "feng@pm.me").run()
 //            let call1 = UserEmailPubKeys(email: "zhj4478@gmail.com").run()
-//            let call2 = UserEmailPubKeys(email: "feng100@protonmail.com").run()
 //            let call3 = UserEmailPubKeys(email: "zhj4478@stonyboat.com").run()
 //            let call4 = UserEmailPubKeys(email: "feng@stonyboat.com").run()
 //            let call5 = UserEmailPubKeys(email: "aabbccdddalkl111@protonmail.com").run()
-            
+            let sendBuilder = SendBuilder()
             when(resolved: requests.pormises).then { results -> Promise<SendBuilder> in
                 //all prebuild errors need pop up from here
                 guard let bodyData = try message.split()?.dataPackage,
                         let session = try message.getSessionKey() else {
                     throw RuntimeError.cant_decrypt.error
                 }
-                
-                let sendBuilder = SendBuilder(bodyData: bodyData, bodySession: session)
+                sendBuilder.update(bodyData: bodyData, bodySession: session)
                 for (index, result) in results.enumerated() {
                     switch result {
                     case .fulfilled(let value):
@@ -1632,10 +1629,7 @@ class MessageDataService {
             }.then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
                 return when(resolved: sendbuilder.promises)
             }.then { results -> Promise<ApiResponse> in
-                guard let bodyData = try message.split()?.dataPackage else {
-                    throw RuntimeError.cant_decrypt.error
-                }
-                let encodedBody = bodyData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+                let encodedBody = sendBuilder.bodyDataPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                 var msgs = [AddressPackageBase]()
                 for res in results {
                     switch res {
@@ -1647,38 +1641,23 @@ class MessageDataService {
                 }
                 let sendApi = SendMessage(messageID: message.messageID, expirationTime: message.expirationOffset, messagePackage: msgs, body: encodedBody)
                 return sendApi.run()
-                }.done (on: .main) { (res) in
-                PMLog.D(any: res)
+            }.done (on: .main) { (res) in
                 let error = res.error
                 if error == nil {
                     if (message.location == MessageLocation.draft) {
-//                        var isOutsideUser = false
-//                        if let keys = reskeys {
-//                            for (key, v) in keys{
-//                                if key == "Code" {
-//                                    continue
-//                                }
-//                                if let publicKey = v as? String {
-//                                    if publicKey.isEmpty {
-//                                        isOutsideUser = true;
-//                                        break;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        if isEncryptOutside {
-//                            if isOutsideUser {
-//                                message.isEncrypted =  NSNumber(value: EncryptTypes.outEnc.rawValue)
-//                            } else {
-//                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
-//                            }
-//                        } else {
-//                            if isOutsideUser {
-//                                message.isEncrypted = NSNumber(value: EncryptTypes.outPlain.rawValue);
-//                            } else {
-//                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
-//                            }
-//                        }
+                        if isEO {
+                            if sendBuilder.outSideUser {
+                                message.isEncrypted =  NSNumber(value: EncryptTypes.outEnc.rawValue)
+                            } else {
+                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
+                            }
+                        } else {
+                            if sendBuilder.outSideUser {
+                                message.isEncrypted = NSNumber(value: EncryptTypes.outPlain.rawValue);
+                            } else {
+                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
+                            }
+                        }
                         
                         if attachments.count > 0 {
                             message.hasAttachments = true;
@@ -1686,7 +1665,6 @@ class MessageDataService {
                         }
                         //TODO::fix later 1.7
                         message.mimeType = "text/html"
-                        
                         message.needsUpdate = false
                         message.isRead = true
                         lastUpdatedStore.ReadMailboxMessage(message.location)
@@ -1710,129 +1688,17 @@ class MessageDataService {
                     } else if error?.code == 15198 {
                         error?.alertSentErrorToast()
                     }  else {
-                        //error?.alertErrorToast()
+                        error?.alertErrorToast()
                     }
-                    //NSError.alertMessageSentErrorToast()
+                    NSError.alertMessageSentErrorToast()
                     error?.upload(toFabric: SendingErrorTitle)
                 }
                 completion?(nil, nil, error)
-                //
             }.catch (on: .main) { (error) in
                 PMLog.D(error.localizedDescription)
                 let err = error as NSError
                 completion?(nil, nil, err)
             }
-            
-//            sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
-//                PMLog.D("SendAttachmentDebug == finish get key!")
-//                if error != nil && error!.code == APIErrorCode.badParameter {
-//                    errorBlock(task, response, error)
-//                    return
-//                }
-//
-//                if message.managedObjectContext == nil {
-//                    NSError.alertLocalCacheErrorToast()
-//                    let err =  NSError.badDraft()
-//                    err.upload(toFabric: CacheErrorTitle)
-//                    errorBlock(task, nil, err)
-//                    return ;
-//                }
-//
-//                // is encrypt outside
-//                let isEncryptOutside = !message.password.isEmpty
-//
-//                // get attachment
-//                let attachments = self.attachmentsForMessage(message)
-//
-//                // create package for internal
-//                let sendMessage = self.generatMessagePackage(message, keys: response, atts:attachments, encrptOutside: isEncryptOutside)
-//
-//                let reskeys = response;
-//
-//                // parse the response for keys
-//                //_ = try? self.messageBodyForMessage(message, response: response)
-//
-//                let completionWrapper: CompletionBlock = { task, response, error in
-//                    PMLog.D("SendAttachmentDebug == finish send email!")
-//                    // remove successful send from Core Data
-//                    if error == nil {
-//                        //context.deleteObject(message)MOBA-378
-//                        if (message.location == MessageLocation.draft) {
-//                            var isOutsideUser = false
-//                            if let keys = reskeys {
-//                                for (key, v) in keys{
-//                                    if key == "Code" {
-//                                        continue
-//                                    }
-//                                    if let publicKey = v as? String {
-//                                        if publicKey.isEmpty {
-//                                            isOutsideUser = true;
-//                                            break;
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                            if isEncryptOutside {
-//                                if isOutsideUser {
-//                                    message.isEncrypted =  NSNumber(value: EncryptTypes.outEnc.rawValue)
-//                                } else {
-//                                    message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
-//                                }
-//                            } else {
-//                                if isOutsideUser {
-//                                    message.isEncrypted = NSNumber(value: EncryptTypes.outPlain.rawValue);
-//                                } else {
-//                                    message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
-//                                }
-//                            }
-//
-//                            if attachments.count > 0 {
-//                                message.hasAttachments = true;
-//                                message.numAttachments = NSNumber(value: attachments.count)
-//                            }
-//                            //TODO::fix later 1.7
-//                            message.mimeType = "text/html"
-//
-//                            message.needsUpdate = false
-//                            message.isRead = true
-//                            lastUpdatedStore.ReadMailboxMessage(message.location)
-//                            message.location = MessageLocation.outbox
-//                            message.isDetailDownloaded = false
-//                            message.removeLocationFromLabels(currentlocation: .draft, location: .outbox, keepSent: true)
-//                        }
-//
-//                        NSError.alertMessageSentToast()
-//                        if let error = context.saveUpstreamIfNeeded() {
-//                            PMLog.D(" error: \(error)")
-//                        } else {
-//                            self.markReplyStatus(message.orginalMessageID, action: message.action)
-//                        }
-//                    }
-//                    else {
-//                        if error?.code == 9001 {
-//                            //here need let user to show the human check.
-//                            sharedMessageQueue.isRequiredHumanCheck = true
-//                            error?.alertSentErrorToast()
-//                        } else if error?.code == 15198 {
-//                            error?.alertSentErrorToast()
-//                        }  else {
-//                            //error?.alertErrorToast()
-//                        }
-//                        //NSError.alertMessageSentErrorToast()
-//                        error?.upload(toFabric: SendingErrorTitle)
-//                    }
-//                    completion?(task, response, error)
-//                    return
-//                }
-//                PMLog.D("SendAttachmentDebug == start send email!")
-//                sendMessage!.call({ (task, response, hasError) -> Void in
-//                    if hasError {
-//                        completionWrapper(task, nil, response?.error)
-//                    } else {
-//                        completionWrapper(task, nil, nil)
-//                    }
-//                })
-//            })
             return
         }
         errorBlock(nil, nil, NSError.badParameter(messageID))
@@ -2034,9 +1900,6 @@ class MessageDataService {
                         statusCode = detail.statusCode
                     }
                     else {
-                        //                        if(error?.code == -1001) {
-                        //                            // request timed out
-                        //                        }
                         if error?.code == -1009 || error?.code == -1004 || error?.code == -1001 { //internet issue
                             if error?.code == -1001 {
                                 NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 0, userInfo: nil))
@@ -2075,12 +1938,7 @@ class MessageDataService {
                 } else if statusCode == 200 && error?.code > 1000 {
                     //show error
                     let _ = sharedMessageQueue.remove(elementID)
-//                    
-//                    async {
-//                        let err : NSError = error {
-//                             Crashlytics.sharedInstance().recordError(err)
-//                        }   
-//                    }
+                    //TODO:: pop some errors here
                 }
                 
                 if statusCode != 200 && statusCode != 404 && statusCode != 500 && !isInternetIssue {
@@ -2112,7 +1970,6 @@ class MessageDataService {
                     saveDraftWithMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .send:
                     send(byID: messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-//                    sendMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .uploadAtt:
                     uploadAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .deleteAtt:
