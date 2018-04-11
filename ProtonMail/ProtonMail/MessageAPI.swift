@@ -312,7 +312,9 @@ struct SendType : OptionSet {
 
 
 
-class PreAddress {
+//////////
+
+final class PreAddress {
     let email : String!
     let recipintType : Int!
     let eo : Bool
@@ -325,10 +327,23 @@ class PreAddress {
     }
 }
 
+final class PreAttachment {
+    let ID : String!
+    let Key : Data?
+    
+    public init(id: String, key: Data?) {
+        self.ID = id
+        self.Key = key
+    }
+}
+
+
+
 class SendBuilder {
     var bodyDataPacket : Data!
     var bodySession : Data!
     var preAddresses : [PreAddress] = [PreAddress]()
+    var preAttachments : [PreAttachment] = [PreAttachment]()
 
     init() { }
     
@@ -337,8 +352,12 @@ class SendBuilder {
         self.bodySession = bodySession
     }
     
-    func add(address: PreAddress) {
+    func add(addr address : PreAddress) {
         preAddresses.append(address)
+    }
+    
+    func add(att attachment : PreAttachment) {
+        self.preAttachments.append(attachment)
     }
     
     private func build(type rt : Int, eo : Bool) -> SendType {
@@ -361,7 +380,7 @@ class SendBuilder {
             for pre in preAddresses {
                 switch self.build(type: pre.recipintType, eo: pre.eo) {
                 case .intl:
-                    out.append(AddressBuilder(type: .intl, addr: pre, session: self.bodySession))
+                    out.append(AddressBuilder(type: .intl, addr: pre, session: self.bodySession, atts: self.preAttachments))
                     break;
                     
                 default:
@@ -432,37 +451,25 @@ class EOAddressBuilder : PackageBuilder {
 
 class AddressBuilder : PackageBuilder {
     let session : Data
-    init(type: SendType, addr: PreAddress, session: Data) {
+    let preAttachments : [PreAttachment]
+    init(type: SendType, addr: PreAddress, session: Data, atts : [PreAttachment]) {
         self.session = session
+        self.preAttachments = atts
         super.init(type: type, addr: addr)
     }
     
     override func build() -> Promise<AddressPackageBase> {
-        
         return async {
-            
-            
-            
-            // encrypt keys use key
-            //                            var attPack : [AttachmentKeyPackage] = []
-            //                            for att in tempAtts {
-            //                                //attID:String!, attKey:String!, Algo : String! = ""
-            //                                let newKeyPack = try att.Key?.getPublicSessionKeyPackage(publicKey)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-            //                                let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
-            //                                attPack.append(attPacket)
-            //                            }
-            //                            //create inside packet
-            //                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey, privateKey: privKey, mailbox_pwd: pwd) {
-            //                                let pack = MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
-            //                                out.append(pack)
-            //                            }
-            
+            var attPackages = [AttachmentPackage]()
+            for att in self.preAttachments {
+                let newKeyPack = try att.Key?.getPublicSessionKeyPackage(self.preAddress.pubKey!)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                let attPacket = AttachmentPackage(attID: att.ID, attKey: newKeyPack)
+                attPackages.append(attPacket)
+            }
+
             let newKeypacket = try self.session.getPublicSessionKeyPackage(self.preAddress.pubKey!)
             let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-            //throw  error later
-            let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey)
-
-            
+            let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, attPackets: attPackages)
             return addr
         }
     }
@@ -480,6 +487,16 @@ class ClearBuilder : PackageBuilder {
 
 
 
+// message attachment key package
+final class AttachmentPackage {
+    let ID : String!
+    let encodedKeyPacket : String!
+    init(attID:String!, attKey:String!) {
+        self.ID = attID
+        self.encodedKeyPacket = attKey
+    }
+}
+
 /// message packages
 final class EOAddressPackage : AddressPackage {
 
@@ -492,7 +509,7 @@ final class EOAddressPackage : AddressPackage {
          auth : PasswordAuth, pwdHit : String?,
          email:String,
          bodyKeyPacket : String,
-         attPackets:[AttachmentKeyPackage]=[AttachmentKeyPackage](),
+         attPackets:[AttachmentPackage]=[AttachmentPackage](),
          type: SendType = SendType.intl, //for base
          sign : Int = 0) {
         
@@ -518,11 +535,11 @@ final class EOAddressPackage : AddressPackage {
 
 class AddressPackage : AddressPackageBase {
     let bodyKeyPacket : String
-    let attPackets : [AttachmentKeyPackage]
+    let attPackets : [AttachmentPackage]
 
     init(email:String,
          bodyKeyPacket : String,
-         attPackets:[AttachmentKeyPackage]=[AttachmentKeyPackage](),
+         attPackets:[AttachmentPackage]=[AttachmentPackage](),
          type: SendType = SendType.intl, //for base
          sign : Int = 0) {
         self.bodyKeyPacket = bodyKeyPacket
@@ -533,15 +550,13 @@ class AddressPackage : AddressPackageBase {
     override func toDictionary() -> [String : Any]? {
         var out = super.toDictionary() ?? [String : Any]()
         out["BodyKeyPacket"] = self.bodyKeyPacket
-        
         //change to == id : packet
         if attPackets.count > 0 {
-            var atts : [Any] = [Any]()
+            var atts : [String:Any] = [String:Any]()
             for attPacket in attPackets {
-                atts.append(attPacket.toDictionary()!)
+                atts[attPacket.ID] = attPacket.encodedKeyPacket
             }
             out["AttachmentKeyPackets"] = atts
-            
         }
 
         return out
@@ -890,30 +905,6 @@ public struct Contacts {
             "Email" : self.email]
     }
 }
-
-//    public struct Attachment {
-//        let fileName: String
-//        let mimeType: String
-//        let fileData: [String:String]
-//        let fileSize: Int
-//
-//        init(fileName: String, mimeType: String, fileData: [String:String], fileSize: Int) {
-//            self.fileName                           = fileName
-//            self.mimeType                           = mimeType
-//            self.fileData                           = fileData
-//            self.fileSize                           = fileSize
-//        }
-//
-//        func asJSON() -> [String:Any] {
-//            return [
-//                "FileName" : fileName,
-//                "MIMEType" : mimeType,
-//                "FileData" : fileData,
-//                "FileSize" : String(fileSize)]
-//        }
-//    }
-
-
 
 
 

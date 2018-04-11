@@ -23,12 +23,44 @@ import Crashlytics
 
 let sharedMessageDataService = MessageDataService()
 
-
 class MessageDataService {
+    enum RuntimeError : String, Error, CustomErrorVar {
+        case cant_decrypt = "can't decrypt message body"
+        case bad_draft
+        var code: Int {
+            get {
+                return -1002000
+            }
+        }
+        var desc: String {
+            get {
+                switch self {
+                case .bad_draft:
+                    return NSLocalizedString("Unable to send the email", comment: "error when sending the message")
+                default:
+                    break
+                }
+                return self.rawValue
+            }
+        }
+        var reason: String {
+            get {
+                switch self {
+                case .bad_draft:
+                    return NSLocalizedString("The draft format incorrectly sending failed!", comment: "error when sending the message")
+                default:
+                    break
+                }
+                return self.rawValue
+            }
+        }
+    }
+    
     typealias CompletionBlock = APIService.CompletionBlock
     typealias CompletionFetchDetail = APIService.CompletionFetchDetail
     typealias ReadBlock = (() -> Void)
     
+    fileprivate var readQueue: [ReadBlock] = []
     var pushNotificationMessageID : String? = nil
     
     struct Key {
@@ -37,29 +69,8 @@ class MessageDataService {
         static let unread = "unread"
     }
     
-    enum RuntimeError : String, Error, CustomErrorVar {
-        case cant_decrypt = "can't decrypt message body"
-       
-        var code: Int {
-            get {
-                return -1002000
-            }
-        }
-        
-        var desc: String {
-            get {
-                return self.rawValue
-            }
-        }
-        
-        var reason: String {
-            get {
-                return self.rawValue
-            }
-        }
-        
-    }
     
+    //TODO:: those 3 var need to double check to clean up
     fileprivate let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
     fileprivate let lastUpdatedMaximumTimeInterval: TimeInterval = 24 /*hours*/ * 3600
     fileprivate let maximumCachedMessageCount = 5000
@@ -67,8 +78,7 @@ class MessageDataService {
     fileprivate var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
     }
-    
-    fileprivate var readQueue: [ReadBlock] = []
+
     
     init() {
         setupMessageMonitoring()
@@ -1590,6 +1600,14 @@ class MessageDataService {
             let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
             let message = context.find(with: objectID) as? Message {
 
+            if message.managedObjectContext == nil {
+                NSError.alertLocalCacheErrorToast()
+                let err = RuntimeError.bad_draft.error
+                Crashlytics.sharedInstance().recordError(err)
+                errorBlock(nil, nil, err)
+                return ;
+            }
+            
             var requests : [UserEmailPubKeys] = [UserEmailPubKeys]()
             for email in message.allEmails {
                 requests.append(UserEmailPubKeys(email: email))
@@ -1613,13 +1631,87 @@ class MessageDataService {
                         let session = try message.getSessionKey() else {
                     throw RuntimeError.cant_decrypt.error
                 }
+
+                for att in attachments {
+                    if att.managedObjectContext != nil {
+                        if let sessionKey = try att.sessionKey() {
+                            sendBuilder.add(att: PreAttachment(id: att.attachmentID, key: sessionKey))
+                        }
+                    }
+                }
+                
+                
+                
+//                let publicKey = v as! String
+//                let isOutsideUser = publicKey.isEmpty
+//
+//                if isOutsideUser {
+//                    if encrptOutside {
+//                        let encryptedBody = try body.encryptWithPassphrase(message.password)
+//                        //create outside encrypt packet
+//                        let token = String.randomString(32) as String
+//                        let based64Token = token.encodeBase64() as String
+//                        let encryptedToken = try based64Token.encryptWithPassphrase(message.password)
+//
+//                        // encrypt keys use key
+//                        var attPack : [AttachmentKeyPackage] = []
+//                        for att in tempAtts {
+//                            let newKeyPack = try att.Key?.getSymmetricSessionKeyPackage(message.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+//                            let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
+//                            attPack.append(attPacket)
+//                        }
+//
+//                        let pack = MessagePackage(address: key, type: 2,  body: encryptedBody, attPackets:attPack, token: based64Token, encToken: encryptedToken, passwordHint: message.passwordHint)
+//                        out.append(pack)
+//
+//                        // encrypt keys use pwd .
+//                    }
+//                    else {
+//                        needsPlainText = true
+//                    }
+//                }
+//                else {
+//                    // encrypt keys use key
+//                    var attPack : [AttachmentKeyPackage] = []
+//                    for att in tempAtts {
+//                        //attID:String!, attKey:String!, Algo : String! = ""
+//                        let newKeyPack = try att.Key?.getPublicSessionKeyPackage(publicKey)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+//                        let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
+//                        attPack.append(attPacket)
+//                    }
+//                    //create inside packet
+//                    if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey, privateKey: privKey, mailbox_pwd: pwd) {
+//                        let pack = MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
+//                        out.append(pack)
+//                    }
+//                }
+//            }
+//        }
+//
+//        outRequest.messagePackage = out
+//
+//        if needsPlainText {
+//            outRequest.clearBody = body
+//            //add attachment package
+//            var attPack : [AttachmentKeyPackage] = []
+//            for att in tempAtts {
+//                //attID:String!, attKey:String!, Algo : String! = ""
+//                let newKeyPack = att.Key?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+//                let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack, Algo: "aes256")
+//                attPack.append(attPacket)
+//            }
+//            outRequest.attPackets = attPack
+//        }
+//
+                
+                
                 sendBuilder.update(bodyData: bodyData, bodySession: session)
                 for (index, result) in results.enumerated() {
                     switch result {
                     case .fulfilled(let value):
                         let req = requests[index]
-                        sendBuilder.add(address: PreAddress(email: req.email, pubKey: value.firstKey(), recipintType: value.recipientType, eo: isEO))
-                        //if type is internal check is key match with contact key
+                        sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), recipintType: value.recipientType, eo: isEO))
+                        //if type is internal check is key match with contact keyß
                         break
                     case .rejected(let error):
                         throw error
@@ -1724,8 +1816,8 @@ class MessageDataService {
                 
                 if message.managedObjectContext == nil {
                     NSError.alertLocalCacheErrorToast()
-                    let err =  NSError.badDraft()
-                    err.upload(toFabric: CacheErrorTitle)
+                    let err = RuntimeError.bad_draft.error
+                    Crashlytics.sharedInstance().recordError(err)
                     errorBlock(task, nil, err)
                     return ;
                 }
@@ -2009,7 +2101,6 @@ class MessageDataService {
     }
     
     fileprivate func queue(_ att: Attachment, action: MessageAction) {
-        //TODO:: need to handle the empty instead of !
         let _ = sharedMessageQueue.addMessage(att.objectID.uriRepresentation().absoluteString, action: action)
         dequeueIfNeeded()
     }
@@ -2034,19 +2125,6 @@ class MessageDataService {
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isRead, handler: { message in
             if message.needsUpdate {
                 let action: MessageAction = message.isRead ? .read : .unread
-//                if message.location == .inbox {
-//                    var count = lastUpdatedStore.UnreadCountForKey(.inbox)
-//                    let offset = message.isRead ? -1 : 1
-//                    count = count + offset
-//                    if count < 0 {
-//                        count = 0
-//                    }
-//                    lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
-//
-//                    UIApplication.setBadge(badge: count)
-//                    //UIApplication.shared.applicationIconBadgeNumber = count
-//                }
-                
                 self.queue(message, action: action)
             }
         })
@@ -2061,7 +2139,6 @@ class MessageDataService {
 }
 
 // MARK: - NSFileManager extension
-
 extension FileManager {
     var attachmentDirectory: URL {
         let attachmentDirectory = applicationSupportDirectoryURL.appendingPathComponent("attachments", isDirectory: true)
@@ -2094,14 +2171,5 @@ extension FileManager {
         catch let ex as NSError {
             PMLog.D("cleanCachedAtts error : \(ex).")
         }
-    }
-}
-
-extension NSError {
-    class func badDraft() -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.SendErrorCode.draftBad,
-            localizedDescription: NSLocalizedString("Unable to send the email", comment: "error when sending the message"),
-            localizedFailureReason: NSLocalizedString("The draft format incorrectly sending failed!", comment: "error when sending the message"))
     }
 }

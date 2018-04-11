@@ -12,10 +12,41 @@
 
 import Foundation
 import RHAddressBook
+import Crashlytics
 
 let sharedAddressBookService = AddressBookService()
 
 class AddressBookService {
+    enum RuntimeError : String, Error, CustomErrorVar {
+        case cant_get_contacts = "Unable to get contacts"
+        var code: Int {
+            get {
+                return -1003000
+            }
+        }
+        var desc: String {
+            get {
+                switch self {
+                case .cant_get_contacts:
+                    return NSLocalizedString("Unable to get contacts", comment: "Error")
+                default:
+                    break
+                }
+                return self.rawValue
+            }
+        }
+        var reason: String {
+            get {
+                switch self {
+                case .cant_get_contacts:
+                    return NSLocalizedString("get contacts() failed, peopleOrderedByUsersPreference return null!!", comment: "contacts api error when fetch")
+                default:
+                    break
+                }
+                return self.rawValue
+            }
+        }
+    }
     
     typealias AuthorizationCompletionBlock = (_ granted: Bool, _ error: Error?) -> Void
     
@@ -74,18 +105,10 @@ class AddressBookService {
                 }
             }
         } else {
-            let err =  NSError.getContactsError()
-            err.upload(toFabric: ContactsErrorTitle)
+            Crashlytics.sharedInstance().recordError(RuntimeError.cant_get_contacts.error)
         }
         return contactVOs
     }
 }
 
-extension NSError {
-    class func getContactsError() -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.SendErrorCode.draftBad,
-            localizedDescription: NSLocalizedString("Unable to get contacts", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("get contacts() failed, peopleOrderedByUsersPreference return null!!", comment: "contacts api error when fetch"))
-    }
-}
+

@@ -44,11 +44,7 @@ public class APIErrorCode {
         static public let pwdUpdateFailed = 12023
         static public let pwdEmpty = 12024
     }
-    
-    public struct SendErrorCode {
-        static public let draftBad = 70
-    }
-    
+
 }
 
 // localized
