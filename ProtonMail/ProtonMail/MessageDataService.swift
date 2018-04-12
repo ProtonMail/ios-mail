@@ -33,7 +33,6 @@ class MessageDataService {
     fileprivate let lastUpdatedMaximumTimeInterval: TimeInterval = 24 /*hours*/ * 3600
     fileprivate let maximumCachedMessageCount = 5000
     
-    
     typealias CompletionBlock = APIService.CompletionBlock
     typealias CompletionFetchDetail = APIService.CompletionFetchDetail
     typealias ReadBlock = (() -> Void)
@@ -41,16 +40,16 @@ class MessageDataService {
     fileprivate var readQueue: [ReadBlock] = []
     var pushNotificationMessageID : String? = nil
     
-    struct Key {
-        static let read = "read"
-        static let total = "total"
-        static let unread = "unread"
-    }
+//    struct Key {
+//        static let read = "read"
+//        static let total = "total"
+//        static let unread = "unread"
+//    }
+    
     fileprivate var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
     }
 
-    
     init() {
         setupMessageMonitoring()
         setupNotifications()
@@ -1358,7 +1357,7 @@ class MessageDataService {
         return messageBody
     }
     
-    fileprivate func saveDraftWithMessageID(_ messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
+    fileprivate func draft(save messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         if let context = managedObjectContext {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
                 do {
@@ -1971,7 +1970,7 @@ class MessageDataService {
                 sharedMessageQueue.isInProgress = true
                 switch action {
                 case .saveDraft:
-                    saveDraftWithMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    draft(save: messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .send:
                     send(byID: messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .uploadAtt:
