@@ -30,7 +30,7 @@ final class UserEmailPubKeys : ApiRequestNew<KeysResponse> {
 }
 
 extension Array where Element : UserEmailPubKeys {
-    var pormises : [Promise<KeysResponse>] {
+    var promises : [Promise<KeysResponse>] {
         var out : [Promise<KeysResponse>] = [Promise<KeysResponse>]()
         for it in self {
              out.append(it.run())

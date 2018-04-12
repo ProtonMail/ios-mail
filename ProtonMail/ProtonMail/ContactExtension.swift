@@ -104,7 +104,6 @@ extension Contact {
                 if let vcards = decoded as? [[String : Any]] {
                     for c in vcards {
                         let t = c["Type"] as? Int ?? 0
-//                        let t = Int(c["Type"] as? String ?? "0") ?? 0
                         let d = c["Data"] as? String ?? ""
                         let s = c["Signature"] as? String ?? ""
                         cards.append(CardData(t: CardDataType(rawValue: t)!, d: d, s: s))

@@ -1559,6 +1559,25 @@ class MessageDataService {
         completion?(nil, nil, NSError.badParameter("\(location)"))
     }
     
+    
+    fileprivate func get(contacts emails: [String], context: NSManagedObjectContext) -> Promise<[PreContact]> {
+        return Promise { seal in 
+            guard let contactEmails = Email.findEmails(emails, inManagedObjectContext: context) else {
+                seal.fulfill([])
+                return
+            }
+            
+            var preContacts : [PreContact] = [PreContact]()
+            for email in contactEmails {
+                if email.defaults == 0 && email.contact.isDownloaded {
+                    //build preContacts
+                }
+            }
+            
+            seal.fulfill(preContacts)
+        }
+    }
+    
     fileprivate func send(byID messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
@@ -1579,29 +1598,34 @@ class MessageDataService {
             }
             
             var requests : [UserEmailPubKeys] = [UserEmailPubKeys]()
-            for email in message.allEmails {
+            let emails = message.allEmails
+            for email in emails {
                 requests.append(UserEmailPubKeys(email: email))
             }
-            
             // is encrypt outside
             let isEO = !message.password.isEmpty
             
             // get attachment
             let attachments = self.attachmentsForMessage(message)
-            
-//            let call0 = UserEmailPubKeys(email: "feng@pm.me").run()
-//            let call1 = UserEmailPubKeys(email: "zhj4478@gmail.com").run()
-//            let call3 = UserEmailPubKeys(email: "zhj4478@stonyboat.com").run()
-//            let call4 = UserEmailPubKeys(email: "feng@stonyboat.com").run()
-//            let call5 = UserEmailPubKeys(email: "aabbccdddalkl111@protonmail.com").run()
+            //let call0 = UserEmailPubKeys(email: "feng@pm.me").run()
+            //let call1 = UserEmailPubKeys(email: "zhj4478@gmail.com").run()
+            //let call3 = UserEmailPubKeys(email: "zhj4478@stonyboat.com").run()
+            //let call4 = UserEmailPubKeys(email: "feng@stonyboat.com").run()
+            //let call5 = UserEmailPubKeys(email: "aabbccdddalkl111@protonmail.com").run()
             let sendBuilder = SendBuilder()
-            when(resolved: requests.pormises).then { results -> Promise<SendBuilder> in
+            //build contacts if user setup key pinning
+            var contacts : [PreContact] = [PreContact]()
+            firstly {
+                get(contacts: emails, context: context)
+            }.then { (cs) -> Guarantee<[Result<KeysResponse>]> in
+                contacts.append(contentsOf: cs)
+                return when(resolved: requests.promises)
+            }.then { results -> Promise<SendBuilder> in
                 //all prebuild errors need pop up from here
                 guard let bodyData = try message.split()?.dataPackage,
                         let session = try message.getSessionKey() else {
                     throw RuntimeError.cant_decrypt.error
                 }
-
                 for att in attachments {
                     if att.managedObjectContext != nil {
                         if let sessionKey = try att.sessionKey() {
@@ -1609,14 +1633,24 @@ class MessageDataService {
                         }
                     }
                 }
-                
                 sendBuilder.update(bodyData: bodyData, bodySession: session)
                 sendBuilder.set(pwd: message.password, hit: message.passwordHint)
+                
                 for (index, result) in results.enumerated() {
                     switch result {
                     case .fulfilled(let value):
                         let req = requests[index]
-                        sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), recipintType: value.recipientType, eo: isEO))
+                        //check contacts have pub key or not
+                        if let contact = contacts.find(email: req.email) {
+                            if value.recipientType == 1 {
+                                //compare the key if doesn't match
+                                
+                            } else {
+                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: contact.pubKey, recipintType: value.recipientType, eo: isEO))
+                            }
+                        } else {
+                            sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), recipintType: value.recipientType, eo: isEO))
+                        }
                         //if type is internal check is key match with contact keyß
                         break
                     case .rejected(let error):

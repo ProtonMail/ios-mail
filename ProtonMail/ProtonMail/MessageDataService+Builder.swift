@@ -13,6 +13,32 @@ import AwaitKit
 
 
 //////////
+final class PreContact {
+    let email : String
+    let pubKey : String
+    let sign : Bool
+    let encrypt : Bool
+    
+    init(email: String, pubKey: String, sign : Bool, encrypt: Bool) {
+        self.email = email
+        self.pubKey = pubKey
+        self.sign = sign
+        self.encrypt = encrypt
+    }
+}
+
+extension Array where Element == PreContact {
+    
+    func find(email: String) -> PreContact? {
+        for c in self {
+            if c.email == email {
+                return c
+            }
+        }
+        return nil
+    }
+}
+
 final class PreAddress {
     let email : String!
     let recipintType : Int!

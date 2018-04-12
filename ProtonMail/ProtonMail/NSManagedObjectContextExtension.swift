@@ -66,6 +66,18 @@ extension NSManagedObjectContext {
         return nil
     }
     
+    func objectsWithEntityName(_ entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> [NSManagedObject]? {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        request.predicate = NSPredicate(format: "%K in %@", key, objectIDs)
+        do {
+            let results = try fetch(request)
+            return results as? [NSManagedObject]
+        } catch let ex as NSError {
+            PMLog.D("error: \(ex)")
+        }
+        return nil
+    }
+    
     func saveUpstreamIfNeeded() -> NSError? {
         var error: NSError?
         do {
