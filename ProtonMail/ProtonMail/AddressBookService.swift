@@ -29,10 +29,8 @@ class AddressBookService {
                 switch self {
                 case .cant_get_contacts:
                     return NSLocalizedString("Unable to get contacts", comment: "Error")
-                default:
-                    break
                 }
-                return self.rawValue
+                //return self.rawValue
             }
         }
         var reason: String {
@@ -40,10 +38,8 @@ class AddressBookService {
                 switch self {
                 case .cant_get_contacts:
                     return NSLocalizedString("get contacts() failed, peopleOrderedByUsersPreference return null!!", comment: "contacts api error when fetch")
-                default:
-                    break
                 }
-                return self.rawValue
+                //return self.rawValue
             }
         }
     }

@@ -21,40 +21,18 @@ import AwaitKit
 import PromiseKit
 import Crashlytics
 
+
+/// TODO:: global access need to be refactored
 let sharedMessageDataService = MessageDataService()
 
+/// Message data service
 class MessageDataService {
-    enum RuntimeError : String, Error, CustomErrorVar {
-        case cant_decrypt = "can't decrypt message body"
-        case bad_draft
-        var code: Int {
-            get {
-                return -1002000
-            }
-        }
-        var desc: String {
-            get {
-                switch self {
-                case .bad_draft:
-                    return NSLocalizedString("Unable to send the email", comment: "error when sending the message")
-                default:
-                    break
-                }
-                return self.rawValue
-            }
-        }
-        var reason: String {
-            get {
-                switch self {
-                case .bad_draft:
-                    return NSLocalizedString("The draft format incorrectly sending failed!", comment: "error when sending the message")
-                default:
-                    break
-                }
-                return self.rawValue
-            }
-        }
-    }
+    
+    //TODO:: those 3 var need to double check to clean up
+    fileprivate let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
+    fileprivate let lastUpdatedMaximumTimeInterval: TimeInterval = 24 /*hours*/ * 3600
+    fileprivate let maximumCachedMessageCount = 5000
+    
     
     typealias CompletionBlock = APIService.CompletionBlock
     typealias CompletionFetchDetail = APIService.CompletionFetchDetail
@@ -68,13 +46,6 @@ class MessageDataService {
         static let total = "total"
         static let unread = "unread"
     }
-    
-    
-    //TODO:: those 3 var need to double check to clean up
-    fileprivate let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
-    fileprivate let lastUpdatedMaximumTimeInterval: TimeInterval = 24 /*hours*/ * 3600
-    fileprivate let maximumCachedMessageCount = 5000
-    
     fileprivate var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
     }
