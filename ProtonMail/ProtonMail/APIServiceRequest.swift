@@ -213,6 +213,7 @@ class ApiRequestNew<T : ApiResponse> : Package {
             if res == nil {
                 // TODO check res
                 deferred.resolver.reject(NSError.badResponse())
+                return
             }
             
             var hasError = apiRes.ParseResponseError(res!)

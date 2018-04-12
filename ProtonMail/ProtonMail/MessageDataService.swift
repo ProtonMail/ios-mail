@@ -1614,7 +1614,7 @@ class MessageDataService {
             }
             
             // is encrypt outside
-            let isEO = message.password.isEmpty
+            let isEO = !message.password.isEmpty
             
             // get attachment
             let attachments = self.attachmentsForMessage(message)
@@ -1640,72 +1640,8 @@ class MessageDataService {
                     }
                 }
                 
-                
-                
-//                let publicKey = v as! String
-//                let isOutsideUser = publicKey.isEmpty
-//
-//                if isOutsideUser {
-//                    if encrptOutside {
-//                        let encryptedBody = try body.encryptWithPassphrase(message.password)
-//                        //create outside encrypt packet
-//                        let token = String.randomString(32) as String
-//                        let based64Token = token.encodeBase64() as String
-//                        let encryptedToken = try based64Token.encryptWithPassphrase(message.password)
-//
-//                        // encrypt keys use key
-//                        var attPack : [AttachmentKeyPackage] = []
-//                        for att in tempAtts {
-//                            let newKeyPack = try att.Key?.getSymmetricSessionKeyPackage(message.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-//                            let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
-//                            attPack.append(attPacket)
-//                        }
-//
-//                        let pack = MessagePackage(address: key, type: 2,  body: encryptedBody, attPackets:attPack, token: based64Token, encToken: encryptedToken, passwordHint: message.passwordHint)
-//                        out.append(pack)
-//
-//                        // encrypt keys use pwd .
-//                    }
-//                    else {
-//                        needsPlainText = true
-//                    }
-//                }
-//                else {
-//                    // encrypt keys use key
-//                    var attPack : [AttachmentKeyPackage] = []
-//                    for att in tempAtts {
-//                        //attID:String!, attKey:String!, Algo : String! = ""
-//                        let newKeyPack = try att.Key?.getPublicSessionKeyPackage(publicKey)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-//                        let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
-//                        attPack.append(attPacket)
-//                    }
-//                    //create inside packet
-//                    if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey, privateKey: privKey, mailbox_pwd: pwd) {
-//                        let pack = MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
-//                        out.append(pack)
-//                    }
-//                }
-//            }
-//        }
-//
-//        outRequest.messagePackage = out
-//
-//        if needsPlainText {
-//            outRequest.clearBody = body
-//            //add attachment package
-//            var attPack : [AttachmentKeyPackage] = []
-//            for att in tempAtts {
-//                //attID:String!, attKey:String!, Algo : String! = ""
-//                let newKeyPack = att.Key?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-//                let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack, Algo: "aes256")
-//                attPack.append(attPacket)
-//            }
-//            outRequest.attPackets = attPack
-//        }
-//
-                
-                
                 sendBuilder.update(bodyData: bodyData, bodySession: session)
+                sendBuilder.set(pwd: message.password, hit: message.passwordHint)
                 for (index, result) in results.enumerated() {
                     switch result {
                     case .fulfilled(let value):
@@ -1731,7 +1667,12 @@ class MessageDataService {
                         throw error
                     }
                 }
-                let sendApi = SendMessage(messageID: message.messageID, expirationTime: message.expirationOffset, messagePackage: msgs, body: encodedBody)
+                
+                let sendApi = SendMessage(messageID: message.messageID,
+                                          expirationTime: message.expirationOffset,
+                                          messagePackage: msgs,
+                                          body: encodedBody,
+                                          clearBody: sendBuilder.clearBody, clearAtts: sendBuilder.clearAtts)
                 return sendApi.run()
             }.done (on: .main) { (res) in
                 let error = res.error

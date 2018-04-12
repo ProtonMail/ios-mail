@@ -328,15 +328,23 @@ final class PreAddress {
 }
 
 final class PreAttachment {
-    let ID : String!
-    let Key : Data?
     
-    public init(id: String, key: Data?) {
+    /// attachment id
+    let ID : String!
+    
+    /// clear session key
+    let Key : Data
+    
+    /// initial
+    ///
+    /// - Parameters:
+    ///   - id: att id
+    ///   - key: clear encrypted attachment session key
+    public init(id: String, key: Data) {
         self.ID = id
         self.Key = key
     }
 }
-
 
 
 class SendBuilder {
@@ -344,12 +352,19 @@ class SendBuilder {
     var bodySession : Data!
     var preAddresses : [PreAddress] = [PreAddress]()
     var preAttachments : [PreAttachment] = [PreAttachment]()
+    var password: String!
+    var hit : String?
 
     init() { }
     
-    func update(bodyData : Data, bodySession : Data) {
-        self.bodyDataPacket = bodyData
+    func update(bodyData data : Data, bodySession : Data) {
+        self.bodyDataPacket = data
         self.bodySession = bodySession
+    }
+    
+    func set(pwd password: String, hit: String?) {
+        self.password = password
+        self.hit = hit
     }
     
     func add(addr address : PreAddress) {
@@ -360,12 +375,38 @@ class SendBuilder {
         self.preAttachments.append(attachment)
     }
     
+    var clearBody : ClearBodyPackage? {
+        get {
+            if self.contains(type: .cinln) ||  self.contains(type: .cmime) {
+                return ClearBodyPackage(key: self.encodedSession)
+            }
+            return nil
+        }
+    }
+    
+    var clearAtts :  [ClearAttachmentPackage]? {
+        get {
+            if self.contains(type: .cinln) ||  self.contains(type: .cmime) {
+                var atts = [ClearAttachmentPackage]()
+                for it in self.preAttachments {
+                    atts.append(ClearAttachmentPackage(attID: it.ID,
+                                                       key: it.Key.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))))
+                }
+                return atts.count > 0 ? atts : nil
+            }
+            return nil
+        }
+    }
+    
+    
     private func build(type rt : Int, eo : Bool) -> SendType {
         switch (rt, eo) {
         case (1, _):
             return SendType.intl
         case (2, true):
             return SendType.eo
+        case (2, false):
+            return SendType.cinln
         case (_, _):
             //should not be here
             break
@@ -381,15 +422,26 @@ class SendBuilder {
                 switch self.build(type: pre.recipintType, eo: pre.eo) {
                 case .intl:
                     out.append(AddressBuilder(type: .intl, addr: pre, session: self.bodySession, atts: self.preAttachments))
-                    break;
-                    
+                case .eo:
+                    out.append(EOAddressBuilder(type: .eo, addr: pre, session: self.bodySession, password: self.password, atts: self.preAttachments, hit: self.hit))
+                case .cinln:
+                    out.append(ClearAddressBuilder(type: .cinln, addr: pre))
                 default:
                     break
                 }
-                
             }
             return out
         }
+    }
+    
+    func contains(type : SendType) -> Bool {
+        for pre in preAddresses {
+            let buildType = self.build(type: pre.recipintType, eo: pre.eo)
+            if buildType.contains(type) {
+                return true
+            }
+        }
+        return false
     }
     
     var promises : [Promise<AddressPackageBase>] {
@@ -405,6 +457,12 @@ class SendBuilder {
     var encodedBody : String {
         get {
             return self.bodyDataPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        }
+    }
+    
+    var encodedSession : String {
+        get {
+            return self.bodySession.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         }
     }
     
@@ -439,19 +497,92 @@ class PackageBuilder : IPackageBuilder {
     
 }
 
+/// Encrypt outside address builder
 class EOAddressBuilder : PackageBuilder {
+    let password : String
+    let hit : String?
+    let session : Data
+
+    /// prepared attachment list
+    let preAttachments : [PreAttachment]
+    
+    init(type: SendType, addr: PreAddress, session: Data, password: String, atts : [PreAttachment], hit: String?) {
+        self.session = session
+        self.password = password
+        self.preAttachments = atts
+        self.hit = hit
+        super.init(type: type, addr: addr)
+    }
+    
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            let auth = PasswordAuth(modulus_id: "", salt: "", verifer: "")
-            let eo = EOAddressPackage(token: "", encToken: "", auth: auth, pwdHit: nil, email: "", bodyKeyPacket: "")
+            let encodedKeyPackage = try self.session.getSymmetricSessionKeyPackage(self.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+            //create outside encrypt packet
+            let token = String.randomString(32) as String
+            let based64Token = token.encodeBase64() as String
+            let encryptedToken = try based64Token.encryptWithPassphrase(self.password)!
+
+            
+            //start build auth package
+            let authModuls = try AuthModulusRequest().syncCall()
+            guard let moduls_id = authModuls?.ModulusID else {
+                throw UpdatePasswordError.invalidModulusID.error
+            }
+            guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
+                throw UpdatePasswordError.invalidModulus.error
+            }
+            //generat new verifier
+            let new_decodedModulus : Data = new_encodedModulus.decodeBase64()
+            let new_lpwd_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+            guard let new_hashed_password = PasswordUtils.hashPasswordVersion4(self.password, salt: new_lpwd_salt, modulus: new_decodedModulus) else {
+                throw UpdatePasswordError.cantHashPassword.error
+            }
+            guard let verifier = try generateVerifier(2048, modulus: new_decodedModulus, hashedPassword: new_hashed_password) else {
+                throw UpdatePasswordError.cantGenerateVerifier.error
+            }
+            let authPacket = PasswordAuth(modulus_id: moduls_id,
+                                          salt: new_lpwd_salt.encodeBase64(),
+                                          verifer: verifier.encodeBase64())
+            
+            
+            
+            // encrypt keys use key
+            var attPack : [AttachmentPackage] = []
+            for att in self.preAttachments {
+                //TODO::here need handle error
+                let newKeyPack = try att.Key.getSymmetricSessionKeyPackage(self.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                let attPacket = AttachmentPackage(attID: att.ID, attKey: newKeyPack)
+                attPack.append(attPacket)
+            }
+            
+            let eo = EOAddressPackage(token: based64Token,
+                                      encToken: encryptedToken,
+                                      auth: authPacket,
+                                      pwdHit: self.hit,
+                                      email: self.preAddress.email,
+                                      bodyKeyPacket: encodedKeyPackage,
+                                      attPackets: attPack,
+                                      type : self.sendType)
             return eo
         }
     }
 }
 
+/// Address Builder for building the packages
 class AddressBuilder : PackageBuilder {
+    /// message body session key
     let session : Data
+    
+    /// prepared attachment list
     let preAttachments : [PreAttachment]
+    
+    /// Initial
+    ///
+    /// - Parameters:
+    ///   - type: SendType sending message type for address
+    ///   - addr: message send to
+    ///   - session: message encrypted body session key
+    ///   - atts: prepared attachments
     init(type: SendType, addr: PreAddress, session: Data, atts : [PreAttachment]) {
         self.session = session
         self.preAttachments = atts
@@ -462,7 +593,8 @@ class AddressBuilder : PackageBuilder {
         return async {
             var attPackages = [AttachmentPackage]()
             for att in self.preAttachments {
-                let newKeyPack = try att.Key?.getPublicSessionKeyPackage(self.preAddress.pubKey!)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                //TODO::here need hanlde the error
+                let newKeyPack = try att.Key.getPublicSessionKeyPackage(self.preAddress.pubKey!)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                 let attPacket = AttachmentPackage(attID: att.ID, attKey: newKeyPack)
                 attPackages.append(attPacket)
             }
@@ -475,11 +607,10 @@ class AddressBuilder : PackageBuilder {
     }
 }
 
-class ClearBuilder : PackageBuilder {
+class ClearAddressBuilder : PackageBuilder {
     override func build() -> Promise<AddressPackageBase> {
         return async {
-//            let auth = PasswordAuth(modulus_id: "", salt: "", verifer: "")
-            let eo = AddressPackage(email: "", bodyKeyPacket: "")
+            let eo = AddressPackageBase(email: self.preAddress.email, type: self.sendType, sign: 0)
             return eo
         }
     }
@@ -494,6 +625,29 @@ final class AttachmentPackage {
     init(attID:String!, attKey:String!) {
         self.ID = attID
         self.encodedKeyPacket = attKey
+    }
+}
+
+// message attachment key package for clear text
+final class ClearAttachmentPackage {
+    /// attachment id
+    let ID : String!
+    /// based64 encoded session key
+    let key : String!
+    let algo : String = "aes256"
+    init(attID:String!, key:String!) {
+        self.ID = attID
+        self.key = key
+    }
+}
+
+// message attachment key package for clear text
+final class ClearBodyPackage {
+    /// based64 encoded session key
+    let key : String!
+    let algo : String = "aes256"
+    init(key : String) {
+        self.key = key
     }
 }
 
@@ -587,18 +741,23 @@ class AddressPackageBase : Package {
 
 /// send message reuqest
 final class SendMessage : ApiRequestNew<ApiResponse> {
-    var messagePackage : [AddressPackageBase]!     // message package
-    var attPackets : [AttachmentKeyPackage]!    //  for optside encrypt att.
-    var body : String!                     //  optional for out side user
+    var messagePackage : [AddressPackageBase]!  // message package
+    var body : String!  // optional for out side user
     let messageID : String!
     let expirationTime : Int32!
     
-    init(messageID : String, expirationTime: Int32?, messagePackage: [AddressPackageBase]!, body : String, attPackages:[AttachmentKeyPackage] = [AttachmentKeyPackage]()) {
+    var clearBody : ClearBodyPackage?
+    var clearAtts : [ClearAttachmentPackage]?
+    
+    init(messageID : String, expirationTime: Int32?,
+         messagePackage: [AddressPackageBase]!, body : String,
+         clearBody : ClearBodyPackage?, clearAtts: [ClearAttachmentPackage]?) {
         self.messageID = messageID
         self.messagePackage = messagePackage
         self.body = body
-        self.attPackets = attPackages
         self.expirationTime = expirationTime ?? 0
+        self.clearBody = clearBody
+        self.clearAtts = clearAtts
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -606,7 +765,6 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
         out["ExpirationTime"] = self.expirationTime
         //optional this will override app setting
         //out["AutoSaveContacts"] = "\(0 / 1)"
-
         
         //packages object
         var packages : [Any] = [Any]()
@@ -622,27 +780,27 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
         normalAddress["Addresses"] = addrs
         normalAddress["Type"] = type.rawValue //"Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
         
-        
         normalAddress["Body"] = self.body
         normalAddress["MIMEType"] = "text/html"
         
-        //
-        if type.contains(.cinln) {
-            normalAddress["BodyKey"] = "[:]" // Include only if cleartext recipients
-//            "BodyKey": {
-//                "Key": <base64_encoded_session_key>,
-//                "Algorithm": "aes256" // algorithm corresponding to session key
-//            },
+        if let cb = clearBody {
+            // Include only if cleartext recipients
+            normalAddress["BodyKey"] = [
+                "Key" : cb.key,
+                "Algorithm" : cb.algo
+            ]
         }
         
-        if attPackets.count > 0 {
-            normalAddress["AttachmentKeys"] = "[:]" // Only include if cleartext recipients, optional if no attachments
-        //        "AttachmentKeys": {
-        //            "<attachment_id>" : {
-        //                "Key": <base64_encoded_session_key>,
-        //                "Algorithm": "aes256" // algorithm corresponding to session key
-        //            }
-        //        },
+        if let cAtts = clearAtts {
+            // Only include if cleartext recipients, optional if no attachments
+            var atts : [String:Any] = [String:Any]()
+            for it in cAtts {
+                atts[it.ID] = [
+                    "Key" : it.key,
+                    "Algorithm" : it.algo
+                ]
+            }
+            normalAddress["AttachmentKeys"] = atts
         }
         packages.append(normalAddress)
         
@@ -668,27 +826,6 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
 //        packages.append(mimeAddress)
         out["Packages"] = packages
         
-//        if !self.clearBody.isEmpty {
-//            out["ClearBody"] = self.clearBody
-//        }
-//
-//        if self.attPackets != nil {
-//            var attPack : [Any] = [Any]()
-//            for pack in self.attPackets {
-//                //TODO:: ! check
-//                attPack.append(pack.toDictionary()!)
-//            }
-//            out["AttachmentKeys"] = attPack
-//        }
-//
-//
-//        var package : [Any] = [Any]()
-//        if self.messagePackage != nil {
-//            for pack in self.messagePackage {
-//                //TODO:: ! check
-//                package.append(pack.toDictionary()!)
-//            }
-        //        }
         PMLog.D( out.json(prettyPrinted: true) )
         return out
     }

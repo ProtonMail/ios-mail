@@ -55,23 +55,23 @@ extension Message {
         var lists: [String] = []
         
         if !recipientList.isEmpty {
-            let to = MessageHelper.contactsToAddresses(recipientList)
+            let to = MessageHelper.contactsToAddressesArray(recipientList)
             if !to.isEmpty  {
-                lists.append(to)
+                lists.append(contentsOf: to)
             }
         }
         
         if !ccList.isEmpty {
-            let cc = MessageHelper.contactsToAddresses(ccList)
+            let cc = MessageHelper.contactsToAddressesArray(ccList)
             if !cc.isEmpty  {
-                lists.append(cc)
+                lists.append(contentsOf: cc)
             }
         }
         
         if !bccList.isEmpty {
-            let bcc = MessageHelper.contactsToAddresses(bccList)
+            let bcc = MessageHelper.contactsToAddressesArray(bccList)
             if !bcc.isEmpty  {
-                lists.append(bcc)
+                lists.append(contentsOf: bcc)
             }
         }
         
