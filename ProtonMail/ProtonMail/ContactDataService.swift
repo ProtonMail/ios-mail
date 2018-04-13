@@ -18,6 +18,8 @@ import Foundation
 import CoreData
 import NSDate_Helper
 import Groot
+import PromiseKit
+import AwaitKit
 
 let sharedContactDataService = ContactDataService()
 
@@ -31,7 +33,6 @@ typealias ContactImportCancel = (() -> Bool)
 
 typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
-typealias ContactDetailsComplete = ((Contact?, NSError?) -> Void)
 
 
 class ContactDataService {
@@ -301,6 +302,31 @@ class ContactDataService {
     }
     
     
+    
+    func fetch(byEmails emails: [String], context: NSManagedObjectContext) -> Promise<[PreContact]> {
+        return Promise { seal in
+            async {
+                guard let contactEmails = Email.findEmails(emails, inManagedObjectContext: context) else {
+                    seal.fulfill([])
+                    return
+                }
+                
+                var preContacts : [PreContact] = [PreContact]()
+                for email in contactEmails {
+                    if email.defaults == 0 && email.contact.isDownloaded {
+                        //build preContacts
+                    }
+                }
+                
+                
+                
+                
+                seal.fulfill(preContacts)
+            }
+        }
+    }
+    
+    
     /**
      get all contacts from server
      
@@ -414,32 +440,34 @@ class ContactDataService {
      - Parameter contactID: contact id
      - Parameter completion: async complete response
      **/
-    func details(contactID: String, completion: ContactDetailsComplete?) {
-        let api = ContactDetailRequest<ContactDetailResponse>(cid: contactID)
-        api.call { (task, response, hasError) in
-            if let contactDict = response?.contact {
-                let context = sharedCoreDataService.newManagedObjectContext()
-                context.performAndWait() {
-                    do {
-                        if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: contactDict, in: context) as? Contact {
-                            contact.isDownloaded = true
-                            let _ = contact.fixName(force: true)
-                            if let error = context.saveUpstreamIfNeeded() {
-                                PMLog.D(" error: \(error)")
-                                completion?(nil, error)
-                            } else {
-                                completion?(contact, nil)
+    func details(contactID: String) -> Promise<Contact> {
+        return Promise { seal in
+            let api = ContactDetailRequest<ContactDetailResponse>(cid: contactID)
+            api.call { (task, response, hasError) in
+                if let contactDict = response?.contact {
+                    let context = sharedCoreDataService.newManagedObjectContext()
+                    context.performAndWait() {
+                        do {
+                            if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: contactDict, in: context) as? Contact {
+                                contact.isDownloaded = true
+                                let _ = contact.fixName(force: true)
+                                if let error = context.saveUpstreamIfNeeded() {
+                                    seal.reject(error)
+                                } else {
+                                    seal.fulfill(contact)
+                                }
                             }
+                        } catch let ex as NSError {
+                            seal.reject(ex)
                         }
-                    } catch let ex as NSError {
-                        PMLog.D(" error: \(ex)")
-                        completion?(nil, ex)
                     }
+                } else {
+                    seal.reject(NSError.unableToParseResponse(response))
                 }
-            } else {
-                completion?(nil, NSError.unableToParseResponse(response))
             }
         }
+        
+        
     }
     
     

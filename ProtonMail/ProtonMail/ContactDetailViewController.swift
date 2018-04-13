@@ -11,6 +11,8 @@
 //
 
 import UIKit
+import PromiseKit
+import AwaitKit
 
 class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
@@ -51,16 +53,18 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
                                         target: self, action: #selector(didTapEditButton(sender:)))
         self.navigationItem.rightBarButtonItem = doneItem
         
-        viewModel.getDetails(loading: {
+        viewModel.getDetails {
             ActivityIndicatorHelper.showActivityIndicator(at: self.view)
-        }) { (contact, error) in
-            if nil != contact {
-                self.tableView.reloadData()
-                self.loaded = true
-            }
+        }.done { (contact) in
+            self.tableView.reloadData()
+            self.loaded = true
+        }.catch { (error) in
+            //show error
+            PMLog.D(error.localizedDescription)
+        }.finally {
             ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
         }
-        
+
         let nib = UINib(nibName: kContactDetailsHeaderView, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
         tableView.rowHeight = UITableViewAutomaticDimension

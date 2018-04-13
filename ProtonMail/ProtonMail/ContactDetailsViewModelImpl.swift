@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 
 class ContactDetailsViewModelImpl : ContactDetailsViewModel {
@@ -365,16 +366,21 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         let _ = self.contact.managedObjectContext?.saveUpstreamIfNeeded()
     }
     
-    override func getDetails(loading: () -> Void, complete: @escaping (Contact?, NSError?) -> Void) {
+    override func getDetails(loading: () -> Void) -> Promise<Contact> {
         if contact.isDownloaded {
             self.setupEmails()
-            return complete(contact, nil)
+            return Promise.value(contact)
         }
         loading()
-        sharedContactDataService.details(contactID: contact.contactID, completion: { (contact : Contact?, error : NSError?) in
-            self.setupEmails()
-            complete(contact, nil)
-        })
+        
+        return Promise { seal in
+            sharedContactDataService.details(contactID: contact.contactID).done { _ in
+                self.setupEmails()
+                seal.fulfill(self.contact)
+            }.catch { (error) in
+                seal.reject(error)
+            }
+        }
     }
     
     override func getProfile() -> ContactEditProfile {

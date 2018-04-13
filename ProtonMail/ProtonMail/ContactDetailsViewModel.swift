@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 
 typealias LoadingProgress = () -> Void
@@ -50,7 +51,7 @@ class ContactDetailsViewModel : ViewModelBase {
         fatalError("This method must be overridden")
     }
     
-    func getDetails(loading : LoadingProgress, complete: @escaping ContactDetailsComplete) {
+    func getDetails(loading : LoadingProgress) -> Promise<Contact> {
         fatalError("This method must be overridden")
     }
     

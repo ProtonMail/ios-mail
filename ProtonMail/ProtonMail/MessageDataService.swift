@@ -1560,23 +1560,7 @@ class MessageDataService {
     }
     
     
-    fileprivate func get(contacts emails: [String], context: NSManagedObjectContext) -> Promise<[PreContact]> {
-        return Promise { seal in 
-            guard let contactEmails = Email.findEmails(emails, inManagedObjectContext: context) else {
-                seal.fulfill([])
-                return
-            }
-            
-            var preContacts : [PreContact] = [PreContact]()
-            for email in contactEmails {
-                if email.defaults == 0 && email.contact.isDownloaded {
-                    //build preContacts
-                }
-            }
-            
-            seal.fulfill(preContacts)
-        }
-    }
+
     
     fileprivate func send(byID messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
@@ -1616,7 +1600,7 @@ class MessageDataService {
             //build contacts if user setup key pinning
             var contacts : [PreContact] = [PreContact]()
             firstly {
-                get(contacts: emails, context: context)
+                sharedContactDataService.fetch(byEmails: emails, context: context)
             }.then { (cs) -> Guarantee<[Result<KeysResponse>]> in
                 contacts.append(contentsOf: cs)
                 return when(resolved: requests.promises)
