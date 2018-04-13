@@ -1282,7 +1282,7 @@ class MessageDataService {
                             var attPack : [AttachmentKeyPackage] = []
                             for att in tempAtts {
                                 //attID:String!, attKey:String!, Algo : String! = ""
-                                let newKeyPack = try att.Key?.getPublicSessionKeyPackage(publicKey)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                                let newKeyPack = try att.Key?.getPublicSessionKeyPackage(str: publicKey)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                                 let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
                                 attPack.append(attPacket)
                             }
@@ -1628,14 +1628,14 @@ class MessageDataService {
                         if let contact = contacts.find(email: req.email) {
                             if value.recipientType == 1 {
                                 //compare the key if doesn't match
-                                
+                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO))
                             } else {
-                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: contact.pubKey, recipintType: value.recipientType, eo: isEO))
+                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO))
                             }
                         } else {
-                            sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), recipintType: value.recipientType, eo: isEO))
+                            sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO))
                         }
-                        //if type is internal check is key match with contact keyß
+                        //if type is internal check is key match with contact key
                         break
                     case .rejected(let error):
                         throw error
@@ -1662,7 +1662,7 @@ class MessageDataService {
                                           body: encodedBody,
                                           clearBody: sendBuilder.clearBody, clearAtts: sendBuilder.clearAtts)
                 return sendApi.run()
-            }.done (on: .main) { (res) in
+            }.done { (res) in
                 let error = res.error
                 if error == nil {
                     if (message.location == MessageLocation.draft) {

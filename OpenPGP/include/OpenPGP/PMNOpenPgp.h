@@ -161,6 +161,9 @@
 - (nonnull NSData *)getNewPublicKeyPackage:(nonnull NSData *)session
                                  publicKey:(nonnull NSString *)publicKey;
 
+- (nonnull NSData *)getNewPublicKeyPackageBinary:(nonnull NSData *)session
+                                       publicKey:(nonnull NSData *)publicKey;
+
 - (nonnull NSData *)getNewSymmetricKeyPackage:(nonnull NSData *)session
                                      password:(nonnull NSString *)password;
 

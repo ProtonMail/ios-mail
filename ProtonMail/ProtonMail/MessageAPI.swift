@@ -91,7 +91,6 @@ final class FetchMessagesByID : ApiRequest<ApiResponse> {
     }
 }
 
-
 final class FetchMessagesByLabel : ApiRequest<ApiResponse> {
     let labelID : String!
     let startTime : Int?
@@ -373,7 +372,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
 }
 
 
-
+/// Old functions need to be removed later
 /// send message reuqest
 final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     var messagePackage : [MessagePackage]!     // message package
@@ -438,8 +437,6 @@ final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
         return .post
     }
 }
-
-
 
 /// TODO:: delete this part
 /// message packages
@@ -534,7 +531,6 @@ final class AttachmentKeyPackage : Package {
         return out
     }
 }
-
 
 /**
 *  temporary table for formating the message send package

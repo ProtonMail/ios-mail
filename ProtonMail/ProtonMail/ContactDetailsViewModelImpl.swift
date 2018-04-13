@@ -372,7 +372,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
             return Promise.value(contact)
         }
         loading()
-        
         return Promise { seal in
             sharedContactDataService.details(contactID: contact.contactID).done { _ in
                 self.setupEmails()

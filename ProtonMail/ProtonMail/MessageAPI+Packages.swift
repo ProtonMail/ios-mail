@@ -9,9 +9,6 @@
 import Foundation
 
 
-
-
-
 // message attachment key package
 final class AttachmentPackage {
     let ID : String!

@@ -311,21 +311,80 @@ class ContactDataService {
                     return
                 }
                 
-                var preContacts : [PreContact] = [PreContact]()
-                for email in contactEmails {
-                    if email.defaults == 0 && email.contact.isDownloaded {
-                        //build preContacts
+                let noDetails : [Email] = contactEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded == false}
+                let fetchs : [Promise<Contact>] = noDetails.map { return self.details(contactID: $0.contactID) }
+
+                firstly {
+                    when(resolved: fetchs)
+                }.then { (result) -> Guarantee<[Result<PreContact>]> in
+                    let details : [Email] = contactEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded}
+                    let parsers : [Promise<PreContact>] = details.map {
+                        return self.parseContact(email: $0.email, cards: $0.contact.getCardData())
                     }
+                    return when(resolved: parsers)
+                }.then { contacts -> Promise<[PreContact]> in
+                    var sucessed : [PreContact] = [PreContact]()
+                    for c in contacts {
+                        switch c {
+                        case .fulfilled(let value):
+                            sucessed.append(value)
+                        case .rejected(let error):
+                            PMLog.D(error.localizedDescription)
+                        }
+                    }
+                    return .value(sucessed)
+                }.done { result in
+                    seal.fulfill(result)
+                }.catch { error in
+                    seal.reject(error)
                 }
-                
-                
-                
-                
-                seal.fulfill(preContacts)
             }
         }
     }
     
+    func parseContact(email : String, cards: [CardData]) -> Promise<PreContact> {
+        return Promise { seal in
+            async {
+                for c in cards {
+                    switch c.type {
+                    case .SignedOnly:
+                        if let vcard = PMNIEzvcard.parseFirst(c.data) {
+                            let emails = vcard.getEmails()
+                            for e in emails {
+                                if email == e.getValue() {
+                                    let group = e.getGroup();
+                                    let encrypt = vcard.getPMEncrypt()
+                                    let sign = vcard.getPMSign()
+                                    let isSign = sign?.getValue() ?? "false" == "true" ? true : false
+                                    let keys = vcard.getKeys()
+                                    let isEncrypt = encrypt?.getValue() ?? "false" == "true" ? true : false
+                                    for key in keys {
+                                        let kg = key.getGroup()
+                                        if kg == group {
+                                            let kp = key.getPref()
+                                            let value = key.getBinary() //based 64 key
+                                            if kp == 1 || kp == Int32.min {
+                                                return seal.fulfill(PreContact(email: email, pubKey: value, sign: isSign, encrypt: isEncrypt))
+                                            }
+                                        }
+
+                                    }
+                                }
+                                
+                            }
+                        }
+                    default:
+                        break
+                        
+                    }
+                }
+                //TODO::need improe the error part
+                seal.reject(NSError.badResponse())
+            }
+           
+
+        }
+    }
     
     /**
      get all contacts from server

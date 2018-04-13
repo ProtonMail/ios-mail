@@ -7,9 +7,13 @@
 /**static create_instance(type: string, email : string, group : string) : i_email; */
 @interface PMNIKey : NSObject
 
-- (nonnull NSString *)getKey;
+- (nonnull NSString *)getText;
 
-- (void)setKey:(nonnull NSString *)key;
+- (void)setText:(nonnull NSString *)text;
+
+- (nonnull NSData *)getBinary;
+
+- (void)setBinary:(nonnull NSData *)data;
 
 - (nonnull NSString *)getGroup;
 

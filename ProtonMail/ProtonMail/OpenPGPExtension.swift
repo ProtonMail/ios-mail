@@ -306,12 +306,20 @@ extension Data {
         return key_session_out
     }
     
-    func getPublicSessionKeyPackage(_ publicKey: String) throws -> Data? {
+    func getPublicSessionKeyPackage(str publicKey: String) throws -> Data? {
         var out_new_key : Data?
         try ObjC.catchException {
             out_new_key = sharedOpenPGP.getNewPublicKeyPackage(self, publicKey: publicKey)
         }
         
+        return out_new_key
+    }
+    
+    func getPublicSessionKeyPackage(data publicKey: Data) throws -> Data? {
+        var out_new_key : Data?
+        try ObjC.catchException {
+            out_new_key = sharedOpenPGP.getNewPublicKeyPackageBinary(self, publicKey: publicKey)
+        }
         return out_new_key
     }
     
