@@ -18,12 +18,14 @@ final class PreContact {
     let pgpKey : Data?
     let sign : Bool
     let encrypt : Bool
+    let mime : Bool
     
-    init(email: String, pubKey: Data?, sign : Bool, encrypt: Bool) {
+    init(email: String, pubKey: Data?, sign : Bool, encrypt: Bool, mime : Bool) {
         self.email = email
         self.pgpKey = pubKey
         self.sign = sign
         self.encrypt = encrypt
+        self.mime = mime
     }
 }
 
@@ -45,12 +47,14 @@ final class PreAddress {
     let eo : Bool
     let pubKey : String?
     let pgpKey : Data?
-    init(email : String, pubKey : String?, pgpKey : Data?, recipintType : Int, eo : Bool ) {
+    let mime : Bool
+    init(email : String, pubKey : String?, pgpKey : Data?, recipintType : Int, eo : Bool, mime : Bool) {
         self.email = email
         self.recipintType = recipintType
         self.eo = eo
         self.pubKey = pubKey
         self.pgpKey = pgpKey
+        self.mime = mime
     }
 }
 
@@ -88,6 +92,11 @@ class SendBuilder {
     var password: String!
     var hit : String?
     
+    
+    var mimeSession : Data!
+    var mimeDataPackage : String!
+    var mimeKeyPackage : String!
+    
     init() { }
     
     func update(bodyData data : Data, bodySession : Data) {
@@ -114,6 +123,24 @@ class SendBuilder {
                 return ClearBodyPackage(key: self.encodedSession)
             }
             return nil
+        }
+    }
+    
+    var clearMimeBody : ClearBodyPackage? {
+        get {
+            if self.contains(type: .cmime) {
+                return ClearBodyPackage(key: self.mimeSession.encodeBase64())
+            }
+            return nil
+        }
+    }
+    
+    var mimeBody : String {
+        get {
+            if self.contains(type: .pgpmime) ||  self.contains(type: .cmime) {
+               return mimeDataPackage
+            }
+            return ""
         }
     }
     
@@ -157,12 +184,40 @@ class SendBuilder {
         return .cinln
     }
     
+    func buildMime() -> Promise<SendBuilder> {
+        return async {
+            let boundary = "==67890=="
+            var clearBody = ""
+            let type : String = "Content-Type: multipart/mixed; boundary=\"\(boundary)\""
+            clearBody.append(contentsOf: type)
+            clearBody.append(contentsOf: "\r\n")
+            clearBody.append(contentsOf: "--==67890==")
+            clearBody.append(contentsOf: "\r\n")
+            clearBody.append(contentsOf: "Content-Type: text/plain; charset='utf-8'")
+            clearBody.append(contentsOf: "\r\n")
+            clearBody.append(contentsOf: "I am not wearing any socks!!")
+            clearBody.append(contentsOf: "\r\n")
+            clearBody.append(contentsOf: "--==67890==---")
+            
+            
+            let encrypted = try! clearBody.encryptMessageWithSingleKey(sharedUserDataService.firstUserPublicKey!, privateKey: "", mailbox_pwd: "")
+            let spilted = try! encrypted?.split()
+            let session = try! spilted?.keyPackage.getSessionKeyFromPubKeyPackage(sharedUserDataService.mailboxPassword!)!
+            
+            
+            self.mimeSession = session
+            self.mimeKeyPackage = spilted?.keyPackage.base64EncodedString()
+            self.mimeDataPackage = spilted?.dataPackage.base64EncodedString()
+            
+            return self
+        }
+    }
     
     var builders : [PackageBuilder] {
         get {
             var out : [PackageBuilder] = [PackageBuilder]()
             for pre in preAddresses {
-                switch self.build(type: pre.recipintType, eo: pre.eo, pgpkey: pre.pgpKey != nil, mime: false) {
+                switch self.build(type: pre.recipintType, eo: pre.eo, pgpkey: pre.pgpKey != nil, mime: pre.mime) {
                 case .intl:
                     out.append(AddressBuilder(type: .intl, addr: pre,
                                               session: self.bodySession, atts: self.preAttachments))
@@ -176,9 +231,11 @@ class SendBuilder {
                     out.append(PGPAddressBuilder(type: .inlnpgp, addr: pre,
                                                  session: self.bodySession, atts: self.preAttachments))
                 case .pgpmime: //pgp mime
-                    break
+                    out.append(MimeAddressBuilder(type: .pgpmime, addr: pre,
+                                                  session: self.bodySession, atts: self.preAttachments))
                 case .cmime: //clear text mime
-                    break
+                    out.append(ClearMimeAddressBuilder(type: .cmime, addr: pre,
+                                                       session: self.bodySession, atts: self.preAttachments))
                 default:
                     break
                 }
@@ -189,7 +246,7 @@ class SendBuilder {
     
     func contains(type : SendType) -> Bool {
         for pre in preAddresses {
-            let buildType = self.build(type: pre.recipintType, eo: pre.eo, pgpkey: pre.pgpKey != nil, mime: false)
+            let buildType = self.build(type: pre.recipintType, eo: pre.eo, pgpkey: pre.pgpKey != nil, mime: pre.mime)
             if buildType.contains(type) {
                 return true
             }
@@ -300,8 +357,6 @@ class EOAddressBuilder : PackageBuilder {
                                           salt: new_lpwd_salt.encodeBase64(),
                                           verifer: verifier.encodeBase64())
             
-            
-            
             // encrypt keys use key
             var attPack : [AttachmentPackage] = []
             for att in self.preAttachments {
@@ -358,7 +413,77 @@ class PGPAddressBuilder : PackageBuilder {
             
             let newKeypacket = try self.session.getPublicSessionKeyPackage(data : self.preAddress.pgpKey!)
             let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-            let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, attPackets: attPackages)
+            let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, type: self.sendType, attPackets: attPackages)
+            return addr
+        }
+    }
+}
+
+
+/// Address Builder for building the packages
+class MimeAddressBuilder : PackageBuilder {
+    /// message body session key
+    let session : Data
+    
+    /// prepared attachment list
+    let preAttachments : [PreAttachment]
+    
+    /// Initial
+    ///
+    /// - Parameters:
+    ///   - type: SendType sending message type for address
+    ///   - addr: message send to
+    ///   - session: message encrypted body session key
+    ///   - atts: prepared attachments
+    init(type: SendType, addr: PreAddress, session: Data, atts : [PreAttachment]) {
+        self.session = session
+        self.preAttachments = atts
+        super.init(type: type, addr: addr)
+    }
+    
+    override func build() -> Promise<AddressPackageBase> {
+        return async {
+            var attPackages = [AttachmentPackage]()
+            for att in self.preAttachments {
+                //TODO::here need hanlde the error
+                let newKeyPack = try att.Key.getPublicSessionKeyPackage(data : self.preAddress.pgpKey!)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                let attPacket = AttachmentPackage(attID: att.ID, attKey: newKeyPack)
+                attPackages.append(attPacket)
+            }
+            
+            let newKeypacket = try self.session.getPublicSessionKeyPackage(data : self.preAddress.pgpKey!)
+            let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+            let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, type: self.sendType, attPackets: attPackages)
+            return addr
+        }
+    }
+}
+
+
+/// Address Builder for building the packages
+class ClearMimeAddressBuilder : PackageBuilder {
+    /// message body session key
+    let session : Data
+    
+    /// prepared attachment list
+    let preAttachments : [PreAttachment]
+    
+    /// Initial
+    ///
+    /// - Parameters:
+    ///   - type: SendType sending message type for address
+    ///   - addr: message send to
+    ///   - session: message encrypted body session key
+    ///   - atts: prepared attachments
+    init(type: SendType, addr: PreAddress, session: Data, atts : [PreAttachment]) {
+        self.session = session
+        self.preAttachments = atts
+        super.init(type: type, addr: addr)
+    }
+    
+    override func build() -> Promise<AddressPackageBase> {
+        return async {
+            let addr = AddressPackageBase(email: self.preAddress.email, type: self.sendType, sign : 0)
             return addr
         }
     }
@@ -394,15 +519,17 @@ class AddressBuilder : PackageBuilder {
                 let attPacket = AttachmentPackage(attID: att.ID, attKey: newKeyPack)
                 attPackages.append(attPacket)
             }
+            
+            //TODO::will remove from here debuging or merge this class with PGPAddressBuildr
             if let pk = self.preAddress.pgpKey {
                 let newKeypacket = try self.session.getPublicSessionKeyPackage(data: pk)
                 let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, attPackets: attPackages)
+                let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, type: self.sendType, attPackets: attPackages)
                 return addr
             } else {
                 let newKeypacket = try self.session.getPublicSessionKeyPackage(str: self.preAddress.pubKey!)
                 let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, attPackets: attPackages)
+                let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, type: self.sendType, attPackets: attPackages)
                 return addr
             }
         }

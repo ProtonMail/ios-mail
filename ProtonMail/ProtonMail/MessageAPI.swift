@@ -277,15 +277,22 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
     var clearBody : ClearBodyPackage?
     var clearAtts : [ClearAttachmentPackage]?
     
+    var mimeBody : String!
+    var clearMimeBody : ClearBodyPackage?
+    
     init(messageID : String, expirationTime: Int32?,
          messagePackage: [AddressPackageBase]!, body : String,
-         clearBody : ClearBodyPackage?, clearAtts: [ClearAttachmentPackage]?) {
+         clearBody : ClearBodyPackage?, clearAtts: [ClearAttachmentPackage]?,
+         mimeBody : String, clearMimeBody : ClearBodyPackage?) {
         self.messageID = messageID
         self.messagePackage = messagePackage
         self.body = body
         self.expirationTime = expirationTime ?? 0
         self.clearBody = clearBody
         self.clearAtts = clearAtts
+        
+        self.mimeBody = mimeBody
+        self.clearMimeBody = clearMimeBody
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -294,64 +301,85 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
         //optional this will override app setting
         //out["AutoSaveContacts"] = "\(0 / 1)"
         
+        let normalPackage = messagePackage.filter { $0.type.rawValue < 10 }
+        let mimePackage = messagePackage.filter { $0.type.rawValue > 10 }
+        
         //packages object
         var packages : [Any] = [Any]()
         
-        //not mime
-        var normalAddress : [String : Any] = [String : Any]()
-        var addrs = [String: Any]()
-        var type = SendType()
-        for mp in messagePackage {
-            addrs[mp.email] = mp.toDictionary()!
-            type.insert(mp.type)
-        }
-        normalAddress["Addresses"] = addrs
-        normalAddress["Type"] = type.rawValue //"Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
-        
-        normalAddress["Body"] = self.body
-        normalAddress["MIMEType"] = "text/html"
-        
-        if let cb = clearBody {
-            // Include only if cleartext recipients
-            normalAddress["BodyKey"] = [
-                "Key" : cb.key,
-                "Algorithm" : cb.algo
-            ]
-        }
-        
-        if let cAtts = clearAtts {
-            // Only include if cleartext recipients, optional if no attachments
-            var atts : [String:Any] = [String:Any]()
-            for it in cAtts {
-                atts[it.ID] = [
-                    "Key" : it.key,
-                    "Algorithm" : it.algo
+        if normalPackage.count > 0 {
+            //not mime
+            var normalAddress : [String : Any] = [String : Any]()
+            var addrs = [String: Any]()
+            var type = SendType()
+            for mp in normalPackage {
+                addrs[mp.email] = mp.toDictionary()!
+                type.insert(mp.type)
+            }
+            normalAddress["Addresses"] = addrs
+            normalAddress["Type"] = type.rawValue //"Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
+            
+            normalAddress["Body"] = self.body
+            normalAddress["MIMEType"] = "text/html"
+            
+            if let cb = clearBody {
+                // Include only if cleartext recipients
+                normalAddress["BodyKey"] = [
+                    "Key" : cb.key,
+                    "Algorithm" : cb.algo
                 ]
             }
-            normalAddress["AttachmentKeys"] = atts
+            
+            if let cAtts = clearAtts {
+                // Only include if cleartext recipients, optional if no attachments
+                var atts : [String:Any] = [String:Any]()
+                for it in cAtts {
+                    atts[it.ID] = [
+                        "Key" : it.key,
+                        "Algorithm" : it.algo
+                    ]
+                }
+                normalAddress["AttachmentKeys"] = atts
+            }
+            packages.append(normalAddress)
         }
-        packages.append(normalAddress)
+       
         
-        //mime
-        var mimeAddress : [String : Any] = [String : Any]()
-        mimeAddress["Addresses"] = "[:]()"
-//        "bartqa2@pgp.me" : {
-//        "Type" : 16, // PGP/MIME
-//        "BodyKeyPacket" : <base64_encoded_key_packet>
-//        },
-//        "bartqa3@gmail.com" : {
-//        "Type" : 32, // cleartext MIME
-//        "Signature" : 0 // 1 = signature
-//        }
-        mimeAddress["Type"] = "get from message list" // 16|32 MIME sending cannot share packages with inline sending
-        mimeAddress["Body"] = "<base64_encoded_openpgp_encrypted_data_packet>"
-        mimeAddress["MIMEType"] = "multipart/mixed"
-        mimeAddress["BodyKey"] = "[:]" // Include only if cleartext MIME recipients
-        //        "BodyKey": {
-        //            "Key": <base64_encoded_session_key>,
-        //            "Algorithm": "aes256" // algorithm corresponding to session key
-        //        },
-//        packages.append(mimeAddress)
+        if mimePackage.count > 0 {
+            //mime
+            var mimeAddress : [String : Any] = [String : Any]()
+            
+            var addrs = [String: Any]()
+            var mimeType = SendType()
+            for mp in mimePackage {
+                addrs[mp.email] = mp.toDictionary()!
+                mimeType.insert(mp.type)
+            }
+            mimeAddress["Addresses"] = addrs
+            //        "bartqa2@pgp.me" : {
+            //        "Type" : 16, // PGP/MIME
+            //        "BodyKeyPacket" : <base64_encoded_key_packet>
+            //        },
+            //        "bartqa3@gmail.com" : {
+            //        "Type" : 32, // cleartext MIME
+            //        "Signature" : 0 // 1 = signature
+            //        }
+            mimeAddress["Type"] = mimeType.rawValue // 16|32 MIME sending cannot share packages with inline sending
+            mimeAddress["Body"] = mimeBody
+            mimeAddress["MIMEType"] = "multipart/mixed"
+            
+            if let cb = clearMimeBody {
+                // Include only if cleartext MIME recipients
+                mimeAddress["BodyKey"] = [
+                    "Key" : cb.key,
+                    "Algorithm" : cb.algo
+                ]
+            }
+            packages.append(mimeAddress)
+        }
+        
+        
+        
         out["Packages"] = packages
         
         PMLog.D( out.json(prettyPrinted: true) )

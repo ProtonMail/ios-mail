@@ -63,7 +63,7 @@ final class EOAddressPackage : AddressPackage {
         self.auth = auth
         self.pwdHit = pwdHit
         
-        super.init(email: email, bodyKeyPacket: bodyKeyPacket, attPackets: attPackets, type: type, sign: sign)
+        super.init(email: email, bodyKeyPacket: bodyKeyPacket, type: type, attPackets: attPackets, sign: sign)
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -84,8 +84,8 @@ class AddressPackage : AddressPackageBase {
     
     init(email:String,
          bodyKeyPacket : String,
+         type: SendType,
          attPackets:[AttachmentPackage]=[AttachmentPackage](),
-         type: SendType = SendType.intl, //for base
         sign : Int = 0) {
         self.bodyKeyPacket = bodyKeyPacket
         self.attPackets = attPackets
@@ -107,6 +107,37 @@ class AddressPackage : AddressPackageBase {
         return out
     }
 }
+
+class MimeAddressPackage : AddressPackageBase {
+    let bodyKeyPacket : String
+    let attPackets : [AttachmentPackage]
+    
+    init(email:String,
+         bodyKeyPacket : String,
+         type: SendType,
+         attPackets:[AttachmentPackage]=[AttachmentPackage](),
+         sign : Int = 0) {
+        self.bodyKeyPacket = bodyKeyPacket
+        self.attPackets = attPackets
+        super.init(email: email, type: type, sign: sign)
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        var out = super.toDictionary() ?? [String : Any]()
+        out["BodyKeyPacket"] = self.bodyKeyPacket
+        //change to == id : packet
+        if attPackets.count > 0 {
+            var atts : [String:Any] = [String:Any]()
+            for attPacket in attPackets {
+                atts[attPacket.ID] = attPacket.encodedKeyPacket
+            }
+            out["AttachmentKeyPackets"] = atts
+        }
+        
+        return out
+    }
+}
+
 
 class AddressPackageBase : Package {
     

@@ -358,13 +358,15 @@ class ContactDataService {
                                     let isSign = sign?.getValue() ?? "false" == "true" ? true : false
                                     let keys = vcard.getKeys()
                                     let isEncrypt = encrypt?.getValue() ?? "false" == "true" ? true : false
+                                    let mimeType = vcard.getPMScheme()
+                                    let isMime = mimeType?.getValue() ?? "" == "pgp-mime" ? true : false
                                     for key in keys {
                                         let kg = key.getGroup()
                                         if kg == group {
                                             let kp = key.getPref()
                                             let value = key.getBinary() //based 64 key
                                             if kp == 1 || kp == Int32.min {
-                                                return seal.fulfill(PreContact(email: email, pubKey: value, sign: isSign, encrypt: isEncrypt))
+                                                return seal.fulfill(PreContact(email: email, pubKey: value, sign: isSign, encrypt: isEncrypt, mime: isMime))
                                             }
                                         }
 

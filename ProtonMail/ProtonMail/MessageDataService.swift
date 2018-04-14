@@ -1588,20 +1588,17 @@ class MessageDataService {
             }
             // is encrypt outside
             let isEO = !message.password.isEmpty
-            
+
             // get attachment
             let attachments = self.attachmentsForMessage(message)
-            //let call0 = UserEmailPubKeys(email: "feng@pm.me").run()
-            //let call1 = UserEmailPubKeys(email: "zhj4478@gmail.com").run()
-            //let call3 = UserEmailPubKeys(email: "zhj4478@stonyboat.com").run()
-            //let call4 = UserEmailPubKeys(email: "feng@stonyboat.com").run()
-            //let call5 = UserEmailPubKeys(email: "aabbccdddalkl111@protonmail.com").run()
             let sendBuilder = SendBuilder()
             //build contacts if user setup key pinning
             var contacts : [PreContact] = [PreContact]()
             firstly {
-                sharedContactDataService.fetch(byEmails: emails, context: context)
+                //fech addresses contact
+                sharedContactDataService.fetch(byEmails: emails, context: context)// emails  ["zhj44781@gmail.com"] 
             }.then { (cs) -> Guarantee<[Result<KeysResponse>]> in
+                // fech email keys from api
                 contacts.append(contentsOf: cs)
                 return when(resolved: requests.promises)
             }.then { results -> Promise<SendBuilder> in
@@ -1625,26 +1622,31 @@ class MessageDataService {
                     case .fulfilled(let value):
                         let req = requests[index]
                         //check contacts have pub key or not
-                        if let contact = contacts.find(email: req.email) {
+                        if let contact = contacts.find(email: req.email) { //"zhj44781@gmail.com") {//req.email) {
                             if value.recipientType == 1 {
+                                //if type is internal check is key match with contact key
                                 //compare the key if doesn't match
-                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO))
+                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: false))
                             } else {
-                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO))
+                                //sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: nil, recipintType: value.recipientType, eo: isEO, mime: true))
+                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: contact.mime))
                             }
                         } else {
-                            sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO))
+                            sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO, mime: false))
                         }
-                        //if type is internal check is key match with contact key
-                        break
                     case .rejected(let error):
                         throw error
                     }
                 }
                 return Promise.value(sendBuilder)
+            }.then{ (sendbuilder) -> Promise<SendBuilder> in
+                //build pgp sending mime body
+                return sendBuilder.buildMime()
             }.then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
+                //build address packages
                 return when(resolved: sendbuilder.promises)
             }.then { results -> Promise<ApiResponse> in
+                //build api request
                 let encodedBody = sendBuilder.bodyDataPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                 var msgs = [AddressPackageBase]()
                 for res in results {
@@ -1660,7 +1662,9 @@ class MessageDataService {
                                           expirationTime: message.expirationOffset,
                                           messagePackage: msgs,
                                           body: encodedBody,
-                                          clearBody: sendBuilder.clearBody, clearAtts: sendBuilder.clearAtts)
+                                          clearBody: sendBuilder.clearBody, clearAtts: sendBuilder.clearAtts, mimeBody: sendBuilder.mimeBody,
+                                          //
+                                          clearMimeBody: sendBuilder.clearMimeBody)
                 return sendApi.run()
             }.done { (res) in
                 let error = res.error
@@ -1715,7 +1719,7 @@ class MessageDataService {
                     error?.upload(toFabric: SendingErrorTitle)
                 }
                 completion?(nil, nil, error)
-            }.catch (on: .main) { (error) in
+            }.catch { (error) in
                 PMLog.D(error.localizedDescription)
                 let err = error as NSError
                 completion?(nil, nil, err)

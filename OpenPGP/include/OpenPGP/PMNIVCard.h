@@ -13,6 +13,7 @@
 @class PMNIOrganization;
 @class PMNIPMCustom;
 @class PMNIPMEncrypt;
+@class PMNIPMScheme;
 @class PMNIPMSign;
 @class PMNIStructuredName;
 @class PMNITelephone;
@@ -132,6 +133,14 @@
 - (void)setPMEncrypt:(nullable PMNIPMEncrypt *)encrypt;
 
 - (void)clearPMEncrypt;
+
+- (nullable PMNIPMScheme *)getPMScheme;
+
+- (void)addPMScheme:(nullable PMNIPMScheme *)scheme;
+
+- (void)setPMScheme:(nullable PMNIPMScheme *)scheme;
+
+- (void)clearPMScheme;
 
 - (nonnull NSArray<PMNIUrl *> *)getUrls;
 
