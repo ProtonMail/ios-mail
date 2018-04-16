@@ -26,7 +26,7 @@ let sharedUserDataService = UserDataService()
 class AppDelegate: UIResponder {
     
     var window: UIWindow?
-    func instantiateRootViewController() -> UIViewController {
+    func instantiateRootViewController() -> UIViewController? {
         let storyboard = UIStoryboard.Storyboard.signIn
         return UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
     }
@@ -39,40 +39,46 @@ class AppDelegate: UIResponder {
     
     // MARK: - Public methods
     func switchTo(storyboard: UIStoryboard.Storyboard, animated: Bool) {
-        if let window = window {
-            if let rootViewController = window.rootViewController {
-                if rootViewController.restorationIdentifier != storyboard.restorationIdentifier {
-                    if !animated {
-                        window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-                    } else {
-                        UIView.animate(withDuration: ViewDefined.animationDuration/2,
-                                       delay: 0,
-                                       options: UIViewAnimationOptions(),
-                                       animations: { () -> Void in
-                                            rootViewController.view.alpha = 0
-                        }, completion: { (finished) -> Void in
-                            let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-                            if let oldView = window.rootViewController as? SWRevealViewController {
-                                if let navigation = oldView.frontViewController as? UINavigationController {
-                                    if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-                                        mailboxViewController.resetFetchedResultsController()
-                                        //TODO:: fix later, this logic change to viewModel service
-                                    }
-                                }
-                            }
-                            viewController.view.alpha = 0
-                            window.rootViewController = viewController
-                            
-                            UIView.animate(withDuration: ViewDefined.animationDuration/2,
-                                           delay: 0, options: UIViewAnimationOptions(),
-                                           animations: { () -> Void in
-                                               viewController.view.alpha = 1.0
-                            }, completion: nil)
-                        })
+        guard let window = window else {
+            return //
+        }
+        
+        guard let rootViewController = window.rootViewController,
+            rootViewController.restorationIdentifier != storyboard.restorationIdentifier else {
+            return //
+        }
+        
+        if !animated {
+            window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+        } else {
+            UIView.animate(withDuration: ViewDefined.animationDuration/2,
+                           delay: 0,
+                           options: UIViewAnimationOptions(),
+                           animations: { () -> Void in
+                            rootViewController.view.alpha = 0
+            }, completion: { (finished) -> Void in
+                guard let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard) else {
+                    return
+                }
+                if let oldView = window.rootViewController as? SWRevealViewController {
+                    if let navigation = oldView.frontViewController as? UINavigationController {
+                        if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
+                            mailboxViewController.resetFetchedResultsController()
+                            //TODO:: fix later, this logic change to viewModel service
+                        }
                     }
                 }
-            }
+                viewController.view.alpha = 0
+                window.rootViewController = viewController
+                
+                UIView.animate(withDuration: ViewDefined.animationDuration/2,
+                               delay: 0, options: UIViewAnimationOptions(),
+                               animations: { () -> Void in
+                                viewController.view.alpha = 1.0
+                }, completion: nil)
+            })
         }
+        
     }
 }
 
@@ -123,7 +129,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
                     }
                 }
             }
-            return  UIInterfaceOrientationMask.all
+            return UIInterfaceOrientationMask.all
         }
     }
     
@@ -195,21 +201,23 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
-        if let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) {
-            if urlComponents.host == "signup" {
-                if let queryItems = urlComponents.queryItems {
-                    if let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first {
-                        if let code = verifyObject.value {
-                            let info : [String:String] = ["verifyCode" : code]
-                            let notification = Notification(name: Notification.Name(rawValue: NotificationDefined.CustomizeURLSchema),
-                                                            object: nil,
-                                                            userInfo: info)
-                            NotificationCenter.default.post(notification)
-                        }
-                    }
-                }
-            }
+        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true), urlComponents.host == "signup" else {
+            return false
         }
+        
+        guard let queryItems = urlComponents.queryItems, let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first else {
+            return false
+        }
+        
+        guard let code = verifyObject.value else {
+            return false
+        }
+        
+        let info : [String:String] = ["verifyCode" : code]
+        let notification = Notification(name: Notification.Name(rawValue: NotificationDefined.CustomizeURLSchema),
+                                        object: nil,
+                                        userInfo: info)
+        NotificationCenter.default.post(notification)
         return true
     }
     
@@ -292,12 +300,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         sharedPushNotificationService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
-        
-//        Messaging.messaging().apnsToken = deviceToken
-//        if let token = Messaging.messaging().fcmToken {
-//            PMLog.D("FCM token: \(token)")
-//            sharedPushNotificationService.didRegisterForRemoteNotifications(withDeviceToken: token)
-//        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -315,23 +317,3 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         NotificationCenter.default.post(notification)
     }
 }
-
-//extension AppDelegate : MessagingDelegate {
-//    // [START refresh_token]
-//    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
-//        PMLog.D("Firebase registration token: \(fcmToken)")
-//
-//        sharedPushNotificationService.didRegisterForRemoteNotifications(withDeviceToken: fcmToken)
-//        // TODO: If necessary send token to application server.
-//        // Note: This callback is fired at each app startup and whenever a new token is generated.
-//    }
-//    // [END refresh_token]
-//    // [START ios_10_data_message]
-//    // Receive data messages on iOS 10+ directly from FCM (bypassing APNs) when the app is in the foreground.
-//    // To enable direct data messages, you can set Messaging.messaging().shouldEstablishDirectChannel to true.
-//    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
-//        PMLog.D("Received data message: \(remoteMessage.appData)")
-//    }
-//    // [END ios_10_data_message]
-//}
-
