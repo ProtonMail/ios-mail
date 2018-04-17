@@ -94,15 +94,15 @@
 		<true/>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>$(PRODUCT_NAME) requires media library access for media attachments.</string>
+	<string>requires media library access for media attachments.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) requires camera access to attach camera photos.</string>
+	<string>requires camera access to attach camera photos.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>$(PRODUCT_NAME) requires contacts access for email autocomplete.</string>
+	<string>requires contacts access for email autocomplete.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) requires photo library access to save image attachments.</string>
+	<string>requires photo library access to save image attachments.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) requires photo library access to attach camera photos.</string>
+	<string>requires photo library access to attach camera photos.</string>
 	<key>UIAppFonts</key>
 	<array/>
 	<key>UIBackgroundModes</key>

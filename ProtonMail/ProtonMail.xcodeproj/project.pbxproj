@@ -139,6 +139,15 @@
 		7508F7ED2086BA6A00EFE237 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
 		7508F7EE2086BA6B00EFE237 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
 		7508F7EF2086BA6C00EFE237 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
+		7508F7F82086BAD700EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
+		7508F8042086BB7500EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
+		7508F8072086BB9200EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
+		7508F8082086BB9800EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
+		7508F8092086BB9900EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
+		7508F80A2086BB9A00EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
+		7508F80B2086BB9B00EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
+		7508F80C2086BB9B00EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
+		7508F80D2086BB9C00EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
 		750AAAC41C23E5CF00BAC444 /* RecaptchaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */; };
 		750AAAC71C2490DB00BAC444 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */; };
 		750AAAC81C2490DB00BAC444 /* SignUpPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC61C2490DB00BAC444 /* SignUpPasswordViewController.swift */; };
@@ -1156,7 +1165,6 @@
 		75AFD2ED1FBA7CF000EAEA61 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75AFD2EC1FBA7CF000EAEA61 /* UserNotifications.framework */; };
 		75AFD2EF1FBA7CF000EAEA61 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75AFD2EE1FBA7CF000EAEA61 /* UserNotificationsUI.framework */; };
 		75AFD2F21FBA7CF000EAEA61 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AFD2F11FBA7CF000EAEA61 /* NotificationViewController.swift */; };
-		75AFD2F51FBA7CF000EAEA61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75AFD2F31FBA7CF000EAEA61 /* MainInterface.storyboard */; };
 		75AFD3031FBA7D7500EAEA61 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75AFD2EC1FBA7CF000EAEA61 /* UserNotifications.framework */; };
 		75B047B31AE708CC005C6D1A /* ComposeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */; };
 		75B0529D1F1FE032008E483A /* ViewModelServiceImpl+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B0529C1F1FE032008E483A /* ViewModelServiceImpl+Share.swift */; };
@@ -1608,6 +1616,8 @@
 		750778CD1BE98900009F516C /* UserAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
 		75079CA92061CCC500182008 /* Greeter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Greeter.framework; sourceTree = "<group>"; };
 		7507BBB51E0CAF9600056D66 /* SignUp+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignUp+Error.swift"; sourceTree = "<group>"; };
+		7508F8052086BB7500EFE237 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
+		7508F80E2086BDBF00EFE237 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecaptchaViewController.swift; sourceTree = "<group>"; };
 		750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpEmailViewController.swift; sourceTree = "<group>"; };
 		750AAAC61C2490DB00BAC444 /* SignUpPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpPasswordViewController.swift; sourceTree = "<group>"; };
@@ -2200,6 +2210,7 @@
 				75542ABA1EE53C3C000F4ABA /* PasswordExtension.strings */,
 				7599B1741CC8124300B2CB8D /* Localizable.strings */,
 				75E49EFA1CAAF47D00235ACC /* InfoDev.plist */,
+				7508F7F62086BAD700EFE237 /* InfoPlist.strings */,
 				075E3DEA1A5F4ECF00E001A7 /* Info.plist */,
 				753480B11CADABCA00964965 /* ProtonMail.entitlements */,
 				7566E4F51FBBA26E0036B36B /* GoogleService-Info.plist */,
@@ -3425,6 +3436,8 @@
 				Base,
 				fr,
 				de,
+				tr,
+				ja,
 			);
 			mainGroup = 075E3DDD1A5F4ECF00E001A7;
 			productRefGroup = 075E3DE71A5F4ECF00E001A7 /* Products */;
@@ -3465,6 +3478,7 @@
 				7547175D206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */,
 				75E49F091CAB200000235ACC /* flags.bundle in Resources */,
 				7528FFD11FA7FEC3005F66A3 /* ContactSectionHeadView.xib in Resources */,
+				7508F80C2086BB9B00EFE237 /* InfoPlist.strings in Resources */,
 				75471759206489EC00C3F21D /* editor.html in Resources */,
 				7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */,
 				07B123781AB8CD90006EA38C /* Attachments.storyboard in Resources */,
@@ -3502,6 +3516,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7508F7EF2086BA6C00EFE237 /* Localizable.strings in Resources */,
+				7508F8092086BB9900EFE237 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3510,6 +3525,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7508F7ED2086BA6A00EFE237 /* Localizable.strings in Resources */,
+				7508F80A2086BB9A00EFE237 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3526,6 +3542,7 @@
 				75482BCE1F7F09E100B0BFFB /* Localizable.strings in Resources */,
 				75482BD01F7F09E100B0BFFB /* SignIn.storyboard in Resources */,
 				75482BD21F7F09E100B0BFFB /* backup.css in Resources */,
+				7508F80B2086BB9B00EFE237 /* InfoPlist.strings in Resources */,
 				75482BD31F7F09E100B0BFFB /* ContactsTableViewCell.xib in Resources */,
 				75482BD41F7F09E100B0BFFB /* PinCodeView.xib in Resources */,
 				75482BD51F7F09E100B0BFFB /* Menu.storyboard in Resources */,
@@ -3546,6 +3563,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				751303DC1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib in Resources */,
+				7508F8072086BB9200EFE237 /* InfoPlist.strings in Resources */,
 				7547175C206489EC00C3F21D /* editor.html in Resources */,
 				755E0D061F2FACF9004D2873 /* Attachments.storyboard in Resources */,
 				7512A9FA1F17E1CE00D84955 /* ShareUnlockViewController.xib in Resources */,
@@ -3573,8 +3591,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75AFD2F51FBA7CF000EAEA61 /* MainInterface.storyboard in Resources */,
 				7508F7EC2086BA6900EFE237 /* Localizable.strings in Resources */,
+				7508F80D2086BB9C00EFE237 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3583,6 +3601,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7508F7EE2086BA6B00EFE237 /* Localizable.strings in Resources */,
+				7508F8082086BB9800EFE237 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3591,6 +3610,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75256CCA1F16E00800F2771E /* ProtonMail.xcdatamodeld in Resources */,
+				7508F8042086BB7500EFE237 /* InfoPlist.strings in Resources */,
 				7547175F206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */,
 				75DE7D891CAAEA4900F5443E /* MailboxRateReviewCell.xib in Resources */,
 				75187BB21CAC54DD00C84382 /* phone_country_code.geojson in Resources */,
@@ -3619,6 +3639,7 @@
 				75DE7D991CAAEA4900F5443E /* RecipientCell.xib in Resources */,
 				75DE7D9B1CAAEA4900F5443E /* LabelsView.xib in Resources */,
 				75DE7D9C1CAAEA4900F5443E /* RecipientView.xib in Resources */,
+				7508F7F82086BAD700EFE237 /* InfoPlist.strings in Resources */,
 				75DE7D9D1CAAEA4900F5443E /* MessageDetailBottomView.xib in Resources */,
 				75DE7D9E1CAAEA4900F5443E /* TempXIB.xib in Resources */,
 				75DE7D9F1CAAEA4900F5443E /* MultiLabelDisplayView.xib in Resources */,
@@ -5346,6 +5367,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		7508F7F62086BAD700EFE237 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7508F80E2086BDBF00EFE237 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		75542ABA1EE53C3C000F4ABA /* PasswordExtension.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -5359,6 +5388,7 @@
 				7566AE871F394CEA006D84F9 /* nl */,
 				753E304F1F86D61400CE5AF8 /* it */,
 				75DF9ED81F97CB0300C2A01C /* pt-BR */,
+				7508F8052086BB7500EFE237 /* ja */,
 			);
 			name = PasswordExtension.strings;
 			sourceTree = "<group>";
