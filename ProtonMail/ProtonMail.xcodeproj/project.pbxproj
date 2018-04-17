@@ -139,7 +139,6 @@
 		7508F7ED2086BA6A00EFE237 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
 		7508F7EE2086BA6B00EFE237 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
 		7508F7EF2086BA6C00EFE237 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
-		7508F7F82086BAD700EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
 		7508F8042086BB7500EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
 		7508F8072086BB9200EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
 		7508F8082086BB9800EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
@@ -3639,7 +3638,6 @@
 				75DE7D991CAAEA4900F5443E /* RecipientCell.xib in Resources */,
 				75DE7D9B1CAAEA4900F5443E /* LabelsView.xib in Resources */,
 				75DE7D9C1CAAEA4900F5443E /* RecipientView.xib in Resources */,
-				7508F7F82086BAD700EFE237 /* InfoPlist.strings in Resources */,
 				75DE7D9D1CAAEA4900F5443E /* MessageDetailBottomView.xib in Resources */,
 				75DE7D9E1CAAEA4900F5443E /* TempXIB.xib in Resources */,
 				75DE7D9F1CAAEA4900F5443E /* MultiLabelDisplayView.xib in Resources */,
