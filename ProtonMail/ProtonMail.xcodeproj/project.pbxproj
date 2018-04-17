@@ -803,7 +803,6 @@
 		7545083E1E14861E00265CD0 /* MailboxCaptchaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7545083C1E14861E00265CD0 /* MailboxCaptchaViewController.swift */; };
 		754508411E149B6600265CD0 /* HumanCheckViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754508401E149B6600265CD0 /* HumanCheckViewModel.swift */; };
 		754508441E149BD000265CD0 /* CaptchaViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754508431E149BD000265CD0 /* CaptchaViewModelImpl.swift */; };
-		7545969E20163E0600AE38B9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 754596A020163E0600AE38B9 /* Localizable.strings */; };
 		7546BE551C8D4F9100FCEB0A /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE541C8D4F9100FCEB0A /* TouchID.swift */; };
 		7546BE571C8D557C00FCEB0A /* TouchIDCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE561C8D557C00FCEB0A /* TouchIDCell.swift */; };
 		754713111DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713101DCD51A30084BF34 /* TwoFAViewModel.swift */; };
@@ -1726,15 +1725,6 @@
 		7545083C1E14861E00265CD0 /* MailboxCaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxCaptchaViewController.swift; sourceTree = "<group>"; };
 		754508401E149B6600265CD0 /* HumanCheckViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckViewModel.swift; sourceTree = "<group>"; };
 		754508431E149BD000265CD0 /* CaptchaViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptchaViewModelImpl.swift; sourceTree = "<group>"; };
-		7545969F20163E0600AE38B9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		754596A920163E2500AE38B9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		754596B220163E4E00AE38B9 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
-		754596BB20163E6D00AE38B9 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		754596C420163E9700AE38B9 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		754596CD20163EC900AE38B9 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		754596D620163EF700AE38B9 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		754596DF20163F2500AE38B9 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
-		754596E32016443F00AE38B9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7546BE541C8D4F9100FCEB0A /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
 		7546BE561C8D557C00FCEB0A /* TouchIDCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchIDCell.swift; sourceTree = "<group>"; };
 		754713101DCD51A30084BF34 /* TwoFAViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFAViewModel.swift; sourceTree = "<group>"; };
@@ -2562,7 +2552,6 @@
 		751CDEB31FBB95F6005E3EB1 /* PushService */ = {
 			isa = PBXGroup;
 			children = (
-				754596A020163E0600AE38B9 /* Localizable.strings */,
 				751CDEB41FBB95F6005E3EB1 /* NotificationService.swift */,
 				751CDEB61FBB95F6005E3EB1 /* Info.plist */,
 				751CDEA61FBB95B4005E3EB1 /* InfoDev.plist */,
@@ -3515,7 +3504,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7545969E20163E0600AE38B9 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5350,22 +5338,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		754596A020163E0600AE38B9 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				7545969F20163E0600AE38B9 /* es */,
-				754596A920163E2500AE38B9 /* fr */,
-				754596B220163E4E00AE38B9 /* it */,
-				754596BB20163E6D00AE38B9 /* nl */,
-				754596C420163E9700AE38B9 /* pl */,
-				754596CD20163EC900AE38B9 /* ru */,
-				754596D620163EF700AE38B9 /* tr */,
-				754596DF20163F2500AE38B9 /* uk */,
-				754596E32016443F00AE38B9 /* de */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
 		75542ABA1EE53C3C000F4ABA /* PasswordExtension.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
