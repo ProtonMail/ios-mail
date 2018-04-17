@@ -147,6 +147,7 @@
 		7508F80B2086BB9B00EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
 		7508F80C2086BB9B00EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
 		7508F80D2086BB9C00EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
+		7508F80F2086BF8C00EFE237 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7508F7F62086BAD700EFE237 /* InfoPlist.strings */; };
 		750AAAC41C23E5CF00BAC444 /* RecaptchaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */; };
 		750AAAC71C2490DB00BAC444 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */; };
 		750AAAC81C2490DB00BAC444 /* SignUpPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC61C2490DB00BAC444 /* SignUpPasswordViewController.swift */; };
@@ -3507,6 +3508,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7508F80F2086BF8C00EFE237 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
