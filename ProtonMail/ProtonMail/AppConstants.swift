@@ -38,7 +38,6 @@ class AppConstants {
     //blue test
 //    static let URL_HOST : String = "protonmail.blue"
     //static let URL_HOST : String = "midnight.protonmail.blue"
-
     
     //static let URL_HOST : String = "http://127.0.0.1"  //http
     //static let URL_HOST : String = "http://protonmail.xyz"  //http

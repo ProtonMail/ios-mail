@@ -14,21 +14,21 @@ public class PMLog {
     public static func D(nstring message: NSString, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column)
     {
         #if DEBUG
-            print("\(file) : \(function) : \(line) : \(column) - \(message)")
+            print("\(file) : \(function) : \(line) : \(column) ↓ \r\n\(message)")
         #endif
     }
     
     public static func D(_ message: String, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column)
     {
         #if DEBUG
-            print("\(file) : \(function) : \(line) : \(column) - \(message)")
+            print("\(file) : \(function) : \(line) : \(column) ↓ \r\n\(message)")
         #endif
     }
     
     public static func D(any message: Any, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column )
     {
         #if DEBUG
-            print("\(file) : \(function) : \(line) : \(column) - \(message)")
+            print("\(file) : \(function) : \(line) : \(column) ↓ \r\n\(message)")
         #endif
     }
     

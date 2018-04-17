@@ -76,8 +76,6 @@ final class PreAttachment {
 }
 
 
-
-
 /// A sending message request builder
 ///
 /// You can create new builder like:
@@ -92,10 +90,12 @@ class SendBuilder {
     var password: String!
     var hit : String?
     
-    
     var mimeSession : Data!
     var mimeDataPackage : String!
     var mimeKeyPackage : String!
+
+    var clearBody : String!
+    var clearBodyMimeType : String!
     
     init() { }
     
@@ -109,6 +109,11 @@ class SendBuilder {
         self.hit = hit
     }
     
+    func set(clear clearBody : String, mimeType: String = "text/html") {
+        self.clearBody = clearBody
+        self.clearBodyMimeType = mimeType
+    }
+    
     func add(addr address : PreAddress) {
         preAddresses.append(address)
     }
@@ -117,7 +122,7 @@ class SendBuilder {
         self.preAttachments.append(attachment)
     }
     
-    var clearBody : ClearBodyPackage? {
+    var clearBodyPackage : ClearBodyPackage? {
         get {
             if self.contains(type: .cinln) ||  self.contains(type: .cmime) {
                 return ClearBodyPackage(key: self.encodedSession)
@@ -126,7 +131,7 @@ class SendBuilder {
         }
     }
     
-    var clearMimeBody : ClearBodyPackage? {
+    var clearMimeBodyPackage : ClearBodyPackage? {
         get {
             if self.contains(type: .cmime) {
                 return ClearBodyPackage(key: self.mimeSession.encodeBase64())
@@ -137,7 +142,7 @@ class SendBuilder {
     
     var mimeBody : String {
         get {
-            if self.contains(type: .pgpmime) ||  self.contains(type: .cmime) {
+            if self.hasMime {
                return mimeDataPackage
             }
             return ""
@@ -184,30 +189,67 @@ class SendBuilder {
         return .cinln
     }
     
-    func buildMime() -> Promise<SendBuilder> {
+    func buildMime(pubKey: String, privKey : String) -> Promise<SendBuilder> {
         return async {
-            let boundary = "==67890=="
-            var clearBody = ""
-            let type : String = "Content-Type: multipart/mixed; boundary=\"\(boundary)\""
-            clearBody.append(contentsOf: type)
-            clearBody.append(contentsOf: "\r\n")
-            clearBody.append(contentsOf: "--==67890==")
-            clearBody.append(contentsOf: "\r\n")
-            clearBody.append(contentsOf: "Content-Type: text/plain; charset='utf-8'")
-            clearBody.append(contentsOf: "\r\n")
-            clearBody.append(contentsOf: "I am not wearing any socks!!")
-            clearBody.append(contentsOf: "\r\n")
-            clearBody.append(contentsOf: "--==67890==---")
+            let messageBody = self.clearBody ?? ""
             
+            let boundary : String = "eXsHUBmzbAkwBNhEHrTop2F5StyNNDgnD111"
+            let typeSign : String = "Content-Type: multipart/signed; micalg=pgp-sha512; protocol=\"application/pgp-signature\"; boundary=\"\(boundary)\""
+            var mimeBody = ""
+            mimeBody.append(contentsOf: typeSign)
+            mimeBody.append(contentsOf: "\r\n")
+            mimeBody.append(contentsOf: "\r\n")
+            //sign boundary start
+            mimeBody.append(contentsOf: "--\(boundary)" + "\r\n")
             
-            let encrypted = try! clearBody.encryptMessageWithSingleKey(sharedUserDataService.firstUserPublicKey!, privateKey: "", mailbox_pwd: "")
+            var signbody = ""
+            let boundaryMsg : String = "uF5XZWCLa1E8CXCUr2Kg8CSEyuEhhw9WU222"
+            let typeMessage = "Content-Type: multipart/mixed; boundary=\"\(boundaryMsg)\"; protected-headers=\"v1\""
+            signbody.append(contentsOf: typeMessage + "\r\n")
+//            signbody.append(contentsOf: "From: Alice <alice@mail.net>" + "\r\n")
+//            signbody.append(contentsOf: "To: Bob <bob@messages.org>" + "\r\n")
+//            signbody.append(contentsOf: "Message-ID: <tndit34m@mail.net>" + "\r\n")
+//            signbody.append(contentsOf: "Subject: PGP/MIME signed - standard" + "\r\n")
+            signbody.append(contentsOf: "\r\n")
+            signbody.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
+            signbody.append(contentsOf: "Content-Type:\(self.clearBodyMimeType!); charset=utf-8" + "\r\n")
+            signbody.append(contentsOf: "Content-Transfer-Encoding: quoted-printable" + "\r\n")
+            signbody.append(contentsOf: "Content-Language: en-US" + "\r\n")
+            signbody.append(contentsOf: "\r\n")
+            signbody.append(contentsOf: messageBody +  "\r\n")
+            signbody.append(contentsOf: "\r\n")
+            signbody.append(contentsOf: "\r\n")
+            signbody.append(contentsOf: "\r\n")
+            signbody.append(contentsOf: "--\(boundaryMsg)--")
+            
+            mimeBody.append(contentsOf: signbody + "\r\n")
+            mimeBody.append(contentsOf: "--\(boundary)" + "\r\n")
+            mimeBody.append(contentsOf: "Content-Type: application/pgp-signature; name=\"signature.asc\"" + "\r\n")
+            mimeBody.append(contentsOf: "Content-Description: OpenPGP digital signature" + "\r\n")
+            mimeBody.append(contentsOf: "Content-Disposition: attachment; filename=\"signature.asc\"" + "\r\n")
+            mimeBody.append(contentsOf: "\r\n")
+            
+            /// sign the body
+            let sign_detached = sharedOpenPGP.signDetached(privKey,
+                                                           plainText: signbody,
+                                                           passphras: sharedUserDataService.mailboxPassword!)
+            mimeBody.append(contentsOf: sign_detached)
+            mimeBody.append(contentsOf: "\r\n")
+            mimeBody.append(contentsOf: "--\(boundary)--")
+            mimeBody.append(contentsOf: "\r\n")
+            
+            PMLog.D(mimeBody)
+ 
+            let encrypted = try! mimeBody.encryptMessageWithSingleKey(pubKey,
+                                                                       privateKey: privKey,
+                                                                       mailbox_pwd: sharedUserDataService.mailboxPassword!)
             let spilted = try! encrypted?.split()
             let session = try! spilted?.keyPackage.getSessionKeyFromPubKeyPackage(sharedUserDataService.mailboxPassword!)!
-            
             
             self.mimeSession = session
             self.mimeKeyPackage = spilted?.keyPackage.base64EncodedString()
             self.mimeDataPackage = spilted?.dataPackage.base64EncodedString()
+            
             
             return self
         }
@@ -232,15 +274,20 @@ class SendBuilder {
                                                  session: self.bodySession, atts: self.preAttachments))
                 case .pgpmime: //pgp mime
                     out.append(MimeAddressBuilder(type: .pgpmime, addr: pre,
-                                                  session: self.bodySession, atts: self.preAttachments))
+                                                  session: self.mimeSession))
                 case .cmime: //clear text mime
-                    out.append(ClearMimeAddressBuilder(type: .cmime, addr: pre,
-                                                       session: self.bodySession, atts: self.preAttachments))
+                    out.append(ClearMimeAddressBuilder(type: .cmime, addr: pre))
                 default:
                     break
                 }
             }
             return out
+        }
+    }
+    
+    var hasMime : Bool {
+        get {
+            return self.contains(type: .pgpmime) ||  self.contains(type: .cmime)
         }
     }
     
@@ -425,35 +472,23 @@ class MimeAddressBuilder : PackageBuilder {
     /// message body session key
     let session : Data
     
-    /// prepared attachment list
-    let preAttachments : [PreAttachment]
-    
     /// Initial
     ///
     /// - Parameters:
     ///   - type: SendType sending message type for address
     ///   - addr: message send to
     ///   - session: message encrypted body session key
-    ///   - atts: prepared attachments
-    init(type: SendType, addr: PreAddress, session: Data, atts : [PreAttachment]) {
+    init(type: SendType, addr: PreAddress, session: Data) {
         self.session = session
-        self.preAttachments = atts
         super.init(type: type, addr: addr)
     }
     
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            var attPackages = [AttachmentPackage]()
-            for att in self.preAttachments {
-                //TODO::here need hanlde the error
-                let newKeyPack = try att.Key.getPublicSessionKeyPackage(data : self.preAddress.pgpKey!)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                let attPacket = AttachmentPackage(attID: att.ID, attKey: newKeyPack)
-                attPackages.append(attPacket)
-            }
-            
             let newKeypacket = try self.session.getPublicSessionKeyPackage(data : self.preAddress.pgpKey!)
             let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-            let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, type: self.sendType, attPackets: attPackages)
+            
+            let addr = MimeAddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, type: self.sendType)
             return addr
         }
     }
@@ -462,28 +497,19 @@ class MimeAddressBuilder : PackageBuilder {
 
 /// Address Builder for building the packages
 class ClearMimeAddressBuilder : PackageBuilder {
-    /// message body session key
-    let session : Data
-    
-    /// prepared attachment list
-    let preAttachments : [PreAttachment]
     
     /// Initial
     ///
     /// - Parameters:
     ///   - type: SendType sending message type for address
     ///   - addr: message send to
-    ///   - session: message encrypted body session key
-    ///   - atts: prepared attachments
-    init(type: SendType, addr: PreAddress, session: Data, atts : [PreAttachment]) {
-        self.session = session
-        self.preAttachments = atts
+    override init(type: SendType, addr: PreAddress) {
         super.init(type: type, addr: addr)
     }
     
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            let addr = AddressPackageBase(email: self.preAddress.email, type: self.sendType, sign : 0)
+            let addr = AddressPackageBase(email: self.preAddress.email, type: self.sendType, sign : 1)
             return addr
         }
     }

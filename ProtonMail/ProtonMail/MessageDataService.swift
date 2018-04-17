@@ -1591,12 +1591,15 @@ class MessageDataService {
 
             // get attachment
             let attachments = self.attachmentsForMessage(message)
+            
+            //create builder
             let sendBuilder = SendBuilder()
+            
             //build contacts if user setup key pinning
             var contacts : [PreContact] = [PreContact]()
             firstly {
                 //fech addresses contact
-                sharedContactDataService.fetch(byEmails: emails, context: context)// emails  ["zhj44781@gmail.com"] 
+                sharedContactDataService.fetch(byEmails: emails, context: context)// emails  ["zhj44781@gmail.com"]
             }.then { (cs) -> Guarantee<[Result<KeysResponse>]> in
                 // fech email keys from api
                 contacts.append(contentsOf: cs)
@@ -1628,7 +1631,6 @@ class MessageDataService {
                                 //compare the key if doesn't match
                                 sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: false))
                             } else {
-                                //sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: nil, recipintType: value.recipientType, eo: isEO, mime: true))
                                 sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: contact.mime))
                             }
                         } else {
@@ -1638,10 +1640,22 @@ class MessageDataService {
                         throw error
                     }
                 }
+                
+                
+                if sendBuilder.hasMime {
+                    guard let clearbody = try message.decryptBody() else {
+                        throw RuntimeError.cant_decrypt.error
+                    }
+                    sendBuilder.set(clear: clearbody)
+                }
+                
                 return Promise.value(sendBuilder)
             }.then{ (sendbuilder) -> Promise<SendBuilder> in
                 //build pgp sending mime body
-                return sendBuilder.buildMime()
+                let addr = message.defaultAddress!.keys.first!
+                let privateKey = addr.private_key
+                let pubKey = addr.public_key
+                return sendBuilder.buildMime(pubKey: pubKey, privKey: privateKey)
             }.then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
                 //build address packages
                 return when(resolved: sendbuilder.promises)
@@ -1662,9 +1676,9 @@ class MessageDataService {
                                           expirationTime: message.expirationOffset,
                                           messagePackage: msgs,
                                           body: encodedBody,
-                                          clearBody: sendBuilder.clearBody, clearAtts: sendBuilder.clearAtts, mimeBody: sendBuilder.mimeBody,
+                                          clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts, mimeBody: sendBuilder.mimeBody,
                                           //
-                                          clearMimeBody: sendBuilder.clearMimeBody)
+                                          clearMimeBody: sendBuilder.clearMimeBodyPackage)
                 return sendApi.run()
             }.done { (res) in
                 let error = res.error

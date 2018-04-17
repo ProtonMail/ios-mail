@@ -520,8 +520,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         })
     }
     
-    internal func purifyEmailBody(_ message : Message!, autoloadimage : Bool) -> String?
-    {
+    internal func purifyEmailBody(_ message : Message!, autoloadimage : Bool) -> String? {
         do {
             var bodyText = try self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.", comment: "Error")
             bodyText = bodyText.stringByStrippingBodyStyle()

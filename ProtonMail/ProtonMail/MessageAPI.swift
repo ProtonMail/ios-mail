@@ -317,8 +317,8 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
                 type.insert(mp.type)
             }
             normalAddress["Addresses"] = addrs
-            normalAddress["Type"] = type.rawValue //"Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
-            
+            //"Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
+            normalAddress["Type"] = type.rawValue
             normalAddress["Body"] = self.body
             normalAddress["MIMEType"] = "text/html"
             
@@ -344,7 +344,6 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
             packages.append(normalAddress)
         }
        
-        
         if mimePackage.count > 0 {
             //mime
             var mimeAddress : [String : Any] = [String : Any]()
@@ -356,14 +355,6 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
                 mimeType.insert(mp.type)
             }
             mimeAddress["Addresses"] = addrs
-            //        "bartqa2@pgp.me" : {
-            //        "Type" : 16, // PGP/MIME
-            //        "BodyKeyPacket" : <base64_encoded_key_packet>
-            //        },
-            //        "bartqa3@gmail.com" : {
-            //        "Type" : 32, // cleartext MIME
-            //        "Signature" : 0 // 1 = signature
-            //        }
             mimeAddress["Type"] = mimeType.rawValue // 16|32 MIME sending cannot share packages with inline sending
             mimeAddress["Body"] = mimeBody
             mimeAddress["MIMEType"] = "multipart/mixed"
@@ -377,12 +368,8 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
             }
             packages.append(mimeAddress)
         }
-        
-        
-        
         out["Packages"] = packages
-        
-        PMLog.D( out.json(prettyPrinted: true) )
+        //PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
     

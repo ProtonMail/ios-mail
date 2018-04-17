@@ -384,6 +384,7 @@ extension Message {
             return body
         } else {
             if var body = try decryptBody() {
+                PMLog.D(body)
                 if isEncrypted == 8 || isEncrypted == 9 {
                     if let mimeMsg = MIMEMessage(string: body) {
                         body = mimeMsg.htmlBody ?? ""
@@ -421,6 +422,7 @@ extension Message {
     }
     
     func checkIsEncrypted() -> Bool! {
+        PMLog.D(any: isEncrypted.intValue)
         let enc_type = EncryptTypes(rawValue: isEncrypted.intValue) ?? EncryptTypes.inner
         let checkIsEncrypted:Bool = enc_type.isEncrypted
         return checkIsEncrypted
