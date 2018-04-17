@@ -238,7 +238,7 @@ class SettingTableViewController: ProtonMailViewController {
                                 if indexPath == indexp {
                                     let view = UIApplication.shared.keyWindow
                                     ActivityIndicatorHelper.show(at: view)
-                                    sharedUserDataService.updateAutoLoadImage(newStatus == true ? 1 : 0) { _, _, error in
+                                    sharedUserDataService.updateAutoLoadImage(newStatus == true ? 3 : 0) { _, _, error in
                                         ActivityIndicatorHelper.hide(at: view)
                                         if let error = error {
                                             feedback(false)

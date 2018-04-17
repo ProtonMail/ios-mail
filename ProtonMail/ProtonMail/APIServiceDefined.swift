@@ -259,6 +259,15 @@ struct OrganizationsAPI {
 
 //Reports API
 //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md
+
+
+/**
+ [ProtonMail Reports API]:
+ https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md "Report bugs"
+ 
+ Reports API
+ - Doc: [ProtonMail Reports API]
+ */
 struct ReportsAPI {
     static let path :String = AppConstants.API_PATH + "/reports"
     
@@ -266,26 +275,45 @@ struct ReportsAPI {
     static let v_reports_bug : Int = 3
 }
 
-
+/**
+ [Settings API Part 1]:
+ https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_mail_settings.md
+ [Settings API Part 2]:
+ https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_settings.md
+ 
+ Settings API
+ - Doc: [Settings API Part 1], [Settings API Part 2]
+ */
 struct SettingsAPI {
     /// base settings api path
     static let path :String = AppConstants.API_PATH + "/settings"
     
-    static let v_get_settings : Int = 3
+    /// Get general settings [GET]
+    static let v_get_general_settings : Int = 3
     
-    //static let V_SettingsUpdateDomainRequest : Int = 1 departured
+    /// Turn on/off email notifications [PUT]
+    static let v_update_notify : Int = 3
     
-    static let V_SettingsUpdateNotifyRequest : Int = 1
+    /// Update email [PUT]
+    static let v_update_email : Int = 3
     
-    static let V_SettingsUpdateSwipeLeftRequest : Int = 1
-    static let V_SettingsUpdateSwipeRightRequest : Int = 1
+    /// Update swipe left flag [PUT]
+    static let v_update_swipe_left_right : Int = 3
     
-    static let V_SettingsUpdateNewsRequest : Int = 1
-    static let V_SettingsUpdateDisplayNameRequest : Int = 1
+    /// Update swipe right flag [PUT]
+    static let v_update_swipe_right_left : Int = 3
     
-    static let V_SettingsUpdateShowImagesRequest : Int = 1
+    /// Update newsletter subscription [PUT]
+    static let v_update_sub_news : Int = 3
     
-    static let V_SettingsUpdateLoginPasswordRequest : Int = 1
+    /// Update display name [PUT]
+    static let v_update_display_name : Int = 3
+    
+    /// Update images bits [PUT]
+    static let v_update_shwo_images : Int = 3
+    
+    /// Update login password [PUT]
+    static let v_update_login_password : Int = 3
 }
 
 //Users API

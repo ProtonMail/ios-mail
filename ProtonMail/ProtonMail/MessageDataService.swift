@@ -1509,11 +1509,11 @@ class MessageDataService {
                         completion?(task, response, error)
                     }
                     PMLog.D("SendAttachmentDebug == start upload att!")
-                    sharedAPIService.upload( byUrl: AppConstants.API_HOST_URL + AppConstants.API_PATH + "/attachments/upload",
+                    sharedAPIService.upload( byUrl: AppConstants.API_HOST_URL + AppConstants.API_PATH + "/attachments",
                                              parameters: params,
                                              keyPackets: keyPacket,
                                              dataPacket: dataPacket,
-                                             headers: ["x-pm-apiversion":1],
+                                             headers: ["x-pm-apiversion":3],
                                              authenticated: true,
                                              completion: completionWrapper)
                     return

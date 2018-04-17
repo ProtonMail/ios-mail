@@ -205,16 +205,17 @@ final class SignupViewModelImpl : SignupViewModel {
                                                 PMLog.D("signup seupt key error")
                                             }
                                             
-                                            
                                             //setup swipe function
-                                            let _ = try UpdateSwiftLeftAction<ApiResponse>(action: MessageSwipeAction.archive).syncCall()
-                                            let _ = try UpdateSwiftRightAction<ApiResponse>(action: MessageSwipeAction.trash).syncCall()
+                                            let _ = try UpdateSwiftLeftAction(action: MessageSwipeAction.archive).syncCall()
+                                            let _ = try UpdateSwiftRightAction(action: MessageSwipeAction.trash).syncCall()
 
                                             sharedLabelsDataService.fetchLabels()
                                             sharedUserDataService.fetchUserInfo().done(on: .main) { info in
                                                 if info != nil {
                                                     sharedUserDataService.isNewUser = true
                                                     sharedUserDataService.setMailboxPassword(self.keypwd_with_keysalt, keysalt: nil, isRemembered: true)
+                                                    //alway signle password mode when signup
+                                                    sharedUserDataService.passwordMode = 1
                                                     complete(true, true, "", nil)
                                                 } else {
                                                     complete(false, true, NSLocalizedString("Unknown Error", comment: "Error"), nil)

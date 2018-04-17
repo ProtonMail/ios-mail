@@ -521,13 +521,13 @@ class UserDataService {
                     }
                     
                     do {
-                        let updatePwd = try UpdateLoginPassword<ApiResponse>(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
-                                                                             clientProof: srpClient.clientProof.encodeBase64(),
-                                                                             SRPSession: session,
-                                                                             modulusID: moduls_id,
-                                                                             salt: new_salt.encodeBase64(),
-                                                                             verifer: verifier.encodeBase64(),
-                                                                             tfaCode: twoFACode).syncCall()
+                        let updatePwd = try UpdateLoginPassword(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
+                                                                clientProof: srpClient.clientProof.encodeBase64(),
+                                                                SRPSession: session,
+                                                                modulusID: moduls_id,
+                                                                salt: new_salt.encodeBase64(),
+                                                                verifer: verifier.encodeBase64(),
+                                                                tfaCode: twoFACode).syncCall()
                         if updatePwd?.code == 1000 {
                             self.password = new_password
                             forceRetry = false
@@ -705,7 +705,7 @@ class UserDataService {
     }
     
     func updateUserSwipeAction(_ isLeft : Bool , action: MessageSwipeAction, completion: @escaping CompletionBlock) {
-        let api = isLeft ? UpdateSwiftLeftAction<ApiResponse>(action: action) : UpdateSwiftRightAction<ApiResponse>(action: action)
+        let api = isLeft ? UpdateSwiftLeftAction(action: action) : UpdateSwiftRightAction(action: action)
         api.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
@@ -759,11 +759,11 @@ class UserDataService {
                     }
                     
                     do {
-                        let updatetNotifyEmailRes = try UpdateNotificationEmail<ApiResponse>(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
-                                                                                         clientProof: srpClient.clientProof.encodeBase64(),
-                                                                                         sRPSession: session,
-                                                                                         notificationEmail: new_notification_email,
-                                                                                         tfaCode: twoFACode).syncCall()
+                        let updatetNotifyEmailRes = try UpdateNotificationEmail(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
+                                                                                clientProof: srpClient.clientProof.encodeBase64(),
+                                                                                sRPSession: session,
+                                                                                notificationEmail: new_notification_email,
+                                                                                tfaCode: twoFACode).syncCall()
                         if updatetNotifyEmailRes?.code == 1000 {
                             if let userInfo = self.userInfo {
                                 userInfo.notificationEmail = new_notification_email
@@ -794,7 +794,7 @@ class UserDataService {
     }
     
     func updateNotify(_ isOn: Bool, completion: @escaping CompletionBlock) {
-        let notifySetting = UpdateNotify<ApiResponse>(notify: isOn ? 1 : 0)
+        let notifySetting = UpdateNotify(notify: isOn ? 1 : 0)
         notifySetting.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {

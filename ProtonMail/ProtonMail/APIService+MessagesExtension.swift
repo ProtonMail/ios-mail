@@ -152,7 +152,7 @@ extension APIService {
         request(method: .post,
                 path: path,
                 parameters: parameters,
-                headers: ["x-pm-apiversion": 2],
+                headers: ["x-pm-apiversion": 3],
                 completion: completion)
     }
     
