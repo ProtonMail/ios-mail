@@ -1610,16 +1610,9 @@ class MessageDataService {
                         let session = try message.getSessionKey() else {
                     throw RuntimeError.cant_decrypt.error
                 }
-                for att in attachments {
-                    if att.managedObjectContext != nil {
-                        if let sessionKey = try att.sessionKey() {
-                            sendBuilder.add(att: PreAttachment(id: att.attachmentID, key: sessionKey))
-                        }
-                    }
-                }
+
                 sendBuilder.update(bodyData: bodyData, bodySession: session)
                 sendBuilder.set(pwd: message.password, hit: message.passwordHint)
-                
                 for (index, result) in results.enumerated() {
                     switch result {
                     case .fulfilled(let value):
@@ -1631,6 +1624,7 @@ class MessageDataService {
                                 //compare the key if doesn't match
                                 sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: false))
                             } else {
+                                //sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: true))
                                 sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: contact.mime))
                             }
                         } else {
@@ -1640,8 +1634,7 @@ class MessageDataService {
                         throw error
                     }
                 }
-                
-                
+
                 if sendBuilder.hasMime {
                     guard let clearbody = try message.decryptBody() else {
                         throw RuntimeError.cant_decrypt.error
@@ -1649,6 +1642,13 @@ class MessageDataService {
                     sendBuilder.set(clear: clearbody)
                 }
                 
+                for att in attachments {
+                    if att.managedObjectContext != nil {
+                        if let sessionKey = try att.sessionKey() {
+                            sendBuilder.add(att: PreAttachment(id: att.attachmentID, key: sessionKey, att: att))
+                        }
+                    }
+                }
                 return Promise.value(sendBuilder)
             }.then{ (sendbuilder) -> Promise<SendBuilder> in
                 //build pgp sending mime body

@@ -16,6 +16,8 @@
 
 import Foundation
 import CoreData
+import PromiseKit
+import AwaitKit
 
 extension Attachment {
     
@@ -99,6 +101,32 @@ extension Attachment {
         })
     }
     
+    func fetchAttachmentBody() -> Promise<String> {
+        return Promise { seal in
+            async {
+                if let localURL = self.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
+                    seal.fulfill(self.base64DecryptAttachment())
+                    return
+                }
+                
+                if let data = self.fileData, data.count > 0 {
+                    seal.fulfill(self.base64DecryptAttachment())
+                    return
+                }
+                
+                self.localURL = nil
+                sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
+                    self.localURL = url;
+                    seal.fulfill(self.base64DecryptAttachment())
+                    if error != nil {
+                        PMLog.D("\(String(describing: error))")
+                    }
+                })
+            }
+            
+        }
+    }
+    
     func base64DecryptAttachment() -> String {
         if let localURL = self.localURL {
             if let data : Data = try? Data(contentsOf: localURL as URL) {
@@ -120,19 +148,20 @@ extension Attachment {
         
         if let data = self.fileData {
             do {
-                if let key_packet = self.keyPacket {
-                    if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                        if let decryptData = try data.decryptAttachment(keydata, passphrase: sharedUserDataService.mailboxPassword!) {
-                            let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
-                            return strBase64
-                        }
-                    }
-                }
+                let strBase64:String = data.base64EncodedString(options: .lineLength64Characters)
+                return strBase64
+//                if let key_packet = self.keyPacket {
+//                    if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
+//                        if let decryptData = try data.decryptAttachment(keydata, passphrase: sharedUserDataService.mailboxPassword!) {
+//                            let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
+//                            return strBase64
+//                        }
+//                    }
+//                }
             } catch let ex as NSError{
                 PMLog.D("\(ex)")
             }
         }
-        
         return ""
     }
     
