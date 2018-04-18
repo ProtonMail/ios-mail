@@ -1,492 +1,729 @@
-/*
- localization.strings
- ProtonMail
- 
- Created by Yanfeng Zhang on 4/20/16.
- Copyright (c) 2016 ProtonMail. All rights reserved.
- */
+/* (No Comment) */
+"%d Minute" = "%d 分";
 
-/**
- *  file string type
- */
-"Localizable.strings" = "Base";
+/* (No Comment) */
+"%d Minutes" = "%d 分";
 
+/* (No Comment) */
+"<no object>" = "<no object>";
 
+/* (No Comment) */
+"A message cannot have more than 5 labels" = "メッセージは、5 つ以上のラベルを持つことはできません";
 
+/* (No Comment) */
+"A new version of ProtonMail app is available, please update to latest version." = "ProtonMailアプリの新バージョンが利用可能です。最新のバージョンに更新してください。";
 
+/* (No Comment) */
+"A passcode has not been set, enable it in the system Settings" = "パスコードが設定されていません。システム設定で有効にしてください。";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Can't get a Modulus ID!";
+/* (No Comment) */
+"ARCHIVE" = "アーカイブ";
 
-/* Description */
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "未払いのため、このアカウントへのアクセスはできません。 \n\n詳細については、<a href = \"https://protonmail.com/support/knowledge-base/delinquency/\">ナレッジベース</a>にアクセスしてください。";
+
+/* (No Comment) */
+"Account password invalid" = "無効なアカウントパスワード";
+
+/* (No Comment) */
+"Add" = "追加";
+
+/* (No Comment) */
+"Add Star" = "星印を追加";
+
+/* (No Comment) */
+"Alert" = "警告";
+
+/* (No Comment) */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失われますが、暗号化されていないメールは引き続き表示されます。\n\nこの操作は取り消せません！";
+
+/* (No Comment) */
+"Apply" = "適用";
+
+/* (No Comment) */
+"Archive" = "アーカイブ";
+
+/* (No Comment) */
+"Archived" = "アーカイブ済";
+
+/* (No Comment) */
+"Authentication Failed Wrong username or password" = "認証に失敗しました。ログイン名またはパスワードが間違っています。";
+
+/* (No Comment) */
+"Auto Lock Time" = "自動ロック時間";
+
+/* (No Comment) */
+"Auto Show Images" = "画像の自動表示";
+
+/* (No Comment) */
+"Bad parameter" = "不正なパラメーター";
+
+/* (No Comment) */
+"Bad parameter: %@" = "不正なパラメーター: %@";
+
+/* (No Comment) */
+"Bad path" = "不正なパス";
+
+/* (No Comment) */
+"Bad response" = "不正な応答";
+
+/* (No Comment) */
+"Bcc" = "Bcc";
+
+/* (No Comment) */
+"Bug Report Received" = "バグレポートを受信しました。";
+
+/* (No Comment) */
+"Can't download message body, please try again." = "メッセージの本文をダウンロードできません。もう一度試してください。";
+
+/* (No Comment) */
+"Can't find the clicked message please try again!" = "クリックされたメールが見当たりません。もう一度試してください。";
+
+/* (No Comment) */
+"Can't get a Moduls ID!" = "Modulus IDを取得できません";
+
+/* (No Comment) */
+"Can't not find the value from the response body" = "レスポンスボディから値を見つけることができません";
+
+/* (No Comment) */
+"Cancel" = "キャンセル";
+
+/* (No Comment) */
+"Cant' decrypt this attachment!" = "この添付ファイルを復号できません。";
+
+/* (No Comment) */
+"Cc" = "Cc";
+
+/* (No Comment) */
+"Cell phone number" = "携帯電話番号";
+
+/* (No Comment) */
+"Change Password" = "パスワードを変更";
+
+/* (No Comment) */
+"Change Pin" = "PINを変更";
+
+/* (No Comment) */
+"Change default address to .." = "既定のアドレスを変更";
+
+/* (No Comment) */
+"Change left swipe action" = "左スワイプアクションを変更";
+
+/* (No Comment) */
+"Change right swipe action" = "右スワイプアクションを変更";
+
+/* (No Comment) */
+"Change sender address to .." = "送信アドレスを変更";
+
+/* (No Comment) */
+"Checking ...." = "確認中…";
+
+/* (No Comment) */
+"Clear Local Message Cache" = "ローカルメッセージのキャッシュを消去";
+
+/* (No Comment) */
+"Close" = "閉じる";
+
+/* (No Comment) */
+"Compose" = "新規作成";
+
+/* (No Comment) */
+"Confirm" = "確認";
+
+/* (No Comment) */
+"Confirm Login Password" = "ログインパスワードを確認";
+
+/* (No Comment) */
+"Confirm Mailbox Password" = "メールボックスのパスワードを確認";
+
+/* (No Comment) */
+"Confirm Password" = "パスワードの確認";
+
+/* (No Comment) */
+"Confirmation" = "確認";
+
+/* (No Comment) */
+"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "メールを分類するラベルを作成・追加して、受信箱を整理しましょう。メールを押し込むと、全ての選択肢が表示されます。";
+
+/* (No Comment) */
+"Create user failed" = "ユーザーの作成に失敗しました。";
+
+/* (No Comment) */
+"DRAFTS" = "下書き";
+
+/* (No Comment) */
+"Date: %@" = "日時: %@";
+
+/* (No Comment) */
+"Debug" = "デバッグ";
+
+/* (No Comment) */
+"Default" = "デフォルト";
+
+/* (No Comment) */
+"Define Hint (Optional)" = "ヒントを定義（省略可）";
+
+/* (No Comment) */
+"Define Password" = "パスワードを定義";
+
+/* (No Comment) */
+"Delete" = "削除";
+
+/* (No Comment) */
+"Deleted" = "削除済";
+
+/* (No Comment) */
+"Details" = "詳細";
+
+/* (No Comment) */
+"Discard draft" = "下書きを破棄";
+
+/* (No Comment) */
+"Display Name" = "表示名";
+
+/* (No Comment) */
+"Display Name Updated" = "表示名が更新されました。";
+
+/* (No Comment) */
+"Done" = "完了";
+
+/* (No Comment) */
+"Draft" = "下書き";
+
+/* (No Comment) */
+"Edit" = "編集";
+
+/* (No Comment) */
+"Edit Contact" = "連絡先の編集";
+
+/* (No Comment) */
+"Email address" = "メールアドレス";
+
+/* (No Comment) */
+"Email address invalid" = "メールアドレスが不正です。";
+
+/* (No Comment) */
+"Email domain invalid" = "無効なメールドメイン";
+
+/* (No Comment) */
+"Empty Folder" = "フォルダーを空にする";
+
+/* (No Comment) */
+"Enable Pin Protection" = "PIN保護機能を有効にする";
+
+/* (No Comment) */
+"Enable TouchID" = "TouchIDを有効";
+
+/* (No Comment) */
+"End-to-End Encryption" = "端末相互間の暗号化";
+
+/* (No Comment) */
+"Enter Verification Code" = "検証コードを入力";
+
+/* (No Comment) */
+"Error Logs" = "エラーログ";
+
+/* (No Comment) */
+"Every time enter app" = "毎回アプリを入力";
+
+/* (No Comment) */
+"Expires in %d days %d hours %d mins %d seconds" = "%d 日 %d 時間 %d 分 %d 秒で期限切れ";
+
+/* (No Comment) */
+"Expiring Messages" = "期限切れ間近のメッセージ";
+
+/* (No Comment) */
+"FORGOT PASSWORD?" = "パスワードをお忘れですか？";
+
+/* (No Comment) */
+"Failed to initialize the application's saved data" = "アプリケーションの保存データの初期化に失敗しました。";
+
+/* (No Comment) */
+"Forward" = "転送";
+
+/* (No Comment) */
+"General Settings" = "一般設定";
+
+/* (No Comment) */
+"Help & Support" = "手引きとサポート";
+
+/* (No Comment) */
+"Hide" = "隠す";
+
+/* (No Comment) */
+"Hide Details" = "詳細を隠す";
+
+/* (No Comment) */
+"INBOX" = "受信箱";
+
+/* (No Comment) */
+"Import File From..." = "...からファイルをインポート";
+
+/* (No Comment) */
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "サービスを利用するには、ProtonMailの利用規約に同意する必要があります。";
+
+/* (No Comment) */
+"Inbox" = "受信箱";
+
+/* (No Comment) */
+"Incorrect password" = "間違ったパスワード";
+
+/* (No Comment) */
+"Invalid UserName" = "無効なユーザー名";
+
+/* (No Comment) */
+"Invalid access token please relogin" = "無効なアクセストークンです。再ログインしてください。";
+
+/* (No Comment) */
+"Invalid credential" = "無効な認証情報";
+
+/* (No Comment) */
+"Key generation failed" = "鍵の作成に失敗しました。";
+
+/* (No Comment) */
+"LOGIN" = "ログイン";
+
+/* (No Comment) */
+"Label Management" = "ラベルの管理";
+
+/* (No Comment) */
+"Label as..." = "…としてラベル付け";
+
+/* (No Comment) */
+"Language" = "言語";
+
+/* (No Comment) */
+"Loading..." = "読み込み中...";
+
+/* (No Comment) */
+"Localizable.strings" = "英語";
+
+/* (No Comment) */
+"Login Password" = "ログインパスワード";
+
+/* (No Comment) */
+"Login password doesn't match" = "ログインパスワードが一致しません。";
+
+/* (No Comment) */
+"MAILBOX PASSWORD" = "メールボックスのパスワード";
+
+/* (No Comment) */
+"Mailbox Password" = "メールボックスのパスワード";
+
+/* (No Comment) */
+"Mailbox password doesn't match" = "メールボックスのパスワードが一致しません。";
+
+/* (No Comment) */
+"Mark Read" = "既読にする";
+
+/* (No Comment) */
+"Mark as unread" = "未読にする";
+
+/* (No Comment) */
+"Message Queue" = "メッセージキュー";
+
+/* (No Comment) */
+"Message Swipe Actions" = "メッセージ上でのスワイプ時のアクション";
+
+/* (No Comment) */
+"Message expired" = "期限切れのメッセージ";
+
+/* (No Comment) */
+"Message password does not match." = "メッセージパスワードが一致しません。";
+
+/* (No Comment) */
+"Message sending failed please try again" = "メッセージの送信に失敗しました。もう一度試してください。";
+
+/* (No Comment) */
+"Messages you send can be set to auto delete after a certain time period." = "送信されたメッセージが一定期間後に自動的に削除されるように設定できます。";
+
+/* (No Comment) */
+"Mobile Signature" = "モバイル署名";
+
+/* (No Comment) */
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "モバイル機器からの新規登録は一時的に無効化されています。時間をおいて再度試すか、デスクトップまたはノート型機器からprotonmail.comを開いて登録してください。";
+
+/* (No Comment) */
+"Move to Archive" = "アーカイブに移動";
+
+/* (No Comment) */
+"Move to Draft" = "下書きへ移動";
+
+/* (No Comment) */
+"Move to Inbox" = "受信箱に移動";
+
+/* (No Comment) */
+"Move to Outbox" = "送信箱に移動";
+
+/* (No Comment) */
+"Move to Spam" = "迷惑メールに移動";
+
+/* (No Comment) */
+"Move to Trash" = "ごみ箱に移動";
+
+/* (No Comment) */
+"Move to..." = "...に移動";
+
+/* (No Comment) */
+"Multiple Addresses" = "複数のアドレス";
+
+/* (No Comment) */
+"NEED AN ACCOUNT? SIGN UP." = "無料登録";
+
+/* (No Comment) */
+"None" = "なし";
+
+/* (No Comment) */
+"Notification Email" = "通知メール";
+
+/* (No Comment) */
+"OK" = "OK";
+
+/* (No Comment) */
+"OpenDraft" = "下書きを開く";
+
+/* (No Comment) */
+"Outbox" = "送信箱";
+
+/* (No Comment) */
+"Password" = "パスワード";
+
+/* (No Comment) */
+"Password Mismatch" = "パスワードが一致しません。";
+
+/* (No Comment) */
+"Password Updated" = "パスワードを更新しました。";
+
+/* (No Comment) */
+"Password cannot be empty." = "パスワードは空白にできません。";
+
+/* (No Comment) */
+"Phone number invalid" = "電話番号が無効です";
+
+/* (No Comment) */
+"Photo Library" = "フォトライブラリー";
+
+/* (No Comment) */
+"Please check your cell phone for the verification code." = "携帯電話で検証コードを確認してください。";
+
+/* (No Comment) */
+"Please check your email for the verification code." = "メールで検証コードを確認してください。";
+
+/* (No Comment) */
+"Please input a valid cell phone number." = "有効な携帯電話番号を入力してください。";
+
+/* (No Comment) */
+"Please input a valid email address." = "有効なメールアドレスを入力してください。";
+
+/* (No Comment) */
+"Please pick a user name first!" = "まずユーザー名を選んでください。";
+
+/* (No Comment) */
+"Please remove all attachments before changing sender!" = "送信者を変更する前に全ての添付ファイルを削除してください。";
+
+/* (No Comment) */
+"Please set a password." = "パスワードを設定してください。";
+
+/* (No Comment) */
+"Please try a different domain." = "別のドメインを試してください。";
+
+/* (No Comment) */
+"Please try a different email address." = "別のメールアドレスを試してください。";
+
+/* (No Comment) */
+"Please try a different password." = "別のパスワードを試してください。";
+
+/* (No Comment) */
+"Please try a different user name." = "別のユーザー名をお試しください。";
+
+/* (No Comment) */
+"Please try again." = "もう一度試してください。";
+
+/* (No Comment) */
+"Please use the web version of ProtonMail to change your mailbox password!" = "メールボックスパスワードを変更するにはProtonMailのwebバージョンを使用してください。";
+
+/* (No Comment) */
+"Please use your new password when signing in." = "ログインするときは、新しいパスワードを使用してください。";
+
+/* (No Comment) */
+"Please, manage it in your phone." = "電話で管理してください。";
+
+/* (No Comment) */
+"Protection" = "保護";
+
+/* (No Comment) */
+"Protection Entire App" = "アプリ全体の保護";
+
+/* (No Comment) */
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMailは広告を売ったり、あなたのプライバシーを侵害したりしません。 ProtonMailを維持する上であなたのサポートは不可欠です。 ProtonMailをサポートするために、有料アカウントにアップグレードしたり寄付したりすることができます。";
+
+/* (No Comment) */
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMailは現在オフラインです。現在の状態については私たちのtwitterを参照してください: https://twitter.com/protonmail";
+
+/* (No Comment) */
+"Quick swipe actions" = "クイックスワイプ操作";
+
+/* (No Comment) */
+"Recovery Email" = "回復用のメールアドレス";
+
+/* (No Comment) */
+"Remove" = "削除";
+
+/* (No Comment) */
+"Reply" = "返信";
+
+/* (No Comment) */
+"Reply message" = "メッセージへの返信";
+
+/* (No Comment) */
+"ReplyAll" = "全員に返信";
+
+/* (No Comment) */
+"Retry after %d seconds" = "%d 秒後に再試行";
+
+/* (No Comment) */
+"SENT" = "送信済";
+
+/* (No Comment) */
+"SPAM" = "迷惑メール";
+
+/* (No Comment) */
+"STARRED" = "星印付き";
+
+/* (No Comment) */
+"Save draft" = "下書きを保存";
+
+/* (No Comment) */
+"Search" = "検索";
+
+/* (No Comment) */
+"Select your language" = "言語を選択";
+
+/* (No Comment) */
+"Send" = "送信";
+
+/* (No Comment) */
+"Send Verification Code" = "検証コードを送信";
+
+/* (No Comment) */
+"Send message without subject?" = "件名なしでメッセージを送りますか。";
+
+/* (No Comment) */
+"Sending Message" = "送信中…";
+
+/* (No Comment) */
+"Sign Out" = "ログアウト";
+
+/* (No Comment) */
+"Signature" = "署名";
+
+/* (No Comment) */
+"Signature Updated" = "署名が更新されました。";
+
+/* (No Comment) */
+"Space Warning" = "容量不足";
+
+/* (No Comment) */
+"Spam" = "迷惑メール";
+
+/* (No Comment) */
+"Spammed" = "迷惑メールに設定";
+
+/* (No Comment) */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
 
+/* (No Comment) */
+"Star" = "星印";
 
-/**
- *  Login View
- */
-"Username" = "Username";
-"Password" = "Password";
-
-"USER LOGIN" = "User log in";
-"LOGIN" = "Login";
-"NEED AN ACCOUNT? SIGN UP." = "Sign up for free";
-"FORGOT PASSWORD?" = "Forgot password?";
-
-
-/**
- *  MailboxPasswordViewController
- */
-"MAILBOX PASSWORD" = "Mailbox password";
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Access to this account is disabled due to non-payment.\n
-Please visit <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">our knowledge base</a> for more information.";
-"Incorrect password" = "Incorrect password";
-"The mailbox password is incorrect." = "The mailbox password is incorrect.";
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com";
-
-
-
-/**
- *  MailboxViewController
- */
-
-"INBOX" = "Inbox";
-"Can't find the clicked message please try again!" = "Can't find the clicked message please try again!";
-//"Cancel"
-"Empty Folder" = "Empty folder";
-"Mark Read" = "Mark as read";
-"Add Star" = "Add star";
-"Archived" = "Archived";
-"Deleted" = "Deleted";
-"Spammed" = "Spammed";
-
-
-
-/**
- *  MenuViewController
- */
-"Confirm" = "Confirm";
-"Sign Out" = "Log out";
-//"Cancel"
-
-
-
-/**
- *  MessageAction
- */
-"Trash" = "Trash";
-"Spam" = "Spam";
-"Star" = "Star";
-"Archive" = "Archive";
-
-
-/**
- *  MessageLocation
- */
-//"Trash"
-"Move to Inbox" = "Move to Inbox";
-"Move to Draft" = "Move to Draft";
-"Move to Outbox" = "Move to Outbox";
-"Move to Spam" = "Move to Spam";
-"Add Star" = "Add Star";
-"Move to Archive" = "Move to Archive";
-"Move to Trash" = "Move to Trash";
-//"Deleted"
-"Inbox" = "Inbox";
-//"Draft" = "Draft";
-"Outbox" = "Outbox";
-//"Spam"
-"Starred" = "Starred";
-//"Archive"
-//"Trash"
-//"INBOX"
-"STARRED" = "Starred";
-"DRAFTS" = "Drafts";
-"SENT" = "Sent";
-"TRASH" = "Trash";
-"ARCHIVE" = "Archive";
-"SPAM" = "Spam";
-
-
-/**
- *  MessageViewController
- */
-"Can't download message body, please try again." = "Can't download message body, please try again.";
-"Unable to decrypt message." = "Unable to decrypt message.";
-"Loading..." = "Loading...";
-
-
-/**
- *  MessageDataService
- */
-"Unable to send the email" = "Unable to send the email.";
-"The draft format incorrectly sending failed!" = "Sending failed. There was an error with the draft format.";
-"Cant' decrypt this attachment!" = "Unable to decrypt this attachment.";
-
-
-/**
- *  MoreOptionsView
- */
-"Label as..." = "Label as...";
-"Move to..." = "Move to...";
-"Mark as unread" = "Mark as unread";
-
-
-/**
- *  Onboarding
- */
-"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Your new encrypted email account has been set up and is ready to send and receive encrypted messages.";
-"You can customize swipe gestures in the ProtonMail App Settings." = "You can customize swipe gestures in the ProtonMail App Settings.";
-"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Create and add labels to organize your inbox. Press and hold down on a message for all options.";
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.";
-"Messages you send can be set to auto delete after a certain time period." = "Messages you send can be set to auto delete after a certain time period.";
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "You can get help and support at protonmail.com/support. Bugs can also be reported with the app.";
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.";
-"Welcome to ProtonMail!" = "Welcome to ProtonMail";
-"Quick swipe actions" = "Quick Swipe actions";
-"Label Management" = "Label management";
-"End-to-End Encryption" = "End-to-end encryption";
-"Expiring Messages" = "Expiring messages";
-"Help & Support" = "Help & Support";
-"Support ProtonMail" = "Support ProtonMail";
-
-
-
-/**
- *  SignUpEmailViewController
- */
-"Recovery Email" = "Recovery Email";
-//"Display Name"
-//"Please input a valid email address."
-
-
-/**
- *  SignUpPasswordViewController
- */
-//"Login Password"
-"Confirm Login Password" = "Confirm login password";
-//"Mailbox Password"
-"Confirm Mailbox Password" = "Confirm mailbox password";
-"Mailbox password doesn't match" = "Mailbox password doesn't match";
-"Login password doesn't match" = "Login password doesn't match";
-
-
-/**
- *  SignUpUserNameViewController
- */
-//"Username"
-"Checking ...." = "Checking...";
-"User is available!" = "Username is available";
-"User already exist!" = "Username already taken";
-"Please pick a user name first!" = "Please pick a username first!";
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "In order to use our services, you must agree to ProtonMail's Terms of Service.";
-//"Done"
-
-
-
-/**
- *  PhoneVerifyViewController
- */
-"Cell phone number" = "Cell phone number";
-//"Enter Verification Code"
-//"Retry after %d seconds";
-//"Send Verification Code";
-//"Verification code request failed"
-"Phone number invalid" = "Phone number invalid";
-"Please input a valid cell phone number." = "Please input a valid cell phone number.";
-"Please check your cell phone for the verification code." = "Please check your cell phone for the verification code.";
-
-
-
-/**
- *  Email Verify View Controller
- */
-"Email address" = "Email address";
-"Enter Verification Code" = "Enter verification code";
-"Retry after %d seconds" = "Retry after %d seconds";
-"Send Verification Code" = "Send verification code";
-"Verification code request failed" = "Verification code request failed"; //alert title
-"Email address invalid" = "Email address invalid"; // alert title
-"Please input a valid email address." = "Please input a valid email address.";
-"Verification code sent" = "Verification code sent"; //alert title
-"Please check your email for the verification code." = "Please check your email for the verification code.";
-
-//error part
-"Create user failed" = "Create user failed"; //alert title
-"User name invalid" = "Invalid username"; //alert title
-"Account password invalid" = "Invalid account password"; //title
-"The verification email invalid" = "Invalid verification email"; //title
-"User name exist" = "Username exist"; //title
-"Email domain invalid" = "Invalid email domain"; //title
-"Wrong verification code" = "Wrong verification code";//title
-
-"Please try again." = "Please try again";
-"Please try a different domain." = "Please try a different domain.";
-"Please try a different user name." = "Please try a different username.";
-"Please try a different email address." = "Please try a different email address.";
-"Please try a different password." = "Please try a different password.";
-
-
-/**
- *  RecaptchaViewController
- */
-"The verification failed!" = "The verification failed!";
-
-
-/**
- *  ReportBugsViewController
- */
-"OK" = "OK";
-"Bug Report Received" = "Bug report received";
-"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Thank you for submitting a bug report.  We have added your report to our bug tracking system.";
-
-
-/**
- *  SearchViewController
- */
-"Search" = "Search";
-
-
-/**
- *  SettingsViewController
- */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!";
-"Display Name Updated" = "Display name updated"; //alert title
-"The display name is now %@." = "The display name is now %@.";
-"Signature Updated" = "Signature Updated";
-"Your signature has been updated." = "Your signature has been updated.";
-"Password Mismatch" = "Passwords do not match";
-"The password you entered does not match the current password." = "The password you entered does not match the current password.";
-"Password Updated" = "Password updated";
-"Please use your new password when signing in." = "Please use your new password when signing in.";
-
-
-
-/**
- *  SettingTableViewController
- */
-"TouchID is not enrolled, enable it in the system Settings" = "TouchID is not enrolled, enable it in the system Settings";
-"A passcode has not been set, enable it in the system Settings" = "A passcode has not been set, enable it in the system Settings";
-"TouchID not available" = "TouchID not available";
-"%d Minutes" = "%d minutes";
-"%d Minute" = "%d minute";
-"None" = "None";
-"Every time enter app" = "Every time enter app";
-"Unknown" = "Unknown";
-"Default" = "Default";
-"Unkonw Version" = "Unknown version";
-"Version %@ %@" = "Version %@ %@";
-"Please use the web version of ProtonMail to change your mailbox password!" = "Please use the web version of ProtonMail to change your mailbox password!";
-"Done" = "Done";
-"Auto Lock Time" = "Auto lock time";
-"Change default address to .." = "Change default address to...";
-//"Cancel"
-"Message Queue" = "Message queue";
-"Error Logs" = "Error logs";
-"Clear Local Message Cache" = "Clear local message cache";
-"Notification Email" = "Notification email";
-"Display Name" = "Display name";
-"Signature" = "Signature";
-"Login Password" = "Login password";
-"Mailbox Password" = "Mailbox password";
-"Clear Local Message Cache" = "Clear local message cache";
-"Mobile Signature" = "Mobile signature";
-"Auto Show Images" = "Auto show images";
-
-"Swipe Left to Right" = "Swipe Left to Right";
-"Swipe Right to Left" = "Swipe Right to Left";
-"Change left swipe action" = "Change left swipe action";
-"Change right swipe action" = "Change right swipe action";
-
-"Enable TouchID" = "Enable TouchID";
-"Enable Pin Protection" = "Enable PIN protection";
-"Change Pin" = "Change PIN";
-"Protection Entire App" = "Protection entire app";
-
-"Debug" = "Debug";
-"General Settings" = "General settings";
-"Multiple Addresses" = "Multiple addresses";
-"Storage" = "Storage";
-"Message Swipe Actions" = "Message Swipe Actions";
-"Protection" = "Protection";
-"Language" = "Language";
-"Select your language" = "Select your language";
-
-
-/**
- *  API Error
- */
-"Token expired" = "Token expired"; //alert title
-"The authentication token has expired." = "The authentication token has expired.";
-"Invalid credential" = "Invalid credential"; //alert title
-"The authentication credentials are invalid." = "The authentication credentials are invalid.";
-"Alert" = "Alert"; //alert title
-"Authentication Failed Wrong username or password" = "Authentication failed: wrong username or password.";
-"Unable to connect to the server" = "Unable to connect to the server";
-"Unable to parse token" = "Unable to parse token"; //alert title
-"Unable to parse authentication token!" = "Unable to parse authentication token!";
-
-"Invalid UserName" = "Invalid username"; //title
-"The UserName have been taken." = "The username have been taken.";
-"Change Password" = "Change password"; //title
-"The Password is wrong." = "The password is wrong.";
-"The new password not match" = "Passwords do not match";
-"The new password can't empty" = "The new password can't be empty";
-
-"Bad parameter" = "Bad parameter"; //title
-"Bad parameter: %@" = "Bad parameter: %@";
-"Bad path" = "Bad path"; //title
-"Unable to construct a valid URL with the following path: %@" = "Unable to construct a valid URL with the following path: %@";
-"Bad response" = "Bad response"; //title
-"Can't not find the value from the response body" = "Can't not find the value from the response body";
-"<no object>" = "<no object>"; //default empty object
-"Unable to parse response" = "Unable to parse response";
-"Unable to parse the response object:\n%@" = "Unable to parse the response object:\n%@";
-
-
-/**
- *  NSErrorExtension
- */
-//"Alert" = "Alert";
-"A new version of ProtonMail app is available, please update to latest version." = "A new version of ProtonMail app is available, please update to latest version.";
-"Invalid access token please relogin" = "Invalid access token please relogin";
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
-"Sending Message" = "Sending message";
-"Message sending failed please try again" = "Message sending failed please try again";
-"Unknow Error" = "Unknown error";
-
-
-
-/**
- *  Attachment table ViewController
- */
-"Photo Library" = "Photo Library";
-"Take a Photo" = "Take photo";
-"Import File From..." = "Import file from...";
-"Cancel" = "Cancel";
-"The total attachment size can't be bigger than 25MB" = "The total attachment size can't be bigger than 25MB";
-"Remove" = "Remove";
-"Unknow file" = "Unknown file";
-
-
-/**
- *  Composer Email view controller
- */
-"Compose" = "Compose";
-"Send message without subject?" = "Send message without subject?";  //when subject not empty
-"Send" = "Send";
-//"Cancel"
-//"Alert"
-"You need at least one recipient to send" = "You need at least one recipient to send";
-"Confirmation" = "Confirmation";
-"Save draft" = "Save draft";
-"Discard draft" = "Discard draft";
-"Please remove all attachments before changing sender!" = "Please remove all attachments before changing the sender"; // when switch sender but email has attachments
-"Change sender address to .." = "Change sender address to...";
-"days" = "Days";
-"hours" = "Hours";
-
-// composer view
-"Message password does not match." = "Message password does not match.";
-"Password cannot be empty." = "Password cannot be empty.";
-"Please set a password." = "Please set a password.";
-"Define Password" = "Define password";
-"Confirm Password" = "Confirm password";
-"Define Hint (Optional)" = "Define hint (Optional)";
-"To" = "To";
-"Cc" = "CC";
-"Bcc" = "BCC";
-
-// composer view model impl
-"Reply message" = "Reply message";
-
-
-/**
- *  Contacts View Controller
- */
-"Delete" = "Delete";
-"Edit" = "Edit";
-"This contact belongs to your Address Book." = "This contact belongs to your address book."; //alert desc
-"Please, manage it in your phone." = "Please, manage it in your phone."; //alert title
-
-/**
- *  Edit Contact view controller
- */
-"Edit Contact" = "Edit contact";
-
-
-/**
- *  Controller Defined
- */
-"Reply" = "Reply";
-"ReplyAll" = "Reply all";
-"Forward" = "Forward";
-"Draft" = "Draft";
-"OpenDraft" = "Open draft";
-
-
-
-/**
- *  Core Data Service
- */
-"Failed to initialize the application's saved data" = "Failed to initialize the application's saved data"; //local error
-"There was an error creating or loading the application's saved data." = "There was an error creating or loading the application's saved data."; //local error
-"Close" = "Close";
-
-
-/**
- *  Email Header View
- */
-
-"Details" = "Details";
-"Hide Details" = "Hide details";
-"Date: %@" = "Date: %@";
-
-
-/**
- *  Encryption Setup View Controller
- */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.";
-"Key generation failed" = "Key generation failed";
-
-
-/**
- *  Expiration View
- */
-"Message expired" = "Message expired";
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
-
-
-/**
- *  Human Check Menu View Controller
- */
-//"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer."
-
-
-
-
-/**
- *  LabelsViewController
- */
-
-"The maximum number of labels is %d." = "The maximum number of labels is %d.";
-"The label name is duplicate" = "The label name is duplicate";
-"Apply" = "Apply";
-"Add" = "Add";
-
-
-/**
- *  LabelTableViewCell
- */
-"A message cannot have more than 5 labels" = "A message cannot have more than 5 labels";
-
-
-
-/**
- *  StorageLimit
- */
-"You have used up all of your storage space (%@)." = "You have used up all of your storage space (%@).";
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
-"Space Warning" = "Space warning";
-"Hide" = "Hide";
+/* (No Comment) */
+"Starred" = "星印付き";
+
+/* (No Comment) */
+"Storage" = "ストレージ";
+
+/* (No Comment) */
+"Support ProtonMail" = "ProtonMailをサポート";
+
+/* (No Comment) */
+"Swipe Left to Right" = "左から右へのスワイプ";
+
+/* (No Comment) */
+"Swipe Right to Left" = "右から左へのスワイプ";
+
+/* (No Comment) */
+"TRASH" = "ごみ箱";
+
+/* (No Comment) */
+"Take a Photo" = "写真を撮影";
+
+/* (No Comment) */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "バグのご報告をありがとうございます。 バグ追跡システムにあなたのレポートを追加しました。";
+
+/* (No Comment) */
+"The Password is wrong." = "パスワードが間違っています。";
+
+/* (No Comment) */
+"The UserName have been taken." = "このユーザー名は既に使用されています。";
+
+/* (No Comment) */
+"The authentication credentials are invalid." = "認証情報が無効です。";
+
+/* (No Comment) */
+"The authentication token has expired." = "認証トークンが期限切れです。";
+
+/* (No Comment) */
+"The display name is now %@." = "表示名は現在 %@ です。";
+
+/* (No Comment) */
+"The draft format incorrectly sending failed!" = "送信に失敗しました。下書きのフォーマットにエラーがありました。";
+
+/* (No Comment) */
+"The label name is duplicate" = "ラベル名が重複しています。";
+
+/* (No Comment) */
+"The mailbox password is incorrect." = "メールボックスパスワードが間違っています。";
+
+/* (No Comment) */
+"The maximum number of labels is %d." = "ラベルの最大数は%d 個です。";
+
+/* (No Comment) */
+"The new password can't empty" = "新しいパスワードは空白にできません。";
+
+/* (No Comment) */
+"The new password not match" = "パスワードが一致しません。";
+
+/* (No Comment) */
+"The password you entered does not match the current password." = "入力したパスワードが現在のパスワードと一致しません。";
+
+/* (No Comment) */
+"The total attachment size can't be bigger than 25MB" = "添付の合計サイズは25MB以内にしてください。";
+
+/* (No Comment) */
+"The verification email invalid" = "無効な検証メール";
+
+/* (No Comment) */
+"The verification failed!" = "検証に失敗しました。";
+
+/* (No Comment) */
+"There was an error creating or loading the application's saved data." = "アプリケーションの保存データを作成または読み込む際にエラーが発生しました。";
+
+/* (No Comment) */
+"This contact belongs to your Address Book." = "この連絡先はあなたのアドレス帳に含まれています。";
+
+/* (No Comment) */
+"To" = "宛先　";
+
+/* (No Comment) */
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "メールボックスパスワードをリセットするには、protonmail.comでProtonMailのwebバージョンを使用してください。";
+
+/* (No Comment) */
+"Token expired" = "トークンの有効期限が過ぎています。";
+
+/* (No Comment) */
+"TouchID is not enrolled, enable it in the system Settings" = "TouchIDが登録されていません。システム設定で有効にしてください。";
+
+/* (No Comment) */
+"TouchID not available" = "TouchIDが利用できません。";
+
+/* (No Comment) */
+"Trash" = "ごみ箱";
+
+/* (No Comment) */
+"USER LOGIN" = "ユーザーログイン";
+
+/* (No Comment) */
+"Unable to connect to the server" = "サーバーに接続できません。";
+
+/* (No Comment) */
+"Unable to construct a valid URL with the following path: %@" = "次のパスで有効なURLを作成できません：%@";
+
+/* (No Comment) */
+"Unable to decrypt message." = "メッセージを復号できません。";
+
+/* (No Comment) */
+"Unable to parse authentication token!" = "認証トークンを解析できません";
+
+/* (No Comment) */
+"Unable to parse response" = "応答を解析できません。";
+
+/* (No Comment) */
+"Unable to parse the response object:\n%@" = "応答オブジェクトを解析できません:%@";
+
+/* (No Comment) */
+"Unable to parse token" = "トークンを解析できません。";
+
+/* (No Comment) */
+"Unable to send the email" = "メールを送信できません。";
+
+/* (No Comment) */
+"Unknow Error" = "不明なエラー";
+
+/* (No Comment) */
+"Unknow file" = "不明なファイル";
+
+/* (No Comment) */
+"Unknown" = "不明";
+
+/* (No Comment) */
+"Unkonw Version" = "不明なバージョン";
+
+/* (No Comment) */
+"User already exist!" = "既に使用されているユーザー名です。";
+
+/* (No Comment) */
+"User is available!" = "ユーザー名を使用可能です。";
+
+/* (No Comment) */
+"User name exist" = "ユーザー名が存在します。";
+
+/* (No Comment) */
+"User name invalid" = "無効なユーザー名";
+
+/* (No Comment) */
+"Username" = "ユーザー名";
+
+/* (No Comment) */
+"Verification code request failed" = "検証コードの要求に失敗しました。";
+
+/* (No Comment) */
+"Verification code sent" = "検証コードを送信しました。";
+
+/* (No Comment) */
+"Version %@ %@" = "バージョン %@ %@";
+
+/* (No Comment) */
+"Welcome to ProtonMail!" = "ProtonMailへようこそ";
+
+/* (No Comment) */
+"Wrong verification code" = "間違った検証コード";
+
+/* (No Comment) */
+"You can customize swipe gestures in the ProtonMail App Settings." = "ProtonMail Appの設定画面にてスワイプ時の操作を自由に選べます。";
+
+/* (No Comment) */
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "ご利用の手引きとサポートをprotonmail.com/supportにて提供しています。アプリ内から不具合の報告もできます。";
+
+/* (No Comment) */
+"You have used %d%% of your storage space (%@)." = "あなたのストレージ容量 (%@) の %d%% を使用しています。";
+
+/* (No Comment) */
+"You have used up all of your storage space (%@)." = "全てのストレージ容量 (%@) が使用されています。";
+
+/* (No Comment) */
+"You need at least one recipient to send" = "送信するには少なくとも 1 人の受信者が必要です。";
+
+/* (No Comment) */
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "受信箱は端末相互間で暗号化され、保護されています。友人に送るメールを自動的に保護するには、その友人にもProtonMailを使ってもらいましょう。ProtonMailを使わない相手でも手動での暗号化が可能です。";
+
+/* (No Comment) */
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "暗号化された電子メールの新しいアカウントが設定され、暗号メッセージを送受信する準備ができました。";
+
+/* (No Comment) */
+"Your signature has been updated." = "署名が更新されました。";
+
+/* (No Comment) */
+"days" = "日";
+
+/* (No Comment) */
+"hours" = "時間";
+

@@ -1,0 +1,729 @@
+/* (No Comment) */
+"%d Minute" = "%d minut";
+
+/* (No Comment) */
+"%d Minutes" = "%d minute";
+
+/* (No Comment) */
+"<no object>" = "<nici un obiect>";
+
+/* (No Comment) */
+"A message cannot have more than 5 labels" = "Un mesaj nu poate avea mai mult de 5 etichete";
+
+/* (No Comment) */
+"A new version of ProtonMail app is available, please update to latest version." = "O nouă versiune a aplicației ProtonMail este disponibilă. Vă rugăm să actualizați la ultima versiune.";
+
+/* (No Comment) */
+"A passcode has not been set, enable it in the system Settings" = "Nu a fost stabilit un cod de acces. Activați-l în setările sistemului.";
+
+/* (No Comment) */
+"ARCHIVE" = "Arhivă";
+
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Accesul la acest cont este dezactivat din cauza neplății.\n\nVă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">baza de cunoștințe</a> pentru mai multe informații.";
+
+/* (No Comment) */
+"Account password invalid" = "Parola contului este greșită";
+
+/* (No Comment) */
+"Add" = "Adăugare";
+
+/* (No Comment) */
+"Add Star" = "Marcare";
+
+/* (No Comment) */
+"Alert" = "Alertă";
+
+/* (No Comment) */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Toate mesajele criptate se vor pierde pentru totdeauna, dar se vor putea vizualiza mesajele necriptate. \n\nACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
+
+/* (No Comment) */
+"Apply" = "Aplicare";
+
+/* (No Comment) */
+"Archive" = "Arhivă";
+
+/* (No Comment) */
+"Archived" = "Arhivat";
+
+/* (No Comment) */
+"Authentication Failed Wrong username or password" = "Conectare nereușită: nume de utilizator sau parolă greșită.";
+
+/* (No Comment) */
+"Auto Lock Time" = "Timp autoblocare";
+
+/* (No Comment) */
+"Auto Show Images" = "Afișare automată imagini";
+
+/* (No Comment) */
+"Bad parameter" = "Parametru greșit";
+
+/* (No Comment) */
+"Bad parameter: %@" = "Parametru greșit: %@";
+
+/* (No Comment) */
+"Bad path" = "Cale incorectă";
+
+/* (No Comment) */
+"Bad response" = "Răspuns greșit";
+
+/* (No Comment) */
+"Bcc" = "BCC";
+
+/* (No Comment) */
+"Bug Report Received" = "Raport eroare primit";
+
+/* (No Comment) */
+"Can't download message body, please try again." = "Corpul mesajului nu poate fi descărcat. Reîncercați.";
+
+/* (No Comment) */
+"Can't find the clicked message please try again!" = "Nu se poate găsi mesajul selectat. Reîncercați!";
+
+/* (No Comment) */
+"Can't get a Moduls ID!" = "Nu se poate obține valoarea absolută pentru ID!";
+
+/* (No Comment) */
+"Can't not find the value from the response body" = "Nu se poate găsi valoarea din corpul de răspuns";
+
+/* (No Comment) */
+"Cancel" = "Anulare";
+
+/* (No Comment) */
+"Cant' decrypt this attachment!" = "Atașamentul nu poate fi decriptat.";
+
+/* (No Comment) */
+"Cc" = "CC";
+
+/* (No Comment) */
+"Cell phone number" = "Număr telefon mobil";
+
+/* (No Comment) */
+"Change Password" = "Schimbare parolă";
+
+/* (No Comment) */
+"Change Pin" = "Schimbare PIN";
+
+/* (No Comment) */
+"Change default address to .." = "Schimbare adresă implicită cu...";
+
+/* (No Comment) */
+"Change left swipe action" = "Schimbare acțiune glisare spre stânga";
+
+/* (No Comment) */
+"Change right swipe action" = "Schimbare acțiune glisare spre dreapta";
+
+/* (No Comment) */
+"Change sender address to .." = "Schimbare adresă expeditor cu...";
+
+/* (No Comment) */
+"Checking ...." = "Se verifică...";
+
+/* (No Comment) */
+"Clear Local Message Cache" = "Golire buffer mesaje locale";
+
+/* (No Comment) */
+"Close" = "Închidere";
+
+/* (No Comment) */
+"Compose" = "Compunere";
+
+/* (No Comment) */
+"Confirm" = "Confirmare";
+
+/* (No Comment) */
+"Confirm Login Password" = "Confirmare parolă conectare";
+
+/* (No Comment) */
+"Confirm Mailbox Password" = "Confirmare parolă mesaje";
+
+/* (No Comment) */
+"Confirm Password" = "Confirmare parolă";
+
+/* (No Comment) */
+"Confirmation" = "Confirmare";
+
+/* (No Comment) */
+"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Creați și adaugați etichete pentru organizarea mesajelor. Țineți apăsat pe un mesaj pentru opțiuni.";
+
+/* (No Comment) */
+"Create user failed" = "Creare utilizator eșuată";
+
+/* (No Comment) */
+"DRAFTS" = "Ciorne";
+
+/* (No Comment) */
+"Date: %@" = "Data: %@";
+
+/* (No Comment) */
+"Debug" = "Depanare";
+
+/* (No Comment) */
+"Default" = "Implicit";
+
+/* (No Comment) */
+"Define Hint (Optional)" = "Definire indiciu (opțional)";
+
+/* (No Comment) */
+"Define Password" = "Definire parolă";
+
+/* (No Comment) */
+"Delete" = "Ștergere";
+
+/* (No Comment) */
+"Deleted" = "Șters";
+
+/* (No Comment) */
+"Details" = "Detalii";
+
+/* (No Comment) */
+"Discard draft" = "Aruncare ciornă";
+
+/* (No Comment) */
+"Display Name" = "Nume afișat";
+
+/* (No Comment) */
+"Display Name Updated" = "Nume afișat actualizat";
+
+/* (No Comment) */
+"Done" = "Gata";
+
+/* (No Comment) */
+"Draft" = "Ciornă";
+
+/* (No Comment) */
+"Edit" = "Editare";
+
+/* (No Comment) */
+"Edit Contact" = "Editare contact";
+
+/* (No Comment) */
+"Email address" = "Adresă de e-mail";
+
+/* (No Comment) */
+"Email address invalid" = "Adresa de e-mail nu este validă";
+
+/* (No Comment) */
+"Email domain invalid" = "Domeniu e-mail nevalid";
+
+/* (No Comment) */
+"Empty Folder" = "Golire folder";
+
+/* (No Comment) */
+"Enable Pin Protection" = "Activare protecție PIN";
+
+/* (No Comment) */
+"Enable TouchID" = "Activare TouchID";
+
+/* (No Comment) */
+"End-to-End Encryption" = "Criptare la ambele capete";
+
+/* (No Comment) */
+"Enter Verification Code" = "Introducere cod verificare";
+
+/* (No Comment) */
+"Error Logs" = "Jurnal de erori";
+
+/* (No Comment) */
+"Every time enter app" = "La fiecare intrare în aplicație";
+
+/* (No Comment) */
+"Expires in %d days %d hours %d mins %d seconds" = "Expiră în %d zile %d ore %d minute %d secunde";
+
+/* (No Comment) */
+"Expiring Messages" = "Mesaje care expiră";
+
+/* (No Comment) */
+"FORGOT PASSWORD?" = "Ați uitat parola?";
+
+/* (No Comment) */
+"Failed to initialize the application's saved data" = "Inițializarea datelor salvate de aplicație a eșuat";
+
+/* (No Comment) */
+"Forward" = "Redirecționare";
+
+/* (No Comment) */
+"General Settings" = "Setări generale";
+
+/* (No Comment) */
+"Help & Support" = "Ajutor & Asistență";
+
+/* (No Comment) */
+"Hide" = "Ascundere";
+
+/* (No Comment) */
+"Hide Details" = "Ascundere detalii";
+
+/* (No Comment) */
+"INBOX" = "Primite";
+
+/* (No Comment) */
+"Import File From..." = "Importare fișier din...";
+
+/* (No Comment) */
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Pentru a folosi serviciile noastre, trebuie să acceptați 'Termenii serviciului' ProtonMail.";
+
+/* (No Comment) */
+"Inbox" = "Primite";
+
+/* (No Comment) */
+"Incorrect password" = "Parolă incorectă";
+
+/* (No Comment) */
+"Invalid UserName" = "Nume de utilizator nevalid";
+
+/* (No Comment) */
+"Invalid access token please relogin" = "Cod de acces nevalid. Reconectați-vă.";
+
+/* (No Comment) */
+"Invalid credential" = "Acreditări nevalide";
+
+/* (No Comment) */
+"Key generation failed" = "Generare cheie eșuată";
+
+/* (No Comment) */
+"LOGIN" = "Conectare";
+
+/* (No Comment) */
+"Label Management" = "Gestionare etichete";
+
+/* (No Comment) */
+"Label as..." = "Etichetare ca...";
+
+/* (No Comment) */
+"Language" = "Limba";
+
+/* (No Comment) */
+"Loading..." = "Se încarcă...";
+
+/* (No Comment) */
+"Localizable.strings" = "Engleză";
+
+/* (No Comment) */
+"Login Password" = "Parolă conectare";
+
+/* (No Comment) */
+"Login password doesn't match" = "Parola de conectare nu se potrivește";
+
+/* (No Comment) */
+"MAILBOX PASSWORD" = "Parolă căsuță poștală";
+
+/* (No Comment) */
+"Mailbox Password" = "Parolă căsuță poștală";
+
+/* (No Comment) */
+"Mailbox password doesn't match" = "Parola căsuței poștale nu este corectă";
+
+/* (No Comment) */
+"Mark Read" = "Marcare ca citit";
+
+/* (No Comment) */
+"Mark as unread" = "Marcare ca necitit";
+
+/* (No Comment) */
+"Message Queue" = "Mesaje în așteptare";
+
+/* (No Comment) */
+"Message Swipe Actions" = "Acțiuni glisare mesaje";
+
+/* (No Comment) */
+"Message expired" = "Mesaj expirat";
+
+/* (No Comment) */
+"Message password does not match." = "Parolele mesajului nu se potrivesc.";
+
+/* (No Comment) */
+"Message sending failed please try again" = "Trimitere mesaj eșuată. Reîncercați.";
+
+/* (No Comment) */
+"Messages you send can be set to auto delete after a certain time period." = "Mesajele trimise pot fi setate să se șteargă automat după o anumită perioadă.";
+
+/* (No Comment) */
+"Mobile Signature" = "Semnătură mobil";
+
+/* (No Comment) */
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Înscrierea de pe mobile este temporar dezactivată. Reîncercați mai târziu sau înscrieți-vă la protonmail.com de pe un calculator desktop sau laptop.";
+
+/* (No Comment) */
+"Move to Archive" = "Mutare în arhivă";
+
+/* (No Comment) */
+"Move to Draft" = "Mutare în ciorne";
+
+/* (No Comment) */
+"Move to Inbox" = "Mutare în primite";
+
+/* (No Comment) */
+"Move to Outbox" = "Mutare în de trimis";
+
+/* (No Comment) */
+"Move to Spam" = "Mutare în spam";
+
+/* (No Comment) */
+"Move to Trash" = "Mutare în gunoi";
+
+/* (No Comment) */
+"Move to..." = "Mutare în...";
+
+/* (No Comment) */
+"Multiple Addresses" = "Adrese multiple";
+
+/* (No Comment) */
+"NEED AN ACCOUNT? SIGN UP." = "Înscriere gratuită";
+
+/* (No Comment) */
+"None" = "Nimic";
+
+/* (No Comment) */
+"Notification Email" = "E-mail de notificare";
+
+/* (No Comment) */
+"OK" = "OK";
+
+/* (No Comment) */
+"OpenDraft" = "Deschidere ciornă";
+
+/* (No Comment) */
+"Outbox" = "De trimis";
+
+/* (No Comment) */
+"Password" = "Parola";
+
+/* (No Comment) */
+"Password Mismatch" = "Parolele nu coincid";
+
+/* (No Comment) */
+"Password Updated" = "Parolă actualizată";
+
+/* (No Comment) */
+"Password cannot be empty." = "Parola nu poate fi goală.";
+
+/* (No Comment) */
+"Phone number invalid" = "Numărul de telefon nu este valid";
+
+/* (No Comment) */
+"Photo Library" = "Galerie foto";
+
+/* (No Comment) */
+"Please check your cell phone for the verification code." = "Consultați-vă telefonul pentru codul de verificare.";
+
+/* (No Comment) */
+"Please check your email for the verification code." = "Consultați-vă e-mailul pentru codul de verificare.";
+
+/* (No Comment) */
+"Please input a valid cell phone number." = "Introduceți un număr de telefon valid.";
+
+/* (No Comment) */
+"Please input a valid email address." = "Introduceți o adresă de e-mail validă.";
+
+/* (No Comment) */
+"Please pick a user name first!" = "Alegeți un nume de utilizator!";
+
+/* (No Comment) */
+"Please remove all attachments before changing sender!" = "Eliminați toate fișierele atașate înainte de a schimba expeditorul";
+
+/* (No Comment) */
+"Please set a password." = "Introduceți o parolă.";
+
+/* (No Comment) */
+"Please try a different domain." = "Încercați un domeniu diferit.";
+
+/* (No Comment) */
+"Please try a different email address." = "Încercați cu o adresă de e-mail diferită.";
+
+/* (No Comment) */
+"Please try a different password." = "Încercați cu o altă parolă.";
+
+/* (No Comment) */
+"Please try a different user name." = "Alegeți un alt nume de utilizator.";
+
+/* (No Comment) */
+"Please try again." = "Vă rugăm reîncercaţi";
+
+/* (No Comment) */
+"Please use the web version of ProtonMail to change your mailbox password!" = "Folosiți versiunea web a ProtonMail pentru a modifica parola mesajelor!";
+
+/* (No Comment) */
+"Please use your new password when signing in." = "Utilizați noua parolă când vă veți conecta.";
+
+/* (No Comment) */
+"Please, manage it in your phone." = "Gestionarea se face în telefon.";
+
+/* (No Comment) */
+"Protection" = "Protecție";
+
+/* (No Comment) */
+"Protection Entire App" = "Protejare întreaga aplicație";
+
+/* (No Comment) */
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail nu vinde reclame și nu vă abuzează intimitatea. Suportul dvs. este esențial pentru funcționarea ProtonMail. Puteți trece la un cont cu plată sau dona pentru a ajuta ProtonMail.";
+
+/* (No Comment) */
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail este momentan offline, pentru starea curentă verificați: https://twitter.com/protonmail";
+
+/* (No Comment) */
+"Quick swipe actions" = "Acțiuni rapide glisare";
+
+/* (No Comment) */
+"Recovery Email" = "E-mail de recuperare";
+
+/* (No Comment) */
+"Remove" = "Eliminare";
+
+/* (No Comment) */
+"Reply" = "Răspuns";
+
+/* (No Comment) */
+"Reply message" = "Răspuns la mesaj";
+
+/* (No Comment) */
+"ReplyAll" = "Răspuns tuturor";
+
+/* (No Comment) */
+"Retry after %d seconds" = "Reîncercați după %d secunde";
+
+/* (No Comment) */
+"SENT" = "Trimise";
+
+/* (No Comment) */
+"SPAM" = "Spam";
+
+/* (No Comment) */
+"STARRED" = "Marcate";
+
+/* (No Comment) */
+"Save draft" = "Salvare ciornă";
+
+/* (No Comment) */
+"Search" = "Căutare";
+
+/* (No Comment) */
+"Select your language" = "Selectați limba";
+
+/* (No Comment) */
+"Send" = "Trimitere";
+
+/* (No Comment) */
+"Send Verification Code" = "Trimite codul de verificare";
+
+/* (No Comment) */
+"Send message without subject?" = "Trimiteți mesajul fără subiect?";
+
+/* (No Comment) */
+"Sending Message" = "Se trimite mesajul";
+
+/* (No Comment) */
+"Sign Out" = "Deconectare";
+
+/* (No Comment) */
+"Signature" = "Semnătură";
+
+/* (No Comment) */
+"Signature Updated" = "Semnătură actualizată";
+
+/* (No Comment) */
+"Space Warning" = "Avertizare spațiu";
+
+/* (No Comment) */
+"Spam" = "Spam";
+
+/* (No Comment) */
+"Spammed" = "Nesolicitat";
+
+/* (No Comment) */
+"Srp single password keyslat invalid!" = "Șirul unic al parolei unice SRP nevalid!";
+
+/* (No Comment) */
+"Star" = "Marcare";
+
+/* (No Comment) */
+"Starred" = "Marcate";
+
+/* (No Comment) */
+"Storage" = "Spațiu de stocare";
+
+/* (No Comment) */
+"Support ProtonMail" = "Asistență ProtonMail";
+
+/* (No Comment) */
+"Swipe Left to Right" = "Glisare de la stânga la dreapta";
+
+/* (No Comment) */
+"Swipe Right to Left" = "Glisare de la dreapta la stânga";
+
+/* (No Comment) */
+"TRASH" = "Gunoi";
+
+/* (No Comment) */
+"Take a Photo" = "Fă o poză";
+
+/* (No Comment) */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Vă mulțumim pentru trimiterea raportului de erori.  V-am adăugat raportul la sistem nostru de urmărire a erorilor.";
+
+/* (No Comment) */
+"The Password is wrong." = "Parola este greșită.";
+
+/* (No Comment) */
+"The UserName have been taken." = "Numele de utilizator este deja luat.";
+
+/* (No Comment) */
+"The authentication credentials are invalid." = "Acreditările de autentificare nu sunt valide.";
+
+/* (No Comment) */
+"The authentication token has expired." = "Codul de acces pentru autentificare a expirat.";
+
+/* (No Comment) */
+"The display name is now %@." = "Numele afișat este acum %@.";
+
+/* (No Comment) */
+"The draft format incorrectly sending failed!" = "Trimitere eșuată. A apărut o eroare în formatul ciornei.";
+
+/* (No Comment) */
+"The label name is duplicate" = "Numele etichetei există deja";
+
+/* (No Comment) */
+"The mailbox password is incorrect." = "Parola mesajelor nu este corectă.";
+
+/* (No Comment) */
+"The maximum number of labels is %d." = "Numărul maxim de etichete este %d.";
+
+/* (No Comment) */
+"The new password can't empty" = "Parola nouă nu poate fi goală";
+
+/* (No Comment) */
+"The new password not match" = "Parolele nu coincid";
+
+/* (No Comment) */
+"The password you entered does not match the current password." = "Parola introdusă nu coincide cu parola actuală.";
+
+/* (No Comment) */
+"The total attachment size can't be bigger than 25MB" = "Total fișierelor atașate nu poate depăși 25 MB";
+
+/* (No Comment) */
+"The verification email invalid" = "E-mail de verificare nevalid";
+
+/* (No Comment) */
+"The verification failed!" = "Verificarea a eșuat!";
+
+/* (No Comment) */
+"There was an error creating or loading the application's saved data." = "A apărut o eroare la crearea sau încărcarea datelor salvate ale aplicației.";
+
+/* (No Comment) */
+"This contact belongs to your Address Book." = "Acest contact aparține agendei dvs.";
+
+/* (No Comment) */
+"To" = "La";
+
+/* (No Comment) */
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pentru a reseta parola cutiei poștale, vă rugăm să folosiți versiunea web a ProtonMail la protonmail.com";
+
+/* (No Comment) */
+"Token expired" = "Cod de acces expirat";
+
+/* (No Comment) */
+"TouchID is not enrolled, enable it in the system Settings" = "TouchID nu este înregistrat. Activați-l în setările sistemului.";
+
+/* (No Comment) */
+"TouchID not available" = "TouchID nu este disponibil";
+
+/* (No Comment) */
+"Trash" = "Gunoi";
+
+/* (No Comment) */
+"USER LOGIN" = "Conectare";
+
+/* (No Comment) */
+"Unable to connect to the server" = "Conectarea la server nu e posibilă";
+
+/* (No Comment) */
+"Unable to construct a valid URL with the following path: %@" = "Imposibil de construit o adresă URL validă cu următoarea cale: %@";
+
+/* (No Comment) */
+"Unable to decrypt message." = "Nu se poate decripta mesajul.";
+
+/* (No Comment) */
+"Unable to parse authentication token!" = "Nu se poate analiza codul de acces de autentificare!";
+
+/* (No Comment) */
+"Unable to parse response" = "Nu se poate analiza răspunsul";
+
+/* (No Comment) */
+"Unable to parse the response object:\n%@" = "Nu se poate analiza obiectul de răspuns:\n%@";
+
+/* (No Comment) */
+"Unable to parse token" = "Nu se poate analiza codul de acces";
+
+/* (No Comment) */
+"Unable to send the email" = "Nu se poate trimite e-mailul.";
+
+/* (No Comment) */
+"Unknow Error" = "Eroare necunoscută";
+
+/* (No Comment) */
+"Unknow file" = "Fișier necunoscut";
+
+/* (No Comment) */
+"Unknown" = "Necunoscut";
+
+/* (No Comment) */
+"Unkonw Version" = "Versiune necunoscută";
+
+/* (No Comment) */
+"User already exist!" = "Nume de utilizator deja folosit";
+
+/* (No Comment) */
+"User is available!" = "Numele de utilizator este disponibil";
+
+/* (No Comment) */
+"User name exist" = "Numele de utilizator există";
+
+/* (No Comment) */
+"User name invalid" = "Nume de utilizator nevalid";
+
+/* (No Comment) */
+"Username" = "Nume utilizator";
+
+/* (No Comment) */
+"Verification code request failed" = "Solicitare cod de verificare eșuată";
+
+/* (No Comment) */
+"Verification code sent" = "Cod de verificare trimis";
+
+/* (No Comment) */
+"Version %@ %@" = "Versiunea %@ %@";
+
+/* (No Comment) */
+"Welcome to ProtonMail!" = "Bine ați venit la ProtonMail";
+
+/* (No Comment) */
+"Wrong verification code" = "Cod de verificare incorect";
+
+/* (No Comment) */
+"You can customize swipe gestures in the ProtonMail App Settings." = "Puteți personaliza gesturile de glisare în setările aplicației ProtonMail.";
+
+/* (No Comment) */
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Puteți primi ajutor și asistență la protonmail.com/support. Erorile pot fi raportate și direct din aplicație.";
+
+/* (No Comment) */
+"You have used %d%% of your storage space (%@)." = "Ați folosit %d%% din spațiu disponibil (%@).";
+
+/* (No Comment) */
+"You have used up all of your storage space (%@)." = "Ați folosit tot spațiul de stocare disponibil (%@).";
+
+/* (No Comment) */
+"You need at least one recipient to send" = "Pentru a trimite, aveți nevoie de cel puțin un destinatar";
+
+/* (No Comment) */
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Căsuța poștală este acum protejată cu criptare la ambele capete. Pentru a trimite automat mesaje securizate prietenilor, invitații la ProtonMail! Mai puteți cripta și manual mesajele către ei, dacă nu folosesc ProtonMail.";
+
+/* (No Comment) */
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Noul cont de e-mail criptat a fost configurat și este gata să trimită și să primească mesaje criptate.";
+
+/* (No Comment) */
+"Your signature has been updated." = "Semnătura a fost actualizată.";
+
+/* (No Comment) */
+"days" = "Zile";
+
+/* (No Comment) */
+"hours" = "Ore";
+
