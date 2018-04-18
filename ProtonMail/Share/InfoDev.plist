@@ -25,16 +25,12 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-    <key>NSAppleMusicUsageDescription</key>
-    <string>Required for attaching media to the email.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>Required for attaching photos to the email.</string>
-    <key>NSContactsUsageDescription</key>
-    <string>Required for email autocomplete.</string>
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>Required for saving image attachments to photo library.</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Required for attaching photos to the email.</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Required for attaching media to the email.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Required for attaching photos to the email.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Required for email autocomplete.</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -60,5 +56,9 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>ShareExtensionEntry</string>
 	</dict>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Required for saving image attachments to photo library.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Required for attaching photos to the email.</string>
 </dict>
 </plist>

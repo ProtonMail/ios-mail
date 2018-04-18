@@ -89,8 +89,10 @@ class SettingDebugViewController: UITableViewController {
     }
     
     @objc override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let  headerCell = tableView.dequeueReusableCell(withIdentifier: "setting_debug_cell") as UITableViewCell!
-        headerCell?.textLabel!.text = headers[section]
+        guard let headerCell = tableView.dequeueReusableCell(withIdentifier: "setting_debug_cell") else {
+            return nil
+        }
+        headerCell.textLabel!.text = headers[section]
         return headerCell
     }
     

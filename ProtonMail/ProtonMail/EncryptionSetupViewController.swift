@@ -41,7 +41,7 @@ class EncryptionSetupViewController: UIViewController {
             attributes: [NSAttributedStringKey.font:font])
         let font1 = Fonts.h4.regular
         let attrHighSize = NSMutableAttributedString(
-            string: " " + NSLocalizedString("(2048 bit)", comment: "Key size text"),
+            string: " " +  LocalString._signup_key_2048_size,
             attributes: [NSAttributedStringKey.font:font1])
         attrHigh.append(attrHighSize)
         highBitLevel.setAttributedTitle(attrHigh, for: .normal)
@@ -50,7 +50,7 @@ class EncryptionSetupViewController: UIViewController {
             string: NSLocalizedString("Extreme Security", comment: "Key size checkbox"),
             attributes: [NSAttributedStringKey.font:font])
         let attrExtremeSize = NSMutableAttributedString(
-            string: " " + NSLocalizedString("(4096 bit)", comment: "Key size text"),
+            string: " " + LocalString._signup_key_4096_size,
             attributes: [NSAttributedStringKey.font:font1])
         attrExtreme.append(attrExtremeSize)
         normalBitLevel.setAttributedTitle(attrExtreme, for: .normal)
