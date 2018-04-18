@@ -359,7 +359,7 @@ class ContactDataService {
                                     let keys = vcard.getKeys()
                                     let isEncrypt = encrypt?.getValue() ?? "false" == "true" ? true : false
                                     let mimeType = vcard.getPMScheme()
-                                    let isMime = mimeType?.getValue() ?? "" == "pgp-mime" ? true : false
+                                    let isMime = mimeType?.getValue() ?? "pgp-mime" == "pgp-mime" ? true : false
                                     for key in keys {
                                         let kg = key.getGroup()
                                         if kg == group {

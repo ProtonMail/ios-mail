@@ -48,13 +48,17 @@ final class PreAddress {
     let pubKey : String?
     let pgpKey : Data?
     let mime : Bool
-    init(email : String, pubKey : String?, pgpKey : Data?, recipintType : Int, eo : Bool, mime : Bool) {
+    let sign : Bool
+    let pgpencrypt : Bool
+    init(email : String, pubKey : String?, pgpKey : Data?, recipintType : Int, eo : Bool, mime : Bool, sign : Bool, pgpencrypt : Bool) {
         self.email = email
         self.recipintType = recipintType
         self.eo = eo
         self.pubKey = pubKey
         self.pgpKey = pgpKey
         self.mime = mime
+        self.sign = sign
+        self.pgpencrypt = pgpencrypt
     }
 }
 
@@ -201,26 +205,22 @@ class SendBuilder {
                 /// decrypt attachments
                 let messageBody = self.clearBody ?? ""
                 
-                let boundary : String = "eXsHUBmzbAkwBNhEHrTop2F5StyNNDgnD111"
-                let typeSign : String = "Content-Type: multipart/signed; micalg=pgp-sha512; protocol=\"application/pgp-signature\"; boundary=\"\(boundary)\""
-                var mimeBody = ""
-                mimeBody.append(contentsOf: typeSign)
-                mimeBody.append(contentsOf: "\r\n")
-                mimeBody.append(contentsOf: "\r\n")
-                //sign boundary start
-                mimeBody.append(contentsOf: "--\(boundary)" + "\r\n")
+//                let boundary : String = "eXsHUBmzbAkwBNhEHrTop2F5StyNNDgnD111"
+//                let typeSign : String = "Content-Type: multipart/signed; micalg=pgp-sha512; protocol=\"application/pgp-signature\"; boundary=\"\(boundary)\""
+//                var mimeBody = ""
+//                mimeBody.append(contentsOf: typeSign)
+//                mimeBody.append(contentsOf: "\r\n")
+//                mimeBody.append(contentsOf: "\r\n")
+//                //sign boundary start
+//                mimeBody.append(contentsOf: "--\(boundary)" + "\r\n")
                 
                 var signbody = ""
                 let boundaryMsg : String = "uF5XZWCLa1E8CXCUr2Kg8CSEyuEhhw9WU222"
-                let typeMessage = "Content-Type: multipart/mixed; boundary=\"\(boundaryMsg)\"; protected-headers=\"v1\""
+                let typeMessage = "Content-Type: multipart/mixed; boundary=\"\(boundaryMsg)\"" //; protected-headers=\"v1\"
                 signbody.append(contentsOf: typeMessage + "\r\n")
-                //            signbody.append(contentsOf: "From: Alice <alice@mail.net>" + "\r\n")
-                //            signbody.append(contentsOf: "To: Bob <bob@messages.org>" + "\r\n")
-                //            signbody.append(contentsOf: "Message-ID: <tndit34m@mail.net>" + "\r\n")
-                //            signbody.append(contentsOf: "Subject: PGP/MIME signed - standard" + "\r\n")
                 signbody.append(contentsOf: "\r\n")
                 signbody.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
-                signbody.append(contentsOf: "Content-Type:\(self.clearBodyMimeType!); charset=utf-8" + "\r\n")
+                signbody.append(contentsOf: "Content-Type:\(self.clearBodyMimeType ?? "text/html"); charset=utf-8" + "\r\n")
                 signbody.append(contentsOf: "Content-Transfer-Encoding: quoted-printable" + "\r\n")
                 signbody.append(contentsOf: "Content-Language: en-US" + "\r\n")
                 signbody.append(contentsOf: "\r\n")
@@ -257,25 +257,25 @@ class SendBuilder {
                         
                     signbody.append(contentsOf: "--\(boundaryMsg)--")
                     
-                    mimeBody.append(contentsOf: signbody + "\r\n")
-                    mimeBody.append(contentsOf: "--\(boundary)" + "\r\n")
-                    mimeBody.append(contentsOf: "Content-Type: application/pgp-signature; name=\"signature.asc\"" + "\r\n")
-                    mimeBody.append(contentsOf: "Content-Description: OpenPGP digital signature" + "\r\n")
-                    mimeBody.append(contentsOf: "Content-Disposition: attachment; filename=\"signature.asc\"" + "\r\n")
-                    mimeBody.append(contentsOf: "\r\n")
+//                    mimeBody.append(contentsOf: signbody + "\r\n")
+//                    mimeBody.append(contentsOf: "--\(boundary)" + "\r\n")
+//                    mimeBody.append(contentsOf: "Content-Type: application/pgp-signature; name=\"signature.asc\"" + "\r\n")
+//                    mimeBody.append(contentsOf: "Content-Description: OpenPGP digital signature" + "\r\n")
+//                    mimeBody.append(contentsOf: "Content-Disposition: attachment; filename=\"signature.asc\"" + "\r\n")
+//                    mimeBody.append(contentsOf: "\r\n")
                     
                     /// sign the body
-                    let sign_detached = sharedOpenPGP.signDetached(privKey,
-                                                                   plainText: signbody,
-                                                                   passphras: sharedUserDataService.mailboxPassword!)
-                    mimeBody.append(contentsOf: sign_detached)
-                    mimeBody.append(contentsOf: "\r\n")
-                    mimeBody.append(contentsOf: "--\(boundary)--")
-                    mimeBody.append(contentsOf: "\r\n")
+//                    let sign_detached = sharedOpenPGP.signDetached(privKey,
+//                                                                   plainText: signbody,
+//                                                                   passphras: sharedUserDataService.mailboxPassword!)
+//                    mimeBody.append(contentsOf: sign_detached)
+//                    mimeBody.append(contentsOf: "\r\n")
+//                    mimeBody.append(contentsOf: "--\(boundary)--")
+//                    mimeBody.append(contentsOf: "\r\n")
                     
-                    PMLog.D(mimeBody)
+                    PMLog.D(signbody)
                     
-                    let encrypted = try! mimeBody.encryptMessageWithSingleKey(pubKey,
+                    let encrypted = try! signbody.encryptMessageWithSingleKey(pubKey,
                                                                               privateKey: privKey,
                                                                               mailbox_pwd: sharedUserDataService.mailboxPassword!)
                     let spilted = try! encrypted?.split()
@@ -295,7 +295,7 @@ class SendBuilder {
         get {
             var out : [PackageBuilder] = [PackageBuilder]()
             for pre in preAddresses {
-                switch self.build(type: pre.recipintType, eo: pre.eo, pgpkey: pre.pgpKey != nil, mime: pre.mime) {
+                switch self.build(type: pre.recipintType, eo: pre.eo, pgpkey: (pre.pgpKey != nil && pre.pgpencrypt) , mime: pre.mime) {
                 case .intl:
                     out.append(AddressBuilder(type: .intl, addr: pre,
                                               session: self.bodySession, atts: self.preAttachments))
@@ -329,7 +329,7 @@ class SendBuilder {
     
     func contains(type : SendType) -> Bool {
         for pre in preAddresses {
-            let buildType = self.build(type: pre.recipintType, eo: pre.eo, pgpkey: pre.pgpKey != nil, mime: pre.mime)
+            let buildType = self.build(type: pre.recipintType, eo: pre.eo, pgpkey: (pre.pgpKey != nil && pre.pgpencrypt), mime: pre.mime)
             if buildType.contains(type) {
                 return true
             }

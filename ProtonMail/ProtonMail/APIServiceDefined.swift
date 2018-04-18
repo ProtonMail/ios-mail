@@ -10,6 +10,7 @@ import Foundation
 
 //*******************************************************************************************
 //ProtonMail API Doc : https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api.md
+//ProtonMail API Doc : http://185.70.40.19:3001/#messages-send-message-post
 //*******************************************************************************************
 
 
@@ -255,10 +256,6 @@ struct OrganizationsAPI {
     /// Get organization keys [GET]
     static let v_get_org_keys : Int = 3
 }
-
-
-//Reports API
-//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md
 
 
 /**
