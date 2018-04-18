@@ -1680,7 +1680,7 @@
 		7528FF851FA7FE83005F66A3 /* Data+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Data+Extension.swift"; path = "ProtonMail/Data+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		7528FF861FA7FE83005F66A3 /* Error+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Error+Extension.swift"; path = "ProtonMail/Error+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		7528FF871FA7FE83005F66A3 /* UIAlertAction+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertAction+Extension.swift"; path = "ProtonMailCommon/UIAlertAction+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF881FA7FE83005F66A3 /* Fonts+Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Fonts+Constants.swift"; path = "ProtonMailCommon/Fonts+Constants.swift"; sourceTree = SOURCE_ROOT; };
+		7528FF881FA7FE83005F66A3 /* Fonts+Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Fonts+Constants.swift"; path = "ProtonMailCommon/Constants/Fonts+Constants.swift"; sourceTree = SOURCE_ROOT; };
 		7528FF891FA7FE84005F66A3 /* EmailExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailExtension.swift; path = ProtonMail/EmailExtension.swift; sourceTree = SOURCE_ROOT; };
 		7528FF8A1FA7FE84005F66A3 /* NSSet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSSet+Extension.swift"; path = "ProtonMailCommon/NSSet+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		7528FF8B1FA7FE84005F66A3 /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertController+Extension.swift"; path = "ProtonMailCommon/UIAlertController+Extension.swift"; sourceTree = SOURCE_ROOT; };
@@ -2533,14 +2533,6 @@
 			name = Compose;
 			sourceTree = "<group>";
 		};
-		750844B71FA93EF5009D6654 /* Constants */ = {
-			isa = PBXGroup;
-			children = (
-				7528FF881FA7FE83005F66A3 /* Fonts+Constants.swift */,
-			);
-			name = Constants;
-			sourceTree = "<group>";
-		};
 		750AAEB21FA91A1700CBFCA3 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
@@ -2630,7 +2622,7 @@
 		75352E6F1F05784500B41443 /* ProtonMailCommon */ = {
 			isa = PBXGroup;
 			children = (
-				750844B71FA93EF5009D6654 /* Constants */,
+				7543B5A92087F69C000BEA72 /* Constants */,
 				75352E801F057A5700B41443 /* Defined */,
 				073FD9301A71C5F000EB0CAF /* DataServices */,
 				072AB6A71A8FB0AB00AF45D6 /* Encryption */,
@@ -2724,6 +2716,14 @@
 				753745031D6B7E8F00682C5A /* APIError+Auth.swift */,
 			);
 			name = Errors;
+			sourceTree = "<group>";
+		};
+		7543B5A92087F69C000BEA72 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				7528FF881FA7FE83005F66A3 /* Fonts+Constants.swift */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 		7545083F1E149B3900265CD0 /* Mailbox */ = {
