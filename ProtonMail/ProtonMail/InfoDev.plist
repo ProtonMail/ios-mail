@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en_US</string>
+	<key>CFBundleDisplayName</key>
+	<string>ProtonMail</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -94,15 +96,15 @@
 		<true/>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>requires media library access for media attachments.</string>
+	<string>Required for attaching media to the email.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>requires camera access to attach camera photos.</string>
+	<string>Required for attaching photos to the email.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>requires contacts access for email autocomplete.</string>
+	<string>Required for email autocomplete.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>requires photo library access to save image attachments.</string>
+	<string>Required for saving image attachments to photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>requires photo library access to attach camera photos.</string>
+	<string>Required for attaching photos to the email.</string>
 	<key>UIAppFonts</key>
 	<array/>
 	<key>UIBackgroundModes</key>

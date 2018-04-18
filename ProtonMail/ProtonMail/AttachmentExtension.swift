@@ -147,20 +147,8 @@ extension Attachment {
         
         
         if let data = self.fileData {
-            do {
-                let strBase64:String = data.base64EncodedString(options: .lineLength64Characters)
-                return strBase64
-//                if let key_packet = self.keyPacket {
-//                    if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-//                        if let decryptData = try data.decryptAttachment(keydata, passphrase: sharedUserDataService.mailboxPassword!) {
-//                            let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
-//                            return strBase64
-//                        }
-//                    }
-//                }
-            } catch let ex as NSError{
-                PMLog.D("\(ex)")
-            }
+            let strBase64:String = data.base64EncodedString(options: .lineLength64Characters)
+            return strBase64
         }
         return ""
     }

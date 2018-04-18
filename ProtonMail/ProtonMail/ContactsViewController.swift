@@ -138,14 +138,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         //get all contacts
         self.viewModel.setupFetchedResults(delaget: self)
         tableView.reloadData()
-        
-        
-        //TODO::
-        let _ = NSLocalizedString("Please upgrade to access encrypted contact details.", comment: "Alert")
-        let _ = NSLocalizedString("Upgrade", comment: "Action")
-        let _ = NSLocalizedString("Notes", comment: "Title")
-        let _ = NSLocalizedString("Encrypting contacts... %d", comment: "Alert")
-        let _ = NSLocalizedString("You have imported %d of %d contacts!", comment: "Alert")
     }
     
     override func viewDidAppear(_ animated: Bool) {
