@@ -179,7 +179,7 @@ extension ContactTypeViewController: UITableViewDataSource {
         } else {
 //            if row == 0 {
 //                let addCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeAddCustomCell", for: indexPath) as! ContactTypeAddCustomCell
-//                addCell.configCell(v: NSLocalizedString("Add Custom Label", comment: "action"))
+//                addCell.configCell(v: LocalString._contacts_add_custom_label)
 //                return addCell
 //            } else if row == 1 {
             if row == 0 {

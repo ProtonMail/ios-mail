@@ -20,17 +20,17 @@ enum InformationType : Int {
     var desc : String {
         switch self {
         case .organization:
-            return NSLocalizedString("Add Organization", comment: "new contacts add Organization ")
+            return LocalString._contacts_add_org
         case .nickname:
-            return NSLocalizedString("Add Nickname", comment: "new contacts add Nickname")
+            return LocalString._contacts_add_nickname
         case .title:
-            return NSLocalizedString("Add Title", comment: "new contacts add Title")
+            return LocalString._contacts_add_title
         case .birthday:
-            return NSLocalizedString("Add Birthday", comment: "new contacts add Birthday")
+            return LocalString._contacts_add_bd
         case .anniversary:
-            return NSLocalizedString("Add Anniversary", comment: "new contacts add Anniversary")
+            return LocalString._contacts_add_anniversary
         case .gender:
-            return NSLocalizedString("Add Gender", comment: "new contacts add Gender")
+            return LocalString._contacts_add_gender
         }
     }
     

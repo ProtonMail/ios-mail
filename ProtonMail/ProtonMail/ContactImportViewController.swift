@@ -93,7 +93,7 @@ class ContactImportViewController: UIViewController {
             self.cancelled = true
             self.dismiss()
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: {(action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: {(action) -> Void in
             self.showedCancel = false
         }))
         self.present(alertController, animated: true, completion: nil)
@@ -356,7 +356,7 @@ class ContactImportViewController: UIViewController {
             } else {
                 {
                     self.finished = true
-                    self.messageLabel.text = NSLocalizedString("All contacts are imported", comment: "Title")
+                    self.messageLabel.text = LocalString._contacts_all_imported
                     self.dismiss()
                 } ~> .main
             }

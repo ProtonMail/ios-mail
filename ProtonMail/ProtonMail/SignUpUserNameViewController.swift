@@ -255,7 +255,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         
         //Create the cancel button & set its title
         let buttonCancel: UIButton = UIButton(frame: buttonCancelFrame);
-        buttonCancel.setTitle(NSLocalizedString("Done", comment: "Title"), for: UIControlState());
+        buttonCancel.setTitle(LocalString._general_done_button, for: UIControlState());
         
         buttonCancel.setTitleColor(UIColor.blue, for: UIControlState());
         toolView.addSubview(buttonCancel); //add it to the toolView

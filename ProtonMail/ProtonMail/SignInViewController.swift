@@ -106,7 +106,7 @@ class SignInViewController: ProtonMailViewController {
         let current_language = LanguageManager.currentLanguageEnum()
         let title = NSLocalizedString("Current Language is: ", comment: "Change language title") + current_language.description
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         for l in ELanguage.allItems() {
             if l != current_language {
                 alertController.addAction(UIAlertAction(title: l.description, style: .default, handler: { (action) -> Void in
@@ -528,7 +528,7 @@ class SignInViewController: ProtonMailViewController {
                                 self.loadContent()
                                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: self)
                             } else {
-                                let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.", comment: "Description").alertController() //here needs change to a clickable link
+                                let alertController = LocalString._general_account_disabled_non_payment.alertController()
                                 alertController.addAction(UIAlertAction.okAction({ (action) -> Void in
                                     let _ = self.navigationController?.popViewController(animated: true)
                                 }))

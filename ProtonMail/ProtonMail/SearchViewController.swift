@@ -44,9 +44,7 @@ class SearchViewController: ProtonMailViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.view.backgroundColor = UIColor.white
-        
-        cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Action"), for: .normal)
+        cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self

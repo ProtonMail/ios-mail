@@ -23,15 +23,16 @@ public enum ComposeMessageAction: Int, CustomStringConvertible {
     case openDraft = 4
     case newDraftFromShare = 5
     
+    /// localized description
     public var description : String {
         get {
             switch(self) {
             case .reply:
-                return NSLocalizedString("Reply", comment: "Action")
+                return  LocalString._general_reply_button
             case .replyAll:
-                return NSLocalizedString("ReplyAll", comment: "Action")
+                return LocalString._general_replyall_button
             case .forward:
-                return NSLocalizedString("Forward", comment: "Action")
+                return LocalString._general_forward_button
             case .newDraft, .newDraftFromShare:
                 return NSLocalizedString("Draft", comment: "Action")
             case .openDraft:

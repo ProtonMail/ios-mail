@@ -221,7 +221,7 @@ class SettingTableViewController: ProtonMailViewController {
                     case .loginPWD, .mbp, .singlePWD:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description
-                        cell.RightText.text = NSLocalizedString("**********", comment: "")
+                        cell.RightText.text = LocalString._settings_secret_x_string
                         cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                         cellout = cell
                     case .cleanCache:
@@ -361,13 +361,13 @@ class SettingTableViewController: ProtonMailViewController {
                         if let t = Int(userCachedStatus.lockTime) {
                             timeIndex = t
                         }
-                        var text = String(format: NSLocalizedString("%d Minutes", comment: ""), timeIndex)
+                        var text = String(format: LocalString._settings_auto_lock_minutes, timeIndex)
                         if timeIndex == -1 {
                             text = NSLocalizedString("None", comment: "")
                         } else if timeIndex == 0 {
                             text = NSLocalizedString("Every time enter app", comment: "")
                         } else if timeIndex == 1{
-                            text = String(format: NSLocalizedString("%d Minute", comment: ""), timeIndex)
+                            text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
                         }
                         
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
@@ -529,7 +529,7 @@ class SettingTableViewController: ProtonMailViewController {
                             hud.removeFromSuperViewOnHide = true
                             sharedMessageDataService.cleanLocalMessageCache() { task, res, error in
                                 hud.mode = MBProgressHUDMode.text
-                                hud.labelText = NSLocalizedString("Done", comment: "Title")
+                                hud.labelText = LocalString._general_done_button
                                 hud.hide(true, afterDelay: 1)
                                 self.cleaning = false
                             }
@@ -562,16 +562,18 @@ class SettingTableViewController: ProtonMailViewController {
                     case .autoLogout:
                         break
                     case .enterTime:
-                        let alertController = UIAlertController(title: NSLocalizedString("Auto Lock Time", comment: "Title"), message: nil, preferredStyle: .actionSheet)
-                        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+                        let alertController = UIAlertController(title: NSLocalizedString("Auto Lock Time", comment: "Title"),
+                                                                message: nil,
+                                                                preferredStyle: .actionSheet)
+                        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                         for timeIndex in protection_auto_logout {
-                            var text = String(format: NSLocalizedString("%d Minutes", comment: ""), timeIndex)
+                            var text = String(format: LocalString._settings_auto_lock_minutes, timeIndex)
                             if timeIndex == -1 {
                                 text = NSLocalizedString("None", comment: "")
                             } else if timeIndex == 0 {
                                 text = NSLocalizedString("Every time enter app", comment: "")
                             } else if timeIndex == 1{
-                                text = String(format: NSLocalizedString("%d Minute", comment: ""), timeIndex)
+                                text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
                             }
                             alertController.addAction(UIAlertAction(title: text, style: .default, handler: { (action) -> Void in
                                 let _ = self.navigationController?.popViewController(animated: true)
@@ -592,7 +594,7 @@ class SettingTableViewController: ProtonMailViewController {
                     case .addresses:
                         var needsShow : Bool = false
                         let alertController = UIAlertController(title: NSLocalizedString("Change default address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
-                        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+                        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                         let defaultAddress : Address? = multi_domains.defaultAddress()
                         for addr in multi_domains {
                             if addr.status == 1 && addr.receive == 1 {
@@ -656,7 +658,7 @@ class SettingTableViewController: ProtonMailViewController {
                 if setting_swipe_action_items.count > indexPath.row {
                     let action_item = setting_swipe_action_items[indexPath.row]
                     let alertController = UIAlertController(title: action_item.actionDescription, message: nil, preferredStyle: .actionSheet)
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+                    alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                     
                     let currentAction = action_item == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
                     for swipeAction in setting_swipe_actions {
@@ -686,7 +688,7 @@ class SettingTableViewController: ProtonMailViewController {
                 let current_language = LanguageManager.currentLanguageEnum()
                 let title = NSLocalizedString("Current Language is: ", comment: "Change language title") + current_language.description
                 let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 for l in setting_languages {
                     if l != current_language {
                         alertController.addAction(UIAlertAction(title: l.description, style: .default, handler: { (action) -> Void in

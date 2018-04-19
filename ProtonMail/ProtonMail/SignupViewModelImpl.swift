@@ -166,7 +166,7 @@ final class SignupViewModelImpl : SignupViewModel {
                             sharedUserDataService.signIn(self.userName, password: self.plaintext_password, twoFACode: nil,
                                 ask2fa: {
                                     //2fa will show error
-                                    complete(false, true, NSLocalizedString("2fa Authentication failed please try to login again", comment: "Error"), nil)
+                                    complete(false, true, LocalString._signup_2fa_auth_failed, nil)
                                 },
                                 onError: { (error) in
                                     complete(false, true, NSLocalizedString("Authentication failed please try to login again", comment: "Error"), error);

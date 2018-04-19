@@ -12,15 +12,15 @@ import Foundation
 final public class LabelCreatingViewModelImple : LabelEditViewModel {
 
     override public func title() -> String {
-        return NSLocalizedString("Add New Label", comment: "Title")
+        return LocalString._labels_add_new_label_title
     }
     
     override public func placeHolder() -> String {
-        return NSLocalizedString("Label Name", comment: "createing lable input place holder")
+        return LocalString._labels_label_name_text
     }
     
     override public func rightButtonText() -> String {
-        return NSLocalizedString("Create", comment: "top right action item title")
+        return LocalString._labels_create_action
     }
     
     override public func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {

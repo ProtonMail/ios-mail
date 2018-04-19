@@ -98,7 +98,7 @@ class SettingDetailViewController: UIViewController {
                 title: NSLocalizedString("Confirmation", comment: "Title"),
                 message: NSLocalizedString("You have unsaved changes. Do you want to save it?", comment: "Confirmation message"),
                 preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "title"),
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
                                                     style: .destructive,
                                                     handler: { action in
                                                         _ = self.navigationController?.popViewController(animated: true)

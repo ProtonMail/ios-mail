@@ -186,7 +186,7 @@ class MailboxPasswordViewController: UIViewController {
                                 self.loadContent()
                                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: self)
                             } else {
-                                let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.", comment: "error message when acction disabled").alertController() //here needs change to a clickable link
+                                let alertController = LocalString._general_account_disabled_non_payment.alertController() 
                                 alertController.addAction(UIAlertAction.okAction({ (action) -> Void in
                                     let _ = self.navigationController?.popViewController(animated: true)
                                 }))
@@ -251,7 +251,9 @@ class MailboxPasswordViewController: UIViewController {
     
     // MARK: - Actions
     @IBAction func resetMBPAction(_ sender: AnyObject) {
-        let alert = UIAlertController(title: NSLocalizedString("Alert", comment: "Title"), message: NSLocalizedString("To reset your mailbox password, please use the web version of ProtonMail at protonmail.com", comment: "Description"), preferredStyle: .alert)
+        let alert = UIAlertController(title: LocalString._general_alert_title,
+                                      message: NSLocalizedString("To reset your mailbox password, please use the web version of ProtonMail at protonmail.com", comment: "Description"),
+                                      preferredStyle: .alert)
         alert.addAction((UIAlertAction.okAction()))
         present(alert, animated: true, completion: nil)
     }

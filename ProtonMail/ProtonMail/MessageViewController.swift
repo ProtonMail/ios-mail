@@ -97,8 +97,8 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
                         self.emailView?.showErrorMessage(error.localizedDescription)
                         self.updateEmailBodyWithError(error.localizedDescription)
                     } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
-                        self.emailView?.showErrorMessage(NSLocalizedString("API Server not reachable...", comment: "Error"))
-                        self.updateEmailBodyWithError(NSLocalizedString("API Server not reachable...", comment: "Error"))
+                        self.emailView?.showErrorMessage(LocalString._general_api_server_not_reachable)
+                        self.updateEmailBodyWithError(LocalString._general_api_server_not_reachable)
                     } else if code < 0{
                         self.emailView?.showErrorMessage(NSLocalizedString("Can't download message body, please try again.", comment: "Error"))
                         self.updateEmailBodyWithError(NSLocalizedString("Can't download message body, please try again.", comment: "Error"))
@@ -264,7 +264,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     @objc internal func moreButtonTapped(_ sender : UIBarButtonItem) {
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .default, .spam : .default, .archive : .default]
         for (location, style) in locations {
             if !message.hasLocation(location: location) {

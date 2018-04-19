@@ -391,10 +391,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     @objc internal func moreButtonTapped() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel",  comment: "Action"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         
         if viewModel.isShowEmptyFolder() {
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Empty Folder",  comment: "Action"), style: .destructive, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Empty Folder",  comment: "Action"),
+                                                    style: .destructive, handler: { (action) -> Void in
 
                 self.viewModel.emptyFolder()
                 self.showNoResultLabel()
@@ -402,20 +403,23 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             }))
         } else {
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Mark Read",  comment: "Action"), style: .default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Mark Read",  comment: "Action"),
+                                                    style: .default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isRead)
                 self.cancelButtonTapped();
                 self.navigationController?.popViewController(animated: true)
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Add Star",  comment: "Action"), style: .default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: LocalString._locations_add_star_action,
+                                                    style: .default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
                 self.selectedMessagesSetStar()
                 self.cancelButtonTapped();
                 self.navigationController?.popViewController(animated: true)
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove Star",  comment: "Action"), style: .default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove Star",  comment: "Action"),
+                                                    style: .default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isStarred)
                 self.selectedMessagesSetUnStar()
                 self.cancelButtonTapped();
@@ -1093,7 +1097,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             leftButtons = [self.menuBarButtonItem]
         } else {
             if (self.cancelBarButtonItem == nil) {
-                self.cancelBarButtonItem = UIBarButtonItem(title:NSLocalizedString("Cancel", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MailboxViewController.cancelButtonTapped))
+                self.cancelBarButtonItem = UIBarButtonItem(title: LocalString._general_cancel_button,
+                                                           style: UIBarButtonItemStyle.plain,
+                                                           target: self,
+                                                           action: #selector(MailboxViewController.cancelButtonTapped))
             }
             
             leftButtons = [self.cancelBarButtonItem]
@@ -1314,7 +1321,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     
     internal func show503ErrorMessage(_ error : NSError?) {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : NSLocalizedString("API Server not reachable...", comment: "Title"))
+        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet: LocalString._general_api_server_not_reachable)
         self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
         self.updateViewConstraints()
         

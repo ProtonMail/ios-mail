@@ -34,11 +34,11 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     override func getApplyButtonText() -> String {
-        return NSLocalizedString("Apply", comment: "folder apply - apply button text")
+        return LocalString._general_apply_button
     }
     
     override func getCancelButtonText() -> String {
-        return NSLocalizedString("Cancel", comment: "folder apply - cancel button text")
+        return LocalString._general_cancel_button
     }
     
     override func getLabelMessage( _ label : Label!) -> LabelMessageModel! {

@@ -60,9 +60,9 @@ class SignUpEmailViewController: UIViewController {
         topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
         topTitleLabel.text = NSLocalizedString("Congratulations!", comment: "view top title")
         titleWarningLabel.text = NSLocalizedString("Your new secure email\r\n account is ready.", comment: "view top title")
-        optionalOneLabel.text = NSLocalizedString("*OPTIONAL", comment: "Title")
+        optionalOneLabel.text = LocalString._signup_optional_text
         displayNameNoteLabel.text = NSLocalizedString("When you send an email, this is the name that appears in the sender field.", comment: "display name notes")
-        optionalTwoLabel.text = NSLocalizedString("*OPTIONAL", comment: "Title")
+        optionalTwoLabel.text = LocalString._signup_optional_text
         
         recoveryEmailNoteLabel.text = NSLocalizedString("The optional recovery email address allows you to reset your login password if you forget it.", comment: "recovery email notes")
         checkButton.setTitle(NSLocalizedString("Keep me updated about new features", comment: "Title"), for: .normal)
@@ -112,7 +112,7 @@ class SignUpEmailViewController: UIViewController {
                 title: NSLocalizedString("Recovery Email Warning", comment: "Title"),
                 message: NSLocalizedString("Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?", comment: "Description"),
                 preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Title"), style: .default, handler: { action in
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .default, handler: { action in
                 
             }))
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Title"), style: .destructive, handler: { action in

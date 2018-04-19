@@ -29,14 +29,14 @@ extension NSError {
     class func authInvalidGrant() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.invalidGrant,
-            localizedDescription: NSLocalizedString("Alert", comment: "Error"),
+            localizedDescription: LocalString._general_alert_title,
             localizedFailureReason: NSLocalizedString("Authentication Failed Wrong username or password", comment: "Description"))
     }
     
     class func internetError() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.networkIusse,
-            localizedDescription: NSLocalizedString("Alert", comment: "Error"),
+            localizedDescription: LocalString._general_alert_title,
             localizedFailureReason: NSLocalizedString("Unable to connect to the server", comment: "Description"))
     }
     

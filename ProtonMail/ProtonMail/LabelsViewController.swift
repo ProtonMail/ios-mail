@@ -61,9 +61,9 @@ class LablesViewController : UIViewController {
         super.viewDidLoad()
         contentView.layer.cornerRadius = 4;
         
-        addLabelButton.setTitle(NSLocalizedString("Add Label", comment: "Action"), for: .normal)
-        addFolderButton.setTitle(NSLocalizedString("Add Folder", comment: "Action"), for: .normal)
-        archiveOptionLabel.text = NSLocalizedString("Also Archive", comment: "Apply label then also archive")
+        addLabelButton.setTitle(LocalString._labels_add_label_action, for: .normal)
+        addFolderButton.setTitle(LocalString._labels_add_folder_action, for: .normal)
+        archiveOptionLabel.text = LocalString._labels_apply_archive_check
 
         self.setupFetchedResultsController()
         titleLabel.text = viewModel.getTitle()

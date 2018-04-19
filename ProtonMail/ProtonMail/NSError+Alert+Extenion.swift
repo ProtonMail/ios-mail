@@ -49,7 +49,7 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = NSLocalizedString("Alert", comment: "Title");
+        hud.labelText = LocalString._general_alert_title
         hud.detailsLabelText = localizedDescription
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
@@ -58,7 +58,7 @@ extension NSError {
     public func alert(at view: UIView) ->Void {
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = NSLocalizedString("Alert", comment: "Title");
+        hud.labelText = LocalString._general_alert_title
         hud.detailsLabelText = localizedDescription
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
@@ -97,7 +97,7 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = NSLocalizedString("Alert", comment: "Title");
+        hud.labelText = LocalString._general_alert_title
         hud.detailsLabelText = NSLocalizedString("ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail", comment: "Description");
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)

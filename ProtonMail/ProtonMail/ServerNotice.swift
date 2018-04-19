@@ -59,8 +59,7 @@ class ServerNotice {
         
         userCachedStatus.serverNotices = messages
         self.setTime(1800)
-        var message = ""
-        message = NSLocalizedString("\(string_show)", comment: "")
+        let message = string_show
         let alertController = UIAlertController(
             title: NSLocalizedString("ProtonMail", comment: "Title"),
             message: message,

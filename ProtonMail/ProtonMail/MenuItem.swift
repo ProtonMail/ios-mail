@@ -29,33 +29,33 @@ enum MenuItem: String {//change to Int later.
     var title: String {
         switch self {
         case .bugs:
-            return NSLocalizedString("Report Bugs", comment: "Title")
+            return LocalString._menu_bugs_title
         case .inbox:
-            return NSLocalizedString("Inbox", comment: "Title")
+            return LocalString._menu_inbox_title
         case .starred:
-            return NSLocalizedString("Starred", comment: "Title")
+            return LocalString._menu_starred_title
         case .archive:
-            return NSLocalizedString("Archive", comment: "Title")
+            return LocalString._menu_archive_title
         case .drafts:
-            return NSLocalizedString("Drafts", comment: "Title")
+            return LocalString._menu_drafts_title
         case .allmail:
-            return NSLocalizedString("All Mail", comment: "Title")
+            return LocalString._menu_allmail_title
         case .sent:
-            return NSLocalizedString("Sent", comment: "Title")
+            return LocalString._menu_sent_title
         case .trash:
-            return NSLocalizedString("Trash", comment: "Title")
+            return LocalString._menu_trash_title
         case .spam:
-            return NSLocalizedString("Spam", comment: "Title")
+            return LocalString._menu_spam_title
         case .contacts:
-            return NSLocalizedString("Contacts", comment: "Title")
+            return LocalString._menu_contacts_title
         case .settings:
-            return NSLocalizedString("Settings", comment: "Title")
+            return LocalString._menu_settings_title
         case .signout:
-            return NSLocalizedString("Logout", comment: "Title")
+            return LocalString._menu_signout_title
         case .feedback:
-            return NSLocalizedString("Feedback", comment: "Title")
+            return LocalString._menu_feedback_title
         case .lockapp:
-            return NSLocalizedString("Lock The App", comment: "Title")
+            return LocalString._menu_lockapp_title
         }
     }
     

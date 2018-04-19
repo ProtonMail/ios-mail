@@ -66,13 +66,13 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.doneItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: "action"),
+        self.doneItem = UIBarButtonItem(title: LocalString._general_done_button,
                                         style: UIBarButtonItemStyle.plain,
                                         target: self, action: #selector(ContactEditViewController.doneAction))
         self.navigationItem.rightBarButtonItem = doneItem
        
         if viewModel.isNew() {
-            self.title = NSLocalizedString("Add Contact", comment: "Contacts add new contact")
+            self.title = LocalString._contacts_add_contact
         } else {
             self.title = NSLocalizedString("Update Contact", comment: "Contacts Update contact")
         }
@@ -140,7 +140,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
                 //save and dismiss
                 self.doneAction(self.doneItem)
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard changes", comment: "Action"), style: .destructive, handler: { (action) -> Void in
                 //discard and dismiss
                 self.dismiss(animated: true, completion: nil)
@@ -362,7 +362,7 @@ extension ContactEditViewController: UITableViewDataSource {
             let emailCount = viewModel.getEmails().count
             if row == emailCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: NSLocalizedString("Add new email", comment: "action"))
+                cell.configCell(value: LocalString._contacts_add_new_email)
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
@@ -375,7 +375,7 @@ extension ContactEditViewController: UITableViewDataSource {
             let cellCount = viewModel.getCells().count
             if row == cellCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: NSLocalizedString("Add new phone number", comment: "action"))
+                cell.configCell(value: LocalString._contacts_add_new_phone)
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
@@ -388,7 +388,7 @@ extension ContactEditViewController: UITableViewDataSource {
             let addrCount = viewModel.getAddresses().count
             if row == addrCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: NSLocalizedString("Add new address", comment: "action"))
+                cell.configCell(value: LocalString._contacts_add_new_address)
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
@@ -414,7 +414,7 @@ extension ContactEditViewController: UITableViewDataSource {
             let orgCount = viewModel.getInformations().count
             if row == orgCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: NSLocalizedString("Add new field", comment: "action"))
+                cell.configCell(value: LocalString._contacts_add_new_field)
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
@@ -427,7 +427,7 @@ extension ContactEditViewController: UITableViewDataSource {
             let fieldCount = viewModel.getFields().count
             if row == fieldCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: NSLocalizedString("Add new custom field", comment: "action"))
+                cell.configCell(value: LocalString._contacts_add_new_custom_field)
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
@@ -566,7 +566,7 @@ extension ContactEditViewController: UITableViewDataSource {
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             case .information:
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 //get left info types
                 let infoTypes = viewModel.getLeftInfoTypes()
                 for t in infoTypes {
@@ -744,7 +744,7 @@ extension ContactEditViewController: UITableViewDelegate {
             let orgCount = viewModel.getInformations().count
             if row == orgCount {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 //get left info types
                 let infoTypes = viewModel.getLeftInfoTypes()
                 for t in infoTypes {
@@ -768,7 +768,7 @@ extension ContactEditViewController: UITableViewDelegate {
             }
         case .delete:
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Contact", comment: "Title-Contacts"), style: .destructive, handler: { (action) -> Void in
                 let v : UIView = self.navigationController?.view ?? self.view
                 ActivityIndicatorHelper.showActivityIndicator(at: v)

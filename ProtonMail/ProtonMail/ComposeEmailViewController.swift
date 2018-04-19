@@ -74,7 +74,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.cancelButton = UIBarButtonItem(title:NSLocalizedString("Cancel", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(ComposeEmailViewController.cancel_clicked(_:)))
+        self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button,
+                                            style: UIBarButtonItemStyle.plain,
+                                            target: self,
+                                            action: #selector(ComposeEmailViewController.cancel_clicked(_:)))
         self.navigationItem.leftBarButtonItem = cancelButton
         
         configureNavigationBar()
@@ -278,9 +281,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             NSAttributedStringKey.font: navigationBarTitleFont
         ]
         
-        self.navigationItem.leftBarButtonItem?.title = NSLocalizedString("Cancel", comment: "Action")
-        
-        cancelButton.title = NSLocalizedString("Cancel", comment: "Action")
+        self.navigationItem.leftBarButtonItem?.title = LocalString._general_cancel_button
+        cancelButton.title = LocalString._general_cancel_button
     }
     
     override func didReceiveMemoryWarning() {
@@ -345,7 +347,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Send", comment: "Action"), style: .destructive, handler: { (action) -> Void in
             self.sendMessage()
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
     
@@ -377,7 +379,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         if self.viewModel.toSelectedContacts.count <= 0 &&
             self.viewModel.ccSelectedContacts.count <= 0 &&
             self.viewModel.bccSelectedContacts.count <= 0 {
-            let alert = UIAlertController(title: NSLocalizedString("Alert", comment: "Title"),
+            let alert = UIAlertController(title: LocalString._general_alert_title,
                                           message: NSLocalizedString("You need at least one recipient to send", comment: "Description"),
                                           preferredStyle: .alert)
             alert.addAction((UIAlertAction.okAction()))
@@ -423,12 +425,13 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
                 dismiss()
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: { (action) ->
-                Void in
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                    style: .cancel, handler: { (action) -> Void in
                 self.isShowingConfirm = false
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft", comment: "Action"), style: .destructive, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft", comment: "Action"),
+                                                    style: .destructive, handler: { (action) -> Void in
                 self.stopAutoSave()
                 self.viewModel.deleteDraft()
                 dismiss()
@@ -533,7 +536,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     func composeViewPickFrom(_ composeView: ComposeView) {
         var needsShow : Bool = false
         let alertController = UIAlertController(title: NSLocalizedString("Change sender address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         let multi_domains = self.viewModel.getAddresses()
         let defaultAddr = self.viewModel.getDefaultSendAddress()
         for addr in multi_domains {

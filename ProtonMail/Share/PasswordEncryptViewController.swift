@@ -47,11 +47,11 @@ class PasswordEncryptViewController: UIViewController {
         confirmPasswordErrorLabel.text   = NSLocalizedString("The message password didn't match", comment: "Description")
         hintField.placeholder            = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
         
-        cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Action"),
+        cancelButton.setTitle(LocalString._general_cancel_button,
                               for: .normal)
-        removeButton.setTitle(NSLocalizedString("Remove", comment: "Action"),
+        removeButton.setTitle(LocalString._general_remove_button,
                               for: .normal)
-        applyButton.setTitle(NSLocalizedString("Apply", comment: "Action"),
+        applyButton.setTitle(LocalString._general_apply_button,
                              for: .normal)
     }
     

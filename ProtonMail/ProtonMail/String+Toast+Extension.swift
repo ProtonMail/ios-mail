@@ -17,7 +17,7 @@ extension String {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = NSLocalizedString("Alert", comment: "alert title");
+        hud.labelText = LocalString._general_alert_title
         hud.detailsLabelText = self
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
@@ -33,7 +33,7 @@ extension String {
     func toast(at view: UIView) -> Void {
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = NSLocalizedString("Alert", comment: "alert title");
+        hud.labelText = LocalString._general_alert_title
         hud.detailsLabelText = self
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)

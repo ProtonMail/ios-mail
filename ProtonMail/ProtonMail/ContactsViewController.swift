@@ -59,7 +59,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
                            forCellReuseIdentifier: kContactCellIdentifier)
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = NSLocalizedString("Search", comment: "Placeholder")
-        searchController.searchBar.setValue(NSLocalizedString("Cancel", comment: "Action"),
+        searchController.searchBar.setValue(LocalString._general_cancel_button,
                                             forKey:"_cancelButtonText")
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
@@ -210,7 +210,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     @available(iOS 9.0, *)
     @objc internal func moreButtonTapped() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel",  comment: "Action"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Upload Contacts",  comment: "Action"), style: .default, handler: { (action) -> Void in
             self.navigationController?.popViewController(animated: true)
@@ -221,7 +221,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Action"), style: .default, handler: { (action) -> Void in
                 self.performSegue(withIdentifier: self.kSegueToImportView, sender: self)
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             self.present(alertController, animated: true, completion: nil)
         }))
     
@@ -294,7 +294,7 @@ extension ContactsViewController: UITableViewDelegate {
         let deleteClosure = { (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
             if let contact = self.viewModel.item(index: indexPath) {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Contact", comment: "Title-Contacts"), style: .destructive, handler: { (action) -> Void in
                     ActivityIndicatorHelper.showActivityIndicator(at: self.view)
                     self.viewModel.delete(contactID: contact.contactID, complete: { (error) in

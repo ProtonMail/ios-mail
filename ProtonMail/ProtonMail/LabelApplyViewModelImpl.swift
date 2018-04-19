@@ -32,11 +32,11 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     }
     
     override func getApplyButtonText() -> String {
-        return NSLocalizedString("Apply", comment: "Action")
+        return LocalString._general_apply_button
     }
     
     override func getCancelButtonText() -> String {
-        return NSLocalizedString("Cancel", comment: "Action")
+        return LocalString._general_cancel_button
     }
     
     override func getLabelMessage( _ label : Label!) -> LabelMessageModel! {

@@ -89,7 +89,7 @@ class AttachmentsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.doneButton = UIBarButtonItem(title:NSLocalizedString("Done", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(AttachmentsTableViewController.doneAction(_:)))
+        self.doneButton = UIBarButtonItem(title: LocalString._general_done_button, style: UIBarButtonItemStyle.plain, target: self, action: #selector(AttachmentsTableViewController.doneAction(_:)))
         self.navigationItem.leftBarButtonItem = doneButton
         
         self.tableView.register(UINib(nibName: "AttachmentTableViewCell", bundle: nil), forCellReuseIdentifier: AttachmentTableViewCell.Constant.identifier)
@@ -187,7 +187,7 @@ class AttachmentsTableViewController: UITableViewController {
         
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: UIAlertActionStyle.cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: UIAlertActionStyle.cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
     
@@ -237,7 +237,7 @@ class AttachmentsTableViewController: UITableViewController {
         if let att = attachment {
             cell.configCell(att.fileName, fileSize: att.fileSize.intValue, showDownload: false)
             let crossView = UILabel();
-            crossView.text = NSLocalizedString("Remove", comment: "Action")
+            crossView.text = LocalString._general_remove_button
             crossView.sizeToFit()
             crossView.textColor = UIColor.white
             cell.defaultColor = UIColor.lightGray
