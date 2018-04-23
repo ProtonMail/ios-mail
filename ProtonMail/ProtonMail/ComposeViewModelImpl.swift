@@ -74,14 +74,14 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 if action == ComposeMessageAction.reply || action == ComposeMessageAction.replyAll {
                     if let title = self.message?.title {
                         if !title.hasRe() {
-                            let re = NSLocalizedString("Re:", comment: "Title")
+                            let re = LocalString._composer_short_reply
                             self.message?.title = "\(re) \(title)"
                         }
                     }
                 } else if action == ComposeMessageAction.forward {
                     if let title = self.message?.title {
                         if !title.hasFwd() {
-                            let fwd = NSLocalizedString("Fwd:", comment: "Title")
+                            let fwd = LocalString._composer_short_forward
                             self.message?.title = "\(fwd) \(title)"
                         }
                     }
@@ -416,8 +416,8 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingStyleHTML()
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
-                let on = NSLocalizedString("On", comment: "Title")
-                let at = NSLocalizedString("at", comment: "Title")
+                let on = LocalString._composer_on
+                let at = LocalString._general_at_label
                 let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
                 let time : String! = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
                 let sn : String! = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
@@ -431,22 +431,22 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 replyHeader = replyHeader.stringByStrippingBodyStyle()
                 replyHeader = replyHeader.stringByPurifyHTML()
                 
-                let w = NSLocalizedString("wrote:", comment: "Title")
+                let w = LocalString._composer_wrote
                 let sp = "<div><br><div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
                 
                 return " \(head) \(htmlString) \(sp) \(body)</blockquote> \(foot)"
             case .forward:
-                let on = NSLocalizedString("On", comment: "Title")
-                let at = NSLocalizedString("at", comment: "Title")
+                let on = LocalString._composer_on
+                let at = LocalString._general_at_label
                 let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
                 let time = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
                 
-                let fwdm = NSLocalizedString("Forwarded message", comment: "Title")
-                let from = NSLocalizedString("From:", comment: "Title")
-                let dt = NSLocalizedString("Date:", comment: "Title")
-                let sj = NSLocalizedString("Subject:", comment: "Title")
-                let t = NSLocalizedString("To:", comment: "Title")
-                let c = NSLocalizedString("Cc:", comment: "Title")
+                let fwdm = LocalString._composer_fwd_message
+                let from = LocalString._general_from_label
+                let dt = LocalString._composer_date_field
+                let sj = LocalString._composer_subject_field
+                let t = LocalString._general_to_label
+                let c = LocalString._general_cc_label
                 var forwardHeader =
                 "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
                 

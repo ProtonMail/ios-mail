@@ -42,7 +42,7 @@ extension String {
     
     
     func hasRe () -> Bool {
-        let re = NSLocalizedString("Re:", comment: "Title")
+        let re = LocalString._composer_short_reply
         let checkCount = re.count
         if self.count < checkCount {
             return false;
@@ -53,7 +53,7 @@ extension String {
     }
     
     func hasFwd () -> Bool {
-        let fwd = NSLocalizedString("Fwd:", comment: "Title")
+        let fwd = LocalString._composer_short_forward
         let checkCount = fwd.count
         if self.count < checkCount {
             return false;

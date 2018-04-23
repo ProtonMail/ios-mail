@@ -125,7 +125,7 @@ class EmailHeaderView: UIView {
         get {
             let n = self.sender?.name ?? ""
             let e = self.sender?.email ?? ""
-            let f = NSLocalizedString("From:", comment: "Title")
+            let f = LocalString._general_from_label
             let from = "\(f) \((n.isEmpty ? e : n))"
             let formRange = NSRange (location: 0, length: from.count)
             let attributedString = NSMutableAttributedString(string: from,
@@ -141,7 +141,7 @@ class EmailHeaderView: UIView {
     
     fileprivate var fromShortAttr : NSMutableAttributedString! {
         get {
-            let f = NSLocalizedString("From:", comment: "Title")
+            let f = LocalString._general_from_label
             let from = "\(f) "
             let formRange = NSRange (location: 0, length: from.count)
             let attributedString = NSMutableAttributedString(string: from,
@@ -171,7 +171,7 @@ class EmailHeaderView: UIView {
                 strTo += " +\(count - 1)"
             }
             
-            let t = NSLocalizedString("To:", comment: "Title")
+            let t = LocalString._general_to_label
             let to = "\(t) \(strTo)"
             let formRange = NSRange (location: 0, length: to.count)
             let attributedString = NSMutableAttributedString(string: to,
@@ -186,7 +186,7 @@ class EmailHeaderView: UIView {
     
     fileprivate var toShortAttr : NSMutableAttributedString! {
         get {
-            let t = NSLocalizedString("To:", comment: "Title")
+            let t = LocalString._general_to_label
             let to = "\(t) "
             let formRange = NSRange (location: 0, length: to.count)
             let attributedString = NSMutableAttributedString(string: to,
@@ -201,7 +201,7 @@ class EmailHeaderView: UIView {
     
     fileprivate var ccShortAttr : NSMutableAttributedString! {
         get {
-            let c = NSLocalizedString("Cc:", comment: "Title")
+            let c = LocalString._general_cc_label
             let cc = "\(c) "
             let formRange = NSRange (location: 0, length: cc.count)
             let attributedString = NSMutableAttributedString(string: cc,
@@ -321,7 +321,8 @@ class EmailHeaderView: UIView {
         self.emailFavoriteButton.isSelected = self.starred;
         
         let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
-        self.emailShortTime.text = "\(NSLocalizedString("at", comment: "like at 10:00pm")) \(self.date.string(format:timeformat))".lowercased()
+        let at = LocalString._general_at_label
+        self.emailShortTime.text = "\(at) \(self.date.string(format:timeformat))".lowercased()
         let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' \(timeformat)") ;
         self.emailDetailDateLabel.text = String(format:NSLocalizedString("Date: %@", comment: "like Date: 2017-10-10"), "\(tm)")
 
