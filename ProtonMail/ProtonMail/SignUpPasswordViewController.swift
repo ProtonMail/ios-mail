@@ -55,8 +55,10 @@ class SignUpPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Choose a Password", comment: "place holder"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
-        confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Confirm Password", comment: "place holder"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        loginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Choose a Password", comment: "place holder"),
+                                                                      attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: LocalString._composer_eo_confirm_pwd_placeholder,
+                                                                             attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
         leftTopItem.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
         topTitleLabel.text = NSLocalizedString("Set passwords", comment: "Signup passwords top title")

@@ -147,9 +147,16 @@ class LocalString {
     static let _composer_eo_desc = NSLocalizedString("Set a password to encrypt this message for non-ProtonMail users.", comment: "Description")
     /// "Get more information"
     static let _composer_eo_info = NSLocalizedString("Get more information", comment: "Action")
-    
-    
+    /// "Message Password"
+    static let _composer_eo_msg_pwd_placeholder = NSLocalizedString("Message Password", comment: "Placeholder")
+    /// "The message password can't be empty"
+    static let _composer_eo_empty_pwd_desc = NSLocalizedString("The message password can't be empty", comment: "Description")
+    /// "Confirm Password"
+    static let _composer_eo_confirm_pwd_placeholder = NSLocalizedString("Confirm Password", comment: "Placeholder")
+    /// "The message password didn't match"
+    static let _composer_eo_dismatch_pwd_desc = NSLocalizedString("The message password didn't match", comment: "Description")
 
+    
     
     // Mark Contacts
     
@@ -261,23 +268,8 @@ class LocalString {
     static let _general_close_action = NSLocalizedString("Close", comment: "general close action")
     
     
-    
-
 
     
-//
-//    /// "Message Password"
-//    static let message_password = NSLocalizedString("Message Password", comment: "Placeholder")
-//
-//    /// "The message password can't be empty"
-//    static let the_message_password_can't_be_empty = NSLocalizedString("The message password can't be empty", comment: "Description")
-//
-//    /// "Confirm Password"
-//    static let confirm_password = NSLocalizedString("Confirm Password", comment: "Placeholder")
-//
-//    /// "The message password didn't match"
-//    static let the_message_password_didn't_match = NSLocalizedString("The message password didn't match", comment: "Description")
-//
 //    /// "Custom"
 //    static let custom = NSLocalizedString("Custom", comment: "default label type")
 //
@@ -531,9 +523,6 @@ class LocalString {
 //    /// "Define Password"
 //    static let define_password = NSLocalizedString("Define Password", comment: "place holder")
 //
-//    /// "Confirm Password"
-//    static let confirm_password = NSLocalizedString("Confirm Password", comment: "Title")
-//
 //    /// "Define Password"
 //    static let define_password = NSLocalizedString("Define Password", comment: "place holder")
 //
@@ -752,9 +741,6 @@ class LocalString {
 //
 //    /// "Choose a Password"
 //    static let choose_a_password = NSLocalizedString("Choose a Password", comment: "place holder")
-//
-//    /// "Confirm Password"
-//    static let confirm_password = NSLocalizedString("Confirm Password", comment: "place holder")
 //
 //    /// "Back"
 //    static let back = NSLocalizedString("Back", comment: "top left back button")
@@ -2114,18 +2100,6 @@ class LocalString {
 //
 //    /// "TouchID not available"
 //    static let touchid_not_available = NSLocalizedString("TouchID not available", comment: "Description")
-//
-//    /// "Message Password"
-//    static let message_password = NSLocalizedString("Message Password", comment: "Placeholder")
-//
-//    /// "The message password can't be empty"
-//    static let the_message_password_can't_be_empty = NSLocalizedString("The message password can't be empty", comment: "Description")
-//
-//    /// "Confirm Password"
-//    static let confirm_password = NSLocalizedString("Confirm Password", comment: "Placeholder")
-//
-//    /// "The message password didn't match"
-//    static let the_message_password_didn't_match = NSLocalizedString("The message password didn't match", comment: "Description")
 //
 //    /// "Compose"
 //    static let compose = NSLocalizedString("Compose", comment: "Action")

@@ -44,14 +44,14 @@ class ComposePasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewTitleLable.text = LocalString._composer_set_password
-        titleDesLabel.text = LocalString._composer_eo_desc
+        viewTitleLable.text              = LocalString._composer_set_password
+        titleDesLabel.text               = LocalString._composer_eo_desc
         moreInfoButton.setTitle(LocalString._composer_eo_info, for: .normal)
-        passwordField.placeholder = NSLocalizedString("Message Password", comment: "Placeholder")
-        passwordErrorLabel.text = NSLocalizedString("The message password can't be empty", comment: "Description")
-        confirmPasswordField.placeholder = NSLocalizedString("Confirm Password", comment: "Placeholder")
-        confirmPasswordErrorLabel.text = NSLocalizedString("The message password didn't match", comment: "Description")
-        hintField.placeholder = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
+        passwordField.placeholder        = LocalString._composer_eo_msg_pwd_placeholder
+        passwordErrorLabel.text          = LocalString._composer_eo_empty_pwd_desc
+        confirmPasswordField.placeholder = LocalString._composer_eo_confirm_pwd_placeholder
+        confirmPasswordErrorLabel.text   = LocalString._composer_eo_dismatch_pwd_desc
+        hintField.placeholder            = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
         removeButton.setTitle(LocalString._general_remove_button, for: .normal)
         applyButton.setTitle(LocalString._general_apply_button, for: .normal)

@@ -378,7 +378,7 @@ class ComposeView: UIViewController {
     }
     
     internal func showConfirmPasswordView() {
-        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Confirm Password", comment: "Title")
+        self.encryptedPasswordTextField.placeholder = LocalString._composer_eo_confirm_pwd_placeholder
         self.encryptedPasswordTextField.isSecureTextEntry = true
         self.encryptedPasswordTextField.text = ""
     }
