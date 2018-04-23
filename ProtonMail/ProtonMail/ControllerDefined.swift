@@ -34,9 +34,9 @@ public enum ComposeMessageAction: Int, CustomStringConvertible {
             case .forward:
                 return LocalString._general_forward_button
             case .newDraft, .newDraftFromShare:
-                return NSLocalizedString("Draft", comment: "Action")
+                return LocalString._general_draft_action
             case .openDraft:
-                return NSLocalizedString("OpenDraft", comment: "Action")
+                return LocalString._general_opendraft_action
             }
         }
     }

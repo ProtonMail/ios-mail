@@ -24,7 +24,7 @@ final class ContactEditUrlCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
-        self.valueField.placeholder = NSLocalizedString("Url", comment: "default vcard types")
+        self.valueField.placeholder = LocalString._contacts_vcard_url_placeholder
     }
     
     override func layoutSubviews() {

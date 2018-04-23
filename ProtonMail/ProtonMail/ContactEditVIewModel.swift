@@ -37,17 +37,17 @@ enum InformationType : Int {
     var title : String {
         switch self {
         case .organization:
-            return NSLocalizedString("Organization", comment: "contacts talbe cell Organization title")
+            return LocalString._contacts_info_organization
         case .nickname:
-            return NSLocalizedString("Nickname", comment: "contacts talbe cell Nickname title")
+            return LocalString._contacts_info_nickname
         case .title:
-            return NSLocalizedString("Title", comment: "contacts talbe cell Title title")
+            return LocalString._contacts_info_title
         case .birthday:
-            return NSLocalizedString("Birthday", comment: "contacts talbe cell Birthday title")
+            return LocalString._contacts_info_birthday
         case .anniversary:
-            return NSLocalizedString("Anniversary", comment: "contacts talbe cell Anniversary title")
+            return LocalString._contacts_info_anniversary
         case .gender:
-            return NSLocalizedString("Gender", comment: "contacts talbe cell gender title")
+            return LocalString._contacts_info_gender
         }
     }
 }

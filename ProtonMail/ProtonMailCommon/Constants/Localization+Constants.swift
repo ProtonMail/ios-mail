@@ -32,6 +32,36 @@ class LocalString {
     static let _settings_auto_lock_minutes = NSLocalizedString("%d Minutes", comment: "auto lock time format")
     /// "**********"
     static let _settings_secret_x_string   = NSLocalizedString("**********", comment: "secret")
+    /// "DisplayName"
+    static let _settings_displayname_title = NSLocalizedString("DisplayName", comment: "Title")
+    /// "DISPLAY NAME"
+    static let _settings_display_name_title = NSLocalizedString("Display Name", comment: "Title")
+    /// "Input Display Name ..."
+    static let _settings_input_display_name_placeholder = NSLocalizedString("Input Display Name ...", comment: "place holder")
+    /// "Signature"
+    static let _settings_signature_title = NSLocalizedString("Signature", comment: "Title")
+    /// "Email default signature"
+    static let _settings_email_default_signature = NSLocalizedString("Email default signature", comment: "place holder")
+    /// "Enable Default Signature"
+    static let _settings_enable_default_signature_title = NSLocalizedString("Enable Default Signature", comment: "Title")
+    /// "Mobile Signature"
+    static let _settings_mobile_signature_title = NSLocalizedString("Mobile Signature", comment: "Title")
+    /// "Only a paid user can modify default mobile signature or turn it off!"
+    static let _settings_only_paid_to_modify_mobile_signature = NSLocalizedString("Only a paid user can modify default mobile signature or turn it off!", comment: "Description")
+    /// "Enable Mobile Signature"
+    static let _settings_enable_mobile_signature_title = NSLocalizedString("Enable Mobile Signature", comment: "Title")
+    /// "ProtonMail Plus is required to customize your mobile signature"
+    static let _settings_plus_is_required_to_modify_signature_notes = NSLocalizedString("ProtonMail Plus is required to customize your mobile signature", comment: "Description")
+    /// "Notification Email"
+    static let _settings_notification_email = NSLocalizedString("Notification Email", comment: "Title")
+    /// "Also used to reset a forgotten password."
+    static let _settings_notification_email_notes = NSLocalizedString("Also used to reset a forgotten password.", comment: "Description")
+    /// "Notification / Recovery Email"
+    static let _settings_notification_email_title = NSLocalizedString("Notification / Recovery Email", comment: "Title")
+    /// "Enable Notification Email"
+    static let _settings_notification_email_switch_title = NSLocalizedString("Enable Notification Email", comment: "Title")
+    /// "Input Notification Email ..."
+    static let _settings_notification_email_placeholder = NSLocalizedString("Input Notification Email ...", comment: "place holder")
     
     
     // Mark Menu
@@ -128,9 +158,9 @@ class LocalString {
     // Mark Messages
     
     /// "Message sent"
-    static let _message_sent_ok_desc = NSLocalizedString("Message sent", comment: "Description")
+    static let _message_sent_ok_desc          = NSLocalizedString("Message sent", comment: "Description")
     /// "Sent Failed"
-    static let _message_sent_failed_desc = NSLocalizedString("Sent Failed", comment: "Description")
+    static let _message_sent_failed_desc      = NSLocalizedString("Sent Failed", comment: "Description")
     /// "The draft cache is broken please try again"
     static let _message_draft_cache_is_broken = NSLocalizedString("The draft cache is broken please try again", comment: "Description")
     
@@ -139,34 +169,55 @@ class LocalString {
     // Mark Composer
 
     /// "Re:"
-    static let _composer_short_reply = NSLocalizedString("Re:", comment: "abbreviation of reply:")
+    static let _composer_short_reply   = NSLocalizedString("Re:", comment: "abbreviation of reply:")
     /// "Fwd:"
     static let _composer_short_forward = NSLocalizedString("Fwd:", comment: "abbreviation of forward:")
     /// "On"
-    static let _composer_on = NSLocalizedString("On", comment: "Title")
+    static let _composer_on            = NSLocalizedString("On", comment: "Title")
     /// "wrote:"
-    static let _composer_wrote = NSLocalizedString("wrote:", comment: "Title")
+    static let _composer_wrote         = NSLocalizedString("wrote:", comment: "Title")
     /// "Date:"
-    static let _composer_date_field = NSLocalizedString("Date:", comment: "message Date: text")
+    static let _composer_date_field    = NSLocalizedString("Date:", comment: "message Date: text")
     /// "Subject:"
     static let _composer_subject_field = NSLocalizedString("Subject:", comment: "subject: text when forward")
     /// "Forwarded message"
-    static let _composer_fwd_message = NSLocalizedString("Forwarded message", comment: "forwarded message title")
+    static let _composer_fwd_message   = NSLocalizedString("Forwarded message", comment: "forwarded message title")
     /// "Set Password"
-    static let _composer_set_password = NSLocalizedString("Set Password", comment: "Title")
+    static let _composer_set_password  = NSLocalizedString("Set Password", comment: "Title")
     /// "Set a password to encrypt this message for non-ProtonMail users."
-    static let _composer_eo_desc = NSLocalizedString("Set a password to encrypt this message for non-ProtonMail users.", comment: "Description")
+    static let _composer_eo_desc       = NSLocalizedString("Set a password to encrypt this message for non-ProtonMail users.", comment: "Description")
     /// "Get more information"
-    static let _composer_eo_info = NSLocalizedString("Get more information", comment: "Action")
+    static let _composer_eo_info       = NSLocalizedString("Get more information", comment: "Action")
     /// "Message Password"
-    static let _composer_eo_msg_pwd_placeholder = NSLocalizedString("Message Password", comment: "Placeholder")
-    /// "The message password can't be empty"
-    static let _composer_eo_empty_pwd_desc = NSLocalizedString("The message password can't be empty", comment: "Description")
+    static let _composer_eo_msg_pwd_placeholder     = NSLocalizedString("Message Password", comment: "Placeholder")
+    /// "Password cannot be empty."
+    static let _composer_eo_empty_pwd_desc          = NSLocalizedString("Password cannot be empty.", comment: "Description")
+    /// "Please set a password."
+    static let _composer_eo_pls_set_password = NSLocalizedString("Please set a password.", comment: "Description")
     /// "Confirm Password"
     static let _composer_eo_confirm_pwd_placeholder = NSLocalizedString("Confirm Password", comment: "Placeholder")
-    /// "The message password didn't match"
-    static let _composer_eo_dismatch_pwd_desc = NSLocalizedString("The message password didn't match", comment: "Description")
-
+    /// "Message password does not match."
+    static let _composer_eo_dismatch_pwd_desc       = NSLocalizedString("Message password does not match.", comment: "Description")
+    /// "Compose"
+    static let _composer_compose_action = NSLocalizedString("Compose", comment: "Action")
+    /// "Send message without subject?"
+    static let _composer_send_no_subject_desc = NSLocalizedString("Send message without subject?", comment: "Description")
+    /// "You need at least one recipient to send"
+    static let _composer_no_recipient_error = NSLocalizedString("You need at least one recipient to send", comment: "Description")
+    /// "Save draft"
+    static let _composer_save_draft_action = NSLocalizedString("Save draft", comment: "Action")
+    /// "Discard draft"
+    static let _composer_discard_draft_action = NSLocalizedString("Discard draft", comment: "Action")
+    /// "Change sender address to .."
+    static let _composer_change_sender_address_to = NSLocalizedString("Change sender address to ..", comment: "Title")
+    /// "Upgrade to a paid plan to send from your %@ address"
+    static let _composer_change_paid_plan_sender_error = NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error")
+    /// "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@"
+    static let _composer_sending_messages_from_a_paid_feature = NSLocalizedString("Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@", comment: "pm.me upgrade warning in composer")
+    /// "days"
+    static let _composer_eo_days_title = NSLocalizedString("days", comment: "Title")
+    /// "Hours"
+    static let _composer_eo_hours_title = NSLocalizedString("Hours", comment: "Title")
     
     
     // Mark Contacts
@@ -221,6 +272,33 @@ class LocalString {
     static let _contacts_all_imported         = NSLocalizedString("All contacts are imported", comment: "Title")
     /// "Custom"
     static let _contacts_custom_type          = NSLocalizedString("Custom", comment: "contacts default label type")
+    /// "Street"
+    static let _contacts_street_field_placeholder = NSLocalizedString("Street", comment: "contact placeholder")
+    /// "City"
+    static let _contacts_city_field_placeholder = NSLocalizedString("City", comment: "contact placeholder")
+    /// "State"
+    static let _contacts_state_field_placeholder = NSLocalizedString("State", comment: "contact placeholder")
+    /// "ZIP"
+    static let _contacts_zip_field_placeholder = NSLocalizedString("ZIP", comment: "contact placeholder")
+    /// "Country"
+    static let _contacts_country_field_placeholder = NSLocalizedString("Country", comment: "contact placeholder")
+    /// "Url"
+    static let _contacts_vcard_url_placeholder = NSLocalizedString("Url", comment: "default vcard types")
+    /// "Organization"
+    static let _contacts_info_organization = NSLocalizedString("Organization", comment: "contacts talbe cell Organization title")
+    /// "Nickname"
+    static let _contacts_info_nickname = NSLocalizedString("Nickname", comment: "contacts talbe cell Nickname title")
+    /// "Title"
+    static let _contacts_info_title = NSLocalizedString("Title", comment: "contacts talbe cell Title title")
+    /// "Birthday"
+    static let _contacts_info_birthday = NSLocalizedString("Birthday", comment: "contacts talbe cell Birthday title")
+    /// "Anniversary"
+    static let _contacts_info_anniversary = NSLocalizedString("Anniversary", comment: "contacts talbe cell Anniversary title")
+    /// "Gender"
+    static let _contacts_info_gender = NSLocalizedString("Gender", comment: "contacts talbe cell gender title")
+    
+    
+    
     
     
     // Mark Labels
@@ -245,7 +323,10 @@ class LocalString {
     static let _labels_create_action        = NSLocalizedString("Create", comment: "top right action text")
     /// "Manage Labels/Folders"
     static let _labels_manage_title         = NSLocalizedString("Manage Labels/Folders", comment: "Title")
-
+    /// "Move to Folder"
+    static let _labels_move_to_folder       = NSLocalizedString("Move to Folder", comment: "folder apply - title")
+    /// "Edit Folder"
+    static let _labels_edit_folder_title    = NSLocalizedString("Edit Folder", comment: "Title")
     
     // Mark General
     
@@ -289,257 +370,66 @@ class LocalString {
     static let _general_force_upgrade_desc = NSLocalizedString("A new version of ProtonMail app is available, please update to latest version.", comment: "Description")
     /// "Search"
     static let _general_search_placeholder = NSLocalizedString("Search", comment: "Title")
-
+    /// "Notice"
+    static let _general_notice_alert_title = NSLocalizedString("Notice", comment: "Alert title")
+    /// "Don't remind me again"
+    static let _general_dont_remind_action = NSLocalizedString("Don't remind me again", comment: "Action")
+    /// "Send"
+    static let _general_send_action = NSLocalizedString("Send", comment: "Action")
+    /// "Confirmation"
+    static let _general_confirmation_title = NSLocalizedString("Confirmation", comment: "Title")
+    /// "Draft"
+    static let _general_draft_action = NSLocalizedString("Draft", comment: "Action")
+    /// "OpenDraft"
+    static let _general_opendraft_action = NSLocalizedString("OpenDraft", comment: "Action")
 
     
-//    /// "Invalid UserName"
-//    static let invalid_username = NSLocalizedString("Invalid UserName", comment: "Error")
-//
-//    /// "The UserName have been taken."
-//    static let the_username_have_been_taken. = NSLocalizedString("The UserName have been taken.", comment: "Error Description")
-//
-//    /// "Bad parameter"
-//    static let bad_parameter = NSLocalizedString("Bad parameter", comment: "Description")
-//
-//    /// "Bad parameter: %@"
-//    static let bad_parameter:_%@ = NSLocalizedString("Bad parameter: %@", comment: "Description")
-//
-//    /// "Bad path"
-//    static let bad_path = NSLocalizedString("Bad path", comment: "Description")
-//
-//    /// "Unable to construct a valid URL with the following path: %@"
-//    static let unable_to_construct_a_valid_url_with_the_following_path:_%@ = NSLocalizedString("Unable to construct a valid URL with the following path: %@", comment: "Description")
-//
-//    /// "Bad response"
-//    static let bad_response = NSLocalizedString("Bad response", comment: "Description")
-//
-//    /// "Can't not find the value from the response body"
-//    static let can't_not_find_the_value_from_the_response_body = NSLocalizedString("Can't not find the value from the response body", comment: "Description")
-//
-//    /// "<no object>"
-//    static let <no_object> = NSLocalizedString("<no object>", comment: "no object error, local only , this could be not translated!")
-//
-//    /// "Unable to parse response"
-//    static let unable_to_parse_response = NSLocalizedString("Unable to parse response", comment: "Description")
-//
-//    /// "Unable to parse the response object:\n%@"
-//    static let unable_to_parse_the_response_object:\n%@ = NSLocalizedString("Unable to parse the response object:\n%@", comment: "Description")
-//
-//    /// "Draft"
-//    static let draft = NSLocalizedString("Draft", comment: "Action")
-//
-//    /// "OpenDraft"
-//    static let opendraft = NSLocalizedString("OpenDraft", comment: "Action")
-//
-//    /// "Url"
-//    static let url = NSLocalizedString("Url", comment: "default vcard types")
-//
-//    /// "Failed to initialize the application's saved data"
-//    static let failed_to_initialize_the_application's_saved_data = NSLocalizedString("Failed to initialize the application's saved data", comment: "Description")
-//
-//    /// "There was an error creating or loading the application's saved data."
-//    static let there_was_an_error_creating_or_loading_the_application's_saved_data. = NSLocalizedString("There was an error creating or loading the application's saved data.", comment: "Description")
-//
-//
-//    /// "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@"
-//    static let sending_messages_from_%@_address_is_a_paid_feature._your_message_will_be_sent_from_your_default_address_%@ = NSLocalizedString("Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@", comment: "pm.me upgrade warning in composer")
-//
-//    /// "Notice"
-//    static let notice = NSLocalizedString("Notice", comment: "Alert")
-//
-//    /// "Don't remind me again"
-//    static let don't_remind_me_again = NSLocalizedString("Don't remind me again", comment: "Action")
-//
-//    /// "Compose"
-//    static let compose = NSLocalizedString("Compose", comment: "Action")
-//
-//    /// "Send message without subject?"
-//    static let send_message_without_subject? = NSLocalizedString("Send message without subject?", comment: "Description")
-//
-//    /// "Send"
-//    static let send = NSLocalizedString("Send", comment: "Action")
-//
-//    /// "You need at least one recipient to send"
-//    static let you_need_at_least_one_recipient_to_send = NSLocalizedString("You need at least one recipient to send", comment: "Description")
-//
-//    /// "Confirmation"
-//    static let confirmation = NSLocalizedString("Confirmation", comment: "Title")
-//
-//    /// "Save draft"
-//    static let save_draft = NSLocalizedString("Save draft", comment: "Action")
-//
-//    /// "Discard draft"
-//    static let discard_draft = NSLocalizedString("Discard draft", comment: "Action")
-//
-//    /// "Change sender address to .."
-//    static let change_sender_address_to_.. = NSLocalizedString("Change sender address to ..", comment: "Title")
-//
-//    /// "Upgrade to a paid plan to send from your %@ address"
-//    static let upgrade_to_a_paid_plan_to_send_from_your_%@_address = NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error")
-//
-//    /// "days"
-//    static let days = NSLocalizedString("days", comment: "")
-//
-//    /// "Hours"
-//    static let hours = NSLocalizedString("Hours", comment: "")
-//
-//    /// "days"
-//    static let days = NSLocalizedString("days", comment: "")
-//
-//    /// "Hours"
-//    static let hours = NSLocalizedString("Hours", comment: "")
-//
-//    /// "Street"
-//    static let street = NSLocalizedString("Street", comment: "contact placeholder")
-//
-//    /// "Street"
-//    static let street = NSLocalizedString("Street", comment: "contact placeholder")
-//
-//    /// "City"
-//    static let city = NSLocalizedString("City", comment: "contact placeholder")
-//
-//    /// "State"
-//    static let state = NSLocalizedString("State", comment: "contact placeholder")
-//
-//    /// "ZIP"
-//    static let zip = NSLocalizedString("ZIP", comment: "contact placeholder")
-//
-//    /// "Country"
-//    static let country = NSLocalizedString("Country", comment: "contact placeholder")
-//
-//    /// "Move to Folder"
-//    static let move_to_folder = NSLocalizedString("Move to Folder", comment: "folder apply - title")
-//
-//    /// "Navigation Title - Test"
-//    static let navigation_title_-_test = NSLocalizedString("Navigation Title - Test", comment: "Test")
-//
-//    /// "this is description - Test"
-//    static let this_is_description_-_test = NSLocalizedString("this is description - Test", comment: "Test")
-//
-//    /// "Section Title - Test"
-//    static let section_title_-_test = NSLocalizedString("Section Title - Test", comment: "Test")
-//
-//    /// "Enable - Test"
-//    static let enable_-_test = NSLocalizedString("Enable - Test", comment: "Test")
-//
-//    /// "Please input ... - Test"
-//    static let please_input_..._-_test = NSLocalizedString("Please input ... - Test", comment: "Test")
-//
-//    /// "test value"
-//    static let test_value = NSLocalizedString("test value", comment: "Test")
-//
-//    /// "DisplayName"
-//    static let displayname = NSLocalizedString("DisplayName", comment: "Title")
-//
-//    /// "DISPLAY NAME"
-//    static let display_name = NSLocalizedString("DISPLAY NAME", comment: "Title")
-//
-//    /// "Input Display Name ..."
-//    static let input_display_name_... = NSLocalizedString("Input Display Name ...", comment: "place holder")
-//
-//    /// "Signature"
-//    static let signature = NSLocalizedString("Signature", comment: "Title")
-//
-//    /// "Email default signature"
-//    static let email_default_signature = NSLocalizedString("Email default signature", comment: "place holder")
-//
-//    /// "SIGNATURE"
-//    static let signature = NSLocalizedString("SIGNATURE", comment: "Title")
-//
-//    /// "Enable Default Signature"
-//    static let enable_default_signature = NSLocalizedString("Enable Default Signature", comment: "Title")
-//
-//    /// "Mobile Signature"
-//    static let mobile_signature = NSLocalizedString("Mobile Signature", comment: "Title")
-//
-//    /// "Only a paid user can modify default mobile signature or turn it off!"
-//    static let only_a_paid_user_can_modify_default_mobile_signature_or_turn_it_off! = NSLocalizedString("Only a paid user can modify default mobile signature or turn it off!", comment: "Description")
-//
-//    /// "Only plus user could modify default mobile signature or turn it off!"
-//    static let only_plus_user_could_modify_default_mobile_signature_or_turn_it_off! = NSLocalizedString("Only plus user could modify default mobile signature or turn it off!", comment: "Description")
-//
-//    /// "Mobile Signature"
-//    static let mobile_signature = NSLocalizedString("Mobile Signature", comment: "Title")
-//
-//    /// "Enable Mobile Signature"
-//    static let enable_mobile_signature = NSLocalizedString("Enable Mobile Signature", comment: "Title")
-//
-//    /// "ProtonMail Plus is required to customize your mobile signature"
-//    static let protonmail_plus_is_required_to_customize_your_mobile_signature = NSLocalizedString("ProtonMail Plus is required to customize your mobile signature", comment: "Description")
-//
-//    /// "Notification Email"
-//    static let notification_email = NSLocalizedString("Notification Email", comment: "Title")
-//
-//    /// "Also used to reset a forgotten password."
-//    static let also_used_to_reset_a_forgotten_password. = NSLocalizedString("Also used to reset a forgotten password.", comment: "Description")
-//
-//    /// "Notification / Recovery Email"
-//    static let notification_/_recovery_email = NSLocalizedString("Notification / Recovery Email", comment: "Title")
-//
-//    /// "Enable Notification Email"
-//    static let enable_notification_email = NSLocalizedString("Enable Notification Email", comment: "Title")
-//
-//    /// "Input Notification Email ..."
-//    static let input_notification_email_... = NSLocalizedString("Input Notification Email ...", comment: "place holder")
-//
-//    /// "Edit Folder"
-//    static let edit_folder = NSLocalizedString("Edit Folder", comment: "Title")
-//
-//    /// "Folder Name"
-//    static let folder_name = NSLocalizedString("Folder Name", comment: "folder editing editfeild place holder")
-//
-//    /// "Message password does not match."
-//    static let message_password_does_not_match. = NSLocalizedString("Message password does not match.", comment: "Error")
-//
-//    /// "Password cannot be empty."
-//    static let password_cannot_be_empty. = NSLocalizedString("Password cannot be empty.", comment: "Error")
-//
-//    /// "Please set a password."
-//    static let please_set_a_password. = NSLocalizedString("Please set a password.", comment: "Description")
-//
-//    /// "From"
-//    static let from = NSLocalizedString("From", comment: "Title")
-//
-//    /// "Subject"
-//    static let subject = NSLocalizedString("Subject", comment: "Placeholder")
-//
-//    /// "Define Expiration Date"
-//    static let define_expiration_date = NSLocalizedString("Define Expiration Date", comment: "Placeholder")
-//
-//    /// "Define Password"
-//    static let define_password = NSLocalizedString("Define Password", comment: "place holder")
-//
-//    /// "Define Password"
-//    static let define_password = NSLocalizedString("Define Password", comment: "place holder")
-//
-//    /// "To"
-//    static let to = NSLocalizedString("To", comment: "Title")
-//
-//    /// "Cc"
-//    static let cc = NSLocalizedString("Cc", comment: "Title")
-//
-//    /// "Bcc"
-//    static let bcc = NSLocalizedString("Bcc", comment: "Title")
-//
-//    /// "Organization"
-//    static let organization = NSLocalizedString("Organization", comment: "contacts talbe cell Organization title")
-//
-//    /// "Nickname"
-//    static let nickname = NSLocalizedString("Nickname", comment: "contacts talbe cell Nickname title")
-//
-//    /// "Title"
-//    static let title = NSLocalizedString("Title", comment: "contacts talbe cell Title title")
-//
-//    /// "Birthday"
-//    static let birthday = NSLocalizedString("Birthday", comment: "contacts talbe cell Birthday title")
-//
-//    /// "Anniversary"
-//    static let anniversary = NSLocalizedString("Anniversary", comment: "contacts talbe cell Anniversary title")
-//
-//    /// "Gender"
-//    static let gender = NSLocalizedString("Gender", comment: "contacts talbe cell gender title")
-//
-//    /// "Plain text"
+
+    
+    /// Mark Error
+    
+    /// "Invalid UserName"
+    static let _error_invalid_username = NSLocalizedString("Invalid UserName!", comment: "Error message")
+    /// "Bad parameter"
+    static let _error_bad_parameter_title = NSLocalizedString("Bad parameter", comment: "Error title")
+    /// "Bad parameter: %@"
+    static let _error_bad_parameter_desc = NSLocalizedString("Bad parameter: %@", comment: "Error Description")
+    /// "Bad response"
+    static let _error_bad_response_title = NSLocalizedString("Bad response", comment: "Error Description")
+    /// "Can't not find the value from the response body"
+    static let _error_cant_parse_response_body = NSLocalizedString("Can't not find the value from the response body", comment: "Description")
+    /// "no object"
+    static let _error_no_object = NSLocalizedString("no object", comment: "no object error, local only , this could be not translated!")
+    /// "Unable to parse response"
+    static let _error_unable_to_parse_response_title = NSLocalizedString("Unable to parse response", comment: "Description")
+    /// "Unable to parse the response object:\n%@"
+    static let _error_unable_to_parse_response_desc = NSLocalizedString("Unable to parse the response object:\n%@", comment: "Description")
+    /// "Failed to initialize the application's saved data"
+    static let _error_core_data_save_failed = NSLocalizedString("Failed to initialize the application's saved data", comment: "Description")
+    /// "There was an error creating or loading the application's saved data."
+    static let _error_core_data_load_failed = NSLocalizedString("There was an error creating or loading the application's saved data.", comment: "Description")
+    
+    
+
+    /// "From"
+    static let _composer_from_label = NSLocalizedString("From", comment: "Title")
+    /// "To"
+    static let _composer_to_label = NSLocalizedString("To", comment: "Title")
+    /// "Cc"
+    static let _composer_cc_label = NSLocalizedString("Cc", comment: "Title")
+    /// "Bcc"
+    static let _composer_bcc_label = NSLocalizedString("Bcc", comment: "Title")
+    /// "Subject"
+    static let _composer_subject_placeholder = NSLocalizedString("Subject", comment: "Placeholder")
+    /// "Define Expiration Date"
+    static let _composer_define_expiration_placeholder = NSLocalizedString("Define Expiration Date", comment: "Placeholder")
+    /// "Define Password"
+    static let _composer_define_password = NSLocalizedString("Define Password", comment: "place holder")
+
+
+
+  
+    /// "Plain text"
 //    static let plain_text = NSLocalizedString("Plain text", comment: "Title")
 //
 //    /// "ProtonMail encrypted emails"
@@ -553,10 +443,6 @@ class LocalString {
 //
 //    /// "Send plain but stored enc"
 //    static let send_plain_but_stored_enc = NSLocalizedString("Send plain but stored enc", comment: "Title")
-//
-//    /// "Draft"
-//    static let draft = NSLocalizedString("Draft", comment: "Title")
-//
 //    /// "Encrypted for outside reply"
 //    static let encrypted_for_outside_reply = NSLocalizedString("Encrypted for outside reply", comment: "Title")
 //
@@ -1297,10 +1183,6 @@ class LocalString {
 //
 //    /// "Error Logs"
 //    static let error_logs = NSLocalizedString("Error Logs", comment: "settings debug section title")
-//
-//    /// "Notification Email"
-//    static let notification_email = NSLocalizedString("Notification Email", comment: "settings general section title")
-//
 //    /// "Login Password"
 //    static let login_password = NSLocalizedString("Login Password", comment: "settings general section title")
 //
@@ -1348,15 +1230,6 @@ class LocalString {
 //
 //    /// ""
 //    static let  = NSLocalizedString("", comment: "")
-//
-//    /// "Display Name"
-//    static let display_name = NSLocalizedString("Display Name", comment: "Title")
-//
-//    /// "Signature"
-//    static let signature = NSLocalizedString("Signature", comment: "Title")
-//
-//    /// "Mobile Signature"
-//    static let mobile_signature = NSLocalizedString("Mobile Signature", comment: "Title")
 //    /// "Debug"
 //    static let debug = NSLocalizedString("Debug", comment: "Title")
 //
@@ -1393,9 +1266,6 @@ class LocalString {
 //    /// "Login Password"
 //    static let login_password = NSLocalizedString("Login Password", comment: "Placeholder")
 //
-//    /// "Confirmation"
-//    static let confirmation = NSLocalizedString("Confirmation", comment: "Title")
-//
 //    /// "You have unsaved changes. Do you want to save it?"
 //    static let you_have_unsaved_changes._do_you_want_to_save_it? = NSLocalizedString("You have unsaved changes. Do you want to save it?", comment: "Confirmation message")
 //
@@ -1425,9 +1295,6 @@ class LocalString {
 //
 //    /// "Change Password"
 //    static let change_password = NSLocalizedString("Change Password", comment: "update password error title")
-//
-//    /// "Invalid UserName!"
-//    static let invalid_username! = NSLocalizedString("Invalid UserName!", comment: "update password error when input invalid username")
 //
 //    /// "Can't get a Moduls ID!"
 //    static let can't_get_a_moduls_id! = NSLocalizedString("Can't get a Moduls ID!", comment: "update password error = typo:Modulus")
@@ -1464,9 +1331,6 @@ class LocalString {
 //
 //    /// "Update Notification Email"
 //    static let update_notification_email = NSLocalizedString("Update Notification Email", comment: "update notification email error title")
-//
-//    /// "Invalid UserName!"
-//    static let invalid_username! = NSLocalizedString("Invalid UserName!", comment: "update notification email error")
 //
 //    /// "Invalid hashed password!"
 //    static let invalid_hashed_password! = NSLocalizedString("Invalid hashed password!", comment: "update notification email error")
@@ -1608,10 +1472,7 @@ class LocalString {
 //
 //    /// "Recovery Email"
 //    static let recovery_email = NSLocalizedString("Recovery Email", comment: "Title")
-//
-//    /// "Display Name"
-//    static let display_name = NSLocalizedString("Display Name", comment: "Title")
-//
+
 //    /// "Back"
 //    static let back = NSLocalizedString("Back", comment: "top left back button")
 //
@@ -1957,9 +1818,6 @@ class LocalString {
 //    /// "Please use the web application to reset your password."
 //    static let please_use_the_web_application_to_reset_your_password. = NSLocalizedString("Please use the web application to reset your password.", comment: "Alert")
 //
-//    /// "Send"
-//    static let send = NSLocalizedString("Send", comment: "Action")
-//
 //    /// "Bug Description"
 //    static let bug_description = NSLocalizedString("Bug Description", comment: "Title")
 //
@@ -2076,46 +1934,6 @@ class LocalString {
 //
 //    /// "TouchID not available"
 //    static let touchid_not_available = NSLocalizedString("TouchID not available", comment: "Description")
-//
-//    /// "Compose"
-//    static let compose = NSLocalizedString("Compose", comment: "Action")
-//
-//    /// "Send message without subject?"
-//    static let send_message_without_subject? = NSLocalizedString("Send message without subject?", comment: "Description")
-//
-//    /// "Send"
-//    static let send = NSLocalizedString("Send", comment: "Action")
-//
-//    /// "Confirmation"
-//    static let confirmation = NSLocalizedString("Confirmation", comment: "Title")
-//
-//    /// "Save draft"
-//    static let save_draft = NSLocalizedString("Save draft", comment: "Title")
-//
-//    /// "Discard draft"
-//    static let discard_draft = NSLocalizedString("Discard draft", comment: "Title")
-//
-//    /// "You need at least one recipient to send"
-//    static let you_need_at_least_one_recipient_to_send = NSLocalizedString("You need at least one recipient to send", comment: "Description")
-//
-//    /// "Change sender address to .."
-//    static let change_sender_address_to_.. = NSLocalizedString("Change sender address to ..", comment: "Title")
-//
-//    /// "Upgrade to a paid plan to send from your %@ address"
-//    static let upgrade_to_a_paid_plan_to_send_from_your_%@_address = NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error")
-//
-//    /// "days"
-//    static let days = NSLocalizedString("days", comment: "")
-//
-//    /// "Hours"
-//    static let hours = NSLocalizedString("Hours", comment: "")
-//
-//    /// "days"
-//    static let days = NSLocalizedString("days", comment: "")
-//
-//    /// "Hours"
-//    static let hours = NSLocalizedString("Hours", comment: "")
-//
 //    /// "Pin code can't be empty."
 //    static let pin_code_can't_be_empty. = NSLocalizedString("Pin code can't be empty.", comment: "Description")
 //

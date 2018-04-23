@@ -141,7 +141,7 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     override func getTitle() -> String {
-        return NSLocalizedString("Move to Folder", comment: "folder apply - title")
+        return LocalString._labels_move_to_folder
     }
     
     override func cancel() {

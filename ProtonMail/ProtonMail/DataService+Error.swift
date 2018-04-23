@@ -84,7 +84,7 @@ enum UpdatePasswordError : Int, Error, CustomErrorVar {
     var reason : String {
         switch self {
         case .invalidUserName:
-            return NSLocalizedString("Invalid UserName!", comment: "update password error when input invalid username")
+            return LocalString._error_invalid_username
         case .invalidModulusID:
             return NSLocalizedString("Can't get a Moduls ID!", comment: "update password error = typo:Modulus")
         case .invalidModulus:
@@ -133,7 +133,7 @@ enum UpdateNotificationEmailError : Int, Error, CustomErrorVar {
     var reason : String {
         switch self {
         case .invalidUserName:
-            return NSLocalizedString("Invalid UserName!", comment: "update notification email error")
+            return LocalString._error_invalid_username
         case .cantHashPassword:
             return NSLocalizedString("Invalid hashed password!", comment: "update notification email error")
         case .cantGenerateVerifier:

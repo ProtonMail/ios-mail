@@ -94,18 +94,6 @@ public class APIErrorCode {
 // }
 
 
-//localized
-extension NSError {
-    
-    class func userNameTaken() -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.UserErrorCode.userNameExsit,
-            localizedDescription: NSLocalizedString("Invalid UserName", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("The UserName have been taken.", comment: "Error Description"))
-    }
-}
-
-
 // MARK: - NSError APIService extension
 
 //localized
@@ -123,30 +111,23 @@ extension NSError {
     public class func badParameter(_ parameter: Any?) -> NSError {
         return apiServiceError(
             code: APIErrorCode.badParameter,
-            localizedDescription: NSLocalizedString("Bad parameter", comment: "Description"),
-            localizedFailureReason: String(format: NSLocalizedString("Bad parameter: %@", comment: "Description"), "\(String(describing: parameter))"))
-    }
-    
-    public class func badPath(_ path: String) -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.badPath,
-            localizedDescription: NSLocalizedString("Bad path", comment: "Description"),
-            localizedFailureReason: String(format: NSLocalizedString("Unable to construct a valid URL with the following path: %@", comment: "Description"), "\(path)"))
+            localizedDescription: LocalString._error_bad_parameter_title,
+            localizedFailureReason: String(format: LocalString._error_bad_parameter_desc, "\(String(describing: parameter))"))
     }
     
     public class func badResponse() -> NSError {
         return apiServiceError(
             code: APIErrorCode.badResponse,
-            localizedDescription: NSLocalizedString("Bad response", comment: "Description"),
-            localizedFailureReason: NSLocalizedString("Can't not find the value from the response body", comment: "Description"))
+            localizedDescription: LocalString._error_bad_response_title,
+            localizedFailureReason: LocalString._error_cant_parse_response_body)
     }
     
     public class func unableToParseResponse(_ response: Any?) -> NSError {
-        let noObject = NSLocalizedString("<no object>", comment: "no object error, local only , this could be not translated!")
+        let noObject = LocalString._error_no_object
         return apiServiceError(
             code: APIErrorCode.unableToParseResponse,
-            localizedDescription: NSLocalizedString("Unable to parse response", comment: "Description"),
-            localizedFailureReason: String(format: NSLocalizedString("Unable to parse the response object:\n%@", comment: "Description"), "\(response ?? noObject)"))
+            localizedDescription: LocalString._error_unable_to_parse_response_title,
+            localizedFailureReason: String(format: LocalString._error_unable_to_parse_response_desc, "\(response ?? noObject)"))
     }
 }
 

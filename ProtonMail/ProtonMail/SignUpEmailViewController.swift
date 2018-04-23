@@ -54,8 +54,10 @@ class SignUpEmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         userCachedStatus.showTourNextTime()
-        recoveryEmailField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Recovery Email", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
-        displayNameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Display Name", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        recoveryEmailField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Recovery Email", comment: "Title"),
+                                                                      attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        displayNameField.attributedPlaceholder = NSAttributedString(string: LocalString._settings_display_name_title,
+                                                                    attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
         topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
         topTitleLabel.text = NSLocalizedString("Congratulations!", comment: "view top title")

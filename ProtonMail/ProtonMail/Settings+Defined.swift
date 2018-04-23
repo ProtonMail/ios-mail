@@ -162,7 +162,7 @@ public enum SGItems: Int, CustomStringConvertible {
     public var description : String {
         switch(self){
         case .notifyEmail:
-            return NSLocalizedString("Notification Email", comment: "settings general section title")
+            return LocalString._settings_notification_email
         case .loginPWD:
             return NSLocalizedString("Login Password", comment: "settings general section title")
         case .mbp:
@@ -235,13 +235,13 @@ public enum SAddressItems: Int, CustomStringConvertible {
     public var description : String {
         switch(self){
         case .addresses:
-            return NSLocalizedString("", comment: "")
+            return ""
         case .displayName:
-            return NSLocalizedString("Display Name", comment: "Title")
+            return LocalString._settings_display_name_title
         case .signature:
-            return NSLocalizedString("Signature", comment: "Title")
+            return LocalString._settings_signature_title
         case .defaultMobilSign:
-            return NSLocalizedString("Mobile Signature", comment: "Title")
+            return LocalString._settings_mobile_signature_title
         }
     }
 }

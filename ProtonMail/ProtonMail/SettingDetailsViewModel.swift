@@ -35,11 +35,11 @@ protocol SettingDetailsViewModel {
 
 class SettingDetailsViewModelTest : SettingDetailsViewModel{
     func getNavigationTitle() -> String {
-        return NSLocalizedString("Navigation Title - Test", comment: "Test")
+        return "Navigation localized Title - Test"
     }
     
     func getTopHelpText() -> String {
-        return NSLocalizedString("this is description - Test", comment: "Test")
+        return "this is localized description - Test"
     }
     
     func isRequireLoginPassword() -> Bool {
@@ -47,7 +47,7 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
     }
     
     func getSectionTitle() -> String {
-        return NSLocalizedString("Section Title - Test", comment: "Test")
+        return "Section Title - Test"
     }
     
     func isDisplaySwitch() -> Bool {
@@ -55,7 +55,7 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
     }
     
     func getSwitchText() -> String {
-        return NSLocalizedString("Enable - Test", comment: "Test")
+        return "Enable - Test"
     }
     
     func getSwitchStatus() -> Bool {
@@ -67,11 +67,11 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
     }
     
     func getPlaceholdText() -> String {
-        return NSLocalizedString("Please input ... - Test", comment: "Test")
+        return "Please input ... - Test"
     }
     
     func getCurrentValue() -> String {
-        return NSLocalizedString("test value", comment: "Test")
+        return "test value"
     }
     
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping(Bool, NSError?) -> Void) {
@@ -102,7 +102,7 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
 
 class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     func getNavigationTitle() -> String {
-        return NSLocalizedString("DisplayName", comment: "Title")
+        return LocalString._settings_displayname_title
     }
     
     func getTopHelpText() -> String {
@@ -110,7 +110,7 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     }
     
     func getSectionTitle() -> String {
-        return NSLocalizedString("DISPLAY NAME", comment: "Title")
+        return LocalString._settings_display_name_title
     }
     
     func isDisplaySwitch() -> Bool {
@@ -134,7 +134,7 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     }
     
     func getPlaceholdText() -> String {
-        return NSLocalizedString("Input Display Name ...", comment: "place holder")
+        return LocalString._settings_input_display_name_placeholder
     }
     
     func getCurrentValue() -> String {
@@ -186,15 +186,15 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
 
 class ChangeSignatureViewModel : SettingDetailsViewModel{
     func getNavigationTitle() -> String {
-        return NSLocalizedString("Signature", comment: "Title")
+        return LocalString._settings_signature_title
     }
     
     func getTopHelpText() -> String {
-        return NSLocalizedString("Email default signature", comment: "place holder")
+        return LocalString._settings_email_default_signature
     }
     
     func getSectionTitle() -> String {
-        return NSLocalizedString("SIGNATURE", comment: "Title")
+        return LocalString._settings_signature_title
     }
     
     func isDisplaySwitch() -> Bool {
@@ -202,7 +202,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func getSwitchText() -> String {
-        return NSLocalizedString("Enable Default Signature", comment: "Title")
+        return LocalString._settings_enable_default_signature_title
     }
     
     func getSwitchStatus() -> Bool {
@@ -271,16 +271,15 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
 
 class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
     func getNavigationTitle() -> String {
-        return NSLocalizedString("Mobile Signature", comment: "Title")
+        return LocalString._settings_mobile_signature_title
     }
     
     func getTopHelpText() -> String {
-        let _ = NSLocalizedString("Only a paid user can modify default mobile signature or turn it off!", comment: "Description")
-        return NSLocalizedString("Only plus user could modify default mobile signature or turn it off!", comment: "Description")
+        return LocalString._settings_only_paid_to_modify_mobile_signature
     }
     
     func getSectionTitle() -> String {
-        return NSLocalizedString("Mobile Signature", comment: "Title")
+        return LocalString._settings_mobile_signature_title
     }
     
     func isDisplaySwitch() -> Bool {
@@ -288,7 +287,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
     }
     
     func getSwitchText() -> String {
-        return NSLocalizedString("Enable Mobile Signature", comment: "Title")
+        return LocalString._settings_enable_mobile_signature_title
     }
     
     func getSwitchStatus() -> Bool {
@@ -336,7 +335,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
     }
     
     func getNotes() -> String {
-        return self.getRole() ? "" : NSLocalizedString("ProtonMail Plus is required to customize your mobile signature", comment: "Description")
+        return self.getRole() ? "" : LocalString._settings_plus_is_required_to_modify_signature_notes
     }
     
     internal func getRole() -> Bool {
@@ -357,15 +356,15 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
 
 class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
     func getNavigationTitle() -> String {
-        return NSLocalizedString("Notification Email", comment: "Title")
+        return LocalString._settings_notification_email
     }
     
     func getTopHelpText() -> String {
-        return NSLocalizedString("Also used to reset a forgotten password.", comment: "Description")
+        return LocalString._settings_notification_email_notes
     }
     
     func getSectionTitle() -> String {
-        return NSLocalizedString("Notification / Recovery Email", comment: "Title")
+        return LocalString._settings_notification_email_title
     }
     
     func isRequireLoginPassword() -> Bool {
@@ -377,7 +376,7 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
     }
     
     func getSwitchText() -> String {
-        return NSLocalizedString("Enable Notification Email", comment: "Title")
+        return LocalString._settings_notification_email_switch_title
     }
     
     func getSwitchStatus() -> Bool {
@@ -389,7 +388,7 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
     }
     
     func getPlaceholdText() -> String {
-        return NSLocalizedString("Input Notification Email ...", comment: "place holder")
+        return LocalString._settings_notification_email_placeholder
     }
 
     func getCurrentValue() -> String {

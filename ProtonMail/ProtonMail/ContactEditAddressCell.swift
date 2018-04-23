@@ -41,12 +41,12 @@ final class ContactEditAddressCell: UITableViewCell {
         self.zipField.delegate = self
         self.countyField.delegate = self
         
-        self.valueField.placeholder = NSLocalizedString("Street", comment: "contact placeholder")
-        self.street_two.placeholder = NSLocalizedString("Street", comment: "contact placeholder")
-        self.cityField.placeholder = NSLocalizedString("City", comment: "contact placeholder")
-        self.stateField.placeholder = NSLocalizedString("State", comment: "contact placeholder")
-        self.zipField.placeholder = NSLocalizedString("ZIP", comment: "contact placeholder")
-        self.countyField.placeholder = NSLocalizedString("Country", comment: "contact placeholder")
+        self.valueField.placeholder  = LocalString._contacts_street_field_placeholder
+        self.street_two.placeholder  = LocalString._contacts_street_field_placeholder
+        self.cityField.placeholder   = LocalString._contacts_city_field_placeholder
+        self.stateField.placeholder  = LocalString._contacts_state_field_placeholder
+        self.zipField.placeholder    = LocalString._contacts_zip_field_placeholder
+        self.countyField.placeholder = LocalString._contacts_country_field_placeholder
     }
     
     

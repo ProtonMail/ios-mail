@@ -28,7 +28,10 @@ class ReportBugsViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.sendButton = UIBarButtonItem(title:NSLocalizedString("Send", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(ReportBugsViewController.sendAction(_:)))
+        self.sendButton = UIBarButtonItem(title: LocalString._general_send_action,
+                                          style: UIBarButtonItemStyle.plain,
+                                          target: self,
+                                          action: #selector(ReportBugsViewController.sendAction(_:)))
         self.navigationItem.rightBarButtonItem = sendButton
         
         textView.text = cachedBugReport.cachedBug

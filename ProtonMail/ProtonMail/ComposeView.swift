@@ -36,9 +36,9 @@ class ComposeView: UIViewController {
     
     var pickerHeight : CGFloat = 0;
     
-    let kConfirmError : String = NSLocalizedString("Message password does not match.", comment: "Error")
-    let kEmptyEOPWD : String = NSLocalizedString("Password cannot be empty.", comment: "Error")
-    let kExpirationNeedsPWDError : String = NSLocalizedString("Please set a password.", comment: "Description")
+//    let kConfirmError : String = NSLocalizedString("Message password does not match.", comment: "Error")
+//    let kEmptyEOPWD : String = NSLocalizedString("Password cannot be empty.", comment: "Error")
+//    let kExpirationNeedsPWDError : String = NSLocalizedString("Please set a password.", comment: "Description")
     
     var toContactPicker: MBContactPicker!
     var toContacts: String {
@@ -163,9 +163,9 @@ class ComposeView: UIViewController {
         self.selfView = self.view;
         
         
-        fromLable.text = NSLocalizedString("From", comment: "Title")
-        subject.placeholder = NSLocalizedString("Subject", comment: "Placeholder")
-        encryptedPasswordTextField.placeholder = NSLocalizedString("Define Expiration Date", comment: "Placeholder")
+        fromLable.text = LocalString._composer_from_label
+        subject.placeholder = LocalString._composer_subject_placeholder
+        encryptedPasswordTextField.placeholder = LocalString._composer_define_expiration_placeholder
         
         self.configureContactPickerTemplate()
         self.includeButtonBorder(encryptedButton)
@@ -371,11 +371,6 @@ class ComposeView: UIViewController {
         self.delegate?.composeViewDidTapNextButton(self)
     }
     
-    internal func showDefinePasswordView() {
-        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Password", comment: "place holder")
-        self.encryptedPasswordTextField.isSecureTextEntry = true
-        self.encryptedPasswordTextField.text = ""
-    }
     
     internal func showConfirmPasswordView() {
         self.encryptedPasswordTextField.placeholder = LocalString._composer_eo_confirm_pwd_placeholder
@@ -391,7 +386,7 @@ class ComposeView: UIViewController {
     
     internal func showEncryptionDone() {
         didTapEncryptedDismissButton(encryptedButton)
-        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Password", comment: "place holder")
+        self.encryptedPasswordTextField.placeholder = LocalString._composer_define_password
         self.encryptedPasswordTextField.isSecureTextEntry = true
         self.encryptedButton.setImage(UIImage(named: "compose_lock-active"), for: UIControlState())
     }
@@ -583,11 +578,11 @@ class ComposeView: UIViewController {
 extension ComposeView: MBContactPickerDataSource {
     func contactModels(for contactPickerView: MBContactPicker!) -> [Any]! {
         if (contactPickerView == toContactPicker) {
-            contactPickerView.prompt = NSLocalizedString("To", comment: "Title")
+            contactPickerView.prompt = LocalString._composer_to_label
         } else if (contactPickerView == ccContactPicker) {
-            contactPickerView.prompt = NSLocalizedString("Cc", comment: "Title")
+            contactPickerView.prompt = LocalString._composer_cc_label
         } else if (contactPickerView == bccContactPicker) {
-            contactPickerView.prompt = NSLocalizedString("Bcc", comment: "Title")
+            contactPickerView.prompt = LocalString._composer_bcc_label
         }
         return self.datasource?.composeViewContactsModelForPicker(self, picker: contactPickerView)
     }

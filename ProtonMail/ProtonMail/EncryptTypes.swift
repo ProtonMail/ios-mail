@@ -35,7 +35,7 @@ enum EncryptTypes: Int, CustomStringConvertible {
         case .outPlain:
             return NSLocalizedString("Send plain but stored enc", comment: "Title")
         case .draftStoreEnc:
-            return NSLocalizedString("Draft", comment: "Title")
+            return LocalString._general_draft_action
         case .outEncReply:
             return NSLocalizedString("Encrypted for outside reply", comment: "Title")
         case .outPGPInline:

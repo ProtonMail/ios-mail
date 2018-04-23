@@ -95,7 +95,7 @@ class SettingDetailViewController: UIViewController {
         }
         else {
             let alertController = UIAlertController(
-                title: NSLocalizedString("Confirmation", comment: "Title"),
+                title: LocalString._general_confirmation_title,
                 message: NSLocalizedString("You have unsaved changes. Do you want to save it?", comment: "Confirmation message"),
                 preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
