@@ -311,7 +311,9 @@ extension ContactsViewController: UITableViewDelegate {
             }
         }
         
-        let deleteAction = UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: "Action"), handler: deleteClosure)
+        let deleteAction = UITableViewRowAction(style: .default,
+                                                title: LocalString._general_delete_action,
+                                                handler: deleteClosure)
         return [deleteAction]
     }
     

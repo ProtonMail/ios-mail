@@ -251,7 +251,7 @@ public enum SLabelsItems: Int, CustomStringConvertible {
     public var description : String {
         switch(self){
         case .labelFolderManager:
-            return NSLocalizedString("Manage Labels/Folders", comment: "Title")
+            return LocalString._labels_manage_title
         }
     }
 }

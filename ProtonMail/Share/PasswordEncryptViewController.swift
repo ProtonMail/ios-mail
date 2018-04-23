@@ -39,20 +39,17 @@ class PasswordEncryptViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewTitleLable.text              = NSLocalizedString("Set Password", comment: "Title")
-        titleDesLabel.text               = NSLocalizedString("Set a password to encrypt this message for non-ProtonMail users.", comment: "Description")
+        viewTitleLable.text              = LocalString._composer_set_password
+        titleDesLabel.text               = LocalString._composer_eo_desc
         passwordField.placeholder        = NSLocalizedString("Message Password", comment: "Placeholder")
         passwordErrorLabel.text          = NSLocalizedString("The message password can't be empty", comment: "Description")
         confirmPasswordField.placeholder = NSLocalizedString("Confirm Password", comment: "Placeholder")
         confirmPasswordErrorLabel.text   = NSLocalizedString("The message password didn't match", comment: "Description")
         hintField.placeholder            = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
         
-        cancelButton.setTitle(LocalString._general_cancel_button,
-                              for: .normal)
-        removeButton.setTitle(LocalString._general_remove_button,
-                              for: .normal)
-        applyButton.setTitle(LocalString._general_apply_button,
-                             for: .normal)
+        cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
+        removeButton.setTitle(LocalString._general_remove_button, for: .normal)
+        applyButton.setTitle(LocalString._general_apply_button, for: .normal)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {

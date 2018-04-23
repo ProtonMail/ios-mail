@@ -178,7 +178,7 @@ class ShareUnlockViewController: UIViewController {
         self.pinUnlock.alpha = 0.0
         
         let alertController = UIAlertController(title: NSLocalizedString("Share Alert", comment: "Title"), message: errorMsg, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Action"), style: .default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._general_close_action, style: .default, handler: { (action) -> Void in
             self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
                 let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
                 self.extensionContext!.cancelRequest(withError: cancelError)

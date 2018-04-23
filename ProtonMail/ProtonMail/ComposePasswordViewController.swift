@@ -44,9 +44,9 @@ class ComposePasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewTitleLable.text = NSLocalizedString("Set Password", comment: "Title")
-        titleDesLabel.text = NSLocalizedString("Set a password to encrypt this message for non-ProtonMail users.", comment: "Description")
-        moreInfoButton.setTitle(NSLocalizedString("Get more information", comment: "Action"), for: .normal)
+        viewTitleLable.text = LocalString._composer_set_password
+        titleDesLabel.text = LocalString._composer_eo_desc
+        moreInfoButton.setTitle(LocalString._composer_eo_info, for: .normal)
         passwordField.placeholder = NSLocalizedString("Message Password", comment: "Placeholder")
         passwordErrorLabel.text = NSLocalizedString("The message password can't be empty", comment: "Description")
         confirmPasswordField.placeholder = NSLocalizedString("Confirm Password", comment: "Placeholder")

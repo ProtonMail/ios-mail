@@ -115,7 +115,7 @@ class CoreDataService {
         
         //TODO::Fix later
 //        let alertController = alertError.alertController()
-//        alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Action"), style: .default, handler: { (action) -> Void in
+//        alertController.addAction(UIAlertAction(title: LocalString._general_close_action, style: .default, handler: { (action) -> Void in
 //            abort()
 //        }))
 //        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)

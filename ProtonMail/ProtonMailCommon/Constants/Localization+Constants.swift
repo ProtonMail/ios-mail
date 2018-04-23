@@ -141,6 +141,14 @@ class LocalString {
     static let _composer_subject_field = NSLocalizedString("Subject:", comment: "subject: text when forward")
     /// "Forwarded message"
     static let _composer_fwd_message = NSLocalizedString("Forwarded message", comment: "forwarded message title")
+    /// "Set Password"
+    static let _composer_set_password = NSLocalizedString("Set Password", comment: "Title")
+    /// "Set a password to encrypt this message for non-ProtonMail users."
+    static let _composer_eo_desc = NSLocalizedString("Set a password to encrypt this message for non-ProtonMail users.", comment: "Description")
+    /// "Get more information"
+    static let _composer_eo_info = NSLocalizedString("Get more information", comment: "Action")
+    
+    
 
     
     // Mark Contacts
@@ -213,7 +221,9 @@ class LocalString {
     static let _labels_label_name_text      = NSLocalizedString("Label Name", comment: "createing lable input place holder")
     /// "Create"
     static let _labels_create_action        = NSLocalizedString("Create", comment: "top right action text")
-    
+    /// "Manage Labels/Folders"
+    static let _labels_manage_title = NSLocalizedString("Manage Labels/Folders", comment: "Title")
+
     
     // Mark General
     
@@ -245,25 +255,16 @@ class LocalString {
     static let _general_cc_label = NSLocalizedString("Cc:", comment: "message Cc: feild")
     /// "at"
     static let _general_at_label = NSLocalizedString("at", comment: "like at 10:00pm")
+    /// "Delete"
+    static let _general_delete_action = NSLocalizedString("Delete", comment: "general delete action")
+    /// "Close"
+    static let _general_close_action = NSLocalizedString("Close", comment: "general close action")
     
-//
-//    /// "Manage Labels/Folders"
-//    static let manage_labels/folders = NSLocalizedString("Manage Labels/Folders", comment: "Title")
-//
-//    /// "Delete"
-//    static let delete = NSLocalizedString("Delete", comment: "lable manager delete action")
-//
-//    /// "Close"
-//    static let close = NSLocalizedString("Close", comment: "lable manager close action")
-//
-//    /// "Set Password"
-//    static let set_password = NSLocalizedString("Set Password", comment: "Title")
-//
-//    /// "Set a password to encrypt this message for non-ProtonMail users."
-//    static let set_a_password_to_encrypt_this_message_for_non-protonmail_users. = NSLocalizedString("Set a password to encrypt this message for non-ProtonMail users.", comment: "Description")
-//
-//    /// "Get more information"
-//    static let get_more_information = NSLocalizedString("Get more information", comment: "Action")
+    
+    
+
+
+    
 //
 //    /// "Message Password"
 //    static let message_password = NSLocalizedString("Message Password", comment: "Placeholder")
@@ -358,8 +359,6 @@ class LocalString {
 //    /// "There was an error creating or loading the application's saved data."
 //    static let there_was_an_error_creating_or_loading_the_application's_saved_data. = NSLocalizedString("There was an error creating or loading the application's saved data.", comment: "Description")
 //
-//    /// "Close"
-//    static let close = NSLocalizedString("Close", comment: "Action")
 //
 //    /// "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@"
 //    static let sending_messages_from_%@_address_is_a_paid_feature._your_message_will_be_sent_from_your_default_address_%@ = NSLocalizedString("Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@", comment: "pm.me upgrade warning in composer")
@@ -946,8 +945,6 @@ class LocalString {
 //    /// "Delete Contact"
 //    static let delete_contact = NSLocalizedString("Delete Contact", comment: "Title-Contacts")
 //
-//    /// "Delete"
-//    static let delete = NSLocalizedString("Delete", comment: "Action")
 //
 //    /// "Login"
 //    static let login = NSLocalizedString("Login", comment: "")
@@ -1398,10 +1395,6 @@ class LocalString {
 //
 //    /// "Mobile Signature"
 //    static let mobile_signature = NSLocalizedString("Mobile Signature", comment: "Title")
-//
-//    /// "Manage Labels/Folders"
-//    static let manage_labels/folders = NSLocalizedString("Manage Labels/Folders", comment: "Title")
-//
 //    /// "Debug"
 //    static let debug = NSLocalizedString("Debug", comment: "Title")
 //
@@ -1719,9 +1712,6 @@ class LocalString {
 //
 //    /// "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer."
 //    static let mobile_signups_are_temporarily_disabled._please_try_again_later,_or_try_signing_up_at_protonmail.com_using_a_desktop_or_laptop_computer. = NSLocalizedString("Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.", comment: "signup human check error description when mobile signup disabled")
-//
-//    /// "Delete"
-//    static let delete = NSLocalizedString("Delete", comment: "swipe title when swipe cell on mailbox message list")
 //
 //    /// "Verification error"
 //    static let verification_error = NSLocalizedString("Verification error", comment: "error title")
@@ -2098,9 +2088,6 @@ class LocalString {
 //    /// "Share Alert"
 //    static let share_alert = NSLocalizedString("Share Alert", comment: "Title")
 //
-//    /// "Close"
-//    static let close = NSLocalizedString("Close", comment: "Action")
-//
 //    /// "Please use ProtonMail App login first"
 //    static let please_use_protonmail_app_login_first = NSLocalizedString("Please use ProtonMail App login first", comment: "Description")
 //
@@ -2127,12 +2114,6 @@ class LocalString {
 //
 //    /// "TouchID not available"
 //    static let touchid_not_available = NSLocalizedString("TouchID not available", comment: "Description")
-//
-//    /// "Set Password"
-//    static let set_password = NSLocalizedString("Set Password", comment: "Title")
-//
-//    /// "Set a password to encrypt this message for non-ProtonMail users."
-//    static let set_a_password_to_encrypt_this_message_for_non-protonmail_users. = NSLocalizedString("Set a password to encrypt this message for non-ProtonMail users.", comment: "Description")
 //
 //    /// "Message Password"
 //    static let message_password = NSLocalizedString("Message Password", comment: "Placeholder")

@@ -42,7 +42,7 @@ class MailboxViewModelImpl : MailboxViewModel {
         switch(self.location!) {
         case .trash, .spam:
             if action == .trash {
-                return NSLocalizedString("Delete", comment: "swipe title when swipe cell on mailbox message list")
+                return LocalString._general_delete_action
             }
             return action.description;
         default:
