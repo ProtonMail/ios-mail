@@ -125,6 +125,17 @@ class LocalString {
     static let _locations_move_allmail_action = NSLocalizedString("Move to AllMail", comment: "move action")
     
     
+    // Mark Messages
+    
+    /// "Message sent"
+    static let _message_sent_ok_desc = NSLocalizedString("Message sent", comment: "Description")
+    /// "Sent Failed"
+    static let _message_sent_failed_desc = NSLocalizedString("Sent Failed", comment: "Description")
+    /// "The draft cache is broken please try again"
+    static let _message_draft_cache_is_broken = NSLocalizedString("The draft cache is broken please try again", comment: "Description")
+    
+    
+    
     // Mark Composer
 
     /// "Re:"
@@ -208,6 +219,8 @@ class LocalString {
     static let _contacts_types_internet_title = NSLocalizedString("Internet", comment: "default vcard types")
     /// "All contacts are imported"
     static let _contacts_all_imported         = NSLocalizedString("All contacts are imported", comment: "Title")
+    /// "Custom"
+    static let _contacts_custom_type          = NSLocalizedString("Custom", comment: "contacts default label type")
     
     
     // Mark Labels
@@ -222,6 +235,8 @@ class LocalString {
     static let _labels_add_new_folder_title = NSLocalizedString("Add New Folder", comment: "add a new folder")
     /// "Add New Label"
     static let _labels_add_new_label_title  = NSLocalizedString("Add New Label", comment: "add a new folder")
+    /// "Edit Label"
+    static let _labels_edit_label_title     = NSLocalizedString("Edit Label", comment: "Title")
     /// "Folder Name"
     static let _labels_folder_name_text     = NSLocalizedString("Folder Name", comment: "place holder")
     /// "Label Name"
@@ -229,7 +244,7 @@ class LocalString {
     /// "Create"
     static let _labels_create_action        = NSLocalizedString("Create", comment: "top right action text")
     /// "Manage Labels/Folders"
-    static let _labels_manage_title = NSLocalizedString("Manage Labels/Folders", comment: "Title")
+    static let _labels_manage_title         = NSLocalizedString("Manage Labels/Folders", comment: "Title")
 
     
     // Mark General
@@ -255,54 +270,28 @@ class LocalString {
     /// "Forward"
     static let _general_forward_button  = NSLocalizedString("Forward", comment: "forward action")    
     /// "From:"
-    static let _general_from_label = NSLocalizedString("From:", comment: "message From: field text")
+    static let _general_from_label      = NSLocalizedString("From:", comment: "message From: field text")
     /// "To:"
-    static let _general_to_label = NSLocalizedString("To:", comment: "message To: feild")
+    static let _general_to_label        = NSLocalizedString("To:", comment: "message To: feild")
     /// "Cc:"
-    static let _general_cc_label = NSLocalizedString("Cc:", comment: "message Cc: feild")
+    static let _general_cc_label        = NSLocalizedString("Cc:", comment: "message Cc: feild")
     /// "at"
-    static let _general_at_label = NSLocalizedString("at", comment: "like at 10:00pm")
+    static let _general_at_label        = NSLocalizedString("at", comment: "like at 10:00pm")
     /// "Delete"
-    static let _general_delete_action = NSLocalizedString("Delete", comment: "general delete action")
+    static let _general_delete_action   = NSLocalizedString("Delete", comment: "general delete action")
     /// "Close"
-    static let _general_close_action = NSLocalizedString("Close", comment: "general close action")
-    
-    
+    static let _general_close_action    = NSLocalizedString("Close", comment: "general close action")
+    /// "Update"
+    static let _general_update_action   = NSLocalizedString("Update", comment: "like top right action text")
+    /// "Invalid access token please relogin"
+    static let _general_invalid_access_token = NSLocalizedString("Invalid access token please relogin", comment: "Description")
+    /// "A new version of ProtonMail app is available, please update to latest version."
+    static let _general_force_upgrade_desc = NSLocalizedString("A new version of ProtonMail app is available, please update to latest version.", comment: "Description")
+    /// "Search"
+    static let _general_search_placeholder = NSLocalizedString("Search", comment: "Title")
+
 
     
-//    /// "Custom"
-//    static let custom = NSLocalizedString("Custom", comment: "default label type")
-//
-//    /// "Edit Label"
-//    static let edit_label = NSLocalizedString("Edit Label", comment: "Title")
-//
-//    /// "Label Name"
-//    static let label_name = NSLocalizedString("Label Name", comment: "place holder")
-//
-//    /// "Update"
-//    static let update = NSLocalizedString("Update", comment: "top right action text")
-//
-//    /// "Message sent"
-//    static let message_sent = NSLocalizedString("Message sent", comment: "Description")
-//
-//    /// "Sending Failed"
-//    static let sending_failed = NSLocalizedString("Sending Failed", comment: "Description")
-//
-//    /// "Sent Failed"
-//    static let sent_failed = NSLocalizedString("Sent Failed", comment: "Description")
-//
-//    /// "The draft cache is broken please try again"
-//    static let the_draft_cache_is_broken_please_try_again = NSLocalizedString("The draft cache is broken please try again", comment: "Description")
-//
-//    /// "Invalid access token please relogin"
-//    static let invalid_access_token_please_relogin = NSLocalizedString("Invalid access token please relogin", comment: "Description")
-//
-//    /// "A new version of ProtonMail app is available, please update to latest version."
-//    static let a_new_version_of_protonmail_app_is_available,_please_update_to_latest_version. = NSLocalizedString("A new version of ProtonMail app is available, please update to latest version.", comment: "Description")
-//
-//    /// "Search"
-//    static let search = NSLocalizedString("Search", comment: "Title")
-//
 //    /// "Invalid UserName"
 //    static let invalid_username = NSLocalizedString("Invalid UserName", comment: "Error")
 //
@@ -498,9 +487,6 @@ class LocalString {
 //
 //    /// "Folder Name"
 //    static let folder_name = NSLocalizedString("Folder Name", comment: "folder editing editfeild place holder")
-//
-//    /// "Update"
-//    static let update = NSLocalizedString("Update", comment: "right top action button")
 //
 //    /// "Message password does not match."
 //    static let message_password_does_not_match. = NSLocalizedString("Message password does not match.", comment: "Error")
@@ -907,9 +893,6 @@ class LocalString {
 //    /// "CONTACTS"
 //    static let contacts = NSLocalizedString("CONTACTS", comment: "Title")
 //
-//    /// "Search"
-//    static let search = NSLocalizedString("Search", comment: "Placeholder")
-//
 //    /// "Back"
 //    static let back = NSLocalizedString("Back", comment: "Action")
 //
@@ -1204,13 +1187,6 @@ class LocalString {
 //
 //    /// "Details"
 //    static let details = NSLocalizedString("Details", comment: "Title")
-//
-//    /// "Custom"
-//    static let custom = NSLocalizedString("Custom", comment: "custom label type default")
-//
-//    /// "Custom"
-//    static let custom = NSLocalizedString("Custom", comment: "custom label type default")
-//
 //    /// "Phone number"
 //    static let phone_number = NSLocalizedString("Phone number", comment: "contact placeholder")
 //

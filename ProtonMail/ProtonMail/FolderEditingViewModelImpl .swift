@@ -24,7 +24,7 @@ final public class FolderEditingViewModelImple : LabelEditViewModel {
     }
     
     override public func rightButtonText() -> String {
-        return NSLocalizedString("Update", comment: "right top action button")
+        return LocalString._general_update_action
     }
     
     override public func name() -> String {

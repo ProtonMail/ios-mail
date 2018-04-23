@@ -58,7 +58,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactCellIdentifier)
         searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = NSLocalizedString("Search", comment: "Placeholder")
+        searchController.searchBar.placeholder = LocalString._general_search_placeholder
         searchController.searchBar.setValue(LocalString._general_cancel_button,
                                             forKey:"_cancelButtonText")
         self.searchController.searchResultsUpdater = self

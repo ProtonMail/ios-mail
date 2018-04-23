@@ -90,10 +90,10 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
                     if let addCell = cell as? ContactTypeAddCustomCell {
                         type = ContactFieldType.get(raw: addCell.getValue())
                     } else {
-                        type = ContactFieldType.get(raw: cell.textLabel?.text ?? NSLocalizedString("Custom", comment: "custom label type default") )
+                        type = ContactFieldType.get(raw: cell.textLabel?.text ?? LocalString._contacts_custom_type)
                     }
                 } else {
-                    type = ContactFieldType.get(raw: NSLocalizedString("Custom", comment: "custom label type default") )
+                    type = ContactFieldType.get(raw: LocalString._contacts_custom_type )
                 }
             }
             viewModel.updateType(t: type)
