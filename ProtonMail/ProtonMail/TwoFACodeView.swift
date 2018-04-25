@@ -67,18 +67,18 @@ class TwoFACodeView : PMView {
         
         let toolbarDone = UIToolbar.init()
         toolbarDone.sizeToFit()
-        let barBtnDone = UIBarButtonItem.init(title: NSLocalizedString("Recovery Code", comment: "Title"),
+        let barBtnDone = UIBarButtonItem.init(title: LocalString._recovery_code,
                                               style: UIBarButtonItemStyle.done,
                                               target: self,
                                               action: #selector(TwoFACodeView.doneButtonAction))
         toolbarDone.items = [barBtnDone]
         twoFactorCodeField.inputAccessoryView = toolbarDone
         
-        twoFactorCodeField.placeholder = NSLocalizedString("Two Factor Code", comment: "Placeholder")
+        twoFactorCodeField.placeholder = LocalString._two_factor_code
         loginPasswordField.placeholder = LocalString._login_password
-        topTitleLabel.text = NSLocalizedString("Authentication", comment: "Title")
+        topTitleLabel.text = LocalString._authentication
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
-        enterButton.setTitle(NSLocalizedString("Enter", comment: "Action"), for: .normal)
+        enterButton.setTitle(LocalString._enter, for: .normal)
     }
 
     @objc func doneButtonAction() {

@@ -99,18 +99,14 @@ class SettingDetailViewController: UIViewController {
         else {
             let alertController = UIAlertController(
                 title: LocalString._general_confirmation_title,
-                message: NSLocalizedString("You have unsaved changes. Do you want to save it?", comment: "Confirmation message"),
+                message: LocalString._you_have_unsaved_changes_do_you_want_to_save_it,
                 preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
-                                                    style: .destructive,
-                                                    handler: { action in
-                                                        _ = self.navigationController?.popViewController(animated: true)
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
+                _ = self.navigationController?.popViewController(animated: true)
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save Changes", comment: "title"),
-                                                    style: .default,
-                                                    handler: { action in
-                                                        self.startUpdateValue()
+            alertController.addAction(UIAlertAction(title: LocalString._save_changes, style: .default, handler: { action in
+                self.startUpdateValue()
             }))
             
             self.present(alertController, animated: true, completion: nil)

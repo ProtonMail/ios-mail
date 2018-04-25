@@ -133,9 +133,9 @@ class SignInViewController: ProtonMailViewController {
         languagesLabel.text = language.description
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-                versionLabel.text = NSLocalizedString("v", comment: "versions first character ") + version + "(\(build))"
+                versionLabel.text = "v" + version + "(\(build))"
             } else {
-                versionLabel.text = NSLocalizedString("v", comment: "versions first character ") + version
+                versionLabel.text = "v" + version
             }
         } else {
             versionLabel.text = ""
@@ -433,7 +433,7 @@ class SignInViewController: ProtonMailViewController {
     }
     
     internal func setupTextFields() {
-        signInTitle.text = NSLocalizedString("USER LOGIN", comment: "Title")
+        signInTitle.text = LocalString._user_login
         
         usernameTextField.attributedPlaceholder = NSAttributedString(string: LocalString._username,
                                                                      attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
@@ -450,8 +450,8 @@ class SignInViewController: ProtonMailViewController {
         
         signInButton.setTitle(LocalString._general_login, for: .normal)
         
-        signUpButton.setTitle(NSLocalizedString("NEED AN ACCOUNT? SIGN UP.", comment: "Action"), for: .normal)
-        forgotPwdButton.setTitle(NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd"), for: .normal)
+        signUpButton.setTitle(LocalString._need_an_account_sign_up, for: .normal)
+        forgotPwdButton.setTitle(LocalString._forgot_password, for: .normal)
         
         
         if biometricType == .faceID {
@@ -551,14 +551,14 @@ class SignInViewController: ProtonMailViewController {
                     }
                 } catch let ex as NSError {
                     MBProgressHUD.hide(for: self.view, animated: true)
-                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? NSLocalizedString("The mailbox password is incorrect.", comment: "Description")
-                    let alertController = UIAlertController(title: NSLocalizedString("Incorrect password", comment: "Title"), message: NSLocalizedString(message, comment: ""),preferredStyle: .alert)
+                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? LocalString._the_mailbox_password_is_incorrect
+                    let alertController = UIAlertController(title: LocalString._incorrect_password, message: NSLocalizedString(message, comment: ""),preferredStyle: .alert)
                     alertController.addOKAction()
                     present(alertController, animated: true, completion: nil)
                 }
             }
         } else {
-            let alert = UIAlertController(title: NSLocalizedString("Incorrect password", comment: "Title"), message: NSLocalizedString("The mailbox password is incorrect.", comment: "Description"), preferredStyle: .alert)
+            let alert = UIAlertController(title: LocalString._incorrect_password, message: LocalString._the_mailbox_password_is_incorrect, preferredStyle: .alert)
             alert.addAction((UIAlertAction.okAction()))
             present(alert, animated: true, completion: nil)
         }
@@ -659,7 +659,7 @@ class SignInViewController: ProtonMailViewController {
         dismissKeyboard();
 
         //UIApplication.shared.openURL(forgotPasswordURL)
-        let alertStr = NSLocalizedString("Please use the web application to reset your password.", comment: "Alert")
+        let alertStr = LocalString._please_use_the_web_application_to_reset_your_password
         let alertController = alertStr.alertController()
         alertController.addOKAction()
         self.present(alertController, animated: true, completion: nil)

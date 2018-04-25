@@ -100,11 +100,11 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
                         self.emailView?.showErrorMessage(LocalString._general_api_server_not_reachable)
                         self.updateEmailBodyWithError(LocalString._general_api_server_not_reachable)
                     } else if code < 0{
-                        self.emailView?.showErrorMessage(NSLocalizedString("Can't download message body, please try again.", comment: "Error"))
-                        self.updateEmailBodyWithError(NSLocalizedString("Can't download message body, please try again.", comment: "Error"))
+                        self.emailView?.showErrorMessage(LocalString._cant_download_message_body_please_try_again)
+                        self.updateEmailBodyWithError(LocalString._cant_download_message_body_please_try_again)
                     } else {
-                        self.emailView?.showErrorMessage(NSLocalizedString("Can't download message body, please try again.", comment: "Error"))
-                        self.updateEmailBodyWithError(NSLocalizedString("Can't download message body, please try again.", comment: "Error"))
+                        self.emailView?.showErrorMessage(LocalString._cant_download_message_body_please_try_again)
+                        self.updateEmailBodyWithError(LocalString._cant_download_message_body_please_try_again)
                     }
                     PMLog.D("error: \(error)")
                 }
@@ -280,7 +280,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
             }
         }
         
-//        alertController.addAction(UIAlertAction(title:NSLocalizedString("Print", comment: "Action"), style: .default, handler: { (action) -> Void in
+//        alertController.addAction(UIAlertAction(title: LocalString._print, style: .default, handler: { (action) -> Void in
 //            self.print(webView : self.emailView!.contentWebView)
 //        }))
         
@@ -522,7 +522,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     
     internal func purifyEmailBody(_ message : Message!, autoloadimage : Bool) -> String? {
         do {
-            var bodyText = try self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.", comment: "Error")
+            var bodyText = try self.message.decryptBodyIfNeeded() ?? LocalString._unable_to_decrypt_message
             bodyText = bodyText.stringByStrippingBodyStyle()
             bodyText = bodyText.stringByPurifyHTML()
             self.bodyHasImages = bodyText.hasImage()
@@ -537,7 +537,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     }
     
     internal func showEmailLoading () {
-        let body = NSLocalizedString("Loading...", comment: "")
+        let body = LocalString._loading_
         let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
         self.emailView?.updateEmailBody(body, meta: meta)
     }
@@ -619,7 +619,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
     }
     
     func showAlertWhenNoDetails() {
-        let alert = NSLocalizedString("Please wait until the email downloaded!", comment: "The").alertController();
+        let alert = LocalString._please_wait_until_the_email_downloaded.alertController();
         alert.addOKAction()
         latestPresentedView = alert
         self.present(alert, animated: true, completion: nil)
@@ -720,13 +720,13 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                 }
             } catch let ex as NSError {
                 PMLog.D("quickLookAttachment error : \(ex)")
-                let alert = NSLocalizedString("Can't decrypt this attachment!", comment: "When quick look attachment but can't decrypt it!").alertController();
+                let alert = LocalString._cant_decrypt_this_attachment.alertController();
                 alert.addOKAction()
                 latestPresentedView = alert
                 self.present(alert, animated: true, completion: nil)
             }
         } else{
-            let alert = NSLocalizedString("Can't find this attachment!", comment: "when quick look attachment but can't find the data").alertController();
+            let alert = LocalString._cant_find_this_attachment.alertController();
             alert.addOKAction()
             latestPresentedView = alert
             self.present(alert, animated: true, completion: nil)

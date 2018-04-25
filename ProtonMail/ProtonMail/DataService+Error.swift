@@ -78,7 +78,7 @@ enum UpdatePasswordError : Int, Error, CustomErrorVar {
     }
     
     var desc : String {
-        return NSLocalizedString("Change Password", comment: "update password error title") //TODO:: check with jason for localization
+        return LocalString._change_password //TODO:: check with jason for localization
     }
     
     var reason : String {
@@ -86,27 +86,27 @@ enum UpdatePasswordError : Int, Error, CustomErrorVar {
         case .invalidUserName:
             return LocalString._error_invalid_username
         case .invalidModulusID:
-            return NSLocalizedString("Can't get a Moduls ID!", comment: "update password error = typo:Modulus")
+            return LocalString._cant_get_a_moduls_id
         case .invalidModulus:
-            return NSLocalizedString("Can't get a Moduls!", comment: "update password error = typo:Modulus")
+            return LocalString._cant_get_a_moduls
         case .cantHashPassword:
-            return NSLocalizedString("Invalid hashed password!", comment: "update password error")
+            return LocalString._invalid_hashed_password
         case .cantGenerateVerifier:
-            return NSLocalizedString("Can't create a SRP verifier!", comment: "update password error")
+            return LocalString._cant_create_a_srp_verifier
         case .cantGenerateSRPClient:
-            return NSLocalizedString("Can't create a SRP Client", comment: "update password error")
+            return LocalString._cant_create_a_srp_client
         case .invalideAuthInfo:
-            return NSLocalizedString("Can't get user auth info", comment: "update password error")
+            return LocalString._cant_get_user_auth_info
         case .currentPasswordWrong:
-            return NSLocalizedString("The Password is wrong.", comment: "update password error")
+            return LocalString._the_password_is_wrong
         case .newNotMatch:
-            return NSLocalizedString("The new password not match.", comment: "update password error")
+            return LocalString._the_new_password_not_match
         case .passwordEmpty:
-            return NSLocalizedString("The new password can't empty.", comment: "update password error")
+            return LocalString._the_new_password_cant_empty
         case .keyUpdateFailed:
-            return NSLocalizedString("The private key update failed.", comment: "update password error")
+            return LocalString._the_private_key_update_failed
         case .default:
-            return NSLocalizedString("Password update failed", comment: "update password error")
+            return LocalString._password_update_failed
         }
     }
 }
@@ -127,7 +127,7 @@ enum UpdateNotificationEmailError : Int, Error, CustomErrorVar {
     }
     
     var desc : String {
-        return NSLocalizedString("Update Notification Email", comment: "update notification email error title")
+        return LocalString._update_notification_email
     }
     
     var reason : String {
@@ -135,15 +135,15 @@ enum UpdateNotificationEmailError : Int, Error, CustomErrorVar {
         case .invalidUserName:
             return LocalString._error_invalid_username
         case .cantHashPassword:
-            return NSLocalizedString("Invalid hashed password!", comment: "update notification email error")
+            return LocalString._invalid_hashed_password
         case .cantGenerateVerifier:
-            return NSLocalizedString("Can't create a SRP verifier!", comment: "update notification email error")
+            return LocalString._cant_create_a_srp_verifier
         case .cantGenerateSRPClient:
-            return NSLocalizedString("Can't create a SRP Client", comment: "update notification email error")
+            return LocalString._cant_create_a_srp_client
         case .invalideAuthInfo:
-            return NSLocalizedString("Can't get user auth info", comment: "update notification email error")
+            return LocalString._cant_get_user_auth_info
         case .default:
-            return NSLocalizedString("Password update failed", comment: "update notification email error")
+            return LocalString._password_update_failed
         }
     }
 }

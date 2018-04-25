@@ -202,7 +202,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     }
     
     override func getTitle() -> String {
-        return NSLocalizedString("Apply Labels", comment: "Title")
+        return LocalString._apply_labels
     }
     
     override func cancel() {

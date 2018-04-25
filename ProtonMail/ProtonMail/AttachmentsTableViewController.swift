@@ -32,9 +32,9 @@ public enum AttachmentSections: Int {
         get {
             switch(self) {
             case .normal:
-                return NSLocalizedString("normal attachments", comment: "Title")
+                return LocalString._normal_attachments
             case .inline:
-                return NSLocalizedString("inline attachments", comment: "Title")
+                return LocalString._inline_attachments
             }
         }
     }
@@ -146,7 +146,7 @@ class AttachmentsTableViewController: UITableViewController {
     @IBAction func addAction(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library", comment: "Title"), style: UIAlertActionStyle.default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._photo_library, style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let picker: UIImagePickerController = PMImagePickerController()
             picker.delegate = self
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
@@ -155,7 +155,7 @@ class AttachmentsTableViewController: UITableViewController {
             self.present(picker, animated: true, completion: nil)
         }))
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Take a Photo", comment: "Title"), style: UIAlertActionStyle.default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._take_a_photo, style: UIAlertActionStyle.default, handler: { (action) -> Void in
             if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)) {
                 let picker: UIImagePickerController = UIImagePickerController()
                 picker.delegate = self
@@ -164,7 +164,7 @@ class AttachmentsTableViewController: UITableViewController {
             }
         }))
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Import File From...", comment: "Title"), style: UIAlertActionStyle.default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._import_file_from_, style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let types = [
                 kUTTypeMovie as String,
                 kUTTypeImage as String,
@@ -192,7 +192,7 @@ class AttachmentsTableViewController: UITableViewController {
     }
     
     func showSizeErrorAlert( _ didReachedSizeLimitation: Int) {
-        let alert = NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description").alertController()
+        let alert = LocalString._the_total_attachment_size_cant_be_bigger_than_25mb.alertController()
         alert.addOKAction()
         present(alert, animated: true, completion: nil)
     }
@@ -333,8 +333,8 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
                 }
             } else {
                 DispatchQueue.main.async {
-                    self.showErrorAlert(NSLocalizedString("Can't load the file", comment: "Error"))
-                    self.delegate?.attachments(self, error: NSLocalizedString("Can't load the file", comment: "Error"))
+                    self.showErrorAlert(LocalString._cant_load_the_file)
+                    self.delegate?.attachments(self, error: LocalString._cant_load_the_file)
                 }
             }
         }
@@ -393,8 +393,8 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                                 self.delegate?.attachments(self, didPickedAttachment: attachment!)
                             } else {
                                 PMLog.D(" Error during copying size incorrect")
-                                self.showErrorAlert(NSLocalizedString("System can't copy the file", comment: "Error"))
-                                self.delegate?.attachments(self, error: NSLocalizedString("System can't copy the file", comment: "Error"))
+                                self.showErrorAlert(LocalString._system_cant_copy_the_file)
+                                self.delegate?.attachments(self, error: LocalString._system_cant_copy_the_file)
                             }
                         }
                     } else {
@@ -420,8 +420,8 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                     guard var image_data = imagedata, /* let _ = dataUTI,*/ let info = info, image_data.count > 0 else {
                         DispatchQueue.main.async() {
                             picker.dismiss(animated: true, completion: nil)
-                            self.showErrorAlert(NSLocalizedString("Can't open the file", comment: "Error"))
-                            self.delegate?.attachments(self, error: NSLocalizedString("Can't open the file", comment: "Error"))
+                            self.showErrorAlert(LocalString._cant_open_the_file)
+                            self.delegate?.attachments(self, error: LocalString._cant_open_the_file)
                         }
                         return
                     }

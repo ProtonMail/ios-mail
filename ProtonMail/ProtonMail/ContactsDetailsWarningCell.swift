@@ -27,16 +27,16 @@ class ContactsDetailsWarningCell: UITableViewCell {
     func configCell(warning : WarningType) {
         switch warning {
         case .signatureWarning:
-            self.errorTitle.text = NSLocalizedString("Verification error", comment: "error title")
-            self.errorDetails.text = NSLocalizedString("Verification of this content’s signature failed", comment: "error details")
+            self.errorTitle.text = LocalString._verification_error
+            self.errorDetails.text = LocalString._verification_of_this_contents_signature_failed
         case .decryptionError:
-            self.errorTitle.text = NSLocalizedString("Decryption error", comment: "error title")
-            self.errorDetails.text = NSLocalizedString("Decryption of this content failed", comment: "error details")
+            self.errorTitle.text = LocalString._decryption_error
+            self.errorDetails.text = LocalString._decryption_of_this_content_failed
         }
     }
     
     func configCell(forlog: String) {
-        self.errorTitle.text = NSLocalizedString("Logs", comment: "error title")
+        self.errorTitle.text = LocalString._logs
         self.errorDetails.text = forlog
     }
 

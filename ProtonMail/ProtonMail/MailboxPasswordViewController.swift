@@ -52,9 +52,9 @@ class MailboxPasswordViewController: UIViewController {
         setupDecryptButton()
         passwordTextField.attributedPlaceholder = NSAttributedString(string: LocalString._mailbox_password, attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
         
-        topTitleLabel.text = NSLocalizedString("DECRYPT MAILBOX", comment: "Title")
-        decryptButton.setTitle(NSLocalizedString("Decrypt", comment: "Action"), for: .normal)
-        resetMailboxPasswordAction.setTitle(NSLocalizedString("RESET MAILBOX PASSWORD", comment: "Action"), for: .normal)
+        topTitleLabel.text = LocalString._decrypt_mailbox
+        decryptButton.setTitle(LocalString._decrypt, for: .normal)
+        resetMailboxPasswordAction.setTitle(LocalString._reset_mailbox_password, for: .normal)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -210,14 +210,14 @@ class MailboxPasswordViewController: UIViewController {
                     }
                 } catch let ex as NSError {
                     MBProgressHUD.hide(for: self.view, animated: true)
-                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? NSLocalizedString("The mailbox password is incorrect.", comment: "Error")
-                    let alertController = UIAlertController(title: NSLocalizedString("Incorrect password", comment: "Title"), message: NSLocalizedString(message, comment: ""), preferredStyle: .alert)
+                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? LocalString._the_mailbox_password_is_incorrect
+                    let alertController = UIAlertController(title: LocalString._incorrect_password, message: NSLocalizedString(message, comment: ""), preferredStyle: .alert)
                     alertController.addOKAction()
                     present(alertController, animated: true, completion: nil)
                 }
             }
         } else {
-            let alert = UIAlertController(title: NSLocalizedString("Incorrect password", comment: "Title"), message: NSLocalizedString("The mailbox password is incorrect.", comment: "Error"), preferredStyle: .alert)
+            let alert = UIAlertController(title: LocalString._incorrect_password, message: LocalString._the_mailbox_password_is_incorrect, preferredStyle: .alert)
             alert.addAction((UIAlertAction.okAction()))
             present(alert, animated: true, completion: nil)
         }
@@ -252,7 +252,7 @@ class MailboxPasswordViewController: UIViewController {
     // MARK: - Actions
     @IBAction func resetMBPAction(_ sender: AnyObject) {
         let alert = UIAlertController(title: LocalString._general_alert_title,
-                                      message: NSLocalizedString("To reset your mailbox password, please use the web version of ProtonMail at protonmail.com", comment: "Description"),
+                                      message: LocalString._to_reset_your_mailbox_password_please_use_the_web_version_of_protonmail,
                                       preferredStyle: .alert)
         alert.addAction((UIAlertAction.okAction()))
         present(alert, animated: true, completion: nil)

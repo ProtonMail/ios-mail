@@ -34,13 +34,12 @@ class UpgradeAlertViewController: UIViewController {
         self.okButton.layer.cornerRadius = 8.0
         
         //set text
-        self.okButton.setTitle(NSLocalizedString("Got it", comment: "Action"), for: UIControlState.normal)
+        self.okButton.setTitle(LocalString._got_it, for: UIControlState.normal)
         
-        self.titleLabel.text = NSLocalizedString("PREMIUM FEATURE", comment: "Upgrade warning title")
-        self.titleLabelTwo.text = NSLocalizedString("Looking to secure your contact's details?", comment: "Upgrade warning title")
-        self.messageLabel.text = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.", comment: "Upgrade warning message")
-        self.messageLabelTwo.text = NSLocalizedString("Upgrading is not possible in the app.", comment: "Upgrade warning message")
-        
+        self.titleLabel.text = LocalString._premium_feature
+        self.titleLabelTwo.text = LocalString._looking_to_secure_your_contacts_details
+        self.messageLabel.text = LocalString._protonmail_plus_enables_you_to_add_and_edit_contact_details_beyond_
+        self.messageLabelTwo.text = LocalString._upgrading_is_not_possible_in_the_app
     }
     
     override func didReceiveMemoryWarning() {

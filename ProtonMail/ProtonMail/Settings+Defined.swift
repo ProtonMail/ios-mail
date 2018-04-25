@@ -270,23 +270,23 @@ public enum SettingSections: Int, CustomStringConvertible {
     public var description : String {
         switch(self){
         case .debug:
-            return NSLocalizedString("Debug", comment: "Title")
+            return LocalString._debug
         case .general:
-            return NSLocalizedString("General Settings", comment: "Title")
+            return LocalString._general_settings
         case .multiDomain:
-            return NSLocalizedString("Multiple Addresses", comment: "Title")
+            return LocalString._multiple_addresses
         case .storage:
-            return NSLocalizedString("Storage", comment: "Title")
+            return LocalString._storage
         case .version:
-            return NSLocalizedString("", comment: "")
+            return ""
         case .swipeAction:
-            return NSLocalizedString("Message Swipe Actions", comment: "Title")
+            return LocalString._message_swipe_actions
         case .protection:
-            return NSLocalizedString("Protection", comment: "Title")
+            return LocalString._protection
         case .language:
-            return NSLocalizedString("Language", comment: "Title")
+            return LocalString._language
         case .labels:
-            return NSLocalizedString("Labels/Folders", comment: "Title")
+            return LocalString._labels_folders
         }
     }
 }

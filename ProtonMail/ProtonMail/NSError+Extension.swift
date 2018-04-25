@@ -58,8 +58,8 @@ extension NSError {
     class func unknowError() -> NSError {
         return apiServiceError(
             code: -1,
-            localizedDescription: NSLocalizedString("Unknow Error", comment: "Description"),
-            localizedFailureReason: NSLocalizedString("Unknow Error", comment: "Description"))
+            localizedDescription: LocalString._unknow_error,
+            localizedFailureReason: LocalString._unknow_error)
     }
     
     func isInternetError() -> Bool {

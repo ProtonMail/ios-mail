@@ -147,7 +147,7 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
             })
         } else {
             self.finishChecking(false)
-            let alert = NSLocalizedString("The verification failed!", comment: "Error").alertController()
+            let alert = LocalString._the_verification_failed.alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
         }

@@ -52,11 +52,11 @@ class StorageLimit {
         }
         
         let alertController = UIAlertController(
-            title: NSLocalizedString("Space Warning", comment: "Title"),
+            title: LocalString._space_warning,
             message: message,
             preferredStyle: .alert)
         alertController.addOKAction()
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Hide", comment: "Action"), style: .destructive, handler: { action in
+        alertController.addAction(UIAlertAction(title: LocalString._hide, style: .destructive, handler: { action in
             userCachedStatus.isCheckSpaceDisabled = true
         }))
         

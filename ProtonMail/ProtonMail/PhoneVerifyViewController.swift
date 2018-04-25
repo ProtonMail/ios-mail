@@ -69,14 +69,15 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        emailTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Cell phone number", comment: "place holder"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        emailTextField.attributedPlaceholder = NSAttributedString(string: LocalString._cell_phone_number,
+                                                                  attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: LocalString._enter_verification_code,
                                                                        attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
         topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
         topTitleLabel.text = LocalString._human_verification
-        titleTwoLabel.text = NSLocalizedString("Enter your cell phone number", comment: "human verification top title")
-        phoneFieldNoteLabel.text = NSLocalizedString("We will send a verification code to the cell phone above.", comment: "text field notes")
+        titleTwoLabel.text = LocalString._enter_your_cell_phone_number
+        phoneFieldNoteLabel.text = LocalString._we_will_send_a_verification_code_to_the_cell_phone_above
         continueButton.setTitle(LocalString._genernal_continue, for: .normal)
         
         self.updateCountryCode(1)
@@ -185,8 +186,8 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
                 var title = LocalString._verification_code_request_failed
                 var message = ""
                 if error?.code == 12231 {
-                    title = NSLocalizedString("Phone number invalid", comment: "Title")
-                    message = NSLocalizedString("Please input a valid cell phone number.", comment: "Description")
+                    title = LocalString._phone_number_invalid
+                    message = LocalString._please_input_a_valid_cell_phone_number
                 } else {
                     message = error!.localizedDescription
                 }
@@ -195,7 +196,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
                 self.present(alert, animated: true, completion: nil)
             } else {
                 let alert = UIAlertController(title: LocalString._verification_code_sent,
-                                              message: NSLocalizedString("Please check your cell phone for the verification code.", comment: "Description"),
+                                              message: LocalString._please_check_your_cell_phone_for_the_verification_code,
                                               preferredStyle: .alert)
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)

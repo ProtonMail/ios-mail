@@ -70,13 +70,13 @@ class ShareUnlockViewController: UIViewController {
                         if let e = self.localized_errors.first {
                             self.showErrorAndQuit(errorMsg: e)
                         } else {
-                            self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
+                            self.showErrorAndQuit(errorMsg: LocalString._cant_load_share_content)
                         }
                     }
                 }
             }
         } else {
-            self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
+            self.showErrorAndQuit(errorMsg: LocalString._cant_load_share_content)
         }
     }
     
@@ -103,10 +103,10 @@ class ShareUnlockViewController: UIViewController {
                                     if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
                                         self.files.append(fileData!)
                                     } else {
-                                        self.localized_errors.append(NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description"))
+                                        self.localized_errors.append(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
                                     }
                                 } else if let err = error {
-                                    self.localized_errors.append(NSLocalizedString("Can't load share content!", comment: "Description"))
+                                    self.localized_errors.append(LocalString._cant_load_share_content)
                                 }
                             })
                         } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
@@ -122,7 +122,7 @@ class ShareUnlockViewController: UIViewController {
                                     let url = shareURL.absoluteString ?? ""
                                     self.inputContent = self.inputContent + "\n" + "<a href=\"\(url)\">\(url)</a>"
                                 } else {
-                                    self.localized_errors.append(NSLocalizedString("Can't load share content!", comment: "Description"))
+                                    self.localized_errors.append(LocalString._cant_load_share_content)
                                 }
                             })
                         } else if let pt = plainText {
@@ -177,7 +177,7 @@ class ShareUnlockViewController: UIViewController {
         self.touchID.alpha = 0.0
         self.pinUnlock.alpha = 0.0
         
-        let alertController = UIAlertController(title: NSLocalizedString("Share Alert", comment: "Title"), message: errorMsg, preferredStyle: .alert)
+        let alertController = UIAlertController(title: LocalString._share_alert, message: errorMsg, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: LocalString._general_close_action, style: .default, handler: { (action) -> Void in
             self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
                 let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
@@ -235,7 +235,7 @@ class ShareUnlockViewController: UIViewController {
         }
         else
         {
-            self.showErrorAndQuit(errorMsg: NSLocalizedString("Please use ProtonMail App login first", comment: "Description"))
+            self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
         }
     }
     

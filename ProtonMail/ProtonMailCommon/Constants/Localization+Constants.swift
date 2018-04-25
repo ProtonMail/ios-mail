@@ -971,522 +971,397 @@ class LocalString {
 
     
     
-//    /// "Debug"
-//    static let debug = NSLocalizedString("Debug", comment: "Title")
-//
-//    /// "General Settings"
-//    static let general_settings = NSLocalizedString("General Settings", comment: "Title")
-//
-//    /// "Multiple Addresses"
-//    static let multiple_addresses = NSLocalizedString("Multiple Addresses", comment: "Title")
-//
-//    /// "Storage"
-//    static let storage = NSLocalizedString("Storage", comment: "Title")
-//
-//    /// ""
-//    static let  = NSLocalizedString("", comment: "")
-//
-//    /// "Message Swipe Actions"
-//    static let message_swipe_actions = NSLocalizedString("Message Swipe Actions", comment: "Title")
-//
-//    /// "Protection"
-//    static let protection = NSLocalizedString("Protection", comment: "Title")
-//
-//    /// "Language"
-//    static let language = NSLocalizedString("Language", comment: "Title")
-//
-//    /// "Labels/Folders"
-//    static let labels/folders = NSLocalizedString("Labels/Folders", comment: "Title")
+    // Mark Settings section title
+    
+    /// "Debug"
+    static let _debug = NSLocalizedString("Debug", comment: "Title")
+    /// "General Settings"
+    static let _general_settings = NSLocalizedString("General Settings", comment: "Title")
+    /// "Multiple Addresses"
+    static let _multiple_addresses = NSLocalizedString("Multiple Addresses", comment: "Title")
+    /// "Storage"
+    static let _storage = NSLocalizedString("Storage", comment: "Title")
+    /// "Message Swipe Actions"
+    static let _message_swipe_actions = NSLocalizedString("Message Swipe Actions", comment: "Title")
+    /// "Protection"
+    static let _protection = NSLocalizedString("Protection", comment: "Title")
+    /// "Language"
+    static let _language = NSLocalizedString("Language", comment: "Title")
+    /// "Labels/Folders"
+    static let _labels_folders = NSLocalizedString("Labels/Folders", comment: "Title")
 
 
-//    /// "You have unsaved changes. Do you want to save it?"
-//    static let you_have_unsaved_changes._do_you_want_to_save_it? = NSLocalizedString("You have unsaved changes. Do you want to save it?", comment: "Confirmation message")
-//
-//    /// "Save Changes"
-//    static let save_changes = NSLocalizedString("Save Changes", comment: "title")
-//
-//    /// "Recovery Code"
-//    static let recovery_code = NSLocalizedString("Recovery Code", comment: "Title")
-//
-//    /// "Two Factor Code"
-//    static let two_factor_code = NSLocalizedString("Two Factor Code", comment: "Placeholder")
-//
+    /// "You have unsaved changes. Do you want to save it?"
+    static let _you_have_unsaved_changes_do_you_want_to_save_it = NSLocalizedString("You have unsaved changes. Do you want to save it?", comment: "Confirmation message")
 
-//    /// "Authentication"
-//    static let authentication = NSLocalizedString("Authentication", comment: "Title")
-//
-//    /// "Enter"
-//    static let enter = NSLocalizedString("Enter", comment: "Action")
-//
-//    /// "Space Warning"
-//    static let space_warning = NSLocalizedString("Space Warning", comment: "Title")
-//
-//    /// "Hide"
-//    static let hide = NSLocalizedString("Hide", comment: "Action")
-//
-//    /// "Change Password"
-//    static let change_password = NSLocalizedString("Change Password", comment: "update password error title")
-//
-//    /// "Can't get a Moduls ID!"
-//    static let can't_get_a_moduls_id! = NSLocalizedString("Can't get a Moduls ID!", comment: "update password error = typo:Modulus")
-//
-//    /// "Can't get a Moduls!"
-//    static let can't_get_a_moduls! = NSLocalizedString("Can't get a Moduls!", comment: "update password error = typo:Modulus")
-//
-//    /// "Invalid hashed password!"
-//    static let invalid_hashed_password! = NSLocalizedString("Invalid hashed password!", comment: "update password error")
-//
-//    /// "Can't create a SRP verifier!"
-//    static let can't_create_a_srp_verifier! = NSLocalizedString("Can't create a SRP verifier!", comment: "update password error")
-//
-//    /// "Can't create a SRP Client"
-//    static let can't_create_a_srp_client = NSLocalizedString("Can't create a SRP Client", comment: "update password error")
-//
-//    /// "Can't get user auth info"
-//    static let can't_get_user_auth_info = NSLocalizedString("Can't get user auth info", comment: "update password error")
-//
-//    /// "The Password is wrong."
-//    static let the_password_is_wrong. = NSLocalizedString("The Password is wrong.", comment: "update password error")
-//
-//    /// "The new password not match."
-//    static let the_new_password_not_match. = NSLocalizedString("The new password not match.", comment: "update password error")
-//
-//    /// "The new password can't empty."
-//    static let the_new_password_can't_empty. = NSLocalizedString("The new password can't empty.", comment: "update password error")
-//
-//    /// "The private key update failed."
-//    static let the_private_key_update_failed. = NSLocalizedString("The private key update failed.", comment: "update password error")
-//
-//    /// "Password update failed"
-//    static let password_update_failed = NSLocalizedString("Password update failed", comment: "update password error")
-//
-//    /// "Update Notification Email"
-//    static let update_notification_email = NSLocalizedString("Update Notification Email", comment: "update notification email error title")
-//
-//    /// "Invalid hashed password!"
-//    static let invalid_hashed_password! = NSLocalizedString("Invalid hashed password!", comment: "update notification email error")
-//
-//    /// "Can't create a SRP verifier!"
-//    static let can't_create_a_srp_verifier! = NSLocalizedString("Can't create a SRP verifier!", comment: "update notification email error")
-//
-//    /// "Can't create a SRP Client"
-//    static let can't_create_a_srp_client = NSLocalizedString("Can't create a SRP Client", comment: "update notification email error")
-//
-//    /// "Can't get user auth info"
-//    static let can't_get_user_auth_info = NSLocalizedString("Can't get user auth info", comment: "update notification email error")
-//
-//    /// "Password update failed"
-//    static let password_update_failed = NSLocalizedString("Password update failed", comment: "update notification email error")
-//
-//    /// "Update Notification Email"
-//    static let update_notification_email = NSLocalizedString("Update Notification Email", comment: "update notification email error title when signup")
-//
-//    /// "Can't get a Moduls ID!"
-//    static let can't_get_a_moduls_id! = NSLocalizedString("Can't get a Moduls ID!", comment: "sign up user error when can't get moduls id")
-//
-//    /// "Can't get a Moduls!"
-//    static let can't_get_a_moduls! = NSLocalizedString("Can't get a Moduls!", comment: "sign up user error")
-//
-//    /// "Invalid hashed password!"
-//    static let invalid_hashed_password! = NSLocalizedString("Invalid hashed password!", comment: "sign up user error")
-//
-//    /// "Can't create a SRP verifier!"
-//    static let can't_create_a_srp_verifier! = NSLocalizedString("Can't create a SRP verifier!", comment: "sign up user error")
-//
-//    /// "Unable to get contacts"
-//    static let unable_to_get_contacts = NSLocalizedString("Unable to get contacts", comment: "Error")
-//
-//    /// "Apply Labels"
-//    static let apply_labels = NSLocalizedString("Apply Labels", comment: "Title")
-//
-//    /// "Can't download message body, please try again."
-//    static let can't_download_message_body,_please_try_again. = NSLocalizedString("Can't download message body, please try again.", comment: "Error")
-//
-//    /// "Can't download message body, please try again."
-//    static let can't_download_message_body,_please_try_again. = NSLocalizedString("Can't download message body, please try again.", comment: "Error")
-//
-//    /// "Can't download message body, please try again."
-//    static let can't_download_message_body,_please_try_again. = NSLocalizedString("Can't download message body, please try again.", comment: "Error")
-//
-//    /// "Can't download message body, please try again."
-//    static let can't_download_message_body,_please_try_again. = NSLocalizedString("Can't download message body, please try again.", comment: "Error")
-//
-//    /// "Print"
-//    static let print = NSLocalizedString("Print", comment: "Action")
-//
-//    /// "Unable to decrypt message."
-//    static let unable_to_decrypt_message. = NSLocalizedString("Unable to decrypt message.", comment: "Error")
-//
-//    /// "Loading..."
-//    static let loading... = NSLocalizedString("Loading...", comment: "")
-//
-//    /// "Please wait until the email downloaded!"
-//    static let please_wait_until_the_email_downloaded! = NSLocalizedString("Please wait until the email downloaded!", comment: "The")
-//
-//    /// "Can't decrypt this attachment!"
-//    static let can't_decrypt_this_attachment! = NSLocalizedString("Can't decrypt this attachment!", comment: "When quick look attachment but can't decrypt it!")
-//
-//    /// "Can't find this attachment!"
-//    static let can't_find_this_attachment! = NSLocalizedString("Can't find this attachment!", comment: "when quick look attachment but can't find the data")
-//
-//    /// "Encryption Setup"
-//    static let encryption_setup = NSLocalizedString("Encryption Setup", comment: "key setup top title")
-//
-//    /// "High Security"
-//    static let high_security = NSLocalizedString("High Security", comment: "Key size checkbox")
-//
-//    /// "Extreme Security"
-//    static let extreme_security = NSLocalizedString("Extreme Security", comment: "Key size checkbox")
-//
-//    /// "The current standard"
-//    static let the_current_standard = NSLocalizedString("The current standard", comment: "key size notes")
-//
-//    /// "The highest level of encryption available."
-//    static let the_highest_level_of_encryption_available. = NSLocalizedString("The highest level of encryption available.", comment: "key size note part 1")
-//
-//    /// "Can take several minutes to setup."
-//    static let can_take_several_minutes_to_setup. = NSLocalizedString("Can take several minutes to setup.", comment: "key size note part 2")
-//
+    /// "Save Changes"
+    static let _save_changes = NSLocalizedString("Save Changes", comment: "title")
 
-//    /// "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer."
-//    static let mobile_signups_are_temporarily_disabled._please_try_again_later,_or_try_signing_up_at_protonmail.com_using_a_desktop_or_laptop_computer. = NSLocalizedString("Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.", comment: "Description")
-//
-//    /// "Key generation failed"
-//    static let key_generation_failed = NSLocalizedString("Key generation failed", comment: "Error")
-//
-//    /// "Your Country Code"
-//    static let your_country_code = NSLocalizedString("Your Country Code", comment: "view top title")
+    /// "Recovery Code"
+    static let _recovery_code = NSLocalizedString("Recovery Code", comment: "Title")
 
-//    /// "DECRYPT MAILBOX"
-//    static let decrypt_mailbox = NSLocalizedString("DECRYPT MAILBOX", comment: "Title")
-//
-//    /// "Decrypt"
-//    static let decrypt = NSLocalizedString("Decrypt", comment: "Action")
-//
-//    /// "RESET MAILBOX PASSWORD"
-//    static let reset_mailbox_password = NSLocalizedString("RESET MAILBOX PASSWORD", comment: "Action")
-//
-//    /// "The mailbox password is incorrect."
-//    static let the_mailbox_password_is_incorrect. = NSLocalizedString("The mailbox password is incorrect.", comment: "Error")
-//
-//    /// "Incorrect password"
-//    static let incorrect_password = NSLocalizedString("Incorrect password", comment: "Title")
-//
-//    /// "Incorrect password"
-//    static let incorrect_password = NSLocalizedString("Incorrect password", comment: "Title")
-//
-//    /// "The mailbox password is incorrect."
-//    static let the_mailbox_password_is_incorrect. = NSLocalizedString("The mailbox password is incorrect.", comment: "Error")
-//
-//    /// "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com"
-//    static let to_reset_your_mailbox_password,_please_use_the_web_version_of_protonmail_at_protonmail.com = NSLocalizedString("To reset your mailbox password, please use the web version of ProtonMail at protonmail.com", comment: "Description")
-//
-//    /// "Recovery Email"
-//    static let recovery_email = NSLocalizedString("Recovery Email", comment: "Title")
-//    /// "Congratulations!"
-//    static let congratulations! = NSLocalizedString("Congratulations!", comment: "view top title")
-//
-//    /// "Your new secure email\r\n account is ready."
-//    static let your_new_secure_email\r\n_account_is_ready. = NSLocalizedString("Your new secure email\r\n account is ready.", comment: "view top title")
-//
-//    /// "When you send an email, this is the name that appears in the sender field."
-//    static let when_you_send_an_email,_this_is_the_name_that_appears_in_the_sender_field. = NSLocalizedString("When you send an email, this is the name that appears in the sender field.", comment: "display name notes")
-//
-//    /// "The optional recovery email address allows you to reset your login password if you forget it."
-//    static let the_optional_recovery_email_address_allows_you_to_reset_your_login_password_if_you_forget_it. = NSLocalizedString("The optional recovery email address allows you to reset your login password if you forget it.", comment: "recovery email notes")
-//
-//    /// "Keep me updated about new features"
-//    static let keep_me_updated_about_new_features = NSLocalizedString("Keep me updated about new features", comment: "Title")
-//
-//    /// "Go to inbox"
-//    static let go_to_inbox = NSLocalizedString("Go to inbox", comment: "Action")
-//
-//    /// "Recovery Email Warning"
-//    static let recovery_email_warning = NSLocalizedString("Recovery Email Warning", comment: "Title")
-//
-//    /// "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?"
-//    static let warning:_you_did_not_set_a_recovery_email_so_account_recovery_is_impossible_if_you_forget_your_password._proceed_without_recovery_email? = NSLocalizedString("Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?", comment: "Description")
-//    /// "To prevent abuse of ProtonMail,\r\n we need to verify that you are human."
-//    static let to_prevent_abuse_of_protonmail,\r\n_we_need_to_verify_that_you_are_human. = NSLocalizedString("To prevent abuse of ProtonMail,\r\n we need to verify that you are human.", comment: "human verification notes")
-//
-//    /// "Please select one of the following options:"
-//    static let please_select_one_of_the_following_options: = NSLocalizedString("Please select one of the following options:", comment: "human check select option title")
-//
-//    /// "CAPTCHA"
-//    static let captcha = NSLocalizedString("CAPTCHA", comment: "human check option button")
-//
-//    /// "Email Verification"
-//    static let email_verification = NSLocalizedString("Email Verification", comment: "human check option button")
-//
-//    /// "Phone Verification"
-//    static let phone_verification = NSLocalizedString("Phone Verification", comment: "human check option button")
-//
-//    /// "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer."
-//    static let mobile_signups_are_temporarily_disabled._please_try_again_later,_or_try_signing_up_at_protonmail.com_using_a_desktop_or_laptop_computer. = NSLocalizedString("Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.", comment: "signup human check error description when mobile signup disabled")
-//
-//    /// "Verification error"
-//    static let verification_error = NSLocalizedString("Verification error", comment: "error title")
-//
-//    /// "Verification of this content’s signature failed"
-//    static let verification_of_this_content’s_signature_failed = NSLocalizedString("Verification of this content’s signature failed", comment: "error details")
-//
-//    /// "Decryption error"
-//    static let decryption_error = NSLocalizedString("Decryption error", comment: "error title")
-//
-//    /// "Decryption of this content failed"
-//    static let decryption_of_this_content_failed = NSLocalizedString("Decryption of this content failed", comment: "error details")
-//
-//    /// "Logs"
-//    static let logs = NSLocalizedString("Logs", comment: "error title")
-//
-//    /// "normal attachments"
-//    static let normal_attachments = NSLocalizedString("normal attachments", comment: "Title")
-//
-//    /// "inline attachments"
-//    static let inline_attachments = NSLocalizedString("inline attachments", comment: "Title")
-//
-//    /// "Photo Library"
-//    static let photo_library = NSLocalizedString("Photo Library", comment: "Title")
-//
-//    /// "Take a Photo"
-//    static let take_a_photo = NSLocalizedString("Take a Photo", comment: "Title")
-//
-//    /// "Import File From..."
-//    static let import_file_from... = NSLocalizedString("Import File From...", comment: "Title")
-//
-//    /// "The total attachment size can't be bigger than 25MB"
-//    static let the_total_attachment_size_can't_be_bigger_than_25mb = NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description")
-//
-//    /// "Can't load the file"
-//    static let can't_load_the_file = NSLocalizedString("Can't load the file", comment: "Error")
-//
-//    /// "Can't load the file"
-//    static let can't_load_the_file = NSLocalizedString("Can't load the file", comment: "Error")
-//
-//    /// "Can't copy the file"
-//    static let can't_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
-//
-//    /// "Can't copy the file"
-//    static let can't_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
-//
-//    /// "System can't copy the file"
-//    static let system_can't_copy_the_file = NSLocalizedString("System can't copy the file", comment: "Error")
-//
-//    /// "System can't copy the file"
-//    static let system_can't_copy_the_file = NSLocalizedString("System can't copy the file", comment: "Error")
-//
-//    /// "Can't open the file"
-//    static let can't_open_the_file = NSLocalizedString("Can't open the file", comment: "Error")
-//
-//    /// "Can't open the file"
-//    static let can't_open_the_file = NSLocalizedString("Can't open the file", comment: "Error")
-//
-//    /// "Can't copy the file"
-//    static let can't_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
-//
-//    /// "Can't copy the file"
-//    static let can't_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
-//
-//    /// "Can't copy the file"
-//    static let can't_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
-//
-//    /// "Can't copy the file"
-//    static let can't_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
-//
-//    /// "Can't copy the file"
-//    static let can't_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
-//
-//    /// "Can't copy the file"
-//    static let can't_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
-//
-//    /// "Cell phone number"
-//    static let cell_phone_number = NSLocalizedString("Cell phone number", comment: "place holder")
+    /// "Two Factor Code"
+    static let _two_factor_code = NSLocalizedString("Two Factor Code", comment: "Placeholder")
 
-//    /// "Enter your cell phone number"
-//    static let enter_your_cell_phone_number = NSLocalizedString("Enter your cell phone number", comment: "human verification top title")
-//
-//    /// "We will send a verification code to the cell phone above."
-//    static let we_will_send_a_verification_code_to_the_cell_phone_above. = NSLocalizedString("We will send a verification code to the cell phone above.", comment: "text field notes")
-//    /// "Phone number invalid"
-//    static let phone_number_invalid = NSLocalizedString("Phone number invalid", comment: "Title")
-//
-//    /// "Please input a valid cell phone number."
-//    static let please_input_a_valid_cell_phone_number. = NSLocalizedString("Please input a valid cell phone number.", comment: "Description")
-//
-//    /// "Please check your cell phone for the verification code."
-//    static let please_check_your_cell_phone_for_the_verification_code. = NSLocalizedString("Please check your cell phone for the verification code.", comment: "Description")
-//    /// "Got it"
-//    static let got_it = NSLocalizedString("Got it", comment: "Action")
-//
-//    /// "PREMIUM FEATURE"
-//    static let premium_feature = NSLocalizedString("PREMIUM FEATURE", comment: "Upgrade warning title")
-//
-//    /// "Looking to secure your contact's details?"
-//    static let looking_to_secure_your_contact's_details? = NSLocalizedString("Looking to secure your contact's details?", comment: "Upgrade warning title")
-//
-//    /// "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email."
-//    static let protonmail_plus/professional/visionary_enables_you_to_add_and_edit_contact_details_beyond_just_your_contact’s_name_and_email._by_using_protonmail,_this_data_will_be_as_secure_as_your_end-to-end_encrypted_email. = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.", comment: "Upgrade warning message")
-//
-//    /// "Upgrading is not possible in the app."
-//    static let upgrading_is_not_possible_in_the_app. = NSLocalizedString("Upgrading is not possible in the app.", comment: "Upgrade warning message")
-//
-//    /// "The verification failed!"
-//    static let the_verification_failed! = NSLocalizedString("The verification failed!", comment: "Error")
-//
-//    /// "Retry"
-//    static let retry = NSLocalizedString("Retry", comment: "Action")
-//
-//    /// "Unknow Error"
-//    static let unknow_error = NSLocalizedString("Unknow Error", comment: "Description")
-//
-//    /// "Unknow Error"
-//    static let unknow_error = NSLocalizedString("Unknow Error", comment: "Description")
-//
-//    /// "Message expired"
-//    static let message_expired = NSLocalizedString("Message expired", comment: "")
-//
-//    /// "Expires in %d days %d hours %d mins %d seconds"
-//    static let expires_in_%d_days_%d_hours_%d_mins_%d_seconds = NSLocalizedString("Expires in %d days %d hours %d mins %d seconds", comment: "expiration time count down")
-//
-//    /// "Sign Out"
-//    static let sign_out = NSLocalizedString("Sign Out", comment: "Action")
-//
-//    /// "Rate & Review"
-//    static let rate_&_review = NSLocalizedString("Rate & Review", comment: "Title")
-//
-//    /// "Tweet about ProtonMail"
-//    static let tweet_about_protonmail = NSLocalizedString("Tweet about ProtonMail", comment: "Title")
-//
-//    /// "Share it with your friends"
-//    static let share_it_with_your_friends = NSLocalizedString("Share it with your friends", comment: "Title")
-//
-//    /// "Contact the ProtonMail team"
-//    static let contact_the_protonmail_team = NSLocalizedString("Contact the ProtonMail team", comment: "Title")
-//
-//    /// "Trouble shooting guide"
-//    static let trouble_shooting_guide = NSLocalizedString("Trouble shooting guide", comment: "Title")
-//
-//    /// "Help us to make privacy the default in the web."
-//    static let help_us_to_make_privacy_the_default_in_the_web. = NSLocalizedString("Help us to make privacy the default in the web.", comment: "Title")
-//
-//    /// "Help us to improve ProtonMail with your input."
-//    static let help_us_to_improve_protonmail_with_your_input. = NSLocalizedString("Help us to improve ProtonMail with your input.", comment: "Title")
-//
-//    /// "We would like to know what we can do better."
-//    static let we_would_like_to_know_what_we_can_do_better. = NSLocalizedString("We would like to know what we can do better.", comment: "Title")
+    /// "Authentication"
+    static let _authentication = NSLocalizedString("Authentication", comment: "Title")
 
-//    /// "v"
-//    static let v = NSLocalizedString("v", comment: "versions first character ")
-//
-//    /// "v"
-//    static let v = NSLocalizedString("v", comment: "versions first character ")
-//
+    /// "Enter"
+    static let _enter = NSLocalizedString("Enter", comment: "Action")
 
-//    /// "USER LOGIN"
-//    static let user_login = NSLocalizedString("USER LOGIN", comment: "Title")
-//
-//    /// "NEED AN ACCOUNT? SIGN UP."
-//    static let need_an_account?_sign_up. = NSLocalizedString("NEED AN ACCOUNT? SIGN UP.", comment: "Action")
-//
-//    /// "FORGOT PASSWORD?"
-//    static let forgot_password? = NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd")
-//
-//    /// "The mailbox password is incorrect."
-//    static let the_mailbox_password_is_incorrect. = NSLocalizedString("The mailbox password is incorrect.", comment: "Description")
-//
-//    /// "Incorrect password"
-//    static let incorrect_password = NSLocalizedString("Incorrect password", comment: "Title")
-//
-//    /// "Incorrect password"
-//    static let incorrect_password = NSLocalizedString("Incorrect password", comment: "Title")
-//
-//    /// "The mailbox password is incorrect."
-//    static let the_mailbox_password_is_incorrect. = NSLocalizedString("The mailbox password is incorrect.", comment: "Description")
-//
-//    /// "Please use the web application to reset your password."
-//    static let please_use_the_web_application_to_reset_your_password. = NSLocalizedString("Please use the web application to reset your password.", comment: "Alert")
-//
-//    /// "Bug Description"
-//    static let bug_description = NSLocalizedString("Bug Description", comment: "Title")
-//
-//    /// "REPORT BUGS"
-//    static let report_bugs = NSLocalizedString("REPORT BUGS", comment: "Title")
-//
-//    /// "Bug Report Received"
-//    static let bug_report_received = NSLocalizedString("Bug Report Received", comment: "Title")
-//
-//    /// "Thank you for submitting a bug report.  We have added your report to our bug tracking system."
-//    static let thank_you_for_submitting_a_bug_report.__we_have_added_your_report_to_our_bug_tracking_system. = NSLocalizedString("Thank you for submitting a bug report.  We have added your report to our bug tracking system.", comment: "")
-//
-//    /// "Label as..."
-//    static let label_as... = NSLocalizedString("Label as...", comment: "Title")
-//
-//    /// "Move to..."
-//    static let move_to... = NSLocalizedString("Move to...", comment: "Title")
-//
-//    /// "Mark as unread"
-//    static let mark_as_unread = NSLocalizedString("Mark as unread", comment: "Action")
-//
-//    /// "All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!"
-//    static let all_of_your_existing_encrypted_emails_will_be_lost_forever,_but_you_will_still_be_able_to_view_your_unencrypted_emails.\n\nthis_action_cannot_be_undone! = NSLocalizedString("All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!", comment: "Description")
-//
-//    /// "Display Name Updated"
-//    static let display_name_updated = NSLocalizedString("Display Name Updated", comment: "Title")
-//
-//    /// "The display name is now %@."
-//    static let the_display_name_is_now_%@. = NSLocalizedString("The display name is now %@.", comment: "Description")
-//
-//    /// "Signature Updated"
-//    static let signature_updated = NSLocalizedString("Signature Updated", comment: "Title")
-//
-//    /// "Your signature has been updated."
-//    static let your_signature_has_been_updated. = NSLocalizedString("Your signature has been updated.", comment: "Description")
-//
-//    /// "Password Mismatch"
-//    static let password_mismatch = NSLocalizedString("Password Mismatch", comment: "Title")
-//
-//    /// "The password you entered does not match the current password."
-//    static let the_password_you_entered_does_not_match_the_current_password. = NSLocalizedString("The password you entered does not match the current password.", comment: "Description")
-//
-//    /// "Password Updated"
-//    static let password_updated = NSLocalizedString("Password Updated", comment: "Title")
-//
-//    /// "Please use your new password when signing in."
-//    static let please_use_your_new_password_when_signing_in. = NSLocalizedString("Please use your new password when signing in.", comment: "Description")
-//
-//    /// "Password Mismatch"
-//    static let password_mismatch = NSLocalizedString("Password Mismatch", comment: "Title")
-//
-//    /// "The passwords you entered do not match."
-//    static let the_passwords_you_entered_do_not_match. = NSLocalizedString("The passwords you entered do not match.", comment: "Description")
-//
-//    /// "Can't load share content!"
-//    static let can't_load_share_content! = NSLocalizedString("Can't load share content!", comment: "Description")
-//
-//    /// "Can't load share content!"
-//    static let can't_load_share_content! = NSLocalizedString("Can't load share content!", comment: "Description")
-//
-//    /// "The total attachment size can't be bigger than 25MB"
-//    static let the_total_attachment_size_can't_be_bigger_than_25mb = NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description")
-//
-//    /// "Can't load share content!"
-//    static let can't_load_share_content! = NSLocalizedString("Can't load share content!", comment: "Description")
-//
-//    /// "Can't load share content!"
-//    static let can't_load_share_content! = NSLocalizedString("Can't load share content!", comment: "Description")
-//
-//    /// "Share Alert"
-//    static let share_alert = NSLocalizedString("Share Alert", comment: "Title")
-//
-//    /// "Please use ProtonMail App login first"
-//    static let please_use_protonmail_app_login_first = NSLocalizedString("Please use ProtonMail App login first", comment: "Description")
+    /// "Space Warning"
+    static let _space_warning = NSLocalizedString("Space Warning", comment: "Title")
 
-//    /// "Authentication was cancelled by the user"
-//    static let authentication_was_cancelled_by_the_user = NSLocalizedString("Authentication was cancelled by the user", comment: "Description")
-//
+    /// "Hide"
+    static let _hide = NSLocalizedString("Hide", comment: "Action")
+
+    /// "Change Password"
+    static let _change_password = NSLocalizedString("Change Password", comment: "update password error title")
+
+    /// "Can't get a Moduls ID!"
+    static let _cant_get_a_moduls_id = NSLocalizedString("Can't get a Moduls ID!", comment: "update password error = typo:Modulus")
+
+    /// "Can't get a Moduls!"
+    static let _cant_get_a_moduls = NSLocalizedString("Can't get a Moduls!", comment: "update password error = typo:Modulus")
+
+    /// "Invalid hashed password!"
+    static let _invalid_hashed_password = NSLocalizedString("Invalid hashed password!", comment: "update password error")
+
+    /// "Can't create a SRP verifier!"
+    static let _cant_create_a_srp_verifier = NSLocalizedString("Can't create a SRP verifier!", comment: "update password error")
+
+    /// "Can't create a SRP Client"
+    static let _cant_create_a_srp_client = NSLocalizedString("Can't create a SRP Client", comment: "update password error")
+
+    /// "Can't get user auth info"
+    static let _cant_get_user_auth_info = NSLocalizedString("Can't get user auth info", comment: "update password error")
+
+    /// "The Password is wrong."
+    static let _the_password_is_wrong = NSLocalizedString("The Password is wrong.", comment: "update password error")
+
+    /// "The new password not match."
+    static let _the_new_password_not_match = NSLocalizedString("The new password not match.", comment: "update password error")
+
+    /// "The new password can't empty."
+    static let _the_new_password_cant_empty = NSLocalizedString("The new password can't empty.", comment: "update password error")
+
+    /// "The private key update failed."
+    static let _the_private_key_update_failed = NSLocalizedString("The private key update failed.", comment: "update password error")
+
+    /// "Password update failed"
+    static let _password_update_failed = NSLocalizedString("Password update failed", comment: "update password error")
+
+    /// "Update Notification Email"
+    static let _update_notification_email = NSLocalizedString("Update Notification Email", comment: "update notification email error title")
+
+
+
+    /// "Unable to get contacts"
+    static let _unable_to_get_contacts = NSLocalizedString("Unable to get contacts", comment: "Error")
+
+    /// "Apply Labels"
+    static let _apply_labels = NSLocalizedString("Apply Labels", comment: "Title")
+
+    /// "Can't download message body, please try again."
+    static let _cant_download_message_body_please_try_again = NSLocalizedString("Can't download message body, please try again.", comment: "Error")
+
+    /// "Print"
+    static let _print = NSLocalizedString("Print", comment: "Action")
+
+    /// "Unable to decrypt message."
+    static let _unable_to_decrypt_message = NSLocalizedString("Unable to decrypt message.", comment: "Error")
+
+    /// "Loading..."
+    static let _loading_ = NSLocalizedString("Loading...", comment: "")
+
+    /// "Please wait until the email downloaded!"
+    static let _please_wait_until_the_email_downloaded = NSLocalizedString("Please wait until the email downloaded!", comment: "The")
+
+    /// "Can't decrypt this attachment!"
+    static let _cant_decrypt_this_attachment = NSLocalizedString("Can't decrypt this attachment!", comment: "When quick look attachment but can't decrypt it!")
+
+    /// "Can't find this attachment!"
+    static let _cant_find_this_attachment = NSLocalizedString("Can't find this attachment!", comment: "when quick look attachment but can't find the data")
+
+    /// "Encryption Setup"
+    static let _encryption_setup = NSLocalizedString("Encryption Setup", comment: "key setup top title")
+
+    /// "High Security"
+    static let _high_security = NSLocalizedString("High Security", comment: "Key size checkbox")
+
+    /// "Extreme Security"
+    static let _extreme_security = NSLocalizedString("Extreme Security", comment: "Key size checkbox")
+
+    /// "The current standard"
+    static let _the_current_standard = NSLocalizedString("The current standard", comment: "key size notes")
+
+    /// "The highest level of encryption available."
+    static let _the_highest_level_of_encryption_available = NSLocalizedString("The highest level of encryption available.", comment: "key size note part 1")
+
+    /// "Can take several minutes to setup."
+    static let _can_take_several_minutes_to_setup = NSLocalizedString("Can take several minutes to setup.", comment: "key size note part 2")
 
     
+
+    /// "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer."
+    static let _mobile_signups_are_disabled_pls_later_pm_com = NSLocalizedString("Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.", comment: "Description")
+
+    /// "Key generation failed"
+    static let _key_generation_failed = NSLocalizedString("Key generation failed", comment: "Error")
+
+    /// "Your Country Code"
+    static let _your_country_code = NSLocalizedString("Your Country Code", comment: "view top title")
+
+    /// "DECRYPT MAILBOX"
+    static let _decrypt_mailbox = NSLocalizedString("DECRYPT MAILBOX", comment: "Title")
+
+    /// "Decrypt"
+    static let _decrypt = NSLocalizedString("Decrypt", comment: "Action")
+
+    /// "RESET MAILBOX PASSWORD"
+    static let _reset_mailbox_password = NSLocalizedString("RESET MAILBOX PASSWORD", comment: "Action")
+
+    /// "The mailbox password is incorrect."
+    static let _the_mailbox_password_is_incorrect = NSLocalizedString("The mailbox password is incorrect.", comment: "Error")
+
+    /// "Incorrect password"
+    static let _incorrect_password = NSLocalizedString("Incorrect password", comment: "Title")
+
+
+    /// "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com"
+    static let _to_reset_your_mailbox_password_please_use_the_web_version_of_protonmail = NSLocalizedString("To reset your mailbox password, please use the web version of ProtonMail at protonmail.com", comment: "Description")
+
+    /// "Recovery Email"
+    static let _recovery_email = NSLocalizedString("Recovery Email", comment: "Title")
+    /// "Congratulations!"
+    static let _congratulations = NSLocalizedString("Congratulations!", comment: "view top title")
+
+    /// "Your new secure email\r\n account is ready."
+    static let _your_new_secure_email_account_is_ready = NSLocalizedString("Your new secure email\r\n account is ready.", comment: "view top title")
+
+    /// "When you send an email, this is the name that appears in the sender field."
+    static let _send_an_email_this_name_that_appears_in_sender_field = NSLocalizedString("When you send an email, this is the name that appears in the sender field.", comment: "display name notes")
+
+    /// "The optional recovery email address allows you to reset your login password if you forget it."
+    static let _the_optional_recovery_email_address_allows_you_to_reset_your_login_password_if_you_forget_it = NSLocalizedString("The optional recovery email address allows you to reset your login password if you forget it.", comment: "recovery email notes")
+
+    /// "Keep me updated about new features"
+    static let _keep_me_updated_about_new_features = NSLocalizedString("Keep me updated about new features", comment: "Title")
+
+    /// "Go to inbox"
+    static let _go_to_inbox = NSLocalizedString("Go to inbox", comment: "Action")
+
+    /// "Recovery Email Warning"
+    static let _recovery_email_warning = NSLocalizedString("Recovery Email Warning", comment: "Title")
+
+    /// "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?"
+    static let _warning_did_not_set_a_recovery_email_so_account_recovery_is_impossible = NSLocalizedString("Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?", comment: "Description")
     
+    /// "To prevent abuse of ProtonMail,\r\n we need to verify that you are human."
+    static let _to_prevent_abuse_of_protonmail_we_need_to_verify_that_you_are_human = NSLocalizedString("To prevent abuse of ProtonMail,\r\n we need to verify that you are human.", comment: "human verification notes")
+
+    /// "Please select one of the following options:"
+    static let _please_select_one_of_the_following_options = NSLocalizedString("Please select one of the following options:", comment: "human check select option title")
+
+    /// "CAPTCHA"
+    static let _captcha = NSLocalizedString("CAPTCHA", comment: "human check option button")
+
+    /// "Email Verification"
+    static let _email_verification = NSLocalizedString("Email Verification", comment: "human check option button")
+
+    /// "Phone Verification"
+    static let _phone_verification = NSLocalizedString("Phone Verification", comment: "human check option button")
+
+    /// "Verification error"
+    static let _verification_error = NSLocalizedString("Verification error", comment: "error title")
+
+    /// "Verification of this content’s signature failed"
+    static let _verification_of_this_contents_signature_failed = NSLocalizedString("Verification of this content’s signature failed", comment: "error details")
+
+    /// "Decryption error"
+    static let _decryption_error = NSLocalizedString("Decryption error", comment: "error title")
+
+    /// "Decryption of this content failed"
+    static let _decryption_of_this_content_failed = NSLocalizedString("Decryption of this content failed", comment: "error details")
+
+    /// "Logs"
+    static let _logs = NSLocalizedString("Logs", comment: "error title")
+
+    /// "normal attachments"
+    static let _normal_attachments = NSLocalizedString("normal attachments", comment: "Title")
+
+    /// "inline attachments"
+    static let _inline_attachments = NSLocalizedString("inline attachments", comment: "Title")
+
+    /// "Photo Library"
+    static let _photo_library = NSLocalizedString("Photo Library", comment: "Title")
+
+    /// "Take a Photo"
+    static let _take_a_photo = NSLocalizedString("Take a Photo", comment: "Title")
+
+    /// "Import File From..."
+    static let _import_file_from_ = NSLocalizedString("Import File From...", comment: "Title")
+
+    /// "The total attachment size can't be bigger than 25MB"
+    static let _the_total_attachment_size_cant_be_bigger_than_25mb = NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description")
+
+    /// "Can't load the file"
+    static let _cant_load_the_file = NSLocalizedString("Can't load the file", comment: "Error")
+
+    /// "System can't copy the file"
+    static let _system_cant_copy_the_file = NSLocalizedString("System can't copy the file", comment: "Error")
+
+    /// "Can't open the file"
+    static let _cant_open_the_file = NSLocalizedString("Can't open the file", comment: "Error")
+
+
+    /// "Cell phone number"
+    static let _cell_phone_number = NSLocalizedString("Cell phone number", comment: "place holder")
+
+    /// "Enter your cell phone number"
+    static let _enter_your_cell_phone_number = NSLocalizedString("Enter your cell phone number", comment: "human verification top title")
+
+    /// "We will send a verification code to the cell phone above."
+    static let _we_will_send_a_verification_code_to_the_cell_phone_above = NSLocalizedString("We will send a verification code to the cell phone above.", comment: "text field notes")
     
+    /// "Phone number invalid"
+    static let _phone_number_invalid = NSLocalizedString("Phone number invalid", comment: "Title")
+
+    /// "Please input a valid cell phone number."
+    static let _please_input_a_valid_cell_phone_number = NSLocalizedString("Please input a valid cell phone number.", comment: "Description")
+
+    /// "Please check your cell phone for the verification code."
+    static let _please_check_your_cell_phone_for_the_verification_code = NSLocalizedString("Please check your cell phone for the verification code.", comment: "Description")
+    /// "Got it"
+    static let _got_it = NSLocalizedString("Got it", comment: "Action")
+
+    /// "PREMIUM FEATURE"
+    static let _premium_feature = NSLocalizedString("PREMIUM FEATURE", comment: "Upgrade warning title")
+
+    /// "Looking to secure your contact's details?"
+    static let _looking_to_secure_your_contacts_details = NSLocalizedString("Looking to secure your contact's details?", comment: "Upgrade warning title")
+
+    /// "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email."
+    static let _protonmail_plus_enables_you_to_add_and_edit_contact_details_beyond_ = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.", comment: "Upgrade warning message")
+
+    /// "Upgrading is not possible in the app."
+    static let _upgrading_is_not_possible_in_the_app = NSLocalizedString("Upgrading is not possible in the app.", comment: "Upgrade warning message")
+
+    /// "The verification failed!"
+    static let _the_verification_failed = NSLocalizedString("The verification failed!", comment: "Error")
+
+    /// "Retry"
+    static let _retry = NSLocalizedString("Retry", comment: "Action")
+
+    /// "Unknow Error"
+    static let _unknow_error = NSLocalizedString("Unknow Error", comment: "Description")
+
+    
+    /// "Message expired"
+    static let _message_expired = NSLocalizedString("Message expired", comment: "")
+
+    /// "Expires in %d days %d hours %d mins %d seconds"
+    static let _expires_in_days_hours_mins_seconds = NSLocalizedString("Expires in %d days %d hours %d mins %d seconds", comment: "expiration time count down")
+
+    /// "Sign Out"
+    static let _sign_out = NSLocalizedString("Sign Out", comment: "Action")
+
+    /// "Rate & Review"
+    static let _rate_review = NSLocalizedString("Rate & Review", comment: "Title")
+
+    /// "Tweet about ProtonMail"
+    static let _tweet_about_protonmail = NSLocalizedString("Tweet about ProtonMail", comment: "Title")
+
+    /// "Share it with your friends"
+    static let _share_it_with_your_friends = NSLocalizedString("Share it with your friends", comment: "Title")
+
+    /// "Contact the ProtonMail team"
+    static let _contact_the_protonmail_team = NSLocalizedString("Contact the ProtonMail team", comment: "Title")
+
+    /// "Trouble shooting guide"
+    static let _trouble_shooting_guide = NSLocalizedString("Trouble shooting guide", comment: "Title")
+
+    /// "Help us to make privacy the default in the web."
+    static let _help_us_to_make_privacy_the_default_in_the_web = NSLocalizedString("Help us to make privacy the default in the web.", comment: "Title")
+
+    /// "Help us to improve ProtonMail with your input."
+    static let _help_us_to_improve_protonmail_with_your_input = NSLocalizedString("Help us to improve ProtonMail with your input.", comment: "Title")
+
+    /// "We would like to know what we can do better."
+    static let _we_would_like_to_know_what_we_can_do_better = NSLocalizedString("We would like to know what we can do better.", comment: "Title")
+    
+
+    /// "USER LOGIN"
+    static let _user_login = NSLocalizedString("USER LOGIN", comment: "Title")
+
+    /// "NEED AN ACCOUNT? SIGN UP."
+    static let _need_an_account_sign_up = NSLocalizedString("NEED AN ACCOUNT? SIGN UP.", comment: "Action")
+
+    /// "FORGOT PASSWORD?"
+    static let _forgot_password = NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd")
+
+
+
+
+    /// "Please use the web application to reset your password."
+    static let _please_use_the_web_application_to_reset_your_password = NSLocalizedString("Please use the web application to reset your password.", comment: "Alert")
+
+    /// "Bug Description"
+    static let _bug_description = NSLocalizedString("Bug Description", comment: "Title")
+    
+    /// "Bug Report Received"
+    static let _bug_report_received = NSLocalizedString("Bug Report Received", comment: "Title")
+
+    /// "Thank you for submitting a bug report.  We have added your report to our bug tracking system."
+    static let _thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system = NSLocalizedString("Thank you for submitting a bug report.  We have added your report to our bug tracking system.", comment: "")
+
+    /// "Label as..."
+    static let _label_as_ = NSLocalizedString("Label as...", comment: "Title")
+
+    /// "Move to..."
+    static let _move_to_ = NSLocalizedString("Move to...", comment: "Title")
+
+    /// "Mark as unread"
+    static let _mark_as_unread = NSLocalizedString("Mark as unread", comment: "Action")
+
+    /// "All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!"
+    static let _all_of_your_existing_encrypted_emails_will_be_lost_forever_but_you_will_still_be_able_to_view_your_unencrypted_emails_ = NSLocalizedString("All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!", comment: "Description")
+
+    /// "Display Name Updated"
+    static let _display_name_updated = NSLocalizedString("Display Name Updated", comment: "Title")
+
+    /// "The display name is now %@."
+    static let _the_display_name_is_now = NSLocalizedString("The display name is now %@.", comment: "Description")
+
+    /// "Signature Updated"
+    static let _signature_updated = NSLocalizedString("Signature Updated", comment: "Title")
+
+    /// "Your signature has been updated."
+    static let _your_signature_has_been_updated = NSLocalizedString("Your signature has been updated.", comment: "Description")
+
+    /// "Password Mismatch"
+    static let _password_mismatch = NSLocalizedString("Password Mismatch", comment: "Title")
+
+    /// "The password you entered does not match the current password."
+    static let _the_password_you_entered_does_not_match_the_current_password = NSLocalizedString("The password you entered does not match the current password.", comment: "Description")
+
+    /// "Password Updated"
+    static let _password_updated = NSLocalizedString("Password Updated", comment: "Title")
+
+    /// "Please use your new password when signing in."
+    static let _please_use_your_new_password_when_signing_in = NSLocalizedString("Please use your new password when signing in.", comment: "Description")
+
+    /// "The passwords you entered do not match."
+    static let _the_passwords_you_entered_do_not_match = NSLocalizedString("The passwords you entered do not match.", comment: "Description")
+
+    /// "Can't load share content!"
+    static let _cant_load_share_content = NSLocalizedString("Can't load share content!", comment: "Description")
+
+    /// "Share Alert"
+    static let _share_alert = NSLocalizedString("Share Alert", comment: "Title")
+
+    /// "Please use ProtonMail App login first"
+    static let _please_use_protonmail_app_login_first = NSLocalizedString("Please use ProtonMail App login first", comment: "Description")
+ 
 
 }
