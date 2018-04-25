@@ -36,10 +36,6 @@ class ComposeView: UIViewController {
     
     var pickerHeight : CGFloat = 0;
     
-//    let kConfirmError : String = NSLocalizedString("Message password does not match.", comment: "Error")
-//    let kEmptyEOPWD : String = NSLocalizedString("Password cannot be empty.", comment: "Error")
-//    let kExpirationNeedsPWDError : String = NSLocalizedString("Please set a password.", comment: "Description")
-    
     var toContactPicker: MBContactPicker!
     var toContacts: String {
         return toContactPicker.contactList

@@ -1363,5 +1363,7 @@ class LocalString {
     /// "Please use ProtonMail App login first"
     static let _please_use_protonmail_app_login_first = NSLocalizedString("Please use ProtonMail App login first", comment: "Description")
  
+    /// "Can't copy the file"
+    static let _cant_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
 
 }

@@ -340,8 +340,8 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
         }
         if error != nil {
             DispatchQueue.main.async {
-                self.showErrorAlert(NSLocalizedString("Can't copy the file", comment: "Error"))
-                self.delegate?.attachments(self, error: NSLocalizedString("Can't copy the file", comment: "Error"))
+                self.showErrorAlert(LocalString._cant_copy_the_file)
+                self.delegate?.attachments(self, error: LocalString._cant_copy_the_file)
             }
         }
     }
@@ -450,8 +450,8 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                                 self.delegate?.attachments(self, didPickedAttachment: attachment!)
                             } else {
                                 PMLog.D(" Error during copying size incorrect")
-                                self.showErrorAlert(NSLocalizedString("Can't copy the file", comment: "Error"))
-                                self.delegate?.attachments(self, error: NSLocalizedString("Can't copy the file", comment: "Error"))
+                                self.showErrorAlert(LocalString._cant_copy_the_file)
+                                self.delegate?.attachments(self, error: LocalString._cant_copy_the_file)
                             }
                         }
                     } else {
@@ -476,8 +476,8 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                     self.delegate?.attachments(self, didPickedAttachment: att)
                 } else {
                     PMLog.D(" Error during copying size incorrect")
-                    self.showErrorAlert(NSLocalizedString("Can't copy the file", comment: "Error"))
-                    self.delegate?.attachments(self, error: NSLocalizedString("Can't copy the file", comment: "Error"))
+                    self.showErrorAlert(LocalString._cant_copy_the_file)
+                    self.delegate?.attachments(self, error: LocalString._cant_copy_the_file)
                 }
             } else {
                 self.showSizeErrorAlert(0)
@@ -488,8 +488,8 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
             self.tableView.reloadData()
         } else {
             picker.dismiss(animated: true, completion: nil)
-            self.showErrorAlert(NSLocalizedString("Can't copy the file", comment: "Error"))
-            self.delegate?.attachments(self, error: NSLocalizedString("Can't copy the file", comment: "Error"))
+            self.showErrorAlert(LocalString._cant_copy_the_file)
+            self.delegate?.attachments(self, error: LocalString._cant_copy_the_file)
             self.buildAttachments()
             self.tableView.reloadData()
         }
