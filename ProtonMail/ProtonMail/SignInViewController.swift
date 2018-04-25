@@ -104,7 +104,7 @@ class SignInViewController: ProtonMailViewController {
     
     @IBAction func changeLanguagesAction(_ sender: UIButton) {
         let current_language = LanguageManager.currentLanguageEnum()
-        let title = NSLocalizedString("Current Language is: ", comment: "Change language title") + current_language.description
+        let title = LocalString._settings_current_language_is + current_language.description
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         for l in ELanguage.allItems() {
@@ -301,7 +301,7 @@ class SignInViewController: ProtonMailViewController {
         var error: NSError?
         context.localizedFallbackTitle = ""
         // Set the reason string that will appear on the authentication alert.
-        let reasonString = "\(NSLocalizedString("Login", comment: "touch id box title like Login: email@email.com")): \(savedEmail)"
+        let reasonString = "\(LocalString._general_login): \(savedEmail)"
         // Check if the device can evaluate the policy.
         if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             context.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: Error?) in
@@ -314,18 +314,16 @@ class SignInViewController: ProtonMailViewController {
                 }
                 else{
                     DispatchQueue.main.async {
-                        //PMLog.D("\(evalPolicyError?.localizedDescription)")
                         switch evalPolicyError!._code {
                         case LAError.Code.systemCancel.rawValue:
-                            PMLog.D("Authentication was cancelled by the system")
-                            NSLocalizedString("Authentication was cancelled by the system", comment: "Description").alertToast()
+                            LocalString._authentication_was_cancelled_by_the_system.alertToast()
                         case LAError.Code.userCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the user")
                         case LAError.Code.userFallback.rawValue:
                             PMLog.D("User selected to enter custom password")
                         default:
                             PMLog.D("Authentication failed")
-                            NSLocalizedString("Authentication failed", comment: "Description").alertToast()
+                           LocalString._authentication_failed.alertToast()
                         }
                     }
                 }
@@ -337,15 +335,15 @@ class SignInViewController: ProtonMailViewController {
             // If the security policy cannot be evaluated then show a short message depending on the error.
             switch error!.code{
             case LAError.Code.touchIDNotEnrolled.rawValue:
-                alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings", comment: "Description")
+                alertString = LocalString._general_touchid_not_enrolled
             case LAError.Code.passcodeNotSet.rawValue:
-                alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings", comment: "Description")
+                alertString = LocalString._general_passcode_not_set
             case -6:
-                alertString = error?.localizedDescription ?? NSLocalizedString("TouchID not available", comment: "Description")
+                alertString = error?.localizedDescription ?? LocalString._general_touchid_not_available
                 break
             default:
                 // The LAError.TouchIDNotAvailable case.
-                alertString = NSLocalizedString("TouchID not available", comment: "Description")
+                alertString = LocalString._general_touchid_not_available
             }
             alertString.alertToast()
         }
@@ -417,8 +415,7 @@ class SignInViewController: ProtonMailViewController {
         self.onePasswordButton.alpha = 0.0
     }
     
-    fileprivate func ShowLoginViews()
-    {
+    fileprivate func ShowLoginViews() {
         sharedPushNotificationService.unregisterForRemoteNotifications()
         UIView.animate(withDuration: 1.0, animations: { () -> Void in
             self.usernameView.alpha      = 1.0
@@ -438,8 +435,10 @@ class SignInViewController: ProtonMailViewController {
     internal func setupTextFields() {
         signInTitle.text = NSLocalizedString("USER LOGIN", comment: "Title")
         
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: LocalString._username,
+                                                                     attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: LocalString._password,
+                                                                     attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
     }
     
     func setupButtons() {
@@ -449,7 +448,7 @@ class SignInViewController: ProtonMailViewController {
         onePasswordButton.layer.borderColor = UIColor.white.cgColor
         onePasswordButton.layer.borderWidth = 2
         
-        signInButton.setTitle(NSLocalizedString("LOGIN", comment: "Title"), for: .normal)
+        signInButton.setTitle(LocalString._general_login, for: .normal)
         
         signUpButton.setTitle(NSLocalizedString("NEED AN ACCOUNT? SIGN UP.", comment: "Action"), for: .normal)
         forgotPwdButton.setTitle(NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd"), for: .normal)

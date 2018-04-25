@@ -75,7 +75,7 @@ class TwoFACodeView : PMView {
         twoFactorCodeField.inputAccessoryView = toolbarDone
         
         twoFactorCodeField.placeholder = NSLocalizedString("Two Factor Code", comment: "Placeholder")
-        loginPasswordField.placeholder = NSLocalizedString("Login Password", comment: "Placeholder")
+        loginPasswordField.placeholder = LocalString._login_password
         topTitleLabel.text = NSLocalizedString("Authentication", comment: "Title")
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
         enterButton.setTitle(NSLocalizedString("Enter", comment: "Action"), for: .normal)

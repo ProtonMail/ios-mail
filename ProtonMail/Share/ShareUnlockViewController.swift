@@ -297,7 +297,7 @@ class ShareUnlockViewController: UIViewController {
         var error: NSError?
         context.localizedFallbackTitle = ""
         // Set the reason string that will appear on the authentication alert.
-        let reasonString = "\(NSLocalizedString("Login", comment: "")): \(savedEmail)"
+        let reasonString = "\(LocalString._general_login): \(savedEmail)"
         
         // Check if the device can evaluate the policy.
         if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
@@ -309,30 +309,21 @@ class ShareUnlockViewController: UIViewController {
                 }
                 else{
                     DispatchQueue.main.async {
-                        PMLog.D("\(String(describing: evalPolicyError?.localizedDescription))")
                         switch evalPolicyError!._code {
                         case LAError.Code.systemCancel.rawValue:
-                            PMLog.D("Authentication was cancelled by the system")
-                            let alertController = NSLocalizedString("Authentication was cancelled by the system", comment: "Description").alertController()
+                            let alertController = LocalString._authentication_was_cancelled_by_the_system.alertController()
                             alertController.addOKAction()
                             self.present(alertController, animated: true, completion: nil)
                         case LAError.Code.userCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the user")
-                            let alertController = NSLocalizedString("Authentication was cancelled by the user", comment: "Description").alertController()
-                            alertController.addOKAction()
-                            self.present(alertController, animated: true, completion: nil)
                         case LAError.Code.userFallback.rawValue:
                             PMLog.D("User selected to enter custom password")
-                            let alertController = NSLocalizedString("Authentication failed", comment: "Description").alertController()
-                            alertController.addOKAction()
-                            self.present(alertController, animated: true, completion: nil)
                         default:
                             PMLog.D("Authentication failed")
-                            let alertController = NSLocalizedString("Authentication failed", comment: "Description").alertController()
+                            let alertController = LocalString._authentication_failed.alertController()
                             alertController.addOKAction()
                             self.present(alertController, animated: true, completion: nil)
                         }
-                        
                     }
                 }
             })
@@ -342,12 +333,12 @@ class ShareUnlockViewController: UIViewController {
             // If the security policy cannot be evaluated then show a short message depending on the error.
             switch error!.code{
             case LAError.Code.touchIDNotEnrolled.rawValue:
-                alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings", comment: "Description")
+                alertString = LocalString._general_touchid_not_enrolled
             case LAError.Code.passcodeNotSet.rawValue:
-                alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings", comment: "Description")
+                alertString = LocalString._general_passcode_not_set
             default:
                 // The LAError.TouchIDNotAvailable case.
-                alertString = NSLocalizedString("TouchID not available", comment: "Description")
+                alertString = LocalString._general_touchid_not_available
             }
             PMLog.D(alertString)
             PMLog.D("\(String(describing: error?.localizedDescription))")

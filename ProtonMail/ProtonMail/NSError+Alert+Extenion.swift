@@ -83,23 +83,10 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = "\(NSLocalizedString("Human Check Failed", comment: "Description")): \(self.localizedDescription)"
+        hud.detailsLabelText = "\(LocalString._error_human_check_failed): \(self.localizedDescription)"
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 3)
-    }
-    
-    
-    public class func alertOfflineToast() ->Void {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
-            return
-        }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.labelText = LocalString._general_alert_title
-        hud.detailsLabelText = NSLocalizedString("ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail", comment: "Description");
-        hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
     }
     
@@ -109,7 +96,7 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = NSLocalizedString("Sending Message", comment: "Description");
+        hud.detailsLabelText = LocalString._messages_sending_message
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0
@@ -122,7 +109,7 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = NSLocalizedString("Sending Message", comment: "Description");
+        hud.detailsLabelText = LocalString._messages_sending_message
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0
@@ -135,7 +122,7 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = NSLocalizedString("Message sending failed please try again", comment: "Description");
+        hud.detailsLabelText = LocalString._messages_sending_failed_try_again
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0

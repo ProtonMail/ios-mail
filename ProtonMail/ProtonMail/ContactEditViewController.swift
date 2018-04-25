@@ -74,9 +74,9 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         if viewModel.isNew() {
             self.title = LocalString._contacts_add_contact
         } else {
-            self.title = NSLocalizedString("Update Contact", comment: "Contacts Update contact")
+            self.title = LocalString._update_contact
         }
-        doneItem.title = NSLocalizedString("Save", comment: "Action-Contacts")
+        doneItem.title = LocalString._general_save_action
         
         UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
         self.displayNameField.text = viewModel.getProfile().newDisplayName
@@ -134,14 +134,14 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         
         //show confirmation first if anything changed
         if self.viewModel.needsUpdate() {
-            let alertController = UIAlertController(title: NSLocalizedString("Do you want to save the unsaved changes?", comment: "Title"),
+            let alertController = UIAlertController(title: LocalString._do_you_want_to_save_the_unsaved_changes,
                                                     message: nil, preferredStyle: .actionSheet)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save", comment: "Action"), style: .default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: LocalString._general_save_action, style: .default, handler: { (action) -> Void in
                 //save and dismiss
                 self.doneAction(self.doneItem)
             }))
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard changes", comment: "Action"), style: .destructive, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: LocalString._discard_changes, style: .destructive, handler: { (action) -> Void in
                 //discard and dismiss
                 self.dismiss(animated: true, completion: nil)
             }))
@@ -401,7 +401,7 @@ extension ContactEditViewController: UITableViewDataSource {
             let urlCount = viewModel.getUrls().count
             if row == urlCount {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddCell, for: indexPath) as! ContactEditAddCell
-                cell.configCell(value: NSLocalizedString("Add new url", comment: "action"))
+                cell.configCell(value: LocalString._add_new_url)
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
@@ -443,7 +443,7 @@ extension ContactEditViewController: UITableViewDataSource {
             outCell = cell
         case .delete:
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditDeleteCell, for: indexPath) as! ContactEditAddCell
-            cell.configCell(value: NSLocalizedString("Delete Contact", comment: "action"))
+            cell.configCell(value: LocalString._delete_contact)
             cell.selectionStyle = .default
             outCell = cell
         case .upgrade:
@@ -625,7 +625,7 @@ extension ContactEditViewController: UITableViewDelegate {
         let sections = viewModel.getSections()
         let sc = sections[section]
         if sc == .encrypted_header {
-            cell.ConfigHeader(title: NSLocalizedString("Encrypted Contact Details", comment: "title"), signed: false)
+            cell.ConfigHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: false)
         } else if sc == .delete || sc == .notes {
             return nil
         }
@@ -769,7 +769,7 @@ extension ContactEditViewController: UITableViewDelegate {
         case .delete:
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Contact", comment: "Title-Contacts"), style: .destructive, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: LocalString._delete_contact, style: .destructive, handler: { (action) -> Void in
                 let v : UIView = self.navigationController?.view ?? self.view
                 ActivityIndicatorHelper.showActivityIndicator(at: v)
                 self.viewModel.delete(complete: { (error) in

@@ -59,7 +59,7 @@ class SignUpEmailViewController: UIViewController {
         displayNameField.attributedPlaceholder = NSAttributedString(string: LocalString._settings_display_name_title,
                                                                     attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
-        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
+        topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
         topTitleLabel.text = NSLocalizedString("Congratulations!", comment: "view top title")
         titleWarningLabel.text = NSLocalizedString("Your new secure email\r\n account is ready.", comment: "view top title")
         optionalOneLabel.text = LocalString._signup_optional_text
@@ -117,9 +117,9 @@ class SignUpEmailViewController: UIViewController {
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .default, handler: { action in
                 
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Title"), style: .destructive, handler: { action in
+            alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action, style: .destructive, handler: { action in
                 if (!email.isEmpty && !email.isValidEmail()) {
-                    let alert = NSLocalizedString("Please input a valid email address.", comment: "Description").alertController()
+                    let alert = LocalString._please_input_a_valid_email_address.alertController()
                     alert.addOKAction()
                     self.present(alert, animated: true, completion: nil)
                 } else {
@@ -140,7 +140,7 @@ class SignUpEmailViewController: UIViewController {
             self.present(alertController, animated: true, completion: nil)
         } else {
             if (!email.isValidEmail()) {
-                let alert = NSLocalizedString("Please input a valid email address.", comment: "Description").alertController()
+                let alert = LocalString._please_input_a_valid_email_address.alertController()
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             } else {

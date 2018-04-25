@@ -37,7 +37,7 @@ enum SignUpCreateUserError : Int, Error, CustomErrorVar {
         case .cantGenerateVerifier:
             return NSLocalizedString("Can't create a SRP verifier!", comment: "sign up user error")
         case .default:
-            return NSLocalizedString("Create user failed", comment: "sign up user error")
+            return LocalString._create_user_failed
         }
     }
 }

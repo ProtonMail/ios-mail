@@ -77,11 +77,11 @@ class ReportBugsViewController: ProtonMailViewController {
                     sender.isEnabled = true
                     if let error = error {
                         let alert = error.alertController()
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Action"), style: .default, handler: nil))
+                        alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                     } else {
                         let alert = UIAlertController(title: NSLocalizedString("Bug Report Received", comment: "Title"), message: NSLocalizedString("Thank you for submitting a bug report.  We have added your report to our bug tracking system.", comment: ""), preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Action"), style: .default, handler: nil))
+                        alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
                         self.present(alert, animated: true, completion: {
                             self.reset()
                             NotificationCenter.default.post(name: Notification.Name(rawValue: MenuViewController.ObserverSwitchView), object: nil)

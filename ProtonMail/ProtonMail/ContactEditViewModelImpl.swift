@@ -426,7 +426,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             var cards : [CardData] = []
             if let vcard2 = origvCard2 {
                 
-                var defaultName = NSLocalizedString("Unknown", comment: "title, default display name")
+                var defaultName = LocalString._general_unknown_title
                 //TODO::need to check the old email's group id
                 var i : Int = 1;
                 var newEmails:[PMNIEmail] = []

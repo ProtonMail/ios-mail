@@ -82,17 +82,17 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         showEmailLoading()
         if !message.isDetailDownloaded && sharedInternetReachability.currentReachabilityStatus() == NotReachable {
             self.emailView?.showNoInternetErrorMessage()
-            self.updateEmailBodyWithError(NSLocalizedString("No connectivity detected...", comment: "Error"))
+            self.updateEmailBodyWithError(LocalString._general_no_connectivity_detected)
         } else {
             message.fetchDetailIfNeeded() { _, _, msg, error in
                 if let error = error {
                     let code = error.code
                     if code == NSURLErrorTimedOut {
                         self.emailView?.showTimeOutErrorMessage()
-                        self.updateEmailBodyWithError(NSLocalizedString("The request timed out.", comment: "Error"))
+                        self.updateEmailBodyWithError(LocalString._general_request_timed_out)
                     } else if code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
                         self.emailView?.showNoInternetErrorMessage()
-                        self.updateEmailBodyWithError(NSLocalizedString("No connectivity detected...", comment: "Error"))
+                        self.updateEmailBodyWithError(LocalString._general_no_connectivity_detected)
                     } else if code == APIErrorCode.API_offline {
                         self.emailView?.showErrorMessage(error.localizedDescription)
                         self.updateEmailBodyWithError(error.localizedDescription)

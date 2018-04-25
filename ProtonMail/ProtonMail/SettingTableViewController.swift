@@ -82,7 +82,7 @@ class SettingTableViewController: ProtonMailViewController {
     }
     
     private func updateTitle() {
-        self.title = NSLocalizedString("SETTINGS", comment: "Title")
+        self.title = LocalString._menu_settings_title
     }
     
     override func didReceiveMemoryWarning() {
@@ -286,14 +286,14 @@ class SettingTableViewController: ProtonMailViewController {
                                             // If the security policy cannot be evaluated then show a short message depending on the error.
                                             switch error!.code{
                                             case LAError.Code.touchIDNotEnrolled.rawValue:
-                                                alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings", comment: "settings touchid error")
+                                                alertString = LocalString._general_touchid_not_enrolled
                                             case LAError.Code.passcodeNotSet.rawValue:
-                                                alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings", comment: "settings touchid error")
+                                                alertString = LocalString._general_passcode_not_set
                                             case -6:
-                                                alertString = error?.localizedDescription ?? NSLocalizedString("TouchID not available", comment: "settings touchid/faceid error")
+                                                alertString = error?.localizedDescription ?? LocalString._general_touchid_not_available
                                             default:
                                                 // The LAError.TouchIDNotAvailable case.
-                                                alertString = NSLocalizedString("TouchID not available", comment: "settings touchid error")
+                                                alertString = LocalString._general_touchid_not_available
                                             }
                                             PMLog.D(alertString)
                                             PMLog.D("\(String(describing: error?.localizedDescription))")
@@ -363,9 +363,9 @@ class SettingTableViewController: ProtonMailViewController {
                         }
                         var text = String(format: LocalString._settings_auto_lock_minutes, timeIndex)
                         if timeIndex == -1 {
-                            text = NSLocalizedString("None", comment: "")
+                            text = LocalString._general_none
                         } else if timeIndex == 0 {
-                            text = NSLocalizedString("Every time enter app", comment: "")
+                            text = LocalString._settings_every_time_enter_app
                         } else if timeIndex == 1{
                             text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
                         }
@@ -394,9 +394,9 @@ class SettingTableViewController: ProtonMailViewController {
                         if let addr = multi_domains.defaultAddress() {
                             cell.domainText.text = addr.email
                         } else {
-                            cell.domainText.text = NSLocalizedString("Unknown", comment: "")
+                            cell.domainText.text = LocalString._general_unknown_title
                         }
-                        cell.defaultMark.text = NSLocalizedString("Default", comment: "Title")
+                        cell.defaultMark.text = LocalString._general_default
                         cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                         cellout = cell
                     case .displayName:
@@ -471,18 +471,18 @@ class SettingTableViewController: ProtonMailViewController {
     @objc func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: HeaderCell) as! CustomHeaderView
         if(setting_headers[section] == SettingSections.version){
-            var appVersion = NSLocalizedString("Unkonw Version", comment: "")
-            var libVersion = "| \(NSLocalizedString("LibVersion", comment: "lib version text")): 1.0.0"
+            var appVersion = "Unkonw Version"
+            var libVersion = "| LibVersion: 1.0.0"
             
             if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                appVersion = "\(NSLocalizedString("AppVersion", comment: "")): \(version)"
+                appVersion = "AppVersion: \(version)"
             }
             if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
                 appVersion = appVersion + " (\(build))"
             }
             
             let lib_v = PMNLibVersion.getLibVersion()
-            libVersion = "| \(NSLocalizedString("LibVersion", comment: "")): \(lib_v)"
+            libVersion = "| LibVersion: \(lib_v)"
             headerCell.headerText.text = appVersion + " " + libVersion
         }
         else
@@ -509,8 +509,7 @@ class SettingTableViewController: ProtonMailViewController {
                     case .loginPWD:
                        // if shard
                         if sharedUserDataService.passwordMode == 1 {
-                            let _ = NSLocalizedString("Please use the web version of ProtonMail to change your passwords!", comment: "Alert")
-                            let alert = NSLocalizedString("Please use the web version of ProtonMail to change your passwords.!", comment: "Alert").alertController()
+                            let alert = LocalString._general_use_web_reset_pwd.alertController()
                             alert.addOKAction()
                             present(alert, animated: true, completion: nil)
                         } else {
@@ -525,7 +524,7 @@ class SettingTableViewController: ProtonMailViewController {
                             cleaning = true
                             let nview = self.navigationController?.view
                             let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
-                            hud.labelText = NSLocalizedString("Resetting message cache ...", comment: "Title")
+                            hud.labelText = LocalString._settings_resetting_cache
                             hud.removeFromSuperViewOnHide = true
                             sharedMessageDataService.cleanLocalMessageCache() { task, res, error in
                                 hud.mode = MBProgressHUDMode.text
@@ -562,16 +561,16 @@ class SettingTableViewController: ProtonMailViewController {
                     case .autoLogout:
                         break
                     case .enterTime:
-                        let alertController = UIAlertController(title: NSLocalizedString("Auto Lock Time", comment: "Title"),
+                        let alertController = UIAlertController(title: LocalString._settings_auto_lock_time,
                                                                 message: nil,
                                                                 preferredStyle: .actionSheet)
                         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                         for timeIndex in protection_auto_logout {
                             var text = String(format: LocalString._settings_auto_lock_minutes, timeIndex)
                             if timeIndex == -1 {
-                                text = NSLocalizedString("None", comment: "")
+                                text = LocalString._general_none
                             } else if timeIndex == 0 {
-                                text = NSLocalizedString("Every time enter app", comment: "")
+                                text = LocalString._settings_every_time_enter_app
                             } else if timeIndex == 1{
                                 text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
                             }
@@ -593,7 +592,7 @@ class SettingTableViewController: ProtonMailViewController {
                     switch address_item {
                     case .addresses:
                         var needsShow : Bool = false
-                        let alertController = UIAlertController(title: NSLocalizedString("Change default address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
+                        let alertController = UIAlertController(title: LocalString._settings_change_default_address_to, message: nil, preferredStyle: .actionSheet)
                         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                         let defaultAddress : Address? = multi_domains.defaultAddress()
                         for addr in multi_domains {
@@ -603,7 +602,7 @@ class SettingTableViewController: ProtonMailViewController {
                                     alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
                                         if addr.send == 0 {
                                             if addr.email.lowercased().range(of: "@pm.me") != nil {
-                                                let msg = String(format: NSLocalizedString("You can't set %@ address as default because it is a paid feature.", comment: "pm.me upgrade warning in composer"), addr.email)
+                                                let msg = String(format: LocalString._settings_change_paid_address_warning, addr.email)
                                                 let alertController = msg.alertController()
                                                 alertController.addOKAction()
                                                 self.present(alertController, animated: true, completion: nil)
@@ -686,7 +685,7 @@ class SettingTableViewController: ProtonMailViewController {
                 self.performSegue(withIdentifier: kManagerLabelsSegue, sender: self)
             case .language:
                 let current_language = LanguageManager.currentLanguageEnum()
-                let title = NSLocalizedString("Current Language is: ", comment: "Change language title") + current_language.description
+                let title = LocalString._settings_current_language_is + current_language.description
                 let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 for l in setting_languages {

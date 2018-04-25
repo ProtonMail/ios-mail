@@ -29,6 +29,6 @@ class ShowImageView: PMView {
         showImageButton.layer.borderWidth = 1.0
         showImageButton.layer.cornerRadius = 2.0
         
-        showImageButton.setTitle(NSLocalizedString("Load remote content", comment: "Action"), for: .normal)
+        showImageButton.setTitle(LocalString._load_remote_content, for: .normal)
     }
 }

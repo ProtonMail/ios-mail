@@ -171,7 +171,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             return; //with error
         }
         
-        var defaultName = NSLocalizedString("Unknown", comment: "title, default display name")
+        var defaultName = LocalString._general_unknown_title
         var i : Int = 1;
         for email in a_emails {
             let group = "Item\(i)"

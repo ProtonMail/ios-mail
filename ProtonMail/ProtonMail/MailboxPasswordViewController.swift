@@ -50,7 +50,7 @@ class MailboxPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDecryptButton()
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("MAILBOX PASSWORD", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: LocalString._mailbox_password, attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
         
         topTitleLabel.text = NSLocalizedString("DECRYPT MAILBOX", comment: "Title")
         decryptButton.setTitle(NSLocalizedString("Decrypt", comment: "Action"), for: .normal)

@@ -70,13 +70,14 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         emailTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Cell phone number", comment: "place holder"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
-        verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Enter Verification Code", comment: "place holder"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: LocalString._enter_verification_code,
+                                                                       attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
-        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
-        topTitleLabel.text = NSLocalizedString("Human Verification", comment: "human verification top title")
+        topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
+        topTitleLabel.text = LocalString._human_verification
         titleTwoLabel.text = NSLocalizedString("Enter your cell phone number", comment: "human verification top title")
         phoneFieldNoteLabel.text = NSLocalizedString("We will send a verification code to the cell phone above.", comment: "text field notes")
-        continueButton.setTitle(NSLocalizedString("Continue", comment: "Action"), for: .normal)
+        continueButton.setTitle(LocalString._genernal_continue, for: .normal)
         
         self.updateCountryCode(1)
         self.updateButtonStatus()
@@ -141,9 +142,9 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         let count = self.viewModel.getTimerSet()
         UIView.performWithoutAnimation { () -> Void in
             if count != 0 {
-                self.sendCodeButton.setTitle(String(format: NSLocalizedString("Retry after %d seconds", comment: "Title"), count), for: UIControlState())
+                self.sendCodeButton.setTitle(String(format: LocalString._retry_after_seconds, count), for: UIControlState())
             } else {
-                self.sendCodeButton.setTitle(NSLocalizedString("Send Verification Code", comment: "Title"), for: UIControlState())
+                self.sendCodeButton.setTitle(LocalString._send_verification_code, for: UIControlState())
             }
             self.sendCodeButton.layoutIfNeeded()
         }
@@ -181,7 +182,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
             MBProgressHUD.hide(for: self.view, animated: true)
             if !isOK {
                 var alert :  UIAlertController!
-                var title = NSLocalizedString("Verification code request failed", comment: "Title")
+                var title = LocalString._verification_code_request_failed
                 var message = ""
                 if error?.code == 12231 {
                     title = NSLocalizedString("Phone number invalid", comment: "Title")
@@ -193,7 +194,9 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             } else {
-                let alert = UIAlertController(title: NSLocalizedString("Verification code sent", comment: "Title"), message: NSLocalizedString("Please check your cell phone for the verification code.", comment: "Description"), preferredStyle: .alert)
+                let alert = UIAlertController(title: LocalString._verification_code_sent,
+                                              message: NSLocalizedString("Please check your cell phone for the verification code.", comment: "Description"),
+                                              preferredStyle: .alert)
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             }
@@ -216,8 +219,8 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
                 MBProgressHUD.hide(for: self.view, animated: true)
                 self.doneClicked = false
                 if !message.isEmpty {
-                    let title = NSLocalizedString("Create user failed", comment: "Title")
-                    var message = NSLocalizedString("Default error, please try again.", comment: "Description")
+                    let title = LocalString._create_user_failed
+                    var message = LocalString._default_error_please_try_again
                     if let error = error {
                         message = error.localizedDescription
                     }

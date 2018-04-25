@@ -184,7 +184,7 @@ class SettingsViewController: ProtonMailViewController {
 //            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .Cancel, handler: { (action) -> Void in
 //                self.clearMailboxPasswordFields()
 //            }))
-//            alertController.addAction(UIAlertAction(title: NSLocalizedString("Change mailbox password"), style: .Destructive, handler: { (action) -> Void in
+//            alertController.addAction(UIAlertAction(title: LocalString.change_mailbox_password, style: .Destructive, handler: { (action) -> Void in
 //                ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
 //                
 //                sharedUserDataService.updateMailboxPassword(self.currentMailboxPasswordTextField.text, newMailboxPassword: self.newMailboxPasswordTextField.text) { _, _, error in

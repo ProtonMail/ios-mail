@@ -32,7 +32,7 @@ class EncryptionSetupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
+        topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
         topTitleLabel.text = NSLocalizedString("Encryption Setup", comment: "key setup top title")
         
         let font = Fonts.h4.bold
@@ -67,7 +67,7 @@ class EncryptionSetupViewController: UIViewController {
             attributes: [NSAttributedStringKey.font:notesfont1])
         attr1.append(attr2)
         extremeSecurityNoteLabel.attributedText = attr1
-        continueButton.setTitle(NSLocalizedString("Continue", comment: "key setup continue button"), for: .normal)
+        continueButton.setTitle(LocalString._genernal_continue, for: .normal)
         
         updateButtonsStatus()
     }

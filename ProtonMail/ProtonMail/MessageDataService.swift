@@ -100,7 +100,7 @@ class MessageDataService {
                 //TODO:: handle can't find the message error.
             }
         } else {
-            error = NSError.protonMailError(500, localizedDescription: NSLocalizedString("No managedObjectContext", comment: "this is a system object can't find, this could be not trasnlated"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
+            error = NSError.protonMailError(500, localizedDescription: "No managedObjectContext", localizedFailureReason: nil, localizedRecoverySuggestion: nil)
         }
         completion?(nil, nil, error)
     }

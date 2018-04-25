@@ -115,14 +115,14 @@ final class SignupViewModelImpl : SignupViewModel {
                 {
                     // do some async stuff
                     if self.newKey == nil {
-                        complete(true, NSLocalizedString("Key generation failed please try again", comment: "Error"), nil)
+                        complete(true, LocalString._key_generation_failed_please_try_again, nil)
                     } else {
                         complete(false, nil, nil);
                     }
                 } ~> .main
             }
             catch let ex as NSError {
-                { complete(false, NSLocalizedString("Key generation failed please try again", comment: "Error"), ex) } ~> .main
+                { complete(false, LocalString._key_generation_failed_please_try_again, ex) } ~> .main
             }
         } ~> .async
     }
@@ -169,7 +169,7 @@ final class SignupViewModelImpl : SignupViewModel {
                                     complete(false, true, LocalString._signup_2fa_auth_failed, nil)
                                 },
                                 onError: { (error) in
-                                    complete(false, true, NSLocalizedString("Authentication failed please try to login again", comment: "Error"), error);
+                                    complete(false, true, LocalString._authentication_failed_pls_try_again, error);
                                 },
                                 onSuccess: { (mailboxpwd) in
                                     {
@@ -218,33 +218,33 @@ final class SignupViewModelImpl : SignupViewModel {
                                                     sharedUserDataService.passwordMode = 1
                                                     complete(true, true, "", nil)
                                                 } else {
-                                                    complete(false, true, NSLocalizedString("Unknown Error", comment: "Error"), nil)
+                                                    complete(false, true, LocalString._unknown_error, nil)
                                                 }
                                             }.catch(on: .main) { error in
-                                                complete(false, true, NSLocalizedString("Fetch user info failed", comment: "Error"), error)
+                                                complete(false, true, LocalString._fetch_user_info_failed, error)
                                             }
                                         } catch let ex as NSError {
                                             PMLog.D(any: ex)
-                                            complete(false, true, NSLocalizedString("Decrypt token failed please try again", comment: "Description"), nil);
+                                            complete(false, true, LocalString._decrypt_token_failed_please_try_again, nil);
                                         }
                                     } ~> .async
                             })
                         } else {
                             if response?.error?.code == 7002 {
-                                complete(false, true, NSLocalizedString("Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.", comment: "Error"), response!.error);
+                                complete(false, true, LocalString._account_creation_has_been_disabled_pls_go_to_https, response!.error);
                             } else {
-                                complete(false, false, NSLocalizedString("Create User failed please try again", comment: "Error"), response!.error);
+                                complete(false, false, LocalString._create_user_failed_please_try_again, response!.error);
                             }
                         }
                     })
                 } catch {
-                    complete(false, false, NSLocalizedString("Create User failed please try again", comment: "Error"), nil);
+                    complete(false, false, LocalString._create_user_failed_please_try_again, nil);
                 }
                 
             } ~> .async
             
         } else {
-            complete(false, false, NSLocalizedString("Key invalid please go back try again", comment: "Error"), nil);
+            complete(false, false, LocalString._key_invalid_please_go_back_try_again, nil);
         }
     }
     

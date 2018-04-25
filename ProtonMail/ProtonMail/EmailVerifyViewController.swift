@@ -64,17 +64,19 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        emailTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Email address", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
-        verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Enter Verification Code", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        emailTextField.attributedPlaceholder = NSAttributedString(string: LocalString._contacts_email_address_placeholder,
+                                                                  attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: LocalString._enter_verification_code,
+                                                                       attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
         
-        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
-        topTitleLabel.text = NSLocalizedString("Human Verification", comment: "top title")
+        topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
+        topTitleLabel.text = LocalString._human_verification
         
-        emailFieldNotes.text = NSLocalizedString("We will send a verification code to the email address above.", comment: "email field notes")
-        titleTwoLabel.text = NSLocalizedString("Enter your existing email address.", comment: "top title")
+        emailFieldNotes.text = LocalString._we_will_send_a_verification_code_to_the_email_address
+        titleTwoLabel.text = LocalString._enter_your_existing_email_address
 
-        continueButton.setTitle(NSLocalizedString("Continue", comment: "Action"), for: .normal)
+        continueButton.setTitle(LocalString._genernal_continue, for: .normal)
         self.updateButtonStatus()
     }
     
@@ -129,9 +131,9 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         let count = self.viewModel.getTimerSet()
         UIView.performWithoutAnimation { () -> Void in
             if count != 0 {
-                self.sendCodeButton.setTitle(String(format: NSLocalizedString("Retry after %d seconds", comment: "email verify code resend count down"), count), for: UIControlState())
+                self.sendCodeButton.setTitle(String(format: LocalString._retry_after_seconds, count), for: UIControlState())
             } else {
-                self.sendCodeButton.setTitle(NSLocalizedString("Send Verification Code", comment: "Title"), for: UIControlState())
+                self.sendCodeButton.setTitle(LocalString._send_verification_code, for: UIControlState())
             }
             self.sendCodeButton.layoutIfNeeded()
         }
@@ -160,11 +162,11 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
             MBProgressHUD.hide(for: self.view, animated: true)
             if !isOK {
                 var alert :  UIAlertController!
-                var title = NSLocalizedString("Verification code request failed", comment: "Title")
+                var title = LocalString._verification_code_request_failed
                 var message = ""
                 if error?.code == 12201 { //USER_CODE_EMAIL_INVALID = 12201
-                    title = NSLocalizedString("Email address invalid", comment: "Title")
-                    message = NSLocalizedString("Please input a valid email address.", comment: "error message")
+                    title = LocalString._email_address_invalid
+                    message = LocalString._please_input_a_valid_email_address
                 } else {
                     message = error!.localizedDescription
                 }
@@ -172,7 +174,9 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             } else {
-                let alert = UIAlertController(title: NSLocalizedString("Verification code sent", comment: "Title"), message: NSLocalizedString("Please check your email for the verification code.", comment: "error message"), preferredStyle: .alert)
+                let alert = UIAlertController(title: LocalString._verification_code_sent,
+                                              message: LocalString._please_check_email_for_code,
+                                              preferredStyle: .alert)
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             }
@@ -196,8 +200,8 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
                     MBProgressHUD.hide(for: self.view, animated: true)
                     self.doneClicked = false
                     if !message.isEmpty {
-                        let title = NSLocalizedString("Create user failed", comment: "error message title when create new user")
-                        var message = NSLocalizedString("Default error, please try again.", comment: "error message when create new user")
+                        let title = LocalString._create_user_failed
+                        var message = LocalString._default_error_please_try_again
                         if let error = error {
                             message = error.localizedDescription
                         }

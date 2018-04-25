@@ -22,7 +22,7 @@ extension MessageDataService {
             get {
                 switch self {
                 case .bad_draft:
-                    return NSLocalizedString("Unable to send the email", comment: "error when sending the message")
+                    return LocalString.unable_to_send_the_email
                 default:
                     break
                 }
@@ -33,7 +33,7 @@ extension MessageDataService {
             get {
                 switch self {
                 case .bad_draft:
-                    return NSLocalizedString("The draft format incorrectly sending failed!", comment: "error when sending the message")
+                    return LocalString._the_draft_incorrectly_sending_failed
                 default:
                     break
                 }

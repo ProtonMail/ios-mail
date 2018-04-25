@@ -41,13 +41,16 @@ class SettingDetailViewController: UIViewController {
         doneButton = self.editButtonItem
         doneButton.target = self;
         doneButton.action = #selector(SettingDetailViewController.doneAction(_:))
-        doneButton.title = NSLocalizedString("Save", comment: "Title")
+        doneButton.title = LocalString._general_save_action
         
         self.navigationItem.title = viewModel.getNavigationTitle()
         sectionTitleLabel.text = viewModel.getSectionTitle()
         
         self.navigationItem.hidesBackButton = true
-        let newBackButton = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(SettingDetailViewController.back(sender:)))
+        let newBackButton = UIBarButtonItem(title: LocalString._general_back_action,
+                                            style: UIBarButtonItemStyle.plain,
+                                            target: self,
+                                            action: #selector(SettingDetailViewController.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
         
         if viewModel.isDisplaySwitch() {
@@ -74,7 +77,7 @@ class SettingDetailViewController: UIViewController {
             inputTextField.placeholder = viewModel.getPlaceholdText()
         }
         
-        passwordTextField.placeholder = NSLocalizedString("Login Password", comment: "Placeholder")
+        passwordTextField.placeholder = LocalString._login_password
         
         if viewModel.isRequireLoginPassword() {
             passwordView.isHidden = false

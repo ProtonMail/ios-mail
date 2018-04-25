@@ -57,11 +57,11 @@ class ContactImportViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         progressView.progress = 0.0
-        titleLabel.text = NSLocalizedString("Importing Contacts", comment: "import contact title")
+        titleLabel.text = LocalString._contacts_import_title
         if #available(iOS 9.0, *) {
             delay(0.5) {
                 self.fetchedResultsController = self.getFetchedResultsController()
-                self.messageLabel.text = NSLocalizedString("Reading device contacts data...", comment: "Title")
+                self.messageLabel.text = LocalString._contacts_reading_contacts_data
                 self.getContacts()
             }
         } else {
@@ -85,10 +85,11 @@ class ContactImportViewController: UIViewController {
             return
         }
         
-        let alertController = UIAlertController(title: NSLocalizedString("Contacts", comment: "Action"),
-                                                message: NSLocalizedString("Do you want to cancel the process?", comment: "Description"),
+        let alertController = UIAlertController(title: LocalString._contacts_title,
+                                                message: LocalString._contacts_import_cancel_wanring,
                                                 preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Action"), style: .destructive, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action,
+                                                style: .destructive, handler: { (action) -> Void in
             self.showedCancel = false
             self.cancelled = true
             self.dismiss()
@@ -187,7 +188,7 @@ class ContactImportViewController: UIViewController {
                 for contact in contacts {
                     if self.cancelled {
                         {
-                            self.messageLabel.text = NSLocalizedString("Cancelling", comment: "Title")
+                            self.messageLabel.text = LocalString._contacts_cancelling_title
                         } ~> .main
                         return
                     }
@@ -216,7 +217,7 @@ class ContactImportViewController: UIViewController {
                             guard let vcard2 = PMNIVCard.createInstance() else {
                                 continue
                             }
-                            var defaultName = NSLocalizedString("Unknown", comment: "title, default display name")
+                            var defaultName = LocalString._general_unknown_title
                             let emails = vcard3.getEmails()
                             var vcard2Emails: [PMNIEmail] = []
                             var i : Int = 1
@@ -312,7 +313,7 @@ class ContactImportViewController: UIViewController {
                 let pre_count = pre_contacts.count
                 if self.cancelled {
                     {
-                        self.messageLabel.text = NSLocalizedString("Cancelling", comment: "Title")
+                        self.messageLabel.text = LocalString._contacts_cancelling_title
                     } ~> .main
                     return
                 }
@@ -342,10 +343,11 @@ class ContactImportViewController: UIViewController {
                         if error.isEmpty {
                             self.dismiss()
                         } else {
-                            let alertController = UIAlertController(title: NSLocalizedString("Import Error", comment: "Action"),
+                            let alertController = UIAlertController(title: LocalString._contacts_import_error,
                                                                     message: error,
                                                                     preferredStyle: .alert)
-                            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Action"), style: .default, handler: {(action) -> Void in
+                            alertController.addAction(UIAlertAction(title: LocalString._general_ok_action,
+                                                                    style: .default, handler: {(action) -> Void in
                                 self.dismiss()
                             }))
                             self.present(alertController, animated: true, completion: nil)

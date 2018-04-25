@@ -85,7 +85,7 @@ extension SharePinUnlockViewController : PinCodeViewDelegate {
     
     func Next(_ code : String) {
         if code.isEmpty {
-//            let alert = NSLocalizedString("Pin code can't be empty.", comment: "Description").alertController()
+//            let alert = LocalString._pin_code_cant_be_empty.alertController()
 //            alert.addOKAction()
 //            self.present(alert, animated: true, completion: nil)
         } else {

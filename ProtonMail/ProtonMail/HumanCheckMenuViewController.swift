@@ -35,8 +35,8 @@ class HumanCheckMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
-        topTitleLabel.text = NSLocalizedString("Human Verification", comment: "human verification top title")
+        topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
+        topTitleLabel.text = LocalString._human_verification
         topNotesLabel.text = NSLocalizedString("To prevent abuse of ProtonMail,\r\n we need to verify that you are human.", comment: "human verification notes")
         optionsTitleLabel.text = NSLocalizedString("Please select one of the following options:", comment: "human check select option title")
         

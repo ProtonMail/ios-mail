@@ -42,8 +42,8 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
         pageControlView.numberOfPages = count;
         pageControlView.currentPage = 0;
         
-        closeButton.setTitle(NSLocalizedString("close tour", comment: "Action"), for: .normal)
-        learnmoreButton.setTitle(NSLocalizedString("Support ProtonMail", comment: "Action"), for: .normal)
+        closeButton.setTitle(LocalString._close_tour, for: .normal)
+        learnmoreButton.setTitle(LocalString._support_protonmail, for: .normal)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

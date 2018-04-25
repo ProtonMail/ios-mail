@@ -324,7 +324,7 @@ class EmailHeaderView: UIView {
         let at = LocalString._general_at_label
         self.emailShortTime.text = "\(at) \(self.date.string(format:timeformat))".lowercased()
         let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' \(timeformat)") ;
-        self.emailDetailDateLabel.text = String(format:NSLocalizedString("Date: %@", comment: "like Date: 2017-10-10"), "\(tm)")
+        self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
 
         let lockType : LockTypes = encType.lockType
         switch (lockType) {
@@ -558,7 +558,7 @@ class EmailHeaderView: UIView {
         self.emailDetailButton.addTarget(self, action: #selector(EmailHeaderView.detailsButtonTapped), for: UIControlEvents.touchUpInside)
         self.emailDetailButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
         self.emailDetailButton.titleLabel?.font = Fonts.h6.medium
-        self.emailDetailButton.setTitle(NSLocalizedString("Details", comment: "Title"), for: UIControlState())
+        self.emailDetailButton.setTitle(LocalString._details, for: UIControlState())
         self.emailDetailButton.setTitleColor(UIColor(RRGGBB: UInt(0x9397CD)), for: UIControlState())
         self.emailDetailButton.sizeToFit()
         self.emailHeaderView.addSubview(emailDetailButton)
@@ -713,9 +713,9 @@ class EmailHeaderView: UIView {
         if let messageTime = self.date {
             let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
             let tm = messageTime.formattedWith("'On' EE, MMM d, yyyy 'at' \(timeformat)");
-            self.emailDetailDateLabel.text = String(format:NSLocalizedString("Date: %@", comment: ""), "\(tm)")
+            self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
         } else {
-            self.emailDetailDateLabel.text = String(format:NSLocalizedString("Date: %@", comment: ""), "")
+            self.emailDetailDateLabel.text = String(format: LocalString._date, "")
         }
         self.emailDetailDateLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_999DA1
         self.emailDetailDateLabel.sizeToFit()
@@ -1042,7 +1042,7 @@ class EmailHeaderView: UIView {
                 let _ = make?.top.equalTo()(self.emailCcTable.mas_bottom)?.with().offset()(self.kEmailTimeViewMarginTop)
             })
             
-            self.emailDetailButton.setTitle(NSLocalizedString("Hide Details", comment: "Title"), for: UIControlState())
+            self.emailDetailButton.setTitle(LocalString._hide_details, for: UIControlState())
             self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.left.equalTo()(self.emailShortTime)
@@ -1176,7 +1176,7 @@ class EmailHeaderView: UIView {
                 let _ = make?.height.equalTo()(0)
             }
             
-            self.emailDetailButton.setTitle(NSLocalizedString("Details", comment: "Title"), for: UIControlState())
+            self.emailDetailButton.setTitle(LocalString._details, for: UIControlState())
             self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.left.equalTo()(self.emailShortTime.mas_right)?.with().offset()(self.kEmailDetailButtonMarginLeft)

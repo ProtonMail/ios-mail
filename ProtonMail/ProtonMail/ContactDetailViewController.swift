@@ -48,7 +48,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     ///
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.doneItem = UIBarButtonItem(title: NSLocalizedString("Edit", comment: "Action"),
+        self.doneItem = UIBarButtonItem(title: LocalString._general_edit_action,
                                         style: UIBarButtonItemStyle.plain,
                                         target: self, action: #selector(didTapEditButton(sender:)))
         self.navigationItem.rightBarButtonItem = doneItem
@@ -185,10 +185,10 @@ extension ContactDetailViewController: UITableViewDataSource {
         switch s {
         case .email_header:
             let signed = viewModel.statusType2()
-            cell?.ConfigHeader(title: NSLocalizedString("Contact Details", comment: "contact section title"), signed: signed)
+            cell?.ConfigHeader(title: LocalString._contacts_contact_details_title, signed: signed)
         case .encrypted_header:
             let signed = viewModel.statusType3()
-            cell?.ConfigHeader(title: NSLocalizedString("Encrypted Contact Details", comment: "contact section title"), signed: signed)
+            cell?.ConfigHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: signed)
         default:
             cell?.ConfigHeader(title: "", signed: false)
         }
@@ -224,7 +224,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             return cell
         } else if s == .share {
             let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsShareCell, for: indexPath) as! ContactEditAddCell
-            cell.configCell(value: NSLocalizedString("Share Contact", comment: "action"))
+            cell.configCell(value: LocalString._contacts_share_contact_action)
             cell.selectionStyle = .default
             return cell
         }
@@ -256,7 +256,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         switch s {
         case .display_name:
             let profile = viewModel.getProfile();
-            cell.configCell(title: NSLocalizedString("Name", comment: "title"), value: profile.newDisplayName)
+            cell.configCell(title: LocalString._contacts_name_title, value: profile.newDisplayName)
             cell.selectionStyle = .none
         case .emails:
             let emails = viewModel.getEmails()
@@ -286,7 +286,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         case .notes:
             let notes = viewModel.getNotes()
             let note = notes[row]
-            cell.configCell(title: NSLocalizedString("Notes", comment: "title"), value: note.newNote)
+            cell.configCell(title: LocalString._contacts_info_notes, value: note.newNote)
             cell.selectionStyle = .default
         case .url:
             let urls = viewModel.getUrls()

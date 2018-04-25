@@ -47,9 +47,9 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
-        topTitleLabel.text = NSLocalizedString("Human Verification", comment: "view top title")
-        continueButton.setTitle(NSLocalizedString("Continue", comment: "Action"), for: .normal)
+        topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
+        topTitleLabel.text = LocalString._human_verification
+        continueButton.setTitle(LocalString._genernal_continue, for: .normal)
         
         resetChecking()
         webView.scrollView.isScrollEnabled = false
@@ -129,8 +129,8 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
                         MBProgressHUD.hide(for: self.view, animated: true)
                         self.doneClicked = false
                         if !message.isEmpty {
-                            let title =  NSLocalizedString("Create user failed", comment: "Title")
-                            var message = NSLocalizedString("Default error, please try again.", comment: "Error")
+                            let title = LocalString._create_user_failed
+                            var message = LocalString._default_error_please_try_again
                             if let error = error {
                                 message = error.localizedDescription
                             }

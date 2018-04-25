@@ -75,7 +75,8 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     override func viewDidLoad() {
         super.viewDidLoad()
         resetChecking()
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: LocalString._username,
+                                                                     attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         MBProgressHUD.showAdded(to: view, animated: true)
         pickerButton.isHidden = true
         pickedDomainLabel.isHidden = true
@@ -86,14 +87,14 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
             self.domains = ds
             self.updatePickedDomain()
         }
-        leftBackItem.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
-        topTitleLabel.text = NSLocalizedString("Create a new account", comment: "Signup top title")
-        userNameNoteLabel.text = NSLocalizedString("Note: The Username is also your ProtonMail address.", comment: "Signup user name notes")
-        agreementButton.setTitle(NSLocalizedString("By using protonmail, you agree to our", comment: "agree check box first part words"), for: .normal)
-        termsButton.setTitle(NSLocalizedString("terms and conditions", comment: "agree check box terms"), for: .normal)
-        andLable.text = NSLocalizedString("and", comment: "agree check box middle word")
-        privacyButton.setTitle(NSLocalizedString("privacy policy.", comment: "agree check box privacy"), for: .normal)
-        createAccountButton.setTitle(NSLocalizedString("Create Account", comment: "Create account button"), for: .normal)
+        leftBackItem.setTitle(LocalString._general_back_action, for: .normal)
+        topTitleLabel.text = LocalString._create_a_new_account
+        userNameNoteLabel.text = LocalString._notes_the_username_is_also_your_protonmail_address
+        agreementButton.setTitle(LocalString._notes_by_using_protonmail_you_agree_to_our, for: .normal)
+        termsButton.setTitle(LocalString._notes_terms_and_conditions, for: .normal)
+        andLable.text = LocalString._and
+        privacyButton.setTitle(LocalString._privacy_policy, for: .normal)
+        createAccountButton.setTitle(LocalString._signup_create_account_action, for: .normal)
         
         self.updatePickedDomain()
     }
@@ -153,7 +154,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     func startChecking() {
         warningView.isHidden = false
         warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-        warningLabel.text = NSLocalizedString("Checking ....", comment: "loading message")
+        warningLabel.text = LocalString._checking_
         warningIcon.isHidden = true;
     }
     
@@ -170,12 +171,12 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
             checkUserStatus = true
             warningView.isHidden = false
             warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-            warningLabel.text = NSLocalizedString("User is available!", comment: "")
+            warningLabel.text = LocalString._user_is_available
             warningIcon.isHidden = false
         } else {
             warningView.isHidden = false
             warningLabel.textColor = UIColor.red
-            warningLabel.text = NSLocalizedString("User already exist!", comment: "error when user already exist")
+            warningLabel.text = LocalString._user_already_exist
             warningIcon.isHidden = true
         }
     }
@@ -206,14 +207,14 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
                     })
                 } else {
                     MBProgressHUD.hide(for: self.view, animated: true)
-                    let alert = NSLocalizedString("Please pick a user name first!", comment: "Error").alertController()
+                    let alert = LocalString._please_pick_a_user_name_first.alertController()
                     alert.addOKAction()
                     self.present(alert, animated: true, completion: nil)
                 }
             }
         } else {
             MBProgressHUD.hide(for: view, animated: true)
-            let alert = NSLocalizedString("In order to use our services, you must agree to ProtonMail's Terms of Service.", comment: "Error").alertController()
+            let alert = LocalString._in_order_to_use_our_services_you_must_agree_to_protonmails_terms_of_service.alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
         }

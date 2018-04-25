@@ -20,7 +20,7 @@ final public class LabelCreatingViewModelImple : LabelEditViewModel {
     }
     
     override public func rightButtonText() -> String {
-        return LocalString._labels_create_action
+        return LocalString._general_create_action
     }
     
     override public func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {

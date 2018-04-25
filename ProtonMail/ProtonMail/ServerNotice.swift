@@ -61,13 +61,13 @@ class ServerNotice {
         self.setTime(1800)
         let message = string_show
         let alertController = UIAlertController(
-            title: NSLocalizedString("ProtonMail", comment: "Title"),
+            title: LocalString._protonmail,
             message: message,
             preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Remind Me Later", comment: "Title"), style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: LocalString._remind_me_later, style: .default, handler: { action in
             self.setTime(10)
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Don't Show Again", comment: "Title"), style: .destructive, handler: { action in
+        alertController.addAction(UIAlertAction(title: LocalString._dont_show_again, style: .destructive, handler: { action in
              self.setTime(31536000)//1 year 1 * 365 * 24 * 60 * 60
         }))
         UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)

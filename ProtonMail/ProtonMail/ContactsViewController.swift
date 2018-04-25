@@ -54,7 +54,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = NSLocalizedString("CONTACTS", comment: "Title")
+        self.title = LocalString._contacts_title
         tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactCellIdentifier)
         searchController = UISearchController(searchResultsController: nil)
@@ -111,7 +111,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.tableView.noSeparatorsBelowFooter()
         self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
         
-        let back = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Action"),
+        let back = UIBarButtonItem(title: LocalString._general_back_action,
                                    style: UIBarButtonItemStyle.plain,
                                    target: nil,
                                    action: nil)
@@ -181,15 +181,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         }
     }
     
-    // MARK: - Private methods
-    fileprivate func showContactBelongsToAddressBookError() {
-        let description = NSLocalizedString("This contact belongs to your Address Book.", comment: "")
-        let message = NSLocalizedString("Please, manage it in your phone.", comment: "Title")
-        let alertController = UIAlertController(title: description, message: message, preferredStyle: .alert)
-        alertController.addOKAction()
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
     @objc internal func fireFetch() {
         self.viewModel.fetchContacts { (contacts: [Contact]?, error: NSError?) in
             if let error = error as NSError? {
@@ -215,10 +206,11 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Upload Contacts",  comment: "Action"), style: .default, handler: { (action) -> Void in
             self.navigationController?.popViewController(animated: true)
             
-            let alertController = UIAlertController(title: NSLocalizedString("Contacts", comment: "Action"),
-                                                    message: NSLocalizedString("Upload iOS contacts to ProtonMail?", comment: "Description"),
+            let alertController = UIAlertController(title: LocalString._contacts_title,
+                                                    message: LocalString._upload_ios_contacts_to_protonmail,
                                                     preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Action"), style: .default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action,
+                                                    style: .default, handler: { (action) -> Void in
                 self.performSegue(withIdentifier: self.kSegueToImportView, sender: self)
             }))
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
@@ -295,7 +287,8 @@ extension ContactsViewController: UITableViewDelegate {
             if let contact = self.viewModel.item(index: indexPath) {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Contact", comment: "Title-Contacts"), style: .destructive, handler: { (action) -> Void in
+                alertController.addAction(UIAlertAction(title: LocalString._delete_contact,
+                                                        style: .destructive, handler: { (action) -> Void in
                     ActivityIndicatorHelper.showActivityIndicator(at: self.view)
                     self.viewModel.delete(contactID: contact.contactID, complete: { (error) in
                         ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
