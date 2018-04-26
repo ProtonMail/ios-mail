@@ -11,8 +11,8 @@ import Foundation
 // MARK : Get messages part
 final class GetLabelsRequest : ApiRequest<GetLabelsResponse> {
     
-    override func method() -> APIService.HTTPMethod {
-        return .get
+    override func toDictionary() -> [String : Any]? {
+        return ["Type" : 1]
     }
     
     override open func path() -> String {
