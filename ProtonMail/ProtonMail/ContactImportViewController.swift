@@ -288,7 +288,7 @@ class ContactImportViewController: UIViewController {
                                 guard let vcard3Str = try vcard3.write() else {
                                     continue
                                 }
-                                let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "")
+                                let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "", trim: true)
                                 let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
                                                                                plainText: vcard3Str,
                                                                                passphras: sharedUserDataService.mailboxPassword!)

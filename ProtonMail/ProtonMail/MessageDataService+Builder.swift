@@ -173,21 +173,22 @@ class SendBuilder {
     }
     
     
-    private func build(type rt : Int, eo : Bool, pgpkey: Bool, mime: Bool) -> SendType {
+    private func build(type rt : Int, eo : Bool, pgpkey: Bool, pgpencrypt : Bool, mime: Bool) -> SendType {
         if rt == 1 {
             return .intl
         }
         
         //pgp mime
-        if rt == 2 && mime && pgpkey {
+        if rt == 2 && mime && pgpkey && pgpencrypt {
             return .pgpmime
         }
+        
         //pgp mime clear
         if rt == 2 && mime {
             return .cmime
         }
-        
-        if rt == 2 && pgpkey {
+
+        if rt == 2 && pgpkey && pgpencrypt {
             return .inlnpgp
         }
         
@@ -295,7 +296,7 @@ class SendBuilder {
         get {
             var out : [PackageBuilder] = [PackageBuilder]()
             for pre in preAddresses {
-                switch self.build(type: pre.recipintType, eo: pre.eo, pgpkey: (pre.pgpKey != nil && pre.pgpencrypt) , mime: pre.mime) {
+                switch self.build(type: pre.recipintType, eo: pre.eo, pgpkey: pre.pgpKey != nil, pgpencrypt: pre.pgpencrypt, mime: pre.mime) {
                 case .intl:
                     out.append(AddressBuilder(type: .intl, addr: pre,
                                               session: self.bodySession, atts: self.preAttachments))
@@ -329,7 +330,8 @@ class SendBuilder {
     
     func contains(type : SendType) -> Bool {
         for pre in preAddresses {
-            let buildType = self.build(type: pre.recipintType, eo: pre.eo, pgpkey: (pre.pgpKey != nil && pre.pgpencrypt), mime: pre.mime)
+            let buildType = self.build(type: pre.recipintType, eo: pre.eo,
+                                       pgpkey: pre.pgpKey != nil, pgpencrypt: pre.pgpencrypt, mime: pre.mime)
             if buildType.contains(type) {
                 return true
             }
@@ -601,7 +603,7 @@ class AddressBuilder : PackageBuilder {
 class ClearAddressBuilder : PackageBuilder {
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            let eo = AddressPackageBase(email: self.preAddress.email, type: self.sendType, sign: 0)
+            let eo = AddressPackageBase(email: self.preAddress.email, type: self.sendType, sign: self.preAddress.sign ? 1 : 0)
             return eo
         }
     }

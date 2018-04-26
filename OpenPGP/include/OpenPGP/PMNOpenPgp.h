@@ -84,15 +84,18 @@
  */
 - (void)updatePrivateInfo:(nonnull NSString *)privateKey;
 
-/**encrypt message */
+/**encrypt message use address id */
 - (nonnull NSString *)encryptMessage:(nonnull NSString *)addressId
                            plainText:(nonnull NSString *)plainText
-                           passphras:(nonnull NSString *)passphras;
+                           passphras:(nonnull NSString *)passphras
+                                trim:(BOOL)trim;
 
+/**encrypt message use public key */
 - (nonnull NSString *)encryptMessageSingleKey:(nonnull NSString *)publicKey
                                     plainText:(nonnull NSString *)plainText
                                    privateKey:(nonnull NSString *)privateKey
-                                    passphras:(nonnull NSString *)passphras;
+                                    passphras:(nonnull NSString *)passphras
+                                         trim:(BOOL)trim;
 
 - (nonnull NSString *)decryptMessage:(nonnull NSString *)encryptText
                            passphras:(nonnull NSString *)passphras;

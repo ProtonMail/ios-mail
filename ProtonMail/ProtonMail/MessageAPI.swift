@@ -320,7 +320,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
             //"Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
             normalAddress["Type"] = type.rawValue
             normalAddress["Body"] = self.body
-            normalAddress["MIMEType"] = "text/html"
+            normalAddress["MIMEType"] = type.contains(.cinln) ? "text/plain" : "text/html"
             
             if let cb = clearBody {
                 // Include only if cleartext recipients

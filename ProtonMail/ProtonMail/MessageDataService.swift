@@ -1649,8 +1649,11 @@ class MessageDataService {
                         }
                     }
                 }
-                return Promise.value(sendBuilder)
+                return .value(sendBuilder)
             }.then{ (sendbuilder) -> Promise<SendBuilder> in
+                if !sendBuilder.hasMime {
+                    return .value(sendBuilder)
+                }
                 //build pgp sending mime body
                 let addr = message.defaultAddress!.keys.first!
                 let privateKey = addr.private_key

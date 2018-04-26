@@ -476,6 +476,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         if (body?.isEmpty)! {
             body = "<div><br></div>"
         }
+        
+        //body = "Asdhfjkhsadfsad \n  asdfasdf.    \nAsdfsadf.  Asdfsdaf\nAsdfs.    "
         self.viewModel.collectDraft(
             self.composeView.subject.text!,
             body: body!,
