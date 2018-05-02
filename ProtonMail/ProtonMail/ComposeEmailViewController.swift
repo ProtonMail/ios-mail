@@ -576,7 +576,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         }
     }
     
-    func ComposeViewDidSizeChanged(_ size: CGSize) {
+    func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {
         self.composeViewSize = size.height
         if #available(iOS 11.0, *) {
             self.updateComposeFrame()
@@ -585,6 +585,8 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
         }
         self.updateContentLayout(true)
+        self.webView.scrollView.isScrollEnabled = !showPicker
+
     }
     
     func ComposeViewDidOffsetChanged(_ offset: CGPoint) {
@@ -662,7 +664,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         }
     }
     
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
+    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker)
     {
         if (picker == composeView.toContactPicker) {
             self.viewModel.toSelectedContacts.append(contact)
@@ -673,7 +675,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         }
     }
     
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
+    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: ContactPicker)
     {// here each logic most same, need refactor later
         if (picker == composeView.toContactPicker) {
             var contactIndex = -1
@@ -715,12 +717,12 @@ extension ComposeEmailViewController : ComposeViewDelegate {
 
 // MARK : compose data source
 extension ComposeEmailViewController : ComposeViewDataSource {
-    
-    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [Any]! {
+
+    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol] {
         return contacts
     }
     
-    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: MBContactPicker) ->  [Any]! {
+    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) ->  [ContactPickerModelProtocol] {
         var selectedContacts: [ContactVO] = [ContactVO]()
         if (picker == composeView.toContactPicker) {
             selectedContacts = self.viewModel.toSelectedContacts

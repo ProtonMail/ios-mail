@@ -8,58 +8,71 @@
 
 import UIKit
 
+//#defined DEBUG_BORDERS
 
-class ContactPicker: UIView {
+@objc protocol ContactPickerDataSource : NSObjectProtocol {
+    //optional
+    @objc func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol]
+    @objc func selectedContactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol]
+}
+
+@objc protocol ContactPickerDelegate : ContactCollectionViewDelegate {
+    @objc optional func contactPicker(contactPicker: ContactPicker, didUpdateContentHeightTo newHeight: CGFloat)
+    @objc optional func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker)
+    @objc optional func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker)
+    @objc optional func contactPicker(contactPicker: ContactPicker, didEnterCustomText text: String, needFocus focus: Bool)
+    @objc optional func customFilterPredicate(searchString: String) -> NSPredicate
+}
+
+
+class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
+
+    var delegate : ContactPickerDelegate?
+    var datasource : ContactPickerDataSource?
     
-    var delegate : MBContactPickerDelegate?
-    var datasource : MBContactPickerDataSource?
+    var originalHeight : CGFloat = -1
+    var originalYOffset : CGFloat = -1
     
-    let originalHeight : CGFloat = -1
-    let originalYOffset : CGFloat = -1
+    var _showPrompt : Bool = true
+    var _prompt : String = ContactPickerDefined.kPrompt
+    var _maxVisibleRows : CGFloat = ContactPickerDefined.kMaxVisibleRows
     
-    
-    var cellHeight : CGFloat = ContactPickerDefined.ROW_HEIGHT
-    var showPrompt : Bool = true
-    var prompt : String = ContactPickerDefined.kPrompt
-    var maxVisibleRows : CGFloat = ContactPickerDefined.kMaxVisibleRows
-    
-    var currentContentHeight : CGFloat = 0
     var keyboardHeight : CGFloat = 0
     
     var animationSpeed : CGFloat = ContactPickerDefined.kAnimationSpeed
-    var allowsCompletionOfSelectedContacts : Bool = true
-    let enabled : Bool = true
-    let hideWhenNoResult : Bool = true
     
-    //    @property (nonatomic) NSArray *filteredContacts;
-    //    @property (nonatomic) NSArray *contacts;
-    //    @property (nonatomic) CGSize contactCollectionViewContentSize;
-    //    @property (nonatomic) BOOL hasLoadedData;
-    //    @property (nonatomic, strong) UIFont *font UI_APPEARANCE_SELECTOR;
+    var allowsCompletionOfSelectedContacts : Bool = true
+    var _enabled : Bool = true
+    var hideWhenNoResult : Bool = false
+    
+    
+    var contacts: [ContactPickerModelProtocol] = [ContactPickerModelProtocol]()
+    var filteredContacts: [ContactPickerModelProtocol] = [ContactPickerModelProtocol]()
 
     var contactCollectionView : ContactCollectionView!
     var searchTableView : UITableView!
+    var contactCollectionViewContentSize: CGSize = CGSize.zero
+    var hasLoadedData : Bool = false
     
-//    @interface MBContactPicker : UIView <UITableViewDataSource, UITableViewDelegate, MBContactCollectionViewDelegate>
-
-//    - (void)reloadData;
-//    - (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model needFocus:(BOOL)focus;
-//    - (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model withCompletion:(CompletionBlock)completion;
-//    @end
-    //
-    //- (NSArray*)contactsSelected
-    //{
-    //    return self.contactCollectionView.selectedContacts;
-    //    }
-    //
-    var contactsSelected : String {
+    var cellHeight : Int {
         get {
-            return ""
+            return self.contactCollectionView.cellHeight
+        }
+        set {
+            self.contactCollectionView.cellHeight = newValue
+            self.contactCollectionView.collectionViewLayout.invalidateLayout()
+        }
+    }
+    
+    var contactsSelected : [ContactPickerModelProtocol] {
+        get {
+            return self.contactCollectionView.selectedContacts
         }
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
+        self.setup()
     }
     
     override init(frame: CGRect) {
@@ -69,59 +82,78 @@ class ContactPicker: UIView {
 
     
     func setup() {
-        self.clipsToBounds = true
-        self.translatesAutoresizingMaskIntoConstraints = false
+        
+        self._prompt = ContactPickerDefined.kPrompt
+        self._showPrompt = true
+        self.originalHeight = -1
+        self.originalYOffset = -1
         
         let contactCollectionView = ContactCollectionView.contactCollectionViewWithFrame(frame: self.bounds)
-//        contactCollectionView.contactDelegate = self;
-//        contactCollectionView.clipsToBounds = YES;
-//        contactCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+        contactCollectionView.contactDelegate = self
+        contactCollectionView.clipsToBounds = true
+        contactCollectionView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(contactCollectionView)
         self.contactCollectionView = contactCollectionView
-
+        
+        self.maxVisibleRows = ContactPickerDefined.kMaxVisibleRows
+        self.animationSpeed = ContactPickerDefined.kAnimationSpeed
+        
+        self.allowsCompletionOfSelectedContacts = true
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.clipsToBounds = true
+        
+        self.enabled = true
+        self.hideWhenNoResult = true
+        
         let searchTableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height))
-//        searchTableView.dataSource = self;
-//        searchTableView.delegate = self;
-//        searchTableView.rowHeight = ROW_HEIGHT;
-//        searchTableView.translatesAutoresizingMaskIntoConstraints = NO;
-//        searchTableView.hidden = YES;
-//        [searchTableView registerNib:[UINib nibWithNibName:ContactsTableViewCellName bundle:nil] forCellReuseIdentifier:ContactsTableViewCellIdentifier];
+        searchTableView.dataSource = self
+        searchTableView.delegate = self
+        searchTableView.rowHeight = CGFloat(ContactPickerDefined.ROW_HEIGHT)
+        searchTableView.translatesAutoresizingMaskIntoConstraints = false
+        searchTableView.isHidden = true
+        searchTableView.register(UINib.init(nibName: ContactPickerDefined.ContactsTableViewCellName, bundle: nil),
+                                 forCellReuseIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier)
         self.addSubview(searchTableView)
         self.searchTableView = searchTableView
-//
-//
-//        [contactCollectionView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-//        [searchTableView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-//
-//        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|[contactCollectionView(>=%ld,<=%ld)][searchTableView(>=0)]|", (long)self.cellHeight, (long)self.cellHeight]
-//            options:0
-//            metrics:nil
-//            views:NSDictionaryOfVariableBindings(contactCollectionView, searchTableView)]];
-//
-//        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contactCollectionView]-(0@500)-|"
-//            options:0
-//            metrics:nil
-//            views:NSDictionaryOfVariableBindings(contactCollectionView)]];
-//
-//        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[contactCollectionView]|"
-//            options:0
-//            metrics:nil
-//            views:NSDictionaryOfVariableBindings(contactCollectionView)]];
-//
-//        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[searchTableView]|"
-//            options:0
-//            metrics:nil
-//            views:NSDictionaryOfVariableBindings(searchTableView)]];
-//
         
-//        #ifdef DEBUG_BORDERS
-//        self.layer.borderColor = [UIColor grayColor].CGColor;
-//        self.layer.borderWidth = 1.0;
-//        contactCollectionView.layer.borderColor = [UIColor redColor].CGColor;
-//        contactCollectionView.layer.borderWidth = 1.0;
-//        searchTableView.layer.borderColor = [UIColor blueColor].CGColor;
-//        searchTableView.layer.borderWidth = 1.0;
-//        #endif
+        self.contactCollectionView.setContentCompressionResistancePriority(.required,
+                                                                           for: .vertical)
+        
+        self.searchTableView.setContentCompressionResistancePriority(.defaultLow,
+                                                                     for: .vertical)
+        
+
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: String(format: "V:|[contactCollectionView(>=%ld,<=%ld)][searchTableView(>=0)]|",
+                                                                                    self.cellHeight,
+                                                                                    self.cellHeight),
+                                                           options: NSLayoutFormatOptions(rawValue: 0),
+                                                           metrics: nil,
+                                                           views: ["contactCollectionView" : contactCollectionView, "searchTableView" : searchTableView]))
+
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[contactCollectionView]-(0@500)-|",
+                                                           options: NSLayoutFormatOptions(rawValue: 0),
+                                                           metrics: nil,
+                                                           views: ["contactCollectionView" : contactCollectionView]))
+        
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[contactCollectionView]|",
+                                                           options: NSLayoutFormatOptions(rawValue: 0),
+                                                           metrics: nil,
+                                                           views: ["contactCollectionView" : contactCollectionView]))
+
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[searchTableView]|",
+                                                           options: NSLayoutFormatOptions(rawValue: 0),
+                                                           metrics: nil,
+                                                           views: ["searchTableView" : searchTableView]))
+        
+        #if DEBUG_BORDERS
+        self.layer.borderColor = UIColor.gray.cgColor
+        self.layer.borderWidth = 1.0
+        contactCollectionView.layer.borderColor = UIColor.red.cgColor
+        contactCollectionView.layer.borderWidth = 1.0
+        searchTableView.layer.borderColor = UIColor.blue.cgColor
+        searchTableView.layer.borderWidth = 1.0
+        #endif
+
     }
     
     override func awakeFromNib() {
@@ -131,326 +163,311 @@ class ContactPicker: UIView {
     
     override func didMoveToWindow() {
         if self.window != nil {
-//            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-//            [nc addObserver:self selector:@selector(keyboardChangedStatus:) name:UIKeyboardWillShowNotification object:nil];
-//            [nc addObserver:self selector:@selector(keyboardChangedStatus:) name:UIKeyboardWillHideNotification object:nil];
-//
-//            if (!self.hasLoadedData)
-//            {
-//                [self reloadData];
-//                self.hasLoadedData = YES;
-//            }
+            let nc = NotificationCenter.default
+            nc.addObserver(self,
+                           selector: #selector(ContactPicker.keyboardChangedStatus(notification:)),
+                           name: NSNotification.Name.UIKeyboardWillShow,
+                           object: nil)
+            
+            nc.addObserver(self,
+                           selector: #selector(ContactPicker.keyboardChangedStatus(notification:)),
+                           name: NSNotification.Name.UIKeyboardWillHide,
+                           object: nil)
+            
+            if !self.hasLoadedData {
+                self.reloadData()
+                self.hasLoadedData = true
+            }
         }
     }
     
     override func willMove(toWindow newWindow: UIWindow?) {
-        if (newWindow == nil)
-        {
-//            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-//            [nc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-//            [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+        if newWindow == nil {
+            let nc = NotificationCenter.default
+            nc.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+            nc.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         }
     }
 
-//#pragma mark - Keyboard Notification Handling
-//- (void)keyboardChangedStatus:(NSNotification*)notification
-//{
-//    CGRect keyboardRect;
-//    [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardRect];
-//    self.keyboardHeight = keyboardRect.size.height;
-//    }
-//
-//    - (void)reloadData
-//        {
-//            self.contactCollectionView.selectedContacts = [[NSMutableArray alloc] init];
-//
-//            if ([self.datasource respondsToSelector:@selector(selectedContactModelsForContactPicker:)])
-//            {
-//                [self.contactCollectionView.selectedContacts addObjectsFromArray:[self.datasource selectedContactModelsForContactPicker:self]];
-//            }
-//
-//            self.contacts = [self.datasource contactModelsForContactPicker:self];
-//
-//            [self.contactCollectionView reloadData];
-//            //[self layoutIfNeeded];
-//            //[self.contactCollectionView layoutIfNeeded];
-//            [self.contactCollectionView scrollToEntryAnimated:NO onComplete:nil];
-//            //[self hideSearchTableView];
-//}
-//
-//#pragma mark - Properties
+    //
+    //#pragma mark - Keyboard Notification Handling
+    //
+    @objc func keyboardChangedStatus(notification: NSNotification) {
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            self.keyboardHeight = keyboardSize.height
+        }
+    }
 
-//    - (void)setCellHeight:(NSInteger)cellHeight
-//{
-//    self.contactCollectionView.cellHeight = cellHeight;
-//    [self.contactCollectionView.collectionViewLayout invalidateLayout];
-//    }
-//
-//    - (NSInteger)cellHeight
-//        {
-//            return self.contactCollectionView.cellHeight;
-//        }
-//
-//        - (void)setPrompt:(NSString *)prompt
-//{
-//    _prompt = [prompt copy];
-//    self.contactCollectionView.prompt = _prompt;
-//    }
-//
-//    - (void)setMaxVisibleRows:(CGFloat)maxVisibleRows
-//{
-//    _maxVisibleRows = maxVisibleRows;
-//    [self.contactCollectionView.collectionViewLayout invalidateLayout];
-//    }
-//
-//    - (CGFloat)currentContentHeight
-//        {
-//            CGFloat minimumSizeWithContent = MAX(self.cellHeight, self.contactCollectionViewContentSize.height);
-//            CGFloat maximumSize = self.maxVisibleRows * self.cellHeight;
-//            return MIN(minimumSizeWithContent, maximumSize);
-//        }
-//
-//        - (void)setEnabled:(BOOL)enabled
-//{
-//    _enabled = enabled;
-//
-//    self.contactCollectionView.allowsSelection = enabled;
-//    self.contactCollectionView.allowsTextInput = enabled;
-//
-//    if (!enabled)
-//    {
-//        [self resignFirstResponder];
-//    }
-//    }
-//
-//    - (void)setShowPrompt:(BOOL)showPrompt
-//{
-//    _showPrompt = showPrompt;
-//    self.contactCollectionView.showPrompt = showPrompt;
-//    }
-//
-//    - (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model withCompletion:(CompletionBlock)completion
-//{
-//    [self.contactCollectionView addToSelectedContacts:model withCompletion:completion];
-//}
-//
-//#pragma mark - UITableViewDataSource
-//
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-//{
-//    return self.filteredContacts.count;
-//    }
-//
-//    - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    ContactsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ContactsTableViewCellIdentifier forIndexPath:indexPath];
-//
-//    if (self.filteredContacts.count > indexPath.row) {
-//        ContactVO<MBContactPickerModelProtocol> *model = self.filteredContacts[indexPath.row];
-//
-//        cell.contactEmailLabel.text = model.contactSubtitle;
-//        cell.contactNameLabel.text = model.contactTitle;
-//    }
-//    return cell;
-//}
-//
-//#pragma mark - UITableViewDelegate
-//
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    id<MBContactPickerModelProtocol> model = self.filteredContacts[indexPath.row];
-//
-//    [self hideSearchTableView];
-//    [self.contactCollectionView addToSelectedContacts:model withCompletion:nil];
-//}
-//
-//#pragma mark - ContactCollectionViewDelegate
-//
-//- (void)contactCollectionView:(MBContactCollectionView*)contactCollectionView willChangeContentSizeTo:(CGSize)newSize
-//{
-//    if (!CGSizeEqualToSize(self.contactCollectionViewContentSize, newSize))
-//    {
-//        self.contactCollectionViewContentSize = newSize;
-//        [self updateCollectionViewHeightConstraints];
-//
-//        if ([self.delegate respondsToSelector:@selector(contactPicker:didUpdateContentHeightTo:)])
-//        {
-//            [self.delegate contactPicker:self didUpdateContentHeightTo:self.currentContentHeight];
-//        }
-//    }
-//    }
-//
-//    - (void)contactCollectionView:(MBContactCollectionView*)contactCollectionView entryTextDidChange:(NSString*)text
-//{
-//    if ([text isEqualToString:@" "])
-//    {
-//        [self hideSearchTableView];
-//    }
-//    else
-//    {
-//        [self.contactCollectionView.collectionViewLayout invalidateLayout];
-//
-//        [self.contactCollectionView performBatchUpdates:^{
-//            [self layoutIfNeeded];
-//            } completion:^(BOOL finished) {
-//            [self.contactCollectionView setFocusOnEntry];
-//            }];
-//
-//        [self showSearchTableView];
-//        NSString *searchString = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-//        NSPredicate *predicate;
-//
-//        if ([self.delegate respondsToSelector:@selector(customFilterPredicate:)])
-//        {
-//            predicate = [self.delegate customFilterPredicate:searchString];
-//        } else if (self.allowsCompletionOfSelectedContacts) {
-//            predicate = [NSPredicate predicateWithFormat:@"contactTitle contains[cd] %@", searchString];
-//        } else {
-//            predicate = [NSPredicate predicateWithFormat:@"contactTitle contains[cd] %@ && !SELF IN %@", searchString, self.contactCollectionView.selectedContacts];
-//        }
-//        self.filteredContacts = [self.contacts filteredArrayUsingPredicate:predicate];
-//
-//        if(self.hideWhenNoResult && self.filteredContacts.count <= 0)
-//        {
-//            if (!self.searchTableView.hidden) {
-//                [self hideSearchTableView];
-//            }
-//        }
-//        else
-//        {
-//            if (self.searchTableView.hidden) {
-//                [self showSearchTableView];
-//            }
-//            [self.searchTableView reloadData];
-//        }
-//    }
-//    }
-//
-//    - (void)contactCollectionView:(MBContactCollectionView*)contactCollectionView didRemoveContact:(id<MBContactPickerModelProtocol>)model
-//{
-//    if ([self.delegate respondsToSelector:@selector(contactCollectionView:didRemoveContact:)])
-//    {
-//        [self.delegate contactCollectionView:contactCollectionView didRemoveContact:model];
-//    }
-//    }
-//
-//    - (void)contactCollectionView:(MBContactCollectionView*)contactCollectionView didAddContact:(id<MBContactPickerModelProtocol>)model
-//{
-//    if ([self.delegate respondsToSelector:@selector(contactCollectionView:didAddContact:)])
-//    {
-//        [self.delegate contactCollectionView:contactCollectionView didAddContact:model];
-//    }
-//    }
-//
-//    - (void)contactCollectionView:(MBContactCollectionView*)contactCollectionView didSelectContact:(id<MBContactPickerModelProtocol>)model
-//{
-//    if ([self.delegate respondsToSelector:@selector(contactCollectionView:didSelectContact:)])
-//    {
-//        [self.delegate contactCollectionView:contactCollectionView didSelectContact:model];
-//    }
-//    }
-//
-//
-//    - (void) contactCollectionView:(MBContactCollectionView*)contactCollectionView didEnterCustomContact:(NSString*)text needFocus:(BOOL)focus
-//{
-//    if ([self.delegate respondsToSelector:@selector(contactPicker:didEnterCustomText:needFocus:)])
-//    {
-//        [self.delegate contactPicker:self didEnterCustomText:text needFocus:focus];
-//        [self hideSearchTableView];
-//    }
-//    }
-//
-//    - (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model needFocus:(BOOL)focus
-//{
-//    [self.contactCollectionView addToSelectedContacts:model withCompletion:^{
-//        if (focus) {
-//        [self becomeFirstResponder];
-//        }
-//        }];
-//}
-//
-//#pragma mark - UIResponder
-//
-//- (BOOL)canBecomeFirstResponder
-//{
-//    return NO;
-//    }
-//
-//    - (BOOL)becomeFirstResponder
-//        {
-//            if (!self.enabled)
-//            {
-//                return NO;
-//            }
-//
-//            if (![self isFirstResponder])
-//            {
-//                if (self.contactCollectionView.indexPathOfSelectedCell)
-//                {
-//                    [self.contactCollectionView scrollToItemAtIndexPath:self.contactCollectionView.indexPathOfSelectedCell atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
-//                }
-//                else
-//                {
-//                    [self.contactCollectionView setFocusOnEntry];
-//                }
-//            }
-//
-//            return YES;
-//        }
-//
-//        - (BOOL)resignFirstResponder
-//            {
-//                [super resignFirstResponder];
-//                return [self.contactCollectionView resignFirstResponder];
-//}
-//
-//#pragma mark Helper Methods
-//
-//- (void)showSearchTableView
-//{
-//    self.searchTableView.hidden = NO;
-//    if ([self.delegate respondsToSelector:@selector(didShowFilteredContactsForContactPicker:)])
-//    {
-//        [self.delegate didShowFilteredContactsForContactPicker:self];
-//    }
-//    }
-//
-//    - (void)hideSearchTableView
-//        {
-//            self.searchTableView.hidden = YES;
-//            if ([self.delegate respondsToSelector:@selector(didHideFilteredContactsForContactPicker:)])
-//            {
-//                [self.delegate didHideFilteredContactsForContactPicker:self];
-//            }
-//        }
-//
-//        - (void)updateCollectionViewHeightConstraints
-//            {
-//                for (NSLayoutConstraint *constraint in self.constraints)
-//                {
-//                    if (constraint.firstItem == self.contactCollectionView)
-//                    {
-//                        if (constraint.firstAttribute == NSLayoutAttributeHeight)
-//                        {
-//                            if (constraint.relation == NSLayoutRelationGreaterThanOrEqual)
-//                            {
-//                                constraint.constant = self.cellHeight;
-//                            }
-//                            else if (constraint.relation == NSLayoutRelationLessThanOrEqual)
-//                            {
-//                                constraint.constant = self.currentContentHeight;
-//                            }
-//                        }
-//                    }
-//                }
-//}
-//
-//@end
+    func reloadData() {
+        self.contactCollectionView.selectedContacts.removeAll()
+        
+        if let delegate = self.datasource, delegate.responds(to: #selector(ContactPickerDataSource.selectedContactModelsForContactPicker(contactPickerView:))) {
+            self.contactCollectionView.selectedContacts.append(contentsOf:delegate.selectedContactModelsForContactPicker(contactPickerView: self))
+        }
+        self.contacts = self.datasource?.contactModelsForContactPicker(contactPickerView: self) ?? [ContactPickerModelProtocol]()
+        self.contactCollectionView.reloadData()
+        
+        self.layoutIfNeeded()
+        self.contactCollectionView.layoutIfNeeded()
+        self.contactCollectionView.scrollToEntryAnimated(animated: false, onComplete: nil)
+        self.hideSearchTableView()
+    }
+    
+    //
+    //#pragma mark - Properties
+    //
+    var prompt : String {
+        get {
+            return self._prompt
+        }
+        set {
+            self._prompt = newValue
+            self.contactCollectionView.prompt = self._prompt
+        }
+    }
+
+    var maxVisibleRows: CGFloat {
+        get {
+            return self._maxVisibleRows
+        }
+        set {
+            self._maxVisibleRows = newValue
+            self.contactCollectionView.collectionViewLayout.invalidateLayout()
+        }
+    }
+
+
+    var currentContentHeight : CGFloat {
+        get {
+            let minimumSizeWithContent = max(CGFloat(self.cellHeight), self.contactCollectionViewContentSize.height)
+            let maximumSize = self.maxVisibleRows * CGFloat(self.cellHeight)
+            return min(minimumSizeWithContent, maximumSize)
+        }
+    }
+
+    var enabled: Bool {
+        get {
+            return self._enabled
+        }
+        set {
+            self._enabled = newValue
+            self.contactCollectionView.allowsSelection = newValue
+            self.contactCollectionView.allowsTextInput = newValue
+            
+            if (!newValue) {
+                self.resignFirstResponder()
+            }
+        }
+    }
+    
+    var showPrompt: Bool {
+        get {
+            return self._showPrompt
+        }
+        set {
+            self._showPrompt = newValue
+            self.contactCollectionView.showPrompt = newValue
+        }
+    }
+
+    
+    func addToSelectedContacts(model: ContactPickerModelProtocol, needFocus focus: Bool) {
+        self.contactCollectionView.addToSelectedContacts(model: model) {
+            if focus {
+                self.becomeFirstResponder()
+            }
+        }
+    }
+
+    
+    func addToSelectedContacts(model: ContactPickerModelProtocol, withCompletion completion: ContactPickerComplete?) {
+        self.contactCollectionView.addToSelectedContacts(model: model, withCompletion: completion)
+    }
+    
+    //
+    //#pragma mark - UITableViewDataSource
+    //
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.filteredContacts.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier, for: indexPath) as! ContactsTableViewCell
+        
+        if (self.filteredContacts.count > indexPath.row) {
+            let model = self.filteredContacts[indexPath.row] as! ContactVO
+            cell.contactEmailLabel.text = model.contactSubtitle
+            cell.contactNameLabel.text = model.contactTitle
+        }
+        return cell
+    }
+    
+    
+    //
+    //#pragma mark - UITableViewDelegate
+    //
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let model = self.filteredContacts[indexPath.row]
+        self.hideSearchTableView()
+        self.contactCollectionView.addToSelectedContacts(model: model, withCompletion: nil)
+    }
+    
+    //
+    //#pragma mark - UIResponder
+    //
+    override var canBecomeFirstResponder: Bool {
+        return false
+    }
+    
+    override func becomeFirstResponder() -> Bool {
+        if !self.enabled {
+            return false
+        }
+        
+        if !self.isFirstResponder {
+            if let index = self.contactCollectionView.indexPathOfSelectedCell {
+                self.contactCollectionView.scrollToItem(at: index, at: UICollectionViewScrollPosition(rawValue: 0), animated: true)
+            } else {
+                self.contactCollectionView.setFocusOnEntry()
+            }
+        }
+        return true
+    }
+    
+    override func resignFirstResponder() -> Bool {
+        super.resignFirstResponder()
+        
+        return self.contactCollectionView.resignFirstResponder()
+    }
+    
+    //
+    //#pragma mark Helper Methods
+    //
+    func showSearchTableView() {
+        self.searchTableView.isHidden = false
+        if let delegate = self.delegate, delegate.responds(to: #selector(ContactPickerDelegate.didShowFilteredContactsForContactPicker(contactPicker:))) {
+            delegate.didShowFilteredContactsForContactPicker!(contactPicker: self)
+        }
+    }
+    
+    func hideSearchTableView() {
+        self.searchTableView.isHidden = true
+
+        if let delegate = self.delegate, delegate.responds(to: #selector(ContactPickerDelegate.didHideFilteredContactsForContactPicker(contactPicker:))) {
+            delegate.didHideFilteredContactsForContactPicker!(contactPicker: self)
+        }
+    }
+    
+    func updateCollectionViewHeightConstraints() {
+        for constraint in self.constraints {
+            if let firstItem = constraint.firstItem as? ContactCollectionView, firstItem == self.contactCollectionView {
+                if constraint.firstAttribute == .height {
+                    if constraint.relation == .greaterThanOrEqual {
+                        constraint.constant = CGFloat( self.cellHeight )
+                    } else if constraint.relation == .lessThanOrEqual {
+                        constraint.constant = self.currentContentHeight
+                    }
+                }
+            }
+        }
+    }
 
 }
 
-//extension ContactPicker : UITableViewDataSource, UITableViewDelegate, MBContactCollectionViewDelegate {
 //
-//}
+//#pragma mark - ContactCollectionViewDelegate
 //
+extension ContactPicker : ContactCollectionViewDelegate {
+    func contactCollectionView(contactCollectionView: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
+        if !__CGSizeEqualToSize(self.contactCollectionViewContentSize, newSize) {
+            self.contactCollectionViewContentSize = newSize
+            self.updateCollectionViewHeightConstraints()
+            
+            if let delegate = self.delegate, delegate.responds(to: #selector(ContactPickerDelegate.contactPicker(contactPicker:didUpdateContentHeightTo:))) {
+                delegate.contactPicker!(contactPicker: self, didUpdateContentHeightTo: self.currentContentHeight)
+            }
+        }
+    }
+    
+    func contactCollectionView(contactCollectionView: ContactCollectionView, entryTextDidChange text: String) {
+    
+        if text == " " {
+            self.hideSearchTableView()
+        }
+        else
+        {
+            self.contactCollectionView.collectionViewLayout.invalidateLayout()
+            
+            self.contactCollectionView.performBatchUpdates({
+                self.layoutIfNeeded()
+            }) { (finished) in
+                self.contactCollectionView.setFocusOnEntry()
+            }
+            self.showSearchTableView()
+            
+            let searchString = text.trimmingCharacters(in: NSCharacterSet.whitespaces)
+            
+            
+            let predicate : NSPredicate!
+            
+            //TODO:: fix this part later not now
+//            if ([self.delegate respondsToSelector:@selector(customFilterPredicate:)])
+//            {
+//                predicate = [self.delegate customFilterPredicate:searchString]
+//            } else
+            if self.allowsCompletionOfSelectedContacts {
+                predicate = NSPredicate(format: "contactTitle contains[cd] %@", searchString)
+            } else {
+                predicate = NSPredicate(format: "contactTitle contains[cd] %@ && !SELF IN %@",
+                                        searchString,
+                                        self.contactCollectionView.selectedContacts)
+            }
+            self.filteredContacts = self.contacts.filter{ predicate.evaluate(with: $0) }
+            
+            if self.hideWhenNoResult && self.filteredContacts.count <= 0 {
+                if !self.searchTableView.isHidden {
+                    self.hideSearchTableView()
+                }
+            } else {
+                if self.searchTableView.isHidden {
+                    self.showSearchTableView()
+                }
+                self.searchTableView.reloadData()
+            }
+        }
+    
+    }
+    
+    func contactCollectionView(contactCollectionView: ContactCollectionView, didEnterCustomContact text: String, needFocus focus: Bool) {
+        if let delegate = self.delegate, delegate.responds(to: #selector(ContactPickerDelegate.contactPicker(contactPicker:didEnterCustomText:needFocus:))) {
+            delegate.contactPicker!(contactPicker: self, didEnterCustomText: text, needFocus: focus)
+        }
+        self.hideSearchTableView()
+    }
+    
+    func contactCollectionView(contactCollectionView: ContactCollectionView, didSelectContact model: ContactPickerModelProtocol) {
+        if let delegate = self.delegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didSelectContact:))) {
+            delegate.contactCollectionView!(contactCollectionView: contactCollectionView, didSelectContact: model)
+        }
+    }
+    
+    func contactCollectionView(contactCollectionView: ContactCollectionView, didAddContact model: ContactPickerModelProtocol) {
+        if let delegate = self.delegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didAddContact:))) {
+            delegate.contactCollectionView!(contactCollectionView: contactCollectionView, didAddContact: model)
+        }
+        
+    }
+    
+    func contactCollectionView(contactCollectionView: ContactCollectionView, didRemoveContact model: ContactPickerModelProtocol) {
+        if let delegate = self.delegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didRemoveContact:))) {
+            delegate.contactCollectionView!(contactCollectionView: contactCollectionView, didRemoveContact: model)
+        }
+    }
+    
+    func contactCollectionView(contactCollectionView: ContactCollectionView, didEnterCustomText text: String) {
+        
+    }
+    
+}
 

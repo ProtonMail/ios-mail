@@ -14,6 +14,7 @@ typealias CreateUserBlock = (Bool, Bool, String, Error?) -> Void
 typealias GenerateKey = (Bool, String?, NSError?) -> Void
 typealias SendVerificationCodeBlock = (Bool, NSError?) -> Void
 
+
 // MARK : update right swipe action
 class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     

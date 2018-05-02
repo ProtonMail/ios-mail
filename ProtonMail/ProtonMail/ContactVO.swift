@@ -12,17 +12,35 @@
 
 import Foundation
 
-public class ContactVO: NSObject, MBContactPickerModelProtocol {
+public class ContactVO: NSObject, ContactPickerModelProtocol {
     public struct Attributes {
         static public let email = "email"
     }
 
-    public var contactTitle: String!
-    public var contactSubtitle: String!
-    public var contactId: String!
+    public var title: String
+    public var subtitle: String
+    public var contactId: String
     public var name: String!
     @objc public var email: String!
     public var isProtonMailContact: Bool = false
+    
+    //
+    var contactTitle : String {
+        get {
+            return title
+        }
+    }
+    var contactSubtitle : String? {
+        get {
+            return nil
+        }
+    }
+    var contactImage : UIImage? {
+        get {
+            return nil
+        }
+    }
+
     
     public init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool = false) {
         self.contactId = id
@@ -30,8 +48,8 @@ public class ContactVO: NSObject, MBContactPickerModelProtocol {
         self.email = email
         self.isProtonMailContact = isProtonMailContact
         
-        self.contactTitle = !name.isEmpty && name != " " ? name : email
-        self.contactSubtitle = email
+        self.title = !name.isEmpty && name != " " ? name : email
+        self.subtitle = email
     }
     
     override public var description: String {

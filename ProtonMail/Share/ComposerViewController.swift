@@ -280,9 +280,9 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             self.composeView.ccContactPicker.reloadData()
             self.composeView.bccContactPicker.reloadData()
             
-            self.composeView.toContactPicker.contactCollectionView!.layoutIfNeeded()
-            self.composeView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
-            self.composeView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.composeView.toContactPicker.contactCollectionView.layoutIfNeeded()
+            self.composeView.bccContactPicker.contactCollectionView.layoutIfNeeded()
+            self.composeView.ccContactPicker.contactCollectionView.layoutIfNeeded()
             
             switch self.viewModel.messageAction!
             {
@@ -444,6 +444,7 @@ extension ComposerViewController : PasswordEncryptViewControllerDelegate {
 
 // MARK : - view extensions
 extension ComposerViewController : ComposeViewDelegate {
+
     func composeViewPickFrom(_ composeView: ComposeView) {
         var needsShow : Bool = false
         let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to, message: nil, preferredStyle: .actionSheet)
@@ -484,7 +485,7 @@ extension ComposerViewController : ComposeViewDelegate {
         }
     }
     
-    func ComposeViewDidSizeChanged(_ size: CGSize) {
+    func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {
         self.composeViewSize = size.height;
         if #available(iOS 11.0, *) {
             self.updateComposeFrame()
@@ -493,6 +494,7 @@ extension ComposerViewController : ComposeViewDelegate {
             self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
         }
         self.updateContentLayout(true)
+        self.webView.scrollView.isScrollEnabled = !showPicker
     }
     
     func ComposeViewDidOffsetChanged(_ offset: CGPoint){
@@ -557,7 +559,7 @@ extension ComposerViewController : ComposeViewDelegate {
         }
     }
     
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker) {
+    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker) {
         if (picker == composeView.toContactPicker) {
             self.viewModel.toSelectedContacts.append(contact)
         } else if (picker == composeView.ccContactPicker) {
@@ -567,7 +569,7 @@ extension ComposerViewController : ComposeViewDelegate {
         }
     }
     
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker) {
+    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker:ContactPicker) {
         // here each logic most same, need refactor later
         if (picker == composeView.toContactPicker) {
             var contactIndex = -1
@@ -609,12 +611,12 @@ extension ComposerViewController : ComposeViewDelegate {
 
 // MARK : compose data source
 extension ComposerViewController : ComposeViewDataSource {
-    
-    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [Any]! {
+
+    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol] {
         return contacts
     }
     
-    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: MBContactPicker) ->  [Any]! {
+    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) ->  [ContactPickerModelProtocol] {
         var selectedContacts: [ContactVO] = [ContactVO]()
         if (picker == composeView.toContactPicker) {
             selectedContacts = self.viewModel.toSelectedContacts

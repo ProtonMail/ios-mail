@@ -9,27 +9,11 @@
 import UIKit
 
 
-protocol ContactPickerModelProtocol {
+@objc protocol ContactPickerModelProtocol {
     
-//    @required
-//
-//    @property (readonly, nonatomic, copy) NSString *contactTitle;
-//
-//    @optional
-//
-//    @property (readonly, nonatomic, copy) NSString *contactSubtitle;
-//    @property (readonly, nonatomic) UIImage *contactImage;
-//
-//    @end
-}
-
-
-
-struct ContactModel : ContactPickerModelProtocol {
-
-    var contactTitle : String
+    var contactTitle : String { get }
     
-    var contactSubtitle : String
-    
-    var contactImage : UIImage
+    //@optional
+    var contactSubtitle : String? { get }
+    var contactImage : UIImage? {get}
 }
