@@ -693,6 +693,8 @@ class SettingTableViewController: ProtonMailViewController {
                         alertController.addAction(UIAlertAction(title: l.description, style: .default, handler: { (action) -> Void in
                             let _ = self.navigationController?.popViewController(animated: true)
                             LanguageManager.saveLanguage(byCode: l.code)
+                            LocalizedString.reset()
+                            
                             self.updateTitle()
                             tableView.reloadData()
                         }))

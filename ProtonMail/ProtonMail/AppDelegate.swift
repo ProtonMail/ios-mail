@@ -129,7 +129,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
                     }
                 }
             }
-            return UIInterfaceOrientationMask.all
+            return .all
         }
     }
     

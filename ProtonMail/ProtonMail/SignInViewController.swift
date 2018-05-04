@@ -112,6 +112,7 @@ class SignInViewController: ProtonMailViewController {
                 alertController.addAction(UIAlertAction(title: l.description, style: .default, handler: { (action) -> Void in
                     let _ = self.navigationController?.popViewController(animated: true)
                     LanguageManager.saveLanguage(byCode: l.code)
+                    LocalizedString.reset()
                     UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
                         self.setupTextFields()
                         self.setupButtons()
