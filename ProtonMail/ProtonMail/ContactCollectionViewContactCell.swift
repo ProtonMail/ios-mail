@@ -53,7 +53,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         contactLabel.translatesAutoresizingMaskIntoConstraints = false;
         self.contactTitleLabel = contactLabel
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(8)-[contactLabel]-(8)-|",
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(2)-[contactLabel]-(2)-|",
                                                            options: NSLayoutFormatOptions(rawValue: 0),
                                                            metrics: nil,
                                                            views: ["contactLabel": contactLabel]))
@@ -98,13 +98,18 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     }
     
     func widthForCellWithContact(model: ContactPickerModelProtocol) -> CGFloat {
-        let font = self.contactTitleLabel.font!
-        let s = CGSize(width: Double.greatestFiniteMagnitude, height: Double.greatestFiniteMagnitude)
-        let size = NSString(string: model.contactTitle).boundingRect(with: s,
-                                                                     options: NSStringDrawingOptions(rawValue: 0),
-                                                                     attributes: [NSAttributedStringKey.font : font],
-                                                                     context: nil).size
-        return size.width.rounded(.up) + 20.0
+//        let font = self.contactTitleLabel.font!
+//        let s = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+//        let size = NSString(string: model.contactTitle).boundingRect(with: s,
+//                                                                     options: [.usesLineFragmentOrigin, .usesFontLeading],
+//                                                                     attributes: [NSAttributedStringKey.font : font],
+//                                                                     context: nil).size
+//        let size2 = NSString(string: model.contactTitle).size(withAttributes: [NSAttributedStringKey.font : font])
+//
+//        let size3 = model.contactTitle.size(withAttributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0)])
+//
+        let size = model.contactTitle.size(withAttributes: [NSAttributedStringKey.font:  Fonts.h6.light])
+        return size.width.rounded(.up) + 20
     }
 }
 

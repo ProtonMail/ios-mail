@@ -59,13 +59,13 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
         textField.spellCheckingType = .no
         textField.keyboardType = .emailAddress
         
-//#if DEBUG_BORDERS
-//        self.layer.borderColor = UIColor.orange.cgColor
-//        self.layer.borderWidth = 1.0;
-//        textField.layer.borderColor = UIColor.green.cgColor
-//        textField.layer.borderWidth = 2.0;
-//#endif
-        
+#if DEBUG_BORDERS
+        self.layer.borderColor = UIColor.orange.cgColor
+        self.layer.borderWidth = 1.0;
+        textField.layer.borderColor = UIColor.green.cgColor
+        textField.layer.borderWidth = 2.0;
+#endif
+
         self.addSubview(textField)
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[textField]|",
@@ -149,18 +149,22 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
     }
     
     func widthForText(text: String) -> CGFloat {
-        guard let font = self.contactEntryTextField?.font else {
-            return 0.0
-        }
+        //        guard let font = self.contactEntryTextField?.font else {
+        //            return 0.0
+        //        }
+        //
+        //        let font = Fonts.h6.light
+        //
+        //        let s = CGSize(width: Double.greatestFiniteMagnitude, height: Double.greatestFiniteMagnitude)
+        //        let size = NSString(string: text).boundingRect(with: s,
+        //                                                       options: NSStringDrawingOptions.usesLineFragmentOrigin,
+        //                                                       attributes: [NSAttributedStringKey.font : font],
+        //                                                       context: nil).size
+        //        return size.width.rounded(.up)
         
-        let s = CGSize(width: Double.greatestFiniteMagnitude, height: Double.greatestFiniteMagnitude)
-        let size = NSString(string: text).boundingRect(with: s,
-                                                       options: NSStringDrawingOptions.usesLineFragmentOrigin,
-                                                       attributes: [NSAttributedStringKey.font : font],
-                                                       context: nil).size
-        return size.width.rounded(.up)
+        return 40  //this will avoid the text input disapeared
     }
-
+    
 }
 
 

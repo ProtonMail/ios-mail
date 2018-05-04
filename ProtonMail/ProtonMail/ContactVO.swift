@@ -32,7 +32,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     }
     var contactSubtitle : String? {
         get {
-            return nil
+            return subtitle
         }
     }
     var contactImage : UIImage? {

@@ -296,7 +296,7 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier, for: indexPath) as! ContactsTableViewCell
         
         if (self.filteredContacts.count > indexPath.row) {
-            let model = self.filteredContacts[indexPath.row] as! ContactVO
+            let model = self.filteredContacts[indexPath.row]
             cell.contactEmailLabel.text = model.contactSubtitle
             cell.contactNameLabel.text = model.contactTitle
         }
@@ -408,15 +408,12 @@ extension ContactPicker : ContactCollectionViewDelegate {
             
             let searchString = text.trimmingCharacters(in: NSCharacterSet.whitespaces)
             
-            
+
             let predicate : NSPredicate!
             
-            //TODO:: fix this part later not now
-//            if ([self.delegate respondsToSelector:@selector(customFilterPredicate:)])
-//            {
-//                predicate = [self.delegate customFilterPredicate:searchString]
-//            } else
-            if self.allowsCompletionOfSelectedContacts {
+            if let delegate = self.delegate, delegate.responds(to: #selector(ContactPickerDelegate.customFilterPredicate(searchString:))) {
+                predicate = delegate.customFilterPredicate!(searchString: searchString)
+            } else if self.allowsCompletionOfSelectedContacts {
                 predicate = NSPredicate(format: "contactTitle contains[cd] %@", searchString)
             } else {
                 predicate = NSPredicate(format: "contactTitle contains[cd] %@ && !SELF IN %@",

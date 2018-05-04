@@ -75,10 +75,10 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         self._showPrompt = true
         
         let layout = self.collectionViewLayout as! ContactCollectionViewFlowLayout
-        layout.minimumInteritemSpacing = 5
-        layout.minimumLineSpacing = 1
-        layout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10)
-        
+        layout.minimumInteritemSpacing = 0 //5
+        layout.minimumLineSpacing = 0 // 1
+        layout.sectionInset = UIEdgeInsetsMake(0, 6, 0, 6)
+
         self.prototypeCell = ContactCollectionViewContactCell()
         
         self.allowsMultipleSelection = false

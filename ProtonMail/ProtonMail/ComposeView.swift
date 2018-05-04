@@ -318,9 +318,6 @@ class ComposeView: UIViewController {
     internal func notifyViewSize(_ animation : Bool) {
         UIView.animate(withDuration: animation ? self.kAnimationDuration : 0, delay:0, options: UIViewAnimationOptions(), animations: {
             self.updateViewSize()
-            PMLog.D("\(self.buttonView.frame)")
-            PMLog.D("\(self.expirationView.frame)")
-            PMLog.D("\(self.passwordView.frame)")
             let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height + self.pickerHeight)
             self.delegate?.ComposeViewDidSizeChanged(size, showPicker: self.pickerHeight > 0.0)
             }, completion: nil)
