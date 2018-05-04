@@ -85,7 +85,10 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         self.allowsSelection = true
         self.backgroundColor = UIColor(hexColorCode: "#FFFFFF") //UIColorFromRGB(0xFCFEFF)
         
-        self.register(ContactCollectionViewContactCell.self, forCellWithReuseIdentifier: "ContactCell")
+//        self.register(ContactCollectionViewContactCell.self, forCellWithReuseIdentifier: "ContactCell")
+        self.register(UINib.init(nibName: "ContactCollectionViewContactCell", bundle: nil),
+                      forCellWithReuseIdentifier: "ContactCell")
+        
         self.register(ContactCollectionViewEntryCell.self, forCellWithReuseIdentifier:"ContactEntryCell")
         self.register(ContactCollectionViewPromptCell.self, forCellWithReuseIdentifier:"ContactPromptCell")
         
@@ -430,8 +433,12 @@ extension ContactCollectionView : UICollectionViewDelegateFlowLayout {
             let prototype = ContactCollectionViewEntryCell()
             widthForItem = max(50, prototype.widthForText(text: self.searchText))
         } else {
-            let model = self.selectedContacts[self.selectedContactIndexFromIndexPath(indexPath: indexPath)]
-            widthForItem = self.prototypeCell.widthForCellWithContact(model: model)
+            if let cell = self.cellForItem(at: indexPath) as? ContactCollectionViewContactCell {
+                widthForItem = cell.widthForCell()
+            } else {
+                let model = self.selectedContacts[self.selectedContactIndexFromIndexPath(indexPath: indexPath)]
+                widthForItem = self.prototypeCell.widthForCellWithContact(model: model)
+            }
         }
         return CGSize(width: min(self.maxContentWidth, widthForItem), height: CGFloat(self.cellHeight))
     }

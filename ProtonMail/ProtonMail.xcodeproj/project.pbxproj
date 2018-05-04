@@ -760,6 +760,14 @@
 		753745041D6B7E8F00682C5A /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
 		753745071D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */; };
 		7537450A1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */; };
+		75381787209C2B77004E97C0 /* ContactCollectionViewContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75381785209C2B77004E97C0 /* ContactCollectionViewContactCell.swift */; };
+		75381788209C2B77004E97C0 /* ContactCollectionViewContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75381785209C2B77004E97C0 /* ContactCollectionViewContactCell.swift */; };
+		75381789209C2B77004E97C0 /* ContactCollectionViewContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75381785209C2B77004E97C0 /* ContactCollectionViewContactCell.swift */; };
+		7538178A209C2B78004E97C0 /* ContactCollectionViewContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75381785209C2B77004E97C0 /* ContactCollectionViewContactCell.swift */; };
+		7538178B209C2B78004E97C0 /* ContactCollectionViewContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75381786209C2B77004E97C0 /* ContactCollectionViewContactCell.xib */; };
+		7538178C209C2B78004E97C0 /* ContactCollectionViewContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75381786209C2B77004E97C0 /* ContactCollectionViewContactCell.xib */; };
+		7538178D209C2B78004E97C0 /* ContactCollectionViewContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75381786209C2B77004E97C0 /* ContactCollectionViewContactCell.xib */; };
+		7538178E209C2B78004E97C0 /* ContactCollectionViewContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75381786209C2B77004E97C0 /* ContactCollectionViewContactCell.xib */; };
 		753934C31FAA91CF00EBFBA5 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
 		753934C41FAA91D000EBFBA5 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
 		753934C71FAB961300EBFBA5 /* ContactEditAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753934C61FAB961200EBFBA5 /* ContactEditAddressCell.swift */; };
@@ -1202,10 +1210,6 @@
 		75BF26712093D15200BE7574 /* ContactCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF266F2093D15200BE7574 /* ContactCollectionView.swift */; };
 		75BF26722093D15200BE7574 /* ContactCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF266F2093D15200BE7574 /* ContactCollectionView.swift */; };
 		75BF26732093D15200BE7574 /* ContactCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF266F2093D15200BE7574 /* ContactCollectionView.swift */; };
-		75BF26752093D39800BE7574 /* ContactCollectionViewContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF26742093D39800BE7574 /* ContactCollectionViewContactCell.swift */; };
-		75BF26762093D39800BE7574 /* ContactCollectionViewContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF26742093D39800BE7574 /* ContactCollectionViewContactCell.swift */; };
-		75BF26772093D39800BE7574 /* ContactCollectionViewContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF26742093D39800BE7574 /* ContactCollectionViewContactCell.swift */; };
-		75BF26782093D39800BE7574 /* ContactCollectionViewContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF26742093D39800BE7574 /* ContactCollectionViewContactCell.swift */; };
 		75BF267A2093D3FC00BE7574 /* ContactCollectionViewEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF26792093D3FC00BE7574 /* ContactCollectionViewEntryCell.swift */; };
 		75BF267B2093D3FC00BE7574 /* ContactCollectionViewEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF26792093D3FC00BE7574 /* ContactCollectionViewEntryCell.swift */; };
 		75BF267C2093D3FC00BE7574 /* ContactCollectionViewEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF26792093D3FC00BE7574 /* ContactCollectionViewEntryCell.swift */; };
@@ -1741,6 +1745,8 @@
 		753745031D6B7E8F00682C5A /* APIError+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIError+Auth.swift"; sourceTree = "<group>"; };
 		753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ResponseTransformer.swift"; sourceTree = "<group>"; };
 		753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ErrorExtension.swift"; sourceTree = "<group>"; };
+		75381785209C2B77004E97C0 /* ContactCollectionViewContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewContactCell.swift; sourceTree = "<group>"; };
+		75381786209C2B77004E97C0 /* ContactCollectionViewContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactCollectionViewContactCell.xib; sourceTree = "<group>"; };
 		753934C61FAB961200EBFBA5 /* ContactEditAddressCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditAddressCell.swift; sourceTree = "<group>"; };
 		753A36161EF250D300032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		753A36171EF250D400032667 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
@@ -1930,7 +1936,6 @@
 		75BF2665209286FB00BE7574 /* ContactPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPicker.swift; sourceTree = "<group>"; };
 		75BF266820928ECC00BE7574 /* ContactModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactModel.swift; sourceTree = "<group>"; };
 		75BF266F2093D15200BE7574 /* ContactCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionView.swift; sourceTree = "<group>"; };
-		75BF26742093D39800BE7574 /* ContactCollectionViewContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewContactCell.swift; sourceTree = "<group>"; };
 		75BF26792093D3FC00BE7574 /* ContactCollectionViewEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewEntryCell.swift; sourceTree = "<group>"; };
 		75BF267E2093D45B00BE7574 /* ContactCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		75BF26832093D4AA00BE7574 /* ContactCollectionViewPromptCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewPromptCell.swift; sourceTree = "<group>"; };
@@ -2980,7 +2985,8 @@
 				75BF2665209286FB00BE7574 /* ContactPicker.swift */,
 				75BF266F2093D15200BE7574 /* ContactCollectionView.swift */,
 				75BF267E2093D45B00BE7574 /* ContactCollectionViewFlowLayout.swift */,
-				75BF26742093D39800BE7574 /* ContactCollectionViewContactCell.swift */,
+				75381785209C2B77004E97C0 /* ContactCollectionViewContactCell.swift */,
+				75381786209C2B77004E97C0 /* ContactCollectionViewContactCell.xib */,
 				75BF26792093D3FC00BE7574 /* ContactCollectionViewEntryCell.swift */,
 				75BF26832093D4AA00BE7574 /* ContactCollectionViewPromptCell.swift */,
 				75BF266820928ECC00BE7574 /* ContactModel.swift */,
@@ -3530,6 +3536,7 @@
 				75BA19991EC631A300153A1A /* SpamScoreWarningView.xib in Resources */,
 				75482B291F7F08C400B0BFFB /* LaunchScreen.xib in Resources */,
 				75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */,
+				7538178B209C2B78004E97C0 /* ContactCollectionViewContactCell.xib in Resources */,
 				759BBDC21BA0C586002608B5 /* LabelDisplayView.xib in Resources */,
 				7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */,
 				7599B1721CC8124300B2CB8D /* Localizable.strings in Resources */,
@@ -3614,6 +3621,7 @@
 				75482BDD1F7F09E100B0BFFB /* SharePinUnlockViewController.xib in Resources */,
 				75482BDF1F7F09E100B0BFFB /* phone_country_code.geojson in Resources */,
 				75482BE01F7F09E100B0BFFB /* editor.css in Resources */,
+				7538178C209C2B78004E97C0 /* ContactCollectionViewContactCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3643,6 +3651,7 @@
 				75E5F7A61F295DFD00001B4F /* SharePinUnlockViewController.xib in Resources */,
 				7512AA231F17FB3400D84955 /* phone_country_code.geojson in Resources */,
 				7512AA201F17FB2F00D84955 /* editor.css in Resources */,
+				7538178E209C2B78004E97C0 /* ContactCollectionViewContactCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3672,6 +3681,7 @@
 				7508F8042086BB7500EFE237 /* InfoPlist.strings in Resources */,
 				7547175F206489EC00C3F21D /* ZSSRichTextEditor.js in Resources */,
 				75DE7D891CAAEA4900F5443E /* MailboxRateReviewCell.xib in Resources */,
+				7538178D209C2B78004E97C0 /* ContactCollectionViewContactCell.xib in Resources */,
 				75187BB21CAC54DD00C84382 /* phone_country_code.geojson in Resources */,
 				75E49F0A1CAB220600235ACC /* flags.bundle in Resources */,
 				75DE7D8A1CAAEA4900F5443E /* ExpirationView.xib in Resources */,
@@ -4145,6 +4155,7 @@
 				756489941B7E77AC007EA207 /* MenuLabelViewCell.swift in Sources */,
 				7567B0791B33880500A72A1E /* APIServiceResponse.swift in Sources */,
 				07CFC9D41A81A2B0007A72B7 /* Attachment.swift in Sources */,
+				75381787209C2B77004E97C0 /* ContactCollectionViewContactCell.swift in Sources */,
 				075F0A541ABF5E3E00E6B9AE /* MessageAction.swift in Sources */,
 				752902A81EE5F71C00B46D36 /* LanguageManager.m in Sources */,
 				75A2F44C1C97D69800BF4306 /* ComposeErrorView.swift in Sources */,
@@ -4284,7 +4295,6 @@
 				75C916C4203ECE1C00A7FD1F /* ViewModelBase.swift in Sources */,
 				753E30A71F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */,
 				75C3C0802059FC0A0037471A /* UpgradeAlertViewController.swift in Sources */,
-				75BF26752093D39800BE7574 /* ContactCollectionViewContactCell.swift in Sources */,
 				7566E4FA1FC3B0880036B36B /* MenuViewModel.swift in Sources */,
 				758625D31CD80C6D0037DFA7 /* SettingsNavigationController.swift in Sources */,
 				07520CFC1AA67D38000D2175 /* PushNotificationService.swift in Sources */,
@@ -4733,7 +4743,6 @@
 				75BF266B20928EE800BE7574 /* ContactPicker.swift in Sources */,
 				75482B471F7F09E100B0BFFB /* String+Alert+Extension.swift in Sources */,
 				75482B481F7F09E100B0BFFB /* JKBCrypt.swift in Sources */,
-				75BF26762093D39800BE7574 /* ContactCollectionViewContactCell.swift in Sources */,
 				75482B491F7F09E100B0BFFB /* UIApplication+BadgeNumber+Share.swift in Sources */,
 				75482B4A1F7F09E100B0BFFB /* Header.swift in Sources */,
 				752800221FA7FFF3005F66A3 /* TimeInterval+Extension.swift in Sources */,
@@ -4756,6 +4765,7 @@
 				75482B5A1F7F09E100B0BFFB /* APIService+UserExtension.swift in Sources */,
 				75482B5B1F7F09E100B0BFFB /* AddressBookService.swift in Sources */,
 				7528003C1FA80109005F66A3 /* UIAlertAction+Extension.swift in Sources */,
+				75381788209C2B77004E97C0 /* ContactCollectionViewContactCell.swift in Sources */,
 				75482B5D1F7F09E100B0BFFB /* NSCoder+Extension.swift in Sources */,
 				75482B5F1F7F09E100B0BFFB /* MessageLocation.swift in Sources */,
 				75482B601F7F09E100B0BFFB /* UserAPI.swift in Sources */,
@@ -4907,7 +4917,6 @@
 				75BF266D20928EE900BE7574 /* ContactPicker.swift in Sources */,
 				752800291FA80049005F66A3 /* UIView+Extension.swift in Sources */,
 				753E5ABA1F181B7D0090C0F9 /* MessageQueue.swift in Sources */,
-				75BF26782093D39800BE7574 /* ContactCollectionViewContactCell.swift in Sources */,
 				75C7FF3C1F2FE20C00F15792 /* String+Alert+Extension.swift in Sources */,
 				7512AA5E1F18081200D84955 /* JKBCrypt.swift in Sources */,
 				75B431BF1F7AF66B009DD520 /* UIApplication+BadgeNumber+Share.swift in Sources */,
@@ -4930,6 +4939,7 @@
 				7512AA571F1806FD00D84955 /* AddressBookService.swift in Sources */,
 				7512AA281F17FD9D00D84955 /* NSCoder+Extension.swift in Sources */,
 				750AAEB41FA91E2200CBFCA3 /* ContactSectionHeadView.swift in Sources */,
+				7538178A209C2B78004E97C0 /* ContactCollectionViewContactCell.swift in Sources */,
 				7512AA051F17EAB800D84955 /* MessageLocation.swift in Sources */,
 				7512AA581F18072800D84955 /* UserAPI.swift in Sources */,
 				75921C931F747DF00028DAC9 /* MessageExtension.swift in Sources */,
@@ -5125,6 +5135,7 @@
 				75256C711F16DFBD00F2771E /* LabelEditViewModel.swift in Sources */,
 				75256C721F16DFBD00F2771E /* LabelEditingViewModelImpl.swift in Sources */,
 				7528000E1FA7FEF6005F66A3 /* NotificationCenter+KeyboardExtension.swift in Sources */,
+				75381789209C2B77004E97C0 /* ContactCollectionViewContactCell.swift in Sources */,
 				75256C731F16DFBD00F2771E /* FolderEditingViewModelImpl .swift in Sources */,
 				75256C741F16DFBD00F2771E /* LabelCreatingViewModelImple.swift in Sources */,
 				752800171FA7FEF6005F66A3 /* UIDevice+InfoExtension.swift in Sources */,
@@ -5267,7 +5278,6 @@
 				7528FFF01FA7FEF6005F66A3 /* ContactEditFieldCell.swift in Sources */,
 				75C3C0812059FC0A0037471A /* UpgradeAlertViewController.swift in Sources */,
 				75DE7CCA1CAAEA4900F5443E /* TouchIDCell.swift in Sources */,
-				75BF26772093D39800BE7574 /* ContactCollectionViewContactCell.swift in Sources */,
 				7566E4FB1FC3B0880036B36B /* MenuViewModel.swift in Sources */,
 				75DE7CCC1CAAEA4900F5443E /* SettingTableViewController.swift in Sources */,
 				7528FFF31FA7FEF6005F66A3 /* ContactEditPhoneCell.swift in Sources */,
