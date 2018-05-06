@@ -523,7 +523,8 @@ extension Message {
         newMessage.addressID = message.addressID
         newMessage.messageStatus = message.messageStatus
         newMessage.numAttachments = message.numAttachments
-        
+        newMessage.mimeType = message.mimeType
+
         if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
         }

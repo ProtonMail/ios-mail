@@ -28,8 +28,7 @@ class ChangePasswordViewController: UIViewController {
     
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var viewModel : ChangePWDViewModel!
-    func setViewModel(_ vm:ChangePWDViewModel) -> Void
-    {
+    func setViewModel(_ vm:ChangePWDViewModel) -> Void {
         self.viewModel = vm
     }
     
