@@ -12,6 +12,17 @@
 
 import Foundation
 
+import PromiseKit
+import AwaitKit
+
+enum PGPType : Int {
+    case none = 0 /// normal outgoing
+    case pgp_signed = 1 /// external pgp signed only
+    case pgp_encrypt_trusted_key = 2 /// external encrypted and signed with trusted key
+    case internal_normal = 3 /// protonmail normal keys
+    case internal_trusted_key = 4  /// trusted key
+}
+
 public class ContactVO: NSObject, ContactPickerModelProtocol {
     public struct Attributes {
         static public let email = "email"
@@ -40,7 +51,61 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             return nil
         }
     }
-
+    
+    var pgpType: PGPType = .none
+    
+    var lock: UIImage? {
+        get {
+            switch self.pgpType {
+            case .internal_normal:
+                return UIImage(named: "internal_normal")
+            case .internal_trusted_key:
+                return UIImage(named: "internal_trusted_key")
+            case .pgp_encrypt_trusted_key:
+                return UIImage(named: "pgp_encrypt_trusted_key")
+            case .pgp_signed:
+                return UIImage(named: "pgp_signed")
+            case .none:
+                return nil
+            }
+        }
+    }
+    
+    /**
+     This is a temp function here. the fetch action or network should be in a model manager class. TODO:: later
+     
+     - Parameter progress: in progress ()-> Void
+     - Parameter complete: complete ()-> Void
+     **/
+    func lockCheck(progress: () -> Void, complete: LockCheckComplete?) {
+        progress()
+        async {
+            let getEmail = UserEmailPubKeys(email: self.email).run()
+            let getContact = sharedContactDataService.fetch(byEmails: [self.email], context: nil)
+            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
+                //internal emails
+                if keyRes.recipientType == 1 {
+                    if let contact = contacts.first, contact.pgpKey != nil {
+                        self.pgpType = .internal_trusted_key
+                    } else {
+                        self.pgpType = .internal_normal
+                    }
+                } else {
+                    if let contact = contacts.first, contact.pgpKey != nil {
+                        if contact.encrypt {
+                            self.pgpType = .pgp_encrypt_trusted_key
+                        } else if contact.sign {
+                            self.pgpType = .pgp_signed
+                        }
+                    }
+                }
+                complete?()
+            }.catch({ (error) in
+                complete?()
+            })
+        }
+        
+    }
     
     public init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool = false) {
         self.contactId = id

@@ -25,6 +25,7 @@ protocol ComposeViewDelegate {
     func composeViewCollectExpirationData(_ composeView: ComposeView)
     
     func composeViewPickFrom(_ composeView: ComposeView)
+    
 }
 
 protocol ComposeViewDataSource {

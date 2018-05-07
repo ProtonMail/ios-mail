@@ -288,8 +288,6 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
                 }
                 self.setFocusOnEntry()
             }
-            
-            
         }
     }
     
@@ -550,7 +548,6 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
                 delegate.collectionView!(in: self, pasted: self.searchText, needFocus: true)
                 return
             }
-            
         }
         
         if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:entryTextDidChange:))) {

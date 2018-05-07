@@ -15,6 +15,10 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     
     @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var contactTitleLabel: UILabel!
+    @IBOutlet weak var lockImage: UIImageView!
+    @IBOutlet weak var activityView: UIActivityIndicatorView!
+    
+    
     /// contact model
     var _model: ContactPickerModelProtocol!
     
@@ -37,7 +41,6 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         self.backgroundColor = UIColor(hexColorCode: "#FCFEFF")
         
         self.contactTitleLabel.textColor = UIColor.blue
-//        self.contactTitleLabel.textAlignment = .center
         self.bgView.clipsToBounds = true
         self.bgView.layer.cornerRadius = 3.0
         self.bgView.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +55,6 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         let p = self.pickerFocused
         self.pickerFocused = p
     }
-    
     
     var pickerFocused: Bool {
         get {
@@ -80,12 +82,24 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         set {
             self._model = newValue
             self.contactTitleLabel.text = self._model.contactTitle
+            self.checkLock()
+        }
+    }
+    
+    internal func checkLock() {
+        self.model.lockCheck(progress: {
+            self.lockImage.isHidden = true
+            self.activityView.startAnimating()
+        }) {
+            self.lockImage.image = self.model.lock
+            self.lockImage.isHidden = false
+            self.activityView.stopAnimating()
         }
     }
     
     func widthForCell() -> CGFloat {
         let size = self._model.contactTitle.size(withAttributes: [NSAttributedStringKey.font:  Fonts.h6.light])
-        return size.width.rounded(.up) + 34 // 20 + self.contactTitleLabel.frame.height + 6
+        return size.width.rounded(.up) + 20 + 14 //34 // 20 + self.contactTitleLabel.frame.height + 6
     }
     
     func widthForCellWithContact(model: ContactPickerModelProtocol) -> CGFloat {
@@ -100,6 +114,6 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         //        let size3 = model.contactTitle.size(withAttributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0)])
         //
         let size = model.contactTitle.size(withAttributes: [NSAttributedStringKey.font:  Fonts.h6.light])
-        return size.width.rounded(.up) + 34 //20 + self.contactTitleLabel.frame.height + 6
+        return size.width.rounded(.up) + 20 + 14 //34 //20 + self.contactTitleLabel.frame.height + 6
     }
 }

@@ -11,10 +11,10 @@ import PromiseKit
 
 final class UserEmailPubKeys : ApiRequestNew<KeysResponse> {
     let email : String
-    
     init(email : String) {
         self.email = email
     }
+    
     override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = ["Email" : self.email]
         return out

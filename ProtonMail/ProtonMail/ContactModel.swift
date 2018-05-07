@@ -8,6 +8,8 @@
 
 import UIKit
 
+typealias LockCheckProgress = (() -> Void)
+typealias LockCheckComplete = (() -> Void)
 
 @objc protocol ContactPickerModelProtocol {
     
@@ -16,4 +18,8 @@ import UIKit
     //@optional
     var contactSubtitle : String? { get }
     var contactImage : UIImage? {get}
+    var lock: UIImage? {get}
+    
+    func lockCheck(progress: LockCheckProgress, complete: LockCheckComplete?)
+    
 }
