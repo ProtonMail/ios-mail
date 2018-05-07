@@ -146,7 +146,8 @@ extension String {
     }
     
     func ln2br() -> String {
-        return  self.replacingOccurrences(of: "\r\n", with: "<br />")
+        let out = self.replacingOccurrences(of: "\r\n", with: "<br />")
+        return out.replacingOccurrences(of: "\n", with: "<br />")
     }
     
     func rmln() -> String {

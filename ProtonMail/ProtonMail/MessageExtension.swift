@@ -401,7 +401,8 @@ extension Message {
                         body = body.multipartGetHtmlContent ()
                     }
                 } else if isEncrypted == 7 {
-                    body = body.ln2br() 
+                    body = body.ln2br()
+                    return body
                 }
                 if isPlainText() {
                     body = body.encodeHtml()
