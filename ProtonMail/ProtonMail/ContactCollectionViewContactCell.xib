@@ -27,7 +27,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pgp_mime_lock" translatesAutoresizingMaskIntoConstraints="NO" id="5jS-pN-hud">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5jS-pN-hud">
                                 <rect key="frame" x="4" y="27" width="14" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="14" id="CKz-YO-GFD"/>
@@ -64,12 +64,11 @@
                 <outlet property="activityView" destination="8RD-Va-u5I" id="D7d-br-W3Y"/>
                 <outlet property="bgView" destination="EnS-BP-AvT" id="ZhS-kz-Dmv"/>
                 <outlet property="contactTitleLabel" destination="mXc-qC-rLP" id="GUf-3E-Wzx"/>
+                <outlet property="leftConstant" destination="NOK-cy-4nN" id="eaa-b8-KaF"/>
                 <outlet property="lockImage" destination="5jS-pN-hud" id="Jl2-ny-ITQ"/>
+                <outlet property="widthConstant" destination="CKz-YO-GFD" id="yDx-Ue-GJP"/>
             </connections>
             <point key="canvasLocation" x="-378.5" y="-30"/>
         </collectionViewCell>
     </objects>
-    <resources>
-        <image name="pgp_mime_lock" width="14" height="14"/>
-    </resources>
 </document>

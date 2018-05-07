@@ -10,14 +10,14 @@ import UIKit
 
 
 class ContactCollectionViewContactCell: UICollectionViewCell {
-    
-//    var contactTitleLabel: UILabel!
-    
+
     @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var contactTitleLabel: UILabel!
     @IBOutlet weak var lockImage: UIImageView!
     @IBOutlet weak var activityView: UIActivityIndicatorView!
     
+    @IBOutlet weak var leftConstant: NSLayoutConstraint!
+    @IBOutlet weak var widthConstant: NSLayoutConstraint!
     
     /// contact model
     var _model: ContactPickerModelProtocol!
@@ -91,15 +91,29 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
         }) {
-            self.lockImage.image = self.model.lock
-            self.lockImage.isHidden = false
+            if let lock = self.model.lock {
+                self.lockImage.image = lock
+                self.lockImage.isHidden = false
+                self.leftConstant.constant = 4
+                self.widthConstant.constant = 14
+                
+                self.contactTitleLabel.textAlignment = .left
+            } else {
+                self.lockImage.image = nil
+                self.lockImage.isHidden = true
+                self.leftConstant.constant = 0
+                self.widthConstant.constant = 0
+                
+                self.contactTitleLabel.textAlignment = .center
+            }
             self.activityView.stopAnimating()
         }
     }
     
     func widthForCell() -> CGFloat {
         let size = self._model.contactTitle.size(withAttributes: [NSAttributedStringKey.font:  Fonts.h6.light])
-        return size.width.rounded(.up) + 20 + 14 //34 // 20 + self.contactTitleLabel.frame.height + 6
+        let offset = self.widthConstant.constant == 0 ? 0 : 14
+        return size.width.rounded(.up) + 20 + CGFloat(offset) //34 // 20 + self.contactTitleLabel.frame.height + 6
     }
     
     func widthForCellWithContact(model: ContactPickerModelProtocol) -> CGFloat {
