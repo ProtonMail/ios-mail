@@ -29,7 +29,7 @@ extension String {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = LocalString._message_sent_ok_desc
+        hud.detailsLabelText = self
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0
