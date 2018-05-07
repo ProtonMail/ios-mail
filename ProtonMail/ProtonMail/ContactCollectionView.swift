@@ -16,10 +16,10 @@ typealias ContactPickerComplete = (() -> Void)
     @objc optional func contactCollectionView (contactCollectionView: UICollectionView?, willChangeContentSizeTo newSize: CGSize)
     @objc optional func contactCollectionView (contactCollectionView: ContactCollectionView, entryTextDidChange text: String)
     @objc optional func contactCollectionView (contactCollectionView: ContactCollectionView, didEnterCustomContact text: String, needFocus focus: Bool)
+    @objc optional func collectionView(in: ContactCollectionView, pasted text: String, needFocus focus: Bool)
     @objc optional func contactCollectionView (contactCollectionView: ContactCollectionView, didSelectContact model: ContactPickerModelProtocol)
     @objc optional func contactCollectionView (contactCollectionView: ContactCollectionView, didAddContact model: ContactPickerModelProtocol)
     @objc optional func contactCollectionView (contactCollectionView: ContactCollectionView, didRemoveContact model: ContactPickerModelProtocol)
-    @objc optional func contactCollectionView (contactCollectionView: ContactCollectionView, didEnterCustomText text: String)
 }
 
 enum ContactCollectionViewSection : Int {
@@ -512,8 +512,13 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = textField.text ?? ""
-        let newString = text.replacingCharacters(in: Range(range, in: text)!, with: string)
         
+        if string == "," || string == ";" {
+            textField.resignFirstResponder()
+            return false
+        }
+        
+        let newString = text.replacingCharacters(in: Range(range, in: text)!, with: string)
         // If backspace is pressed and there isn't any text in the field, we want to select the
         // last selected contact and not let them delete the space we inserted (the space allows
         // us to catch the last backspace press - without it, we get no event!)
@@ -530,22 +535,35 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
             }
             return false
         }
-        
         return true
     }
     
     func textFieldDidChange(textField: UITextField) {
         self.searchText = textField.text
+
+        let left = self.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !left.isEmpty,
+            let right = UIPasteboard.general.string?.trimmingCharacters(in: .whitespacesAndNewlines),
+            left == right,
+            (left.contains(check: ";") || left.contains(check: ",")) {
+            if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.collectionView(in:pasted:needFocus:))) {
+                delegate.collectionView!(in: self, pasted: self.searchText, needFocus: true)
+                return
+            }
+            
+        }
+        
         if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:entryTextDidChange:))) {
             delegate.contactCollectionView!(contactCollectionView: self, entryTextDidChange: textField.text ?? "")
         }
+        
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didEnterCustomContact:needFocus:))) {
-            
-            //NSString *trimmedString = [textField.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]]
+            //NSString *  = [textField.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]]
             let trimmedString = (textField.text ?? "").trimmingCharacters(in: .whitespaces)
             if trimmedString.count > 0 {
                 delegate.contactCollectionView!(contactCollectionView: self, didEnterCustomContact: trimmedString, needFocus: true)
@@ -556,7 +574,6 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didEnterCustomContact:needFocus:))) {
-            
             //NSString *trimmedString = [textField.text stringByTrimmingCharactersInSet:
             let trimmedString = (textField.text ?? "").trimmingCharacters(in: .whitespaces)
             if trimmedString.count > 0 {

@@ -224,7 +224,7 @@ class ComposeView: UIViewController {
     @IBAction func expirationButtonTapped(_ sender: UIButton) {
         self.hidePasswordAndConfirmDoesntMatch()
         self.view.endEditing(true)
-        self.toContactPicker.becomeFirstResponder()
+        let _ = self.toContactPicker.becomeFirstResponder()
         UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
             self.passwordView.alpha = 0.0
             self.buttonView.alpha = 0.0
@@ -236,7 +236,7 @@ class ComposeView: UIViewController {
             self.subject.isUserInteractionEnabled = false
             
             self.showExpirationPicker()
-            self.toContactPicker.resignFirstResponder()
+            let _ = self.toContactPicker.resignFirstResponder()
         })
     }
     
@@ -597,6 +597,32 @@ extension ComposeView: ContactPickerDelegate {
     func contactPicker(contactPicker: ContactPicker, didEnterCustomText text: String, needFocus focus: Bool) {
         let customContact = ContactVO(id: "", name: text, email: text)
         contactPicker.addToSelectedContacts(model: customContact, needFocus: focus)
+    }
+    
+    func contactPicker(picker: ContactPicker, pasted text: String, needFocus focus: Bool) {
+        
+        if text.contains(check: ",") {
+            let cusTexts = text.split(separator: ",")
+            for cusText in cusTexts {
+                let trimmed = cusText.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !trimmed.isEmpty {
+                    let customContact = ContactVO(id: "", name: trimmed, email: trimmed)
+                    picker.addToSelectedContacts(model: customContact, needFocus: focus)
+                }
+            }
+        } else if text.contains(check: ";") {
+            let cusTexts = text.split(separator: ";")
+            for cusText in cusTexts {
+                let trimmed = cusText.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !trimmed.isEmpty {
+                    let customContact = ContactVO(id: "", name: trimmed, email: trimmed)
+                    picker.addToSelectedContacts(model: customContact, needFocus: focus)
+                }
+            }
+        } else {
+            let customContact = ContactVO(id: "", name: text, email: text)
+            picker.addToSelectedContacts(model: customContact, needFocus: focus)
+        }
     }
     
     func contactPicker(contactPicker: ContactPicker, didUpdateContentHeightTo newHeight: CGFloat) {

@@ -291,7 +291,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                 self.composeView.notifyViewSize(true)
                 break
             default:
-                self.composeView.toContactPicker.becomeFirstResponder()
+                let _ = self.composeView.toContactPicker.becomeFirstResponder()
                 break
             }
         }

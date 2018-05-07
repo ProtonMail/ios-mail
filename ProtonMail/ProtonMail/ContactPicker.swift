@@ -21,6 +21,7 @@ import UIKit
     @objc optional func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker)
     @objc optional func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker)
     @objc optional func contactPicker(contactPicker: ContactPicker, didEnterCustomText text: String, needFocus focus: Bool)
+    @objc optional func contactPicker(picker: ContactPicker, pasted text: String, needFocus focus: Bool)
     @objc optional func customFilterPredicate(searchString: String) -> NSPredicate
 }
 
@@ -256,7 +257,7 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
             self.contactCollectionView.allowsTextInput = newValue
             
             if (!newValue) {
-                self.resignFirstResponder()
+                let _ = self.resignFirstResponder()
             }
         }
     }
@@ -275,7 +276,7 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
     func addToSelectedContacts(model: ContactPickerModelProtocol, needFocus focus: Bool) {
         self.contactCollectionView.addToSelectedContacts(model: model) {
             if focus {
-                self.becomeFirstResponder()
+                let _ = self.becomeFirstResponder()
             }
         }
     }
@@ -453,7 +454,6 @@ extension ContactPicker : ContactCollectionViewDelegate {
         if let delegate = self.delegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didAddContact:))) {
             delegate.contactCollectionView!(contactCollectionView: contactCollectionView, didAddContact: model)
         }
-        
     }
     
     func contactCollectionView(contactCollectionView: ContactCollectionView, didRemoveContact model: ContactPickerModelProtocol) {
@@ -462,9 +462,10 @@ extension ContactPicker : ContactCollectionViewDelegate {
         }
     }
     
-    func contactCollectionView(contactCollectionView: ContactCollectionView, didEnterCustomText text: String) {
-        
+    func collectionView(in: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
+        if let delegate = self.delegate, delegate.responds(to: #selector(ContactPickerDelegate.contactPicker(picker:pasted:needFocus:))) {
+            delegate.contactPicker!(picker: self, pasted: text, needFocus: focus)
+        }
     }
-    
 }
 

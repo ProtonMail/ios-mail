@@ -172,7 +172,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
                 break
             default:
                 if !self.isShowingConfirm {
-                    self.composeView.toContactPicker.becomeFirstResponder()
+                    let _ = self.composeView.toContactPicker.becomeFirstResponder()
                 }
                 break
             }
