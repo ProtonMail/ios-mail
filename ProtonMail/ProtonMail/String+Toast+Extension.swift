@@ -23,6 +23,19 @@ extension String {
         hud.hide(true, afterDelay: 3)
     }
     
+    public func alertToastBottom() ->Void {
+        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+            return
+        }
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
+        hud.detailsLabelText = LocalString._message_sent_ok_desc
+        hud.removeFromSuperViewOnHide = true
+        hud.margin = 10
+        hud.yOffset = 250.0
+        hud.hide(true, afterDelay: 1)
+    }
+    
     /**
      show toast message at top of the view
      

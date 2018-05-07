@@ -82,6 +82,24 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             }
         }
     }
+
+    var notes: String {
+        get {
+            switch self.pgpType {
+            case .internal_normal:
+                return "End-to-end encrypted"
+            case .internal_trusted_key:
+                return "End-to-end encrypted from verified ProtonMail User"
+            case .pgp_encrypt_trusted_key:
+                return "PGP-encrypted"
+            case .pgp_signed:
+                return "PGP-signed"
+            case .none:
+                return "Stored with zero access encryption"
+            }
+        }
+    }
+
     
     /**
      This is a temp function here. the fetch action or network should be in a model manager class. TODO:: later

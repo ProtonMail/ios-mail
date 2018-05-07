@@ -19,6 +19,8 @@ protocol EmailHeaderActionsProtocol {
     func quickLookAttachment (_ tempfile : URL, keyPackage:Data, fileName:String, type: String)
     
     func showImage()
+    
+    func recipientCell(at cell: RecipientCell, clicked arrow: UIButton, model: ContactPickerModelProtocol)
 }
 
 class EmailHeaderView: UIView {
@@ -312,10 +314,13 @@ class EmailHeaderView: UIView {
         self.emailFrom.attributedText = fromSinglelineAttr
         
         self.emailFromTable.contacts = [sender]
+        self.emailFromTable.delegate = self
         self.emailToTable.contacts = toList
         self.emailToTable.showLock(isShow: false)
+        self.emailToTable.delegate = self
         self.emailCcTable.contacts = ccList
         self.emailCcTable.showLock(isShow: false)
+        self.emailCcTable.delegate = self
         
         self.emailTo.attributedText = toSinglelineAttr
         self.emailCc.attributedText = ccShortAttr
@@ -1276,6 +1281,12 @@ class EmailHeaderView: UIView {
         }
         
         self.updateSelf(true)
+    }
+}
+
+extension EmailHeaderView : RecipientViewDelegate {
+    func recipientView(at cell: RecipientCell, clicked arrow: UIButton, model: ContactPickerModelProtocol) {
+        self.actionsDelegate?.recipientCell(at: cell, clicked: arrow, model: model)
     }
 }
 

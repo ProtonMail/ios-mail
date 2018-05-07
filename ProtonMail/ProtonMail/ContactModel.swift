@@ -21,6 +21,7 @@ typealias LockCheckComplete = (() -> Void)
     var contactSubtitle : String? { get }
     var contactImage : UIImage? {get}
     var lock: UIImage? {get}
+    var notes: String {get}
     
     func lockCheck(progress: LockCheckProgress, complete: LockCheckComplete?)
     

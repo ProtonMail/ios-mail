@@ -639,6 +639,13 @@ extension MessageViewController :  EmailViewProtocol {
 // MARK
 fileprivate var tempFileUri : URL?
 extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteractionControllerDelegate {
+    func recipientCell(at cell: RecipientCell, clicked arrow: UIButton, model: ContactPickerModelProtocol) {
+        let notes = model.notes
+        
+        
+        notes.alertToastBottom()
+        
+    }
     
     func showImage() {
         self.showedShowImageView = true

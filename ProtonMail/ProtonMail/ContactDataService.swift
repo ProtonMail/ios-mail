@@ -306,7 +306,10 @@ class ContactDataService {
     func fetch(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]> {
         return Promise { seal in
             async {
-                let context = context ?? self.managedObjectContext!
+                guard let context = context ?? self.managedObjectContext else {
+                    seal.fulfill([])
+                    return
+                }
                 
                 guard let contactEmails = Email.findEmails(emails, inManagedObjectContext: context) else {
                     seal.fulfill([])

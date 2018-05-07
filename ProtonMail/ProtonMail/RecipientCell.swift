@@ -8,6 +8,14 @@
 
 import UIKit
 
+
+protocol RecipientCellDelegate {
+    
+    func recipientCell(at cell: RecipientCell, clicked arrow: UIButton, model : ContactPickerModelProtocol)
+    
+}
+
+
 class RecipientCell: UITableViewCell {
 
     @IBOutlet weak var senderName: UILabel!
@@ -22,6 +30,8 @@ class RecipientCell: UITableViewCell {
     
     private var _showLocker : Bool = true
     
+    var delegate : RecipientCellDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -35,7 +45,7 @@ class RecipientCell: UITableViewCell {
     }
     
     @IBAction func arrowAction(_ sender: Any) {
-        
+        delegate?.recipientCell(at: self, clicked: self.arrowButton, model: self.model)
     }
     
     func showLock(isShow: Bool) {
@@ -70,7 +80,7 @@ class RecipientCell: UITableViewCell {
                 self.lockImage.isHidden = false
             } else {
                 self.lockImage.image = UIImage(named: "zero_access_encryption")
-                self.lockImage.isHidden = true
+                self.lockImage.isHidden = false
             }
             self.activityView.stopAnimating()
         }
