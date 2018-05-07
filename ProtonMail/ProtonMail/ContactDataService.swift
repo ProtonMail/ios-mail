@@ -313,7 +313,7 @@ class ContactDataService {
                     return
                 }
                 
-                let noDetails : [Email] = contactEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded == false}
+                let noDetails : [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false}
                 let fetchs : [Promise<Contact>] = noDetails.map { return self.details(contactID: $0.contactID) }
 
                 firstly {

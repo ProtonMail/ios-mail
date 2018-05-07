@@ -15,6 +15,8 @@ class RecipientView: PMView {
     var promptString : String?
     var labelValue : String?
     
+    var showLocker : Bool = true
+    
     var labelSize : CGSize?
     
     var contacts : [ContactVO]?
@@ -51,6 +53,10 @@ class RecipientView: PMView {
         }
     }
     
+    func showLock(isShow: Bool) {
+        showLocker = isShow
+    }
+    
     func getContentSize() -> CGSize{
         tableView.reloadData()
         tableView.layoutIfNeeded();
@@ -64,11 +70,10 @@ extension RecipientView: UITableViewDataSource {
     @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: kContactCellIdentifier, for: indexPath) as! RecipientCell
         
-        let c = contacts?[indexPath.row]
-        let n = (c?.name ?? "")
-        let e = (c?.email ?? "")
-        cell.senderName.text = n.isEmpty ? e : n
-        cell.email.text = "<" + e + ">"
+        if let c = contacts?[indexPath.row] {
+            cell.showLock(isShow: showLocker)
+            cell.model = c
+        }
         return cell;
     }
     

@@ -313,7 +313,9 @@ class EmailHeaderView: UIView {
         
         self.emailFromTable.contacts = [sender]
         self.emailToTable.contacts = toList
+        self.emailToTable.showLock(isShow: false)
         self.emailCcTable.contacts = ccList
+        self.emailCcTable.showLock(isShow: false)
         
         self.emailTo.attributedText = toSinglelineAttr
         self.emailCc.attributedText = ccShortAttr

@@ -52,6 +52,18 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         }
     }
     
+    var displayName : String? {
+        get {
+            return name
+        }
+    }
+    
+    var displayEmail : String? {
+        get {
+            return email
+        }
+    }
+    
     var pgpType: PGPType = .none
     
     var lock: UIImage? {

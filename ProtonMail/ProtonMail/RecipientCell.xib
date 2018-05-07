@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -28,7 +28,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;andy@protonmail.ch&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EjN-Jc-zzM">
-                        <rect key="frame" x="0.0" y="16" width="320" height="12"/>
+                        <rect key="frame" x="0.0" y="16" width="115" height="12"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="12" id="Hfh-LN-HnV"/>
                         </constraints>
@@ -36,21 +36,58 @@
                         <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nAQ-Pg-FbD">
+                        <rect key="frame" x="117" y="15" width="14" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="14" id="cFA-aN-6qb"/>
+                            <constraint firstAttribute="height" constant="14" id="veL-ZB-38c"/>
+                        </constraints>
+                        <inset key="imageEdgeInsets" minX="2" minY="0.0" maxX="2" maxY="0.0"/>
+                        <state key="normal" title="Button" image="mail_attachment-closed"/>
+                        <connections>
+                            <action selector="arrowAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="z89-AM-oKS"/>
+                        </connections>
+                    </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pgp_encrypt_trusted_key" translatesAutoresizingMaskIntoConstraints="NO" id="UiL-Gg-eL0">
+                        <rect key="frame" x="135" y="15.5" width="14" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="14" id="Ges-hm-CaL"/>
+                            <constraint firstAttribute="height" constant="14" id="fSP-La-XpK"/>
+                        </constraints>
+                    </imageView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="qtT-xZ-Xve">
+                        <rect key="frame" x="132" y="12" width="20" height="20"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </activityIndicatorView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="EjN-Jc-zzM" secondAttribute="trailing" id="3qn-pF-Zt9"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="EjN-Jc-zzM" secondAttribute="trailing" priority="900" id="3qn-pF-Zt9"/>
                     <constraint firstItem="RiM-Rv-HcN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="9En-y3-TsE"/>
+                    <constraint firstItem="nAQ-Pg-FbD" firstAttribute="leading" secondItem="EjN-Jc-zzM" secondAttribute="trailing" constant="2" id="Bel-IF-jQf"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="UiL-Gg-eL0" secondAttribute="trailing" constant="4" id="HNH-UF-3z6"/>
                     <constraint firstItem="RiM-Rv-HcN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Twl-Lu-L9A"/>
+                    <constraint firstItem="qtT-xZ-Xve" firstAttribute="centerX" secondItem="UiL-Gg-eL0" secondAttribute="centerX" id="WNW-hb-U1k"/>
+                    <constraint firstItem="UiL-Gg-eL0" firstAttribute="leading" secondItem="nAQ-Pg-FbD" secondAttribute="trailing" constant="4" id="WhZ-gO-woH"/>
+                    <constraint firstAttribute="bottom" secondItem="UiL-Gg-eL0" secondAttribute="bottom" id="c3Y-pN-eka"/>
                     <constraint firstAttribute="trailing" secondItem="RiM-Rv-HcN" secondAttribute="trailing" id="irj-qr-5AE"/>
+                    <constraint firstAttribute="bottom" secondItem="nAQ-Pg-FbD" secondAttribute="bottom" constant="0.5" id="mkl-J4-Liq"/>
                     <constraint firstItem="EjN-Jc-zzM" firstAttribute="top" secondItem="RiM-Rv-HcN" secondAttribute="bottom" id="nKB-sY-bx9"/>
+                    <constraint firstItem="qtT-xZ-Xve" firstAttribute="centerY" secondItem="UiL-Gg-eL0" secondAttribute="centerY" id="nxg-40-Eb9"/>
                     <constraint firstItem="EjN-Jc-zzM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="pWA-ui-A0b"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="activityView" destination="qtT-xZ-Xve" id="00A-Am-6LB"/>
+                <outlet property="arrowButton" destination="nAQ-Pg-FbD" id="npR-iW-FBI"/>
                 <outlet property="email" destination="EjN-Jc-zzM" id="m5n-XM-voT"/>
+                <outlet property="lockImage" destination="UiL-Gg-eL0" id="7Td-C7-87X"/>
                 <outlet property="senderName" destination="RiM-Rv-HcN" id="9Iz-2b-QEm"/>
             </connections>
             <point key="canvasLocation" x="28" y="105"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="mail_attachment-closed" width="14" height="14"/>
+        <image name="pgp_encrypt_trusted_key" width="14" height="14"/>
+    </resources>
 </document>

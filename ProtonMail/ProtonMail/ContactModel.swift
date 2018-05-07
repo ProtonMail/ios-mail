@@ -16,6 +16,8 @@ typealias LockCheckComplete = (() -> Void)
     var contactTitle : String { get }
     
     //@optional
+    var displayName : String? { get }
+    var displayEmail : String? { get }
     var contactSubtitle : String? { get }
     var contactImage : UIImage? {get}
     var lock: UIImage? {get}
