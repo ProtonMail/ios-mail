@@ -755,6 +755,7 @@
 		75357EAB20A10F7800189E8E /* PM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75357EA820A10F7800189E8E /* PM.framework */; };
 		75357EAC20A10F7800189E8E /* PM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75357EA820A10F7800189E8E /* PM.framework */; };
 		75357EB120A1160D00189E8E /* PM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75357EA820A10F7800189E8E /* PM.framework */; };
+		75357EB520A1186100189E8E /* OpenPGPDefines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75357EB420A1186100189E8E /* OpenPGPDefines.swift */; };
 		7535D49F1FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
 		7535D4A01FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
 		7535D4A11FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
@@ -1736,6 +1737,7 @@
 		752FAA131CB5B14500F03228 /* PinCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeViewController.swift; sourceTree = "<group>"; };
 		753480B11CADABCA00964965 /* ProtonMail.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ProtonMail.entitlements; sourceTree = "<group>"; };
 		75357EA820A10F7800189E8E /* PM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PM.framework; sourceTree = "<group>"; };
+		75357EB420A1186100189E8E /* OpenPGPDefines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenPGPDefines.swift; sourceTree = "<group>"; };
 		7535D49E1FE1CFE60059DED9 /* PushData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushData.swift; sourceTree = "<group>"; };
 		75370A911CA50616005020F9 /* ComposePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePasswordViewController.swift; sourceTree = "<group>"; };
 		753745031D6B7E8F00682C5A /* APIError+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIError+Auth.swift"; sourceTree = "<group>"; };
@@ -2740,6 +2742,7 @@
 			isa = PBXGroup;
 			children = (
 				078FF4C11A91032C008321D1 /* OpenPGPTests.swift */,
+				75357EB420A1186100189E8E /* OpenPGPDefines.swift */,
 			);
 			path = OpenPGP;
 			sourceTree = "<group>";
@@ -4453,6 +4456,7 @@
 				078FF4C21A91032C008321D1 /* OpenPGPTests.swift in Sources */,
 				75F54C651B3B552200290F73 /* LastUpdateCacheTests.swift in Sources */,
 				078FF4C51A9106A3008321D1 /* ProtonMail-Bridging-Header.cpp in Sources */,
+				75357EB520A1186100189E8E /* OpenPGPDefines.swift in Sources */,
 				759223371D9DD5A70064DAA1 /* SrpTests.swift in Sources */,
 				7567B0711B3351C200A72A1E /* ComposeViewModelTests.swift in Sources */,
 				75ECCE041B31F5F600A8C800 /* AuthAPITests.swift in Sources */,
@@ -5737,7 +5741,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -5760,7 +5764,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
@@ -6534,7 +6538,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Distribution;
