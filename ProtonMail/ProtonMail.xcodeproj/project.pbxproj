@@ -39,7 +39,6 @@
 		078FF4C21A91032C008321D1 /* OpenPGPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C11A91032C008321D1 /* OpenPGPTests.swift */; };
 		078FF4C51A9106A3008321D1 /* ProtonMail-Bridging-Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */; };
 		078FF4CA1A91232D008321D1 /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
-		078FF4CB1A91232D008321D1 /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
 		078FF4D01A92CE15008321D1 /* APIService+SettingsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */; };
 		07A0E1AD1A9D3C64005FD04B /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */; };
 		07B123781AB8CD90006EA38C /* Attachments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B123771AB8CD90006EA38C /* Attachments.storyboard */; };
@@ -126,7 +125,6 @@
 		750729531DEFA52D0021483D /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750729521DEFA52D0021483D /* MimeTypes.swift */; };
 		750729541DEFA52E0021483D /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750729521DEFA52D0021483D /* MimeTypes.swift */; };
 		750778CE1BE98900009F516C /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750778CD1BE98900009F516C /* UserAPI.swift */; };
-		75079CAA2061CCC500182008 /* Greeter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75079CA92061CCC500182008 /* Greeter.framework */; };
 		7507BBB61E0CAF9600056D66 /* SignUp+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7507BBB51E0CAF9600056D66 /* SignUp+Error.swift */; };
 		7508F7EC2086BA6900EFE237 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
 		7508F7ED2086BA6A00EFE237 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
@@ -752,6 +750,11 @@
 		752FAA101CB5AEAF00F03228 /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */; };
 		752FAA121CB5AEC300F03228 /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA111CB5AEC300F03228 /* PinCodeView.swift */; };
 		752FAA141CB5B14500F03228 /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA131CB5B14500F03228 /* PinCodeViewController.swift */; };
+		75357EA920A10F7800189E8E /* PM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75357EA820A10F7800189E8E /* PM.framework */; };
+		75357EAA20A10F7800189E8E /* PM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75357EA820A10F7800189E8E /* PM.framework */; };
+		75357EAB20A10F7800189E8E /* PM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75357EA820A10F7800189E8E /* PM.framework */; };
+		75357EAC20A10F7800189E8E /* PM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75357EA820A10F7800189E8E /* PM.framework */; };
+		75357EB120A1160D00189E8E /* PM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75357EA820A10F7800189E8E /* PM.framework */; };
 		7535D49F1FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
 		7535D4A01FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
 		7535D4A11FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
@@ -1440,12 +1443,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		075E3DFF1A5F4ECF00E001A7 /* PBXContainerItemProxy */ = {
+		75357EB220A1168800189E8E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 075E3DDE1A5F4ECF00E001A7 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 075E3DE51A5F4ECF00E001A7;
-			remoteInfo = ProtonMail;
+			remoteGlobalIDString = 75DE7CB21CAAEA4900F5443E;
+			remoteInfo = ProtonMailDev;
 		};
 		75482BEE1F7F10B500B0BFFB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1460,13 +1463,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 758ED7C01F05A3FF0028D1A5;
 			remoteInfo = ShareDev;
-		};
-		759223381D9DD6D60064DAA1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 075E3DDE1A5F4ECF00E001A7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 75DE7CB21CAAEA4900F5443E;
-			remoteInfo = ProtonMailDev;
 		};
 		75D0D87D2073473D004AE43D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1632,7 +1628,6 @@
 		7505C5EE207FE3E600557FF1 /* MessageAPI+Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageAPI+Response.swift"; sourceTree = "<group>"; };
 		750729521DEFA52D0021483D /* MimeTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MimeTypes.swift; path = ../ProtonMail/MimeTypes.swift; sourceTree = "<group>"; };
 		750778CD1BE98900009F516C /* UserAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
-		75079CA92061CCC500182008 /* Greeter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Greeter.framework; sourceTree = "<group>"; };
 		7507BBB51E0CAF9600056D66 /* SignUp+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignUp+Error.swift"; sourceTree = "<group>"; };
 		7508F8052086BB7500EFE237 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		7508F80E2086BDBF00EFE237 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1740,6 +1735,7 @@
 		752FAA111CB5AEC300F03228 /* PinCodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeView.swift; sourceTree = "<group>"; };
 		752FAA131CB5B14500F03228 /* PinCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeViewController.swift; sourceTree = "<group>"; };
 		753480B11CADABCA00964965 /* ProtonMail.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ProtonMail.entitlements; sourceTree = "<group>"; };
+		75357EA820A10F7800189E8E /* PM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PM.framework; sourceTree = "<group>"; };
 		7535D49E1FE1CFE60059DED9 /* PushData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushData.swift; sourceTree = "<group>"; };
 		75370A911CA50616005020F9 /* ComposePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePasswordViewController.swift; sourceTree = "<group>"; };
 		753745031D6B7E8F00682C5A /* APIError+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIError+Auth.swift"; sourceTree = "<group>"; };
@@ -2044,6 +2040,7 @@
 				75C2175A1AD6F1B800978579 /* Crashlytics.framework in Frameworks */,
 				75C2175B1AD6F1B800978579 /* Fabric.framework in Frameworks */,
 				1930358898FEFFCC8B8D4FEE /* Pods_ProtonMail.framework in Frameworks */,
+				75357EA920A10F7800189E8E /* PM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2052,6 +2049,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F13485990B5ECAE0E458211 /* Pods_ProtonMailTests.framework in Frameworks */,
+				75357EB120A1160D00189E8E /* PM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2081,6 +2079,7 @@
 				75482BC31F7F09E100B0BFFB /* Crashlytics.framework in Frameworks */,
 				75482BC41F7F09E100B0BFFB /* libstdc++.tbd in Frameworks */,
 				62DFF778E71C9DEA28114F01 /* Pods_Share.framework in Frameworks */,
+				75357EAA20A10F7800189E8E /* PM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2092,6 +2091,7 @@
 				7512A9EF1F17D5B400D84955 /* Crashlytics.framework in Frameworks */,
 				758ED7D01F05A43B0028D1A5 /* libstdc++.tbd in Frameworks */,
 				AB36B253D49A42CC855932B0 /* Pods_ShareDev.framework in Frameworks */,
+				75357EAC20A10F7800189E8E /* PM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2123,7 +2123,7 @@
 				75DE7D851CAAEA4900F5443E /* Crashlytics.framework in Frameworks */,
 				75DE7D871CAAEA4900F5443E /* Fabric.framework in Frameworks */,
 				0158665D7AB47DDA8C0653E4 /* Pods_ProtonMailDev.framework in Frameworks */,
-				75079CAA2061CCC500182008 /* Greeter.framework in Frameworks */,
+				75357EAB20A10F7800189E8E /* PM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2270,10 +2270,10 @@
 		075E3E011A5F4ECF00E001A7 /* ProtonMailTests */ = {
 			isa = PBXGroup;
 			children = (
+				75357EAE20A110C100189E8E /* OpenPGP */,
 				759223351D9DD55E0064DAA1 /* SrpTest */,
 				75F54C641B3B552200290F73 /* LastUpdateCacheTests.swift */,
 				7567B0701B3351C200A72A1E /* ComposeViewModelTests.swift */,
-				078FF4C11A91032C008321D1 /* OpenPGPTests.swift */,
 				75ECCE031B31F5F600A8C800 /* AuthAPITests.swift */,
 				075E3E021A5F4ECF00E001A7 /* Supporting Files */,
 			);
@@ -2736,6 +2736,14 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
+		75357EAE20A110C100189E8E /* OpenPGP */ = {
+			isa = PBXGroup;
+			children = (
+				078FF4C11A91032C008321D1 /* OpenPGPTests.swift */,
+			);
+			path = OpenPGP;
+			sourceTree = "<group>";
+		};
 		753745021D6B7E7000682C5A /* Errors */ = {
 			isa = PBXGroup;
 			children = (
@@ -3175,7 +3183,7 @@
 		EDDC3A27CB6370D84ADB05EA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				75079CA92061CCC500182008 /* Greeter.framework */,
+				75357EA820A10F7800189E8E /* PM.framework */,
 				7561DC231FBB6FAA0099AFF5 /* libc++.tbd */,
 				75A42B6A1F0439690025F52C /* libstdc++.tbd */,
 				75A42B681F0439570025F52C /* libz.tbd */,
@@ -3237,8 +3245,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				075E3E001A5F4ECF00E001A7 /* PBXTargetDependency */,
-				759223391D9DD6D60064DAA1 /* PBXTargetDependency */,
+				75357EB320A1168800189E8E /* PBXTargetDependency */,
 			);
 			name = ProtonMailTests;
 			productName = ProtonMailTests;
@@ -3407,8 +3414,9 @@
 					};
 					075E3DFD1A5F4ECF00E001A7 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 6UN54H93QT;
 						LastSwiftMigration = 0900;
-						TestTargetID = 75DE7CB21CAAEA4900F5443E;
+						ProvisioningStyle = Manual;
 					};
 					751CDEA11FBB95B3005E3EB1 = {
 						CreatedOnToolsVersion = 9.1;
@@ -4445,7 +4453,6 @@
 				078FF4C21A91032C008321D1 /* OpenPGPTests.swift in Sources */,
 				75F54C651B3B552200290F73 /* LastUpdateCacheTests.swift in Sources */,
 				078FF4C51A9106A3008321D1 /* ProtonMail-Bridging-Header.cpp in Sources */,
-				078FF4CB1A91232D008321D1 /* OpenPGPExtension.swift in Sources */,
 				759223371D9DD5A70064DAA1 /* SrpTests.swift in Sources */,
 				7567B0711B3351C200A72A1E /* ComposeViewModelTests.swift in Sources */,
 				75ECCE041B31F5F600A8C800 /* AuthAPITests.swift in Sources */,
@@ -5421,10 +5428,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		075E3E001A5F4ECF00E001A7 /* PBXTargetDependency */ = {
+		75357EB320A1168800189E8E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 075E3DE51A5F4ECF00E001A7 /* ProtonMail */;
-			targetProxy = 075E3DFF1A5F4ECF00E001A7 /* PBXContainerItemProxy */;
+			target = 75DE7CB21CAAEA4900F5443E /* ProtonMailDev */;
+			targetProxy = 75357EB220A1168800189E8E /* PBXContainerItemProxy */;
 		};
 		75482BEF1F7F10B500B0BFFB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5435,11 +5442,6 @@
 			isa = PBXTargetDependency;
 			target = 758ED7C01F05A3FF0028D1A5 /* ShareDev */;
 			targetProxy = 758ED7C91F05A4000028D1A5 /* PBXContainerItemProxy */;
-		};
-		759223391D9DD6D60064DAA1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 75DE7CB21CAAEA4900F5443E /* ProtonMailDev */;
-			targetProxy = 759223381D9DD6D60064DAA1 /* PBXContainerItemProxy */;
 		};
 		75D0D87E2073473D004AE43D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5717,7 +5719,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 41169F68B3FE8907F2C72783 /* Pods-ProtonMailTests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 6UN54H93QT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -5732,9 +5736,9 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
 			name = Debug;
 		};
@@ -5742,7 +5746,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7BBE5AA309996CC3AE0CB72A /* Pods-ProtonMailTests.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 6UN54H93QT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -5753,9 +5759,9 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
 			name = Release;
 		};
@@ -6514,7 +6520,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D150620E49C5EDEC5065FEA1 /* Pods-ProtonMailTests.distribution.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 6UN54H93QT;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -6525,9 +6533,9 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
 			name = Distribution;
 		};

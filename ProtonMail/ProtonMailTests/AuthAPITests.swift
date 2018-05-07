@@ -9,9 +9,6 @@
 import UIKit
 import XCTest
 
-
-
-
 class AuthAPITests: XCTestCase {
 
   //
