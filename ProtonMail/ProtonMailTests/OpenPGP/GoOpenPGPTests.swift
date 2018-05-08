@@ -42,14 +42,16 @@ class GoOpenPGPTests: XCTestCase {
             for _ in 0 ... 100 {
                 var error : NSError?
                 let out = PmEncryptMessageSingleKey(OpenPGPDefines.publicKey, "test", "", "", true, &error)
-                if let err = error {
-                    
-                }
+                XCTAssertNil(error)
             }
         }
     }
     
-    func testDecryption() {
-        
+    func testUnarmed() {
+        var error : NSError?
+        let unArmorKey = PmUnArmor(OpenPGPDefines.publicKey, &error)
+        XCTAssertNil(error)
+        let encrypted = PmEncryptMessageSingleBinKey(unArmorKey!, "test", "", "", true, &error)
+        XCTAssertNil(error)
     }
 }

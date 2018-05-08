@@ -84,7 +84,7 @@ FOUNDATION_EXPORT NSString* PmArmor(NSData* input);
 
 FOUNDATION_EXPORT BOOL PmCheckPassphrase(NSString* privateKey, NSString* passphrase);
 
-FOUNDATION_EXPORT NSString* PmEncryptMessageSingleBinKey(NSData* publicKey, NSString* plainText, NSString* privateKey, NSString* passphrase, BOOL trim);
+FOUNDATION_EXPORT NSString* PmEncryptMessageSingleBinKey(NSData* publicKey, NSString* plainText, NSString* privateKey, NSString* passphrase, BOOL trim, NSError** error);
 
 FOUNDATION_EXPORT NSString* PmEncryptMessageSingleKey(NSString* publicKey, NSString* plainText, NSString* privateKey, NSString* passphrase, BOOL trim, NSError** error);
 
@@ -98,6 +98,6 @@ FOUNDATION_EXPORT BOOL PmIsKeyExpired(NSString* publicKey);
 
 FOUNDATION_EXPORT BOOL PmIsKeyExpiredBin(NSData* publicKey);
 
-FOUNDATION_EXPORT NSData* PmUnArmor(NSString* input);
+FOUNDATION_EXPORT NSData* PmUnArmor(NSString* input, NSError** error);
 
 #endif
