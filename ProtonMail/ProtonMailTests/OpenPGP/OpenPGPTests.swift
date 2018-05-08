@@ -23,23 +23,45 @@ class OpenPGPTests: XCTestCase {
     
     //MARK: - Test methods
     func testCheckPassphrase() {
-        
         let result = PMNOpenPgp.checkPassphrase(OpenPGPDefines.privateKey,
                                    passphrase: OpenPGPDefines.passphrase)
-        
         XCTAssertTrue(result, "checkPassphrase failed")
     }
     
-//    func testCheckPassphraseBad() {
+    func testPerformanceExample() {
+        // This is an example of a performance test case.
+        self.measure {
+            for _ in 0 ... 100 {
+                let result = PMNOpenPgp.checkPassphrase(OpenPGPDefines.privateKey,
+                                                        passphrase: OpenPGPDefines.passphrase)
+                XCTAssertTrue(result, "checkPassphrase failed")
+            }
+        }
+    }
+    
+    let openPGP = PMNOpenPgp.createInstance()
+    func testEncryption() {
+        self.measure {
+            for _ in 0 ... 100 {
+                let out = openPGP?.encryptMessageSingleKey(OpenPGPDefines.publicKey,
+                                                           plainText: "test",
+                                                           privateKey: "",
+                                                           passphras: "",
+                                                           trim: false)
+            }
+        }
+    }
+    
+    func testCheckPassphraseBad() {
 //        let badPassphrase = "badPassphrase"
 //        var error: NSError?
 //        let result = OpenPGP().checkPassphrase(badPassphrase, forPrivateKey: privateKey, publicKey: publicKey, error: &error)
-//
+//        
 //        XCTAssertFalse(result, "badPassphrase should fail.")
 //        XCTAssertEqual(error!.domain, OpenPGPErrorDomain, "bad error domain")
 //        XCTAssertEqual(error!.code, OpenPGP.ErrorCode.badPassphrase.rawValue, "wrong error code")
-//    }
-//
+    }
+    
 //    func testDecryptWithPrivateKey() {
 //        let encryptedText = cleartext.encryptWithPublicKey(publicKey, error: nil)
 //

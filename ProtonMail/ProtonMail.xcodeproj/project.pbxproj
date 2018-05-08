@@ -756,6 +756,7 @@
 		75357EAC20A10F7800189E8E /* PM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75357EA820A10F7800189E8E /* PM.framework */; };
 		75357EB120A1160D00189E8E /* PM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75357EA820A10F7800189E8E /* PM.framework */; };
 		75357EB520A1186100189E8E /* OpenPGPDefines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75357EB420A1186100189E8E /* OpenPGPDefines.swift */; };
+		75357EB720A11E2200189E8E /* GoOpenPGPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75357EB620A11E2200189E8E /* GoOpenPGPTests.swift */; };
 		7535D49F1FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
 		7535D4A01FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
 		7535D4A11FE1CFE60059DED9 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535D49E1FE1CFE60059DED9 /* PushData.swift */; };
@@ -1738,6 +1739,7 @@
 		753480B11CADABCA00964965 /* ProtonMail.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ProtonMail.entitlements; sourceTree = "<group>"; };
 		75357EA820A10F7800189E8E /* PM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PM.framework; sourceTree = "<group>"; };
 		75357EB420A1186100189E8E /* OpenPGPDefines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenPGPDefines.swift; sourceTree = "<group>"; };
+		75357EB620A11E2200189E8E /* GoOpenPGPTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoOpenPGPTests.swift; sourceTree = "<group>"; };
 		7535D49E1FE1CFE60059DED9 /* PushData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushData.swift; sourceTree = "<group>"; };
 		75370A911CA50616005020F9 /* ComposePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePasswordViewController.swift; sourceTree = "<group>"; };
 		753745031D6B7E8F00682C5A /* APIError+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIError+Auth.swift"; sourceTree = "<group>"; };
@@ -2741,8 +2743,9 @@
 		75357EAE20A110C100189E8E /* OpenPGP */ = {
 			isa = PBXGroup;
 			children = (
-				078FF4C11A91032C008321D1 /* OpenPGPTests.swift */,
 				75357EB420A1186100189E8E /* OpenPGPDefines.swift */,
+				078FF4C11A91032C008321D1 /* OpenPGPTests.swift */,
+				75357EB620A11E2200189E8E /* GoOpenPGPTests.swift */,
 			);
 			path = OpenPGP;
 			sourceTree = "<group>";
@@ -4454,6 +4457,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				078FF4C21A91032C008321D1 /* OpenPGPTests.swift in Sources */,
+				75357EB720A11E2200189E8E /* GoOpenPGPTests.swift in Sources */,
 				75F54C651B3B552200290F73 /* LastUpdateCacheTests.swift in Sources */,
 				078FF4C51A9106A3008321D1 /* ProtonMail-Bridging-Header.cpp in Sources */,
 				75357EB520A1186100189E8E /* OpenPGPDefines.swift in Sources */,

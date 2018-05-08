@@ -77,12 +77,16 @@
 
 - (BOOL)cleanAddresses;
 - (NSString*)encryptMessage:(NSString*)addressID plainText:(NSString*)plainText passphrase:(NSString*)passphrase trim:(BOOL)trim;
-- (NSString*)encryptMessageSingleBinKey:(NSData*)publicKey plainText:(NSString*)plainText privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase trim:(BOOL)trim;
-- (NSString*)encryptMessageSingleKey:(NSString*)publicKey plainText:(NSString*)plainText privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase trim:(BOOL)trim;
 - (BOOL)removeAddress:(NSString*)addressID;
 @end
 
 FOUNDATION_EXPORT NSString* PmArmor(NSData* input);
+
+FOUNDATION_EXPORT BOOL PmCheckPassphrase(NSString* privateKey, NSString* passphrase);
+
+FOUNDATION_EXPORT NSString* PmEncryptMessageSingleBinKey(NSData* publicKey, NSString* plainText, NSString* privateKey, NSString* passphrase, BOOL trim);
+
+FOUNDATION_EXPORT NSString* PmEncryptMessageSingleKey(NSString* publicKey, NSString* plainText, NSString* privateKey, NSString* passphrase, BOOL trim, NSError** error);
 
 FOUNDATION_EXPORT PmKey* PmGenerateKey(NSString* user_name, NSString* domain, NSString* passphrase, long bits);
 
