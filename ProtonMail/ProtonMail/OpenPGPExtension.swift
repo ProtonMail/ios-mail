@@ -159,7 +159,7 @@ extension PMNOpenPgp {
         var check = false
         do {
             try ObjC.catchException {
-                check = self.signDetachedVerify(publicKey, signature: signature, plainText: plainText)
+                check = self.signDetachedVerifySinglePubKey(publicKey, signature: signature, plainText: plainText)
             }
         } catch {
             

@@ -777,6 +777,7 @@
 		753934C41FAA91D000EBFBA5 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752902A41EE5D6B700B46D36 /* Settings+Defined.swift */; };
 		753934C71FAB961300EBFBA5 /* ContactEditAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753934C61FAB961200EBFBA5 /* ContactEditAddressCell.swift */; };
 		753934C81FAB96CA00EBFBA5 /* ContactEditAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753934C61FAB961200EBFBA5 /* ContactEditAddressCell.swift */; };
+		753991B920A3890900569940 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F1697D1AF7F43A00BE6E79 /* Logger.swift */; };
 		753E30A71F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
 		753E30A81F86F5BB00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
 		753E30A91F86F77D00CE5AF8 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */; };
@@ -4460,6 +4461,7 @@
 				75357EB720A11E2200189E8E /* GoOpenPGPTests.swift in Sources */,
 				75F54C651B3B552200290F73 /* LastUpdateCacheTests.swift in Sources */,
 				078FF4C51A9106A3008321D1 /* ProtonMail-Bridging-Header.cpp in Sources */,
+				753991B920A3890900569940 /* Logger.swift in Sources */,
 				75357EB520A1186100189E8E /* OpenPGPDefines.swift in Sources */,
 				759223371D9DD5A70064DAA1 /* SrpTests.swift in Sources */,
 				7567B0711B3351C200A72A1E /* ComposeViewModelTests.swift in Sources */,

@@ -215,8 +215,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     break
                 }
                 
-                self.verifyType3 = sharedOpenPGP.signDetachedVerify(key.public_key, signature: c.sign, plainText: pt_contact_vcard)
-                
+                self.verifyType3 = sharedOpenPGP.signDetachedVerifySinglePubKey(key.public_key, signature: c.sign, plainText: pt_contact_vcard)
                 if let vcard = PMNIEzvcard.parseFirst(pt_contact_vcard) {
                     let types = vcard.getPropertyTypes()
                     for type in types {

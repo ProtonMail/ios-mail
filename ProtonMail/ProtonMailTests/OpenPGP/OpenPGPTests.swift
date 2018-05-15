@@ -48,6 +48,9 @@ class OpenPGPTests: XCTestCase {
                                                            privateKey: "",
                                                            passphras: "",
                                                            trim: false)
+                
+                
+                XCTAssertNotNil(out)
             }
         }
     }
