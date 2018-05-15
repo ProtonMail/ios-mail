@@ -24,6 +24,7 @@ class RecipientCell: UITableViewCell {
     @IBOutlet weak var arrowButton: UIButton!
     @IBOutlet weak var lockImage: UIImageView!
     
+    @IBOutlet weak var lockButton: UIButton!
     @IBOutlet weak var activityView: UIActivityIndicatorView!
     
     private var _model : ContactPickerModelProtocol!
@@ -36,6 +37,8 @@ class RecipientCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         self.lockImage.isHidden = true
+        
+        self.arrowButton.imageView?.contentMode = .scaleAspectFit
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -46,6 +49,9 @@ class RecipientCell: UITableViewCell {
     
     @IBAction func arrowAction(_ sender: Any) {
         delegate?.recipientCell(at: self, clicked: self.arrowButton, model: self.model)
+    }
+
+    @IBAction func lockIconAction(_ sender: Any) {
     }
     
     func showLock(isShow: Bool) {
