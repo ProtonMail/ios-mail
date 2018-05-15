@@ -41,7 +41,7 @@ class GoOpenPGPTests: XCTestCase {
         self.measure {
             for _ in 0 ... 100 {
                 var error : NSError?
-                let out = PmEncryptMessage(OpenPGPDefines.publicKey, "test", "", "", true, &error)
+                let out = PmEncryptMessage("test", OpenPGPDefines.publicKey, "", "", true, &error)
                 XCTAssertNil(error)
                 XCTAssertNotNil(out)
             }
@@ -90,7 +90,7 @@ class GoOpenPGPTests: XCTestCase {
         error = nil
         
         // test decrypt
-        let encrypted1 = PmEncryptMessage(OpenPGPDefines.publicKey, "test", "", "", true, &error)
+        let encrypted1 = PmEncryptMessage( "test", OpenPGPDefines.publicKey, "", "", true, &error)
         XCTAssertNil(error)
         XCTAssertNotNil(encrypted1)
         error = nil
@@ -103,13 +103,13 @@ class GoOpenPGPTests: XCTestCase {
         error = nil
         
         // test bad key
-        let encrypted2 = PmEncryptMessage(OpenPGPDefines.publicKey, "test", OpenPGPDefines.privateKey, "222", true, &error)
+        let encrypted2 = PmEncryptMessage("test", OpenPGPDefines.publicKey, OpenPGPDefines.privateKey, "222", true, &error)
         XCTAssertNotNil(error)
         XCTAssertNil(encrypted2)
         error = nil
         
         // test signe
-        let encrypted3 = PmEncryptMessage(OpenPGPDefines.publicKey, "test", OpenPGPDefines.privateKey, OpenPGPDefines.passphrase, true, &error)
+        let encrypted3 = PmEncryptMessage("test", OpenPGPDefines.publicKey,  OpenPGPDefines.privateKey, OpenPGPDefines.passphrase, true, &error)
         XCTAssertNil(error)
         XCTAssertNotNil(encrypted3)
         error = nil
@@ -148,9 +148,10 @@ class GoOpenPGPTests: XCTestCase {
     
     func testSign() {
         var error : NSError? = nil
-        let encrypted = PmEncryptMessage(OpenPGPDefines.publicKey, "test",
-                                                  OpenPGPDefines.feng100_private_key_1,
-                                                  OpenPGPDefines.feng100_passphrase_1, true, &error)
+        let encrypted = PmEncryptMessage( "test",
+                                          OpenPGPDefines.publicKey,
+                                          OpenPGPDefines.feng100_private_key_1,
+                                          OpenPGPDefines.feng100_passphrase_1, true, &error)
         XCTAssertNil(error)
         XCTAssertNotNil(encrypted)
         error = nil
@@ -187,7 +188,7 @@ class GoOpenPGPTests: XCTestCase {
         XCTAssertNil(error)
         XCTAssertNotNil(pubkey)
         
-        let encrypted = PmEncryptMessage(pubkey!, "test", "", "", true, &error)
+        let encrypted = PmEncryptMessage("test", pubkey!, "", "", true, &error)
         XCTAssertNil(error)
         XCTAssertNotNil(encrypted)
         
@@ -206,11 +207,7 @@ class GoOpenPGPTests: XCTestCase {
         let spiled = PmEncryptAttachment(indata, "",OpenPGPDefines.publicKey, &error)
         XCTAssertNil(error)
         XCTAssertNotNil(spiled)
-        
-        
-        
     }
-    
     
     
     
