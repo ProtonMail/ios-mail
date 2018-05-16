@@ -9,26 +9,25 @@
 import Foundation
 
 protocol ShowImageViewProtocol {
-    func showImageClicked()
+    func showImage()
 }
+
 class ShowImageView: PMView {
-    
     @IBOutlet weak var showImageButton: UIButton!
-    var actionDelegate : ShowImageViewProtocol?
+    var delegate : ShowImageViewProtocol?
     
     override func getNibName() -> String {
         return "ShowImageView"
     }
     
     @IBAction func clickAction(_ sender: AnyObject) {
-        actionDelegate?.showImageClicked()
+        self.delegate?.showImage()
     }
     
     override func setup() {
         showImageButton.layer.borderColor = UIColor.ProtonMail.Gray_C9CED4.cgColor
         showImageButton.layer.borderWidth = 1.0
         showImageButton.layer.cornerRadius = 2.0
-        
         showImageButton.setTitle(LocalString._load_remote_content, for: .normal)
     }
 }

@@ -15,14 +15,7 @@ protocol MessageDetailBottomViewProtocol {
 }
 
 class MessageDetailBottomView: UIView {
-    
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-    // Drawing code
-    }
-    */
+
     @IBOutlet weak var replyButton: UIButton!
     @IBOutlet weak var replyAllButton: UIButton!
     @IBOutlet weak var forwardButton: UIButton!

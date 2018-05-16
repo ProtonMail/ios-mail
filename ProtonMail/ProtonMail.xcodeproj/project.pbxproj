@@ -2399,11 +2399,11 @@
 			children = (
 				757945D51B66E38D004EEDCA /* MessageViewController.swift */,
 				752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */,
+				757945D71B6702A2004EEDCA /* EmailView.swift */,
 				07411D8D1AAA407A002A4611 /* AttachmentTableViewCell.swift */,
 				07411D8B1AAA3F1B002A4611 /* AttachmentTableViewCell.xib */,
 				7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */,
 				7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */,
-				757945D71B6702A2004EEDCA /* EmailView.swift */,
 				757945D91B6702B5004EEDCA /* EmailHeaderView.swift */,
 				751562541B68E8050066FE38 /* EmailAttachmentView.swift */,
 				75117C491BA22F6200A0CE68 /* RecipientView.swift */,

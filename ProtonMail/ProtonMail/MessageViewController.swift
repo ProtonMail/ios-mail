@@ -69,9 +69,9 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
-        self.emailView!.emailHeader.actionsDelegate = self
+        self.emailView!.emailHeader.delegate = self
         self.emailView!.topMessageView.delegate = self
-        self.emailView?.viewDelegate = self
+        self.emailView?.delegate = self
         self.emailView?.emailHeader.updateAttConstraints(false)
         self.updateBadgeNumberWhenRead(message, changeToRead: true)
         loadMessageDetailes()
@@ -627,8 +627,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
 
 // MARK
 
-extension MessageViewController :  EmailViewProtocol {
-    
+extension MessageViewController :  EmailViewActionsProtocol {
     func mailto(_ url: Foundation.URL?) {
         URL = url as NSURL?
         self.performSegue(withIdentifier: kToComposerSegue, sender: ComposeMessageAction.newDraft.rawValue)
@@ -639,12 +638,90 @@ extension MessageViewController :  EmailViewProtocol {
 // MARK
 fileprivate var tempFileUri : URL?
 extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteractionControllerDelegate {
-    func recipientCell(at cell: RecipientCell, clicked arrow: UIButton, model: ContactPickerModelProtocol) {
+    func quickLook(attachment tempfile: URL, keyPackage: Data, fileName: String, type: String) {
+        
+        if let data : Data = try? Data(contentsOf: tempfile) {
+            do {
+                tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)
+                if let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!) {
+                    try? decryptData.write(to: tempFileUri!, options: [.atomic])
+                    //TODO:: the hard code string need change it to enum later
+                    if (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
+                        let pkfile = try? Data(contentsOf: tempFileUri!) {
+                        var error : NSError? = nil
+                        let pass : PKPass = PKPass(data: pkfile, error: &error)
+                        if error != nil {
+                            let previewQL = QuickViewViewController()
+                            previewQL.dataSource = self
+                            latestPresentedView = previewQL
+                            self.present(previewQL, animated: true, completion: nil)
+                        } else {
+                            let vc = PKAddPassesViewController(pass: pass) as PKAddPassesViewController
+                            self.present(vc, animated: true, completion: nil)
+                        }
+                    } else {
+                        let previewQL = QuickViewViewController()
+                        previewQL.dataSource = self
+                        latestPresentedView = previewQL
+                        self.present(previewQL, animated: true, completion: nil)
+                    }
+                }
+            } catch let ex as NSError {
+                let alert = LocalString._cant_decrypt_this_attachment.alertController();
+                alert.addOKAction()
+                latestPresentedView = alert
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else{
+            let alert = LocalString._cant_find_this_attachment.alertController();
+            alert.addOKAction()
+            latestPresentedView = alert
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func star(changed isStarred: Bool) {
+        if isStarred {
+            self.message.setLabelLocation(.starred)
+            if let context = message.managedObjectContext {
+                context.perform {
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D("error: \(error)")
+                    }
+                }
+            }
+        } else {
+            self.message.removeLocationFromLabels(currentlocation: .starred, location: .deleted, keepSent: true)
+        }
+        self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
+    }
+    
+    func recipientView(at cell: RecipientCell, arrowClicked arrow: UIButton, model: ContactPickerModelProtocol) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        
+        alertController.addAction(UIAlertAction(title: "Copy address", style: .default, handler: { (action) -> Void in
+            
+        }))
+        alertController.addAction(UIAlertAction(title: "Copy name", style: .default, handler: { (action) -> Void in
+            
+        }))
+        alertController.addAction(UIAlertAction(title: "Compose to", style: .default, handler: { (action) -> Void in
+            
+        }))
+        alertController.addAction(UIAlertAction(title: "Add to contacts", style: .default, handler: { (action) -> Void in
+            
+        }))
+        alertController.popoverPresentationController?.sourceView = arrow
+        alertController.popoverPresentationController?.sourceRect = arrow.frame
+        
+        latestPresentedView = alertController
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol) {
         let notes = model.notes
-        
-        
         notes.alertToastBottom()
-        
     }
     
     func showImage() {
@@ -678,64 +755,6 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                     checkCount = checkCount - 1
                 }
             }
-        }
-    }
-    
-    func starredChanged(_ isStarred: Bool) {
-        if isStarred {
-            self.message.setLabelLocation(.starred)
-            if let context = message.managedObjectContext {
-                context.perform {
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    }
-                }
-            }
-        } else {
-            self.message.removeLocationFromLabels(currentlocation: .starred, location: .deleted, keepSent: true)
-        }
-        self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
-    }
-    
-    func quickLookAttachment (_ localURL : Foundation.URL, keyPackage:Data, fileName:String, type: String) {
-        if let data : Data = try? Data(contentsOf: localURL) {
-            do {
-                tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)
-                if let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!) {
-                    try? decryptData.write(to: tempFileUri!, options: [.atomic])
-                    //TODO:: the hard code string need change it to enum later
-                    if (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
-                        let pkfile = try? Data(contentsOf: tempFileUri!) {
-                        var error : NSError? = nil
-                        let pass : PKPass = PKPass(data: pkfile, error: &error)
-                        if error != nil {
-                            let previewQL = QuickViewViewController()
-                            previewQL.dataSource = self
-                            latestPresentedView = previewQL
-                            self.present(previewQL, animated: true, completion: nil)
-                        } else {
-                            let vc = PKAddPassesViewController(pass: pass) as PKAddPassesViewController
-                            self.present(vc, animated: true, completion: nil)
-                        }
-                    } else {
-                        let previewQL = QuickViewViewController()
-                        previewQL.dataSource = self
-                        latestPresentedView = previewQL
-                        self.present(previewQL, animated: true, completion: nil)
-                    }
-                }
-            } catch let ex as NSError {
-                PMLog.D("quickLookAttachment error : \(ex)")
-                let alert = LocalString._cant_decrypt_this_attachment.alertController();
-                alert.addOKAction()
-                latestPresentedView = alert
-                self.present(alert, animated: true, completion: nil)
-            }
-        } else{
-            let alert = LocalString._cant_find_this_attachment.alertController();
-            alert.addOKAction()
-            latestPresentedView = alert
-            self.present(alert, animated: true, completion: nil)
         }
     }
     

@@ -10,9 +10,9 @@ import UIKit
 
 
 protocol RecipientCellDelegate {
+    func recipientView(at cell: RecipientCell, arrowClicked arrow: UIButton, model: ContactPickerModelProtocol)
     
-    func recipientCell(at cell: RecipientCell, clicked arrow: UIButton, model : ContactPickerModelProtocol)
-    
+    func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol)
 }
 
 
@@ -48,10 +48,11 @@ class RecipientCell: UITableViewCell {
     }
     
     @IBAction func arrowAction(_ sender: Any) {
-        delegate?.recipientCell(at: self, clicked: self.arrowButton, model: self.model)
+        delegate?.recipientView(at: self, arrowClicked: self.arrowButton, model: self.model)
     }
 
     @IBAction func lockIconAction(_ sender: Any) {
+        delegate?.recipientView(at: self, lockClicked: self.lockButton, model: self.model)
     }
     
     func showLock(isShow: Bool) {
@@ -68,7 +69,7 @@ class RecipientCell: UITableViewCell {
             let n = (self._model.displayName ?? "")
             let e = (self._model.displayEmail ?? "")
             self.senderName.text = n.isEmpty ? e : n
-            self.email.text = "<" + e + ">"
+            self.email.text =  e
             
             if _showLocker {
                 self.checkLock()

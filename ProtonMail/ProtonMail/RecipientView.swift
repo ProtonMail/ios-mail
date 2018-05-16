@@ -8,8 +8,8 @@
 
 import UIKit
 
-protocol RecipientViewDelegate {
-    func recipientView(at cell: RecipientCell, clicked arrow: UIButton, model: ContactPickerModelProtocol)
+protocol RecipientViewDelegate : RecipientCellDelegate {
+    
 }
 
 class RecipientView: PMView {
@@ -71,19 +71,13 @@ class RecipientView: PMView {
     }
 }
 
-extension RecipientView : RecipientCellDelegate {
-    func recipientCell(at cell: RecipientCell, clicked arrow: UIButton, model: ContactPickerModelProtocol) {
-        delegate?.recipientView(at: cell, clicked: arrow, model: model)
-    }
-}
-
 extension RecipientView: UITableViewDataSource {
     
     @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: kContactCellIdentifier, for: indexPath) as! RecipientCell
         
         if let c = contacts?[indexPath.row] {
-            cell.delegate = self
+            cell.delegate = self.delegate
             cell.showLock(isShow: showLocker)
             cell.model = c
         }

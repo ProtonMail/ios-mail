@@ -13,20 +13,32 @@ protocol EmailHeaderViewProtocol {
     func updateSize()
 }
 
-protocol EmailHeaderActionsProtocol {
-    func starredChanged(_ isStarred : Bool)
+protocol EmailHeaderActionsProtocol: RecipientViewDelegate, ShowImageViewProtocol {
+    func quickLook(attachment tempfile : URL, keyPackage:Data, fileName:String, type: String)
     
-    func quickLookAttachment (_ tempfile : URL, keyPackage:Data, fileName:String, type: String)
+    func star(changed isStarred : Bool)
     
     func showImage()
-    
-    func recipientCell(at cell: RecipientCell, clicked arrow: UIButton, model: ContactPickerModelProtocol)
 }
 
 class EmailHeaderView: UIView {
     
     var viewDelegate: EmailHeaderViewProtocol?
-    var actionsDelegate: EmailHeaderActionsProtocol?
+    private var _delegate: EmailHeaderActionsProtocol?
+    
+    var delegate :EmailHeaderActionsProtocol? {
+        get {
+            return self._delegate
+        }
+        set {
+            self._delegate = newValue
+            //set delegate here
+            self.emailFromTable.delegate = self._delegate
+            self.emailToTable.delegate = self._delegate
+            self.emailCcTable.delegate = self._delegate
+            self.showImageView.delegate = self._delegate
+        }
+    }
     
     /// Header Content View
     fileprivate var emailHeaderView: UIView!
@@ -314,13 +326,10 @@ class EmailHeaderView: UIView {
         self.emailFrom.attributedText = fromSinglelineAttr
         
         self.emailFromTable.contacts = [sender]
-        self.emailFromTable.delegate = self
         self.emailToTable.contacts = toList
         self.emailToTable.showLock(isShow: false)
-        self.emailToTable.delegate = self
         self.emailCcTable.contacts = ccList
         self.emailCcTable.showLock(isShow: false)
-        self.emailCcTable.delegate = self
         
         self.emailTo.attributedText = toSinglelineAttr
         self.emailCc.attributedText = ccShortAttr
@@ -471,7 +480,6 @@ class EmailHeaderView: UIView {
     
     fileprivate func createShowImageView() {
         self.showImageView = ShowImageView()
-        self.showImageView.actionDelegate = self
         self.addSubview(showImageView!)
     }
     
@@ -957,7 +965,7 @@ class EmailHeaderView: UIView {
     
     @objc internal func emailFavoriteButtonTapped() {
         self.starred = !self.starred
-        self.actionsDelegate?.starredChanged(self.starred)
+        self.delegate?.star(changed: self.starred)
         self.emailFavoriteButton.isSelected = self.starred
     }
     
@@ -1284,20 +1292,6 @@ class EmailHeaderView: UIView {
     }
 }
 
-extension EmailHeaderView : RecipientViewDelegate {
-    func recipientView(at cell: RecipientCell, clicked arrow: UIButton, model: ContactPickerModelProtocol) {
-        self.actionsDelegate?.recipientCell(at: cell, clicked: arrow, model: model)
-    }
-}
-
-
-extension EmailHeaderView : ShowImageViewProtocol {
-    func showImageClicked() {
-        actionsDelegate?.showImage()
-    }
-}
-
-
 extension EmailHeaderView: UITableViewDataSource {
     
     @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -1403,21 +1397,8 @@ extension EmailHeaderView: UITableViewDelegate {
         })
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
-    }
-    
-    //    - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-    //    {
-    //    if ([keyPath isEqualToString:@"fractionCompleted"]) {
-    //    NSProgress *progress = (NSProgress *)object;
-    //    NSLog(@"Progress… %f", progress.fractionCompleted);
-    //    } else {
-    //    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    //    }
-    //    }
     
     fileprivate func openLocalURL(_ localURL: URL, keyPackage:Data, fileName:String, type: String, forCell cell: UITableViewCell) {
-        self.actionsDelegate?.quickLookAttachment(localURL, keyPackage: keyPackage, fileName: fileName, type: type)
+        self.delegate?.quickLook(attachment: localURL, keyPackage: keyPackage, fileName: fileName, type: type)
     }
 }

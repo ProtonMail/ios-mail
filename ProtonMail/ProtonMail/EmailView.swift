@@ -11,37 +11,24 @@ import UIKit
 import QuickLook
 
 extension UIDataDetectorTypes {
-//    public static var phoneNumber
-//    public static var link
-//    @available(iOS 4.0, *)
-//    public static var address
-//    @available(iOS 4.0, *)
-//    public static var calendarEvent
-//    @available(iOS 10.0, *)
-//    public static var shipmentTrackingNumber
-//    @available(iOS 10.0, *)
-//    public static var flightNumber
-//    @available(iOS 10.0, *)
-//    public static var lookupSuggestion
-
     public static var pm_email: UIDataDetectorTypes = [.phoneNumber, .link]
 }
 
-protocol EmailViewProtocol {
+protocol EmailViewActionsProtocol {
     func mailto(_ url: URL?)
 }
 
+/// this veiw is all subviews container
 class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     
     var kDefautWebViewScale : CGFloat = 0.9
-    
     //
     fileprivate let kMoreOptionsViewHeight: CGFloat = 123.0
     
     // Message header view
     var emailHeader : EmailHeaderView!
     
-    var viewDelegate: EmailViewProtocol?
+    var delegate: EmailViewActionsProtocol?
     
     // Message content
     var contentWebView: UIWebView!
@@ -213,10 +200,9 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
     
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        
         if navigationType == .linkClicked {
             if request.url?.scheme == "mailto" {
-                viewDelegate?.mailto(request.url)
+                self.delegate?.mailto(request.url)
                 return false
             } else {
                 UIApplication.shared.openURL(request.url!)
