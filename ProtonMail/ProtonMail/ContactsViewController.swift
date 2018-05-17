@@ -170,14 +170,9 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController)
         } else if (segue.identifier == "toCompose") {
-            //let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
-            //sharedVMService.newDraftViewModelWithContact(composeViewController, contact: self.selectedContact)
         } else if segue.identifier == kSegueToImportView{
             let popup = segue.destination as! ContactImportViewController
-//            popup.viewModel = CaptchaViewModelImpl()
-//            popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
-            
         }
     }
     

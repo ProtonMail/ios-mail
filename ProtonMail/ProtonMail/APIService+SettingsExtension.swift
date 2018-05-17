@@ -20,7 +20,7 @@ import Foundation
 extension APIService {
     
     fileprivate struct SettingPath {
-        static let base = AppConstants.API_PATH + "/settings"
+        static let base = AppConstants.API_PATH + "/settings/mail"
     }
     
     //TODO::Swift

@@ -18,9 +18,11 @@ import PromiseKit
 
 class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     
+    
     fileprivate let kToComposerSegue : String    = "toCompose"
     fileprivate let kSegueMoveToFolders : String = "toMoveToFolderSegue"
     fileprivate let kSegueToApplyLabels : String = "toApplyLabelsSegue"
+    fileprivate let kToAddContactSegue : String  = "toAddContact"
     
     /// message info
     var message: Message!
@@ -373,7 +375,10 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToComposerSegue {
-            if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft{
+            if let contact = sender as? ContactVO {
+                let composeViewController = segue.destination as! ComposeEmailViewController
+                sharedVMService.newDraftViewModelWithContact(composeViewController, contact: contact)
+            } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft{
                 let composeViewController = segue.destination as! ComposeEmailViewController
                 sharedVMService.actionDraftViewModel(composeViewController, msg: message, action: tapped)
             } else {
@@ -390,6 +395,11 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
             popup.delegate = self
             popup.viewModel = FolderApplyViewModelImpl(msg: [self.message])
             self.setPresentationStyleForSelfController(self, presentingController: popup)
+        } else if segue.identifier == kToAddContactSegue {
+            if let contact = sender as? ContactVO {
+                let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
+                sharedVMService.contactAddViewModel(addContactViewController, contactVO: contact)
+            }
         }
     }
     
@@ -701,16 +711,24 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         
         alertController.addAction(UIAlertAction(title: "Copy address", style: .default, handler: { (action) -> Void in
-            
+            UIPasteboard.general.string = model.displayEmail
         }))
         alertController.addAction(UIAlertAction(title: "Copy name", style: .default, handler: { (action) -> Void in
-            
+            UIPasteboard.general.string = model.displayName
         }))
         alertController.addAction(UIAlertAction(title: "Compose to", style: .default, handler: { (action) -> Void in
-            
+            let contactVO = ContactVO(id: "",
+                                      name: model.displayName,
+                                      email: model.displayEmail,
+                                      isProtonMailContact: false)
+            self.performSegue(withIdentifier: self.kToComposerSegue, sender: contactVO)
         }))
         alertController.addAction(UIAlertAction(title: "Add to contacts", style: .default, handler: { (action) -> Void in
-            
+            let contactVO = ContactVO(id: "",
+                                      name: model.displayName,
+                                      email: model.displayEmail,
+                                      isProtonMailContact: false)
+            self.performSegue(withIdentifier: self.kToAddContactSegue, sender: contactVO)
         }))
         alertController.popoverPresentationController?.sourceView = arrow
         alertController.popoverPresentationController?.sourceRect = arrow.frame
