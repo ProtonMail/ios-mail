@@ -1370,5 +1370,16 @@ class LocalizedString {
  
     /// "Can't copy the file"
     lazy var _cant_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
+    
+    /// "Copy address"
+    lazy var _copy_address    = NSLocalizedString("Copy address", comment: "Title")
+    /// "Copy name"
+    lazy var _copy_name       = NSLocalizedString("Copy name", comment: "Title")
+    /// "Compose to"
+    lazy var _compose_to      = NSLocalizedString("Compose to", comment: "Title")
+    /// "Add to contacts"
+    lazy var _add_to_contacts = NSLocalizedString("Add to contacts", comment: "Title")
+    
+
 
 }

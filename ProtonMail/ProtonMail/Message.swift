@@ -26,7 +26,7 @@ final public class Message: NSManagedObject {
     @NSManaged public var expirationTime: Date?
     @NSManaged public var hasAttachments: Bool   //removed
     @NSManaged public var numAttachments: NSNumber
-    @NSManaged public var header: String
+    @NSManaged public var header: String?
     @NSManaged public var isDetailDownloaded: Bool
     @NSManaged public var isEncrypted: NSNumber
     @NSManaged public var isForwarded: Bool

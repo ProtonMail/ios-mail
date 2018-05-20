@@ -1525,7 +1525,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                PMLog.D("Section: \(newIndexPath.section) Row: \(newIndexPath.row) ")
                 tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
                 if self.needToShowNewMessage == true {
                     if let newMsg = anObject as? Message {

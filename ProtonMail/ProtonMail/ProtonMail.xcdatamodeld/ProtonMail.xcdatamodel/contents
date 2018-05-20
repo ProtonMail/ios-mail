@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14133" systemVersion="17E199" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14133" systemVersion="17E202" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -220,7 +220,7 @@
                 <entry key="JSONTransformerName" value="BoolTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="header" attributeType="String" syncable="YES">
+        <attribute name="header" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Header"/>
             </userInfo>

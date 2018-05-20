@@ -13,6 +13,8 @@ protocol RecipientCellDelegate {
     func recipientView(at cell: RecipientCell, arrowClicked arrow: UIButton, model: ContactPickerModelProtocol)
     
     func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol)
+    
+    func recipientView(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
 }
 
 
@@ -78,10 +80,10 @@ class RecipientCell: UITableViewCell {
     }
     
     func checkLock() {
-        self.model.lockCheck(progress: {
+        self.delegate?.recipientView(lockCheck: self.model, progress: {
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
-        }) {
+        }, complete: {
             if let lock = self.model.lock {
                 self.lockImage.image = lock
                 self.lockImage.isHidden = false
@@ -90,6 +92,6 @@ class RecipientCell: UITableViewCell {
                 self.lockImage.isHidden = false
             }
             self.activityView.stopAnimating()
-        }
+        })
     }
 }

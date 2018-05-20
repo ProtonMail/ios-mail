@@ -21,9 +21,16 @@ enum PGPType : Int {
     case pgp_encrypt_trusted_key = 2 /// external encrypted and signed with trusted key
     case internal_normal = 3 /// protonmail normal keys
     case internal_trusted_key = 4  /// trusted key
+    case pgp_encrypt_trusted_key_verify_failed = 6
+    case internal_trusted_key_verify_failed = 7
+    case internal_normal_verify_failed = 8
+    case pgp_signed_verify_failed = 9
+    case eo = 10
+    case pgp_encrypted = 11
 }
 
 public class ContactVO: NSObject, ContactPickerModelProtocol {
+
     public struct Attributes {
         static public let email = "email"
     }
@@ -34,6 +41,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     public var name: String!
     @objc public var email: String!
     public var isProtonMailContact: Bool = false
+    
     
     //
     var contactTitle : String {
@@ -66,10 +74,20 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     
     var pgpType: PGPType = .none
     
+    func notes(type: Int) -> String {
+        //0 composer, 1 inbox 2 sent
+        if type == 1 {
+            return self.inboxNotes
+        } else if type == 2 {
+            return self.sentNotes
+        }
+        return self.composerNotes
+    }
+    
     var lock: UIImage? {
         get {
             switch self.pgpType {
-            case .internal_normal:
+            case .internal_normal, .eo:
                 return UIImage(named: "internal_normal")
             case .internal_trusted_key:
                 return UIImage(named: "internal_trusted_key")
@@ -79,23 +97,103 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                 return UIImage(named: "pgp_signed")
             case .none:
                 return nil
+            case .pgp_encrypt_trusted_key_verify_failed:
+                return UIImage(named: "pgp_trusted_sign_failed")
+            case .pgp_signed_verify_failed:
+                return UIImage(named: "pgp_clear_sign_failed")
+            case .internal_trusted_key_verify_failed:
+                return UIImage(named: "internal_sign_failed")
+            case .internal_normal_verify_failed:
+                return UIImage(named: "internal_sign_failed")
+            case .pgp_encrypted:
+                return UIImage(named: "pgp_encrypted")
             }
         }
     }
 
-    var notes: String {
+    var composerNotes: String {
         get {
             switch self.pgpType {
-            case .internal_normal:
+            case .none:
+                return ""
+            case .eo:
                 return "End-to-end encrypted"
-            case .internal_trusted_key:
-                return "End-to-end encrypted from verified ProtonMail User"
+            case .internal_normal: //PM --> PM (encrypted+signed)
+                return "End-to-end encrypted"
+            case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
+                return "End-to-end encrypted to verified address"
             case .pgp_encrypt_trusted_key:
                 return "PGP-encrypted"
-            case .pgp_signed:
+            case .pgp_signed://PM --> non-PM PGP (signed)
                 return "PGP-signed"
+            case .pgp_encrypt_trusted_key_verify_failed: //PM --> non-PM PGP (encrypted+signed/pinned)
+                return "PGP-encrypted"
+            case .internal_trusted_key_verify_failed:
+                return "Sender Verification Failed"
+            case .internal_normal_verify_failed:
+                return "Sender Verification Failed"
+            case .pgp_signed_verify_failed:
+                return "Sender Verification Failed"
+            case .pgp_encrypted:
+                return ""
+            }
+        }
+    }
+    
+    var sentNotes: String {
+        get {
+            switch self.pgpType {
+            case .internal_normal: //PM --> PM (encrypted+signed)
+                return "End-to-end encrypted"
+            case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
+                return "End-to-end encrypted to verified address"
+            case .pgp_encrypt_trusted_key:
+                return "PGP-encrypted"
+            case .pgp_signed://non-PM signed PGP --> PM (pinned)
+                return "PGP-signed message from verified address"
             case .none:
                 return "Stored with zero access encryption"
+            case .pgp_encrypt_trusted_key_verify_failed: //non-PM signed+encrypted PGP --> PM (pinned)
+                return "PGP-encrypted message from verified address"
+            case .internal_trusted_key_verify_failed:
+                return "Sender Verification Failed"
+            case .internal_normal_verify_failed:
+                return "Sender Verification Failed"
+            case .pgp_signed_verify_failed:
+                return "Sender Verification Failed"
+            case .eo:
+                return "Encrypted outside"
+            case .pgp_encrypted:
+                return ""
+            }
+        }
+    }
+    
+    var inboxNotes: String {
+        get {
+            switch self.pgpType {
+            case .internal_normal: //PM --> PM (encrypted+signed)
+                return "End-to-end encrypted"
+            case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
+                return "End-to-end encrypted to verified address"
+            case .pgp_encrypt_trusted_key:
+                return "PGP-encrypted"
+            case .pgp_signed://non-PM signed PGP --> PM (pinned)
+                return "PGP-signed message from verified address"
+            case .none:
+                return "Stored with zero access encryption"
+            case .pgp_encrypt_trusted_key_verify_failed: //non-PM signed+encrypted PGP --> PM (pinned)
+                return "PGP-encrypted message from verified address"
+            case .internal_trusted_key_verify_failed:
+                return "Sender Verification Failed"
+            case .internal_normal_verify_failed:
+                return "Sender Verification Failed"
+            case .pgp_signed_verify_failed:
+                return "Sender Verification Failed"
+            case .eo:
+                return "Encrypted outside"
+            case .pgp_encrypted:
+                return ""
             }
         }
     }

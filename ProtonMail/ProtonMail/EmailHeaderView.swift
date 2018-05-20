@@ -112,6 +112,8 @@ class EmailHeaderView: UIView {
 
     fileprivate var tempFileUri : URL?
     
+    fileprivate var isSentFolder : Bool = false
+    
     func getHeight () -> CGFloat {
         return separatorShowImage.frame.origin.y + 6;
     }
@@ -307,7 +309,8 @@ class EmailHeaderView: UIView {
                            sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?,
                            isStarred : Bool, time : Date?, encType : EncryptTypes, labels : [Label]?,
                            showShowImages: Bool, expiration : Date?,
-                           score: MessageSpamScore) {
+                           score: MessageSpamScore, isSent: Bool) {
+        self.isSentFolder = isSent
         self.title = title
         self.sender = sender
         self.toList = to
@@ -327,9 +330,9 @@ class EmailHeaderView: UIView {
         
         self.emailFromTable.contacts = [sender]
         self.emailToTable.contacts = toList
-        self.emailToTable.showLock(isShow: false)
+        self.emailToTable.showLock(isShow: self.isSentFolder)
         self.emailCcTable.contacts = ccList
-        self.emailCcTable.showLock(isShow: false)
+        self.emailCcTable.showLock(isShow: self.isSentFolder)
         
         self.emailTo.attributedText = toSinglelineAttr
         self.emailCc.attributedText = ccShortAttr

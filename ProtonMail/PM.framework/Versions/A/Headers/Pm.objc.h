@@ -86,11 +86,36 @@
 
 - (instancetype)initWithRef:(id)ref;
 - (instancetype)init;
-- (BOOL)addAddress:(PmAddress*)address ret0_:(BOOL*)ret0_ error:(NSError**)error;
-- (BOOL)cleanAddresses:(BOOL*)ret0_ error:(NSError**)error;
-- (NSString*)decryptMessage:(NSString*)encryptText passphras:(NSString*)passphras error:(NSError**)error;
-- (NSString*)encryptMessage:(NSString*)addressID plainText:(NSString*)plainText passphrase:(NSString*)passphrase trim:(BOOL)trim error:(NSError**)error;
-- (BOOL)removeAddress:(NSString*)addressID ret0_:(BOOL*)ret0_ error:(NSError**)error;
+- (NSData*)decryptAttachment:(NSData*)keyPacket dataPacket:(NSData*)dataPacket privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase error:(NSError**)error;
+- (NSData*)decryptAttachmentBinKey:(NSData*)keyPacket dataPacket:(NSData*)dataPacket privateKeys:(NSData*)privateKeys passphrase:(NSString*)passphrase error:(NSError**)error;
+- (NSData*)decryptAttachmentWithPassword:(NSData*)keyPacket dataPacket:(NSData*)dataPacket password:(NSString*)password error:(NSError**)error;
+- (NSString*)decryptMessage:(NSString*)encryptedText privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase error:(NSError**)error;
+- (NSString*)decryptMessageBinKey:(NSString*)encryptedText privateKey:(NSData*)privateKey passphrase:(NSString*)passphrase error:(NSError**)error;
+- (PmDecryptSignedVerify*)decryptMessageVerify:(NSString*)encryptedText veriferKey:(NSString*)veriferKey privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase verifyTime:(int64_t)verifyTime error:(NSError**)error;
+- (PmDecryptSignedVerify*)decryptMessageVerifyBinKey:(NSString*)encryptedText veriferKey:(NSData*)veriferKey privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase verifyTime:(int64_t)verifyTime error:(NSError**)error;
+- (PmDecryptSignedVerify*)decryptMessageVerifyBinKeyPrivbinkeys:(NSString*)encryptedText veriferKey:(NSData*)veriferKey privateKeys:(NSData*)privateKeys passphrase:(NSString*)passphrase verifyTime:(int64_t)verifyTime error:(NSError**)error;
+- (PmDecryptSignedVerify*)decryptMessageVerifyPrivbinkeys:(NSString*)encryptedText veriferKey:(NSString*)veriferKey privateKeys:(NSData*)privateKeys passphrase:(NSString*)passphrase verifyTime:(int64_t)verifyTime error:(NSError**)error;
+- (NSString*)decryptMessageWithPassword:(NSString*)encrypted password:(NSString*)password error:(NSError**)error;
+- (PmEncryptedSplit*)encryptAttachment:(NSData*)plainData fileName:(NSString*)fileName publicKey:(NSString*)publicKey error:(NSError**)error;
+- (PmEncryptedSplit*)encryptAttachmentBinKey:(NSData*)plainData fileName:(NSString*)fileName publicKey:(NSData*)publicKey error:(NSError**)error;
+- (NSString*)encryptAttachmentWithPassword:(NSData*)plainData password:(NSString*)password error:(NSError**)error;
+- (NSString*)encryptMessage:(NSString*)plainText publicKey:(NSString*)publicKey privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase trim:(BOOL)trim error:(NSError**)error;
+- (NSString*)encryptMessageBinKey:(NSString*)plainText publicKey:(NSData*)publicKey privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase trim:(BOOL)trim error:(NSError**)error;
+- (NSString*)encryptMessageWithPassword:(NSString*)plainText password:(NSString*)password error:(NSError**)error;
+- (NSString*)generateKey:(NSString*)userName domain:(NSString*)domain passphrase:(NSString*)passphrase keyType:(NSString*)keyType bits:(long)bits error:(NSError**)error;
+- (long)getTime;
+- (BOOL)isKeyExpired:(NSString*)publicKey ret0_:(BOOL*)ret0_ error:(NSError**)error;
+- (BOOL)isKeyExpiredBin:(NSData*)publicKey ret0_:(BOOL*)ret0_ error:(NSError**)error;
+- (NSString*)signBinDetached:(NSData*)plainData privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase error:(NSError**)error;
+- (NSString*)signBinDetachedBinKey:(NSData*)plainData privateKey:(NSData*)privateKey passphrase:(NSString*)passphrase error:(NSError**)error;
+- (NSString*)signTextDetached:(NSString*)plainText privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase trim:(BOOL)trim error:(NSError**)error;
+- (NSString*)signTextDetachedBinKey:(NSString*)plainText privateKey:(NSData*)privateKey passphrase:(NSString*)passphrase trim:(BOOL)trim error:(NSError**)error;
+- (NSString*)updatePrivateKeyPassphrase:(NSString*)privateKey oldPassphrase:(NSString*)oldPassphrase newPassphrase:(NSString*)newPassphrase error:(NSError**)error;
+- (void)updateTime:(long)newTime;
+- (BOOL)verifyBinSignDetached:(NSString*)signature plainData:(NSData*)plainData publicKey:(NSString*)publicKey verifyTime:(int64_t)verifyTime ret0_:(BOOL*)ret0_ error:(NSError**)error;
+- (BOOL)verifyBinSignDetachedBinKey:(NSString*)signature plainData:(NSData*)plainData publicKey:(NSData*)publicKey verifyTime:(int64_t)verifyTime ret0_:(BOOL*)ret0_ error:(NSError**)error;
+- (BOOL)verifyTextSignDetached:(NSString*)signature plainText:(NSString*)plainText publicKey:(NSString*)publicKey verifyTime:(int64_t)verifyTime ret0_:(BOOL*)ret0_ error:(NSError**)error;
+- (BOOL)verifyTextSignDetachedBinKey:(NSString*)signature plainText:(NSString*)plainText publicKey:(NSData*)publicKey verifyTime:(int64_t)verifyTime ret0_:(BOOL*)ret0_ error:(NSError**)error;
 @end
 
 @interface PmSessionSplit : NSObject <goSeqRefInterface> {
@@ -113,40 +138,6 @@ FOUNDATION_EXPORT NSString* PmCheckKey(NSString* pubKey, NSError** error);
 
 FOUNDATION_EXPORT BOOL PmCheckPassphrase(NSString* privateKey, NSString* passphrase);
 
-FOUNDATION_EXPORT NSData* PmDecryptAttachment(NSData* keyPacket, NSData* dataPacket, NSString* privateKey, NSString* passphrase, NSError** error);
-
-FOUNDATION_EXPORT NSData* PmDecryptAttachmentBinKey(NSData* keyPacket, NSData* dataPacket, NSData* privateKeys, NSString* passphrase, NSError** error);
-
-FOUNDATION_EXPORT NSData* PmDecryptAttachmentWithPassword(NSData* keyPacket, NSData* dataPacket, NSString* password, NSError** error);
-
-FOUNDATION_EXPORT NSString* PmDecryptMessage(NSString* encryptedText, NSString* privateKey, NSString* passphrase, NSError** error);
-
-FOUNDATION_EXPORT NSString* PmDecryptMessageBinKey(NSString* encryptedText, NSData* privateKey, NSString* passphrase, NSError** error);
-
-FOUNDATION_EXPORT PmDecryptSignedVerify* PmDecryptMessageVerify(NSString* encryptedText, NSString* veriferKey, NSString* privateKey, NSString* passphrase, NSError** error);
-
-FOUNDATION_EXPORT PmDecryptSignedVerify* PmDecryptMessageVerifyBinKey(NSString* encryptedText, NSData* veriferKey, NSString* privateKey, NSString* passphrase, NSError** error);
-
-FOUNDATION_EXPORT PmDecryptSignedVerify* PmDecryptMessageVerifyBinKeyPrivbinkeys(NSString* encryptedText, NSData* veriferKey, NSData* privateKeys, NSString* passphrase, NSError** error);
-
-FOUNDATION_EXPORT PmDecryptSignedVerify* PmDecryptMessageVerifyPrivbinkeys(NSString* encryptedText, NSString* veriferKey, NSData* privateKeys, NSString* passphrase, NSError** error);
-
-FOUNDATION_EXPORT NSString* PmDecryptMessageWithPassword(NSString* encrypted, NSString* password, NSError** error);
-
-FOUNDATION_EXPORT PmEncryptedSplit* PmEncryptAttachment(NSData* plainData, NSString* fileName, NSString* publicKey, NSError** error);
-
-FOUNDATION_EXPORT PmEncryptedSplit* PmEncryptAttachmentBinKey(NSData* plainData, NSString* fileName, NSData* publicKey, NSError** error);
-
-FOUNDATION_EXPORT NSString* PmEncryptAttachmentWithPassword(NSData* plainData, NSString* password, NSError** error);
-
-FOUNDATION_EXPORT NSString* PmEncryptMessage(NSString* plainText, NSString* publicKey, NSString* privateKey, NSString* passphrase, BOOL trim, NSError** error);
-
-FOUNDATION_EXPORT NSString* PmEncryptMessageBinKey(NSString* plainText, NSData* publicKey, NSString* privateKey, NSString* passphrase, BOOL trim, NSError** error);
-
-FOUNDATION_EXPORT NSString* PmEncryptMessageWithPassword(NSString* plainText, NSString* password, NSError** error);
-
-FOUNDATION_EXPORT PmKey* PmGenerateKey(NSString* userName, NSString* domain, NSString* passphrase, NSString* keyType, long bits, NSError** error);
-
 FOUNDATION_EXPORT NSString* PmGetFingerprint(NSString* publicKey, NSError** error);
 
 FOUNDATION_EXPORT NSString* PmGetFingerprintBinKey(NSData* publicKey, NSError** error);
@@ -157,39 +148,23 @@ FOUNDATION_EXPORT PmSessionSplit* PmGetSessionFromKeyPacketBinkeys(NSData* keyPa
 
 FOUNDATION_EXPORT PmSessionSplit* PmGetSessionFromSymmetricPacket(NSData* keyPackage, NSString* password, NSError** error);
 
-FOUNDATION_EXPORT BOOL PmIsKeyExpired(NSString* publicKey, NSString* timeCheck, BOOL* ret0_, NSError** error);
-
-FOUNDATION_EXPORT BOOL PmIsKeyExpiredBin(NSData* publicKey, BOOL* ret0_, NSError** error);
-
 FOUNDATION_EXPORT NSData* PmKeyPacketWithPublicKey(PmSessionSplit* sessionSplit, NSString* publicKey, NSError** error);
 
 FOUNDATION_EXPORT NSData* PmKeyPacketWithPublicKeyBin(PmSessionSplit* sessionSplit, NSData* publicKey, NSError** error);
 
 FOUNDATION_EXPORT NSString* PmPublicKey(NSString* privateKey, NSError** error);
 
+FOUNDATION_EXPORT NSData* PmRandomToken(NSError** error);
+
+FOUNDATION_EXPORT NSData* PmRandomTokenWith(long size, NSError** error);
+
 FOUNDATION_EXPORT NSString* PmReadClearSignedMessage(NSString* signedMessage, NSError** error);
 
 FOUNDATION_EXPORT PmEncryptedSplit* PmSeparateKeyAndData(NSString* encrypted, NSError** error);
 
-FOUNDATION_EXPORT NSString* PmSignBinDetached(NSData* plainData, NSString* privateKey, NSString* passphrase, NSError** error);
-
-FOUNDATION_EXPORT NSString* PmSignBinDetachedBinKey(NSData* plainData, NSData* privateKey, NSString* passphrase, NSError** error);
-
-FOUNDATION_EXPORT NSString* PmSignTextDetached(NSString* plainText, NSString* privateKey, NSString* passphrase, BOOL trim, NSError** error);
-
-FOUNDATION_EXPORT NSString* PmSignTextDetachedBinKey(NSString* plainText, NSData* privateKey, NSString* passphrase, BOOL trim, NSError** error);
-
 FOUNDATION_EXPORT NSData* PmSymmetricKeyPacketWithPassword(PmSessionSplit* sessionSplit, NSString* password, NSError** error);
 
 FOUNDATION_EXPORT NSData* PmUnArmor(NSString* input, NSError** error);
-
-FOUNDATION_EXPORT BOOL PmVerifyBinSignDetached(NSString* signature, NSData* plainData, NSString* publicKey, BOOL* ret0_, NSError** error);
-
-FOUNDATION_EXPORT BOOL PmVerifyBinSignDetachedBinKey(NSString* signature, NSData* plainData, NSData* publicKey, BOOL* ret0_, NSError** error);
-
-FOUNDATION_EXPORT BOOL PmVerifyTextSignDetached(NSString* signature, NSString* plainText, NSString* publicKey, BOOL* ret0_, NSError** error);
-
-FOUNDATION_EXPORT BOOL PmVerifyTextSignDetachedBinKey(NSString* signature, NSString* plainText, NSData* publicKey, BOOL* ret0_, NSError** error);
 
 FOUNDATION_EXPORT NSString* PmVersion(void);
 

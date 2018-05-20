@@ -95,13 +95,13 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
                            sender : ContactVO, to:[ContactVO]?, cc : [ContactVO]?, bcc: [ContactVO]?,
                            isStarred:Bool, time : Date?, encType: EncryptTypes, labels : [Label]?,
                            showShowImages: Bool, expiration : Date?,
-                           score: MessageSpamScore) {
+                           score: MessageSpamScore, isSent: Bool) {
         
         self.emailHeader.updateHeaderData(title, sender:sender,
                                           to: to, cc: cc, bcc: bcc,
                                           isStarred: isStarred, time: time, encType: encType,
                                           labels : labels, showShowImages: showShowImages, expiration : expiration,
-                                          score: score)
+                                          score: score, isSent: isSent)
         self.emailHeader.updateHeaderLayout()
     }
     

@@ -113,7 +113,6 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
                 else
                 {
                     self.updateContent()
-                    //self.showEmbedImage()
                 }
             }
         }
@@ -189,7 +188,8 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
                                              labels : self.message.labels.allObjects as? [Label],
                                              showShowImages: self.needShowShowImageView,
                                              expiration: self.message.expirationTime,
-                                             score: self.message.getScore() )
+                                             score: self.message.getScore(),
+                                             isSent: self.message.hasLocation(location: .outbox))
         } else {
             PMLog.D(" MessageViewController self.message.managedObjectContext == nil")
         }
@@ -648,6 +648,17 @@ extension MessageViewController :  EmailViewActionsProtocol {
 // MARK
 fileprivate var tempFileUri : URL?
 extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteractionControllerDelegate {
+    func recipientView(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
+        if !self.message.isDetailDownloaded {
+            progress()
+        } else {
+            if let c = model as? ContactVO {
+                c.pgpType = self.message.getSentLockType(email: c.displayEmail ?? "")
+                complete?()
+            }
+        }
+    }
+    
     func quickLook(attachment tempfile: URL, keyPackage: Data, fileName: String, type: String) {
         
         if let data : Data = try? Data(contentsOf: tempfile) {
@@ -676,7 +687,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                         self.present(previewQL, animated: true, completion: nil)
                     }
                 }
-            } catch let ex as NSError {
+            } catch _ {
                 let alert = LocalString._cant_decrypt_this_attachment.alertController();
                 alert.addOKAction()
                 latestPresentedView = alert
@@ -710,20 +721,20 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         
-        alertController.addAction(UIAlertAction(title: "Copy address", style: .default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._copy_address, style: .default, handler: { (action) -> Void in
             UIPasteboard.general.string = model.displayEmail
         }))
-        alertController.addAction(UIAlertAction(title: "Copy name", style: .default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._copy_name, style: .default, handler: { (action) -> Void in
             UIPasteboard.general.string = model.displayName
         }))
-        alertController.addAction(UIAlertAction(title: "Compose to", style: .default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._compose_to, style: .default, handler: { (action) -> Void in
             let contactVO = ContactVO(id: "",
                                       name: model.displayName,
                                       email: model.displayEmail,
                                       isProtonMailContact: false)
             self.performSegue(withIdentifier: self.kToComposerSegue, sender: contactVO)
         }))
-        alertController.addAction(UIAlertAction(title: "Add to contacts", style: .default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._add_to_contacts, style: .default, handler: { (action) -> Void in
             let contactVO = ContactVO(id: "",
                                       name: model.displayName,
                                       email: model.displayEmail,
@@ -738,7 +749,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol) {
-        let notes = model.notes
+        let notes = model.notes(type: self.message.hasLocation(location: .outbox) ? 2 : 1)
         notes.alertToastBottom()
     }
     
