@@ -104,8 +104,6 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                 return UIImage(named: "pgp_encrypt_trusted_key")
             case .pgp_signed:
                 return UIImage(named: "pgp_signed")
-            case .none:
-                return nil
             case .pgp_encrypt_trusted_key_verify_failed:
                 return UIImage(named: "pgp_trusted_sign_failed")
             case .pgp_signed_verify_failed:
@@ -116,6 +114,8 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                 return UIImage(named: "internal_sign_failed")
             case .pgp_encrypted:
                 return UIImage(named: "pgp_encrypted")
+            case .none:
+                return nil
             }
         }
     }
@@ -123,27 +123,26 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     var composerNotes: String {
         get {
             switch self.pgpType {
-            case .none:
-                return ""
             case .eo:
-                return "End-to-end encrypted"
-            case .internal_normal: //PM --> PM (encrypted+signed)
-                return "End-to-end encrypted"
-            case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
-                return "End-to-end encrypted to verified address"
-            case .pgp_encrypt_trusted_key:
-                return "PGP-encrypted"
+                return LocalString._end_to_end_encrypted
+                
+            case .pgp_encrypt_trusted_key: //PM --> non-PM PGP (encrypted+signed/pinned)
+                return LocalString._pgp_encrypted
             case .pgp_signed://PM --> non-PM PGP (signed)
-                return "PGP-signed"
-            case .pgp_encrypt_trusted_key_verify_failed: //PM --> non-PM PGP (encrypted+signed/pinned)
-                return "PGP-encrypted"
-            case .internal_trusted_key_verify_failed:
-                return "Sender Verification Failed"
-            case .internal_normal_verify_failed:
-                return "Sender Verification Failed"
-            case .pgp_signed_verify_failed:
-                return "Sender Verification Failed"
-            case .pgp_encrypted:
+                return LocalString._pgp_signed
+            case .pgp_encrypted: //not for composer but in case
+                return LocalString._pgp_encrypted
+                
+            case .internal_normal: //PM --> PM (encrypted+signed)
+                return LocalString._end_to_end_encrypted
+            case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
+                return LocalString._end_to_end_encrypted_to_verified_address
+                
+            case .pgp_encrypt_trusted_key_verify_failed,
+                 .internal_trusted_key_verify_failed,
+                 .internal_normal_verify_failed,
+                 .pgp_signed_verify_failed,
+                 .none:
                 return ""
             }
         }
@@ -152,28 +151,26 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     var sentNotes: String {
         get {
             switch self.pgpType {
+            case .none, .eo:
+                return LocalString._stored_with_zero_access_encryption
+                
             case .internal_normal: //PM --> PM (encrypted+signed)
-                return "End-to-end encrypted"
+                return LocalString._sent_by_you_with_end_to_end_encryption
             case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
-                return "End-to-end encrypted to verified address"
-            case .pgp_encrypt_trusted_key:
-                return "PGP-encrypted"
-            case .pgp_signed://non-PM signed PGP --> PM (pinned)
-                return "PGP-signed message from verified address"
-            case .none:
-                return "Stored with zero access encryption"
-            case .pgp_encrypt_trusted_key_verify_failed: //non-PM signed+encrypted PGP --> PM (pinned)
-                return "PGP-encrypted message from verified address"
-            case .internal_trusted_key_verify_failed:
-                return "Sender Verification Failed"
-            case .internal_normal_verify_failed:
-                return "Sender Verification Failed"
-            case .pgp_signed_verify_failed:
-                return "Sender Verification Failed"
-            case .eo:
-                return "Encrypted outside"
+                return LocalString._sent_by_you_with_end_to_end_encryption
+                
             case .pgp_encrypted:
-                return ""
+                return LocalString._pgp_encrypted_message
+            case .pgp_encrypt_trusted_key:
+                return LocalString._pgp_encrypted_message_from_verified_address
+            case .pgp_signed://non-PM signed PGP --> PM (pinned)
+                return LocalString._pgp_signed_message_from_verified_address
+                
+            case .pgp_encrypt_trusted_key_verify_failed,
+                 .internal_trusted_key_verify_failed,
+                 .internal_normal_verify_failed,
+                 .pgp_signed_verify_failed:
+                return LocalString._sender_verification_failed
             }
         }
     }
@@ -181,28 +178,28 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     var inboxNotes: String {
         get {
             switch self.pgpType {
-            case .internal_normal: //PM --> PM (encrypted+signed)
-                return "End-to-end encrypted"
-            case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
-                return "End-to-end encrypted to verified address"
-            case .pgp_encrypt_trusted_key:
-                return "PGP-encrypted"
-            case .pgp_signed://non-PM signed PGP --> PM (pinned)
-                return "PGP-signed message from verified address"
             case .none:
-                return "Stored with zero access encryption"
-            case .pgp_encrypt_trusted_key_verify_failed: //non-PM signed+encrypted PGP --> PM (pinned)
-                return "PGP-encrypted message from verified address"
-            case .internal_trusted_key_verify_failed:
-                return "Sender Verification Failed"
-            case .internal_normal_verify_failed:
-                return "Sender Verification Failed"
-            case .pgp_signed_verify_failed:
-                return "Sender Verification Failed"
+                return LocalString._stored_with_zero_access_encryption
             case .eo:
-                return "Encrypted outside"
+                return LocalString._encrypted_outside
+                
+            case .internal_normal: //PM --> PM (encrypted+signed)
+                return LocalString._end_to_end_encrypted_message
+            case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
+                return LocalString._end_to_end_encrypted_message_from_verified_address
+                
             case .pgp_encrypted:
-                return ""
+                return LocalString._pgp_encrypted_message
+            case .pgp_encrypt_trusted_key:
+                return LocalString._pgp_encrypted_message_from_verified_address
+            case .pgp_signed://non-PM signed PGP --> PM (pinned)
+                return LocalString._pgp_signed_message_from_verified_address
+                
+            case .pgp_encrypt_trusted_key_verify_failed,
+                 .internal_trusted_key_verify_failed,
+                 .internal_normal_verify_failed,
+                 .pgp_signed_verify_failed:
+                return LocalString._sender_verification_failed
             }
         }
     }

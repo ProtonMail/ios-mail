@@ -1380,6 +1380,33 @@ class LocalizedString {
     /// "Add to contacts"
     lazy var _add_to_contacts = NSLocalizedString("Add to contacts", comment: "Title")
     
+    
+    ///"End-to-end encrypted"
+    lazy var _end_to_end_encrypted = NSLocalizedString("End-to-end encrypted", comment: "encryption lock description")
+    /// "PGP-encrypted"
+    lazy var _pgp_encrypted = NSLocalizedString("PGP-encrypted", comment: "encryption lock description")
+    /// "PGP-signed"
+    lazy var _pgp_signed = NSLocalizedString("PGP-signed", comment: "encryption lock description")
+    /// "End-to-end encrypted to verified address"
+    lazy var _end_to_end_encrypted_to_verified_address = NSLocalizedString("End-to-end encrypted to verified address", comment: "encryption lock description")
+    /// "Stored with zero access encryption"
+    lazy var _stored_with_zero_access_encryption = NSLocalizedString("Stored with zero access encryption", comment: "encryption lock description")
+    /// "Sent by you with end-to-end encryption"
+    lazy var _sent_by_you_with_end_to_end_encryption = NSLocalizedString("Sent by you with end-to-end encryption", comment: "encryption lock description")
+    /// "PGP-encrypted message"
+    lazy var _pgp_encrypted_message = NSLocalizedString("PGP-encrypted message", comment: "encryption lock description")
+    /// "PGP-encrypted message from verified address"
+    lazy var _pgp_encrypted_message_from_verified_address = NSLocalizedString("PGP-encrypted message from verified address", comment: "encryption lock description")
+    /// "PGP-signed message from verified address"
+    lazy var _pgp_signed_message_from_verified_address = NSLocalizedString("PGP-signed message from verified address", comment: "encryption lock description")
+    /// "Sender Verification Failed"
+    lazy var _sender_verification_failed = NSLocalizedString("Sender Verification Failed", comment: "encryption lock description")
+    /// "Encrypted outside"
+    lazy var _encrypted_outside = NSLocalizedString("Encrypted outside", comment: "encryption lock description")
+    /// "End-to-end encrypted message"
+    lazy var _end_to_end_encrypted_message = NSLocalizedString("End-to-end encrypted message", comment: "encryption lock description")
+    /// "End-to-end encrypted message from verified address"
+    lazy var _end_to_end_encrypted_message_from_verified_address = NSLocalizedString("End-to-end encrypted message from verified address", comment: "encryption lock description")
 
 
 }
