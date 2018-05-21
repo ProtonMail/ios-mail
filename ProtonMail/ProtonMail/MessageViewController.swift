@@ -652,8 +652,16 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         if !self.message.isDetailDownloaded {
             progress()
         } else {
+            PMLog.D(self.message.encryptType.description)
+            //TODO:: put this to view model
             if let c = model as? ContactVO {
-                c.pgpType = self.message.getSentLockType(email: c.displayEmail ?? "")
+                if self.message.hasLocation(location: .outbox) {
+                    
+                    c.pgpType = self.message.getSentLockType(email: c.displayEmail ?? "")
+                } else {
+                    c.pgpType = self.message.getInboxType(email: c.displayEmail ?? "", signature: SignType.no_sign)
+                }
+
                 complete?()
             }
         }

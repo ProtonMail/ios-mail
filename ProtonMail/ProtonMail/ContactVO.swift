@@ -15,6 +15,15 @@ import Foundation
 import PromiseKit
 import AwaitKit
 
+
+struct SignType : OptionSet {
+    let rawValue: Int
+    
+    static let no_sign       = SignType(rawValue: 0)
+    static let verify_failed = SignType(rawValue: 1 << 0)
+    static let verify_ok     = SignType(rawValue: 1 << 1)
+}
+
 enum PGPType : Int {
     case none = 0 /// normal outgoing
     case pgp_signed = 1 /// external pgp signed only

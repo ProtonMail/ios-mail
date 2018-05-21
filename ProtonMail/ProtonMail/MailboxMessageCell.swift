@@ -54,7 +54,11 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         // Initialization code
         checkboxWidth.constant = 0.0
         
-        locationLabel.layer.cornerRadius = 2;
+        locationLabel.layer.cornerRadius = 2
+        
+        //disable lock
+        lockImage.isHidden = true
+        lockWidth.constant = 0.0
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -117,27 +121,27 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         if showLocation && !title.isEmpty {
             self.locationLabel.text = " \(title) "
             locationWidth.constant = self.locationLabel.sizeThatFits(CGSize.zero).width
-            loctionRightSpace.constant = 4.0;
+            loctionRightSpace.constant = 4.0
         } else {
-            locationWidth.constant = 0.0;
-            loctionRightSpace.constant = 0.0;
+            locationWidth.constant = 0.0
+            loctionRightSpace.constant = 0.0
         }
         
-        let lockType : LockTypes = message.lockType
-        switch (lockType) {
-        case .plainTextLock:
-            self.lockImage.image = UIImage(named: "mail_lock");
-            self.lockImage.isHighlighted = true;
-            break
-        case .encryptLock:
-            self.lockImage.image = UIImage(named: "mail_lock");
-            self.lockImage.isHighlighted = false;
-            break
-        case .pgpLock:
-            self.lockImage.image = UIImage(named: "mail_lock-pgpmime");
-            self.lockImage.isHighlighted = false;
-            break;
-        }
+//        let lockType : LockTypes = message.lockType
+//        switch (lockType) {
+//        case .plainTextLock:
+//            self.lockImage.image = UIImage(named: "mail_lock")
+//            self.lockImage.isHighlighted = true
+//            break
+//        case .encryptLock:
+//            self.lockImage.image = UIImage(named: "mail_lock")
+//            self.lockImage.isHighlighted = false
+//            break
+//        case .pgpLock:
+//            self.lockImage.image = UIImage(named: "mail_lock-pgpmime")
+//            self.lockImage.isHighlighted = false
+//            break
+//        }
         
         if message.numAttachments.int32Value > 0 {
             self.attachmentImage.isHidden = false
@@ -167,7 +171,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         let tempLabels = message.labels.filtered(using: predicate) //TODO:: later need add lables exsiting check 
         var labels : [Label] = []
         for vowel in tempLabels {
-            let label = vowel as! Label;
+            let label = vowel as! Label
             labels.append(label)
         }
         if message.location == MessageLocation.outbox {
@@ -211,14 +215,14 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     fileprivate func updateLables (_ labelView : LabelDisplayView, label:Label?) {
         if let label = label {
             if label.name.isEmpty || label.color.isEmpty {
-                labelView.isHidden = true;
+                labelView.isHidden = true
             } else {
-                labelView.isHidden = false;
+                labelView.isHidden = false
                 labelView.labelTitle = label.name
                 labelView.LabelTintColor = UIColor(hexString: label.color, alpha: 1.0)
             }
         } else {
-            labelView.isHidden = true;
+            labelView.isHidden = true
         }
     }
     

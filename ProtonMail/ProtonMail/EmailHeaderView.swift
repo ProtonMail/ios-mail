@@ -69,7 +69,7 @@ class EmailHeaderView: UIView {
     fileprivate var LabelFive: UILabel!
     
     fileprivate var emailFavoriteButton: UIButton!
-    fileprivate var emailIsEncryptedImageView: UIImageView!
+//    fileprivate var emailIsEncryptedImageView: UIImageView!
     fileprivate var emailHasAttachmentsImageView: UIImageView!
     fileprivate var emailAttachmentsAmount: UILabel!
     
@@ -101,7 +101,7 @@ class EmailHeaderView: UIView {
     fileprivate let kEmailDetailDateLabelMarginTop: CGFloat = 10.0
     fileprivate let kEmailDetailButtonMarginLeft: CGFloat = 5.0
     fileprivate let kEmailHasAttachmentsImageViewMarginRight: CGFloat = -4.0
-    fileprivate let kEmailIsEncryptedImageViewMarginRight: CGFloat = -8.0
+//    fileprivate let kEmailIsEncryptedImageViewMarginRight: CGFloat = -8.0
     fileprivate let kEmailBodyTextViewMarginLeft: CGFloat = 0//-16.0
     fileprivate let kEmailBodyTextViewMarginRight: CGFloat = 0//-16.0
     fileprivate let kEmailBodyTextViewMarginTop: CGFloat = 16.0
@@ -345,21 +345,21 @@ class EmailHeaderView: UIView {
         let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' \(timeformat)") ;
         self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
 
-        let lockType : LockTypes = encType.lockType
-        switch (lockType) {
-        case .plainTextLock:
-            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock");
-            self.emailIsEncryptedImageView.isHighlighted = true;
-            break
-        case .encryptLock:
-            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock");
-            self.emailIsEncryptedImageView.isHighlighted = false;
-            break
-        case .pgpLock:
-            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock-pgpmime");
-            self.emailIsEncryptedImageView.isHighlighted = false;
-            break;
-        }
+//        let lockType : LockTypes = encType.lockType
+//        switch (lockType) {
+//        case .plainTextLock:
+//            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock");
+//            self.emailIsEncryptedImageView.isHighlighted = true;
+//            break
+//        case .encryptLock:
+//            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock");
+//            self.emailIsEncryptedImageView.isHighlighted = false;
+//            break
+//        case .pgpLock:
+//            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock-pgpmime");
+//            self.emailIsEncryptedImageView.isHighlighted = false;
+//            break;
+//        }
         
         var tmplabels : [Label] = []
         if let alllabels = labels {
@@ -583,11 +583,11 @@ class EmailHeaderView: UIView {
         
         self.configureEmailDetailDateLabel()
         
-        self.emailIsEncryptedImageView = UIImageView(image: UIImage(named: "mail_lock"))
-        self.emailIsEncryptedImageView.highlightedImage = UIImage(named: "mail_lock-outside")
-        self.emailIsEncryptedImageView.contentMode = UIViewContentMode.center
-        self.emailIsEncryptedImageView.sizeToFit()
-        self.emailHeaderView.addSubview(emailIsEncryptedImageView)
+//        self.emailIsEncryptedImageView = UIImageView(image: UIImage(named: "mail_lock"))
+//        self.emailIsEncryptedImageView.highlightedImage = UIImage(named: "mail_lock-outside")
+//        self.emailIsEncryptedImageView.contentMode = UIViewContentMode.center
+//        self.emailIsEncryptedImageView.sizeToFit()
+//        self.emailHeaderView.addSubview(emailIsEncryptedImageView)
         
         self.emailHasAttachmentsImageView = UIImageView(image: UIImage(named: "mail_attachment"))
         self.emailHasAttachmentsImageView.contentMode = UIViewContentMode.center
@@ -705,17 +705,17 @@ class EmailHeaderView: UIView {
             let _ = make?.height.equalTo()(separatorHeight)
         }
         
-        emailIsEncryptedImageView.mas_updateConstraints { (make) -> Void in
-            make?.removeExisting = true
-            if (self.attachmentCount > 0) {
-                let _ = make?.right.equalTo()(self.emailHasAttachmentsImageView.mas_left)?.with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
-            } else {
-                let _ = make?.right.equalTo()(self.emailHeaderView)?.offset()(-16)
-            }
-            let _ = make?.bottom.equalTo()(self.emailAttachmentsAmount)
-            let _ = make?.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
-            let _ = make?.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
-        }
+//        emailIsEncryptedImageView.mas_updateConstraints { (make) -> Void in
+//            make?.removeExisting = true
+//            if (self.attachmentCount > 0) {
+//                let _ = make?.right.equalTo()(self.emailHasAttachmentsImageView.mas_left)?.with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
+//            } else {
+//                let _ = make?.right.equalTo()(self.emailHeaderView)?.offset()(-16)
+//            }
+//            let _ = make?.bottom.equalTo()(self.emailAttachmentsAmount)
+//            let _ = make?.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
+//            let _ = make?.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
+//        }
         
         self.updateExpirationConstraints()
         self.updateShowImageConstraints()
@@ -946,17 +946,17 @@ class EmailHeaderView: UIView {
             let _ = make?.width.equalTo()(self.emailHasAttachmentsImageView.frame.width)
         }
         
-        emailIsEncryptedImageView.mas_makeConstraints { (make) -> Void in
-            if (self.attachmentCount > 0) {
-                let _ = make?.right.equalTo()(self.emailHasAttachmentsImageView.mas_left)?.with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
-            } else {
-                let _ = make?.right.equalTo()(self.emailHeaderView)
-            }
-            
-            let _ = make?.bottom.equalTo()(self.emailAttachmentsAmount)
-            let _ = make?.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
-            let _ = make?.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
-        }
+//        emailIsEncryptedImageView.mas_makeConstraints { (make) -> Void in
+//            if (self.attachmentCount > 0) {
+//                let _ = make?.right.equalTo()(self.emailHasAttachmentsImageView.mas_left)?.with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
+//            } else {
+//                let _ = make?.right.equalTo()(self.emailHeaderView)
+//            }
+//
+//            let _ = make?.bottom.equalTo()(self.emailAttachmentsAmount)
+//            let _ = make?.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
+//            let _ = make?.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
+//        }
     }
     
     fileprivate var isShowingDetail: Bool = false
