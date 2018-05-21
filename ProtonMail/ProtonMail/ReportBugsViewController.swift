@@ -38,7 +38,11 @@ class ReportBugsViewController: ProtonMailViewController {
         
         topTitleLabel.text = LocalString._bug_description
         self.title = LocalString._menu_bugs_title
+        
+        self.textView.textContainer.lineFragmentPadding = 0
+        self.textView.textContainerInset = .zero
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
