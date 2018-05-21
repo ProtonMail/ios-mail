@@ -352,6 +352,7 @@ class ContactDataService {
                 for c in cards {
                     switch c.type {
                     case .SignedOnly:
+                        PMLog.D(c.data)
                         if let vcard = PMNIEzvcard.parseFirst(c.data) {
                             let emails = vcard.getEmails()
                             for e in emails {

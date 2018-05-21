@@ -225,7 +225,7 @@ extension String {
     func encryptMessageWithSingleKey(_ publicKey: String, privateKey: String, mailbox_pwd: String) throws -> String? {
         var out_encrypted : String?
         try ObjC.catchException {
-            out_encrypted = sharedOpenPGP.encryptMessageSingleKey(publicKey, plainText: self, privateKey: privateKey, passphras: mailbox_pwd, trim: false)
+            out_encrypted = sharedOpenPGP.encryptMessageSingleKey(publicKey, plainText: self, privateKey: privateKey, passphras: mailbox_pwd, trim: true)
         }
         
         return out_encrypted
