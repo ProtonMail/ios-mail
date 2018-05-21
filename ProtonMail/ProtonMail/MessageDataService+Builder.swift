@@ -315,8 +315,8 @@ class SendBuilder {
         return Promise { seal in
             async {
                 let messageBody = self.clearBody ?? ""
-                
-                let plainText = messageBody.html2String
+                //TODO:: need improve replace part
+                let plainText = messageBody.html2String.preg_replace("\n", replaceto: "\r\n")
                 
                 PMLog.D(plainText)
                 
