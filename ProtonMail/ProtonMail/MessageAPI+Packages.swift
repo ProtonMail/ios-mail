@@ -54,6 +54,7 @@ final class EOAddressPackage : AddressPackage {
          auth : PasswordAuth, pwdHit : String?,
          email:String,
          bodyKeyPacket : String,
+         plainText : Bool,
          attPackets:[AttachmentPackage]=[AttachmentPackage](),
          type: SendType = SendType.intl, //for base
         sign : Int = 0) {
@@ -63,7 +64,7 @@ final class EOAddressPackage : AddressPackage {
         self.auth = auth
         self.pwdHit = pwdHit
         
-        super.init(email: email, bodyKeyPacket: bodyKeyPacket, type: type, attPackets: attPackets, sign: sign)
+        super.init(email: email, bodyKeyPacket: bodyKeyPacket, type: type, plainText: plainText, attPackets: attPackets, sign: sign)
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -85,11 +86,12 @@ class AddressPackage : AddressPackageBase {
     init(email:String,
          bodyKeyPacket : String,
          type: SendType,
+         plainText : Bool,
          attPackets:[AttachmentPackage]=[AttachmentPackage](),
         sign : Int = 0) {
         self.bodyKeyPacket = bodyKeyPacket
         self.attPackets = attPackets
-        super.init(email: email, type: type, sign: sign)
+        super.init(email: email, type: type, sign: sign, plainText: plainText)
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -112,9 +114,10 @@ class MimeAddressPackage : AddressPackageBase {
     let bodyKeyPacket : String
     init(email:String,
          bodyKeyPacket : String,
-         type: SendType) {
+         type: SendType,
+         plainText : Bool) {
         self.bodyKeyPacket = bodyKeyPacket
-        super.init(email: email, type: type, sign: -1)
+        super.init(email: email, type: type, sign: -1, plainText: plainText)
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -130,11 +133,13 @@ class AddressPackageBase : Package {
     let type : SendType!
     let sign : Int! //0 or 1
     let email : String
+    let plainText : Bool
     
-    init(email: String, type: SendType, sign : Int) {
+    init(email: String, type: SendType, sign : Int, plainText : Bool) {
         self.type = type
         self.sign = sign
         self.email = email
+        self.plainText = plainText
     }
     
     func toDictionary() -> [String : Any]? {

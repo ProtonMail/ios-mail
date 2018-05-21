@@ -270,20 +270,24 @@ final class MessageEmptyRequest : ApiRequest <ApiResponse> {
 /// send message reuqest
 final class SendMessage : ApiRequestNew<ApiResponse> {
     var messagePackage : [AddressPackageBase]!  // message package
-    var body : String!  // optional for out side user
+    var body : String!
     let messageID : String!
     let expirationTime : Int32!
     
     var clearBody : ClearBodyPackage?
     var clearAtts : [ClearAttachmentPackage]?
     
-    var mimeBody : String!
+    var mimeDataPacket : String!
     var clearMimeBody : ClearBodyPackage?
+    
+    var plainTextDataPacket : String!
+    var clearPlainTextBody : ClearBodyPackage?
     
     init(messageID : String, expirationTime: Int32?,
          messagePackage: [AddressPackageBase]!, body : String,
          clearBody : ClearBodyPackage?, clearAtts: [ClearAttachmentPackage]?,
-         mimeBody : String, clearMimeBody : ClearBodyPackage?) {
+         mimeDataPacket : String, clearMimeBody : ClearBodyPackage?,
+         plainTextDataPacket : String, clearPlainTextBody : ClearBodyPackage?) {
         self.messageID = messageID
         self.messagePackage = messagePackage
         self.body = body
@@ -291,8 +295,11 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
         self.clearBody = clearBody
         self.clearAtts = clearAtts
         
-        self.mimeBody = mimeBody
+        self.mimeDataPacket = mimeDataPacket
         self.clearMimeBody = clearMimeBody
+        
+        self.plainTextDataPacket = plainTextDataPacket
+        self.clearPlainTextBody = clearPlainTextBody
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -304,27 +311,32 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
         let normalPackage = messagePackage.filter { $0.type.rawValue < 10 }
         let mimePackage = messagePackage.filter { $0.type.rawValue > 10 }
         
+        
+        let plainTextPackage = normalPackage.filter { $0.plainText == true }
+        let htmlPackage = normalPackage.filter { $0.plainText == false }
+        
         //packages object
         var packages : [Any] = [Any]()
         
-        if normalPackage.count > 0 {
+        //plaintext
+        if plainTextPackage.count > 0 {
             //not mime
-            var normalAddress : [String : Any] = [String : Any]()
+            var plainTextAddress : [String : Any] = [String : Any]()
             var addrs = [String: Any]()
             var type = SendType()
-            for mp in normalPackage {
+            for mp in plainTextPackage {
                 addrs[mp.email] = mp.toDictionary()!
                 type.insert(mp.type)
             }
-            normalAddress["Addresses"] = addrs
+            plainTextAddress["Addresses"] = addrs
             //"Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
-            normalAddress["Type"] = type.rawValue
-            normalAddress["Body"] = self.body
-            normalAddress["MIMEType"] = type.contains(.cinln) ? "text/plain" : "text/html"
+            plainTextAddress["Type"] = type.rawValue
+            plainTextAddress["Body"] = self.plainTextDataPacket
+            plainTextAddress["MIMEType"] = "text/plain"
             
-            if let cb = clearBody {
+            if let cb = self.clearPlainTextBody {
                 // Include only if cleartext recipients
-                normalAddress["BodyKey"] = [
+                plainTextAddress["BodyKey"] = [
                     "Key" : cb.key,
                     "Algorithm" : cb.algo
                 ]
@@ -339,9 +351,48 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
                         "Algorithm" : it.algo
                     ]
                 }
-                normalAddress["AttachmentKeys"] = atts
+                plainTextAddress["AttachmentKeys"] = atts
             }
-            packages.append(normalAddress)
+            packages.append(plainTextAddress)
+        }
+        
+        
+        //html text
+        if htmlPackage.count > 0 {
+            //not mime
+            var htmlAddress : [String : Any] = [String : Any]()
+            var addrs = [String: Any]()
+            var type = SendType()
+            for mp in htmlPackage {
+                addrs[mp.email] = mp.toDictionary()!
+                type.insert(mp.type)
+            }
+            htmlAddress["Addresses"] = addrs
+            //"Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
+            htmlAddress["Type"] = type.rawValue
+            htmlAddress["Body"] = self.body
+            htmlAddress["MIMEType"] = "text/html"
+            
+            if let cb = clearBody {
+                // Include only if cleartext recipients
+                htmlAddress["BodyKey"] = [
+                    "Key" : cb.key,
+                    "Algorithm" : cb.algo
+                ]
+            }
+            
+            if let cAtts = clearAtts {
+                // Only include if cleartext recipients, optional if no attachments
+                var atts : [String:Any] = [String:Any]()
+                for it in cAtts {
+                    atts[it.ID] = [
+                        "Key" : it.key,
+                        "Algorithm" : it.algo
+                    ]
+                }
+                htmlAddress["AttachmentKeys"] = atts
+            }
+            packages.append(htmlAddress)
         }
        
         if mimePackage.count > 0 {
@@ -356,7 +407,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
             }
             mimeAddress["Addresses"] = addrs
             mimeAddress["Type"] = mimeType.rawValue // 16|32 MIME sending cannot share packages with inline sending
-            mimeAddress["Body"] = mimeBody
+            mimeAddress["Body"] = mimeDataPacket
             mimeAddress["MIMEType"] = "multipart/mixed"
             
             if let cb = clearMimeBody {
@@ -369,7 +420,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
             packages.append(mimeAddress)
         }
         out["Packages"] = packages
-        //PMLog.D( out.json(prettyPrinted: true) )
+        PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
     

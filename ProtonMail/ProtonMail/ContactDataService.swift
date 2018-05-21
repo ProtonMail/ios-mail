@@ -304,9 +304,11 @@ class ContactDataService {
     
     
     func fetch(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]> {
+        
+        let context = context ?? sharedCoreDataService.newManagedObjectContext()
+        
         return Promise { seal in
             async {
-                let context = context ?? sharedCoreDataService.newManagedObjectContext()
                 
                 guard let contactEmails = Email.findEmails(emails, inManagedObjectContext: context) else {
                     seal.fulfill([])
@@ -360,15 +362,19 @@ class ContactDataService {
                                     let isSign = sign?.getValue() ?? "false" == "true" ? true : false
                                     let keys = vcard.getKeys()
                                     let isEncrypt = encrypt?.getValue() ?? "false" == "true" ? true : false
-                                    let mimeType = vcard.getPMScheme()
-                                    let isMime = mimeType?.getValue() ?? "pgp-mime" == "pgp-mime" ? true : false
+                                    let schemeType = vcard.getPMScheme()
+                                    let isMime = schemeType?.getValue() ?? "pgp-mime" == "pgp-mime" ? true : false
+                                    let mimeType = vcard.getPMMimeType()
+                                    let pt = mimeType?.getValue()
+                                    let plainText = pt ?? "text/html" == "text/html" ? false : true
+                                    
                                     for key in keys {
                                         let kg = key.getGroup()
                                         if kg == group {
                                             let kp = key.getPref()
                                             let value = key.getBinary() //based 64 key
                                             if kp == 1 || kp == Int32.min {
-                                                return seal.fulfill(PreContact(email: email, pubKey: value, sign: isSign, encrypt: isEncrypt, mime: isMime))
+                                                return seal.fulfill(PreContact(email: email, pubKey: value, sign: isSign, encrypt: isEncrypt, mime: isMime, plainText: plainText))
                                             }
                                         }
 

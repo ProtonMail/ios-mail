@@ -1622,20 +1622,20 @@ class MessageDataService {
                             if value.recipientType == 1 {
                                 //if type is internal check is key match with contact key
                                 //compare the key if doesn't match
-                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: false, sign: true, pgpencrypt: false))
+                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: false, sign: true, pgpencrypt: false, plainText: contact.plainText))
                             } else {
                                 //sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: true))
-                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: contact.mime, sign: contact.sign, pgpencrypt: contact.encrypt))
+                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: contact.mime, sign: contact.sign, pgpencrypt: contact.encrypt, plainText: contact.plainText))
                             }
                         } else {
-                            sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO, mime: false, sign: false, pgpencrypt: false))
+                            sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO, mime: false, sign: false, pgpencrypt: false, plainText: false))
                         }
                     case .rejected(let error):
                         throw error
                     }
                 }
 
-                if sendBuilder.hasMime {
+                if sendBuilder.hasMime || sendBuilder.hasPlainText {
                     guard let clearbody = try message.decryptBody() else {
                         throw RuntimeError.cant_decrypt.error
                     }
@@ -1659,7 +1659,16 @@ class MessageDataService {
                 let privateKey = addr.private_key
                 let pubKey = addr.public_key
                 return sendBuilder.buildMime(pubKey: pubKey, privKey: privateKey)
-            }.then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
+            }.then{ (sendbuilder) -> Promise<SendBuilder> in
+                if !sendBuilder.hasPlainText {
+                    return .value(sendBuilder)
+                }
+                //build pgp sending mime body
+                let addr = message.defaultAddress!.keys.first!
+                let privateKey = addr.private_key
+                let pubKey = addr.public_key
+                return sendBuilder.buildPlainText(pubKey: pubKey, privKey: privateKey)
+            } .then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
                 //build address packages
                 return when(resolved: sendbuilder.promises)
             }.then { results -> Promise<ApiResponse> in
@@ -1679,9 +1688,12 @@ class MessageDataService {
                                           expirationTime: message.expirationOffset,
                                           messagePackage: msgs,
                                           body: encodedBody,
-                                          clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts, mimeBody: sendBuilder.mimeBody,
-                                          //
-                                          clearMimeBody: sendBuilder.clearMimeBodyPackage)
+                                          clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
+                                          mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
+                                          plainTextDataPacket : sendBuilder.plainBody, clearPlainTextBody : sendBuilder.clearPlainBodyPackage
+                )
+                
+                
                 return sendApi.run()
             }.done { (res) in
                 let error = res.error

@@ -73,6 +73,7 @@
 #import <OpenPGP/PMNIPMEncrypt.h>
 #import <OpenPGP/PMNIKey.h>
 #import <OpenPGP/PMNIPMScheme.h>
+#import <OpenPGP/PMNIPMMimeType.h>
 
 
 

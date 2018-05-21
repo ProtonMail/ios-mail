@@ -13,6 +13,7 @@
 @class PMNIOrganization;
 @class PMNIPMCustom;
 @class PMNIPMEncrypt;
+@class PMNIPMMimeType;
 @class PMNIPMScheme;
 @class PMNIPMSign;
 @class PMNIStructuredName;
@@ -141,6 +142,14 @@
 - (void)setPMScheme:(nullable PMNIPMScheme *)scheme;
 
 - (void)clearPMScheme;
+
+- (nullable PMNIPMMimeType *)getPMMimeType;
+
+- (void)addPMMimeType:(nullable PMNIPMMimeType *)mimetype;
+
+- (void)setPMMimeType:(nullable PMNIPMMimeType *)mimetype;
+
+- (void)clearPMMimeType;
 
 - (nonnull NSArray<PMNIUrl *> *)getUrls;
 
