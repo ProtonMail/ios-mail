@@ -175,6 +175,47 @@ final class ComposeViewModelImpl : ComposeViewModel {
         return sharedUserDataService.userAddresses
     }
     
+    override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: (() -> Void)?) {
+        progress()
+        
+        let context = sharedCoreDataService.newManagedObjectContext()
+        async {
+            guard let c = model as? ContactVO else {
+                complete?()
+                return
+            }
+            
+            guard let emial = model.displayEmail else {
+                complete?()
+                return
+            }
+            let getEmail = UserEmailPubKeys(email: emial).run()
+            let getContact = sharedContactDataService.fetch(byEmails: [emial], context: context)
+            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
+                //internal emails
+                if keyRes.recipientType == 1 {
+                    if let contact = contacts.first, contact.pgpKey != nil {
+                        c.pgpType = .internal_trusted_key
+                    } else {
+                        c.pgpType = .internal_normal
+                    }
+                } else {
+                    if let contact = contacts.first, contact.pgpKey != nil {
+                        if contact.encrypt {
+                            c.pgpType = .pgp_encrypt_trusted_key
+                        } else if contact.sign {
+                            c.pgpType = .pgp_signed
+                        }
+                    }
+                }
+                complete?()
+            }.catch({ (error) in
+                PMLog.D(error.localizedDescription)
+                complete?()
+            })
+        }
+    }
+    
     override func getDefaultSendAddress() -> Address? {
         if self.message == nil {
             if let addr = sharedUserDataService.userAddresses.defaultSendAddress() {

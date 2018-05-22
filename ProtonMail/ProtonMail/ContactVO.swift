@@ -235,6 +235,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                 }
                 complete?()
             }.catch({ (error) in
+                PMLog.D(error.localizedDescription)
                 complete?()
             })
         }

@@ -10,19 +10,23 @@ import UIKit
 
 //#defined DEBUG_BORDERS
 
-@objc protocol ContactPickerDataSource : NSObjectProtocol {
+protocol ContactPickerDataSource : NSObjectProtocol {
     //optional
-    @objc func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol]
-    @objc func selectedContactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol]
+    func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol]
+    func selectedContactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol]
+    //
+    func picker(contactPicker :ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: (() -> Void)?)
 }
 
-@objc protocol ContactPickerDelegate : ContactCollectionViewDelegate {
-    @objc optional func contactPicker(contactPicker: ContactPicker, didUpdateContentHeightTo newHeight: CGFloat)
-    @objc optional func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker)
-    @objc optional func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker)
-    @objc optional func contactPicker(contactPicker: ContactPicker, didEnterCustomText text: String, needFocus focus: Bool)
-    @objc optional func contactPicker(picker: ContactPicker, pasted text: String, needFocus focus: Bool)
-    @objc optional func customFilterPredicate(searchString: String) -> NSPredicate
+protocol ContactPickerDelegate : ContactCollectionViewDelegate {
+    func contactPicker(contactPicker: ContactPicker, didUpdateContentHeightTo newHeight: CGFloat)
+    func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker)
+    func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker)
+    func contactPicker(contactPicker: ContactPicker, didEnterCustomText text: String, needFocus focus: Bool)
+    func contactPicker(picker: ContactPicker, pasted text: String, needFocus focus: Bool)
+    
+    func useCustomFilter() -> Bool
+    func customFilterPredicate(searchString: String) -> NSPredicate
 }
 
 
@@ -203,9 +207,10 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
     func reloadData() {
         self.contactCollectionView.selectedContacts.removeAll()
         
-        if let delegate = self.datasource, delegate.responds(to: #selector(ContactPickerDataSource.selectedContactModelsForContactPicker(contactPickerView:))) {
-            self.contactCollectionView.selectedContacts.append(contentsOf:delegate.selectedContactModelsForContactPicker(contactPickerView: self))
+        if let selected = self.datasource?.selectedContactModelsForContactPicker(contactPickerView: self) {
+             self.contactCollectionView.selectedContacts.append(contentsOf:selected)
         }
+        
         self.contacts = self.datasource?.contactModelsForContactPicker(contactPickerView: self) ?? [ContactPickerModelProtocol]()
         self.contactCollectionView.reloadData()
         
@@ -338,7 +343,6 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
     
     override func resignFirstResponder() -> Bool {
         super.resignFirstResponder()
-        
         return self.contactCollectionView.resignFirstResponder()
     }
     
@@ -347,17 +351,12 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
     //
     func showSearchTableView() {
         self.searchTableView.isHidden = false
-        if let delegate = self.delegate, delegate.responds(to: #selector(ContactPickerDelegate.didShowFilteredContactsForContactPicker(contactPicker:))) {
-            delegate.didShowFilteredContactsForContactPicker!(contactPicker: self)
-        }
+        self.delegate?.didShowFilteredContactsForContactPicker(contactPicker: self)
     }
     
     func hideSearchTableView() {
         self.searchTableView.isHidden = true
-
-        if let delegate = self.delegate, delegate.responds(to: #selector(ContactPickerDelegate.didHideFilteredContactsForContactPicker(contactPicker:))) {
-            delegate.didHideFilteredContactsForContactPicker!(contactPicker: self)
-        }
+        self.delegate?.didHideFilteredContactsForContactPicker(contactPicker: self)
     }
     
     func updateCollectionViewHeightConstraints() {
@@ -376,23 +375,32 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
 
 }
 
+
 //
 //#pragma mark - ContactCollectionViewDelegate
 //
 extension ContactPicker : ContactCollectionViewDelegate {
-    func contactCollectionView(contactCollectionView: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
-        if !__CGSizeEqualToSize(self.contactCollectionViewContentSize, newSize) {
-            self.contactCollectionViewContentSize = newSize
-            self.updateCollectionViewHeightConstraints()
-            
-            if let delegate = self.delegate, delegate.responds(to: #selector(ContactPickerDelegate.contactPicker(contactPicker:didUpdateContentHeightTo:))) {
-                delegate.contactPicker!(contactPicker: self, didUpdateContentHeightTo: self.currentContentHeight)
+
+    func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
+        self.delegate?.collectionContactCell(lockCheck: model, progress: progress) {
+            complete?()
+            self.contactCollectionView.performBatchUpdates({
+                self.layoutIfNeeded()
+            }) { (finished) in
+
             }
         }
     }
     
-    func contactCollectionView(contactCollectionView: ContactCollectionView, entryTextDidChange text: String) {
+    func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
+        if !__CGSizeEqualToSize(self.contactCollectionViewContentSize, newSize) {
+            self.contactCollectionViewContentSize = newSize
+            self.updateCollectionViewHeightConstraints()
+            self.delegate?.contactPicker(contactPicker: self, didUpdateContentHeightTo: self.currentContentHeight)
+        }
+    }
     
+    func collectionView(at: ContactCollectionView, entryTextDidChange text: String) {
         if text == " " {
             self.hideSearchTableView()
         }
@@ -408,12 +416,10 @@ extension ContactPicker : ContactCollectionViewDelegate {
             self.showSearchTableView()
             
             let searchString = text.trimmingCharacters(in: NSCharacterSet.whitespaces)
-            
-
             let predicate : NSPredicate!
             
-            if let delegate = self.delegate, delegate.responds(to: #selector(ContactPickerDelegate.customFilterPredicate(searchString:))) {
-                predicate = delegate.customFilterPredicate!(searchString: searchString)
+            if let hasCustom = self.delegate?.useCustomFilter(), hasCustom == true {
+                predicate = delegate?.customFilterPredicate(searchString: searchString)
             } else if self.allowsCompletionOfSelectedContacts {
                 predicate = NSPredicate(format: "contactTitle contains[cd] %@", searchString)
             } else {
@@ -437,35 +443,25 @@ extension ContactPicker : ContactCollectionViewDelegate {
     
     }
     
-    func contactCollectionView(contactCollectionView: ContactCollectionView, didEnterCustomContact text: String, needFocus focus: Bool) {
-        if let delegate = self.delegate, delegate.responds(to: #selector(ContactPickerDelegate.contactPicker(contactPicker:didEnterCustomText:needFocus:))) {
-            delegate.contactPicker!(contactPicker: self, didEnterCustomText: text, needFocus: focus)
-        }
+    func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool) {
+        self.delegate?.contactPicker(contactPicker: self, didEnterCustomText: text, needFocus: focus)
         self.hideSearchTableView()
     }
     
-    func contactCollectionView(contactCollectionView: ContactCollectionView, didSelectContact model: ContactPickerModelProtocol) {
-        if let delegate = self.delegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didSelectContact:))) {
-            delegate.contactCollectionView!(contactCollectionView: contactCollectionView, didSelectContact: model)
-        }
+    func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
+        self.delegate?.collectionView(at: contactCollectionView, didSelect: contact)
     }
     
-    func contactCollectionView(contactCollectionView: ContactCollectionView, didAddContact model: ContactPickerModelProtocol) {
-        if let delegate = self.delegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didAddContact:))) {
-            delegate.contactCollectionView!(contactCollectionView: contactCollectionView, didAddContact: model)
-        }
+    func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol) {
+        self.delegate?.collectionView(at: contactCollectionView, didAdd: contact)
     }
     
-    func contactCollectionView(contactCollectionView: ContactCollectionView, didRemoveContact model: ContactPickerModelProtocol) {
-        if let delegate = self.delegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didRemoveContact:))) {
-            delegate.contactCollectionView!(contactCollectionView: contactCollectionView, didRemoveContact: model)
-        }
+    func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol) {
+        self.delegate?.collectionView(at: contactCollectionView, didRemove: contact)
     }
     
-    func collectionView(in: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
-        if let delegate = self.delegate, delegate.responds(to: #selector(ContactPickerDelegate.contactPicker(picker:pasted:needFocus:))) {
-            delegate.contactPicker!(picker: self, pasted: text, needFocus: focus)
-        }
+    func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
+        self.delegate?.contactPicker(picker: self, pasted: text, needFocus: focus)
     }
 }
 

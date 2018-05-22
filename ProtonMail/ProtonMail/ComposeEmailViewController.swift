@@ -537,6 +537,10 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
 
 // MARK : - view extensions
 extension ComposeEmailViewController : ComposeViewDelegate {
+    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
+        self.viewModel.lockerCheck(model: model, progress: progress, complete: complete)
+    }
+    
     func composeViewPickFrom(_ composeView: ComposeView) {
         var needsShow : Bool = false
         let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to, message: nil, preferredStyle: .actionSheet)

@@ -25,7 +25,8 @@ protocol ComposeViewDelegate {
     func composeViewCollectExpirationData(_ composeView: ComposeView)
     
     func composeViewPickFrom(_ composeView: ComposeView)
-    
+
+    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
 }
 
 protocol ComposeViewDataSource {
@@ -563,6 +564,11 @@ class ComposeView: UIViewController {
 // MARK: - ContactPickerDataSource
 extension ComposeView: ContactPickerDataSource {
     
+    func picker(contactPicker: ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: (() -> Void)?) {
+        self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
+    }
+    
+    
     func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol] {
         if (contactPickerView == toContactPicker) {
             contactPickerView.prompt = LocalString._composer_to_label
@@ -581,18 +587,35 @@ extension ComposeView: ContactPickerDataSource {
 
 
 // MARK: - ContactPickerDelegate
-
 extension ComposeView: ContactPickerDelegate {
-    func contactCollectionView(contactCollectionView: ContactCollectionView, didAddContact model: ContactPickerModelProtocol) {
-        let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
-        self.notifyViewSize(true)
-        self.delegate?.composeView(self, didAddContact: model as! ContactVO, toPicker: contactPicker)
+    func contactPicker(contactPicker: ContactPicker, didUpdateContentHeightTo newHeight: CGFloat) {
+        self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
     }
     
-    func contactCollectionView(contactCollectionView: ContactCollectionView, didRemoveContact model: ContactPickerModelProtocol) {
-        let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
-        self.notifyViewSize(true)
-        self.delegate?.composeView(self, didRemoveContact: model as! ContactVO, fromPicker: contactPicker)
+    func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker) {
+        self.view.bringSubview(toFront: contactPicker)
+        if (contactPicker.frame.size.height <= contactPicker.currentContentHeight) {
+            let pickerRectInWindow = self.view.convert(contactPicker.frame, to: nil)
+            let newHeight = self.view.window!.bounds.size.height - pickerRectInWindow.origin.y - contactPicker.keyboardHeight
+            self.pickerHeight = newHeight
+            self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
+        }
+        
+        if !contactPicker.isHidden {
+            
+        }
+        
+        self.notifyViewSize(false)
+
+    }
+    
+    func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker) {
+        self.view.sendSubview(toBack: contactPicker)
+        if (contactPicker.frame.size.height > contactPicker.currentContentHeight) {
+            self.updateContactPickerHeight(contactPicker, newHeight: contactPicker.currentContentHeight)
+        }
+        self.pickerHeight = 0;
+        self.notifyViewSize(false)
     }
     
     func contactPicker(contactPicker: ContactPicker, didEnterCustomText text: String, needFocus focus: Bool) {
@@ -601,7 +624,6 @@ extension ComposeView: ContactPickerDelegate {
     }
     
     func contactPicker(picker: ContactPicker, pasted text: String, needFocus focus: Bool) {
-        
         if text.contains(check: ",") {
             let cusTexts = text.split(separator: ",")
             for cusText in cusTexts {
@@ -626,34 +648,48 @@ extension ComposeView: ContactPickerDelegate {
         }
     }
     
-    func contactPicker(contactPicker: ContactPicker, didUpdateContentHeightTo newHeight: CGFloat) {
-        self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
+    func useCustomFilter() -> Bool {
+        return true
     }
     
-    func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker) {
-        self.view.bringSubview(toFront: contactPicker)
-        if (contactPicker.frame.size.height <= contactPicker.currentContentHeight) {
-            let pickerRectInWindow = self.view.convert(contactPicker.frame, to: nil)
-            let newHeight = self.view.window!.bounds.size.height - pickerRectInWindow.origin.y - contactPicker.keyboardHeight
-            self.pickerHeight = newHeight
-            self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
-        }
-        
-        if !contactPicker.isHidden {
-            
-        }
-        
-        self.notifyViewSize(false)
+    func customFilterPredicate(searchString: String) -> NSPredicate {
+        return NSPredicate(format: "contactTitle CONTAINS[cd] %@ or contactSubtitle CONTAINS[cd] %@", argumentArray: [searchString, searchString])
     }
     
-    func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker) {
-        self.view.sendSubview(toBack: contactPicker)
-        if (contactPicker.frame.size.height > contactPicker.currentContentHeight) {
-            self.updateContactPickerHeight(contactPicker, newHeight: contactPicker.currentContentHeight)
-        }
+    func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
         
-        self.pickerHeight = 0;
-        self.notifyViewSize(false)
+    }
+    
+    func collectionView(at: ContactCollectionView, entryTextDidChange text: String) {
+        
+    }
+    
+    func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool) {
+        
+    }
+    
+    func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
+        
+    }
+    
+    func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol) {
+        let contactPicker = contactPickerForContactCollectionView(at)
+        self.notifyViewSize(true)
+        self.delegate?.composeView(self, didAddContact: contact as! ContactVO, toPicker: contactPicker)
+    }
+    
+    func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol) {
+        let contactPicker = contactPickerForContactCollectionView(at)
+        self.notifyViewSize(true)
+        self.delegate?.composeView(self, didRemoveContact: contact as! ContactVO, fromPicker: contactPicker)
+    }
+    
+    func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
+        
+    }
+    
+    func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
+        self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
     }
     
     // MARK: Private delegate helper methods
@@ -667,9 +703,6 @@ extension ComposeView: ContactPickerDelegate {
             contactPicker = bccContactPicker
         }
         return contactPicker
-    }
-    func customFilterPredicate(searchString: String) -> NSPredicate {
-        return NSPredicate(format: "contactTitle CONTAINS[cd] %@ or contactSubtitle CONTAINS[cd] %@", argumentArray: [searchString, searchString])
     }
 }
 

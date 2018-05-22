@@ -659,7 +659,6 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                 } else {
                     c.pgpType = self.message.getInboxType(email: c.displayEmail ?? "", signature: SignType.no_sign)
                 }
-
                 complete?()
             }
         }

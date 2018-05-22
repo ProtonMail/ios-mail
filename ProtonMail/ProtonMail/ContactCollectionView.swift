@@ -11,15 +11,15 @@ import UIKit
 //Complete
 typealias ContactPickerComplete = (() -> Void)
 
-@objc protocol ContactCollectionViewDelegate : NSObjectProtocol {
-    
-    @objc optional func contactCollectionView (contactCollectionView: UICollectionView?, willChangeContentSizeTo newSize: CGSize)
-    @objc optional func contactCollectionView (contactCollectionView: ContactCollectionView, entryTextDidChange text: String)
-    @objc optional func contactCollectionView (contactCollectionView: ContactCollectionView, didEnterCustomContact text: String, needFocus focus: Bool)
-    @objc optional func collectionView(in: ContactCollectionView, pasted text: String, needFocus focus: Bool)
-    @objc optional func contactCollectionView (contactCollectionView: ContactCollectionView, didSelectContact model: ContactPickerModelProtocol)
-    @objc optional func contactCollectionView (contactCollectionView: ContactCollectionView, didAddContact model: ContactPickerModelProtocol)
-    @objc optional func contactCollectionView (contactCollectionView: ContactCollectionView, didRemoveContact model: ContactPickerModelProtocol)
+protocol ContactCollectionViewDelegate : NSObjectProtocol, ContactCollectionViewContactCellDelegate {
+    func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize)
+    func collectionView(at: ContactCollectionView, entryTextDidChange text: String)
+    func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool)
+    func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol)
+
+    func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol)
+    func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol)
+    func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool)
 }
 
 enum ContactCollectionViewSection : Int {
@@ -265,9 +265,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
                 if finished {
                     completion?()
                 }
-                if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didAddContact:))) {
-                    delegate.contactCollectionView!(contactCollectionView: self, didAddContact: model)
-                }
+                self.contactDelegate?.collectionView(at: self, didAdd: model)
             }
         }
     }
@@ -283,9 +281,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             }) { (finished) in
                 
                 completion?()
-                if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didRemoveContact:))) {
-                    delegate.contactCollectionView!(contactCollectionView: self, didRemoveContact: model)
-                }
+                self.contactDelegate?.collectionView(at: self, didRemove: model)
                 self.setFocusOnEntry()
             }
         }
@@ -393,6 +389,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContactCell", for: indexPath) as! ContactCollectionViewContactCell
+            cell.delegate = self.contactDelegate
             cell.model = self.selectedContacts[self.selectedContactIndexFromIndexPath(indexPath: indexPath)]
             if  self.indexPathOfSelectedCell == indexPath {
                 cell.pickerFocused = true
@@ -468,9 +465,7 @@ extension ContactCollectionView : UIKeyInput {
 //
 extension ContactCollectionView : ContactCollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
-        if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:willChangeContentSizeTo:))) {
-            delegate.contactCollectionView!(contactCollectionView: self, willChangeContentSizeTo: newSize)
-        }
+        self.contactDelegate?.collectionView(at: self, willChangeContentSizeTo: newSize)
     }
 }
 
@@ -484,16 +479,13 @@ extension ContactCollectionView : UICollectionViewDelegate {
         if let cell = collectionView.cellForItem(at: indexPath) as? ContactCollectionViewContactCell {
             self.becomeFirstResponder()
             cell.pickerFocused = true
-            if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didSelectContact:))) {
-                delegate.contactCollectionView!(contactCollectionView: self, didSelectContact: cell.model)
-            }
+            self.contactDelegate?.collectionView(at: self, didSelect: cell.model)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
         return self.isCell(contact: indexPath)
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? ContactCollectionViewContactCell {
@@ -538,44 +530,30 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
     
     func textFieldDidChange(textField: UITextField) {
         self.searchText = textField.text
-
+        
         let left = self.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         if !left.isEmpty,
             let right = UIPasteboard.general.string?.trimmingCharacters(in: .whitespacesAndNewlines),
             left == right,
             (left.contains(check: ";") || left.contains(check: ",")) {
-            if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.collectionView(in:pasted:needFocus:))) {
-                delegate.collectionView!(in: self, pasted: self.searchText, needFocus: true)
-                return
-            }
+            self.contactDelegate?.collectionView(at: self, pasted: self.searchText, needFocus: true)
+            return
         }
-        
-        if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:entryTextDidChange:))) {
-            delegate.contactCollectionView!(contactCollectionView: self, entryTextDidChange: textField.text ?? "")
-        }
-        
-        
+        self.contactDelegate?.collectionView(at: self, entryTextDidChange: textField.text ?? "")
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didEnterCustomContact:needFocus:))) {
-            //NSString *  = [textField.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]]
-            let trimmedString = (textField.text ?? "").trimmingCharacters(in: .whitespaces)
-            if trimmedString.count > 0 {
-                delegate.contactCollectionView!(contactCollectionView: self, didEnterCustomContact: trimmedString, needFocus: true)
-            }
+        let trimmedString = (textField.text ?? "").trimmingCharacters(in: .whitespaces)
+        if trimmedString.count > 0 {
+            self.contactDelegate?.collectionView(at: self, didEnterCustom: trimmedString, needFocus: true)
         }
         return false
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let delegate = self.contactDelegate, delegate.responds(to: #selector(ContactCollectionViewDelegate.contactCollectionView(contactCollectionView:didEnterCustomContact:needFocus:))) {
-            //NSString *trimmedString = [textField.text stringByTrimmingCharactersInSet:
-            let trimmedString = (textField.text ?? "").trimmingCharacters(in: .whitespaces)
-            if trimmedString.count > 0 {
-                delegate.contactCollectionView!(contactCollectionView: self, didEnterCustomContact: trimmedString, needFocus: false)
-            }
+        let trimmedString = (textField.text ?? "").trimmingCharacters(in: .whitespaces)
+        if trimmedString.count > 0 {
+            self.contactDelegate?.collectionView(at: self, didEnterCustom: trimmedString, needFocus: false)
         }
     }
 }

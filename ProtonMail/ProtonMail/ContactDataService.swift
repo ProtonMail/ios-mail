@@ -322,8 +322,21 @@ class ContactDataService {
                     when(resolved: fetchs)
                 }.then { (result) -> Guarantee<[Result<PreContact>]> in
                     let details : [Email] = contactEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded}
-                    let parsers : [Promise<PreContact>] = details.map {
+                    var parsers : [Promise<PreContact>] = details.map {
                         return self.parseContact(email: $0.email, cards: $0.contact.getCardData())
+                    }
+                    for r in result {
+                        switch r {
+                        case .fulfilled(let value):
+                            if let fEmail = contactEmails.first(where: { (e) -> Bool in
+                                e.contactID == value.contactID
+                            }) {
+                                PMLog.D(value.cardData)
+                                parsers.append(self.parseContact(email: fEmail.email, cards: value.getCardData()))
+                            }
+                        case .rejected(let error):
+                            PMLog.D(error.localizedDescription)
+                        }
                     }
                     return when(resolved: parsers)
                 }.then { contacts -> Promise<[PreContact]> in
@@ -521,6 +534,7 @@ class ContactDataService {
                             if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: contactDict, in: context) as? Contact {
                                 contact.isDownloaded = true
                                 let _ = contact.fixName(force: true)
+                                let _ = contact.managedObjectContext?.saveUpstreamIfNeeded()
                                 if let error = context.saveUpstreamIfNeeded() {
                                     seal.reject(error)
                                 } else {

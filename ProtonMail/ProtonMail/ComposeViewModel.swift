@@ -141,6 +141,10 @@ class ComposeViewModel {
     func hasAttachment () -> Bool {
         fatalError("This method must be overridden")
     }
+    
+    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: (() -> Void)?) {
+        fatalError("This method must be overridden")
+    }
 }
 
 

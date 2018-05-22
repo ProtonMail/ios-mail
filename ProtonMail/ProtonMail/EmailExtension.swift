@@ -28,7 +28,11 @@ extension Email {
     }
 
     class func findEmails(_ emails: [String], inManagedObjectContext context: NSManagedObjectContext) -> [Email]? {
-        return context.objectsWithEntityName(Attributes.entityName, forKey: Attributes.email, forManagedObjectIDs: emails) as? [Email]
+        var out : [Email]?
+        context.performAndWait {
+            out = context.objectsWithEntityName(Attributes.entityName, forKey: Attributes.email, forManagedObjectIDs: emails) as? [Email]
+        }
+        return out
     }
 
     func log() {

@@ -9,6 +9,10 @@
 import UIKit
 
 
+protocol ContactCollectionViewContactCellDelegate {
+    func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
+}
+
 class ContactCollectionViewContactCell: UICollectionViewCell {
 
     @IBOutlet weak var bgView: UIView!
@@ -18,6 +22,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     
     @IBOutlet weak var leftConstant: NSLayoutConstraint!
     @IBOutlet weak var widthConstant: NSLayoutConstraint!
+    
+    var delegate : ContactCollectionViewContactCellDelegate?
     
     /// contact model
     var _model: ContactPickerModelProtocol!
@@ -87,10 +93,10 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     }
     
     internal func checkLock() {
-        self.model.lockCheck(progress: {
+        self.delegate?.collectionContactCell(lockCheck: self.model, progress: {
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
-        }) {
+        }, complete: {
             if let lock = self.model.lock {
                 self.lockImage.image = lock
                 self.lockImage.isHidden = false
@@ -107,7 +113,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                 self.contactTitleLabel.textAlignment = .center
             }
             self.activityView.stopAnimating()
-        }
+        })
     }
     
     func widthForCell() -> CGFloat {
