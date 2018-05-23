@@ -10,6 +10,8 @@ import Foundation
 
 protocol SettingDetailsViewModel {
     
+    var sectionTitle2 : String {get}
+    
     func getNavigationTitle() -> String
     func getTopHelpText() ->String
     func getSectionTitle() -> String
@@ -34,6 +36,10 @@ protocol SettingDetailsViewModel {
 
 
 class SettingDetailsViewModelTest : SettingDetailsViewModel{
+    var sectionTitle2: String {
+        return ""
+    }
+    
     func getNavigationTitle() -> String {
         return "Navigation localized Title - Test"
     }
@@ -101,6 +107,10 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
 
 
 class ChangeDisplayNameViewModel : SettingDetailsViewModel{
+    var sectionTitle2: String {
+        return ""
+    }
+    
     func getNavigationTitle() -> String {
         return LocalString._settings_displayname_title
     }
@@ -185,6 +195,10 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
 
 
 class ChangeSignatureViewModel : SettingDetailsViewModel{
+    var sectionTitle2: String {
+        return LocalString._edit_signature
+    }
+    
     func getNavigationTitle() -> String {
         return LocalString._settings_signature_title
     }
@@ -269,7 +283,11 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
 }
 
-class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
+class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
+    var sectionTitle2: String {
+        return LocalString._edit_mobile_signature
+    }
+    
     func getNavigationTitle() -> String {
         return LocalString._settings_mobile_signature_title
     }
@@ -338,13 +356,13 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
         return self.getRole() ? "" : LocalString._settings_plus_is_required_to_modify_signature_notes
     }
     
+    
     internal func getRole() -> Bool {
         #if Enterprise
             let isEnterprise = true
         #else
             let isEnterprise = false
         #endif
-        
         return sharedUserDataService.userInfo?.role > 0 || isEnterprise
     }
     
@@ -354,7 +372,11 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
 }
 
 
-class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
+class ChangeNotificationEmailViewModel : SettingDetailsViewModel {
+    
+    var sectionTitle2: String {
+        return ""
+    }
     func getNavigationTitle() -> String {
         return LocalString._settings_notification_email
     }

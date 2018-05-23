@@ -16,7 +16,7 @@ import Fabric
 import AwaitKit
 import PromiseKit
 
-class MessageViewController: ProtonMailViewController, ViewModelProtocol{
+class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     
     fileprivate let kToComposerSegue : String    = "toCompose"
@@ -31,7 +31,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     var emailView: EmailView?
     
     ///
-    fileprivate var URL : NSURL?
+    fileprivate var url : URL?
     
     @IBOutlet var backButton: UIBarButtonItem!
     
@@ -377,13 +377,13 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         if segue.identifier == kToComposerSegue {
             if let contact = sender as? ContactVO {
                 let composeViewController = segue.destination as! ComposeEmailViewController
-                sharedVMService.newDraftViewModelWithContact(composeViewController, contact: contact)
+                sharedVMService.newDraft(vmp: composeViewController, with: contact)
             } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft{
                 let composeViewController = segue.destination as! ComposeEmailViewController
-                sharedVMService.actionDraftViewModel(composeViewController, msg: message, action: tapped)
+                sharedVMService.newDraft(vmp: composeViewController, with: message, action: tapped)
             } else {
                 let composeViewController = segue.destination as! ComposeEmailViewController
-                sharedVMService.newDraftViewModelWithMailTo(composeViewController, url: self.URL as URL?)
+                sharedVMService.newDraft(vmp: composeViewController, with: self.url)
             }
         } else if segue.identifier == kSegueToApplyLabels {
             let popup = segue.destination as! LablesViewController
@@ -639,7 +639,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
 
 extension MessageViewController :  EmailViewActionsProtocol {
     func mailto(_ url: Foundation.URL?) {
-        URL = url as NSURL?
+        self.url = url
         self.performSegue(withIdentifier: kToComposerSegue, sender: ComposeMessageAction.newDraft.rawValue)
     }
 }

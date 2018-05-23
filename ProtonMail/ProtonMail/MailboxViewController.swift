@@ -296,7 +296,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             let composeViewController = segue.destination.childViewControllers[0] as! ComposeEmailViewController
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
-                    sharedVMService.openDraftViewModel(composeViewController, msg: selectedDraft ?? message)
+                    sharedVMService.openDraft(vmp: composeViewController, with: selectedDraft ?? message)
                 } else {
                     let alert = LocalString._messages_cant_find_message.alertController()
                     alert.addOKAction()
@@ -330,8 +330,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             
         } else if segue.identifier == kSegueToCompose {
             let composeViewController = segue.destination.childViewControllers[0] as! ComposeEmailViewController
-            sharedVMService.newDraftViewModel(composeViewController)
-            
+            sharedVMService.newDraft(vmp: composeViewController)
         } else if segue.identifier == kSegueToTour {
             let popup = segue.destination as! OnboardingViewController
             self.setPresentationStyleForSelfController(self, presentingController: popup)

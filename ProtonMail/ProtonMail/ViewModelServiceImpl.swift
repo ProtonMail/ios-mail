@@ -17,10 +17,17 @@ class ViewModelServiceImpl: ViewModelService {
     
     //the active view controller needs to be reset when resetComposerView be called
     private var activeViewController : ViewModelProtocol?
-    
     //the active mailbox
     private var mailboxViewController : ViewModelProtocol?
     
+    //new one
+    private var activeViewControllerNew : ViewModelProtocolBase?
+    
+    private func setup(composer vmp: ViewModelProtocolBase, viewModel: ComposeViewModel) {
+        vmp.setModel(vm: viewModel)
+        self.latestComposerViewModel = viewModel
+        self.activeViewControllerNew = vmp
+    }
     
     override func signOut() {
         self.resetView()
@@ -37,31 +44,41 @@ class ViewModelServiceImpl: ViewModelService {
                 self.activeViewController = nil
             }
         }
+        DispatchQueue.main.async {
+            if let actived  = self.activeViewControllerNew {
+                actived.inactiveViewModel()
+                self.activeViewControllerNew = nil
+            }
+        }
         latestComposerViewModel = nil
     }
     
-    override func newDraftViewModel(_ vmp : ViewModelProtocol) {
-        activeViewController = vmp
-        latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: .newDraft);
-        vmp.setViewModel(latestComposerViewModel!)
+    override func newDraft(vmp: ViewModelProtocolBase) {
+        let viewModel = ComposeViewModelImpl(msg: nil, action: .newDraft)
+        self.setup(composer: vmp, viewModel: viewModel)
     }
     
-    
-    override func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO?) {
-        activeViewController = vmp
-        latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft);
+    override func newDraft(vmp: ViewModelProtocolBase, with contact: ContactVO?) {
+        let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
         if let c = contact {
-            latestComposerViewModel?.addToContacts(c)
+            viewModel.addToContacts(c)
         }
-        vmp.setViewModel(latestComposerViewModel!)
+        self.setup(composer: vmp, viewModel: viewModel)
     }
     
-    override func newDraftViewModelWithMailTo(_ vmp: ViewModelProtocol, url: URL?) {
-        activeViewController = vmp
-        latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft);
-
-        if let mailTo : NSURL = url as NSURL?, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
-            PMLog.D("\(mailTo)")
+    override func openDraft(vmp: ViewModelProtocolBase, with msg: Message!) {
+        let viewModel = ComposeViewModelImpl(msg: msg, action: .openDraft)
+        self.setup(composer: vmp, viewModel: viewModel)
+    }
+    
+    override func newDraft(vmp: ViewModelProtocolBase, with msg: Message!, action: ComposeMessageAction) {
+        let viewModel = ComposeViewModelImpl(msg: msg, action: action)
+        self.setup(composer: vmp, viewModel: viewModel)
+    }
+    
+    override func newDraft(vmp: ViewModelProtocolBase, with mailTo: URL?) {
+        let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
+        if let mailTo : NSURL = mailTo as NSURL?, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
             var rawURLparts = resSpecifier.components(separatedBy: "?")
             if (rawURLparts.count > 2) {
                 
@@ -69,7 +86,7 @@ class ViewModelServiceImpl: ViewModelService {
                 let defaultRecipient = rawURLparts[0]
                 if defaultRecipient.count > 0 { //default to
                     if defaultRecipient.isValidEmail() {
-                        latestComposerViewModel?.addToContacts(ContactVO(name: defaultRecipient, email: defaultRecipient))
+                        viewModel.addToContacts(ContactVO(name: defaultRecipient, email: defaultRecipient))
                     }
                     PMLog.D("to: \(defaultRecipient)")
                 }
@@ -80,58 +97,46 @@ class ViewModelServiceImpl: ViewModelService {
                     for param in params {
                         var keyValue = param.components(separatedBy: "=")
                         if (keyValue.count != 2) {
-                            continue;
+                            continue
                         }
                         let key = keyValue[0].lowercased()
                         var value = keyValue[1]
                         value = value.removingPercentEncoding ?? ""
                         if key == "subject" {
                             PMLog.D("subject: \(value)")
-                            latestComposerViewModel?.setSubject(value)
+                            viewModel.setSubject(value)
                         }
                         
                         if key == "body" {
                             PMLog.D("body: \(value)")
-                            latestComposerViewModel?.setBody(value)
+                            viewModel.setBody(value)
                         }
                         
                         if key == "to" {
                             PMLog.D("to: \(value)")
                             if value.isValidEmail() {
-                                latestComposerViewModel?.addToContacts(ContactVO(name: value, email: value))
+                                viewModel.addToContacts(ContactVO(name: value, email: value))
                             }
                         }
                         
                         if key == "cc" {
                             PMLog.D("cc: \(value)")
                             if value.isValidEmail() {
-                                latestComposerViewModel?.addCcContacts(ContactVO(name: value, email: value))
+                                viewModel.addCcContacts(ContactVO(name: value, email: value))
                             }
                         }
                         
                         if key == "bcc" {
                             PMLog.D("bcc: \(value)")
                             if value.isValidEmail() {
-                                latestComposerViewModel?.addBccContacts(ContactVO(name: value, email: value))
+                                viewModel.addBccContacts(ContactVO(name: value, email: value))
                             }
                         }
                     }
                 }
             }
         }
-        vmp.setViewModel(latestComposerViewModel!)
-    }
-    
-    override func openDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!) {
-        activeViewController = vmp
-        latestComposerViewModel = ComposeViewModelImpl(msg: msg, action: ComposeMessageAction.openDraft);
-        vmp.setViewModel(latestComposerViewModel!)
-    }
-    
-    override func actionDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
-        activeViewController = vmp
-        latestComposerViewModel = ComposeViewModelImpl(msg: msg, action: action);
-        vmp.setViewModel(latestComposerViewModel!)
+        self.setup(composer: vmp, viewModel: viewModel)
     }
     
     // msg details
@@ -142,7 +147,6 @@ class ViewModelServiceImpl: ViewModelService {
     override func messageDetails(fromPush vmp: ViewModelProtocol) {
         activeViewController = vmp
     }
-    
     
     override func mailbox(fromMenu vmp : ViewModelProtocol, location : MessageLocation) -> Void {
         if let oldVC = mailboxViewController {
@@ -256,11 +260,11 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func buildComposer<T>(_ vmp: T, subject: String, content: String, files: [FileData]) where T : ViewModelProtocolNew {
-        latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare);
+        latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)
         guard let viewModel = latestComposerViewModel as? T.argType else {
             return
         }
-        vmp.setViewModel(viewModel)
+        vmp.set(viewModel: viewModel)
     }
     
     func buildTerms(_ base : ViewModelProtocolBase) {
@@ -271,5 +275,13 @@ class ViewModelServiceImpl: ViewModelService {
     func buildPolicy(_ base : ViewModelProtocolBase) {
         let model = PolicyWebViewModelImpl()
         base.setModel(vm: model)
+    }
+    
+    /////////////////
+    override func upgradeAlert(contacts vmp: ViewModelProtocolBase) {
+        vmp.setModel(vm: ContactAlertViewModelImpl())
+    }
+    override func upgradeAlert(signature vmp: ViewModelProtocolBase) {
+        vmp.setModel(vm: SignatureAlertViewModelImpl())
     }
 }

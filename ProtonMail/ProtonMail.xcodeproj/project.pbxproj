@@ -1089,6 +1089,14 @@
 		757F4A0F1E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A0E1E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift */; };
 		757F4A121E68F409001CDE71 /* LabelCreatingViewModelImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A111E68F408001CDE71 /* LabelCreatingViewModelImple.swift */; };
 		757F4A151E68F817001CDE71 /* FolderCreatingViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A141E68F817001CDE71 /* FolderCreatingViewModelImpl.swift */; };
+		7580247120B5F649007EE0FF /* UpgradeAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580247020B5F649007EE0FF /* UpgradeAlertViewModel.swift */; };
+		7580247320B5F6A3007EE0FF /* ContactAlertViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580247220B5F6A3007EE0FF /* ContactAlertViewModelImpl.swift */; };
+		7580247520B5F6BF007EE0FF /* SignatureAlertViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580247420B5F6BF007EE0FF /* SignatureAlertViewModelImpl.swift */; };
+		7580247920B5F84B007EE0FF /* UpgradeAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580247020B5F649007EE0FF /* UpgradeAlertViewModel.swift */; };
+		7580247A20B5F84B007EE0FF /* ContactAlertViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580247220B5F6A3007EE0FF /* ContactAlertViewModelImpl.swift */; };
+		7580247B20B5F84B007EE0FF /* SignatureAlertViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580247420B5F6BF007EE0FF /* SignatureAlertViewModelImpl.swift */; };
+		7580248020B5F8F7007EE0FF /* ViewModelProtocalT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580247F20B5F8F7007EE0FF /* ViewModelProtocalT.swift */; };
+		7580248220B5FA7A007EE0FF /* ViewModelProtocalT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580247F20B5F8F7007EE0FF /* ViewModelProtocalT.swift */; };
 		7580D65A1C8E440200A15885 /* OnePasswordExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7580D6591C8E440200A15885 /* OnePasswordExtension.m */; };
 		7582CFBC1D024E2900F521D4 /* TopMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582CFBB1D024E2800F521D4 /* TopMessageView.xib */; };
 		7582CFBD1D024E2900F521D4 /* TopMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582CFBB1D024E2800F521D4 /* TopMessageView.xib */; };
@@ -1870,6 +1878,10 @@
 		757F4A0E1E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelEditingViewModelImpl.swift; sourceTree = "<group>"; };
 		757F4A111E68F408001CDE71 /* LabelCreatingViewModelImple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelCreatingViewModelImple.swift; sourceTree = "<group>"; };
 		757F4A141E68F817001CDE71 /* FolderCreatingViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderCreatingViewModelImpl.swift; sourceTree = "<group>"; };
+		7580247020B5F649007EE0FF /* UpgradeAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeAlertViewModel.swift; sourceTree = "<group>"; };
+		7580247220B5F6A3007EE0FF /* ContactAlertViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAlertViewModelImpl.swift; sourceTree = "<group>"; };
+		7580247420B5F6BF007EE0FF /* SignatureAlertViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureAlertViewModelImpl.swift; sourceTree = "<group>"; };
+		7580247F20B5F8F7007EE0FF /* ViewModelProtocalT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelProtocalT.swift; sourceTree = "<group>"; };
 		7580D6581C8E440200A15885 /* OnePasswordExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnePasswordExtension.h; sourceTree = "<group>"; };
 		7580D6591C8E440200A15885 /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordExtension.m; sourceTree = "<group>"; };
 		7582CFBB1D024E2800F521D4 /* TopMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopMessageView.xib; sourceTree = "<group>"; };
@@ -3039,6 +3051,16 @@
 			name = Upgrade;
 			sourceTree = "<group>";
 		};
+		75D7A13520B5F1EE006F32F6 /* UpgradeAlert */ = {
+			isa = PBXGroup;
+			children = (
+				7580247020B5F649007EE0FF /* UpgradeAlertViewModel.swift */,
+				7580247220B5F6A3007EE0FF /* ContactAlertViewModelImpl.swift */,
+				7580247420B5F6BF007EE0FF /* SignatureAlertViewModelImpl.swift */,
+			);
+			name = UpgradeAlert;
+			sourceTree = "<group>";
+		};
 		75DD3E531E81BF94005A7B93 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -3123,6 +3145,7 @@
 		75ECC2361AB9F10600B8FC78 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				75D7A13520B5F1EE006F32F6 /* UpgradeAlert */,
 				75DD3E541E81BFB0005A7B93 /* Composer */,
 				750AAEB21FA91A1700CBFCA3 /* Contacts */,
 				757F4A071E67A0B8001CDE71 /* Labels */,
@@ -3139,6 +3162,7 @@
 				759339BF1ABB45C700535F1B /* ViewModelFactory.swift */,
 				75F29E182057195F00C70AD2 /* ViewModelProtocol.swift */,
 				75F29E1D20571DEF00C70AD2 /* ViewModelProtocolNew.swift */,
+				7580247F20B5F8F7007EE0FF /* ViewModelProtocalT.swift */,
 				7567B06C1B334FA400A72A1E /* ViewModelService.swift */,
 				7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */,
 				75B0529C1F1FE032008E483A /* ViewModelServiceImpl+Share.swift */,
@@ -4130,6 +4154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75F775701D63AA5B00FD3893 /* APIService+DefinedExtension.swift in Sources */,
+				7580248020B5F8F7007EE0FF /* ViewModelProtocalT.swift in Sources */,
 				07CCCC2E1AA2BD8800ECA79E /* Snapshot.swift in Sources */,
 				756CDEF91D9DB374004455F6 /* JKBCrypt.swift in Sources */,
 				75510BAD1B82F990001348FF /* LabelViewModel.swift in Sources */,
@@ -4226,6 +4251,7 @@
 				70762C3B1A94EC30006B9693 /* ActivityIndicatorHelper.swift in Sources */,
 				75F29E1120570CBE00C70AD2 /* WebViewController.swift in Sources */,
 				75117C4A1BA22F6200A0CE68 /* RecipientView.swift in Sources */,
+				7580247320B5F6A3007EE0FF /* ContactAlertViewModelImpl.swift in Sources */,
 				7518393F1B3DCA3000C714A6 /* EventAPI.swift in Sources */,
 				7588BB401BFBE05A00EC8EFD /* SecureStore.swift in Sources */,
 				75DE3DF81C977683007C208E /* FeedbackHeadCell.swift in Sources */,
@@ -4268,6 +4294,7 @@
 				75A4321B1B1D040A00D046B3 /* QueueManager.swift in Sources */,
 				7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */,
 				70945E6E1A813550002B6837 /* UIButton+ProtonMail.swift in Sources */,
+				7580247520B5F6BF007EE0FF /* SignatureAlertViewModelImpl.swift in Sources */,
 				759BBDC01BA0C55E002608B5 /* LabelDisplayView.swift in Sources */,
 				07B797C51A6EE5FF00244532 /* AuthCredential.swift in Sources */,
 				755638C71CA1AE78003FA2D0 /* ShowImageView.swift in Sources */,
@@ -4319,6 +4346,7 @@
 				75106D0D1C97704B007F8176 /* FeedbackTableViewCell.swift in Sources */,
 				75BF8F461DA6E49D000F350F /* SRPClient.swift in Sources */,
 				753934C71FAB961300EBFBA5 /* ContactEditAddressCell.swift in Sources */,
+				7580247120B5F649007EE0FF /* UpgradeAlertViewModel.swift in Sources */,
 				7567B06F1B334FD300A72A1E /* ViewModelServiceImpl.swift in Sources */,
 				75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */,
 				7514FC291B79825F00DDD297 /* MenuItem.swift in Sources */,
@@ -5122,6 +5150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75256CCE1F16E99200F2771E /* ComposeEmailViewController.swift in Sources */,
+				7580248220B5FA7A007EE0FF /* ViewModelProtocalT.swift in Sources */,
 				75256CCB1F16E04300F2771E /* ContactVO.swift in Sources */,
 				75256CCC1F16E04300F2771E /* SettingsNavigationController.swift in Sources */,
 				7528FFEC1FA7FEF6005F66A3 /* ContactEditAddCell.swift in Sources */,
@@ -5245,6 +5274,7 @@
 				75F8B00B202AEC8B00A7CB0F /* ContactImportViewController.swift in Sources */,
 				75256C9F1F16DFBD00F2771E /* UserAPI.swift in Sources */,
 				75256CA01F16DFBD00F2771E /* DomainAPI.swift in Sources */,
+				7580247B20B5F84B007EE0FF /* SignatureAlertViewModelImpl.swift in Sources */,
 				75256CA11F16DFBD00F2771E /* DeviceAPI.swift in Sources */,
 				75873DEB20B1F2E800012E28 /* Message+String+Extension.swift in Sources */,
 				75921C871F747BD00028DAC9 /* Data+Mime.swift in Sources */,
@@ -5303,6 +5333,7 @@
 				75252CE01FCE23BF007972EF /* EventDataService.swift in Sources */,
 				75256CC81F16DFBD00F2771E /* QueueManager.swift in Sources */,
 				75256CC91F16DFBD00F2771E /* QueueConstant.swift in Sources */,
+				7580247A20B5F84B007EE0FF /* ContactAlertViewModelImpl.swift in Sources */,
 				75DE7CB61CAAEA4900F5443E /* Snapshot.swift in Sources */,
 				75F22BEF1E83335100677E67 /* ToastMessageView.swift in Sources */,
 				75DE7CB81CAAEA4900F5443E /* FeedbackViewController.swift in Sources */,
@@ -5311,6 +5342,7 @@
 				75DE7CBB1CAAEA4900F5443E /* TextInsetTextField.swift in Sources */,
 				75DE7CBE1CAAEA4900F5443E /* MailboxMessageCell.swift in Sources */,
 				75921C8B1F747BD10028DAC9 /* String+Mime.swift in Sources */,
+				7580247920B5F84B007EE0FF /* UpgradeAlertViewModel.swift in Sources */,
 				7528FFE81FA7FEF6005F66A3 /* ContactDetailsDisplayCell.swift in Sources */,
 				752800041FA7FEF6005F66A3 /* ContactTypeViewModel.swift in Sources */,
 				75DE7CC51CAAEA4900F5443E /* SettingsCell.swift in Sources */,

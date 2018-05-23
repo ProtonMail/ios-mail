@@ -11,21 +11,21 @@ import ZSSRichTextEditor
 import PromiseKit
 import AwaitKit
 
-class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
-    
+class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     // view model
     fileprivate var viewModel : ComposeViewModel!
-    
-    func setViewModel(_ vm: Any) {
-        self.viewModel = vm as! ComposeViewModel
+
+    func set(viewModel: ComposeViewModel) {
+        self.viewModel = viewModel
     }
     
-    func inactiveViewModel() {
+    typealias argType = ComposeViewModel
+    
+    func inactiveViewModel() { 
         self.stopAutoSave()
         NotificationCenter.default.removeObserver(self,
                                                   name: NSNotification.Name.UIApplicationWillResignActive,
                                                   object:nil)
-        
         self.dismissKeyboard()
         if self.presentingViewController != nil {
             self.dismiss(animated: true, completion: nil)

@@ -16,12 +16,12 @@ import Foundation
 
 protocol ViewModelProtocolBase {
     func setModel(vm: Any)
+    func inactiveViewModel() -> Void
 }
 
 protocol ViewModelProtocolNew : ViewModelProtocolBase {
     associatedtype argType
-    func setViewModel(_ vm: argType) -> Void
-    func inactiveViewModel() -> Void
+    func set(viewModel: argType) -> Void
 }
 
 
@@ -30,7 +30,7 @@ extension ViewModelProtocolNew {
         guard let viewModel = vm as? argType else {
             fatalError("This view model type doesn't match") //this shouldn't happend
         }
-        self.setViewModel(viewModel)
+        self.set(viewModel: viewModel)
     }
 }
 

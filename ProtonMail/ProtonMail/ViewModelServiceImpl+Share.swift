@@ -15,11 +15,9 @@ final class ViewModelServiceShareImpl: ViewModelService {
     private var latestComposerViewModel : ComposeViewModel?
     
     override func buildComposer<T>(_ vmp: T, subject: String, content: String, files: [FileData]) where T : ViewModelProtocolNew {
-        latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)
-        guard let viewModel = latestComposerViewModel as? T.argType else {
-            fatalError("This method must be overridden")
-        }
-        vmp.setViewModel(viewModel)
+        let viewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)
+        vmp.setModel(vm: viewModel)
+        self.latestComposerViewModel = viewModel
     }
     
 //    override func newShareDraftViewModel(_ vmp : ViewModelProtocol, subject: String, content: String, files : [FileData]) {

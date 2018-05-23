@@ -12,6 +12,8 @@ class SettingDetailViewController: UIViewController {
 
     @IBOutlet weak var sectionTitleLabel: UILabel!
     
+    @IBOutlet weak var titleLabel2: UILabel!
+    
     @IBOutlet weak var switchView: UIView!
     @IBOutlet weak var switchLabel: UILabel!
     @IBOutlet weak var switcher: UISwitch!
@@ -27,6 +29,7 @@ class SettingDetailViewController: UIViewController {
     
     @IBOutlet weak var notesLabel: UILabel!
     let kAsk2FASegue = "password_to_twofa_code_segue"
+    let kToUpgradeAlertSegue = "toUpgradeAlertSegue"
     
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var viewModel : SettingDetailsViewModel!
@@ -62,14 +65,14 @@ class SettingDetailViewController: UIViewController {
             switchView.isHidden = true
             inputViewTopDistance.constant = 22
         }
+        titleLabel2.text = viewModel.sectionTitle2
         
         if viewModel.isShowTextView() {
             inputViewHight.constant = 200.0
             inputTextField.isHidden = true
             inputTextView.isHidden = false
             inputTextView.text = viewModel.getCurrentValue()
-        }
-        else {
+        } else {
             inputViewHight.constant = 44.0
             inputTextField.isHidden = false
             inputTextView.isHidden = true
@@ -89,6 +92,12 @@ class SettingDetailViewController: UIViewController {
         inputTextView.isEditable = viewModel.isSwitchEnabled()
         
         notesLabel.text = viewModel.getNotes()
+        
+        
+        //check Role if need a paid feature
+        if !viewModel.isSwitchEnabled() {
+            self.performSegue(withIdentifier: self.kToUpgradeAlertSegue, sender: self)
+        }
     }
     
     @objc func back(sender: UIBarButtonItem) {
@@ -132,11 +141,14 @@ class SettingDetailViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == kAsk2FASegue {
+        if segue.identifier == self.kAsk2FASegue {
             let popup = segue.destination as! TwoFACodeViewController
             popup.delegate = self
             popup.mode = .twoFactorCode
             self.setPresentationStyleForSelfController(self, presentingController: popup)
+        } else if segue.identifier == self.kToUpgradeAlertSegue {
+            let popup = segue.destination as! UpgradeAlertViewController
+            sharedVMService.upgradeAlert(signature: popup)
         }
     }
     

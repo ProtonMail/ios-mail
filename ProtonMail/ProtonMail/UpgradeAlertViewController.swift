@@ -13,7 +13,16 @@ protocol UpgradeAlertVCDelegate {
     func cancel()
 }
 
-class UpgradeAlertViewController: UIViewController {
+class UpgradeAlertViewController: UIViewController, ViewModelProtocolNew {
+    typealias argType = UpgradeAlertViewModel
+    
+    var viewModel : UpgradeAlertViewModel!
+    
+    func set(viewModel: UpgradeAlertViewModel) {
+        self.viewModel = viewModel
+    }
+    func inactiveViewModel() { }
+    
     
     var delegate : UpgradeAlertVCDelegate?
 
@@ -29,17 +38,16 @@ class UpgradeAlertViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.viewContainer.layer.cornerRadius = 4.0
         self.okButton.layer.cornerRadius = 8.0
         
         //set text
-        self.okButton.setTitle(LocalString._got_it, for: UIControlState.normal)
+        self.okButton.setTitle(self.viewModel.button, for: UIControlState.normal)
         
-        self.titleLabel.text = LocalString._premium_feature
-        self.titleLabelTwo.text = LocalString._looking_to_secure_your_contacts_details
-        self.messageLabel.text = LocalString._protonmail_plus_enables_you_to_add_and_edit_contact_details_beyond_
-        self.messageLabelTwo.text = LocalString._upgrading_is_not_possible_in_the_app
+        self.titleLabel.text = self.viewModel.title
+        self.titleLabelTwo.text = self.viewModel.title2
+        self.messageLabel.text = self.viewModel.message
+        self.messageLabelTwo.text = self.viewModel.message2
     }
     
     override func didReceiveMemoryWarning() {

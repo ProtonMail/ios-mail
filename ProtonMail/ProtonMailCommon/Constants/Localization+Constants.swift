@@ -1408,5 +1408,13 @@ class LocalizedString {
     /// "End-to-end encrypted message from verified address"
     lazy var _end_to_end_encrypted_message_from_verified_address = NSLocalizedString("End-to-end encrypted message from verified address", comment: "encryption lock description")
 
-
+    /// "Edit mobile signature"
+    lazy var _edit_mobile_signature = NSLocalizedString("Edit mobile signature", comment: "title")
+    /// "Edit signature"
+    lazy var _edit_signature = NSLocalizedString("Edit signature", comment: "title")
+    
+    /// "Looking to edit or disable your mobile signature?"
+    lazy var _looking_to_edit_or_disable_your_mobile_signature = NSLocalizedString("Looking to edit or disable your mobile signature?", comment: "alert description")
+    /// "ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature."
+    lazy var _plus_visionary_enables_you_to_customize_mobile_signature = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." , comment: "alert description")
 }

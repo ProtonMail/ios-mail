@@ -10,12 +10,12 @@ import UIKit
 import ZSSRichTextEditor
 
 class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
-    
+    typealias argType = ComposeViewModel
     // view model
     fileprivate var viewModel : ComposeViewModel!
     
-    func setViewModel(_ vm: Any) {
-        self.viewModel = vm as! ComposeViewModel
+    func set(viewModel: ComposeViewModel) {
+         self.viewModel = viewModel
     }
     
     func inactiveViewModel() {

@@ -124,6 +124,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             sharedVMService.contactTypeViewModel(contactTypeViewController, type: type)
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController
+            sharedVMService.upgradeAlert(contacts: popup)
             popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
         }
