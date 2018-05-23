@@ -304,24 +304,29 @@ class ContactDataService {
     
     
     func fetch(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]> {
-        
         let context = context ?? sharedCoreDataService.newManagedObjectContext()
-        
         return Promise { seal in
             async {
-                
-                guard let contactEmails = Email.findEmails(emails, inManagedObjectContext: context) else {
+                guard let fetchController = Email.findEmailsController(emails, inManagedObjectContext: context) else {
+                    seal.fulfill([])
+                    return
+                }
+                guard let contactEmails = fetchController.fetchedObjects as? [Email] else {
                     seal.fulfill([])
                     return
                 }
                 
                 let noDetails : [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false}
-                let fetchs : [Promise<Contact>] = noDetails.map { return self.details(contactID: $0.contactID) }
-
+                let fetchs : [Promise<Contact>] = noDetails.map { return self.details(contactID: $0.contactID, inContext: context) }
                 firstly {
                     when(resolved: fetchs)
                 }.then { (result) -> Guarantee<[Result<PreContact>]> in
-                    let details : [Email] = contactEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded}
+                    var allEmails = contactEmails
+                    if let newFetched = fetchController.fetchedObjects as? [Email] {
+                        allEmails = newFetched
+                    }
+                    
+                    let details : [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded}
                     var parsers : [Promise<PreContact>] = details.map {
                         return self.parseContact(email: $0.email, cards: $0.contact.getCardData())
                     }
@@ -523,21 +528,22 @@ class ContactDataService {
      - Parameter contactID: contact id
      - Parameter completion: async complete response
      **/
-    func details(contactID: String) -> Promise<Contact> {
+    func details(contactID: String, inContext: NSManagedObjectContext? = nil) -> Promise<Contact> {
         return Promise { seal in
             let api = ContactDetailRequest<ContactDetailResponse>(cid: contactID)
             api.call { (task, response, hasError) in
                 if let contactDict = response?.contact {
-                    let context = sharedCoreDataService.newManagedObjectContext()
+                    let context = inContext ?? sharedCoreDataService.newMainManagedObjectContext()
                     context.performAndWait() {
                         do {
                             if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: contactDict, in: context) as? Contact {
                                 contact.isDownloaded = true
                                 let _ = contact.fixName(force: true)
-                                let _ = contact.managedObjectContext?.saveUpstreamIfNeeded()
                                 if let error = context.saveUpstreamIfNeeded() {
+                                    PMLog.D(error.localizedDescription)
                                     seal.reject(error)
                                 } else {
+                                    context.processPendingChanges()
                                     seal.fulfill(contact)
                                 }
                             }

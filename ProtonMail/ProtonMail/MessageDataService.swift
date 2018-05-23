@@ -1599,7 +1599,7 @@ class MessageDataService {
             var contacts : [PreContact] = [PreContact]()
             firstly {
                 //fech addresses contact
-                sharedContactDataService.fetch(byEmails: emails, context: context)// emails  ["zhj44781@gmail.com"]
+                sharedContactDataService.fetch(byEmails: emails, context: context)
             }.then { (cs) -> Guarantee<[Result<KeysResponse>]> in
                 // fech email keys from api
                 contacts.append(contentsOf: cs)

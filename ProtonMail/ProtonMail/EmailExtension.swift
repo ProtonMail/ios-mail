@@ -27,12 +27,22 @@ extension Email {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.emailID, matchingValue: emailID) as? Email
     }
 
-    class func findEmails(_ emails: [String], inManagedObjectContext context: NSManagedObjectContext) -> [Email]? {
-        var out : [Email]?
-        context.performAndWait {
-            out = context.objectsWithEntityName(Attributes.entityName, forKey: Attributes.email, forManagedObjectIDs: emails) as? [Email]
+//    class func findEmails(_ emails: [String], inManagedObjectContext context: NSManagedObjectContext) -> [Email]? {
+//        var out : [Email]?
+//        context.performAndWait {
+//            out = context.objectsWithEntityName(Attributes.entityName, forKey: Attributes.email, forManagedObjectIDs: emails) as? [Email]
+//        }
+//        return out
+//    }
+    
+    class func findEmailsController(_ emails: [String], inManagedObjectContext context: NSManagedObjectContext) -> NSFetchedResultsController<NSFetchRequestResult>? {
+        let controller = context.fetchedControllerEntityName(entityName: Attributes.entityName, forKey: Attributes.email, forManagedObjectIDs: emails)
+        do {
+            try controller?.performFetch()
+        } catch _ {
+            return nil
         }
-        return out
+        return controller
     }
 
     func log() {

@@ -103,7 +103,7 @@
 - (NSString*)encryptMessageBinKey:(NSString*)plainText publicKey:(NSData*)publicKey privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase trim:(BOOL)trim error:(NSError**)error;
 - (NSString*)encryptMessageWithPassword:(NSString*)plainText password:(NSString*)password error:(NSError**)error;
 - (NSString*)generateKey:(NSString*)userName domain:(NSString*)domain passphrase:(NSString*)passphrase keyType:(NSString*)keyType bits:(long)bits error:(NSError**)error;
-- (long)getTime;
+- (int64_t)getTime;
 - (BOOL)isKeyExpired:(NSString*)publicKey ret0_:(BOOL*)ret0_ error:(NSError**)error;
 - (BOOL)isKeyExpiredBin:(NSData*)publicKey ret0_:(BOOL*)ret0_ error:(NSError**)error;
 - (NSString*)signBinDetached:(NSData*)plainData privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase error:(NSError**)error;
@@ -111,7 +111,7 @@
 - (NSString*)signTextDetached:(NSString*)plainText privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase trim:(BOOL)trim error:(NSError**)error;
 - (NSString*)signTextDetachedBinKey:(NSString*)plainText privateKey:(NSData*)privateKey passphrase:(NSString*)passphrase trim:(BOOL)trim error:(NSError**)error;
 - (NSString*)updatePrivateKeyPassphrase:(NSString*)privateKey oldPassphrase:(NSString*)oldPassphrase newPassphrase:(NSString*)newPassphrase error:(NSError**)error;
-- (void)updateTime:(long)newTime;
+- (void)updateTime:(int64_t)newTime;
 - (BOOL)verifyBinSignDetached:(NSString*)signature plainData:(NSData*)plainData publicKey:(NSString*)publicKey verifyTime:(int64_t)verifyTime ret0_:(BOOL*)ret0_ error:(NSError**)error;
 - (BOOL)verifyBinSignDetachedBinKey:(NSString*)signature plainData:(NSData*)plainData publicKey:(NSData*)publicKey verifyTime:(int64_t)verifyTime ret0_:(BOOL*)ret0_ error:(NSError**)error;
 - (BOOL)verifyTextSignDetached:(NSString*)signature plainText:(NSString*)plainText publicKey:(NSString*)publicKey verifyTime:(int64_t)verifyTime ret0_:(BOOL*)ret0_ error:(NSError**)error;
