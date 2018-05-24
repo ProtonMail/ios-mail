@@ -43,7 +43,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     @IBOutlet weak var checkboxButton: UIButton!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var lockImage: UIImageView!
+    @IBOutlet weak var lockImage: UIImageView! // deprecated
     @IBOutlet weak var replyImage: UIImageView!
     
     @IBOutlet weak var attachmentImage: UIImageView!
@@ -127,22 +127,6 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             loctionRightSpace.constant = 0.0
         }
         
-//        let lockType : LockTypes = message.lockType
-//        switch (lockType) {
-//        case .plainTextLock:
-//            self.lockImage.image = UIImage(named: "mail_lock")
-//            self.lockImage.isHighlighted = true
-//            break
-//        case .encryptLock:
-//            self.lockImage.image = UIImage(named: "mail_lock")
-//            self.lockImage.isHighlighted = false
-//            break
-//        case .pgpLock:
-//            self.lockImage.image = UIImage(named: "mail_lock-pgpmime")
-//            self.lockImage.isHighlighted = false
-//            break
-//        }
-        
         if message.numAttachments.int32Value > 0 {
             self.attachmentImage.isHidden = false
             self.attachmentWidth.constant = kIconsWidth
@@ -175,7 +159,8 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             labels.append(label)
         }
         if message.location == MessageLocation.outbox {
-            labelsView.configLables( message.recipientList.getDisplayAddress(), labels: labels)
+            
+            labelsView.configLables( message.allEmailAddresses, labels: labels)
         } else {
             labelsView.configLables( message.displaySender, labels: labels)
         }
