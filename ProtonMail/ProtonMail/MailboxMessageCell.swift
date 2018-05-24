@@ -64,12 +64,12 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
-        locationLabel.backgroundColor = UIColor.gray
+//        locationLabel.backgroundColor = UIColor.gray
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
-        locationLabel.backgroundColor = UIColor.gray
+//        locationLabel.backgroundColor = UIColor.gray
     }
     
     
