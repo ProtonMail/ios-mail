@@ -387,7 +387,14 @@ extension Message {
                 PMLog.D(body)
                 if isEncrypted == 8 || isEncrypted == 9 {
                     if let mimeMsg = MIMEMessage(string: body) {
-                        body = mimeMsg.htmlBody ?? ""
+                        if let html = mimeMsg.mainPart.part(ofType: "text/html")?.bodyString {
+                            body = html
+                            
+                        } else if let text = mimeMsg.mainPart.part(ofType: "text/plain")?.plainString {
+                            body = text.encodeHtml()
+                            body = "<html><body>\(body.ln2br())</body></html>"
+                        }
+                        
                         if let cidPart = mimeMsg.mainPart.partCID(),
                             var cid = cidPart.cid,
                             let rawBody = cidPart.rawBodyString {
@@ -401,6 +408,7 @@ extension Message {
                         body = body.multipartGetHtmlContent ()
                     }
                 } else if isEncrypted == 7 {
+                    body = body.encodeHtml()
                     body = body.ln2br()
                     return body
                 }
