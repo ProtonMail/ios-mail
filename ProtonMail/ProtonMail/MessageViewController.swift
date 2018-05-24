@@ -281,9 +281,9 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             }
         }
         
-//        alertController.addAction(UIAlertAction(title: LocalString._print, style: .default, handler: { (action) -> Void in
-//            self.print(webView : self.emailView!.contentWebView)
-//        }))
+        alertController.addAction(UIAlertAction(title: LocalString._print, style: .default, handler: { (action) -> Void in
+            self.print(webView : self.emailView!.contentWebView)
+        }))
         
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
@@ -313,13 +313,16 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             render.drawPage(at: i - 1, in: bounds)
         }
         UIGraphicsEndPDFContext();
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        PMLog.D(documentsPath)
-        pdfData.write(toFile: "\(documentsPath)/pdfName.pdf", atomically: true)
-        //TODO:: then open as pdf
-//        self.pdfPath = "\(documentsPath)/pdfName.pdf"
-//        self.pdfTitle = "pdfName"
-//        self.performSegue(withIdentifier: "showPDFSegue", sender: nil)
+        let documentsPath = FileManager.default.attachmentDirectory.appendingPathComponent("\(self.message.subject).pdf")
+        PMLog.D(documentsPath.absoluteString)
+        try? pdfData.write(to: documentsPath, options: [.atomic])
+//        pdfData.write(toFile: documentsPath, atomically: true)
+        
+        tempFileUri = documentsPath
+        let previewQL = QuickViewViewController()
+        previewQL.dataSource = self
+        latestPresentedView = previewQL
+        self.present(previewQL, animated: true, completion: nil)
     }
     
     fileprivate func messagesSetValue(setValue value: Any?, forKey key: String) {
