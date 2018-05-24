@@ -129,4 +129,16 @@ extension NSError {
         hud.hide(true, afterDelay: 2)
     }
     
+    public class func alertMessageSentError(details : String) -> Void {
+        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+            return
+        }
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
+        hud.detailsLabelText = LocalString._messages_sending_failed_try_again + " " + details
+        hud.removeFromSuperViewOnHide = true
+        hud.margin = 10
+        hud.yOffset = 250.0
+        hud.hide(true, afterDelay: 2)
+    }
 }

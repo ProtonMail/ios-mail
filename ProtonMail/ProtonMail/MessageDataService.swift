@@ -1751,6 +1751,7 @@ class MessageDataService {
             }.catch { (error) in
                 PMLog.D(error.localizedDescription)
                 let err = error as NSError
+                NSError.alertMessageSentError(details: error.localizedDescription)
                 completion?(nil, nil, err)
             }
             return
