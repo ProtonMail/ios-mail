@@ -8,7 +8,7 @@ about: Create a report to help us improve
 A clear and concise description of what the bug is.
 
 **App Version:**
-1.8.x (0) [live]
+1.8.x (0) ***live***
 
 **Device + OS version**
 iPhone ...  iOS 11.
