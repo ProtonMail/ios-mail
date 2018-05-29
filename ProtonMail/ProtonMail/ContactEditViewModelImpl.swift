@@ -412,6 +412,10 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             //update
             var a_emails: [ContactEmail] = []
             for e in getEmails() {
+                if e.newEmail.isEmpty || !e.newEmail.isValid() {
+                    complete(RuntimeError.invalidEmail.toError())
+                    return
+                }
                 a_emails.append(e.toContactEmail())
             }
             if origvCard2 == nil {
@@ -430,6 +434,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 //TODO::need to check the old email's group id
                 var i : Int = 1;
                 var newEmails:[PMNIEmail] = []
+                vcard2.clearEmails()
                 for email in a_emails {
                     let group = "Item\(i)"
                     let em = email.email

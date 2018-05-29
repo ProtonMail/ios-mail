@@ -10,6 +10,9 @@ import Foundation
 
 
 
+
+
+
 class ContactAddViewModelImpl : ContactEditViewModel {
     var sections: [ContactEditSectionType] = [.display_name,
                                               .emails,
@@ -169,6 +172,10 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         //add
         var a_emails: [ContactEmail] = []
         for e in getEmails() {
+            if e.newEmail.isEmpty || !e.newEmail.isValid() {
+                complete(RuntimeError.invalidEmail.toError())
+                return
+            }
             a_emails.append(e.toContactEmail())
         }
         guard let vcard2 = PMNIVCard.createInstance() else {

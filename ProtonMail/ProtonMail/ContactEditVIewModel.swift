@@ -73,6 +73,31 @@ enum ContactEditSectionType : Int {
 }
 
 
+
+enum RuntimeError : Int, Error, CustomErrorVar {
+    case invalidEmail = 0x0001
+    
+    
+    var code: Int {
+        return self.rawValue
+    }
+    
+    var desc: String {
+        return reason
+    }
+    
+    var reason: String {
+        switch self {
+            
+        case .invalidEmail:
+            return LocalString._please_input_a_valid_email_address
+        }
+    }
+    
+    
+}
+
+
 class ContactEditViewModel {
     
     var allowed_types: [InformationType] = [.organization,

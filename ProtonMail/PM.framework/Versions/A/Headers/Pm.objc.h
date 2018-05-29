@@ -34,8 +34,10 @@
 - (instancetype)init;
 - (NSString*)plaintext;
 - (void)setPlaintext:(NSString*)v;
-- (BOOL)verify;
-- (void)setVerify:(BOOL)v;
+- (long)verify;
+- (void)setVerify:(long)v;
+- (NSString*)message;
+- (void)setMessage:(NSString*)v;
 @end
 
 @interface PmEncryptedSigned : NSObject <goSeqRefInterface> {
