@@ -60,5 +60,7 @@
 	<string>Required for saving image attachments to photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Required for attaching photos to the email.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Allows you quick and secure to unlock your application.</string>
 </dict>
 </plist>

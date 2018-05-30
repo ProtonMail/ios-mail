@@ -101,6 +101,8 @@
 	<string>Required for attaching photos to the email.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Required for email autocomplete.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Allows you quick and secure to unlock your application.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Required for saving image attachments to photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
