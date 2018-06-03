@@ -8,7 +8,7 @@
 
 import UIKit
 import XCTest
-import ProtonMail
+@testable import ProtonMail
 
 class LastUpdateCacheTests: XCTestCase {
 
@@ -36,7 +36,7 @@ class LastUpdateCacheTests: XCTestCase {
     
     func testInboxUpdateCache() {
         // initial the cache
-        let lastUpdatedStore = LastUpdatedStore(shared: UserDefaults.standardUserDefaults())
+        let lastUpdatedStore = LastUpdatedStore(shared: UserDefaults.standard)
         lastUpdatedStore.clear()
         
 //        // test default cache
