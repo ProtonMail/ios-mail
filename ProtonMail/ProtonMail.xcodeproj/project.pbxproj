@@ -1374,6 +1374,16 @@
 		75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */; };
 		9F13485990B5ECAE0E458211 /* Pods_ProtonMailTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B592540B8A286228E3A5430A /* Pods_ProtonMailTests.framework */; };
 		AB36B253D49A42CC855932B0 /* Pods_ShareDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554FD2400ABE7FDFDC9156F4 /* Pods_ShareDev.framework */; };
+		D89072A620C6923200A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
+		D89072A720C6923200A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
+		D89072A820C69E4F00A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
+		D89072AA20C69E5300A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
+		D89072AB20C69E5500A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
+		D89072AC20C69E5600A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
+		D89072AD20C69E6400A325DF /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
+		D89072AE20C69E6600A325DF /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
+		D89072AF20C69E6600A325DF /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
+		D89072B020C69E6700A325DF /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
 		D8C2B27720C4570C00979CBE /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
 		D8C2B27820C4570C00979CBE /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
 		D8C2B27A20C4571B00979CBE /* CalendarIntervalRuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27920C4571A00979CBE /* CalendarIntervalRuleTests.swift */; };
@@ -1941,6 +1951,7 @@
 		C87DB98FF3BD404B025BC4DC /* Pods-ProtonMail.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.debug.xcconfig"; sourceTree = "<group>"; };
 		C96E84F0F719879E420125E5 /* Pods_Share.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Share.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D150620E49C5EDEC5065FEA1 /* Pods-ProtonMailTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.distribution.xcconfig"; sourceTree = "<group>"; };
+		D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationsSnoozer.swift; sourceTree = "<group>"; };
 		D8B28E771ECD203453213C64 /* libPods-PushService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntervalRule.swift; sourceTree = "<group>"; };
 		D8C2B27920C4571A00979CBE /* CalendarIntervalRuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntervalRuleTests.swift; sourceTree = "<group>"; };
@@ -3046,6 +3057,7 @@
 				7580D6561C8E436F00A15885 /* OnePassword */,
 				076758791AA126E400F9AC9C /* StorageLimit.swift */,
 				751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */,
+				D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */,
 				7546BE541C8D4F9100FCEB0A /* TouchID.swift */,
 			);
 			name = Utilities;
@@ -5028,6 +5040,7 @@
 				7567B06D1B334FA400A72A1E /* ViewModelService.swift in Sources */,
 				7528FFAA1FA7FE85005F66A3 /* ContactVO+Extension.swift in Sources */,
 				701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */,
+				D89072A620C6923200A325DF /* UserNotificationsSnoozer.swift in Sources */,
 				75921C7D1F747BC90028DAC9 /* Data+Mime.swift in Sources */,
 				07CC99641A6F076A000FD6F8 /* NSError+Extension.swift in Sources */,
 				75E49F0D1CAB256900235ACC /* PhoneVerifyViewController.swift in Sources */,
@@ -5182,6 +5195,7 @@
 				75252D431FCF5F2D007972EF /* ContactEditVIewModel.swift in Sources */,
 				75252DA81FCF69FF007972EF /* EmailExtension.swift in Sources */,
 				75252CF11FCF5A94007972EF /* String+Extension.swift in Sources */,
+				D89072AF20C69E6600A325DF /* CalendarIntervalRule.swift in Sources */,
 				75252DBC1FCF6D1F007972EF /* Reachability.m in Sources */,
 				75252D501FCF5FE8007972EF /* MessageExtension.swift in Sources */,
 				75252D8E1FCF63E5007972EF /* Hash.swift in Sources */,
@@ -5250,6 +5264,7 @@
 				75252DC41FCF7CD2007972EF /* Dictionary+JSON+Extension.swift in Sources */,
 				75252D961FCF68DA007972EF /* TimeInterval+Extension.swift in Sources */,
 				75252D091FCF5B7A007972EF /* APIServiceDefined.swift in Sources */,
+				D89072AA20C69E5300A325DF /* UserNotificationsSnoozer.swift in Sources */,
 				75252DB61FCF6AD8007972EF /* JKBCryptRandom.swift in Sources */,
 				75252D681FCF6187007972EF /* Data+Extension.swift in Sources */,
 				75252CEE1FCF5A73007972EF /* NSError+Extension.swift in Sources */,
@@ -5294,6 +5309,7 @@
 				75252DBB1FCF6D06007972EF /* LanguageManager.m in Sources */,
 				75252D181FCF5C68007972EF /* UserCachedStatus.swift in Sources */,
 				75252D271FCF5DC1007972EF /* UserAPI.swift in Sources */,
+				D89072B020C69E6700A325DF /* CalendarIntervalRule.swift in Sources */,
 				75D0D882207348D9004AE43D /* UserAgent.swift in Sources */,
 				75252D2D1FCF5E49007972EF /* APIService+AuthenticationExtension.swift in Sources */,
 				75252D441FCF5F3A007972EF /* ContactsAPI.swift in Sources */,
@@ -5301,6 +5317,7 @@
 				75252D481FCF5F5E007972EF /* Attachment.swift in Sources */,
 				75252D941FCF6852007972EF /* UserTempCachedStatus.swift in Sources */,
 				75252D0A1FCF5B7B007972EF /* APIServiceDefined.swift in Sources */,
+				D89072AB20C69E5500A325DF /* UserNotificationsSnoozer.swift in Sources */,
 				75252D8C1FCF63DC007972EF /* APIService+SettingsExtension.swift in Sources */,
 				75252CEB1FCF5A54007972EF /* UserInfo.swift in Sources */,
 				75252CF41FCF5ABB007972EF /* APIService+DefinedExtension.swift in Sources */,
@@ -5425,6 +5442,7 @@
 				750AAEB31FA91E2200CBFCA3 /* ContactSectionHeadView.swift in Sources */,
 				75482B3F1F7F09E100B0BFFB /* NSBundle+Language.m in Sources */,
 				75482B401F7F09E100B0BFFB /* SharedCacheBase.swift in Sources */,
+				D89072AD20C69E6400A325DF /* CalendarIntervalRule.swift in Sources */,
 				75482B411F7F09E100B0BFFB /* ComposeViewModelImpl.swift in Sources */,
 				753E30AA1F86F77E00CE5AF8 /* BCrypt+Extension.swift in Sources */,
 				75482B421F7F09E100B0BFFB /* LabelboxViewModelImpl.swift in Sources */,
@@ -5560,6 +5578,7 @@
 				75482BB61F7F09E100B0BFFB /* EncryptTypes.swift in Sources */,
 				75482BB71F7F09E100B0BFFB /* AuthAPI.swift in Sources */,
 				75482BB91F7F09E100B0BFFB /* Threading.swift in Sources */,
+				D89072A820C69E4F00A325DF /* UserNotificationsSnoozer.swift in Sources */,
 				750AAEB61FA91ED700CBFCA3 /* ContactsDefined.swift in Sources */,
 				75482BBA1F7F09E100B0BFFB /* SharePinUnlockViewController.swift in Sources */,
 				75482BBB1F7F09E100B0BFFB /* Reachability.m in Sources */,
@@ -5592,6 +5611,7 @@
 				7512AA3A1F1801BC00D84955 /* OpenPGPExtension.swift in Sources */,
 				7512AA5F1F18083300D84955 /* Hash.swift in Sources */,
 				752800331FA800C8005F66A3 /* Data+Extension.swift in Sources */,
+				D89072AE20C69E6600A325DF /* CalendarIntervalRule.swift in Sources */,
 				753E5ACC1F1820E80090C0F9 /* NSBundle+Language.m in Sources */,
 				7512AA4C1F1804F900D84955 /* SharedCacheBase.swift in Sources */,
 				7512AA651F180B5700D84955 /* ComposeViewModelImpl.swift in Sources */,
@@ -5727,6 +5747,7 @@
 				7512AA311F17FEC400D84955 /* AuthAPI.swift in Sources */,
 				7512AA5C1F18078100D84955 /* Threading.swift in Sources */,
 				7528001D1FA7FFB3005F66A3 /* UserDefaults+Extension.swift in Sources */,
+				D89072AC20C69E5600A325DF /* UserNotificationsSnoozer.swift in Sources */,
 				750AAEB51FA91ED600CBFCA3 /* ContactsDefined.swift in Sources */,
 				75E5F7A51F295DFD00001B4F /* SharePinUnlockViewController.swift in Sources */,
 				753E5ACE1F1820E80090C0F9 /* Reachability.m in Sources */,
@@ -5971,6 +5992,7 @@
 				75DE7CEB1CAAEA4900F5443E /* RecipientView.swift in Sources */,
 				75DE7CEE1CAAEA4900F5443E /* FeedbackHeadCell.swift in Sources */,
 				75DE7CEF1CAAEA4900F5443E /* ProtonMail.xcdatamodeld in Sources */,
+				D89072A720C6923200A325DF /* UserNotificationsSnoozer.swift in Sources */,
 				75856D6C1CB5B5F2000D9F3B /* PinCodeView.swift in Sources */,
 				7528FFFA1FA7FEF6005F66A3 /* ContactTypeAddCustomCell.swift in Sources */,
 				75DE7CF81CAAEA4900F5443E /* CustomHeaderView.swift in Sources */,

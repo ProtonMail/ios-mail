@@ -50,6 +50,9 @@ final class UserCachedStatus : SharedCacheBase {
         static let lastSplashViersion = "last_splash_viersion" //global cache
         static let lastTourViersion = "last_tour_viersion" //global cache
         static let lastLocalMobileSignature = "last_local_mobile_signature" //user cache but could restore
+        
+        // Snooze Notifications
+        static let snoozeConfiguration = "snoozeConfiguration"
     }
     
     var isForcedLogout : Bool = false
@@ -316,6 +319,19 @@ extension UserCachedStatus {
     
     func resetAskedEnableTouchID() {
         setValue(AppConstants.AskTouchID, forKey: Key.askEnableTouchID)
+    }
+    
+    var snoozeConfiguration: Array<UserNotificationsSnoozer.Configuration>? {
+        get {
+            guard let rawConfig = getShared().data(forKey: Key.snoozeConfiguration) else {
+                return nil
+            }
+            return try? PropertyListDecoder().decode(Array<UserNotificationsSnoozer.Configuration>.self, from: rawConfig)
+        }
+        set {
+            let rawConfig = try? PropertyListEncoder().encode(newValue)
+            getShared().set(rawConfig, forKey: Key.snoozeConfiguration)
+        }
     }
     
 }

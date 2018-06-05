@@ -8,24 +8,24 @@
 
 import UIKit
 
-struct CalendarIntervalRule {
+struct CalendarIntervalRule: Codable, Equatable {
     private let startMatching: DateComponents
     private let endMatching: DateComponents
     
-    private let componenstOfInterest: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute]
+    fileprivate static var componenstOfInterest: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute]
     
-    init(start: DateComponents, end: DateComponents) {
+    internal init(start: DateComponents, end: DateComponents) {
         self.startMatching = start
         self.endMatching = end
     }
     
-    init(duration: DateComponents, since date: Date) {
-        self.startMatching = Calendar.current.dateComponents(componenstOfInterest, from: date)
+    internal init(duration: DateComponents, since date: Date) {
+        self.startMatching = Calendar.current.dateComponents(CalendarIntervalRule.componenstOfInterest, from: date)
         let endDate = Calendar.current.date(byAdding: duration, to: date)!
-        self.endMatching = Calendar.current.dateComponents(componenstOfInterest, from: endDate)
+        self.endMatching = Calendar.current.dateComponents(CalendarIntervalRule.componenstOfInterest, from: endDate)
     }
     
-    func intersects(with dateOfInterest: Date) -> Bool {
+    internal func intersects(with dateOfInterest: Date) -> Bool {
         // interval already started
         guard let recentStart = Calendar.current.nextDate(after: dateOfInterest, matching: self.startMatching, matchingPolicy: .strict, repeatedTimePolicy: .first, direction: .backward), // and there is an end of interval in future
             let _ = Calendar.current.nextDate(after: dateOfInterest, matching: self.endMatching, matchingPolicy: .strict, repeatedTimePolicy: .first, direction: .forward) else
@@ -45,7 +45,7 @@ struct CalendarIntervalRule {
 }
 
 extension Array where Element == CalendarIntervalRule {
-    func intersects(with date: Date) -> Bool {
+    internal func intersects(with date: Date) -> Bool {
         return self.contains(where: { $0.intersects(with: date) } )
     }
 }
