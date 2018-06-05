@@ -271,9 +271,10 @@ class ContactImportViewController: UIViewController {
                                     continue //with error
                                 }
                                 
-                                let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                                               plainText: vcard2Str,
-                                                                               passphras: sharedUserDataService.mailboxPassword!)
+                                let signed_vcard2 = try sharedOpenPGP.signTextDetached(vcard2Str,
+                                                                                       privateKey: userkey.private_key,
+                                                                                       passphrase: sharedUserDataService.mailboxPassword!,
+                                                                                       trim: true)
                                 
                                 //card 2 object
                                 let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
@@ -288,12 +289,13 @@ class ContactImportViewController: UIViewController {
                                 guard let vcard3Str = try vcard3.write() else {
                                     continue
                                 }
-                                let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "", trim: true)
-                                let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                                               plainText: vcard3Str,
-                                                                               passphras: sharedUserDataService.mailboxPassword!)
+                                let encrypted_vcard3 = try vcard3Str.encrypt(withPubKey: userkey.public_key, privateKey: "", mailbox_pwd: "")
+                                let signed_vcard3 = try sharedOpenPGP.signTextDetached(vcard3Str,
+                                                                                       privateKey: userkey.private_key,
+                                                                                       passphrase: sharedUserDataService.mailboxPassword!,
+                                                                                       trim: true)
                                 //card 3 object
-                                let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
+                                let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3)
                                 
                                 let cards : [CardData] = [card2, card3]
                                 

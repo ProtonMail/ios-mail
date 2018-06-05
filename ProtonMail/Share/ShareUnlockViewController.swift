@@ -228,9 +228,9 @@ class ShareUnlockViewController: UIViewController {
         if sharedUserDataService.isUserCredentialStored {
             userCachedStatus.lockedApp = false
             sharedUserDataService.isSignedIn = true
-            if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
-                sharedOpenPGP.setAddresses(addresses);
-            }
+//            if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
+//                sharedOpenPGP.setAddresses(addresses);
+//            }
             self.goto_composer()
         }
         else

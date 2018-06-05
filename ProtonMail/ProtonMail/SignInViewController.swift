@@ -575,10 +575,6 @@ class SignInViewController: ProtonMailViewController {
             sharedUserDataService.isSignedIn = true
             isRemembered = true
             
-            if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
-                sharedOpenPGP.setAddresses(addresses);
-            }
-            
             usernameTextField.text = sharedUserDataService.username
             passwordTextField.text = sharedUserDataService.password
             

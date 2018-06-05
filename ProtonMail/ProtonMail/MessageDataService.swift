@@ -1231,8 +1231,8 @@ class MessageDataService {
             var tempAtts : [TempAttachment]! = []
             for att in atts {
                 if att.managedObjectContext != nil {
-                    if let sessionKey = try att.sessionKey() {
-                        tempAtts.append(TempAttachment(id: att.attachmentID, key: sessionKey))
+                    if let sessionKey = try att.getSession() {
+                        tempAtts.append(TempAttachment(id: att.attachmentID, session: sessionKey))
                     }
                 }
             }
@@ -1254,23 +1254,22 @@ class MessageDataService {
                         
                         if isOutsideUser {
                             if encrptOutside {
-                                let encryptedBody = try body.encryptWithPassphrase(message.password)
+                                let encryptedBody = try body.encrypt(withPwd: message.password)
                                 //create outside encrypt packet
                                 let token = String.randomString(32) as String
                                 let based64Token = token.encodeBase64() as String
-                                let encryptedToken = try based64Token.encryptWithPassphrase(message.password)
+                                let encryptedToken = try based64Token.encrypt(withPwd: message.password)
                                 
                                 // encrypt keys use key
                                 var attPack : [AttachmentKeyPackage] = []
                                 for att in tempAtts {
-                                    let newKeyPack = try att.Key?.getSymmetricSessionKeyPackage(message.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                                    let newKeyPack = try att.Session?.getSymmetricPacket(withPwd: message.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                                     let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
                                     attPack.append(attPacket)
                                 }
                                 
                                 let pack = MessagePackage(address: key, type: 2,  body: encryptedBody, attPackets:attPack, token: based64Token, encToken: encryptedToken, passwordHint: message.passwordHint)
                                 out.append(pack)
-                                
                                 // encrypt keys use pwd .
                             }
                             else {
@@ -1282,12 +1281,12 @@ class MessageDataService {
                             var attPack : [AttachmentKeyPackage] = []
                             for att in tempAtts {
                                 //attID:String!, attKey:String!, Algo : String! = ""
-                                let newKeyPack = try att.Key?.getPublicSessionKeyPackage(str: publicKey)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                                let newKeyPack = try att.Session?.getKeyPackage(strKey: publicKey)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                                 let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
                                 attPack.append(attPacket)
                             }
                             //create inside packet
-                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey, privateKey: privKey, mailbox_pwd: pwd) {
+                            if let encryptedBody = try body.encrypt(withPubKey: publicKey, privateKey: privKey, mailbox_pwd: pwd) {
                                 let pack = MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
                                 out.append(pack)
                             }
@@ -1303,7 +1302,7 @@ class MessageDataService {
                     var attPack : [AttachmentKeyPackage] = []
                     for att in tempAtts {
                         //attID:String!, attKey:String!, Algo : String! = ""
-                        let newKeyPack = att.Key?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                        let newKeyPack = att.Session?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                         let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack, Algo: "aes256")
                         attPack.append(attPacket)
                     }
@@ -1340,7 +1339,7 @@ class MessageDataService {
                     // encrypt body with each key
                     for publicKeys in keys {
                         for (email, publicKey) in publicKeys {
-                            if let encryptedBody = try body.encryptMessageWithSingleKey(publicKey, privateKey: privKey, mailbox_pwd: pwd) {
+                            if let encryptedBody = try body.encrypt(withPubKey: publicKey, privateKey: privKey, mailbox_pwd: pwd) {
                                 messageBody[email] = encryptedBody
                             }
                         }
@@ -1492,9 +1491,8 @@ class MessageDataService {
                     let pwd = sharedUserDataService.mailboxPassword ?? ""
                     let encrypt_data = attachment.encrypt(byAddrID: default_address_id, mailbox_pwd: pwd)
                     //TODO:: here need check is encryptdata is nil and return the error to user.
-                    let keyPacket = encrypt_data?.keyPackage
-                    let dataPacket = encrypt_data?.dataPackage
-                    
+                    let keyPacket = encrypt_data?.keyPacket()
+                    let dataPacket = encrypt_data?.dataPacket()
                     let completionWrapper: CompletionBlock = { task, response, error in
                         PMLog.D("SendAttachmentDebug == finish upload att!")
                         if error == nil {
@@ -1606,12 +1604,12 @@ class MessageDataService {
                 return when(resolved: requests.promises)
             }.then { results -> Promise<SendBuilder> in
                 //all prebuild errors need pop up from here
-                guard let bodyData = try message.split()?.dataPackage,
+                guard let bodyData = try message.split()?.dataPacket(),
                         let session = try message.getSessionKey() else {
                     throw RuntimeError.cant_decrypt.error
                 }
 
-                sendBuilder.update(bodyData: bodyData, bodySession: session)
+                sendBuilder.update(bodyData: bodyData, bodySession: session.session())
                 sendBuilder.set(pwd: message.password, hit: message.passwordHint)
                 for (index, result) in results.enumerated() {
                     switch result {
@@ -1644,8 +1642,8 @@ class MessageDataService {
                 
                 for att in attachments {
                     if att.managedObjectContext != nil {
-                        if let sessionKey = try att.sessionKey() {
-                            sendBuilder.add(att: PreAttachment(id: att.attachmentID, key: sessionKey, att: att))
+                        if let sessionKey = try att.getSession() {
+                            sendBuilder.add(att: PreAttachment(id: att.attachmentID, session: sessionKey, att: att))
                         }
                     }
                 }

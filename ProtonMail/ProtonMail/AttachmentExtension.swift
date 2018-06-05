@@ -18,6 +18,7 @@ import Foundation
 import CoreData
 import PromiseKit
 import AwaitKit
+import Pm
 
 extension Attachment {
     
@@ -52,7 +53,7 @@ extension Attachment {
     
     
     // Mark : public functions
-    func encrypt(byAddrID sender_address_id : String, mailbox_pwd: String) -> PMNEncryptPackage? {
+    func encrypt(byAddrID sender_address_id : String, mailbox_pwd: String) -> PmEncryptedSplit? {
         do {
             guard let out =  try fileData?.encryptAttachment(sender_address_id, fileName: self.fileName, mailbox_pwd: mailbox_pwd) else {
                 return nil
@@ -63,13 +64,13 @@ extension Attachment {
         }
     }
     
-    func sessionKey() throws -> Data? {
+    func getSession() throws -> Data? {
         if self.keyPacket == nil {
             return nil
         }
         let data: Data = Data(base64Encoded: self.keyPacket!, options: NSData.Base64DecodingOptions(rawValue: 0))!
-        let sessionKey = try data.getSessionKeyFromPubKeyPackage(passphrase) ?? nil
-        return sessionKey
+        let sessionKey = try data.getSessionFromPubKeyPackage(passphrase)
+        return sessionKey?.session()
     }
     
     func fetchAttachment(_ downloadTask: ((URLSessionDownloadTask) -> Void)?, completion:((URLResponse?, URL?, NSError?) -> Void)?) {

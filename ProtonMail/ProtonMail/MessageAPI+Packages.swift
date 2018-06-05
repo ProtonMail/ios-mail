@@ -24,11 +24,11 @@ final class ClearAttachmentPackage {
     /// attachment id
     let ID : String!
     /// based64 encoded session key
-    let key : String!
+    let encodedSession : String!
     let algo : String = "aes256"
-    init(attID:String!, key:String!) {
+    init(attID:String!, encodedSession:String!) {
         self.ID = attID
-        self.key = key
+        self.encodedSession = encodedSession
     }
 }
 

@@ -16,6 +16,7 @@
 
 import Foundation
 import CoreData
+import Pm
 
 extension Message {
     
@@ -356,15 +357,16 @@ extension Message {
     
     // MARK: methods
     func decryptBody() throws -> String? {
-        return try body.decryptMessage(passphrase)
+        let keys = sharedUserDataService.addressPrivKeys
+        return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
     }
     
-    func split() throws -> PMNEncryptPackage? {
+    func split() throws -> PmEncryptedSplit? {
         return try body.split()
     }
     
-    func getSessionKey() throws -> Data? {
-        return try split()?.keyPackage.getSessionKeyFromPubKeyPackage(passphrase)
+    func getSessionKey() throws -> PmSessionSplit? {
+        return try split()?.keyPacket().getSessionFromPubKeyPackage(passphrase)
     }
     
     func bodyToHtml() -> String {
@@ -427,7 +429,7 @@ extension Message {
         if address_id.isEmpty {
             return
         }
-        self.body = try! body.encryptMessage(address_id, mailbox_pwd: mailbox_pwd) ?? ""
+        self.body = try! body.encrypt(withAddr: address_id, mailbox_pwd: mailbox_pwd) ?? ""
     }
     
     func checkIsEncrypted() -> Bool! {

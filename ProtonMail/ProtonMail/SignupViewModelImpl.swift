@@ -110,16 +110,16 @@ final class SignupViewModelImpl : SignupViewModel {
                 self.keysalt = new_mpwd_salt
                 self.keypwd_with_keysalt = new_hashed_mpwd
                 //generate new key
-                self.newKey = try sharedOpenPGP.generateKey(new_hashed_mpwd, userName: self.userName, domain: self.domain, bits: self.bit);
-                
-                {
-                    // do some async stuff
-                    if self.newKey == nil {
-                        complete(true, LocalString._key_generation_failed_please_try_again, nil)
-                    } else {
-                        complete(false, nil, nil);
-                    }
-                } ~> .main
+//                self.newKey = try sharedOpenPGP.generateKey(new_hashed_mpwd, userName: self.userName, domain: self.domain, bits: self.bit);
+//                
+//                {
+//                    // do some async stuff
+//                    if self.newKey == nil {
+//                        complete(true, LocalString._key_generation_failed_please_try_again, nil)
+//                    } else {
+//                        complete(false, nil, nil);
+//                    }
+//                } ~> .main
             }
             catch let ex as NSError {
                 { complete(false, LocalString._key_generation_failed_please_try_again, ex) } ~> .main

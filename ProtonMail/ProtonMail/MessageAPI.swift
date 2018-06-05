@@ -347,7 +347,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
                 var atts : [String:Any] = [String:Any]()
                 for it in cAtts {
                     atts[it.ID] = [
-                        "Key" : it.key,
+                        "Key" : it.encodedSession,
                         "Algorithm" : it.algo
                     ]
                 }
@@ -386,7 +386,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
                 var atts : [String:Any] = [String:Any]()
                 for it in cAtts {
                     atts[it.ID] = [
-                        "Key" : it.key,
+                        "Key" : it.encodedSession,
                         "Algorithm" : it.algo
                     ]
                 }
@@ -603,11 +603,11 @@ final class AttachmentKeyPackage : Package {
 */
 final class TempAttachment {
     let ID : String!
-    let Key : Data?
+    let Session : Data?
     
-    public init(id: String, key: Data?) {
+    public init(id: String, session: Data?) {
         self.ID = id
-        self.Key = key
+        self.Session = session
     }
 }
 

@@ -9,6 +9,7 @@
 import Foundation
 import PromiseKit
 import AwaitKit
+import Pm
 
 extension Data {
     var html2AttributedString: NSAttributedString? {
@@ -91,7 +92,7 @@ final class PreAttachment {
     /// attachment id
     let ID : String!
     /// clear session key
-    let Key : Data
+    let Session : Data
     
     
     let att : Attachment
@@ -101,9 +102,9 @@ final class PreAttachment {
     /// - Parameters:
     ///   - id: att id
     ///   - key: clear encrypted attachment session key
-    public init(id: String, key: Data, att: Attachment) {
+    public init(id: String, session: Data, att: Attachment) {
         self.ID = id
-        self.Key = key
+        self.Session = session
         self.att = att
     }
 }
@@ -208,7 +209,7 @@ class SendBuilder {
                 var atts = [ClearAttachmentPackage]()
                 for it in self.preAttachments {
                     atts.append(ClearAttachmentPackage(attID: it.ID,
-                                                       key: it.Key.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))))
+                                                       encodedSession: it.Session.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))))
                 }
                 return atts.count > 0 ? atts : nil
             }
@@ -292,20 +293,24 @@ class SendBuilder {
                         
                     signbody.append(contentsOf: "--\(boundaryMsg)--")
                     
-                    
                     PMLog.D(signbody)
                     
-                    let encrypted = try! signbody.encryptMessageWithSingleKey(pubKey,
-                                                                              privateKey: privKey,
-                                                                              mailbox_pwd: sharedUserDataService.mailboxPassword!)
-                    let spilted = try! encrypted?.split()
-                    let session = try! spilted?.keyPackage.getSessionKeyFromPubKeyPackage(sharedUserDataService.mailboxPassword!)!
+                    do {
+                        
+                    }
+                    let encrypted = try signbody.encrypt(withPubKey: pubKey,
+                                                         privateKey: privKey,
+                                                         mailbox_pwd: sharedUserDataService.mailboxPassword!)
+                    let spilted = try encrypted?.split()
+                    let session = try spilted?.keyPacket().getSessionFromPubKeyPackage(sharedUserDataService.mailboxPassword!)!
                     
-                    self.mimeSession = session
-                    self.mimeDataPackage = spilted?.dataPackage.base64EncodedString()
+                    self.mimeSession = session?.session()
+                    self.mimeDataPackage = spilted?.dataPacket().base64EncodedString()
                     
                     seal.fulfill(self)
-                }
+                }.catch({ error in
+                    seal.reject(error)
+                })
             }
         }
     }
@@ -320,14 +325,14 @@ class SendBuilder {
                 
                 PMLog.D(plainText)
                 
-                let encrypted = try! plainText.encryptMessageWithSingleKey(pubKey,
-                                                                          privateKey: privKey,
-                                                                          mailbox_pwd: sharedUserDataService.mailboxPassword!)
-                let spilted = try! encrypted?.split()
-                let session = try! spilted?.keyPackage.getSessionKeyFromPubKeyPackage(sharedUserDataService.mailboxPassword!)!
+                let encrypted = try plainText.encrypt(withPubKey: pubKey,
+                                                       privateKey: privKey,
+                                                       mailbox_pwd: sharedUserDataService.mailboxPassword!)
+                let spilted = try encrypted?.split()
+                let session = try spilted?.keyPacket().getSessionFromPubKeyPackage(sharedUserDataService.mailboxPassword!)!
                 
-                self.plainTextSession = session
-                self.plainTextDataPackage = spilted?.dataPackage.base64EncodedString()
+                self.plainTextSession = session?.session()
+                self.plainTextDataPackage = spilted?.dataPacket().base64EncodedString()
                 
                 self.clearPlainTextBody = plainText
                 
@@ -471,11 +476,11 @@ class EOAddressBuilder : PackageBuilder {
     
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            let encodedKeyPackage = try self.session.getSymmetricSessionKeyPackage(self.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+            let encodedKeyPackage = try self.session.getSymmetricPacket(withPwd: self.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
             //create outside encrypt packet
             let token = String.randomString(32) as String
             let based64Token = token.encodeBase64() as String
-            let encryptedToken = try based64Token.encryptWithPassphrase(self.password)!
+            let encryptedToken = try based64Token.encrypt(withPwd: self.password) ?? ""
             
             
             //start build auth package
@@ -503,7 +508,7 @@ class EOAddressBuilder : PackageBuilder {
             var attPack : [AttachmentPackage] = []
             for att in self.preAttachments {
                 //TODO::here need handle error
-                let newKeyPack = try att.Key.getSymmetricSessionKeyPackage(self.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                let newKeyPack = try att.Session.getSymmetricPacket(withPwd: self.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                 let attPacket = AttachmentPackage(attID: att.ID, attKey: newKeyPack)
                 attPack.append(attPacket)
             }
@@ -549,14 +554,13 @@ class PGPAddressBuilder : PackageBuilder {
             var attPackages = [AttachmentPackage]()
             for att in self.preAttachments {
                 //TODO::here need hanlde the error
-                let newKeyPack = try att.Key.getPublicSessionKeyPackage(data : self.preAddress.pgpKey!)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                let newKeyPack = try att.Session.getKeyPackage(dataKey: self.preAddress.pgpKey!)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                 let attPacket = AttachmentPackage(attID: att.ID, attKey: newKeyPack)
                 attPackages.append(attPacket)
             }
             
             //if plainText
-            
-            let newKeypacket = try self.session.getPublicSessionKeyPackage(data : self.preAddress.pgpKey!)
+            let newKeypacket = try self.session.getKeyPackage(dataKey: self.preAddress.pgpKey!)
             let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
             let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, type: self.sendType, plainText: self.preAddress.plainText, attPackets: attPackages)
             return addr
@@ -583,7 +587,7 @@ class MimeAddressBuilder : PackageBuilder {
     
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            let newKeypacket = try self.session.getPublicSessionKeyPackage(data : self.preAddress.pgpKey!)
+            let newKeypacket = try self.session.getKeyPackage(dataKey: self.preAddress.pgpKey!)
             let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
             
             let addr = MimeAddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, type: self.sendType, plainText: self.preAddress.plainText)
@@ -639,19 +643,19 @@ class AddressBuilder : PackageBuilder {
             var attPackages = [AttachmentPackage]()
             for att in self.preAttachments {
                 //TODO::here need hanlde the error
-                let newKeyPack = try att.Key.getPublicSessionKeyPackage(str: self.preAddress.pubKey!)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                let newKeyPack = try att.Session.getKeyPackage(strKey: self.preAddress.pubKey!)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                 let attPacket = AttachmentPackage(attID: att.ID, attKey: newKeyPack)
                 attPackages.append(attPacket)
             }
             
             //TODO::will remove from here debuging or merge this class with PGPAddressBuildr
             if let pk = self.preAddress.pgpKey {
-                let newKeypacket = try self.session.getPublicSessionKeyPackage(data: pk)
+                let newKeypacket = try self.session.getKeyPackage(dataKey: pk)
                 let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                 let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, type: self.sendType, plainText: self.preAddress.plainText, attPackets: attPackages)
                 return addr
             } else {
-                let newKeypacket = try self.session.getPublicSessionKeyPackage(str: self.preAddress.pubKey!)
+                let newKeypacket = try self.session.getKeyPackage(strKey: self.preAddress.pubKey!)
                 let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                 let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, type: self.sendType, plainText: self.preAddress.plainText, attPackets: attPackages)
                 return addr

@@ -209,13 +209,14 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
             return; //with error
         }
-        PMLog.D(vcard2Str);
-        let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                       plainText: vcard2Str,
-                                                       passphras: sharedUserDataService.mailboxPassword!)
-        
+        PMLog.D(vcard2Str)
+        //TODO:: fix the try?
+        let signed_vcard2 = try? sharedOpenPGP.signTextDetached(vcard2Str,
+                                                                privateKey: userkey.private_key,
+                                                                passphrase: sharedUserDataService.mailboxPassword!,
+                                                                trim: true)
         //card 2 object
-        let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
+        let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2 ?? "")
         
         var isCard3Set : Bool = false
         //
@@ -312,14 +313,16 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         vcard3.setUid(uuid)
         
         let vcard3Str = PMNIEzvcard.write(vcard3)
-        PMLog.D(vcard3Str);
-        let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "", trim: true)
-        PMLog.D(encrypted_vcard3);
-        let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                       plainText: vcard3Str,
-                                                       passphras: sharedUserDataService.mailboxPassword!)
+        PMLog.D(vcard3Str)
+        //TODO:: fix the try!
+        let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.public_key, privateKey: "", mailbox_pwd: "")
+        PMLog.D(encrypted_vcard3 ?? "")
+        let signed_vcard3 = try! sharedOpenPGP.signTextDetached(vcard3Str,
+                                                           privateKey: userkey.private_key,
+                                                           passphrase: sharedUserDataService.mailboxPassword!,
+                                                           trim: true)
         //card 3 object
-        let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
+        let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3 )
         
         var cards : [CardData] = [card2]
         if isCard3Set {

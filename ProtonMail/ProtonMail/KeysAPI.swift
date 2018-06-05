@@ -61,6 +61,9 @@ final class KeysResponse : ApiResponse {
         if let keyRes = response["Keys"] as? [[String : Any]] {
             for keyDict in keyRes {
                 let send = keyDict["Send"] as? Int ?? 0
+                
+                let keyFlags =  keyDict["Flags"] as? Int ?? 0
+                
                 let pubKey = keyDict["PublicKey"] as? String
                 self.keys.append(KeyResponse(send: send, pubkey: pubKey))
             }

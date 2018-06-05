@@ -38,7 +38,7 @@
 		078A3A4C1A7FF4DC002C5FF3 /* MessageDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078A3A4B1A7FF4DC002C5FF3 /* MessageDataService.swift */; };
 		078FF4C21A91032C008321D1 /* OpenPGPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C11A91032C008321D1 /* OpenPGPTests.swift */; };
 		078FF4C51A9106A3008321D1 /* ProtonMail-Bridging-Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */; };
-		078FF4CA1A91232D008321D1 /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
+		078FF4CA1A91232D008321D1 /* OpenPGP+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGP+Extension.swift */; };
 		078FF4D01A92CE15008321D1 /* APIService+SettingsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */; };
 		07A0E1AD1A9D3C64005FD04B /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */; };
 		07B123781AB8CD90006EA38C /* Attachments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B123771AB8CD90006EA38C /* Attachments.storyboard */; };
@@ -85,12 +85,12 @@
 		70B28D0A1A9BA0AC002D9EC8 /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */; };
 		70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */; };
 		70FC90DA1A9BC11F00498B42 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FC90D91A9BC11F00498B42 /* String+Extension.swift */; };
-		7501D285204853D8009689C8 /* VCardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCardExtension.swift */; };
-		7501D286204853D8009689C8 /* VCardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCardExtension.swift */; };
-		7501D287204853D8009689C8 /* VCardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCardExtension.swift */; };
-		7501D288204853D8009689C8 /* VCardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCardExtension.swift */; };
-		7501D28A20485614009689C8 /* VCardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCardExtension.swift */; };
-		7501D28B20485615009689C8 /* VCardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCardExtension.swift */; };
+		7501D285204853D8009689C8 /* VCard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCard+Extension.swift */; };
+		7501D286204853D8009689C8 /* VCard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCard+Extension.swift */; };
+		7501D287204853D8009689C8 /* VCard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCard+Extension.swift */; };
+		7501D288204853D8009689C8 /* VCard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCard+Extension.swift */; };
+		7501D28A20485614009689C8 /* VCard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCard+Extension.swift */; };
+		7501D28B20485615009689C8 /* VCard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501D284204853D8009689C8 /* VCard+Extension.swift */; };
 		750254DA1AB8157800050B12 /* GeneralSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */; };
 		7505C5D3207FDCAC00557FF1 /* MessageDataService+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7505C5D2207FDCAC00557FF1 /* MessageDataService+Builder.swift */; };
 		7505C5D4207FDCAC00557FF1 /* MessageDataService+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7505C5D2207FDCAC00557FF1 /* MessageDataService+Builder.swift */; };
@@ -202,7 +202,7 @@
 		7512AA371F17FF5700D84955 /* NSError+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99631A6F076A000FD6F8 /* NSError+Extension.swift */; };
 		7512AA381F18008800D84955 /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */; };
 		7512AA391F18018500D84955 /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
-		7512AA3A1F1801BC00D84955 /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
+		7512AA3A1F1801BC00D84955 /* OpenPGP+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGP+Extension.swift */; };
 		7512AA3B1F1801EB00D84955 /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */; };
 		7512AA3C1F18020B00D84955 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FC90D91A9BC11F00498B42 /* String+Extension.swift */; };
 		7512AA3D1F18024200D84955 /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9311A71C60900EB0CAF /* UserDataService.swift */; };
@@ -232,7 +232,7 @@
 		7512AA5D1F1807B200D84955 /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */; };
 		7512AA5E1F18081200D84955 /* JKBCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDEF81D9DB374004455F6 /* JKBCrypt.swift */; };
 		7512AA5F1F18083300D84955 /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B9C6071DA2D39A001DE21E /* Hash.swift */; };
-		7512AA601F18084D00D84955 /* SrpClientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */; };
+		7512AA601F18084D00D84955 /* SrpClient+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClient+Extension.swift */; };
 		7512AA621F1808BB00D84955 /* OrganizationsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758DB00D1DDBBCA8007B83D3 /* OrganizationsAPI.swift */; };
 		7512AA631F1808C100D84955 /* KeysAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2202A1DD6728200078D6C /* KeysAPI.swift */; };
 		7512AA641F180B2D00D84955 /* APIService+SettingsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */; };
@@ -262,7 +262,7 @@
 		751CE0261DDFBD0600D5EC66 /* ServerNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */; };
 		751CE0271DDFBD0600D5EC66 /* ServerNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */; };
 		751D49F01BE356180008E75C /* LabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751D49EF1BE356180008E75C /* LabelsView.swift */; };
-		75200C041DB6E3B6007E8A29 /* SrpClientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */; };
+		75200C041DB6E3B6007E8A29 /* SrpClient+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClient+Extension.swift */; };
 		75230C241B9A3A3600EC2AC2 /* MailboxMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */; };
 		75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */; };
 		75230C271B9A430F00EC2AC2 /* TempXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C261B9A430F00EC2AC2 /* TempXIB.xib */; };
@@ -315,8 +315,8 @@
 		75252D121FCF5C23007972EF /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751900731F1D4A5700DB68ED /* KeychainWrapper.swift */; };
 		75252D131FCF5C3B007972EF /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF7F1FA7FE82005F66A3 /* UserDefaults+Extension.swift */; };
 		75252D141FCF5C3C007972EF /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF7F1FA7FE82005F66A3 /* UserDefaults+Extension.swift */; };
-		75252D151FCF5C4A007972EF /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
-		75252D161FCF5C4A007972EF /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
+		75252D151FCF5C4A007972EF /* OpenPGP+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGP+Extension.swift */; };
+		75252D161FCF5C4A007972EF /* OpenPGP+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGP+Extension.swift */; };
 		75252D181FCF5C68007972EF /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */; };
 		75252D191FCF5CCA007972EF /* DataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E220311DDA642500078D6C /* DataService+Error.swift */; };
 		75252D1A1FCF5CCB007972EF /* DataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E220311DDA642500078D6C /* DataService+Error.swift */; };
@@ -341,8 +341,8 @@
 		75252D2D1FCF5E49007972EF /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */; };
 		75252D2E1FCF5E57007972EF /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
 		75252D2F1FCF5E58007972EF /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
-		75252D301FCF5E67007972EF /* SrpClientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */; };
-		75252D311FCF5E68007972EF /* SrpClientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */; };
+		75252D301FCF5E67007972EF /* SrpClient+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClient+Extension.swift */; };
+		75252D311FCF5E68007972EF /* SrpClient+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClient+Extension.swift */; };
 		75252D321FCF5E77007972EF /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */; };
 		75252D331FCF5E78007972EF /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */; };
 		75252D371FCF5EB3007972EF /* ViewModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06C1B334FA400A72A1E /* ViewModelService.swift */; };
@@ -579,8 +579,8 @@
 		75256CAC1F16DFBD00F2771E /* SecureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */; };
 		75256CAD1F16DFBD00F2771E /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */; };
 		75256CAE1F16DFBD00F2771E /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
-		75256CB01F16DFBD00F2771E /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
-		75256CB11F16DFBD00F2771E /* SrpClientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */; };
+		75256CB01F16DFBD00F2771E /* OpenPGP+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGP+Extension.swift */; };
+		75256CB11F16DFBD00F2771E /* SrpClient+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClient+Extension.swift */; };
 		75256CB21F16DFBD00F2771E /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C41A6EE5FF00244532 /* AuthCredential.swift */; };
 		75256CB31F16DFBD00F2771E /* SharedCacheBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */; };
 		75256CB41F16DFBD00F2771E /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */; };
@@ -854,7 +854,7 @@
 		75482B391F7F09E100B0BFFB /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7048B9F21A9E385B00D45F57 /* ContactsTableViewCell.swift */; };
 		75482B3A1F7F09E100B0BFFB /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A61A9815DF00ED130C /* URL+Extension.swift */; };
 		75482B3C1F7F09E100B0BFFB /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */; };
-		75482B3D1F7F09E100B0BFFB /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
+		75482B3D1F7F09E100B0BFFB /* OpenPGP+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGP+Extension.swift */; };
 		75482B3E1F7F09E100B0BFFB /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B9C6071DA2D39A001DE21E /* Hash.swift */; };
 		75482B3F1F7F09E100B0BFFB /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */; };
 		75482B401F7F09E100B0BFFB /* SharedCacheBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */; };
@@ -935,7 +935,7 @@
 		75482B971F7F09E100B0BFFB /* PersistentQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB7FD1A880B1200C5E347 /* PersistentQueue.swift */; };
 		75482B981F7F09E100B0BFFB /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */; };
 		75482B991F7F09E100B0BFFB /* MIMEMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75921C7A1F747BC80028DAC9 /* MIMEMessage.swift */; };
-		75482B9A1F7F09E100B0BFFB /* SrpClientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */; };
+		75482B9A1F7F09E100B0BFFB /* SrpClient+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClient+Extension.swift */; };
 		75482B9B1F7F09E100B0BFFB /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323991A7C02AB0043DB41 /* Message.swift */; };
 		75482B9D1F7F09E100B0BFFB /* ViewDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B0529E1F1FE1FC008E483A /* ViewDefined.swift */; };
 		75482B9E1F7F09E100B0BFFB /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */; };
@@ -1570,7 +1570,7 @@
 		076758791AA126E400F9AC9C /* StorageLimit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = StorageLimit.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		078A3A4B1A7FF4DC002C5FF3 /* MessageDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MessageDataService.swift; sourceTree = "<group>"; wrapsLines = 0; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		078FF4C11A91032C008321D1 /* OpenPGPTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenPGPTests.swift; sourceTree = "<group>"; };
-		078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenPGPExtension.swift; sourceTree = "<group>"; };
+		078FF4C91A91232D008321D1 /* OpenPGP+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OpenPGP+Extension.swift"; sourceTree = "<group>"; };
 		078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "APIService+SettingsExtension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		07B123771AB8CD90006EA38C /* Attachments.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Attachments.storyboard; sourceTree = "<group>"; };
@@ -1642,7 +1642,7 @@
 		70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+ProtonMail.swift"; path = "../ProtonMail/UIColor+ProtonMail.swift"; sourceTree = "<group>"; };
 		70FC90D91A9BC11F00498B42 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		72AC1531F9DC8F37E025D0ED /* Pods-ProtonMailDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.release.xcconfig"; sourceTree = "<group>"; };
-		7501D284204853D8009689C8 /* VCardExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCardExtension.swift; sourceTree = "<group>"; };
+		7501D284204853D8009689C8 /* VCard+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VCard+Extension.swift"; sourceTree = "<group>"; };
 		750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
 		7505C5D2207FDCAC00557FF1 /* MessageDataService+Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageDataService+Builder.swift"; sourceTree = "<group>"; };
 		7505C5D9207FDCDF00557FF1 /* MessageDataService+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageDataService+Error.swift"; sourceTree = "<group>"; };
@@ -1689,7 +1689,7 @@
 		751CDEB61FBB95F6005E3EB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerNotice.swift; sourceTree = "<group>"; };
 		751D49EF1BE356180008E75C /* LabelsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelsView.swift; sourceTree = "<group>"; };
-		75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SrpClientExtension.swift; sourceTree = "<group>"; };
+		75200C031DB6E3B6007E8A29 /* SrpClient+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SrpClient+Extension.swift"; sourceTree = "<group>"; };
 		75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxMessageCell.swift; sourceTree = "<group>"; };
 		75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MailboxMessageCell.xib; sourceTree = "<group>"; };
 		75230C261B9A430F00EC2AC2 /* TempXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TempXIB.xib; sourceTree = "<group>"; };
@@ -2189,10 +2189,10 @@
 			children = (
 				751C5FE81C49C17700949FBF /* SwiftTryCatch.m */,
 				751C5FE91C49C17700949FBF /* SwiftTryCatch.h */,
-				078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */,
-				75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */,
+				078FF4C91A91232D008321D1 /* OpenPGP+Extension.swift */,
+				75200C031DB6E3B6007E8A29 /* SrpClient+Extension.swift */,
 				753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */,
-				7501D284204853D8009689C8 /* VCardExtension.swift */,
+				7501D284204853D8009689C8 /* VCard+Extension.swift */,
 			);
 			name = Encryption;
 			path = ../ProtonMail;
@@ -4174,7 +4174,7 @@
 				071323921A7ADA590043DB41 /* APIService+MessagesExtension.swift in Sources */,
 				7516B1A71F7B6AB500DC5229 /* NSError+Alert+Mail.swift in Sources */,
 				75A84D4C1FF601C700F2A54B /* ContactEditTextViewCell.swift in Sources */,
-				078FF4CA1A91232D008321D1 /* OpenPGPExtension.swift in Sources */,
+				078FF4CA1A91232D008321D1 /* OpenPGP+Extension.swift in Sources */,
 				07CF61941A89895600ED38AE /* Message+Extension.swift in Sources */,
 				756489981B7F2AB3007EA207 /* MailboxViewModel.swift in Sources */,
 				75B9C6081DA2D39A001DE21E /* Hash.swift in Sources */,
@@ -4329,7 +4329,7 @@
 				7512AA351F17FF3300D84955 /* NSError+Alert+Extenion.swift in Sources */,
 				75CFA26F1B223DBB006E4465 /* SharedCacheBase.swift in Sources */,
 				7528FFE01FA7FEC3005F66A3 /* UIView+Extension.swift in Sources */,
-				75200C041DB6E3B6007E8A29 /* SrpClientExtension.swift in Sources */,
+				75200C041DB6E3B6007E8A29 /* SrpClient+Extension.swift in Sources */,
 				75662BA71B543A5B006C538E /* SettingsAPI.swift in Sources */,
 				75252CDF1FCE23BF007972EF /* EventDataService.swift in Sources */,
 				75F161911DCBB7E600912662 /* TwoFACodeViewController.swift in Sources */,
@@ -4422,7 +4422,7 @@
 				7571102F2060699F0093DC57 /* UserAgent.swift in Sources */,
 				755F92171C7E685700BAEDF9 /* OnboardingViewController.swift in Sources */,
 				7528FFD41FA7FEC3005F66A3 /* Array+Extension.swift in Sources */,
-				7501D285204853D8009689C8 /* VCardExtension.swift in Sources */,
+				7501D285204853D8009689C8 /* VCard+Extension.swift in Sources */,
 				073FE01B1A955F4A00825980 /* APIService+ContactExtension.swift in Sources */,
 				75BF267A2093D3FC00BE7574 /* ContactCollectionViewEntryCell.swift in Sources */,
 				75A84D4F1FF7569500F2A54B /* ContactFieldType.swift in Sources */,
@@ -4534,7 +4534,7 @@
 				75D0D87F20734859004AE43D /* ViewModelProtocolNew.swift in Sources */,
 				75252D261FCF5DC0007972EF /* UserAPI.swift in Sources */,
 				75252CF51FCF5ABC007972EF /* APIService+DefinedExtension.swift in Sources */,
-				7501D28B20485615009689C8 /* VCardExtension.swift in Sources */,
+				7501D28B20485615009689C8 /* VCard+Extension.swift in Sources */,
 				75252D431FCF5F2D007972EF /* ContactEditVIewModel.swift in Sources */,
 				75252DA81FCF69FF007972EF /* EmailExtension.swift in Sources */,
 				75252CF11FCF5A94007972EF /* String+Extension.swift in Sources */,
@@ -4583,7 +4583,7 @@
 				75252CEC1FCF5A61007972EF /* NSCoder+Extension.swift in Sources */,
 				75252D9F1FCF695C007972EF /* EventAPI.swift in Sources */,
 				75252CE81FCF5A43007972EF /* APIService.swift in Sources */,
-				75252D151FCF5C4A007972EF /* OpenPGPExtension.swift in Sources */,
+				75252D151FCF5C4A007972EF /* OpenPGP+Extension.swift in Sources */,
 				75252CF61FCF5ACB007972EF /* Message.swift in Sources */,
 				75252D6A1FCF6190007972EF /* OrganizationsAPI.swift in Sources */,
 				75252DA51FCF69B2007972EF /* Settings+Defined.swift in Sources */,
@@ -4622,7 +4622,7 @@
 				7505C5ED207FE0C000557FF1 /* MessageAPI+Packages.swift in Sources */,
 				75252DB81FCF6AFC007972EF /* AttachmentAPI.swift in Sources */,
 				75D0D88720734939004AE43D /* ViewModelProtocol.swift in Sources */,
-				75252D301FCF5E67007972EF /* SrpClientExtension.swift in Sources */,
+				75252D301FCF5E67007972EF /* SrpClient+Extension.swift in Sources */,
 				7505C5D8207FDCAC00557FF1 /* MessageDataService+Builder.swift in Sources */,
 				75252DAB1FCF6A2C007972EF /* AddressBookService.swift in Sources */,
 				75252DB41FCF6ABF007972EF /* MonitorSavesDataService+Extension.swift in Sources */,
@@ -4714,7 +4714,7 @@
 				7505C5DC207FDCDF00557FF1 /* MessageDataService+Error.swift in Sources */,
 				75252D071FCF5B65007972EF /* MessageAction.swift in Sources */,
 				75252D4E1FCF5FAE007972EF /* SettingsAPI.swift in Sources */,
-				7501D28A20485614009689C8 /* VCardExtension.swift in Sources */,
+				7501D28A20485614009689C8 /* VCard+Extension.swift in Sources */,
 				75252D841FCF6347007972EF /* Date+Extension.swift in Sources */,
 				75252D511FCF5FE9007972EF /* Message+Extension.swift in Sources */,
 				7543B5AD2087F738000BEA72 /* Localization+Constants.swift in Sources */,
@@ -4745,7 +4745,7 @@
 				75252D531FCF601B007972EF /* MIMEMessage.swift in Sources */,
 				75252DA71FCF69CC007972EF /* ContactExtension.swift in Sources */,
 				75252DB11FCF6A90007972EF /* UIApplication+BadgeNumber+Share.swift in Sources */,
-				75252D311FCF5E68007972EF /* SrpClientExtension.swift in Sources */,
+				75252D311FCF5E68007972EF /* SrpClient+Extension.swift in Sources */,
 				75252D5F1FCF60B4007972EF /* MessageDataService.swift in Sources */,
 				754F0EAE2097B95600A5DDB6 /* ContactVO.swift in Sources */,
 				75D0D8852073490A004AE43D /* ViewModelServiceImpl+Share.swift in Sources */,
@@ -4768,7 +4768,7 @@
 				75252D641FCF6100007972EF /* MessageHelper.swift in Sources */,
 				75252DBD1FCF6D20007972EF /* Reachability.m in Sources */,
 				75252D551FCF602B007972EF /* Part.swift in Sources */,
-				75252D161FCF5C4A007972EF /* OpenPGPExtension.swift in Sources */,
+				75252D161FCF5C4A007972EF /* OpenPGP+Extension.swift in Sources */,
 				7505C5D5207FDCAC00557FF1 /* MessageDataService+Builder.swift in Sources */,
 				75252DAA1FCF6A2B007972EF /* AddressBookService.swift in Sources */,
 				75A84D541FF758DE00F2A54B /* ContactFieldType.swift in Sources */,
@@ -4794,7 +4794,7 @@
 				75482B391F7F09E100B0BFFB /* ContactsTableViewCell.swift in Sources */,
 				75482B3A1F7F09E100B0BFFB /* URL+Extension.swift in Sources */,
 				75482B3C1F7F09E100B0BFFB /* APIService+ResponseTransformer.swift in Sources */,
-				75482B3D1F7F09E100B0BFFB /* OpenPGPExtension.swift in Sources */,
+				75482B3D1F7F09E100B0BFFB /* OpenPGP+Extension.swift in Sources */,
 				75873DF020B1F3B000012E28 /* Message+Header+Extension.swift in Sources */,
 				75482B3E1F7F09E100B0BFFB /* Hash.swift in Sources */,
 				750AAEB31FA91E2200CBFCA3 /* ContactSectionHeadView.swift in Sources */,
@@ -4887,7 +4887,7 @@
 				75482B881F7F09E100B0BFFB /* MailboxViewModel.swift in Sources */,
 				750AAEB81FA91EE200CBFCA3 /* ContactEditVIewModel.swift in Sources */,
 				7543B5AC2087F738000BEA72 /* Localization+Constants.swift in Sources */,
-				7501D286204853D8009689C8 /* VCardExtension.swift in Sources */,
+				7501D286204853D8009689C8 /* VCard+Extension.swift in Sources */,
 				752800321FA800B4005F66A3 /* ContactsAPI.swift in Sources */,
 				752800301FA8008A005F66A3 /* Dictionary+Extension.swift in Sources */,
 				75482B8A1F7F09E100B0BFFB /* LabelAPI.swift in Sources */,
@@ -4907,7 +4907,7 @@
 				75482B981F7F09E100B0BFFB /* PMDocumentPickerViewController.swift in Sources */,
 				75F29E2820571E5400C70AD2 /* WebViewController.swift in Sources */,
 				75482B991F7F09E100B0BFFB /* MIMEMessage.swift in Sources */,
-				75482B9A1F7F09E100B0BFFB /* SrpClientExtension.swift in Sources */,
+				75482B9A1F7F09E100B0BFFB /* SrpClient+Extension.swift in Sources */,
 				75F29E1A2057195F00C70AD2 /* ViewModelProtocol.swift in Sources */,
 				75482B9B1F7F09E100B0BFFB /* Message.swift in Sources */,
 				75482B9D1F7F09E100B0BFFB /* ViewDefined.swift in Sources */,
@@ -4973,7 +4973,7 @@
 				7528001F1FA7FFDD005F66A3 /* NotificationCenter+KeyboardExtension.swift in Sources */,
 				75873DF320B1F3B000012E28 /* Message+Header+Extension.swift in Sources */,
 				7512AA2D1F17FE5100D84955 /* APIService+ResponseTransformer.swift in Sources */,
-				7512AA3A1F1801BC00D84955 /* OpenPGPExtension.swift in Sources */,
+				7512AA3A1F1801BC00D84955 /* OpenPGP+Extension.swift in Sources */,
 				7512AA5F1F18083300D84955 /* Hash.swift in Sources */,
 				752800331FA800C8005F66A3 /* Data+Extension.swift in Sources */,
 				753E5ACC1F1820E80090C0F9 /* NSBundle+Language.m in Sources */,
@@ -5061,7 +5061,7 @@
 				75BF26872093D4AA00BE7574 /* ContactCollectionViewPromptCell.swift in Sources */,
 				753E5ABF1F181C6A0090C0F9 /* MailboxViewModel.swift in Sources */,
 				750AAEB71FA91EE200CBFCA3 /* ContactEditVIewModel.swift in Sources */,
-				7501D288204853D8009689C8 /* VCardExtension.swift in Sources */,
+				7501D288204853D8009689C8 /* VCard+Extension.swift in Sources */,
 				7543B5AF2087F738000BEA72 /* Localization+Constants.swift in Sources */,
 				753E5AC51F181E500090C0F9 /* LabelAPI.swift in Sources */,
 				7512AA291F17FDAA00D84955 /* ContactDataService.swift in Sources */,
@@ -5082,7 +5082,7 @@
 				75C7FF361F2FB3FF00F15792 /* PMDocumentPickerViewController.swift in Sources */,
 				75921C961F747E270028DAC9 /* MIMEMessage.swift in Sources */,
 				75F29E2720571E5300C70AD2 /* WebViewController.swift in Sources */,
-				7512AA601F18084D00D84955 /* SrpClientExtension.swift in Sources */,
+				7512AA601F18084D00D84955 /* SrpClient+Extension.swift in Sources */,
 				752800231FA80004005F66A3 /* ContactVO+Extension.swift in Sources */,
 				7512AA041F17EAAE00D84955 /* Message.swift in Sources */,
 				75B052A11F1FE1FC008E483A /* ViewDefined.swift in Sources */,
@@ -5299,8 +5299,8 @@
 				7528000A1FA7FEF6005F66A3 /* Email.swift in Sources */,
 				75256CAE1F16DFBD00F2771E /* SwiftTryCatch.m in Sources */,
 				752800191FA7FEF6005F66A3 /* UIImage+Extension.swift in Sources */,
-				75256CB01F16DFBD00F2771E /* OpenPGPExtension.swift in Sources */,
-				75256CB11F16DFBD00F2771E /* SrpClientExtension.swift in Sources */,
+				75256CB01F16DFBD00F2771E /* OpenPGP+Extension.swift in Sources */,
+				75256CB11F16DFBD00F2771E /* SrpClient+Extension.swift in Sources */,
 				7528FFE61FA7FEF6005F66A3 /* Array+Extension.swift in Sources */,
 				752800111FA7FEF6005F66A3 /* NSString+Extension.swift in Sources */,
 				75BF266A20928ECD00BE7574 /* ContactModel.swift in Sources */,
@@ -5419,7 +5419,7 @@
 				757110312060699F0093DC57 /* UserAgent.swift in Sources */,
 				75DE7D2C1CAAEA4900F5443E /* FeedbackTableViewCell.swift in Sources */,
 				75DE7D2F1CAAEA4900F5443E /* MenuItem.swift in Sources */,
-				7501D287204853D8009689C8 /* VCardExtension.swift in Sources */,
+				7501D287204853D8009689C8 /* VCard+Extension.swift in Sources */,
 				75DE7D301CAAEA4900F5443E /* SettingsViewController.swift in Sources */,
 				75BF267C2093D3FC00BE7574 /* ContactCollectionViewEntryCell.swift in Sources */,
 				75A84D501FF7569600F2A54B /* ContactFieldType.swift in Sources */,

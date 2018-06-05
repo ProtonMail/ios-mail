@@ -86,16 +86,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     break
                 case .SignAndEncrypt:
                     var pt_contact : String?
-                    if let userkeys = sharedUserDataService.userInfo?.userKeys {
-                        for key in userkeys {
-                            do {
-                                if c.data.findKeyID(key.private_key) {
-                                    pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
-                                    break
-                                }
-                            } catch {
-                            }
-                        }
+                    do {
+                        pt_contact = try c.data.decryptMessage(binKeys: sharedUserDataService.userPrivKeys, passphrase: sharedUserDataService.mailboxPassword!)
+                    } catch {
                     }
                     
                     guard let pt_contact_vcard = pt_contact else {
@@ -463,11 +456,17 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 // add others later
                 let vcard2Str = PMNIEzvcard.write(vcard2)
-                let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key, plainText: vcard2Str, passphras: sharedUserDataService.mailboxPassword!)
+                //TODO:: fix try later
+                let signed_vcard2 = try? sharedOpenPGP.signTextDetached(vcard2Str,
+                                                                   privateKey: userkey.private_key,
+                                                                   passphrase: sharedUserDataService.mailboxPassword!,
+                                                                   trim: true)
                 
                 //card 2 object
-                let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
-                
+                let card2 = CardData(t: .SignedOnly,
+                                     d: vcard2Str,
+                                     s: signed_vcard2 ?? "")
+
                 cards.append(card2)
             }
           
@@ -591,13 +590,16 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 let vcard3Str = PMNIEzvcard.write(vcard3)
                 PMLog.D(vcard3Str);
-                let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "", trim: true)
-                PMLog.D(encrypted_vcard3);
-                let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                               plainText: vcard3Str,
-                                                               passphras: sharedUserDataService.mailboxPassword!)
+                //TODO:: fix the try! later
+                let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.public_key,
+                                                              privateKey: "",
+                                                              mailbox_pwd: "")
+                let signed_vcard3 = try! sharedOpenPGP.signTextDetached(vcard3Str,
+                                                                        privateKey: userkey.private_key,
+                                                                        passphrase: sharedUserDataService.mailboxPassword!,
+                                                                        trim: true)
                 //card 3 object
-                let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
+                let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3!, s: signed_vcard3)
                 if isCard3Set {
                     cards.append(card3)
                 }

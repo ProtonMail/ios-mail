@@ -139,6 +139,7 @@ final class Key : NSObject {
     var private_key : String
     var fingerprint : String
     var is_updated : Bool = false
+    var keyflags : Int = 0
     
     required init(key_id: String?, public_key: String?, private_key: String?, fingerprint : String?, isupdated: Bool) {
         self.key_id = key_id ?? ""
@@ -148,7 +149,6 @@ final class Key : NSObject {
         self.is_updated = isupdated
     }
 }
-
 
 extension UserInfo {
     /// Initializes the UserInfo with the response data
@@ -392,63 +392,63 @@ extension Key: NSCoding {
     }
 }
 
-extension Address {
-    func toPMNAddress() -> PMNAddress! {
-        return PMNAddress(addressId: self.address_id, addressName: self.email, keys: self.keys.toPMNPgpKeys())
-    }
-}
+//extension Address {
+//    func toPMNAddress() -> PMNAddress! {
+//        return PMNAddress(addressId: self.address_id, addressName: self.email, keys: self.keys.toPMNPgpKeys())
+//    }
+//}
+//
+//extension Key {
+//    func toPMNPgpKey<T : PMNOpenPgpKey>() -> T {
+//        return T(keyId: key_id, publicKey: public_key, privateKey: private_key, fingerPrint: fingerprint, isUpdated: is_updated)
+//    }
+//}
 
-extension Key {
-    func toPMNPgpKey<T : PMNOpenPgpKey>() -> T {
-        return T(keyId: key_id, publicKey: public_key, privateKey: private_key, fingerPrint: fingerprint, isUpdated: is_updated)
-    }
-}
+//extension PMNOpenPgpKey {
+//    func toKey<T : Key>() -> T {
+//        return T(key_id: keyId, public_key: publicKey, private_key: privateKey, fingerprint : fingerPrint, isupdated: isUpdated)
+//    }
+//}
 
-extension PMNOpenPgpKey {
-    func toKey<T : Key>() -> T {
-        return T(key_id: keyId, public_key: publicKey, private_key: privateKey, fingerprint : fingerPrint, isupdated: isUpdated)
-    }
-}
+//extension Array where Element : Key {
+//    func toPMNPgpKeys() -> [PMNOpenPgpKey] {
+//        var out_array = [PMNOpenPgpKey]()
+//        for i in 0 ..< self.count {
+//            let addr = self[i]
+//            out_array.append(addr.toPMNPgpKey())
+//        }
+//        return out_array;
+//    }
+//    
+//    var first : Key? {
+//        guard self.count > 0 else {
+//            return nil
+//        }
+//        return self[0]
+//    }
+//}
 
-extension Array where Element : Key {
-    func toPMNPgpKeys() -> [PMNOpenPgpKey] {
-        var out_array = [PMNOpenPgpKey]()
-        for i in 0 ..< self.count {
-            let addr = self[i]
-            out_array.append(addr.toPMNPgpKey())
-        }
-        return out_array;
-    }
-    
-    var first : Key? {
-        guard self.count > 0 else {
-            return nil
-        }
-        return self[0]
-    }
-}
-
-extension Array where Element : PMNOpenPgpKey {
-    func toKeys() -> [Key] {
-        var out_array = [Key]()
-        for i in 0 ..< self.count {
-            let addr = self[i]
-            out_array.append(addr.toKey())
-        }
-        return out_array;
-    }
-}
+//extension Array where Element : PMNOpenPgpKey {
+//    func toKeys() -> [Key] {
+//        var out_array = [Key]()
+//        for i in 0 ..< self.count {
+//            let addr = self[i]
+//            out_array.append(addr.toKey())
+//        }
+//        return out_array;
+//    }
+//}
 
 extension Array where Element : Address {
 
-    func toPMNAddresses() -> [PMNAddress] {
-        var out_array = [PMNAddress]()
-        for i in 0 ..< self.count {
-            let addr = self[i]
-            out_array.append(addr.toPMNAddress())
-        }
-        return out_array;
-    }
+//    func toPMNAddresses() -> [PMNAddress] {
+//        var out_array = [PMNAddress]()
+//        for i in 0 ..< self.count {
+//            let addr = self[i]
+//            out_array.append(addr.toPMNAddress())
+//        }
+//        return out_array;
+//    }
     
     func defaultAddress() -> Address? {
         for addr in self {
