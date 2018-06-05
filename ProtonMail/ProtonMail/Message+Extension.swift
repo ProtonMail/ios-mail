@@ -429,7 +429,13 @@ extension Message {
         if address_id.isEmpty {
             return
         }
-        self.body = try! body.encrypt(withAddr: address_id, mailbox_pwd: mailbox_pwd) ?? ""
+        
+        do {
+            self.body = try body.encrypt(withAddr: address_id, mailbox_pwd: mailbox_pwd) ?? ""
+        } catch {//TODO:: error handling
+            self.body = ""
+        }
+        
     }
     
     func checkIsEncrypted() -> Bool! {

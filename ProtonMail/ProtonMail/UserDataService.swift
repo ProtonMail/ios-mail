@@ -202,8 +202,8 @@ class UserDataService {
     }
     
     func get_address_pub_key(address_id : String) -> String {
-    
-        return ""
+        let addr = userAddresses.indexOfAddress(address_id) ?? userAddresses.defaultSendAddress()
+        return addr?.keys.first?.public_key ?? ""
     }
     
     var addressPrivKeys : Data {

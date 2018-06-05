@@ -354,6 +354,19 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     
     internal func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
+            
+            
+            let alertController = UIAlertController(title: LocalString._composer_compose_action,
+                                                    message: LocalString._composer_send_no_subject_desc,
+                                                    preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: LocalString._general_send_action,
+                                                    style: .destructive, handler: { (action) -> Void in
+            }))
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+            present(alertController, animated: true, completion: nil)
+            
+            
+            
             if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
                 let emails = self.composeView.allEmails
                 //show loading

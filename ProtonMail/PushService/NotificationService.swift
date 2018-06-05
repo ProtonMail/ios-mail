@@ -21,7 +21,7 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-            sharedUserDataService = UserDataService()
+            sharedUserDataService = UserDataService(check: false)
             if sharedUserDataService.isUserCredentialStored {
                 if let encrypted = bestAttemptContent.userInfo["encryptedMessage"] as? String {
                     bestAttemptContent.body = encrypted

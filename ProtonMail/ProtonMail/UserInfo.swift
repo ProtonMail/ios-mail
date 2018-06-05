@@ -417,7 +417,7 @@ extension Key: NSCoding {
 //            let addr = self[i]
 //            out_array.append(addr.toPMNPgpKey())
 //        }
-//        return out_array;
+//        return out_array
 //    }
 //    
 //    var first : Key? {
@@ -435,7 +435,7 @@ extension Key: NSCoding {
 //            let addr = self[i]
 //            out_array.append(addr.toKey())
 //        }
-//        return out_array;
+//        return out_array
 //    }
 //}
 
@@ -447,44 +447,44 @@ extension Array where Element : Address {
 //            let addr = self[i]
 //            out_array.append(addr.toPMNAddress())
 //        }
-//        return out_array;
+//        return out_array
 //    }
     
     func defaultAddress() -> Address? {
         for addr in self {
             if addr.status == 1 && addr.receive == 1 {
-                return addr;
+                return addr
             }
         }
-        return nil;
+        return nil
     }
     
     func defaultSendAddress() -> Address? {
         for addr in self {
             if addr.status == 1 && addr.receive == 1 && addr.send == 1{
-                return addr;
+                return addr
             }
         }
-        return nil;
+        return nil
     }
     
     func indexOfAddress(_ addressid : String) -> Address? {
         for addr in self {
             if addr.status == 1 && addr.receive == 1 && addr.address_id == addressid {
-                return addr;
+                return addr
             }
         }
-        return nil;
+        return nil
     }
     
     func getAddressOrder() -> [String] {
         let ids = self.map { $0.address_id }
-        return ids;
+        return ids
     }
     
     func getAddressNewOrder() -> [Int] {
         let ids = self.map { $0.order }
-        return ids;
+        return ids
     }
     
     func toKeys() -> [Key] {
