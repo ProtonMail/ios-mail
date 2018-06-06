@@ -119,6 +119,34 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             }
         }
     }
+    
+    
+    var hasPGPPined : Bool {
+        get {
+            switch self.pgpType {
+            case .pgp_encrypt_trusted_key,
+                 .pgp_encrypted,
+                 .eo,
+                 .pgp_encrypt_trusted_key_verify_failed:
+                return true
+            default:
+                return false
+            }
+        }
+    }
+    var hasNonePM : Bool {
+        get {
+            switch self.pgpType {
+            case .internal_normal,
+                 .internal_trusted_key,
+                 .internal_normal_verify_failed,
+                 .internal_trusted_key_verify_failed:
+                return false
+            default:
+                return true
+            }
+        }
+    }
 
     var composerNotes: String {
         get {

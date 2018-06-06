@@ -11,6 +11,10 @@ import ZSSRichTextEditor
 import PromiseKit
 import AwaitKit
 
+
+fileprivate let learnMoreUrl = URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
+
+
 class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     // view model
     fileprivate var viewModel : ComposeViewModel!
@@ -355,34 +359,37 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     internal func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
             
-            
-            let alertController = UIAlertController(title: LocalString._composer_compose_action,
-                                                    message: LocalString._composer_send_no_subject_desc,
-                                                    preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: LocalString._general_send_action,
-                                                    style: .destructive, handler: { (action) -> Void in
-            }))
-            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            present(alertController, animated: true, completion: nil)
-            
-            
-            
-            if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
-                let emails = self.composeView.allEmails
-                //show loading
-                ActivityIndicatorHelper.showActivityIndicator(at: view)
-                let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
-                api.call({ (task, response: EmailsCheckResponse?, hasError : Bool) in
-                    //hide loading
-                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-                    if let res = response, res.hasOutsideEmails == false {
-                        self.sendMessageStepTwo()
-                    } else {
-                        self.composeView.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_pls_set_password)
-                    }
-                })
+            if self.composeView.hasPGPPinned || (self.composeView.hasNonePMEmails && self.encryptionPassword.count <= 0 ) {
+                let alertController = UIAlertController(title: LocalString._composer_compose_action,
+                                                        message: "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.",
+                                                        preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: LocalString._general_send_action,
+                                                        style: .destructive, handler: { (action) -> Void in
+                                                            self.sendMessageStepTwo()
+                }))
+                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: "Learn more", style: .default, handler: { (action) in
+                    UIApplication.shared.openURL(learnMoreUrl)
+                }))
+                present(alertController, animated: true, completion: nil)
                 return
             }
+//            if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
+//                let emails = self.composeView.allEmails
+//                //show loading
+//                ActivityIndicatorHelper.showActivityIndicator(at: view)
+//                let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
+//                api.call({ (task, response: EmailsCheckResponse?, hasError : Bool) in
+//                    //hide loading
+//                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+//                    if let res = response, res.hasOutsideEmails == false {
+//                        self.sendMessageStepTwo()
+//                    } else {
+//                        self.composeView.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_pls_set_password)
+//                    }
+//                })
+//                return
+//            }
         }
         delay(0.3) {
             self.sendMessageStepTwo()

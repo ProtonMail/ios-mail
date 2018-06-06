@@ -211,7 +211,7 @@ extension String {
     }
     
     func encrypt(withAddr address_id: String, mailbox_pwd: String) throws -> String? {
-        let privateKey = sharedUserDataService.get_address_pub_key(address_id: address_id)
+        let privateKey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
         return try sharedOpenPGP.encryptMessage(self, publicKey: privateKey, privateKey: privateKey, passphrase: mailbox_pwd, trim: true)
     }
 
@@ -244,7 +244,7 @@ extension Data {
     }
     
     func encryptAttachment(_ address_id: String, fileName:String, mailbox_pwd: String) throws -> PmEncryptedSplit? {
-        let pubkey = sharedUserDataService.get_address_pub_key(address_id: address_id)
+        let pubkey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
         return try sharedOpenPGP.encryptAttachment(self, fileName: fileName, publicKey: pubkey)
     }
     //
@@ -260,10 +260,8 @@ extension Data {
     //key packet part
     func getSessionFromPubKeyPackage(_ passphrase: String) throws -> PmSessionSplit? {
         var error : NSError?
-
         let privKeys = sharedUserDataService.addressPrivKeys
         let out = PmGetSessionFromKeyPacketBinkeys(self, privKeys, passphrase, &error)
-        
         if let err = error {
             throw err
         }

@@ -432,7 +432,8 @@ extension Message {
         
         do {
             self.body = try body.encrypt(withAddr: address_id, mailbox_pwd: mailbox_pwd) ?? ""
-        } catch {//TODO:: error handling
+        } catch let error {//TODO:: error handling
+            PMLog.D(any: error.localizedDescription)
             self.body = ""
         }
         

@@ -201,9 +201,9 @@ class UserDataService {
         return nil
     }
     
-    func get_address_pub_key(address_id : String) -> String {
+    func getAddressPrivKey(address_id : String) -> String {
         let addr = userAddresses.indexOfAddress(address_id) ?? userAddresses.defaultSendAddress()
-        return addr?.keys.first?.public_key ?? ""
+        return addr?.keys.first?.private_key ?? ""
     }
     
     var addressPrivKeys : Data {
@@ -211,8 +211,8 @@ class UserDataService {
         var error : NSError?
         for addr in userAddresses {
             for key in addr.keys {
-                if let pubK = PmPublicKeyBinOut(key.private_key, &error) {
-                    out.append(pubK)
+                if let privK = PmUnArmor(key.private_key, &error) {
+                    out.append(privK)
                 }
             }
         }
@@ -224,8 +224,8 @@ class UserDataService {
         var error : NSError?
         for addr in userAddresses {
             for key in addr.keys {
-                if let pubK = PmPublicKeyBinOut(key.private_key, &error) {
-                    out.append(pubK)
+                if let privK = PmUnArmor(key.private_key, &error) {
+                    out.append(privK)
                 }
             }
         }

@@ -62,6 +62,45 @@ class ComposeView: UIViewController {
         return false
     }
     
+    var hasNonePMEmails : Bool {
+        let toHas = toContactPicker.hasNonePM
+        if (toHas) {
+            return true;
+        }
+        
+        let ccHas = ccContactPicker.hasNonePM
+        if (ccHas) {
+            return true;
+        }
+        
+        let bccHas = bccContactPicker.hasNonePM
+        if (bccHas) {
+            return true;
+        }
+        
+        return false
+    }
+
+    var hasPGPPinned : Bool {
+        let toHas = toContactPicker.hasPGPPinned
+        if (toHas) {
+            return true;
+        }
+        
+        let ccHas = ccContactPicker.hasPGPPinned
+        if (ccHas) {
+            return true;
+        }
+        
+        let bccHas = bccContactPicker.hasPGPPinned
+        if (bccHas) {
+            return true;
+        }
+        
+        return false
+    }
+    
+    
     var allEmails : String {  // email,email,email
         var emails : [String] = []
         
@@ -735,6 +774,24 @@ extension ContactPicker {
                 if contact.lowercased().range(of: "@protonmail.ch") == nil && contact.lowercased().range(of: "@protonmail.com") == nil && contact.lowercased().range(of: "@pm.me") == nil {
                     return true
                 }
+            }
+        }
+        return false
+    }
+    
+    var hasPGPPinned : Bool {
+        for contact in self.contactsSelected {
+            if contact.hasPGPPined {
+                return true
+            }
+        }
+        return false
+    }
+    
+    var hasNonePM : Bool {
+        for contact in self.contactsSelected {
+            if contact.hasNonePM {
+                return true
             }
         }
         return false
