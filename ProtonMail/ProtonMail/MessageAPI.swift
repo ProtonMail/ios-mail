@@ -136,12 +136,19 @@ class CreateDraft : ApiRequest<MessageResponse> {
     }
     
     override func toDictionary() -> [String : Any]? {
-        let address_id : String                 = message.getAddressID
         var messsageDict : [String : Any] = [
-            "AddressID" : address_id,
             "Body" : message.body,
             "Subject" : message.title,
             "IsRead" : message.isRead]
+        
+        let fromaddr = message.fromAddress ?? message.defaultAddress
+        let name = fromaddr?.display_name ?? "unknow"
+        let address = fromaddr?.email ?? "unknow"
+        
+        messsageDict["Sender"] = [
+            "Name": name,
+            "Address": address
+        ]
         
         messsageDict["ToList"]  = message.recipientList.parseJson()
         messsageDict["CCList"]  = message.ccList.parseJson()
