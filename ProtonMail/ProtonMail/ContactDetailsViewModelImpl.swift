@@ -166,13 +166,12 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
             case .SignedOnly:
                 if let userkeys = sharedUserDataService.userInfo?.userKeys {
                     for key in userkeys {
-                        //self.verifyType2 = sharedOpenPGP.signVerify(detached: c.sign, publicKey: key.public_key, plainText: c.data)
                         do {
                             var ok = ObjCBool(false)
-                            let isfine = try sharedOpenPGP.verifyTextSignDetached(c.sign,
-                                                                                  plainText: c.data,
-                                                                                  publicKey: key.public_key,
-                                                                                  verifyTime: 0, ret0_: &ok)
+                            let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
+                                                                             plainText: c.data,
+                                                                             publicKey: key.public_key,
+                                                                             verifyTime: 0, ret0_: &ok)
                             self.verifyType2 = ok.boolValue
                             if self.verifyType2 {
                                 if !PmCheckPassphrase(key.private_key, sharedUserDataService.mailboxPassword!) {
@@ -201,18 +200,21 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 break
             case .SignAndEncrypt:
                 guard let firstUserkey = sharedUserDataService.userInfo?.firstUserKey() else {
-                    return;
+                    return
                 }
                 var pt_contact : String?
                 var signKey : Key?
-                
-                let keys = sharedUserDataService.userPrivKeys
-                do {
-                    pt_contact = try c.data.decryptMessage(binKeys: keys, passphrase: sharedUserDataService.mailboxPassword!)
-                    //signKey = key
-                    self.decryptError = false
-                } catch {
-                    self.decryptError = true
+                if let userkeys = sharedUserDataService.userInfo?.userKeys {
+                    for key in userkeys {
+                        do {
+                            pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
+                            signKey = key
+                            self.decryptError = false
+                            break
+                        } catch {
+                            self.decryptError = true
+                        }
+                    }
                 }
                 
                 let key = signKey ?? firstUserkey
@@ -220,16 +222,18 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     break
                 }
                 
-//                self.verifyType3 = sharedOpenPGP.signDetachedVerifySinglePubKey(key.public_key, signature: c.sign, plainText: pt_contact_vcard)
+                do {
+                    var ok = ObjCBool(false)
+                    let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
+                                                                      plainText: pt_contact_vcard,
+                                                                      publicKey: key.public_key,
+                                                                      verifyTime: 0,
+                                                                      ret0_: &ok)
+                    self.verifyType3 = ok.boolValue
+                } catch {
+                    self.verifyType3 = false
+                }
                 
-                var ok = ObjCBool(false)
-                let isfine = try? sharedOpenPGP.verifyTextSignDetachedBinKey(c.sign,
-                                                                            plainText: pt_contact_vcard,
-                                                                            publicKey: keys,
-                                                                            verifyTime: 0,
-                                                                            ret0_: &ok)
-//                self.verifyType3 = sharedOpenPGP.signDetachedVerifySinglePubKey(key.public_key, signature: c.sign, plainText: pt_contact_vcard)
-                self.verifyType3 = ok.boolValue
                 if let vcard = PMNIEzvcard.parseFirst(pt_contact_vcard) {
                     let types = vcard.getPropertyTypes()
                     for type in types {
@@ -318,38 +322,38 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             //case "Impp":
                             
                             //"Key":
-                            //"KindScribe());
-                            //"LabelScribe());
-                            //"LanguageScribe());
-                            //"LogoScribe());
-                            //"MailerScribe());
-                            //"MemberScribe());
-                            //"NicknameScribe());
-                            //"NoteScribe());
-                            //"OrganizationScribe());
-                            //"PhotoScribe());
-                            //"ProductIdScribe());
-                            //"ProfileScribe());
-                            //"RelatedScribe());
-                            //"RevisionScribe());
-                            //"RoleScribe());
-                            //"SortStringScribe());
-                            //"SoundScribe());
-                            //"SourceDisplayTextScribe());
-                            //"SourceScribe());
-                            //"StructuredNameScribe());
-                            //"TelephoneScribe());
-                            //"TimezoneScribe());
-                            //"TitleScribe());
-                            //"UidScribe());
-                            //"UrlScribe());
-                            //"BirthplaceScribe());
-                            //"DeathdateScribe());
-                            //"DeathplaceScribe());
-                            //"ExpertiseScribe());
-                            //"OrgDirectoryScribe());
-                            //"InterestScribe());
-                            //"HobbyScribe());
+                            //"KindScribe())
+                            //"LabelScribe())
+                            //"LanguageScribe())
+                            //"LogoScribe())
+                            //"MailerScribe())
+                            //"MemberScribe())
+                            //"NicknameScribe())
+                            //"NoteScribe())
+                            //"OrganizationScribe())
+                            //"PhotoScribe())
+                            //"ProductIdScribe())
+                            //"ProfileScribe())
+                            //"RelatedScribe())
+                            //"RevisionScribe())
+                            //"RoleScribe())
+                            //"SortStringScribe())
+                            //"SoundScribe())
+                            //"SourceDisplayTextScribe())
+                            //"SourceScribe())
+                            //"StructuredNameScribe())
+                            //"TelephoneScribe())
+                            //"TimezoneScribe())
+                            //"TitleScribe())
+                            //"UidScribe())
+                            //"UrlScribe())
+                            //"BirthplaceScribe())
+                            //"DeathdateScribe())
+                            //"DeathplaceScribe())
+                            //"ExpertiseScribe())
+                            //"OrgDirectoryScribe())
+                            //"InterestScribe())
+                            //"HobbyScribe())
                         default:
                             break
                         }
@@ -439,14 +443,11 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 var pt_contact : String?
                 if let userkeys = sharedUserDataService.userInfo?.userKeys {
                     for key in userkeys {
-                        //TODO::fix later
-//                        do {
-//                            if c.data.findKeyID(key.private_key) {
-//                                pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
-//                                break
-//                            }
-//                        } catch {
-//                        }
+                        do {
+                            pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
+                            break
+                        } catch {
+                        }
                     }
                 }
                 

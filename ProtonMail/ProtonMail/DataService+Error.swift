@@ -78,7 +78,7 @@ enum UpdatePasswordError : Int, Error, CustomErrorVar {
     }
     
     var desc : String {
-        return LocalString._change_password //TODO:: check with jason for localization
+        return LocalString._change_password
     }
     
     var reason : String {

@@ -31,6 +31,85 @@ extension PmOpenPGP {
         }
         return out
     }
+    
+    class func updateKeysPassword(_ old_keys : [Key], old_pass: String, new_pass: String ) throws -> [Key] {
+        var outKeys : [Key] = [Key]()
+        for okey in old_keys {
+            let new_private_key = try sharedOpenPGP.updatePrivateKeyPassphrase(okey.private_key, oldPassphrase: old_pass, newPassphrase: new_pass)
+            let newK = Key(key_id: okey.key_id , public_key: okey.public_key, private_key: new_private_key, fingerprint: okey.fingerprint, isupdated: true)
+            outKeys.append(newK)
+        }
+        
+        guard outKeys.count == old_keys.count else {
+            throw UpdatePasswordError.keyUpdateFailed.error
+        }
+        
+        guard outKeys.count > 0 && outKeys[0].is_updated == true else {
+            throw UpdatePasswordError.keyUpdateFailed.error
+        }
+        
+        for u_k in outKeys {
+            if u_k.is_updated == false {
+                continue
+            }
+            let result = PMNOpenPgp.checkPassphrase(u_k.private_key, passphrase: new_pass)
+            guard result == true else {
+                throw UpdatePasswordError.keyUpdateFailed.error
+            }
+        }
+        return outKeys
+    }
+    
+    
+    class func updateAddrKeysPassword(_ old_addresses : [Address], old_pass: String, new_pass: String ) throws -> [Address] {
+        var out_addresses = [Address]()
+        for addr in old_addresses {
+            
+            var outKeys : [Key] = [Key]()
+            for okey in addr.keys {
+                let new_private_key = try sharedOpenPGP.updatePrivateKeyPassphrase(okey.private_key, oldPassphrase: old_pass, newPassphrase: new_pass)
+                let newK = Key(key_id: okey.key_id , public_key: okey.public_key, private_key: new_private_key, fingerprint: okey.fingerprint, isupdated: true)
+                outKeys.append(newK)
+            }
+            
+            guard outKeys.count == addr.keys.count else {
+                throw UpdatePasswordError.keyUpdateFailed.error
+            }
+            
+            guard outKeys.count > 0 && outKeys[0].is_updated == true else {
+                throw UpdatePasswordError.keyUpdateFailed.error
+            }
+            
+            for u_k in outKeys {
+                if u_k.is_updated == false {
+                    continue
+                }
+                let result = PMNOpenPgp.checkPassphrase(u_k.private_key, passphrase: new_pass)
+                guard result == true else {
+                    throw UpdatePasswordError.keyUpdateFailed.error
+                }
+            }
+            
+            let new_addr = Address(addressid: addr.address_id,
+                                   email: addr.email,
+                                   order: addr.order,
+                                   receive: addr.receive,
+                                   mailbox: addr.mailbox,
+                                   display_name: addr.display_name,
+                                   signature: addr.signature,
+                                   keys: outKeys,
+                                   status: addr.status,
+                                   type: addr.type,
+                                   send: addr.send)
+            out_addresses.append(new_addr)
+        }
+        
+        guard out_addresses.count == old_addresses.count else {
+            throw UpdatePasswordError.keyUpdateFailed.error
+        }
+        
+        return out_addresses
+    }
 }
 //
 //extension PMNOpenPgp {
@@ -67,84 +146,7 @@ extension PmOpenPGP {
 //        return out_new_key
 //    }
 //
-//    class func updateKeysPassword(_ old_keys : [Key], old_pass: String, new_pass: String ) throws -> [Key] {
-//        let pm_keys = old_keys.toPMNPgpKeys()
-//        var out_keys : [Key]?
-//        try ObjC.catchException {
-//            let new_keys = PMNOpenPgp.updateKeysPassphrase(pm_keys, oldPassphrase: old_pass, newPassphrase: new_pass)
-//            out_keys = new_keys.toKeys()
-//        }
-//
-//        guard let outKeys = out_keys, outKeys.count == old_keys.count else {
-//            throw UpdatePasswordError.keyUpdateFailed.error
-//        }
-//
-//        guard outKeys.count > 0 && outKeys[0].is_updated == true else {
-//            throw UpdatePasswordError.keyUpdateFailed.error
-//        }
-//
-//        for u_k in outKeys {
-//            if u_k.is_updated == false {
-//                continue
-//            }
-//            let result = PMNOpenPgp.checkPassphrase(u_k.private_key, passphrase: new_pass)
-//            guard result == true else {
-//                throw UpdatePasswordError.keyUpdateFailed.error
-//            }
-//        }
-//        return outKeys
-//    }
-//
-//
-//    class func updateAddrKeysPassword(_ old_addresses : [Address], old_pass: String, new_pass: String ) throws -> [Address] {
-//        var out_addresses = [Address]()
-//        for addr in old_addresses {
-//            var out_keys : [Key]?
-//            let pm_keys = addr.keys.toPMNPgpKeys()
-//
-//            try ObjC.catchException {
-//                let new_keys = PMNOpenPgp.updateKeysPassphrase(pm_keys, oldPassphrase: old_pass, newPassphrase: new_pass)
-//                out_keys = new_keys.toKeys()
-//            }
-//
-//            guard let outKeys = out_keys, outKeys.count == addr.keys.count else {
-//                throw UpdatePasswordError.keyUpdateFailed.error
-//            }
-//
-//            guard outKeys.count > 0 && outKeys[0].is_updated == true else {
-//                throw UpdatePasswordError.keyUpdateFailed.error
-//            }
-//
-//            for u_k in outKeys {
-//                if u_k.is_updated == false {
-//                    continue
-//                }
-//                let result = PMNOpenPgp.checkPassphrase(u_k.private_key, passphrase: new_pass)
-//                guard result == true else {
-//                    throw UpdatePasswordError.keyUpdateFailed.error
-//                }
-//            }
-//
-//            let new_addr = Address(addressid: addr.address_id,
-//                                   email: addr.email,
-//                                   order: addr.order,
-//                                   receive: addr.receive,
-//                                   mailbox: addr.mailbox,
-//                                   display_name: addr.display_name,
-//                                   signature: addr.signature,
-//                                   keys: outKeys,
-//                                   status: addr.status,
-//                                   type: addr.type,
-//                                   send: addr.send)
-//            out_addresses.append(new_addr)
-//        }
-//
-//        guard out_addresses.count == old_addresses.count else {
-//            throw UpdatePasswordError.keyUpdateFailed.error
-//        }
-//
-//        return out_addresses
-//    }
+
 //
 //    class func updateKeyPassword(_ private_key: String, old_pass: String, new_pass: String ) throws -> String {
 //        var out_key : String?

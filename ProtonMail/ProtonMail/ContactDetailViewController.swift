@@ -403,7 +403,6 @@ extension ContactDetailViewController: UITableViewDelegate {
         case .encrypted_header:
             break
         case .cellphone:
-            //TODO::bring up the phone call
             let phone = self.viewModel.getPhones()[row]
             let formatedNumber = phone.newPhone.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
             let phoneUrl = "tel://\(formatedNumber)"

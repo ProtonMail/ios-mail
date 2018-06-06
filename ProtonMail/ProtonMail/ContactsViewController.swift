@@ -317,7 +317,7 @@ extension ContactsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        //TODO:: add this later
+        //TODO:: add this later the full size index
 //        - (void)viewDidLoad
 //            {
 //                [super viewDidLoad];

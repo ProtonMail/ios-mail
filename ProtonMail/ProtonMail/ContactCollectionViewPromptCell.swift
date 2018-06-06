@@ -51,10 +51,10 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
     func setup() {
         self.insets = UIEdgeInsetsMake(0, 0, 0, 0)
         
-//#if DEBUG_BORDERS
-//        self.layer.borderWidth = 1.0
-//        self.layer.borderColor = UIColor.purple.cgColor
-//#endif
+        #if DEBUG_BORDERS
+        self.layer.borderWidth = 1.0
+        self.layer.borderColor = UIColor.purple.cgColor
+        #endif
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false

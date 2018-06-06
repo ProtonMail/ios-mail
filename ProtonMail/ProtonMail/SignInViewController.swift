@@ -622,8 +622,7 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
-    func clean()
-    {
+    func clean() {
         UserTempCachedStatus.backup()
         sharedUserDataService.signOut(true)
         userCachedStatus.signOut()

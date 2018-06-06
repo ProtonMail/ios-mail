@@ -32,7 +32,6 @@ class ComposePasswordViewController: UIViewController {
     
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
 
-    //TODO:: if apple reject app because this. we need change this to a static file and load from client
     fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
     
     fileprivate var pwd : String = ""

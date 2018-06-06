@@ -500,9 +500,6 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
     }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        
-        //TODO::Fix later
-//        UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.lightContent, animated: false)
         configureNavigationBar(navigationController)
     }
 }

@@ -39,10 +39,9 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
-        //self.displayNameField.delegate = self
     }
     
-    override func viewWillAppear(_ animated: Bool) { //TODO::
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
         

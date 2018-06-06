@@ -155,7 +155,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                 PMLog.D(" error: \(error)")
             }
             
-            //TODO::
             self.contacts = contacts
             
             self.composeView.toContactPicker.reloadData()

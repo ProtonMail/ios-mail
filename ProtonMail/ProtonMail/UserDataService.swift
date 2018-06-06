@@ -364,10 +364,6 @@ class UserDataService {
     
     func updateUserInfoFromEventLog (_ userInfo : UserInfo){
         self.userInfo = userInfo
-        //TODO:: need to change
-//        if let addresses = self.userInfo?.userAddresses.toPMNAddresses() {
-//            sharedOpenPGP.setAddresses(addresses);
-//        }
     }
     
     func isMailboxPasswordValid(_ password: String, privateKey : String) -> Bool {
@@ -595,27 +591,28 @@ class UserDataService {
                 guard let old_password = self.mailboxPassword else {
                     throw UpdatePasswordError.currentPasswordWrong.error
                 }
-                //TODO:: fix this later
-//                //generat keysalt
-//                let new_mpwd_salt : Data = PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
-//                let new_hashed_mpwd = PasswordUtils.getMailboxPassword(new_password, salt: new_mpwd_salt)
-//
-//                let updated_address_keys = try PMNOpenPgp.updateAddrKeysPassword(user_info.userAddresses, old_pass: old_password, new_pass: new_hashed_mpwd)
-//                let updated_userlevel_keys = try PMNOpenPgp.updateKeysPassword(user_info.userKeys, old_pass: old_password, new_pass: new_hashed_mpwd)
-//
-//                var new_org_key : String?
-//                //create a key list for key updates
-//                if user_info.role == 2 { //need to get the org keys
-//                    //check user role if equal 2 try to get the org key.
-//                    let cur_org_key = try GetOrgKeys<OrgKeyResponse>().syncCall()
-//                    if let org_priv_key = cur_org_key?.privKey, !org_priv_key.isEmpty {
-//                        do {
-//                            new_org_key = try PMNOpenPgp.updateKeyPassword(org_priv_key, old_pass: old_password, new_pass: new_hashed_mpwd)
-//                        } catch {
-//                            //ignore it for now.
-//                        }
-//                    }
-//                }
+
+                //generat keysalt
+                let new_mpwd_salt : Data = PmRandomTokenWith(16, nil) //PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
+                let new_hashed_mpwd = PasswordUtils.getMailboxPassword(new_password, salt: new_mpwd_salt)
+                
+
+                let updated_address_keys = try PmOpenPGP.updateAddrKeysPassword(user_info.userAddresses, old_pass: old_password, new_pass: new_hashed_mpwd)
+                let updated_userlevel_keys = try PmOpenPGP.updateKeysPassword(user_info.userKeys, old_pass: old_password, new_pass: new_hashed_mpwd)
+
+                var new_org_key : String?
+                //create a key list for key updates
+                if user_info.role == 2 { //need to get the org keys
+                    //check user role if equal 2 try to get the org key.
+                    let cur_org_key = try GetOrgKeys<OrgKeyResponse>().syncCall()
+                    if let org_priv_key = cur_org_key?.privKey, !org_priv_key.isEmpty {
+                        do {
+                            new_org_key = try sharedOpenPGP.updatePrivateKeyPassphrase(org_priv_key, oldPassphrase: old_password, newPassphrase: new_hashed_mpwd)
+                        } catch {
+                            //ignore it for now.
+                        }
+                    }
+                }
                 
                 var authPacket : PasswordAuth?
                 if buildAuth {
@@ -675,25 +672,23 @@ class UserDataService {
                     }
                     
                     do {
-//                        let update_res = try UpdatePrivateKeyRequest<ApiResponse>(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
-//                              clientProof:srpClient.clientProof.encodeBase64(),
-//                              SRPSession: session,
-//                              keySalt: new_mpwd_salt.encodeBase64(),
-//                              userlevelKeys: updated_userlevel_keys,
-//                              addressKeys: updated_address_keys.toKeys(),
-//                              tfaCode: twoFACode,
-//                              orgKey: new_org_key,
-//                              auth: authPacket).syncCall()
-//                        guard update_res?.code == 1000 else {
-//                            throw UpdatePasswordError.default.error
-//                        }
-//                        //update local keys
+                        let update_res = try UpdatePrivateKeyRequest<ApiResponse>(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
+                              clientProof:srpClient.clientProof.encodeBase64(),
+                              SRPSession: session,
+                              keySalt: new_mpwd_salt.encodeBase64(),
+                              userlevelKeys: updated_userlevel_keys,
+                              addressKeys: updated_address_keys.toKeys(),
+                              tfaCode: twoFACode,
+                              orgKey: new_org_key,
+                              auth: authPacket).syncCall()
+                        guard update_res?.code == 1000 else {
+                            throw UpdatePasswordError.default.error
+                        }
+                        //update local keys
 //                        user_info.userKeys = updated_userlevel_keys
 //                        user_info.userAddresses = updated_address_keys
-//                        self.mailboxPassword = new_hashed_mpwd
+                        self.mailboxPassword = new_hashed_mpwd
                         self.userInfo = user_info
-                        //sharedOpenPGP.cleanAddresses()
-                        //sharedOpenPGP.setAddresses(user_info.userAddresses.toPMNAddresses());
                         forceRetry = false
                     } catch let error as NSError {
                         if error.isInternetError() {
