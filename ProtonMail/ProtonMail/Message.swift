@@ -70,5 +70,10 @@ final public class Message: NSManagedObject {
     
     @NSManaged public var attachments: NSSet
     @NSManaged public var labels: NSSet
+    
+    //temp cache
+    var checkingSign : Bool = false
+    var checkedSign : Bool = false
+    var pgpType : PGPType = .none
 }
 

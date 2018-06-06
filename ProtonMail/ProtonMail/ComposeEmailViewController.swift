@@ -373,22 +373,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                 present(alertController, animated: true, completion: nil)
                 return
             }
-//            if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
-//                let emails = self.composeView.allEmails
-//                //show loading
-//                ActivityIndicatorHelper.showActivityIndicator(at: view)
-//                let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
-//                api.call({ (task, response: EmailsCheckResponse?, hasError : Bool) in
-//                    //hide loading
-//                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-//                    if let res = response, res.hasOutsideEmails == false {
-//                        self.sendMessageStepTwo()
-//                    } else {
-//                        self.composeView.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_pls_set_password)
-//                    }
-//                })
-//                return
-//            }
+            
         }
         delay(0.3) {
             self.sendMessageStepTwo()
@@ -663,8 +648,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         }
     }
     
-    func composeViewDidTapExpirationButton(_ composeView: ComposeView)
-    {
+    func composeViewDidTapExpirationButton(_ composeView: ComposeView) {
         self.expirationPicker.alpha = 1
         self.view.bringSubview(toFront: expirationPicker)
     }
@@ -681,8 +665,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     func composeViewCollectExpirationData(_ composeView: ComposeView) {
         let selectedDay = expirationPicker.selectedRow(inComponent: 0)
         let selectedHour = expirationPicker.selectedRow(inComponent: 1)
-        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour)
-        {
+        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour) {
             self.expirationPicker.alpha = 0
         }
     }

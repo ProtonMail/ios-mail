@@ -660,15 +660,72 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                 if self.message.hasLocation(location: .outbox) {
                     c.pgpType = self.message.getSentLockType(email: c.displayEmail ?? "")
                 } else {
-                    c.pgpType = self.message.getInboxType(email: c.displayEmail ?? "", signature: SignType.no_sign)
+                    c.pgpType = self.message.getInboxType(email: c.displayEmail ?? "", signature: .notSigned)
+                    if self.message.checkedSign {
+                        c.pgpType = self.message.pgpType
+                        complete?(nil)
+                    } else {
+                        if self.message.checkingSign {
+                            
+                        } else {
+                            self.message.checkingSign = true
+                            guard let emial = model.displayEmail else {
+                                self.message.checkingSign = false
+                                complete?(nil)
+                                return
+                            }
+                            let context = sharedCoreDataService.newManagedObjectContext()
+                            let getEmail = UserEmailPubKeys(email: emial).run()
+                            let getContact = sharedContactDataService.fetch(byEmails: [emial], context: context)
+                            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
+                                //internal emails
+                                if keyRes.recipientType == 1 {
+                                    if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
+                                        let status = self.message.verifyBody(verifier: pgpKeys)
+                                        switch status {
+                                        case .ok:
+                                            c.pgpType = .internal_trusted_key
+                                        case .notSigned:
+                                            c.pgpType = .internal_normal
+                                        case .noVerifier:
+                                            c.pgpType = .internal_normal
+                                        case .failed:
+                                            c.pgpType = .internal_trusted_key_verify_failed
+                                        }
+                                    }
+                                } else {
+                                    if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
+                                        let status = self.message.verifyBody(verifier: pgpKeys)
+                                        switch status {
+                                        case .ok:
+                                            c.pgpType = .pgp_encrypt_trusted_key
+                                        case .notSigned:
+                                            c.pgpType = .pgp_encrypted
+                                        case .noVerifier:
+                                            c.pgpType = .pgp_encrypted
+                                        case .failed:
+                                            c.pgpType = .pgp_encrypt_trusted_key_verify_failed
+                                        }
+                                    }
+                                }
+                                self.message.pgpType = c.pgpType
+                                self.message.checkedSign = true
+                                self.message.checkingSign = false
+                                complete?(c.lock)
+                            }.catch({ (error) in
+                                self.message.checkingSign = false
+                                PMLog.D(error.localizedDescription)
+                                complete?(nil)
+                            })
+                            
+                        }
+                    }
                 }
-                complete?()
             }
         }
     }
     
     func quickLook(attachment tempfile: URL, keyPackage: Data, fileName: String, type: String) {
-        
         if let data : Data = try? Data(contentsOf: tempfile) {
             do {
                 tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)

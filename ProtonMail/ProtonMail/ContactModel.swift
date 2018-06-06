@@ -9,7 +9,7 @@
 import UIKit
 
 typealias LockCheckProgress = (() -> Void)
-typealias LockCheckComplete = (() -> Void)
+typealias LockCheckComplete = ((_ lock: UIImage?) -> Void)
 
 @objc protocol ContactPickerModelProtocol {
     

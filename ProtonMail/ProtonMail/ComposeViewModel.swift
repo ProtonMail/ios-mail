@@ -142,7 +142,7 @@ class ComposeViewModel {
         fatalError("This method must be overridden")
     }
     
-    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: (() -> Void)?) {
+    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?) -> Void)?) {
         fatalError("This method must be overridden")
     }
 }

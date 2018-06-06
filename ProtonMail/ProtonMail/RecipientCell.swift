@@ -83,8 +83,11 @@ class RecipientCell: UITableViewCell {
         self.delegate?.recipientView(lockCheck: self.model, progress: {
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
-        }, complete: {
-            if let lock = self.model.lock {
+        }, complete: { image in
+            if let img = image {
+                self.lockImage.image = img
+                self.lockImage.isHidden = false
+            } else if let lock = self.model.lock {
                 self.lockImage.image = lock
                 self.lockImage.isHidden = false
             } else {

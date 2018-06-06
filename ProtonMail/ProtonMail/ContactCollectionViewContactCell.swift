@@ -96,8 +96,15 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         self.delegate?.collectionContactCell(lockCheck: self.model, progress: {
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
-        }, complete: {
-            if let lock = self.model.lock {
+        }, complete: { image in
+            if let img = image {
+                self.lockImage.image = img
+                self.lockImage.isHidden = false
+                self.leftConstant.constant = 4
+                self.widthConstant.constant = 14
+                
+                self.contactTitleLabel.textAlignment = .left
+            } else if let lock = self.model.lock {
                 self.lockImage.image = lock
                 self.lockImage.isHidden = false
                 self.leftConstant.constant = 4

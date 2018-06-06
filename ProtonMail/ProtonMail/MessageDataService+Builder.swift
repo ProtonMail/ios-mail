@@ -37,15 +37,17 @@ extension String {
 //////////
 final class PreContact {
     let email : String
-    let pgpKey : Data?
+    let firstPgpKey : Data?
+    let pgpKeys : Data?
     let sign : Bool
     let encrypt : Bool
     let mime : Bool
     let plainText : Bool
     
-    init(email: String, pubKey: Data?, sign : Bool, encrypt: Bool, mime : Bool, plainText : Bool) {
+    init(email: String, pubKey: Data?, pubKeys: Data?, sign : Bool, encrypt: Bool, mime : Bool, plainText : Bool) {
         self.email = email
-        self.pgpKey = pubKey
+        self.firstPgpKey = pubKey
+        self.pgpKeys = pubKeys
         self.sign = sign
         self.encrypt = encrypt
         self.mime = mime

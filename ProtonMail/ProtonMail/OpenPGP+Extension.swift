@@ -199,6 +199,10 @@ extension String {
         return try sharedOpenPGP.decryptMessageBinKey(self, privateKey: binKeys, passphrase: passphrase)
     }
     
+    func verifyMessage(verifier: Data, binKeys: Data, passphrase: String) throws -> PmDecryptSignedVerify? {
+        return try sharedOpenPGP.decryptMessageVerifyBinKeyPrivbinkeys(self, veriferKey: verifier, privateKeys: binKeys, passphrase: passphrase, verifyTime: 0)
+    }
+    
     func decryptMessageWithSinglKey(_ privateKey: String, passphrase: String) throws -> String? {
         return try sharedOpenPGP.decryptMessage(self, privateKey: privateKey, passphrase: passphrase)
     }

@@ -11,22 +11,22 @@ import Foundation
 
 extension Message {
     //
-    func getInboxType(email : String, signature : SignType) -> PGPType {
-
+    //        case plain = 0          //Plain text
+    //        case inner = 1       // ProtonMail encrypted emails
+    //        case external = 2       // Encrypted from outside
+    //        case outEnc = 3         // Encrypted for outside
+    //        case outPlain = 4       // Send plain but stored enc
+    //        case draftStoreEnc = 5  // Draft
+    //        case outEncReply = 6    // Encrypted for outside reply
+    //
+    //        case outPGPInline = 7    // out side pgp inline
+    //        case outPGPMime = 8    // out pgp mime
+    //        case outSignedPGPMime = 9 //PGP/MIME signed message
+    
+    func getInboxType(email : String, signature : SignStatus) -> PGPType {
         guard self.isDetailDownloaded  else {
             return .none
         }
-        //        case plain = 0          //Plain text
-        //        case inner = 1       // ProtonMail encrypted emails
-        //        case external = 2       // Encrypted from outside
-        //        case outEnc = 3         // Encrypted for outside
-        //        case outPlain = 4       // Send plain but stored enc
-        //        case draftStoreEnc = 5  // Draft
-        //        case outEncReply = 6    // Encrypted for outside reply
-        //
-        //        case outPGPInline = 7    // out side pgp inline
-        //        case outPGPMime = 8    // out pgp mime
-        //        case outSignedPGPMime = 9 //PGP/MIME signed message
         
         if isEncrypted == 1 {
             return .internal_normal

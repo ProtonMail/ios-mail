@@ -361,6 +361,26 @@ extension Message {
         return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
     }
     
+    //const (
+    //  ok         = 0
+    //  notSigned  = 1
+    //  noVerifier = 2
+    //  failed     = 3
+    //  )
+    func verifyBody(verifier : Data) -> SignStatus {
+        let keys = sharedUserDataService.addressPrivKeys
+
+        do {
+            if let verify = try body.verifyMessage(verifier: verifier, binKeys: keys, passphrase: passphrase) {
+                let status = verify.verify()
+                return SignStatus(rawValue: status) ?? .notSigned
+            }
+            
+        } catch {
+        }
+        return .failed
+    }
+    
     func split() throws -> PmEncryptedSplit? {
         return try body.split()
     }

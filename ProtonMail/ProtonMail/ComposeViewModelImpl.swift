@@ -175,18 +175,18 @@ final class ComposeViewModelImpl : ComposeViewModel {
         return sharedUserDataService.userAddresses
     }
     
-    override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: (() -> Void)?) {
+    override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?) -> Void)?) {
         progress()
         
         let context = sharedCoreDataService.newManagedObjectContext()
         async {
             guard let c = model as? ContactVO else {
-                complete?()
+                complete?(nil)
                 return
             }
             
             guard let emial = model.displayEmail else {
-                complete?()
+                complete?(nil)
                 return
             }
             let getEmail = UserEmailPubKeys(email: emial).run()
@@ -194,13 +194,13 @@ final class ComposeViewModelImpl : ComposeViewModel {
             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                 //internal emails
                 if keyRes.recipientType == 1 {
-                    if let contact = contacts.first, contact.pgpKey != nil {
+                    if let contact = contacts.first, contact.firstPgpKey != nil {
                         c.pgpType = .internal_trusted_key
                     } else {
                         c.pgpType = .internal_normal
                     }
                 } else {
-                    if let contact = contacts.first, contact.pgpKey != nil {
+                    if let contact = contacts.first, contact.firstPgpKey != nil {
                         if contact.encrypt {
                             c.pgpType = .pgp_encrypt_trusted_key
                         } else if contact.sign {
@@ -208,10 +208,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
                 }
-                complete?()
+                complete?(c.lock)
             }.catch({ (error) in
                 PMLog.D(error.localizedDescription)
-                complete?()
+                complete?(nil)
             })
         }
     }

@@ -16,12 +16,11 @@ import PromiseKit
 import AwaitKit
 
 
-struct SignType : OptionSet {
-    let rawValue: Int
-    
-    static let no_sign       = SignType(rawValue: 0)
-    static let verify_failed = SignType(rawValue: 1 << 0)
-    static let verify_ok     = SignType(rawValue: 1 << 1)
+enum SignStatus : Int {
+    case ok = 0 /// normal outgoing
+    case notSigned = 1
+    case noVerifier = 2
+    case failed = 3
 }
 
 enum PGPType : Int {
@@ -247,13 +246,13 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                 //internal emails
                 if keyRes.recipientType == 1 {
-                    if let contact = contacts.first, contact.pgpKey != nil {
+                    if let contact = contacts.first, contact.firstPgpKey != nil {
                         self.pgpType = .internal_trusted_key
                     } else {
                         self.pgpType = .internal_normal
                     }
                 } else {
-                    if let contact = contacts.first, contact.pgpKey != nil {
+                    if let contact = contacts.first, contact.firstPgpKey != nil {
                         if contact.encrypt {
                             self.pgpType = .pgp_encrypt_trusted_key
                         } else if contact.sign {
@@ -261,10 +260,10 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                         }
                     }
                 }
-                complete?()
+                complete?(nil)
             }.catch({ (error) in
                 PMLog.D(error.localizedDescription)
-                complete?()
+                complete?(nil)
             })
         }
         
