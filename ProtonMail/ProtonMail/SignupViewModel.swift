@@ -82,11 +82,11 @@ class SignupViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
-    func getCurrentBit() -> Int32 {
+    func getCurrentBit() -> Int {
         fatalError("This method must be overridden")
     }
     
-    func setBit(_ bit: Int32) {
+    func setBit(_ bit: Int) {
         fatalError("This method must be overridden")
     }
     

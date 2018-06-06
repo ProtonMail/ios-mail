@@ -14,8 +14,8 @@ class EncryptionSetupViewController: UIViewController {
     fileprivate let kSegueToSignUpVerification = "encryption_to_verification_segue"
     
     //Notes: low means high(4096) high means normal(2048)
-    let hight : Int32 = 2048
-    let low : Int32 = 4096
+    let hight : Int = 2048
+    let low : Int = 4096
     
     var viewModel : SignupViewModel!
     

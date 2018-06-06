@@ -13,7 +13,7 @@ final class SignupViewModelImpl : SignupViewModel {
     fileprivate var userName : String = ""
     fileprivate var token : String = ""
     fileprivate var isExpired : Bool = true
-    fileprivate var newKey : PMNOpenPgpKey?
+    fileprivate var newPrivateKey : String?
     fileprivate var domain : String = ""
     fileprivate var destination : String = ""
     fileprivate var recoverEmail : String = ""
@@ -26,7 +26,7 @@ final class SignupViewModelImpl : SignupViewModel {
     
     fileprivate var keysalt : Data?
     fileprivate var keypwd_with_keysalt : String = ""
-    fileprivate var bit : Int32 = 2048
+    fileprivate var bit : Int = 2048
     
     fileprivate var delegate : SignupViewModelDelegate?
     fileprivate var verifyType : VerifyCodeType = .email
@@ -65,11 +65,11 @@ final class SignupViewModelImpl : SignupViewModel {
         }
     }
     
-    override func getCurrentBit() -> Int32 {
+    override func getCurrentBit() -> Int {
         return self.bit
     }
     
-    override func setBit(_ bit: Int32) {
+    override func setBit(_ bit: Int) {
         self.bit = bit
     }
     
@@ -110,16 +110,19 @@ final class SignupViewModelImpl : SignupViewModel {
                 self.keysalt = new_mpwd_salt
                 self.keypwd_with_keysalt = new_hashed_mpwd
                 //generate new key
-//                self.newKey = try sharedOpenPGP.generateKey(new_hashed_mpwd, userName: self.userName, domain: self.domain, bits: self.bit);
-//                
-//                {
-//                    // do some async stuff
-//                    if self.newKey == nil {
-//                        complete(true, LocalString._key_generation_failed_please_try_again, nil)
-//                    } else {
-//                        complete(false, nil, nil);
-//                    }
-//                } ~> .main
+                
+                self.newPrivateKey = try sharedOpenPGP.generateKey(self.userName,
+                                                                   domain: self.domain,
+                                                                   passphrase: new_hashed_mpwd,
+                                                                   keyType: "rsa", bits: self.bit);
+                {
+                    // do some async stuff
+                    if self.newPrivateKey == nil {
+                        complete(true, LocalString._key_generation_failed_please_try_again, nil)
+                    } else {
+                        complete(false, nil, nil);
+                    }
+                } ~> .main
             }
             catch let ex as NSError {
                 { complete(false, LocalString._key_generation_failed_please_try_again, ex) } ~> .main
@@ -129,7 +132,7 @@ final class SignupViewModelImpl : SignupViewModel {
     
     override func createNewUser(_ complete: @escaping CreateUserBlock) {
         //validation here
-        if let key = self.newKey {
+        if let key = self.newPrivateKey {
             {
                 do {
                     let authModuls = try AuthModulusRequest().syncCall()
@@ -200,7 +203,10 @@ final class SignupViewModelImpl : SignupViewModel {
                                             let addr_id = setupAddrApi?.addresses.first?.address_id
                                             let pwd_auth = PasswordAuth(modulus_id: moduls_id_for_key,salt: new_salt_for_key.encodeBase64(), verifer: verifier_for_key.encodeBase64())
                                             
-                                            let setupKeyApi = try SetupKeyRequest<ApiResponse>(address_id: addr_id, private_key: key.privateKey, keysalt: self.keysalt!.encodeBase64(), auth: pwd_auth).syncCall()
+                                            let setupKeyApi = try SetupKeyRequest<ApiResponse>(address_id: addr_id,
+                                                                                               private_key: key,
+                                                                                               keysalt: self.keysalt!.encodeBase64(),
+                                                                                               auth: pwd_auth).syncCall()
                                             if setupKeyApi?.error != nil {
                                                 PMLog.D("signup seupt key error")
                                             }
@@ -225,7 +231,7 @@ final class SignupViewModelImpl : SignupViewModel {
                                             }
                                         } catch let ex as NSError {
                                             PMLog.D(any: ex)
-                                            complete(false, true, LocalString._decrypt_token_failed_please_try_again, nil);
+                                            complete(false, true, ex.localizedDescription, nil);
                                         }
                                     } ~> .async
                             })
