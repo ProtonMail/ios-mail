@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.8.3</string>
+	<string>1.9.0</string>
 	<key>CFBundleVersion</key>
 	<string>Debug</string>
 	<key>NSAppTransportSecurity</key>
@@ -56,11 +56,11 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>ShareExtensionEntry</string>
 	</dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Allows you quick and secure to unlock your application.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Required for saving image attachments to photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Required for attaching photos to the email.</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Allows you quick and secure to unlock your application.</string>
 </dict>
 </plist>
