@@ -1374,6 +1374,12 @@
 		75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */; };
 		9F13485990B5ECAE0E458211 /* Pods_ProtonMailTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B592540B8A286228E3A5430A /* Pods_ProtonMailTests.framework */; };
 		AB36B253D49A42CC855932B0 /* Pods_ShareDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554FD2400ABE7FDFDC9156F4 /* Pods_ShareDev.framework */; };
+		D81DF2A820C704A40023B656 /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DF2A720C704A40023B656 /* String+Localized.swift */; };
+		D81DF2A920C7051F0023B656 /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DF2A720C704A40023B656 /* String+Localized.swift */; };
+		D81DF2AA20C705210023B656 /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DF2A720C704A40023B656 /* String+Localized.swift */; };
+		D81DF2AB20C705220023B656 /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DF2A720C704A40023B656 /* String+Localized.swift */; };
+		D81DF2AC20C705230023B656 /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DF2A720C704A40023B656 /* String+Localized.swift */; };
+		D81DF2AD20C705270023B656 /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DF2A720C704A40023B656 /* String+Localized.swift */; };
 		D89072A620C6923200A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
 		D89072A720C6923200A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
 		D89072A820C69E4F00A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
@@ -1951,6 +1957,7 @@
 		C87DB98FF3BD404B025BC4DC /* Pods-ProtonMail.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.debug.xcconfig"; sourceTree = "<group>"; };
 		C96E84F0F719879E420125E5 /* Pods_Share.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Share.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D150620E49C5EDEC5065FEA1 /* Pods-ProtonMailTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.distribution.xcconfig"; sourceTree = "<group>"; };
+		D81DF2A720C704A40023B656 /* String+Localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localized.swift"; sourceTree = "<group>"; };
 		D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationsSnoozer.swift; sourceTree = "<group>"; };
 		D8B28E771ECD203453213C64 /* libPods-PushService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntervalRule.swift; sourceTree = "<group>"; };
@@ -2619,6 +2626,7 @@
 				75F1697D1AF7F43A00BE6E79 /* Logger.swift */,
 				75E2202D1DDA532900078D6C /* Threading.swift */,
 				75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */,
+				D81DF2A720C704A40023B656 /* String+Localized.swift */,
 				7571102E2060699F0093DC57 /* UserAgent.swift */,
 			);
 			name = Utilities;
@@ -4931,6 +4939,7 @@
 				7567B0771B3387F700A72A1E /* APIServiceRequest.swift in Sources */,
 				758E46B520573E8300111406 /* TermsWebViewModelImpl.swift in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
+				D81DF2A820C704A40023B656 /* String+Localized.swift in Sources */,
 				75E2202E1DDA532900078D6C /* Threading.swift in Sources */,
 				7567B07B1B338EB900A72A1E /* MessageHelper.swift in Sources */,
 				759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */,
@@ -5267,6 +5276,7 @@
 				D89072AA20C69E5300A325DF /* UserNotificationsSnoozer.swift in Sources */,
 				75252DB61FCF6AD8007972EF /* JKBCryptRandom.swift in Sources */,
 				75252D681FCF6187007972EF /* Data+Extension.swift in Sources */,
+				D81DF2AD20C705270023B656 /* String+Localized.swift in Sources */,
 				75252CEE1FCF5A73007972EF /* NSError+Extension.swift in Sources */,
 				75252DBF1FCF710D007972EF /* SwiftTryCatch.m in Sources */,
 				75252D921FCF6840007972EF /* APIService+ResponseTransformer.swift in Sources */,
@@ -5409,6 +5419,7 @@
 				75252D591FCF603F007972EF /* MessageSpamScore.swift in Sources */,
 				75252D4B1FCF5F74007972EF /* NotificationDefined.swift in Sources */,
 				75252DAC1FCF6A5E007972EF /* LabelsDataService.swift in Sources */,
+				D81DF2AA20C705210023B656 /* String+Localized.swift in Sources */,
 				75252DC01FCF710E007972EF /* SwiftTryCatch.m in Sources */,
 				75252D001FCF5B2A007972EF /* APIServiceRequest.swift in Sources */,
 				75252D641FCF6100007972EF /* MessageHelper.swift in Sources */,
@@ -5541,6 +5552,7 @@
 				753934C41FAA91D000EBFBA5 /* Settings+Defined.swift in Sources */,
 				75482B961F7F09E100B0BFFB /* NotificationDefined.swift in Sources */,
 				75BA4F521F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */,
+				D81DF2A920C7051F0023B656 /* String+Localized.swift in Sources */,
 				75482B971F7F09E100B0BFFB /* PersistentQueue.swift in Sources */,
 				75482B981F7F09E100B0BFFB /* PMDocumentPickerViewController.swift in Sources */,
 				75F29E2820571E5400C70AD2 /* WebViewController.swift in Sources */,
@@ -5710,6 +5722,7 @@
 				753934C31FAA91CF00EBFBA5 /* Settings+Defined.swift in Sources */,
 				75BA4F541F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */,
 				753E5ABB1F181BAD0090C0F9 /* PersistentQueue.swift in Sources */,
+				D81DF2AC20C705230023B656 /* String+Localized.swift in Sources */,
 				75C7FF361F2FB3FF00F15792 /* PMDocumentPickerViewController.swift in Sources */,
 				75921C961F747E270028DAC9 /* MIMEMessage.swift in Sources */,
 				75F29E2720571E5300C70AD2 /* WebViewController.swift in Sources */,
@@ -5883,6 +5896,7 @@
 				758E46B720573E8400111406 /* TermsWebViewModelImpl.swift in Sources */,
 				75256C981F16DFBD00F2771E /* KeysAPI.swift in Sources */,
 				75256C991F16DFBD00F2771E /* MessageAPI.swift in Sources */,
+				D81DF2AB20C705220023B656 /* String+Localized.swift in Sources */,
 				7528FFEB1FA7FEF6005F66A3 /* ContactDetailViewController.swift in Sources */,
 				7528000D1FA7FEF6005F66A3 /* Notification+KeyboardExtension.swift in Sources */,
 				75921C8C1F747BD10028DAC9 /* UInt8+Mime.swift in Sources */,

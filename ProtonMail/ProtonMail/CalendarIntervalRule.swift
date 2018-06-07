@@ -6,7 +6,7 @@
 //  Copyright © 2018 ProtonMail. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 struct CalendarIntervalRule: Codable, Equatable {
     private let startMatching: DateComponents
@@ -41,6 +41,10 @@ struct CalendarIntervalRule: Codable, Equatable {
         
         // it should be before the start
         return Calendar.current.compare(recentEnd, to: recentStart, toGranularity: .second) == .orderedAscending
+    }
+    
+    internal func soonestEnd(from date: Date) -> Date? {
+        return Calendar.current.nextDate(after: date, matching: self.endMatching, matchingPolicy: .strict, repeatedTimePolicy: .first, direction: .forward)
     }
 }
 

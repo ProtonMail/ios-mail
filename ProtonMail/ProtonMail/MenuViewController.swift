@@ -23,10 +23,12 @@ class MenuViewController: UIViewController {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var snoozeButton: UIButton!
     
     // MARK: - Private constants
     //here need to change to set by view model factory
     fileprivate let viewModel : MenuViewModel! = MenuViewModelImpl()
+    fileprivate lazy var userNotificationsSnoozer = UserNotificationsSnoozer()
     
     //
     fileprivate var signingOut: Bool                 = false
@@ -93,6 +95,13 @@ class MenuViewController: UIViewController {
         updateEmailLabel()
         updateDisplayNameLabel()
         tableView.reloadData()
+        
+        if #available(iOS 10.0, *) {
+            self.setupSnoozeButton()
+            self.snoozeButton.accessibilityHint = "Double tap to setup".localized
+        } else {
+            self.snoozeButton.isHidden = true
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -175,6 +184,21 @@ class MenuViewController: UIViewController {
     //@objc for #seclector()
     @objc func performLastSegue(_ notification: Notification) {
         self.performSegue(withIdentifier: lastSegue, sender: IndexPath(row: 0, section: 0))
+    }
+}
+
+extension MenuViewController {
+    private func setupSnoozeButton(switchedOn: Bool? = nil) {
+        self.snoozeButton.isSelected = switchedOn ?? self.userNotificationsSnoozer.isSnoozeActive(at: Date())
+        self.snoozeButton.accessibilityLabel = self.snoozeButton.isSelected ? "Notifications Are Snoozed".localized : "Notifications Snooze Off".localized
+    }
+    
+    @available(iOS 10.0, *)
+    @IBAction func presentQuickSnoozeOptions(sender: UIButton?) {
+        let dialog = self.userNotificationsSnoozer.quickOptionsDialog(for: Date()) { switchedOn in
+            self.setupSnoozeButton(switchedOn: switchedOn)
+        }
+        self.present(dialog, animated: true, completion: nil)
     }
 }
 

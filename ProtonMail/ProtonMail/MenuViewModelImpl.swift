@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 class MenuViewModelImpl : MenuViewModel {
     
@@ -87,6 +88,4 @@ class MenuViewModelImpl : MenuViewModel {
         }
         return nil
     }
-    
-    
 }
