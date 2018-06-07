@@ -687,8 +687,8 @@ class UserDataService {
                             throw UpdatePasswordError.default.error
                         }
                         //update local keys
-//                        user_info.userKeys = updated_userlevel_keys
-//                        user_info.userAddresses = updated_address_keys
+                        user_info.userKeys = updated_userlevel_keys
+                        user_info.userAddresses = updated_address_keys
                         self.mailboxPassword = new_hashed_mpwd
                         self.userInfo = user_info
                         forceRetry = false

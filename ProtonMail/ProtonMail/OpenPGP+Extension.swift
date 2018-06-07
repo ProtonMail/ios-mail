@@ -34,10 +34,23 @@ extension PmOpenPGP {
     
     class func updateKeysPassword(_ old_keys : [Key], old_pass: String, new_pass: String ) throws -> [Key] {
         var outKeys : [Key] = [Key]()
-        for okey in old_keys {
-            let new_private_key = try sharedOpenPGP.updatePrivateKeyPassphrase(okey.private_key, oldPassphrase: old_pass, newPassphrase: new_pass)
-            let newK = Key(key_id: okey.key_id, private_key: new_private_key, fingerprint: okey.fingerprint, isupdated: true)
-            outKeys.append(newK)
+        for okey in old_keys {            
+            do {
+                let new_private_key = try sharedOpenPGP.updatePrivateKeyPassphrase(okey.private_key,
+                                                                                   oldPassphrase: old_pass,
+                                                                                   newPassphrase: new_pass)
+                let newK = Key(key_id: okey.key_id,
+                               private_key: new_private_key,
+                               fingerprint: okey.fingerprint,
+                               isupdated: true)
+                outKeys.append(newK)
+            } catch {
+                let newK = Key(key_id: okey.key_id,
+                               private_key: okey.private_key,
+                               fingerprint: okey.fingerprint,
+                               isupdated: false)
+                outKeys.append(newK)
+            }
         }
         
         guard outKeys.count == old_keys.count else {
