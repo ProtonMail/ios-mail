@@ -13,6 +13,8 @@
 
 - (nonnull NSString *)getGroup;
 
+- (void)setGroup:(nonnull NSString *)g;
+
 + (nullable PMNIPMEncrypt *)createInstance:(nonnull NSString *)type
                                      value:(nonnull NSString *)value;
 

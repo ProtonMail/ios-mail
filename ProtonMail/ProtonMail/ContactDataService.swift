@@ -376,14 +376,14 @@ class ContactDataService {
                             for e in emails {
                                 if email == e.getValue() {
                                     let group = e.getGroup();
-                                    let encrypt = vcard.getPMEncrypt()
-                                    let sign = vcard.getPMSign()
+                                    let encrypt = vcard.getPMEncrypt(group)
+                                    let sign = vcard.getPMSign(group)
                                     let isSign = sign?.getValue() ?? "false" == "true" ? true : false
-                                    let keys = vcard.getKeys()
+                                    let keys = vcard.getKeys(group)
                                     let isEncrypt = encrypt?.getValue() ?? "false" == "true" ? true : false
-                                    let schemeType = vcard.getPMScheme()
+                                    let schemeType = vcard.getPMScheme(group)
                                     let isMime = schemeType?.getValue() ?? "pgp-mime" == "pgp-mime" ? true : false
-                                    let mimeType = vcard.getPMMimeType()
+                                    let mimeType = vcard.getPMMimeType(group)
                                     let pt = mimeType?.getValue()
                                     let plainText = pt ?? "text/html" == "text/html" ? false : true
                                     

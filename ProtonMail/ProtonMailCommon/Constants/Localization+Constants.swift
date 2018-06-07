@@ -434,6 +434,10 @@ class LocalizedString {
     lazy var _general_dont_remind_action = NSLocalizedString("Don't remind me again", comment: "Action")
     /// "Send"
     lazy var _general_send_action = NSLocalizedString("Send", comment: "Action")
+    /// "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients."
+    lazy var _you_enabled_message_expiration_but_not_all_recipients_support_this_please_add = NSLocalizedString("You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.", comment: "description")
+    /// "Send anyway"
+    lazy var _send_anyway = NSLocalizedString("Send anyway", comment: "Action")
     /// "Confirmation"
     lazy var _general_confirmation_title = NSLocalizedString("Confirmation", comment: "Title")
     /// "Draft"

@@ -56,15 +56,6 @@
 
 - (void)clearEmails;
 
-- (nonnull NSArray<PMNIKey *> *)getKeys;
-
-- (void)addKey:(nullable PMNIKey *)key;
-
-/**set will replace all exsiting */
-- (void)setKeys:(nonnull NSArray<PMNIKey *> *)keys;
-
-- (void)clearKeys;
-
 - (nullable PMNIUid *)getUid;
 
 - (void)setUid:(nullable PMNIUid *)uuid;
@@ -119,7 +110,7 @@
 
 - (void)clearCustoms;
 
-- (nullable PMNIPMSign *)getPMSign;
+- (nullable PMNIPMSign *)getPMSign:(nonnull NSString *)group;
 
 - (void)addPMSign:(nullable PMNIPMSign *)sign;
 
@@ -127,7 +118,7 @@
 
 - (void)clearPMSign;
 
-- (nullable PMNIPMEncrypt *)getPMEncrypt;
+- (nullable PMNIPMEncrypt *)getPMEncrypt:(nonnull NSString *)group;
 
 - (void)addPMEncrypt:(nullable PMNIPMEncrypt *)encrypt;
 
@@ -135,7 +126,7 @@
 
 - (void)clearPMEncrypt;
 
-- (nullable PMNIPMScheme *)getPMScheme;
+- (nullable PMNIPMScheme *)getPMScheme:(nonnull NSString *)group;
 
 - (void)addPMScheme:(nullable PMNIPMScheme *)scheme;
 
@@ -143,13 +134,22 @@
 
 - (void)clearPMScheme;
 
-- (nullable PMNIPMMimeType *)getPMMimeType;
+- (nullable PMNIPMMimeType *)getPMMimeType:(nonnull NSString *)group;
 
 - (void)addPMMimeType:(nullable PMNIPMMimeType *)mimetype;
 
 - (void)setPMMimeType:(nullable PMNIPMMimeType *)mimetype;
 
 - (void)clearPMMimeType;
+
+- (nonnull NSArray<PMNIKey *> *)getKeys:(nonnull NSString *)group;
+
+- (void)addKey:(nullable PMNIKey *)key;
+
+/**set will replace all exsiting */
+- (void)setKeys:(nonnull NSArray<PMNIKey *> *)keys;
+
+- (void)clearKeys;
 
 - (nonnull NSArray<PMNIUrl *> *)getUrls;
 

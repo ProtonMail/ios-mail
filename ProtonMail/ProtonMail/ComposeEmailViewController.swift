@@ -357,12 +357,11 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     
     internal func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
-            
             if self.composeView.hasPGPPinned || (self.composeView.hasNonePMEmails && self.encryptionPassword.count <= 0 ) {
                 let alertController = UIAlertController(title: LocalString._composer_compose_action,
-                                                        message: "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.",
+                                                        message: LocalString._you_enabled_message_expiration_but_not_all_recipients_support_this_please_add,
                                                         preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: LocalString._general_send_action,
+                alertController.addAction(UIAlertAction(title: LocalString._send_anyway,
                                                         style: .destructive, handler: { (action) -> Void in
                                                             self.sendMessageStepTwo()
                 }))
@@ -481,7 +480,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             body = "<div><br></div>"
         }
         
-        //body = "Asdhfjkhsadfsad \n  asdfasdf.    \nAsdfsadf.  Asdfsdaf\nAsdfs.    "
         self.viewModel.collectDraft(
             self.composeView.subject.text!,
             body: body!,

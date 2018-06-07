@@ -155,7 +155,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         let types = e.getTypes()
                         let typeRaw = types.count > 0 ? types.first! : ""
                         let type = ContactFieldType.get(raw: typeRaw)
-                        let ce = ContactEditEmail(order: order, type: type == .empty ? .email : type, email:e.getValue(), isNew: false)
+                        let ce = ContactEditEmail(order: order, type: type == .empty ? .email : type, email:e.getValue(), isNew: false, keys: nil, encrypt: nil, sign: nil , scheme: nil, mimeType: nil)
                         origEmails.append(ce)
                         order += 1
                     }
@@ -192,7 +192,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         let types = e.getTypes()
                         let typeRaw = types.count > 0 ? types.first! : ""
                         let type = ContactFieldType.get(raw: typeRaw)
-                        let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false)
+                        let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false, keys: nil, encrypt: nil, sign: nil , scheme: nil, mimeType: nil)
                         origEmails.append(ce)
                         order += 1
                     }

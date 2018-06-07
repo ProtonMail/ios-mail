@@ -106,7 +106,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     override func newEmail() -> ContactEditEmail {
         let type = pick(newType: ContactFieldType.emailTypes, pickedTypes: emails)
-        let email = ContactEditEmail(order: emails.count, type: type, email:"", isNew: true)
+        let email = ContactEditEmail(order: emails.count, type: type, email:"", isNew: true, keys: nil, encrypt: nil, sign: nil , scheme: nil, mimeType: nil)
         emails.append(email)
         return email
     }

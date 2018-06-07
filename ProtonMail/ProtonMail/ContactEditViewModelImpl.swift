@@ -38,14 +38,6 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         super.init()
         self.contact = c
         self.prepareContactData()
-        
-//        if !paidUser() {
-//            sections = [.display_name,
-//                        .emails,
-//                        .encrypted_header,
-//                        .upgrade,
-//                        .delete]
-//        }
     }
     
     private func prepareContactData() {
@@ -55,6 +47,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             for c in cards {
                 switch c.type {
                 case .PlainText:
+                    PMLog.D(c.data)
                     if let vcard = PMNIEzvcard.parseFirst(c.data) {
                         let emails = vcard.getEmails()
                         var order : Int = 1
@@ -62,7 +55,18 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                             let types = e.getTypes()
                             let typeRaw = types.count > 0 ? types.first! : ""
                             let type = ContactFieldType.get(raw: typeRaw)
-                            let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false)
+                            
+                            ///
+                            let group = e.getGroup()
+                            //get based on group
+                            let keys = vcard.getKeys(group)
+                            let encrypt = vcard.getPMEncrypt(group)
+                            let sign = vcard.getPMSign(group)
+                            let schemeType = vcard.getPMScheme(group)
+                            let mimeType = vcard.getPMMimeType(group)
+                            
+                            let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false,
+                                                      keys: keys, encrypt: encrypt, sign: sign, scheme: schemeType, mimeType: mimeType)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -70,6 +74,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     break
                 case .EncryptedOnly: break
                 case .SignedOnly:
+                    
+                    PMLog.D(c.data)
                     origvCard2 = PMNIEzvcard.parseFirst(c.data)
                     if let vcard = origvCard2 {
                         let emails = vcard.getEmails()
@@ -78,7 +84,18 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                             let types = e.getTypes()
                             let typeRaw = types.count > 0 ? types.first! : ""
                             let type = ContactFieldType.get(raw: typeRaw)
-                            let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false)
+                            
+                            ///
+                            let group = e.getGroup()
+                            //get based on group
+                            let encrypt = vcard.getPMEncrypt(group)
+                            let sign = vcard.getPMSign(group)
+                            let keys = vcard.getKeys(group)
+                            let schemeType = vcard.getPMScheme(group)
+                            let mimeType = vcard.getPMMimeType(group)
+                            
+                            let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false,
+                                                      keys: keys, encrypt: encrypt, sign: sign, scheme: schemeType, mimeType: mimeType)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -338,7 +355,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     }
     override func newEmail() -> ContactEditEmail {
         let type = pick(newType: ContactFieldType.emailTypes, pickedTypes: emails)
-        let email = ContactEditEmail(order: emails.count, type: type, email:"", isNew: true)
+        let email = ContactEditEmail(order: emails.count, type: type, email:"", isNew: true, keys: nil, encrypt: nil, sign: nil , scheme: nil, mimeType: nil)
         emails.append(email)
         return email
     }
@@ -402,15 +419,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     
     override func done(complete : @escaping ContactEditSaveComplete) {
         if let c = contact, c.managedObjectContext != nil {
-            //update
-            var a_emails: [ContactEmail] = []
-            for e in getEmails() {
-                if e.newEmail.isEmpty || !e.newEmail.isValid() {
-                    complete(RuntimeError.invalidEmail.toError())
-                    return
-                }
-                a_emails.append(e.toContactEmail())
-            }
+
             if origvCard2 == nil {
                 origvCard2 = PMNIVCard.createInstance()
             }
@@ -428,16 +437,55 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 var i : Int = 1;
                 var newEmails:[PMNIEmail] = []
                 vcard2.clearEmails()
-                for email in a_emails {
+                vcard2.clearKeys()
+                vcard2.clearPMSign()
+                vcard2.clearPMEncrypt()
+                vcard2.clearPMScheme()
+                vcard2.clearPMMimeType()
+                
+                //update
+                for email in getEmails() {
+                    if email.newEmail.isEmpty || !email.newEmail.isValid() {
+                        complete(RuntimeError.invalidEmail.toError())
+                        return
+                    }
                     let group = "Item\(i)"
-                    let em = email.email
+                    let em = email.newEmail
                     if !em.isEmpty {
                         defaultName = em
-                        let m = PMNIEmail.createInstance(email.type, email: email.email, group: group)!
+                        let m = PMNIEmail.createInstance(email.newType.vcardType, email: email.newEmail, group: group)!
                         newEmails.append(m)
+                        
+                        if let keys = email.keys {
+                            for k in keys {
+                                k.setGroup(group)
+                                vcard2.add(k)
+                            }
+                        }
+                        
+                        if let sign = email.sign {
+                            sign.setGroup(group)
+                            vcard2.add(sign)
+                        }
+                        
+                        if let encrypt = email.encrypt {
+                            encrypt.setGroup(group)
+                            vcard2.add(encrypt)
+                        }
+                        
+                        if let scheme = email.scheme {
+                            scheme.setGroup(group)
+                            vcard2.add(scheme)
+                        }
+                        if let mime = email.mimeType {
+                            mime.setGroup(group)
+                            vcard2.add(mime)
+                        }
+                        
                         i += 1
                     }
                 }
+                
                 //replace emails
                 vcard2.setEmails(newEmails)
                 
@@ -458,9 +506,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 let vcard2Str = PMNIEzvcard.write(vcard2)
                 //TODO:: fix try later
                 let signed_vcard2 = try? sharedOpenPGP.signTextDetached(vcard2Str,
-                                                                   privateKey: userkey.private_key,
-                                                                   passphrase: sharedUserDataService.mailboxPassword!,
-                                                                   trim: true)
+                                                                        privateKey: userkey.private_key,
+                                                                        passphrase: sharedUserDataService.mailboxPassword!,
+                                                                        trim: true)
                 
                 //card 2 object
                 let card2 = CardData(t: .SignedOnly,
