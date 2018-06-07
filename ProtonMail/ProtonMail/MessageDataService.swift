@@ -1655,7 +1655,7 @@ class MessageDataService {
                 //build pgp sending mime body
                 let addr = message.defaultAddress!.keys.first!
                 let privateKey = addr.private_key
-                let pubKey = addr.public_key
+                let pubKey = addr.publicKey
                 return sendBuilder.buildMime(pubKey: pubKey, privKey: privateKey)
             }.then{ (sendbuilder) -> Promise<SendBuilder> in
                 if !sendBuilder.hasPlainText {
@@ -1664,7 +1664,7 @@ class MessageDataService {
                 //build pgp sending mime body
                 let addr = message.defaultAddress!.keys.first!
                 let privateKey = addr.private_key
-                let pubKey = addr.public_key
+                let pubKey = addr.publicKey
                 return sendBuilder.buildPlainText(pubKey: pubKey, privKey: privateKey)
             } .then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
                 //build address packages

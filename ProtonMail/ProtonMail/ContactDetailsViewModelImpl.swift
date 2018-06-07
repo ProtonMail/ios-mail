@@ -170,7 +170,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             var ok = ObjCBool(false)
                             let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
                                                                              plainText: c.data,
-                                                                             publicKey: key.public_key,
+                                                                             publicKey: key.publicKey,
                                                                              verifyTime: 0, ret0_: &ok)
                             self.verifyType2 = ok.boolValue
                             if self.verifyType2 {
@@ -226,7 +226,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     var ok = ObjCBool(false)
                     let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
                                                                       plainText: pt_contact_vcard,
-                                                                      publicKey: key.public_key,
+                                                                      publicKey: key.publicKey,
                                                                       verifyTime: 0,
                                                                       ret0_: &ok)
                     self.verifyType3 = ok.boolValue

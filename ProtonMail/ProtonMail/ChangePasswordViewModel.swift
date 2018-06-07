@@ -212,7 +212,7 @@ class ChangePWDViewModelTest : ChangePWDViewModel{
         let newpwd = new_pwd//.trim();
         let confirmpwd = confirm_new_pwd//.trim();
         
-        if curr_pwd != sharedUserDataService.mailboxPassword || !sharedUserDataService.isMailboxPasswordValid(curr_pwd, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
+        if curr_pwd != sharedUserDataService.mailboxPassword {
             complete(false, UpdatePasswordError.currentPasswordWrong.error)
         }
         else if newpwd == "" || confirmpwd == "" {

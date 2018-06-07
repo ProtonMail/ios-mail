@@ -36,7 +36,7 @@ extension PmOpenPGP {
         var outKeys : [Key] = [Key]()
         for okey in old_keys {
             let new_private_key = try sharedOpenPGP.updatePrivateKeyPassphrase(okey.private_key, oldPassphrase: old_pass, newPassphrase: new_pass)
-            let newK = Key(key_id: okey.key_id , public_key: okey.public_key, private_key: new_private_key, fingerprint: okey.fingerprint, isupdated: true)
+            let newK = Key(key_id: okey.key_id, private_key: new_private_key, fingerprint: okey.fingerprint, isupdated: true)
             outKeys.append(newK)
         }
         
@@ -64,12 +64,24 @@ extension PmOpenPGP {
     class func updateAddrKeysPassword(_ old_addresses : [Address], old_pass: String, new_pass: String ) throws -> [Address] {
         var out_addresses = [Address]()
         for addr in old_addresses {
-            
             var outKeys : [Key] = [Key]()
             for okey in addr.keys {
-                let new_private_key = try sharedOpenPGP.updatePrivateKeyPassphrase(okey.private_key, oldPassphrase: old_pass, newPassphrase: new_pass)
-                let newK = Key(key_id: okey.key_id , public_key: okey.public_key, private_key: new_private_key, fingerprint: okey.fingerprint, isupdated: true)
-                outKeys.append(newK)
+                do {
+                    let new_private_key = try sharedOpenPGP.updatePrivateKeyPassphrase(okey.private_key,
+                                                                                       oldPassphrase: old_pass,
+                                                                                       newPassphrase: new_pass)
+                    let newK = Key(key_id: okey.key_id,
+                                   private_key: new_private_key,
+                                   fingerprint: okey.fingerprint,
+                                   isupdated: true)
+                    outKeys.append(newK)
+                } catch {
+                    let newK = Key(key_id: okey.key_id,
+                                   private_key: okey.private_key,
+                                   fingerprint: okey.fingerprint,
+                                   isupdated: false)
+                    outKeys.append(newK)
+                }
             }
             
             guard outKeys.count == addr.keys.count else {
@@ -117,15 +129,6 @@ extension PmOpenPGP {
 //        case badPassphrase = 10001
 //        case noPrivateKey = 10004
 //        case badProtonMailPGPMessage = 10006
-//    }
-//
-//    func setAddresses (_ addresses : [PMNAddress]!) {
-//        self.cleanAddresses();
-//        for addr in addresses {
-////            PMLog.D(addr.addressName)
-////            PMLog.D(addr.keys.first?.publicKey ?? "")
-//            self.add(addr)
-//        }
 //    }
 //
 //    static func checkPassphrase(_ passphrase: String, forPrivateKey privateKey: String) -> Bool {

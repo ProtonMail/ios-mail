@@ -195,7 +195,7 @@ class UserDataService {
     var firstUserPublicKey: String? {
         if let keys = userInfo?.userKeys, keys.count > 0 {
             for k in keys {
-                return k.public_key
+                return k.publicKey
             }
         }
         return nil
@@ -604,10 +604,12 @@ class UserDataService {
                 //create a key list for key updates
                 if user_info.role == 2 { //need to get the org keys
                     //check user role if equal 2 try to get the org key.
-                    let cur_org_key = try GetOrgKeys<OrgKeyResponse>().syncCall()
+                    let cur_org_key = try GetOrgKeys().syncCall()
                     if let org_priv_key = cur_org_key?.privKey, !org_priv_key.isEmpty {
                         do {
-                            new_org_key = try sharedOpenPGP.updatePrivateKeyPassphrase(org_priv_key, oldPassphrase: old_password, newPassphrase: new_hashed_mpwd)
+                            new_org_key = try sharedOpenPGP.updatePrivateKeyPassphrase(org_priv_key,
+                                                                                       oldPassphrase: old_password,
+                                                                                       newPassphrase: new_hashed_mpwd)
                         } catch {
                             //ignore it for now.
                         }

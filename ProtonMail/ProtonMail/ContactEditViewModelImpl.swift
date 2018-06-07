@@ -639,7 +639,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 let vcard3Str = PMNIEzvcard.write(vcard3)
                 PMLog.D(vcard3Str);
                 //TODO:: fix the try! later
-                let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.public_key,
+                let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.publicKey,
                                                               privateKey: "",
                                                               mailbox_pwd: "")
                 let signed_vcard3 = try! sharedOpenPGP.signTextDetached(vcard3Str,

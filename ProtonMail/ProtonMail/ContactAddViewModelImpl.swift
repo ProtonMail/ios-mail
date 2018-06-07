@@ -315,7 +315,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         let vcard3Str = PMNIEzvcard.write(vcard3)
         PMLog.D(vcard3Str)
         //TODO:: fix the try!
-        let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.public_key, privateKey: "", mailbox_pwd: "")
+        let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", mailbox_pwd: "")
         PMLog.D(encrypted_vcard3 ?? "")
         let signed_vcard3 = try! sharedOpenPGP.signTextDetached(vcard3Str,
                                                            privateKey: userkey.private_key,

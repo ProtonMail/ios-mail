@@ -144,7 +144,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         guard let session = try att.getSession() else {
                             continue
                         }
-                        guard let newKeyPack = try session.getKeyPackage(strKey: key.public_key)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                        guard let newKeyPack = try session.getKeyPackage(strKey: key.publicKey)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
                             continue
                         }
                         
