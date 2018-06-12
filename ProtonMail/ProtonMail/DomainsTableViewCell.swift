@@ -8,10 +8,10 @@
 
 import UIKit
 
-class DomainsTableViewCell: UITableViewCell {
-
+@IBDesignable class DomainsTableViewCell: UITableViewCell {
     @IBOutlet weak var domainText: UILabel!
     @IBOutlet weak var defaultMark: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -20,4 +20,10 @@ class DomainsTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
+}
+
+extension DomainsTableViewCell: IBDesignableCell {
+    override func prepareForInterfaceBuilder() {
+        self.labelAtInterfaceBuilder()
+    }
 }

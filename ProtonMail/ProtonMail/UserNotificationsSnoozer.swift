@@ -23,7 +23,7 @@ final class UserNotificationsSnoozer {
         }
     }
     
-    fileprivate func configs(ofCase type: Configuration.CodingKeys? = nil) -> [Configuration] {
+    internal func configs(ofCase type: Configuration.CodingKeys? = nil) -> [Configuration] {
         guard let configs = userCachedStatus.snoozeConfiguration else {
             return []
         }
@@ -39,6 +39,8 @@ final class UserNotificationsSnoozer {
         }
     }
     
+    // TODO: evaluated configs can be cached here
+    
     // check if snoozed currently
     internal func isSnoozeActive(at date: Date) -> Bool {
         return self.configs().contains { $0.evaluate(at: date) }
@@ -53,9 +55,14 @@ final class UserNotificationsSnoozer {
     }
     
     // set snooze config
-    internal func snooze(_ configuration: Configuration) {
-        var currentSettings = Array<Configuration>()
-        currentSettings.append(configuration)
+    internal func add(_ configurations: [Configuration]) {
+        var currentSettings = userCachedStatus.snoozeConfiguration
+        currentSettings?.append(contentsOf: configurations)
+        userCachedStatus.snoozeConfiguration = currentSettings
+    }
+    internal func add(_ configuration: Configuration) {
+        var currentSettings = userCachedStatus.snoozeConfiguration
+        currentSettings?.append(configuration)
         userCachedStatus.snoozeConfiguration = currentSettings
     }
     
@@ -91,7 +98,7 @@ extension UserNotificationsSnoozer {
     
     @available(iOS 10.0, *)
     internal func quickOptionsDialog(for date: Date,
-                                     onStateChangedTo: @escaping (Bool)->Void) -> UIViewController
+                                     onStateChangedTo: ((Bool)->Void)? = nil) -> UIViewController
     {
         // time-based options
         let minutes = [30].map { (unit: Measurement<UnitDuration>(value: Double($0), unit: .minutes),
@@ -107,9 +114,9 @@ extension UserNotificationsSnoozer {
         
         let timeBasedActions = timeBasedOptions.map { time in
             UIAlertAction(title: formatter.string(from: time.unit), style: .default) { _ in
-                onStateChangedTo(true)
                 self.unsnoozeNonRepeating()
-                self.snooze(.quick(rule: .init(duration: time.component, since: Date()))) // here we need date of tap, not creation!
+                self.add(.quick(rule: .init(duration: time.component, since: Date()))) // here we need date of tap, not creation!
+                onStateChangedTo?(true)
             }
         }
         
@@ -120,15 +127,15 @@ extension UserNotificationsSnoozer {
         // other actions
         let turnOff = UIAlertAction(title: "Turn Off".localized, style: .destructive) { _ in
             self.unsnoozeNonRepeating()
-            onStateChangedTo(false)
+            onStateChangedTo?(false)
         }
         let custom = UIAlertAction(title: "Custom".localized, style: .default) { _ in
             // FIXME: segue
-            onStateChangedTo(self.isSnoozeActive(at: Date()))
+            onStateChangedTo?(self.isSnoozeActive(at: Date()))
         }
         let scheduled = UIAlertAction(title: "Scheduled".localized, style: .default) { _ in
             // FIXME: segue
-            onStateChangedTo(self.isSnoozeActive(at: Date()))
+            onStateChangedTo?(self.isSnoozeActive(at: Date()))
         }
         let cancel = UIAlertAction(title: "Cancel".localized, style: .cancel) { _ in dialog.dismiss(animated: true, completion: nil) }
         
@@ -183,7 +190,7 @@ extension UserNotificationsSnoozer.Configuration {
 // utilitary
 
 extension UserNotificationsSnoozer.Configuration: Encodable, Decodable {
-    fileprivate enum CodingKeys: CodingKey {
+    internal enum CodingKeys: CodingKey {
         case quick
         case scheduled
     }

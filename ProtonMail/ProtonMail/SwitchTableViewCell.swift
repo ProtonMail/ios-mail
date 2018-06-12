@@ -12,8 +12,7 @@ import UIKit
 typealias ActionStatus = (_ isOK: Bool) -> Void
 typealias switchActionBlock = (_ cell: SwitchTableViewCell?, _ newStatus: Bool, _ feedback: @escaping ActionStatus) -> Void
 
-class SwitchTableViewCell: UITableViewCell {
-    
+@IBDesignable class SwitchTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -46,5 +45,11 @@ class SwitchTableViewCell: UITableViewCell {
             bottomLineLabel.isHidden = true
             self.layoutIfNeeded()
         }
+    }
+}
+
+extension SwitchTableViewCell: IBDesignableCell {
+    override func prepareForInterfaceBuilder() {
+        self.labelAtInterfaceBuilder()
     }
 }

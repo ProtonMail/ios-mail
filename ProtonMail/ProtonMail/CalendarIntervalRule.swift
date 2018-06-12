@@ -9,8 +9,8 @@
 import Foundation
 
 struct CalendarIntervalRule: Codable, Equatable {
-    private let startMatching: DateComponents
-    private let endMatching: DateComponents
+    internal let startMatching: DateComponents
+    internal let endMatching: DateComponents
     
     fileprivate static var componenstOfInterest: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute]
     
