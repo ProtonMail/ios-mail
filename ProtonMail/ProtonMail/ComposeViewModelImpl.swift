@@ -517,6 +517,12 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 sp = sp.stringByStrippingBodyStyle()
                 sp = sp.stringByPurifyHTML()
                 
+//                let bundle = Bundle.main
+//                let path = bundle.path(forResource: "test_html", ofType: "html")
+//                let css = try! String(contentsOfFile: path!, encoding: String.Encoding.utf8)
+//                
+//                body = css
+                
                 return "\(head)\(htmlString)\(sp)\(body)\(foot)"
             case .newDraft:
                 if !self.body.isEmpty {

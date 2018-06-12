@@ -14,7 +14,6 @@ import AwaitKit
 
 fileprivate let learnMoreUrl = URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
 
-
 class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     // view model
     fileprivate var viewModel : ComposeViewModel!
@@ -65,6 +64,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     fileprivate let kNumberOfHoursInTimePicker: Int = 24
     
     fileprivate let kPasswordSegue : String = "to_eo_password_segue"
+    fileprivate let kExpirationWarningSegue : String = "expiration_warning_segue"
     
     fileprivate var isShowingConfirm : Bool = false
     
@@ -298,6 +298,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             popup.pwdDelegate = self
             popup.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
             self.setPresentationStyleForSelfController(self, presentingController: popup)
+        } else if segue.identifier == kExpirationWarningSegue {
+//            let popup = segue.destination as! ComposePasswordViewController
+//            popup.pwdDelegate = self
+
         }
     }
     
@@ -357,19 +361,22 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     
     internal func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
-            if self.composeView.hasPGPPinned || (self.composeView.hasNonePMEmails && self.encryptionPassword.count <= 0 ) {
-                let alertController = UIAlertController(title: LocalString._composer_compose_action,
-                                                        message: LocalString._you_enabled_message_expiration_but_not_all_recipients_support_this_please_add,
-                                                        preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: LocalString._send_anyway,
-                                                        style: .destructive, handler: { (action) -> Void in
-                                                            self.sendMessageStepTwo()
-                }))
-                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-                alertController.addAction(UIAlertAction(title: "Learn more", style: .default, handler: { (action) in
-                    UIApplication.shared.openURL(learnMoreUrl)
-                }))
-                present(alertController, animated: true, completion: nil)
+            if self.composeView.hasPGPPinned ||
+                (self.composeView.hasNonePMEmails && self.encryptionPassword.count <= 0 ) {
+                
+                self.performSegue(withIdentifier: "expiration_warning_segue", sender: self)
+//                let alertController = UIAlertController(title: LocalString._composer_compose_action,
+//                                                        message: LocalString._you_enabled_message_expiration_but_not_all_recipients_support_this_please_add,
+//                                                        preferredStyle: .alert)
+//                alertController.addAction(UIAlertAction(title: LocalString._send_anyway,
+//                                                        style: .destructive, handler: { (action) -> Void in
+//                                                            self.sendMessageStepTwo()
+//                }))
+//                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+//                alertController.addAction(UIAlertAction(title: "Learn more", style: .default, handler: { (action) in
+//                    UIApplication.shared.openURL(learnMoreUrl)
+//                }))
+//                present(alertController, animated: true, completion: nil)
                 return
             }
             

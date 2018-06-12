@@ -609,6 +609,10 @@
 		75256CCD1F16E29E00F2771E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */; };
 		75256CCE1F16E99200F2771E /* ComposeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */; };
 		7526AC8E1B6C4B3700E1967E /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
+		7527AC7320CED4E1008F808A /* test_html.html in Resources */ = {isa = PBXBuildFile; fileRef = 7527AC7220CED49F008F808A /* test_html.html */; };
+		7527AC7420CED4E2008F808A /* test_html.html in Resources */ = {isa = PBXBuildFile; fileRef = 7527AC7220CED49F008F808A /* test_html.html */; };
+		7527AC7520CED4E3008F808A /* test_html.html in Resources */ = {isa = PBXBuildFile; fileRef = 7527AC7220CED49F008F808A /* test_html.html */; };
+		7527AC7620CED4E3008F808A /* test_html.html in Resources */ = {isa = PBXBuildFile; fileRef = 7527AC7220CED49F008F808A /* test_html.html */; };
 		752800001FA7FEF6005F66A3 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFC51FA7FEC2005F66A3 /* UIView+Extension.swift */; };
 		752800011FA7FEF6005F66A3 /* ContactsDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF831FA7FE82005F66A3 /* ContactsDefined.swift */; };
 		752800021FA7FEF6005F66A3 /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FF781FA7FE80005F66A3 /* ContactsViewModel.swift */; };
@@ -1282,6 +1286,8 @@
 		75D0D88720734939004AE43D /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E182057195F00C70AD2 /* ViewModelProtocol.swift */; };
 		75D0D8882073493A004AE43D /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F29E182057195F00C70AD2 /* ViewModelProtocol.swift */; };
 		75D3C2311F140BD9004B8FD7 /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9311A71C60900EB0CAF /* UserDataService.swift */; };
+		75D9414220C9EA62001F7A91 /* ExpirationWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D9413D20C9DA34001F7A91 /* ExpirationWarningViewController.swift */; };
+		75D9414320C9EA63001F7A91 /* ExpirationWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D9413D20C9DA34001F7A91 /* ExpirationWarningViewController.swift */; };
 		75DCB2071BA2A1560085BE8C /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DCB2051BA2A1560085BE8C /* RecipientCell.swift */; };
 		75DCB2081BA2A1560085BE8C /* RecipientCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75DCB2061BA2A1560085BE8C /* RecipientCell.xib */; };
 		75DE3DF81C977683007C208E /* FeedbackHeadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE3DF71C977683007C208E /* FeedbackHeadCell.swift */; };
@@ -1697,6 +1703,7 @@
 		75252CE11FCE320B007972EF /* Dictionary+JSON+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+JSON+Extension.swift"; sourceTree = "<group>"; };
 		75252DC31FCF750B007972EF /* PushServiceDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PushServiceDev.entitlements; sourceTree = "<group>"; };
 		7526AC8D1B6C4B3700E1967E /* backup.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = backup.css; sourceTree = "<group>"; };
+		7527AC7220CED49F008F808A /* test_html.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = test_html.html; sourceTree = "<group>"; };
 		7528FF751FA7FE80005F66A3 /* NSFetchedResultsController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSFetchedResultsController+Extension.swift"; path = "ProtonMailCommon/NSFetchedResultsController+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		7528FF761FA7FE80005F66A3 /* ContactTypeViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactTypeViewModelImpl.swift; path = ProtonMail/ContactTypeViewModelImpl.swift; sourceTree = SOURCE_ROOT; };
 		7528FF771FA7FE80005F66A3 /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIScrollView+Extension.swift"; path = "ProtonMailCommon/UIScrollView+Extension.swift"; sourceTree = SOURCE_ROOT; };
@@ -1996,6 +2003,7 @@
 		75CA88FF2087DB660074A1A6 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharedCacheBase.swift; path = ../ProtonMail/SharedCacheBase.swift; sourceTree = "<group>"; };
 		75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAPI.swift; sourceTree = "<group>"; };
+		75D9413D20C9DA34001F7A91 /* ExpirationWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationWarningViewController.swift; sourceTree = "<group>"; };
 		75DCB2051BA2A1560085BE8C /* RecipientCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientCell.swift; sourceTree = "<group>"; };
 		75DCB2061BA2A1560085BE8C /* RecipientCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecipientCell.xib; sourceTree = "<group>"; };
 		75DE3DF71C977683007C208E /* FeedbackHeadCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackHeadCell.swift; sourceTree = "<group>"; };
@@ -2589,6 +2597,7 @@
 				75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */,
 				755405B01B1648D2003BFC0A /* ComposeView.swift */,
 				755405B11B1648D2003BFC0A /* ComposeView.xib */,
+				75D9413D20C9DA34001F7A91 /* ExpirationWarningViewController.swift */,
 			);
 			name = Compose;
 			sourceTree = "<group>";
@@ -2959,6 +2968,7 @@
 		75978BD91B28F5F800D07501 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				7527AC7220CED49F008F808A /* test_html.html */,
 				75471757206489EB00C3F21D /* editor.html */,
 				75471758206489EB00C3F21D /* ZSSRichTextEditor.js */,
 				75E49F081CAB200000235ACC /* flags.bundle */,
@@ -3601,6 +3611,7 @@
 				7508F80C2086BB9B00EFE237 /* InfoPlist.strings in Resources */,
 				75471759206489EC00C3F21D /* editor.html in Resources */,
 				7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */,
+				7527AC7620CED4E3008F808A /* test_html.html in Resources */,
 				07B123781AB8CD90006EA38C /* Attachments.storyboard in Resources */,
 				755638C11CA1AE42003FA2D0 /* ShowImageView.xib in Resources */,
 				75DCB2081BA2A1560085BE8C /* RecipientCell.xib in Resources */,
@@ -3659,6 +3670,7 @@
 				75482BC91F7F09E100B0BFFB /* Attachments.storyboard in Resources */,
 				75482BCA1F7F09E100B0BFFB /* ShareUnlockViewController.xib in Resources */,
 				75482BCB1F7F09E100B0BFFB /* Images.xcassets in Resources */,
+				7527AC7520CED4E3008F808A /* test_html.html in Resources */,
 				75482BCD1F7F09E100B0BFFB /* ComposerViewController.xib in Resources */,
 				75482BCE1F7F09E100B0BFFB /* Localizable.strings in Resources */,
 				75482BD01F7F09E100B0BFFB /* SignIn.storyboard in Resources */,
@@ -3689,6 +3701,7 @@
 				7547175C206489EC00C3F21D /* editor.html in Resources */,
 				755E0D061F2FACF9004D2873 /* Attachments.storyboard in Resources */,
 				7512A9FA1F17E1CE00D84955 /* ShareUnlockViewController.xib in Resources */,
+				7527AC7420CED4E2008F808A /* test_html.html in Resources */,
 				758ED7D41F05A5610028D1A5 /* Images.xcassets in Resources */,
 				7512AA001F17E95100D84955 /* ComposerViewController.xib in Resources */,
 				7512AA401F18028100D84955 /* Localizable.strings in Resources */,
@@ -3746,6 +3759,7 @@
 				75DE7D8D1CAAEA4900F5443E /* ComposeView.xib in Resources */,
 				75F22BF21E83348100677E67 /* ToastMessageView.xib in Resources */,
 				75DE7EB21CAAEF9000F5443E /* Images.xcassets in Resources */,
+				7527AC7320CED4E1008F808A /* test_html.html in Resources */,
 				75BA55A81D087F6A0081DD88 /* Readme.txt in Resources */,
 				7566E4F61FBBA26F0036B36B /* GoogleService-Info.plist in Resources */,
 				75BA199C1EC632E100153A1A /* SpamScoreWarningView.xib in Resources */,
@@ -5112,6 +5126,7 @@
 				7512AA6A1F180DAD00D84955 /* LastUpdatedStore.swift in Sources */,
 				7512AA251F17FD4A00D84955 /* ComposeViewModel.swift in Sources */,
 				751900771F1D832C00DB68ED /* UserTempCachedStatus.swift in Sources */,
+				75D9414220C9EA62001F7A91 /* ExpirationWarningViewController.swift in Sources */,
 				7512AA011F17EA4300D84955 /* ViewModelService.swift in Sources */,
 				75BF26732093D15200BE7574 /* ContactCollectionView.swift in Sources */,
 				753E5AB61F181A5F0090C0F9 /* EncryptTypes.swift in Sources */,
@@ -5405,6 +5420,7 @@
 				75B431BE1F7AF661009DD520 /* UIApplication+BadgeNumber.swift in Sources */,
 				75DE7D201CAAEA4900F5443E /* EmailHeaderView.swift in Sources */,
 				75DE7D251CAAEA4900F5443E /* MailboxRateReviewCell.swift in Sources */,
+				75D9414320C9EA63001F7A91 /* ExpirationWarningViewController.swift in Sources */,
 				75DE7D261CAAEA4900F5443E /* SignInViewController.swift in Sources */,
 				7528000C1FA7FEF6005F66A3 /* Error+Extension.swift in Sources */,
 				752800001FA7FEF6005F66A3 /* UIView+Extension.swift in Sources */,
