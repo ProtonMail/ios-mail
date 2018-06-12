@@ -9,6 +9,7 @@
 import Foundation
 import PromiseKit
 import AwaitKit
+import HTMLPurifier
 
 final class ComposeViewModelImpl : ComposeViewModel {
     
@@ -426,7 +427,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
         let foot = "</body></html>"
         let htmlString = "\(defaultSignature) \(mobileSignature)"
         
-        
         if let msgAction = messageAction {
             switch msgAction
             {
@@ -457,6 +457,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingStyleHTML()
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
+                body = body.preg_replace("\r\n", replaceto: "")
                 let on = LocalString._composer_on
                 let at = LocalString._general_at_label
                 let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
@@ -511,17 +512,11 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingStyleHTML()
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
-                
+                body = body.preg_replace("\r\n", replaceto: "")
                 var sp = "<blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
                 sp = sp.stringByStrippingStyleHTML()
                 sp = sp.stringByStrippingBodyStyle()
                 sp = sp.stringByPurifyHTML()
-                
-//                let bundle = Bundle.main
-//                let path = bundle.path(forResource: "test_html", ofType: "html")
-//                let css = try! String(contentsOfFile: path!, encoding: String.Encoding.utf8)
-//                
-//                body = css
                 
                 return "\(head)\(htmlString)\(sp)\(body)\(foot)"
             case .newDraft:
