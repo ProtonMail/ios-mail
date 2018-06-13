@@ -77,8 +77,9 @@ final class NotificationsSnoozer: NotificationsSnoozerCore {
             presenter.present(picker, animated: true, completion: nil)
         }
         let scheduled = UIAlertAction(title: "Scheduled".localized, style: .default) { _ in
-            // FIXME: segue to settings
             onStateChangedTo?(self.isSnoozeActive(at: Date()))
+            guard let menu = presenter as? MenuViewController else { return }
+            menu.performSegue(withIdentifier: menu.kSegueToSettings, sender: self)
         }
         let cancel = UIAlertAction(title: "Cancel".localized, style: .cancel) { _ in dialog.dismiss(animated: true, completion: nil) }
         

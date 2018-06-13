@@ -41,7 +41,7 @@ class MenuViewController: UIViewController {
     
     fileprivate let kSegueToMailbox: String   = "toMailboxSegue"
     fileprivate let kSegueToLabelbox: String  = "toLabelboxSegue"
-    fileprivate let kSegueToSettings: String  = "toSettingsSegue"
+    internal let kSegueToSettings: String  = "toSettingsSegue"
     fileprivate let kSegueToBugs: String      = "toBugsSegue"
     fileprivate let kSegueToContacts: String  = "toContactsSegue"
     fileprivate let kSegueToFeedback: String  = "toFeedbackSegue"
@@ -120,6 +120,15 @@ class MenuViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // TODO: this deeplink implementation is ugly, consider using Coordinators pattern
+        if #available(iOS 10.0, *),
+            sender is NotificationsSnoozer,
+            let navigation = segue.destination as? UINavigationController,
+            let settings = navigation.topViewController as? SettingTableViewController
+        {
+            settings.performSegue(withIdentifier: settings.kNotificationsSnoozeSegue, sender: sender)
+        }
+        
         if let navigation = segue.destination as? UINavigationController {
             let segueID = segue.identifier
             //right now all mailbox view controller all could process together.

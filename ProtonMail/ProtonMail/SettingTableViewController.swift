@@ -111,8 +111,7 @@ class SettingTableViewController: ProtonMailViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let segueID:String! = segue.identifier
-        switch segueID
-        {
+        switch segueID {
         case kLoginpwdSegue:
             let changeLoginPwdView = segue.destination as! ChangePasswordViewController
             changeLoginPwdView.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
@@ -141,6 +140,12 @@ class SettingTableViewController: ProtonMailViewController {
             let vc = segue.destination as! LablesViewController
             vc.viewModel = LabelManagerViewModelImpl()
             self.setPresentationStyleForSelfController(self, presentingController: vc)
+        case kNotificationsSnoozeSegue: // this allows to setup navbar for deeplink when view of this controller does not load/appear
+                if #available(iOS 10, *), sender is NotificationsSnoozer {
+                    super.viewDidLoad()
+                    self.updateTitle()
+                    navigationController?.setNavigationBarHidden(false, animated: true)
+                }
         default:
             break
         }
