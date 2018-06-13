@@ -8,16 +8,19 @@
 
 import UIKit
 
-class SettingsWeekdaysTableViewController: UITableViewController {
-    private lazy var allWeekdays = Calendar.current.weekdaySymbols
-    private var selectedWeekdays = [Int]()
+final class SettingsWeekdaysTableViewController: UITableViewController {
+    typealias Weekday = Int
+    typealias HandleSelection = (Array<Weekday>)->Void
     
-    internal func markWeekdaysAsSelected(_ weekdays: [Int]) {
-        self.selectedWeekdays = weekdays
-    }
+    private lazy var allWeekdays = Calendar.current.weekdaySymbols
+    private var selectedWeekdays = Set<Weekday>()
+    private var handler: HandleSelection?
+    
+    // methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.tableFooterView = UIView()
         
         let nib = UINib(nibName: "\(GeneralSettingViewCell.self)", bundle: Bundle.main)
         self.tableView.register(nib, forCellReuseIdentifier: "\(GeneralSettingViewCell.self)")
@@ -37,8 +40,27 @@ class SettingsWeekdaysTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = self.tableView.cellForRow(at: indexPath) {
-            cell.accessoryType = cell.accessoryType == .none ? .checkmark : .none
+            if cell.accessoryType == .none {
+                self.selectedWeekdays.insert(indexPath.row)
+                cell.accessoryType = .checkmark
+            } else {
+                self.selectedWeekdays.remove(indexPath.row)
+                cell.accessoryType = .none
+            }
         }
         self.tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.handler?(self.selectedWeekdays.sorted(by: <))
+    }
+    
+    // custom
+    internal func set(handler: @escaping HandleSelection) {
+        self.handler = handler
+    }
+    
+    internal func markWeekdaysAsSelected(_ weekdays: Set<Weekday>) {
+        self.selectedWeekdays = weekdays
     }
 }

@@ -1389,6 +1389,10 @@
 		D82BC09720CD2A880006705A /* DomainsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82BC09520CD2A880006705A /* DomainsTableViewCell.xib */; };
 		D880C74F20CAEFF600F41FB6 /* SettingsNotificationsSnooze.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D880C74E20CAEFF600F41FB6 /* SettingsNotificationsSnooze.storyboard */; };
 		D880C75020CAEFF600F41FB6 /* SettingsNotificationsSnooze.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D880C74E20CAEFF600F41FB6 /* SettingsNotificationsSnooze.storyboard */; };
+		D889521520D11E9D0057FE17 /* TimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D889521320D11E9D0057FE17 /* TimePickerViewController.swift */; };
+		D889521620D11E9D0057FE17 /* TimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D889521320D11E9D0057FE17 /* TimePickerViewController.swift */; };
+		D889521720D11E9D0057FE17 /* TimePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D889521420D11E9D0057FE17 /* TimePickerViewController.xib */; };
+		D889521820D11E9D0057FE17 /* TimePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D889521420D11E9D0057FE17 /* TimePickerViewController.xib */; };
 		D89072A620C6923200A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
 		D89072A720C6923200A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
 		D89072A820C69E4F00A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
@@ -1399,6 +1403,10 @@
 		D89072AE20C69E6600A325DF /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
 		D89072AF20C69E6600A325DF /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
 		D89072B020C69E6700A325DF /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
+		D8C0E3E920D01831003C326A /* DurationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C0E3E720D01831003C326A /* DurationPickerViewController.swift */; };
+		D8C0E3EA20D01831003C326A /* DurationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C0E3E720D01831003C326A /* DurationPickerViewController.swift */; };
+		D8C0E3EB20D01831003C326A /* DurationPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C0E3E820D01831003C326A /* DurationPickerViewController.xib */; };
+		D8C0E3EC20D01831003C326A /* DurationPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C0E3E820D01831003C326A /* DurationPickerViewController.xib */; };
 		D8C2B27720C4570C00979CBE /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
 		D8C2B27820C4570C00979CBE /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
 		D8C2B27A20C4571B00979CBE /* CalendarIntervalRuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27920C4571A00979CBE /* CalendarIntervalRuleTests.swift */; };
@@ -1975,8 +1983,12 @@
 		D82BC09220CD28410006705A /* IBDesignableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBDesignableCell.swift; sourceTree = "<group>"; };
 		D82BC09520CD2A880006705A /* DomainsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DomainsTableViewCell.xib; sourceTree = "<group>"; };
 		D880C74E20CAEFF600F41FB6 /* SettingsNotificationsSnooze.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsNotificationsSnooze.storyboard; sourceTree = "<group>"; };
+		D889521320D11E9D0057FE17 /* TimePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerViewController.swift; sourceTree = "<group>"; };
+		D889521420D11E9D0057FE17 /* TimePickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimePickerViewController.xib; sourceTree = "<group>"; };
 		D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationsSnoozer.swift; sourceTree = "<group>"; };
 		D8B28E771ECD203453213C64 /* libPods-PushService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8C0E3E720D01831003C326A /* DurationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPickerViewController.swift; sourceTree = "<group>"; };
+		D8C0E3E820D01831003C326A /* DurationPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DurationPickerViewController.xib; sourceTree = "<group>"; };
 		D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntervalRule.swift; sourceTree = "<group>"; };
 		D8C2B27920C4571A00979CBE /* CalendarIntervalRuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntervalRuleTests.swift; sourceTree = "<group>"; };
 		D8F89BEF20CFF8A100576842 /* SettingsWeekdaysTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWeekdaysTableViewController.swift; sourceTree = "<group>"; };
@@ -3087,7 +3099,9 @@
 				75B549E31D02730100F21A30 /* Reachability */,
 				7580D6571C8E438800A15885 /* LastPass */,
 				7580D6561C8E436F00A15885 /* OnePassword */,
+				D8C0E3E620D017EC003C326A /* DurationPickerViewController */,
 				076758791AA126E400F9AC9C /* StorageLimit.swift */,
+				D889521220D11E820057FE17 /* TimePickerViewController */,
 				751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */,
 				D82BC09220CD28410006705A /* IBDesignableCell.swift */,
 				D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */,
@@ -3108,6 +3122,24 @@
 				75482BEA1F7F0D2000B0BFFB /* InfoDev.plist */,
 			);
 			path = Share;
+			sourceTree = "<group>";
+		};
+		D889521220D11E820057FE17 /* TimePickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D889521320D11E9D0057FE17 /* TimePickerViewController.swift */,
+				D889521420D11E9D0057FE17 /* TimePickerViewController.xib */,
+			);
+			name = TimePickerViewController;
+			sourceTree = "<group>";
+		};
+		D8C0E3E620D017EC003C326A /* DurationPickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D8C0E3E720D01831003C326A /* DurationPickerViewController.swift */,
+				D8C0E3E820D01831003C326A /* DurationPickerViewController.xib */,
+			);
+			name = DurationPickerViewController;
 			sourceTree = "<group>";
 		};
 		EDDC3A27CB6370D84ADB05EA /* Frameworks */ = {
@@ -3496,10 +3528,12 @@
 				75187BB11CAC54DD00C84382 /* phone_country_code.geojson in Resources */,
 				7582CFBC1D024E2900F521D4 /* TopMessageView.xib in Resources */,
 				75117C481BA217CE00A0CE68 /* RecipientView.xib in Resources */,
+				D889521720D11E9D0057FE17 /* TimePickerViewController.xib in Resources */,
 				7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */,
 				75230C271B9A430F00EC2AC2 /* TempXIB.xib in Resources */,
 				759BBDC41BA0D18A002608B5 /* MultiLabelDisplayView.xib in Resources */,
 				07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */,
+				D8C0E3EB20D01831003C326A /* DurationPickerViewController.xib in Resources */,
 				076758761AA0E86400F9AC9C /* LoadingView.xib in Resources */,
 				7526AC8E1B6C4B3700E1967E /* backup.css in Resources */,
 				75542AB81EE53C3C000F4ABA /* PasswordExtension.strings in Resources */,
@@ -3639,10 +3673,12 @@
 				75DE7D9C1CAAEA4900F5443E /* RecipientView.xib in Resources */,
 				75DE7D9D1CAAEA4900F5443E /* MessageDetailBottomView.xib in Resources */,
 				D82BC09720CD2A880006705A /* DomainsTableViewCell.xib in Resources */,
+				D8C0E3EC20D01831003C326A /* DurationPickerViewController.xib in Resources */,
 				75DE7D9E1CAAEA4900F5443E /* TempXIB.xib in Resources */,
 				D880C75020CAEFF600F41FB6 /* SettingsNotificationsSnooze.storyboard in Resources */,
 				75DE7D9F1CAAEA4900F5443E /* MultiLabelDisplayView.xib in Resources */,
 				75F1618C1DCBB19300912662 /* TwoFACodeView.xib in Resources */,
+				D889521820D11E9D0057FE17 /* TimePickerViewController.xib in Resources */,
 				75DE7DA01CAAEA4900F5443E /* Settings.bundle in Resources */,
 				75542AD21EE53D40000F4ABA /* PasswordExtension.strings in Resources */,
 				7528FFF91FA7FEF6005F66A3 /* ContactSectionHeadView.xib in Resources */,
@@ -4896,6 +4932,7 @@
 				7528FFD61FA7FEC3005F66A3 /* ContactsAPI.swift in Sources */,
 				07CF61981A8AE5AA00ED38AE /* MonitorSavesDataService.swift in Sources */,
 				752EEC1C1BB0A9D800770331 /* QuickViewViewController.swift in Sources */,
+				D8C0E3E920D01831003C326A /* DurationPickerViewController.swift in Sources */,
 				7528FFA61FA7FE85005F66A3 /* EmailExtension.swift in Sources */,
 				755ECCE520699C20003D45AE /* TouchID+Helper.swift in Sources */,
 				7546BE571C8D557C00FCEB0A /* TouchIDCell.swift in Sources */,
@@ -5093,6 +5130,7 @@
 				7528FFD31FA7FEC3005F66A3 /* ContactEditViewModelImpl.swift in Sources */,
 				7528FFE41FA7FEC3005F66A3 /* ContactEditVIewModel.swift in Sources */,
 				075F0A521ABF5DB500E6B9AE /* MessageLocation.swift in Sources */,
+				D889521520D11E9D0057FE17 /* TimePickerViewController.swift in Sources */,
 				75475EA71CCEB97400588D41 /* BaseViewController.swift in Sources */,
 				75E090541CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */,
 				751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */,
@@ -5909,6 +5947,7 @@
 				75F29E1B2057195F00C70AD2 /* ViewModelProtocol.swift in Sources */,
 				75256C891F16DFBD00F2771E /* Message.swift in Sources */,
 				75256C8A1F16DFBD00F2771E /* MessageExtension.swift in Sources */,
+				D889521620D11E9D0057FE17 /* TimePickerViewController.swift in Sources */,
 				75256C8B1F16DFBD00F2771E /* MessageSpamScore.swift in Sources */,
 				75256C8C1F16DFBD00F2771E /* MessageLocation.swift in Sources */,
 				75256C8D1F16DFBD00F2771E /* MessageHelper.swift in Sources */,
@@ -6080,6 +6119,7 @@
 				752800001FA7FEF6005F66A3 /* UIView+Extension.swift in Sources */,
 				75DE7D271CAAEA4900F5443E /* SwitchTableViewCell.swift in Sources */,
 				75DE7D2A1CAAEA4900F5443E /* Onboarding.swift in Sources */,
+				D8C0E3EA20D01831003C326A /* DurationPickerViewController.swift in Sources */,
 				752800061FA7FEF6005F66A3 /* ContactVO+Extension.swift in Sources */,
 				7568F3341FCE0F2B00F3DE03 /* ViewModelTimer.swift in Sources */,
 				75856D6A1CB5B5EC000D9F3B /* PinCodeViewController.swift in Sources */,
