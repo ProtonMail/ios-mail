@@ -1393,12 +1393,14 @@
 		D889521620D11E9D0057FE17 /* TimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D889521320D11E9D0057FE17 /* TimePickerViewController.swift */; };
 		D889521720D11E9D0057FE17 /* TimePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D889521420D11E9D0057FE17 /* TimePickerViewController.xib */; };
 		D889521820D11E9D0057FE17 /* TimePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D889521420D11E9D0057FE17 /* TimePickerViewController.xib */; };
-		D89072A620C6923200A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
-		D89072A720C6923200A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
-		D89072A820C69E4F00A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
-		D89072AA20C69E5300A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
-		D89072AB20C69E5500A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
-		D89072AC20C69E5600A325DF /* UserNotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */; };
+		D889521A20D12DC30057FE17 /* NotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D889521920D12DC30057FE17 /* NotificationsSnoozer.swift */; };
+		D889521B20D12DC30057FE17 /* NotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D889521920D12DC30057FE17 /* NotificationsSnoozer.swift */; };
+		D89072A620C6923200A325DF /* NotificationsSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* NotificationsSnoozerCore.swift */; };
+		D89072A720C6923200A325DF /* NotificationsSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* NotificationsSnoozerCore.swift */; };
+		D89072A820C69E4F00A325DF /* NotificationsSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* NotificationsSnoozerCore.swift */; };
+		D89072AA20C69E5300A325DF /* NotificationsSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* NotificationsSnoozerCore.swift */; };
+		D89072AB20C69E5500A325DF /* NotificationsSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* NotificationsSnoozerCore.swift */; };
+		D89072AC20C69E5600A325DF /* NotificationsSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89072A520C6923200A325DF /* NotificationsSnoozerCore.swift */; };
 		D89072AD20C69E6400A325DF /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
 		D89072AE20C69E6600A325DF /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
 		D89072AF20C69E6600A325DF /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
@@ -1985,7 +1987,8 @@
 		D880C74E20CAEFF600F41FB6 /* SettingsNotificationsSnooze.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsNotificationsSnooze.storyboard; sourceTree = "<group>"; };
 		D889521320D11E9D0057FE17 /* TimePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerViewController.swift; sourceTree = "<group>"; };
 		D889521420D11E9D0057FE17 /* TimePickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimePickerViewController.xib; sourceTree = "<group>"; };
-		D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationsSnoozer.swift; sourceTree = "<group>"; };
+		D889521920D12DC30057FE17 /* NotificationsSnoozer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSnoozer.swift; sourceTree = "<group>"; };
+		D89072A520C6923200A325DF /* NotificationsSnoozerCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSnoozerCore.swift; sourceTree = "<group>"; };
 		D8B28E771ECD203453213C64 /* libPods-PushService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C0E3E720D01831003C326A /* DurationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPickerViewController.swift; sourceTree = "<group>"; };
 		D8C0E3E820D01831003C326A /* DurationPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DurationPickerViewController.xib; sourceTree = "<group>"; };
@@ -3104,7 +3107,8 @@
 				D889521220D11E820057FE17 /* TimePickerViewController */,
 				751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */,
 				D82BC09220CD28410006705A /* IBDesignableCell.swift */,
-				D89072A520C6923200A325DF /* UserNotificationsSnoozer.swift */,
+				D89072A520C6923200A325DF /* NotificationsSnoozerCore.swift */,
+				D889521920D12DC30057FE17 /* NotificationsSnoozer.swift */,
 				7546BE541C8D4F9100FCEB0A /* TouchID.swift */,
 			);
 			name = Utilities;
@@ -5119,7 +5123,7 @@
 				7567B06D1B334FA400A72A1E /* ViewModelService.swift in Sources */,
 				7528FFAA1FA7FE85005F66A3 /* ContactVO+Extension.swift in Sources */,
 				701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */,
-				D89072A620C6923200A325DF /* UserNotificationsSnoozer.swift in Sources */,
+				D89072A620C6923200A325DF /* NotificationsSnoozerCore.swift in Sources */,
 				75921C7D1F747BC90028DAC9 /* Data+Mime.swift in Sources */,
 				07CC99641A6F076A000FD6F8 /* NSError+Extension.swift in Sources */,
 				75E49F0D1CAB256900235ACC /* PhoneVerifyViewController.swift in Sources */,
@@ -5216,6 +5220,7 @@
 				75D3C2311F140BD9004B8FD7 /* UserDataService.swift in Sources */,
 				7528FFCF1FA7FEC3005F66A3 /* ContactEditInformationCell.swift in Sources */,
 				75B2223E2003C6AE00E35033 /* ContactEditUpgradeCell.swift in Sources */,
+				D889521A20D12DC30057FE17 /* NotificationsSnoozer.swift in Sources */,
 				75BDECAD1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift in Sources */,
 				70945E6C1A8133B8002B6837 /* MoreOptionsView.swift in Sources */,
 				7566E4FD1FC3B0A00036B36B /* MenuViewModelImpl.swift in Sources */,
@@ -5345,7 +5350,7 @@
 				75252DC41FCF7CD2007972EF /* Dictionary+JSON+Extension.swift in Sources */,
 				75252D961FCF68DA007972EF /* TimeInterval+Extension.swift in Sources */,
 				75252D091FCF5B7A007972EF /* APIServiceDefined.swift in Sources */,
-				D89072AA20C69E5300A325DF /* UserNotificationsSnoozer.swift in Sources */,
+				D89072AA20C69E5300A325DF /* NotificationsSnoozerCore.swift in Sources */,
 				75252DB61FCF6AD8007972EF /* JKBCryptRandom.swift in Sources */,
 				75252D681FCF6187007972EF /* Data+Extension.swift in Sources */,
 				D81DF2AD20C705270023B656 /* String+Localized.swift in Sources */,
@@ -5399,7 +5404,7 @@
 				75252D481FCF5F5E007972EF /* Attachment.swift in Sources */,
 				75252D941FCF6852007972EF /* UserTempCachedStatus.swift in Sources */,
 				75252D0A1FCF5B7B007972EF /* APIServiceDefined.swift in Sources */,
-				D89072AB20C69E5500A325DF /* UserNotificationsSnoozer.swift in Sources */,
+				D89072AB20C69E5500A325DF /* NotificationsSnoozerCore.swift in Sources */,
 				75252D8C1FCF63DC007972EF /* APIService+SettingsExtension.swift in Sources */,
 				75252CEB1FCF5A54007972EF /* UserInfo.swift in Sources */,
 				75252CF41FCF5ABB007972EF /* APIService+DefinedExtension.swift in Sources */,
@@ -5662,7 +5667,7 @@
 				75482BB61F7F09E100B0BFFB /* EncryptTypes.swift in Sources */,
 				75482BB71F7F09E100B0BFFB /* AuthAPI.swift in Sources */,
 				75482BB91F7F09E100B0BFFB /* Threading.swift in Sources */,
-				D89072A820C69E4F00A325DF /* UserNotificationsSnoozer.swift in Sources */,
+				D89072A820C69E4F00A325DF /* NotificationsSnoozerCore.swift in Sources */,
 				750AAEB61FA91ED700CBFCA3 /* ContactsDefined.swift in Sources */,
 				75482BBA1F7F09E100B0BFFB /* SharePinUnlockViewController.swift in Sources */,
 				75482BBB1F7F09E100B0BFFB /* Reachability.m in Sources */,
@@ -5832,7 +5837,7 @@
 				7512AA311F17FEC400D84955 /* AuthAPI.swift in Sources */,
 				7512AA5C1F18078100D84955 /* Threading.swift in Sources */,
 				7528001D1FA7FFB3005F66A3 /* UserDefaults+Extension.swift in Sources */,
-				D89072AC20C69E5600A325DF /* UserNotificationsSnoozer.swift in Sources */,
+				D89072AC20C69E5600A325DF /* NotificationsSnoozerCore.swift in Sources */,
 				750AAEB51FA91ED600CBFCA3 /* ContactsDefined.swift in Sources */,
 				75E5F7A51F295DFD00001B4F /* SharePinUnlockViewController.swift in Sources */,
 				753E5ACE1F1820E80090C0F9 /* Reachability.m in Sources */,
@@ -6030,6 +6035,7 @@
 				75256CC01F16DFBD00F2771E /* APIService+AttachmentExtension.swift in Sources */,
 				75256CC11F16DFBD00F2771E /* APIService+ContactExtension.swift in Sources */,
 				75256CC21F16DFBD00F2771E /* APIService+DeviceExtension.swift in Sources */,
+				D889521B20D12DC30057FE17 /* NotificationsSnoozer.swift in Sources */,
 				7512AA361F17FF3300D84955 /* NSError+Alert+Extenion.swift in Sources */,
 				75256CC31F16DFBD00F2771E /* APIService+MessagesExtension.swift in Sources */,
 				75256CC41F16DFBD00F2771E /* APIService+SettingsExtension.swift in Sources */,
@@ -6080,7 +6086,7 @@
 				75DE7CEA1CAAEA4900F5443E /* ActivityIndicatorHelper.swift in Sources */,
 				75DE7CEB1CAAEA4900F5443E /* RecipientView.swift in Sources */,
 				75DE7CEE1CAAEA4900F5443E /* FeedbackHeadCell.swift in Sources */,
-				D89072A720C6923200A325DF /* UserNotificationsSnoozer.swift in Sources */,
+				D89072A720C6923200A325DF /* NotificationsSnoozerCore.swift in Sources */,
 				75856D6C1CB5B5F2000D9F3B /* PinCodeView.swift in Sources */,
 				7528FFFA1FA7FEF6005F66A3 /* ContactTypeAddCustomCell.swift in Sources */,
 				75DE7CF81CAAEA4900F5443E /* CustomHeaderView.swift in Sources */,

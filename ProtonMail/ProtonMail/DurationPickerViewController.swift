@@ -25,8 +25,8 @@ final class DurationPickerViewController: UIViewController, UIPickerViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.picker.selectRow(self.valueToSelect.0 - 1, inComponent: 0, animated: false)
-        self.picker.selectRow(self.valueToSelect.1 - 1, inComponent: 1, animated: false)
+        self.picker.selectRow(self.valueToSelect.0, inComponent: 0, animated: false)
+        self.picker.selectRow(self.valueToSelect.1, inComponent: 1, animated: false)
     }
     
     @IBAction func cancel() {
@@ -34,9 +34,9 @@ final class DurationPickerViewController: UIViewController, UIPickerViewDataSour
     }
     
     @IBAction func save() {
-        let hours = self.picker.selectedRow(inComponent: 0) + 1
-        let minutes = self.picker.selectedRow(inComponent: 1) + 1
-        self.handler((hours, minutes))
+        let hours = self.picker.selectedRow(inComponent: 0)
+        let minutes = self.picker.selectedRow(inComponent: 1)
+        self.handler?((hours, minutes))
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -46,13 +46,13 @@ final class DurationPickerViewController: UIViewController, UIPickerViewDataSour
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch component {
-        case 0: return 22
-        case 1: return 58
+        case 0: return 24
+        case 1: return 60
         default: fatalError()
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "\(row + 1)"
+        return "\(row)"
     }
 }

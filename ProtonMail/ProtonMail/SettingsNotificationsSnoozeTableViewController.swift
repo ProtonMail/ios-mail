@@ -50,7 +50,8 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
     
     // properties
     
-    private lazy var notificationsSnoozer = UserNotificationsSnoozer()
+    private lazy var notificationsSnoozer = NotificationsSnoozer()
+    
     private var scheduledRules: [CalendarIntervalRule]? {
         didSet {
             self.schedule(self.scheduledRules)
@@ -105,7 +106,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
         switch model {
         case .quickSettings:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(GeneralSettingViewCell.self)", for: indexPath) as! GeneralSettingViewCell
-            cell.configCell("Snooze Notifications", right: self.notificationsSnoozer.overview(at: Date()))
+            cell.configCell("Snooze Notifications", right: self.notificationsSnoozer.overview(at: Date(), ofCase: .quick))
             cell.accessoryType = .disclosureIndicator
             return cell
             
@@ -153,7 +154,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
         
         switch model {
         case .quickSettings:
-            let dialog = self.notificationsSnoozer.quickOptionsDialog(for: Date()) { _ in
+            let dialog = self.notificationsSnoozer.quickOptionsDialog(for: Date(), toPresentOn: self) { _ in
                 self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
             }
             self.present(dialog, animated: true) {
@@ -196,7 +197,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
         guard let rules = rules else {
             return
         }
-        let configs = rules.map { UserNotificationsSnoozer.Configuration.scheduled(rule: $0) }
+        let configs = rules.map { NotificationsSnoozer.Configuration.scheduled(rule: $0) }
         self.notificationsSnoozer.add(configs)
     }
     
@@ -216,7 +217,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
     
     private func loadRawRulesFromSnoozer() {
         let usersRules: [CalendarIntervalRule] = self.notificationsSnoozer.configs(ofCase: .scheduled).compactMap { config in
-            guard case UserNotificationsSnoozer.Configuration.scheduled(rule: let rule) = config else {
+            guard case NotificationsSnoozer.Configuration.scheduled(rule: let rule) = config else {
                 return nil
             }
             return rule

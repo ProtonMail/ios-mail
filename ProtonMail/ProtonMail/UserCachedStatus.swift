@@ -321,12 +321,12 @@ extension UserCachedStatus {
         setValue(AppConstants.AskTouchID, forKey: Key.askEnableTouchID)
     }
     
-    var snoozeConfiguration: Array<UserNotificationsSnoozer.Configuration>? {
+    var snoozeConfiguration: Array<NotificationsSnoozerCore.Configuration>? {
         get {
             guard let rawConfig = getShared().data(forKey: Key.snoozeConfiguration) else {
                 return nil
             }
-            return try? PropertyListDecoder().decode(Array<UserNotificationsSnoozer.Configuration>.self, from: rawConfig)
+            return try? PropertyListDecoder().decode(Array<NotificationsSnoozerCore.Configuration>.self, from: rawConfig)
         }
         set {
             let rawConfig = try? PropertyListEncoder().encode(newValue)
