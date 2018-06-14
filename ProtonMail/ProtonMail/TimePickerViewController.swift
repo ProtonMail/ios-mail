@@ -9,18 +9,28 @@
 import UIKit
 
 @available(iOS 9.0, *)
-final class TimePickerViewController: UIViewController {
+final class TimePickerViewController: UIViewController, UINavigationBarDelegate {
     typealias ChangeHandler = (SelectedComponents)->Void
     typealias SelectedComponents = DateComponents
     
+    @IBOutlet weak var customNavigationItem: UINavigationItem!
     @IBOutlet weak var picker: UIDatePicker!
     private var handler: ChangeHandler!
     private var valueToSelect: SelectedComponents!
+    private var customTitle: String?
     
-    convenience init(select: SelectedComponents, changeHandler handler: @escaping ChangeHandler) {
+    convenience init(title: String? = nil,
+                     select: SelectedComponents,
+                     changeHandler handler: @escaping ChangeHandler)
+    {
         self.init(nibName: "\(TimePickerViewController.self)", bundle: .main)
         self.handler = handler
         self.valueToSelect = select
+        self.customTitle = title?.uppercased()
+    }
+    
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
     }
     
     override func viewDidLoad() {
@@ -30,6 +40,7 @@ final class TimePickerViewController: UIViewController {
                                          second: 0,
                                          of: Date())!
         self.picker.setDate(date, animated: false)
+        self.customNavigationItem.title = self.customTitle
     }
     
     @IBAction func cancel() {

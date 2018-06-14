@@ -24,6 +24,8 @@ final class SettingsWeekdaysTableViewController: UITableViewController {
         
         let nib = UINib(nibName: "\(GeneralSettingViewCell.self)", bundle: Bundle.main)
         self.tableView.register(nib, forCellReuseIdentifier: "\(GeneralSettingViewCell.self)")
+        
+        self.title = self.title?.localized.uppercased()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

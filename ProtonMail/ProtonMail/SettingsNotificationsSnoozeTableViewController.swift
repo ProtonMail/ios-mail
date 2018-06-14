@@ -68,6 +68,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Snooze Notifications".localized.uppercased()
         self.tableView.tableFooterView = UIView()
         
         let cellTypesToRegister = [GeneralSettingViewCell.self, SwitchTableViewCell.self, DomainsTableViewCell.self]
@@ -114,7 +115,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
         
         case .startTime:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(DomainsTableViewCell.self)", for: indexPath) as! DomainsTableViewCell
-            cell.domainText.text = "Start Time:".localized
+            cell.domainText.text = "Start Time".localized + ":"
             let start = self.scheduledRules!.first!.startMatching
             let date = Calendar.current.date(bySettingHour: start.hour!, minute: start.minute!, second: 0, of: Date())!
             cell.defaultMark.text = self.timeFormatter.string(from: date)
@@ -123,7 +124,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
  
         case .endTime:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(DomainsTableViewCell.self)", for: indexPath) as! DomainsTableViewCell
-            cell.domainText.text = "End Time:".localized
+            cell.domainText.text = "End Time".localized + ":"
             let end = self.scheduledRules!.first!.endMatching
             let date = Calendar.current.date(bySettingHour: end.hour!, minute: end.minute!, second: 0, of: Date())!
             cell.defaultMark.text = self.timeFormatter.string(from: date)
@@ -159,26 +160,30 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
         
         case .startTime:
             guard let anyRule = self.scheduledRules?.first else { return }
-            let picker = TimePickerViewController(select: anyRule.startMatching) { [weak self] newStart in
+            let picker = TimePickerViewController(title: "Start Time".localized, select: anyRule.startMatching) { [weak self] newStart in
                 self?.rawRulesModel?.setStart(hour: newStart.hour!, minute: newStart.minute!)
             }
             self.present(picker, animated: true, completion: nil)
             
         case .endTime:
             guard let anyRule = self.scheduledRules?.first else { return }
-            let picker = TimePickerViewController(select: anyRule.endMatching) { [weak self] newEnd in
+            let picker = TimePickerViewController(title: "End Time".localized, select: anyRule.endMatching) { [weak self] newEnd in
                 self?.rawRulesModel?.setEnd(hour: newEnd.hour!, minute: newEnd.minute!)
             }
             self.present(picker, animated: true, completion: nil)
             
         case .repeat:
-            if let controller = self.storyboard?.instantiateViewController(withIdentifier: "\(SettingsWeekdaysTableViewController.self)") as? SettingsWeekdaysTableViewController {
-                controller.set(handler: { [weak self] weekdays in
-                    self?.rawRulesModel?.weekdays = weekdays
-                })
-                controller.markWeekdaysAsSelected(Set(self.scheduledRules!.compactMap { $0.startMatching.weekday }))
-                self.navigationController?.pushViewController(controller, animated: true)
+            guard let controller = self.storyboard?.instantiateViewController(withIdentifier: "\(SettingsWeekdaysTableViewController.self)") as? SettingsWeekdaysTableViewController,
+                let weekdays = self.scheduledRules?.compactMap({ $0.startMatching.weekday }) else
+            {
+                return
             }
+            controller.markWeekdaysAsSelected(Set(weekdays))
+            controller.set() { [weak self] weekdays in
+                self?.rawRulesModel?.weekdays = weekdays
+            }
+            
+            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
     

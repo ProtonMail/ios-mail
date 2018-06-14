@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Settings Notifications Snooze Table View Controller-->
+        <!--Snooze Notifications-->
         <scene sceneID="GV5-ea-Lh6">
             <objects>
-                <tableViewController id="pWU-BY-dfH" customClass="SettingsNotificationsSnoozeTableViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Snooze Notifications" id="pWU-BY-dfH" customClass="SettingsNotificationsSnoozeTableViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="9d4-KX-SLL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -78,10 +78,10 @@
             </objects>
             <point key="canvasLocation" x="604" y="5383"/>
         </scene>
-        <!--Settings Weekdays Table View Controller-->
+        <!--Repeat-->
         <scene sceneID="72x-Bh-Tcq">
             <objects>
-                <tableViewController storyboardIdentifier="SettingsWeekdaysTableViewController" id="69A-DX-4nc" customClass="SettingsWeekdaysTableViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SettingsWeekdaysTableViewController" title="Repeat" id="69A-DX-4nc" customClass="SettingsWeekdaysTableViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="vRp-Xx-OgN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
