@@ -134,6 +134,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(GeneralSettingViewCell.self)", for: indexPath) as! GeneralSettingViewCell
             let weekdays = self.scheduledRules!.compactMap { Calendar.current.shortWeekdaySymbols[$0.startMatching.weekday!] }
             cell.configCell("Repeat".localized, right: weekdays.joined(separator: ", "))
+            cell.RightText.accessibilityLabel = self.scheduledRules!.compactMap({ Calendar.current.weekdaySymbols[$0.startMatching.weekday!] }).joined(separator: ", ")
             cell.accessoryType = .disclosureIndicator
             return cell
         }
