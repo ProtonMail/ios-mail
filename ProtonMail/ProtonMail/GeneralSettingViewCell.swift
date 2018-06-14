@@ -29,7 +29,7 @@ import UIKit
     }
 }
 
-extension GeneralSettingViewCell: IBDesignableCell {
+extension GeneralSettingViewCell: IBDesignableLabeled {
     override func prepareForInterfaceBuilder() {
         self.labelAtInterfaceBuilder()
     }

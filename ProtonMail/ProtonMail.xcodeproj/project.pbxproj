@@ -1383,8 +1383,8 @@
 		D82BC08E20CD07760006705A /* GeneralSettingViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82BC08C20CD07760006705A /* GeneralSettingViewCell.xib */; };
 		D82BC09020CD154E0006705A /* SwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82BC08F20CD154E0006705A /* SwitchTableViewCell.xib */; };
 		D82BC09120CD154E0006705A /* SwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82BC08F20CD154E0006705A /* SwitchTableViewCell.xib */; };
-		D82BC09320CD28410006705A /* IBDesignableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82BC09220CD28410006705A /* IBDesignableCell.swift */; };
-		D82BC09420CD28410006705A /* IBDesignableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82BC09220CD28410006705A /* IBDesignableCell.swift */; };
+		D82BC09320CD28410006705A /* IBDesignableLabeled.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82BC09220CD28410006705A /* IBDesignableLabeled.swift */; };
+		D82BC09420CD28410006705A /* IBDesignableLabeled.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82BC09220CD28410006705A /* IBDesignableLabeled.swift */; };
 		D82BC09620CD2A880006705A /* DomainsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82BC09520CD2A880006705A /* DomainsTableViewCell.xib */; };
 		D82BC09720CD2A880006705A /* DomainsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82BC09520CD2A880006705A /* DomainsTableViewCell.xib */; };
 		D880C74F20CAEFF600F41FB6 /* SettingsNotificationsSnooze.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D880C74E20CAEFF600F41FB6 /* SettingsNotificationsSnooze.storyboard */; };
@@ -1412,6 +1412,8 @@
 		D8C2B27720C4570C00979CBE /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
 		D8C2B27820C4570C00979CBE /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */; };
 		D8C2B27A20C4571B00979CBE /* CalendarIntervalRuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2B27920C4571A00979CBE /* CalendarIntervalRuleTests.swift */; };
+		D8C46D0E20D24293004F5011 /* SectionHeaderCustomizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C46D0D20D24293004F5011 /* SectionHeaderCustomizing.swift */; };
+		D8C46D0F20D24293004F5011 /* SectionHeaderCustomizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C46D0D20D24293004F5011 /* SectionHeaderCustomizing.swift */; };
 		D8F89BF020CFF8A100576842 /* SettingsWeekdaysTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F89BEF20CFF8A100576842 /* SettingsWeekdaysTableViewController.swift */; };
 		D8F89BF120CFF8A100576842 /* SettingsWeekdaysTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F89BEF20CFF8A100576842 /* SettingsWeekdaysTableViewController.swift */; };
 /* End PBXBuildFile section */
@@ -1982,7 +1984,7 @@
 		D82BC08920CCFCB80006705A /* SettingsNotificationsSnoozeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsSnoozeTableViewController.swift; sourceTree = "<group>"; };
 		D82BC08C20CD07760006705A /* GeneralSettingViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralSettingViewCell.xib; sourceTree = "<group>"; };
 		D82BC08F20CD154E0006705A /* SwitchTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchTableViewCell.xib; sourceTree = "<group>"; };
-		D82BC09220CD28410006705A /* IBDesignableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBDesignableCell.swift; sourceTree = "<group>"; };
+		D82BC09220CD28410006705A /* IBDesignableLabeled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBDesignableLabeled.swift; sourceTree = "<group>"; };
 		D82BC09520CD2A880006705A /* DomainsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DomainsTableViewCell.xib; sourceTree = "<group>"; };
 		D880C74E20CAEFF600F41FB6 /* SettingsNotificationsSnooze.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsNotificationsSnooze.storyboard; sourceTree = "<group>"; };
 		D889521320D11E9D0057FE17 /* TimePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerViewController.swift; sourceTree = "<group>"; };
@@ -1994,6 +1996,7 @@
 		D8C0E3E820D01831003C326A /* DurationPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DurationPickerViewController.xib; sourceTree = "<group>"; };
 		D8C2B27620C4570C00979CBE /* CalendarIntervalRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntervalRule.swift; sourceTree = "<group>"; };
 		D8C2B27920C4571A00979CBE /* CalendarIntervalRuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntervalRuleTests.swift; sourceTree = "<group>"; };
+		D8C46D0D20D24293004F5011 /* SectionHeaderCustomizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderCustomizing.swift; sourceTree = "<group>"; };
 		D8F89BEF20CFF8A100576842 /* SettingsWeekdaysTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWeekdaysTableViewController.swift; sourceTree = "<group>"; };
 		E0B6A30FB77748C2FB0174AA /* Pods_PushServiceDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PushServiceDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC5AB60FBA59317594F99CA /* libPods-PushDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3106,7 +3109,8 @@
 				076758791AA126E400F9AC9C /* StorageLimit.swift */,
 				D889521220D11E820057FE17 /* TimePickerViewController */,
 				751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */,
-				D82BC09220CD28410006705A /* IBDesignableCell.swift */,
+				D82BC09220CD28410006705A /* IBDesignableLabeled.swift */,
+				D8C46D0D20D24293004F5011 /* SectionHeaderCustomizing.swift */,
 				D89072A520C6923200A325DF /* NotificationsSnoozerCore.swift */,
 				D889521920D12DC30057FE17 /* NotificationsSnoozer.swift */,
 				7546BE541C8D4F9100FCEB0A /* TouchID.swift */,
@@ -5005,6 +5009,7 @@
 				7518393F1B3DCA3000C714A6 /* EventAPI.swift in Sources */,
 				7588BB401BFBE05A00EC8EFD /* SecureStore.swift in Sources */,
 				75DE3DF81C977683007C208E /* FeedbackHeadCell.swift in Sources */,
+				D8C46D0E20D24293004F5011 /* SectionHeaderCustomizing.swift in Sources */,
 				7528FF961FA7FE85005F66A3 /* NotificationCenter+KeyboardExtension.swift in Sources */,
 				075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */,
 				75252CE21FCE320C007972EF /* Dictionary+JSON+Extension.swift in Sources */,
@@ -5236,7 +5241,7 @@
 				75DF17AB1AB9051F008A032B /* StorageViewCell.swift in Sources */,
 				07DD68A51A97DE9F00ED130C /* APIService+AttachmentExtension.swift in Sources */,
 				07411D8E1AAA407A002A4611 /* AttachmentTableViewCell.swift in Sources */,
-				D82BC09320CD28410006705A /* IBDesignableCell.swift in Sources */,
+				D82BC09320CD28410006705A /* IBDesignableLabeled.swift in Sources */,
 				750AAAC81C2490DB00BAC444 /* SignUpPasswordViewController.swift in Sources */,
 				757F4A121E68F409001CDE71 /* LabelCreatingViewModelImple.swift in Sources */,
 				757945D61B66E38D004EEDCA /* MessageViewController.swift in Sources */,
@@ -6051,7 +6056,7 @@
 				75F22BEF1E83335100677E67 /* ToastMessageView.swift in Sources */,
 				75DE7CB81CAAEA4900F5443E /* FeedbackViewController.swift in Sources */,
 				7545083E1E14861E00265CD0 /* MailboxCaptchaViewController.swift in Sources */,
-				D82BC09420CD28410006705A /* IBDesignableCell.swift in Sources */,
+				D82BC09420CD28410006705A /* IBDesignableLabeled.swift in Sources */,
 				7512AA481F18035500D84955 /* String+Alert+Extension.swift in Sources */,
 				75DE7CBB1CAAEA4900F5443E /* TextInsetTextField.swift in Sources */,
 				75DE7CBE1CAAEA4900F5443E /* MailboxMessageCell.swift in Sources */,
@@ -6111,6 +6116,7 @@
 				75DE7D0E1CAAEA4900F5443E /* SignUpUserNameViewController.swift in Sources */,
 				75DE7D0F1CAAEA4900F5443E /* LoadingView.swift in Sources */,
 				75DE7D101CAAEA4900F5443E /* MBContactCollectionView.m in Sources */,
+				D8C46D0F20D24293004F5011 /* SectionHeaderCustomizing.swift in Sources */,
 				75DE7D131CAAEA4900F5443E /* OnePasswordExtension.m in Sources */,
 				75DE7D141CAAEA4900F5443E /* LabelsViewController.swift in Sources */,
 				75DE7D151CAAEA4900F5443E /* LabelsView.swift in Sources */,

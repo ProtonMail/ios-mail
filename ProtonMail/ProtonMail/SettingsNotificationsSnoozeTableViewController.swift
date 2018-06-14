@@ -9,12 +9,12 @@
 import UIKit
 
 @available (iOS 10, *)
-class SettingsNotificationsSnoozeTableViewController: UITableViewController {
+class SettingsNotificationsSnoozeTableViewController: UITableViewController, SectionHeaderCustomizing {
     
     // nested types
     
     private struct RawRulesModel {
-        var weekdays: Array<Int> = [1,2,3,4,5]
+        var weekdays: Array<Int> = [1,2,3,4,5] // default values
         var startHour: Int = 22
         var startMinute: Int = 00
         var endHour: Int = 08
@@ -30,14 +30,9 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
         }
     }
     private enum ViewModel {
-        case quickSettings
+        case quickSettings, scheduledToggle, startTime, endTime, `repeat`
         
-        case scheduledToggle
-        case startTime
-        case endTime
-        case `repeat`
-        
-        static var cellsLayout: Dictionary<IndexPath, ViewModel> = [
+        static var cellsLayout: Dictionary<IndexPath, ViewModel> = [ // this should be synced with cells order in storyboard
             .init(row: 0, section:0): .quickSettings,
             
             .init(row: 0, section:1): .scheduledToggle,
@@ -71,9 +66,6 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
         return formatter
     }()
     
-    
-    // methods
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.tableFooterView = UIView()
@@ -99,14 +91,14 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let model = ViewModel.cellsLayout[indexPath] else {
+        guard let layoutModel = ViewModel.cellsLayout[indexPath] else {
             fatalError()
         }
         
-        switch model {
+        switch layoutModel {
         case .quickSettings:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(GeneralSettingViewCell.self)", for: indexPath) as! GeneralSettingViewCell
-            cell.configCell("Snooze Notifications", right: self.notificationsSnoozer.overview(at: Date(), ofCase: .quick))
+            cell.configCell("Snooze Notifications".localized, right: self.notificationsSnoozer.overview(at: Date(), ofCase: .quick))
             cell.accessoryType = .disclosureIndicator
             return cell
             
@@ -115,14 +107,14 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
             cell.accessoryType = .none
             cell.selectionStyle = .none
             let scheduledIsOn = !self.notificationsSnoozer.configs(ofCase: .scheduled).isEmpty
-            cell.configCell("Scheduled", bottomLine: "", status: scheduledIsOn) { _, newStatus, _ in
+            cell.configCell("Scheduled".localized, bottomLine: "", status: scheduledIsOn) { _, newStatus, _ in
                 self.rawRulesModel = newStatus ? RawRulesModel() : nil
             }
             return cell
         
         case .startTime:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(DomainsTableViewCell.self)", for: indexPath) as! DomainsTableViewCell
-            cell.domainText.text = "Start Time:"
+            cell.domainText.text = "Start Time:".localized
             let start = self.scheduledRules!.first!.startMatching
             let date = Calendar.current.date(bySettingHour: start.hour!, minute: start.minute!, second: 0, of: Date())!
             cell.defaultMark.text = self.timeFormatter.string(from: date)
@@ -131,7 +123,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
  
         case .endTime:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(DomainsTableViewCell.self)", for: indexPath) as! DomainsTableViewCell
-            cell.domainText.text = "End Time:"
+            cell.domainText.text = "End Time:".localized
             let end = self.scheduledRules!.first!.endMatching
             let date = Calendar.current.date(bySettingHour: end.hour!, minute: end.minute!, second: 0, of: Date())!
             cell.defaultMark.text = self.timeFormatter.string(from: date)
@@ -141,18 +133,18 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
         case .repeat:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(GeneralSettingViewCell.self)", for: indexPath) as! GeneralSettingViewCell
             let weekdays = self.scheduledRules!.compactMap { Calendar.current.shortWeekdaySymbols[$0.startMatching.weekday!] }
-            cell.configCell("Repeat", right: weekdays.joined(separator: ", "))
+            cell.configCell("Repeat".localized, right: weekdays.joined(separator: ", "))
             cell.accessoryType = .disclosureIndicator
             return cell
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let model = ViewModel.cellsLayout[indexPath] else {
+        guard let layoutModel = ViewModel.cellsLayout[indexPath] else {
             fatalError()
         }
         
-        switch model {
+        switch layoutModel {
         case .quickSettings:
             let dialog = self.notificationsSnoozer.quickOptionsDialog(for: Date(), toPresentOn: self) { _ in
                 self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
@@ -166,14 +158,14 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
         
         case .startTime:
             guard let anyRule = self.scheduledRules?.first else { return }
-            let picker = TimePickerViewController.init(select: anyRule.startMatching) { [weak self] newStart in
+            let picker = TimePickerViewController(select: anyRule.startMatching) { [weak self] newStart in
                 self?.rawRulesModel?.setStart(hour: newStart.hour!, minute: newStart.minute!)
             }
             self.present(picker, animated: true, completion: nil)
             
         case .endTime:
             guard let anyRule = self.scheduledRules?.first else { return }
-            let picker = TimePickerViewController.init(select: anyRule.endMatching) { [weak self] newEnd in
+            let picker = TimePickerViewController(select: anyRule.endMatching) { [weak self] newEnd in
                 self?.rawRulesModel?.setEnd(hour: newEnd.hour!, minute: newEnd.minute!)
             }
             self.present(picker, animated: true, completion: nil)
@@ -189,6 +181,10 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        self.customize(header: view)
+    }
+
     
     // custom methods
     
@@ -206,11 +202,11 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController {
             return nil
         }
         
-        let endTimeOveflows = (rawRules.startHour > rawRules.endHour) ||
+        let endTimeOverflows = (rawRules.startHour > rawRules.endHour) ||
                               (rawRules.startHour == rawRules.endHour && rawRules.startMinute > rawRules.endMinute)
         let rules = rawRules.weekdays.map {
             CalendarIntervalRule(start: .init(hour: rawRules.startHour, minute: rawRules.startMinute, weekday: $0),
-                                 end: .init(hour: rawRules.endHour, minute: rawRules.endMinute, weekday: $0 + (endTimeOveflows ? 1 : 0)))
+                                 end: .init(hour: rawRules.endHour, minute: rawRules.endMinute, weekday: $0 + (endTimeOverflows ? 1 : 0)))
         }
         return rules
     }

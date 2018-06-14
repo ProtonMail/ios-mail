@@ -48,7 +48,7 @@ typealias switchActionBlock = (_ cell: SwitchTableViewCell?, _ newStatus: Bool, 
     }
 }
 
-extension SwitchTableViewCell: IBDesignableCell {
+extension SwitchTableViewCell: IBDesignableLabeled {
     override func prepareForInterfaceBuilder() {
         self.labelAtInterfaceBuilder()
     }

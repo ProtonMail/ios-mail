@@ -22,7 +22,7 @@ import UIKit
 
 }
 
-extension DomainsTableViewCell: IBDesignableCell {
+extension DomainsTableViewCell: IBDesignableLabeled {
     override func prepareForInterfaceBuilder() {
         self.labelAtInterfaceBuilder()
     }
