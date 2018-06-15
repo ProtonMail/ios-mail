@@ -33,7 +33,7 @@
                             </constraints>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ssn-2e-X6s" userLabel="background action">
-                            <rect key="frame" x="0.0" y="0.0" width="335" height="65"/>
+                            <rect key="frame" x="0.0" y="0.0" width="365" height="65"/>
                             <connections>
                                 <action selector="backgroundAction:" destination="-2" eventType="touchUpInside" id="9G7-Pq-DHd"/>
                             </connections>
@@ -46,7 +46,7 @@
                         <constraint firstAttribute="trailing" secondItem="y7u-Sb-7HT" secondAttribute="trailing" constant="16" id="DHa-EO-qaX"/>
                         <constraint firstItem="y7u-Sb-7HT" firstAttribute="leading" secondItem="uor-VI-44p" secondAttribute="trailing" constant="16" id="FWd-BO-cHU"/>
                         <constraint firstItem="ssn-2e-X6s" firstAttribute="leading" secondItem="yaY-1h-iLG" secondAttribute="leading" id="H3K-ne-UOl"/>
-                        <constraint firstItem="y7u-Sb-7HT" firstAttribute="leading" secondItem="ssn-2e-X6s" secondAttribute="trailing" id="PwK-f0-YmN"/>
+                        <constraint firstAttribute="trailing" secondItem="ssn-2e-X6s" secondAttribute="trailing" id="Htm-CH-JY9"/>
                         <constraint firstItem="uor-VI-44p" firstAttribute="top" secondItem="yaY-1h-iLG" secondAttribute="top" id="cON-F5-BZx"/>
                         <constraint firstItem="ssn-2e-X6s" firstAttribute="top" secondItem="yaY-1h-iLG" secondAttribute="top" id="sag-8G-Cr9"/>
                         <constraint firstAttribute="bottom" secondItem="ssn-2e-X6s" secondAttribute="bottom" id="veI-um-VIB"/>

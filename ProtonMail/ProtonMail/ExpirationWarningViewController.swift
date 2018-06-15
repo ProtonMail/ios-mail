@@ -108,6 +108,7 @@ class ExpirationWarningViewController : UIViewController {
     }
 
     @IBAction func sendAction(_ sender: Any) {
+        self.dismiss()
         delegate?.send()
     }
     

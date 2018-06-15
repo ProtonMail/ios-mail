@@ -35,6 +35,7 @@ class ExpirationWarningHeaderCell: UITableViewHeaderFooterView {
         headerLabel.text = title
         self.section = section
         self.expend = expend
+        self.updateImage()
     }
 
     func updateImage() {
