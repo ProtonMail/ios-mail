@@ -74,21 +74,20 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 if action == ComposeMessageAction.reply || action == ComposeMessageAction.replyAll {
                     if let title = self.message?.title {
                         if !title.hasRe() {
-                            let re = NSLocalizedString("Re:", comment: "Title")
+                            let re = LocalString._composer_short_reply
                             self.message?.title = "\(re) \(title)"
                         }
                     }
                 } else if action == ComposeMessageAction.forward {
                     if let title = self.message?.title {
                         if !title.hasFwd() {
-                            let fwd = NSLocalizedString("Fwd:", comment: "Title")
+                            let fwd = LocalString._composer_short_forward
                             self.message?.title = "\(fwd) \(title)"
                         }
                     }
                 } else {
                 }
             }
-            //PMLog.D(message!);
         }
         
         self.setSubject(self.message?.title ?? "")
@@ -141,10 +140,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
             if let atts = self.getAttachments() {
                 for att in atts {
                     do {
-                        guard let session = try att.sessionKey() else {
+                        guard let session = try att.getSession() else {
                             continue
                         }
-                        guard let newKeyPack = try session.getPublicSessionKeyPackage(key.public_key)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                        guard let newKeyPack = try session.getKeyPackage(strKey: key.publicKey)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
                             continue
                         }
                         
@@ -173,6 +172,47 @@ final class ComposeViewModelImpl : ComposeViewModel {
     
     override func getAddresses() -> [Address] {
         return sharedUserDataService.userAddresses
+    }
+    
+    override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?) -> Void)?) {
+        progress()
+        
+        let context = sharedCoreDataService.newManagedObjectContext()
+        async {
+            guard let c = model as? ContactVO else {
+                complete?(nil)
+                return
+            }
+            
+            guard let emial = model.displayEmail else {
+                complete?(nil)
+                return
+            }
+            let getEmail = UserEmailPubKeys(email: emial).run()
+            let getContact = sharedContactDataService.fetch(byEmails: [emial], context: context)
+            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
+                //internal emails
+                if keyRes.recipientType == 1 {
+                    if let contact = contacts.first, contact.firstPgpKey != nil {
+                        c.pgpType = .internal_trusted_key
+                    } else {
+                        c.pgpType = .internal_normal
+                    }
+                } else {
+                    if let contact = contacts.first, contact.firstPgpKey != nil {
+                        if contact.encrypt {
+                            c.pgpType = .pgp_encrypt_trusted_key
+                        } else if contact.sign {
+                            c.pgpType = .pgp_signed
+                        }
+                    }
+                }
+                complete?(c.lock)
+            }.catch({ (error) in
+                PMLog.D(error.localizedDescription)
+                complete?(nil)
+            })
+        }
     }
     
     override func getDefaultSendAddress() -> Address? {
@@ -299,7 +339,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
     override func sendMessage() {
         
         self.updateDraft()
-        sharedMessageDataService.send(self.message?.messageID)  { task, response, error in
+        sharedMessageDataService.send(inQueue: self.message?.messageID)  { task, response, error in
             
         }
         
@@ -385,7 +425,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
         let foot = "</body></html>"
         let htmlString = "\(defaultSignature) \(mobileSignature)"
         
-        
         if let msgAction = messageAction {
             switch msgAction
             {
@@ -416,8 +455,9 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingStyleHTML()
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
-                let on = NSLocalizedString("On", comment: "Title")
-                let at = NSLocalizedString("at", comment: "Title")
+                body = body.preg_replace("\r\n", replaceto: "")
+                let on = LocalString._composer_on
+                let at = LocalString._general_at_label
                 let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
                 let time : String! = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
                 let sn : String! = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
@@ -431,22 +471,22 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 replyHeader = replyHeader.stringByStrippingBodyStyle()
                 replyHeader = replyHeader.stringByPurifyHTML()
                 
-                let w = NSLocalizedString("wrote:", comment: "Title")
+                let w = LocalString._composer_wrote
                 let sp = "<div><br><div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
                 
                 return " \(head) \(htmlString) \(sp) \(body)</blockquote> \(foot)"
             case .forward:
-                let on = NSLocalizedString("On", comment: "Title")
-                let at = NSLocalizedString("at", comment: "Title")
+                let on = LocalString._composer_on
+                let at = LocalString._general_at_label
                 let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
                 let time = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
                 
-                let fwdm = NSLocalizedString("Forwarded message", comment: "Title")
-                let from = NSLocalizedString("From:", comment: "Title")
-                let dt = NSLocalizedString("Date:", comment: "Title")
-                let sj = NSLocalizedString("Subject:", comment: "Title")
-                let t = NSLocalizedString("To:", comment: "Title")
-                let c = NSLocalizedString("Cc:", comment: "Title")
+                let fwdm = LocalString._composer_fwd_message
+                let from = LocalString._general_from_label
+                let dt = LocalString._composer_date_field
+                let sj = LocalString._composer_subject_field
+                let t = LocalString._general_to_label
+                let c = LocalString._general_cc_label
                 var forwardHeader =
                 "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
                 
@@ -470,7 +510,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingStyleHTML()
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
-                
+                body = body.preg_replace("\r\n", replaceto: "")
                 var sp = "<blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
                 sp = sp.stringByStrippingStyleHTML()
                 sp = sp.stringByStrippingBodyStyle()

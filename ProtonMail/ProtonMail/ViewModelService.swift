@@ -12,10 +12,6 @@ import Foundation
 // this is abstract ViewModel service for tracking the ui flow
 class ViewModelService {
     
-    open func set<T : ViewModelProtocolNew>(vpm: T, val :T.argType) {
-        vpm.setViewModel(val)
-    }
-    
     func changeIndex() {
         fatalError("This method must be overridden")
     }
@@ -23,30 +19,31 @@ class ViewModelService {
     func buildComposer<T : ViewModelProtocolNew>(_ vpm: T, subject: String, content: String, files : [FileData]) {
         fatalError("This method must be overridden")
     }
-
-//    func newShareDraftViewModel(_ vmp : ViewModelProtocolNew, subject: String, content: String, files : [FileData]) {
-//        fatalError("This method must be overridden")
-//    }
     
-    func newDraftViewModel(_ vmp : ViewModelProtocol) {
+    
+    /// NewDraft
+    /// init normal new draft viewModel
+    /// - Parameter vmp: the ViewController based on ViewModelProtocal
+    func newDraft(vmp : ViewModelProtocolBase) {
         fatalError("This method must be overridden")
     }
     
-    func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO?) {
+    func newDraft(vmp : ViewModelProtocolBase, with contact: ContactVO?) {
+         fatalError("This method must be overridden")
+    }
+    
+    func newDraft(vmp : ViewModelProtocolBase, with mailTo : URL?) {
         fatalError("This method must be overridden")
     }
     
-    func newDraftViewModelWithMailTo(_ vmp : ViewModelProtocol, url: URL?) {
+    func openDraft(vmp: ViewModelProtocolBase, with msg: Message!) {
         fatalError("This method must be overridden")
     }
     
-    func openDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!) {
+    func newDraft(vmp: ViewModelProtocolBase, with msg: Message!, action: ComposeMessageAction) {
         fatalError("This method must be overridden")
     }
     
-    func actionDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
-        fatalError("This method must be overridden")
-    }
     
     //messgae detail part
     func messageDetails(fromList vmp : ViewModelProtocol) -> Void {
@@ -81,6 +78,10 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
+    func contactAddViewModel(_ vmp : ViewModelProtocol, contactVO: ContactVO!) {
+        fatalError("This method must be overridden")
+    }
+    
     func contactEditViewModel(_ vmp : ViewModelProtocol, contact: Contact!) {
         fatalError("This method must be overridden")
     }
@@ -89,16 +90,21 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    
-    //
-    func signOut() {
-        
+    ///////////////////////
+    ///
+    func upgradeAlert(signature vmp: ViewModelProtocolBase) {
+        fatalError("This method must be overridden")
+    }
+    ///
+    func upgradeAlert(contacts vmp: ViewModelProtocolBase) {
+        fatalError("This method must be overridden")
     }
     
+    
+    //
+    func signOut() { }
     func cleanLegacy() {
-        
         //get current version
-        
     }
 }
 

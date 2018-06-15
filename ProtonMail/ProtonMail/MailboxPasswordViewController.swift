@@ -50,11 +50,11 @@ class MailboxPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDecryptButton()
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("MAILBOX PASSWORD", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: LocalString._mailbox_password, attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
         
-        topTitleLabel.text = NSLocalizedString("DECRYPT MAILBOX", comment: "Title")
-        decryptButton.setTitle(NSLocalizedString("Decrypt", comment: "Action"), for: .normal)
-        resetMailboxPasswordAction.setTitle(NSLocalizedString("RESET MAILBOX PASSWORD", comment: "Action"), for: .normal)
+        topTitleLabel.text = LocalString._decrypt_mailbox
+        decryptButton.setTitle(LocalString._decrypt, for: .normal)
+        resetMailboxPasswordAction.setTitle(LocalString._reset_mailbox_password, for: .normal)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -176,16 +176,9 @@ class MailboxPasswordViewController: UIViewController {
                     try AuthCredential.setupToken(mailbox_password, isRememberMailbox: self.isRemembered)
                     MBProgressHUD.showAdded(to: view, animated: true)
                     sharedLabelsDataService.fetchLabels()
-                    sharedUserDataService.fetchUserInfo() { info, _, error in
+                    sharedUserDataService.fetchUserInfo().done(on: .main) { info in
                         MBProgressHUD.hide(for: self.view, animated: true)
-                        if error != nil {
-                            let alertController = error!.alertController()
-                            alertController.addOKAction()
-                            self.present(alertController, animated: true, completion: nil)
-                            if error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                                let _ = self.navigationController?.popViewController(animated: true)
-                            }
-                        } else if info != nil {
+                        if info != nil {
                             if info!.delinquent < 3 {
                                 userCachedStatus.pinFailedCount = 0;
                                 sharedUserDataService.setMailboxPassword(mailbox_password, keysalt: nil, isRemembered: self.isRemembered)
@@ -193,7 +186,7 @@ class MailboxPasswordViewController: UIViewController {
                                 self.loadContent()
                                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: self)
                             } else {
-                                let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.", comment: "error message when acction disabled").alertController() //here needs change to a clickable link
+                                let alertController = LocalString._general_account_disabled_non_payment.alertController() 
                                 alertController.addAction(UIAlertAction.okAction({ (action) -> Void in
                                     let _ = self.navigationController?.popViewController(animated: true)
                                 }))
@@ -204,17 +197,27 @@ class MailboxPasswordViewController: UIViewController {
                             alertController.addOKAction()
                             self.present(alertController, animated: true, completion: nil)
                         }
+                    }.catch(on: .main) { (error) in
+                        MBProgressHUD.hide(for: self.view, animated: true)
+                        if let error = error as NSError? {
+                            let alertController = error.alertController()
+                            alertController.addOKAction()
+                            self.present(alertController, animated: true, completion: nil)
+                            if error.domain == APIServiceErrorDomain && error.code == APIErrorCode.AuthErrorCode.localCacheBad {
+                                let _ = self.navigationController?.popViewController(animated: true)
+                            }
+                        }
                     }
                 } catch let ex as NSError {
                     MBProgressHUD.hide(for: self.view, animated: true)
-                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? NSLocalizedString("The mailbox password is incorrect.", comment: "Error")
-                    let alertController = UIAlertController(title: NSLocalizedString("Incorrect password", comment: "Title"), message: NSLocalizedString(message, comment: ""), preferredStyle: .alert)
+                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? LocalString._the_mailbox_password_is_incorrect
+                    let alertController = UIAlertController(title: LocalString._incorrect_password, message: NSLocalizedString(message, comment: ""), preferredStyle: .alert)
                     alertController.addOKAction()
                     present(alertController, animated: true, completion: nil)
                 }
             }
         } else {
-            let alert = UIAlertController(title: NSLocalizedString("Incorrect password", comment: "Title"), message: NSLocalizedString("The mailbox password is incorrect.", comment: "Error"), preferredStyle: .alert)
+            let alert = UIAlertController(title: LocalString._incorrect_password, message: LocalString._the_mailbox_password_is_incorrect, preferredStyle: .alert)
             alert.addAction((UIAlertAction.okAction()))
             present(alert, animated: true, completion: nil)
         }
@@ -248,7 +251,9 @@ class MailboxPasswordViewController: UIViewController {
     
     // MARK: - Actions
     @IBAction func resetMBPAction(_ sender: AnyObject) {
-        let alert = UIAlertController(title: NSLocalizedString("Alert", comment: "Title"), message: NSLocalizedString("To reset your mailbox password, please use the web version of ProtonMail at protonmail.com", comment: "Description"), preferredStyle: .alert)
+        let alert = UIAlertController(title: LocalString._general_alert_title,
+                                      message: LocalString._to_reset_your_mailbox_password_please_use_the_web_version_of_protonmail,
+                                      preferredStyle: .alert)
         alert.addAction((UIAlertAction.okAction()))
         present(alert, animated: true, completion: nil)
     }

@@ -10,6 +10,7 @@ import Foundation
 
 //*******************************************************************************************
 //ProtonMail API Doc : https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api.md
+//ProtonMail API Doc : http://185.70.40.19:3001/#messages-send-message-post
 //*******************************************************************************************
 
 
@@ -169,14 +170,17 @@ struct EventAPI {
 struct KeysAPI {
     static let path : String = AppConstants.API_PATH + "/keys"
     
-    //Update private keys only, use for mailbox password/single password updates PUT
+    /// Update private keys only, use for mailbox password/single password updates PUT
     static let v_update_private_key : Int = 3
     
-    //Setup keys for new account, private user [POST]
+    /// Setup keys for new account, private user [POST]
     static let v_setup_key : Int = 3
     
-    //Get key salts, locked route [GET]
+    /// Get key salts, locked route [GET]
     static let v_get_key_salts : Int = 3
+    
+    /// Get public keys [GET]
+    static let v_get_emails_pub_key : Int = 3
 }
 
 //Labels API
@@ -209,22 +213,39 @@ struct LabelAPI {
 //Doc: V1 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages.md
 //Doc: V3 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages_v3.md
 struct MessageAPI {
-    //TODO:: need to finish
     /// base message api path
     static let path :String = AppConstants.API_PATH + "/messages"
     
-    /// fetch message request version
-    static let V_MessageFetchRequest : Int = 1
+    //Get a list of message metadata [GET]
+    static let v_fetch_messages : Int = 3
+    
+    //Get grouped message count [GET]
+    static let v_message_count : Int = 3
     
     static let v_create_draft : Int = 3
     
     static let v_update_draft : Int = 3
     
-    static let V_MessageActionRequest : Int = 1
+    // inlcude read/unread
+    static let V_MessageActionRequest : Int = 3
     
-    static let V_MessageEmptyRequest : Int = 1
+    //Send a message [POST]
+    static let v_send_message : Int = 3
     
-    static let V_MessageSendRequest : Int = 1
+    //Label/move an array of messages [PUT]
+    static let v_label_move_msgs : Int = 3
+    
+    //Unlabel an array of messages [PUT]
+    static let v_unlabel_msgs : Int = 3
+    
+    //Delete all messages with a label/folder [DELETE]
+    static let v_empty_label_folder : Int = 3
+    
+    //Delete an array of messages [PUT]
+    static let v_delete_msgs : Int = 3
+    
+    //Undelete Messages [/messages/undelete]
+    static let v_undelete_msgs : Int = 3
 }
 
 //Organization API
@@ -237,8 +258,13 @@ struct OrganizationsAPI {
 }
 
 
-//Reports API
-//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md
+/**
+ [ProtonMail Reports API]:
+ https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md "Report bugs"
+ 
+ Reports API
+ - Doc: [ProtonMail Reports API]
+ */
 struct ReportsAPI {
     static let path :String = AppConstants.API_PATH + "/reports"
     
@@ -246,26 +272,45 @@ struct ReportsAPI {
     static let v_reports_bug : Int = 3
 }
 
-
+/**
+ [Settings API Part 1]:
+ https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_mail_settings.md
+ [Settings API Part 2]:
+ https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_settings.md
+ 
+ Settings API
+ - Doc: [Settings API Part 1], [Settings API Part 2]
+ */
 struct SettingsAPI {
     /// base settings api path
     static let path :String = AppConstants.API_PATH + "/settings"
     
-    static let v_get_settings : Int = 3
+    /// Get general settings [GET]
+    static let v_get_general_settings : Int = 3
     
-    //static let V_SettingsUpdateDomainRequest : Int = 1 departured
+    /// Turn on/off email notifications [PUT]
+    static let v_update_notify : Int = 3
     
-    static let V_SettingsUpdateNotifyRequest : Int = 1
+    /// Update email [PUT]
+    static let v_update_email : Int = 3
     
-    static let V_SettingsUpdateSwipeLeftRequest : Int = 1
-    static let V_SettingsUpdateSwipeRightRequest : Int = 1
+    /// Update swipe left flag [PUT]
+    static let v_update_swipe_left_right : Int = 3
     
-    static let V_SettingsUpdateNewsRequest : Int = 1
-    static let V_SettingsUpdateDisplayNameRequest : Int = 1
+    /// Update swipe right flag [PUT]
+    static let v_update_swipe_right_left : Int = 3
     
-    static let V_SettingsUpdateShowImagesRequest : Int = 1
+    /// Update newsletter subscription [PUT]
+    static let v_update_sub_news : Int = 3
     
-    static let V_SettingsUpdateLoginPasswordRequest : Int = 1
+    /// Update display name [PUT]
+    static let v_update_display_name : Int = 3
+    
+    /// Update images bits [PUT]
+    static let v_update_shwo_images : Int = 3
+    
+    /// Update login password [PUT]
+    static let v_update_login_password : Int = 3
 }
 
 //Users API
@@ -297,3 +342,4 @@ struct UsersAPI {
     
     static let V_GetUserPublicKeysRequest : Int = 2  //TODO:: need move to message
 }
+

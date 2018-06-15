@@ -45,7 +45,7 @@ final class MessageHelper {
             do {
                 message.encryptBody(body, mailbox_pwd: mailbox_pwd, error: nil)
                 if !encryptionPassword.isEmpty {
-                    if let encryptedBody = try body.encryptWithPassphrase(encryptionPassword) {
+                    if let encryptedBody = try body.encrypt(withPwd: encryptionPassword) {
                         message.isEncrypted = true
                         message.passwordEncryptedBody = encryptedBody
                     }
@@ -82,39 +82,7 @@ final class MessageHelper {
         if expirationTimeInterval > 0 {
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)
         }
-
         message.encryptBody(body, mailbox_pwd: mailbox_pwd, error: nil)
- 
-            //PMLog.D(" error: \(error)")
-        
-        
-        //        if !encryptionPassword.isEmpty {
-        //            if let encryptedBody = body.encryptWithPassphrase(encryptionPassword, error: &error) {
-        //                message.isEncrypted = true
-        //                message.passwordEncryptedBody = encryptedBody
-        //            } else {
-        //                PMLog.D(" encryption error: \(error)")
-        //            }
-        //        }
-        //
-        //        if let attachments = attachments {
-        //            for (index, attachment) in enumerate(attachments) {
-        //                if let image = attachment as? UIImage {
-        //                    if let fileData = UIImagePNGRepresentation(image) {
-        //                        let attachment = Attachment(context: context)
-        //                        attachment.attachmentID = "0"
-        //                        attachment.message = message
-        //                        attachment.fileName = "\(index).png"
-        //                        attachment.mimeType = "image/png"
-        //                        attachment.fileData = fileData
-        //                        attachment.fileSize = fileData.length
-        //                        continue
-        //                    }
-        //                }
-        //                let description = attachment.description ?? "unknown"
-        //                PMLog.D(" unsupported attachment type \(description)")
-        //            }
-        //        }
     }
 
     
@@ -130,5 +98,19 @@ final class MessageHelper {
             }
         }
         return lists.joined(separator: ",")
+    }
+    
+    static func contactsToAddressesArray (_ contacts : String!) -> [String]
+    {
+        var lists: [String] = []
+        let recipients : [[String : String]] = contacts.parseJson()!
+        for dict:[String : String] in recipients {
+            
+            let to = dict.getAddress()
+            if !to.isEmpty  {
+                lists.append(to)
+            }
+        }
+        return lists
     }
 }

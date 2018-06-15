@@ -39,10 +39,9 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
-        //self.displayNameField.delegate = self
     }
     
-    override func viewWillAppear(_ animated: Bool) { //TODO::
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
         
@@ -90,10 +89,10 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
                     if let addCell = cell as? ContactTypeAddCustomCell {
                         type = ContactFieldType.get(raw: addCell.getValue())
                     } else {
-                        type = ContactFieldType.get(raw: cell.textLabel?.text ?? NSLocalizedString("Custom", comment: "custom label type default") )
+                        type = ContactFieldType.get(raw: cell.textLabel?.text ?? LocalString._contacts_custom_type)
                     }
                 } else {
-                    type = ContactFieldType.get(raw: NSLocalizedString("Custom", comment: "custom label type default") )
+                    type = ContactFieldType.get(raw: LocalString._contacts_custom_type )
                 }
             }
             viewModel.updateType(t: type)
@@ -179,7 +178,7 @@ extension ContactTypeViewController: UITableViewDataSource {
         } else {
 //            if row == 0 {
 //                let addCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeAddCustomCell", for: indexPath) as! ContactTypeAddCustomCell
-//                addCell.configCell(v: NSLocalizedString("Add Custom Label", comment: "action"))
+//                addCell.configCell(v: LocalString._contacts_add_custom_label)
 //                return addCell
 //            } else if row == 1 {
             if row == 0 {

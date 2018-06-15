@@ -16,15 +16,15 @@ final public class FolderEditingViewModelImple : LabelEditViewModel {
     }
     
      override public func title() -> String {
-        return NSLocalizedString("Edit Folder", comment: "Title")
+        return LocalString._labels_edit_folder_title
     }
     
     override public func placeHolder() -> String {
-        return NSLocalizedString("Folder Name", comment: "folder editing editfeild place holder")
+        return LocalString._labels_folder_name_text
     }
     
     override public func rightButtonText() -> String {
-        return NSLocalizedString("Update", comment: "right top action button")
+        return LocalString._general_update_action
     }
     
     override public func name() -> String {

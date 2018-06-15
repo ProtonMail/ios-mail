@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 class ContactsViewModel : ViewModelTimer {
-    
+
     override init() { }
     
     func paidUser() -> Bool {

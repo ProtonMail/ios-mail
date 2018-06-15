@@ -61,7 +61,6 @@ final class ContactEditProfile {
 }
 
 
-
 final class ContactEditEmail: ContactEditTypeInterface {
     var origOrder : Int = 0
     var origType : ContactFieldType = .empty
@@ -72,11 +71,25 @@ final class ContactEditEmail: ContactEditTypeInterface {
     var newType : ContactFieldType = .empty
     var newEmail : String = ""
     
-    init(order: Int, type: ContactFieldType, email: String, isNew: Bool) {
+    var keys : [PMNIKey]?
+    var encrypt : PMNIPMEncrypt?
+    var sign : PMNIPMSign?
+    var scheme : PMNIPMScheme?
+    var mimeType: PMNIPMMimeType?
+    
+    init(order: Int, type: ContactFieldType, email: String, isNew: Bool,
+        keys : [PMNIKey]?, encrypt : PMNIPMEncrypt?, sign : PMNIPMSign?, scheme : PMNIPMScheme?, mimeType: PMNIPMMimeType?) {
         self.newOrder = order
         self.newType = type
         self.newEmail = email
         self.origOrder = self.newOrder
+        
+        //
+        self.keys = keys
+        self.encrypt = encrypt
+        self.sign = sign
+        self.scheme = scheme
+        self.mimeType = mimeType
         
         self.isNew = isNew
         if !self.isNew {

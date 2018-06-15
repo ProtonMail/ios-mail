@@ -53,6 +53,22 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         return results
     }
     
+    var headerKeyValues: [String: String] {
+        var results: [String: String] = [:]
+        guard let normalBody = self.body.removingPercentEncoding else {
+            return results
+        }
+        let components = normalBody.components(separatedBy: ";")
+        for component in components {
+            let pieces = component.components(separatedBy: "=")
+            guard pieces.count >= 2 else { continue }
+            let key = pieces[0].trimmingCharacters(in: .quotes).components(separatedBy: .whitespaces).last!
+            let arrary = Array(pieces[1...])
+            results[key] = arrary.joined(separator: "=").trimmingCharacters(in: .quotes).trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return results
+    }
+    
     var boundaryValue: String? {
         for (key, value) in self.keyValues {
             if key.contains("boundary") {

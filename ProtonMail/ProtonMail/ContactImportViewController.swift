@@ -57,11 +57,11 @@ class ContactImportViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         progressView.progress = 0.0
-        titleLabel.text = NSLocalizedString("Importing Contacts", comment: "import contact title")
+        titleLabel.text = LocalString._contacts_import_title
         if #available(iOS 9.0, *) {
             delay(0.5) {
                 self.fetchedResultsController = self.getFetchedResultsController()
-                self.messageLabel.text = NSLocalizedString("Reading device contacts data...", comment: "Title")
+                self.messageLabel.text = LocalString._contacts_reading_contacts_data
                 self.getContacts()
             }
         } else {
@@ -85,15 +85,16 @@ class ContactImportViewController: UIViewController {
             return
         }
         
-        let alertController = UIAlertController(title: NSLocalizedString("Contacts", comment: "Action"),
-                                                message: NSLocalizedString("Do you want to cancel the process?", comment: "Description"),
+        let alertController = UIAlertController(title: LocalString._contacts_title,
+                                                message: LocalString._contacts_import_cancel_wanring,
                                                 preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Action"), style: .destructive, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action,
+                                                style: .destructive, handler: { (action) -> Void in
             self.showedCancel = false
             self.cancelled = true
             self.dismiss()
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: {(action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: {(action) -> Void in
             self.showedCancel = false
         }))
         self.present(alertController, animated: true, completion: nil)
@@ -187,7 +188,7 @@ class ContactImportViewController: UIViewController {
                 for contact in contacts {
                     if self.cancelled {
                         {
-                            self.messageLabel.text = NSLocalizedString("Cancelling", comment: "Title")
+                            self.messageLabel.text = LocalString._contacts_cancelling_title
                         } ~> .main
                         return
                     }
@@ -216,7 +217,7 @@ class ContactImportViewController: UIViewController {
                             guard let vcard2 = PMNIVCard.createInstance() else {
                                 continue
                             }
-                            var defaultName = NSLocalizedString("Unknown", comment: "title, default display name")
+                            var defaultName = LocalString._general_unknown_title
                             let emails = vcard3.getEmails()
                             var vcard2Emails: [PMNIEmail] = []
                             var i : Int = 1
@@ -270,9 +271,10 @@ class ContactImportViewController: UIViewController {
                                     continue //with error
                                 }
                                 
-                                let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                                               plainText: vcard2Str,
-                                                                               passphras: sharedUserDataService.mailboxPassword!)
+                                let signed_vcard2 = try sharedOpenPGP.signTextDetached(vcard2Str,
+                                                                                       privateKey: userkey.private_key,
+                                                                                       passphrase: sharedUserDataService.mailboxPassword!,
+                                                                                       trim: true)
                                 
                                 //card 2 object
                                 let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
@@ -287,12 +289,13 @@ class ContactImportViewController: UIViewController {
                                 guard let vcard3Str = try vcard3.write() else {
                                     continue
                                 }
-                                let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "")
-                                let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                                               plainText: vcard3Str,
-                                                                               passphras: sharedUserDataService.mailboxPassword!)
+                                let encrypted_vcard3 = try vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", mailbox_pwd: "")
+                                let signed_vcard3 = try sharedOpenPGP.signTextDetached(vcard3Str,
+                                                                                       privateKey: userkey.private_key,
+                                                                                       passphrase: sharedUserDataService.mailboxPassword!,
+                                                                                       trim: true)
                                 //card 3 object
-                                let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
+                                let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3)
                                 
                                 let cards : [CardData] = [card2, card3]
                                 
@@ -312,7 +315,7 @@ class ContactImportViewController: UIViewController {
                 let pre_count = pre_contacts.count
                 if self.cancelled {
                     {
-                        self.messageLabel.text = NSLocalizedString("Cancelling", comment: "Title")
+                        self.messageLabel.text = LocalString._contacts_cancelling_title
                     } ~> .main
                     return
                 }
@@ -342,10 +345,11 @@ class ContactImportViewController: UIViewController {
                         if error.isEmpty {
                             self.dismiss()
                         } else {
-                            let alertController = UIAlertController(title: NSLocalizedString("Import Error", comment: "Action"),
+                            let alertController = UIAlertController(title: LocalString._contacts_import_error,
                                                                     message: error,
                                                                     preferredStyle: .alert)
-                            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Action"), style: .default, handler: {(action) -> Void in
+                            alertController.addAction(UIAlertAction(title: LocalString._general_ok_action,
+                                                                    style: .default, handler: {(action) -> Void in
                                 self.dismiss()
                             }))
                             self.present(alertController, animated: true, completion: nil)
@@ -356,7 +360,7 @@ class ContactImportViewController: UIViewController {
             } else {
                 {
                     self.finished = true
-                    self.messageLabel.text = NSLocalizedString("All contacts are imported", comment: "Title")
+                    self.messageLabel.text = LocalString._contacts_all_imported
                     self.dismiss()
                 } ~> .main
             }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,7 +14,7 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipientCell" rowHeight="14" id="KGk-i7-Jjw" customClass="RecipientCell" customModule="ProtonMail" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+            <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="29.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -28,7 +28,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;andy@protonmail.ch&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EjN-Jc-zzM">
-                        <rect key="frame" x="0.0" y="16" width="320" height="12"/>
+                        <rect key="frame" x="0.0" y="16" width="115" height="12"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="12" id="Hfh-LN-HnV"/>
                         </constraints>
@@ -36,21 +36,78 @@
                         <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_right_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="ySx-ow-9jF">
+                        <rect key="frame" x="118" y="16" width="14" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="14" id="EDa-bL-9wV"/>
+                            <constraint firstAttribute="height" constant="14" id="JVr-V0-FTk"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nAQ-Pg-FbD">
+                        <rect key="frame" x="0.0" y="7" width="132" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="veL-ZB-38c"/>
+                        </constraints>
+                        <connections>
+                            <action selector="arrowAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="z89-AM-oKS"/>
+                        </connections>
+                    </button>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="qtT-xZ-Xve">
+                        <rect key="frame" x="136" y="9.5" width="20" height="20"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </activityIndicatorView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MbF-RD-l2T" userLabel="lock button">
+                        <rect key="frame" x="135" y="13.5" width="24" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="24" id="PvZ-hV-L4C"/>
+                            <constraint firstAttribute="height" constant="16" id="Qu4-YE-vVn"/>
+                        </constraints>
+                        <connections>
+                            <action selector="lockIconAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="8KD-nD-Xcx"/>
+                        </connections>
+                    </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pgp_encrypt_trusted_key" translatesAutoresizingMaskIntoConstraints="NO" id="UiL-Gg-eL0">
+                        <rect key="frame" x="139" y="15" width="14" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="14" id="Ges-hm-CaL"/>
+                            <constraint firstAttribute="height" constant="14" id="fSP-La-XpK"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="EjN-Jc-zzM" secondAttribute="trailing" id="3qn-pF-Zt9"/>
+                    <constraint firstItem="UiL-Gg-eL0" firstAttribute="leading" secondItem="ySx-ow-9jF" secondAttribute="trailing" constant="7" id="35B-sR-U2g"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="EjN-Jc-zzM" secondAttribute="trailing" priority="900" id="3qn-pF-Zt9"/>
                     <constraint firstItem="RiM-Rv-HcN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="9En-y3-TsE"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="MbF-RD-l2T" secondAttribute="trailing" id="BiZ-Kd-CRI"/>
+                    <constraint firstItem="qtT-xZ-Xve" firstAttribute="centerX" secondItem="UiL-Gg-eL0" secondAttribute="centerX" id="D2C-oq-8vG"/>
+                    <constraint firstAttribute="bottom" secondItem="qtT-xZ-Xve" secondAttribute="bottom" id="EZg-U9-g7P"/>
+                    <constraint firstAttribute="bottom" secondItem="MbF-RD-l2T" secondAttribute="bottom" id="KaI-Yx-4Ag"/>
+                    <constraint firstItem="nAQ-Pg-FbD" firstAttribute="trailing" secondItem="ySx-ow-9jF" secondAttribute="trailing" id="L1o-qt-zgJ"/>
                     <constraint firstItem="RiM-Rv-HcN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Twl-Lu-L9A"/>
+                    <constraint firstAttribute="bottom" secondItem="UiL-Gg-eL0" secondAttribute="bottom" id="c3Y-pN-eka"/>
+                    <constraint firstAttribute="bottom" secondItem="ySx-ow-9jF" secondAttribute="bottom" id="hZs-mB-T1p"/>
+                    <constraint firstItem="nAQ-Pg-FbD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="hos-CX-xuq"/>
                     <constraint firstAttribute="trailing" secondItem="RiM-Rv-HcN" secondAttribute="trailing" id="irj-qr-5AE"/>
+                    <constraint firstItem="MbF-RD-l2T" firstAttribute="leading" secondItem="ySx-ow-9jF" secondAttribute="trailing" constant="3" id="mZj-X0-kIG"/>
+                    <constraint firstAttribute="bottom" secondItem="nAQ-Pg-FbD" secondAttribute="bottom" id="mkl-J4-Liq"/>
                     <constraint firstItem="EjN-Jc-zzM" firstAttribute="top" secondItem="RiM-Rv-HcN" secondAttribute="bottom" id="nKB-sY-bx9"/>
                     <constraint firstItem="EjN-Jc-zzM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="pWA-ui-A0b"/>
+                    <constraint firstItem="ySx-ow-9jF" firstAttribute="leading" secondItem="EjN-Jc-zzM" secondAttribute="trailing" constant="3" id="v4Y-cq-Zbc"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="activityView" destination="qtT-xZ-Xve" id="00A-Am-6LB"/>
+                <outlet property="arrowButton" destination="nAQ-Pg-FbD" id="npR-iW-FBI"/>
                 <outlet property="email" destination="EjN-Jc-zzM" id="m5n-XM-voT"/>
+                <outlet property="lockButton" destination="MbF-RD-l2T" id="DYJ-ff-rgb"/>
+                <outlet property="lockImage" destination="UiL-Gg-eL0" id="7Td-C7-87X"/>
                 <outlet property="senderName" destination="RiM-Rv-HcN" id="9Iz-2b-QEm"/>
             </connections>
             <point key="canvasLocation" x="28" y="105"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="mail_right_arrow" width="16" height="16"/>
+        <image name="pgp_encrypt_trusted_key" width="16" height="16"/>
+    </resources>
 </document>

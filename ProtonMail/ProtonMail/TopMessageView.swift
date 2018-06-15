@@ -30,7 +30,7 @@ class TopMessageView : PMView {
     }
     
     override func setup() {
-        closeButton.setTitle(NSLocalizedString("Retry", comment: "Action"), for: .normal)
+        closeButton.setTitle(LocalString._retry, for: .normal)
     }
     
     func updateMessage(newMessage message: String) -> CGFloat {

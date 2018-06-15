@@ -24,26 +24,26 @@ PODS:
   - Masonry (1.1.0)
   - MBProgressHUD (0.9.2)
   - MCSwipeTableViewCell (2.1.4)
-  - NSDate+Helper (1.0.4)
+  - "NSDate+Helper (1.0.4)"
   - OpenPGP (1.0.5):
     - OpenSSL
   - OpenSSL (1.0.210)
-  - PromiseKit (6.2.3):
-    - PromiseKit/CorePromise (= 6.2.3)
-    - PromiseKit/Foundation (= 6.2.3)
-    - PromiseKit/UIKit (= 6.2.3)
-  - PromiseKit/CorePromise (6.2.3)
-  - PromiseKit/Foundation (6.2.3):
+  - PromiseKit (6.3.0):
+    - PromiseKit/CorePromise (= 6.3.0)
+    - PromiseKit/Foundation (= 6.3.0)
+    - PromiseKit/UIKit (= 6.3.0)
+  - PromiseKit/CorePromise (6.3.0)
+  - PromiseKit/Foundation (6.3.0):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.2.3):
+  - PromiseKit/UIKit (6.3.0):
     - PromiseKit/CorePromise
   - RHAddressBook (1.1.1)
   - SWRevealViewController (2.3.0)
   - UICKeyChainStore (2.1.1)
-  - UIColor+Hex (1.0.1):
-    - UIColor+Hex/NSColor (= 1.0.1)
-    - UIColor+Hex/UIColor (= 1.0.1)
-  - UIColor+Hex/UIColor (1.0.1)
+  - "UIColor+Hex (1.0.1)":
+    - "UIColor+Hex/NSColor (= 1.0.1)"
+    - "UIColor+Hex/UIColor (= 1.0.1)"
+  - "UIColor+Hex/UIColor (1.0.1)"
   - ZSSRichTextEditor (0.5.2.1)
 
 DEPENDENCIES:
@@ -54,32 +54,47 @@ DEPENDENCIES:
   - Masonry (= 1.1.0)
   - MBProgressHUD (= 0.9.2)
   - MCSwipeTableViewCell (~> 2.1.4)
-  - NSDate+Helper (from `https://github.com/ProtonMail/nsdate-helper.git`, branch `master`)
+  - "NSDate+Helper (from `https://github.com/ProtonMail/nsdate-helper.git`, branch `master`)"
   - OpenPGP (from `../OpenPGP`)
   - PromiseKit (~> 6.0)
   - RHAddressBook (= 1.1.1)
   - SWRevealViewController (= 2.3.0)
   - UICKeyChainStore (= 2.1.1)
-  - UIColor+Hex (= 1.0.1)
+  - "UIColor+Hex (= 1.0.1)"
   - ZSSRichTextEditor (from `../ZSSRichTextEditor`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - AFNetworking
+    - AwaitKit
+    - Groot
+    - Masonry
+    - MBProgressHUD
+    - MCSwipeTableViewCell
+    - OpenSSL
+    - PromiseKit
+    - RHAddressBook
+    - SWRevealViewController
+    - UICKeyChainStore
+    - "UIColor+Hex"
 
 EXTERNAL SOURCES:
   AFNetworkActivityLogger:
     :branch: 3_0_0
     :git: https://github.com/AFNetworking/AFNetworkActivityLogger.git
-  NSDate+Helper:
+  "NSDate+Helper":
     :branch: master
     :git: https://github.com/ProtonMail/nsdate-helper.git
   OpenPGP:
-    :path: ../OpenPGP
+    :path: "../OpenPGP"
   ZSSRichTextEditor:
-    :path: ../ZSSRichTextEditor
+    :path: "../ZSSRichTextEditor"
 
 CHECKOUT OPTIONS:
   AFNetworkActivityLogger:
     :commit: b7cce59a369788c409d218e8dab7f381a858cee4
     :git: https://github.com/AFNetworking/AFNetworkActivityLogger.git
-  NSDate+Helper:
+  "NSDate+Helper":
     :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
     :git: https://github.com/ProtonMail/nsdate-helper.git
 
@@ -91,16 +106,16 @@ SPEC CHECKSUMS:
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
-  NSDate+Helper: 78f517ac1c67914096433466fa7d20b812b9d86c
+  "NSDate+Helper": 78f517ac1c67914096433466fa7d20b812b9d86c
   OpenPGP: 1462a488aa857e65e3a9b810867032f80aee1009
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
-  PromiseKit: 62f37bb4900a9b0b7550d017e41497171d93face
+  PromiseKit: cf84bbb1235a61473b326c5cf0b41f6828f87ba5
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
-  UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
+  "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: 53fd660ed37df3ccc3752ab15a04a4fdca35e6d2
 
-PODFILE CHECKSUM: 169613d5ce36243656f3a22ebfe69d41dc784fc0
+PODFILE CHECKSUM: f41b4772d8ffeb801f7901b287707964acb2b478
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0

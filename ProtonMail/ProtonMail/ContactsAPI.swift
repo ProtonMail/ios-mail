@@ -247,7 +247,7 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
             "Contacts" : contacts,
             "Overwrite": 1, // when UID conflict, 0 = error, 1 = overwrite
             "Groups": 1, // import groups if present, will silently skip if group does not exist
-            "Labels": 1 // import
+            "Labels": 0 // import Notes: change to 0 for now , we need change to 1 later
         ]
     }
 }

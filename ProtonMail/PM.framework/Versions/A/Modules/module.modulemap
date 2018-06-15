@@ -1,0 +1,8 @@
+framework module "Pm" {
+	header "ref.h"
+    header "Pm.objc.h"
+    header "universe.objc.h"
+    header "Pm.h"
+
+    export *
+}

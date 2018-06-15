@@ -10,7 +10,7 @@ import Foundation
 
 
 // Mark : get addresses
-final class GetAddressesRequest : ApiRequest<AddressesResponse> {
+final class GetAddressesRequest : ApiRequestNew<AddressesResponse> {
     
     override func path() -> String {
         return AddressesAPI.path + AppConstants.DEBUG_OPTION
@@ -124,7 +124,6 @@ final class AddressesResponse : ApiResponse {
             for key_res in address_keys {
                 keys.append(Key(
                     key_id: key_res["ID"] as? String,
-                    public_key: key_res["PublicKey"] as? String,
                     private_key: key_res["PrivateKey"] as? String,
                     fingerprint: key_res["Fingerprint"] as? String,
                     isupdated: false))

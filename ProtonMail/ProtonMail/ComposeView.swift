@@ -10,14 +10,14 @@ import UIKit
 import Masonry
 
 protocol ComposeViewDelegate {
-    func ComposeViewDidSizeChanged(_ size: CGSize)
+    func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool)
     func ComposeViewDidOffsetChanged(_ offset: CGPoint)
     func composeViewDidTapNextButton(_ composeView: ComposeView)
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView)
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView)
     
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
+    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker)
+    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: ContactPicker)
     
     func composeViewHideExpirationView(_ composeView: ComposeView)
     func composeViewCancelExpirationData(_ composeView: ComposeView)
@@ -25,22 +25,20 @@ protocol ComposeViewDelegate {
     func composeViewCollectExpirationData(_ composeView: ComposeView)
     
     func composeViewPickFrom(_ composeView: ComposeView)
+
+    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
 }
 
 protocol ComposeViewDataSource {
-    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [Any]!
-    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [Any]!
+    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol]
+    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol]
 }
 
 class ComposeView: UIViewController {
     
-    var pickerHeight : CGFloat = 0;
+    var pickerHeight : CGFloat = 0.0
     
-    let kConfirmError : String = NSLocalizedString("Message password does not match.", comment: "Error")
-    let kEmptyEOPWD : String = NSLocalizedString("Password cannot be empty.", comment: "Error")
-    let kExpirationNeedsPWDError : String = NSLocalizedString("Please set a password.", comment: "Description")
-    
-    var toContactPicker: MBContactPicker!
+    var toContactPicker: ContactPicker!
     var toContacts: String {
         return toContactPicker.contactList
     }
@@ -62,6 +60,61 @@ class ComposeView: UIViewController {
         }
         
         return false
+    }
+    
+    var hasNonePMEmails : Bool {
+        let toHas = toContactPicker.hasNonePM
+        if (toHas) {
+            return true;
+        }
+        
+        let ccHas = ccContactPicker.hasNonePM
+        if (ccHas) {
+            return true;
+        }
+        
+        let bccHas = bccContactPicker.hasNonePM
+        if (bccHas) {
+            return true;
+        }
+        
+        return false
+    }
+ 
+
+    var hasPGPPinned : Bool {
+        let toHas = toContactPicker.hasPGPPinned
+        if (toHas) {
+            return true;
+        }
+        
+        let ccHas = ccContactPicker.hasPGPPinned
+        if (ccHas) {
+            return true;
+        }
+        
+        let bccHas = bccContactPicker.hasPGPPinned
+        if (bccHas) {
+            return true;
+        }
+        
+        return false
+    }
+    
+    var nonePMEmails : [String] {
+        var out : [String] = [String]()
+        out.append(contentsOf: toContactPicker.nonePMEmails)
+        out.append(contentsOf: ccContactPicker.nonePMEmails)
+        out.append(contentsOf: bccContactPicker.nonePMEmails)
+        return out
+    }
+    
+    var pgpEmails : [String] {
+        var out : [String] = [String]()
+        out.append(contentsOf: toContactPicker.pgpEmails)
+        out.append(contentsOf: ccContactPicker.pgpEmails)
+        out.append(contentsOf: bccContactPicker.pgpEmails)
+        return out
     }
     
     var allEmails : String {  // email,email,email
@@ -89,11 +142,11 @@ class ComposeView: UIViewController {
     
     
     
-    var ccContactPicker: MBContactPicker!
+    var ccContactPicker: ContactPicker!
     var ccContacts: String {
         return ccContactPicker.contactList
     }
-    var bccContactPicker: MBContactPicker!
+    var bccContactPicker: ContactPicker!
     var bccContacts: String {
         return bccContactPicker.contactList
     }
@@ -143,7 +196,7 @@ class ComposeView: UIViewController {
     var selfView : UIView!
     
     // MARK: - Constants
-    fileprivate let kDefaultRecipientHeight = 44
+    fileprivate let kDefaultRecipientHeight : Int = 44
     fileprivate let kErrorMessageHeight: CGFloat = 48.0
     fileprivate let kNumberOfColumnsInTimePicker: Int = 2
     fileprivate let kNumberOfDaysInTimePicker: Int = 30
@@ -162,10 +215,9 @@ class ComposeView: UIViewController {
         super.viewDidLoad()
         self.selfView = self.view;
         
-        
-        fromLable.text = NSLocalizedString("From", comment: "Title")
-        subject.placeholder = NSLocalizedString("Subject", comment: "Placeholder")
-        encryptedPasswordTextField.placeholder = NSLocalizedString("Define Expiration Date", comment: "Placeholder")
+        fromLable.text = LocalString._composer_from_label
+        subject.placeholder = LocalString._composer_subject_placeholder
+        encryptedPasswordTextField.placeholder = LocalString._composer_define_expiration_placeholder
         
         self.configureContactPickerTemplate()
         self.includeButtonBorder(encryptedButton)
@@ -229,7 +281,7 @@ class ComposeView: UIViewController {
     @IBAction func expirationButtonTapped(_ sender: UIButton) {
         self.hidePasswordAndConfirmDoesntMatch()
         self.view.endEditing(true)
-        self.toContactPicker.becomeFirstResponder()
+        let _ = self.toContactPicker.becomeFirstResponder()
         UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
             self.passwordView.alpha = 0.0
             self.buttonView.alpha = 0.0
@@ -241,7 +293,7 @@ class ComposeView: UIViewController {
             self.subject.isUserInteractionEnabled = false
             
             self.showExpirationPicker()
-            self.toContactPicker.resignFirstResponder()
+            let _ = self.toContactPicker.resignFirstResponder()
         })
     }
     
@@ -313,22 +365,18 @@ class ComposeView: UIViewController {
     }
     
     fileprivate func configureContactPickerTemplate() {
-        MBContactCollectionViewContactCell.appearance().tintColor = UIColor.ProtonMail.Blue_6789AB
-        MBContactCollectionViewContactCell.appearance().font = Fonts.h6.light
-        MBContactCollectionViewPromptCell.appearance().font = Fonts.h6.light
-        MBContactCollectionViewEntryCell.appearance().font = Fonts.h6.light
+        ContactCollectionViewContactCell.appearance().tintColor = UIColor.ProtonMail.Blue_6789AB
+        ContactCollectionViewContactCell.appearance().font = Fonts.h6.light
+        ContactCollectionViewPromptCell.appearance().font = Fonts.h6.light
+        ContactCollectionViewEntryCell.appearance().font = Fonts.h6.light
     }
     
     ///
-    internal func notifyViewSize(_ animation : Bool)
-    {
+    internal func notifyViewSize(_ animation : Bool) {
         UIView.animate(withDuration: animation ? self.kAnimationDuration : 0, delay:0, options: UIViewAnimationOptions(), animations: {
             self.updateViewSize()
-            PMLog.D("\(self.buttonView.frame)")
-            PMLog.D("\(self.expirationView.frame)")
-            PMLog.D("\(self.passwordView.frame)")
             let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height + self.pickerHeight)
-            self.delegate?.ComposeViewDidSizeChanged(size)
+            self.delegate?.ComposeViewDidSizeChanged(size, showPicker: self.pickerHeight > 0.0)
             }, completion: nil)
     }
     
@@ -340,8 +388,7 @@ class ComposeView: UIViewController {
         
     }
     
-    internal func plusButtonHandle()
-    {
+    internal func plusButtonHandle() {
         if (isShowingCcBccView) {
             UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
                 self.fakeContactPickerHeightConstraint.constant = self.toContactPicker.currentContentHeight
@@ -371,14 +418,9 @@ class ComposeView: UIViewController {
         self.delegate?.composeViewDidTapNextButton(self)
     }
     
-    internal func showDefinePasswordView() {
-        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Password", comment: "place holder")
-        self.encryptedPasswordTextField.isSecureTextEntry = true
-        self.encryptedPasswordTextField.text = ""
-    }
     
     internal func showConfirmPasswordView() {
-        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Confirm Password", comment: "Title")
+        self.encryptedPasswordTextField.placeholder = LocalString._composer_eo_confirm_pwd_placeholder
         self.encryptedPasswordTextField.isSecureTextEntry = true
         self.encryptedPasswordTextField.text = ""
     }
@@ -391,7 +433,7 @@ class ComposeView: UIViewController {
     
     internal func showEncryptionDone() {
         didTapEncryptedDismissButton(encryptedButton)
-        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Password", comment: "place holder")
+        self.encryptedPasswordTextField.placeholder = LocalString._composer_define_password
         self.encryptedPasswordTextField.isSecureTextEntry = true
         self.encryptedButton.setImage(UIImage(named: "compose_lock-active"), for: UIControlState())
     }
@@ -453,14 +495,12 @@ class ComposeView: UIViewController {
         })
     }
     
-    func updateExpirationValue(_ intagerV : TimeInterval, text : String)
-    {
+    func updateExpirationValue(_ intagerV : TimeInterval, text : String) {
         self.expirationDateTextField.text = text
         self.expirationTimeInterval = intagerV
     }
     
-    func setExpirationValue (_ day : Int, hour : Int) -> Bool
-    {
+    func setExpirationValue (_ day : Int, hour : Int) -> Bool {
         if (day == 0 && hour == 0 && !hasExpirationSchedule) {
             self.expirationDateTextField.shake(3, offset: 10.0)
             
@@ -484,15 +524,14 @@ class ComposeView: UIViewController {
         }
     }
     
-    fileprivate func updateViewSize()
-    {
+    fileprivate func updateViewSize() {
         //let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
         //self.htmlEditor.view.frame = CGRect(x: 0, y: size.height, width: editorSize.width, height: editorSize.height)
         //self.htmlEditor.setFrame(CGRect(x: 0, y: 0, width: editorSize.width, height: editorSize.height))
     }
     
     fileprivate func configureToContactPicker() {
-        toContactPicker = MBContactPicker()
+        toContactPicker = ContactPicker()
         toContactPicker.translatesAutoresizingMaskIntoConstraints = true
         toContactPicker.cellHeight = self.kDefaultRecipientHeight;
         self.view.addSubview(toContactPicker)
@@ -508,7 +547,7 @@ class ComposeView: UIViewController {
     }
     
     fileprivate func configureCcContactPicker() {
-        ccContactPicker = MBContactPicker()
+        ccContactPicker = ContactPicker()
         self.view.addSubview(ccContactPicker)
         
         ccContactPicker.datasource = self
@@ -524,7 +563,7 @@ class ComposeView: UIViewController {
     }
     
     fileprivate func configureBccContactPicker() {
-        bccContactPicker = MBContactPicker()
+        bccContactPicker = ContactPicker()
         self.view.addSubview(bccContactPicker)
         
         bccContactPicker.datasource = self
@@ -539,7 +578,7 @@ class ComposeView: UIViewController {
         }
     }
     
-    fileprivate func updateContactPickerHeight(_ contactPicker: MBContactPicker, newHeight: CGFloat) {
+    fileprivate func updateContactPickerHeight(_ contactPicker: ContactPicker, newHeight: CGFloat) {
         if (contactPicker == self.toContactPicker) {
             toContactPicker.mas_updateConstraints({ (make) -> Void in
                 make?.removeExisting = true
@@ -577,52 +616,38 @@ class ComposeView: UIViewController {
 }
 
 
-
-
-// MARK: - MBContactPickerDataSource
-extension ComposeView: MBContactPickerDataSource {
-    func contactModels(for contactPickerView: MBContactPicker!) -> [Any]! {
-        if (contactPickerView == toContactPicker) {
-            contactPickerView.prompt = NSLocalizedString("To", comment: "Title")
-        } else if (contactPickerView == ccContactPicker) {
-            contactPickerView.prompt = NSLocalizedString("Cc", comment: "Title")
-        } else if (contactPickerView == bccContactPicker) {
-            contactPickerView.prompt = NSLocalizedString("Bcc", comment: "Title")
-        }
-        return self.datasource?.composeViewContactsModelForPicker(self, picker: contactPickerView)
+// MARK: - ContactPickerDataSource
+extension ComposeView: ContactPickerDataSource {
+    
+    func picker(contactPicker: ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?) -> Void)?) {
+        self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
     }
     
-    func selectedContactModels(for contactPickerView: MBContactPicker!) -> [Any]! {
-        return self.datasource?.composeViewSelectedContactsForPicker(self, picker: contactPickerView)
+    
+    func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol] {
+        if (contactPickerView == toContactPicker) {
+            contactPickerView.prompt = LocalString._composer_to_label
+        } else if (contactPickerView == ccContactPicker) {
+            contactPickerView.prompt = LocalString._composer_cc_label
+        } else if (contactPickerView == bccContactPicker) {
+            contactPickerView.prompt = LocalString._composer_bcc_label
+        }
+        return self.datasource?.composeViewContactsModelForPicker(self, picker: contactPickerView) ?? [ContactPickerModelProtocol]()
+    }
+    
+    func selectedContactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol] {
+        return self.datasource?.composeViewSelectedContactsForPicker(self, picker: contactPickerView) ?? [ContactPickerModelProtocol]()
     }
 }
 
 
-// MARK: - MBContactPickerDelegate
-
-extension ComposeView: MBContactPickerDelegate {
-    func contactCollectionView(_ contactCollectionView: MBContactCollectionView!, didAddContact model: MBContactPickerModelProtocol!) {
-        let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
-        self.notifyViewSize(true)
-        self.delegate?.composeView(self, didAddContact: model as! ContactVO, toPicker: contactPicker)
-    }
-    
-    func contactCollectionView(_ contactCollectionView: MBContactCollectionView!, didRemoveContact model: MBContactPickerModelProtocol!) {
-        let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
-        self.notifyViewSize(true)
-        self.delegate?.composeView(self, didRemoveContact: model as! ContactVO, fromPicker: contactPicker)
-    }
-    
-    func contactPicker(_ contactPicker: MBContactPicker!, didEnterCustomText text: String!, needFocus focus: Bool) {
-        let customContact = ContactVO(id: "", name: text, email: text)
-        contactPicker.add(toSelectedContacts: customContact, needFocus: focus)
-    }
-    
-    func contactPicker(_ contactPicker: MBContactPicker!, didUpdateContentHeightTo newHeight: CGFloat) {
+// MARK: - ContactPickerDelegate
+extension ComposeView: ContactPickerDelegate {
+    func contactPicker(contactPicker: ContactPicker, didUpdateContentHeightTo newHeight: CGFloat) {
         self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
     }
     
-    func didShowFilteredContacts(for contactPicker: MBContactPicker!) {
+    func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker) {
         self.view.bringSubview(toFront: contactPicker)
         if (contactPicker.frame.size.height <= contactPicker.currentContentHeight) {
             let pickerRectInWindow = self.view.convert(contactPicker.frame, to: nil)
@@ -636,36 +661,106 @@ extension ComposeView: MBContactPickerDelegate {
         }
         
         self.notifyViewSize(false)
+
     }
     
-    func didHideFilteredContacts(for contactPicker: MBContactPicker!) {
+    func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker) {
         self.view.sendSubview(toBack: contactPicker)
         if (contactPicker.frame.size.height > contactPicker.currentContentHeight) {
             self.updateContactPickerHeight(contactPicker, newHeight: contactPicker.currentContentHeight)
         }
-        
         self.pickerHeight = 0;
         self.notifyViewSize(false)
     }
     
-    // MARK: Private delegate helper methods
+    func contactPicker(contactPicker: ContactPicker, didEnterCustomText text: String, needFocus focus: Bool) {
+        let customContact = ContactVO(id: "", name: text, email: text)
+        contactPicker.addToSelectedContacts(model: customContact, needFocus: focus)
+    }
     
-    fileprivate func contactPickerForContactCollectionView(_ contactCollectionView: MBContactCollectionView) -> MBContactPicker {
-        var contactPicker: MBContactPicker = toContactPicker
+    func contactPicker(picker: ContactPicker, pasted text: String, needFocus focus: Bool) {
+        if text.contains(check: ",") {
+            let cusTexts = text.split(separator: ",")
+            for cusText in cusTexts {
+                let trimmed = cusText.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !trimmed.isEmpty {
+                    let customContact = ContactVO(id: "", name: trimmed, email: trimmed)
+                    picker.addToSelectedContacts(model: customContact, needFocus: focus)
+                }
+            }
+        } else if text.contains(check: ";") {
+            let cusTexts = text.split(separator: ";")
+            for cusText in cusTexts {
+                let trimmed = cusText.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !trimmed.isEmpty {
+                    let customContact = ContactVO(id: "", name: trimmed, email: trimmed)
+                    picker.addToSelectedContacts(model: customContact, needFocus: focus)
+                }
+            }
+        } else {
+            let customContact = ContactVO(id: "", name: text, email: text)
+            picker.addToSelectedContacts(model: customContact, needFocus: focus)
+        }
+    }
+    
+    func useCustomFilter() -> Bool {
+        return true
+    }
+    
+    func customFilterPredicate(searchString: String) -> NSPredicate {
+        return NSPredicate(format: "contactTitle CONTAINS[cd] %@ or contactSubtitle CONTAINS[cd] %@", argumentArray: [searchString, searchString])
+    }
+    
+    func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
+        
+    }
+    
+    func collectionView(at: ContactCollectionView, entryTextDidChange text: String) {
+        
+    }
+    
+    func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool) {
+        
+    }
+    
+    func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
+        
+    }
+    
+    func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol) {
+        let contactPicker = contactPickerForContactCollectionView(at)
+        self.notifyViewSize(true)
+        self.delegate?.composeView(self, didAddContact: contact as! ContactVO, toPicker: contactPicker)
+    }
+    
+    func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol) {
+        let contactPicker = contactPickerForContactCollectionView(at)
+        self.notifyViewSize(true)
+        self.delegate?.composeView(self, didRemoveContact: contact as! ContactVO, fromPicker: contactPicker)
+    }
+    
+    func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
+        
+    }
+    
+    func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
+        self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
+    }
+    
+    // MARK: Private delegate helper methods
+    fileprivate func contactPickerForContactCollectionView(_ contactCollectionView: ContactCollectionView) -> ContactPicker {
+        var contactPicker: ContactPicker = toContactPicker
         if (contactCollectionView == toContactPicker.contactCollectionView) {
             contactPicker = toContactPicker
-        }
-        else if (contactCollectionView == ccContactPicker.contactCollectionView) {
+        } else if (contactCollectionView == ccContactPicker.contactCollectionView) {
             contactPicker = ccContactPicker
         } else if (contactCollectionView == bccContactPicker.contactCollectionView) {
             contactPicker = bccContactPicker
         }
         return contactPicker
     }
-    internal func customFilterPredicate(_ searchString: String!) -> NSPredicate! {
-        return NSPredicate(format: "contactTitle CONTAINS[cd] %@ or contactSubtitle CONTAINS[cd] %@", argumentArray: [searchString, searchString])
-    }
 }
+
 
 // MARK: - UITextFieldDelegate
 extension ComposeView: UITextFieldDelegate {
@@ -677,8 +772,8 @@ extension ComposeView: UITextFieldDelegate {
     }
 }
 
-// MARK: - MBContactPicker extension
-extension MBContactPicker {
+// MARK: - ContactPicker extension
+extension ContactPicker {
     var contactList: String {
         var contactList = ""
         let contactsSelected = NSArray(array: self.contactsSelected)
@@ -698,6 +793,44 @@ extension MBContactPicker {
             }
         }
         return false
+    }
+    
+    var hasPGPPinned : Bool {
+        for contact in self.contactsSelected {
+            if contact.hasPGPPined {
+                return true
+            }
+        }
+        return false
+    }
+    
+    var hasNonePM : Bool {
+        for contact in self.contactsSelected {
+            if contact.hasNonePM {
+                return true
+            }
+        }
+        return false
+    }
+    
+    var pgpEmails : [String] {
+        var out : [String] = [String]()
+        for contact in self.contactsSelected {
+            if contact.hasPGPPined, let email = contact.displayEmail {
+                out.append(email)
+            }
+        }
+        return out
+    }
+    
+    var nonePMEmails : [String] {
+        var out : [String] = [String]()
+        for contact in self.contactsSelected {
+            if contact.hasNonePM , let email = contact.displayEmail {
+                out.append(email)
+            }
+        }
+        return out
     }
 }
 

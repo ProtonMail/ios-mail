@@ -11,6 +11,8 @@
 //
 
 import UIKit
+import PromiseKit
+import AwaitKit
 
 class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
@@ -18,7 +20,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     
     private let kInvalidEmailShakeTimes: Float         = 3.0
     private let kInvalidEmailShakeOffset: CGFloat      = 10.0
-    
     
     fileprivate let kContactDetailsHeaderView : String      = "ContactSectionHeadView"
     fileprivate let kContactDetailsHeaderID : String        = "contact_section_head_view"
@@ -46,21 +47,23 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     ///
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.doneItem = UIBarButtonItem(title: NSLocalizedString("Edit", comment: "Action"),
+        self.doneItem = UIBarButtonItem(title: LocalString._general_edit_action,
                                         style: UIBarButtonItemStyle.plain,
                                         target: self, action: #selector(didTapEditButton(sender:)))
         self.navigationItem.rightBarButtonItem = doneItem
         
-        viewModel.getDetails(loading: {
+        viewModel.getDetails {
             ActivityIndicatorHelper.showActivityIndicator(at: self.view)
-        }) { (contact, error) in
-            if nil != contact {
-                self.tableView.reloadData()
-                self.loaded = true
-            }
+        }.done { (contact) in
+            self.tableView.reloadData()
+            self.loaded = true
+        }.catch { (error) in
+            //show error
+            PMLog.D(error.localizedDescription)
+        }.finally {
             ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
         }
-        
+
         let nib = UINib(nibName: kContactDetailsHeaderView, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -98,12 +101,15 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             addContactViewController.delegate = self
             sharedVMService.contactEditViewModel(addContactViewController, contact: contact)
         } else if (segue.identifier == kToComposeSegue) {
-            let composeViewController = segue.destination.childViewControllers[0] as! ComposeEmailViewController
+            let composerVC = segue.destination.childViewControllers[0] as! ComposeEmailViewController
             let contact = sender as? ContactVO
-            sharedVMService.newDraftViewModelWithContact(composeViewController, contact: contact)
+            sharedVMService.newDraft(vmp: composerVC, with: contact)
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController
-            self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
+            sharedVMService.upgradeAlert(contacts: popup)
+            self.setPresentationStyleForSelfController(self,
+                                                       presentingController: popup,
+                                                       style: .overFullScreen)
         }
     }
     
@@ -181,10 +187,10 @@ extension ContactDetailViewController: UITableViewDataSource {
         switch s {
         case .email_header:
             let signed = viewModel.statusType2()
-            cell?.ConfigHeader(title: NSLocalizedString("Contact Details", comment: "contact section title"), signed: signed)
+            cell?.ConfigHeader(title: LocalString._contacts_contact_details_title, signed: signed)
         case .encrypted_header:
             let signed = viewModel.statusType3()
-            cell?.ConfigHeader(title: NSLocalizedString("Encrypted Contact Details", comment: "contact section title"), signed: signed)
+            cell?.ConfigHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: signed)
         default:
             cell?.ConfigHeader(title: "", signed: false)
         }
@@ -220,7 +226,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             return cell
         } else if s == .share {
             let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsShareCell, for: indexPath) as! ContactEditAddCell
-            cell.configCell(value: NSLocalizedString("Share Contact", comment: "action"))
+            cell.configCell(value: LocalString._contacts_share_contact_action)
             cell.selectionStyle = .default
             return cell
         }
@@ -252,7 +258,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         switch s {
         case .display_name:
             let profile = viewModel.getProfile();
-            cell.configCell(title: NSLocalizedString("Name", comment: "title"), value: profile.newDisplayName)
+            cell.configCell(title: LocalString._contacts_name_title, value: profile.newDisplayName)
             cell.selectionStyle = .none
         case .emails:
             let emails = viewModel.getEmails()
@@ -282,7 +288,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         case .notes:
             let notes = viewModel.getNotes()
             let note = notes[row]
-            cell.configCell(title: NSLocalizedString("Notes", comment: "title"), value: note.newNote)
+            cell.configCell(title: LocalString._contacts_info_notes, value: note.newNote)
             cell.selectionStyle = .default
         case .url:
             let urls = viewModel.getUrls()
@@ -396,7 +402,6 @@ extension ContactDetailViewController: UITableViewDelegate {
         case .encrypted_header:
             break
         case .cellphone:
-            //TODO::bring up the phone call
             let phone = self.viewModel.getPhones()[row]
             let formatedNumber = phone.newPhone.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
             let phoneUrl = "tel://\(formatedNumber)"

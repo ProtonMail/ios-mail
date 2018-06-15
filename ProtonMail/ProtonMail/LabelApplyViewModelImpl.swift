@@ -32,11 +32,11 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     }
     
     override func getApplyButtonText() -> String {
-        return NSLocalizedString("Apply", comment: "Action")
+        return LocalString._general_apply_button
     }
     
     override func getCancelButtonText() -> String {
-        return NSLocalizedString("Cancel", comment: "Action")
+        return LocalString._general_cancel_button
     }
     
     override func getLabelMessage( _ label : Label!) -> LabelMessageModel! {
@@ -194,7 +194,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                 }
             }
             let ids = self.messages.map { ($0).messageID }
-            let api = MessageActionRequest<ApiResponse>(action: "archive", ids: ids)
+            let api = MessageActionRequest(action: "archive", ids: ids)
             api.call(nil)
         }
         
@@ -202,7 +202,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     }
     
     override func getTitle() -> String {
-        return NSLocalizedString("Apply Labels", comment: "Title")
+        return LocalString._apply_labels
     }
     
     override func cancel() {

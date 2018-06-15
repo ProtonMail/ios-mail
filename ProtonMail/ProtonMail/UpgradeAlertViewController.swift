@@ -13,7 +13,16 @@ protocol UpgradeAlertVCDelegate {
     func cancel()
 }
 
-class UpgradeAlertViewController: UIViewController {
+class UpgradeAlertViewController: UIViewController, ViewModelProtocolNew {
+    typealias argType = UpgradeAlertViewModel
+    
+    var viewModel : UpgradeAlertViewModel!
+    
+    func set(viewModel: UpgradeAlertViewModel) {
+        self.viewModel = viewModel
+    }
+    func inactiveViewModel() { }
+    
     
     var delegate : UpgradeAlertVCDelegate?
 
@@ -29,18 +38,16 @@ class UpgradeAlertViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.viewContainer.layer.cornerRadius = 4.0
         self.okButton.layer.cornerRadius = 8.0
         
         //set text
-        self.okButton.setTitle(NSLocalizedString("Got it", comment: "Action"), for: UIControlState.normal)
+        self.okButton.setTitle(self.viewModel.button, for: UIControlState.normal)
         
-        self.titleLabel.text = NSLocalizedString("PREMIUM FEATURE", comment: "Upgrade warning title")
-        self.titleLabelTwo.text = NSLocalizedString("Looking to secure your contact's details?", comment: "Upgrade warning title")
-        self.messageLabel.text = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.", comment: "Upgrade warning message")
-        self.messageLabelTwo.text = NSLocalizedString("Upgrading is not possible in the app.", comment: "Upgrade warning message")
-        
+        self.titleLabel.text = self.viewModel.title
+        self.titleLabelTwo.text = self.viewModel.title2
+        self.messageLabel.text = self.viewModel.message
+        self.messageLabelTwo.text = self.viewModel.message2
     }
     
     override func didReceiveMemoryWarning() {

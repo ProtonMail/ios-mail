@@ -14,6 +14,7 @@ extension Email {
     struct Attributes {
         static let entityName = "Email"
         static let contactID = "contactID"
+        static let email = "email"
         static let emailID = "emailID"
     }
     
@@ -25,7 +26,25 @@ extension Email {
     class func EmailForID(_ emailID: String, inManagedObjectContext context: NSManagedObjectContext) -> Email? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.emailID, matchingValue: emailID) as? Email
     }
+
+//    class func findEmails(_ emails: [String], inManagedObjectContext context: NSManagedObjectContext) -> [Email]? {
+//        var out : [Email]?
+//        context.performAndWait {
+//            out = context.objectsWithEntityName(Attributes.entityName, forKey: Attributes.email, forManagedObjectIDs: emails) as? [Email]
+//        }
+//        return out
+//    }
     
+    class func findEmailsController(_ emails: [String], inManagedObjectContext context: NSManagedObjectContext) -> NSFetchedResultsController<NSFetchRequestResult>? {
+        let controller = context.fetchedControllerEntityName(entityName: Attributes.entityName, forKey: Attributes.email, forManagedObjectIDs: emails)
+        do {
+            try controller?.performFetch()
+        } catch _ {
+            return nil
+        }
+        return controller
+    }
+
     func log() {
         PMLog.D("EmailID: \(self.emailID)")
         PMLog.D("ContactID: \(self.contactID)")

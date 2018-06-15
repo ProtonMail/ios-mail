@@ -21,30 +21,31 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-            sharedUserDataService = UserDataService()
+            sharedUserDataService = UserDataService(check: false)
             if sharedUserDataService.isUserCredentialStored {
                 if let encrypted = bestAttemptContent.userInfo["encryptedMessage"] as? String {
                     bestAttemptContent.body = encrypted
                     if let userkey = sharedUserDataService.userInfo?.firstUserKey(), let password = sharedUserDataService.mailboxPassword {
                         do {
-                            if let plaintext = try encrypted.decryptMessageWithSinglKey(userkey.private_key, passphrase: password) {
-                                if let push = PushData.parse(with: plaintext) {
-                                    bestAttemptContent.title = push.title // "\(bestAttemptContent.title) [modified]"
-                                    if let _ = push.sound {
-                                        //right now it is a integer should be sound name put default for now
-                                    }
-                                    bestAttemptContent.sound = UNNotificationSound.default()
-                                    if let sub = push.subTitle {
-                                        bestAttemptContent.subtitle = sub
-                                    }
-                                    
-                                    if let body = push.body {
-                                        bestAttemptContent.body = body
-                                    }
-                                    
-                                    if let badge = push.badge, badge.intValue > 0 {
-                                        bestAttemptContent.badge = badge
-                                    }
+                            let plaintext = try sharedOpenPGP.decryptMessage(encrypted,
+                                                                             privateKey: userkey.private_key,
+                                                                             passphrase: password)
+                            if let push = PushData.parse(with: plaintext) {
+                                bestAttemptContent.title = push.title // "\(bestAttemptContent.title) [modified]"
+                                if let _ = push.sound {
+                                    //right now it is a integer should be sound name put default for now
+                                }
+                                bestAttemptContent.sound = UNNotificationSound.default()
+                                if let sub = push.subTitle {
+                                    bestAttemptContent.subtitle = sub
+                                }
+                                
+                                if let body = push.body {
+                                    bestAttemptContent.body = body
+                                }
+                                
+                                if let badge = push.badge, badge.intValue > 0 {
+                                    bestAttemptContent.badge = badge
                                 }
                             }
                         } catch let error {

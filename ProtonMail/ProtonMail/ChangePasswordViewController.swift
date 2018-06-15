@@ -21,15 +21,14 @@ class ChangePasswordViewController: UIViewController {
     
     @IBOutlet weak var topOffset: NSLayoutConstraint!
     
-    var keyboardHeight : CGFloat = 0.0;
-    var textFieldPoint : CGFloat = 0.0;
+    var keyboardHeight : CGFloat = 0.0
+    var textFieldPoint : CGFloat = 0.0
     
     let kAsk2FASegue = "password_to_twofa_code_segue"
     
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var viewModel : ChangePWDViewModel!
-    func setViewModel(_ vm:ChangePWDViewModel) -> Void
-    {
+    func setViewModel(_ vm:ChangePWDViewModel) -> Void {
         self.viewModel = vm
     }
     
@@ -37,9 +36,9 @@ class ChangePasswordViewController: UIViewController {
         super.viewDidLoad()
         
         doneButton = self.editButtonItem
-        doneButton.target = self;
+        doneButton.target = self
         doneButton.action = #selector(ChangePasswordViewController.doneAction(_:))
-        doneButton.title = NSLocalizedString("Save", comment: "Title")
+        doneButton.title = LocalString._general_save_action
 
         self.navigationItem.title = viewModel.getNavigationTitle()
         self.titleLable.text = viewModel.getSectionTitle()
@@ -47,11 +46,11 @@ class ChangePasswordViewController: UIViewController {
         self.labelTwo.text = viewModel.getLabelTwo()
         self.labelThree.text = viewModel.getLabelThree()
         
-        currentPwdEditor.placeholder = NSLocalizedString("Current password", comment: "Placeholder")
-        newPwdEditor.placeholder = NSLocalizedString("New password", comment: "Placeholder")
-        confirmPwdEditor.placeholder = NSLocalizedString("Confirm new password", comment: "Placeholder")
+        currentPwdEditor.placeholder = LocalString._settings_current_password
+        newPwdEditor.placeholder = LocalString._settings_new_password
+        confirmPwdEditor.placeholder = LocalString._settings_confirm_new_password
         
-        focusFirstEmpty();
+        focusFirstEmpty()
     }
     
     override func didReceiveMemoryWarning() {
@@ -85,12 +84,12 @@ class ChangePasswordViewController: UIViewController {
     }
 
     func updateView() {
-        let screenHeight = view.frame.height;
+        let screenHeight = view.frame.height
         let offbox = screenHeight - textFieldPoint
         if offbox > keyboardHeight {
-            topOffset.constant = 8;
+            topOffset.constant = 8
         } else {
-            topOffset.constant = offbox - keyboardHeight;
+            topOffset.constant = offbox - keyboardHeight
         }
     }
     
@@ -103,10 +102,9 @@ class ChangePasswordViewController: UIViewController {
         }
     }
     
-    internal func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController)
-    {
-        presentingController.providesPresentationContextTransitionStyle = true;
-        presentingController.definesPresentationContext = true;
+    internal func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController) {
+        presentingController.providesPresentationContextTransitionStyle = true
+        presentingController.definesPresentationContext = true
         presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
     }
 
@@ -114,8 +112,8 @@ class ChangePasswordViewController: UIViewController {
     
     @IBAction func StartEditing(_ sender: UITextField) {
         let frame = sender.convert(sender.frame, to: self.view)
-        textFieldPoint = frame.origin.y + frame.height + 40;
-        updateView();
+        textFieldPoint = frame.origin.y + frame.height + 40
+        updateView()
     }
     
     fileprivate func isInputEmpty() -> Bool {
@@ -123,15 +121,15 @@ class ChangePasswordViewController: UIViewController {
         let nPwd = (newPwdEditor.text ?? "") //.trim()
         let cnPwd = (confirmPwdEditor.text ?? "") //.trim()
         if !cPwd.isEmpty {
-            return false;
+            return false
         }
         if !nPwd.isEmpty {
-            return false;
+            return false
         }
         if !cnPwd.isEmpty {
-            return false;
+            return false
         }
-        return true;
+        return true
     }
     
     fileprivate func focusFirstEmpty() -> Void {
@@ -174,7 +172,7 @@ class ChangePasswordViewController: UIViewController {
                 } else {
                     let _ = self.navigationController?.popToRootViewController(animated: true)
                 }
-            });
+            })
         }
     }
 
@@ -188,15 +186,15 @@ class ChangePasswordViewController: UIViewController {
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension ChangePasswordViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
-        keyboardHeight = 0;
-        updateView();
+        keyboardHeight = 0
+        updateView()
     }
     
     func keyboardWillShowNotification(_ notification: Notification) {
         let info: NSDictionary = notification.userInfo! as NSDictionary
         if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            keyboardHeight = keyboardSize.height;
-            updateView();
+            keyboardHeight = keyboardSize.height
+            updateView()
         }
     }
 }
@@ -221,7 +219,7 @@ extension ChangePasswordViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if isInputEmpty() {
-            self.navigationItem.rightBarButtonItem = nil;
+            self.navigationItem.rightBarButtonItem = nil
         }
         else {
             self.navigationItem.rightBarButtonItem = doneButton
@@ -237,7 +235,7 @@ extension ChangePasswordViewController: UITextFieldDelegate {
         {
         case currentPwdEditor:
             newPwdEditor.becomeFirstResponder()
-            break;
+            break
         case newPwdEditor:
             confirmPwdEditor.becomeFirstResponder()
             break

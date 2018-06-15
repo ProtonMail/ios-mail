@@ -12,6 +12,8 @@ class SettingDetailViewController: UIViewController {
 
     @IBOutlet weak var sectionTitleLabel: UILabel!
     
+    @IBOutlet weak var titleLabel2: UILabel!
+    
     @IBOutlet weak var switchView: UIView!
     @IBOutlet weak var switchLabel: UILabel!
     @IBOutlet weak var switcher: UISwitch!
@@ -27,6 +29,7 @@ class SettingDetailViewController: UIViewController {
     
     @IBOutlet weak var notesLabel: UILabel!
     let kAsk2FASegue = "password_to_twofa_code_segue"
+    let kToUpgradeAlertSegue = "toUpgradeAlertSegue"
     
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var viewModel : SettingDetailsViewModel!
@@ -41,13 +44,16 @@ class SettingDetailViewController: UIViewController {
         doneButton = self.editButtonItem
         doneButton.target = self;
         doneButton.action = #selector(SettingDetailViewController.doneAction(_:))
-        doneButton.title = NSLocalizedString("Save", comment: "Title")
+        doneButton.title = LocalString._general_save_action
         
         self.navigationItem.title = viewModel.getNavigationTitle()
         sectionTitleLabel.text = viewModel.getSectionTitle()
         
         self.navigationItem.hidesBackButton = true
-        let newBackButton = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(SettingDetailViewController.back(sender:)))
+        let newBackButton = UIBarButtonItem(title: LocalString._general_back_action,
+                                            style: UIBarButtonItemStyle.plain,
+                                            target: self,
+                                            action: #selector(SettingDetailViewController.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
         
         if viewModel.isDisplaySwitch() {
@@ -59,14 +65,14 @@ class SettingDetailViewController: UIViewController {
             switchView.isHidden = true
             inputViewTopDistance.constant = 22
         }
+        titleLabel2.text = viewModel.sectionTitle2
         
         if viewModel.isShowTextView() {
             inputViewHight.constant = 200.0
             inputTextField.isHidden = true
             inputTextView.isHidden = false
             inputTextView.text = viewModel.getCurrentValue()
-        }
-        else {
+        } else {
             inputViewHight.constant = 44.0
             inputTextField.isHidden = false
             inputTextView.isHidden = true
@@ -74,7 +80,7 @@ class SettingDetailViewController: UIViewController {
             inputTextField.placeholder = viewModel.getPlaceholdText()
         }
         
-        passwordTextField.placeholder = NSLocalizedString("Login Password", comment: "Placeholder")
+        passwordTextField.placeholder = LocalString._login_password
         
         if viewModel.isRequireLoginPassword() {
             passwordView.isHidden = false
@@ -86,6 +92,12 @@ class SettingDetailViewController: UIViewController {
         inputTextView.isEditable = viewModel.isSwitchEnabled()
         
         notesLabel.text = viewModel.getNotes()
+        
+        
+        //check Role if need a paid feature
+        if !viewModel.isSwitchEnabled() {
+            self.performSegue(withIdentifier: self.kToUpgradeAlertSegue, sender: self)
+        }
     }
     
     @objc func back(sender: UIBarButtonItem) {
@@ -95,19 +107,15 @@ class SettingDetailViewController: UIViewController {
         }
         else {
             let alertController = UIAlertController(
-                title: NSLocalizedString("Confirmation", comment: "Title"),
-                message: NSLocalizedString("You have unsaved changes. Do you want to save it?", comment: "Confirmation message"),
+                title: LocalString._general_confirmation_title,
+                message: LocalString._you_have_unsaved_changes_do_you_want_to_save_it,
                 preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "title"),
-                                                    style: .destructive,
-                                                    handler: { action in
-                                                        _ = self.navigationController?.popViewController(animated: true)
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
+                _ = self.navigationController?.popViewController(animated: true)
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save Changes", comment: "title"),
-                                                    style: .default,
-                                                    handler: { action in
-                                                        self.startUpdateValue()
+            alertController.addAction(UIAlertAction(title: LocalString._save_changes, style: .default, handler: { action in
+                self.startUpdateValue()
             }))
             
             self.present(alertController, animated: true, completion: nil)
@@ -133,11 +141,14 @@ class SettingDetailViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == kAsk2FASegue {
+        if segue.identifier == self.kAsk2FASegue {
             let popup = segue.destination as! TwoFACodeViewController
             popup.delegate = self
             popup.mode = .twoFactorCode
             self.setPresentationStyleForSelfController(self, presentingController: popup)
+        } else if segue.identifier == self.kToUpgradeAlertSegue {
+            let popup = segue.destination as! UpgradeAlertViewController
+            sharedVMService.upgradeAlert(signature: popup)
         }
     }
     

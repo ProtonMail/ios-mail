@@ -7,30 +7,21 @@
 //
 
 import Foundation
-
+import PromiseKit
+import AwaitKit
 
 // MARK : Get messages part
-final class MessageCountRequest<T : ApiResponse> : ApiRequest<T> {
-    
+final class MessageCount : ApiRequest<MessageCountResponse> {
     override open func path() -> String {
         return MessageAPI.path + "/count" + AppConstants.DEBUG_OPTION
     }
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageFetchRequest
+        return MessageAPI.v_message_count
     }
 }
-
-final class MessageCountResponse : ApiResponse {
-    var counts : [[String : Any]]?
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.counts = response?["Counts"] as? [[String : Any]]
-        return true
-    }
-}
-
 
 // MARK : Get messages part
-final class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
+final class FetchMessages : ApiRequest<ApiResponse> {
     let location : MessageLocation!
     let startTime : Int?
     let endTime : Int
@@ -64,11 +55,11 @@ final class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageFetchRequest
+        return MessageAPI.v_fetch_messages
     }
 }
 
-final class MessageFetchByIDsRequest<T : ApiResponse> : ApiRequest<T> {
+final class FetchMessagesByID : ApiRequest<ApiResponse> {
     let messages : [Message]!
     init(messages: [Message]) {
         self.messages = messages
@@ -96,12 +87,11 @@ final class MessageFetchByIDsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageFetchRequest
+        return MessageAPI.v_fetch_messages
     }
 }
 
-
-final class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
+final class FetchMessagesByLabel : ApiRequest<ApiResponse> {
     let labelID : String!
     let startTime : Int?
     let endTime : Int
@@ -115,13 +105,10 @@ final class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
     override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = ["Sort" : "Time"]
         out["Label"] = self.labelID
-        if(self.endTime > 0)
-        {
+        if self.endTime > 0 {
             let newTime = self.endTime - 1
             out["End"] = newTime
         }
-        
-        
         PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
@@ -131,28 +118,37 @@ final class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageFetchRequest
+        return MessageAPI.v_fetch_messages
     }
 }
 
 // MARK : Create/Update Draft Part
-
 /// create draft message request class
-class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
+class CreateDraft : ApiRequest<MessageResponse> {
     
-    let message : Message!;
+    let message : Message!
     
+    /// TODO:: here need remove refrence of Message should create a Draft builder and a seperate package
+    ///
+    /// - Parameter message: Message
     init(message: Message!) {
         self.message = message
     }
     
     override func toDictionary() -> [String : Any]? {
-        let address_id : String                 = message.getAddressID
         var messsageDict : [String : Any] = [
-            "AddressID" : address_id,
             "Body" : message.body,
             "Subject" : message.title,
             "IsRead" : message.isRead]
+        
+        let fromaddr = message.fromAddress ?? message.defaultAddress
+        let name = fromaddr?.display_name ?? "unknow"
+        let address = fromaddr?.email ?? "unknow"
+        
+        messsageDict["Sender"] = [
+            "Name": name,
+            "Address": address
+        ]
         
         messsageDict["ToList"]  = message.recipientList.parseJson()
         messsageDict["CCList"]  = message.ccList.parseJson()
@@ -194,11 +190,8 @@ class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
 }
 
 /// message update draft api request
-final class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> {
-    override init(message: Message!) {
-        super.init(message: message)
-    }
-    
+final class UpdateDraft : CreateDraft {
+
     override func path() -> String {
         return MessageAPI.path + "/" + message.messageID + AppConstants.DEBUG_OPTION
     }
@@ -212,26 +205,14 @@ final class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> {
     }
 }
 
-
-final class MessageResponse : ApiResponse {
-    var message : [String : Any]?
-    
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.message = response?["Message"] as? [String : Any]
-        return true
-    }
-}
-
-
 // MARK : Message actions part
 
 /// mesaage action request PUT method
-final class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
+final class MessageActionRequest : ApiRequest<ApiResponse> {
     let messages : [Message]!
     let action : String!
     var ids : [String] = [String] ()
-    
-    
+
     public init(action:String, messages: [Message]!) {
         self.messages = messages
         self.action = action
@@ -268,7 +249,7 @@ final class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
 }
 
 /// empty trash or spam
-final class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
+final class MessageEmptyRequest : ApiRequest <ApiResponse> {
     let location : String!
     
     public init(location: String! ) {
@@ -284,7 +265,7 @@ final class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageEmptyRequest
+        return MessageAPI.v_empty_label_folder
     }
     
     override func method() -> APIService.HTTPMethod {
@@ -293,7 +274,178 @@ final class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
 }
 
 // MARK : Message Send part
+/// send message reuqest
+final class SendMessage : ApiRequestNew<ApiResponse> {
+    var messagePackage : [AddressPackageBase]!  // message package
+    var body : String!
+    let messageID : String!
+    let expirationTime : Int32!
+    
+    var clearBody : ClearBodyPackage?
+    var clearAtts : [ClearAttachmentPackage]?
+    
+    var mimeDataPacket : String!
+    var clearMimeBody : ClearBodyPackage?
+    
+    var plainTextDataPacket : String!
+    var clearPlainTextBody : ClearBodyPackage?
+    
+    init(messageID : String, expirationTime: Int32?,
+         messagePackage: [AddressPackageBase]!, body : String,
+         clearBody : ClearBodyPackage?, clearAtts: [ClearAttachmentPackage]?,
+         mimeDataPacket : String, clearMimeBody : ClearBodyPackage?,
+         plainTextDataPacket : String, clearPlainTextBody : ClearBodyPackage?) {
+        self.messageID = messageID
+        self.messagePackage = messagePackage
+        self.body = body
+        self.expirationTime = expirationTime ?? 0
+        self.clearBody = clearBody
+        self.clearAtts = clearAtts
+        
+        self.mimeDataPacket = mimeDataPacket
+        self.clearMimeBody = clearMimeBody
+        
+        self.plainTextDataPacket = plainTextDataPacket
+        self.clearPlainTextBody = clearPlainTextBody
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        var out : [String : Any] = [String : Any]()
+        out["ExpirationTime"] = self.expirationTime
+        //optional this will override app setting
+        //out["AutoSaveContacts"] = "\(0 / 1)"
+        
+        let normalPackage = messagePackage.filter { $0.type.rawValue < 10 }
+        let mimePackage = messagePackage.filter { $0.type.rawValue > 10 }
+        
+        
+        let plainTextPackage = normalPackage.filter { $0.plainText == true }
+        let htmlPackage = normalPackage.filter { $0.plainText == false }
+        
+        //packages object
+        var packages : [Any] = [Any]()
+        
+        //plaintext
+        if plainTextPackage.count > 0 {
+            //not mime
+            var plainTextAddress : [String : Any] = [String : Any]()
+            var addrs = [String: Any]()
+            var type = SendType()
+            for mp in plainTextPackage {
+                addrs[mp.email] = mp.toDictionary()!
+                type.insert(mp.type)
+            }
+            plainTextAddress["Addresses"] = addrs
+            //"Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
+            plainTextAddress["Type"] = type.rawValue
+            plainTextAddress["Body"] = self.plainTextDataPacket
+            plainTextAddress["MIMEType"] = "text/plain"
+            
+            if let cb = self.clearPlainTextBody {
+                // Include only if cleartext recipients
+                plainTextAddress["BodyKey"] = [
+                    "Key" : cb.key,
+                    "Algorithm" : cb.algo
+                ]
+            }
+            
+            if let cAtts = clearAtts {
+                // Only include if cleartext recipients, optional if no attachments
+                var atts : [String:Any] = [String:Any]()
+                for it in cAtts {
+                    atts[it.ID] = [
+                        "Key" : it.encodedSession,
+                        "Algorithm" : it.algo
+                    ]
+                }
+                plainTextAddress["AttachmentKeys"] = atts
+            }
+            packages.append(plainTextAddress)
+        }
+        
+        
+        //html text
+        if htmlPackage.count > 0 {
+            //not mime
+            var htmlAddress : [String : Any] = [String : Any]()
+            var addrs = [String: Any]()
+            var type = SendType()
+            for mp in htmlPackage {
+                addrs[mp.email] = mp.toDictionary()!
+                type.insert(mp.type)
+            }
+            htmlAddress["Addresses"] = addrs
+            //"Type": 15, // 8|4|2|1, all types sharing this package, a bitmask
+            htmlAddress["Type"] = type.rawValue
+            htmlAddress["Body"] = self.body
+            htmlAddress["MIMEType"] = "text/html"
+            
+            if let cb = clearBody {
+                // Include only if cleartext recipients
+                htmlAddress["BodyKey"] = [
+                    "Key" : cb.key,
+                    "Algorithm" : cb.algo
+                ]
+            }
+            
+            if let cAtts = clearAtts {
+                // Only include if cleartext recipients, optional if no attachments
+                var atts : [String:Any] = [String:Any]()
+                for it in cAtts {
+                    atts[it.ID] = [
+                        "Key" : it.encodedSession,
+                        "Algorithm" : it.algo
+                    ]
+                }
+                htmlAddress["AttachmentKeys"] = atts
+            }
+            packages.append(htmlAddress)
+        }
+       
+        if mimePackage.count > 0 {
+            //mime
+            var mimeAddress : [String : Any] = [String : Any]()
+            
+            var addrs = [String: Any]()
+            var mimeType = SendType()
+            for mp in mimePackage {
+                addrs[mp.email] = mp.toDictionary()!
+                mimeType.insert(mp.type)
+            }
+            mimeAddress["Addresses"] = addrs
+            mimeAddress["Type"] = mimeType.rawValue // 16|32 MIME sending cannot share packages with inline sending
+            mimeAddress["Body"] = mimeDataPacket
+            mimeAddress["MIMEType"] = "multipart/mixed"
+            
+            if let cb = clearMimeBody {
+                // Include only if cleartext MIME recipients
+                mimeAddress["BodyKey"] = [
+                    "Key" : cb.key,
+                    "Algorithm" : cb.algo
+                ]
+            }
+            packages.append(mimeAddress)
+        }
+        out["Packages"] = packages
+        PMLog.D( out.json(prettyPrinted: true) )
+        return out
+    }
+    
+    override func path() -> String {
+        return MessageAPI.path + "/" + self.messageID + AppConstants.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return MessageAPI.v_send_message
+    }
+    
+    override func method() -> APIService.HTTPMethod {
+        return .post
+    }
+}
 
+
+/// Old functions need to be removed later
 /// send message reuqest
 final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     var messagePackage : [MessagePackage]!     // message package
@@ -311,6 +463,7 @@ final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     }
     
     override func toDictionary() -> [String : Any]? {
+
         
         var out : [String : Any] = [String : Any]()
         
@@ -350,7 +503,7 @@ final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return MessageAPI.V_MessageSendRequest
+        return 1
     }
     
     override func method() -> APIService.HTTPMethod {
@@ -358,6 +511,7 @@ final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     }
 }
 
+/// TODO:: delete this part
 /// message packages
 final class MessagePackage : Package {
     
@@ -428,7 +582,6 @@ final class MessagePackage : Package {
     }
 }
 
-
 // message attachment key package
 final class AttachmentKeyPackage : Package {
     let ID : String!
@@ -452,68 +605,16 @@ final class AttachmentKeyPackage : Package {
     }
 }
 
-
 /**
 *  temporary table for formating the message send package
 */
 final class TempAttachment {
     let ID : String!
-    let Key : Data?
+    let Session : Data?
     
-    public init(id: String, key: Data?) {
+    public init(id: String, session: Data?) {
         self.ID = id
-        self.Key = key
+        self.Session = session
     }
 }
-
-
-
-/**
-* MARK : down all the old code
-*/
-
-/**
-*  contact
-*/
-public struct Contacts {
-    let email: String
-    let name: String
-    
-    init(email: String, name: String) {
-        self.name = name
-        self.email = email
-    }
-    
-    func asJSON() -> [String : Any] {
-        return [
-            "Name" : self.name,
-            "Email" : self.email]
-    }
-}
-
-//    public struct Attachment {
-//        let fileName: String
-//        let mimeType: String
-//        let fileData: [String:String]
-//        let fileSize: Int
-//
-//        init(fileName: String, mimeType: String, fileData: [String:String], fileSize: Int) {
-//            self.fileName                           = fileName
-//            self.mimeType                           = mimeType
-//            self.fileData                           = fileData
-//            self.fileSize                           = fileSize
-//        }
-//
-//        func asJSON() -> [String:Any] {
-//            return [
-//                "FileName" : fileName,
-//                "MIMEType" : mimeType,
-//                "FileData" : fileData,
-//                "FileSize" : String(fileSize)]
-//        }
-//    }
-
-
-
-
 

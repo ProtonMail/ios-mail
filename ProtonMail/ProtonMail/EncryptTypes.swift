@@ -25,25 +25,25 @@ enum EncryptTypes: Int, CustomStringConvertible {
     var description : String {
         switch(self){
         case .plain:
-            return NSLocalizedString("Plain text", comment: "Title")
+            return LocalString._general_enc_type_plain_text
         case .inner:
-            return NSLocalizedString("ProtonMail encrypted emails", comment: "Title")
+            return LocalString._general_enc_pm_emails
         case .external:
-            return NSLocalizedString("Encrypted from outside", comment: "Title")
+            return LocalString._general_enc_from_outside
         case .outEnc:
-            return NSLocalizedString("Encrypted for outside", comment: "Title")
+            return LocalString._general_enc_for_outside
         case .outPlain:
-            return NSLocalizedString("Send plain but stored enc", comment: "Title")
+            return LocalString._general_send_plain_but_stored_enc
         case .draftStoreEnc:
-            return NSLocalizedString("Draft", comment: "Title")
+            return LocalString._general_draft_action
         case .outEncReply:
-            return NSLocalizedString("Encrypted for outside reply", comment: "Title")
+            return LocalString._general_encrypted_for_outside_reply
         case .outPGPInline:
-            return NSLocalizedString("Encrypted from outside pgp inline", comment: "Title")
+            return LocalString._general_enc_from_outside_pgp_inline
         case .outPGPMime:
-            return NSLocalizedString("Encrypted from outside pgp mime", comment: "Title")
+            return LocalString._general_enc_from_outside_pgp_mime
         case .outSignedPGPMime:
-            return NSLocalizedString("Encrypted from outside signed pgp mime", comment: "Title")
+            return LocalString._general_enc_from_outside_signed_pgp_mime
         }
     }
     

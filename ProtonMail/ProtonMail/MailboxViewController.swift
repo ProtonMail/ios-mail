@@ -131,9 +131,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.noResultLabel.text = NSLocalizedString("No Messages", comment: "message when mailbox doesnt have emailsß")
+        self.noResultLabel.text = LocalString._messages_no_messages
         
-        undoButton.setTitle(NSLocalizedString("Undo", comment: "Action"), for: .normal)
+        undoButton.setTitle(LocalString._messages_undo_action, for: .normal)
 
         self.setNavigationTitleText(viewModel.getNavigationTitle())
         
@@ -228,7 +228,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         self.navigationTitleLabel.font = Fonts.h2.regular
         self.navigationTitleLabel.textAlignment = NSTextAlignment.center
         self.navigationTitleLabel.textColor = UIColor.white
-        self.navigationTitleLabel.text = self.title ?? NSLocalizedString("INBOX", comment: "Title")
+        self.navigationTitleLabel.text = self.title ?? LocalString._locations_inbox_title
         self.navigationTitleLabel.sizeToFit()
         self.navigationItem.titleView = navigationTitleLabel
         
@@ -284,7 +284,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                 if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
                     messageDetailViewController.message = message
                 } else {
-                    let alert = NSLocalizedString("Can't find the clicked message please try again!", comment: "Description").alertController()
+                    let alert = LocalString._messages_cant_find_message.alertController()
                     alert.addOKAction()
                     present(alert, animated: true, completion: nil)
                 }
@@ -296,9 +296,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             let composeViewController = segue.destination.childViewControllers[0] as! ComposeEmailViewController
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
-                    sharedVMService.openDraftViewModel(composeViewController, msg: selectedDraft ?? message)
+                    sharedVMService.openDraft(vmp: composeViewController, with: selectedDraft ?? message)
                 } else {
-                    let alert = NSLocalizedString("Can't find the clicked message please try again!", comment: "Description").alertController()
+                    let alert = LocalString._messages_cant_find_message.alertController()
                     alert.addOKAction()
                     present(alert, animated: true, completion: nil)
                 }
@@ -330,8 +330,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             
         } else if segue.identifier == kSegueToCompose {
             let composeViewController = segue.destination.childViewControllers[0] as! ComposeEmailViewController
-            sharedVMService.newDraftViewModel(composeViewController)
-            
+            sharedVMService.newDraft(vmp: composeViewController)
         } else if segue.identifier == kSegueToTour {
             let popup = segue.destination as! OnboardingViewController
             self.setPresentationStyleForSelfController(self, presentingController: popup)
@@ -371,10 +370,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     @objc internal func removeButtonTapped() {
         if viewModel.isDelete() {
             moveMessagesToLocation(.deleted)
-            showMessageMoved(title: NSLocalizedString("Message has been deleted.", comment: "Title"))
+            showMessageMoved(title: LocalString._messages_has_been_deleted)
         } else {
             moveMessagesToLocation(.trash)
-            showMessageMoved(title: NSLocalizedString("Message has been moved.", comment: "Title"))
+            showMessageMoved(title: LocalString._messages_has_been_moved)
         }
         cancelButtonTapped();
     }
@@ -391,10 +390,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     @objc internal func moreButtonTapped() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel",  comment: "Action"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         
         if viewModel.isShowEmptyFolder() {
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Empty Folder",  comment: "Action"), style: .destructive, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Empty Folder",  comment: "Action"),
+                                                    style: .destructive, handler: { (action) -> Void in
 
                 self.viewModel.emptyFolder()
                 self.showNoResultLabel()
@@ -402,20 +402,23 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             }))
         } else {
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Mark Read",  comment: "Action"), style: .default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Mark Read",  comment: "Action"),
+                                                    style: .default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isRead)
                 self.cancelButtonTapped();
                 self.navigationController?.popViewController(animated: true)
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Add Star",  comment: "Action"), style: .default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: LocalString._locations_add_star_action,
+                                                    style: .default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
                 self.selectedMessagesSetStar()
                 self.cancelButtonTapped();
                 self.navigationController?.popViewController(animated: true)
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove Star",  comment: "Action"), style: .default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove Star",  comment: "Action"),
+                                                    style: .default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isStarred)
                 self.selectedMessagesSetUnStar()
                 self.cancelButtonTapped();
@@ -661,9 +664,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             let res = viewModel.archiveMessage(message)
             switch res {
             case .showUndo:
-                showUndoView(NSLocalizedString("Archived", comment: "Description"))
+                showUndoView(LocalString._messages_archived)
             case .showGeneral:
-                showMessageMoved(title: NSLocalizedString("Message has been moved.", comment: "Title"))
+                showMessageMoved(title: LocalString._messages_has_been_moved)
             default: break
             }
         }
@@ -675,9 +678,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             let res = viewModel.deleteMessage(message)
             switch res {
             case .showUndo:
-                showUndoView(NSLocalizedString("Deleted", comment: "Description"))
+                showUndoView(LocalString._locations_deleted_desc)
             case .showGeneral:
-                showMessageMoved(title: NSLocalizedString("Message has been deleted.", comment: "Title"))
+                showMessageMoved(title: LocalString._messages_has_been_deleted)
             default: break
             }
         }
@@ -689,9 +692,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             let res = viewModel.spamMessage(message)
             switch res {
             case .showUndo:
-                showUndoView(NSLocalizedString("Spammed", comment: "Description"))
+                showUndoView(LocalString._messages_spammed)
             case .showGeneral:
-                showMessageMoved(title: NSLocalizedString("Message has been moved.", comment: "Title"))
+                showMessageMoved(title: LocalString._messages_has_been_moved)
             default: break
             }
         }
@@ -722,7 +725,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     fileprivate func showUndoView(_ title : String) {
-        undoLabel.text = String(format: NSLocalizedString("Message %@", comment: "Message with title"), title)
+        undoLabel.text = String(format: LocalString._messages_with_title, title)
         self.undoBottomDistance.constant = 0
         self.undoButton.isHidden = false
         self.undoView.isHidden = false
@@ -1093,7 +1096,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             leftButtons = [self.menuBarButtonItem]
         } else {
             if (self.cancelBarButtonItem == nil) {
-                self.cancelBarButtonItem = UIBarButtonItem(title:NSLocalizedString("Cancel", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MailboxViewController.cancelButtonTapped))
+                self.cancelBarButtonItem = UIBarButtonItem(title: LocalString._general_cancel_button,
+                                                           style: UIBarButtonItemStyle.plain,
+                                                           target: self,
+                                                           action: #selector(MailboxViewController.cancelButtonTapped))
             }
             
             leftButtons = [self.cancelBarButtonItem]
@@ -1248,9 +1254,9 @@ extension MailboxViewController : LablesViewControllerDelegate {
     
     func apply(type: LabelFetchType) {
         if type == .label {
-            showMessageMoved(title: NSLocalizedString("Labels have been applied.", comment: "Title"))
+            showMessageMoved(title: LocalString._messages_labels_applied)
         } else if type == .folder {
-            showMessageMoved(title: NSLocalizedString("Message has been moved.", comment: "Title"))
+            showMessageMoved(title: LocalString._messages_has_been_moved)
         }
     }
 }
@@ -1284,7 +1290,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     
     internal func showTimeOutErrorMessage() {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(timeOut: NSLocalizedString("The request timed out.", comment: "Title"))
+        self.latestSpaceHide = self.topMessageView.updateMessage(timeOut: LocalString._general_request_timed_out)
         self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
@@ -1294,7 +1300,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     
     internal func showNoInternetErrorMessage() {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : NSLocalizedString("No connectivity detected...", comment: "Title"))
+        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : LocalString._general_no_connectivity_detected)
         self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
@@ -1304,7 +1310,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     
     internal func showOfflineErrorMessage(_ error : NSError?) {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : error?.localizedDescription ?? NSLocalizedString("The ProtonMail current offline...", comment: "Title"))
+        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : error?.localizedDescription ?? LocalString._general_pm_offline)
         self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
@@ -1314,7 +1320,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     
     internal func show503ErrorMessage(_ error : NSError?) {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : NSLocalizedString("API Server not reachable...", comment: "Title"))
+        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet: LocalString._general_api_server_not_reachable)
         self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
         self.updateViewConstraints()
         
@@ -1331,9 +1337,9 @@ extension MailboxViewController : TopMessageViewDelegate {
             if count > 0 {
                 self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
                 if count == 1 {
-                    self.latestSpaceHide = self.topMessageView.updateMessage(newMessage: NSLocalizedString("You have a new email!", comment: "Title"))
+                    self.latestSpaceHide = self.topMessageView.updateMessage(newMessage: LocalString._messages_you_have_new_email)
                 } else {
-                    self.latestSpaceHide = self.topMessageView.updateMessage(newMessage: String(format: NSLocalizedString("You have %d new emails!", comment: "Message"), count))
+                    self.latestSpaceHide = self.topMessageView.updateMessage(newMessage: String(format: LocalString._messages_you_have_new_emails_with, count))
                 }
                 self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
                 self.updateViewConstraints()
@@ -1368,7 +1374,7 @@ extension MailboxViewController : TopMessageViewDelegate {
         case NotReachable:
             PMLog.D("Access Not Available")
             self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-            self.latestSpaceHide = self.topMessageView.updateMessage(noInternet: NSLocalizedString("No connectivity detected...", comment: "Title"))
+            self.latestSpaceHide = self.topMessageView.updateMessage(noInternet: LocalString._general_no_connectivity_detected)
             self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
             self.updateViewConstraints()
         case ReachableViaWWAN:
@@ -1518,7 +1524,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                PMLog.D("Section: \(newIndexPath.section) Row: \(newIndexPath.row) ")
                 tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
                 if self.needToShowNewMessage == true {
                     if let newMsg = anObject as? Message {

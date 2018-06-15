@@ -13,10 +13,10 @@ protocol EmailHeaderViewProtocol {
     func updateSize()
 }
 
-protocol EmailHeaderActionsProtocol {
-    func starredChanged(_ isStarred : Bool)
+protocol EmailHeaderActionsProtocol: RecipientViewDelegate, ShowImageViewProtocol {
+    func quickLook(attachment tempfile : URL, keyPackage:Data, fileName:String, type: String)
     
-    func quickLookAttachment (_ tempfile : URL, keyPackage:Data, fileName:String, type: String)
+    func star(changed isStarred : Bool)
     
     func showImage()
 }
@@ -24,7 +24,21 @@ protocol EmailHeaderActionsProtocol {
 class EmailHeaderView: UIView {
     
     var viewDelegate: EmailHeaderViewProtocol?
-    var actionsDelegate: EmailHeaderActionsProtocol?
+    private var _delegate: EmailHeaderActionsProtocol?
+    
+    var delegate :EmailHeaderActionsProtocol? {
+        get {
+            return self._delegate
+        }
+        set {
+            self._delegate = newValue
+            //set delegate here
+            self.emailFromTable.delegate = self._delegate
+            self.emailToTable.delegate = self._delegate
+            self.emailCcTable.delegate = self._delegate
+            self.showImageView.delegate = self._delegate
+        }
+    }
     
     /// Header Content View
     fileprivate var emailHeaderView: UIView!
@@ -55,7 +69,7 @@ class EmailHeaderView: UIView {
     fileprivate var LabelFive: UILabel!
     
     fileprivate var emailFavoriteButton: UIButton!
-    fileprivate var emailIsEncryptedImageView: UIImageView!
+//    fileprivate var emailIsEncryptedImageView: UIImageView!
     fileprivate var emailHasAttachmentsImageView: UIImageView!
     fileprivate var emailAttachmentsAmount: UILabel!
     
@@ -87,7 +101,7 @@ class EmailHeaderView: UIView {
     fileprivate let kEmailDetailDateLabelMarginTop: CGFloat = 10.0
     fileprivate let kEmailDetailButtonMarginLeft: CGFloat = 5.0
     fileprivate let kEmailHasAttachmentsImageViewMarginRight: CGFloat = -4.0
-    fileprivate let kEmailIsEncryptedImageViewMarginRight: CGFloat = -8.0
+//    fileprivate let kEmailIsEncryptedImageViewMarginRight: CGFloat = -8.0
     fileprivate let kEmailBodyTextViewMarginLeft: CGFloat = 0//-16.0
     fileprivate let kEmailBodyTextViewMarginRight: CGFloat = 0//-16.0
     fileprivate let kEmailBodyTextViewMarginTop: CGFloat = 16.0
@@ -97,6 +111,8 @@ class EmailHeaderView: UIView {
     fileprivate let k24HourMinuteFormat = "HH:mm"
 
     fileprivate var tempFileUri : URL?
+    
+    fileprivate var isSentFolder : Bool = false
     
     func getHeight () -> CGFloat {
         return separatorShowImage.frame.origin.y + 6;
@@ -125,7 +141,7 @@ class EmailHeaderView: UIView {
         get {
             let n = self.sender?.name ?? ""
             let e = self.sender?.email ?? ""
-            let f = NSLocalizedString("From:", comment: "Title")
+            let f = LocalString._general_from_label
             let from = "\(f) \((n.isEmpty ? e : n))"
             let formRange = NSRange (location: 0, length: from.count)
             let attributedString = NSMutableAttributedString(string: from,
@@ -141,7 +157,7 @@ class EmailHeaderView: UIView {
     
     fileprivate var fromShortAttr : NSMutableAttributedString! {
         get {
-            let f = NSLocalizedString("From:", comment: "Title")
+            let f = LocalString._general_from_label
             let from = "\(f) "
             let formRange = NSRange (location: 0, length: from.count)
             let attributedString = NSMutableAttributedString(string: from,
@@ -171,7 +187,7 @@ class EmailHeaderView: UIView {
                 strTo += " +\(count - 1)"
             }
             
-            let t = NSLocalizedString("To:", comment: "Title")
+            let t = LocalString._general_to_label
             let to = "\(t) \(strTo)"
             let formRange = NSRange (location: 0, length: to.count)
             let attributedString = NSMutableAttributedString(string: to,
@@ -186,7 +202,7 @@ class EmailHeaderView: UIView {
     
     fileprivate var toShortAttr : NSMutableAttributedString! {
         get {
-            let t = NSLocalizedString("To:", comment: "Title")
+            let t = LocalString._general_to_label
             let to = "\(t) "
             let formRange = NSRange (location: 0, length: to.count)
             let attributedString = NSMutableAttributedString(string: to,
@@ -201,7 +217,7 @@ class EmailHeaderView: UIView {
     
     fileprivate var ccShortAttr : NSMutableAttributedString! {
         get {
-            let c = NSLocalizedString("Cc:", comment: "Title")
+            let c = LocalString._general_cc_label
             let cc = "\(c) "
             let formRange = NSRange (location: 0, length: cc.count)
             let attributedString = NSMutableAttributedString(string: cc,
@@ -293,7 +309,8 @@ class EmailHeaderView: UIView {
                            sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?,
                            isStarred : Bool, time : Date?, encType : EncryptTypes, labels : [Label]?,
                            showShowImages: Bool, expiration : Date?,
-                           score: MessageSpamScore) {
+                           score: MessageSpamScore, isSent: Bool) {
+        self.isSentFolder = isSent
         self.title = title
         self.sender = sender
         self.toList = to
@@ -313,7 +330,9 @@ class EmailHeaderView: UIView {
         
         self.emailFromTable.contacts = [sender]
         self.emailToTable.contacts = toList
+        self.emailToTable.showLock(isShow: self.isSentFolder)
         self.emailCcTable.contacts = ccList
+        self.emailCcTable.showLock(isShow: self.isSentFolder)
         
         self.emailTo.attributedText = toSinglelineAttr
         self.emailCc.attributedText = ccShortAttr
@@ -321,25 +340,26 @@ class EmailHeaderView: UIView {
         self.emailFavoriteButton.isSelected = self.starred;
         
         let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
-        self.emailShortTime.text = "\(NSLocalizedString("at", comment: "like at 10:00pm")) \(self.date.string(format:timeformat))".lowercased()
+        let at = LocalString._general_at_label
+        self.emailShortTime.text = "\(at) \(self.date.string(format:timeformat))".lowercased()
         let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' \(timeformat)") ;
-        self.emailDetailDateLabel.text = String(format:NSLocalizedString("Date: %@", comment: "like Date: 2017-10-10"), "\(tm)")
+        self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
 
-        let lockType : LockTypes = encType.lockType
-        switch (lockType) {
-        case .plainTextLock:
-            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock");
-            self.emailIsEncryptedImageView.isHighlighted = true;
-            break
-        case .encryptLock:
-            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock");
-            self.emailIsEncryptedImageView.isHighlighted = false;
-            break
-        case .pgpLock:
-            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock-pgpmime");
-            self.emailIsEncryptedImageView.isHighlighted = false;
-            break;
-        }
+//        let lockType : LockTypes = encType.lockType
+//        switch (lockType) {
+//        case .plainTextLock:
+//            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock");
+//            self.emailIsEncryptedImageView.isHighlighted = true;
+//            break
+//        case .encryptLock:
+//            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock");
+//            self.emailIsEncryptedImageView.isHighlighted = false;
+//            break
+//        case .pgpLock:
+//            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock-pgpmime");
+//            self.emailIsEncryptedImageView.isHighlighted = false;
+//            break;
+//        }
         
         var tmplabels : [Label] = []
         if let alllabels = labels {
@@ -463,7 +483,6 @@ class EmailHeaderView: UIView {
     
     fileprivate func createShowImageView() {
         self.showImageView = ShowImageView()
-        self.showImageView.actionDelegate = self
         self.addSubview(showImageView!)
     }
     
@@ -557,18 +576,18 @@ class EmailHeaderView: UIView {
         self.emailDetailButton.addTarget(self, action: #selector(EmailHeaderView.detailsButtonTapped), for: UIControlEvents.touchUpInside)
         self.emailDetailButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
         self.emailDetailButton.titleLabel?.font = Fonts.h6.medium
-        self.emailDetailButton.setTitle(NSLocalizedString("Details", comment: "Title"), for: UIControlState())
+        self.emailDetailButton.setTitle(LocalString._details, for: UIControlState())
         self.emailDetailButton.setTitleColor(UIColor(RRGGBB: UInt(0x9397CD)), for: UIControlState())
         self.emailDetailButton.sizeToFit()
         self.emailHeaderView.addSubview(emailDetailButton)
         
         self.configureEmailDetailDateLabel()
         
-        self.emailIsEncryptedImageView = UIImageView(image: UIImage(named: "mail_lock"))
-        self.emailIsEncryptedImageView.highlightedImage = UIImage(named: "mail_lock-outside")
-        self.emailIsEncryptedImageView.contentMode = UIViewContentMode.center
-        self.emailIsEncryptedImageView.sizeToFit()
-        self.emailHeaderView.addSubview(emailIsEncryptedImageView)
+//        self.emailIsEncryptedImageView = UIImageView(image: UIImage(named: "mail_lock"))
+//        self.emailIsEncryptedImageView.highlightedImage = UIImage(named: "mail_lock-outside")
+//        self.emailIsEncryptedImageView.contentMode = UIViewContentMode.center
+//        self.emailIsEncryptedImageView.sizeToFit()
+//        self.emailHeaderView.addSubview(emailIsEncryptedImageView)
         
         self.emailHasAttachmentsImageView = UIImageView(image: UIImage(named: "mail_attachment"))
         self.emailHasAttachmentsImageView.contentMode = UIViewContentMode.center
@@ -686,17 +705,17 @@ class EmailHeaderView: UIView {
             let _ = make?.height.equalTo()(separatorHeight)
         }
         
-        emailIsEncryptedImageView.mas_updateConstraints { (make) -> Void in
-            make?.removeExisting = true
-            if (self.attachmentCount > 0) {
-                let _ = make?.right.equalTo()(self.emailHasAttachmentsImageView.mas_left)?.with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
-            } else {
-                let _ = make?.right.equalTo()(self.emailHeaderView)?.offset()(-16)
-            }
-            let _ = make?.bottom.equalTo()(self.emailAttachmentsAmount)
-            let _ = make?.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
-            let _ = make?.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
-        }
+//        emailIsEncryptedImageView.mas_updateConstraints { (make) -> Void in
+//            make?.removeExisting = true
+//            if (self.attachmentCount > 0) {
+//                let _ = make?.right.equalTo()(self.emailHasAttachmentsImageView.mas_left)?.with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
+//            } else {
+//                let _ = make?.right.equalTo()(self.emailHeaderView)?.offset()(-16)
+//            }
+//            let _ = make?.bottom.equalTo()(self.emailAttachmentsAmount)
+//            let _ = make?.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
+//            let _ = make?.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
+//        }
         
         self.updateExpirationConstraints()
         self.updateShowImageConstraints()
@@ -712,9 +731,9 @@ class EmailHeaderView: UIView {
         if let messageTime = self.date {
             let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
             let tm = messageTime.formattedWith("'On' EE, MMM d, yyyy 'at' \(timeformat)");
-            self.emailDetailDateLabel.text = String(format:NSLocalizedString("Date: %@", comment: ""), "\(tm)")
+            self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
         } else {
-            self.emailDetailDateLabel.text = String(format:NSLocalizedString("Date: %@", comment: ""), "")
+            self.emailDetailDateLabel.text = String(format: LocalString._date, "")
         }
         self.emailDetailDateLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_999DA1
         self.emailDetailDateLabel.sizeToFit()
@@ -927,17 +946,17 @@ class EmailHeaderView: UIView {
             let _ = make?.width.equalTo()(self.emailHasAttachmentsImageView.frame.width)
         }
         
-        emailIsEncryptedImageView.mas_makeConstraints { (make) -> Void in
-            if (self.attachmentCount > 0) {
-                let _ = make?.right.equalTo()(self.emailHasAttachmentsImageView.mas_left)?.with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
-            } else {
-                let _ = make?.right.equalTo()(self.emailHeaderView)
-            }
-            
-            let _ = make?.bottom.equalTo()(self.emailAttachmentsAmount)
-            let _ = make?.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
-            let _ = make?.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
-        }
+//        emailIsEncryptedImageView.mas_makeConstraints { (make) -> Void in
+//            if (self.attachmentCount > 0) {
+//                let _ = make?.right.equalTo()(self.emailHasAttachmentsImageView.mas_left)?.with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
+//            } else {
+//                let _ = make?.right.equalTo()(self.emailHeaderView)
+//            }
+//
+//            let _ = make?.bottom.equalTo()(self.emailAttachmentsAmount)
+//            let _ = make?.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
+//            let _ = make?.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
+//        }
     }
     
     fileprivate var isShowingDetail: Bool = false
@@ -949,7 +968,7 @@ class EmailHeaderView: UIView {
     
     @objc internal func emailFavoriteButtonTapped() {
         self.starred = !self.starred
-        self.actionsDelegate?.starredChanged(self.starred)
+        self.delegate?.star(changed: self.starred)
         self.emailFavoriteButton.isSelected = self.starred
     }
     
@@ -1041,7 +1060,7 @@ class EmailHeaderView: UIView {
                 let _ = make?.top.equalTo()(self.emailCcTable.mas_bottom)?.with().offset()(self.kEmailTimeViewMarginTop)
             })
             
-            self.emailDetailButton.setTitle(NSLocalizedString("Hide Details", comment: "Title"), for: UIControlState())
+            self.emailDetailButton.setTitle(LocalString._hide_details, for: UIControlState())
             self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.left.equalTo()(self.emailShortTime)
@@ -1175,7 +1194,7 @@ class EmailHeaderView: UIView {
                 let _ = make?.height.equalTo()(0)
             }
             
-            self.emailDetailButton.setTitle(NSLocalizedString("Details", comment: "Title"), for: UIControlState())
+            self.emailDetailButton.setTitle(LocalString._details, for: UIControlState())
             self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.left.equalTo()(self.emailShortTime.mas_right)?.with().offset()(self.kEmailDetailButtonMarginLeft)
@@ -1275,14 +1294,6 @@ class EmailHeaderView: UIView {
         self.updateSelf(true)
     }
 }
-
-
-extension EmailHeaderView : ShowImageViewProtocol {
-    func showImageClicked() {
-        actionsDelegate?.showImage()
-    }
-}
-
 
 extension EmailHeaderView: UITableViewDataSource {
     
@@ -1389,21 +1400,8 @@ extension EmailHeaderView: UITableViewDelegate {
         })
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
-    }
-    
-    //    - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-    //    {
-    //    if ([keyPath isEqualToString:@"fractionCompleted"]) {
-    //    NSProgress *progress = (NSProgress *)object;
-    //    NSLog(@"Progress… %f", progress.fractionCompleted);
-    //    } else {
-    //    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    //    }
-    //    }
     
     fileprivate func openLocalURL(_ localURL: URL, keyPackage:Data, fileName:String, type: String, forCell cell: UITableViewCell) {
-        self.actionsDelegate?.quickLookAttachment(localURL, keyPackage: keyPackage, fileName: fileName, type: type)
+        self.delegate?.quickLook(attachment: localURL, keyPackage: keyPackage, fileName: fileName, type: type)
     }
 }

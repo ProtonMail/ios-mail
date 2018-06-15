@@ -40,7 +40,7 @@ class PMView: UIView {
             self.clipsToBounds = true;
             self.setup()
         } else {
-            PMLog.D("PMView setupView loadViewFromNib failed") //TODO:: add file log
+            PMLog.D("PMView setupView loadViewFromNib failed") //TODO:: add a real log
         }
     }
     

@@ -7,10 +7,15 @@
 @class PMNIEmail;
 @class PMNIFormattedName;
 @class PMNIGender;
+@class PMNIKey;
 @class PMNINickname;
 @class PMNINote;
 @class PMNIOrganization;
 @class PMNIPMCustom;
+@class PMNIPMEncrypt;
+@class PMNIPMMimeType;
+@class PMNIPMScheme;
+@class PMNIPMSign;
 @class PMNIStructuredName;
 @class PMNITelephone;
 @class PMNITitle;
@@ -104,6 +109,47 @@
 - (void)setCustoms:(nonnull NSArray<PMNIPMCustom *> *)customs;
 
 - (void)clearCustoms;
+
+- (nullable PMNIPMSign *)getPMSign:(nonnull NSString *)group;
+
+- (void)addPMSign:(nullable PMNIPMSign *)sign;
+
+- (void)setPMSign:(nullable PMNIPMSign *)sign;
+
+- (void)clearPMSign;
+
+- (nullable PMNIPMEncrypt *)getPMEncrypt:(nonnull NSString *)group;
+
+- (void)addPMEncrypt:(nullable PMNIPMEncrypt *)encrypt;
+
+- (void)setPMEncrypt:(nullable PMNIPMEncrypt *)encrypt;
+
+- (void)clearPMEncrypt;
+
+- (nullable PMNIPMScheme *)getPMScheme:(nonnull NSString *)group;
+
+- (void)addPMScheme:(nullable PMNIPMScheme *)scheme;
+
+- (void)setPMScheme:(nullable PMNIPMScheme *)scheme;
+
+- (void)clearPMScheme;
+
+- (nullable PMNIPMMimeType *)getPMMimeType:(nonnull NSString *)group;
+
+- (void)addPMMimeType:(nullable PMNIPMMimeType *)mimetype;
+
+- (void)setPMMimeType:(nullable PMNIPMMimeType *)mimetype;
+
+- (void)clearPMMimeType;
+
+- (nonnull NSArray<PMNIKey *> *)getKeys:(nonnull NSString *)group;
+
+- (void)addKey:(nullable PMNIKey *)key;
+
+/**set will replace all exsiting */
+- (void)setKeys:(nonnull NSArray<PMNIKey *> *)keys;
+
+- (void)clearKeys;
 
 - (nonnull NSArray<PMNIUrl *> *)getUrls;
 

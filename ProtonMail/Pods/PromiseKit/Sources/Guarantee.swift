@@ -1,7 +1,10 @@
 import class Foundation.Thread
 import Dispatch
 
-/// A `Guarantee` is a functional abstraction around an asynchronous operation that cannot error.
+/**
+ A `Guarantee` is a functional abstraction around an asynchronous operation that cannot error.
+ - See: `Thenable`
+*/
 public class Guarantee<T>: Thenable {
     let box: Box<T>
 
@@ -9,15 +12,18 @@ public class Guarantee<T>: Thenable {
         self.box = box
     }
 
+    /// Returns a `Guarantee` sealed with the provided value.
     public static func value(_ value: T) -> Guarantee<T> {
         return .init(box: SealedBox(value: value))
     }
 
+    /// Returns a pending `Guarantee` that can be resolved with the provided closure’s parameter.
     public init(resolver body: (@escaping(T) -> Void) -> Void) {
         box = EmptyBox()
         body(box.seal)
     }
 
+    /// - See: `Thenable.pipe`
     public func pipe(to: @escaping(Result<T>) -> Void) {
         pipe{ to(.fulfilled($0)) }
     }
@@ -38,6 +44,7 @@ public class Guarantee<T>: Thenable {
         }
     }
 
+    /// - See: `Thenable.result`
     public var result: Result<T>? {
         switch box.inspect() {
         case .pending:
@@ -51,6 +58,7 @@ public class Guarantee<T>: Thenable {
         box = EmptyBox()
     }
 
+    /// Returns a tuple of a pending `Guarantee` and a function that resolves it.
     public class func pending() -> (guarantee: Guarantee<T>, resolve: (T) -> Void) {
         return { ($0, $0.box.seal) }(Guarantee<T>(.pending))
     }
@@ -58,10 +66,10 @@ public class Guarantee<T>: Thenable {
 
 public extension Guarantee {
     @discardableResult
-    func done(on: DispatchQueue? = conf.Q.return, _ body: @escaping(T) -> Void) -> Guarantee<Void> {
+    func done(on: DispatchQueue? = conf.Q.return, flags: DispatchWorkItemFlags? = nil, _ body: @escaping(T) -> Void) -> Guarantee<Void> {
         let rg = Guarantee<Void>(.pending)
         pipe { (value: T) in
-            on.async {
+            on.async(flags: flags) {
                 body(value)
                 rg.box.seal(())
             }
@@ -69,10 +77,10 @@ public extension Guarantee {
         return rg
     }
 
-    func map<U>(on: DispatchQueue? = conf.Q.map, _ body: @escaping(T) -> U) -> Guarantee<U> {
+    func map<U>(on: DispatchQueue? = conf.Q.map, flags: DispatchWorkItemFlags? = nil, _ body: @escaping(T) -> U) -> Guarantee<U> {
         let rg = Guarantee<U>(.pending)
         pipe { value in
-            on.async {
+            on.async(flags: flags) {
                 rg.box.seal(body(value))
             }
         }
@@ -80,10 +88,10 @@ public extension Guarantee {
     }
 
 	@discardableResult
-    func then<U>(on: DispatchQueue? = conf.Q.map, _ body: @escaping(T) -> Guarantee<U>) -> Guarantee<U> {
+    func then<U>(on: DispatchQueue? = conf.Q.map, flags: DispatchWorkItemFlags? = nil, _ body: @escaping(T) -> Guarantee<U>) -> Guarantee<U> {
         let rg = Guarantee<U>(.pending)
         pipe { value in
-            on.async {
+            on.async(flags: flags) {
                 body(value).pipe(to: rg.box.seal)
             }
         }
@@ -114,6 +122,29 @@ public extension Guarantee {
         }
         
         return result!
+    }
+}
+
+public extension Guarantee where T: Sequence {
+
+    /**
+     `Guarantee<[T]>` => `T` -> `Guarantee<U>` => `Guaranetee<[U]>`
+
+         firstly {
+             .value([1,2,3])
+         }.thenMap {
+             .value($0 * 2)
+         }.done {
+             // $0 => [2,4,6]
+         }
+     */
+    func thenMap<U>(on: DispatchQueue? = conf.Q.map, flags: DispatchWorkItemFlags? = nil, _ transform: @escaping(T.Iterator.Element) -> Guarantee<U>) -> Guarantee<[U]> {
+        return then(on: on, flags: flags) {
+            when(fulfilled: $0.map(transform))
+        }.recover {
+            // if happens then is bug inside PromiseKit
+            fatalError(String(describing: $0))
+        }
     }
 }
 

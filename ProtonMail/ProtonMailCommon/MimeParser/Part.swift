@@ -14,6 +14,7 @@ public struct Part: CustomStringConvertible {
     
     public let headers: [Header]
     public let body: Data
+    public let string : String
     let subParts: [Part]
     
     public subscript(_ header: Header.Kind) -> String? {
@@ -22,15 +23,17 @@ public struct Part: CustomStringConvertible {
     
     public var bodyString: String {
         let data = self.data
-        
         guard let string = String(data: data, encoding: .utf8) ?? String(data: data, encoding: .ascii) else { return "\(data.count) bytes" }
-        
         return string
     }
     
     public var rawBodyString: String? {
         guard let string = String(data: body, encoding: .utf8) ?? String(data: body, encoding: .ascii) else { return nil }
         return string
+    }
+    
+    public var plainString : String {
+        return self.string
     }
     
     public var contentType: String? { return self.headers[.contentType]?.body }
@@ -69,6 +72,7 @@ public struct Part: CustomStringConvertible {
         if let blankIndex = components.index(of: "") {
             self.headers = components[0..<blankIndex].map { Header($0) }
             self.body = components[blankIndex..<components.count]
+            self.string = components[blankIndex..<components.count].joined(separator: "\n")
             var parts: [Part] = []
             if let boundary = self.headers[.contentType]?.boundaryValue {
                 let groups = components.separated(by: boundary)
@@ -86,6 +90,7 @@ public struct Part: CustomStringConvertible {
             self.headers = components.all.map { Header($0) }
             self.subParts = []
             self.body = Data()
+            self.string = ""
         }
     }
     

@@ -76,7 +76,8 @@
 - (nonnull PMNOpenPgpKey *)generateKey:(nonnull NSString *)userName
                                 domain:(nonnull NSString *)domain
                             passphrase:(nonnull NSString *)passphrase
-                                  bits:(int32_t)bits;
+                                  bits:(int32_t)bits
+                                  time:(int32_t)time;
 
 /**
  * old functions blow
@@ -84,15 +85,24 @@
  */
 - (void)updatePrivateInfo:(nonnull NSString *)privateKey;
 
-/**encrypt message */
+/**encrypt message use address id */
 - (nonnull NSString *)encryptMessage:(nonnull NSString *)addressId
                            plainText:(nonnull NSString *)plainText
-                           passphras:(nonnull NSString *)passphras;
+                           passphras:(nonnull NSString *)passphras
+                                trim:(BOOL)trim;
 
+/**encrypt message use public key */
 - (nonnull NSString *)encryptMessageSingleKey:(nonnull NSString *)publicKey
                                     plainText:(nonnull NSString *)plainText
                                    privateKey:(nonnull NSString *)privateKey
-                                    passphras:(nonnull NSString *)passphras;
+                                    passphras:(nonnull NSString *)passphras
+                                         trim:(BOOL)trim;
+
+- (nonnull NSString *)encryptMessageSingleBinaryPubKey:(nonnull NSData *)publicKey
+                                             plainText:(nonnull NSString *)plainText
+                                            privateKey:(nonnull NSString *)privateKey
+                                             passphras:(nonnull NSString *)passphras
+                                                  trim:(BOOL)trim;
 
 - (nonnull NSString *)decryptMessage:(nonnull NSString *)encryptText
                            passphras:(nonnull NSString *)passphras;
@@ -107,9 +117,12 @@
                                                     plainText:(nonnull NSString *)plainText
                                                     passphras:(nonnull NSString *)passphras;
 
-- (nonnull PMNDecryptSignVerify *)decryptMessageVerify:(nonnull NSString *)publicKey
-                                            privateKey:(nonnull NSString *)privateKey
-                                             passphras:(nonnull NSString *)passphras
+- (nonnull PMNDecryptSignVerify *)decryptMessageVerifySingleKey:(nonnull NSString *)privateKey
+                                                      passphras:(nonnull NSString *)passphras
+                                                      encrypted:(nonnull NSString *)encrypted
+                                                      signature:(nonnull NSString *)signature;
+
+- (nonnull PMNDecryptSignVerify *)decryptMessageVerify:(nonnull NSString *)passphras
                                              encrypted:(nonnull NSString *)encrypted
                                              signature:(nonnull NSString *)signature;
 
@@ -117,8 +130,19 @@
                          plainText:(nonnull NSString *)plainText
                          passphras:(nonnull NSString *)passphras;
 
-- (BOOL)signDetachedVerify:(nonnull NSString *)publicKey
-                 signature:(nonnull NSString *)signature
+- (BOOL)signDetachedVerifySinglePubKey:(nonnull NSString *)publicKey
+                             signature:(nonnull NSString *)signature
+                             plainText:(nonnull NSString *)plainText;
+
+- (BOOL)signDetachedVerifySingleBinaryPubKey:(nonnull NSData *)publicKey
+                                   signature:(nonnull NSString *)signature
+                                   plainText:(nonnull NSString *)plainText;
+
+- (BOOL)signDetachedVerifySinglePrivateKey:(nonnull NSString *)privateKey
+                                 signature:(nonnull NSString *)signature
+                                 plainText:(nonnull NSString *)plainText;
+
+- (BOOL)signDetachedVerify:(nonnull NSString *)signature
                  plainText:(nonnull NSString *)plainText;
 
 + (BOOL)findKeyid:(nonnull NSString *)encryptText
@@ -134,6 +158,12 @@
                                                  fileName:(nonnull NSString *)fileName
                                                privateKey:(nonnull NSString *)privateKey
                                                 passphras:(nonnull NSString *)passphras;
+
+- (nonnull PMNEncryptPackage *)encryptAttachmentSingleBinaryKey:(nonnull NSData *)publicKey
+                                                  unencryptData:(nonnull NSData *)unencryptData
+                                                       fileName:(nonnull NSString *)fileName
+                                                     privateKey:(nonnull NSString *)privateKey
+                                                      passphras:(nonnull NSString *)passphras;
 
 - (nonnull NSData *)decryptAttachment:(nonnull NSData *)key
                                  data:(nonnull NSData *)data
@@ -161,6 +191,9 @@
 - (nonnull NSData *)getNewPublicKeyPackage:(nonnull NSData *)session
                                  publicKey:(nonnull NSString *)publicKey;
 
+- (nonnull NSData *)getNewPublicKeyPackageBinary:(nonnull NSData *)session
+                                       publicKey:(nonnull NSData *)publicKey;
+
 - (nonnull NSData *)getNewSymmetricKeyPackage:(nonnull NSData *)session
                                      password:(nonnull NSString *)password;
 
@@ -177,6 +210,11 @@
                                    salt:(nonnull NSString *)salt;
 
 - (nonnull NSString *)readClearsignedMessage:(nonnull NSString *)signedMessage;
+
++ (nonnull PMNEncryptPackage *)splitMessage:(nonnull NSString *)encrypted;
+
++ (nonnull NSString *)combinePackages:(nonnull NSData *)key
+                                 data:(nonnull NSData *)data;
 
 /**test functions */
 - (int32_t)throwAnException;

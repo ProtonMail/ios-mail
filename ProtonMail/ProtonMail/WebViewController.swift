@@ -10,8 +10,8 @@ import UIKit
 
 class WebViewController: UIViewController, ViewModelProtocolNew, UIWebViewDelegate {
     typealias argType = WebViewModel
-    func setViewModel(_ vm: WebViewModel) {
-         self.viewModel = vm
+    func set(viewModel: WebViewModel) {
+        self.viewModel = viewModel
     }
     
     func inactiveViewModel() {

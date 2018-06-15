@@ -11,7 +11,7 @@ import Foundation
 
 
 //MARK : get keys salt  #not in used
-final class GetOrgKeys<T : ApiResponse> : ApiRequest<T> {
+final class GetOrgKeys : ApiRequest<OrgKeyResponse> {
     
     override func method() -> APIService.HTTPMethod {
         return .get
@@ -25,13 +25,11 @@ final class GetOrgKeys<T : ApiResponse> : ApiRequest<T> {
         return OrganizationsAPI.v_get_org_keys
     }
 }
-
+//TODO::check public key
 final class OrgKeyResponse : ApiResponse {
-    var pubKey : String?
     var privKey : String?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.pubKey = response["PublicKey"] as? String
         self.privKey = response["PrivateKey"] as? String
         return true
     }

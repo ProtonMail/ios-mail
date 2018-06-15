@@ -1,0 +1,729 @@
+/* (No Comment) */
+"%d Minute" = "%d menit";
+
+/* (No Comment) */
+"%d Minutes" = "%d menit";
+
+/* (No Comment) */
+"<no object>" = "& lt; tidak ada objek & gt;";
+
+/* (No Comment) */
+"A message cannot have more than 5 labels" = "Pesan tidak boleh memiliki lebih dari 5 label";
+
+/* (No Comment) */
+"A new version of ProtonMail app is available, please update to latest version." = "Versi baru dari aplikasi ProtonMail tersedia, silakan update ke versi terbaru.";
+
+/* (No Comment) */
+"A passcode has not been set, enable it in the system Settings" = "Kode akses belum diatur, aktifkan dalam pengaturan sistem";
+
+/* (No Comment) */
+"ARCHIVE" = "Arsipkan";
+
+/* (No Comment) */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Akses ke akun ini dinonaktifkan karena tidak membayar. Silahkan kunjungi & lt; a href = \"https://protonmail.com/support/knowledge-base/delinquency/\" & gt; basis pengetahuan & lt; / a & gt; untuk informasi lebih lanjut.";
+
+/* (No Comment) */
+"Account password invalid" = "Kata sandi akun tidak valid";
+
+/* (No Comment) */
+"Add" = "Menambahkan";
+
+/* (No Comment) */
+"Add Star" = "Tambahkan Bintang";
+
+/* (No Comment) */
+"Alert" = "Waspada";
+
+/* (No Comment) */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Semua email terenkripsi yang ada akan hilang selamanya, namun Anda tetap dapat melihat email yang tidak dienkripsi. TINDAKAN INI TIDAK BISA DIBATALKAN!";
+
+/* (No Comment) */
+"Apply" = "Menerapkan";
+
+/* (No Comment) */
+"Archive" = "Arsipkan";
+
+/* (No Comment) */
+"Archived" = "Diarsipkan";
+
+/* (No Comment) */
+"Authentication Failed Wrong username or password" = "Otentikasi gagal: salah nama pengguna atau kata sandi.";
+
+/* (No Comment) */
+"Auto Lock Time" = "Waktu penguncian otomatis";
+
+/* (No Comment) */
+"Auto Show Images" = "Tampilkan gambar otomatis";
+
+/* (No Comment) */
+"Bad parameter" = "Parameter buruk";
+
+/* (No Comment) */
+"Bad parameter: %@" = "Parameter buruk: % @";
+
+/* (No Comment) */
+"Bad path" = "Jalan buruk";
+
+/* (No Comment) */
+"Bad response" = "Respons buruk";
+
+/* (No Comment) */
+"Bcc" = "BCC";
+
+/* (No Comment) */
+"Bug Report Received" = "Laporan bug diterima";
+
+/* (No Comment) */
+"Can't download message body, please try again." = "Tidak bisa mendownload body pesan, silahkan coba lagi.";
+
+/* (No Comment) */
+"Can't find the clicked message please try again!" = "Tidak dapat menemukan pesan yang diklik silahkan coba lagi!";
+
+/* (No Comment) */
+"Can't get a Moduls ID!" = "Tidak bisa mendapatkan ID Modulus!";
+
+/* (No Comment) */
+"Can't not find the value from the response body" = "Tidak dapat menemukan nilai dari respon tubuh";
+
+/* (No Comment) */
+"Cancel" = "Membatalkan";
+
+/* (No Comment) */
+"Cant' decrypt this attachment!" = "Tidak dapat mendekripsi lampiran ini.";
+
+/* (No Comment) */
+"Cc" = "CC";
+
+/* (No Comment) */
+"Cell phone number" = "Nomor ponsel";
+
+/* (No Comment) */
+"Change Password" = "Ganti kata sandi";
+
+/* (No Comment) */
+"Change Pin" = "Ganti PIN";
+
+/* (No Comment) */
+"Change default address to .." = "Ubah alamat default menjadi ...";
+
+/* (No Comment) */
+"Change left swipe action" = "Ubah tindakan gesek ke kiri";
+
+/* (No Comment) */
+"Change right swipe action" = "Ubah tindakan menggesek kanan";
+
+/* (No Comment) */
+"Change sender address to .." = "Ubah alamat pengirim ke...";
+
+/* (No Comment) */
+"Checking ...." = "Memeriksa ...";
+
+/* (No Comment) */
+"Clear Local Message Cache" = "Kosongkan cache pesan lokal";
+
+/* (No Comment) */
+"Close" = "Dekat";
+
+/* (No Comment) */
+"Compose" = "Menyusun";
+
+/* (No Comment) */
+"Confirm" = "Memastikan";
+
+/* (No Comment) */
+"Confirm Login Password" = "Konfirmasi kata sandi masuk";
+
+/* (No Comment) */
+"Confirm Mailbox Password" = "Konfirmasi kata sandi kotak pesan";
+
+/* (No Comment) */
+"Confirm Password" = "Konfirmasi sandi";
+
+/* (No Comment) */
+"Confirmation" = "Konfirmasi";
+
+/* (No Comment) */
+"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Buat dan tambahkan label untuk mengatur kotak masuk Anda. Tekan dan tahan pesan untuk semua opsi.";
+
+/* (No Comment) */
+"Create user failed" = "Buat pengguna gagal";
+
+/* (No Comment) */
+"DRAFTS" = "Draft";
+
+/* (No Comment) */
+"Date: %@" = "Tanggal: % @";
+
+/* (No Comment) */
+"Debug" = "Debug";
+
+/* (No Comment) */
+"Default" = "Default";
+
+/* (No Comment) */
+"Define Hint (Optional)" = "Tentukan petunjuk (Opsional)";
+
+/* (No Comment) */
+"Define Password" = "Tentukan kata sandi";
+
+/* (No Comment) */
+"Delete" = "Menghapus";
+
+/* (No Comment) */
+"Deleted" = "Dihapus";
+
+/* (No Comment) */
+"Details" = "Rincian";
+
+/* (No Comment) */
+"Discard draft" = "Buang draf";
+
+/* (No Comment) */
+"Display Name" = "Nama tampilan";
+
+/* (No Comment) */
+"Display Name Updated" = "Nama tampilan diperbarui";
+
+/* (No Comment) */
+"Done" = "Selesai";
+
+/* (No Comment) */
+"Draft" = "Konsep";
+
+/* (No Comment) */
+"Edit" = "Edit";
+
+/* (No Comment) */
+"Edit Contact" = "Edit kontak";
+
+/* (No Comment) */
+"Email address" = "Alamat email";
+
+/* (No Comment) */
+"Email address invalid" = "Alamat email tidak valid";
+
+/* (No Comment) */
+"Email domain invalid" = "Domain email tidak valid";
+
+/* (No Comment) */
+"Empty Folder" = "Folder kosong";
+
+/* (No Comment) */
+"Enable Pin Protection" = "Aktifkan proteksi PIN";
+
+/* (No Comment) */
+"Enable TouchID" = "Aktifkan TouchID";
+
+/* (No Comment) */
+"End-to-End Encryption" = "Enkripsi end-to-end";
+
+/* (No Comment) */
+"Enter Verification Code" = "Masukkan kode verifikasi";
+
+/* (No Comment) */
+"Error Logs" = "Log kesalahan";
+
+/* (No Comment) */
+"Every time enter app" = "Setiap kali masuk app";
+
+/* (No Comment) */
+"Expires in %d days %d hours %d mins %d seconds" = "Kedaluwarsa dalam % d hari % d jam % d menit d detik";
+
+/* (No Comment) */
+"Expiring Messages" = "Kadaluarsa pesan";
+
+/* (No Comment) */
+"FORGOT PASSWORD?" = "Lupa kata sandi?";
+
+/* (No Comment) */
+"Failed to initialize the application's saved data" = "Gagal menginisialisasi data tersimpan aplikasi";
+
+/* (No Comment) */
+"Forward" = "Meneruskan";
+
+/* (No Comment) */
+"General Settings" = "Pengaturan Umum";
+
+/* (No Comment) */
+"Help & Support" = "Bantuan & amp; Mendukung";
+
+/* (No Comment) */
+"Hide" = "Menyembunyikan";
+
+/* (No Comment) */
+"Hide Details" = "Sembunyikan detail";
+
+/* (No Comment) */
+"INBOX" = "Kotak masuk";
+
+/* (No Comment) */
+"Import File From..." = "Impor file dari ...";
+
+/* (No Comment) */
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Agar dapat menggunakan layanan kami, Anda harus menyetujui Persyaratan Layanan ProtonMail.";
+
+/* (No Comment) */
+"Inbox" = "Kotak masuk";
+
+/* (No Comment) */
+"Incorrect password" = "kata kunci Salah";
+
+/* (No Comment) */
+"Invalid UserName" = "Nama pengguna tidak valid";
+
+/* (No Comment) */
+"Invalid access token please relogin" = "Token akses tidak valid silahkan relogin";
+
+/* (No Comment) */
+"Invalid credential" = "Kredensial tidak sah";
+
+/* (No Comment) */
+"Key generation failed" = "Generasi kunci gagal";
+
+/* (No Comment) */
+"LOGIN" = "Masuk";
+
+/* (No Comment) */
+"Label Management" = "Manajemen label";
+
+/* (No Comment) */
+"Label as..." = "Label sebagai...";
+
+/* (No Comment) */
+"Language" = "Bahasa";
+
+/* (No Comment) */
+"Loading..." = "Pemuatan...";
+
+/* (No Comment) */
+"Localizable.strings" = "Inggris";
+
+/* (No Comment) */
+"Login Password" = "Kata sandi masuk";
+
+/* (No Comment) */
+"Login password doesn't match" = "Password Login tidak cocok";
+
+/* (No Comment) */
+"MAILBOX PASSWORD" = "Kata sandi kotak pesan";
+
+/* (No Comment) */
+"Mailbox Password" = "Kata sandi kotak pesan";
+
+/* (No Comment) */
+"Mailbox password doesn't match" = "Kata sandi kotak pesan tidak cocok";
+
+/* (No Comment) */
+"Mark Read" = "Tandai sebagai membaca";
+
+/* (No Comment) */
+"Mark as unread" = "Tandai sebagai Belum dibaca";
+
+/* (No Comment) */
+"Message Queue" = "Antrian pesan";
+
+/* (No Comment) */
+"Message Swipe Actions" = "Tindakan Gesek Pesan";
+
+/* (No Comment) */
+"Message expired" = "Pesan kadaluarsa";
+
+/* (No Comment) */
+"Message password does not match." = "Sandi pesan tidak cocok.";
+
+/* (No Comment) */
+"Message sending failed please try again" = "Pengiriman pesan gagal silahkan dicoba lagi";
+
+/* (No Comment) */
+"Messages you send can be set to auto delete after a certain time period." = "Pesan yang Anda kirim bisa diatur ke auto delete setelah jangka waktu tertentu.";
+
+/* (No Comment) */
+"Mobile Signature" = "Tanda tangan mobile";
+
+/* (No Comment) */
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Pendaftaran seluler untuk sementara dinonaktifkan. Silakan coba lagi nanti, atau coba sign up di protonmail.com menggunakan komputer desktop atau laptop.";
+
+/* (No Comment) */
+"Move to Archive" = "Pindah ke Arsip";
+
+/* (No Comment) */
+"Move to Draft" = "Pindah ke Konsep";
+
+/* (No Comment) */
+"Move to Inbox" = "Pindah ke Inbox";
+
+/* (No Comment) */
+"Move to Outbox" = "Pindah ke Kotak keluar";
+
+/* (No Comment) */
+"Move to Spam" = "Pindah ke Spam";
+
+/* (No Comment) */
+"Move to Trash" = "Pindah ke Sampah";
+
+/* (No Comment) */
+"Move to..." = "Pindah ke...";
+
+/* (No Comment) */
+"Multiple Addresses" = "Beberapa alamat";
+
+/* (No Comment) */
+"NEED AN ACCOUNT? SIGN UP." = "Daftar gratis";
+
+/* (No Comment) */
+"None" = "tak satupun";
+
+/* (No Comment) */
+"Notification Email" = "Email notifikasi";
+
+/* (No Comment) */
+"OK" = "Baik";
+
+/* (No Comment) */
+"OpenDraft" = "Buka draf";
+
+/* (No Comment) */
+"Outbox" = "Kotak keluar";
+
+/* (No Comment) */
+"Password" = "Kata sandi";
+
+/* (No Comment) */
+"Password Mismatch" = "Sandi tidak cocok";
+
+/* (No Comment) */
+"Password Updated" = "Kata sandi diperbarui";
+
+/* (No Comment) */
+"Password cannot be empty." = "Password tidak boleh kosong.";
+
+/* (No Comment) */
+"Phone number invalid" = "Nomor telepon tidak valid";
+
+/* (No Comment) */
+"Photo Library" = "Perpustakaan Foto";
+
+/* (No Comment) */
+"Please check your cell phone for the verification code." = "Silakan periksa ponsel Anda untuk kode verifikasi.";
+
+/* (No Comment) */
+"Please check your email for the verification code." = "Silakan cek email anda untuk kode verifikasi.";
+
+/* (No Comment) */
+"Please input a valid cell phone number." = "Mohon masukan nomor ponsel yang valid.";
+
+/* (No Comment) */
+"Please input a valid email address." = "Harap masukan alamat email yang valid.";
+
+/* (No Comment) */
+"Please pick a user name first!" = "Silakan pilih username terlebih dahulu!";
+
+/* (No Comment) */
+"Please remove all attachments before changing sender!" = "Harap hapus semua lampiran sebelum mengubah pengirim";
+
+/* (No Comment) */
+"Please set a password." = "Harap tentukan kata sandi.";
+
+/* (No Comment) */
+"Please try a different domain." = "Silakan coba domain yang berbeda.";
+
+/* (No Comment) */
+"Please try a different email address." = "Silakan coba alamat email yang berbeda.";
+
+/* (No Comment) */
+"Please try a different password." = "Silakan coba kata sandi yang berbeda.";
+
+/* (No Comment) */
+"Please try a different user name." = "Silakan coba nama pengguna yang berbeda.";
+
+/* (No Comment) */
+"Please try again." = "Silahkan coba lagi";
+
+/* (No Comment) */
+"Please use the web version of ProtonMail to change your mailbox password!" = "Silakan gunakan versi web ProtonMail untuk mengganti kata sandi kotak surat Anda!";
+
+/* (No Comment) */
+"Please use your new password when signing in." = "Harap gunakan kata sandi baru Anda saat masuk.";
+
+/* (No Comment) */
+"Please, manage it in your phone." = "Tolong, kelola di telepon Anda.";
+
+/* (No Comment) */
+"Protection" = "Perlindungan";
+
+/* (No Comment) */
+"Protection Entire App" = "Perlindungan seluruh aplikasi";
+
+/* (No Comment) */
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail tidak menjual iklan atau menyalahgunakan privasi Anda. Dukungan Anda sangat penting untuk menjaga agar ProtonMail tetap berjalan. Anda dapat meng-upgrade ke akun berbayar atau menyumbang untuk mendukung ProtonMail.";
+
+/* (No Comment) */
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail sedang offline, periksa twitter kami untuk status saat ini: https://twitter.com/protonmail";
+
+/* (No Comment) */
+"Quick swipe actions" = "Tindakan Cepat Gesek";
+
+/* (No Comment) */
+"Recovery Email" = "Email pemulihan";
+
+/* (No Comment) */
+"Remove" = "Menghapus";
+
+/* (No Comment) */
+"Reply" = "Balasan";
+
+/* (No Comment) */
+"Reply message" = "Balas pesan";
+
+/* (No Comment) */
+"ReplyAll" = "Membalas semua";
+
+/* (No Comment) */
+"Retry after %d seconds" = "Coba lagi setelah % d detik";
+
+/* (No Comment) */
+"SENT" = "Dikirim";
+
+/* (No Comment) */
+"SPAM" = "Spam";
+
+/* (No Comment) */
+"STARRED" = "Dibintangi";
+
+/* (No Comment) */
+"Save draft" = "Menyimpan konsep";
+
+/* (No Comment) */
+"Search" = "Pencarian";
+
+/* (No Comment) */
+"Select your language" = "Pilih bahasamu";
+
+/* (No Comment) */
+"Send" = "Kirim";
+
+/* (No Comment) */
+"Send Verification Code" = "Kirim kode verifikasi";
+
+/* (No Comment) */
+"Send message without subject?" = "Kirim pesan tanpa subjek?";
+
+/* (No Comment) */
+"Sending Message" = "Mengirim pesan";
+
+/* (No Comment) */
+"Sign Out" = "Keluar";
+
+/* (No Comment) */
+"Signature" = "Tanda tangan";
+
+/* (No Comment) */
+"Signature Updated" = "Tanda tangan Diperbarui";
+
+/* (No Comment) */
+"Space Warning" = "Peringatan ruang";
+
+/* (No Comment) */
+"Spam" = "Spam";
+
+/* (No Comment) */
+"Spammed" = "Spammed";
+
+/* (No Comment) */
+"Srp single password keyslat invalid!" = "Kunci tunggal Srp keysalt tidak valid!";
+
+/* (No Comment) */
+"Star" = "Bintang";
+
+/* (No Comment) */
+"Starred" = "Dibintangi";
+
+/* (No Comment) */
+"Storage" = "Penyimpanan";
+
+/* (No Comment) */
+"Support ProtonMail" = "Dukungan ProtonMail";
+
+/* (No Comment) */
+"Swipe Left to Right" = "Gesek ke Kiri ke Kanan";
+
+/* (No Comment) */
+"Swipe Right to Left" = "Gesek Kanan ke Kiri";
+
+/* (No Comment) */
+"TRASH" = "Sampah";
+
+/* (No Comment) */
+"Take a Photo" = "Memotret";
+
+/* (No Comment) */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Terima kasih telah mengirimkan laporan bug Kami telah menambahkan laporan Anda ke sistem pelacakan bug kami.";
+
+/* (No Comment) */
+"The Password is wrong." = "Kata sandinya salah.";
+
+/* (No Comment) */
+"The UserName have been taken." = "Nama pengguna telah diambil.";
+
+/* (No Comment) */
+"The authentication credentials are invalid." = "Otentikasi kredensial tidak valid.";
+
+/* (No Comment) */
+"The authentication token has expired." = "Token otentikasi telah kedaluwarsa.";
+
+/* (No Comment) */
+"The display name is now %@." = "Nama tampilan sekarang adalah % @.";
+
+/* (No Comment) */
+"The draft format incorrectly sending failed!" = "Pengiriman gagal. Ada kesalahan dengan draf format.";
+
+/* (No Comment) */
+"The label name is duplicate" = "Nama labelnya adalah duplikat";
+
+/* (No Comment) */
+"The mailbox password is incorrect." = "Sandi kotak pesan salah.";
+
+/* (No Comment) */
+"The maximum number of labels is %d." = "Jumlah maksimum label adalah % d.";
+
+/* (No Comment) */
+"The new password can't empty" = "Kata sandi baru tidak boleh kosong";
+
+/* (No Comment) */
+"The new password not match" = "Sandi tidak cocok";
+
+/* (No Comment) */
+"The password you entered does not match the current password." = "Kata sandi yang Anda masukkan tidak cocok dengan kata sandi saat ini.";
+
+/* (No Comment) */
+"The total attachment size can't be bigger than 25MB" = "Ukuran lampiran total tidak boleh lebih besar dari 25MB";
+
+/* (No Comment) */
+"The verification email invalid" = "Email verifikasi tidak valid";
+
+/* (No Comment) */
+"The verification failed!" = "Verifikasi gagal!";
+
+/* (No Comment) */
+"There was an error creating or loading the application's saved data." = "Terjadi kesalahan saat membuat atau memuat data tersimpan aplikasi.";
+
+/* (No Comment) */
+"This contact belongs to your Address Book." = "Kontak ini termasuk dalam buku alamat Anda.";
+
+/* (No Comment) */
+"To" = "Untuk";
+
+/* (No Comment) */
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Untuk mereset kata sandi kotak surat Anda, gunakan ProtonMail versi web di protonmail.com";
+
+/* (No Comment) */
+"Token expired" = "Token kadaluarsa";
+
+/* (No Comment) */
+"TouchID is not enrolled, enable it in the system Settings" = "TouchID tidak terdaftar, aktifkan dalam pengaturan sistem";
+
+/* (No Comment) */
+"TouchID not available" = "TouchID tidak tersedia";
+
+/* (No Comment) */
+"Trash" = "Sampah";
+
+/* (No Comment) */
+"USER LOGIN" = "Pengguna masuk";
+
+/* (No Comment) */
+"Unable to connect to the server" = "Tidak dapat terhubung ke server";
+
+/* (No Comment) */
+"Unable to construct a valid URL with the following path: %@" = "Tidak dapat membuat URL yang valid dengan jalur berikut: % @";
+
+/* (No Comment) */
+"Unable to decrypt message." = "Tidak dapat mendekripsi pesan.";
+
+/* (No Comment) */
+"Unable to parse authentication token!" = "Tidak dapat mengurai token otentikasi!";
+
+/* (No Comment) */
+"Unable to parse response" = "Tidak dapat mengurai respons";
+
+/* (No Comment) */
+"Unable to parse the response object:\n%@" = "Tidak dapat mengurai objek tanggapan:\n % @";
+
+/* (No Comment) */
+"Unable to parse token" = "Tidak dapat mengurai token";
+
+/* (No Comment) */
+"Unable to send the email" = "Tidak dapat mengirim email.";
+
+/* (No Comment) */
+"Unknow Error" = "Kesalahan yang tidak diketahui";
+
+/* (No Comment) */
+"Unknow file" = "Berkas tidak diketahui";
+
+/* (No Comment) */
+"Unknown" = "Tidak dikenal";
+
+/* (No Comment) */
+"Unkonw Version" = "Versi tidak diketahui";
+
+/* (No Comment) */
+"User already exist!" = "Username sudah diambil";
+
+/* (No Comment) */
+"User is available!" = "Username tersedia";
+
+/* (No Comment) */
+"User name exist" = "Username ada";
+
+/* (No Comment) */
+"User name invalid" = "Nama pengguna tidak valid";
+
+/* (No Comment) */
+"Username" = "Nama pengguna";
+
+/* (No Comment) */
+"Verification code request failed" = "Permintaan kode verifikasi gagal";
+
+/* (No Comment) */
+"Verification code sent" = "Kode verifikasi dikirim";
+
+/* (No Comment) */
+"Version %@ %@" = "Versi % @ % @";
+
+/* (No Comment) */
+"Welcome to ProtonMail!" = "Selamat datang di ProtonMail";
+
+/* (No Comment) */
+"Wrong verification code" = "Kode verifikasi salah";
+
+/* (No Comment) */
+"You can customize swipe gestures in the ProtonMail App Settings." = "Anda dapat menyesuaikan isyarat babatan di Setelan Aplikasi ProtonMail.";
+
+/* (No Comment) */
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Anda bisa mendapatkan bantuan dan dukungan di protonmail.com/support. Bug juga dapat dilaporkan dengan aplikasi.";
+
+/* (No Comment) */
+"You have used %d%% of your storage space (%@)." = "Anda telah menggunakan % d %% ruang penyimpanan Anda ( % @).";
+
+/* (No Comment) */
+"You have used up all of your storage space (%@)." = "Anda telah menghabiskan semua ruang penyimpanan Anda ( % @).";
+
+/* (No Comment) */
+"You need at least one recipient to send" = "Anda memerlukan setidaknya satu penerima untuk mengirim";
+
+/* (No Comment) */
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Kotak masuk Anda sekarang dilindungi dengan enkripsi end-to-end. Untuk secara otomatis mengamankan email teman, mintalah mereka mendapatkan ProtonMail! Anda juga dapat mengenkripsi pesan secara manual jika tidak menggunakan ProtonMail.";
+
+/* (No Comment) */
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Akun email terenkripsi baru Anda telah disiapkan dan siap untuk mengirim dan menerima pesan terenkripsi.";
+
+/* (No Comment) */
+"Your signature has been updated." = "Tanda tangan Anda telah diperbarui.";
+
+/* (No Comment) */
+"days" = "Hari";
+
+/* (No Comment) */
+"hours" = "Jam";
+

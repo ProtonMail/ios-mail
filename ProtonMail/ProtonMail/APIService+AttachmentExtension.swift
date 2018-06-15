@@ -27,14 +27,14 @@ extension APIService {
         let filepath = destinationDirectoryURL.appendingPathComponent(attachmentID)
         download(byUrl: AppConstants.API_HOST_URL + pathForAttachmentID(attachmentID),
                  destinationDirectoryURL: filepath,
-                 headers: ["x-pm-apiversion": 1],
+                 headers: ["x-pm-apiversion": 3],
                  downloadTask: downloadTask,
                  completion: completion)
     }
     
     func attachmentDeleteForAttachmentID(_ attachmentID: String, completion: CompletionBlock?) {
         //setApiVesion(1, appVersion: 1)
-        request(method: .delete, path: pathForAttachmentID(attachmentID), parameters: nil, headers: ["x-pm-apiversion": 1], completion: completion)
+        request(method: .delete, path: pathForAttachmentID(attachmentID), parameters: nil, headers: ["x-pm-apiversion": 3], completion: completion)
     }
     
     // MARK: - Private methods

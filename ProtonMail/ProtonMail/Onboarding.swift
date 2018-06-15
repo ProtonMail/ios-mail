@@ -43,19 +43,19 @@ public enum Onboarding: Int, CustomStringConvertible {
         get {
             switch(self) {
             case .welcome:
-                return NSLocalizedString("Your new encrypted email account has been set up and is ready to send and receive encrypted messages.", comment: "Description")
+                return LocalString._your_new_account_is_ready_to_send_and_receive_encrypted_messages
             case .swipe:
-                return NSLocalizedString("You can customize swipe gestures in the ProtonMail App Settings.", comment: "Description")
+                return LocalString._you_can_customize_swipe_in_app_settings
             case .label:
-                return NSLocalizedString("Create and add Labels to organize your inbox. Press and hold down on a message for all options.", comment: "Description")
+                return LocalString._create_and_add_labels_to_organize_inbox_and_hold_down_on_a_message_for_all_options
             case .encryption:
-                return NSLocalizedString("Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.", comment: "Description")
+                return LocalString._your_inbox_is_now_protected_with_e2e_you_can_also_do_eo
             case .expire:
-                return NSLocalizedString("Messages you send can be set to auto delete after a certain time period.", comment: "Description")
+                return LocalString._messages_you_send_can_be_set_to_auto_delete_after_a_certain_time_period
             case .help:
-                return NSLocalizedString("You can get help and support at protonmail.com/support. Bugs can also be reported with the app.", comment: "Description")
+                return LocalString._you_can_get_help_and_support_at_protonmail_support_and_bugs
             case .upgrade:
-                return NSLocalizedString("ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.", comment: "Description")
+                return LocalString._protonmail_doesnt_sell_ads_or_abuse_your_privacy
             }
         }
     }
@@ -64,19 +64,19 @@ public enum Onboarding: Int, CustomStringConvertible {
         get {
             switch(self) {
             case .welcome:
-                return NSLocalizedString("Welcome to ProtonMail!", comment: "Title")
+                return LocalString._welcome_to_protonmail
             case .swipe:
-                return NSLocalizedString("Quick swipe actions", comment: "Title")
+                return LocalString._quick_swipe_actions
             case .label:
-                return NSLocalizedString("Label Management", comment: "Title")
+                return LocalString._label_management
             case .encryption:
-                return NSLocalizedString("End-to-End Encryption", comment: "Title")
+                return LocalString._end_to_end_encryption
             case .expire:
-                return NSLocalizedString("Expiring Messages", comment: "Title")
+                return LocalString._expiring_messages
             case .help:
-                return NSLocalizedString("Help & Support", comment: "Title")
+                return LocalString._help_and_support
             case .upgrade:
-                return NSLocalizedString("Support ProtonMail", comment: "Title")
+                return LocalString._support_protonmail
             }
         }
     }

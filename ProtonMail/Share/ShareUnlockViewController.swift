@@ -70,13 +70,13 @@ class ShareUnlockViewController: UIViewController {
                         if let e = self.localized_errors.first {
                             self.showErrorAndQuit(errorMsg: e)
                         } else {
-                            self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
+                            self.showErrorAndQuit(errorMsg: LocalString._cant_load_share_content)
                         }
                     }
                 }
             }
         } else {
-            self.showErrorAndQuit(errorMsg: NSLocalizedString("Can't load share content!", comment: "Description"))
+            self.showErrorAndQuit(errorMsg: LocalString._cant_load_share_content)
         }
     }
     
@@ -103,10 +103,10 @@ class ShareUnlockViewController: UIViewController {
                                     if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
                                         self.files.append(fileData!)
                                     } else {
-                                        self.localized_errors.append(NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description"))
+                                        self.localized_errors.append(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
                                     }
                                 } else if let err = error {
-                                    self.localized_errors.append(NSLocalizedString("Can't load share content!", comment: "Description"))
+                                    self.localized_errors.append(LocalString._cant_load_share_content)
                                 }
                             })
                         } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
@@ -122,7 +122,7 @@ class ShareUnlockViewController: UIViewController {
                                     let url = shareURL.absoluteString ?? ""
                                     self.inputContent = self.inputContent + "\n" + "<a href=\"\(url)\">\(url)</a>"
                                 } else {
-                                    self.localized_errors.append(NSLocalizedString("Can't load share content!", comment: "Description"))
+                                    self.localized_errors.append(LocalString._cant_load_share_content)
                                 }
                             })
                         } else if let pt = plainText {
@@ -177,8 +177,8 @@ class ShareUnlockViewController: UIViewController {
         self.touchID.alpha = 0.0
         self.pinUnlock.alpha = 0.0
         
-        let alertController = UIAlertController(title: NSLocalizedString("Share Alert", comment: "Title"), message: errorMsg, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Action"), style: .default, handler: { (action) -> Void in
+        let alertController = UIAlertController(title: LocalString._share_alert, message: errorMsg, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: LocalString._general_close_action, style: .default, handler: { (action) -> Void in
             self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
                 let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
                 self.extensionContext!.cancelRequest(withError: cancelError)
@@ -228,14 +228,14 @@ class ShareUnlockViewController: UIViewController {
         if sharedUserDataService.isUserCredentialStored {
             userCachedStatus.lockedApp = false
             sharedUserDataService.isSignedIn = true
-            if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
-                sharedOpenPGP.setAddresses(addresses);
-            }
+//            if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
+//                sharedOpenPGP.setAddresses(addresses);
+//            }
             self.goto_composer()
         }
         else
         {
-            self.showErrorAndQuit(errorMsg: NSLocalizedString("Please use ProtonMail App login first", comment: "Description"))
+            self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
         }
     }
     
@@ -297,7 +297,7 @@ class ShareUnlockViewController: UIViewController {
         var error: NSError?
         context.localizedFallbackTitle = ""
         // Set the reason string that will appear on the authentication alert.
-        let reasonString = "\(NSLocalizedString("Login", comment: "")): \(savedEmail)"
+        let reasonString = "\(LocalString._general_login): \(savedEmail)"
         
         // Check if the device can evaluate the policy.
         if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
@@ -309,30 +309,21 @@ class ShareUnlockViewController: UIViewController {
                 }
                 else{
                     DispatchQueue.main.async {
-                        PMLog.D("\(String(describing: evalPolicyError?.localizedDescription))")
                         switch evalPolicyError!._code {
                         case LAError.Code.systemCancel.rawValue:
-                            PMLog.D("Authentication was cancelled by the system")
-                            let alertController = NSLocalizedString("Authentication was cancelled by the system", comment: "Description").alertController()
+                            let alertController = LocalString._authentication_was_cancelled_by_the_system.alertController()
                             alertController.addOKAction()
                             self.present(alertController, animated: true, completion: nil)
                         case LAError.Code.userCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the user")
-                            let alertController = NSLocalizedString("Authentication was cancelled by the user", comment: "Description").alertController()
-                            alertController.addOKAction()
-                            self.present(alertController, animated: true, completion: nil)
                         case LAError.Code.userFallback.rawValue:
                             PMLog.D("User selected to enter custom password")
-                            let alertController = NSLocalizedString("Authentication failed", comment: "Description").alertController()
-                            alertController.addOKAction()
-                            self.present(alertController, animated: true, completion: nil)
                         default:
                             PMLog.D("Authentication failed")
-                            let alertController = NSLocalizedString("Authentication failed", comment: "Description").alertController()
+                            let alertController = LocalString._authentication_failed.alertController()
                             alertController.addOKAction()
                             self.present(alertController, animated: true, completion: nil)
                         }
-                        
                     }
                 }
             })
@@ -342,12 +333,12 @@ class ShareUnlockViewController: UIViewController {
             // If the security policy cannot be evaluated then show a short message depending on the error.
             switch error!.code{
             case LAError.Code.touchIDNotEnrolled.rawValue:
-                alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings", comment: "Description")
+                alertString = LocalString._general_touchid_not_enrolled
             case LAError.Code.passcodeNotSet.rawValue:
-                alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings", comment: "Description")
+                alertString = LocalString._general_passcode_not_set
             default:
                 // The LAError.TouchIDNotAvailable case.
-                alertString = NSLocalizedString("TouchID not available", comment: "Description")
+                alertString = LocalString._general_touchid_not_available
             }
             PMLog.D(alertString)
             PMLog.D("\(String(describing: error?.localizedDescription))")

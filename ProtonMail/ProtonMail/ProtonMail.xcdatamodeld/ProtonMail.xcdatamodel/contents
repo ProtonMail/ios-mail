@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17D102" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14133" systemVersion="17E202" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -88,6 +88,12 @@
         <attribute name="contactID" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ContactID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="defaults" optional="YES" attributeType="Integer 16" usesScalarValueType="NO" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Defaults"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES">
@@ -214,7 +220,7 @@
                 <entry key="JSONTransformerName" value="BoolTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="header" attributeType="String" syncable="YES">
+        <attribute name="header" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Header"/>
             </userInfo>
@@ -386,7 +392,7 @@
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="210"/>
         <element name="Contact" positionX="1240" positionY="-3582" width="128" height="210"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
-        <element name="Email" positionX="1539" positionY="-3582" width="128" height="150"/>
+        <element name="Email" positionX="1539" positionY="-3582" width="128" height="165"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="165"/>
         <element name="Message" positionX="1717" positionY="-3867" width="128" height="765"/>
     </elements>

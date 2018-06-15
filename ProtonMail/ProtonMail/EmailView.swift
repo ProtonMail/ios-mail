@@ -10,21 +10,25 @@ import Foundation
 import UIKit
 import QuickLook
 
-protocol EmailViewProtocol {
+extension UIDataDetectorTypes {
+    public static var pm_email: UIDataDetectorTypes = [.phoneNumber, .link]
+}
+
+protocol EmailViewActionsProtocol {
     func mailto(_ url: URL?)
 }
 
+/// this veiw is all subviews container
 class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     
     var kDefautWebViewScale : CGFloat = 0.9
-    
     //
     fileprivate let kMoreOptionsViewHeight: CGFloat = 123.0
     
     // Message header view
     var emailHeader : EmailHeaderView!
     
-    var viewDelegate: EmailViewProtocol?
+    var delegate: EmailViewActionsProtocol?
     
     // Message content
     var contentWebView: UIWebView!
@@ -91,13 +95,13 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
                            sender : ContactVO, to:[ContactVO]?, cc : [ContactVO]?, bcc: [ContactVO]?,
                            isStarred:Bool, time : Date?, encType: EncryptTypes, labels : [Label]?,
                            showShowImages: Bool, expiration : Date?,
-                           score: MessageSpamScore) {
+                           score: MessageSpamScore, isSent: Bool) {
         
         self.emailHeader.updateHeaderData(title, sender:sender,
                                           to: to, cc: cc, bcc: bcc,
                                           isStarred: isStarred, time: time, encType: encType,
                                           labels : labels, showShowImages: showShowImages, expiration : expiration,
-                                          score: score)
+                                          score: score, isSent: isSent)
         self.emailHeader.updateHeaderLayout()
     }
     
@@ -159,6 +163,8 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.contentWebView = PMWebView()
         self.contentWebView.scalesPageToFit = true;
         self.addSubview(contentWebView)
+        
+        self.contentWebView.dataDetectorTypes = .pm_email
         self.contentWebView.backgroundColor = UIColor.white
         self.contentWebView.isUserInteractionEnabled = true
         self.contentWebView.scrollView.isScrollEnabled = true
@@ -194,10 +200,9 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
     
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        
         if navigationType == .linkClicked {
             if request.url?.scheme == "mailto" {
-                viewDelegate?.mailto(request.url)
+                self.delegate?.mailto(request.url)
                 return false
             } else {
                 UIApplication.shared.openURL(request.url!)

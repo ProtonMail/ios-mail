@@ -13,12 +13,16 @@ import CoreData
 import PassKit
 import Crashlytics
 import Fabric
+import AwaitKit
+import PromiseKit
 
-class MessageViewController: ProtonMailViewController, ViewModelProtocol{
+class MessageViewController: ProtonMailViewController, ViewModelProtocol {
+    
     
     fileprivate let kToComposerSegue : String    = "toCompose"
     fileprivate let kSegueMoveToFolders : String = "toMoveToFolderSegue"
     fileprivate let kSegueToApplyLabels : String = "toApplyLabelsSegue"
+    fileprivate let kToAddContactSegue : String  = "toAddContact"
     
     /// message info
     var message: Message!
@@ -27,7 +31,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     var emailView: EmailView?
     
     ///
-    fileprivate var URL : NSURL?
+    fileprivate var url : URL?
     
     @IBOutlet var backButton: UIBarButtonItem!
     
@@ -67,9 +71,9 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
-        self.emailView!.emailHeader.actionsDelegate = self
+        self.emailView!.emailHeader.delegate = self
         self.emailView!.topMessageView.delegate = self
-        self.emailView?.viewDelegate = self
+        self.emailView?.delegate = self
         self.emailView?.emailHeader.updateAttConstraints(false)
         self.updateBadgeNumberWhenRead(message, changeToRead: true)
         loadMessageDetailes()
@@ -80,36 +84,35 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         showEmailLoading()
         if !message.isDetailDownloaded && sharedInternetReachability.currentReachabilityStatus() == NotReachable {
             self.emailView?.showNoInternetErrorMessage()
-            self.updateEmailBodyWithError(NSLocalizedString("No connectivity detected...", comment: "Error"))
+            self.updateEmailBodyWithError(LocalString._general_no_connectivity_detected)
         } else {
             message.fetchDetailIfNeeded() { _, _, msg, error in
                 if let error = error {
                     let code = error.code
                     if code == NSURLErrorTimedOut {
                         self.emailView?.showTimeOutErrorMessage()
-                        self.updateEmailBodyWithError(NSLocalizedString("The request timed out.", comment: "Error"))
+                        self.updateEmailBodyWithError(LocalString._general_request_timed_out)
                     } else if code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
                         self.emailView?.showNoInternetErrorMessage()
-                        self.updateEmailBodyWithError(NSLocalizedString("No connectivity detected...", comment: "Error"))
+                        self.updateEmailBodyWithError(LocalString._general_no_connectivity_detected)
                     } else if code == APIErrorCode.API_offline {
                         self.emailView?.showErrorMessage(error.localizedDescription)
                         self.updateEmailBodyWithError(error.localizedDescription)
                     } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
-                        self.emailView?.showErrorMessage(NSLocalizedString("API Server not reachable...", comment: "Error"))
-                        self.updateEmailBodyWithError(NSLocalizedString("API Server not reachable...", comment: "Error"))
+                        self.emailView?.showErrorMessage(LocalString._general_api_server_not_reachable)
+                        self.updateEmailBodyWithError(LocalString._general_api_server_not_reachable)
                     } else if code < 0{
-                        self.emailView?.showErrorMessage(NSLocalizedString("Can't download message body, please try again.", comment: "Error"))
-                        self.updateEmailBodyWithError(NSLocalizedString("Can't download message body, please try again.", comment: "Error"))
+                        self.emailView?.showErrorMessage(LocalString._cant_download_message_body_please_try_again)
+                        self.updateEmailBodyWithError(LocalString._cant_download_message_body_please_try_again)
                     } else {
-                        self.emailView?.showErrorMessage(NSLocalizedString("Can't download message body, please try again.", comment: "Error"))
-                        self.updateEmailBodyWithError(NSLocalizedString("Can't download message body, please try again.", comment: "Error"))
+                        self.emailView?.showErrorMessage(LocalString._cant_download_message_body_please_try_again)
+                        self.updateEmailBodyWithError(LocalString._cant_download_message_body_please_try_again)
                     }
                     PMLog.D("error: \(error)")
                 }
                 else
                 {
                     self.updateContent()
-                    //self.showEmbedImage()
                 }
             }
         }
@@ -185,8 +188,8 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
                                              labels : self.message.labels.allObjects as? [Label],
                                              showShowImages: self.needShowShowImageView,
                                              expiration: self.message.expirationTime,
-                                             score: self.message.getScore()
-            )
+                                             score: self.message.getScore(),
+                                             isSent: self.message.hasLocation(location: .outbox))
         } else {
             PMLog.D(" MessageViewController self.message.managedObjectContext == nil")
         }
@@ -260,8 +263,9 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     }
     
     @objc internal func moreButtonTapped(_ sender : UIBarButtonItem) {
+
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .default, .spam : .default, .archive : .default]
         for (location, style) in locations {
             if !message.hasLocation(location: location) {
@@ -277,9 +281,9 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
             }
         }
         
-//        alertController.addAction(UIAlertAction(title:NSLocalizedString("Print", comment: "Action"), style: .default, handler: { (action) -> Void in
-//            self.print(webView : self.emailView!.contentWebView)
-//        }))
+        alertController.addAction(UIAlertAction(title: LocalString._print, style: .default, handler: { (action) -> Void in
+            self.print(webView : self.emailView!.contentWebView)
+        }))
         
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
@@ -309,13 +313,16 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
             render.drawPage(at: i - 1, in: bounds)
         }
         UIGraphicsEndPDFContext();
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        PMLog.D(documentsPath)
-        pdfData.write(toFile: "\(documentsPath)/pdfName.pdf", atomically: true)
-        //TODO:: then open as pdf
-//        self.pdfPath = "\(documentsPath)/pdfName.pdf"
-//        self.pdfTitle = "pdfName"
-//        self.performSegue(withIdentifier: "showPDFSegue", sender: nil)
+        let documentsPath = FileManager.default.attachmentDirectory.appendingPathComponent("\(self.message.subject).pdf")
+        PMLog.D(documentsPath.absoluteString)
+        try? pdfData.write(to: documentsPath, options: [.atomic])
+//        pdfData.write(toFile: documentsPath, atomically: true)
+        
+        tempFileUri = documentsPath
+        let previewQL = QuickViewViewController()
+        previewQL.dataSource = self
+        latestPresentedView = previewQL
+        self.present(previewQL, animated: true, completion: nil)
     }
     
     fileprivate func messagesSetValue(setValue value: Any?, forKey key: String) {
@@ -371,12 +378,15 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToComposerSegue {
-            if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft{
+            if let contact = sender as? ContactVO {
                 let composeViewController = segue.destination as! ComposeEmailViewController
-                sharedVMService.actionDraftViewModel(composeViewController, msg: message, action: tapped)
+                sharedVMService.newDraft(vmp: composeViewController, with: contact)
+            } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft{
+                let composeViewController = segue.destination as! ComposeEmailViewController
+                sharedVMService.newDraft(vmp: composeViewController, with: message, action: tapped)
             } else {
                 let composeViewController = segue.destination as! ComposeEmailViewController
-                sharedVMService.newDraftViewModelWithMailTo(composeViewController, url: self.URL as URL?)
+                sharedVMService.newDraft(vmp: composeViewController, with: self.url)
             }
         } else if segue.identifier == kSegueToApplyLabels {
             let popup = segue.destination as! LablesViewController
@@ -388,6 +398,11 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
             popup.delegate = self
             popup.viewModel = FolderApplyViewModelImpl(msg: [self.message])
             self.setPresentationStyleForSelfController(self, presentingController: popup)
+        } else if segue.identifier == kToAddContactSegue {
+            if let contact = sender as? ContactVO {
+                let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
+                sharedVMService.contactAddViewModel(addContactViewController, contactVO: contact)
+            }
         }
     }
     
@@ -517,10 +532,9 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
         })
     }
     
-    internal func purifyEmailBody(_ message : Message!, autoloadimage : Bool) -> String?
-    {
+    internal func purifyEmailBody(_ message : Message!, autoloadimage : Bool) -> String? {
         do {
-            var bodyText = try self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.", comment: "Error")
+            var bodyText = try self.message.decryptBodyIfNeeded() ?? LocalString._unable_to_decrypt_message
             bodyText = bodyText.stringByStrippingBodyStyle()
             bodyText = bodyText.stringByPurifyHTML()
             self.bodyHasImages = bodyText.hasImage()
@@ -535,7 +549,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     }
     
     internal func showEmailLoading () {
-        let body = NSLocalizedString("Loading...", comment: "")
+        let body = LocalString._loading_
         let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
         self.emailView?.updateEmailBody(body, meta: meta)
     }
@@ -617,7 +631,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
     }
     
     func showAlertWhenNoDetails() {
-        let alert = NSLocalizedString("Please wait until the email downloaded!", comment: "The").alertController();
+        let alert = LocalString._please_wait_until_the_email_downloaded.alertController();
         alert.addOKAction()
         latestPresentedView = alert
         self.present(alert, animated: true, completion: nil)
@@ -626,10 +640,9 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
 
 // MARK
 
-extension MessageViewController :  EmailViewProtocol {
-    
+extension MessageViewController :  EmailViewActionsProtocol {
     func mailto(_ url: Foundation.URL?) {
-        URL = url as NSURL?
+        self.url = url
         self.performSegue(withIdentifier: kToComposerSegue, sender: ComposeMessageAction.newDraft.rawValue)
     }
 }
@@ -638,6 +651,172 @@ extension MessageViewController :  EmailViewProtocol {
 // MARK
 fileprivate var tempFileUri : URL?
 extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteractionControllerDelegate {
+    func recipientView(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
+        if !self.message.isDetailDownloaded {
+            progress()
+        } else {
+            //TODO:: put this to view model
+            if let c = model as? ContactVO {
+                if self.message.hasLocation(location: .outbox) {
+                    c.pgpType = self.message.getSentLockType(email: c.displayEmail ?? "")
+                } else {
+                    c.pgpType = self.message.getInboxType(email: c.displayEmail ?? "", signature: .notSigned)
+                    if self.message.checkedSign {
+                        c.pgpType = self.message.pgpType
+                        complete?(nil)
+                    } else {
+                        if self.message.checkingSign {
+                            
+                        } else {
+                            self.message.checkingSign = true
+                            guard let emial = model.displayEmail else {
+                                self.message.checkingSign = false
+                                complete?(nil)
+                                return
+                            }
+                            let context = sharedCoreDataService.newManagedObjectContext()
+                            let getEmail = UserEmailPubKeys(email: emial).run()
+                            let getContact = sharedContactDataService.fetch(byEmails: [emial], context: context)
+                            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
+                                //internal emails
+                                if keyRes.recipientType == 1 {
+                                    if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
+                                        let status = self.message.verifyBody(verifier: pgpKeys)
+                                        switch status {
+                                        case .ok:
+                                            c.pgpType = .internal_trusted_key
+                                        case .notSigned:
+                                            c.pgpType = .internal_normal
+                                        case .noVerifier:
+                                            c.pgpType = .internal_normal
+                                        case .failed:
+                                            c.pgpType = .internal_trusted_key_verify_failed
+                                        }
+                                    }
+                                } else {
+                                    if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
+                                        let status = self.message.verifyBody(verifier: pgpKeys)
+                                        switch status {
+                                        case .ok:
+                                            c.pgpType = .pgp_encrypt_trusted_key
+                                        case .notSigned:
+                                            c.pgpType = .pgp_encrypted
+                                        case .noVerifier:
+                                            c.pgpType = .pgp_encrypted
+                                        case .failed:
+                                            c.pgpType = .pgp_encrypt_trusted_key_verify_failed
+                                        }
+                                    }
+                                }
+                                self.message.pgpType = c.pgpType
+                                self.message.checkedSign = true
+                                self.message.checkingSign = false
+                                complete?(c.lock)
+                            }.catch({ (error) in
+                                self.message.checkingSign = false
+                                PMLog.D(error.localizedDescription)
+                                complete?(nil)
+                            })
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func quickLook(attachment tempfile: URL, keyPackage: Data, fileName: String, type: String) {
+        if let data : Data = try? Data(contentsOf: tempfile) {
+            do {
+                tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)
+                if let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!) {
+                    try? decryptData.write(to: tempFileUri!, options: [.atomic])
+                    //TODO:: the hard code string need change it to enum later
+                    if (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
+                        let pkfile = try? Data(contentsOf: tempFileUri!) {
+                        var error : NSError? = nil
+                        let pass : PKPass = PKPass(data: pkfile, error: &error)
+                        if error != nil {
+                            let previewQL = QuickViewViewController()
+                            previewQL.dataSource = self
+                            latestPresentedView = previewQL
+                            self.present(previewQL, animated: true, completion: nil)
+                        } else {
+                            let vc = PKAddPassesViewController(pass: pass) as PKAddPassesViewController
+                            self.present(vc, animated: true, completion: nil)
+                        }
+                    } else {
+                        let previewQL = QuickViewViewController()
+                        previewQL.dataSource = self
+                        latestPresentedView = previewQL
+                        self.present(previewQL, animated: true, completion: nil)
+                    }
+                }
+            } catch _ {
+                let alert = LocalString._cant_decrypt_this_attachment.alertController();
+                alert.addOKAction()
+                latestPresentedView = alert
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else{
+            let alert = LocalString._cant_find_this_attachment.alertController();
+            alert.addOKAction()
+            latestPresentedView = alert
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func star(changed isStarred: Bool) {
+        if isStarred {
+            self.message.setLabelLocation(.starred)
+            if let context = message.managedObjectContext {
+                context.perform {
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D("error: \(error)")
+                    }
+                }
+            }
+        } else {
+            self.message.removeLocationFromLabels(currentlocation: .starred, location: .deleted, keepSent: true)
+        }
+        self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
+    }
+    
+    func recipientView(at cell: RecipientCell, arrowClicked arrow: UIButton, model: ContactPickerModelProtocol) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        
+        alertController.addAction(UIAlertAction(title: LocalString._copy_address, style: .default, handler: { (action) -> Void in
+            UIPasteboard.general.string = model.displayEmail
+        }))
+        alertController.addAction(UIAlertAction(title: LocalString._copy_name, style: .default, handler: { (action) -> Void in
+            UIPasteboard.general.string = model.displayName
+        }))
+        alertController.addAction(UIAlertAction(title: LocalString._compose_to, style: .default, handler: { (action) -> Void in
+            let contactVO = ContactVO(id: "",
+                                      name: model.displayName,
+                                      email: model.displayEmail,
+                                      isProtonMailContact: false)
+            self.performSegue(withIdentifier: self.kToComposerSegue, sender: contactVO)
+        }))
+        alertController.addAction(UIAlertAction(title: LocalString._add_to_contacts, style: .default, handler: { (action) -> Void in
+            let contactVO = ContactVO(id: "",
+                                      name: model.displayName,
+                                      email: model.displayEmail,
+                                      isProtonMailContact: false)
+            self.performSegue(withIdentifier: self.kToAddContactSegue, sender: contactVO)
+        }))
+        alertController.popoverPresentationController?.sourceView = arrow
+        alertController.popoverPresentationController?.sourceRect = arrow.frame
+        
+        latestPresentedView = alertController
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol) {
+        let notes = model.notes(type: self.message.hasLocation(location: .outbox) ? 2 : 1)
+        notes.alertToastBottom()
+    }
     
     func showImage() {
         self.showedShowImageView = true
@@ -670,64 +849,6 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                     checkCount = checkCount - 1
                 }
             }
-        }
-    }
-    
-    func starredChanged(_ isStarred: Bool) {
-        if isStarred {
-            self.message.setLabelLocation(.starred)
-            if let context = message.managedObjectContext {
-                context.perform {
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    }
-                }
-            }
-        } else {
-            self.message.removeLocationFromLabels(currentlocation: .starred, location: .deleted, keepSent: true)
-        }
-        self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
-    }
-    
-    func quickLookAttachment (_ localURL : Foundation.URL, keyPackage:Data, fileName:String, type: String) {
-        if let data : Data = try? Data(contentsOf: localURL) {
-            do {
-                tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)
-                if let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!) {
-                    try? decryptData.write(to: tempFileUri!, options: [.atomic])
-                    //TODO:: the hard code string need change it to enum later
-                    if (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
-                        let pkfile = try? Data(contentsOf: tempFileUri!) {
-                        var error : NSError? = nil
-                        let pass : PKPass = PKPass(data: pkfile, error: &error)
-                        if error != nil {
-                            let previewQL = QuickViewViewController()
-                            previewQL.dataSource = self
-                            latestPresentedView = previewQL
-                            self.present(previewQL, animated: true, completion: nil)
-                        } else {
-                            let vc = PKAddPassesViewController(pass: pass) as PKAddPassesViewController
-                            self.present(vc, animated: true, completion: nil)
-                        }
-                    } else {
-                        let previewQL = QuickViewViewController()
-                        previewQL.dataSource = self
-                        latestPresentedView = previewQL
-                        self.present(previewQL, animated: true, completion: nil)
-                    }
-                }
-            } catch let ex as NSError {
-                PMLog.D("quickLookAttachment error : \(ex)")
-                let alert = NSLocalizedString("Can't decrypt this attachment!", comment: "When quick look attachment but can't decrypt it!").alertController();
-                alert.addOKAction()
-                latestPresentedView = alert
-                self.present(alert, animated: true, completion: nil)
-            }
-        } else{
-            let alert = NSLocalizedString("Can't find this attachment!", comment: "when quick look attachment but can't find the data").alertController();
-            alert.addOKAction()
-            latestPresentedView = alert
-            self.present(alert, animated: true, completion: nil)
         }
     }
     

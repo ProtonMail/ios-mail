@@ -45,7 +45,7 @@ class LableEditViewController : UIViewController {
         applyButtonText = viewModel.rightButtonText()
         applyButton.setTitle(applyButtonText, for: UIControlState.disabled)
         applyButton.setTitle(applyButtonText, for: UIControlState())
-        cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Title"), for: UIControlState())
+        cancelButton.setTitle(LocalString._general_cancel_button, for: UIControlState())
         
         applyButton.isEnabled = !name.isEmpty
     }

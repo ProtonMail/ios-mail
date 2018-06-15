@@ -42,7 +42,7 @@ extension String {
     
     
     func hasRe () -> Bool {
-        let re = NSLocalizedString("Re:", comment: "Title")
+        let re = LocalString._composer_short_reply
         let checkCount = re.count
         if self.count < checkCount {
             return false;
@@ -53,7 +53,7 @@ extension String {
     }
     
     func hasFwd () -> Bool {
-        let fwd = NSLocalizedString("Fwd:", comment: "Title")
+        let fwd = LocalString._composer_short_forward
         let checkCount = fwd.count
         if self.count < checkCount {
             return false;
@@ -76,6 +76,19 @@ extension String {
             return emailTest.evaluate(with: self)
         }
         return false
+    }
+    
+    func isValid() -> Bool {
+        let emailRegEx = "(?:[a-zA-Z0-9!#$%\\&‘*+/=?\\^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%\\&'*+/=?\\^_`{|}" +
+        "~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\" +
+        "x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-" +
+        "z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5" +
+        "]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-" +
+        "9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21" +
+        "-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES[c] %@", emailRegEx)
+        return emailTest.evaluate(with: self)
     }
     
     /**
@@ -146,7 +159,8 @@ extension String {
     }
     
     func ln2br() -> String {
-        return  self.replacingOccurrences(of: "\r\n", with: "<br />")
+        let out = self.replacingOccurrences(of: "\r\n", with: "<br />")
+        return out.replacingOccurrences(of: "\n", with: "<br />")
     }
     
     func rmln() -> String {
@@ -256,7 +270,7 @@ extension String {
         
         return false
     }
-    //<link rel=“stylesheet” type=“text/css” href=“http://url/“>
+    //<link rel="stylesheet" type="text/css" href="http://url/">
     func hasImage () -> Bool {
         
         if self.preg_match("\\ssrc='(?!cid:)") {

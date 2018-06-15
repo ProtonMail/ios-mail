@@ -28,14 +28,21 @@ class ReportBugsViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.sendButton = UIBarButtonItem(title:NSLocalizedString("Send", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(ReportBugsViewController.sendAction(_:)))
+        self.sendButton = UIBarButtonItem(title: LocalString._general_send_action,
+                                          style: UIBarButtonItemStyle.plain,
+                                          target: self,
+                                          action: #selector(ReportBugsViewController.sendAction(_:)))
         self.navigationItem.rightBarButtonItem = sendButton
         
         textView.text = cachedBugReport.cachedBug
         
-        topTitleLabel.text = NSLocalizedString("Bug Description", comment: "Title")
-        self.title = NSLocalizedString("REPORT BUGS", comment: "Title")
+        topTitleLabel.text = LocalString._bug_description
+        self.title = LocalString._menu_bugs_title
+        
+        self.textView.textContainer.lineFragmentPadding = 0
+        self.textView.textContainerInset = .zero
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -74,11 +81,13 @@ class ReportBugsViewController: ProtonMailViewController {
                     sender.isEnabled = true
                     if let error = error {
                         let alert = error.alertController()
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Action"), style: .default, handler: nil))
+                        alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                     } else {
-                        let alert = UIAlertController(title: NSLocalizedString("Bug Report Received", comment: "Title"), message: NSLocalizedString("Thank you for submitting a bug report.  We have added your report to our bug tracking system.", comment: ""), preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Action"), style: .default, handler: nil))
+                        let alert = UIAlertController(title: LocalString._bug_report_received,
+                                                      message: LocalString._thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system,
+                                                      preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
                         self.present(alert, animated: true, completion: {
                             self.reset()
                             NotificationCenter.default.post(name: Notification.Name(rawValue: MenuViewController.ObserverSwitchView), object: nil)

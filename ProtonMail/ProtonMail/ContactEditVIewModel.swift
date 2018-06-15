@@ -20,34 +20,34 @@ enum InformationType : Int {
     var desc : String {
         switch self {
         case .organization:
-            return NSLocalizedString("Add Organization", comment: "new contacts add Organization ")
+            return LocalString._contacts_add_org
         case .nickname:
-            return NSLocalizedString("Add Nickname", comment: "new contacts add Nickname")
+            return LocalString._contacts_add_nickname
         case .title:
-            return NSLocalizedString("Add Title", comment: "new contacts add Title")
+            return LocalString._contacts_add_title
         case .birthday:
-            return NSLocalizedString("Add Birthday", comment: "new contacts add Birthday")
+            return LocalString._contacts_add_bd
         case .anniversary:
-            return NSLocalizedString("Add Anniversary", comment: "new contacts add Anniversary")
+            return LocalString._contacts_add_anniversary
         case .gender:
-            return NSLocalizedString("Add Gender", comment: "new contacts add Gender")
+            return LocalString._contacts_add_gender
         }
     }
     
     var title : String {
         switch self {
         case .organization:
-            return NSLocalizedString("Organization", comment: "contacts talbe cell Organization title")
+            return LocalString._contacts_info_organization
         case .nickname:
-            return NSLocalizedString("Nickname", comment: "contacts talbe cell Nickname title")
+            return LocalString._contacts_info_nickname
         case .title:
-            return NSLocalizedString("Title", comment: "contacts talbe cell Title title")
+            return LocalString._contacts_info_title
         case .birthday:
-            return NSLocalizedString("Birthday", comment: "contacts talbe cell Birthday title")
+            return LocalString._contacts_info_birthday
         case .anniversary:
-            return NSLocalizedString("Anniversary", comment: "contacts talbe cell Anniversary title")
+            return LocalString._contacts_info_anniversary
         case .gender:
-            return NSLocalizedString("Gender", comment: "contacts talbe cell gender title")
+            return LocalString._contacts_info_gender
         }
     }
 }
@@ -70,6 +70,31 @@ enum ContactEditSectionType : Int {
     case type3_warning = 14
     case email_header = 15
     case debuginfo = 16
+}
+
+
+
+enum RuntimeError : Int, Error, CustomErrorVar {
+    case invalidEmail = 0x0001
+    
+    
+    var code: Int {
+        return self.rawValue
+    }
+    
+    var desc: String {
+        return reason
+    }
+    
+    var reason: String {
+        switch self {
+            
+        case .invalidEmail:
+            return LocalString._please_input_a_valid_email_address
+        }
+    }
+    
+    
 }
 
 

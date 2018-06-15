@@ -54,12 +54,12 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = NSLocalizedString("CONTACTS", comment: "Title")
+        self.title = LocalString._contacts_title
         tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactCellIdentifier)
         searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = NSLocalizedString("Search", comment: "Placeholder")
-        searchController.searchBar.setValue(NSLocalizedString("Cancel", comment: "Action"),
+        searchController.searchBar.placeholder = LocalString._general_search_placeholder
+        searchController.searchBar.setValue(LocalString._general_cancel_button,
                                             forKey:"_cancelButtonText")
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
@@ -111,7 +111,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.tableView.noSeparatorsBelowFooter()
         self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
         
-        let back = UIBarButtonItem(title: NSLocalizedString("Back", comment: "Action"),
+        let back = UIBarButtonItem(title: LocalString._general_back_action,
                                    style: UIBarButtonItemStyle.plain,
                                    target: nil,
                                    action: nil)
@@ -138,14 +138,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         //get all contacts
         self.viewModel.setupFetchedResults(delaget: self)
         tableView.reloadData()
-        
-        
-        //TODO::
-        let _ = NSLocalizedString("Please upgrade to access encrypted contact details.", comment: "Alert")
-        let _ = NSLocalizedString("Upgrade", comment: "Action")
-        let _ = NSLocalizedString("Notes", comment: "Title")
-        let _ = NSLocalizedString("Encrypting contacts... %d", comment: "Alert")
-        let _ = NSLocalizedString("You have imported %d of %d contacts!", comment: "Alert")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -178,24 +170,10 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController)
         } else if (segue.identifier == "toCompose") {
-            //let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
-            //sharedVMService.newDraftViewModelWithContact(composeViewController, contact: self.selectedContact)
         } else if segue.identifier == kSegueToImportView{
             let popup = segue.destination as! ContactImportViewController
-//            popup.viewModel = CaptchaViewModelImpl()
-//            popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
-            
         }
-    }
-    
-    // MARK: - Private methods
-    fileprivate func showContactBelongsToAddressBookError() {
-        let description = NSLocalizedString("This contact belongs to your Address Book.", comment: "")
-        let message = NSLocalizedString("Please, manage it in your phone.", comment: "Title")
-        let alertController = UIAlertController(title: description, message: message, preferredStyle: .alert)
-        alertController.addOKAction()
-        self.present(alertController, animated: true, completion: nil)
     }
     
     @objc internal func fireFetch() {
@@ -218,18 +196,19 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     @available(iOS 9.0, *)
     @objc internal func moreButtonTapped() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel",  comment: "Action"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Upload Contacts",  comment: "Action"), style: .default, handler: { (action) -> Void in
             self.navigationController?.popViewController(animated: true)
             
-            let alertController = UIAlertController(title: NSLocalizedString("Contacts", comment: "Action"),
-                                                    message: NSLocalizedString("Upload iOS contacts to ProtonMail?", comment: "Description"),
+            let alertController = UIAlertController(title: LocalString._contacts_title,
+                                                    message: LocalString._upload_ios_contacts_to_protonmail,
                                                     preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Action"), style: .default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action,
+                                                    style: .default, handler: { (action) -> Void in
                 self.performSegue(withIdentifier: self.kSegueToImportView, sender: self)
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             self.present(alertController, animated: true, completion: nil)
         }))
     
@@ -302,8 +281,9 @@ extension ContactsViewController: UITableViewDelegate {
         let deleteClosure = { (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
             if let contact = self.viewModel.item(index: indexPath) {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action-Contacts"), style: .cancel, handler: nil))
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Contact", comment: "Title-Contacts"), style: .destructive, handler: { (action) -> Void in
+                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: LocalString._delete_contact,
+                                                        style: .destructive, handler: { (action) -> Void in
                     ActivityIndicatorHelper.showActivityIndicator(at: self.view)
                     self.viewModel.delete(contactID: contact.contactID, complete: { (error) in
                         ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
@@ -319,7 +299,9 @@ extension ContactsViewController: UITableViewDelegate {
             }
         }
         
-        let deleteAction = UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: "Action"), handler: deleteClosure)
+        let deleteAction = UITableViewRowAction(style: .default,
+                                                title: LocalString._general_delete_action,
+                                                handler: deleteClosure)
         return [deleteAction]
     }
     
@@ -335,7 +317,7 @@ extension ContactsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        //TODO:: add this later
+        //TODO:: add this later the full size index
 //        - (void)viewDidLoad
 //            {
 //                [super viewDidLoad];

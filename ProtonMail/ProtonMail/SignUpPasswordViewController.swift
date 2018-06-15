@@ -55,14 +55,16 @@ class SignUpPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Choose a Password", comment: "place holder"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
-        confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Confirm Password", comment: "place holder"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        loginPasswordField.attributedPlaceholder = NSAttributedString(string: LocalString._signup_choose_password,
+                                                                      attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: LocalString._composer_eo_confirm_pwd_placeholder,
+                                                                             attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
-        leftTopItem.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
-        topTitleLabel.text = NSLocalizedString("Set passwords", comment: "Signup passwords top title")
-        noteOneLable.text = NSLocalizedString("Note: This is used to log you into your account.", comment: "setup password notes")
-        noteTwoLabel.text = NSLocalizedString("Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.", comment: "setup password notes")
-        createPasswordButton.setTitle(NSLocalizedString("Create Account", comment: "Create account button"), for: .normal)
+        leftTopItem.setTitle(LocalString._general_back_action, for: .normal)
+        topTitleLabel.text = LocalString._signup_set_passwords_title
+        noteOneLable.text = LocalString._signup_set_pwd_note_1
+        noteTwoLabel.text =  LocalString._signup_set_pwd_note_2
+        createPasswordButton.setTitle(LocalString._signup_create_account_action, for: .normal)
         
         self.updateButtonStatus()
         
@@ -115,7 +117,7 @@ class SignUpPasswordViewController: UIViewController {
             viewModel.setSinglePassword(login_pwd)
             self.performSegue(withIdentifier: kSegueToEncryptionSetup, sender: self)
         } else {
-            let alert = NSLocalizedString("Login password doesn't match", comment: "Error").alertController()
+            let alert = LocalString._signup_pwd_doesnt_match.alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
         }

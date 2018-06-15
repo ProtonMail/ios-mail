@@ -18,6 +18,8 @@ import Foundation
 import CoreData
 import NSDate_Helper
 import Groot
+import PromiseKit
+import AwaitKit
 
 let sharedContactDataService = ContactDataService()
 
@@ -31,7 +33,6 @@ typealias ContactImportCancel = (() -> Bool)
 
 typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
-typealias ContactDetailsComplete = ((Contact?, NSError?) -> Void)
 
 
 class ContactDataService {
@@ -301,6 +302,127 @@ class ContactDataService {
     }
     
     
+    
+    func fetch(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]> {
+        let context = context ?? sharedCoreDataService.newManagedObjectContext()
+        return Promise { seal in
+            async {
+                guard let fetchController = Email.findEmailsController(emails, inManagedObjectContext: context) else {
+                    seal.fulfill([])
+                    return
+                }
+                guard let contactEmails = fetchController.fetchedObjects as? [Email] else {
+                    seal.fulfill([])
+                    return
+                }
+                
+                let noDetails : [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false}
+                let fetchs : [Promise<Contact>] = noDetails.map { return self.details(contactID: $0.contactID, inContext: context) }
+                firstly {
+                    when(resolved: fetchs)
+                }.then { (result) -> Guarantee<[Result<PreContact>]> in
+                    var allEmails = contactEmails
+                    if let newFetched = fetchController.fetchedObjects as? [Email] {
+                        allEmails = newFetched
+                    }
+                    
+                    let details : [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded}
+                    var parsers : [Promise<PreContact>] = details.map {
+                        return self.parseContact(email: $0.email, cards: $0.contact.getCardData())
+                    }
+                    for r in result {
+                        switch r {
+                        case .fulfilled(let value):
+                            if let fEmail = contactEmails.first(where: { (e) -> Bool in
+                                e.contactID == value.contactID
+                            }) {
+                                PMLog.D(value.cardData)
+                                parsers.append(self.parseContact(email: fEmail.email, cards: value.getCardData()))
+                            }
+                        case .rejected(let error):
+                            PMLog.D(error.localizedDescription)
+                        }
+                    }
+                    return when(resolved: parsers)
+                }.then { contacts -> Promise<[PreContact]> in
+                    var sucessed : [PreContact] = [PreContact]()
+                    for c in contacts {
+                        switch c {
+                        case .fulfilled(let value):
+                            sucessed.append(value)
+                        case .rejected(let error):
+                            PMLog.D(error.localizedDescription)
+                        }
+                    }
+                    return .value(sucessed)
+                }.done { result in
+                    seal.fulfill(result)
+                }.catch { error in
+                    seal.reject(error)
+                }
+            }
+        }
+    }
+    
+    func parseContact(email : String, cards: [CardData]) -> Promise<PreContact> {
+        return Promise { seal in
+            async {
+                for c in cards {
+                    switch c.type {
+                    case .SignedOnly:
+                        PMLog.D(c.data)
+                        if let vcard = PMNIEzvcard.parseFirst(c.data) {
+                            let emails = vcard.getEmails()
+                            for e in emails {
+                                if email == e.getValue() {
+                                    let group = e.getGroup();
+                                    let encrypt = vcard.getPMEncrypt(group)
+                                    let sign = vcard.getPMSign(group)
+                                    let isSign = sign?.getValue() ?? "false" == "true" ? true : false
+                                    let keys = vcard.getKeys(group)
+                                    let isEncrypt = encrypt?.getValue() ?? "false" == "true" ? true : false
+                                    let schemeType = vcard.getPMScheme(group)
+                                    let isMime = schemeType?.getValue() ?? "pgp-mime" == "pgp-mime" ? true : false
+                                    let mimeType = vcard.getPMMimeType(group)
+                                    let pt = mimeType?.getValue()
+                                    let plainText = pt ?? "text/html" == "text/html" ? false : true
+                                    
+                                    var firstKey : Data?
+                                    var pubKeys : Data?
+                                    for key in keys {
+                                        let kg = key.getGroup()
+                                        if kg == group {
+                                            let kp = key.getPref()
+                                            let value = key.getBinary() //based 64 key
+                                            if pubKeys == nil {
+                                                pubKeys = Data()
+                                            }
+                                            pubKeys?.append(value)
+                                            if kp == 1 || kp == Int32.min {
+                                                firstKey = value
+                                            }
+                                        }
+                                    }
+                                    return seal.fulfill(PreContact(email: email,
+                                                                   pubKey: firstKey, pubKeys: pubKeys,
+                                                                   sign: isSign, encrypt: isEncrypt,
+                                                                   mime: isMime, plainText: plainText))
+                                }
+                            }
+                        }
+                    default:
+                        break
+                        
+                    }
+                }
+                //TODO::need to improve the error part
+                seal.reject(NSError.badResponse())
+            }
+           
+
+        }
+    }
+    
     /**
      get all contacts from server
      
@@ -414,32 +536,36 @@ class ContactDataService {
      - Parameter contactID: contact id
      - Parameter completion: async complete response
      **/
-    func details(contactID: String, completion: ContactDetailsComplete?) {
-        let api = ContactDetailRequest<ContactDetailResponse>(cid: contactID)
-        api.call { (task, response, hasError) in
-            if let contactDict = response?.contact {
-                let context = sharedCoreDataService.newManagedObjectContext()
-                context.performAndWait() {
-                    do {
-                        if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: contactDict, in: context) as? Contact {
-                            contact.isDownloaded = true
-                            let _ = contact.fixName(force: true)
-                            if let error = context.saveUpstreamIfNeeded() {
-                                PMLog.D(" error: \(error)")
-                                completion?(nil, error)
-                            } else {
-                                completion?(contact, nil)
+    func details(contactID: String, inContext: NSManagedObjectContext? = nil) -> Promise<Contact> {
+        return Promise { seal in
+            let api = ContactDetailRequest<ContactDetailResponse>(cid: contactID)
+            api.call { (task, response, hasError) in
+                if let contactDict = response?.contact {
+                    let context = inContext ?? sharedCoreDataService.newMainManagedObjectContext()
+                    context.performAndWait() {
+                        do {
+                            if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: contactDict, in: context) as? Contact {
+                                contact.isDownloaded = true
+                                let _ = contact.fixName(force: true)
+                                if let error = context.saveUpstreamIfNeeded() {
+                                    PMLog.D(error.localizedDescription)
+                                    seal.reject(error)
+                                } else {
+                                    context.processPendingChanges()
+                                    seal.fulfill(contact)
+                                }
                             }
+                        } catch let ex as NSError {
+                            seal.reject(ex)
                         }
-                    } catch let ex as NSError {
-                        PMLog.D(" error: \(ex)")
-                        completion?(nil, ex)
                     }
+                } else {
+                    seal.reject(NSError.unableToParseResponse(response))
                 }
-            } else {
-                completion?(nil, NSError.unableToParseResponse(response))
             }
         }
+        
+        
     }
     
     

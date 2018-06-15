@@ -35,14 +35,14 @@ class HumanCheckMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
-        topTitleLabel.text = NSLocalizedString("Human Verification", comment: "human verification top title")
-        topNotesLabel.text = NSLocalizedString("To prevent abuse of ProtonMail,\r\n we need to verify that you are human.", comment: "human verification notes")
-        optionsTitleLabel.text = NSLocalizedString("Please select one of the following options:", comment: "human check select option title")
+        topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
+        topTitleLabel.text = LocalString._human_verification
+        topNotesLabel.text = LocalString._to_prevent_abuse_of_protonmail_we_need_to_verify_that_you_are_human
+        optionsTitleLabel.text = LocalString._please_select_one_of_the_following_options
         
-        captchaButton.setTitle(NSLocalizedString("CAPTCHA", comment: "human check option button"), for: .normal)
-        emailCheckButton.setTitle(NSLocalizedString("Email Verification", comment: "human check option button"), for: .normal)
-        phoneCheckButton.setTitle(NSLocalizedString("Phone Verification", comment: "human check option button"), for: .normal)
+        captchaButton.setTitle(LocalString._captcha, for: .normal)
+        emailCheckButton.setTitle(LocalString._email_verification, for: .normal)
+        phoneCheckButton.setTitle(LocalString._phone_verification, for: .normal)
         
         self.setupSignUpFunctions()
     }
@@ -50,7 +50,7 @@ class HumanCheckMenuViewController: UIViewController {
     internal func setupSignUpFunctions () {
         let directs = viewModel.getDirect()
         if directs.count <= 0 {
-            let alert = NSLocalizedString("Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.", comment: "signup human check error description when mobile signup disabled").alertController()
+            let alert = LocalString._mobile_signups_are_disabled_pls_later_pm_com.alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
         } else {

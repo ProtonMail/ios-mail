@@ -36,7 +36,7 @@ class SrpTests: XCTestCase {
     
     
     func testBcryptHashPwd() {
-        let cleaned_user_name = PasswordUtils.CleanUserName("afsadfasdf.asklfj.KKK_kajsdf-lkajd")
+       // let cleaned_user_name = PasswordUtils.CleanUserName("afsadfasdf.asklfj.KKK_kajsdf-lkajd")
         
 
         

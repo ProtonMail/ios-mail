@@ -29,7 +29,7 @@ final class GetSettings : ApiRequest<SettingsResponse> {
     }
     
     override func apiVersion() -> Int {
-        return SettingsAPI.v_get_settings
+        return SettingsAPI.v_get_general_settings
     }
 }
 
@@ -60,7 +60,7 @@ final class SettingsResponse : ApiResponse {
 
 
 // MARK : update email notifiy
-final class UpdateNotify<T : ApiResponse> : ApiRequest<T> {
+final class UpdateNotify : ApiRequest<ApiResponse> {
     let notify : Int
     
     init(notify : Int) {
@@ -77,16 +77,16 @@ final class UpdateNotify<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.path + "/notify" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/email/notify" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
-        return SettingsAPI.V_SettingsUpdateNotifyRequest
+        return SettingsAPI.v_update_notify
     }
 }
 
 // MARK : update notification email
-final class UpdateNotificationEmail<T : ApiResponse> : ApiRequest<T> {
+final class UpdateNotificationEmail : ApiRequest<ApiResponse> {
 
     let email : String!
     
@@ -124,16 +124,16 @@ final class UpdateNotificationEmail<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.path + "/noticeemail" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/email" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
-        return SettingsAPI.V_SettingsUpdateNotifyRequest
+        return SettingsAPI.v_update_email
     }
 }
 
 // MARK : update notification email
-final class UpdateNewsRequest<T : ApiResponse> : ApiRequest<T> {
+final class UpdateNewsRequest : ApiRequest<ApiResponse> {
     let news : Bool!
     
     init(news : Bool) {
@@ -155,12 +155,12 @@ final class UpdateNewsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return SettingsAPI.V_SettingsUpdateNewsRequest
+        return SettingsAPI.v_update_sub_news
     }
 }
 
 //MARK : update display name 
-final class UpdateDisplayNameRequest<T : ApiResponse> : ApiRequest<T> {
+final class UpdateDisplayNameRequest : ApiRequest<ApiResponse> {
     let displayName : String!
     
     init(displayName: String) {
@@ -177,16 +177,18 @@ final class UpdateDisplayNameRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.path + "/display" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/mail/display" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
-        return SettingsAPI.V_SettingsUpdateDisplayNameRequest
+        return SettingsAPI.v_update_display_name
     }
 }
 
 //MARK : update display name
-final class UpdateShowImagesRequest<T : ApiResponse> : ApiRequest<T> {
+
+//Here need to change to 0 for none, 1 for remote, 2 for embedded, 3 for remote and embedded
+final class UpdateShowImagesRequest : ApiRequest<ApiResponse> {
     let status : Int!
     
     init(status: Int) {
@@ -203,16 +205,16 @@ final class UpdateShowImagesRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.path + "/showimages" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/mail/images" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
-        return SettingsAPI.V_SettingsUpdateShowImagesRequest
+        return SettingsAPI.v_update_shwo_images
     }
 }
 
 // MARK : update left swipe action
-final class UpdateSwiftLeftAction<T : ApiResponse> : ApiRequest<T> {
+final class UpdateSwiftLeftAction : ApiRequest<ApiResponse> {
     let newAction : MessageSwipeAction!
     
     init(action : MessageSwipeAction!) {
@@ -229,16 +231,16 @@ final class UpdateSwiftLeftAction<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.path + "/swipeleft" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/mail/swipeleft" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
-        return SettingsAPI.V_SettingsUpdateSwipeLeftRequest
+        return SettingsAPI.v_update_swipe_left_right
     }
 }
 
 // MARK : update right swipe action
-final class UpdateSwiftRightAction<T : ApiResponse> : ApiRequest<T> {
+final class UpdateSwiftRightAction : ApiRequest<ApiResponse> {
     let newAction : MessageSwipeAction!
     
     init(action : MessageSwipeAction!) {
@@ -255,16 +257,16 @@ final class UpdateSwiftRightAction<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func path() -> String {
-        return SettingsAPI.path + "/swiperight" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/mail/swiperight" + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
-        return SettingsAPI.V_SettingsUpdateSwipeRightRequest
+        return SettingsAPI.v_update_swipe_right_left
     }
 }
 
 // update login password this is only in two password mode
-final class UpdateLoginPassword<T : ApiResponse> : ApiRequest<T> {
+final class UpdateLoginPassword : ApiRequest<ApiResponse> {
     let clientEphemeral : String! //base64_encoded_ephemeral
     let clientProof : String! //base64_encoded_proof
     let SRPSession : String! //hex_encoded_session_id
@@ -324,6 +326,6 @@ final class UpdateLoginPassword<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func apiVersion() -> Int {
-        return SettingsAPI.V_SettingsUpdateLoginPasswordRequest
+        return SettingsAPI.v_update_login_password
     }
 }

@@ -14,8 +14,8 @@ class EncryptionSetupViewController: UIViewController {
     fileprivate let kSegueToSignUpVerification = "encryption_to_verification_segue"
     
     //Notes: low means high(4096) high means normal(2048)
-    let hight : Int32 = 2048
-    let low : Int32 = 4096
+    let hight : Int = 2048
+    let low : Int = 4096
     
     var viewModel : SignupViewModel!
     
@@ -32,42 +32,42 @@ class EncryptionSetupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
-        topTitleLabel.text = NSLocalizedString("Encryption Setup", comment: "key setup top title")
+        topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
+        topTitleLabel.text = LocalString._encryption_setup
         
         let font = Fonts.h4.bold
         let attrHigh = NSMutableAttributedString(
-            string: " " + NSLocalizedString("High Security", comment: "Key size checkbox"),
+            string: " " + LocalString._high_security,
             attributes: [NSAttributedStringKey.font:font])
         let font1 = Fonts.h4.regular
         let attrHighSize = NSMutableAttributedString(
-            string: " " + NSLocalizedString("(2048 bit)", comment: "Key size text"),
+            string: " " +  LocalString._signup_key_2048_size,
             attributes: [NSAttributedStringKey.font:font1])
         attrHigh.append(attrHighSize)
         highBitLevel.setAttributedTitle(attrHigh, for: .normal)
         
         let attrExtreme = NSMutableAttributedString(
-            string: NSLocalizedString("Extreme Security", comment: "Key size checkbox"),
+            string: LocalString._extreme_security,
             attributes: [NSAttributedStringKey.font:font])
         let attrExtremeSize = NSMutableAttributedString(
-            string: " " + NSLocalizedString("(4096 bit)", comment: "Key size text"),
+            string: " " + LocalString._signup_key_4096_size,
             attributes: [NSAttributedStringKey.font:font1])
         attrExtreme.append(attrExtremeSize)
         normalBitLevel.setAttributedTitle(attrExtreme, for: .normal)
         
-        highSecurityLabel.text = NSLocalizedString("The current standard", comment: "key size notes")
+        highSecurityLabel.text = LocalString._the_current_standard
         
         let notesfont = Fonts.s13.regular
         let attr1 = NSMutableAttributedString(
-            string: NSLocalizedString("The highest level of encryption available.", comment: "key size note part 1") + " ",
+            string: LocalString._the_highest_level_of_encryption_available + " ",
             attributes: [NSAttributedStringKey.font:notesfont])
         let notesfont1 = Fonts.s13.bold
         let attr2 = NSMutableAttributedString(
-            string: NSLocalizedString("Can take several minutes to setup.", comment: "key size note part 2"),
+            string: LocalString._can_take_several_minutes_to_setup,
             attributes: [NSAttributedStringKey.font:notesfont1])
         attr1.append(attr2)
         extremeSecurityNoteLabel.attributedText = attr1
-        continueButton.setTitle(NSLocalizedString("Continue", comment: "key setup continue button"), for: .normal)
+        continueButton.setTitle(LocalString._genernal_continue, for: .normal)
         
         updateButtonsStatus()
     }
@@ -129,14 +129,14 @@ class EncryptionSetupViewController: UIViewController {
                     if directs.count > 0 {
                         self.performSegue(withIdentifier: self.kSegueToSignUpVerification, sender: self)
                     } else {
-                        let alert = NSLocalizedString("Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.", comment: "Description").alertController()
+                        let alert = LocalString._mobile_signups_are_disabled_pls_later_pm_com.alertController()
                         alert.addOKAction()
                         self.present(alert, animated: true, completion: nil)
                     }
                 }
             } else {
                 MBProgressHUD.hide(for: self.view, animated: true)
-                let alert = error!.alertController(NSLocalizedString("Key generation failed", comment: "Error"))
+                let alert = error!.alertController(LocalString._key_generation_failed)
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             }

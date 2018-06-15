@@ -91,25 +91,25 @@ enum ContactFieldType {
     var title : String {
         switch self {
         case .home: //renamed to Personal
-            return NSLocalizedString("Personal", comment: "default vcard types")
+            return LocalString._contacts_types_home_title
         case .work:
-            return NSLocalizedString("Work", comment: "default vcard types")
+            return LocalString._contacts_types_work_title
         case .email:
-            return NSLocalizedString("Email", comment: "default vcard types")
+            return LocalString._contacts_types_email_title
         case .other:
-            return NSLocalizedString("Other", comment: "default vcard types")
+            return LocalString._contacts_types_other_title
         case .phone:
-            return NSLocalizedString("Phone", comment: "default vcard types")
+            return LocalString._contacts_types_phone_title
         case .mobile:
-            return NSLocalizedString("Mobile", comment: "default vcard types")
+            return LocalString._contacts_types_mobile_title
         case .fax:
-            return NSLocalizedString("Fax", comment: "default vcard types")
+            return LocalString._contacts_types_fax_title
         case .address:
-            return NSLocalizedString("Address", comment: "default vcard types")
+            return LocalString._contacts_types_address_title
         case .url:
-            return NSLocalizedString("URL", comment: "default vcard types")
+            return LocalString._contacts_types_url_title
         case .internet:
-            return NSLocalizedString("Internet", comment: "default vcard types")
+            return LocalString._contacts_types_internet_title
         default:
             return self.rawString
         }

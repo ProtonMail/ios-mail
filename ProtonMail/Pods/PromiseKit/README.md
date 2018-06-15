@@ -2,8 +2,6 @@
 
 ![badge-pod] ![badge-languages] ![badge-pms] ![badge-platforms] [![Build Status](https://travis-ci.org/mxcl/PromiseKit.svg?branch=master)](https://travis-ci.org/mxcl/PromiseKit)
 
-[繁體中文](README.zh_Hant.md) (*outdated*), [简体中文](README.zh_CN.md) (*outdated*)
-
 ---
 
 Promises simplify asynchronous programming, freeing you up to focus on the more
@@ -51,12 +49,13 @@ target "Change Me!" do
 end
 ```
 
-PromiseKit 6, 5 and 4 support Xcode 8.3, 9.0, 9.1, 9.2 and 9.3; Swift 3.1,
-3.2, 3.3, 4.0 and 4.1 ; iOS, macOS, tvOS, watchOS, Linux and Android; CocoaPods,
+PromiseKit 6, 5 and 4 support Xcode 8.3, 9.x and 10.0; Swift 3.1,
+3.2, 3.3, 4.0, 4.1 and 4.2 ; iOS, macOS, tvOS, watchOS, Linux and Android; CocoaPods,
 Carthage and SwiftPM; ([CI Matrix](https://travis-ci.org/mxcl/PromiseKit)).
 
 For Carthage, SwiftPM, etc., or for instructions when using older Swifts or
-Xcodes see our [Installation Guide](Documentation/Installation.md).
+Xcodes see our [Installation Guide](Documentation/Installation.md). Please note
+that we sincerely recommend [Carthage](https://github.com/Carthage/Carthage).
 
 # Documentation
 
@@ -69,9 +68,7 @@ Xcodes see our [Installation Guide](Documentation/Installation.md).
   * [Objective-C Guide](Documentation/ObjectiveC.md)
   * [Troubleshooting](Documentation/Troubleshooting.md) (eg. solutions to common compile errors)
   * [Appendix](Documentation/Appendix.md)
-
-If you are looking for a function’s documentation, then please note
-[our sources](Sources/) are thoroughly documented.
+* [API Reference](https://promisekit.org/reference/)
 
 # Extensions
 
@@ -152,7 +149,7 @@ func makeUrlRequest() throws -> URLRequest {
     rq.httpMethod = "POST"
     rq.addValue("application/json", forHTTPHeaderField: "Content-Type")
     rq.addValue("application/json", forHTTPHeaderField: "Accept")
-    rq.httpBody = try JSONSerialization.jsonData(with: obj)
+    rq.httpBody = try JSONEncoder().encode(obj)
     return rq
 }
 ```

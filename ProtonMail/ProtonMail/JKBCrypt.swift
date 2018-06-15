@@ -814,11 +814,11 @@ class JKBCrypt: NSObject {
     }
     
     fileprivate func deinitKey() {
-        p.deinitialize()
-        p.deallocate(capacity: P_orig.count)
+        p.deinitialize(count: P_orig.count) //.deinitialize()
+        p.deallocate() //p.deallocate(capacity: P_orig.count)
         
-        s.deinitialize()
-        s.deallocate(capacity: S_orig.count)
+        s.deinitialize(count: S_orig.count) //.deinitialize()
+        s.deallocate() //s.deallocate(capacity: S_orig.count)
     }
     
     /**

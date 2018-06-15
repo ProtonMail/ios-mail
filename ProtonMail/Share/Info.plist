@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>en_US</string>
 	<key>CFBundleDisplayName</key>
 	<string>ProtonMail</string>
 	<key>CFBundleExecutable</key>
@@ -17,20 +17,20 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.8.2</string>
+	<string>1.9.0</string>
 	<key>CFBundleVersion</key>
-	<string>2343</string>
+	<string>Debug</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>$(PRODUCT_NAME) requires media library access for media attachments.</string>
+	<string>Required for attaching media to the email.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) requires camera access to attach camera photos.</string>
+	<string>Required for attaching photos to the email.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>$(PRODUCT_NAME) requires contacts access for email autocomplete.</string>
+	<string>Required for email autocomplete.</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -56,9 +56,11 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>ShareExtensionEntry</string>
 	</dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Allows you quick and secure to unlock your application.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) requires photo library access to save image attachments.</string>
+	<string>Required for saving image attachments to photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) requires photo library access to attach camera photos.</string>
+	<string>Required for attaching photos to the email.</string>
 </dict>
 </plist>

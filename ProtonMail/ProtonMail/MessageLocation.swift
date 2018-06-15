@@ -27,29 +27,28 @@ public enum MessageLocation: Int, CustomStringConvertible {
     case allmail = 5
     case starred = 10
     
-    //8 , 7  another type of draft,sent 
-    
+    //8 , 7  another type of draft,sent
     public var actionTitle : String {
         get {
             switch(self) {
             case .deleted:
-                return NSLocalizedString("Trash", comment: "Action")
+                return LocalString._locations_deleted_action
             case .inbox:
-                return NSLocalizedString("Move to Inbox", comment: "Action")
+                return LocalString._locations_move_inbox_action
             case .draft:
-                return NSLocalizedString("Move to Draft", comment: "Action")
+                return LocalString._locations_move_draft_action
             case .outbox:
-                return NSLocalizedString("Move to Outbox", comment: "Action")
+                return LocalString._locations_move_outbox_action
             case .spam:
-                return NSLocalizedString("Move to Spam", comment: "Action")
+                return LocalString._locations_move_spam_action
             case .starred:
-                return NSLocalizedString("Add Star", comment: "Action")
+                return LocalString._locations_add_star_action
             case .archive:
-                return NSLocalizedString("Move to Archive", comment: "Action")
+                return LocalString._locations_move_archive_action
             case .trash:
-                return NSLocalizedString("Move to Trash", comment: "Action")
+                return LocalString._locations_move_trash_action
             case .allmail:
-                return NSLocalizedString("Move to AllMail", comment: "Action") //not in used
+                return LocalString._locations_move_allmail_action
             }
         }
     }
@@ -58,23 +57,23 @@ public enum MessageLocation: Int, CustomStringConvertible {
         get {
             switch(self) {
             case .deleted:
-                return NSLocalizedString("Deleted", comment: "Title")
+                return LocalString._locations_deleted_desc
             case .inbox:
-                return NSLocalizedString("Inbox", comment: "Title")
+                return LocalString._locations_inbox_desc
             case .draft:
-                return NSLocalizedString("Draft", comment: "Title")
+                return LocalString._locations_draft_desc
             case .outbox:
-                return NSLocalizedString("Outbox", comment: "Title")
+                return LocalString._locations_outbox_desc
             case .spam:
-                return NSLocalizedString("Spam", comment: "Title")
+                return LocalString._locations_spam_desc
             case .starred:
-                return NSLocalizedString("Starred", comment: "Title")
+                return LocalString._locations_starred_desc
             case .archive:
-                return NSLocalizedString("Archive", comment: "Title")
+                return LocalString._locations_archive_desc
             case .trash:
-                return NSLocalizedString("Trash", comment: "Title")
+                return LocalString._locations_trash_desc
             case .allmail:
-                return NSLocalizedString("All Mail", comment: "Title")
+                return LocalString._locations_all_mail_desc
             }
         }
     }
@@ -82,23 +81,23 @@ public enum MessageLocation: Int, CustomStringConvertible {
     public var title : String {
         switch(self) {
         case .inbox:
-            return NSLocalizedString("INBOX", comment: "Title")
+            return LocalString._locations_inbox_title
         case .starred:
-            return NSLocalizedString("STARRED", comment: "Title")
+            return LocalString._locations_starred_title
         case .draft:
-            return NSLocalizedString("DRAFTS", comment: "Title")
+            return LocalString._locations_draft_title
         case .outbox:
-            return NSLocalizedString("SENT", comment: "Title")
+            return LocalString._locations_outbox_title
         case .trash:
-            return NSLocalizedString("TRASH", comment: "Title")
+            return LocalString._locations_trash_title
         case .archive:
-            return NSLocalizedString("ARCHIVE", comment: "Title")
+            return LocalString._locations_archive_title
         case .spam:
-            return NSLocalizedString("SPAM", comment: "Title")
+            return LocalString._locations_spam_title
         case .allmail:
-            return NSLocalizedString("All Mail", comment: "Title")
+            return LocalString._locations_all_mail_title
         default:
-            return NSLocalizedString("INBOX", comment: "Title")
+            return LocalString._locations_inbox_title
         }
     }
     

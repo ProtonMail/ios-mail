@@ -18,7 +18,9 @@ public class MIMEMessage {
 	
 	public var htmlBody: String? {
 		if let html = self.mainPart.part(ofType: "text/html")?.bodyString { return html }
-		if let text = self.mainPart.part(ofType: "text/plain")?.bodyString { return "<html><body>\(text)</body></html>" }
+		if let text = self.mainPart.part(ofType: "text/plain")?.bodyString {
+            return "<html><body>\(text)</body></html>"
+        }
 		return nil
 	}
     

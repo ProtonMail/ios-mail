@@ -36,15 +36,15 @@ final class LabelManagerViewModelImpl : LabelViewModel {
     }
     
     override func getTitle() -> String {
-        return NSLocalizedString("Manage Labels/Folders", comment: "Title")
+        return LocalString._labels_manage_title
     }
     
     override func getApplyButtonText() -> String {
-        return NSLocalizedString("Delete", comment: "lable manager delete action")
+        return LocalString._general_delete_action
     }
     
     override func getCancelButtonText() -> String {
-        return NSLocalizedString("Close", comment: "lable manager close action")
+        return LocalString._general_close_action
     }
     
     override func cellClicked(_ label: Label!) {

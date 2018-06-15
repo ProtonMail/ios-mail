@@ -16,27 +16,27 @@ extension ELanguage {
         get {
             switch(self) {
             case .english:
-                return NSLocalizedString("English", comment: "Action")
+                return LocalString._english
             case .german:
-                return NSLocalizedString("German", comment: "Action")
+                return LocalString._german
             case .french:
-                return NSLocalizedString("French", comment: "Action")
+                return LocalString._french
             case .russian:
-                return NSLocalizedString("Russian", comment: "Action")
+                return LocalString._russian
             case .spanish:
-                return NSLocalizedString("Spanish", comment: "Action")
+                return LocalString._spanish
             case .turkish:
-                return NSLocalizedString("Turkish", comment: "Action")
+                return LocalString._turkish
             case .polish:
-                return NSLocalizedString("Polish", comment: "Action")
+                return LocalString._polish
             case .ukrainian:
-                return NSLocalizedString("Ukrainian", comment: "Action")
+                return LocalString._ukrainian
             case .dutch:
-                return NSLocalizedString("Dutch", comment: "Action")
+                return LocalString._dutch
             case .italian:
-                return NSLocalizedString("Italian", comment: "Action")
+                return LocalString._italian
             case .portugueseBrazil:
-                return NSLocalizedString("Portuguese Brazil", comment: "Action")
+                return LocalString._portuguese_brazil
             case .count:
                 return ""
             }
@@ -142,9 +142,9 @@ public enum SDebugItem: Int, CustomStringConvertible {
     public var description : String {
         switch(self){
         case .queue:
-            return NSLocalizedString("Message Queue", comment: "settings debug section title")
+            return LocalString._message_queue
         case .errorLogs:
-            return NSLocalizedString("Error Logs", comment: "settings debug section title")
+            return LocalString._error_logs
         }
     }
 }
@@ -162,17 +162,17 @@ public enum SGItems: Int, CustomStringConvertible {
     public var description : String {
         switch(self){
         case .notifyEmail:
-            return NSLocalizedString("Notification Email", comment: "settings general section title")
+            return LocalString._settings_notification_email
         case .loginPWD:
-            return NSLocalizedString("Login Password", comment: "settings general section title")
+            return LocalString._login_password
         case .mbp:
-            return NSLocalizedString("Mailbox Password", comment: "settings general section title")
+            return LocalString._mailbox_password
         case .singlePWD:
-            return NSLocalizedString("Single Password", comment: "settings general section title")
+            return LocalString._single_password
         case .cleanCache:
-            return NSLocalizedString("Clear Local Message Cache", comment: "settings general section title")
+            return LocalString._clear_local_message_cache
         case .autoLoadImage:
-            return NSLocalizedString("Auto Show Images", comment: "settings general section title")
+            return LocalString._auto_show_images
         }
     }
 }
@@ -184,18 +184,18 @@ public enum SSwipeActionItems: Int, CustomStringConvertible {
     public var description : String {
         switch(self){
         case .left:
-            return NSLocalizedString("Swipe Left to Right", comment: "settings swipe actions section title")
+            return LocalString._swipe_left_to_right
         case .right:
-            return NSLocalizedString("Swipe Right to Left", comment: "settings swipe actions section title")
+            return LocalString._swipe_right_to_left
         }
     }
     
     public var actionDescription : String {
         switch(self){
         case .left:
-            return NSLocalizedString("Change left swipe action", comment: "settings swipe actions section action description")
+            return LocalString._change_left_swipe_action
         case .right:
-            return NSLocalizedString("Change right swipe action", comment: "settings swipe actions section action description")
+            return LocalString._change_right_swipe_action
         }
     }
 }
@@ -211,17 +211,17 @@ public enum SProtectionItems : Int, CustomStringConvertible {
     public var description : String {
         switch(self){
         case .touchID:
-            return NSLocalizedString("Enable TouchID", comment: "settings protection section title")
+            return LocalString._enable_touchid
         case .pinCode:
-            return NSLocalizedString("Enable Pin Protection", comment: "settings protection section title")
+            return LocalString._enable_pin_protection
         case .updatePin:
-            return NSLocalizedString("Change Pin", comment: "settings protection section title")
+            return LocalString._change_pin
         case .autoLogout:
-            return NSLocalizedString("Protection Entire App", comment: "settings protection section title")
+            return LocalString._protection_entire_app
         case .enterTime:
-            return NSLocalizedString("Auto Lock Time", comment: "settings protection section title")
+            return LocalString._settings_auto_lock_time
         case .faceID:
-            return NSLocalizedString("Enable FaceID", comment: "settings protection section title")
+            return LocalString._enable_faceid
         }
     }
 }
@@ -235,13 +235,13 @@ public enum SAddressItems: Int, CustomStringConvertible {
     public var description : String {
         switch(self){
         case .addresses:
-            return NSLocalizedString("", comment: "")
+            return ""
         case .displayName:
-            return NSLocalizedString("Display Name", comment: "Title")
+            return LocalString._settings_display_name_title
         case .signature:
-            return NSLocalizedString("Signature", comment: "Title")
+            return LocalString._settings_signature_title
         case .defaultMobilSign:
-            return NSLocalizedString("Mobile Signature", comment: "Title")
+            return LocalString._settings_mobile_signature_title
         }
     }
 }
@@ -251,7 +251,7 @@ public enum SLabelsItems: Int, CustomStringConvertible {
     public var description : String {
         switch(self){
         case .labelFolderManager:
-            return NSLocalizedString("Manage Labels/Folders", comment: "Title")
+            return LocalString._labels_manage_title
         }
     }
 }
@@ -270,23 +270,23 @@ public enum SettingSections: Int, CustomStringConvertible {
     public var description : String {
         switch(self){
         case .debug:
-            return NSLocalizedString("Debug", comment: "Title")
+            return LocalString._debug
         case .general:
-            return NSLocalizedString("General Settings", comment: "Title")
+            return LocalString._general_settings
         case .multiDomain:
-            return NSLocalizedString("Multiple Addresses", comment: "Title")
+            return LocalString._multiple_addresses
         case .storage:
-            return NSLocalizedString("Storage", comment: "Title")
+            return LocalString._storage
         case .version:
-            return NSLocalizedString("", comment: "")
+            return ""
         case .swipeAction:
-            return NSLocalizedString("Message Swipe Actions", comment: "Title")
+            return LocalString._message_swipe_actions
         case .protection:
-            return NSLocalizedString("Protection", comment: "Title")
+            return LocalString._protection
         case .language:
-            return NSLocalizedString("Language", comment: "Title")
+            return LocalString._language
         case .labels:
-            return NSLocalizedString("Labels/Folders", comment: "Title")
+            return LocalString._labels_folders
         }
     }
 }

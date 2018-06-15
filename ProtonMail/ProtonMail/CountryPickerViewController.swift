@@ -38,9 +38,9 @@ class CountryPickerViewController : UIViewController {
         
         tableView.sectionIndexColor = UIColor(hexColorCode: "#9199CB")
         
-        titleLabel.text = NSLocalizedString("Your Country Code", comment: "view top title")
-        cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Action"), for: .normal)
-        applyButton.setTitle(NSLocalizedString("Apply", comment: "Action"), for: .normal)
+        titleLabel.text = LocalString._your_country_code
+        cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
+        applyButton.setTitle(LocalString._general_apply_button, for: .normal)
         self.prepareSource();
     }
     

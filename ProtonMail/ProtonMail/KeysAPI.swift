@@ -7,7 +7,79 @@
 //
 
 import Foundation
+import PromiseKit
 
+final class UserEmailPubKeys : ApiRequestNew<KeysResponse> {
+    let email : String
+    init(email : String) {
+        self.email = email
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        let out : [String : Any] = ["Email" : self.email]
+        return out
+    }
+    
+    override open func path() -> String {
+        return KeysAPI.path + AppConstants.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return KeysAPI.v_get_emails_pub_key
+    }
+}
+
+extension Array where Element : UserEmailPubKeys {
+    var promises : [Promise<KeysResponse>] {
+        var out : [Promise<KeysResponse>] = [Promise<KeysResponse>]()
+        for it in self {
+             out.append(it.run())
+        }
+        return out
+    }
+}
+
+
+final class KeyResponse {
+    var send : Int = 1 // 1 internal 2 external
+    var publicKey : String?
+   
+    init(send : Int, pubkey: String?) {
+        self.send = send
+        self.publicKey = pubkey
+    }
+}
+
+final class KeysResponse : ApiResponse {
+    var recipientType : Int = 1 // 1 internal 2 external
+    var mimeType : String?
+    var keys : [KeyResponse] = [KeyResponse]()
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        self.recipientType = response["RecipientType"] as? Int ?? 1
+        self.mimeType = response["MIMEType"] as? String
+        
+        if let keyRes = response["Keys"] as? [[String : Any]] {
+            for keyDict in keyRes {
+                let send = keyDict["Send"] as? Int ?? 0
+                
+                let keyFlags =  keyDict["Flags"] as? Int ?? 0
+                
+                let pubKey = keyDict["PublicKey"] as? String
+                self.keys.append(KeyResponse(send: send, pubkey: pubKey))
+            }
+        }
+        return true
+    }
+    
+    func firstKey () -> String? {
+        for k in keys {
+            if k.send == 1 {
+                return k.publicKey
+            }
+        }
+        return nil
+    }
+}
 
 //MARK : get keys salt  #not in used
 final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {

@@ -66,6 +66,25 @@ extension NSManagedObjectContext {
         return nil
     }
     
+    func objectsWithEntityName(_ entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> [NSManagedObject]? {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        request.predicate = NSPredicate(format: "%K in %@", key, objectIDs)
+        do {
+            let results = try fetch(request)
+            return results as? [NSManagedObject]
+        } catch let ex as NSError {
+            PMLog.D("error: \(ex)")
+        }
+        return nil
+    }
+    
+    func fetchedControllerEntityName(entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> NSFetchedResultsController<NSFetchRequestResult>? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K in %@", key, objectIDs)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: key, ascending: false)]
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self, sectionNameKeyPath: nil, cacheName: nil)
+    }
+    
     func saveUpstreamIfNeeded() -> NSError? {
         var error: NSError?
         do {
@@ -81,5 +100,18 @@ extension NSManagedObjectContext {
             error = ex
         }
         return error
+    }
+    
+    func find(with objectID: NSManagedObjectID) -> NSManagedObject? {
+        var msgObject : NSManagedObject?
+        do {
+            msgObject = try self.existingObject(with: objectID)
+        } catch {
+            msgObject = nil
+        }
+//        if let obj = msgObject as? T {
+//            return obj
+//        }
+        return msgObject
     }
 }

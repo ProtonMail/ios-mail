@@ -39,20 +39,17 @@ class PasswordEncryptViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewTitleLable.text              = NSLocalizedString("Set Password", comment: "Title")
-        titleDesLabel.text               = NSLocalizedString("Set a password to encrypt this message for non-ProtonMail users.", comment: "Description")
-        passwordField.placeholder        = NSLocalizedString("Message Password", comment: "Placeholder")
-        passwordErrorLabel.text          = NSLocalizedString("The message password can't be empty", comment: "Description")
-        confirmPasswordField.placeholder = NSLocalizedString("Confirm Password", comment: "Placeholder")
-        confirmPasswordErrorLabel.text   = NSLocalizedString("The message password didn't match", comment: "Description")
+        viewTitleLable.text              = LocalString._composer_set_password
+        titleDesLabel.text               = LocalString._composer_eo_desc
+        passwordField.placeholder        = LocalString._composer_eo_msg_pwd_placeholder
+        passwordErrorLabel.text          = LocalString._composer_eo_empty_pwd_desc
+        confirmPasswordField.placeholder = LocalString._composer_eo_confirm_pwd_placeholder
+        confirmPasswordErrorLabel.text   = LocalString._composer_eo_dismatch_pwd_desc
         hintField.placeholder            = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
         
-        cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Action"),
-                              for: .normal)
-        removeButton.setTitle(NSLocalizedString("Remove", comment: "Action"),
-                              for: .normal)
-        applyButton.setTitle(NSLocalizedString("Apply", comment: "Action"),
-                             for: .normal)
+        cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
+        removeButton.setTitle(LocalString._general_remove_button, for: .normal)
+        applyButton.setTitle(LocalString._general_apply_button, for: .normal)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {

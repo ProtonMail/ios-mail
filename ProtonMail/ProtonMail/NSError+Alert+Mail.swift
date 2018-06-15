@@ -12,10 +12,12 @@ import MBProgressHUD
 extension NSError {
     
     public class func alertMessageSentToast() ->Void {
-        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
+        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+            return
+        }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = NSLocalizedString("Message sent", comment: "Description");
+        hud.detailsLabelText = LocalString._message_sent_ok_desc
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0
@@ -24,11 +26,12 @@ extension NSError {
     
     
     public func alertSentErrorToast() ->Void {
-        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
+        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+            return
+        }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        let _ = NSLocalizedString("Sending Failed", comment: "Description")
-        hud.detailsLabelText = "\(NSLocalizedString("Sent Failed", comment: "Description")): \(self.localizedDescription)"
+        hud.detailsLabelText = "\(LocalString._message_sent_failed_desc): \(self.localizedDescription)"
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0
@@ -37,10 +40,12 @@ extension NSError {
     
     
     public class func alertLocalCacheErrorToast() ->Void {
-        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
+        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+            return
+        }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = NSLocalizedString("The draft cache is broken please try again", comment: "Description");
+        hud.detailsLabelText = LocalString._message_draft_cache_is_broken
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0
@@ -49,11 +54,13 @@ extension NSError {
     
     
     public class func alertBadTokenToast() ->Void {
-        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
+        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+            return
+        }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = NSLocalizedString("Alert", comment: "Title");
-        hud.detailsLabelText = NSLocalizedString("Invalid access token please relogin", comment: "Description");
+        hud.labelText = LocalString._general_alert_title
+        hud.detailsLabelText = LocalString._general_invalid_access_token
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
     }
@@ -61,11 +68,13 @@ extension NSError {
     
     
     public class func alertUpdatedToast() ->Void {
-        let window : UIWindow = UIApplication.shared.keyWindow as UIWindow!
+        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+            return
+        }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = NSLocalizedString("Alert", comment: "Title");
-        hud.detailsLabelText = NSLocalizedString("A new version of ProtonMail app is available, please update to latest version.", comment: "Description");
+        hud.labelText = LocalString._general_alert_title
+        hud.detailsLabelText = LocalString._general_force_upgrade_desc
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
     }

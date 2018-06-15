@@ -13,11 +13,15 @@ extension String {
     
     public func alertController() -> UIAlertController {
         let message = self
-        return UIAlertController(title: NSLocalizedString("Alert", comment: "alert title"), message: message, preferredStyle: .alert)
+        return UIAlertController(title: LocalString._general_alert_title,
+                                 message: message,
+                                 preferredStyle: .alert)
     }
     
     public func alertController(_ localizedTitle : String) -> UIAlertController {
         let message = self
-        return UIAlertController(title: localizedTitle, message: message, preferredStyle: .alert)
+        return UIAlertController(title: localizedTitle,
+                                 message: message,
+                                 preferredStyle: .alert)
     }
 }

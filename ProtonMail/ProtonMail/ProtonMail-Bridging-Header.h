@@ -29,16 +29,6 @@
 //contact picker
 #import "MBContactPicker.h"
 
-//progress
-//#import <MBProgressHUD/MBProgressHUD.h>
-//#import <NSDate+Helper/NSDate+Helper.h>
-//#import <RHAddressBook/AddressBook.h>
-//#import <RHAddressBook/RHMultiValue.h>
-//#import <SWRevealViewController/SWRevealViewController.h>
-//#import <UICKeyChainStore/UICKeyChainStore.h>
-//#import <UIColor+Hex/UIColor+Hex.h>
-//#import <ZSSRichTextEditor.h>
-//#import <MCSwipeTableViewCell.h>
 #import <CommonCrypto/CommonCrypto.h>
 
 //try catch objective-c
@@ -79,6 +69,12 @@
 #import <OpenPGP/PMNIGender.h>
 #import <OpenPGP/PMNIBirthday.h>
 #import <OpenPGP/PMNIAnniversary.h>
+#import <OpenPGP/PMNIPMSign.h>
+#import <OpenPGP/PMNIPMEncrypt.h>
+#import <OpenPGP/PMNIKey.h>
+#import <OpenPGP/PMNIPMScheme.h>
+#import <OpenPGP/PMNIPMMimeType.h>
+
 
 
 

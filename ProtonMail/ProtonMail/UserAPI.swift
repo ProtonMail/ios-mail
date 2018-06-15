@@ -14,6 +14,7 @@ typealias CreateUserBlock = (Bool, Bool, String, Error?) -> Void
 typealias GenerateKey = (Bool, String?, NSError?) -> Void
 typealias SendVerificationCodeBlock = (Bool, NSError?) -> Void
 
+
 // MARK : update right swipe action
 class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     
@@ -84,7 +85,7 @@ class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-final class GetUserInfoRequest : ApiRequest<GetUserInfoResponse> {
+final class GetUserInfoRequest : ApiRequestNew<GetUserInfoResponse> {
     
     override func method() -> APIService.HTTPMethod {
         return .get
@@ -105,16 +106,12 @@ final class GetUserInfoResponse : ApiResponse {
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         guard let res = response["User"] as? [String : Any] else {
-            let err = NSError.badUserInfoResponse("\(response)")
-            Crashlytics.sharedInstance().recordError(err)
-            err.upload(toFabric: FetchUserInfoErrorTitle)
             return false
         }
         self.userInfo = UserInfo(response: res)
         return true
     }
 }
-
 
 
 class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
@@ -365,15 +362,5 @@ class EmailsCheckResponse : PublicKeysResponse {
             return true
         }
         return false
-    }
-}
-
-
-extension NSError {
-    class func badUserInfoResponse(_ error : String) -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.SendErrorCode.draftBad,
-            localizedDescription: error,
-            localizedFailureReason: NSLocalizedString("The user info fetch is wrong", comment: "Description"))
     }
 }

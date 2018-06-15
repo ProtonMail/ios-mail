@@ -38,7 +38,7 @@ extension APIService {
                 let escapedValue : String? = base64Emails.addingPercentEncoding(withAllowedCharacters: CharacterSet(charactersIn: "/+=\n").inverted)
                 let path = UserPath.base.stringByAppendingPathComponent("pubkeys").stringByAppendingPathComponent(escapedValue ?? base64Emails)
                 //setApiVesion(2, appVersion: 1)
-                request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 2], completion: { task, response, error in
+                request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 3], completion: { task, response, error in
                     PMLog.D("userPublicKeysForEmails -- res \(String(describing: response)) || error -- \(String(describing: error))")
                     if let paserError = self.isErrorResponse(response) {
                         completion?(task, response, paserError)
@@ -60,7 +60,7 @@ extension APIService {
             "PrivateKey" : privateKey
         ]
         
-        request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 2], completion: completion)
+        request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 3], completion: completion)
     }
     
     // MARK: private mothods

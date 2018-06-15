@@ -15,36 +15,16 @@ protocol MessageDetailBottomViewProtocol {
 }
 
 class MessageDetailBottomView: UIView {
-    
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-    // Drawing code
-    }
-    */
+
     @IBOutlet weak var replyButton: UIButton!
     @IBOutlet weak var replyAllButton: UIButton!
     @IBOutlet weak var forwardButton: UIButton!
     
     override func awakeFromNib() {
-        replyButton.setTitle(NSLocalizedString("Reply", comment: "top left back button"), for: .normal)
-        replyAllButton.setTitle(NSLocalizedString("Reply All", comment: "top left back button"), for: .normal)
-        forwardButton.setTitle(NSLocalizedString("Forward", comment: "top left back button"), for: .normal)
+        replyButton.setTitle(LocalString._general_reply_button, for: .normal)
+        replyAllButton.setTitle(LocalString._general_replyall_button, for: .normal)
+        forwardButton.setTitle(LocalString._general_forward_button, for: .normal)
     }
-    
-//    override init(frame: CGRect) { // for using CustomView in code
-//        super.init(frame: frame)
-//        
-//        replyButton.setTitle(NSLocalizedString("Reply", comment: "top left back button"), for: .normal)
-//        replyAllButton.setTitle(NSLocalizedString("Reply All", comment: "top left back button"), for: .normal)
-//        forwardButton.setTitle(NSLocalizedString("Forward", comment: "top left back button"), for: .normal)
-//    }
-//    
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)!
-//        
-//    }
     
     var delegate: MessageDetailBottomViewProtocol?
 

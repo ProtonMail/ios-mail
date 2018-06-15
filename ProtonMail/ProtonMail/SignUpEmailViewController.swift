@@ -54,19 +54,21 @@ class SignUpEmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         userCachedStatus.showTourNextTime()
-        recoveryEmailField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Recovery Email", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
-        displayNameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Display Name", comment: "Title"), attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        recoveryEmailField.attributedPlaceholder = NSAttributedString(string: LocalString._recovery_email,
+                                                                      attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+        displayNameField.attributedPlaceholder = NSAttributedString(string: LocalString._settings_display_name_title,
+                                                                    attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
-        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
-        topTitleLabel.text = NSLocalizedString("Congratulations!", comment: "view top title")
-        titleWarningLabel.text = NSLocalizedString("Your new secure email\r\n account is ready.", comment: "view top title")
-        optionalOneLabel.text = NSLocalizedString("*OPTIONAL", comment: "Title")
-        displayNameNoteLabel.text = NSLocalizedString("When you send an email, this is the name that appears in the sender field.", comment: "display name notes")
-        optionalTwoLabel.text = NSLocalizedString("*OPTIONAL", comment: "Title")
+        topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
+        topTitleLabel.text = LocalString._congratulations
+        titleWarningLabel.text = LocalString._your_new_secure_email_account_is_ready
+        optionalOneLabel.text = LocalString._signup_optional_text
+        displayNameNoteLabel.text = LocalString._send_an_email_this_name_that_appears_in_sender_field
+        optionalTwoLabel.text = LocalString._signup_optional_text
         
-        recoveryEmailNoteLabel.text = NSLocalizedString("The optional recovery email address allows you to reset your login password if you forget it.", comment: "recovery email notes")
-        checkButton.setTitle(NSLocalizedString("Keep me updated about new features", comment: "Title"), for: .normal)
-        goInboxButton.setTitle(NSLocalizedString("Go to inbox", comment: "Action"), for: .normal)
+        recoveryEmailNoteLabel.text = LocalString._the_optional_recovery_email_address_allows_you_to_reset_your_login_password_if_you_forget_it
+        checkButton.setTitle(LocalString._keep_me_updated_about_new_features, for: .normal)
+        goInboxButton.setTitle(LocalString._go_to_inbox, for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,15 +111,15 @@ class SignUpEmailViewController: UIViewController {
         if email.isEmpty {
             // show a warning
             let alertController = UIAlertController(
-                title: NSLocalizedString("Recovery Email Warning", comment: "Title"),
-                message: NSLocalizedString("Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?", comment: "Description"),
+                title: LocalString._recovery_email_warning,
+                message: LocalString._warning_did_not_set_a_recovery_email_so_account_recovery_is_impossible,
                 preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Title"), style: .default, handler: { action in
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .default, handler: { action in
                 
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Title"), style: .destructive, handler: { action in
+            alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action, style: .destructive, handler: { action in
                 if (!email.isEmpty && !email.isValidEmail()) {
-                    let alert = NSLocalizedString("Please input a valid email address.", comment: "Description").alertController()
+                    let alert = LocalString._please_input_a_valid_email_address.alertController()
                     alert.addOKAction()
                     self.present(alert, animated: true, completion: nil)
                 } else {
@@ -138,7 +140,7 @@ class SignUpEmailViewController: UIViewController {
             self.present(alertController, animated: true, completion: nil)
         } else {
             if (!email.isValidEmail()) {
-                let alert = NSLocalizedString("Please input a valid email address.", comment: "Description").alertController()
+                let alert = LocalString._please_input_a_valid_email_address.alertController()
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             } else {
@@ -160,9 +162,9 @@ class SignUpEmailViewController: UIViewController {
     
     fileprivate func moveToInbox() {
         sharedUserDataService.isSignedIn = true
-        if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
-            sharedOpenPGP.setAddresses(addresses);
-        }
+//        if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
+//            sharedOpenPGP.setAddresses(addresses);
+//        }
         self.loadContent()
     }
     
@@ -183,7 +185,7 @@ class SignUpEmailViewController: UIViewController {
     
     func loadContactsAfterInstall()
     {
-        sharedUserDataService.fetchUserInfo()
+        sharedUserDataService.fetchUserInfo().done() { _ in }.catch { _ in }
         sharedContactDataService.fetchContacts { (contacts, error) in
             if error != nil {
                 PMLog.D("\(String(describing: error))")

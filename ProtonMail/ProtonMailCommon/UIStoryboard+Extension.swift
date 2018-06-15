@@ -31,12 +31,12 @@ extension UIStoryboard {
             return UIStoryboard(name: rawValue, bundle: nil)
         }
         
-        func instantiateInitialViewController() -> UIViewController {
-            return storyboard.instantiateInitialViewController() as UIViewController!
+        func instantiateInitialViewController() -> UIViewController? {
+            return storyboard.instantiateInitialViewController()
         }
     }
     
-    class func instantiateInitialViewController(storyboard: Storyboard) -> UIViewController {
+    class func instantiateInitialViewController(storyboard: Storyboard) -> UIViewController? {
         return storyboard.instantiateInitialViewController()
     }
 }

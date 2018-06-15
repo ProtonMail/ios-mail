@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import PromiseKit
+import Pm
 
 
 class ContactDetailsViewModelImpl : ContactDetailsViewModel {
@@ -153,7 +155,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         let types = e.getTypes()
                         let typeRaw = types.count > 0 ? types.first! : ""
                         let type = ContactFieldType.get(raw: typeRaw)
-                        let ce = ContactEditEmail(order: order, type: type == .empty ? .email : type, email:e.getValue(), isNew: false)
+                        let ce = ContactEditEmail(order: order, type: type == .empty ? .email : type, email:e.getValue(), isNew: false, keys: nil, encrypt: nil, sign: nil , scheme: nil, mimeType: nil)
                         origEmails.append(ce)
                         order += 1
                     }
@@ -164,12 +166,22 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
             case .SignedOnly:
                 if let userkeys = sharedUserDataService.userInfo?.userKeys {
                     for key in userkeys {
-                        self.verifyType2 = sharedOpenPGP.signVerify(detached: c.sign, publicKey: key.public_key, plainText: c.data)
-                        if self.verifyType2 {
-                            if !PMNOpenPgp.checkPassphrase(sharedUserDataService.mailboxPassword!, forPrivateKey: key.private_key) {
-                                self.verifyType2 = false
+                        do {
+                            var ok = ObjCBool(false)
+                            let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
+                                                                             plainText: c.data,
+                                                                             publicKey: key.publicKey,
+                                                                             verifyTime: 0, ret0_: &ok)
+                            self.verifyType2 = ok.boolValue
+                            if self.verifyType2 {
+                                if !PmCheckPassphrase(key.private_key, sharedUserDataService.mailboxPassword!) {
+                                    self.verifyType2 = false
+                                }
+                                break
                             }
-                            break
+                            
+                        } catch {
+                            self.verifyType2 = false
                         }
                     }
                 }
@@ -180,7 +192,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         let types = e.getTypes()
                         let typeRaw = types.count > 0 ? types.first! : ""
                         let type = ContactFieldType.get(raw: typeRaw)
-                        let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false)
+                        let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false, keys: nil, encrypt: nil, sign: nil , scheme: nil, mimeType: nil)
                         origEmails.append(ce)
                         order += 1
                     }
@@ -188,21 +200,17 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 break
             case .SignAndEncrypt:
                 guard let firstUserkey = sharedUserDataService.userInfo?.firstUserKey() else {
-                    return;
+                    return
                 }
                 var pt_contact : String?
                 var signKey : Key?
-                
-                
                 if let userkeys = sharedUserDataService.userInfo?.userKeys {
                     for key in userkeys {
                         do {
-                            if c.data.findKeyID(key.private_key) {
-                                pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
-                                signKey = key
-                                self.decryptError = false
-                                break
-                            }
+                            pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
+                            signKey = key
+                            self.decryptError = false
+                            break
                         } catch {
                             self.decryptError = true
                         }
@@ -214,7 +222,17 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     break
                 }
                 
-                self.verifyType3 = sharedOpenPGP.signDetachedVerify(key.public_key, signature: c.sign, plainText: pt_contact_vcard)
+                do {
+                    var ok = ObjCBool(false)
+                    let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
+                                                                      plainText: pt_contact_vcard,
+                                                                      publicKey: key.publicKey,
+                                                                      verifyTime: 0,
+                                                                      ret0_: &ok)
+                    self.verifyType3 = ok.boolValue
+                } catch {
+                    self.verifyType3 = false
+                }
                 
                 if let vcard = PMNIEzvcard.parseFirst(pt_contact_vcard) {
                     let types = vcard.getPropertyTypes()
@@ -304,38 +322,38 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             //case "Impp":
                             
                             //"Key":
-                            //"KindScribe());
-                            //"LabelScribe());
-                            //"LanguageScribe());
-                            //"LogoScribe());
-                            //"MailerScribe());
-                            //"MemberScribe());
-                            //"NicknameScribe());
-                            //"NoteScribe());
-                            //"OrganizationScribe());
-                            //"PhotoScribe());
-                            //"ProductIdScribe());
-                            //"ProfileScribe());
-                            //"RelatedScribe());
-                            //"RevisionScribe());
-                            //"RoleScribe());
-                            //"SortStringScribe());
-                            //"SoundScribe());
-                            //"SourceDisplayTextScribe());
-                            //"SourceScribe());
-                            //"StructuredNameScribe());
-                            //"TelephoneScribe());
-                            //"TimezoneScribe());
-                            //"TitleScribe());
-                            //"UidScribe());
-                            //"UrlScribe());
-                            //"BirthplaceScribe());
-                            //"DeathdateScribe());
-                            //"DeathplaceScribe());
-                            //"ExpertiseScribe());
-                            //"OrgDirectoryScribe());
-                            //"InterestScribe());
-                            //"HobbyScribe());
+                            //"KindScribe())
+                            //"LabelScribe())
+                            //"LanguageScribe())
+                            //"LogoScribe())
+                            //"MailerScribe())
+                            //"MemberScribe())
+                            //"NicknameScribe())
+                            //"NoteScribe())
+                            //"OrganizationScribe())
+                            //"PhotoScribe())
+                            //"ProductIdScribe())
+                            //"ProfileScribe())
+                            //"RelatedScribe())
+                            //"RevisionScribe())
+                            //"RoleScribe())
+                            //"SortStringScribe())
+                            //"SoundScribe())
+                            //"SourceDisplayTextScribe())
+                            //"SourceScribe())
+                            //"StructuredNameScribe())
+                            //"TelephoneScribe())
+                            //"TimezoneScribe())
+                            //"TitleScribe())
+                            //"UidScribe())
+                            //"UrlScribe())
+                            //"BirthplaceScribe())
+                            //"DeathdateScribe())
+                            //"DeathplaceScribe())
+                            //"ExpertiseScribe())
+                            //"OrgDirectoryScribe())
+                            //"InterestScribe())
+                            //"HobbyScribe())
                         default:
                             break
                         }
@@ -365,16 +383,20 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         let _ = self.contact.managedObjectContext?.saveUpstreamIfNeeded()
     }
     
-    override func getDetails(loading: () -> Void, complete: @escaping (Contact?, NSError?) -> Void) {
+    override func getDetails(loading: () -> Void) -> Promise<Contact> {
         if contact.isDownloaded {
             self.setupEmails()
-            return complete(contact, nil)
+            return Promise.value(contact)
         }
         loading()
-        sharedContactDataService.details(contactID: contact.contactID, completion: { (contact : Contact?, error : NSError?) in
-            self.setupEmails()
-            complete(contact, nil)
-        })
+        return Promise { seal in
+            sharedContactDataService.details(contactID: contact.contactID).done { _ in
+                self.setupEmails()
+                seal.fulfill(self.contact)
+            }.catch { (error) in
+                seal.reject(error)
+            }
+        }
     }
     
     override func getProfile() -> ContactEditProfile {
@@ -422,10 +444,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 if let userkeys = sharedUserDataService.userInfo?.userKeys {
                     for key in userkeys {
                         do {
-                            if c.data.findKeyID(key.private_key) {
-                                pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
-                                break
-                            }
+                            pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
+                            break
                         } catch {
                         }
                     }

@@ -11,21 +11,24 @@ import ZSSRichTextEditor
 import PromiseKit
 import AwaitKit
 
-class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
-    
+
+fileprivate let learnMoreUrl = URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
+
+class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     // view model
     fileprivate var viewModel : ComposeViewModel!
-    
-    func setViewModel(_ vm: Any) {
-        self.viewModel = vm as! ComposeViewModel
+
+    func set(viewModel: ComposeViewModel) {
+        self.viewModel = viewModel
     }
     
-    func inactiveViewModel() {
+    typealias argType = ComposeViewModel
+    
+    func inactiveViewModel() { 
         self.stopAutoSave()
         NotificationCenter.default.removeObserver(self,
                                                   name: NSNotification.Name.UIApplicationWillResignActive,
                                                   object:nil)
-        
         self.dismissKeyboard()
         if self.presentingViewController != nil {
             self.dismiss(animated: true, completion: nil)
@@ -61,6 +64,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     fileprivate let kNumberOfHoursInTimePicker: Int = 24
     
     fileprivate let kPasswordSegue : String = "to_eo_password_segue"
+    fileprivate let kExpirationWarningSegue : String = "expiration_warning_segue"
     
     fileprivate var isShowingConfirm : Bool = false
     
@@ -74,7 +78,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.cancelButton = UIBarButtonItem(title:NSLocalizedString("Cancel", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(ComposeEmailViewController.cancel_clicked(_:)))
+        self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button,
+                                            style: UIBarButtonItemStyle.plain,
+                                            target: self,
+                                            action: #selector(ComposeEmailViewController.cancel_clicked(_:)))
         self.navigationItem.leftBarButtonItem = cancelButton
         
         configureNavigationBar()
@@ -148,7 +155,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
                 PMLog.D(" error: \(error)")
             }
             
-            //TODO::
             self.contacts = contacts
             
             self.composeView.toContactPicker.reloadData()
@@ -169,7 +175,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
                 break
             default:
                 if !self.isShowingConfirm {
-                    self.composeView.toContactPicker.becomeFirstResponder()
+                    let _ = self.composeView.toContactPicker.becomeFirstResponder()
                 }
                 break
             }
@@ -225,10 +231,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
                     guard userCachedStatus.isPMMEWarningDisabled == false else {
                         return
                     }
-                    let msg = String(format: NSLocalizedString("Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@", comment: "pm.me upgrade warning in composer"), origAddr.email, addr.email)
-                    let alertController = msg.alertController(NSLocalizedString("Notice", comment: "Alert"))
+                    let msg = String(format: LocalString._composer_sending_messages_from_a_paid_feature, origAddr.email, addr.email)
+                    let alertController = msg.alertController(LocalString._general_notice_alert_title)
                     alertController.addOKAction()
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Don't remind me again", comment: "Action"), style: .destructive, handler: { action in
+                    alertController.addAction(UIAlertAction(title: LocalString._general_dont_remind_action, style: .destructive, handler: { action in
                         userCachedStatus.isPMMEWarningDisabled = true
                     }))
                     self.present(alertController, animated: true, completion: nil)
@@ -278,9 +284,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             NSAttributedStringKey.font: navigationBarTitleFont
         ]
         
-        self.navigationItem.leftBarButtonItem?.title = NSLocalizedString("Cancel", comment: "Action")
-        
-        cancelButton.title = NSLocalizedString("Cancel", comment: "Action")
+        self.navigationItem.leftBarButtonItem?.title = LocalString._general_cancel_button
+        cancelButton.title = LocalString._general_cancel_button
     }
     
     override func didReceiveMemoryWarning() {
@@ -293,6 +298,11 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             popup.pwdDelegate = self
             popup.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
             self.setPresentationStyleForSelfController(self, presentingController: popup)
+        } else if segue.identifier == kExpirationWarningSegue {
+            let popup = segue.destination as! ExpirationWarningViewController
+            popup.delegate = self
+            popup.config(needPwd: self.composeView.nonePMEmails,
+                         pgp: self.composeView.pgpEmails)
         }
     }
     
@@ -339,34 +349,38 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             }
         }
         
-        let alertController = UIAlertController(title: NSLocalizedString("Compose", comment: "Action"),
-                                                message: NSLocalizedString("Send message without subject?", comment: "Description"),
+        let alertController = UIAlertController(title: LocalString._composer_compose_action,
+                                                message: LocalString._composer_send_no_subject_desc,
                                                 preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send", comment: "Action"), style: .destructive, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._general_send_action,
+                                                style: .destructive, handler: { (action) -> Void in
             self.sendMessage()
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
     
     internal func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
-            if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
-                let emails = self.composeView.allEmails
-                //show loading
-                ActivityIndicatorHelper.showActivityIndicator(at: view)
-                let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
-                api.call({ (task, response: EmailsCheckResponse?, hasError : Bool) in
-                    //hide loading
-                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-                    if let res = response, res.hasOutsideEmails == false {
-                        self.sendMessageStepTwo()
-                    } else {
-                        self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
-                    }
-                })
+            if self.composeView.hasPGPPinned ||
+                (self.composeView.hasNonePMEmails && self.encryptionPassword.count <= 0 ) {
+                
+                self.performSegue(withIdentifier: self.kExpirationWarningSegue, sender: self)
+//                let alertController = UIAlertController(title: LocalString._composer_compose_action,
+//                                                        message: LocalString._you_enabled_message_expiration_but_not_all_recipients_support_this_please_add,
+//                                                        preferredStyle: .alert)
+//                alertController.addAction(UIAlertAction(title: LocalString._send_anyway,
+//                                                        style: .destructive, handler: { (action) -> Void in
+//                                                            self.sendMessageStepTwo()
+//                }))
+//                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+//                alertController.addAction(UIAlertAction(title: "Learn more", style: .default, handler: { (action) in
+//                    UIApplication.shared.openURL(learnMoreUrl)
+//                }))
+//                present(alertController, animated: true, completion: nil)
                 return
             }
+            
         }
         delay(0.3) {
             self.sendMessageStepTwo()
@@ -377,8 +391,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         if self.viewModel.toSelectedContacts.count <= 0 &&
             self.viewModel.ccSelectedContacts.count <= 0 &&
             self.viewModel.bccSelectedContacts.count <= 0 {
-            let alert = UIAlertController(title: NSLocalizedString("Alert", comment: "Title"),
-                                          message: NSLocalizedString("You need at least one recipient to send", comment: "Description"),
+            let alert = UIAlertController(title: LocalString._general_alert_title,
+                                          message: LocalString._composer_no_recipient_error,
                                           preferredStyle: .alert)
             alert.addAction((UIAlertAction.okAction()))
             present(alert, animated: true, completion: nil)
@@ -414,21 +428,23 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
             self.isShowingConfirm = true
-            let alertController = UIAlertController(title: NSLocalizedString("Confirmation", comment: "Title"),
+            let alertController = UIAlertController(title: LocalString._general_confirmation_title,
                                                     message: nil, preferredStyle: .actionSheet)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft", comment: "Action"), style: .default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: LocalString._composer_save_draft_action,
+                                                    style: .default, handler: { (action) -> Void in
                 self.stopAutoSave()
                 self.collectDraft()
                 self.viewModel.updateDraft()
                 dismiss()
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: { (action) ->
-                Void in
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                    style: .cancel, handler: { (action) -> Void in
                 self.isShowingConfirm = false
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft", comment: "Action"), style: .destructive, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: LocalString._composer_discard_draft_action,
+                                                    style: .destructive, handler: { (action) -> Void in
                 self.stopAutoSave()
                 self.viewModel.deleteDraft()
                 dismiss()
@@ -471,6 +487,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         if (body?.isEmpty)! {
             body = "<div><br></div>"
         }
+        
         self.viewModel.collectDraft(
             self.composeView.subject.text!,
             body: body!,
@@ -530,10 +547,14 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
 
 // MARK : - view extensions
 extension ComposeEmailViewController : ComposeViewDelegate {
+    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
+        self.viewModel.lockerCheck(model: model, progress: progress, complete: complete)
+    }
+    
     func composeViewPickFrom(_ composeView: ComposeView) {
         var needsShow : Bool = false
-        let alertController = UIAlertController(title: NSLocalizedString("Change sender address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         let multi_domains = self.viewModel.getAddresses()
         let defaultAddr = self.viewModel.getDefaultSendAddress()
         for addr in multi_domains {
@@ -541,7 +562,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
                 needsShow = true
                 alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
                     if addr.send == 0 {
-                        let alertController = String(format: NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error"), addr.email).alertController()
+                        let alertController = String(format: LocalString._composer_change_paid_plan_sender_error, addr.email).alertController()
                         alertController.addOKAction()
                         self.present(alertController, animated: true, completion: nil)
                     } else {
@@ -569,7 +590,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         }
     }
     
-    func ComposeViewDidSizeChanged(_ size: CGSize) {
+    func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {
         self.composeViewSize = size.height
         if #available(iOS 11.0, *) {
             self.updateComposeFrame()
@@ -578,6 +599,8 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
         }
         self.updateContentLayout(true)
+        self.webView.scrollView.isScrollEnabled = !showPicker
+
     }
     
     func ComposeViewDidOffsetChanged(_ offset: CGPoint) {
@@ -592,7 +615,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
                 self.actualEncryptionStep = EncryptionStep.ConfirmPassword
                 self.composeView.showConfirmPasswordView()
             } else {
-                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kEmptyEOPWD)
+                self.composeView.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_empty_pwd_desc)
             }
         case EncryptionStep.ConfirmPassword:
             self.encryptionConfirmPassword = (composeView.encryptedPasswordTextField.text ?? "").trim()
@@ -602,7 +625,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
                 self.composeView.hidePasswordAndConfirmDoesntMatch()
                 self.composeView.showPasswordHintView()
             } else {
-                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kConfirmError)
+                self.composeView.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_dismatch_pwd_desc)
             }
             
         case EncryptionStep.DefineHintPassword:
@@ -631,8 +654,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         }
     }
     
-    func composeViewDidTapExpirationButton(_ composeView: ComposeView)
-    {
+    func composeViewDidTapExpirationButton(_ composeView: ComposeView) {
         self.expirationPicker.alpha = 1
         self.view.bringSubview(toFront: expirationPicker)
     }
@@ -649,13 +671,12 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     func composeViewCollectExpirationData(_ composeView: ComposeView) {
         let selectedDay = expirationPicker.selectedRow(inComponent: 0)
         let selectedHour = expirationPicker.selectedRow(inComponent: 1)
-        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour)
-        {
+        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour) {
             self.expirationPicker.alpha = 0
         }
     }
     
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
+    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker)
     {
         if (picker == composeView.toContactPicker) {
             self.viewModel.toSelectedContacts.append(contact)
@@ -666,7 +687,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         }
     }
     
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
+    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: ContactPicker)
     {// here each logic most same, need refactor later
         if (picker == composeView.toContactPicker) {
             var contactIndex = -1
@@ -708,12 +729,12 @@ extension ComposeEmailViewController : ComposeViewDelegate {
 
 // MARK : compose data source
 extension ComposeEmailViewController : ComposeViewDataSource {
-    
-    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [Any]! {
+
+    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol] {
         return contacts
     }
     
-    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: MBContactPicker) ->  [Any]! {
+    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) ->  [ContactPickerModelProtocol] {
         var selectedContacts: [ContactVO] = [ContactVO]()
         if (picker == composeView.toContactPicker) {
             selectedContacts = self.viewModel.toSelectedContacts
@@ -776,9 +797,9 @@ extension ComposeEmailViewController: UIPickerViewDataSource {
 extension ComposeEmailViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (component == 0) {
-            return "\(row) " + NSLocalizedString("days", comment: "")
+            return "\(row) " + LocalString._composer_eo_days_title
         } else {
-            return "\(row) " + NSLocalizedString("Hours", comment: "")
+            return "\(row) " + LocalString._composer_eo_hours_title
         }
     }
     
@@ -786,14 +807,26 @@ extension ComposeEmailViewController: UIPickerViewDelegate {
         let selectedDay = pickerView.selectedRow(inComponent: 0)
         let selectedHour = pickerView.selectedRow(inComponent: 1)
         
-        let day = "\(selectedDay) " + NSLocalizedString("days", comment: "")
-        let hour = "\(selectedHour) " + NSLocalizedString("Hours", comment: "")
+        let day = "\(selectedDay) " + LocalString._composer_eo_days_title
+        let hour = "\(selectedHour) " + LocalString._composer_eo_hours_title
         self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
     }
     
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return super.canPerformAction(action, withSender: sender)
     }
+    
+}
+
+extension ComposeEmailViewController: ExpirationWarningVCDelegate{
+    func send() {
+        self.sendMessageStepTwo()
+    }
+    
+    func learnMore() {
+        UIApplication.shared.openURL(learnMoreUrl)
+    }
+    
     
 }
 

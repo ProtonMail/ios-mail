@@ -10,12 +10,12 @@ import UIKit
 import ZSSRichTextEditor
 
 class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
-    
+    typealias argType = ComposeViewModel
     // view model
     fileprivate var viewModel : ComposeViewModel!
     
-    func setViewModel(_ vm: Any) {
-        self.viewModel = vm as! ComposeViewModel
+    func set(viewModel: ComposeViewModel) {
+         self.viewModel = viewModel
     }
     
     func inactiveViewModel() {
@@ -56,7 +56,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         self.edgesForExtendedLayout = []
         
         //inital navigation bar items
-        self.cancelButton = UIBarButtonItem(title:NSLocalizedString("Cancel", comment: "Action"),
+        self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button,
                                             style: .plain,
                                             target: self,
                                             action: #selector(ComposerViewController.cancelButtonTapped(sender:)))
@@ -118,13 +118,14 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             }
         }
         
-        let alertController = UIAlertController(title: NSLocalizedString("Compose", comment: "Action"),
-                                                message: NSLocalizedString("Send message without subject?", comment: "Description"),
+        let alertController = UIAlertController(title: LocalString._composer_compose_action,
+                                                message: LocalString._composer_send_no_subject_desc,
                                                 preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send", comment: "Action"), style: .destructive, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._general_send_action,
+                                                style: .destructive, handler: { (action) -> Void in
             self.sendMessage()
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
     
@@ -138,15 +139,17 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         }
         
         //if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
-        let alertController = UIAlertController(title: NSLocalizedString("Confirmation", comment: "Title") , message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft", comment: "Title"), style: .default, handler: { (action) -> Void in
+        let alertController = UIAlertController(title: LocalString._general_confirmation_title, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: LocalString._composer_save_draft_action,
+                                                style: .default, handler: { (action) -> Void in
             self.stopAutoSave()
             self.collectDraft()
             self.viewModel.updateDraft()
             dismiss()
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Title"), style: .cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft", comment: "Title"), style: .destructive, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._composer_discard_draft_action,
+                                                style: .destructive, handler: { (action) -> Void in
             self.stopAutoSave()
             self.viewModel.deleteDraft()
             dismiss()
@@ -277,9 +280,9 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             self.composeView.ccContactPicker.reloadData()
             self.composeView.bccContactPicker.reloadData()
             
-            self.composeView.toContactPicker.contactCollectionView!.layoutIfNeeded()
-            self.composeView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
-            self.composeView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.composeView.toContactPicker.contactCollectionView.layoutIfNeeded()
+            self.composeView.bccContactPicker.contactCollectionView.layoutIfNeeded()
+            self.composeView.ccContactPicker.contactCollectionView.layoutIfNeeded()
             
             switch self.viewModel.messageAction!
             {
@@ -288,7 +291,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                 self.composeView.notifyViewSize(true)
                 break
             default:
-                self.composeView.toContactPicker.becomeFirstResponder()
+                let _ = self.composeView.toContactPicker.becomeFirstResponder()
                 break
             }
         }
@@ -374,7 +377,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                     if let res = response, res.hasOutsideEmails == false {
                         self.sendMessageStepTwo()
                     } else {
-                        self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
+                        self.composeView.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_pls_set_password)
                     }
                 })
                 return
@@ -389,8 +392,8 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         if self.viewModel.toSelectedContacts.count <= 0 &&
             self.viewModel.ccSelectedContacts.count <= 0 &&
             self.viewModel.bccSelectedContacts.count <= 0 {
-            let alert = UIAlertController(title: NSLocalizedString("Alert", comment: "Title"),
-                                          message: NSLocalizedString("You need at least one recipient to send", comment: "Description"),
+            let alert = UIAlertController(title: LocalString._general_alert_title,
+                                          message: LocalString._composer_no_recipient_error,
                                           preferredStyle: .alert)
             alert.addAction((UIAlertAction.okAction()))
             present(alert, animated: true, completion: nil)
@@ -441,10 +444,14 @@ extension ComposerViewController : PasswordEncryptViewControllerDelegate {
 
 // MARK : - view extensions
 extension ComposerViewController : ComposeViewDelegate {
+    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
+        self.viewModel.lockerCheck(model: model, progress: progress, complete: complete)
+    }
+    
     func composeViewPickFrom(_ composeView: ComposeView) {
         var needsShow : Bool = false
-        let alertController = UIAlertController(title: NSLocalizedString("Change sender address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
+        let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         let multi_domains = self.viewModel.getAddresses()
         let defaultAddr = self.viewModel.getDefaultSendAddress()
         for addr in multi_domains {
@@ -452,7 +459,7 @@ extension ComposerViewController : ComposeViewDelegate {
                 needsShow = true
                 alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
                     if addr.send == 0 {
-                        let alertController = String(format: NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error"), addr.email).alertController()
+                        let alertController = String(format: LocalString._composer_change_paid_plan_sender_error, addr.email).alertController()
                         alertController.addOKAction()
                         self.present(alertController, animated: true, completion: nil)
                     } else {
@@ -481,7 +488,7 @@ extension ComposerViewController : ComposeViewDelegate {
         }
     }
     
-    func ComposeViewDidSizeChanged(_ size: CGSize) {
+    func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {
         self.composeViewSize = size.height;
         if #available(iOS 11.0, *) {
             self.updateComposeFrame()
@@ -490,6 +497,7 @@ extension ComposerViewController : ComposeViewDelegate {
             self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
         }
         self.updateContentLayout(true)
+        self.webView.scrollView.isScrollEnabled = !showPicker
     }
     
     func ComposeViewDidOffsetChanged(_ offset: CGPoint){
@@ -554,7 +562,7 @@ extension ComposerViewController : ComposeViewDelegate {
         }
     }
     
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker) {
+    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker) {
         if (picker == composeView.toContactPicker) {
             self.viewModel.toSelectedContacts.append(contact)
         } else if (picker == composeView.ccContactPicker) {
@@ -564,7 +572,7 @@ extension ComposerViewController : ComposeViewDelegate {
         }
     }
     
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker) {
+    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker:ContactPicker) {
         // here each logic most same, need refactor later
         if (picker == composeView.toContactPicker) {
             var contactIndex = -1
@@ -606,12 +614,12 @@ extension ComposerViewController : ComposeViewDelegate {
 
 // MARK : compose data source
 extension ComposerViewController : ComposeViewDataSource {
-    
-    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [Any]! {
+
+    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol] {
         return contacts
     }
     
-    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: MBContactPicker) ->  [Any]! {
+    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) ->  [ContactPickerModelProtocol] {
         var selectedContacts: [ContactVO] = [ContactVO]()
         if (picker == composeView.toContactPicker) {
             selectedContacts = self.viewModel.toSelectedContacts
@@ -673,9 +681,9 @@ extension ComposerViewController : UIPickerViewDataSource {
 extension ComposerViewController : UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (component == 0) {
-            return "\(row) " + NSLocalizedString("days", comment: "")
+            return "\(row) " + LocalString._composer_eo_days_title
         } else {
-            return "\(row) " + NSLocalizedString("Hours", comment: "")
+            return "\(row) " + LocalString._composer_eo_hours_title
         }
     }
     
@@ -683,8 +691,8 @@ extension ComposerViewController : UIPickerViewDelegate {
         let selectedDay = pickerView.selectedRow(inComponent: 0)
         let selectedHour = pickerView.selectedRow(inComponent: 1)
         
-        let day = "\(selectedDay) " + NSLocalizedString("days", comment: "")
-        let hour = "\(selectedHour) " + NSLocalizedString("Hours", comment: "")
+        let day = "\(selectedDay) " + LocalString._composer_eo_days_title
+        let hour = "\(selectedHour) " + LocalString._composer_eo_hours_title
         self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
     }
     

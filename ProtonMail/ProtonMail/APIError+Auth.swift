@@ -12,88 +12,81 @@ import Foundation
 
 extension NSError {
     
-    class func authCredentialExpired() -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.AuthErrorCode.credentialExpired,
-            localizedDescription: NSLocalizedString("Token expired", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("The authentication token has expired.", comment: "Description"))
-    }
-    
     class func authCredentialInvalid() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.credentialInvalid,
-            localizedDescription: NSLocalizedString("Invalid credential", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("The authentication credentials are invalid.", comment: "Description"))
+            localizedDescription: LocalString._invalid_credential,
+            localizedFailureReason: LocalString._the_authentication_credentials_are_invalid)
     }
     
     class func authInvalidGrant() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.invalidGrant,
-            localizedDescription: NSLocalizedString("Alert", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("Authentication Failed Wrong username or password", comment: "Description"))
+            localizedDescription: LocalString._general_alert_title,
+            localizedFailureReason: LocalString._authentication_failed_wrong_username_or_password)
     }
     
     class func internetError() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.networkIusse,
-            localizedDescription: NSLocalizedString("Alert", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("Unable to connect to the server", comment: "Description"))
+            localizedDescription: LocalString._general_alert_title,
+            localizedFailureReason: LocalString._unable_to_connect_to_the_server)
     }
     
     class func authUnableToParseToken() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.unableToParseToken,
-            localizedDescription: NSLocalizedString("Unable to parse token", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("Unable to parse authentication token!", comment: "Description"))
+            localizedDescription: LocalString._unable_to_parse_token,
+            localizedFailureReason: LocalString._unable_to_parse_authentication_token)
     }
     
     class func authUnableToParseAuthInfo() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.unableToParseAuthInfo,
-            localizedDescription: NSLocalizedString("Unable to parse token", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("Unable to parse authentication info!", comment: "Description"))
+            localizedDescription: LocalString._unable_to_parse_token,
+            localizedFailureReason: LocalString._unable_to_parse_authentication_info)
     }
     
     class func authUnableToGeneratePwd() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.authUnableToGeneratePwd,
-            localizedDescription: NSLocalizedString("Invalid Password", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("Unable to generate hash password!", comment: "Description"))
+            localizedDescription: LocalString._invalid_password,
+            localizedFailureReason: LocalString._unable_to_generate_hash_password)
     }
     
     class func authUnableToGenerateSRP() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.authUnableToGenerateSRP,
-            localizedDescription: NSLocalizedString("SRP Client", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("Unable to create SRP Client!", comment: "Description"))
+            localizedDescription: LocalString._srp_client,
+            localizedFailureReason: LocalString._unable_to_create_srp_client)
     }
     
     class func authServerSRPInValid() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.unableToParseAuthInfo,
-            localizedDescription: NSLocalizedString("SRP Server", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("Server proofs not valid!", comment: "Description"))
+            localizedDescription: LocalString._srp_server,
+            localizedFailureReason: LocalString._server_proofs_not_valid)
     }
     
     class func authInValidKeySalt() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.authInValidKeySalt,
-            localizedDescription: NSLocalizedString("Invalid Password", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("Srp single password keyslat invalid!", comment: "Description"))
+            localizedDescription: LocalString._invalid_password,
+            localizedFailureReason: LocalString._srp_single_password_keyslat_invalid)
     }
     
     class func authCacheBad() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.localCacheBad,
-            localizedDescription: NSLocalizedString("Unable to parse token", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("Unable to parse cased authentication token!", comment: "Description"))
+            localizedDescription: LocalString._unable_to_parse_token,
+            localizedFailureReason: LocalString._unable_to_parse_cased_authentication_token)
     }
     
     
     class func AuthCachePassEmpty() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.Cache_PasswordEmpty,
-            localizedDescription: NSLocalizedString("Bad auth cache", comment: "Error"),
-            localizedFailureReason: NSLocalizedString("Local cache can't find mailbox password", comment: "Description"))
+            localizedDescription: LocalString._bad_auth_cache,
+            localizedFailureReason: LocalString._local_cache_cant_find_mailbox_password)
     }
 }

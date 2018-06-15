@@ -10,6 +10,9 @@ import Foundation
 
 
 
+
+
+
 class ContactAddViewModelImpl : ContactEditViewModel {
     var sections: [ContactEditSectionType] = [.display_name,
                                               .emails,
@@ -33,13 +36,17 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     override init() {
         super.init()
         self.contact = nil
+    }
+    
+    init(contactVO : ContactVO) {
+        super.init()
+        self.contact = nil
         
-//        if !paidUser() {
-//            sections = [.display_name,
-//                        .emails,
-//                        .encrypted_header,
-//                        .upgrade]
-//        }
+        let email = self.newEmail()
+        email.newEmail = contactVO.displayEmail ?? ""
+        
+        profile.newDisplayName = contactVO.displayName ?? ""
+        
     }
     
     override func getSections() -> [ContactEditSectionType] {
@@ -99,7 +106,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     override func newEmail() -> ContactEditEmail {
         let type = pick(newType: ContactFieldType.emailTypes, pickedTypes: emails)
-        let email = ContactEditEmail(order: emails.count, type: type, email:"", isNew: true)
+        let email = ContactEditEmail(order: emails.count, type: type, email:"", isNew: true, keys: nil, encrypt: nil, sign: nil , scheme: nil, mimeType: nil)
         emails.append(email)
         return email
     }
@@ -165,13 +172,17 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         //add
         var a_emails: [ContactEmail] = []
         for e in getEmails() {
+            if e.newEmail.isEmpty || !e.newEmail.isValid() {
+                complete(RuntimeError.invalidEmail.toError())
+                return
+            }
             a_emails.append(e.toContactEmail())
         }
         guard let vcard2 = PMNIVCard.createInstance() else {
             return; //with error
         }
         
-        var defaultName = NSLocalizedString("Unknown", comment: "title, default display name")
+        var defaultName = LocalString._general_unknown_title
         var i : Int = 1;
         for email in a_emails {
             let group = "Item\(i)"
@@ -198,13 +209,14 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
             return; //with error
         }
-        PMLog.D(vcard2Str);
-        let signed_vcard2 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                       plainText: vcard2Str,
-                                                       passphras: sharedUserDataService.mailboxPassword!)
-        
+        PMLog.D(vcard2Str)
+        //TODO:: fix the try?
+        let signed_vcard2 = try? sharedOpenPGP.signTextDetached(vcard2Str,
+                                                                privateKey: userkey.private_key,
+                                                                passphrase: sharedUserDataService.mailboxPassword!,
+                                                                trim: true)
         //card 2 object
-        let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
+        let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2 ?? "")
         
         var isCard3Set : Bool = false
         //
@@ -301,14 +313,16 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         vcard3.setUid(uuid)
         
         let vcard3Str = PMNIEzvcard.write(vcard3)
-        PMLog.D(vcard3Str);
-        let encrypted_vcard3 = sharedOpenPGP.encryptMessageSingleKey(userkey.public_key, plainText: vcard3Str, privateKey: "", passphras: "")
-        PMLog.D(encrypted_vcard3);
-        let signed_vcard3 = sharedOpenPGP.signDetached(userkey.private_key,
-                                                       plainText: vcard3Str,
-                                                       passphras: sharedUserDataService.mailboxPassword!)
+        PMLog.D(vcard3Str)
+        //TODO:: fix the try!
+        let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", mailbox_pwd: "")
+        PMLog.D(encrypted_vcard3 ?? "")
+        let signed_vcard3 = try! sharedOpenPGP.signTextDetached(vcard3Str,
+                                                           privateKey: userkey.private_key,
+                                                           passphrase: sharedUserDataService.mailboxPassword!,
+                                                           trim: true)
         //card 3 object
-        let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3)
+        let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3 )
         
         var cards : [CardData] = [card2]
         if isCard3Set {

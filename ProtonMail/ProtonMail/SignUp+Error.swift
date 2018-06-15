@@ -23,21 +23,21 @@ enum SignUpCreateUserError : Int, Error, CustomErrorVar {
     }
     
     var desc : String {
-        return NSLocalizedString("Update Notification Email", comment: "update notification email error title when signup")
+        return LocalString._update_notification_email
     }
     
     var reason : String {
         switch self {
         case .invalidModulsID:
-            return NSLocalizedString("Can't get a Moduls ID!", comment: "sign up user error when can't get moduls id")
+            return LocalString._cant_get_a_moduls_id
         case .invalidModuls:
-            return NSLocalizedString("Can't get a Moduls!", comment: "sign up user error")
+            return LocalString._cant_get_a_moduls
         case .cantHashPassword:
-            return NSLocalizedString("Invalid hashed password!", comment: "sign up user error")
+            return LocalString._invalid_hashed_password
         case .cantGenerateVerifier:
-            return NSLocalizedString("Can't create a SRP verifier!", comment: "sign up user error")
+            return LocalString._cant_create_a_srp_verifier
         case .default:
-            return NSLocalizedString("Create user failed", comment: "sign up user error")
+            return LocalString._create_user_failed
         }
     }
 }

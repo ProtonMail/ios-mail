@@ -104,22 +104,20 @@ class CoreDataService {
     func popError (_ error : NSError) {
         // Report any error we got.
         var dict = [AnyHashable: Any]()
-        dict[NSLocalizedDescriptionKey] = NSLocalizedString("Failed to initialize the application's saved data", comment: "Description")
-        dict[NSLocalizedFailureReasonErrorKey] = NSLocalizedString("There was an error creating or loading the application's saved data.", comment: "Description")
+        dict[NSLocalizedDescriptionKey] = LocalString._error_core_data_save_failed
+        dict[NSLocalizedFailureReasonErrorKey] = LocalString._error_core_data_load_failed
         dict[NSUnderlyingErrorKey] = error
         //TODO:: need monitor
-        
         let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain("CoreDataService")
         let _ = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any] as? [String : Any])
         PMLog.D("Unresolved error \(error), \(error.userInfo)")
         
         //TODO::Fix later
 //        let alertController = alertError.alertController()
-//        alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Action"), style: .default, handler: { (action) -> Void in
+//        alertController.addAction(UIAlertAction(title: LocalString._general_close_action, style: .default, handler: { (action) -> Void in
 //            abort()
 //        }))
 //        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
-//        
     }
 
     func cleanLegacy() {
@@ -134,14 +132,3 @@ class CoreDataService {
     }
     
 }
-
-// MARK: - NSError Core Data extensions
-//
-//extension NSError {
-//    class func noManagedObjectContext() -> NSError {
-//        return NSError.protonMailError(
-//            10000,
-//            localizedDescription: NSLocalizedString("No managed object context", comment: "Description"),
-//            localizedFailureReason: NSLocalizedString("No managed object context.", comment: "Description"))
-//    }
-//}
