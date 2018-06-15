@@ -96,9 +96,12 @@ class SettingTableViewController: ProtonMailViewController {
         self.updateProtectionItems()
         
         if sharedUserDataService.passwordMode == 1 {
-            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .cleanCache, .notificationsSnooze]
+            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .cleanCache]
         } else {
-            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .cleanCache, .notificationsSnooze]
+            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .cleanCache]
+        }
+        if #available(iOS 10.0, *), AppVersion.current >= NotificationsSnoozer.appVersion {
+            setting_general_items.append(.notificationsSnooze)
         }
         
         userInfo = sharedUserDataService.userInfo

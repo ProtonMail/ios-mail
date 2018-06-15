@@ -14,7 +14,9 @@ extension SectionHeaderCustomizing {
         guard let header = view as? UITableViewHeaderFooterView else {
             return
         }
-        header.textLabel?.text = header.textLabel?.text?.localized
+        if let text = header.textLabel?.text {
+            header.textLabel?.text = NSLocalizedString(text, comment:"section header")
+        }
         header.textLabel?.font = UIFont.preferredFont(forTextStyle: .caption1)
         header.textLabel?.textColor = .lightGray
     }

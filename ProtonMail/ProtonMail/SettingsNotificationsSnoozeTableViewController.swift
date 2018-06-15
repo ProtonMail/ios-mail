@@ -68,7 +68,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Snooze Notifications".localized.uppercased()
+        self.title = LocalString._snooze_notifications
         self.tableView.tableFooterView = UIView()
         
         let cellTypesToRegister = [GeneralSettingViewCell.self, SwitchTableViewCell.self, DomainsTableViewCell.self]
@@ -99,7 +99,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
         switch layoutModel {
         case .quickSettings:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(GeneralSettingViewCell.self)", for: indexPath) as! GeneralSettingViewCell
-            cell.configCell("Snooze Notifications".localized, right: self.notificationsSnoozer.overview(at: Date(), ofCase: .quick))
+            cell.configCell(LocalString._snooze_notifications, right: self.notificationsSnoozer.overview(at: Date(), ofCase: .quick))
             cell.accessoryType = .disclosureIndicator
             return cell
             
@@ -108,14 +108,14 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
             cell.accessoryType = .none
             cell.selectionStyle = .none
             let scheduledIsOn = !self.notificationsSnoozer.configs(ofCase: .scheduled).isEmpty
-            cell.configCell("Scheduled".localized, bottomLine: "", status: scheduledIsOn) { _, newStatus, _ in
+            cell.configCell(LocalString._scheduled, bottomLine: "", status: scheduledIsOn) { _, newStatus, _ in
                 self.rawRulesModel = newStatus ? RawRulesModel() : nil
             }
             return cell
         
         case .startTime:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(DomainsTableViewCell.self)", for: indexPath) as! DomainsTableViewCell
-            cell.domainText.text = "Start Time".localized + ":"
+            cell.domainText.text = LocalString._start_time + ":"
             let start = self.scheduledRules!.first!.startMatching
             let date = Calendar.current.date(bySettingHour: start.hour!, minute: start.minute!, second: 0, of: Date())!
             cell.defaultMark.text = self.timeFormatter.string(from: date)
@@ -124,7 +124,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
  
         case .endTime:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(DomainsTableViewCell.self)", for: indexPath) as! DomainsTableViewCell
-            cell.domainText.text = "End Time".localized + ":"
+            cell.domainText.text = LocalString._end_time + ":"
             let end = self.scheduledRules!.first!.endMatching
             let date = Calendar.current.date(bySettingHour: end.hour!, minute: end.minute!, second: 0, of: Date())!
             cell.defaultMark.text = self.timeFormatter.string(from: date)
@@ -134,7 +134,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
         case .repeat:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(GeneralSettingViewCell.self)", for: indexPath) as! GeneralSettingViewCell
             let weekdays = self.scheduledRules!.compactMap { Calendar.current.shortWeekdaySymbols[$0.startMatching.weekday!] }
-            cell.configCell("Repeat".localized, right: weekdays.joined(separator: ", "))
+            cell.configCell(LocalString._repeat, right: weekdays.joined(separator: ", "))
             cell.RightText.accessibilityLabel = self.scheduledRules!.compactMap({ Calendar.current.weekdaySymbols[$0.startMatching.weekday!] }).joined(separator: ", ")
             cell.accessoryType = .disclosureIndicator
             return cell
@@ -160,14 +160,14 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
         
         case .startTime:
             guard let anyRule = self.scheduledRules?.first else { return }
-            let picker = TimePickerViewController(title: "Start Time".localized, select: anyRule.startMatching) { [weak self] newStart in
+            let picker = TimePickerViewController(title: LocalString._start_time, select: anyRule.startMatching) { [weak self] newStart in
                 self?.rawRulesModel?.setStart(hour: newStart.hour!, minute: newStart.minute!)
             }
             self.present(picker, animated: true, completion: nil)
             
         case .endTime:
             guard let anyRule = self.scheduledRules?.first else { return }
-            let picker = TimePickerViewController(title: "End Time".localized, select: anyRule.endMatching) { [weak self] newEnd in
+            let picker = TimePickerViewController(title: LocalString._end_time, select: anyRule.endMatching) { [weak self] newEnd in
                 self?.rawRulesModel?.setEnd(hour: newEnd.hour!, minute: newEnd.minute!)
             }
             self.present(picker, animated: true, completion: nil)

@@ -1483,12 +1483,6 @@
 		75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */; };
 		9F13485990B5ECAE0E458211 /* Pods_ProtonMailTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B592540B8A286228E3A5430A /* Pods_ProtonMailTests.framework */; };
 		AB36B253D49A42CC855932B0 /* Pods_ShareDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554FD2400ABE7FDFDC9156F4 /* Pods_ShareDev.framework */; };
-		D81DF2A820C704A40023B656 /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DF2A720C704A40023B656 /* String+Localized.swift */; };
-		D81DF2A920C7051F0023B656 /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DF2A720C704A40023B656 /* String+Localized.swift */; };
-		D81DF2AA20C705210023B656 /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DF2A720C704A40023B656 /* String+Localized.swift */; };
-		D81DF2AB20C705220023B656 /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DF2A720C704A40023B656 /* String+Localized.swift */; };
-		D81DF2AC20C705230023B656 /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DF2A720C704A40023B656 /* String+Localized.swift */; };
-		D81DF2AD20C705270023B656 /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DF2A720C704A40023B656 /* String+Localized.swift */; };
 		D82BC08A20CCFCB80006705A /* SettingsNotificationsSnoozeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82BC08920CCFCB80006705A /* SettingsNotificationsSnoozeTableViewController.swift */; };
 		D82BC08B20CCFCC90006705A /* SettingsNotificationsSnoozeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82BC08920CCFCB80006705A /* SettingsNotificationsSnoozeTableViewController.swift */; };
 		D82BC08D20CD07760006705A /* GeneralSettingViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82BC08C20CD07760006705A /* GeneralSettingViewCell.xib */; };
@@ -1526,6 +1520,9 @@
 		D8C4DE7B20D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4DE7920D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift */; };
 		D8C4DE7C20D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4DE7920D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift */; };
 		D8C4DE7D20D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4DE7920D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift */; };
+		D8C4DE7F20D3BFE0002D4FE5 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4DE7E20D3BFE0002D4FE5 /* AppVersion.swift */; };
+		D8C4DE8020D3BFE0002D4FE5 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4DE7E20D3BFE0002D4FE5 /* AppVersion.swift */; };
+		D8C4DE8220D3C261002D4FE5 /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4DE8120D3C261002D4FE5 /* AppVersionTests.swift */; };
 		D8F89BF020CFF8A100576842 /* SettingsWeekdaysTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F89BEF20CFF8A100576842 /* SettingsWeekdaysTableViewController.swift */; };
 		D8F89BF120CFF8A100576842 /* SettingsWeekdaysTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F89BEF20CFF8A100576842 /* SettingsWeekdaysTableViewController.swift */; };
 /* End PBXBuildFile section */
@@ -2123,7 +2120,6 @@
 		C87DB98FF3BD404B025BC4DC /* Pods-ProtonMail.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.debug.xcconfig"; sourceTree = "<group>"; };
 		C96E84F0F719879E420125E5 /* Pods_Share.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Share.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D150620E49C5EDEC5065FEA1 /* Pods-ProtonMailTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.distribution.xcconfig"; sourceTree = "<group>"; };
-		D81DF2A720C704A40023B656 /* String+Localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localized.swift"; sourceTree = "<group>"; };
 		D82BC08920CCFCB80006705A /* SettingsNotificationsSnoozeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsSnoozeTableViewController.swift; sourceTree = "<group>"; };
 		D82BC08C20CD07760006705A /* GeneralSettingViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralSettingViewCell.xib; sourceTree = "<group>"; };
 		D82BC08F20CD154E0006705A /* SwitchTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchTableViewCell.xib; sourceTree = "<group>"; };
@@ -2141,6 +2137,8 @@
 		D8C2B27920C4571A00979CBE /* CalendarIntervalRuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntervalRuleTests.swift; sourceTree = "<group>"; };
 		D8C46D0D20D24293004F5011 /* SectionHeaderCustomizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderCustomizing.swift; sourceTree = "<group>"; };
 		D8C4DE7920D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCachedStatus+NotificationSnoozerCore.swift"; sourceTree = "<group>"; };
+		D8C4DE7E20D3BFE0002D4FE5 /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
+		D8C4DE8120D3C261002D4FE5 /* AppVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionTests.swift; sourceTree = "<group>"; };
 		D8F89BEF20CFF8A100576842 /* SettingsWeekdaysTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWeekdaysTableViewController.swift; sourceTree = "<group>"; };
 		E0B6A30FB77748C2FB0174AA /* Pods_PushServiceDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PushServiceDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC5AB60FBA59317594F99CA /* libPods-PushDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2393,6 +2391,7 @@
 				75F54C641B3B552200290F73 /* LastUpdateCacheTests.swift */,
 				7567B0701B3351C200A72A1E /* ComposeViewModelTests.swift */,
 				D8C2B27920C4571A00979CBE /* CalendarIntervalRuleTests.swift */,
+				D8C4DE8120D3C261002D4FE5 /* AppVersionTests.swift */,
 				75ECCE031B31F5F600A8C800 /* AuthAPITests.swift */,
 				075E3E021A5F4ECF00E001A7 /* Supporting Files */,
 			);
@@ -2809,9 +2808,9 @@
 				75921C741F747B630028DAC9 /* MimeParser */,
 				756CDE3B1D9C754D004455F6 /* SRP */,
 				75F1697D1AF7F43A00BE6E79 /* Logger.swift */,
+				D8C4DE7E20D3BFE0002D4FE5 /* AppVersion.swift */,
 				75E2202D1DDA532900078D6C /* Threading.swift */,
 				75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */,
-				D81DF2A720C704A40023B656 /* String+Localized.swift */,
 				7571102E2060699F0093DC57 /* UserAgent.swift */,
 			);
 			name = Utilities;
@@ -4409,7 +4408,6 @@
 				7567B0771B3387F700A72A1E /* APIServiceRequest.swift in Sources */,
 				758E46B520573E8300111406 /* TermsWebViewModelImpl.swift in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
-				D81DF2A820C704A40023B656 /* String+Localized.swift in Sources */,
 				75E2202E1DDA532900078D6C /* Threading.swift in Sources */,
 				7567B07B1B338EB900A72A1E /* MessageHelper.swift in Sources */,
 				759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */,
@@ -4449,6 +4447,7 @@
 				07B797C51A6EE5FF00244532 /* AuthCredential.swift in Sources */,
 				755638C71CA1AE78003FA2D0 /* ShowImageView.swift in Sources */,
 				75BA4F511F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */,
+				D8C4DE7F20D3BFE0002D4FE5 /* AppVersion.swift in Sources */,
 				75BB65761BD5C88800F9432D /* AttachmentAPI.swift in Sources */,
 				078A3A4C1A7FF4DC002C5FF3 /* MessageDataService.swift in Sources */,
 				75F169811AF80B5900BE6E79 /* UserCachedStatus.swift in Sources */,
@@ -4669,6 +4668,7 @@
 				759223371D9DD5A70064DAA1 /* SrpTests.swift in Sources */,
 				7567B0711B3351C200A72A1E /* ComposeViewModelTests.swift in Sources */,
 				75ECCE041B31F5F600A8C800 /* AuthAPITests.swift in Sources */,
+				D8C4DE8220D3C261002D4FE5 /* AppVersionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4771,7 +4771,6 @@
 				D89072AA20C69E5300A325DF /* NotificationsSnoozerCore.swift in Sources */,
 				75252DB61FCF6AD8007972EF /* JKBCryptRandom.swift in Sources */,
 				75252D681FCF6187007972EF /* Data+Extension.swift in Sources */,
-				D81DF2AD20C705270023B656 /* String+Localized.swift in Sources */,
 				75252CEE1FCF5A73007972EF /* NSError+Extension.swift in Sources */,
 				75252DBF1FCF710D007972EF /* SwiftTryCatch.m in Sources */,
 				75252D921FCF6840007972EF /* APIService+ResponseTransformer.swift in Sources */,
@@ -4926,7 +4925,6 @@
 				75252D591FCF603F007972EF /* MessageSpamScore.swift in Sources */,
 				75252D4B1FCF5F74007972EF /* NotificationDefined.swift in Sources */,
 				75252DAC1FCF6A5E007972EF /* LabelsDataService.swift in Sources */,
-				D81DF2AA20C705210023B656 /* String+Localized.swift in Sources */,
 				75252DC01FCF710E007972EF /* SwiftTryCatch.m in Sources */,
 				75252D001FCF5B2A007972EF /* APIServiceRequest.swift in Sources */,
 				75252D641FCF6100007972EF /* MessageHelper.swift in Sources */,
@@ -5071,7 +5069,6 @@
 				753934C41FAA91D000EBFBA5 /* Settings+Defined.swift in Sources */,
 				75482B961F7F09E100B0BFFB /* NotificationDefined.swift in Sources */,
 				75BA4F521F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */,
-				D81DF2A920C7051F0023B656 /* String+Localized.swift in Sources */,
 				75482B971F7F09E100B0BFFB /* PersistentQueue.swift in Sources */,
 				75482B981F7F09E100B0BFFB /* PMDocumentPickerViewController.swift in Sources */,
 				75F29E2820571E5400C70AD2 /* WebViewController.swift in Sources */,
@@ -5252,7 +5249,6 @@
 				753934C31FAA91CF00EBFBA5 /* Settings+Defined.swift in Sources */,
 				75BA4F541F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */,
 				753E5ABB1F181BAD0090C0F9 /* PersistentQueue.swift in Sources */,
-				D81DF2AC20C705230023B656 /* String+Localized.swift in Sources */,
 				75C7FF361F2FB3FF00F15792 /* PMDocumentPickerViewController.swift in Sources */,
 				75921C961F747E270028DAC9 /* MIMEMessage.swift in Sources */,
 				75F29E2720571E5300C70AD2 /* WebViewController.swift in Sources */,
@@ -5438,7 +5434,6 @@
 				75F4F2CD20D14B5000F3F241 /* ExpirationWarningHeaderCell.swift in Sources */,
 				75256C981F16DFBD00F2771E /* KeysAPI.swift in Sources */,
 				75256C991F16DFBD00F2771E /* MessageAPI.swift in Sources */,
-				D81DF2AB20C705220023B656 /* String+Localized.swift in Sources */,
 				7528FFEB1FA7FEF6005F66A3 /* ContactDetailViewController.swift in Sources */,
 				7528000D1FA7FEF6005F66A3 /* Notification+KeyboardExtension.swift in Sources */,
 				75921C8C1F747BD10028DAC9 /* UInt8+Mime.swift in Sources */,
@@ -5461,6 +5456,7 @@
 				75921C871F747BD00028DAC9 /* Data+Mime.swift in Sources */,
 				75256CA21F16DFBD00F2771E /* OrganizationsAPI.swift in Sources */,
 				75256CA31F16DFBD00F2771E /* AddressBookService.swift in Sources */,
+				D8C4DE8020D3BFE0002D4FE5 /* AppVersion.swift in Sources */,
 				752800141FA7FEF6005F66A3 /* UIAlertAction+Extension.swift in Sources */,
 				75BA4F531F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */,
 				7528FFF81FA7FEF6005F66A3 /* ContactSectionHeadView.swift in Sources */,

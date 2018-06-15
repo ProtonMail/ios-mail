@@ -11,6 +11,7 @@ import Foundation
 // model
 
 class NotificationsSnoozerCore {
+    
     internal enum Configuration {
         case quick(rule: CalendarIntervalRule)
         case scheduled(rule: CalendarIntervalRule)

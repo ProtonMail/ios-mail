@@ -98,9 +98,9 @@ class MenuViewController: UIViewController {
         updateDisplayNameLabel()
         tableView.reloadData()
         
-        if #available(iOS 10.0, *) {
+        if #available(iOS 10.0, *), AppVersion.current >= NotificationsSnoozer.appVersion {
             self.setupSnoozeButton()
-            self.snoozeButton.accessibilityHint = "Double tap to setup".localized
+            self.snoozeButton.accessibilityHint = LocalString._double_tap_to_setup
         } else {
             self.snoozeButton.isHidden = true
         }
@@ -202,7 +202,7 @@ class MenuViewController: UIViewController {
 extension MenuViewController {
     private func setupSnoozeButton(switchedOn: Bool? = nil) {
         self.snoozeButton.isSelected = switchedOn ?? self.notificationsSnoozer.isSnoozeActive(at: Date())
-        self.snoozeButton.accessibilityLabel = self.snoozeButton.isSelected ? "Notifications Are Snoozed".localized : "Notifications Snooze Off".localized
+        self.snoozeButton.accessibilityLabel = self.snoozeButton.isSelected ? LocalString._notifications_are_snoozed : LocalString._notifications_snooze_off
     }
     
     @IBAction func presentQuickSnoozeOptions(sender: UIButton?) {

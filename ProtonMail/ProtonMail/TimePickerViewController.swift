@@ -26,7 +26,7 @@ final class TimePickerViewController: UIViewController, UINavigationBarDelegate 
         self.init(nibName: "\(TimePickerViewController.self)", bundle: .main)
         self.handler = handler
         self.valueToSelect = select
-        self.customTitle = title?.uppercased()
+        self.customTitle = title
     }
     
     func position(for bar: UIBarPositioning) -> UIBarPosition {
