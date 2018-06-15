@@ -16,7 +16,7 @@ final class NotificationsSnoozer: NotificationsSnoozerCore {
                            ofCase type: NotificationsSnoozerCore.Configuration.CodingKeys? = nil) -> String
     {
         guard case let activeConfigs = self.activeConfigurations(at: date, ofCase: type), !activeConfigs.isEmpty else {
-            return "Notification Snooze".localized
+            return LocalString._notification_snooze
         }
         let descriptions: [String] = activeConfigs.compactMap { $0.localizedDescription(at: date) }
         return descriptions.joined(separator: ", ")
@@ -51,11 +51,11 @@ final class NotificationsSnoozer: NotificationsSnoozerCore {
         let dialog = UIAlertController(title: nil, message: self.overview(at: date), preferredStyle: .actionSheet)
         
         // other actions
-        let turnOff = UIAlertAction(title: "Turn Off".localized, style: .destructive) { _ in
+        let turnOff = UIAlertAction(title: LocalString._turn_off, style: .destructive) { _ in
             self.unsnoozeNonRepeating()
             onStateChangedTo?(false)
         }
-        let custom = UIAlertAction(title: "Custom".localized, style: .default) { _ in
+        let custom = UIAlertAction(title: LocalString._custom, style: .default) { _ in
             let configs = self.activeConfigurations(at: date)
             
             var defaultSelection: (Int, Int) = (0, 0)
@@ -76,12 +76,12 @@ final class NotificationsSnoozer: NotificationsSnoozerCore {
             }
             presenter.present(picker, animated: true, completion: nil)
         }
-        let scheduled = UIAlertAction(title: "Scheduled".localized, style: .default) { _ in
+        let scheduled = UIAlertAction(title: LocalString._scheduled, style: .default) { _ in
             onStateChangedTo?(self.isSnoozeActive(at: Date()))
             guard let menu = presenter as? MenuViewController else { return }
             menu.performSegue(withIdentifier: menu.kSegueToSettings, sender: self)
         }
-        let cancel = UIAlertAction(title: "Cancel".localized, style: .cancel) { _ in dialog.dismiss(animated: true, completion: nil) }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in dialog.dismiss(animated: true, completion: nil) }
         
         // bring everything together
         
@@ -122,14 +122,14 @@ extension NotificationsSnoozer.Configuration {
                 return nil
             }
             
-            return "Snoozed for".localized + " " + formattedString
+            return LocalString._snoozed_for + " " + formattedString
             
         case .scheduled(rule: let rule):
             guard let soonestEnd = rule.soonestEnd(from: date) else {
                 return nil
             }
             
-            return "Snoozed till".localized + " " + NotificationsSnoozer.Configuration.dateFormatter.string(from: soonestEnd)
+            return LocalString._snoozed_till + " " + NotificationsSnoozer.Configuration.dateFormatter.string(from: soonestEnd)
         }
     }
 }

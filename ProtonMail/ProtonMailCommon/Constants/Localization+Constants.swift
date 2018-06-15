@@ -1421,4 +1421,34 @@ class LocalizedString {
     lazy var _looking_to_edit_or_disable_your_mobile_signature = NSLocalizedString("Looking to edit or disable your mobile signature?", comment: "alert description")
     /// "ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature."
     lazy var _plus_visionary_enables_you_to_customize_mobile_signature = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." , comment: "alert description")
+    
+    
+    // MARK: - Notifcations Snooze feature
+    
+    /// "Turn Off"
+    lazy var _turn_off = NSLocalizedString("Turn Off", comment: "action sheet option")
+    /// "Scheduled"
+    lazy var _scheduled = NSLocalizedString("Scheduled", comment: "action sheet option")
+    /// "Notification Snooze"
+    lazy var _notification_snooze = NSLocalizedString("Notification Snooze", comment: "title of action sheet")
+    /// "Snoozed for"
+    lazy var _snoozed_for = NSLocalizedString("Snoozed for", comment: "title of action sheet when quick snooze is active (Snoozed for 30min)")
+    /// "Snoozed till"
+    lazy var _snoozed_till = NSLocalizedString("Snoozed till", comment: "title of action sheet when scheduled scoone is active (Snoozed till 8am)")
+    /// "Notifications Are Snoozed"
+    lazy var _notifications_are_snoozed = NSLocalizedString("Notifications Are Snoozed", comment: "VoiceOver description")
+    /// "Notifications Snooze Off"
+    lazy var _notifications_snooze_off = NSLocalizedString("Notifications Snooze Off", comment: "VoiceOver description")
+    /// "Snooze Notifications"
+    lazy var _snooze_notifications = NSLocalizedString("Snooze Notifications", comment: "settings option")
+    /// "End Time"
+    lazy var _end_time = NSLocalizedString("End Time", comment: "settings option (End Time: 8am)")
+    /// "Start Time"
+    lazy var _start_time = NSLocalizedString("Start Time", comment: "settings option (Start Time: 8am)")
+    /// "Repeat"
+    lazy var _repeat = NSLocalizedString("Repeat", comment: "settings option (Repeat: sun, mon, thu)")
+    /// "Double tap to setup"
+    lazy var _double_tap_to_setup = NSLocalizedString("Double tap to setup", comment: "VoiceOver action description")
+    /// "Custom"
+    lazy var _custom = NSLocalizedString("Custom", comment: "action sheet option")
 }
