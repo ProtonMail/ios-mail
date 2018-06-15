@@ -141,6 +141,10 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                  .internal_normal_verify_failed,
                  .internal_trusted_key_verify_failed:
                 return false
+            case .pgp_encrypt_trusted_key,
+                 .pgp_encrypted,
+                 .pgp_encrypt_trusted_key_verify_failed:
+                return false
             default:
                 return true
             }

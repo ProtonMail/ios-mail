@@ -9,7 +9,6 @@
 import Foundation
 import PromiseKit
 import AwaitKit
-import HTMLPurifier
 
 final class ComposeViewModelImpl : ComposeViewModel {
     
@@ -89,7 +88,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 } else {
                 }
             }
-            //PMLog.D(message!);
         }
         
         self.setSubject(self.message?.title ?? "")

@@ -21,7 +21,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     private let kInvalidEmailShakeTimes: Float         = 3.0
     private let kInvalidEmailShakeOffset: CGFloat      = 10.0
     
-    
     fileprivate let kContactDetailsHeaderView : String      = "ContactSectionHeadView"
     fileprivate let kContactDetailsHeaderID : String        = "contact_section_head_view"
     fileprivate let kContactDetailsDisplayCell : String     = "contacts_details_display_cell"

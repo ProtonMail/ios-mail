@@ -11,46 +11,92 @@ import Contacts
 
 protocol ExpirationWarningVCDelegate {
     func send()
+    func learnMore()
+}
+
+enum HeaderType {
+    case pwd
+    case pgp
 }
 
 class ExpirationWarningViewController : UIViewController {
 
-//    @IBOutlet weak var sendButton: UIButton!
-//    
-//    
-//    
-//    
+    fileprivate let learnMoreUrl = URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
+    fileprivate let kHeaderView : String = "ExpirationWarningHeaderCell"
+    fileprivate let kHeaderID : String   = "expiration_warning_header_cell"
+    fileprivate let kCellID : String     = "expiration_warning_email_cell"
     
+    @IBOutlet weak var headerLabel: UILabel!
+    @IBOutlet weak var tableView: UITableView!
+    
+    @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var sendButton: UIButton!
+
+    @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet weak var learnMore: UIButton!
     
     var delegate : ExpirationWarningVCDelegate?
-//
-//    @IBOutlet weak var backgroundView: UIImageView!
-//    @IBOutlet weak var viewContainer: UIView!
-//    @IBOutlet weak var closeButton: UIButton!
-//    @IBOutlet weak var okButton: UIButton!
-//    
-//    @IBOutlet weak var titleLabel: UILabel!
-//    @IBOutlet weak var titleLabelTwo: UILabel!
-//    @IBOutlet weak var messageLabel: UILabel!
-//    @IBOutlet weak var messageLabelTwo: UILabel!
-//    
+    var types : [HeaderType] = [HeaderType]()
+    var expends : [HeaderType : Bool] = [HeaderType : Bool]()
+    var expendsValue : [HeaderType : [String]] = [HeaderType : [String]]()
+    
+    var pgpEmails : [String] = [String]()
+    var nonePMEmails : [String] = [String]()
+    func config(needPwd: [String], pgp: [String]) {
+        
+        if needPwd.count > 0 {
+            types.append(.pwd)
+            expends[.pwd] = false
+            nonePMEmails = needPwd
+        }
+        
+        if pgp.count > 0 {
+            types.append(.pgp)
+            expends[.pgp] = false
+            pgpEmails = pgp
+        }
+        
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.viewContainer.layer.cornerRadius = 4.0
-//        self.okButton.layer.cornerRadius = 8.0
-//
-        //set text
-//        self.okButton.setTitle(self.viewModel.button, for: UIControlState.normal)
-//
-//        self.titleLabel.text = self.viewModel.title
-//        self.titleLabelTwo.text = self.viewModel.title2
-//        self.messageLabel.text = self.viewModel.message
-//        self.messageLabelTwo.text = self.viewModel.message2
+
+        /// setup types
+        let nib = UINib(nibName: kHeaderView, bundle: nil)
+        self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: kHeaderID)
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 60.0
+        
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.noSeparatorsBelowFooter()
+        
+        
+        self.tableView.tableFooterView = footerView
+        textLabel.text = "Tap send anyway to send without expiration to these recipients"
+        let text = "Learn more here"
+//        let titleString : NSMutableAttributedString = NSMutableAttributedString(string: text)
+//        titleString.addAttribute(NSAttributedStringKey.underlineStyle,
+//                                 value: UIColor.blue,
+//                                 range: NSMakeRange(0, text.utf8.count))
+////        learnMore.setAttributedTitle(titleString, for: .normal)
+        
+        learnMore.setTitle(text, for: .normal)
+        
+        headerLabel.text = "Not all recipients support message expiration"
+        
+        cancelButton.layer.borderWidth = 1.0
+        cancelButton.layer.borderColor = UIColor.darkGray.cgColor
+    }
+    
+    @IBAction func learnMoreAction(_ sender: Any) {
+        self.delegate?.learnMore()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -62,10 +108,153 @@ class ExpirationWarningViewController : UIViewController {
     }
 
     @IBAction func sendAction(_ sender: Any) {
+        delegate?.send()
     }
+    
     private func dismiss() {
         self.dismiss(animated: true, completion: {
-//            self.delegate?.cancel()
+
         })
     }
 }
+
+
+extension ExpirationWarningViewController : UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return types.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard types.count > section else {
+            return 0
+        }
+        
+        let type = types[section]
+        guard let expend = self.expends[type] else {
+            return 0
+        }
+        
+        if expend {
+            if type == .pwd {
+                return nonePMEmails.count
+            } else if type == .pgp {
+                return pgpEmails.count
+            }
+        }
+        
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard types.count > section else {
+            return nil
+        }
+        
+        let type = types[section]
+        guard let expend = self.expends[type] else {
+            return nil
+        }
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kHeaderID) as? ExpirationWarningHeaderCell
+        
+        if type == .pwd {
+            cell?.ConfigHeader(title: "Please add a password for the following recipients",
+                               section: section,
+                               expend: expend)
+        } else {
+            cell?.ConfigHeader(title: "Please disable PGP Sending for following addresses",
+                               section: section,
+                               expend: expend)
+        }
+        cell?.delegate = self
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 80.0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.5
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell  = tableView.dequeueReusableCell(withIdentifier: kCellID, for: indexPath) as! ExpirationWarningEmailCell
+        cell.selectionStyle = .none
+        
+        let section = indexPath.section
+        let row = indexPath.row
+        if types.count > section {
+            let type = types[section]
+            if type == .pwd {
+                
+                if nonePMEmails.count > row {
+                    let email = nonePMEmails[row]
+                    cell.configCell(email: email)
+                }
+                
+                
+            } else if type == .pgp {
+                if pgpEmails.count > row {
+                    let email = pgpEmails[row]
+                    cell.configCell(email: email)
+                }
+                
+            }
+        }
+        return cell
+    }
+}
+
+
+extension ExpirationWarningViewController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        if (action == #selector(UIResponderStandardEditActions.copy(_:))) {
+            return true
+        }
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+       return UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
+}
+
+extension ExpirationWarningViewController : ExpirationWarningHeaderCellDelegate {
+    func clicked(at section: Int, expend: Bool) {
+        guard types.count > section else {
+            return
+        }
+        let type = types[section]
+        self.expends[type] = expend
+        tableView.reloadSections([section], with: .automatic)
+        if expend {
+            tableView.scrollToRow(at: IndexPath(row: 0, section: section),
+                                  at: UITableViewScrollPosition.top,
+                                  animated: true)
+        } else {
+            tableView.setContentOffset(.zero, animated: true)
+        }
+    }
+}
+

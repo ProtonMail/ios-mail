@@ -299,9 +299,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             popup.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         } else if segue.identifier == kExpirationWarningSegue {
-//            let popup = segue.destination as! ComposePasswordViewController
-//            popup.pwdDelegate = self
-
+            let popup = segue.destination as! ExpirationWarningViewController
+            popup.delegate = self
+            popup.config(needPwd: self.composeView.nonePMEmails,
+                         pgp: self.composeView.pgpEmails)
         }
     }
     
@@ -364,7 +365,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             if self.composeView.hasPGPPinned ||
                 (self.composeView.hasNonePMEmails && self.encryptionPassword.count <= 0 ) {
                 
-                self.performSegue(withIdentifier: "expiration_warning_segue", sender: self)
+                self.performSegue(withIdentifier: self.kExpirationWarningSegue, sender: self)
 //                let alertController = UIAlertController(title: LocalString._composer_compose_action,
 //                                                        message: LocalString._you_enabled_message_expiration_but_not_all_recipients_support_this_please_add,
 //                                                        preferredStyle: .alert)
@@ -814,6 +815,18 @@ extension ComposeEmailViewController: UIPickerViewDelegate {
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return super.canPerformAction(action, withSender: sender)
     }
+    
+}
+
+extension ComposeEmailViewController: ExpirationWarningVCDelegate{
+    func send() {
+        self.sendMessageStepTwo()
+    }
+    
+    func learnMore() {
+        UIApplication.shared.openURL(learnMoreUrl)
+    }
+    
     
 }
 

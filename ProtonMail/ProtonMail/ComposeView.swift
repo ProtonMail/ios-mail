@@ -80,6 +80,7 @@ class ComposeView: UIViewController {
         
         return false
     }
+ 
 
     var hasPGPPinned : Bool {
         let toHas = toContactPicker.hasPGPPinned
@@ -100,6 +101,21 @@ class ComposeView: UIViewController {
         return false
     }
     
+    var nonePMEmails : [String] {
+        var out : [String] = [String]()
+        out.append(contentsOf: toContactPicker.nonePMEmails)
+        out.append(contentsOf: ccContactPicker.nonePMEmails)
+        out.append(contentsOf: bccContactPicker.nonePMEmails)
+        return out
+    }
+    
+    var pgpEmails : [String] {
+        var out : [String] = [String]()
+        out.append(contentsOf: toContactPicker.pgpEmails)
+        out.append(contentsOf: ccContactPicker.pgpEmails)
+        out.append(contentsOf: bccContactPicker.pgpEmails)
+        return out
+    }
     
     var allEmails : String {  // email,email,email
         var emails : [String] = []
@@ -795,6 +811,26 @@ extension ContactPicker {
             }
         }
         return false
+    }
+    
+    var pgpEmails : [String] {
+        var out : [String] = [String]()
+        for contact in self.contactsSelected {
+            if contact.hasPGPPined, let email = contact.displayEmail {
+                out.append(email)
+            }
+        }
+        return out
+    }
+    
+    var nonePMEmails : [String] {
+        var out : [String] = [String]()
+        for contact in self.contactsSelected {
+            if contact.hasNonePM , let email = contact.displayEmail {
+                out.append(email)
+            }
+        }
+        return out
     }
 }
 
