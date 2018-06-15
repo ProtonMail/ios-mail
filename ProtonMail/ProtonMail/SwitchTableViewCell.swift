@@ -12,8 +12,7 @@ import UIKit
 typealias ActionStatus = (_ isOK: Bool) -> Void
 typealias switchActionBlock = (_ cell: SwitchTableViewCell?, _ newStatus: Bool, _ feedback: @escaping ActionStatus) -> Void
 
-class SwitchTableViewCell: UITableViewCell {
-    
+@IBDesignable class SwitchTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -41,10 +40,19 @@ class SwitchTableViewCell: UITableViewCell {
         switchView.isOn = status
         callback = complete
         
+        self.accessibilityElements = [switchView]
+        self.switchView.accessibilityLabel = (topLineLabel.text ?? "") + (bottomLineLabel.text ?? "")
+        
         if bottomLine.isEmpty {
             centerConstraint.priority = UILayoutPriority(rawValue: 750.0);
             bottomLineLabel.isHidden = true
             self.layoutIfNeeded()
         }
+    }
+}
+
+extension SwitchTableViewCell: IBDesignableLabeled {
+    override func prepareForInterfaceBuilder() {
+        self.labelAtInterfaceBuilder()
     }
 }

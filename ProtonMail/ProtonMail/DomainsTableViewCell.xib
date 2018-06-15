@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="DomainsTableViewCell" id="Ygp-cn-4Vf" customClass="DomainsTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ygp-cn-4Vf" id="gFx-K2-fPg">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tdd-6F-jsy">
+                        <rect key="frame" x="23" y="15" width="284" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Default" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vrv-EH-qcS">
+                        <rect key="frame" x="308" y="14" width="44" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="18" id="JoR-fq-GgN"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Vrv-EH-qcS" firstAttribute="leading" secondItem="Tdd-6F-jsy" secondAttribute="trailing" constant="1" id="VMh-oS-KOt"/>
+                    <constraint firstAttribute="centerY" secondItem="Vrv-EH-qcS" secondAttribute="centerY" constant="2" id="bSy-c1-0tM"/>
+                    <constraint firstAttribute="centerY" secondItem="Tdd-6F-jsy" secondAttribute="centerY" constant="2" id="hbJ-dP-2AU"/>
+                    <constraint firstItem="Tdd-6F-jsy" firstAttribute="leading" secondItem="gFx-K2-fPg" secondAttribute="leadingMargin" constant="7" id="l7l-DS-sK1"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Vrv-EH-qcS" secondAttribute="trailing" constant="7" id="oNY-Cl-eDB"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="defaultMark" destination="Vrv-EH-qcS" id="jle-fb-GUf"/>
+                <outlet property="domainText" destination="Tdd-6F-jsy" id="nX9-GL-bTt"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import ProtonMail
+@testable import ProtonMail
 
 class SrpTests: XCTestCase {
     

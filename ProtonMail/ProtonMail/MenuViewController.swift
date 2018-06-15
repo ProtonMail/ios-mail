@@ -23,10 +23,14 @@ class MenuViewController: UIViewController {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var snoozeButton: UIButton!
     
     // MARK: - Private constants
     //here need to change to set by view model factory
     fileprivate let viewModel : MenuViewModel! = MenuViewModelImpl()
+    
+    @available(iOS 10.0, *)
+    fileprivate lazy var notificationsSnoozer = NotificationsSnoozer()
     
     //
     fileprivate var signingOut: Bool                 = false
@@ -37,7 +41,7 @@ class MenuViewController: UIViewController {
     
     fileprivate let kSegueToMailbox: String   = "toMailboxSegue"
     fileprivate let kSegueToLabelbox: String  = "toLabelboxSegue"
-    fileprivate let kSegueToSettings: String  = "toSettingsSegue"
+    internal let kSegueToSettings: String  = "toSettingsSegue"
     fileprivate let kSegueToBugs: String      = "toBugsSegue"
     fileprivate let kSegueToContacts: String  = "toContactsSegue"
     fileprivate let kSegueToFeedback: String  = "toFeedbackSegue"
@@ -93,6 +97,13 @@ class MenuViewController: UIViewController {
         updateEmailLabel()
         updateDisplayNameLabel()
         tableView.reloadData()
+        
+        if #available(iOS 10.0, *) {
+            self.setupSnoozeButton()
+            self.snoozeButton.accessibilityHint = "Double tap to setup".localized
+        } else {
+            self.snoozeButton.isHidden = true
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -109,6 +120,15 @@ class MenuViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // TODO: this deeplink implementation is ugly, consider using Coordinators pattern
+        if #available(iOS 10.0, *),
+            sender is NotificationsSnoozer,
+            let navigation = segue.destination as? UINavigationController,
+            let settings = navigation.topViewController as? SettingTableViewController
+        {
+            settings.performSegue(withIdentifier: settings.kNotificationsSnoozeSegue, sender: sender)
+        }
+        
         if let navigation = segue.destination as? UINavigationController {
             let segueID = segue.identifier
             //right now all mailbox view controller all could process together.
@@ -175,6 +195,21 @@ class MenuViewController: UIViewController {
     //@objc for #seclector()
     @objc func performLastSegue(_ notification: Notification) {
         self.performSegue(withIdentifier: lastSegue, sender: IndexPath(row: 0, section: 0))
+    }
+}
+
+@available(iOS 10.0, *)
+extension MenuViewController {
+    private func setupSnoozeButton(switchedOn: Bool? = nil) {
+        self.snoozeButton.isSelected = switchedOn ?? self.notificationsSnoozer.isSnoozeActive(at: Date())
+        self.snoozeButton.accessibilityLabel = self.snoozeButton.isSelected ? "Notifications Are Snoozed".localized : "Notifications Snooze Off".localized
+    }
+    
+    @IBAction func presentQuickSnoozeOptions(sender: UIButton?) {
+        let dialog = self.notificationsSnoozer.quickOptionsDialog(for: Date(), toPresentOn: self) { switchedOn in
+            self.setupSnoozeButton(switchedOn: switchedOn)
+        }
+        self.present(dialog, animated: true, completion: nil)
     }
 }
 

@@ -22,7 +22,7 @@ class SettingTableViewController: ProtonMailViewController {
                                                             .version] //.Debug,
     
     var setting_general_items : [SGItems]                = [.notifyEmail, .loginPWD,
-                                                            .mbp, .autoLoadImage, .cleanCache]
+                                                            .mbp, .autoLoadImage, .cleanCache, .notificationsSnooze]
     var setting_debug_items : [SDebugItem]               = [.queue, .errorLogs]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
@@ -56,6 +56,8 @@ class SettingTableViewController: ProtonMailViewController {
     let kLoginpwdSegue:String         = "setting_login_pwd"
     let kMailboxpwdSegue:String       = "setting_mailbox_pwd"
     let kSinglePasswordSegue : String = "setting_single_password_segue"
+    let kNotificationsSnoozeSegue : String = "setting_notifications_snooze_segue"
+    
     /// cells
     let SettingSingalLineCell         = "settings_general"
     let SettingTwoLinesCell           = "settings_twolines"
@@ -94,9 +96,9 @@ class SettingTableViewController: ProtonMailViewController {
         self.updateProtectionItems()
         
         if sharedUserDataService.passwordMode == 1 {
-            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .cleanCache]
+            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .cleanCache, .notificationsSnooze]
         } else {
-            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .cleanCache]
+            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .cleanCache, .notificationsSnooze]
         }
         
         userInfo = sharedUserDataService.userInfo
@@ -109,8 +111,7 @@ class SettingTableViewController: ProtonMailViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let segueID:String! = segue.identifier
-        switch segueID
-        {
+        switch segueID {
         case kLoginpwdSegue:
             let changeLoginPwdView = segue.destination as! ChangePasswordViewController
             changeLoginPwdView.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
@@ -139,6 +140,12 @@ class SettingTableViewController: ProtonMailViewController {
             let vc = segue.destination as! LablesViewController
             vc.viewModel = LabelManagerViewModelImpl()
             self.setPresentationStyleForSelfController(self, presentingController: vc)
+        case kNotificationsSnoozeSegue: // this allows to setup navbar for deeplink when view of this controller does not load/appear
+                if #available(iOS 10, *), sender is NotificationsSnoozer {
+                    super.viewDidLoad()
+                    self.updateTitle()
+                    navigationController?.setNavigationBarHidden(false, animated: true)
+                }
         default:
             break
         }
@@ -228,6 +235,11 @@ class SettingTableViewController: ProtonMailViewController {
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
                         cell.configCell(itme.description, right: "")
                         cell.accessoryType = UITableViewCellAccessoryType.none
+                        cellout = cell
+                    case .notificationsSnooze:
+                        let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
+                        cell.configCell(itme.description, right: "")
+                        cell.accessoryType = .disclosureIndicator
                         cellout = cell
                     case .autoLoadImage:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
@@ -533,6 +545,8 @@ class SettingTableViewController: ProtonMailViewController {
                                 self.cleaning = false
                             }
                         }
+                    case .notificationsSnooze:
+                        self.performSegue(withIdentifier: kNotificationsSnoozeSegue, sender: self)
                     case .autoLoadImage:
                         break
                     }

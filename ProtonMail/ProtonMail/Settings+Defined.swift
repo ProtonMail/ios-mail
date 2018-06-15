@@ -158,6 +158,7 @@ public enum SGItems: Int, CustomStringConvertible {
     case cleanCache = 5
     case autoLoadImage = 9
     case singlePWD = 10
+    case notificationsSnooze = 11
     
     public var description : String {
         switch(self){
@@ -173,6 +174,8 @@ public enum SGItems: Int, CustomStringConvertible {
             return LocalString._clear_local_message_cache
         case .autoLoadImage:
             return LocalString._auto_show_images
+        case .notificationsSnooze:
+            return NSLocalizedString("Snooze Notifications", comment: "settings general section title")
         }
     }
 }

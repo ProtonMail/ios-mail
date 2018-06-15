@@ -19,9 +19,9 @@ enum MenuSection {
     case unknown    //do nothing by default
 }
 
-extension Mirror {
+extension Mirror { // TODO: unused, consider removing
     
-    func toDictionary() -> [String: Any] {
+    private func toDictionary() -> [String: Any] {
         var dict = [String: Any]()
         
         // Properties of this instance:

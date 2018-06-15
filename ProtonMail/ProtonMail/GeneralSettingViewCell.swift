@@ -8,10 +8,12 @@
 
 import UIKit
 
-class GeneralSettingViewCell: UITableViewCell {
-
+@IBDesignable class GeneralSettingViewCell: UITableViewCell {
     @IBOutlet weak var LeftText: UILabel!
     @IBOutlet weak var RightText: UILabel!
+    
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -25,5 +27,10 @@ class GeneralSettingViewCell: UITableViewCell {
         LeftText.text = left
         RightText.text = right
     }
-    
+}
+
+extension GeneralSettingViewCell: IBDesignableLabeled {
+    override func prepareForInterfaceBuilder() {
+        self.labelAtInterfaceBuilder()
+    }
 }
