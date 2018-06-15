@@ -1520,6 +1520,9 @@
 		D8C4DE7B20D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4DE7920D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift */; };
 		D8C4DE7C20D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4DE7920D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift */; };
 		D8C4DE7D20D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4DE7920D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift */; };
+		D8C4DE7F20D3BFE0002D4FE5 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4DE7E20D3BFE0002D4FE5 /* AppVersion.swift */; };
+		D8C4DE8020D3BFE0002D4FE5 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4DE7E20D3BFE0002D4FE5 /* AppVersion.swift */; };
+		D8C4DE8220D3C261002D4FE5 /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4DE8120D3C261002D4FE5 /* AppVersionTests.swift */; };
 		D8F89BF020CFF8A100576842 /* SettingsWeekdaysTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F89BEF20CFF8A100576842 /* SettingsWeekdaysTableViewController.swift */; };
 		D8F89BF120CFF8A100576842 /* SettingsWeekdaysTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F89BEF20CFF8A100576842 /* SettingsWeekdaysTableViewController.swift */; };
 /* End PBXBuildFile section */
@@ -2134,6 +2137,8 @@
 		D8C2B27920C4571A00979CBE /* CalendarIntervalRuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntervalRuleTests.swift; sourceTree = "<group>"; };
 		D8C46D0D20D24293004F5011 /* SectionHeaderCustomizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderCustomizing.swift; sourceTree = "<group>"; };
 		D8C4DE7920D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCachedStatus+NotificationSnoozerCore.swift"; sourceTree = "<group>"; };
+		D8C4DE7E20D3BFE0002D4FE5 /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
+		D8C4DE8120D3C261002D4FE5 /* AppVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionTests.swift; sourceTree = "<group>"; };
 		D8F89BEF20CFF8A100576842 /* SettingsWeekdaysTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWeekdaysTableViewController.swift; sourceTree = "<group>"; };
 		E0B6A30FB77748C2FB0174AA /* Pods_PushServiceDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PushServiceDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC5AB60FBA59317594F99CA /* libPods-PushDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2386,6 +2391,7 @@
 				75F54C641B3B552200290F73 /* LastUpdateCacheTests.swift */,
 				7567B0701B3351C200A72A1E /* ComposeViewModelTests.swift */,
 				D8C2B27920C4571A00979CBE /* CalendarIntervalRuleTests.swift */,
+				D8C4DE8120D3C261002D4FE5 /* AppVersionTests.swift */,
 				75ECCE031B31F5F600A8C800 /* AuthAPITests.swift */,
 				075E3E021A5F4ECF00E001A7 /* Supporting Files */,
 			);
@@ -2802,6 +2808,7 @@
 				75921C741F747B630028DAC9 /* MimeParser */,
 				756CDE3B1D9C754D004455F6 /* SRP */,
 				75F1697D1AF7F43A00BE6E79 /* Logger.swift */,
+				D8C4DE7E20D3BFE0002D4FE5 /* AppVersion.swift */,
 				75E2202D1DDA532900078D6C /* Threading.swift */,
 				75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */,
 				7571102E2060699F0093DC57 /* UserAgent.swift */,
@@ -4440,6 +4447,7 @@
 				07B797C51A6EE5FF00244532 /* AuthCredential.swift in Sources */,
 				755638C71CA1AE78003FA2D0 /* ShowImageView.swift in Sources */,
 				75BA4F511F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */,
+				D8C4DE7F20D3BFE0002D4FE5 /* AppVersion.swift in Sources */,
 				75BB65761BD5C88800F9432D /* AttachmentAPI.swift in Sources */,
 				078A3A4C1A7FF4DC002C5FF3 /* MessageDataService.swift in Sources */,
 				75F169811AF80B5900BE6E79 /* UserCachedStatus.swift in Sources */,
@@ -4660,6 +4668,7 @@
 				759223371D9DD5A70064DAA1 /* SrpTests.swift in Sources */,
 				7567B0711B3351C200A72A1E /* ComposeViewModelTests.swift in Sources */,
 				75ECCE041B31F5F600A8C800 /* AuthAPITests.swift in Sources */,
+				D8C4DE8220D3C261002D4FE5 /* AppVersionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5447,6 +5456,7 @@
 				75921C871F747BD00028DAC9 /* Data+Mime.swift in Sources */,
 				75256CA21F16DFBD00F2771E /* OrganizationsAPI.swift in Sources */,
 				75256CA31F16DFBD00F2771E /* AddressBookService.swift in Sources */,
+				D8C4DE8020D3BFE0002D4FE5 /* AppVersion.swift in Sources */,
 				752800141FA7FEF6005F66A3 /* UIAlertAction+Extension.swift in Sources */,
 				75BA4F531F8D957A00BAF5E4 /* Compare+Extension.swift in Sources */,
 				7528FFF81FA7FEF6005F66A3 /* ContactSectionHeadView.swift in Sources */,

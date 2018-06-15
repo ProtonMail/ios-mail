@@ -98,7 +98,7 @@ class MenuViewController: UIViewController {
         updateDisplayNameLabel()
         tableView.reloadData()
         
-        if #available(iOS 10.0, *) {
+        if #available(iOS 10.0, *), AppVersion.current >= NotificationsSnoozer.appVersion {
             self.setupSnoozeButton()
             self.snoozeButton.accessibilityHint = LocalString._double_tap_to_setup
         } else {
