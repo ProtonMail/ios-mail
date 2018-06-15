@@ -68,7 +68,7 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = LocalString._snooze_notifications.uppercased()
+        self.title = LocalString._snooze_notifications
         self.tableView.tableFooterView = UIView()
         
         let cellTypesToRegister = [GeneralSettingViewCell.self, SwitchTableViewCell.self, DomainsTableViewCell.self]
