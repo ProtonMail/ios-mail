@@ -76,7 +76,8 @@
 - (nonnull PMNOpenPgpKey *)generateKey:(nonnull NSString *)userName
                                 domain:(nonnull NSString *)domain
                             passphrase:(nonnull NSString *)passphrase
-                                  bits:(int32_t)bits;
+                                  bits:(int32_t)bits
+                                  time:(int32_t)time;
 
 /**
  * old functions blow

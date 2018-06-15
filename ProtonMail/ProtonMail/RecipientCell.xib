@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -44,10 +44,9 @@
                         </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nAQ-Pg-FbD">
-                        <rect key="frame" x="115" y="13" width="20" height="16"/>
+                        <rect key="frame" x="0.0" y="7" width="132" height="22"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="20" id="cFA-aN-6qb"/>
-                            <constraint firstAttribute="height" constant="16" id="veL-ZB-38c"/>
+                            <constraint firstAttribute="height" constant="22" id="veL-ZB-38c"/>
                         </constraints>
                         <connections>
                             <action selector="arrowAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="z89-AM-oKS"/>
@@ -76,23 +75,24 @@
                     </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="UiL-Gg-eL0" firstAttribute="leading" secondItem="ySx-ow-9jF" secondAttribute="trailing" constant="7" id="35B-sR-U2g"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="EjN-Jc-zzM" secondAttribute="trailing" priority="900" id="3qn-pF-Zt9"/>
-                    <constraint firstItem="ySx-ow-9jF" firstAttribute="leading" secondItem="nAQ-Pg-FbD" secondAttribute="leading" constant="3" id="6HP-EF-f5U"/>
                     <constraint firstItem="RiM-Rv-HcN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="9En-y3-TsE"/>
-                    <constraint firstItem="nAQ-Pg-FbD" firstAttribute="leading" secondItem="EjN-Jc-zzM" secondAttribute="trailing" id="Bel-IF-jQf"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="MbF-RD-l2T" secondAttribute="trailing" id="BiZ-Kd-CRI"/>
                     <constraint firstItem="qtT-xZ-Xve" firstAttribute="centerX" secondItem="UiL-Gg-eL0" secondAttribute="centerX" id="D2C-oq-8vG"/>
                     <constraint firstAttribute="bottom" secondItem="qtT-xZ-Xve" secondAttribute="bottom" id="EZg-U9-g7P"/>
                     <constraint firstAttribute="bottom" secondItem="MbF-RD-l2T" secondAttribute="bottom" id="KaI-Yx-4Ag"/>
+                    <constraint firstItem="nAQ-Pg-FbD" firstAttribute="trailing" secondItem="ySx-ow-9jF" secondAttribute="trailing" id="L1o-qt-zgJ"/>
                     <constraint firstItem="RiM-Rv-HcN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Twl-Lu-L9A"/>
-                    <constraint firstItem="UiL-Gg-eL0" firstAttribute="leading" secondItem="MbF-RD-l2T" secondAttribute="leading" constant="4" id="Wqr-FZ-TvC"/>
                     <constraint firstAttribute="bottom" secondItem="UiL-Gg-eL0" secondAttribute="bottom" id="c3Y-pN-eka"/>
                     <constraint firstAttribute="bottom" secondItem="ySx-ow-9jF" secondAttribute="bottom" id="hZs-mB-T1p"/>
+                    <constraint firstItem="nAQ-Pg-FbD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="hos-CX-xuq"/>
                     <constraint firstAttribute="trailing" secondItem="RiM-Rv-HcN" secondAttribute="trailing" id="irj-qr-5AE"/>
+                    <constraint firstItem="MbF-RD-l2T" firstAttribute="leading" secondItem="ySx-ow-9jF" secondAttribute="trailing" constant="3" id="mZj-X0-kIG"/>
                     <constraint firstAttribute="bottom" secondItem="nAQ-Pg-FbD" secondAttribute="bottom" id="mkl-J4-Liq"/>
                     <constraint firstItem="EjN-Jc-zzM" firstAttribute="top" secondItem="RiM-Rv-HcN" secondAttribute="bottom" id="nKB-sY-bx9"/>
                     <constraint firstItem="EjN-Jc-zzM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="pWA-ui-A0b"/>
-                    <constraint firstItem="MbF-RD-l2T" firstAttribute="leading" secondItem="nAQ-Pg-FbD" secondAttribute="trailing" id="u13-Fz-5nq"/>
+                    <constraint firstItem="ySx-ow-9jF" firstAttribute="leading" secondItem="EjN-Jc-zzM" secondAttribute="trailing" constant="3" id="v4Y-cq-Zbc"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

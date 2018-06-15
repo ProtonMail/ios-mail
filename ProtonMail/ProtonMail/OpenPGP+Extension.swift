@@ -137,7 +137,7 @@ extension PmOpenPGP {
     }
 }
 //
-//extension PMNOpenPgp {
+extension PMNOpenPgp {
 //    enum ErrorCode: Int {
 //        case badPassphrase = 10001
 //        case noPrivateKey = 10004
@@ -151,16 +151,18 @@ extension PmOpenPGP {
 //        return true
 //    }
 //
-//    func generateKey(_ passphrase: String, userName: String, domain:String, bits: Int32) throws -> PMNOpenPgpKey? {
-//        var out_new_key : PMNOpenPgpKey?
-//        try ObjC.catchException {
-//            out_new_key = self.generateKey(userName, domain: domain, passphrase: passphrase, bits: bits)
-//            if out_new_key!.privateKey.isEmpty || out_new_key!.publicKey.isEmpty {
-//                out_new_key = nil
-//            }
-//        }
-//        return out_new_key
-//    }
+    func generateKey(_ passphrase: String, userName: String, domain:String, bits: Int32) throws -> PMNOpenPgpKey? {
+        var out_new_key : PMNOpenPgpKey?
+        try ObjC.catchException {
+            out_new_key = self.generateKey(userName, domain: domain, passphrase: passphrase, bits: bits, time: 0)
+           
+            if out_new_key!.privateKey.isEmpty || out_new_key!.publicKey.isEmpty {
+                out_new_key = nil
+            }
+        }
+        return out_new_key
+    }
+}
 //
 
 //

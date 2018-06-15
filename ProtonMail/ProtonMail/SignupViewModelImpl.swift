@@ -111,10 +111,17 @@ final class SignupViewModelImpl : SignupViewModel {
                 self.keypwd_with_keysalt = new_hashed_mpwd
                 //generate new key
                 
-                self.newPrivateKey = try sharedOpenPGP.generateKey(self.userName,
-                                                                   domain: self.domain,
-                                                                   passphrase: new_hashed_mpwd,
-                                                                   keyType: "rsa", bits: self.bit);
+//                self.newPrivateKey = try sharedOpenPGP.generateKey(self.userName,
+//                                                                   domain: self.domain,
+//                                                                   passphrase: new_hashed_mpwd,
+//                                                                   keyType: "rsa", bits: self.bit);
+                let pgp = PMNOpenPgp.createInstance()!
+                let newK = try pgp.generateKey(new_hashed_mpwd,
+                                               userName: self.userName,
+                                               domain: self.domain,
+                                               bits: Int32(self.bit))
+                self.newPrivateKey = newK?.privateKey;
+                
                 {
                     // do some async stuff
                     if self.newPrivateKey == nil {
