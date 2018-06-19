@@ -8,7 +8,7 @@ jobs:
 
     # Specify the Xcode version to use
     macos:
-      xcode: "9.4.1"
+      xcode: "9.4.0"
 
     steps:
       - checkout
