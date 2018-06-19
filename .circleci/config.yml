@@ -3,6 +3,9 @@ version: 2
 
 jobs:
     build-and-test:
+        branches:
+            ignore:
+                - develop
         macos:
             xcode: "9.4.0"
         working_directory: /Users/distiller/protonmail_ios/
