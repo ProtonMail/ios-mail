@@ -1,50 +1,30 @@
-# iOS CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/ios-migrating-from-1-2/ for more details
-#
+# .circleci/config.yml
 version: 2
+
 jobs:
-  build:
+    build-and-test:
+        macos:
+            xcode: "9.4.0"
+        working_directory: /Users/distiller/protonmail_ios/
+        environment:
+            FL_OUTPUT_DIR: output
+            FASTLANE_LANE: test
+        steps:
+            - checkout
+            - run:
+                name: pre-start simulator
+                command: xcrun instruments -w "iPhone 8 (11.4) [" || true
+            - run:
+                name: Run tests
+                command: fastlane scan --workspace "ProtonMail/ProtonMail.xcworkspace"
+                environment:
+                    SCAN_DEVICE: iPhone 8
+                    SCAN_SCHEME: ProtonMailDev
+            - store_test_results:
+                path: output/scan
 
-    # Specify the Xcode version to use
-    macos:
-      xcode: "9.4.0"
-
-    steps:
-      - checkout
-      # Install fastlane
-      # - run:
-      #     name: Install fastlane
-      #     command: sudo gem uninstall fastlane
-      # - run:
-      #     name: Install fastlane
-      #     command: gem install fastlane
-      # Install CocoaPods
-      # - run:
-      #     name: Install CocoaPods
-      #     command: pod install
-
-      # go to project
-      # - run:
-      #     name: cd in protonmail
-      #     command: cd /Users/distiller/project/ProtonMail
-
-      # Build the app and run tests
-      - run:
-          name: Build and run tests
-          command: bundle exec fastlane scan --workspace "ProtonMail/ProtonMail.xcworkspace"
-          environment:
-            SCAN_DEVICE: iPhone 8
-            SCAN_SCHEME: ProtonMail
-
-      # Collect XML test results data to show in the UI,
-      # and save the same XML files under test-results folder
-      # in the Artifacts tab
-      - store_test_results:
-          path: test_output/report.xml
-      - store_artifacts:
-          path: /tmp/test-results
-          destination: scan-test-results
-      - store_artifacts:
-          path: ~/Library/Logs/scan
-          destination: scan-logs
+workflows:
+    version: 2
+    build-test-adhoc:
+        jobs:
+            - build-and-test

@@ -3588,6 +3588,7 @@
 						DevelopmentTeam = 6UN54H93QT;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Manual;
+						TestTargetID = 75DE7CB21CAAEA4900F5443E;
 					};
 					751CDEA11FBB95B3005E3EB1 = {
 						CreatedOnToolsVersion = 9.1;
