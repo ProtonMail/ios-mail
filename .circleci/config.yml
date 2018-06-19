@@ -24,6 +24,11 @@ jobs:
       #     name: Install CocoaPods
       #     command: pod install
 
+      # go to project
+      - run:
+          name: cd in protonmail
+          command: cd ProtonMail
+
       # Build the app and run tests
       - run:
           name: Build and run tests
