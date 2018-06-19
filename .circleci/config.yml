@@ -27,7 +27,7 @@ jobs:
       # go to project
       - run:
           name: cd in protonmail
-          command: cd ProtonMail
+          command: cd /Users/distiller/project/ProtonMail
 
       # Build the app and run tests
       - run:
