@@ -19,12 +19,12 @@ jobs:
       #     command: pod install
 
       # Build the app and run tests
-      - run:
-          name: Build and run tests
-          command: fastlane scan
-          environment:
-            SCAN_DEVICE: iPhone 8
-            SCAN_SCHEME: WebTests
+      # - run:
+      #     name: Build and run tests
+      #     command: fastlane scan
+      #     environment:
+      #       SCAN_DEVICE: iPhone 8
+      #       SCAN_SCHEME: WebTests
 
       # Collect XML test results data to show in the UI,
       # and save the same XML files under test-results folder
@@ -37,3 +37,17 @@ jobs:
       - store_artifacts:
           path: ~/Library/Logs/scan
           destination: scan-logs
+  test:
+  override:
+    - set -o pipefail &&
+      xcodebuild
+        CODE_SIGNING_REQUIRED=NO
+        CODE_SIGN_IDENTITY=
+        PROVISIONING_PROFILE=
+        -sdk iphonesimulator
+        -destination 'platform=iOS Simulator,OS=9.0,name=iPhone 6'
+        -workspace ***.xcworkspace
+        -scheme "***"
+        clean build test |
+      tee $CIRCLE_ARTIFACTS/xcode_raw.log |
+      xcpretty --color --report junit --output $CIRCLE_TEST_REPORTS/xcode/results.xml
