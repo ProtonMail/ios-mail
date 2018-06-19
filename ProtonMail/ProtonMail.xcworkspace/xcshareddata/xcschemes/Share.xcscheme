@@ -15,9 +15,9 @@
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "5DA685F205D6B047EB72388A10B974F8"
-                     BuildableName = "PushDev.appex"
-                     BlueprintName = "PushDev"
+                     BlueprintIdentifier = "5C6761FECCEBDA639D93B2A606D16447"
+                     BuildableName = "Share.appex"
+                     BlueprintName = "Share"
                      ReferencedContainer = "container:ProtonMail.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
@@ -33,9 +33,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5DA685F205D6B047EB72388A10B974F8"
-               BuildableName = "PushDev.appex"
-               BlueprintName = "PushDev"
+               BlueprintIdentifier = "5C6761FECCEBDA639D93B2A606D16447"
+               BuildableName = "Share.appex"
+               BlueprintName = "Share"
+               ReferencedContainer = "container:ProtonMail.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7CC48161B0FC946A8DB234B96B6A66DD"
+               BuildableName = "ProtonMail.app"
+               BlueprintName = "ProtonMail"
                ReferencedContainer = "container:ProtonMail.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -48,6 +62,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "5C6761FECCEBDA639D93B2A606D16447"
+            BuildableName = "Share.appex"
+            BlueprintName = "Share"
+            ReferencedContainer = "container:ProtonMail.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -62,15 +85,16 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5DA685F205D6B047EB72388A10B974F8"
-            BuildableName = "PushDev.appex"
-            BlueprintName = "PushDev"
+            BlueprintIdentifier = "7CC48161B0FC946A8DB234B96B6A66DD"
+            BuildableName = "ProtonMail.app"
+            BlueprintName = "ProtonMail"
             ReferencedContainer = "container:ProtonMail.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -81,15 +105,16 @@
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES"
       launchAutomaticallySubstyle = "2">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5DA685F205D6B047EB72388A10B974F8"
-            BuildableName = "PushDev.appex"
-            BlueprintName = "PushDev"
+            BlueprintIdentifier = "7CC48161B0FC946A8DB234B96B6A66DD"
+            BuildableName = "ProtonMail.app"
+            BlueprintName = "ProtonMail"
             ReferencedContainer = "container:ProtonMail.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

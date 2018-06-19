@@ -1,11 +1,12 @@
 # .circleci/config.yml
 version: 2
 
+#dependencies:
+#    pre:
+#        - sudo easy_install pip; sudo pip install xUnique
+
 jobs:
     build-and-test:
-        branches:
-            ignore:
-                - develop
         macos:
             xcode: "9.4.0"
         working_directory: /Users/distiller/protonmail_ios/
@@ -14,6 +15,9 @@ jobs:
             FASTLANE_LANE: test
         steps:
             - checkout
+            - run:
+                name: install xUnique
+                command: sudo pip install xUnique
             - run:
                 name: pre-start simulator
                 command: xcrun instruments -w "iPhone 8 (11.4) [" || true

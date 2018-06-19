@@ -6,6 +6,24 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "xunique &quot;${PROJECT_FILE_PATH}/project.pbxproj&quot;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "E900B623493DA0C67875BBDA4D4D90ED"
+                     BuildableName = "Push.appex"
+                     BlueprintName = "Push"
+                     ReferencedContainer = "container:ProtonMail.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -15,7 +33,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "75AFD2EA1FBA7CF000EAEA61"
+               BlueprintIdentifier = "E900B623493DA0C67875BBDA4D4D90ED"
                BuildableName = "Push.appex"
                BlueprintName = "Push"
                ReferencedContainer = "container:ProtonMail.xcodeproj">
@@ -47,7 +65,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "75AFD2EA1FBA7CF000EAEA61"
+            BlueprintIdentifier = "E900B623493DA0C67875BBDA4D4D90ED"
             BuildableName = "Push.appex"
             BlueprintName = "Push"
             ReferencedContainer = "container:ProtonMail.xcodeproj">
@@ -66,7 +84,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "75AFD2EA1FBA7CF000EAEA61"
+            BlueprintIdentifier = "E900B623493DA0C67875BBDA4D4D90ED"
             BuildableName = "Push.appex"
             BlueprintName = "Push"
             ReferencedContainer = "container:ProtonMail.xcodeproj">

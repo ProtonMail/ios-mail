@@ -16,3 +16,8 @@
 
 The Html edtor change to use framework then the code can't load the html file and js files
 when people touch those make sure in clude those resources in to main app copy bundle
+
+
+
+2. We use xUnique (ver 4.1.4) in order to prevent merge conflicts in ProtonMail.xcodeproj file. Each shared scheme has post-build action, and builds will fail on machenes with no xUnique installed. Please read Installation section: https://github.com/truebit/xUnique
+

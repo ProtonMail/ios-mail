@@ -6,6 +6,24 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "xunique &quot;${PROJECT_FILE_PATH}/project.pbxproj&quot;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "528CABDE5FC7422D1D0E7976ADAA8CAD"
+                     BuildableName = "ShareDev.appex"
+                     BlueprintName = "ShareDev"
+                     ReferencedContainer = "container:ProtonMail.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -15,7 +33,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "758ED7C01F05A3FF0028D1A5"
+               BlueprintIdentifier = "528CABDE5FC7422D1D0E7976ADAA8CAD"
                BuildableName = "ShareDev.appex"
                BlueprintName = "ShareDev"
                ReferencedContainer = "container:ProtonMail.xcodeproj">
@@ -29,7 +47,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "75DE7CB21CAAEA4900F5443E"
+               BlueprintIdentifier = "73B959411C37C32C3517112463FDCDDE"
                BuildableName = "ProtonMail.app"
                BlueprintName = "ProtonMailDev"
                ReferencedContainer = "container:ProtonMail.xcodeproj">
@@ -47,7 +65,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "758ED7C01F05A3FF0028D1A5"
+            BlueprintIdentifier = "528CABDE5FC7422D1D0E7976ADAA8CAD"
             BuildableName = "ShareDev.appex"
             BlueprintName = "ShareDev"
             ReferencedContainer = "container:ProtonMail.xcodeproj">
@@ -71,7 +89,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "75DE7CB21CAAEA4900F5443E"
+            BlueprintIdentifier = "73B959411C37C32C3517112463FDCDDE"
             BuildableName = "ProtonMail.app"
             BlueprintName = "ProtonMailDev"
             ReferencedContainer = "container:ProtonMail.xcodeproj">
@@ -91,7 +109,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "75DE7CB21CAAEA4900F5443E"
+            BlueprintIdentifier = "73B959411C37C32C3517112463FDCDDE"
             BuildableName = "ProtonMail.app"
             BlueprintName = "ProtonMailDev"
             ReferencedContainer = "container:ProtonMail.xcodeproj">
