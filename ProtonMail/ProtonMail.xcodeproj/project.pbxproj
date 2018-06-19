@@ -1604,7 +1604,7 @@
 		0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInsetTextField.swift; sourceTree = "<group>"; };
 		071323911A7ADA590043DB41 /* APIService+MessagesExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "APIService+MessagesExtension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		071323991A7C02AB0043DB41 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-		0713239B1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSManagedObjectContextExtension.swift; path = ../ProtonMail/NSManagedObjectContextExtension.swift; sourceTree = "<group>"; };
+		0713239B1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContextExtension.swift; sourceTree = "<group>"; };
 		072AB6901A8E89AD00AF45D6 /* MonitorSavesDataService+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MonitorSavesDataService+Extension.swift"; sourceTree = "<group>"; };
 		072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "ProtonMail-Bridging-Header.cpp"; sourceTree = "<group>"; };
 		073FD92B1A719B7900EB0CAF /* APIService+UserExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+UserExtension.swift"; sourceTree = "<group>"; };
@@ -1624,14 +1624,14 @@
 		075E3DFE1A5F4ECF00E001A7 /* ProtonMailTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtonMailTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		075E3E031A5F4ECF00E001A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		075F0A511ABF5DB500E6B9AE /* MessageLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageLocation.swift; sourceTree = "<group>"; };
-		075F0A531ABF5E3E00E6B9AE /* MessageAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageAction.swift; path = ../ProtonMail/MessageAction.swift; sourceTree = "<group>"; };
+		075F0A531ABF5E3E00E6B9AE /* MessageAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAction.swift; sourceTree = "<group>"; };
 		07655BBC1AB1036200CD3883 /* BugDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugDataService.swift; sourceTree = "<group>"; };
-		07655BC01AB10D7100CD3883 /* Bundle+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Bundle+Extension.swift"; path = "../ProtonMail/Bundle+Extension.swift"; sourceTree = "<group>"; };
+		07655BC01AB10D7100CD3883 /* Bundle+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		076758751AA0E86400F9AC9C /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
 		076758771AA0EB6900F9AC9C /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		076758791AA126E400F9AC9C /* StorageLimit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = StorageLimit.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		078A3A4B1A7FF4DC002C5FF3 /* MessageDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MessageDataService.swift; sourceTree = "<group>"; wrapsLines = 0; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		078FF4C11A91032C008321D1 /* OpenPGPTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenPGPTests.swift; path = ProtonMailTests/OpenPGP/OpenPGPTests.swift; sourceTree = SOURCE_ROOT; };
+		078FF4C11A91032C008321D1 /* OpenPGPTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenPGPTests.swift; sourceTree = "<group>"; };
 		078FF4C91A91232D008321D1 /* OpenPGP+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OpenPGP+Extension.swift"; sourceTree = "<group>"; };
 		078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "APIService+SettingsExtension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
@@ -1639,25 +1639,25 @@
 		07B1237D1AB8ECEC006EA38C /* AttachmentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentCollectionViewCell.swift; sourceTree = "<group>"; };
 		07B797BF1A6EDFF400244532 /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = APIService.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+AuthenticationExtension.swift"; sourceTree = "<group>"; };
-		07B797C41A6EE5FF00244532 /* AuthCredential.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthCredential.swift; path = ../ProtonMail/AuthCredential.swift; sourceTree = "<group>"; };
+		07B797C41A6EE5FF00244532 /* AuthCredential.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCredential.swift; sourceTree = "<group>"; };
 		07CAB7FD1A880B1200C5E347 /* PersistentQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentQueue.swift; sourceTree = "<group>"; };
-		07CAB8011A8815DF00C5E347 /* FileManager+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "FileManager+Extension.swift"; path = "../ProtonMail/FileManager+Extension.swift"; sourceTree = "<group>"; };
+		07CAB8011A8815DF00C5E347 /* FileManager+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
 		07CAB8051A894F8600C5E347 /* CoreDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		07CB23551AB0F24700699068 /* ReportBugsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportBugsViewController.swift; sourceTree = "<group>"; };
 		07CC3F921A941C7A0005E39F /* MessageQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageQueue.swift; sourceTree = "<group>"; };
-		07CC99631A6F076A000FD6F8 /* NSError+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSError+Extension.swift"; path = "../ProtonMail/NSError+Extension.swift"; sourceTree = "<group>"; };
-		07CC99651A6F1380000FD6F8 /* Foundation+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Foundation+Extension.swift"; path = "../ProtonMail/Foundation+Extension.swift"; sourceTree = "<group>"; };
+		07CC99631A6F076A000FD6F8 /* NSError+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+Extension.swift"; sourceTree = "<group>"; };
+		07CC99651A6F1380000FD6F8 /* Foundation+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Foundation+Extension.swift"; sourceTree = "<group>"; };
 		07CC99691A705BA4000FD6F8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		07CCCC2D1AA2BD8800ECA79E /* Snapshot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
-		07CCCC2F1AA4E26000ECA79E /* NSCoder+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSCoder+Extension.swift"; path = "../ProtonMail/NSCoder+Extension.swift"; sourceTree = "<group>"; };
+		07CCCC2F1AA4E26000ECA79E /* NSCoder+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSCoder+Extension.swift"; sourceTree = "<group>"; };
 		07CF61911A8988F100ED38AE /* AttachmentExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentExtension.swift; sourceTree = "<group>"; };
 		07CF61931A89895600ED38AE /* Message+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Message+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		07CF61971A8AE5AA00ED38AE /* MonitorSavesDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorSavesDataService.swift; sourceTree = "<group>"; };
 		07CFC9D31A81A2B0007A72B7 /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
-		07DD68A21A96CFB800ED130C /* LastUpdatedStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LastUpdatedStore.swift; path = ../ProtonMail/LastUpdatedStore.swift; sourceTree = "<group>"; };
+		07DD68A21A96CFB800ED130C /* LastUpdatedStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastUpdatedStore.swift; sourceTree = "<group>"; };
 		07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+AttachmentExtension.swift"; sourceTree = "<group>"; };
-		07DD68A61A9815DF00ED130C /* URL+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "URL+Extension.swift"; path = "../ProtonMail/URL+Extension.swift"; sourceTree = "<group>"; };
-		07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSManagedObjectExtension.swift; path = ../ProtonMail/NSManagedObjectExtension.swift; sourceTree = "<group>"; };
+		07DD68A61A9815DF00ED130C /* URL+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
+		07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectExtension.swift; sourceTree = "<group>"; };
 		0C8F2DF59046AC07D54D3A1D /* Pods-Share.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.debug.xcconfig"; sourceTree = "<group>"; };
 		244A62D4C89F2BB7DF4957E0 /* Pods-ProtonMail.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.release.xcconfig"; sourceTree = "<group>"; };
 		2753871EAB4E48C75B953246 /* Pods-ShareDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.distribution.xcconfig"; sourceTree = "<group>"; };
@@ -1698,10 +1698,10 @@
 		70762C3A1A94EC30006B9693 /* ActivityIndicatorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorHelper.swift; sourceTree = "<group>"; };
 		70945E691A80F351002B6837 /* MailboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MailboxViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		70945E6B1A8133B8002B6837 /* MoreOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreOptionsView.swift; sourceTree = "<group>"; };
-		70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIButton+ProtonMail.swift"; path = "../ProtonMail/UIButton+ProtonMail.swift"; sourceTree = "<group>"; };
-		70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UILabel+ProtonMail.swift"; path = "../ProtonMail/UILabel+ProtonMail.swift"; sourceTree = "<group>"; };
+		70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+ProtonMail.swift"; sourceTree = "<group>"; };
+		70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+ProtonMail.swift"; sourceTree = "<group>"; };
 		70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookService.swift; sourceTree = "<group>"; };
-		70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+ProtonMail.swift"; path = "../ProtonMail/UIColor+ProtonMail.swift"; sourceTree = "<group>"; };
+		70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ProtonMail.swift"; sourceTree = "<group>"; };
 		70FC90D91A9BC11F00498B42 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		72AC1531F9DC8F37E025D0ED /* Pods-ProtonMailDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.release.xcconfig"; sourceTree = "<group>"; };
 		7501D284204853D8009689C8 /* VCard+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VCard+Extension.swift"; sourceTree = "<group>"; };
@@ -1711,7 +1711,7 @@
 		7505C5E0207FDFE900557FF1 /* MessageAPI+SendType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageAPI+SendType.swift"; sourceTree = "<group>"; };
 		7505C5E7207FE0C000557FF1 /* MessageAPI+Packages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageAPI+Packages.swift"; sourceTree = "<group>"; };
 		7505C5EE207FE3E600557FF1 /* MessageAPI+Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageAPI+Response.swift"; sourceTree = "<group>"; };
-		750729521DEFA52D0021483D /* MimeTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MimeTypes.swift; path = ../ProtonMail/MimeTypes.swift; sourceTree = "<group>"; };
+		750729521DEFA52D0021483D /* MimeTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTypes.swift; sourceTree = "<group>"; };
 		750778CD1BE98900009F516C /* UserAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
 		7507BBB51E0CAF9600056D66 /* SignUp+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignUp+Error.swift"; sourceTree = "<group>"; };
 		7508F8052086BB7500EFE237 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
@@ -1719,7 +1719,7 @@
 		750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecaptchaViewController.swift; sourceTree = "<group>"; };
 		750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpEmailViewController.swift; sourceTree = "<group>"; };
 		750AAAC61C2490DB00BAC444 /* SignUpPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpPasswordViewController.swift; sourceTree = "<group>"; };
-		750B00971B7AB91400F180BD /* NotificationDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationDefined.swift; path = ../ProtonMail/NotificationDefined.swift; sourceTree = "<group>"; };
+		750B00971B7AB91400F180BD /* NotificationDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDefined.swift; sourceTree = "<group>"; };
 		75106D0C1C97704B007F8176 /* FeedbackTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackTableViewCell.swift; sourceTree = "<group>"; };
 		7510AE751AB8989E00EF3C41 /* DomainsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsTableViewCell.swift; sourceTree = "<group>"; };
 		7510AE7B1AB8D68B00EF3C41 /* SettingDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailViewController.swift; sourceTree = "<group>"; };
@@ -1730,17 +1730,17 @@
 		7512A9F81F17E1CE00D84955 /* ShareUnlockViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareUnlockViewController.xib; sourceTree = "<group>"; };
 		7512A9FD1F17E95100D84955 /* ComposerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerViewController.swift; sourceTree = "<group>"; };
 		7512A9FE1F17E95100D84955 /* ComposerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposerViewController.xib; sourceTree = "<group>"; };
-		7512AA341F17FF3300D84955 /* NSError+Alert+Extenion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSError+Alert+Extenion.swift"; path = "ProtonMail/NSError+Alert+Extenion.swift"; sourceTree = SOURCE_ROOT; };
+		7512AA341F17FF3300D84955 /* NSError+Alert+Extenion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+Alert+Extenion.swift"; sourceTree = "<group>"; };
 		7512AA461F18035500D84955 /* String+Alert+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Alert+Extension.swift"; sourceTree = "<group>"; };
 		751303D91F26A6A3003FE4A2 /* PasswordEncryptViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordEncryptViewController.swift; sourceTree = "<group>"; };
 		751303DA1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PasswordEncryptViewController.xib; sourceTree = "<group>"; };
 		7514FC281B79825F00DDD297 /* MenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDebugTableViewController.swift; sourceTree = "<group>"; };
 		751562541B68E8050066FE38 /* EmailAttachmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailAttachmentView.swift; sourceTree = "<group>"; };
-		7516B1A61F7B6AB500DC5229 /* NSError+Alert+Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSError+Alert+Mail.swift"; path = "ProtonMail/NSError+Alert+Mail.swift"; sourceTree = SOURCE_ROOT; };
-		7516B1A91F7B6ADE00DC5229 /* NSError+Alert+Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSError+Alert+Share.swift"; path = "ProtonMail/NSError+Alert+Share.swift"; sourceTree = SOURCE_ROOT; };
+		7516B1A61F7B6AB500DC5229 /* NSError+Alert+Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Alert+Mail.swift"; sourceTree = "<group>"; };
+		7516B1A91F7B6ADE00DC5229 /* NSError+Alert+Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Alert+Share.swift"; sourceTree = "<group>"; };
 		7518393E1B3DCA3000C714A6 /* EventAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAPI.swift; sourceTree = "<group>"; };
-		751900731F1D4A5700DB68ED /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeychainWrapper.swift; path = ProtonMail/KeychainWrapper.swift; sourceTree = SOURCE_ROOT; };
+		751900731F1D4A5700DB68ED /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		751B446D1B81245100B68CD6 /* TableCellLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCellLabelView.swift; sourceTree = "<group>"; };
 		751C5FE81C49C17700949FBF /* SwiftTryCatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwiftTryCatch.m; sourceTree = "<group>"; };
 		751C5FE91C49C17700949FBF /* SwiftTryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftTryCatch.h; sourceTree = "<group>"; };
@@ -1760,61 +1760,61 @@
 		75252DC31FCF750B007972EF /* PushServiceDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PushServiceDev.entitlements; sourceTree = "<group>"; };
 		7526AC8D1B6C4B3700E1967E /* backup.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = backup.css; sourceTree = "<group>"; };
 		7527AC7220CED49F008F808A /* test_html.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = test_html.html; sourceTree = "<group>"; };
-		7528FF751FA7FE80005F66A3 /* NSFetchedResultsController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSFetchedResultsController+Extension.swift"; path = "ProtonMailCommon/NSFetchedResultsController+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF761FA7FE80005F66A3 /* ContactTypeViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactTypeViewModelImpl.swift; path = ProtonMail/ContactTypeViewModelImpl.swift; sourceTree = SOURCE_ROOT; };
-		7528FF771FA7FE80005F66A3 /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIScrollView+Extension.swift"; path = "ProtonMailCommon/UIScrollView+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF781FA7FE80005F66A3 /* ContactsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactsViewModel.swift; path = ProtonMail/ContactsViewModel.swift; sourceTree = SOURCE_ROOT; };
-		7528FF791FA7FE81005F66A3 /* NotificationCenter+KeyboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NotificationCenter+KeyboardExtension.swift"; path = "ProtonMailCommon/NotificationCenter+KeyboardExtension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF7A1FA7FE81005F66A3 /* NSString+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSString+Extension.swift"; path = "ProtonMail/NSString+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF7B1FA7FE81005F66A3 /* PHAsset+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PHAsset+Extension.swift"; path = "ProtonMailCommon/PHAsset+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF7C1FA7FE81005F66A3 /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImage+Extension.swift"; path = "ProtonMailCommon/UIImage+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF7D1FA7FE81005F66A3 /* Notification+KeyboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Notification+KeyboardExtension.swift"; path = "ProtonMailCommon/Notification+KeyboardExtension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF7E1FA7FE81005F66A3 /* UIDevice+InfoExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIDevice+InfoExtension.swift"; path = "ProtonMailCommon/UIDevice+InfoExtension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF7F1FA7FE82005F66A3 /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UserDefaults+Extension.swift"; path = "ProtonMailCommon/UserDefaults+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF801FA7FE82005F66A3 /* UIStoryboard+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIStoryboard+Extension.swift"; path = "ProtonMailCommon/UIStoryboard+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF811FA7FE82005F66A3 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Dictionary+Extension.swift"; path = "ProtonMail/Dictionary+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF821FA7FE82005F66A3 /* Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Email.swift; path = ProtonMail/Email.swift; sourceTree = SOURCE_ROOT; };
-		7528FF831FA7FE82005F66A3 /* ContactsDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactsDefined.swift; path = ProtonMail/ContactsDefined.swift; sourceTree = SOURCE_ROOT; };
-		7528FF841FA7FE83005F66A3 /* ContactTypeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactTypeViewModel.swift; path = ProtonMail/ContactTypeViewModel.swift; sourceTree = SOURCE_ROOT; };
-		7528FF851FA7FE83005F66A3 /* Data+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Data+Extension.swift"; path = "ProtonMail/Data+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF861FA7FE83005F66A3 /* Error+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Error+Extension.swift"; path = "ProtonMail/Error+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF871FA7FE83005F66A3 /* UIAlertAction+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertAction+Extension.swift"; path = "ProtonMailCommon/UIAlertAction+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF881FA7FE83005F66A3 /* Fonts+Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Fonts+Constants.swift"; path = "ProtonMailCommon/Constants/Fonts+Constants.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF891FA7FE84005F66A3 /* EmailExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailExtension.swift; path = ProtonMail/EmailExtension.swift; sourceTree = SOURCE_ROOT; };
-		7528FF8A1FA7FE84005F66A3 /* NSSet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSSet+Extension.swift"; path = "ProtonMailCommon/NSSet+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF8B1FA7FE84005F66A3 /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertController+Extension.swift"; path = "ProtonMailCommon/UIAlertController+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF8C1FA7FE84005F66A3 /* UITableView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UITableView+Extension.swift"; path = "ProtonMailCommon/UITableView+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF8D1FA7FE84005F66A3 /* ContactVO+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ContactVO+Extension.swift"; path = "ProtonMail/ContactVO+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF8E1FA7FE85005F66A3 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Date+Extension.swift"; path = "ProtonMailCommon/Date+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF8F1FA7FE85005F66A3 /* TimeInterval+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "TimeInterval+Extension.swift"; path = "ProtonMailCommon/TimeInterval+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF901FA7FE85005F66A3 /* UIApplication+InfoExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIApplication+InfoExtension.swift"; path = "ProtonMailCommon/UIApplication+InfoExtension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FF911FA7FE85005F66A3 /* ContactsViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactsViewModelImpl.swift; path = ProtonMail/ContactsViewModelImpl.swift; sourceTree = SOURCE_ROOT; };
-		7528FFAF1FA7FEBD005F66A3 /* ContactTypeAddCustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactTypeAddCustomCell.swift; path = ProtonMail/ContactTypeAddCustomCell.swift; sourceTree = SOURCE_ROOT; };
-		7528FFB01FA7FEBD005F66A3 /* ContactDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactDetailViewController.swift; path = ProtonMail/ContactDetailViewController.swift; sourceTree = SOURCE_ROOT; };
-		7528FFB21FA7FEBD005F66A3 /* ContactDetailsViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactDetailsViewModelImpl.swift; path = ProtonMail/ContactDetailsViewModelImpl.swift; sourceTree = SOURCE_ROOT; };
-		7528FFB31FA7FEBE005F66A3 /* ContactEditAddCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactEditAddCell.swift; path = ProtonMail/ContactEditAddCell.swift; sourceTree = SOURCE_ROOT; };
-		7528FFB41FA7FEBE005F66A3 /* ContactEditInformationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactEditInformationCell.swift; path = ProtonMail/ContactEditInformationCell.swift; sourceTree = SOURCE_ROOT; };
-		7528FFB61FA7FEBE005F66A3 /* ContactSectionHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ContactSectionHeadView.xib; path = ProtonMail/ContactSectionHeadView.xib; sourceTree = SOURCE_ROOT; };
-		7528FFB81FA7FEBF005F66A3 /* ContactEditViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactEditViewModelImpl.swift; path = ProtonMail/ContactEditViewModelImpl.swift; sourceTree = SOURCE_ROOT; };
-		7528FFB91FA7FEBF005F66A3 /* Array+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Array+Extension.swift"; path = "ProtonMail/Array+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FFBB1FA7FEBF005F66A3 /* ContactsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactsAPI.swift; path = ProtonMail/ContactsAPI.swift; sourceTree = SOURCE_ROOT; };
-		7528FFBD1FA7FEC0005F66A3 /* ContactEditCell+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ContactEditCell+Delegates.swift"; path = "ProtonMail/ContactEditCell+Delegates.swift"; sourceTree = SOURCE_ROOT; };
-		7528FFBE1FA7FEC0005F66A3 /* ContactSectionHeadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactSectionHeadView.swift; path = ProtonMail/ContactSectionHeadView.swift; sourceTree = SOURCE_ROOT; };
-		7528FFBF1FA7FEC0005F66A3 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactEditViewController.swift; path = ProtonMail/ContactEditViewController.swift; sourceTree = SOURCE_ROOT; };
-		7528FFC01FA7FEC0005F66A3 /* ContactAddViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactAddViewModelImpl.swift; path = ProtonMail/ContactAddViewModelImpl.swift; sourceTree = SOURCE_ROOT; };
-		7528FFC11FA7FEC0005F66A3 /* ContactTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactTypeViewController.swift; path = ProtonMail/ContactTypeViewController.swift; sourceTree = SOURCE_ROOT; };
-		7528FFC21FA7FEC1005F66A3 /* ContactDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactDetailsViewModel.swift; path = ProtonMail/ContactDetailsViewModel.swift; sourceTree = SOURCE_ROOT; };
-		7528FFC31FA7FEC1005F66A3 /* ContactEditFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactEditFieldCell.swift; path = ProtonMail/ContactEditFieldCell.swift; sourceTree = SOURCE_ROOT; };
-		7528FFC41FA7FEC1005F66A3 /* ContactEditPhoneCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactEditPhoneCell.swift; path = ProtonMail/ContactEditPhoneCell.swift; sourceTree = SOURCE_ROOT; };
-		7528FFC51FA7FEC2005F66A3 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+Extension.swift"; path = "ProtonMailCommon/UIView+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		7528FFC61FA7FEC2005F66A3 /* ContactEditEmailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactEditEmailCell.swift; path = ProtonMail/ContactEditEmailCell.swift; sourceTree = SOURCE_ROOT; };
-		7528FFC81FA7FEC2005F66A3 /* ContactDetailsDisplayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactDetailsDisplayCell.swift; path = ProtonMail/ContactDetailsDisplayCell.swift; sourceTree = SOURCE_ROOT; };
-		7528FFC91FA7FEC3005F66A3 /* ContactEditVIewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactEditVIewModel.swift; path = ProtonMail/ContactEditVIewModel.swift; sourceTree = SOURCE_ROOT; };
+		7528FF751FA7FE80005F66A3 /* NSFetchedResultsController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSFetchedResultsController+Extension.swift"; sourceTree = "<group>"; };
+		7528FF761FA7FE80005F66A3 /* ContactTypeViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTypeViewModelImpl.swift; sourceTree = "<group>"; };
+		7528FF771FA7FE80005F66A3 /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
+		7528FF781FA7FE80005F66A3 /* ContactsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
+		7528FF791FA7FE81005F66A3 /* NotificationCenter+KeyboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+KeyboardExtension.swift"; sourceTree = "<group>"; };
+		7528FF7A1FA7FE81005F66A3 /* NSString+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Extension.swift"; sourceTree = "<group>"; };
+		7528FF7B1FA7FE81005F66A3 /* PHAsset+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PHAsset+Extension.swift"; sourceTree = "<group>"; };
+		7528FF7C1FA7FE81005F66A3 /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		7528FF7D1FA7FE81005F66A3 /* Notification+KeyboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+KeyboardExtension.swift"; sourceTree = "<group>"; };
+		7528FF7E1FA7FE81005F66A3 /* UIDevice+InfoExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+InfoExtension.swift"; sourceTree = "<group>"; };
+		7528FF7F1FA7FE82005F66A3 /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extension.swift"; sourceTree = "<group>"; };
+		7528FF801FA7FE82005F66A3 /* UIStoryboard+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extension.swift"; sourceTree = "<group>"; };
+		7528FF811FA7FE82005F66A3 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
+		7528FF821FA7FE82005F66A3 /* Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Email.swift; sourceTree = "<group>"; };
+		7528FF831FA7FE82005F66A3 /* ContactsDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsDefined.swift; sourceTree = "<group>"; };
+		7528FF841FA7FE83005F66A3 /* ContactTypeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTypeViewModel.swift; sourceTree = "<group>"; };
+		7528FF851FA7FE83005F66A3 /* Data+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Extension.swift"; sourceTree = "<group>"; };
+		7528FF861FA7FE83005F66A3 /* Error+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Error+Extension.swift"; sourceTree = "<group>"; };
+		7528FF871FA7FE83005F66A3 /* UIAlertAction+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+Extension.swift"; sourceTree = "<group>"; };
+		7528FF881FA7FE83005F66A3 /* Fonts+Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Fonts+Constants.swift"; sourceTree = "<group>"; };
+		7528FF891FA7FE84005F66A3 /* EmailExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailExtension.swift; sourceTree = "<group>"; };
+		7528FF8A1FA7FE84005F66A3 /* NSSet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSet+Extension.swift"; sourceTree = "<group>"; };
+		7528FF8B1FA7FE84005F66A3 /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extension.swift"; sourceTree = "<group>"; };
+		7528FF8C1FA7FE84005F66A3 /* UITableView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		7528FF8D1FA7FE84005F66A3 /* ContactVO+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactVO+Extension.swift"; sourceTree = "<group>"; };
+		7528FF8E1FA7FE85005F66A3 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		7528FF8F1FA7FE85005F66A3 /* TimeInterval+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Extension.swift"; sourceTree = "<group>"; };
+		7528FF901FA7FE85005F66A3 /* UIApplication+InfoExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+InfoExtension.swift"; sourceTree = "<group>"; };
+		7528FF911FA7FE85005F66A3 /* ContactsViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModelImpl.swift; sourceTree = "<group>"; };
+		7528FFAF1FA7FEBD005F66A3 /* ContactTypeAddCustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTypeAddCustomCell.swift; sourceTree = "<group>"; };
+		7528FFB01FA7FEBD005F66A3 /* ContactDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
+		7528FFB21FA7FEBD005F66A3 /* ContactDetailsViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailsViewModelImpl.swift; sourceTree = "<group>"; };
+		7528FFB31FA7FEBE005F66A3 /* ContactEditAddCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditAddCell.swift; sourceTree = "<group>"; };
+		7528FFB41FA7FEBE005F66A3 /* ContactEditInformationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditInformationCell.swift; sourceTree = "<group>"; };
+		7528FFB61FA7FEBE005F66A3 /* ContactSectionHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactSectionHeadView.xib; sourceTree = "<group>"; };
+		7528FFB81FA7FEBF005F66A3 /* ContactEditViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewModelImpl.swift; sourceTree = "<group>"; };
+		7528FFB91FA7FEBF005F66A3 /* Array+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		7528FFBB1FA7FEBF005F66A3 /* ContactsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsAPI.swift; sourceTree = "<group>"; };
+		7528FFBD1FA7FEC0005F66A3 /* ContactEditCell+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactEditCell+Delegates.swift"; sourceTree = "<group>"; };
+		7528FFBE1FA7FEC0005F66A3 /* ContactSectionHeadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactSectionHeadView.swift; sourceTree = "<group>"; };
+		7528FFBF1FA7FEC0005F66A3 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
+		7528FFC01FA7FEC0005F66A3 /* ContactAddViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactAddViewModelImpl.swift; sourceTree = "<group>"; };
+		7528FFC11FA7FEC0005F66A3 /* ContactTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTypeViewController.swift; sourceTree = "<group>"; };
+		7528FFC21FA7FEC1005F66A3 /* ContactDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailsViewModel.swift; sourceTree = "<group>"; };
+		7528FFC31FA7FEC1005F66A3 /* ContactEditFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditFieldCell.swift; sourceTree = "<group>"; };
+		7528FFC41FA7FEC1005F66A3 /* ContactEditPhoneCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditPhoneCell.swift; sourceTree = "<group>"; };
+		7528FFC51FA7FEC2005F66A3 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		7528FFC61FA7FEC2005F66A3 /* ContactEditEmailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditEmailCell.swift; sourceTree = "<group>"; };
+		7528FFC81FA7FEC2005F66A3 /* ContactDetailsDisplayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailsDisplayCell.swift; sourceTree = "<group>"; };
+		7528FFC91FA7FEC3005F66A3 /* ContactEditVIewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditVIewModel.swift; sourceTree = "<group>"; };
 		752902A11EE5D2CC00B46D36 /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		752902A41EE5D6B700B46D36 /* Settings+Defined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Settings+Defined.swift"; sourceTree = "<group>"; };
 		752902A71EE5F71C00B46D36 /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		752A9EBC1DB80E40008D4392 /* LabelApplyViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelApplyViewModelImpl.swift; sourceTree = "<group>"; };
-		752A9EBF1DB8286C008D4392 /* BugReportCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BugReportCache.swift; path = ../ProtonMail/BugReportCache.swift; sourceTree = "<group>"; };
+		752A9EBF1DB8286C008D4392 /* BugReportCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportCache.swift; sourceTree = "<group>"; };
 		752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsTableViewController.swift; sourceTree = "<group>"; };
 		752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickViewViewController.swift; sourceTree = "<group>"; };
 		752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinCodeView.xib; sourceTree = "<group>"; };
@@ -1851,8 +1851,8 @@
 		754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = General2FAViewModelImpl.swift; sourceTree = "<group>"; };
 		754713171DCD616D0084BF34 /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModelImpl.swift; sourceTree = "<group>"; };
-		75471757206489EB00C3F21D /* editor.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = editor.html; path = ../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html; sourceTree = "<group>"; };
-		75471758206489EB00C3F21D /* ZSSRichTextEditor.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = ZSSRichTextEditor.js; path = ../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js; sourceTree = "<group>"; };
+		75471757206489EB00C3F21D /* editor.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = editor.html; sourceTree = "<group>"; };
+		75471758206489EB00C3F21D /* ZSSRichTextEditor.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = ZSSRichTextEditor.js; sourceTree = "<group>"; };
 		75475EA61CCEB97400588D41 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		75475EA91CCEE21C00588D41 /* NSBundle+Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Language.h"; sourceTree = "<group>"; };
 		75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Language.m"; sourceTree = "<group>"; };
@@ -1860,11 +1860,11 @@
 		75482BE71F7F09E100B0BFFB /* Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Share.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		75482BEA1F7F0D2000B0BFFB /* InfoDev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
 		75482BEC1F7F0D2A00B0BFFB /* Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Share.entitlements; sourceTree = "<group>"; };
-		7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserTempCachedStatus.swift; path = ../ProtonMail/UserTempCachedStatus.swift; sourceTree = "<group>"; };
+		7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTempCachedStatus.swift; sourceTree = "<group>"; };
 		7549F0B01D07827A00643C64 /* AddressAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressAPI.swift; sourceTree = "<group>"; };
 		754B70C71C975271004F991A /* FeedbackItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackItem.swift; sourceTree = "<group>"; };
 		754BD2061BFA9FCD006CBAE6 /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
-		754BD9A41CB31DB300913A5C /* DeviceInfoCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceInfoCache.swift; path = ../ProtonMail/DeviceInfoCache.swift; sourceTree = "<group>"; };
+		754BD9A41CB31DB300913A5C /* DeviceInfoCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInfoCache.swift; sourceTree = "<group>"; };
 		754CD4871AB809D60084C54A /* SettingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		754CD48A1AB80D770084C54A /* CustomHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
 		75510BAA1B82BDEB001348FF /* LabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
@@ -1908,13 +1908,13 @@
 		7567B06C1B334FA400A72A1E /* ViewModelService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelService.swift; sourceTree = "<group>"; };
 		7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelServiceImpl.swift; sourceTree = "<group>"; };
 		7567B0701B3351C200A72A1E /* ComposeViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModelTests.swift; sourceTree = "<group>"; };
-		7567B0721B3363D000A72A1E /* ControllerDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ControllerDefined.swift; path = ../ProtonMail/ControllerDefined.swift; sourceTree = "<group>"; };
+		7567B0721B3363D000A72A1E /* ControllerDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerDefined.swift; sourceTree = "<group>"; };
 		7567B0741B3383F900A72A1E /* MessageAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAPI.swift; sourceTree = "<group>"; };
 		7567B0761B3387F700A72A1E /* APIServiceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIServiceRequest.swift; sourceTree = "<group>"; };
 		7567B0781B33880500A72A1E /* APIServiceResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIServiceResponse.swift; sourceTree = "<group>"; };
 		7567B07A1B338EB900A72A1E /* MessageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageHelper.swift; sourceTree = "<group>"; };
 		7568F3321FCE0F2B00F3DE03 /* ViewModelTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTimer.swift; sourceTree = "<group>"; };
-		756A35141B20D9B80033BC7C /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppConstants.swift; path = ../ProtonMail/AppConstants.swift; sourceTree = "<group>"; };
+		756A35141B20D9B80033BC7C /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordUtils.swift; sourceTree = "<group>"; };
 		756CDEF81D9DB374004455F6 /* JKBCrypt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKBCrypt.swift; sourceTree = "<group>"; };
 		756CDEFB1D9DB3A0004455F6 /* JKBCryptRandom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKBCryptRandom.swift; sourceTree = "<group>"; };
@@ -1991,7 +1991,7 @@
 		75A42B711F044B750025F52C /* ShareExtensionEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareExtensionEntry.swift; sourceTree = "<group>"; };
 		75A4321A1B1D040A00D046B3 /* QueueManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueManager.swift; sourceTree = "<group>"; };
 		75A4321C1B1D042C00D046B3 /* QueueConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueConstant.swift; sourceTree = "<group>"; };
-		75A84D481FF59EDE00F2A54B /* UISearchBar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UISearchBar+Extension.swift"; path = "ProtonMail/UISearchBar+Extension.swift"; sourceTree = SOURCE_ROOT; };
+		75A84D481FF59EDE00F2A54B /* UISearchBar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extension.swift"; sourceTree = "<group>"; };
 		75A84D4B1FF601C700F2A54B /* ContactEditTextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditTextViewCell.swift; sourceTree = "<group>"; };
 		75A84D4E1FF7569500F2A54B /* ContactFieldType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFieldType.swift; sourceTree = "<group>"; };
 		75AD87311E975CC600B8265B /* FolderEditingViewModelImpl .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FolderEditingViewModelImpl .swift"; sourceTree = "<group>"; };
@@ -1999,17 +1999,17 @@
 		75AFD2EC1FBA7CF000EAEA61 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		75AFD2EE1FBA7CF000EAEA61 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		75AFD2F11FBA7CF000EAEA61 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
-		75AFD2F41FBA7CF000EAEA61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		75AFD2F41FBA7CF000EAEA61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		75AFD2F61FBA7CF000EAEA61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75AFD3021FBA7D7500EAEA61 /* PushDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		75AFD30B1FBA7D7500EAEA61 /* InfoDev.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
 		75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeEmailViewController.swift; sourceTree = "<group>"; };
 		75B0529C1F1FE032008E483A /* ViewModelServiceImpl+Share.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewModelServiceImpl+Share.swift"; sourceTree = "<group>"; };
-		75B0529E1F1FE1FC008E483A /* ViewDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewDefined.swift; path = ProtonMail/ViewDefined.swift; sourceTree = SOURCE_ROOT; };
+		75B0529E1F1FE1FC008E483A /* ViewDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewDefined.swift; sourceTree = "<group>"; };
 		75B2223A2003C14800E35033 /* ContactDetailsUpgradeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailsUpgradeCell.swift; sourceTree = "<group>"; };
 		75B2223D2003C6AE00E35033 /* ContactEditUpgradeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUpgradeCell.swift; sourceTree = "<group>"; };
-		75B431BA1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIApplication+BadgeNumber.swift"; path = "ProtonMail/UIApplication+BadgeNumber.swift"; sourceTree = SOURCE_ROOT; };
-		75B431BC1F7AF406009DD520 /* UIApplication+BadgeNumber+Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIApplication+BadgeNumber+Share.swift"; path = "ProtonMail/UIApplication+BadgeNumber+Share.swift"; sourceTree = SOURCE_ROOT; };
+		75B431BA1F7AF3BE009DD520 /* UIApplication+BadgeNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+BadgeNumber.swift"; sourceTree = "<group>"; };
+		75B431BC1F7AF406009DD520 /* UIApplication+BadgeNumber+Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+BadgeNumber+Share.swift"; sourceTree = "<group>"; };
 		75B549E41D02731300F21A30 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		75B549E51D02731300F21A30 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		75B9C6071DA2D39A001DE21E /* Hash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hash.swift; sourceTree = "<group>"; };
@@ -2017,7 +2017,7 @@
 		75BA19981EC631A300153A1A /* SpamScoreWarningView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpamScoreWarningView.swift; sourceTree = "<group>"; };
 		75BA199E1EC6474D00153A1A /* MessageSpamScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSpamScore.swift; sourceTree = "<group>"; };
 		75BA3443207BECD900143E76 /* TestAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAPI.swift; sourceTree = "<group>"; };
-		75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Compare+Extension.swift"; path = "ProtonMail/Compare+Extension.swift"; sourceTree = SOURCE_ROOT; };
+		75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Compare+Extension.swift"; sourceTree = "<group>"; };
 		75BA55A61D087F6A0081DD88 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		75BB65751BD5C88800F9432D /* AttachmentAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentAPI.swift; sourceTree = "<group>"; };
 		75BD44EF20D31DC400AF328D /* ExpirationWarningEmailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationWarningEmailCell.swift; sourceTree = "<group>"; };
@@ -2059,7 +2059,7 @@
 		75CA88FD2087DAB30074A1A6 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		75CA88FE2087DB4C0074A1A6 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		75CA88FF2087DB660074A1A6 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharedCacheBase.swift; path = ../ProtonMail/SharedCacheBase.swift; sourceTree = "<group>"; };
+		75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedCacheBase.swift; sourceTree = "<group>"; };
 		75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAPI.swift; sourceTree = "<group>"; };
 		75D9413D20C9DA34001F7A91 /* ExpirationWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationWarningViewController.swift; sourceTree = "<group>"; };
 		75DCB2051BA2A1560085BE8C /* RecipientCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientCell.swift; sourceTree = "<group>"; };
@@ -2072,7 +2072,7 @@
 		75E0904F1CAC6E8E00751136 /* CountryCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCode.swift; sourceTree = "<group>"; };
 		75E090531CAC7A3A00751136 /* CountryCodeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCodeTableViewCell.swift; sourceTree = "<group>"; };
 		75E2202A1DD6728200078D6C /* KeysAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeysAPI.swift; sourceTree = "<group>"; };
-		75E2202D1DDA532900078D6C /* Threading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Threading.swift; path = ../ProtonMail/Threading.swift; sourceTree = "<group>"; };
+		75E2202D1DDA532900078D6C /* Threading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Threading.swift; sourceTree = "<group>"; };
 		75E220311DDA642500078D6C /* DataService+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataService+Error.swift"; sourceTree = "<group>"; };
 		75E49EFA1CAAF47D00235ACC /* InfoDev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
 		75E49F081CAB200000235ACC /* flags.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = flags.bundle; sourceTree = "<group>"; };
@@ -2093,8 +2093,8 @@
 		75F1618A1DCBB19300912662 /* TwoFACodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwoFACodeView.xib; sourceTree = "<group>"; };
 		75F1618D1DCBB1CA00912662 /* TwoFACodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFACodeView.swift; sourceTree = "<group>"; };
 		75F161901DCBB7E600912662 /* TwoFACodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFACodeViewController.swift; sourceTree = "<group>"; };
-		75F1697D1AF7F43A00BE6E79 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = ../ProtonMail/Logger.swift; sourceTree = "<group>"; };
-		75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserCachedStatus.swift; path = ../ProtonMail/UserCachedStatus.swift; sourceTree = "<group>"; };
+		75F1697D1AF7F43A00BE6E79 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCachedStatus.swift; sourceTree = "<group>"; };
 		75F22BED1E83335000677E67 /* ToastMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToastMessageView.swift; sourceTree = "<group>"; };
 		75F22BF01E83348100677E67 /* ToastMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToastMessageView.xib; sourceTree = "<group>"; };
 		75F29E1020570CBE00C70AD2 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -2266,7 +2266,7 @@
 				750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */,
 				75F29E1020570CBE00C70AD2 /* WebViewController.swift */,
 			);
-			name = "Sign In";
+			path = "Sign In";
 			sourceTree = "<group>";
 		};
 		072AB6A71A8FB0AB00AF45D6 /* Encryption */ = {
@@ -2279,8 +2279,7 @@
 				753E30A61F86F5BA00CE5AF8 /* BCrypt+Extension.swift */,
 				7501D284204853D8009689C8 /* VCard+Extension.swift */,
 			);
-			name = Encryption;
-			path = ../ProtonMail;
+			path = Encryption;
 			sourceTree = "<group>";
 		};
 		073FD92D1A71C33B00EB0CAF /* DataModels */ = {
@@ -2293,7 +2292,7 @@
 				7535D49E1FE1CFE60059DED9 /* PushData.swift */,
 				07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */,
 			);
-			name = DataModels;
+			path = DataModels;
 			sourceTree = "<group>";
 		};
 		073FD9301A71C5F000EB0CAF /* DataServices */ = {
@@ -2317,8 +2316,7 @@
 				7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */,
 				073FD9311A71C60900EB0CAF /* UserDataService.swift */,
 			);
-			name = DataServices;
-			path = ../ProtonMail;
+			path = DataServices;
 			sourceTree = "<group>";
 		};
 		075E3DDD1A5F4ECF00E001A7 = {
@@ -2350,7 +2348,7 @@
 				751CDEA21FBB95B3005E3EB1 /* PushServiceDev.appex */,
 				751CDEB21FBB95F6005E3EB1 /* PushService.appex */,
 			);
-			name = Products;
+			path = Products;
 			sourceTree = "<group>";
 		};
 		075E3DE81A5F4ECF00E001A7 /* ProtonMail */ = {
@@ -2380,7 +2378,7 @@
 				072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */,
 				07CC99691A705BA4000FD6F8 /* Settings.bundle */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		075E3E011A5F4ECF00E001A7 /* ProtonMailTests */ = {
@@ -2403,7 +2401,7 @@
 			children = (
 				075E3E031A5F4ECF00E001A7 /* Info.plist */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		07B123761AB8CD76006EA38C /* Attachments */ = {
@@ -2415,7 +2413,7 @@
 				7578B7821CADD1EA006B523B /* PMImagePickerController.swift */,
 				7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */,
 			);
-			name = Attachments;
+			path = Attachments;
 			sourceTree = "<group>";
 		};
 		07B797C31A6EE54600244532 /* Network */ = {
@@ -2433,8 +2431,7 @@
 				078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */,
 				073FD92B1A719B7900EB0CAF /* APIService+UserExtension.swift */,
 			);
-			name = Network;
-			path = ../ProtonMail;
+			path = Network;
 			sourceTree = "<group>";
 		};
 		07CAB7FC1A880AF300C5E347 /* Queue */ = {
@@ -2445,8 +2442,7 @@
 				75A4321A1B1D040A00D046B3 /* QueueManager.swift */,
 				75A4321C1B1D042C00D046B3 /* QueueConstant.swift */,
 			);
-			name = Queue;
-			path = ../ProtonMail;
+			path = Queue;
 			sourceTree = "<group>";
 		};
 		07CB23541AB0F20F00699068 /* Bugs */ = {
@@ -2454,7 +2450,7 @@
 			children = (
 				07CB23551AB0F24700699068 /* ReportBugsViewController.swift */,
 			);
-			name = Bugs;
+			path = Bugs;
 			sourceTree = "<group>";
 		};
 		07CCCC2C1AA2962200ECA79E /* Views */ = {
@@ -2479,7 +2475,7 @@
 				75F22BED1E83335000677E67 /* ToastMessageView.swift */,
 				75F22BF01E83348100677E67 /* ToastMessageView.xib */,
 			);
-			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		518B9570F3E0BF19912099F3 /* Pods */ = {
@@ -2530,7 +2526,7 @@
 				755638C61CA1AE78003FA2D0 /* ShowImageView.swift */,
 				755638C01CA1AE42003FA2D0 /* ShowImageView.xib */,
 			);
-			name = "Message Detail";
+			path = "Message Detail";
 			sourceTree = "<group>";
 		};
 		701DDE7C1AA64D430038149C /* MBContactPicker */ = {
@@ -2551,7 +2547,7 @@
 				701DDE8B1AA64DEB0038149C /* MBContactModel.h */,
 				701DDE8C1AA64DEB0038149C /* MBContactModel.m */,
 			);
-			name = MBContactPicker;
+			path = MBContactPicker;
 			sourceTree = "<group>";
 		};
 		7048B9F61A9E3B1B00D45F57 /* Cell */ = {
@@ -2577,7 +2573,7 @@
 				75C916C0203DBA9400A7FD1F /* ContactsDetailsWarningCell.swift */,
 				758E46B8205745A300111406 /* ContactUpgradeCellDelegate.swift */,
 			);
-			name = Cell;
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		7061A3F11A6E8C4A0006D36C /* Menu */ = {
@@ -2588,7 +2584,7 @@
 				7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */,
 				70945E6B1A8133B8002B6837 /* MoreOptionsView.swift */,
 			);
-			name = Menu;
+			path = Menu;
 			sourceTree = "<group>";
 		};
 		706628241A71681300164117 /* Controller */ = {
@@ -2613,7 +2609,7 @@
 				75C3C07E2059F7860037471A /* Upgrade */,
 				07CCCC2C1AA2962200ECA79E /* Views */,
 			);
-			name = Controller;
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		706932A91A77BE2900A75A93 /* Search */ = {
@@ -2621,7 +2617,7 @@
 			children = (
 				706932AA1A77BE3D00A75A93 /* SearchViewController.swift */,
 			);
-			name = Search;
+			path = Search;
 			sourceTree = "<group>";
 		};
 		706962031A713959001443B2 /* Contacts */ = {
@@ -2636,7 +2632,7 @@
 				7528FFBF1FA7FEC0005F66A3 /* ContactEditViewController.swift */,
 				7528FFC11FA7FEC0005F66A3 /* ContactTypeViewController.swift */,
 			);
-			name = Contacts;
+			path = Contacts;
 			sourceTree = "<group>";
 		};
 		706962041A713960001443B2 /* Settings */ = {
@@ -2653,7 +2649,7 @@
 				75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */,
 				75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */,
 			);
-			name = Settings;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		70945E681A80F331002B6837 /* Mailbox */ = {
@@ -2666,7 +2662,7 @@
 				70945E691A80F351002B6837 /* MailboxViewController.swift */,
 				751B446D1B81245100B68CD6 /* TableCellLabelView.swift */,
 			);
-			name = Mailbox;
+			path = Mailbox;
 			sourceTree = "<group>";
 		};
 		709FE39E1A977C8400034288 /* Compose */ = {
@@ -2683,7 +2679,7 @@
 				759C414520D013F20081599D /* ExpirationWarningHeaderCell.swift */,
 				759C414420D013F20081599D /* ExpirationWarningHeaderCell.xib */,
 			);
-			name = Compose;
+			path = Compose;
 			sourceTree = "<group>";
 		};
 		750AAEB21FA91A1700CBFCA3 /* Contacts */ = {
@@ -2701,7 +2697,7 @@
 				7528FFB81FA7FEBF005F66A3 /* ContactEditViewModelImpl.swift */,
 				75A84D4E1FF7569500F2A54B /* ContactFieldType.swift */,
 			);
-			name = Contacts;
+			path = Contacts;
 			sourceTree = "<group>";
 		};
 		7512A9FB1F17E1D500D84955 /* Controller */ = {
@@ -2712,7 +2708,7 @@
 				751303D91F26A6A3003FE4A2 /* PasswordEncryptViewController.swift */,
 				75E5F7A31F295DFD00001B4F /* SharePinUnlockViewController.swift */,
 			);
-			name = Controller;
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		7512A9FC1F17E1E700D84955 /* Views */ = {
@@ -2723,7 +2719,7 @@
 				7512A9FE1F17E95100D84955 /* ComposerViewController.xib */,
 				751303DA1F26A6A3003FE4A2 /* PasswordEncryptViewController.xib */,
 			);
-			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		751CDEB31FBB95F6005E3EB1 /* PushService */ = {
@@ -2748,7 +2744,7 @@
 				756DAC401C9236D000F3486C /* MailboxRateReviewCell.xib */,
 				75230C261B9A430F00EC2AC2 /* TempXIB.xib */,
 			);
-			name = Cells;
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		7523A1A31DB9513900A89E55 /* StoryBoard */ = {
@@ -2759,7 +2755,7 @@
 				7061A3F41A6E8C9D0006D36C /* Menu.storyboard */,
 				D880C74E20CAEFF600F41FB6 /* SettingsNotificationsSnooze.storyboard */,
 			);
-			name = StoryBoard;
+			path = StoryBoard;
 			sourceTree = "<group>";
 		};
 		752902A01EE5CEA400B46D36 /* Localization */ = {
@@ -2770,7 +2766,7 @@
 				75475EA91CCEE21C00588D41 /* NSBundle+Language.h */,
 				75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */,
 			);
-			name = Localization;
+			path = Localization;
 			sourceTree = "<group>";
 		};
 		75352E6F1F05784500B41443 /* ProtonMailCommon */ = {
@@ -2799,7 +2795,7 @@
 				750B00971B7AB91400F180BD /* NotificationDefined.swift */,
 				75B0529E1F1FE1FC008E483A /* ViewDefined.swift */,
 			);
-			name = Defined;
+			path = Defined;
 			sourceTree = "<group>";
 		};
 		75352E821F057AB100B41443 /* Utilities */ = {
@@ -2813,7 +2809,7 @@
 				75BA4F501F8D957A00BAF5E4 /* Compare+Extension.swift */,
 				7571102E2060699F0093DC57 /* UserAgent.swift */,
 			);
-			name = Utilities;
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		75352E841F057B1100B41443 /* Extensions */ = {
@@ -2859,7 +2855,7 @@
 				75A84D481FF59EDE00F2A54B /* UISearchBar+Extension.swift */,
 				755ECCE420699C20003D45AE /* TouchID+Helper.swift */,
 			);
-			name = Extensions;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		75357EAE20A110C100189E8E /* OpenPGP */ = {
@@ -2880,7 +2876,7 @@
 				75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */,
 				753745031D6B7E8F00682C5A /* APIError+Auth.swift */,
 			);
-			name = Errors;
+			path = Errors;
 			sourceTree = "<group>";
 		};
 		7543B5A92087F69C000BEA72 /* Constants */ = {
@@ -2901,7 +2897,7 @@
 				754508401E149B6600265CD0 /* HumanCheckViewModel.swift */,
 				754508431E149BD000265CD0 /* CaptchaViewModelImpl.swift */,
 			);
-			name = Mailbox;
+			path = Mailbox;
 			sourceTree = "<group>";
 		};
 		7547130F1DCD517E0084BF34 /* TwoFA */ = {
@@ -2910,7 +2906,7 @@
 				754713101DCD51A30084BF34 /* TwoFAViewModel.swift */,
 				754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */,
 			);
-			name = TwoFA;
+			path = TwoFA;
 			sourceTree = "<group>";
 		};
 		754713161DCD61510084BF34 /* SignIn */ = {
@@ -2919,7 +2915,7 @@
 				754713171DCD616D0084BF34 /* SignInViewModel.swift */,
 				7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */,
 			);
-			name = SignIn;
+			path = SignIn;
 			sourceTree = "<group>";
 		};
 		754CD4891AB80D580084C54A /* Cells */ = {
@@ -2936,7 +2932,7 @@
 				754BD2061BFA9FCD006CBAE6 /* SettingsCell.swift */,
 				7546BE561C8D557C00FCEB0A /* TouchIDCell.swift */,
 			);
-			name = Cells;
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		755F92151C7E67C200BAEDF9 /* Onboarding */ = {
@@ -2947,7 +2943,7 @@
 				755F92181C7E6D0D00BAEDF9 /* OnboardingView.swift */,
 				755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */,
 			);
-			name = Onboarding;
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		7566E4F81FC3B05A0036B36B /* Menu */ = {
@@ -2957,7 +2953,7 @@
 				7566E4F91FC3B0880036B36B /* MenuViewModel.swift */,
 				7566E4FC1FC3B0A00036B36B /* MenuViewModelImpl.swift */,
 			);
-			name = Menu;
+			path = Menu;
 			sourceTree = "<group>";
 		};
 		756CDE3B1D9C754D004455F6 /* SRP */ = {
@@ -2970,8 +2966,7 @@
 				756CDEFB1D9DB3A0004455F6 /* JKBCryptRandom.swift */,
 				75BF8F451DA6E49D000F350F /* SRPClient.swift */,
 			);
-			name = SRP;
-			path = ../ProtonMail;
+			path = SRP;
 			sourceTree = "<group>";
 		};
 		756DAC431C92B2B600F3486C /* Review */ = {
@@ -2983,7 +2978,7 @@
 				75DE3DF71C977683007C208E /* FeedbackHeadCell.swift */,
 				754B70C71C975271004F991A /* FeedbackItem.swift */,
 			);
-			name = Review;
+			path = Review;
 			sourceTree = "<group>";
 		};
 		757F4A071E67A0B8001CDE71 /* Labels */ = {
@@ -2999,7 +2994,7 @@
 				757F4A111E68F408001CDE71 /* LabelCreatingViewModelImple.swift */,
 				757F4A141E68F817001CDE71 /* FolderCreatingViewModelImpl.swift */,
 			);
-			name = Labels;
+			path = Labels;
 			sourceTree = "<group>";
 		};
 		7580D6561C8E436F00A15885 /* OnePassword */ = {
@@ -3008,14 +3003,14 @@
 				7580D6581C8E440200A15885 /* OnePasswordExtension.h */,
 				7580D6591C8E440200A15885 /* OnePasswordExtension.m */,
 			);
-			name = OnePassword;
+			path = OnePassword;
 			sourceTree = "<group>";
 		};
 		7580D6571C8E438800A15885 /* LastPass */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = LastPass;
+			path = LastPass;
 			sourceTree = "<group>";
 		};
 		758ED7E51F05A7CB0028D1A5 /* LocalCache */ = {
@@ -3031,7 +3026,7 @@
 				D8C4DE7920D39E81002D4FE5 /* UserCachedStatus+NotificationSnoozerCore.swift */,
 				7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */,
 			);
-			name = LocalCache;
+			path = LocalCache;
 			sourceTree = "<group>";
 		};
 		75921C741F747B630028DAC9 /* MimeParser */ = {
@@ -3052,7 +3047,7 @@
 			children = (
 				759223361D9DD5A70064DAA1 /* SrpTests.swift */,
 			);
-			name = SrpTest;
+			path = SrpTest;
 			sourceTree = "<group>";
 		};
 		75978BD91B28F5F800D07501 /* Resource */ = {
@@ -3067,7 +3062,7 @@
 				7526AC8D1B6C4B3700E1967E /* backup.css */,
 				75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */,
 			);
-			name = Resource;
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		75AFD2F01FBA7CF000EAEA61 /* Push */ = {
@@ -3095,8 +3090,7 @@
 				7512AA461F18035500D84955 /* String+Alert+Extension.swift */,
 				75C7FF391F2FE1F800F15792 /* String+Toast+Extension.swift */,
 			);
-			name = General;
-			path = ../ProtonMail;
+			path = General;
 			sourceTree = "<group>";
 		};
 		75B549E31D02730100F21A30 /* Reachability */ = {
@@ -3105,7 +3099,7 @@
 				75B549E41D02731300F21A30 /* Reachability.h */,
 				75B549E51D02731300F21A30 /* Reachability.m */,
 			);
-			name = Reachability;
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 		75BDECA71CBCCC5A00982089 /* PinCode */ = {
@@ -3116,7 +3110,7 @@
 				75BDECAC1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift */,
 				75E5F7A71F29617100001B4F /* ShareUnlockPinCodeModelImpl.swift */,
 			);
-			name = PinCode;
+			path = PinCode;
 			sourceTree = "<group>";
 		};
 		75BF2664209286BE00BE7574 /* ContactPicker */ = {
@@ -3133,14 +3127,14 @@
 				75BF266820928ECC00BE7574 /* ContactModel.swift */,
 				701DDE961AA651100038149C /* ContactVO.swift */,
 			);
-			name = ContactPicker;
+			path = ContactPicker;
 			sourceTree = "<group>";
 		};
 		75BF8F441DA6CCCF000F350F /* Client */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = Client;
+			path = Client;
 			sourceTree = "<group>";
 		};
 		75C3C07E2059F7860037471A /* Upgrade */ = {
@@ -3148,7 +3142,7 @@
 			children = (
 				75C3C07F2059FC080037471A /* UpgradeAlertViewController.swift */,
 			);
-			name = Upgrade;
+			path = Upgrade;
 			sourceTree = "<group>";
 		};
 		75D7A13520B5F1EE006F32F6 /* UpgradeAlert */ = {
@@ -3158,7 +3152,7 @@
 				7580247220B5F6A3007EE0FF /* ContactAlertViewModelImpl.swift */,
 				7580247420B5F6BF007EE0FF /* SignatureAlertViewModelImpl.swift */,
 			);
-			name = UpgradeAlert;
+			path = UpgradeAlert;
 			sourceTree = "<group>";
 		};
 		75DD3E531E81BF94005A7B93 /* Settings */ = {
@@ -3168,7 +3162,7 @@
 				752902A41EE5D6B700B46D36 /* Settings+Defined.swift */,
 				759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */,
 			);
-			name = Settings;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		75DD3E541E81BFB0005A7B93 /* Composer */ = {
@@ -3177,7 +3171,7 @@
 				7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */,
 				7564899D1B7F2C9F007EA207 /* ComposeViewModelImpl.swift */,
 			);
-			name = Composer;
+			path = Composer;
 			sourceTree = "<group>";
 		};
 		75DD3E551E81BFCD005A7B93 /* MessageDetail */ = {
@@ -3186,7 +3180,7 @@
 				755638C81CA1F423003FA2D0 /* MessageViewModel.swift */,
 				755638CA1CA1F446003FA2D0 /* MessageViewModelImpl.swift */,
 			);
-			name = MessageDetail;
+			path = MessageDetail;
 			sourceTree = "<group>";
 		};
 		75E0904E1CAC6D7600751136 /* CoreData */ = {
@@ -3209,7 +3203,7 @@
 				755B6A6F1B38C0B800745872 /* Label.swift */,
 				756489911B7DC8B8007EA207 /* LabelExtension.swift */,
 			);
-			name = CoreData;
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		75E090521CAC79F500751136 /* Cell */ = {
@@ -3217,7 +3211,7 @@
 			children = (
 				75E090531CAC7A3A00751136 /* CountryCodeTableViewCell.swift */,
 			);
-			name = Cell;
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		75E49EFE1CAB07BC00235ACC /* SignUp */ = {
@@ -3229,7 +3223,7 @@
 				758E46B420573B1B00111406 /* TermsWebViewModelImpl.swift */,
 				75F29E17205718A600C70AD2 /* PolicyWebViewModelImpl.swift */,
 			);
-			name = SignUp;
+			path = SignUp;
 			sourceTree = "<group>";
 		};
 		75E652B21B82AA630084DDF8 /* Labels */ = {
@@ -3239,7 +3233,7 @@
 				75E652B31B82AC0D0084DDF8 /* LabelsViewController.swift */,
 				757F4A041E677E1C001CDE71 /* LabelEditViewController.swift */,
 			);
-			name = Labels;
+			path = Labels;
 			sourceTree = "<group>";
 		};
 		75ECC2361AB9F10600B8FC78 /* ViewModels */ = {
@@ -3267,8 +3261,7 @@
 				7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */,
 				75B0529C1F1FE032008E483A /* ViewModelServiceImpl+Share.swift */,
 			);
-			name = ViewModels;
-			path = ../ProtonMail;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		75ECCDFC1B31EF3600A8C800 /* APIService */ = {
@@ -3296,7 +3289,7 @@
 				750778CD1BE98900009F516C /* UserAPI.swift */,
 				75BA3443207BECD900143E76 /* TestAPI.swift */,
 			);
-			name = APIService;
+			path = APIService;
 			sourceTree = "<group>";
 		};
 		75F1697F1AF7F49B00BE6E79 /* Utilities */ = {
@@ -3316,7 +3309,7 @@
 				D889521920D12DC30057FE17 /* NotificationsSnoozer.swift */,
 				7546BE541C8D4F9100FCEB0A /* TouchID.swift */,
 			);
-			name = Utilities;
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		75FE232C1F04347C00DF12C1 /* Share */ = {
@@ -3339,7 +3332,7 @@
 				D889521320D11E9D0057FE17 /* TimePickerViewController.swift */,
 				D889521420D11E9D0057FE17 /* TimePickerViewController.xib */,
 			);
-			name = TimePickerViewController;
+			path = TimePickerViewController;
 			sourceTree = "<group>";
 		};
 		D8C0E3E620D017EC003C326A /* DurationPickerViewController */ = {
@@ -3348,7 +3341,7 @@
 				D8C0E3E720D01831003C326A /* DurationPickerViewController.swift */,
 				D8C0E3E820D01831003C326A /* DurationPickerViewController.xib */,
 			);
-			name = DurationPickerViewController;
+			path = DurationPickerViewController;
 			sourceTree = "<group>";
 		};
 		EDDC3A27CB6370D84ADB05EA /* Frameworks */ = {
@@ -5727,7 +5720,8 @@
 				7543B5B42087FA59000BEA72 /* es */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
+			path = ProtonMail;
+			sourceTree = SOURCE_ROOT;
 		};
 		75542ABA1EE53C3C000F4ABA /* PasswordExtension.strings */ = {
 			isa = PBXVariantGroup;
@@ -5747,7 +5741,8 @@
 				75CA88FB2087D9AF0074A1A6 /* ro */,
 			);
 			name = PasswordExtension.strings;
-			sourceTree = "<group>";
+			path = ProtonMail;
+			sourceTree = SOURCE_ROOT;
 		};
 		7599B1741CC8124300B2CB8D /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
@@ -5769,14 +5764,15 @@
 				75CA88FC2087D9B00074A1A6 /* ro */,
 			);
 			name = Localizable.strings;
-			sourceTree = "<group>";
+			path = ProtonMail;
+			sourceTree = SOURCE_ROOT;
 		};
 		75AFD2F31FBA7CF000EAEA61 /* MainInterface.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				75AFD2F41FBA7CF000EAEA61 /* Base */,
 			);
-			name = MainInterface.storyboard;
+			path = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -5839,7 +5835,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "ProtonMail/ProtonMail-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -5893,7 +5889,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "ProtonMail/ProtonMail-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -5905,7 +5901,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
-				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
@@ -5916,7 +5912,7 @@
 					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = ProtonMail/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -5942,7 +5938,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
-				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
@@ -5952,7 +5948,7 @@
 					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = ProtonMail/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -5988,7 +5984,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = ProtonMailTests/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/ProtonMailTests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6011,7 +6007,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = ProtonMailTests/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/ProtonMailTests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6030,7 +6026,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = PushService/PushServiceDev.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/PushService/PushServiceDev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -6040,7 +6036,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = PushService/InfoDev.plist;
+				INFOPLIST_FILE = "${SRCROOT}/PushService/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
@@ -6062,7 +6058,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = PushService/PushServiceDev.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/PushService/PushServiceDev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
@@ -6073,7 +6069,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = PushService/InfoDev.plist;
+				INFOPLIST_FILE = "${SRCROOT}/PushService/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
@@ -6095,7 +6091,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = PushService/PushServiceDev.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/PushService/PushServiceDev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -6105,7 +6101,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = PushService/InfoDev.plist;
+				INFOPLIST_FILE = "${SRCROOT}/PushService/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
@@ -6131,7 +6127,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				INFOPLIST_FILE = PushService/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/PushService/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
@@ -6155,7 +6151,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				INFOPLIST_FILE = PushService/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/PushService/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
@@ -6178,7 +6174,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
-				INFOPLIST_FILE = PushService/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/PushService/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
@@ -6198,7 +6194,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Share/Share.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/Share/Share.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
@@ -6209,7 +6205,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Share/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/Share/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -6235,7 +6231,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Share/Share.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/Share/Share.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -6247,7 +6243,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Share/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/Share/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -6273,7 +6269,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Share/Share.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/Share/Share.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -6285,7 +6281,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Share/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/Share/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -6311,7 +6307,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Share/ShareDev.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/Share/ShareDev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -6322,7 +6318,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Share/InfoDev.plist;
+				INFOPLIST_FILE = "${SRCROOT}/Share/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -6348,7 +6344,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Share/ShareDev.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/Share/ShareDev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
@@ -6360,7 +6356,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Share/InfoDev.plist;
+				INFOPLIST_FILE = "${SRCROOT}/Share/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -6386,7 +6382,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Share/ShareDev.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/Share/ShareDev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
@@ -6398,7 +6394,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Share/InfoDev.plist;
+				INFOPLIST_FILE = "${SRCROOT}/Share/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -6429,7 +6425,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = Push/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/Push/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Push;
@@ -6457,7 +6453,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = Push/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/Push/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Push;
@@ -6484,7 +6480,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = Push/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/Push/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Push;
@@ -6510,7 +6506,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 6UN54H93QT;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = PushDev/Info.plist;
+				INFOPLIST_FILE = Push/InfoDev.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
@@ -6537,7 +6533,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6UN54H93QT;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = PushDev/Info.plist;
+				INFOPLIST_FILE = Push/InfoDev.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
@@ -6562,7 +6558,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6UN54H93QT;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = PushDev/Info.plist;
+				INFOPLIST_FILE = Push/InfoDev.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
@@ -6579,7 +6575,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev;
-				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -6591,7 +6587,7 @@
 					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = ProtonMail/InfoDev.plist;
+				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -6617,7 +6613,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev;
-				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
@@ -6629,7 +6625,7 @@
 					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = ProtonMail/InfoDev.plist;
+				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -6655,7 +6651,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev;
-				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -6666,7 +6662,7 @@
 					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = ProtonMail/InfoDev.plist;
+				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -6735,7 +6731,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "ProtonMail/ProtonMail-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail-Bridging-Header.h";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Distribution;
@@ -6746,7 +6742,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
-				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
@@ -6756,7 +6752,7 @@
 					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = ProtonMail/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -6788,7 +6784,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = ProtonMailTests/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/ProtonMailTests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6911,8 +6907,9 @@
 				075E3DEE1A5F4ECF00E001A7 /* ProtonMail.xcdatamodel */,
 			);
 			currentVersion = 075E3DEE1A5F4ECF00E001A7 /* ProtonMail.xcdatamodel */;
-			path = ProtonMail.xcdatamodeld;
-			sourceTree = "<group>";
+			name = ProtonMail.xcdatamodeld;
+			path = ProtonMail/ProtonMail.xcdatamodeld;
+			sourceTree = SOURCE_ROOT;
 			versionGroupType = wrapper.xcdatamodel;
 		};
 /* End XCVersionGroup section */
