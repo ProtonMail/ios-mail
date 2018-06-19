@@ -12,7 +12,10 @@ jobs:
 
     steps:
       - checkout
-
+      # Install fastlane
+      - run:
+          name: Install fastlane
+          command: sudo gem install fastlane
       # Install CocoaPods
       # - run:
       #     name: Install CocoaPods
