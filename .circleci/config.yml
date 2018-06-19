@@ -30,7 +30,7 @@ jobs:
           command: fastlane scan
           environment:
             SCAN_DEVICE: iPhone 8
-            SCAN_SCHEME: ProtonMailDev
+            SCAN_SCHEME: ProtonMail
 
       # Collect XML test results data to show in the UI,
       # and save the same XML files under test-results folder
