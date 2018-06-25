@@ -135,36 +135,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         Fabric.with([Crashlytics()])
-//        FirebaseApp.configure()
-//
-//        // set_messaging_delegate
-//        Messaging.messaging().delegate = self
-
-//        if #available(iOS 10.0, *) {
-//            // For iOS 10 display notification (sent via APNS)
-//            UNUserNotificationCenter.current().delegate = self
-//
-//            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-//            UNUserNotificationCenter.current().requestAuthorization(
-//                options: authOptions,
-//                completionHandler: {_, _ in })
-//        } else {
-//            let settings: UIUserNotificationSettings =
-//                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-//            application.registerUserNotificationSettings(settings)
-//        }
-//        application.registerForRemoteNotifications()
-//
-//        let userInfo = [
-//            NSLocalizedDescriptionKey: "The request failed.",
-//            NSLocalizedFailureReasonErrorKey: "The response returned a 505ß.",
-//            NSLocalizedRecoverySuggestionErrorKey: "Does this page exist?",
-//            "ProductID": "123456",
-//            "UserID": "Feng"
-//        ]
-//
-//        let errors = NSError(domain: dataServiceDomain, code: -101010, userInfo: userInfo)
-//        Crashlytics.sharedInstance().recordError(errors)
+        application.registerForRemoteNotifications()
         
         shareViewModelFactoy = ViewModelFactoryProduction()
         sharedVMService.cleanLegacy()
@@ -186,6 +157,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
+        
         sharedPushNotificationService.registerForRemoteNotifications()
         
         if mode != .dev && mode != .sim {

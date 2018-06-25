@@ -1017,7 +1017,7 @@ class LocalizedString {
     lazy var _authentication = NSLocalizedString("Authentication", comment: "Title")
 
     /// "Enter"
-    lazy var _enter = NSLocalizedString("Enter", comment: "Action")
+    lazy var _enter = NSLocalizedString("Enter", comment: "Action in 2fa popup view")
 
     /// "Space Warning"
     lazy var _space_warning = NSLocalizedString("Space Warning", comment: "Title")
@@ -1364,7 +1364,7 @@ class LocalizedString {
     lazy var _the_passwords_you_entered_do_not_match = NSLocalizedString("The passwords you entered do not match.", comment: "Description")
 
     /// "Can't load share content!"
-    lazy var _cant_load_share_content = NSLocalizedString("Can't load share content!", comment: "Description")
+    lazy var _cant_load_share_content = NSLocalizedString("Can't load share content!", comment: "This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly")
 
     /// "Share Alert"
     lazy var _share_alert = NSLocalizedString("Share Alert", comment: "Title")
