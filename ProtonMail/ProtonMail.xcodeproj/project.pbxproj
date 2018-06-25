@@ -149,6 +149,7 @@
 		750AAEB71FA91EE200CBFCA3 /* ContactEditVIewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFC91FA7FEC3005F66A3 /* ContactEditVIewModel.swift */; };
 		750AAEB81FA91EE200CBFCA3 /* ContactEditVIewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7528FFC91FA7FEC3005F66A3 /* ContactEditVIewModel.swift */; };
 		750B00981B7AB91400F180BD /* NotificationDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B00971B7AB91400F180BD /* NotificationDefined.swift */; };
+		750BF10520E19F7200EFCD5C /* PM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75357EA820A10F7800189E8E /* PM.framework */; };
 		75106D0D1C97704B007F8176 /* FeedbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75106D0C1C97704B007F8176 /* FeedbackTableViewCell.swift */; };
 		7510AE761AB8989E00EF3C41 /* DomainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7510AE751AB8989E00EF3C41 /* DomainsTableViewCell.swift */; };
 		7510AE7C1AB8D68B00EF3C41 /* SettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7510AE7B1AB8D68B00EF3C41 /* SettingDetailViewController.swift */; };
@@ -2173,6 +2174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				750BF10520E19F7200EFCD5C /* PM.framework in Frameworks */,
 				75252D2A1FCF5E05007972EF /* Fabric.framework in Frameworks */,
 				75252D2B1FCF5E05007972EF /* Crashlytics.framework in Frameworks */,
 				751CDEBE1FBB96D5005E3EB1 /* libstdc++.tbd in Frameworks */,
@@ -6044,7 +6046,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "16719ca7-7b2d-49e9-b5bc-f1917ab97221";
+				PROVISIONING_PROFILE = "7c01965d-dba3-4af7-9b97-f1985dc7eae6";
 				PROVISIONING_PROFILE_SPECIFIER = "protonmail push service development";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG Enterprise";

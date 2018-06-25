@@ -10,12 +10,12 @@ import UserNotifications
 
 var sharedUserDataService : UserDataService!
 
-@available(iOSApplicationExtension 10.0, *)
+@available(iOS 10.0, *)
 class NotificationService: UNNotificationServiceExtension {
-
+    
     var contentHandler: ((UNNotificationContent) -> Void)?
     var bestAttemptContent: UNMutableNotificationContent?
-
+    
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
@@ -30,15 +30,17 @@ class NotificationService: UNNotificationServiceExtension {
                             let plaintext = try sharedOpenPGP.decryptMessage(encrypted,
                                                                              privateKey: userkey.private_key,
                                                                              passphrase: password)
+                            
                             if let push = PushData.parse(with: plaintext) {
-                                bestAttemptContent.title = push.title // "\(bestAttemptContent.title) [modified]"
+                                //bestAttemptContent.title = push.title // "\(bestAttemptContent.title) [modified]"
                                 if let _ = push.sound {
                                     //right now it is a integer should be sound name put default for now
                                 }
+                                
                                 bestAttemptContent.sound = UNNotificationSound.default()
-                                if let sub = push.subTitle {
-                                    bestAttemptContent.subtitle = sub
-                                }
+                                //if let sub = push.subTitle {
+                                //  bestAttemptContent.subtitle = sub
+                                //}
                                 
                                 if let body = push.body {
                                     bestAttemptContent.body = body
@@ -49,6 +51,7 @@ class NotificationService: UNNotificationServiceExtension {
                                 }
                             }
                         } catch let error {
+                            NSLog("APNS: catched error -- " + error.localizedDescription)
                             PMLog.D(error.localizedDescription)
                         }
                     }
@@ -65,5 +68,5 @@ class NotificationService: UNNotificationServiceExtension {
             contentHandler(bestAttemptContent)
         }
     }
-
+    
 }

@@ -67,7 +67,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2512</string>
+	<string>Debug</string>
 	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
 	<true/>
 	<key>Fabric</key>
