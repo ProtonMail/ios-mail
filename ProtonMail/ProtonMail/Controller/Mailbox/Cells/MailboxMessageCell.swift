@@ -43,7 +43,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     @IBOutlet weak var checkboxButton: UIButton!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var lockImage: UIImageView! // deprecated
+    @available(*, deprecated) @IBOutlet weak var lockImage: UIImageView!
     @IBOutlet weak var replyImage: UIImageView!
     
     @IBOutlet weak var attachmentImage: UIImageView!
@@ -51,39 +51,70 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     @IBOutlet weak var starImage: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        checkboxWidth.constant = 0.0
+
+        self.checkboxWidth.constant = 0.0
+        self.checkboxButton.isAccessibilityElement = false // TODO: check that this action is included into accessibility actions
         
-        locationLabel.layer.cornerRadius = 2
+        self.locationLabel.layer.cornerRadius = 2
         
-        //disable lock
         lockImage.isHidden = true
         lockWidth.constant = 0.0
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
-//        locationLabel.backgroundColor = UIColor.gray
+    private var accessibilityActionBoxes: [MCSwipeCompletionBlockBox] = []
+    private func updateAccessibilityCustomActions() {
+        self.accessibilityActionBoxes = [completionBlock1, completionBlock2, completionBlock3, completionBlock4].compactMap { MCSwipeCompletionBlockBox($0, self) }
+        let labels = [view1, view2, view3, view4].compactMap{ $0 as? UILabel }
+        let newPairs = zip(labels, self.accessibilityActionBoxes)
+        
+        self.accessibilityCustomActions = newPairs.compactMap { label, box in
+            return UIAccessibilityCustomAction(name: label.text ?? "",
+                                               target: box,
+                                               selector: #selector(MCSwipeCompletionBlockBox.execute(_:_:_:)))
+        }
     }
     
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        super.setHighlighted(highlighted, animated: animated)
-//        locationLabel.backgroundColor = UIColor.gray
+    override func setSwipeGestureWith(_ view: UIView!, color: UIColor!, mode: MCSwipeTableViewCellMode, state: MCSwipeTableViewCellState, completionBlock: MCSwipeCompletionBlock!) {
+        super.setSwipeGestureWith(view, color: color, mode: mode, state: state, completionBlock: completionBlock)
+        self.updateAccessibilityCustomActions()
     }
     
+    private func updateAccessibilityLabel() {
+        self.accessibilityLabel = """
+            \(self.title.text ?? ""),
+            \(self.labelsView.sender),
+            \(self.time.text ?? ""),
+            \(self.attachmentImage.isHidden ? "" : LocalString._attachments)
+            """
+        
+        var extendedLabel = ""
+        if !self.locationLabel.isHidden, let location = self.locationLabel.text {
+            extendedLabel += ", " + LocalString._folder + ": " + location
+        }
+        if let labels = self.labelsView.labels, !labels.isEmpty {
+            let names = labels.map { $0.name }
+            extendedLabel += ", " + LocalString._labels + ": " + names.joined(separator: ",")
+        }
+        if !self.starImage.isHidden {
+            extendedLabel += ", " + LocalString._starred
+        }
+        if !self.expirationImage.isHidden {
+            extendedLabel += ", " + LocalString._expires
+        }
+        self.accessibilityHint = extendedLabel
+    }
     
     // MARK : funcs
     
     func showCheckboxOnLeftSide() {
         self.checkboxWidth.constant = kCheckboxWidth
-        //self.titleLeadingConstraint.constant = kTitleMarginLeft
+        self.checkboxButton.isHidden = false
         self.setNeedsUpdateConstraints()
     }
     
     func hideCheckboxOnLeftSide() {
         self.checkboxWidth.constant = 0.0
-        //self.titleLeadingConstraint.constant = 0.0
+        self.checkboxButton.isHidden = true
         self.setNeedsUpdateConstraints()
     }
     
@@ -97,12 +128,14 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     }
     
     func changeStyleToReadDesign() {
+        self.accessibilityValue = nil
         self.backgroundColor = UIColor.ProtonMail.MessageCell_Read_Color
         self.title.font = Fonts.h4.light
         self.time.font = Fonts.h6.light
     }
     
     func changeStyleToUnreadDesign() {
+        self.accessibilityValue = LocalString._unread
         self.backgroundColor = UIColor.ProtonMail.MessageCell_UnRead_Color
         self.title.font = Fonts.h4.medium
         self.time.font = Fonts.h6.medium
@@ -111,6 +144,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     
     // MARK: - Cell configuration
     func configureCell(_ message: Message, showLocation : Bool, ignoredTitle: String) {
+        self.accessibilityActionBoxes = []
         self.title.text = message.subject
     
         var title = ""
@@ -120,9 +154,11 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         
         if showLocation && !title.isEmpty {
             self.locationLabel.text = " \(title) "
+            self.locationLabel.isHidden = false
             locationWidth.constant = self.locationLabel.sizeThatFits(CGSize.zero).width
             loctionRightSpace.constant = 4.0
         } else {
+            self.locationLabel.isHidden = true
             locationWidth.constant = 0.0
             loctionRightSpace.constant = 0.0
         }
@@ -195,6 +231,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         
         timeWidth.constant = self.time.sizeThatFits(CGSize.zero).width
         
+        self.updateAccessibilityLabel()
         self.setNeedsUpdateConstraints()
     }
     fileprivate func updateLables (_ labelView : LabelDisplayView, label:Label?) {

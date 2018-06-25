@@ -23,6 +23,7 @@ class ProtonMailViewController: UIViewController {
         if let revealViewController = self.revealViewController() {
             
             if (self.shouldShowSideMenu()) {
+                self.menuButton.accessibilityLabel = LocalString._menu_button
                 self.menuButton.target = self.revealViewController()
                 self.menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
                 self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())

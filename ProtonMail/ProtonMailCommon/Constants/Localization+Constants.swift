@@ -77,7 +77,7 @@ class LocalizedString {
     
     
     // Mark Menu
-    
+    lazy var _menu_button         = NSLocalizedString("Menu", comment: "menu title")
     /// "Report Bugs"
     lazy var _menu_bugs_title     = NSLocalizedString("Report Bugs", comment: "menu title")
     /// "Inbox"
@@ -1451,4 +1451,20 @@ class LocalizedString {
     lazy var _double_tap_to_setup = NSLocalizedString("Double tap to setup", comment: "VoiceOver action description")
     /// "Custom"
     lazy var _custom = NSLocalizedString("Custom", comment: "action sheet option")
+    
+    
+    // Mark: - VoiceOver
+    
+    /// "Attachments"
+    lazy var _attachments = NSLocalizedString("Attachments", comment: "VoiceOver: email has attachments")
+    /// "Folder"
+    lazy var _folder = NSLocalizedString("Folder", comment: "VoiceOver: email belongs to folder")
+    /// "Labels"
+    lazy var _labels = NSLocalizedString("Labels", comment: "VoiceOver: email has lables")
+    /// "Starred"
+    lazy var _starred = NSLocalizedString("Starred", comment: "VoiceOver: email is starred")
+    /// "Expires"
+    lazy var _expires = NSLocalizedString("Expires", comment: "VoiceOver: email can expire")
+    /// "Unread"
+    lazy var _unread = NSLocalizedString("Unread", comment: "VoiceOver: email is not read yet")
 }

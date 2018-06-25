@@ -601,7 +601,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             rightCrossView.textColor = UIColor.white
             
             if self.viewModel.isSwipeActionValid(self.leftSwipeAction) {
-                mailboxCell.setSwipeGestureWith(leftCrossView, color: leftSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state1 ) { (cell, state, mode) -> Void in
+                mailboxCell.setSwipeGestureWith(leftCrossView, color: leftSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state1 ) { [weak self] (cell, state, mode) -> Void in
+                    guard let `self` = self else { return }
                     if let indexp = self.tableView.indexPath(for: cell!) {
                         if self.viewModel.isSwipeActionValid(self.leftSwipeAction) {
                             if !self.processSwipeActions(self.leftSwipeAction, indexPath: indexp) {
@@ -619,7 +620,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             }
             
             if self.viewModel.isSwipeActionValid(self.rightSwipeAction) {
-                mailboxCell.setSwipeGestureWith(rightCrossView, color: rightSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state3  ) { (cell, state, mode) -> Void in
+                mailboxCell.setSwipeGestureWith(rightCrossView, color: rightSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state3  ) { [weak self] (cell, state, mode) -> Void in
+                    guard let `self` = self else { return }
                     if let indexp = self.tableView.indexPath(for: cell!) {
                         if self.viewModel.isSwipeActionValid(self.rightSwipeAction) {
                             if !self.processSwipeActions(self.rightSwipeAction, indexPath: indexp) {
@@ -642,6 +644,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     
     fileprivate func processSwipeActions(_ action: MessageSwipeAction, indexPath: IndexPath) -> Bool {
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, action.description)
         switch (action) {
         case .archive:
             self.archiveMessageForIndexPath(indexPath)

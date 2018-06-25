@@ -241,7 +241,8 @@ class AttachmentsTableViewController: UITableViewController {
             crossView.sizeToFit()
             crossView.textColor = UIColor.white
             cell.defaultColor = UIColor.lightGray
-            cell.setSwipeGestureWith(crossView, color: UIColor.ProtonMail.MessageActionTintColor, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state3  ) { (cell, state, mode) -> Void in
+            cell.setSwipeGestureWith(crossView, color: UIColor.ProtonMail.MessageActionTintColor, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state3  ) { [weak self] (cell, state, mode) -> Void in
+                guard let `self` = self else { return }
                 if let indexp = self.tableView.indexPath(for: cell!) {
                     let section = self.attachmentSections[indexp.section]
                     var cellAtt : Attachment?

@@ -87,6 +87,10 @@ class MenuViewController: UIViewController {
         super.viewWillAppear(animated)
         self.updateRevealWidth()
         
+        self.revealViewController().frontViewController.view.accessibilityElementsHidden = true
+        self.view.accessibilityElementsHidden = false
+        self.view.becomeFirstResponder()
+        
         self.revealViewController().frontViewController.view.isUserInteractionEnabled = false
         self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         
@@ -120,6 +124,9 @@ class MenuViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        segue.destination.view.accessibilityElementsHidden = false
+        self.view.accessibilityElementsHidden = true
+        
         // TODO: this deeplink implementation is ugly, consider using Coordinators pattern
         if #available(iOS 10.0, *),
             sender is NotificationsSnoozer,
