@@ -50,7 +50,7 @@ class ComposePasswordViewController: UIViewController {
         passwordErrorLabel.text          = LocalString._composer_eo_empty_pwd_desc
         confirmPasswordField.placeholder = LocalString._composer_eo_confirm_pwd_placeholder
         confirmPasswordErrorLabel.text   = LocalString._composer_eo_dismatch_pwd_desc
-        hintField.placeholder            = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
+        hintField.placeholder            = LocalString._define_hint_optional
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
         removeButton.setTitle(LocalString._general_remove_button, for: .normal)
         applyButton.setTitle(LocalString._general_apply_button, for: .normal)

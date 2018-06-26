@@ -198,7 +198,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Upload Contacts",  comment: "Action"), style: .default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._contacts_upload_contacts, style: .default, handler: { (action) -> Void in
             self.navigationController?.popViewController(animated: true)
             
             let alertController = UIAlertController(title: LocalString._contacts_title,

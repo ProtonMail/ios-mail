@@ -426,7 +426,7 @@ class ComposeView: UIViewController {
     }
     
     internal func showPasswordHintView() {
-        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Hint (Optional)", comment: "place holder")
+        self.encryptedPasswordTextField.placeholder = LocalString._define_hint_optional
         self.encryptedPasswordTextField.isSecureTextEntry = false
         self.encryptedPasswordTextField.text = ""
     }

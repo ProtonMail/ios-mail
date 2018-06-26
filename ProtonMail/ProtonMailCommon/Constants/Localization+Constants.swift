@@ -266,8 +266,8 @@ class LocalizedString {
     lazy var _composer_define_expiration_placeholder = NSLocalizedString("Define Expiration Date", comment: "Placeholder")
     /// "Define Password"
     lazy var _composer_define_password = NSLocalizedString("Define Password", comment: "place holder")
-    
-    
+    /// "Define Hint (Optional)"
+    lazy var _define_hint_optional = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
 
     
     
@@ -357,8 +357,8 @@ class LocalizedString {
     lazy var _contacts_name_title = NSLocalizedString("Name", comment: "title")
     /// "Notes"
     lazy var _contacts_info_notes = NSLocalizedString("Notes", comment: "title")
-    
-    
+    /// "Upload Contacts"
+    lazy var _contacts_upload_contacts = NSLocalizedString("Upload Contacts",  comment: "Action")
     
     
     // Mark Labels
@@ -1422,6 +1422,19 @@ class LocalizedString {
     /// "ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature."
     lazy var _plus_visionary_enables_you_to_customize_mobile_signature = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." , comment: "alert description")
     
+    // MARK: - Composer expiration warning
+    
+    ///"Tap send anyway to send without expiration to these recipients"
+    lazy var _tap_send_anyway_to_send_without_expiration_to_these_recipients = NSLocalizedString("Tap send anyway to send without expiration to these recipients", comment: "alert description")
+    /// "Learn more here"
+    lazy var _learn_more_here = NSLocalizedString("Learn more here", comment: "learn more button")
+    /// "Not all recipients support message expiration"
+    lazy var _not_all_recipients_support_message_expiration = NSLocalizedString("Not all recipients support message expiration", comment: "alert description")
+    /// "Please add a password for the following recipients"
+    lazy var _please_add_a_password_for_the_following_recipients = NSLocalizedString("Please add a password for the following recipients", comment: "alert description")
+    /// "Please disable PGP Sending for following addresses"
+    lazy var _please_disable_pgp_sending_for_following_addresses = NSLocalizedString("Please disable PGP Sending for following addresses", comment: "alert description")
+    
     
     // MARK: - Notifcations Snooze feature
     
@@ -1451,4 +1464,21 @@ class LocalizedString {
     lazy var _double_tap_to_setup = NSLocalizedString("Double tap to setup", comment: "VoiceOver action description")
     /// "Custom"
     lazy var _custom = NSLocalizedString("Custom", comment: "action sheet option")
+
+    // Mark: - VoiceOver
+    
+    /// "Attachments"
+    lazy var _attachments = NSLocalizedString("Attachments", comment: "VoiceOver: email has attachments")
+    /// "Folder"
+    lazy var _folder = NSLocalizedString("Folder", comment: "VoiceOver: email belongs to folder")
+    /// "Labels"
+    lazy var _labels = NSLocalizedString("Labels", comment: "VoiceOver: email has lables")
+    /// "Starred"
+    lazy var _starred = NSLocalizedString("Starred", comment: "VoiceOver: email is starred")
+    /// "Expires"
+    lazy var _expires = NSLocalizedString("Expires", comment: "VoiceOver: email can expire")
+    /// "Unread"
+    lazy var _unread = NSLocalizedString("Unread", comment: "VoiceOver: email is not read yet")
+    
+    
 }
