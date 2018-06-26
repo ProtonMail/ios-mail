@@ -563,12 +563,13 @@ extension ComposeViewModelImpl {
         return strJson
     }
     func toContacts(_ json : String) -> [ContactVO] {
-        
         var out : [ContactVO] = [ContactVO]();
-        
-        let recipients : [[String : String]] = json.parseJson()!
-        for dict:[String : String] in recipients {
-            out.append(ContactVO(id: "", name: dict["Name"], email: dict["Address"]))
+        if let recipients : [[String : Any]] = json.parseJson() {
+            for dict:[String : Any] in recipients {
+                let name = dict["Name"] as? String ?? ""
+                let email = dict["Address"] as? String ?? ""
+                out.append(ContactVO(id: "", name: name, email: email))
+            }
         }
         return out
     }

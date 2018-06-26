@@ -54,6 +54,7 @@ class APIService {
         //sessionManager.requestSerializer.timeoutInterval = 20.0;
         sessionManager.securityPolicy.validatesDomainName = false
         sessionManager.securityPolicy.allowInvalidCertificates = false
+        sessionManager.responseSerializer.acceptableContentTypes?.insert("text/html")
         
         #if DEBUG
             sessionManager.securityPolicy.allowInvalidCertificates = true

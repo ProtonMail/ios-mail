@@ -86,29 +86,27 @@ final class MessageHelper {
     }
 
     
-    static func contactsToAddresses (_ contacts : String!) -> String
-    {
+    static func contactsToAddresses (_ contacts : String!) -> String {
         var lists: [String] = []
-        let recipients : [[String : String]] = contacts.parseJson()!
-        for dict:[String : String] in recipients {
-            
-            let to = dict.getAddress()
-            if !to.isEmpty  {
-                lists.append(to)
+        if let recipients : [[String : Any]] = contacts.parseJson() {
+            for dict:[String : Any] in recipients {
+                let to = dict.getAddress()
+                if !to.isEmpty  {
+                    lists.append(to)
+                }
             }
         }
         return lists.joined(separator: ",")
     }
     
-    static func contactsToAddressesArray (_ contacts : String!) -> [String]
-    {
+    static func contactsToAddressesArray (_ contacts : String!) -> [String] {
         var lists: [String] = []
-        let recipients : [[String : String]] = contacts.parseJson()!
-        for dict:[String : String] in recipients {
-            
-            let to = dict.getAddress()
-            if !to.isEmpty  {
-                lists.append(to)
+        if let recipients : [[String : Any]] = contacts.parseJson() {
+            for dict:[String : Any] in recipients {
+                let to = dict.getAddress()
+                if !to.isEmpty  {
+                    lists.append(to)
+                }
             }
         }
         return lists
