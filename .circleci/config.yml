@@ -19,11 +19,8 @@ jobs:
                 name: install xUnique
                 command: sudo pip install xUnique
             - run:
-                name: pre-start simulator
-                command: xcrun instruments -w "iPhone 8 (11.4) [" || true
-            - run:
                 name: Run tests
-                command: fastlane scan --workspace "ProtonMail/ProtonMail.xcworkspace"
+                command: fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "ProtonMailDev" --device "iPhone 8" --clean
                 environment:
                     SCAN_DEVICE: iPhone 8
                     SCAN_SCHEME: ProtonMailDev
