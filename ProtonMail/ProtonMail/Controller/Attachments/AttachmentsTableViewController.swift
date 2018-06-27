@@ -174,15 +174,24 @@ class AttachmentsTableViewController: UITableViewController {
                 kUTTypeBzip2Archive as String,
                 kUTTypeZipArchive as String,
                 kUTTypeData as String
-//                "rar",
-//                "RAR"
             ]
-            let importMenu = UIDocumentMenuViewController(documentTypes: types, in: .import)
-            importMenu.delegate = self
-            importMenu.popoverPresentationController?.barButtonItem = sender
-            importMenu.popoverPresentationController?.sourceRect = self.view.frame
-            // importMenu.addOptionWithTitle("Create New Document", image: nil, order: .First, handler: { println("New Doc Requested") })
-            self.present(importMenu, animated: true, completion: nil)
+            
+            if #available(iOS 11.0, *) {
+                // UIDocumentMenuViewController  will be deprecated in iOS 12 and since iOS 11 contains only one `Browse...` option which opens UIDocumentPickerViewController. We can avoid useless middle step.
+                let picker = UIDocumentPickerViewController(documentTypes: types, in: .import)
+                picker.delegate = self
+                picker.popoverPresentationController?.barButtonItem = sender
+                picker.popoverPresentationController?.sourceRect = self.view.frame
+                picker.allowsMultipleSelection = true
+                self.present(picker, animated: true, completion: nil)
+            } else {
+                // iOS 9 and 10 also allow access to document providers from UIDocumentPickerViewController, but let's keep Menu as it's still useful (until iOS 11)
+                let importMenu = UIDocumentMenuViewController(documentTypes: types, in: .import)
+                importMenu.delegate = self
+                importMenu.popoverPresentationController?.barButtonItem = sender
+                importMenu.popoverPresentationController?.sourceRect = self.view.frame
+                self.present(importMenu, animated: true, completion: nil)
+            }
         }))
         
         alertController.popoverPresentationController?.barButtonItem = sender
@@ -194,7 +203,9 @@ class AttachmentsTableViewController: UITableViewController {
     func showSizeErrorAlert( _ didReachedSizeLimitation: Int) {
         let alert = LocalString._the_total_attachment_size_cant_be_bigger_than_25mb.alertController()
         alert.addOKAction()
-        present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     func showErrorAlert( _ error: String) {
@@ -241,7 +252,7 @@ class AttachmentsTableViewController: UITableViewController {
             crossView.sizeToFit()
             crossView.textColor = UIColor.white
             cell.defaultColor = UIColor.lightGray
-            cell.setSwipeGestureWith(crossView, color: UIColor.ProtonMail.MessageActionTintColor, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state3  ) { [weak self] (cell, state, mode) -> Void in
+            cell.setSwipeGestureWith(crossView, color: .red, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state3  ) { [weak self] (cell, state, mode) -> Void in
                 guard let `self` = self else { return }
                 if let indexp = self.tableView.indexPath(for: cell!) {
                     let section = self.attachmentSections[indexp.section]
@@ -301,8 +312,8 @@ class AttachmentsTableViewController: UITableViewController {
     }
 }
 
+@available(iOS, deprecated: 11.0, message: "We don't use UIDocumentMenuViewController for iOS 11+, only UIDocumentPickerViewController")
 extension AttachmentsTableViewController : UIDocumentMenuDelegate {
-    
     func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         documentPicker.delegate = self
         documentPicker.modalPresentationStyle = UIModalPresentationStyle.formSheet
@@ -310,40 +321,45 @@ extension AttachmentsTableViewController : UIDocumentMenuDelegate {
     }
 }
 
+
+/// Documents
 extension AttachmentsTableViewController: UIDocumentPickerDelegate {
     
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+    @available(iOS 11.0, *)
+    internal func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        urls.forEach { self.documentPicker(controller, didPickDocumentAt: $0) }
+    }
+    
+    internal func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
         var error : NSError?
-        coordinator.coordinate(readingItemAt: url, options: NSFileCoordinator.ReadingOptions(), error: &error) { (new_url) -> Void in
-            if let data = try? Data(contentsOf: url) {
-                DispatchQueue.main.async {
-                    if data.count <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
-                        let ext = url.mimeType()
-                        let fileName = url.lastPathComponent
-                        let attachment = data.toAttachment(self.message, fileName: fileName, type: ext)
-                        self.attachments.append(attachment!)
-                        self.delegate?.attachments(self, didPickedAttachment: attachment!)
-                        self.updateAttachmentSize()
-                        self.buildAttachments()
-                        self.tableView.reloadData()
-                    } else {
-                        self.showSizeErrorAlert(0)
-                        self.delegate?.attachments(self, didReachedSizeLimitation:0)
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.showErrorAlert(LocalString._cant_load_the_file)
-                    self.delegate?.attachments(self, error: LocalString._cant_load_the_file)
-                }
+        
+        coordinator.coordinate(readingItemAt: url, options: NSFileCoordinator.ReadingOptions(), error: &error) { new_url in
+            guard let data = try? Data(contentsOf: url) else {
+                self.showErrorAlert(LocalString._cant_load_the_file)
+                self.delegate?.attachments(self, error: LocalString._cant_load_the_file)
+                return
             }
+
+            guard data.count > ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) else {
+                self.showSizeErrorAlert(0)
+                self.delegate?.attachments(self, didReachedSizeLimitation:0)
+                return
+            }
+            
+            let ext = url.mimeType()
+            let fileName = url.lastPathComponent
+            let attachment = data.toAttachment(self.message, fileName: fileName, type: ext)
+            self.attachments.append(attachment!)
+            self.delegate?.attachments(self, didPickedAttachment: attachment!)
+            self.updateAttachmentSize()
+            self.buildAttachments()
+            self.tableView.reloadData()
         }
+        
         if error != nil {
-            DispatchQueue.main.async {
-                self.showErrorAlert(LocalString._cant_copy_the_file)
-                self.delegate?.attachments(self, error: LocalString._cant_copy_the_file)
-            }
+            self.showErrorAlert(LocalString._cant_copy_the_file)
+            self.delegate?.attachments(self, error: LocalString._cant_copy_the_file)
         }
     }
     
@@ -353,6 +369,8 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
     
 }
 
+
+/// Photos
 extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
