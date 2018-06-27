@@ -1,0 +1,6 @@
+framework module DKPhotoGallery {
+  umbrella header "DKPhotoGallery-umbrella.h"
+
+  export *
+  module * { export * }
+}
