@@ -26,6 +26,7 @@
 		01E381FABFB2196B79463AFD78A843FD /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */; };
 		0214AE81179224CC7C0CA717238ADFE7 /* OrganizationsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8C88CF997A748C2D11C0419571595A /* OrganizationsAPI.swift */; };
 		029818E07D05EE4B1460BC382930AD02 /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153F6534536F0C3BB4E2D2782B5F8674 /* Hash.swift */; };
+		02A3F6BD54D03C5D61AEC5DF9AB5AD0A /* libPods-ShareDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76D0CBED5D793B5B7AA620464528601D /* libPods-ShareDev.a */; };
 		02B5904D049F6EC59AC0B3A96F01FDFD /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942B9E881D2DF16816299A285CD5CDFC /* Array+Extension.swift */; };
 		02FA2D4C14FAB65F01A26CF51368DF7E /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BB002B5675ED1988C1C86F59FDB410DA /* ProtonMail.xcdatamodeld */; };
 		030575AB0D61889496C2F7F336358FC2 /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA73A35D604465146787543338B179D1 /* UIColor+ProtonMail.swift */; };
@@ -67,9 +68,7 @@
 		087CD058E064EEE2E717602818378501 /* ExpirationWarningHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667B259499756B936C5965740FB1C262 /* ExpirationWarningHeaderCell.swift */; };
 		0882139F4F3ADA776896A5883CD7191C /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CFA13A53B9FD4D4305DD4B86DF8193 /* FeedbackViewController.swift */; };
 		0938782E2535FE2942502EF8BE06C676 /* ContactEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */; };
-		094F3E702945675F314FAF6330691FA9 /* Pods_ProtonMailTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B28DCB0803630A3B44E183F3040FBF3 /* Pods_ProtonMailTests.framework */; };
 		09774923BE6C942B4403375CED80EA9C /* DomainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AA34A18E2E22A96A8348C10B43A531 /* DomainsTableViewCell.swift */; };
-		09D86FB462391753724C8C78707A0B1F /* Pods_ProtonMailDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA59AD999B62E695D152A787E8BAAD0C /* Pods_ProtonMailDev.framework */; };
 		09DBA95B82320A739DC502E55A0832B3 /* LabelCreatingViewModelImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0852EA8136DF638576DE78C9E6D2FF1D /* LabelCreatingViewModelImple.swift */; };
 		09F780646B51A97138C2B511683B066C /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77669C3C0F15ACBCAC5071A59F5E57F0 /* Threading.swift */; };
 		0A24A88AC8877D8D8B27FF74B7CD2D27 /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0795584292A315BA131FB8D800A1AB /* SettingsNavigationController.swift */; };
@@ -194,6 +193,7 @@
 		21352EBA64320030B9D9FD060C2A637B /* ContactUpgradeCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304EBAE13534EEE358F03C9DF7F79797 /* ContactUpgradeCellDelegate.swift */; };
 		21451E8CD631782A427DA0FD26B1E3E0 /* LabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DF8A1F9330638F7C4A47D405EB7D23 /* LabelExtension.swift */; };
 		2185438D12B7EE525C1B2790042A5D97 /* ContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7385ADE4EA34EE7A7F64BBA0E0E5BF7D /* ContactPicker.swift */; };
+		21958CA5331474BF08968C572E9303B2 /* libPods-Share.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45AB0DE68A1BFC02BE2789161593615E /* libPods-Share.a */; };
 		21A22D014CF6CB1EB6C5D86F919A7795 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */; };
 		21C61585CCE300557EEB115B8866C89E /* MultiLabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E60FC91F733F0C899B8269CF3D0E7D /* MultiLabelDisplayView.xib */; };
 		21DE88D47AA0B199C941B9B8ED4B2AF1 /* MessageAPI+Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F810FE516B49C36333F506F09E4E5 /* MessageAPI+Response.swift */; };
@@ -404,7 +404,6 @@
 		4636B8BC852796F32AF4B62E369BA6BF /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB9FC5D69B6BA67F8EEF7823648FABB /* UINavigationController+Extension.swift */; };
 		46788AD27915EB5EB1EC5D6F6492280C /* ContactCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE7A25E600A79A1B5AF9F044609BC4B /* ContactCollectionView.swift */; };
 		467E9CE17D1FA2A733897744C2691965 /* MessageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA5E8F1461234804B3FAB424722B8BF /* MessageAction.swift */; };
-		46EB8A356624DB9F23CEF6D61FBA248E /* Pods_PushServiceDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A84AA1A4CD359F9B3AD53E56954AF524 /* Pods_PushServiceDev.framework */; };
 		4707DDC46D30856D64FED5C8B756A36C /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E1DF4B9083F68972C3AD18616B2856E /* PinCodeView.xib */; };
 		472CCCF84185441403F7BC40C1A4A26A /* AddressAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04025B7C6436895719C25378EBFF48C9 /* AddressAPI.swift */; };
 		47965230D29D78C91E4A627974C4C0E5 /* MenuLabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DE7858BA56DBC87D4AF3B339EADD91 /* MenuLabelViewCell.swift */; };
@@ -450,7 +449,6 @@
 		4D973CD5E70D3EE7EC387F5B4E0BA09A /* ShowImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 304EB5D67CD0DF808BAD447D812C0CCF /* ShowImageView.xib */; };
 		4DBFFF58172DE9015F7AF24CE60E1B6D /* ContactFieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F1904E81CADB25323AA62B5C0D4F3F /* ContactFieldType.swift */; };
 		4E12BBDF7134F9B981506F49E70A7349 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1683E88F2B7F1FCE35BA6AD99BCA5B9 /* SettingsCell.swift */; };
-		4E1CCBDCF9F890CF0D017BCFBFB3F439 /* Pods_ShareDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E337FAA25F7ED4AC0D90F477BEC94697 /* Pods_ShareDev.framework */; };
 		4E9B13A6B01327DF61973144A147E122 /* MessageAPI+SendType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79805F58CE1B891A44279FF30CBE677A /* MessageAPI+SendType.swift */; };
 		4E9BF75778F70D4F1F372C93F914DCCE /* ContactEditTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B13E32145C9E9E7885E6588E3F7F3C5 /* ContactEditTextViewCell.swift */; };
 		4EB0065AC6F7778195D56A50789D66EA /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493E60450A08C78D9D259E95FA6E897C /* CalendarIntervalRule.swift */; };
@@ -522,7 +520,6 @@
 		58B1B2244B17BF3BE5CD7D8973A013D4 /* ContactDetailsUpgradeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC985B9AE4DCC8A30D656FD4A00D658C /* ContactDetailsUpgradeCell.swift */; };
 		58CBD745E9C4790EB5A054926802A8B4 /* APIService+MessagesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A9D3A4B83ACC4D934A2E630B505AF5 /* APIService+MessagesExtension.swift */; };
 		58EE51A9871BA7F34E461E7BDD60E6A7 /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03C21BED10B6A6ED8D7D2660C78D4A2 /* LabelAPI.swift */; };
-		58F4F4F777E23217BF18ED6C75481736 /* Pods_Share.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BD9D2C7E81A25BCF17A6EE6B7B6D9D6 /* Pods_Share.framework */; };
 		59428A559165BE43BC3D8629B32406A8 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFE3868B0060D33182C2D17832CAF5F /* APIService.swift */; };
 		596D801115C6A66EB7B8367156D655D7 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCEB3AB6A95864C955CC7CE2F7C50B5 /* UserNotifications.framework */; };
 		598AE5C1D1659BCD983B25409F147E9D /* Message+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E4AC8179E64BE4F4E1C508F653E628 /* Message+String+Extension.swift */; };
@@ -568,7 +565,6 @@
 		619826D17E0A9CF1CDE67A37C9B892BB /* LabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0A6A9213EBF556CB9344EDEDD80B021 /* LabelDisplayView.xib */; };
 		61B84B30BFC8F0F602D5E3998B30E3D7 /* EmailExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BD9608A584A24A09728FC917C8551C /* EmailExtension.swift */; };
 		61F6917B121521B3D81938EBEC48613D /* EmailExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BD9608A584A24A09728FC917C8551C /* EmailExtension.swift */; };
-		61F9DB611ECBEF296940B1E438C9AAFC /* Pods_ProtonMail.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E5FF415464C7BC5B7487FC9782F5B4 /* Pods_ProtonMail.framework */; };
 		62062D266C79089F614025B3CEF9C216 /* SettingDebugTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3D37EE9B1F2A764D88FD1AA824BC76 /* SettingDebugTableViewController.swift */; };
 		6237D5A3E5B257C3F57721E6304EF447 /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D92DEE740435769B951F10DDEACF596 /* Email.swift */; };
 		626BC3C873B121016E6D88A241313897 /* ViewModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3625E14CB48ED7B24630CE2FDBCBDA /* ViewModelService.swift */; };
@@ -752,6 +748,7 @@
 		80197720C505895A63FFEDD68090C6E5 /* DataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7172825915E9D32EB8B24F78F70667 /* DataService+Error.swift */; };
 		8020ACD54C2981A444E55BD20A6E9A1D /* DebugDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F21312E00992676D7D963F599A5F /* DebugDetailsViewController.swift */; };
 		802DF89A8E0947671F0885794AEC265D /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33280811503EE1C12B69359DF59547D /* ContactsViewModel.swift */; };
+		805BCE63E540F2407E5508F3F19B6F61 /* libPods-ProtonMail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D56F66AEF70E0E570822A849DFE5E27 /* libPods-ProtonMail.a */; };
 		806214862B5FD30EF71BC9AA805703DD /* ExpirationWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57805306D07DA8BD55BDA82FCEA2986C /* ExpirationWarningViewController.swift */; };
 		80AD57EC84909ABB1B1BE4DE790C07AB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B510F2298FF72A4B77337856F9219E /* SignInViewController.swift */; };
 		8101491AE70F00A1794B28FF1676CCDA /* ContactCollectionViewContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 161647CD3D12CAF522C1683DBD2046F6 /* ContactCollectionViewContactCell.xib */; };
@@ -872,6 +869,7 @@
 		9442E4EEA9825AE9ADA9948F84634641 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BE9D2FABB2F4204098EE8B5588DE5C /* Settings+Defined.swift */; };
 		948AE53265DB086B11CA8B3E15FE989E /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E503FA48E816D788CBE16EFDC359D08 /* AppVersionTests.swift */; };
 		95092C4430BA5BDFCDDF35C6E4DB97CD /* NSError+Alert+Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350DB1CE5A6D9FB0346D24A0319EB2E /* NSError+Alert+Mail.swift */; };
+		9596FE440B63D47C8E7E8582EA4A59EE /* libPods-PushServiceDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43677A7B9EADC3081038A93A2FEF9E32 /* libPods-PushServiceDev.a */; };
 		959BE19AB36E5CD6F655DE21BF4AA2E3 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */; };
 		95AA447AEFDA858547B27F85F7808CDA /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052B8D056C5CE08382D71EDBD635B6A5 /* Label.swift */; };
 		9717061947CD25B973A744B1BAE5FD65 /* ContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0477F89137AAA9A42BC73B09D025A29 /* ContactModel.swift */; };
@@ -1353,6 +1351,7 @@
 		E2C8463A2A406D26055B712D83EF8600 /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87530495407CE3203D251F1AAF3A3DAD /* ToastMessageView.swift */; };
 		E2DE3E71D9D8BA6410F736D53B74C0E6 /* MessageDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B58028DD144CB7DBE3910795D25907 /* MessageDataService.swift */; };
 		E3035D57F1B18C1E189B87B10A8702A3 /* ExpirationWarningHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667B259499756B936C5965740FB1C262 /* ExpirationWarningHeaderCell.swift */; };
+		E364C9B8BDD709DF3E129548039AA10D /* libPods-ProtonMailTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B49BE838AF8C2C2CB5B021C9B37D6A /* libPods-ProtonMailTests.a */; };
 		E36A729F1C1343F935D9F805B68367AB /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD961DC114743EC95EAE9E6B7F90274C /* UserAPI.swift */; };
 		E3B38E92CFD6373B41945D286B6D089C /* MessageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA5E8F1461234804B3FAB424722B8BF /* MessageAction.swift */; };
 		E3BFEE7F3A31CF23BEF1F6911A475692 /* AttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5001058BC4DB4742070EDC912918C2ED /* AttachmentTableViewCell.swift */; };
@@ -1522,6 +1521,7 @@
 		FE9158DA877946A3209329EB2245BC29 /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325B84027809DA6DB073D1D84C4DBBB2 /* UserDefaults+Extension.swift */; };
 		FEC08DB44B517A212D160200C9BA5B43 /* ContactsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B698B7E32E1425A4A64AC8322B47EE27 /* ContactsAPI.swift */; };
 		FEDF1EBAA909B9DB90CFA996E7586414 /* MessageAPI+SendType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79805F58CE1B891A44279FF30CBE677A /* MessageAPI+SendType.swift */; };
+		FEEADFB8026EBF019F20F34085EF5296 /* libPods-ProtonMailDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFC3223D8F624D4506F2DEA56C01E523 /* libPods-ProtonMailDev.a */; };
 		FF574EBFF74DBAF15846CDB94D3AB365 /* ViewModelBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B47C3DCD77DFACE40B083CBEB41E9C /* ViewModelBase.swift */; };
 		FF71F8D04B2D795219315A312AF00251 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267162BA635F2F55FE71248A41115376 /* MenuTableViewCell.swift */; };
 		FF9485B6BF07BD9F040979B9E7A9BA92 /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ED0222F585298654890FE8BF6620AC /* SignInViewModelImpl.swift */; };
@@ -1662,7 +1662,6 @@
 		1AB6E3213453075852FF02AF616CE4F7 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		1ADC95EBCE3934AB4F7E4DFB4B0E00AF /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		1B13E32145C9E9E7885E6588E3F7F3C5 /* ContactEditTextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditTextViewCell.swift; sourceTree = "<group>"; };
-		1B28DCB0803630A3B44E183F3040FBF3 /* Pods_ProtonMailTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProtonMailTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B3055A244AAD264664E2E6C96BE6938 /* Pods-ProtonMailTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.distribution.xcconfig"; sourceTree = "<group>"; };
 		1BBAB3378173BB2EA0DA5B8ED856A693 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1C6975591022B24982654B9F6C071D9C /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
@@ -1743,13 +1742,14 @@
 		3EC70018679D8EB92AC81A27EBA49C35 /* BCrypt+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BCrypt+Extension.swift"; sourceTree = "<group>"; };
 		3F9C1DB9DCA27A1E893B9BFE52A76926 /* TermsWebViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsWebViewModelImpl.swift; sourceTree = "<group>"; };
 		40AA063DDB34350CC9B431705C5A4D03 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
-		41E5FF415464C7BC5B7487FC9782F5B4 /* Pods_ProtonMail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProtonMail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		429151026228BE9C624D5EC94E3564C7 /* MBContactPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBContactPicker.h; sourceTree = "<group>"; };
 		42E21667F1C859137B9CE6DD7A47DE59 /* ContactEditViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewModelImpl.swift; sourceTree = "<group>"; };
+		43677A7B9EADC3081038A93A2FEF9E32 /* libPods-PushServiceDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushServiceDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		44085B624A400826C97F51354D48AF8C /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		450D2530B2F47C55FBEABC6AC343D094 /* OpenPGPDefines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenPGPDefines.swift; sourceTree = "<group>"; };
 		451A9B0D4FA42E20F1E5DF6F73A2D947 /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		45885E1634D5EACB18C02CB6678FA056 /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
+		45AB0DE68A1BFC02BE2789161593615E /* libPods-Share.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Share.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47AA066E127A4E761C07732C013385F4 /* MonitorSavesDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorSavesDataService.swift; sourceTree = "<group>"; };
 		47AE767C6397168279C0ADCF111E1383 /* ContactsDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsDefined.swift; sourceTree = "<group>"; };
 		47E6C6516E4914A548087D78DFD0C41B /* ComposerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposerViewController.xib; sourceTree = "<group>"; };
@@ -1795,6 +1795,7 @@
 		5C3C45196C742337934AB7387537109A /* DomainsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DomainsTableViewCell.xib; sourceTree = "<group>"; };
 		5D1BEB8606CB3CF8775F504C746071BA /* NSBundle+Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Language.h"; sourceTree = "<group>"; };
 		5D2CEFA26A1BF2F0E6FED78804862460 /* SignUpUserNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpUserNameViewController.swift; sourceTree = "<group>"; };
+		5D56F66AEF70E0E570822A849DFE5E27 /* libPods-ProtonMail.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMail.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DB70CD125DBA94CA84EEFCA591D2366 /* NotificationDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDefined.swift; sourceTree = "<group>"; };
 		5F0A6DAFDF49785FC75C1ECF770E55C9 /* CountryCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCode.swift; sourceTree = "<group>"; };
 		6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportsAPI.swift; sourceTree = "<group>"; };
@@ -1864,6 +1865,7 @@
 		75FFC0F937D149117E07B6ADFEF9186F /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
 		760C5DA9DF82644FD4A749CF84130A95 /* String+Toast+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Toast+Extension.swift"; sourceTree = "<group>"; };
 		7627FEBF2F33A575273ACF9A8A0AA738 /* SettingsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAPI.swift; sourceTree = "<group>"; };
+		76D0CBED5D793B5B7AA620464528601D /* libPods-ShareDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShareDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		76E557A37E9C2EAF13725A6B0B37F3E0 /* ExpirationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpirationView.xib; sourceTree = "<group>"; };
 		77669C3C0F15ACBCAC5071A59F5E57F0 /* Threading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Threading.swift; sourceTree = "<group>"; };
 		77A9D3A4B83ACC4D934A2E630B505AF5 /* APIService+MessagesExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "APIService+MessagesExtension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -1936,7 +1938,6 @@
 		99498D0AAFDBA306C8569EAC3640B7A8 /* PushDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B134B304EA7B3B50AB022AD491099FA /* String+Mime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mime.swift"; sourceTree = "<group>"; };
 		9BC3A915CE5C2DCBE33816238C7A3E83 /* NSFetchedResultsController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSFetchedResultsController+Extension.swift"; sourceTree = "<group>"; };
-		9BD9D2C7E81A25BCF17A6EE6B7B6D9D6 /* Pods_Share.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Share.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BFCE533884CA182718B493B6066DAB3 /* SharedCacheBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedCacheBase.swift; sourceTree = "<group>"; };
 		9C0829793CC58D8772051A264559A6D1 /* NSSet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSet+Extension.swift"; sourceTree = "<group>"; };
 		9CA2EFDD9F7027917C486AFA29F60E40 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -1956,12 +1957,12 @@
 		A15A32EFCD58FF1DBC64A3F0D7E7074D /* MailboxViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewModel.swift; sourceTree = "<group>"; };
 		A1683E88F2B7F1FCE35BA6AD99BCA5B9 /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		A3B69A9A7E31F1994FD354E4E35A0260 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A4B49BE838AF8C2C2CB5B021C9B37D6A /* libPods-ProtonMailTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4D6B81CADB11CAD01B8E46E92DF6B12 /* ContactDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailsViewModel.swift; sourceTree = "<group>"; };
 		A50CD790075625CE993EEF2DEDB772B6 /* libPods-PushService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PushService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A56C53C0EE62F034C5DEC86CDDB56EFE /* ContactVO+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactVO+Extension.swift"; sourceTree = "<group>"; };
 		A6E60FC91F733F0C899B8269CF3D0E7D /* MultiLabelDisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiLabelDisplayView.xib; sourceTree = "<group>"; };
 		A7C6E2D20B275A72C9CABA3AD759418E /* UnlockPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockPinCodeModelImpl.swift; sourceTree = "<group>"; };
-		A84AA1A4CD359F9B3AD53E56954AF524 /* Pods_PushServiceDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PushServiceDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA72760EAA3C44E6CBDF96D02D86D24 /* TwoFACodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFACodeView.swift; sourceTree = "<group>"; };
 		AAD05BB8416067244824CCFC22BA4288 /* LabelManagerViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelManagerViewModelImpl.swift; sourceTree = "<group>"; };
 		AB1B727A907EF920049437670F1ECC53 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
@@ -1979,6 +1980,7 @@
 		AE8BDF8407201DBD2012A5B66289F42E /* HumanCheckMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckMenuViewController.swift; sourceTree = "<group>"; };
 		AEED05C7EADA3DD772CA5DF3FDEC0155 /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		AFC0D4124C61390A1D788A83DD1A9FFC /* MailboxViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewModelImpl.swift; sourceTree = "<group>"; };
+		AFC3223D8F624D4506F2DEA56C01E523 /* libPods-ProtonMailDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0477F89137AAA9A42BC73B09D025A29 /* ContactModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactModel.swift; sourceTree = "<group>"; };
 		B070CDFCF9E3E2A25CD4062DECEBC482 /* ShareDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B07957F0BFEE3F393983F4EFEAFA6094 /* Pods-ProtonMail.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.release.xcconfig"; sourceTree = "<group>"; };
@@ -2090,7 +2092,6 @@
 		E294C5A51541DA58646483FDCD8C2870 /* ShareDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareDev.entitlements; sourceTree = "<group>"; };
 		E317255F86BEBA7FC4A9C815198014ED /* ViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
 		E31A8775E09B34F474D6DACB8E7FB5FE /* UpgradeAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeAlertViewController.swift; sourceTree = "<group>"; };
-		E337FAA25F7ED4AC0D90F477BEC94697 /* Pods_ShareDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3F1904E81CADB25323AA62B5C0D4F3F /* ContactFieldType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFieldType.swift; sourceTree = "<group>"; };
 		E44E8C94EC355ADF770FAB0226BEC145 /* SettingsWeekdaysTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWeekdaysTableViewController.swift; sourceTree = "<group>"; };
 		E4809B81E683764D08E1015C74ED8F26 /* ServerNotice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerNotice.swift; sourceTree = "<group>"; };
@@ -2106,7 +2107,6 @@
 		E910C23C361F11C228DD5EA51E9BD73A /* ShareUnlockViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareUnlockViewController.swift; sourceTree = "<group>"; };
 		E9D9D84B662F25D5F69A900C47AAB156 /* SrpTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SrpTests.swift; sourceTree = "<group>"; };
 		EA310AD75EF147FEF5E2C05CA8916FD9 /* ContactSectionHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactSectionHeadView.xib; sourceTree = "<group>"; };
-		EA59AD999B62E695D152A787E8BAAD0C /* Pods_ProtonMailDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProtonMailDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAF5A5BA89D281954143CF30E55D2F6C /* Pods-PushServiceDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushServiceDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		EBF547CEFCD814853B222CFBADF77BA6 /* HumanCheckViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckViewModel.swift; sourceTree = "<group>"; };
 		EC6B492F6F532F6FE805CC7F50C82509 /* APIService+ErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ErrorExtension.swift"; sourceTree = "<group>"; };
@@ -2163,7 +2163,7 @@
 			files = (
 				22D40301E7327EC5A81FE698B050EFF3 /* Crashlytics.framework in Frameworks */,
 				17C5B9C0BB7BB886842AB9E292FDFA85 /* Fabric.framework in Frameworks */,
-				46EB8A356624DB9F23CEF6D61FBA248E /* Pods_PushServiceDev.framework in Frameworks */,
+				9596FE440B63D47C8E7E8582EA4A59EE /* libPods-PushServiceDev.a in Frameworks */,
 				EE12BEE6663C6F1860A81F50CF9FC1B8 /* libstdc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2176,8 +2176,8 @@
 				48863A6D1CDE0533C89DEE9F0202E5FE /* Fabric.framework in Frameworks */,
 				E7B4F4834DED13D8E36A52804D7A4137 /* LocalAuthentication.framework in Frameworks */,
 				83E7FE1B13A30C16FE94F5140CB111C3 /* PM.framework in Frameworks */,
-				61F9DB611ECBEF296940B1E438C9AAFC /* Pods_ProtonMail.framework in Frameworks */,
 				0E85F59431AE555F969B4F49B87BD6A8 /* Social.framework in Frameworks */,
+				805BCE63E540F2407E5508F3F19B6F61 /* libPods-ProtonMail.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2186,7 +2186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AB1D9636AD4A194102AB80E92EEE7FD /* PM.framework in Frameworks */,
-				094F3E702945675F314FAF6330691FA9 /* Pods_ProtonMailTests.framework in Frameworks */,
+				E364C9B8BDD709DF3E129548039AA10D /* libPods-ProtonMailTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2197,7 +2197,7 @@
 				221305AE09DF7C0D0D1882872274BB75 /* Crashlytics.framework in Frameworks */,
 				01128C7A1FDF2877C6F8E80CA2DD2F6C /* Fabric.framework in Frameworks */,
 				48B85798EA78D8DE8F294D7C81323DBE /* PM.framework in Frameworks */,
-				4E1CCBDCF9F890CF0D017BCFBFB3F439 /* Pods_ShareDev.framework in Frameworks */,
+				02A3F6BD54D03C5D61AEC5DF9AB5AD0A /* libPods-ShareDev.a in Frameworks */,
 				63EEFAED29E34FD910625333133C4868 /* libstdc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2210,8 +2210,8 @@
 				8F4F13B494D4436E49EE2ED8538EB7CF /* Fabric.framework in Frameworks */,
 				71C62704321FFA82D66C890EED5D7823 /* LocalAuthentication.framework in Frameworks */,
 				97A6203552DDB930158AC843893DFD71 /* PM.framework in Frameworks */,
-				09D86FB462391753724C8C78707A0B1F /* Pods_ProtonMailDev.framework in Frameworks */,
 				B4889BBA7F90BA058CD16A5A8F7806A7 /* Social.framework in Frameworks */,
+				FEEADFB8026EBF019F20F34085EF5296 /* libPods-ProtonMailDev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2238,7 +2238,7 @@
 				D1C52D73D149622D7FC421823DEA218F /* Crashlytics.framework in Frameworks */,
 				C715C1E816A1A6D64A152C25C81A988C /* Fabric.framework in Frameworks */,
 				271C15EB5BCB1532D91DD81A585E474F /* PM.framework in Frameworks */,
-				58F4F4F777E23217BF18ED6C75481736 /* Pods_Share.framework in Frameworks */,
+				21958CA5331474BF08968C572E9303B2 /* libPods-Share.a in Frameworks */,
 				18BE5475283E93765F658F50AF5C346D /* libstdc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3219,18 +3219,18 @@
 				C97B10ACFE993A5ABC3DDD43209BA369 /* Fabric.framework */,
 				35FA4A6184AAD8D5F833AEF3B3E7137E /* LocalAuthentication.framework */,
 				F30072FD1F33EAA148C54584943839E8 /* PM.framework */,
-				41E5FF415464C7BC5B7487FC9782F5B4 /* Pods_ProtonMail.framework */,
-				EA59AD999B62E695D152A787E8BAAD0C /* Pods_ProtonMailDev.framework */,
-				1B28DCB0803630A3B44E183F3040FBF3 /* Pods_ProtonMailTests.framework */,
-				A84AA1A4CD359F9B3AD53E56954AF524 /* Pods_PushServiceDev.framework */,
-				9BD9D2C7E81A25BCF17A6EE6B7B6D9D6 /* Pods_Share.framework */,
-				E337FAA25F7ED4AC0D90F477BEC94697 /* Pods_ShareDev.framework */,
 				C0A2F260039163C3214BBFA3487444F0 /* Social.framework */,
 				3DCEB3AB6A95864C955CC7CE2F7C50B5 /* UserNotifications.framework */,
 				2C1C49FACBAAF24D0FEE27BBB85179CA /* UserNotificationsUI.framework */,
+				5D56F66AEF70E0E570822A849DFE5E27 /* libPods-ProtonMail.a */,
+				AFC3223D8F624D4506F2DEA56C01E523 /* libPods-ProtonMailDev.a */,
+				A4B49BE838AF8C2C2CB5B021C9B37D6A /* libPods-ProtonMailTests.a */,
 				B90B0B7D01AAA74944FF210A8C284A0C /* libPods-Push.a */,
 				987F39BD558FE0028DC4409C4ADC70CE /* libPods-PushDev.a */,
 				A50CD790075625CE993EEF2DEDB772B6 /* libPods-PushService.a */,
+				43677A7B9EADC3081038A93A2FEF9E32 /* libPods-PushServiceDev.a */,
+				45AB0DE68A1BFC02BE2789161593615E /* libPods-Share.a */,
+				76D0CBED5D793B5B7AA620464528601D /* libPods-ShareDev.a */,
 				D60B6D85977FFFD73600A15D7884B641 /* libc++.tbd */,
 				AD8790D4C0DE38F62EEDA96A8973CD35 /* libstdc++.tbd */,
 				98F6DBEFE48775817E6EBAA4BD63F9F8 /* libz.tbd */,
@@ -3378,10 +3378,11 @@
 			buildConfigurationList = B85F53D2383B81C0673FCA36AD601CEB /* Build configuration list for PBXNativeTarget "PushServiceDev" */;
 			buildPhases = (
 				3C1715097B43678CF36F4C52208D45DD /* [CP] Check Pods Manifest.lock */,
-				40B8AABC9EA404FD29F703676D4C54DC /* Setup Version Number */,
+				E724A96FA5AC3AA80701F8501CDA1B4A /* Setup Version Number */,
 				8BC72C9B2394D4F09ED595DC2567913E /* Sources */,
 				40D67731E7C6B35387668D6752D6F662 /* Frameworks */,
 				4A7194F91C25AF2121AB74AA7801CF0A /* Resources */,
+				CAA77739CADD7B0D0BA5B013C68DAEBB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3397,10 +3398,11 @@
 			buildConfigurationList = 999248DB067D4D4FD5585B2C82EE274E /* Build configuration list for PBXNativeTarget "ShareDev" */;
 			buildPhases = (
 				1B1F2A5EC8751EB5CEBC8594C6762AB0 /* [CP] Check Pods Manifest.lock */,
-				0D7CB8A9B8661F2730F59FFC7E55B53E /* Setup Version Number */,
+				210070596376C955F743EB06670EADD0 /* Setup Version Number */,
 				D25C01E787911BADE239BB309286F502 /* Sources */,
 				AAB0022C007E2F92622E96DC6C4A3203 /* Frameworks */,
 				EEEC44AD9C4FEEA00FBF6ACCE2DCB313 /* Resources */,
+				8C2B3B1C56F323BEE0B585D79877D908 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3437,6 +3439,7 @@
 				A0BE62B02F1A1002D1E7A3479363A2F1 /* Sources */,
 				EC5A9B57322B4DBDC42CA33F70E98D27 /* Frameworks */,
 				3707E9551B06F05DEE0FD30FF1A9B73E /* Resources */,
+				FC95BF179C880395B2A3FE292A903C3E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3470,14 +3473,14 @@
 			buildConfigurationList = AC0CDE795E003B1982306A387402481B /* Build configuration list for PBXNativeTarget "ProtonMailDev" */;
 			buildPhases = (
 				CB32097D2CA8875CFCA9EF3DE72115A3 /* [CP] Check Pods Manifest.lock */,
-				F8B9A1FD35B3E7A146E84956AA3413D9 /* Setup Version Number */,
+				C16B66E92A7867DC813F87FD43EB2FEC /* Setup Version Number */,
 				73F3090EAA97C506D4CAD0C2A0852405 /* Sources */,
 				D4A57E2455B1533EA4BF09C2CE7E5490 /* Frameworks */,
 				8860A78F234125BD6E1662C028B73DC7 /* Resources */,
 				5D2D27B25F7E493ED6051979D3101487 /* Setup Fabric */,
-				F1E4137A9B95F0DC770CE8EB95FDC90A /* [CP] Embed Pods Frameworks */,
 				32FD8B84ACCEDCB9E7DCC6348BF41D03 /* Embed App Extensions */,
 				6EE58F9A6C6CBD84F7F37695EBB06601 /* Embed Frameworks */,
+				74148283EB0EB87AF36466C142A59413 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3500,8 +3503,8 @@
 				7CDDAC75253802DE782BC64CCCF195FE /* Frameworks */,
 				74DAC7A39D03830847662B2CA23938FC /* Resources */,
 				1F199D601119C9441CCD3BCD15D87C06 /* Run Script */,
-				CAB74E32CCB4914091FD8C87475D8803 /* [CP] Embed Pods Frameworks */,
 				E04C8B5D7BBBD207F1F503EE464CC7BE /* Embed App Extensions */,
+				B91DB1ABEB2E969090CD9237D6E4BD5E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3521,7 +3524,7 @@
 				33CD7D25D48DDB5F3CEABC15249C58AB /* Sources */,
 				85D3B7A03E5E6FC4F98F651AAFE03D93 /* Frameworks */,
 				577D604FBA606E88292D081338F1CCA7 /* Resources */,
-				A679E432B73D0D9378A93A019C1A0232 /* [CP] Embed Pods Frameworks */,
+				52406D07D86DE6096E54843C2F208085 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3926,7 +3929,171 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
 		};
-		0D7CB8A9B8661F2730F59FFC7E55B53E /* Setup Version Number */ = {
+		CAA77739CADD7B0D0BA5B013C68DAEBB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev-resources.sh",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSRichTextEditor.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor.html",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		210070596376C955F743EB06670EADD0 /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3938,7 +4105,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
+			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;";
 		};
 		1AA1FDEBD21E985B4F3B2ACC5BCD457A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3990,6 +4157,174 @@
 			shellPath = /bin/sh;
 			shellScript = "./Fabric.framework/run 982063ac8b41a8754cf79640ebab8b392ebe7e86 e66156cd496bbb89d6374b216ff8adf504838a4c1bf02c34c5390d289840bd02";
 		};
+		74148283EB0EB87AF36466C142A59413 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-resources.sh",
+				"${PODS_ROOT}/DKImagePickerController/Sources/DKImagePickerController/Resource/DKImagePickerController.bundle",
+				"${PODS_ROOT}/DKPhotoGallery/DKPhotoGallery/Resource/DKPhotoGallery.bundle",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DKImagePickerController.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DKPhotoGallery.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSRichTextEditor.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor.html",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3C1715097B43678CF36F4C52208D45DD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4008,7 +4343,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		40B8AABC9EA404FD29F703676D4C54DC /* Setup Version Number */ = {
+		E724A96FA5AC3AA80701F8501CDA1B4A /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4020,7 +4355,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
+			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;";
 		};
 		5BD35235FCBF099C6D04FD460A46CA55 /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4050,108 +4385,172 @@
 			shellPath = /bin/sh;
 			shellScript = "./Fabric.framework/run 982063ac8b41a8754cf79640ebab8b392ebe7e86 e66156cd496bbb89d6374b216ff8adf504838a4c1bf02c34c5390d289840bd02";
 		};
-		A679E432B73D0D9378A93A019C1A0232 /* [CP] Embed Pods Frameworks */ = {
+		B91DB1ABEB2E969090CD9237D6E4BD5E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework",
-				"${BUILT_PRODUCTS_DIR}/DKImagePickerController/DKImagePickerController.framework",
-				"${BUILT_PRODUCTS_DIR}/DKPhotoGallery/DKPhotoGallery.framework",
-				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
-				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
-				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
-				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
-				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${BUILT_PRODUCTS_DIR}/RHAddressBook/RHAddressBook.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
-				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
-				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
-				"${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework",
+				"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-resources.sh",
+				"${PODS_ROOT}/DKImagePickerController/Sources/DKImagePickerController/Resource/DKImagePickerController.bundle",
+				"${PODS_ROOT}/DKPhotoGallery/DKPhotoGallery/Resource/DKPhotoGallery.bundle",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworkActivityLogger.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AwaitKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKImagePickerController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKPhotoGallery.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RHAddressBook.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZSSRichTextEditor.framework",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DKImagePickerController.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DKPhotoGallery.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSRichTextEditor.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor.html",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CAB74E32CCB4914091FD8C87475D8803 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework",
-				"${BUILT_PRODUCTS_DIR}/DKImagePickerController/DKImagePickerController.framework",
-				"${BUILT_PRODUCTS_DIR}/DKPhotoGallery/DKPhotoGallery.framework",
-				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
-				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
-				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
-				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
-				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${BUILT_PRODUCTS_DIR}/RHAddressBook/RHAddressBook.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
-				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
-				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
-				"${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworkActivityLogger.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AwaitKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKImagePickerController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKPhotoGallery.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RHAddressBook.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZSSRichTextEditor.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CB32097D2CA8875CFCA9EF3DE72115A3 /* [CP] Check Pods Manifest.lock */ = {
@@ -4172,6 +4571,170 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		FC95BF179C880395B2A3FE292A903C3E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Share/Pods-Share-resources.sh",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSRichTextEditor.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor.html",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Share/Pods-Share-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		E117BBD6ECFCD59D138CE291EDC9C951 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4188,6 +4751,338 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		52406D07D86DE6096E54843C2F208085 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-resources.sh",
+				"${PODS_ROOT}/DKImagePickerController/Sources/DKImagePickerController/Resource/DKImagePickerController.bundle",
+				"${PODS_ROOT}/DKPhotoGallery/DKPhotoGallery/Resource/DKPhotoGallery.bundle",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DKImagePickerController.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DKPhotoGallery.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSRichTextEditor.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor.html",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8C2B3B1C56F323BEE0B585D79877D908 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev-resources.sh",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbgcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSbold@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSScenterjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSclearstyle@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSforcejustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh1@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh2@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh3@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh4@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh5@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSh6@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSShorizontalrule@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSimage@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSindent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSinsertkeyword@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSitalic@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSkeyboard@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSleftjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSoutdent@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSparagraph@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSpicker@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSquicklink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSredo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSrightjustify@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSstrikethrough@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsubscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSsuperscript@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStable@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSStextcolor@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunderline@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSundo@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunlink@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSunorderedlist@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/Images/ZSSviewsource@2x.png",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/ZSSRichTextEditor.js",
+				"${PODS_ROOT}/../../ZSSRichTextEditor/ZSSRichTextEditor/editor.html",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbgcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSbold@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSScenterjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSclearstyle@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSforcejustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh1@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh2@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh3@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh4@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh5@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSh6@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSShorizontalrule@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSimage@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSindent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSinsertkeyword@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSitalic@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSkeyboard@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSleftjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSoutdent@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSparagraph@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSpicker@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSquicklink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSredo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSrightjustify@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSstrikethrough@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsubscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSsuperscript@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStable@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSStextcolor@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunderline@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSundo@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunlink@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSunorderedlist@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSviewsource@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZSSRichTextEditor.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/editor.html",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F00EFEC03D5478819F38AF0E5CB9C21F /* [CP] Check Pods Manifest.lock */ = {
@@ -4208,59 +5103,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F1E4137A9B95F0DC770CE8EB95FDC90A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework",
-				"${BUILT_PRODUCTS_DIR}/DKImagePickerController/DKImagePickerController.framework",
-				"${BUILT_PRODUCTS_DIR}/DKPhotoGallery/DKPhotoGallery.framework",
-				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
-				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
-				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
-				"${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework",
-				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${BUILT_PRODUCTS_DIR}/RHAddressBook/RHAddressBook.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
-				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
-				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
-				"${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworkActivityLogger.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AwaitKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKImagePickerController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKPhotoGallery.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSDate_Helper.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RHAddressBook.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZSSRichTextEditor.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F8B9A1FD35B3E7A146E84956AA3413D9 /* Setup Version Number */ = {
+		C16B66E92A7867DC813F87FD43EB2FEC /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4272,7 +5115,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
+			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;";
 		};
 		F9F44D98117E1CF7D6B9EC4D5779E99A /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6227,7 +7070,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "${SRCROOT}/PushService/InfoDev.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6357,7 +7200,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "${SRCROOT}/PushService/InfoDev.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6576,7 +7419,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "${SRCROOT}/PushService/InfoDev.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";

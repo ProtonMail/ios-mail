@@ -147,14 +147,12 @@ class AttachmentsTableViewController: UITableViewController {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         alertController.addAction(UIAlertAction(title: LocalString._photo_library, style: UIAlertActionStyle.default, handler: { (action) -> Void in
-            /*
             let picker: UIImagePickerController = PMImagePickerController()
             picker.delegate = self
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
             picker.mediaTypes = [kUTTypeMovie as String, kUTTypeVideo as String, kUTTypeImage as String]
             
             self.present(picker, animated: true, completion: nil)
-            */
         }))
         
         alertController.addAction(UIAlertAction(title: LocalString._take_a_photo, style: UIAlertActionStyle.default, handler: { (action) -> Void in

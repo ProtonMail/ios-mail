@@ -1,0 +1,1 @@
+../../../MCSwipeTableViewCell/MCSwipeTableViewCell/MCSwipeTableViewCell.h

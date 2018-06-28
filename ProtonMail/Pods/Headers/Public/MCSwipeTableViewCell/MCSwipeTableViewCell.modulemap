@@ -1,0 +1,6 @@
+module MCSwipeTableViewCell {
+  umbrella header "MCSwipeTableViewCell-umbrella.h"
+
+  export *
+  module * { export * }
+}

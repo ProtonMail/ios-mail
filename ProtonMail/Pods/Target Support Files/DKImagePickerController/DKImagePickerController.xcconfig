@@ -1,12 +1,15 @@
 CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/DKImagePickerController
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DKPhotoGallery" "${PODS_CONFIGURATION_BUILD_DIR}/FLAnimatedImage" "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public"
+LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DKPhotoGallery" "${PODS_CONFIGURATION_BUILD_DIR}/FLAnimatedImage" "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage"
+OTHER_CFLAGS = $(inherited) -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DKPhotoGallery/DKPhotoGallery.modulemap" -fmodule-map-file="${PODS_ROOT}/Headers/Public/SDWebImage/SDWebImage.modulemap" -fmodule-map-file="${PODS_ROOT}/Headers/Public/FLAnimatedImage/FLAnimatedImage.modulemap"
 OTHER_LDFLAGS = -framework "Foundation" -framework "Photos" -framework "UIKit"
-OTHER_SWIFT_FLAGS = $(inherited) "-D" "COCOAPODS" "-suppress-warnings"
+OTHER_SWIFT_FLAGS = $(inherited) "-D" "COCOAPODS" "-suppress-warnings" -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DKPhotoGallery/DKPhotoGallery.modulemap" -Xcc -fmodule-map-file="${PODS_ROOT}/Headers/Public/SDWebImage/SDWebImage.modulemap" -Xcc -fmodule-map-file="${PODS_ROOT}/Headers/Public/FLAnimatedImage/FLAnimatedImage.modulemap" -import-underlying-module -Xcc -fmodule-map-file="${SRCROOT}/${MODULEMAP_FILE}"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_ROOT = ${SRCROOT}
 PODS_TARGET_SRCROOT = ${PODS_ROOT}/DKImagePickerController
 PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.${PRODUCT_NAME:rfc1034identifier}
 SKIP_INSTALL = YES
+SWIFT_INCLUDE_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DKPhotoGallery"
 SWIFT_VERSION = 4.0
