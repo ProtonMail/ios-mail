@@ -199,8 +199,11 @@ extension Attachment {
     }
 }
 
+protocol AttachmentConvertible {
+    func toAttachment (_ message:Message, fileName : String, type:String) -> Attachment?
+}
 
-extension UIImage {
+extension UIImage: AttachmentConvertible {
     func toAttachment (_ message:Message, fileName : String, type:String) -> Attachment? {
         if let fileData = UIImageJPEGRepresentation(self, 0) {
             if let context = message.managedObjectContext {
@@ -233,7 +236,7 @@ extension UIImage {
     }
 }
 
-extension Data {
+extension Data: AttachmentConvertible {
     func toAttachment (_ message:Message, fileName : String) -> Attachment? {
         return self.toAttachment(message, fileName: fileName, type: "image/jpg")
     }

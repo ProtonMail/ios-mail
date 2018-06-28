@@ -6,12 +6,11 @@
 //  Copyright (c) 2016 ProtonMail. All rights reserved.
 //
 
-import Foundation
+import UIKit
+import Photos
+import DKImagePickerController
 
-
-
-class PMImagePickerController : UIImagePickerController {
-    
+class PMImagePickerController : DKImagePickerController {
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.all
     }
@@ -19,4 +18,12 @@ class PMImagePickerController : UIImagePickerController {
     override var shouldAutorotate : Bool {
         return true
     }
+    
+    internal func setup(withDelegate delegate: ImageProcessor) {
+        self.sourceType = .photo
+        self.didSelectAssets = { assets in
+            assets.compactMap{ $0.originalAsset }.forEach(delegate.process)
+        }
+    }
 }
+
