@@ -23,18 +23,26 @@ extension UserDefaults {
             NSKeyedUnarchiver.setClass(UserInfo.classForKeyedArchiver(), forClassName: "ProtonMail.UserInfo")
             NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "Share.UserInfo")
             NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ShareDev.UserInfo")
+            NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PushServic.UserInfo")
+            NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UserInfo")
             
             NSKeyedUnarchiver.setClass(Address.classForKeyedArchiver(), forClassName: "ProtonMail.Address")
             NSKeyedUnarchiver.setClass(Address.classForKeyedArchiver(), forClassName: "Share.Address")
             NSKeyedUnarchiver.setClass(Address.classForKeyedArchiver(), forClassName: "ShareDev.Address")
+            NSKeyedUnarchiver.setClass(Address.classForKeyedArchiver(), forClassName: "PushService.Address")
+            NSKeyedUnarchiver.setClass(Address.classForKeyedArchiver(), forClassName: "PushServiceDev.Address")
             
             NSKeyedUnarchiver.setClass(Key.classForKeyedArchiver(), forClassName: "ProtonMail.Key")
             NSKeyedUnarchiver.setClass(Key.classForKeyedArchiver(), forClassName: "Share.Key")
             NSKeyedUnarchiver.setClass(Key.classForKeyedArchiver(), forClassName: "ShareDev.Key")
+            NSKeyedUnarchiver.setClass(Key.classForKeyedArchiver(), forClassName: "PushService.Key")
+            NSKeyedUnarchiver.setClass(Key.classForKeyedArchiver(), forClassName: "PushServiceDev.Key")
             
             NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedArchiver(), forClassName: "ProtonMail.UpdateTime")
             NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedArchiver(), forClassName: "Share.UpdateTime")
             NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedArchiver(), forClassName: "ShareDev.UpdateTime")
+            NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedArchiver(), forClassName: "PushService.UpdateTime")
+            NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedArchiver(), forClassName: "PushServiceDev.UpdateTime")
             
             return NSKeyedUnarchiver.unarchiveObject(with: data)
         }

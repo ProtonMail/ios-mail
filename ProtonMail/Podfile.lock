@@ -64,7 +64,7 @@ DEPENDENCIES:
   - ZSSRichTextEditor (from `../ZSSRichTextEditor`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - AFNetworking
     - AwaitKit
     - Groot
@@ -116,6 +116,6 @@ SPEC CHECKSUMS:
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: 53fd660ed37df3ccc3752ab15a04a4fdca35e6d2
 
-PODFILE CHECKSUM: f41b4772d8ffeb801f7901b287707964acb2b478
+PODFILE CHECKSUM: 6dda54078c2596b015aa1afd072f20e32f8bc345
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3
