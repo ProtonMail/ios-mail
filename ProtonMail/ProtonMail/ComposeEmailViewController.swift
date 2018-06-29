@@ -301,7 +301,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         } else if segue.identifier == kExpirationWarningSegue {
             let popup = segue.destination as! ExpirationWarningViewController
             popup.delegate = self
-            popup.config(needPwd: self.composeView.nonePMEmails,
+            
+            let nonePMEmail = self.encryptionPassword.count <= 0 ? self.composeView.nonePMEmails : [String]()
+            
+            popup.config(needPwd: nonePMEmail,
                          pgp: self.composeView.pgpEmails)
         }
     }
@@ -366,18 +369,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                 (self.composeView.hasNonePMEmails && self.encryptionPassword.count <= 0 ) {
                 
                 self.performSegue(withIdentifier: self.kExpirationWarningSegue, sender: self)
-//                let alertController = UIAlertController(title: LocalString._composer_compose_action,
-//                                                        message: LocalString._you_enabled_message_expiration_but_not_all_recipients_support_this_please_add,
-//                                                        preferredStyle: .alert)
-//                alertController.addAction(UIAlertAction(title: LocalString._send_anyway,
-//                                                        style: .destructive, handler: { (action) -> Void in
-//                                                            self.sendMessageStepTwo()
-//                }))
-//                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-//                alertController.addAction(UIAlertAction(title: "Learn more", style: .default, handler: { (action) in
-//                    UIApplication.shared.openURL(learnMoreUrl)
-//                }))
-//                present(alertController, animated: true, completion: nil)
                 return
             }
             
