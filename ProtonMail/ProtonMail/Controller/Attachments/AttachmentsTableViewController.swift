@@ -53,6 +53,18 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         }
     }
     
+    lazy var attachmentProviders: Array<AttachmentProvider> = {
+        // There is no access to camera in AppExtensions, so should not include it into menu
+        #if APP_EXTENSION
+            return [PhotoAttachmentProvider(for: self),
+                    DocumentAttachmentProvider(for: self)]
+        #else
+            return [PhotoAttachmentProvider(for: self),
+                    CameraAttachmentProvider(for: self),
+                    DocumentAttachmentProvider(for: self)]
+        #endif
+    }()
+    
     func buildAttachments() {
         normalAttachments = attachments.filter { !$0.inline() }
         inlineAttachments = attachments.filter { $0.inline() }
@@ -72,7 +84,8 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         self.doneButton = UIBarButtonItem(title: LocalString._general_done_button, style: UIBarButtonItemStyle.plain, target: self, action: #selector(AttachmentsTableViewController.doneAction(_:)))
         self.navigationItem.leftBarButtonItem = doneButton
         
-        self.tableView.register(UINib(nibName: "AttachmentTableViewCell", bundle: nil), forCellReuseIdentifier: AttachmentTableViewCell.Constant.identifier)
+        self.tableView.register(UINib(nibName: "\(AttachmentTableViewCell.self)", bundle: nil),
+                                forCellReuseIdentifier: AttachmentTableViewCell.Constant.identifier)
         self.tableView.separatorStyle = .none
         
         if let navigationController = navigationController {
@@ -105,12 +118,10 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }
 
     internal func updateAttachmentSize () {
-        self.currentAttachmentSize = self.attachments.reduce(into: 0, { (result, attachment) in
-            guard attachment.fileSize.intValue > 0 else { // FIXME: why?
-                fatalError()
-            }
-            result += attachment.fileSize.intValue
-        })
+        self.currentAttachmentSize = self.attachments.reduce(into: 0) {
+            $0 += $1.fileSize.intValue
+        }
+        print("1") // FIXME
     }
     
     @IBAction func doneAction(_ sender: AnyObject) {
@@ -118,19 +129,12 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         dismiss(animated: true, completion: nil)
     }
     
-    lazy var documentProvider: AttachmentProvider = DocumentAttachmentProvider(for: self)
-    lazy var imageProvider: AttachmentProvider = PhotoAttachmentProvider(for: self)
-    lazy var cameraProvider: AttachmentProvider = CameraAttachmentProvider(for: self)
-    
     @IBAction func addAction(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        alertController.addAction(self.imageProvider.alertAction)
-        alertController.addAction(self.cameraProvider.alertAction)
-        alertController.addAction(self.documentProvider.alertAction)
-        
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
+        
+        self.attachmentProviders.map{ $0.alertAction }.forEach(alertController.addAction)
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: UIAlertActionStyle.cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
@@ -163,10 +167,9 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentTableViewCell.Constant.identifier, for: indexPath) as! AttachmentTableViewCell
-        
-        let section = attachmentSections[indexPath.section]
+
         var attachment: Attachment?
-        switch section {
+        switch attachmentSections[indexPath.section] {
         case .normal: attachment = normalAttachments[indexPath.row] as Attachment
         case .inline: attachment = inlineAttachments[indexPath.row] as Attachment
         }
@@ -180,33 +183,22 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
             cell.defaultColor = UIColor.lightGray
             cell.setSwipeGestureWith(crossView, color: .red, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state3  ) { [weak self] (cell, state, mode) -> Void in
                 guard let `self` = self else { return }
-                guard let indexp = self.tableView.indexPath(for: cell!) else {
-                    cell?.swipeToOrigin(completion: nil) // FIXME: do we need this?
-                    self.buildAttachments()
-                    self.tableView.reloadData()
+                guard let cell = cell, let indexp = self.tableView.indexPath(for: cell) else {
                     return
-                }
-                let section = self.attachmentSections[indexp.section]
-                var cellAtt : Attachment?
-                switch section {
-                case .normal:
-                    cellAtt = self.normalAttachments[indexp.row] as Attachment
-                case .inline:
-                    cellAtt = self.inlineAttachments[indexp.row] as Attachment
                 }
                 
-                guard let att = cellAtt, att.attachmentID != "0" else {
-                    cell?.swipeToOrigin(completion: nil)
-                    return
+                var att: Attachment!
+                switch self.attachmentSections[indexp.section] {
+                case .normal:
+                    att = self.normalAttachments[indexp.row] as Attachment
+                case .inline:
+                    att = self.inlineAttachments[indexp.row] as Attachment
                 }
-                    
+                
                 self.delegate?.attachments(self, didDeletedAttachment: att)
                 if let index = self.attachments.index(of: att) {
                     self.attachments.remove(at: index)
                 }
-                
-                self.buildAttachments()
-                self.tableView.reloadData()
             }
         }
         

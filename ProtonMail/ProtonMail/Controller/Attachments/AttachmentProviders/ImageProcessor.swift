@@ -22,8 +22,7 @@ extension ImageProcessor where Self: AttachmentProvider {
         switch asset.mediaType {
         case .video:
             let options = PHVideoRequestOptions()
-            PHImageManager.default().requestAVAsset(forVideo: asset, options: options, resultHandler: { (asset: AVAsset?, audioMix: AVAudioMix?, info:[AnyHashable : Any]?) in
-                
+            PHImageManager.default().requestAVAsset(forVideo: asset, options: options, resultHandler: { asset, audioMix, info in
                 if let error = info?[PHImageErrorKey] as? NSError {
                     self.controller.error(error.debugDescription)
                     return

@@ -65,16 +65,24 @@ extension DocumentAttachmentProvider: UIDocumentPickerDelegate {
         let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
         var error : NSError?
         
-        coordinator.coordinate(readingItemAt: url, options: [], error: &error) { new_url in
-            guard let data = try? Data(contentsOf: url) else {
-                self.controller.error(LocalString._cant_load_the_file)
-                return
-            }
-            self.controller.finish(data, filename: url.lastPathComponent, extension: url.mimeType())
-        }
+        // TODO: at least on iOS 11.3.1, DocumentPicker does not call this method until whole file will be downloaded from the cloud. This should be a bug, but in future we can check size of document before downloading it
+        // FileManager.default.attributesOfItem(atPath: url.path)[NSFileSize]
         
-        if error != nil {
-            self.controller.error(LocalString._cant_copy_the_file)
+        // notify that file started downloading...
+        DispatchQueue.global().async { [weak self] in
+            coordinator.coordinate(readingItemAt: url, options: [], error: &error) { new_url in
+                guard let data = try? Data(contentsOf: url) else {
+                    self?.controller.error(LocalString._cant_load_the_file)
+                    return
+                }
+                // notify that finished downloading
+                self?.controller.finish(data, filename: url.lastPathComponent, extension: url.mimeType())
+            }
+            
+            if error != nil {
+                // notify that finished downloading
+                self?.controller.error(LocalString._cant_copy_the_file)
+            }
         }
     }
     

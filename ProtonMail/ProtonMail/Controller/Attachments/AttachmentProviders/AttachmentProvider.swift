@@ -32,24 +32,26 @@ extension AttachmentsTableViewController {
     }
     
     func finish(_ rawAttachment: AttachmentConvertible, filename: String, extension ext: String) {
-        guard self.message.managedObjectContext != nil else {
-            PMLog.D(" Error during copying size incorrect")
-            self.error(LocalString._system_cant_copy_the_file)
-            return
-        }
-        guard let attachment = rawAttachment.toAttachment(self.message, fileName: filename, type: ext) else {
-            PMLog.D(" Error during copying size incorrect")
-            self.error(LocalString._cant_copy_the_file)
-            return
-        }
-        let length = attachment.fileSize.intValue
-        guard length < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
-            self.sizeError(0)
-            PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
-            return
-        }
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            let size = rawAttachment.size
+            guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
+                self.sizeError(0)
+                PMLog.D(" Size too big Orig: \(size) -- Limit: \(self.kDefaultAttachmentFileSize)")
+                return
+            }
         
-        DispatchQueue.main.async {
+            guard self.message.managedObjectContext != nil else {
+                PMLog.D(" Error during copying size incorrect")
+                self.error(LocalString._system_cant_copy_the_file)
+                return
+            }
+            guard let attachment = rawAttachment.toAttachment(self.message, fileName: filename, type: ext) else {
+                PMLog.D(" Error during copying size incorrect")
+                self.error(LocalString._cant_copy_the_file)
+                return
+            }
+    
             self.attachments.append(attachment)
             self.delegate?.attachments(self, didPickedAttachment: attachment)
         }
