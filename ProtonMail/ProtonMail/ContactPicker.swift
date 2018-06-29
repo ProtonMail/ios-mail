@@ -121,6 +121,9 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
         self.addSubview(searchTableView)
         self.searchTableView = searchTableView
         
+        self.searchTableView.noSeparatorsBelowFooter()
+        
+        
         self.contactCollectionView.setContentCompressionResistancePriority(.required,
                                                                            for: .vertical)
         
