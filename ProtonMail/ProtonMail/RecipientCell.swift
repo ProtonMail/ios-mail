@@ -74,7 +74,12 @@ class RecipientCell: UITableViewCell {
             self.email.text =  e
             
             if _showLocker {
+                self.lockButton.isHidden = false
+                self.lockImage.isHidden = false
                 self.checkLock()
+            } else {
+                self.lockButton.isHidden = true
+                self.lockImage.isHidden = true
             }
         }
     }
