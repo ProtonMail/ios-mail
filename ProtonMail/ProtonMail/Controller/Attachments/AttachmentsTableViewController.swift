@@ -121,7 +121,6 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         self.currentAttachmentSize = self.attachments.reduce(into: 0) {
             $0 += $1.fileSize.intValue
         }
-        print("1") // FIXME
     }
     
     @IBAction func doneAction(_ sender: AnyObject) {
