@@ -34,7 +34,7 @@ extension Message {
         
         if isEncrypted == 2 {
             //return a different value if signed
-            return .none
+            return .zero_access_store
         }
         
         if isEncrypted == 7 {
