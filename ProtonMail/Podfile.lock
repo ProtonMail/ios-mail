@@ -18,6 +18,33 @@ PODS:
     - AFNetworking/NSURLSession
   - AwaitKit (5.0.0):
     - PromiseKit (~> 6)
+  - DKImagePickerController/Core (4.0.0-beta2):
+    - DKImagePickerController/ImageDataManager
+    - DKImagePickerController/Resource
+  - DKImagePickerController/ImageDataManager (4.0.0-beta2)
+  - DKImagePickerController/PhotoGallery (4.0.0-beta2):
+    - DKImagePickerController/Core
+    - DKPhotoGallery
+  - DKImagePickerController/Resource (4.0.0-beta2)
+  - DKPhotoGallery (0.0.6):
+    - DKPhotoGallery/Core (= 0.0.6)
+    - DKPhotoGallery/Model (= 0.0.6)
+    - DKPhotoGallery/Preview (= 0.0.6)
+    - DKPhotoGallery/Resource (= 0.0.6)
+    - SDWebImage/GIF
+  - DKPhotoGallery/Core (0.0.6):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Preview
+    - SDWebImage/GIF
+  - DKPhotoGallery/Model (0.0.6):
+    - SDWebImage/GIF
+  - DKPhotoGallery/Preview (0.0.6):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Resource
+    - SDWebImage/GIF
+  - DKPhotoGallery/Resource (0.0.6):
+    - SDWebImage/GIF
+  - FLAnimatedImage (1.0.12)
   - Groot (3.0.1):
     - Groot/Swift (= 3.0.1)
   - Groot/Swift (3.0.1)
@@ -38,6 +65,10 @@ PODS:
   - PromiseKit/UIKit (6.3.0):
     - PromiseKit/CorePromise
   - RHAddressBook (1.1.1)
+  - SDWebImage/Core (4.4.1)
+  - SDWebImage/GIF (4.4.1):
+    - FLAnimatedImage (~> 1.0)
+    - SDWebImage/Core
   - SWRevealViewController (2.3.0)
   - UICKeyChainStore (2.1.1)
   - "UIColor+Hex (1.0.1)":
@@ -50,6 +81,7 @@ DEPENDENCIES:
   - AFNetworkActivityLogger (from `https://github.com/AFNetworking/AFNetworkActivityLogger.git`, branch `3_0_0`)
   - AFNetworking (= 3.2.0)
   - AwaitKit (~> 5.0.0)
+  - DKImagePickerController/PhotoGallery (= 4.0.0-beta2)
   - Groot (= 3.0.1)
   - Masonry (= 1.1.0)
   - MBProgressHUD (= 0.9.2)
@@ -64,9 +96,12 @@ DEPENDENCIES:
   - ZSSRichTextEditor (from `../ZSSRichTextEditor`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - AFNetworking
     - AwaitKit
+    - DKImagePickerController
+    - DKPhotoGallery
+    - FLAnimatedImage
     - Groot
     - Masonry
     - MBProgressHUD
@@ -74,6 +109,7 @@ SPEC REPOS:
     - OpenSSL
     - PromiseKit
     - RHAddressBook
+    - SDWebImage
     - SWRevealViewController
     - UICKeyChainStore
     - "UIColor+Hex"
@@ -102,6 +138,9 @@ SPEC CHECKSUMS:
   AFNetworkActivityLogger: e77f68d014becb33c4306a23f56a64906ff72670
   AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
   AwaitKit: d8a6e30eeb2da916630270b44636b31033388bd8
+  DKImagePickerController: 43789fb00974b13f26263cc1ee0de5c2e6c6390d
+  DKPhotoGallery: 3eb2402aa9b9b12ef863f494140712baf54e9fae
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
@@ -111,11 +150,12 @@ SPEC CHECKSUMS:
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PromiseKit: cf84bbb1235a61473b326c5cf0b41f6828f87ba5
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
+  SDWebImage: 47e9b5b925cbce75946c23f0c42dd19464189af4
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: 53fd660ed37df3ccc3752ab15a04a4fdca35e6d2
 
-PODFILE CHECKSUM: f41b4772d8ffeb801f7901b287707964acb2b478
+PODFILE CHECKSUM: 191060a79df0fb27ef27705969cb02106b3a3f1e
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

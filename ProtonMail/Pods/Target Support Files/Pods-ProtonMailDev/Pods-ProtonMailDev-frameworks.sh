@@ -141,55 +141,6 @@ strip_invalid_archs() {
   STRIP_BINARY_RETVAL=1
 }
 
-
-if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Groot/Groot.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/RHAddressBook/RHAddressBook.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework"
-fi
-if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Groot/Groot.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/RHAddressBook/RHAddressBook.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework"
-fi
-if [[ "$CONFIGURATION" == "Distribution" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Groot/Groot.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/RHAddressBook/RHAddressBook.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework"
-fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait
 fi
