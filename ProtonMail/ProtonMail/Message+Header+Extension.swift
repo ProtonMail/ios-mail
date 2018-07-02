@@ -52,13 +52,14 @@ extension Message {
         return .none
     }
     
-    
-    
-    
     func getSentLockType(email : String) -> PGPType {
         
         if self.senderAddress == email {
-            return .internal_normal
+            
+            if self.unencrypt_outside {
+                return .sent_sender_out_side
+            }
+            return .sent_sender_encrypted
         }
         
         guard self.isDetailDownloaded  else {
@@ -109,6 +110,11 @@ extension Message {
         
         if authtype == "pgp-eo" {
             return .eo
+        }
+        
+        if authtype == "none" {
+            self.unencrypt_outside = true
+            return .none
         }
         
         return .none
