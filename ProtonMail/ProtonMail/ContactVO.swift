@@ -23,7 +23,7 @@ enum SignStatus : Int {
     case failed = 3
 }
 
-enum PGPType : Int {
+ enum PGPType : Int {
     case none = 0 /// default none
     case pgp_signed = 1 /// external pgp signed only
     case pgp_encrypt_trusted_key = 2 /// external encrypted and signed with trusted key
@@ -84,6 +84,12 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     }
     
     var pgpType: PGPType = .none
+    
+    func setType(type: Int) {
+        if let pgp_type = PGPType(rawValue: type) {
+            self.pgpType = pgp_type
+        }
+    }
     
     func notes(type: Int) -> String {
         //0 composer, 1 inbox 2 sent
@@ -285,10 +291,10 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                         }
                     }
                 }
-                complete?(nil)
+                complete?(nil, -1)
             }.catch({ (error) in
                 PMLog.D(error.localizedDescription)
-                complete?(nil)
+                complete?(nil, -1)
             })
         }
         

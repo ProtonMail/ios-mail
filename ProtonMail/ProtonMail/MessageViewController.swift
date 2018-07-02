@@ -659,12 +659,12 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
             if let c = model as? ContactVO {
                 if self.message.hasLocation(location: .outbox) {
                     c.pgpType = self.message.getSentLockType(email: c.displayEmail ?? "")
-                    complete?(nil)
+                    complete?(nil, -1)
                 } else {
                     c.pgpType = self.message.getInboxType(email: c.displayEmail ?? "", signature: .notSigned)
                     if self.message.checkedSign {
                         c.pgpType = self.message.pgpType
-                        complete?(nil)
+                        complete?(nil, -1)
                     } else {
                         if self.message.checkingSign {
                             
@@ -672,7 +672,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                             self.message.checkingSign = true
                             guard let emial = model.displayEmail else {
                                 self.message.checkingSign = false
-                                complete?(nil)
+                                complete?(nil, -1)
                                 return
                             }
                             let context = sharedCoreDataService.newManagedObjectContext()
@@ -699,24 +699,30 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                                         let status = self.message.verifyBody(verifier: pgpKeys)
                                         switch status {
                                         case .ok:
-                                            c.pgpType = .pgp_encrypt_trusted_key
-                                        case .notSigned:
-                                            c.pgpType = .pgp_encrypted
-                                        case .noVerifier:
-                                            c.pgpType = .pgp_encrypted
+                                            if c.pgpType == .zero_access_store {
+                                                c.pgpType = .pgp_signed
+                                            } else {
+                                                c.pgpType = .pgp_encrypt_trusted_key
+                                            }
+                                        case .notSigned, .noVerifier:
+                                            break
                                         case .failed:
-                                            c.pgpType = .pgp_encrypt_trusted_key_verify_failed
+                                            if c.pgpType == .zero_access_store {
+                                                c.pgpType = .pgp_signed_verify_failed
+                                            } else {
+                                                c.pgpType = .pgp_encrypt_trusted_key_verify_failed
+                                            }
                                         }
                                     }
                                 }
                                 self.message.pgpType = c.pgpType
                                 self.message.checkedSign = true
                                 self.message.checkingSign = false
-                                complete?(c.lock)
+                                complete?(c.lock, c.pgpType.rawValue)
                             }.catch({ (error) in
                                 self.message.checkingSign = false
                                 PMLog.D(error.localizedDescription)
-                                complete?(nil)
+                                complete?(nil, -1)
                             })
                             
                         }

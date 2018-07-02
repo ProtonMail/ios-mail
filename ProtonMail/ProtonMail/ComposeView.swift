@@ -619,7 +619,7 @@ class ComposeView: UIViewController {
 // MARK: - ContactPickerDataSource
 extension ComposeView: ContactPickerDataSource {
     
-    func picker(contactPicker: ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?) -> Void)?) {
+    func picker(contactPicker: ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
         self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
     }
     

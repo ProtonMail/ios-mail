@@ -174,18 +174,18 @@ final class ComposeViewModelImpl : ComposeViewModel {
         return sharedUserDataService.userAddresses
     }
     
-    override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?) -> Void)?) {
+    override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
         progress()
         
         let context = sharedCoreDataService.newManagedObjectContext()
         async {
             guard let c = model as? ContactVO else {
-                complete?(nil)
+                complete?(nil, -1)
                 return
             }
             
             guard let emial = model.displayEmail else {
-                complete?(nil)
+                complete?(nil, -1)
                 return
             }
             let getEmail = UserEmailPubKeys(email: emial).run()
@@ -207,10 +207,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
                 }
-                complete?(c.lock)
+                complete?(c.lock, c.pgpType.rawValue)
             }.catch({ (error) in
                 PMLog.D(error.localizedDescription)
-                complete?(nil)
+                complete?(nil, -1)
             })
         }
     }

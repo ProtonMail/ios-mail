@@ -96,7 +96,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         self.delegate?.collectionContactCell(lockCheck: self.model, progress: {
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
-        }, complete: { image in
+        }, complete: { image, type in
+            self._model.setType(type: type)
             if let img = image {
                 self.lockImage.image = img
                 self.lockImage.isHidden = false
