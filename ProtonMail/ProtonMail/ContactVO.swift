@@ -182,21 +182,20 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     var sentNotes: String {
         get {
             switch self.pgpType {
-            case .none, .eo:
+            case .none:
                 return LocalString._stored_with_zero_access_encryption
-                
+            case .eo:
+                return LocalString._end_to_end_encrypted
             case .internal_normal: //PM --> PM (encrypted+signed)
-                return LocalString._sent_by_you_with_end_to_end_encryption
+                return LocalString._end_to_end_encrypted
             case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
-                return LocalString._sent_by_you_with_end_to_end_encryption
-                
+                return LocalString._end_to_end_encrypted_to_verified_address
             case .pgp_encrypted:
                 return LocalString._pgp_encrypted_message
             case .pgp_encrypt_trusted_key:
-                return LocalString._pgp_encrypted_message_from_verified_address
+                return LocalString._pgp_encrypted
             case .pgp_signed://non-PM signed PGP --> PM (pinned)
-                return LocalString._pgp_signed_message_from_verified_address
-                
+                return LocalString._pgp_signed
             case .pgp_encrypt_trusted_key_verify_failed,
                  .internal_trusted_key_verify_failed,
                  .internal_normal_verify_failed,

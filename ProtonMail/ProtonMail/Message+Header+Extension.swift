@@ -107,6 +107,10 @@ extension Message {
             return .pgp_encrypted
         }
         
+        if authtype == "pgp-eo" {
+            return .eo
+        }
+        
         return .none
         
         

@@ -89,6 +89,7 @@ class RecipientCell: UITableViewCell {
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
         }, complete: { image in
+            self.lockButton.isHidden = false
             if let img = image {
                 self.lockImage.image = img
                 self.lockImage.isHidden = false
@@ -96,8 +97,9 @@ class RecipientCell: UITableViewCell {
                 self.lockImage.image = lock
                 self.lockImage.isHidden = false
             } else {
-                self.lockImage.image = UIImage(named: "zero_access_encryption")
-                self.lockImage.isHidden = false
+                self.lockImage.image =  nil
+                self.lockImage.isHidden = true
+                self.lockButton.isHidden = true
             }
             self.activityView.stopAnimating()
         })
