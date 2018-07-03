@@ -2021,7 +2021,7 @@ class MessageDataService {
     fileprivate func dequeueIfNeeded(notify : (() -> Void)? = nil) {
         
         if notify == nil {
-            if sharedMessageQueue.count <= 0 {
+            if sharedMessageQueue.count <= 0 && readQueue.count <= 0 {
                 self.dequieNotify?()
                 self.dequieNotify = nil
             }

@@ -201,14 +201,22 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
             let timeInterval : Int = Int(Date().timeIntervalSince1970)
             userCachedStatus.exitTime = "\(timeInterval)";
         }
-        sharedMessageDataService.purgeOldMessages()
-        
-        //var taskID : UIBackgroundTaskIdentifier = 0
-        _ = application.beginBackgroundTask {
+        var taskID : UIBackgroundTaskIdentifier = 0
+        taskID = application.beginBackgroundTask {
             //timed out
         }
-        //stop the process in the future
-        //application.endBackgroundTask(taskID)
+        sharedMessageDataService.purgeOldMessages()
+        if sharedUserDataService.isUserCredentialStored {
+            sharedMessageDataService.backgroundFetch {
+                delay(3, closure: {
+                    application.endBackgroundTask(taskID)
+                })
+            }
+        } else {
+            delay(3, closure: {
+                application.endBackgroundTask(taskID)
+            })
+        }
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
