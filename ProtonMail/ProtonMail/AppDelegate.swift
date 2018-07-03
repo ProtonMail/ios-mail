@@ -202,6 +202,13 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
             userCachedStatus.exitTime = "\(timeInterval)";
         }
         sharedMessageDataService.purgeOldMessages()
+        
+        //var taskID : UIBackgroundTaskIdentifier = 0
+        _ = application.beginBackgroundTask {
+            //timed out
+        }
+        //stop the process in the future
+        //application.endBackgroundTask(taskID)
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
