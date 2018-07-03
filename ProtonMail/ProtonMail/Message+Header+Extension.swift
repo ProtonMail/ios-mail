@@ -53,9 +53,7 @@ extension Message {
     }
     
     func getSentLockType(email : String) -> PGPType {
-        
         if self.senderAddress == email {
-            
             if self.unencrypt_outside {
                 return .sent_sender_out_side
             }
@@ -86,12 +84,18 @@ extension Message {
             return .none
         }
         
+        if enctype == "none" {
+            self.unencrypt_outside = true
+        }
+        
         
         if authtype == "pgp-inline" {
             if enctype == "pgp-inline-pinned" {
                 return .pgp_encrypt_trusted_key
+            } else if enctype == "none" {
+                return .pgp_signed
             }
-            return .pgp_signed
+            return .pgp_encrypted
         }
         
         if authtype == "pgp-pm" {
@@ -104,6 +108,8 @@ extension Message {
         if authtype == "pgp-mime" {
             if enctype == "pgp-mime-pinned" {
                 return .pgp_encrypt_trusted_key
+            } else if enctype == "none" {
+                return .pgp_signed
             }
             return .pgp_encrypted
         }
@@ -113,7 +119,6 @@ extension Message {
         }
         
         if authtype == "none" {
-            self.unencrypt_outside = true
             return .none
         }
         

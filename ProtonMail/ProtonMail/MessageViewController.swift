@@ -69,6 +69,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             self.emailView?.updateEmailAttachment(atts);
         }
         
+        self.emailView?.showDetails(show: self.message.hasLocation(location: .outbox))
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.delegate = self
