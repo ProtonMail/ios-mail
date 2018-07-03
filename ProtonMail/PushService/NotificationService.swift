@@ -22,7 +22,9 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-            bestAttemptContent.body = "Push is working!"
+            #if Enterprise
+            bestAttemptContent.body = "You received a new message! ."
+            #endif
             let pgp = PmOpenPGP()
             _ = pgp?.getTime()
             sharedUserDataService = UserDataService()
@@ -39,26 +41,48 @@ class NotificationService: UNNotificationServiceExtension {
                                 if let _ = push.sound {
                                     //right now it is a integer should be sound name put default for now
                                 }
-
+                                
                                 bestAttemptContent.sound = UNNotificationSound.default()
                                 //if let sub = push.subTitle {
                                 //  bestAttemptContent.subtitle = sub
                                 //}
-
+                                
                                 if let body = push.body {
                                     bestAttemptContent.body = body
+                                } else {
+                                    #if Enterprise
+                                    bestAttemptContent.body = "You received a new message!..."
+                                    #endif
                                 }
-
+                                
                                 if let badge = push.badge, badge.intValue > 0 {
                                     bestAttemptContent.badge = badge
                                 }
+                            } else {
+                                #if Enterprise
+                                bestAttemptContent.body = "You received a new message!."
+                                #endif
                             }
                         } catch let error {
                             NSLog("APNS: catched error -- " + error.localizedDescription)
-                            PMLog.D(error.localizedDescription)
+                            #if Enterprise
+                            bestAttemptContent.body = "You received a new message!.."
+                            #endif
                         }
+                    } else {
+                        #if Enterprise
+                        bestAttemptContent.body = "You received a new message! ..."
+                        #endif
                     }
+                } else {
+                    #if Enterprise
+                    bestAttemptContent.body = "You received a new message!!"
+                    #endif
                 }
+            } else {
+                #if Enterprise
+                bestAttemptContent.body = "You received a new message! .."
+                #endif
             }
             contentHandler(bestAttemptContent)
         }
