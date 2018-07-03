@@ -2012,7 +2012,23 @@ class MessageDataService {
         }
     }
     
-    fileprivate func dequeueIfNeeded() {
+    var dequieNotify : (() -> Void)?
+    
+    func backgroundFetch(notify : (() -> Void)?) {
+        self.dequeueIfNeeded(notify: notify)
+    }
+    
+    fileprivate func dequeueIfNeeded(notify : (() -> Void)? = nil) {
+        
+        if notify == nil {
+            if sharedMessageQueue.count <= 0 {
+                self.dequieNotify?()
+                self.dequieNotify = nil
+            }
+        } else {
+            self.dequieNotify = notify
+        }
+        
         if let (uuid, messageID, actionString) = sharedMessageQueue.nextMessage() {
             PMLog.D("SendAttachmentDebug == dequeue --- \(actionString)")
             if let action = MessageAction(rawValue: actionString) {
@@ -2042,6 +2058,7 @@ class MessageDataService {
             dequeueIfNeeded()
         }
     }
+    
     
     fileprivate func queue(_ message: Message, action: MessageAction) {
         if action == .saveDraft || action == .send {

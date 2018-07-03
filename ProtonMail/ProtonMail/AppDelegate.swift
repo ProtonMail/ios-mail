@@ -144,6 +144,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
         
+        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
+        
         //get build mode if debug mode enable network logging
         let mode = UIApplication.shared.releaseMode()
         //network debug options
@@ -230,8 +232,19 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         }
     }
     
-    // MARK: Notification methods
+    // MARK: Background methods`
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        if sharedUserDataService.isUserCredentialStored {
+            //sharedMessageDataService.fetchNewMessagesForLocation(.inbox, notificationMessageID: nil) { (task, nil, nil ) in
+            sharedMessageDataService.backgroundFetch {
+                completionHandler(.newData)
+            }
+        } else {
+            completionHandler(.noData)
+        }
+    }
     
+    // MARK: Notification methods
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         Answers.logCustomEvent(withName: "NotificationError", customAttributes:["error" : "\(error)"])
         sharedPushNotificationService.didFailToRegisterForRemoteNotificationsWithError(error as NSError)
