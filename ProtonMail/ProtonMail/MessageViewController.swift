@@ -701,7 +701,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                                         switch status {
                                         case .ok:
                                             if c.pgpType == .zero_access_store {
-                                                c.pgpType = .pgp_signed
+                                                c.pgpType = .pgp_signed_verified
                                             } else {
                                                 c.pgpType = .pgp_encrypt_trusted_key
                                             }
