@@ -338,6 +338,9 @@ class SendBuilder {
                 
                 self.clearPlainTextBody = plainText
                 
+                
+                
+                
                 seal.fulfill(self)
             }
         }

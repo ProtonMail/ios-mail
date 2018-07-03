@@ -64,6 +64,23 @@ extension Attachment {
         }
     }
     
+    func sign(byAddrID sender_address_id : String, mailbox_pwd: String) -> Data? {
+        do {
+            guard let out = try fileData?.signAttachment(sender_address_id, mailbox_pwd: mailbox_pwd) else {
+                return nil
+            }
+            var error : NSError?
+            let data = PmUnArmor(out, &error)
+            if error != nil {
+                return nil
+            }
+            
+            return data
+        } catch {
+            return nil
+        }
+    }
+    
     func getSession() throws -> Data? {
         if self.keyPacket == nil {
             return nil

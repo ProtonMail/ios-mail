@@ -1493,6 +1493,7 @@ class MessageDataService {
                     //TODO:: here need check is encryptdata is nil and return the error to user.
                     let keyPacket = encrypt_data?.keyPacket()
                     let dataPacket = encrypt_data?.dataPacket()
+                    let signed = attachment.sign(byAddrID: default_address_id, mailbox_pwd: pwd)
                     let completionWrapper: CompletionBlock = { task, response, error in
                         PMLog.D("SendAttachmentDebug == finish upload att!")
                         if error == nil {
@@ -1511,6 +1512,7 @@ class MessageDataService {
                                              parameters: params,
                                              keyPackets: keyPacket,
                                              dataPacket: dataPacket,
+                                             signature: signed,
                                              headers: ["x-pm-apiversion":3],
                                              authenticated: true,
                                              completion: completionWrapper)
@@ -1556,9 +1558,6 @@ class MessageDataService {
         self.dequeueIfNeeded()
         completion?(nil, nil, NSError.badParameter("\(location)"))
     }
-    
-    
-
     
     fileprivate func send(byID messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in

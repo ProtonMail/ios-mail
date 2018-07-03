@@ -213,6 +213,13 @@ extension Data {
         let pubkey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
         return try sharedOpenPGP.encryptAttachment(self, fileName: fileName, publicKey: pubkey)
     }
+    
+    func signAttachment(_ address_id: String, mailbox_pwd: String) throws -> String? {
+        let privateKey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
+        return try sharedOpenPGP.signBinDetached(self, privateKey: privateKey, passphrase: mailbox_pwd)
+    }
+    
+    
     //
 //    func encryptAttachmentWithSingleKey(_ publicKey: String, fileName:String, privateKey: String, mailbox_pwd: String) throws -> PMNEncryptPackage? {
 //        var out_enc_data : PMNEncryptPackage?
