@@ -209,6 +209,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         if sharedUserDataService.isUserCredentialStored {
             sharedMessageDataService.backgroundFetch {
                 delay(3, closure: {
+                    PMLog.D("End Background Task")
                     application.endBackgroundTask(taskID)
                 })
             }
@@ -217,6 +218,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
                 application.endBackgroundTask(taskID)
             })
         }
+        
+        PMLog.D("Enter Background")
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
