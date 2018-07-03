@@ -250,6 +250,12 @@ class ComposeView: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    func reloadPicker() {
+        self.toContactPicker.reload()
+        self.ccContactPicker.reload()
+        self.bccContactPicker.reload()
+    }
+    
     @IBAction func contactPlusButtonTapped(_ sender: UIButton) {
         self.plusButtonHandle();
         self.notifyViewSize(true)

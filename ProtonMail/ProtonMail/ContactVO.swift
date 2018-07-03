@@ -139,7 +139,6 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             switch self.pgpType {
             case .pgp_encrypt_trusted_key,
                  .pgp_encrypted,
-                 .eo,
                  .pgp_encrypt_trusted_key_verify_failed:
                 return true
             default:

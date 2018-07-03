@@ -223,6 +223,11 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
         self.hideSearchTableView()
     }
     
+    
+    func reload() {
+        self.contactCollectionView.reloadData()
+    }
+    
     //
     //#pragma mark - Properties
     //

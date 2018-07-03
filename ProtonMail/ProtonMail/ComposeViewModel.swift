@@ -114,6 +114,11 @@ class ComposeViewModel {
          NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
+    func updateEO(expir:TimeInterval, pwd:String, pwdHit:String) -> Void {
+        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
+    }
+    
+    
     func getAttachments() -> [Attachment]? {
         fatalError("This method must be overridden")
     }

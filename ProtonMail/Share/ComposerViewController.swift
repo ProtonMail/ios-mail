@@ -416,6 +416,13 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             self.composeView.updateAttachmentButton(false)
         }
     }
+    
+    func updateEO() {
+        self.viewModel.updateEO(expir: self.composeView.expirationTimeInterval,
+                                pwd: self.encryptionPassword,
+                                pwdHit: self.encryptionPasswordHint)
+        self.composeView.reloadPicker()
+    }
 }
 
 extension ComposerViewController : PasswordEncryptViewControllerDelegate {
@@ -430,6 +437,7 @@ extension ComposerViewController : PasswordEncryptViewControllerDelegate {
         self.encryptionPasswordHint    = hint
         
         self.composeView.showEncryptionDone()
+        self.updateEO()
     }
     
     func Removed() {
@@ -438,6 +446,7 @@ extension ComposerViewController : PasswordEncryptViewControllerDelegate {
         self.encryptionPasswordHint    = ""
         
         self.composeView.showEncryptionRemoved()
+        self.updateEO()
     }
 }
 
@@ -535,31 +544,27 @@ extension ComposerViewController : ComposeViewDelegate {
         }
     }
     
-    func composeViewDidTapExpirationButton(_ composeView: ComposeView)
-    {
+    func composeViewDidTapExpirationButton(_ composeView: ComposeView) {
         self.expirationPicker.alpha = 1;
         self.view.bringSubview(toFront: expirationPicker)
     }
     
-    func composeViewHideExpirationView(_ composeView: ComposeView)
-    {
+    func composeViewHideExpirationView(_ composeView: ComposeView) {
         self.expirationPicker.alpha = 0;
     }
     
-    func composeViewCancelExpirationData(_ composeView: ComposeView)
-    {
+    func composeViewCancelExpirationData(_ composeView: ComposeView) {
         self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
         self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
     }
     
-    func composeViewCollectExpirationData(_ composeView: ComposeView)
-    {
+    func composeViewCollectExpirationData(_ composeView: ComposeView) {
         let selectedDay = expirationPicker.selectedRow(inComponent: 0)
         let selectedHour = expirationPicker.selectedRow(inComponent: 1)
-        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour)
-        {
+        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour) {
             self.expirationPicker.alpha = 0;
         }
+        self.updateEO()
     }
     
     func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker) {

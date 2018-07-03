@@ -301,9 +301,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         } else if segue.identifier == kExpirationWarningSegue {
             let popup = segue.destination as! ExpirationWarningViewController
             popup.delegate = self
-            
             let nonePMEmail = self.encryptionPassword.count <= 0 ? self.composeView.nonePMEmails : [String]()
-            
             popup.config(needPwd: nonePMEmail,
                          pgp: self.composeView.pgpEmails)
         }
@@ -464,8 +462,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         }
     }
     
-    @objc func autoSaveTimer()
-    {
+    @objc func autoSaveTimer() {
         self.collectDraft()
         self.viewModel.updateDraft()
     }
@@ -479,7 +476,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             body = "<div><br></div>"
         }
         
-        self.viewModel.collectDraft(
+        self.viewModel.collectDraft (
             self.composeView.subject.text!,
             body: body!,
             expir: self.composeView.expirationTimeInterval,
@@ -520,11 +517,11 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
     }
     
     func Apply(_ password: String, confirmPassword: String, hint: String) {
-        
         self.encryptionPassword = password
         self.encryptionConfirmPassword = confirmPassword
         self.encryptionPasswordHint = hint
         self.composeView.showEncryptionDone()
+        self.updateEO()
     }
     
     func Removed() {
@@ -533,6 +530,7 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
         self.encryptionPasswordHint = ""
         
         self.composeView.showEncryptionRemoved()
+        self.updateEO()
     }
 }
 
@@ -665,10 +663,17 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         if self.composeView.setExpirationValue(selectedDay, hour: selectedHour) {
             self.expirationPicker.alpha = 0
         }
+        self.updateEO()
     }
     
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker)
-    {
+    func updateEO() {
+        self.viewModel.updateEO(expir: self.composeView.expirationTimeInterval,
+                                pwd: self.encryptionPassword,
+                                pwdHit: self.encryptionPasswordHint)
+        self.composeView.reloadPicker()
+    }
+    
+    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker) {
         if (picker == composeView.toContactPicker) {
             self.viewModel.toSelectedContacts.append(contact)
         } else if (picker == composeView.ccContactPicker) {
@@ -678,8 +683,8 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         }
     }
     
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: ContactPicker)
-    {// here each logic most same, need refactor later
+    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: ContactPicker) {
+        // here each logic most same, need refactor later
         if (picker == composeView.toContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.toSelectedContacts

@@ -205,6 +205,12 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         } else if contact.sign {
                             c.pgpType = .pgp_signed
                         }
+                    } else {
+                        if let pwd = self.message?.password, let exp = self.message?.expirationOffset, pwd != "", exp > 0 {
+                            c.pgpType = .eo
+                        } else {
+                            c.pgpType = .none
+                        }
                     }
                 }
                 complete?(c.lock, c.pgpType.rawValue)
@@ -239,8 +245,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         return true;
     }
     
-    fileprivate func updateContacts(_ oldLocation : MessageLocation?)
-    {
+    fileprivate func updateContacts(_ oldLocation : MessageLocation?) {
         if message != nil {
             switch messageAction!
             {
@@ -379,7 +384,26 @@ final class ComposeViewModelImpl : ComposeViewModel {
             self.message?.setLabelLocation(.draft)
             MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil, mailbox_pwd: sharedUserDataService.mailboxPassword!)
             
-            if let context = message!.managedObjectContext {
+            if let context = message?.managedObjectContext {
+                context.perform {
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)")
+                    }
+                }
+            }
+        }
+    }
+    
+    override func updateEO(expir:TimeInterval, pwd:String, pwdHit:String) -> Void {
+        if message != nil {
+            self.message?.time = Date()
+            self.message?.password = pwd
+            self.message?.passwordHint = pwdHit
+            self.message?.expirationOffset = Int32(expir)
+            if expir > 0 {
+                self.message?.expirationTime = Date(timeIntervalSinceNow: expir)
+            }
+            if let context = message?.managedObjectContext {
                 context.perform {
                     if let error = context.saveUpstreamIfNeeded() {
                         PMLog.D(" error: \(error)")
