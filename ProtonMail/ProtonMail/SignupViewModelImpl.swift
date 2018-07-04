@@ -59,7 +59,7 @@ final class SignupViewModelImpl : SignupViewModel {
     
     override func checkUserName(_ username: String, complete: CheckUserNameBlock!) {
         // need valide user name format
-        let api = CheckUserExistRequest<CheckUserExistResponse>(userName: username)
+        let api = CheckUserExist(userName: username)
         api.call { (task, response, hasError) -> Void in
             complete(response?.isAvailable ?? false, response?.error)
         }
@@ -159,12 +159,12 @@ final class SignupViewModelImpl : SignupViewModel {
                         throw SignUpCreateUserError.cantGenerateVerifier.error
                     }
                     
-                    let api = CreateNewUserRequest<ApiResponse>(token: self.token,
-                                                                type: self.verifyType.toString, username: self.userName,
-                                                                email: self.recoverEmail, news: self.news,
-                                                                modulusID: moduls_id,
-                                                                salt: new_salt.encodeBase64(),
-                                                                verifer: verifier.encodeBase64())
+                    let api = CreateNewUser(token: self.token,
+                                            type: self.verifyType.toString, username: self.userName,
+                                            email: self.recoverEmail, news: self.news,
+                                            modulusID: moduls_id,
+                                            salt: new_salt.encodeBase64(),
+                                            verifer: verifier.encodeBase64())
                     api.call({ (task, response, hasError) -> Void in
                         if !hasError {
                             //need clean the cache without ui flow change then signin with a fresh user
@@ -298,7 +298,7 @@ final class SignupViewModelImpl : SignupViewModel {
     
     override func fetchDirect(_ res : @escaping (_ directs:[String]) -> Void) {
         if direct.count <= 0 {
-            let api = DirectRequest<DirectResponse>()
+            let api = DirectRequest()
             api.call { (task, response, hasError) -> Void in
                 if hasError {
                     res([])

@@ -13,14 +13,14 @@ import Foundation
 final class CaptchaViewModelImpl : HumanCheckViewModel {
     
     override func getToken(_ complete: @escaping HumanResBlock) {
-        let api = GetHumanCheckRequest<GetHumanCheckResponse>()
+        let api = GetHumanCheckToken()
         api.call { (task, response, hasError) in
             complete(response?.token, response?.error)
         }
     }
     
     override func humanCheck(_ type: String, token: String, complete: @escaping HumanCheckBlock) {
-        let api = HumanCheckRequest<ApiResponse>(type: type, token: token)
+        let api = HumanCheckRequest(type: type, token: token)
         api.call { (task, response, hasError) in
             complete(response?.error)
         }

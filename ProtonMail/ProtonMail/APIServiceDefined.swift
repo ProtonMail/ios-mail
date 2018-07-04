@@ -339,7 +339,5 @@ struct UsersAPI {
     
     /// Send a verification code [POST]
     static let v_send_verification_code : Int = 3
-    
-    static let V_GetUserPublicKeysRequest : Int = 2  //TODO:: need move to message
 }
 

@@ -366,26 +366,11 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     
     internal func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
-            if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
-                let emails = self.composeView.allEmails
-                //show loading
-                ActivityIndicatorHelper.showActivityIndicator(at: view)
-                let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
-                api.call({ (task, response: EmailsCheckResponse?, hasError : Bool) in
-                    //hide loading
-                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-                    if let res = response, res.hasOutsideEmails == false {
-                        self.sendMessageStepTwo()
-                    } else {
-                        self.composeView.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_pls_set_password)
-                    }
-                })
-                return
+            if self.composeView.hasNonePMEmails && self.encryptionPassword.count <= 0 {
+                self.composeView.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_pls_set_password)
             }
         }
-        delay(0.3) {
-            self.sendMessageStepTwo()
-        }
+        self.sendMessageStepTwo()
     }
     
     internal func sendMessageStepTwo() {
