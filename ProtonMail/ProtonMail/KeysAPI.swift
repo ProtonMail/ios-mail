@@ -20,7 +20,7 @@ final class UserEmailPubKeys : ApiRequestNew<KeysResponse> {
         return out
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return KeysAPI.path + AppConstants.DEBUG_OPTION
     }
     
@@ -88,7 +88,7 @@ final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
         return .get
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return KeysAPI.path + "/salts" + AppConstants.DEBUG_OPTION
     }
     

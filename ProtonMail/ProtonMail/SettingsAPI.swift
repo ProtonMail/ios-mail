@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 //"News" : 255 // 0 - 255 bitmask., . 16, 32, 64, and 128 are currently unused.
 struct News : OptionSet {
     let rawValue: Int
@@ -19,12 +18,9 @@ struct News : OptionSet {
     static let all      = RefreshStatus(rawValue: 0xFF)
 }
 
-
-
-
 // Mark : get all settings
 final class GetSettings : ApiRequest<SettingsResponse> {
-    override open func path() -> String {
+    override func path() -> String {
         return SettingsAPI.path + AppConstants.DEBUG_OPTION
     }
     
@@ -76,7 +72,7 @@ final class UpdateNotify : ApiRequest<ApiResponse> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return SettingsAPI.path + "/email/notify" + AppConstants.DEBUG_OPTION
     }
     
@@ -123,7 +119,7 @@ final class UpdateNotificationEmail : ApiRequest<ApiResponse> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return SettingsAPI.path + "/email" + AppConstants.DEBUG_OPTION
     }
     
@@ -150,7 +146,7 @@ final class UpdateNewsRequest : ApiRequest<ApiResponse> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return SettingsAPI.path + "/news" + AppConstants.DEBUG_OPTION
     }
     
@@ -176,7 +172,7 @@ final class UpdateDisplayNameRequest : ApiRequest<ApiResponse> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return SettingsAPI.path + "/mail/display" + AppConstants.DEBUG_OPTION
     }
     
@@ -204,7 +200,7 @@ final class UpdateShowImagesRequest : ApiRequest<ApiResponse> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return SettingsAPI.path + "/mail/images" + AppConstants.DEBUG_OPTION
     }
     
@@ -230,7 +226,7 @@ final class UpdateSwiftLeftAction : ApiRequest<ApiResponse> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return SettingsAPI.path + "/mail/swipeleft" + AppConstants.DEBUG_OPTION
     }
     
@@ -256,7 +252,7 @@ final class UpdateSwiftRightAction : ApiRequest<ApiResponse> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return SettingsAPI.path + "/mail/swiperight" + AppConstants.DEBUG_OPTION
     }
     
@@ -321,7 +317,7 @@ final class UpdateLoginPassword : ApiRequest<ApiResponse> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return SettingsAPI.path + "/password" + AppConstants.DEBUG_OPTION
     }
     

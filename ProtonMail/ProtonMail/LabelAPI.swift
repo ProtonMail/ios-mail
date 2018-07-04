@@ -15,7 +15,7 @@ final class GetLabelsRequest : ApiRequest<GetLabelsResponse> {
         return ["Type" : 1]
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return LabelAPI.path + AppConstants.DEBUG_OPTION
     }
     
@@ -54,7 +54,7 @@ final class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return LabelAPI.path + "/apply/" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
@@ -86,7 +86,7 @@ final class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return LabelAPI.path + "/remove/" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
@@ -124,7 +124,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return .post
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return LabelAPI.path + AppConstants.DEBUG_OPTION
     }
     
@@ -160,7 +160,7 @@ final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return LabelAPI.path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     
@@ -192,7 +192,7 @@ final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return .delete
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return LabelAPI.path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     

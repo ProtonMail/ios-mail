@@ -17,7 +17,7 @@ final class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
         self.eventID = eventID
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return EventAPI.path + "/\(self.eventID)" + AppConstants.DEBUG_OPTION
     }
     
@@ -29,7 +29,7 @@ final class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
 
 final class EventLatestIDRequest<T : ApiResponse> : ApiRequest<T>{
 
-    override open func path() -> String {
+    override func path() -> String {
         return EventAPI.path + "/latest" + AppConstants.DEBUG_OPTION
     }
     
