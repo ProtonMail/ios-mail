@@ -648,9 +648,11 @@ class AddressBuilder : PackageBuilder {
             var attPackages = [AttachmentPackage]()
             for att in self.preAttachments {
                 //TODO::here need hanlde the error
-                let newKeyPack = try att.Session.getKeyPackage(strKey: self.preAddress.pubKey!)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                let attPacket = AttachmentPackage(attID: att.ID, attKey: newKeyPack)
-                attPackages.append(attPacket)
+                if let pubK = self.preAddress.pubKey {
+                    let newKeyPack = try att.Session.getKeyPackage(strKey: pubK)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                    let attPacket = AttachmentPackage(attID: att.ID, attKey: newKeyPack)
+                    attPackages.append(attPacket)
+                }
             }
             
             //TODO::will remove from here debuging or merge this class with PGPAddressBuildr
@@ -660,7 +662,8 @@ class AddressBuilder : PackageBuilder {
                 let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, type: self.sendType, plainText: self.preAddress.plainText, attPackets: attPackages)
                 return addr
             } else {
-                let newKeypacket = try self.session.getKeyPackage(strKey: self.preAddress.pubKey!)
+                //TODO::here need hanlde the error
+                let newKeypacket = try self.session.getKeyPackage(strKey: self.preAddress.pubKey ?? "")
                 let newEncodedKey = newKeypacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
                 let addr = AddressPackage(email: self.preAddress.email, bodyKeyPacket: newEncodedKey, type: self.sendType, plainText: self.preAddress.plainText, attPackets: attPackages)
                 return addr

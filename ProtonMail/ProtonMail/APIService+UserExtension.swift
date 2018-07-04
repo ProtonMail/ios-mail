@@ -25,12 +25,14 @@ extension APIService {
         static let base = AppConstants.API_PATH + "/users"
     }
     
+    //deprecated
     func userPublicKeysForEmails(_ emails: [String], completion: CompletionBlock?) {
         let emailsString = emails.joined(separator: ",")
         
         userPublicKeysForEmails(emailsString, completion: completion)
     }
     
+    //deprecated
     func userPublicKeysForEmails(_ emails: String, completion: CompletionBlock?) {
         PMLog.D("userPublicKeysForEmails -- \(emails)")
         if !emails.isEmpty {
@@ -52,6 +54,7 @@ extension APIService {
         completion?(nil, nil, NSError.badParameter(emails))
     }
     
+    //deprecated
     func userUpdateKeypair(_ pwd: String, publicKey: String, privateKey: String, completion: CompletionBlock?) {
         let path = UserPath.base + "/keys"
         let parameters = [

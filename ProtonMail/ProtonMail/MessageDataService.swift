@@ -1757,6 +1757,7 @@ class MessageDataService {
         errorBlock(nil, nil, NSError.badParameter(messageID))
     }
     
+    //deprecated
     fileprivate func sendMessageID(_ messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request

@@ -252,7 +252,7 @@ extension Data {
     
     func getKeyPackage(strKey publicKey: String) throws -> Data? {
         let session = PmSessionSplit()!
-        session.setSession( self)
+        session.setSession(self)
         session.setAlgo("aes256")
         
         var error : NSError?

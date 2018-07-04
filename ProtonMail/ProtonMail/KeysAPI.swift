@@ -8,6 +8,7 @@
 
 import Foundation
 import PromiseKit
+import Pm
 
 final class UserEmailPubKeys : ApiRequestNew<KeysResponse> {
     let email : String
@@ -41,11 +42,12 @@ extension Array where Element : UserEmailPubKeys {
 
 
 final class KeyResponse {
-    var send : Int = 1 // 1 internal 2 external
+    //TODO:: change to bitmap later
+    var flags : Int = 0 // bitmap: 1 = can be used to verify, 2 = can be used to encrypt
     var publicKey : String?
    
-    init(send : Int, pubkey: String?) {
-        self.send = send
+    init(flags : Int, pubkey: String?) {
+        self.flags = flags
         self.publicKey = pubkey
     }
 }
@@ -60,12 +62,9 @@ final class KeysResponse : ApiResponse {
         
         if let keyRes = response["Keys"] as? [[String : Any]] {
             for keyDict in keyRes {
-                let send = keyDict["Send"] as? Int ?? 0
-                
-                let keyFlags =  keyDict["Flags"] as? Int ?? 0
-                
+                let flags =  keyDict["Flags"] as? Int ?? 0
                 let pubKey = keyDict["PublicKey"] as? String
-                self.keys.append(KeyResponse(send: send, pubkey: pubKey))
+                self.keys.append(KeyResponse(flags: flags, pubkey: pubKey))
             }
         }
         return true
@@ -73,11 +72,52 @@ final class KeysResponse : ApiResponse {
     
     func firstKey () -> String? {
         for k in keys {
-            if k.send == 1 {
+            if k.flags == 2 ||  k.flags == 3 {
                 return k.publicKey
             }
         }
         return nil
+    }
+    
+    //TODO:: change to filter later.
+    func getCompromisedKeys() -> Data?  {
+        var pubKeys : Data? = nil
+        for k in keys {
+            if k.flags == 0 {
+                if pubKeys == nil {
+                    pubKeys = Data()
+                }
+                if let p = k.publicKey {
+                    var error : NSError?
+                    if let data = PmUnArmor(p, &error) {
+                        if error == nil && data.count > 0 {
+                            pubKeys?.append(data)
+                        }
+                    }
+                }
+            }
+        }
+        return pubKeys
+    }
+    
+    func getVerifyKeys() -> Data? {
+        var pubKeys : Data? = nil
+        for k in keys {
+            if k.flags == 1 || k.flags == 3 {
+                if pubKeys == nil {
+                    pubKeys = Data()
+                }
+                if let p = k.publicKey {
+                    var error : NSError?
+                    if let data = PmUnArmor(p, &error) {
+                        if error == nil && data.count > 0 {
+                            pubKeys?.append(data)
+                        }
+                    }
+                }
+            }
+        }
+        return pubKeys
     }
 }
 
