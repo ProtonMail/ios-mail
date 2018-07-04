@@ -10,9 +10,74 @@ import Foundation
 import PromiseKit
 import AwaitKit
 
+
+// MARK : apply label to message
+final class ApplyLabelToMessages : ApiRequest<ApiResponse> {
+    var labelID: String!
+    var messages:[String]!
+    
+    init(labelID: String!, messages: [String]!) {
+        self.labelID = labelID
+        self.messages = messages
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        var out : [String : Any] = [String : Any]()
+        out["LabelID"] = self.labelID
+        out["IDs"] = messages
+        return out
+    }
+    
+    
+    override func method() -> APIService.HTTPMethod {
+        return .put
+    }
+    
+    override func path() -> String {
+        return MessageAPI.path + "/label" + AppConstants.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return MessageAPI.v_apply_label_to_messages
+    }
+}
+
+
+// MARK : remove label from message
+final class RemoveLabelFromMessages : ApiRequest<ApiResponse> {
+    
+    var labelID: String!
+    var messages:[String]!
+    
+    init(labelID:String!, messages: [String]!) {
+        self.labelID = labelID
+        self.messages = messages
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        var out : [String : Any] = [String : Any]()
+        out["LabelID"] = self.labelID
+        out["IDs"] = messages
+        return out
+    }
+    
+    override func method() -> APIService.HTTPMethod {
+        return .put
+    }
+    
+    override func path() -> String {
+        return MessageAPI.path + "/unlabel" + AppConstants.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return MessageAPI.v_remove_label_from_message
+    }
+}
+
+
 // MARK : Get messages part
 final class MessageCount : ApiRequest<MessageCountResponse> {
-    override open func path() -> String {
+    override func path() -> String {
         return MessageAPI.path + "/count" + AppConstants.DEBUG_OPTION
     }
     override func apiVersion() -> Int {

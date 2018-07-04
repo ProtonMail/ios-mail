@@ -93,7 +93,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
         for (key, value) in self.labelMessages {
             if value.currentStatus != value.origStatus && value.currentStatus == 0 { //remove
                 let ids = self.messages.map { ($0).messageID }
-                let api = RemoveLabelFromMessageRequest(labelID: key, messages: ids)
+                let api = RemoveLabelFromMessages(labelID: key, messages: ids)
                 api.call(nil)
                 context.performAndWait { () -> Void in
                     for mm in self.messages {
@@ -104,7 +104,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                 }
             } else if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
                 let ids = self.messages.map { ($0).messageID }
-                let api = ApplyLabelToMessageRequest(labelID: key, messages: ids)
+                let api = ApplyLabelToMessages(labelID: key, messages: ids)
                 api.call(nil)
                 context.performAndWait { () -> Void in
                     for mm in self.messages {
