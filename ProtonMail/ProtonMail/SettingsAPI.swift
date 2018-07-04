@@ -19,7 +19,7 @@ struct News : OptionSet {
 }
 
 // Mark : get all settings
-final class GetSettings : ApiRequest<SettingsResponse> {
+final class GetSettings : ApiRequestNew<SettingsResponse> {
     override func path() -> String {
         return SettingsAPI.path + AppConstants.DEBUG_OPTION
     }

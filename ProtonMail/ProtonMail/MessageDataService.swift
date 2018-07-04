@@ -1124,8 +1124,9 @@ class MessageDataService {
         sharedContactDataService.clean() //here need move to a general data service manager
         sharedLabelsDataService.cleanUp()
         
+        sharedUserDataService.cleanUserInfo()
+        
         UIApplication.setBadge(badge: 0)
-        //UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     fileprivate func cleanMessage() {

@@ -137,15 +137,13 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         Fabric.with([Crashlytics()])
         application.registerForRemoteNotifications()
         
+        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
+        
         shareViewModelFactoy = ViewModelFactoryProduction()
         sharedVMService.cleanLegacy()
         sharedAPIService.delegate = self
-        sharedUserDataService.delegate = self
         
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
-        
-        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
-        
         //get build mode if debug mode enable network logging
         let mode = UIApplication.shared.releaseMode()
         //network debug options
@@ -153,13 +151,13 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
             logger.level = .AFLoggerLevelDebug;
         }
         AFNetworkActivityLogger.shared().startLogging()
-
+        
         //start network notifier
         sharedInternetReachability.startNotifier()
         
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
-        
+        sharedUserDataService.delegate = self
         sharedPushNotificationService.registerForRemoteNotifications()
         
         if mode != .dev && mode != .sim {

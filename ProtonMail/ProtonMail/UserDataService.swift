@@ -349,15 +349,17 @@ class UserDataService {
             
             let addrApi = GetAddressesRequest()
             let userApi = GetUserInfoRequest()
+            let settingsApi = GetSettings()
+            
             
             let addrRes = try await(addrApi.run())
             let userRes = try await(userApi.run())
+//            let settingsRes = try await(settingsApi.run())
             
             userRes.userInfo?.setAddresses(addresses: addrRes.addresses)
+            userRes.userInfo?.setSettings()
+            
             self.userInfo = userRes.userInfo
-//            if let addresses = self.userInfo?.userAddresses.toPMNAddresses() {
-//                sharedOpenPGP.setAddresses(addresses);
-//            }
             return self.userInfo
         }
     }
@@ -406,6 +408,10 @@ class UserDataService {
     func clean() {
         clearAll()
         clearAuthToken()
+    }
+    
+    func cleanUserInfo() {
+        
     }
     
     func signOut(_ animated: Bool) {
@@ -857,8 +863,6 @@ class UserDataService {
         userInfo = nil
         twoFactorStatus = 0
         passwordMode = 2
-        
-        //sharedOpenPGP.cleanAddresses()
     }
     
     func clearAuthToken() {
