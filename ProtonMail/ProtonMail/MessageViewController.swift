@@ -682,44 +682,57 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                                 //internal emails
                                 if keyRes.recipientType == 1 {
-                                    //get all keys compromised
-                                    var iscompromised = false
-                                    if  let compromisedKeys = keyRes.getCompromisedKeys(), compromisedKeys.count > 0 {
-                                        let status = self.message.verifyBody(verifier: compromisedKeys)
+                                    if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
+                                        let status = self.message.verifyBody(verifier: pgpKeys)
                                         switch status {
                                         case .ok:
-                                            iscompromised = true
+                                            c.pgpType = .internal_trusted_key
+                                        case .notSigned:
+                                            c.pgpType = .internal_normal
+                                        case .noVerifier:
+                                            c.pgpType = .internal_normal
+                                        case .failed:
                                             c.pgpType = .internal_trusted_key_verify_failed
-                                        case .notSigned, .noVerifier, .failed:
-                                            break
                                         }
                                     }
-                                    
-                                    if !iscompromised {
-                                        var verifier = Data()
-                                        //get verify keys from getEmail
-                                        if  let verifyKeys = keyRes.getVerifyKeys(), verifyKeys.count > 0 {
-                                            verifier.append(verifyKeys)
-                                        }
-                                        //get verify keys from pgpkeys
-                                        if let contact = contacts.first, let pgpKeys = contact.pgpKeys, pgpKeys.count > 0 {
-                                            verifier.append(pgpKeys)
-                                        }
-                                        
-                                        if verifier.count > 0 {
-                                            let status = self.message.verifyBody(verifier: verifier)
-                                            switch status {
-                                            case .ok:
-                                                c.pgpType = .internal_trusted_key
-                                            case .notSigned:
-                                                c.pgpType = .internal_normal
-                                            case .noVerifier:
-                                                c.pgpType = .internal_normal
-                                            case .failed:
-                                                c.pgpType = .internal_trusted_key_verify_failed
-                                            }
-                                        }
-                                    }
+                                    //get all keys compromised
+//                                    var iscompromised = false
+//                                    if  let compromisedKeys = keyRes.getCompromisedKeys(), compromisedKeys.count > 0 {
+//                                        let status = self.message.verifyBody(verifier: compromisedKeys)
+//                                        switch status {
+//                                        case .ok:
+//                                            iscompromised = true
+//                                            c.pgpType = .internal_trusted_key_verify_failed
+//                                        case .notSigned, .noVerifier, .failed:
+//                                            break
+//                                        }
+//                                    }
+//
+//                                    if !iscompromised {
+//                                        var verifier = Data()
+//                                        //get verify keys from getEmail
+//                                        if  let verifyKeys = keyRes.getVerifyKeys(), verifyKeys.count > 0 {
+//                                            verifier.append(verifyKeys)
+//                                        }
+//                                        //get verify keys from pgpkeys
+//                                        if let contact = contacts.first, let pgpKeys = contact.pgpKeys, pgpKeys.count > 0 {
+//                                            verifier.append(pgpKeys)
+//                                        }
+//                                        
+//                                        if verifier.count > 0 {
+//                                            let status = self.message.verifyBody(verifier: verifier)
+//                                            switch status {
+//                                            case .ok:
+//                                                c.pgpType = .internal_trusted_key
+//                                            case .notSigned:
+//                                                c.pgpType = .internal_normal
+//                                            case .noVerifier:
+//                                                c.pgpType = .internal_normal
+//                                            case .failed:
+//                                                c.pgpType = .internal_trusted_key_verify_failed
+//                                            }
+//                                        }
+//                                    }
                                 } else {
                                     if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
                                         let status = self.message.verifyBody(verifier: pgpKeys)
