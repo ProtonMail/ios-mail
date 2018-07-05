@@ -105,6 +105,7 @@
 - (NSString*)encryptMessageBinKey:(NSString*)plainText publicKey:(NSData*)publicKey privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase trim:(BOOL)trim error:(NSError**)error;
 - (NSString*)encryptMessageWithPassword:(NSString*)plainText password:(NSString*)password error:(NSError**)error;
 - (NSString*)generateKey:(NSString*)userName domain:(NSString*)domain passphrase:(NSString*)passphrase keyType:(NSString*)keyType bits:(long)bits error:(NSError**)error;
+- (NSString*)generateRSAKeyWithPrimes:(NSString*)userName domain:(NSString*)domain passphrase:(NSString*)passphrase bits:(long)bits primeone:(NSData*)primeone primetwo:(NSData*)primetwo primethree:(NSData*)primethree primefour:(NSData*)primefour error:(NSError**)error;
 - (int64_t)getTime;
 - (BOOL)isKeyExpired:(NSString*)publicKey ret0_:(BOOL*)ret0_ error:(NSError**)error;
 - (BOOL)isKeyExpiredBin:(NSData*)publicKey ret0_:(BOOL*)ret0_ error:(NSError**)error;
