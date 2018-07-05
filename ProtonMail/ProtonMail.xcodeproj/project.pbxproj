@@ -3263,8 +3263,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 751CDEBA1FBB95F6005E3EB1 /* Build configuration list for PBXNativeTarget "PushService" */;
 			buildPhases = (
-				D6783586113C6AD2BDC49F70 /* [CP] Check Pods Manifest.lock */,
 				7516456D20EE9A0300BEE441 /* Setup Version Number */,
+				D6783586113C6AD2BDC49F70 /* [CP] Check Pods Manifest.lock */,
 				751CDEAE1FBB95F6005E3EB1 /* Sources */,
 				751CDEAF1FBB95F6005E3EB1 /* Frameworks */,
 				751CDEB01FBB95F6005E3EB1 /* Resources */,
