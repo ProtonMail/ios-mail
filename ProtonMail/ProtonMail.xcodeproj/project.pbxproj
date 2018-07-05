@@ -3423,7 +3423,7 @@
 					751CDEB11FBB95F6005E3EB1 = {
 						CreatedOnToolsVersion = 9.1;
 						DevelopmentTeam = 2SB5Z68H26;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					75482B2B1F7F09E100B0BFFB = {
 						DevelopmentTeam = 2SB5Z68H26;
@@ -5760,7 +5760,7 @@
 				CODE_SIGN_ENTITLEMENTS = PushService/PushService.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5772,6 +5772,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "ee8d1e39-1c0a-4af3-b488-e20aaa3be9bc";
+				PROVISIONING_PROFILE_SPECIFIER = "protonmail push service dev";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -5790,7 +5792,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = PushService/PushService.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
@@ -5803,6 +5805,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "a2889947-d058-427f-9f13-6d9a5a2aa4f6";
+				PROVISIONING_PROFILE_SPECIFIER = "protonmail push service release";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
@@ -5820,7 +5824,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = PushService/PushService.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
@@ -5833,6 +5837,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "a2889947-d058-427f-9f13-6d9a5a2aa4f6";
+				PROVISIONING_PROFILE_SPECIFIER = "protonmail push service release";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
