@@ -54,6 +54,10 @@ end
 #targets
 target 'ProtonMail' do
 	pm_pods
+    # Pods for PushService
+    target 'PushService' do
+        inherit! :search_paths
+    end
 end
 
 target 'ProtonMailDev' do
@@ -63,7 +67,6 @@ target 'ProtonMailDev' do
     target 'PushServiceDev' do
         inherit! :search_paths
     end
-
 end
 
 target 'ProtonMailTests' do
@@ -77,12 +80,6 @@ end
 target 'ShareDev' do
     pm_extensions
 end
-
-#target 'PushService' do
-#    pm_push
-#end
-
-
 
 post_install do | installer |
     require 'fileutils'
