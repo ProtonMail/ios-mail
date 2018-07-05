@@ -3506,14 +3506,14 @@
 			projectRoot = "";
 			targets = (
 				075E3DE51A5F4ECF00E001A7 /* ProtonMail */,
-				75482B2B1F7F09E100B0BFFB /* Share */,
-				75AFD2EA1FBA7CF000EAEA61 /* Push */,
-				751CDEB11FBB95F6005E3EB1 /* PushService */,
-				075E3DFD1A5F4ECF00E001A7 /* ProtonMailTests */,
 				75DE7CB21CAAEA4900F5443E /* ProtonMailDev */,
+				75482B2B1F7F09E100B0BFFB /* Share */,
 				758ED7C01F05A3FF0028D1A5 /* ShareDev */,
-				75AFD3011FBA7D7500EAEA61 /* PushDev */,
+				751CDEB11FBB95F6005E3EB1 /* PushService */,
 				751CDEA11FBB95B3005E3EB1 /* PushServiceDev */,
+				075E3DFD1A5F4ECF00E001A7 /* ProtonMailTests */,
+				75AFD2EA1FBA7CF000EAEA61 /* Push */,
+				75AFD3011FBA7D7500EAEA61 /* PushDev */,
 			);
 		};
 /* End PBXProject section */
