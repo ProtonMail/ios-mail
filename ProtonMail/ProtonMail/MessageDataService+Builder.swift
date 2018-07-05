@@ -220,14 +220,20 @@ class SendBuilder {
     }
     
     
-    private func build(type rt : Int, eo : Bool, pgpkey: Bool, pgpencrypt : Bool, mime: Bool) -> SendType {
+    private func build(type rt : Int, eo : Bool, pgpkey: Bool, pgpencrypt : Bool, mime: Bool, sign: Bool) -> SendType {
         if rt == 1 {
             return .intl
         }
-        
+
         //pgp mime
         if rt == 2 && mime && pgpkey && pgpencrypt {
             return .pgpmime
+        }
+
+        
+        // sign only and set eo pwd
+        if rt == 2 && !pgpencrypt && eo {
+            return .eo
         }
         
         //pgp mime clear
@@ -239,6 +245,7 @@ class SendBuilder {
             return .inlnpgp
         }
         
+        // seems this check is useless 
         if rt == 2 && eo {
             return .eo
         }
@@ -355,7 +362,7 @@ class SendBuilder {
                 if pre.plainText {
                     session = self.plainTextSession
                 }
-                switch self.build(type: pre.recipintType, eo: pre.eo, pgpkey: pre.pgpKey != nil, pgpencrypt: pre.pgpencrypt, mime: pre.mime) {
+                switch self.build(type: pre.recipintType, eo: pre.eo, pgpkey: pre.pgpKey != nil, pgpencrypt: pre.pgpencrypt, mime: pre.mime, sign: pre.sign) {
                 case .intl:
                     out.append(AddressBuilder(type: .intl, addr: pre, session: session, atts: self.preAttachments))
                 case .eo:
@@ -400,7 +407,7 @@ class SendBuilder {
     func contains(type : SendType) -> Bool {
         for pre in preAddresses {
             let buildType = self.build(type: pre.recipintType, eo: pre.eo,
-                                       pgpkey: pre.pgpKey != nil, pgpencrypt: pre.pgpencrypt, mime: pre.mime)
+                                       pgpkey: pre.pgpKey != nil, pgpencrypt: pre.pgpencrypt, mime: pre.mime, sign: pre.sign)
             if buildType.contains(type) {
                 return true
             }

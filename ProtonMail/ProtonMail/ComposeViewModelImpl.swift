@@ -204,9 +204,12 @@ final class ComposeViewModelImpl : ComposeViewModel {
                             c.pgpType = .pgp_encrypt_trusted_key
                         } else if contact.sign {
                             c.pgpType = .pgp_signed
+                            if let pwd = self.message?.password, pwd != "" {
+                                c.pgpType = .eo
+                            }
                         }
                     } else {
-                        if let pwd = self.message?.password, let exp = self.message?.expirationOffset, pwd != "", exp > 0 {
+                        if let pwd = self.message?.password, pwd != "" {
                             c.pgpType = .eo
                         } else {
                             c.pgpType = .none

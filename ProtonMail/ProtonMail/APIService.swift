@@ -497,6 +497,9 @@ class APIService {
                 }, downloadProgress: { (progress) in
                     //TODO::add later
                 }, completionHandler: { (urlresponse, res, error) in
+                    
+                    
+                    
                     parseBlock(task, res, error)
                 })
                 task!.resume()
