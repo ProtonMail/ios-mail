@@ -55,14 +55,17 @@ class ShareUnlockViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel,
                                                                 target: self,
                                                                 action: #selector(ShareUnlockViewController.cancelButtonTapped(sender:)))
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         ActivityIndicatorHelper.showActivityIndicator(at: view)
         if let inputitems = self.extensionContext?.inputItems as? [NSExtensionItem] {
             let group = DispatchGroup()
             self.parse(items: inputitems, group: group)
-            group.notify(queue: .main) {
-                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-                DispatchQueue.main.async {
+            group.notify(queue: DispatchQueue.global(qos: .userInteractive)) { [unowned self] in
+                DispatchQueue.main.async { [unowned self] in
+                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                     //go to composer
                     if self.localized_errors.isEmpty {
                         self.loginCheck()
@@ -93,7 +96,7 @@ class ShareUnlockViewController: UIViewController {
                     if let itemProvider = att as? NSItemProvider {
                         if let type = itemProvider.hasItem(types: file_types) {
                             group.enter() //#1
-                            itemProvider.loadItem(type: type, handler: { (fileData : FileData?, error : NSError?) in
+                            itemProvider.loadItem(type: type, handler: { [unowned self] (fileData : FileData?, error : NSError?) in
                                 defer {
                                      group.leave() //#1
                                 }
@@ -113,7 +116,7 @@ class ShareUnlockViewController: UIViewController {
                             PMLog.D("1")
                         } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
                             group.enter()//#2
-                            itemProvider.loadItem(forTypeIdentifier: url_key, options: nil, completionHandler: { (url, error) -> Void in
+                            itemProvider.loadItem(forTypeIdentifier: url_key, options: nil, completionHandler: { [unowned self] (url, error) -> Void in
                                 defer {
                                     group.leave()//#2
                                 }
@@ -186,10 +189,7 @@ class ShareUnlockViewController: UIViewController {
         }))
         self.present(alertController, animated: true, completion: nil)
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
+
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -197,15 +197,7 @@ class ShareUnlockViewController: UIViewController {
             self.tryTouchID()
         })
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-    }
-    
+
     fileprivate func getViewFlow() -> SignInUIFlow {
         if sharedTouchID.showTouchIDOrPin() {
             if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {

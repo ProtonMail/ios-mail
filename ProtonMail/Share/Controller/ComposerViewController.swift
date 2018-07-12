@@ -134,7 +134,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         let dismiss: (() -> Void) = {
             self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
                 let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
-                self.extensionContext!.cancelRequest(withError: cancelError)
+                self.extensionContext?.cancelRequest(withError: cancelError)
             })
         }
         
@@ -160,10 +160,26 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         present(alertController, animated: true, completion: nil)
     }
     
+    private var observation: NSKeyValueObservation?
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
-        UIView.animate(withDuration: 0.50, animations: { () -> Void in
-            self.navigationController!.view.transform = CGAffineTransform(translationX: 0, y: self.navigationController!.view.frame.size.height)
-        }, completion: completion)
+        let alert = UIAlertController(title: "Working", message: "Please wait", preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        
+        self.observation = sharedMessageQueue.observe(\.queue) { [weak self] _, change in
+            if sharedMessageQueue.queue.isEmpty {
+                let animationBlock: ()->Void = {
+                    if let view = self?.navigationController?.view {
+                        view.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height)
+                    }
+                }
+                alert.dismiss(animated: true, completion: nil)
+                self?.webView?.delegate = nil
+                self?.webView?.stopLoading()
+                self?.observation?.invalidate()
+                self?.observation = nil
+                UIView.animate(withDuration: 0.50, animations: animationBlock, completion: completion)
+            }
+        }
     }
     
     
@@ -268,7 +284,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     }
     
     fileprivate func retrieveAllContacts() {
-        sharedContactDataService.getContactVOs { (contacts, error) in
+        sharedContactDataService.getContactVOs { [unowned self] (contacts, error) in
             if let error = error {
                 PMLog.D(" error: \(error)")
             }
@@ -294,7 +310,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                 let _ = self.composeView.toContactPicker.becomeFirstResponder()
                 break
             }
-        }
+        } 
     }
     
     fileprivate func updateContentLayout(_ animation: Bool) {
@@ -405,7 +421,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         self.viewModel.sendMessage()
         
         self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
-            self.extensionContext!.completeRequest(returningItems: nil, completionHandler: nil)
+            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
         })
     }
     

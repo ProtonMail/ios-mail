@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import Masonry
 
-protocol ComposeViewDelegate {
+protocol ComposeViewDelegate: class {
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool)
     func ComposeViewDidOffsetChanged(_ offset: CGPoint)
     func composeViewDidTapNextButton(_ composeView: ComposeView)
@@ -29,7 +29,7 @@ protocol ComposeViewDelegate {
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
 }
 
-protocol ComposeViewDataSource {
+protocol ComposeViewDataSource: class {
     func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol]
     func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol]
 }
@@ -190,8 +190,8 @@ class ComposeView: UIViewController {
     @IBOutlet weak var fromLable: UILabel!
     
     // MARK: - Delegate and Datasource
-    var datasource: ComposeViewDataSource?
-    var delegate: ComposeViewDelegate?
+    weak var datasource: ComposeViewDataSource?
+    weak var delegate: ComposeViewDelegate?
     
     var selfView : UIView!
     

@@ -9,7 +9,7 @@
 import UIKit
 
 
-protocol ContactCollectionViewContactCellDelegate {
+protocol ContactCollectionViewContactCellDelegate: class {
     func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
 }
 
@@ -23,7 +23,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     @IBOutlet weak var leftConstant: NSLayoutConstraint!
     @IBOutlet weak var widthConstant: NSLayoutConstraint!
     
-    var delegate : ContactCollectionViewContactCellDelegate?
+    weak var delegate : ContactCollectionViewContactCellDelegate?
     
     /// contact model
     var _model: ContactPickerModelProtocol!

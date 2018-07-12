@@ -12,7 +12,7 @@ import Foundation
 let sharedVMService : ViewModelService = ViewModelServiceShareImpl()
 final class ViewModelServiceShareImpl: ViewModelService {
     
-    private var latestComposerViewModel : ComposeViewModel?
+    private weak var latestComposerViewModel : ComposeViewModel? // FIXME: why do we need it at all?
     
     override func buildComposer<T>(_ vmp: T, subject: String, content: String, files: [FileData]) where T : ViewModelProtocolNew {
         let viewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)

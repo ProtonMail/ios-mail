@@ -16,7 +16,7 @@ import UIKit
 
 class ContactCollectionViewEntryCell: UICollectionViewCell {
 
-    var _delegate: UITextFieldDelegateImproved?
+    weak var _delegate: UITextFieldDelegateImproved?
     
     private var contactEntryTextField: UITextField?
     

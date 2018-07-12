@@ -16,7 +16,7 @@
 
 import Foundation
 
-class PersistentQueue {
+@objcMembers class PersistentQueue: NSObject {
     
     struct Key {
         static let elementID = "elementID"
@@ -26,7 +26,7 @@ class PersistentQueue {
     fileprivate var queueURL: URL
     fileprivate var queueName: String
     
-    fileprivate var queue: [Any] {
+    dynamic fileprivate(set) var queue: [Any] {
         didSet {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.background).sync { () -> Void in
                 let data = NSKeyedArchiver.archivedData(withRootObject: self.queue)
@@ -59,6 +59,8 @@ class PersistentQueue {
         else {
             self.queue = []
         }
+        
+        super.init()
     }
     
     func add (_ uuid: UUID, object: NSCoding) -> UUID {

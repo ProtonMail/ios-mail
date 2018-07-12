@@ -32,8 +32,8 @@ protocol ContactPickerDelegate : ContactCollectionViewDelegate {
 
 class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
 
-    var delegate : ContactPickerDelegate?
-    var datasource : ContactPickerDataSource?
+    weak var delegate : ContactPickerDelegate?
+    weak var datasource : ContactPickerDataSource?
     
     var originalHeight : CGFloat = -1
     var originalYOffset : CGFloat = -1

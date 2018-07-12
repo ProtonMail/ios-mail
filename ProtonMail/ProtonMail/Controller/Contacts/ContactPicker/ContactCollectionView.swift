@@ -38,7 +38,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
     var cellHeight: Int = ContactPickerDefined.ROW_HEIGHT
     var selectedContacts: [ContactPickerModelProtocol]!
     
-    var contactDelegate: ContactCollectionViewDelegate?
+    weak var contactDelegate: ContactCollectionViewDelegate?
     
     var prototypeCell: ContactCollectionViewContactCell!
     var promptCell: ContactCollectionViewPromptCell?
