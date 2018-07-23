@@ -430,9 +430,13 @@ extension Message {
                         body = body.multipartGetHtmlContent ()
                     }
                 } else if isEncrypted == 7 {
-                    body = body.encodeHtml()
-                    body = body.ln2br()
-                    return body
+                    if isPlainText() {
+                        body = body.encodeHtml()
+                        body = body.ln2br()
+                        return body
+                    } else {
+                        return body
+                    }
                 }
                 if isPlainText() {
                     body = body.encodeHtml()
