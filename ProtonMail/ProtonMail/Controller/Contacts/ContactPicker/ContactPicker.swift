@@ -99,6 +99,9 @@ class ContactPicker: UIView {
         self.setup()
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     private func setup() {
         self._prompt = ContactPickerDefined.kPrompt
@@ -262,6 +265,15 @@ class ContactPicker: UIView {
         return self.contactCollectionView.resignFirstResponder()
     }
     
+    override func didMoveToWindow() {
+        if self.window != nil {
+            if !self.hasLoadedData {
+                self.reloadData()
+                self.hasLoadedData = true
+            }
+        }
+    }
+
     //
     //#pragma mark Helper Methods
     //
