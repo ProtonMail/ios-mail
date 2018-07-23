@@ -647,20 +647,7 @@ extension ComposeView: ContactPickerDelegate {
         self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
     }
     
-    func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker) {
-        self.view.bringSubview(toFront: contactPicker)
-        if (contactPicker.frame.size.height <= contactPicker.currentContentHeight) {
-            let pickerRectInWindow = self.view.convert(contactPicker.frame, to: nil)
-            let newHeight = self.view.window!.bounds.size.height - pickerRectInWindow.origin.y - contactPicker.keyboardHeight
-            self.pickerHeight = newHeight
-            self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
-        }
-        
-        if !contactPicker.isHidden {
-            
-        }
-        
-        self.notifyViewSize(false)
+    func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker) { 
 
     }
     

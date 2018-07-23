@@ -7,12 +7,27 @@
 //
 
 import UIKit
-import ZSSRichTextEditor
+import RichEditorView
 
-class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
+extension ComposerViewController: RichEditorDelegate {
+    func richEditor(_ editor: RichEditorView, shouldInteractWith url: URL) -> Bool {
+        return false
+    }
+    
+    func richEditor(_ editor: RichEditorView, heightDidChange height: Int) {
+        print("height changed")
+    }
+}
+
+class ComposerViewController: UIViewController, ViewModelProtocolNew {
     typealias argType = ComposeViewModel
-    // view model
-    fileprivate var viewModel : ComposeViewModel!
+
+    fileprivate var viewModel: ComposeViewModel!
+    
+    fileprivate lazy var editorView: RichEditorView = {
+        let editor = RichEditorView(frame: self.view.bounds)
+        return editor
+    }()
     
     func set(viewModel: ComposeViewModel) {
          self.viewModel = viewModel
@@ -22,8 +37,8 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     }
     
     // private views
-    fileprivate var webView : UIWebView!
-    fileprivate var composeView : ComposeView!
+    fileprivate weak var webView : UIWebView?
+    fileprivate var composeViewController : ComposeView!
     fileprivate var cancelButton: UIBarButtonItem!
     fileprivate var sendButton: UIBarButtonItem!
     
@@ -70,22 +85,24 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         self.configureNavigationBar()
         
         //inital webview
-        self.baseURL = URL( fileURLWithPath: "https://protonmail.ch")
         //self.formatHTML = false
-        self.webView = self.getWebView()
+        self.webView = self.editorView.webView
+        self.view.addSubview(self.editorView)
+        self.editorView.delegate = self
         
         // init views
-        self.composeView = ComposeView(nibName: "ComposeView", bundle: nil)
+        self.composeViewController = ComposeView(nibName: "ComposeView", bundle: nil)
         let w = UIScreen.main.applicationFrame.width;
-        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
-        self.composeView.delegate = self
-        self.composeView.datasource = self
-        self.webView.scrollView.addSubview(composeView.view);
-        self.webView.scrollView.bringSubview(toFront: composeView.view)
+        self.composeViewController.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
+        self.composeViewController.delegate = self
+        self.composeViewController.datasource = self
+        self.addChildViewController(self.composeViewController)
+        self.webView?.scrollView.addSubview(composeViewController.view);
+        self.webView?.scrollView.bringSubview(toFront: composeViewController.view)
+        self.composeViewController.didMove(toParentViewController: self)
         
         // update content values
         updateMessageView()
-        //self.contacts = sharedContactDataService.allContactVOs()
         retrieveAllContacts()
         
         self.expirationPicker.alpha = 0.0
@@ -99,19 +116,14 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         
         //change message as read
         self.viewModel.markAsRead();
-        
+        self.composeViewController.toContactPicker.becomeFirstResponder()
         
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     @objc func send_clicked(sender: UIBarButtonItem) {
         self.dismissKeyboard()
-        if let suject = self.composeView.subject.text {
+        if let suject = self.composeViewController.subject.text {
             if !suject.isEmpty {
                 self.sendMessage()
                 return
@@ -189,7 +201,8 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                 if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
                     att.base64AttachmentData({ (based64String) in
                         if !based64String.isEmpty {
-                            self.updateEmbedImage(byCID: "cid:\(content_id)", blob:  "data:\(att.mimeType);base64,\(based64String)");
+                            // FIXME
+//                            self.updateEmbedImage(byCID: "cid:\(content_id)", blob:  "data:\(att.mimeType);base64,\(based64String)");
                         }
                     })
                 }
@@ -197,27 +210,19 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         }
     }
     
-    override func webViewDidFinishLoad(_ webView: UIWebView) {
-        super.webViewDidFinishLoad(webView)
-        updateEmbedImages()
-        
-        self.composeView.notifyViewSize(true)
-    }
-    
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-        self.composeView.notifyViewSize(true)
+        self.composeViewController.notifyViewSize(true)
     }
     
     fileprivate func dismissKeyboard() {
-        self.composeView.subject.becomeFirstResponder()
-        self.composeView.subject.resignFirstResponder()
+        self.composeViewController.subject.becomeFirstResponder()
+        self.composeViewController.subject.resignFirstResponder()
     }
     
     fileprivate func updateMessageView() {
-        self.composeView.updateFromValue(self.viewModel.getDefaultSendAddress()?.email ?? "", pickerEnabled: true)
-        self.composeView.subject.text = self.viewModel.getSubject();
-        self.shouldShowKeyboard = false
-        self.setHTML(self.viewModel.getHtmlBody())
+        self.composeViewController.updateFromValue(self.viewModel.getDefaultSendAddress()?.email ?? "", pickerEnabled: true)
+        self.composeViewController.subject.text = self.viewModel.getSubject();
+        self.editorView.html = self.viewModel.getHtmlBody()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -239,7 +244,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     }
     
     internal func statusBarHit (_ notify: Notification) {
-        webView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+        self.webView?.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -266,7 +271,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         var frame = self.view.frame
         frame.size.width = w
         self.view.frame = frame
-        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
+        self.composeViewController?.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
     }
     
     // ******************
@@ -289,25 +294,24 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                 PMLog.D(" error: \(error)")
             }
             
-            //TODO::
             self.contacts = contacts
             
-            self.composeView.toContactPicker.reloadData()
-            self.composeView.ccContactPicker.reloadData()
-            self.composeView.bccContactPicker.reloadData()
+            self.composeViewController.toContactPicker.reloadData()
+            self.composeViewController.ccContactPicker.reloadData()
+            self.composeViewController.bccContactPicker.reloadData()
             
-            self.composeView.toContactPicker.contactCollectionView.layoutIfNeeded()
-            self.composeView.bccContactPicker.contactCollectionView.layoutIfNeeded()
-            self.composeView.ccContactPicker.contactCollectionView.layoutIfNeeded()
+            self.composeViewController.toContactPicker.contactCollectionView.layoutIfNeeded()
+            self.composeViewController.bccContactPicker.contactCollectionView.layoutIfNeeded()
+            self.composeViewController.ccContactPicker.contactCollectionView.layoutIfNeeded()
             
             switch self.viewModel.messageAction!
             {
             case .openDraft, .reply, .replyAll:
-                self.focus()
-                self.composeView.notifyViewSize(true)
+                self.editorView.focus()
+                self.composeViewController.notifyViewSize(true)
                 break
             default:
-                let _ = self.composeView.toContactPicker.becomeFirstResponder()
+                let _ = self.composeViewController.toContactPicker.becomeFirstResponder()
                 break
             }
         } 
@@ -315,15 +319,16 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     
     fileprivate func updateContentLayout(_ animation: Bool) {
         UIView.animate(withDuration: animation ? 0.25 : 0, animations: { () -> Void in
-            for subview in self.webView.scrollView.subviews {
+            for subview in (self.webView?.scrollView.subviews ?? []) {
                 let sub = subview
-                if sub == self.composeView.view {
+                if sub == self.composeViewController.view {
                     continue
                 } else if sub is UIImageView {
                     continue
                 } else {
                     let h : CGFloat = self.composeViewSize
-                    self.updateFooterOffset(h)
+//                    self.updateFooterOffset(h) // FIXME
+//                    self.editor.webView.scrollView.contentOffset
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
                 }
             }
@@ -348,17 +353,18 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     }
     
     fileprivate func collectDraft() {
-        let orignal = self.getOrignalEmbedImages()
-        let edited = self.getEditedEmbedImages()
-        self.checkEmbedImageEdit(orignal!, edited: edited!)
-        var body = self.getHTML()
-        if (body?.isEmpty)! {
+        // FIXME
+//        let orignal = self.getOrignalEmbedImages()
+//        let edited = self.getEditedEmbedImages()
+//        self.checkEmbedImageEdit(orignal!, edited: edited!)
+        var body = self.editorView.html
+        if body.isEmpty {
             body = "<div><br></div>"
         }
         self.viewModel.collectDraft(
-            self.composeView.subject.text!,
-            body: body!,
-            expir: self.composeView.expirationTimeInterval,
+            self.composeViewController.subject.text!,
+            body: body,
+            expir: self.composeViewController.expirationTimeInterval,
             pwd:self.encryptionPassword,
             pwdHit:self.encryptionPasswordHint
         )
@@ -381,9 +387,9 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     }
     
     internal func sendMessage () {
-        if self.composeView.expirationTimeInterval > 0 {
-            if self.composeView.hasOutSideEmails && self.encryptionPassword.count <= 0 {
-                let emails = self.composeView.allEmails
+        if self.composeViewController.expirationTimeInterval > 0 {
+            if self.composeViewController.hasOutSideEmails && self.encryptionPassword.count <= 0 {
+                let emails = self.composeViewController.allEmails
                 //show loading
                 ActivityIndicatorHelper.showActivityIndicator(at: view)
                 let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
@@ -393,7 +399,7 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                     if let res = response, res.hasOutsideEmails == false {
                         self.sendMessageStepTwo()
                     } else {
-                        self.composeView.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_pls_set_password)
+                        self.composeViewController.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_pls_set_password)
                     }
                 })
                 return
@@ -427,9 +433,9 @@ class ComposerViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     
     fileprivate func updateAttachmentButton () {
         if let att = attachments, att.count > 0 {
-            self.composeView.updateAttachmentButton(true)
+            self.composeViewController.updateAttachmentButton(true)
         } else {
-            self.composeView.updateAttachmentButton(false)
+            self.composeViewController.updateAttachmentButton(false)
         }
     }
 }
@@ -445,7 +451,7 @@ extension ComposerViewController : PasswordEncryptViewControllerDelegate {
         self.encryptionConfirmPassword = confirmPassword
         self.encryptionPasswordHint    = hint
         
-        self.composeView.showEncryptionDone()
+        self.composeViewController.showEncryptionDone()
     }
     
     func Removed() {
@@ -453,7 +459,7 @@ extension ComposerViewController : PasswordEncryptViewControllerDelegate {
         self.encryptionConfirmPassword = ""
         self.encryptionPasswordHint    = ""
         
-        self.composeView.showEncryptionRemoved()
+        self.composeViewController.showEncryptionRemoved()
     }
 }
 
@@ -480,12 +486,12 @@ extension ComposerViewController : ComposeViewDelegate {
                         self.present(alertController, animated: true, completion: nil)
                     } else {
                         if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
-                            self.updateSignature("\(signature)")
+//                            self.updateSignature("\(signature)")
                         }
                         
                         ActivityIndicatorHelper.showActivityIndicator(at: self.view)
                         self.viewModel.updateAddressID(addr.address_id).done {
-                            self.composeView.updateFromValue(addr.email, pickerEnabled: true)
+                            self.composeViewController.updateFromValue(addr.email, pickerEnabled: true)
                         }.catch { (error ) in
                             let alertController = error.localizedDescription.alertController()
                             alertController.addOKAction()
@@ -498,8 +504,8 @@ extension ComposerViewController : ComposeViewDelegate {
             }
         }
         if needsShow {
-            alertController.popoverPresentationController?.sourceView = self.composeView.fromView
-            alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
+            alertController.popoverPresentationController?.sourceView = self.composeViewController.fromView
+            alertController.popoverPresentationController?.sourceRect = self.composeViewController.fromView.frame
             present(alertController, animated: true, completion: nil)
         }
     }
@@ -510,10 +516,10 @@ extension ComposerViewController : ComposeViewDelegate {
             self.updateComposeFrame()
         } else {
             let w = UIScreen.main.applicationFrame.width
-            self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
+            self.composeViewController.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
         }
         self.updateContentLayout(true)
-        self.webView.scrollView.isScrollEnabled = !showPicker
+        self.webView?.scrollView.isScrollEnabled = !showPicker
     }
     
     func ComposeViewDidOffsetChanged(_ offset: CGPoint){
@@ -572,7 +578,7 @@ extension ComposerViewController : ComposeViewDelegate {
     {
         let selectedDay = expirationPicker.selectedRow(inComponent: 0)
         let selectedHour = expirationPicker.selectedRow(inComponent: 1)
-        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour)
+        if self.composeViewController.setExpirationValue(selectedDay, hour: selectedHour)
         {
             self.expirationPicker.alpha = 0;
         }
@@ -664,7 +670,8 @@ extension ComposerViewController: AttachmentsTableViewControllerDelegate {
         self.collectDraft()
 
         if let content_id = attachment.contentID(), !content_id.isEmpty && attachment.inline() {
-            self.removeEmbedImage(byCID: "cid:\(content_id)")
+            // FIXME
+//            self.removeEmbedImage(byCID: "cid:\(content_id)")
         }
         
         self.viewModel.deleteAtt(attachment)
@@ -709,7 +716,7 @@ extension ComposerViewController : UIPickerViewDelegate {
         
         let day = "\(selectedDay) " + LocalString._composer_eo_days_title
         let hour = "\(selectedHour) " + LocalString._composer_eo_hours_title
-        self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
+        self.composeViewController.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
     }
     
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {

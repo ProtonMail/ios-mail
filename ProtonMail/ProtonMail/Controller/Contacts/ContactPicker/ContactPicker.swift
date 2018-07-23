@@ -8,9 +8,7 @@
 
 import UIKit
 
-//#defined DEBUG_BORDERS
-
-protocol ContactPickerDataSource : NSObjectProtocol {
+protocol ContactPickerDataSource: NSObjectProtocol {
     //optional
     func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol]
     func selectedContactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol]
@@ -18,7 +16,7 @@ protocol ContactPickerDataSource : NSObjectProtocol {
     func picker(contactPicker :ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?) -> Void)?)
 }
 
-protocol ContactPickerDelegate : ContactCollectionViewDelegate {
+protocol ContactPickerDelegate: ContactCollectionViewDelegate {
     func contactPicker(contactPicker: ContactPicker, didUpdateContentHeightTo newHeight: CGFloat)
     func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker)
     func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker)
@@ -29,37 +27,53 @@ protocol ContactPickerDelegate : ContactCollectionViewDelegate {
     func customFilterPredicate(searchString: String) -> NSPredicate
 }
 
+class ContactPicker: UIView {
+    private var keyboardFrame: CGRect = .zero
+    private var searchWindow: UIWindow?
+    private var searchTableViewController: ContactSearchTableViewController?
+    private func createSearchTableViewController() -> ContactSearchTableViewController {
+        let controller = ContactSearchTableViewController()
+        controller.tableView.rowHeight = CGFloat(ContactPickerDefined.ROW_HEIGHT)
+        controller.tableView.register(UINib.init(nibName: ContactPickerDefined.ContactsTableViewCellName, bundle: nil),
+                                 forCellReuseIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier)
+        controller.onSelection = { model in
+            self.hideSearchTableView()
+            self.contactCollectionView.addToSelectedContacts(model: model, withCompletion: nil)
+        }
+        return controller
+    }
+    
+    @objc private func keyboardShown(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
+            return
+        }
+        self.keyboardFrame = keyboardFrame
+        
+        // should work only for device orientation changes
+        if notification.name == .UIKeyboardWillHide {
+            self.hideSearchTableView()
+        }
+    }
+    
+    internal weak var delegate : (ContactPickerDelegate&UIViewController)!
+    internal weak var datasource : ContactPickerDataSource?
+    
+    private var _showPrompt : Bool = true
+    private var _prompt : String = ContactPickerDefined.kPrompt
+    private var _maxVisibleRows : CGFloat = ContactPickerDefined.kMaxVisibleRows
+    private var animationSpeed : CGFloat = ContactPickerDefined.kAnimationSpeed
+    private var allowsCompletionOfSelectedContacts : Bool = true
+    private var _enabled : Bool = true
+    private var hideWhenNoResult : Bool = false
+    
+    private var contacts: [ContactPickerModelProtocol] = [ContactPickerModelProtocol]()
 
-class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
-
-    weak var delegate : ContactPickerDelegate?
-    weak var datasource : ContactPickerDataSource?
+    internal var contactCollectionView : ContactCollectionView!
     
-    var originalHeight : CGFloat = -1
-    var originalYOffset : CGFloat = -1
+    private var contactCollectionViewContentSize: CGSize = CGSize.zero
+    private var hasLoadedData : Bool = false
     
-    var _showPrompt : Bool = true
-    var _prompt : String = ContactPickerDefined.kPrompt
-    var _maxVisibleRows : CGFloat = ContactPickerDefined.kMaxVisibleRows
-    
-    var keyboardHeight : CGFloat = 0
-    
-    var animationSpeed : CGFloat = ContactPickerDefined.kAnimationSpeed
-    
-    var allowsCompletionOfSelectedContacts : Bool = true
-    var _enabled : Bool = true
-    var hideWhenNoResult : Bool = false
-    
-    
-    var contacts: [ContactPickerModelProtocol] = [ContactPickerModelProtocol]()
-    var filteredContacts: [ContactPickerModelProtocol] = [ContactPickerModelProtocol]()
-
-    var contactCollectionView : ContactCollectionView!
-    var searchTableView : UITableView!
-    var contactCollectionViewContentSize: CGSize = CGSize.zero
-    var hasLoadedData : Bool = false
-    
-    var cellHeight : Int {
+    internal var cellHeight : Int {
         get {
             return self.contactCollectionView.cellHeight
         }
@@ -69,7 +83,7 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    var contactsSelected : [ContactPickerModelProtocol] {
+    internal var contactsSelected : [ContactPickerModelProtocol] {
         get {
             return self.contactCollectionView.selectedContacts
         }
@@ -86,19 +100,23 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
     }
 
     
-    func setup() {
-        
+    private func setup() {
         self._prompt = ContactPickerDefined.kPrompt
         self._showPrompt = true
-        self.originalHeight = -1
-        self.originalYOffset = -1
         
         let contactCollectionView = ContactCollectionView.contactCollectionViewWithFrame(frame: self.bounds)
         contactCollectionView.contactDelegate = self
         contactCollectionView.clipsToBounds = true
         contactCollectionView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(contactCollectionView)
+        
         self.contactCollectionView = contactCollectionView
+        if #available(iOS 9.0, *) { // we're dropping iOS8 by this version
+            self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+            self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+            self.contactCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+            self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        }
         
         self.maxVisibleRows = ContactPickerDefined.kMaxVisibleRows
         self.animationSpeed = ContactPickerDefined.kAnimationSpeed
@@ -109,102 +127,27 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
         
         self.enabled = true
         self.hideWhenNoResult = true
-        
-        let searchTableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height))
-        searchTableView.dataSource = self
-        searchTableView.delegate = self
-        searchTableView.rowHeight = CGFloat(ContactPickerDefined.ROW_HEIGHT)
-        searchTableView.translatesAutoresizingMaskIntoConstraints = false
-        searchTableView.isHidden = true
-        searchTableView.register(UINib.init(nibName: ContactPickerDefined.ContactsTableViewCellName, bundle: nil),
-                                 forCellReuseIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier)
-        self.addSubview(searchTableView)
-        self.searchTableView = searchTableView
-        
-        self.contactCollectionView.setContentCompressionResistancePriority(.required,
-                                                                           for: .vertical)
-        
-        self.searchTableView.setContentCompressionResistancePriority(.defaultLow,
-                                                                     for: .vertical)
-        
 
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: String(format: "V:|[contactCollectionView(>=%ld,<=%ld)][searchTableView(>=0)]|",
-                                                                                    self.cellHeight,
-                                                                                    self.cellHeight),
-                                                           options: NSLayoutFormatOptions(rawValue: 0),
-                                                           metrics: nil,
-                                                           views: ["contactCollectionView" : contactCollectionView, "searchTableView" : searchTableView]))
-
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[contactCollectionView]-(0@500)-|",
-                                                           options: NSLayoutFormatOptions(rawValue: 0),
-                                                           metrics: nil,
-                                                           views: ["contactCollectionView" : contactCollectionView]))
-        
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[contactCollectionView]|",
-                                                           options: NSLayoutFormatOptions(rawValue: 0),
-                                                           metrics: nil,
-                                                           views: ["contactCollectionView" : contactCollectionView]))
-
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[searchTableView]|",
-                                                           options: NSLayoutFormatOptions(rawValue: 0),
-                                                           metrics: nil,
-                                                           views: ["searchTableView" : searchTableView]))
-        
-        #if DEBUG_BORDERS
-        self.layer.borderColor = UIColor.gray.cgColor
-        self.layer.borderWidth = 1.0
-        contactCollectionView.layer.borderColor = UIColor.red.cgColor
-        contactCollectionView.layer.borderWidth = 1.0
-        searchTableView.layer.borderColor = UIColor.blue.cgColor
-        searchTableView.layer.borderWidth = 1.0
-        #endif
-
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardShown(_:)),
+                                               name: Notification.Name.UIKeyboardWillShow,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardShown(_:)),
+                                               name: Notification.Name.UIKeyboardWillHide,
+                                               object: nil)
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.setup()
     }
-    
-    override func didMoveToWindow() {
-        if self.window != nil {
-            let nc = NotificationCenter.default
-            nc.addObserver(self,
-                           selector: #selector(ContactPicker.keyboardChangedStatus(notification:)),
-                           name: NSNotification.Name.UIKeyboardWillShow,
-                           object: nil)
-            
-            nc.addObserver(self,
-                           selector: #selector(ContactPicker.keyboardChangedStatus(notification:)),
-                           name: NSNotification.Name.UIKeyboardWillHide,
-                           object: nil)
-            
-            if !self.hasLoadedData {
-                self.reloadData()
-                self.hasLoadedData = true
-            }
-        }
-    }
-    
-    override func willMove(toWindow newWindow: UIWindow?) {
-        if newWindow == nil {
-            let nc = NotificationCenter.default
-            nc.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-            nc.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        }
-    }
 
     //
     //#pragma mark - Keyboard Notification Handling
     //
-    @objc func keyboardChangedStatus(notification: NSNotification) {
-        let info: NSDictionary = notification.userInfo! as NSDictionary
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            self.keyboardHeight = keyboardSize.height
-        }
-    }
 
-    func reloadData() {
+    internal func reloadData() {
         self.contactCollectionView.selectedContacts.removeAll()
         
         if let selected = self.datasource?.selectedContactModelsForContactPicker(contactPickerView: self) {
@@ -223,7 +166,7 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
     //
     //#pragma mark - Properties
     //
-    var prompt : String {
+    internal var prompt : String {
         get {
             return self._prompt
         }
@@ -233,7 +176,7 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
         }
     }
 
-    var maxVisibleRows: CGFloat {
+    private var maxVisibleRows: CGFloat {
         get {
             return self._maxVisibleRows
         }
@@ -244,7 +187,7 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
     }
 
 
-    var currentContentHeight : CGFloat {
+    internal var currentContentHeight : CGFloat {
         get {
             let minimumSizeWithContent = max(CGFloat(self.cellHeight), self.contactCollectionViewContentSize.height)
             let maximumSize = self.maxVisibleRows * CGFloat(self.cellHeight)
@@ -252,7 +195,7 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
         }
     }
 
-    var enabled: Bool {
+    private var enabled: Bool {
         get {
             return self._enabled
         }
@@ -267,7 +210,7 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    var showPrompt: Bool {
+    private var showPrompt: Bool {
         get {
             return self._showPrompt
         }
@@ -278,7 +221,7 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
     }
 
     
-    func addToSelectedContacts(model: ContactPickerModelProtocol, needFocus focus: Bool) {
+    internal func addToSelectedContacts(model: ContactPickerModelProtocol, needFocus focus: Bool) {
         self.contactCollectionView.addToSelectedContacts(model: model) {
             if focus {
                 let _ = self.becomeFirstResponder()
@@ -287,37 +230,10 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
     }
 
     
-    func addToSelectedContacts(model: ContactPickerModelProtocol, withCompletion completion: ContactPickerComplete?) {
+    private func addToSelectedContacts(model: ContactPickerModelProtocol, withCompletion completion: ContactPickerComplete?) {
         self.contactCollectionView.addToSelectedContacts(model: model, withCompletion: completion)
     }
     
-    //
-    //#pragma mark - UITableViewDataSource
-    //
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.filteredContacts.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier, for: indexPath) as! ContactsTableViewCell
-        
-        if (self.filteredContacts.count > indexPath.row) {
-            let model = self.filteredContacts[indexPath.row]
-            cell.contactEmailLabel.text = model.contactSubtitle
-            cell.contactNameLabel.text = model.contactTitle
-        }
-        return cell
-    }
-    
-    
-    //
-    //#pragma mark - UITableViewDelegate
-    //
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let model = self.filteredContacts[indexPath.row]
-        self.hideSearchTableView()
-        self.contactCollectionView.addToSelectedContacts(model: model, withCompletion: nil)
-    }
     
     //
     //#pragma mark - UIResponder
@@ -349,30 +265,38 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
     //
     //#pragma mark Helper Methods
     //
-    func showSearchTableView() {
-        self.searchTableView.isHidden = false
-        self.delegate?.didShowFilteredContactsForContactPicker(contactPicker: self)
-    }
-    
-    func hideSearchTableView() {
-        self.searchTableView.isHidden = true
-        self.delegate?.didHideFilteredContactsForContactPicker(contactPicker: self)
-    }
-    
-    func updateCollectionViewHeightConstraints() {
-        for constraint in self.constraints {
-            if let firstItem = constraint.firstItem as? ContactCollectionView, firstItem == self.contactCollectionView {
-                if constraint.firstAttribute == .height {
-                    if constraint.relation == .greaterThanOrEqual {
-                        constraint.constant = CGFloat( self.cellHeight )
-                    } else if constraint.relation == .lessThanOrEqual {
-                        constraint.constant = self.currentContentHeight
-                    }
-                }
-            }
+    private func showSearchTableView(with contacts: [ContactPickerModelProtocol]) {
+        defer {
+            self.searchTableViewController?.filteredContacts = contacts
         }
+        guard self.searchWindow == nil else { return }
+        self.searchTableViewController = self.createSearchTableViewController()
+        self.searchWindow = UIWindow(frame: self.frameForContactSearch)
+        self.searchWindow?.rootViewController = self.searchTableViewController
+        self.searchWindow?.isHidden = false
+        self.searchWindow?.windowLevel = UIWindowLevelNormal
+        self.window?.addSubview(self.searchWindow!) // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to  it's hierarchy
+        self.delegate.didShowFilteredContactsForContactPicker(contactPicker: self)
     }
 
+    private func hideSearchTableView() {
+        guard let _ = self.searchWindow else { return }
+        self.searchTableViewController = nil
+        self.searchWindow?.isHidden = true
+        self.searchWindow = nil
+        self.delegate.didHideFilteredContactsForContactPicker(contactPicker: self)
+    }
+    
+    private var frameForContactSearch: CGRect {
+        guard let window = self.delegate?.view.window else {
+            return .zero
+        }
+
+        var topLine = self.convert(CGPoint.zero, to: window)
+        topLine.y += self.frame.size.height
+        let size = CGSize(width: window.bounds.width, height: window.bounds.size.height - self.keyboardFrame.size.height - topLine.y)
+        return .init(origin: topLine, size: size)
+    }
 }
 
 
@@ -381,7 +305,7 @@ class ContactPicker: UIView, UITableViewDataSource, UITableViewDelegate {
 //
 extension ContactPicker : ContactCollectionViewDelegate {
 
-    func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
+    internal func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.delegate?.collectionContactCell(lockCheck: model, progress: progress) { image in
             complete?(image)
             self.contactCollectionView.performBatchUpdates({
@@ -392,75 +316,64 @@ extension ContactPicker : ContactCollectionViewDelegate {
         }
     }
     
-    func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
+    internal func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
         if !__CGSizeEqualToSize(self.contactCollectionViewContentSize, newSize) {
             self.contactCollectionViewContentSize = newSize
-            self.updateCollectionViewHeightConstraints()
             self.delegate?.contactPicker(contactPicker: self, didUpdateContentHeightTo: self.currentContentHeight)
         }
     }
     
-    func collectionView(at: ContactCollectionView, entryTextDidChange text: String) {
-        if text == " " {
+    internal func collectionView(at: ContactCollectionView, entryTextDidChange text: String) {
+        guard text != " " else {
             self.hideSearchTableView()
+            return
         }
-        else
-        {
-            self.contactCollectionView.collectionViewLayout.invalidateLayout()
-            
-            self.contactCollectionView.performBatchUpdates({
-                self.layoutIfNeeded()
-            }) { (finished) in
-                self.contactCollectionView.setFocusOnEntry()
-            }
-            self.showSearchTableView()
-            
-            let searchString = text.trimmingCharacters(in: NSCharacterSet.whitespaces)
-            let predicate : NSPredicate!
-            
-            if let hasCustom = self.delegate?.useCustomFilter(), hasCustom == true {
-                predicate = delegate?.customFilterPredicate(searchString: searchString)
-            } else if self.allowsCompletionOfSelectedContacts {
-                predicate = NSPredicate(format: "contactTitle contains[cd] %@", searchString)
-            } else {
-                predicate = NSPredicate(format: "contactTitle contains[cd] %@ && !SELF IN %@",
-                                        searchString,
-                                        self.contactCollectionView.selectedContacts)
-            }
-            self.filteredContacts = self.contacts.filter{ predicate.evaluate(with: $0) }
-            
-            if self.hideWhenNoResult && self.filteredContacts.count <= 0 {
-                if !self.searchTableView.isHidden {
-                    self.hideSearchTableView()
-                }
-            } else {
-                if self.searchTableView.isHidden {
-                    self.showSearchTableView()
-                }
-                self.searchTableView.reloadData()
-            }
+        
+        self.contactCollectionView.collectionViewLayout.invalidateLayout()
+        self.contactCollectionView.performBatchUpdates( self.layoutIfNeeded ) { (finished) in
+            self.contactCollectionView.setFocusOnEntry()
         }
-    
+        
+        let searchString = text.trimmingCharacters(in: NSCharacterSet.whitespaces)
+        let predicate : NSPredicate!
+        
+        if let hasCustom = self.delegate?.useCustomFilter(), hasCustom == true {
+            predicate = self.delegate?.customFilterPredicate(searchString: searchString)
+        } else if self.allowsCompletionOfSelectedContacts {
+            predicate = NSPredicate(format: "contactTitle contains[cd] %@",
+                                    searchString)
+        } else {
+            predicate = NSPredicate(format: "contactTitle contains[cd] %@ && !SELF IN %@",
+                                    searchString,
+                                    self.contactCollectionView.selectedContacts)
+        }
+        
+        let filteredContacts = self.contacts.filter { predicate.evaluate(with: $0) }
+        if self.hideWhenNoResult && filteredContacts.isEmpty {
+            self.hideSearchTableView()
+        } else {
+            self.showSearchTableView(with: filteredContacts)
+        }
     }
     
-    func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool) {
+    internal func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool) {
         self.delegate?.contactPicker(contactPicker: self, didEnterCustomText: text, needFocus: focus)
         self.hideSearchTableView()
     }
     
-    func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
+    internal func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
         self.delegate?.collectionView(at: contactCollectionView, didSelect: contact)
     }
     
-    func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol) {
+    internal func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol) {
         self.delegate?.collectionView(at: contactCollectionView, didAdd: contact)
     }
     
-    func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol) {
+    internal func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol) {
         self.delegate?.collectionView(at: contactCollectionView, didRemove: contact)
     }
     
-    func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
+    internal func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
         self.delegate?.contactPicker(picker: self, pasted: text, needFocus: focus)
     }
 }
