@@ -35,7 +35,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ssn-2e-X6s" userLabel="background action">
                             <rect key="frame" x="0.0" y="0.0" width="365" height="65"/>
                             <connections>
-                                <action selector="backgroundAction:" destination="-2" eventType="touchUpInside" id="9G7-Pq-DHd"/>
+                                <action selector="backgroundAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="zoV-gt-dMy"/>
                             </connections>
                         </button>
                     </subviews>
@@ -62,6 +62,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="actionButton" destination="ssn-2e-X6s" id="zvp-7G-jJH"/>
                 <outlet property="arrowImage" destination="y7u-Sb-7HT" id="ClV-jP-yTV"/>
                 <outlet property="headerLabel" destination="uor-VI-44p" id="Pzb-E4-QkV"/>
             </connections>

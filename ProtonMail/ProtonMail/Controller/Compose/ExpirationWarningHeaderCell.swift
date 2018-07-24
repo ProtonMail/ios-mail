@@ -18,6 +18,8 @@ class ExpirationWarningHeaderCell: UITableViewHeaderFooterView {
     var section : Int = 0
     var expend : Bool = false
     
+    @IBOutlet weak var actionButton: UIButton!
+
     @IBOutlet weak var arrowImage: UIImageView!
     @IBAction func backgroundAction(_ sender: Any) {
         if self.expend {
