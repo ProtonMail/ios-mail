@@ -46,7 +46,7 @@ extension Message {
         }
         
         if isEncrypted == 9 {
-            return .pgp_signed
+            return .zero_access_store
         }
         
         return .none
