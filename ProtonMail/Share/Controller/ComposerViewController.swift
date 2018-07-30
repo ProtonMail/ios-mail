@@ -13,10 +13,6 @@ extension ComposerViewController: RichEditorDelegate {
     func richEditor(_ editor: RichEditorView, shouldInteractWith url: URL) -> Bool {
         return false
     }
-    
-    func richEditor(_ editor: RichEditorView, heightDidChange height: Int) {
-        print("height changed")
-    }
 }
 
 class ComposerViewController: UIViewController, ViewModelProtocolNew {
@@ -26,6 +22,9 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     
     fileprivate lazy var editorView: RichEditorView = {
         let editor = RichEditorView(frame: self.view.bounds)
+        editor.translatesAutoresizingMaskIntoConstraints = false
+        editor.delegate = self
+        self.webView = editor.webView
         return editor
     }()
     
@@ -38,7 +37,12 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     
     // private views
     fileprivate weak var webView : UIWebView?
-    fileprivate var composeViewController : ComposeView!
+    fileprivate lazy var composeViewController: ComposeView = {
+        let composeViewController = ComposeView(nibName: "ComposeView", bundle: nil)
+        composeViewController.delegate = self
+        composeViewController.datasource = self
+        return composeViewController
+    }()
     fileprivate var cancelButton: UIBarButtonItem!
     fileprivate var sendButton: UIBarButtonItem!
     
@@ -67,10 +71,9 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.edgesForExtendedLayout = []
         
-        //inital navigation bar items
+        // navigation bar items
         self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button,
                                             style: .plain,
                                             target: self,
@@ -81,21 +84,20 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
                                           action: #selector(ComposerViewController.send_clicked(sender:)))
         self.navigationItem.leftBarButtonItem = self.cancelButton
         self.navigationItem.rightBarButtonItem = self.sendButton
-        
         self.configureNavigationBar()
         
-        //inital webview
-        //self.formatHTML = false
-        self.webView = self.editorView.webView
+        // webview
         self.view.addSubview(self.editorView)
-        self.editorView.delegate = self
-        
-        // init views
-        self.composeViewController = ComposeView(nibName: "ComposeView", bundle: nil)
+        if #available(iOSApplicationExtension 9.0, *) {
+            self.editorView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+            self.editorView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+            self.editorView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+            self.editorView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        }
+
+        // compose view
         let w = UIScreen.main.applicationFrame.width;
         self.composeViewController.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
-        self.composeViewController.delegate = self
-        self.composeViewController.datasource = self
         self.addChildViewController(self.composeViewController)
         self.webView?.scrollView.addSubview(composeViewController.view);
         self.webView?.scrollView.bringSubview(toFront: composeViewController.view)
@@ -116,7 +118,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         
         //change message as read
         self.viewModel.markAsRead();
-        self.composeViewController.toContactPicker.becomeFirstResponder()
+        let _ = self.composeViewController.toContactPicker.becomeFirstResponder() // FIXME: there is another one when contacts loaded
         
         self.setNeedsStatusBarAppearanceUpdate()
     }
@@ -271,7 +273,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         var frame = self.view.frame
         frame.size.width = w
         self.view.frame = frame
-        self.composeViewController?.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
+        self.composeViewController.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
     }
     
     // ******************
