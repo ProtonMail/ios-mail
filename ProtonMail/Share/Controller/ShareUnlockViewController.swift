@@ -18,10 +18,13 @@ class ShareUnlockViewController: UIViewController {
     fileprivate var inputSubject : String! = ""
     fileprivate var inputContent : String! = ""
     fileprivate var inputAttachments : String! = ""
-    fileprivate var files: [FileData] = []
+    fileprivate var files = Array<FileData>()
     fileprivate let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000
     fileprivate var currentAttachmentSize : Int = 0
     
+    //
+    fileprivate lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
+    fileprivate lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
     
     // pre - defined
     private let file_types : [String]  = [kUTTypeImage as String,
@@ -30,16 +33,12 @@ class ShareUnlockViewController: UIViewController {
                                           kUTTypeFileURL as String]
     private let propertylist_ket = kUTTypePropertyList as String
     private let url_key = kUTTypeURL as String
-    
     private var localized_errors: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         sharedUserDataService = UserDataService()
-        
         LanguageManager.setupCurrentLanguage()
-        
         configureNavigationBar()
         
         pinUnlock.alpha = 0.0
@@ -47,7 +46,6 @@ class ShareUnlockViewController: UIViewController {
         
         pinUnlock.isEnabled = false
         touchID.isEnabled = false
-        
         touchID.layer.cornerRadius = 25
         
         // Do any additional setup after loading the view.
@@ -60,26 +58,24 @@ class ShareUnlockViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         ActivityIndicatorHelper.showActivityIndicator(at: view)
-        if let inputitems = self.extensionContext?.inputItems as? [NSExtensionItem] {
-            let group = DispatchGroup()
-            self.parse(items: inputitems, group: group)
-            group.notify(queue: DispatchQueue.global(qos: .userInteractive)) { [unowned self] in
-                DispatchQueue.main.async { [unowned self] in
-                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-                    //go to composer
-                    if self.localized_errors.isEmpty {
-                        self.loginCheck()
-                    } else {
-                        if let e = self.localized_errors.first {
-                            self.showErrorAndQuit(errorMsg: e)
-                        } else {
-                            self.showErrorAndQuit(errorMsg: LocalString._cant_load_share_content)
-                        }
-                    }
-                }
-            }
-        } else {
+        guard let inputitems = self.extensionContext?.inputItems as? [NSExtensionItem] else {
             self.showErrorAndQuit(errorMsg: LocalString._cant_load_share_content)
+            return
+        }
+        
+        let group = DispatchGroup()
+        self.parse(items: inputitems, group: group)
+        group.notify(queue: DispatchQueue.global(qos: .userInteractive)) { [unowned self] in
+            DispatchQueue.main.async { [unowned self] in
+                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                //go to composer
+                guard self.localized_errors.isEmpty else {
+                    self.showErrorAndQuit(errorMsg: self.localized_errors.first ?? LocalString._cant_load_share_content)
+                    return
+                }
+                
+                self.loginCheck()
+            }
         }
     }
     
@@ -96,27 +92,14 @@ class ShareUnlockViewController: UIViewController {
                     if let itemProvider = att as? NSItemProvider {
                         if let type = itemProvider.hasItem(types: file_types) {
                             group.enter() //#1
-                            itemProvider.loadItem(type: type, handler: { [unowned self] (fileData : FileData?, error : NSError?) in
-                                defer {
-                                     group.leave() //#1
-                                }
-                                
-                                if let data = fileData {
-                                    let length = fileData!.data.count
-                                    if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
-                                        self.files.append(fileData!)
-                                    } else {
-                                        self.localized_errors.append(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
-                                    }
-                                } else if let err = error {
-                                    self.localized_errors.append(LocalString._cant_load_share_content)
-                                }
-                            })
+                            self.loadItem(itemProvider, type: type) {
+                                 group.leave() //#1
+                            }
                         } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
                             PMLog.D("1")
                         } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
                             group.enter()//#2
-                            itemProvider.loadItem(forTypeIdentifier: url_key, options: nil, completionHandler: { [unowned self] (url, error) -> Void in
+                            itemProvider.loadItem(forTypeIdentifier: url_key, options: nil) { [unowned self] url, error in
                                 defer {
                                     group.leave()//#2
                                 }
@@ -125,9 +108,9 @@ class ShareUnlockViewController: UIViewController {
                                     let url = shareURL.absoluteString ?? ""
                                     self.inputContent = self.inputContent + "\n" + "<a href=\"\(url)\">\(url)</a>"
                                 } else {
-                                    self.localized_errors.append(LocalString._cant_load_share_content)
+                                    self.error(LocalString._cant_load_share_content)
                                 }
-                            })
+                            }
                         } else if let pt = plainText {
                             self.inputSubject = ""
                             self.inputContent = self.inputContent + "\n"  + pt
@@ -141,8 +124,7 @@ class ShareUnlockViewController: UIViewController {
     }
     
     private func loginCheck() {
-        let signinFlow = getViewFlow()
-        switch signinFlow {
+        switch getViewFlow() {
         case .requirePin:
             sharedUserDataService.isSignedIn = false
             pinUnlock.alpha = 1.0
@@ -151,28 +133,21 @@ class ShareUnlockViewController: UIViewController {
                 touchID.alpha = 1.0
                 touchID.isEnabled = true
             }
-            break
+
         case .requireTouchID:
             sharedUserDataService.isSignedIn = false
             touchID.alpha = 1.0
             touchID.isEnabled = true
-            break
+
         case .restore:
             self.signInIfRememberedCredentials()
-            break
         }
     }
     
     private func tryTouchID() {
-        let signinFlow = getViewFlow()
-        switch signinFlow {
-        case .requirePin:
-            break
-        case .requireTouchID:
-            self.authenticateUser()
-            break
-        case .restore:
-            break
+        switch getViewFlow() {
+        case .requireTouchID: self.authenticateUser()
+        case .restore, .requirePin: break
         }
     }
     
@@ -181,59 +156,48 @@ class ShareUnlockViewController: UIViewController {
         self.pinUnlock.alpha = 0.0
         
         let alertController = UIAlertController(title: LocalString._share_alert, message: errorMsg, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: LocalString._general_close_action, style: .default, handler: { (action) -> Void in
-            self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
+        let action = UIAlertAction(title: LocalString._general_close_action, style: .default) { action in
+            self.hideExtensionWithCompletionHandler() { _ in
                 let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
-                self.extensionContext!.cancelRequest(withError: cancelError)
-            })
-        }))
+                self.extensionContext?.cancelRequest(withError: cancelError)
+            }
+        }
+        alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)
     }
 
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        delay(0.3, closure: {
-            self.tryTouchID()
-        })
+        delay(0.3) { self.tryTouchID() }
     }
 
     fileprivate func getViewFlow() -> SignInUIFlow {
-        if sharedTouchID.showTouchIDOrPin() {
-            if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
-                self.view.backgroundColor = UIColor.red
-                return SignInUIFlow.requirePin
-            } else {
-                //check touch id status
-                if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-                    return SignInUIFlow.requireTouchID
-                } else {
-                    return SignInUIFlow.restore
-                }
-            }
-        } else {
+        guard !sharedTouchID.showTouchIDOrPin() else {
             return SignInUIFlow.restore
+        }
+        
+        if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
+            self.view.backgroundColor = UIColor.red
+            return SignInUIFlow.requirePin
+        } else {
+            //check touch id status
+            if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+                return SignInUIFlow.requireTouchID
+            } else {
+                return SignInUIFlow.restore
+            }
         }
     }
     
     func signInIfRememberedCredentials() {
-        if sharedUserDataService.isUserCredentialStored {
-            userCachedStatus.lockedApp = false
-            sharedUserDataService.isSignedIn = true
-//            if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
-//                sharedOpenPGP.setAddresses(addresses);
-//            }
-            self.goto_composer()
-        }
-        else
-        {
+        guard sharedUserDataService.isUserCredentialStored else {
             self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
+            return
         }
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        userCachedStatus.lockedApp = false
+        sharedUserDataService.isSignedIn = true
+        self.goto_composer()
     }
     
     func goto_composer() {
@@ -260,10 +224,10 @@ class ShareUnlockViewController: UIViewController {
     }
     
     @objc func cancelButtonTapped(sender: UIBarButtonItem) {
-        self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
+        self.hideExtensionWithCompletionHandler() { _ in
             let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
-            self.extensionContext!.cancelRequest(withError: cancelError)
-        })
+            self.extensionContext?.cancelRequest(withError: cancelError)
+        }
     }
     
     @IBAction func touch_id_action(_ sender: Any) {
@@ -275,81 +239,87 @@ class ShareUnlockViewController: UIViewController {
     }
     
     func authenticateUser() {
-        let savedEmail = userCachedStatus.codedEmail()
-        // Get the local authentication context.
-        let context = LAContext()
-        // Declare a NSError variable.
-        var error: NSError?
+        let context = LAContext() // Get the local authentication context
         context.localizedFallbackTitle = ""
-        // Set the reason string that will appear on the authentication alert.
-        let reasonString = "\(LocalString._general_login): \(savedEmail)"
+        let reasonString = "\(LocalString._general_login): \(userCachedStatus.codedEmail())"
         
         // Check if the device can evaluate the policy.
-        if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            context.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: Error?) in
-                if success {
-                    DispatchQueue.main.async {
-                        self.signInIfRememberedCredentials()
-                    }
-                }
-                else{
-                    DispatchQueue.main.async {
-                        switch evalPolicyError!._code {
-                        case LAError.Code.systemCancel.rawValue:
-                            let alertController = LocalString._authentication_was_cancelled_by_the_system.alertController()
-                            alertController.addOKAction()
-                            self.present(alertController, animated: true, completion: nil)
-                        case LAError.Code.userCancel.rawValue:
-                            PMLog.D("Authentication was cancelled by the user")
-                        case LAError.Code.userFallback.rawValue:
-                            PMLog.D("User selected to enter custom password")
-                        default:
-                            PMLog.D("Authentication failed")
-                            let alertController = LocalString._authentication_failed.alertController()
-                            alertController.addOKAction()
-                            self.present(alertController, animated: true, completion: nil)
-                        }
-                    }
-                }
-            })
-        }
-        else{
+        var error: NSError?
+        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
             var alertString : String = "";
-            // If the security policy cannot be evaluated then show a short message depending on the error.
-            switch error!.code{
-            case LAError.Code.touchIDNotEnrolled.rawValue:
+            // If the security policy cannot be evaluated then show a short message depending on the error
+            switch error?.code {
+            case .some(LAError.Code.touchIDNotEnrolled.rawValue):
                 alertString = LocalString._general_touchid_not_enrolled
-            case LAError.Code.passcodeNotSet.rawValue:
+                
+            case .some(LAError.Code.passcodeNotSet.rawValue):
                 alertString = LocalString._general_passcode_not_set
-            default:
-                // The LAError.TouchIDNotAvailable case.
+                
+            default: // The LAError.TouchIDNotAvailable case
                 alertString = LocalString._general_touchid_not_available
             }
+            
             PMLog.D(alertString)
             PMLog.D("\(String(describing: error?.localizedDescription))")
             let alertController = alertString.alertController()
             alertController.addOKAction()
             self.present(alertController, animated: true, completion: nil)
+            
+            return
         }
+        
+        let evaluationHandler: (Bool, Error?)->Void = { (success, evalPolicyError) in
+            DispatchQueue.main.async {
+                guard success else {
+                    switch evalPolicyError?._code {
+                    case .some(LAError.Code.systemCancel.rawValue):
+                        let alertController = LocalString._authentication_was_cancelled_by_the_system.alertController()
+                        alertController.addOKAction()
+                        self.present(alertController, animated: true, completion: nil)
+                        
+                    case .some(LAError.Code.userCancel.rawValue):
+                        PMLog.D("Authentication was cancelled by the user")
+                        
+                    case .some(LAError.Code.userFallback.rawValue):
+                        PMLog.D("User selected to enter custom password")
+                        
+                    default:
+                        PMLog.D("Authentication failed")
+                        let alertController = LocalString._authentication_failed.alertController()
+                        alertController.addOKAction()
+                        self.present(alertController, animated: true, completion: nil)
+                    }
+                    return
+                }
+                self.signInIfRememberedCredentials()
+            }
+        }
+        
+        context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: evaluationHandler)
+        
     }
     
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
-        UIView.animate(withDuration: 0.50, animations: { () -> Void in
-            self.navigationController!.view.transform = CGAffineTransform(translationX: 0, y: self.navigationController!.view.frame.size.height)
-        }, completion: completion)
+        UIView.animate(withDuration: 0.50,
+                       animations: {
+                            if let view = self.navigationController?.view {
+                                view.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height)
+                            }
+                       },
+                       completion: completion)
     }
     
     func configureNavigationBar() {
-        self.navigationController?.navigationBar.barStyle = UIBarStyle.black
-        self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.tintColor = UIColor.white
-        
-        let navigationBarTitleFont = Fonts.h2.regular
-        self.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: navigationBarTitleFont
-        ]
+        if let bar = self.navigationController?.navigationBar {
+            bar.barStyle = UIBarStyle.black
+            bar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
+            bar.isTranslucent = false
+            bar.tintColor = UIColor.white
+            bar.titleTextAttributes = [
+                NSAttributedStringKey.foregroundColor: UIColor.white,
+                NSAttributedStringKey.font: Fonts.h2.regular
+            ]
+        }
     }
 }
 
@@ -368,60 +338,46 @@ extension ShareUnlockViewController : SharePinUnlockViewControllerDelegate {
     }
 }
 
-typealias LoadComplete = (_ attachment: FileData?, _ error: NSError?) -> Void
-
-extension NSItemProvider {
-    
-    func hasItem(types: [String]) -> String? {
-        for type in types {
-            if self.hasItemConformingToTypeIdentifier(type) {
-                return type
-            }
-        }
-        return nil
+extension ShareUnlockViewController: AttachmentController {
+    func error(_ description: String) {
+        self.localized_errors.append(description)
     }
     
-    
-    func loadItem(type : String, handler : @escaping LoadComplete) {
-        self.loadItem(forTypeIdentifier: type, options: nil) { data, error in
-            if error != nil {
-                handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
-            } else if let url = data as? URL {
-                let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
-                var error : NSError?
-                coordinator.coordinate(readingItemAt: url, options: NSFileCoordinator.ReadingOptions(), error: &error) { (new_url) -> Void in
-                    do {
-                        let data = try Data(contentsOf: url)
-                        DispatchQueue.main.async {
-                            let ext = url.mimeType()
-                            let fileName = url.lastPathComponent
-                            let filedata = FileData(name: fileName, ext: ext, data: data)
-                            handler(filedata, nil)
-                        }
-                    } catch {
-                        DispatchQueue.main.async {
-                            handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
-                        }
-                    }
-                }
-            } else if let img = data as? UIImage {
-                let fileName = "\(NSUUID().uuidString).PNG"
-                let ext = "image/png"
-                if let fileData = UIImagePNGRepresentation(img) {
-                    DispatchQueue.main.async {
-                        let filedata = FileData(name: fileName, ext: ext, data: fileData)
-                        handler(filedata, nil)
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
-                    }
-                }
+    func finish(_ fileData: FileData) {
+        guard fileData.contents.size < ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
+            self.error(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
+            return
+        }
+
+        self.files.append(fileData)
+    }
+
+    func loadItem(_ itemProvider: NSItemProvider, type: String, handler: @escaping ()->Void) {
+        itemProvider.loadItem(forTypeIdentifier: type, options: nil) { item, error in // async
+            defer {
+                // important: whole this closure contents will be run synchronously, so we can call the handler in the end of scope
+                // if this situation will change some day, handler should be passed over
+                handler()
+            }
+            
+            guard error == nil else {
+                self.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
+                return
+            }
+
+            if let url = item as? URL {
+                self.documentAttachmentProvider.process(fileAt: url) // sync
+            } else if let img = item as? UIImage {
+                self.imageAttachmentProvider.process(original: img) // sync
             } else {
-                DispatchQueue.main.async {
-                    handler(nil, NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil))
-                }
+                self.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
             }
         }
+    }
+}
+
+extension NSItemProvider {
+    func hasItem(types: [String]) -> String? {
+        return types.first(where: self.hasItemConformingToTypeIdentifier)
     }
 }

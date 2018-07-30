@@ -36,7 +36,7 @@ class ContactPicker: UIView {
         controller.tableView.rowHeight = CGFloat(ContactPickerDefined.ROW_HEIGHT)
         controller.tableView.register(UINib.init(nibName: ContactPickerDefined.ContactsTableViewCellName, bundle: nil),
                                  forCellReuseIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier)
-        controller.onSelection = { model in
+        controller.onSelection = { [unowned self] model in
             self.hideSearchTableView()
             self.contactCollectionView.addToSelectedContacts(model: model, withCompletion: nil)
         }
@@ -281,21 +281,28 @@ class ContactPicker: UIView {
         defer {
             self.searchTableViewController?.filteredContacts = contacts
         }
-        guard self.searchWindow == nil else { return }
+        guard self.searchTableViewController == nil else { return }
         self.searchTableViewController = self.createSearchTableViewController()
-        self.searchWindow = UIWindow(frame: self.frameForContactSearch)
+        self.searchWindow = self.searchWindow ?? UIWindow(frame: self.frameForContactSearch)
         self.searchWindow?.rootViewController = self.searchTableViewController
         self.searchWindow?.isHidden = false
         self.searchWindow?.windowLevel = UIWindowLevelNormal
-        self.window?.addSubview(self.searchWindow!) // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to  it's hierarchy
+        #if APP_EXTENSION
+         // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to  it's hierarchy explicitly
+        self.window?.addSubview(searchWindow!)
+        #endif
         self.delegate.didShowFilteredContactsForContactPicker(contactPicker: self)
     }
 
     private func hideSearchTableView() {
-        guard let _ = self.searchWindow else { return }
+        guard let _ = self.searchTableViewController else { return }
         self.searchTableViewController = nil
+        self.searchWindow?.rootViewController = nil
         self.searchWindow?.isHidden = true
+        #if !APP_EXTENSION
+        // in app extenison window is strongly held by _UIHostedWindow and we can not change that since removeFromSuperview() does not work properly, so we'll just reuse same window all over again
         self.searchWindow = nil
+        #endif
         self.delegate.didHideFilteredContactsForContactPicker(contactPicker: self)
     }
     

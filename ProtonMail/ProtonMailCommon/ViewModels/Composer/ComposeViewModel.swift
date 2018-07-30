@@ -10,11 +10,22 @@ import Foundation
 import PromiseKit
 import AwaitKit
 
+protocol FileData {
+    var name: String { get set }
+    var ext: String { get set }
+    var contents: AttachmentConvertible { get set }
+}
 
-struct FileData {
-    var name : String
-    var ext : String
-    var data : Data
+struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
+    var name: String
+    var ext: String
+    var contents: AttachmentConvertible
+    
+    init(name: String, ext: String, contents: AttachmentConvertible) {
+        self.name = name
+        self.ext = ext
+        self.contents = contents
+    }
 }
 
 

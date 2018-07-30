@@ -16,7 +16,7 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func buildComposer<T : ViewModelProtocolNew>(_ vpm: T, subject: String, content: String, files : [FileData]) {
+    func buildComposer<T: ViewModelProtocolNew>(_ vmp: T, subject: String, content: String, files: [FileData]) {
         fatalError("This method must be overridden")
     }
     

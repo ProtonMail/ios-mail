@@ -74,7 +74,7 @@ class CoreDataService {
     
     func newPersistentStoreCoordinator(_ managedObjectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        guard let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier:AppConstants.APP_GROUP) else {
+        guard let containerUrl = FileManager.default.appGroupsDirectoryURL else {
             //TODO::fix later need add error
             PMLog.D("Can't find the group")
             return nil

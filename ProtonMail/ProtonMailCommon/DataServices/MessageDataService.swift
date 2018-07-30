@@ -1111,10 +1111,7 @@ class MessageDataService {
      4. use wraped manully.
      */
     fileprivate func cleanUp() {
-        if let context = managedObjectContext {
-            Message.deleteAll(inContext: context)
-        }
-        //TODO : need check is attachments cleaned .
+        self.cleanMessage()
         
         lastUpdatedStore.clear()
         sharedMessageQueue.clear()
@@ -1123,17 +1120,17 @@ class MessageDataService {
         //tempary for clean contact cache
         sharedContactDataService.clean() //here need move to a general data service manager
         sharedLabelsDataService.cleanUp()
-        
-        UIApplication.setBadge(badge: 0)
-        //UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     fileprivate func cleanMessage() {
         if let context = managedObjectContext {
-            Message.deleteAll(inContext: context)
+            Message.deleteAll(inContext: context) // will cascadely remove appropriate Attacments also
         }
         UIApplication.setBadge(badge: 0)
         //UIApplication.shared.applicationIconBadgeNumber = 0
+        
+        // good opportunity to remove all temp folders (they should be empty by this moment)
+        try? FileManager.default.removeItem(at: FileManager.default.appGroupsTempDirectoryURL)
     }
     
     func search(_ query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
@@ -1499,6 +1496,14 @@ class MessageDataService {
                             if let messageID = response?["AttachmentID"] as? String {
                                 attachment.attachmentID = messageID
                                 attachment.keyPacket = keyPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                                
+                                // since the encrypted attachment is successfully uploaded, we no longer need it cleartext in db
+                                attachment.fileData = nil
+                                if let fileUrl = attachment.localURL,
+                                    let _ = try? FileManager.default.removeItem(at: fileUrl)
+                                {
+                                    attachment.localURL = nil
+                                }
                                 if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D(" error: \(error)")
                                 }

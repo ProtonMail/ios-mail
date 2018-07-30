@@ -42,6 +42,48 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
             }
         })
     }
+    
+    
+    internal func process(fileAt url: URL) {
+        let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
+        var error : NSError?
+        
+        coordinator.coordinate(readingItemAt: url, options: [], error: &error) { [weak self] new_url in
+            guard let `self` = self else { return }
+            var fileData: FileData!
+            
+            #if APP_EXTENSION
+                do {
+                    let newUrl = try self.copyItemToTempDirectory(from: url)
+                    let ext = url.mimeType()
+                    let fileName = url.lastPathComponent
+                    fileData = ConcreteFileData<URL>(name: fileName, ext: ext, contents: newUrl)
+                } catch let error {
+                    PMLog.D("Error while importing attachment: \(error.localizedDescription)")
+                    self.controller.error(LocalString._cant_copy_the_file)
+                }
+                
+            #else
+                guard let data = try? Data(contentsOf: url) else {
+                    self.controller.error(LocalString._cant_load_the_file)
+                    return
+                }
+                fileData = ConcreteFileData<Data>(name: url.lastPathComponent, ext: url.mimeType(), contents: data)
+            #endif
+            
+            self.controller.finish(fileData)
+        }
+        
+        if error != nil {
+            self.controller.error(LocalString._cant_copy_the_file)
+        }
+    }
+
+    private func copyItemToTempDirectory(from oldUrl: URL) throws -> URL {
+        let tempFileUrl = try FileManager.default.createTempURL(forCopyOfFileNamed: oldUrl.lastPathComponent)
+        try FileManager.default.copyItem(at: oldUrl, to: tempFileUrl)
+        return tempFileUrl
+    }
 }
 
 
@@ -61,33 +103,16 @@ extension DocumentAttachmentProvider: UIDocumentPickerDelegate {
         urls.forEach { self.documentPicker(controller, didPickDocumentAt: $0) }
     }
     
-    internal func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
-        var error : NSError?
-        
+    internal func documentPicker(_ documentController: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         // TODO: at least on iOS 11.3.1, DocumentPicker does not call this method until whole file will be downloaded from the cloud. This should be a bug, but in future we can check size of document before downloading it
         // FileManager.default.attributesOfItem(atPath: url.path)[NSFileSize]
         
-        // notify that file started downloading...
-        DispatchQueue.global().async { [weak self] in
-            coordinator.coordinate(readingItemAt: url, options: [], error: &error) { new_url in
-                guard let data = try? Data(contentsOf: url) else {
-                    self?.controller.error(LocalString._cant_load_the_file)
-                    return
-                }
-                // notify that finished downloading
-                self?.controller.finish(data, filename: url.lastPathComponent, extension: url.mimeType())
-            }
-            
-            if error != nil {
-                // notify that finished downloading
-                self?.controller.error(LocalString._cant_copy_the_file)
-            }
+        DispatchQueue.global().async {
+            self.process(fileAt: url)
         }
     }
     
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         PMLog.D("")
     }
-    
 }

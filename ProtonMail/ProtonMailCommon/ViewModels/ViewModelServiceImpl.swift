@@ -259,7 +259,7 @@ class ViewModelServiceImpl: ViewModelService {
         vmp.setViewModel(ContactTypeViewModelImpl(t: type))
     }
     
-    override func buildComposer<T>(_ vmp: T, subject: String, content: String, files: [FileData]) where T : ViewModelProtocolNew {
+    override func buildComposer<T: ViewModelProtocolNew>(_ vmp: T, subject: String, content: String, files: [FileData]) {
         latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)
         guard let viewModel = latestComposerViewModel as? T.argType else {
             return

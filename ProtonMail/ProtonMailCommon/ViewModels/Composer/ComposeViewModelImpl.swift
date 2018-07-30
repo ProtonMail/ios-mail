@@ -52,7 +52,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
         
         for f in files {
-            self.uploadAtt(f.data.toAttachment(self.message!, fileName: f.name, type: f.ext))
+            self.uploadAtt(f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext))
         }
         
     }

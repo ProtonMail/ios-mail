@@ -54,14 +54,21 @@ extension Attachment {
     
     // Mark : public functions
     func encrypt(byAddrID sender_address_id : String, mailbox_pwd: String) -> PmEncryptedSplit? {
-        do {
-            guard let out =  try fileData?.encryptAttachment(sender_address_id, fileName: self.fileName, mailbox_pwd: mailbox_pwd) else {
-                return nil
+        var out: PmEncryptedSplit? = nil
+        
+        autoreleasepool() {
+            do {
+                var clearData = self.fileData
+                if clearData == nil, let localURL = self.localURL {
+                    clearData = try Data(contentsOf: localURL)
+                }
+                
+                out =  try clearData?.encryptAttachment(sender_address_id, fileName: self.fileName, mailbox_pwd: mailbox_pwd)
+            } catch {
+                // nothing here
             }
-            return out
-        } catch {
-            return nil
         }
+        return out
     }
     
     func getSession() throws -> Data? {
@@ -276,4 +283,43 @@ extension Data: AttachmentConvertible {
         return attachment
         
     }
+}
+
+extension URL: AttachmentConvertible {
+    func toAttachment(_ message: Message, fileName: String, type: String) -> Attachment? {
+        guard let context = message.managedObjectContext else { return nil }
+        let attachment = Attachment(context: context)
+        attachment.attachmentID = "0"
+        attachment.fileName = fileName
+        attachment.mimeType = type
+        attachment.fileData = nil
+        attachment.fileSize = NSNumber(value: self.size)
+        attachment.isTemp = false
+        attachment.keyPacket = ""
+        attachment.localURL = self
+        
+        attachment.message = message
+        
+        let number = message.numAttachments.int32Value
+        let newNum = number > 0 ? number + 1 : 1
+        message.numAttachments = NSNumber(value: newNum)
+        
+        var error: NSError? = nil
+        error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+        if error != nil {
+            PMLog.D(" toAttachment () with error: \(String(describing: error))")
+        }
+        return attachment
+    }
+    
+    var size: Int {
+        guard let attributes = try? FileManager.default.attributesOfItem(atPath: self.path),
+            let size = attributes[.size] as? NSNumber else
+        {
+            return 0
+        }
+        return size.intValue
+    }
+    
+    
 }

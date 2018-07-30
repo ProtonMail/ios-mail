@@ -14,8 +14,31 @@ protocol ImageProcessor {
     func process(asset: PHAsset)
 }
 extension ImageProcessor where Self: AttachmentProvider {
+    
+    private func writeItemToTempDirectory(_ item: Data, filename: String) throws -> URL {
+        let tempFileUrl = try FileManager.default.createTempURL(forCopyOfFileNamed: filename)
+        try item.write(to: tempFileUrl)
+        return tempFileUrl
+    }
+    
     internal func process(original originalImage: UIImage) {
-        self.controller.finish(originalImage, filename: "\(NSUUID().uuidString).PNG", extension: "image/png")
+        let fileName = "\(NSUUID().uuidString).PNG"
+        let ext = "image/png"
+        var fileData: FileData!
+
+        #if APP_EXTENSION
+            guard let data = UIImagePNGRepresentation(originalImage),
+                let newUrl = try? self.writeItemToTempDirectory(data, filename: fileName) else
+            {
+                self.controller.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
+                return
+            }
+            fileData = ConcreteFileData<URL>(name: fileName, ext: ext, contents: newUrl)
+        #else
+            fileData = ConcreteFileData<UIImage>(name: fileName, ext: ext, contents: originalImage)
+        #endif
+        
+        self.controller.finish(fileData)
     }
     
     internal func process(asset: PHAsset) {
@@ -33,7 +56,8 @@ extension ImageProcessor where Self: AttachmentProvider {
                 }
                 
                 let fileName = asset.url.lastPathComponent
-                self.controller.finish(image_data, filename: fileName, extension: fileName.mimeType())
+                let fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: image_data)
+                self.controller.finish(fileData)
             })
             
         default:
@@ -56,8 +80,8 @@ extension ImageProcessor where Self: AttachmentProvider {
                         }
                     }
                 }
-
-                self.controller.finish(image_data, filename: fileName, extension: fileName.mimeType())
+                let fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: image_data)
+                self.controller.finish(fileData)
             }
         }
     }

@@ -17,7 +17,7 @@ protocol AttachmentProvider {
 protocol AttachmentController: class {
     func present(_ controller: UIViewController, animated: Bool, completion: (()->Void)?)
     func error(_ description: String)
-    func finish(_ rawAttachment: AttachmentConvertible, filename: String, extension ext: String)
+    func finish(_ fileData: FileData)
 }
 
 extension AttachmentsTableViewController {
@@ -31,10 +31,10 @@ extension AttachmentsTableViewController {
         self.delegate?.attachments(self, didReachedSizeLimitation: size)
     }
     
-    func finish(_ rawAttachment: AttachmentConvertible, filename: String, extension ext: String) {
+    func finish(_ fileData: FileData) {
         DispatchQueue.main.async { [weak self] in
             guard let `self` = self else { return }
-            let size = rawAttachment.size
+            let size = fileData.contents.size
             guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
                 self.sizeError(0)
                 PMLog.D(" Size too big Orig: \(size) -- Limit: \(self.kDefaultAttachmentFileSize)")
@@ -46,7 +46,7 @@ extension AttachmentsTableViewController {
                 self.error(LocalString._system_cant_copy_the_file)
                 return
             }
-            guard let attachment = rawAttachment.toAttachment(self.message, fileName: filename, type: ext) else {
+            guard let attachment = fileData.contents.toAttachment(self.message, fileName: fileData.name, type: fileData.ext) else {
                 PMLog.D(" Error during copying size incorrect")
                 self.error(LocalString._cant_copy_the_file)
                 return
