@@ -36,20 +36,35 @@
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>NSExtensionActivationRule</key>
-			<dict>
-				<key>NSExtensionActivationRule</key>
-				<string>TRUEPREDICATE</string>
-				<key>NSExtensionActivationSupportsFileWithMaxCount</key>
-				<integer>1</integer>
-				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<integer>1</integer>
-				<key>NSExtensionActivationSupportsMovieWithMaxCount</key>
-				<integer>1</integer>
-				<key>NSExtensionActivationSupportsText</key>
-				<true/>
-				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
-				<integer>1</integer>
-			</dict>
+			<string>SUBQUERY (
+			    extensionItems,
+			    $extensionItem,
+			    SUBQUERY (
+			        $extensionItem.attachments,
+			        $attachment,
+			        (ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.url&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.file-url&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.text&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.plain-text&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.utf8-plain-text&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.html&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.xml&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.adobe.pdf&quot; ||
+              		ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.composite-content&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.image&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.playlist&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.archive&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.spreadsheet&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.presentation&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.content&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.to-do-item&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.calendar-event&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.email-message&quot; ||
+              		ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.apple.internet-location&quot; ||
+                    ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.vcard&quot; ||
+			        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.message&quot;)
+			    ).@count == $extensionItem.attachments.@count
+			).@count &gt;= 1</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
