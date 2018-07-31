@@ -1890,7 +1890,7 @@ class MessageDataService {
         }
         errorBlock(nil, nil, NSError.badParameter(messageID))
     }
-    
+
     fileprivate func markReplyStatus(_ oriMsgID : String?, action : NSNumber?) {
         if let _ = managedObjectContext {
             if let originMessageID = oriMsgID {

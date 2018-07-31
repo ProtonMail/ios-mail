@@ -5990,7 +5990,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 830618ABE4869953324AE823B8628469 /* Pods-ProtonMail.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
 				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -6106,7 +6106,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B07957F0BFEE3F393983F4EFEAFA6094 /* Pods-ProtonMail.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
 				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -6263,7 +6263,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E6286CDFA472ABD288218EA86185FB40 /* Pods-ProtonMail.distribution.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
 				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";

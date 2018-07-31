@@ -272,6 +272,8 @@ struct ReportsAPI {
     
     /// Report a bug [POST]
     static let v_reports_bug : Int = 3
+    
+    static let v_reports_phishing : Int = 3
 }
 
 /**

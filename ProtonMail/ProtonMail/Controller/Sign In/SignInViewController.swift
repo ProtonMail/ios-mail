@@ -434,6 +434,7 @@ class SignInViewController: ProtonMailViewController {
     }
     
     internal func setupTextFields() {
+        PMLog.D(LocalString._user_login)
         signInTitle.text = LocalString._user_login
         
         usernameTextField.attributedPlaceholder = NSAttributedString(string: LocalString._username,

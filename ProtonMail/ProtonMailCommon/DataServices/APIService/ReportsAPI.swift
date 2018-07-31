@@ -9,8 +9,44 @@
 import Foundation
 
 
+
 // MARK : Get messages part
-final class BugReportRequest<T : ApiResponse> : ApiRequest<T> {
+final class ReportPhishing : ApiRequest<ApiResponse> {
+    let msgID : String
+    let mimeType : String
+    let body : String
+    
+    init(msgID : String, mimeType : String, body : String) {
+        self.msgID = msgID
+        self.mimeType = mimeType
+        self.body = body
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        let out : [String : Any] = [
+            "MessageID": self.msgID,
+            "MIMEType" : self.mimeType,
+            "Body": self.body
+        ]
+        return out
+    }
+    
+    override func method() -> APIService.HTTPMethod {
+        return .post
+    }
+    
+    override func path() -> String {
+        return ReportsAPI.path + "/phishing" + AppConstants.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return ReportsAPI.v_reports_phishing
+    }
+}
+
+
+// MARK : Report a bug
+final class BugReportRequest : ApiRequest<ApiResponse> {
     let os : String!
     let osVersion : String!
     let clientVersion : String!

@@ -286,6 +286,26 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             self.print(webView : self.emailView!.contentWebView)
         }))
         
+        alertController.addAction(UIAlertAction(title: LocalString._report_phishing, style: .destructive, handler: { (action) -> Void in
+            let alert = UIAlertController(title: LocalString._confirm_phishing_report,
+                                          message: LocalString._reporting_a_message_as_a_phishing_,
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { (action) in
+                
+            }))
+            alert.addAction(UIAlertAction(title: LocalString._general_confirm_action, style: .default, handler: { (action) in
+                
+                if let _ = self.message.managedObjectContext {
+                   BugDataService().reportPhishing(messageID: self.message.messageID, messageBody: self.fixedBody ?? "")
+                }
+                
+            }))
+            self.present(alert, animated: true, completion: {
+                
+            })
+        }))
+        
+        
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
         
