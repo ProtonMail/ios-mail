@@ -88,69 +88,12 @@ final class LabelApplyViewModelImpl : LabelViewModel {
         }
     }
     
-//    func selectAction() {
-//        var plusCount = 1
-//        if model.totalMessages.count <= 1 || 0 ==  model.originalSelected.count || model.originalSelected.count ==  model.totalMessages.count {
-//            plusCount = 2
-//        }
-//
-//        var tempStatus = self.model.currentStatus + plusCount;
-//        if tempStatus > 2 {
-//            tempStatus = 0
-//        }
-//        
-//        if tempStatus == 0 {
-//            for mm in self.model.totalMessages {
-//                let labelObjs = mm.mutableSetValueForKey("labels")
-//                labelObjs.removeObject(model.label)
-//                mm.setValue(labelObjs, forKey: "labels")
-//            }
-//        } else if tempStatus == 1 {
-//            for mm in self.model.totalMessages {
-//                let labelObjs = mm.mutableSetValueForKey("labels")
-//                labelObjs.removeObject(model.label)
-//                mm.setValue(labelObjs, forKey: "labels")
-//            }
-//            
-//            for mm in self.model.originalSelected {
-//                let labelObjs = mm.mutableSetValueForKey("labels")
-//                labelObjs.addObject(model.label)
-//                mm.setValue(labelObjs, forKey: "labels")
-//            }
-//        } else if tempStatus == 2 {
-//            for mm in self.model.totalMessages {
-//                let labelObjs = mm.mutableSetValueForKey("labels")
-//                var labelCount = 0
-//                for l in labelObjs {
-//                    if (l as! Label).labelID != model.label.labelID {
-//                        labelCount += 1
-//                    }
-//                }
-//                if labelCount >= maxLabelCount {
-//                    let alert = NSLocalizedString("A message cannot have more than \(maxLabelCount) labels").alertController();
-//                    alert.addOKAction()
-//                    vc.presentViewController(alert, animated: true, completion: nil)
-//                    return;
-//                }
-//            }
-//            
-//            for mm in self.model.totalMessages {
-//                let labelObjs = mm.mutableSetValueForKey("labels")
-//                labelObjs.addObject(model.label)
-//                mm.setValue(labelObjs, forKey: "labels")
-//            }
-//        }
-//        
-//        self.model.currentStatus = tempStatus
-//        self.updateStatusButton();
-//    }
-    
     override func apply(archiveMessage : Bool) -> Bool {
         let context = sharedCoreDataService.newMainManagedObjectContext()
         for (key, value) in self.labelMessages {
             if value.currentStatus != value.origStatus && value.currentStatus == 0 { //remove
                 let ids = self.messages.map { ($0).messageID }
-                let api = RemoveLabelFromMessageRequest(labelID: key, messages: ids)
+                let api = RemoveLabelFromMessages(labelID: key, messages: ids)
                 api.call(nil)
                 context.performAndWait { () -> Void in
                     for mm in self.messages {
@@ -161,7 +104,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                 }
             } else if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
                 let ids = self.messages.map { ($0).messageID }
-                let api = ApplyLabelToMessageRequest(labelID: key, messages: ids)
+                let api = ApplyLabelToMessages(labelID: key, messages: ids)
                 api.call(nil)
                 context.performAndWait { () -> Void in
                     for mm in self.messages {

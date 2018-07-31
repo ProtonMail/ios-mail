@@ -135,44 +135,15 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         Fabric.with([Crashlytics()])
-//        FirebaseApp.configure()
-//
-//        // set_messaging_delegate
-//        Messaging.messaging().delegate = self
-
-//        if #available(iOS 10.0, *) {
-//            // For iOS 10 display notification (sent via APNS)
-//            UNUserNotificationCenter.current().delegate = self
-//
-//            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-//            UNUserNotificationCenter.current().requestAuthorization(
-//                options: authOptions,
-//                completionHandler: {_, _ in })
-//        } else {
-//            let settings: UIUserNotificationSettings =
-//                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-//            application.registerUserNotificationSettings(settings)
-//        }
-//        application.registerForRemoteNotifications()
-//
-//        let userInfo = [
-//            NSLocalizedDescriptionKey: "The request failed.",
-//            NSLocalizedFailureReasonErrorKey: "The response returned a 505ß.",
-//            NSLocalizedRecoverySuggestionErrorKey: "Does this page exist?",
-//            "ProductID": "123456",
-//            "UserID": "Feng"
-//        ]
-//
-//        let errors = NSError(domain: dataServiceDomain, code: -101010, userInfo: userInfo)
-//        Crashlytics.sharedInstance().recordError(errors)
+        application.registerForRemoteNotifications()
+        
+        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         
         shareViewModelFactoy = ViewModelFactoryProduction()
         sharedVMService.cleanLegacy()
         sharedAPIService.delegate = self
-        sharedUserDataService.delegate = self
         
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
-        
         //get build mode if debug mode enable network logging
         let mode = UIApplication.shared.releaseMode()
         //network debug options
@@ -180,12 +151,13 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
             logger.level = .AFLoggerLevelDebug;
         }
         AFNetworkActivityLogger.shared().startLogging()
-
+        
         //start network notifier
         sharedInternetReachability.startNotifier()
         
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
+        sharedUserDataService.delegate = self
         sharedPushNotificationService.registerForRemoteNotifications()
         
         if mode != .dev && mode != .sim {
@@ -227,7 +199,25 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
             let timeInterval : Int = Int(Date().timeIntervalSince1970)
             userCachedStatus.exitTime = "\(timeInterval)";
         }
+        var taskID : UIBackgroundTaskIdentifier = 0
+        taskID = application.beginBackgroundTask {
+            //timed out
+        }
         sharedMessageDataService.purgeOldMessages()
+        if sharedUserDataService.isUserCredentialStored {
+            sharedMessageDataService.backgroundFetch {
+                delay(3, closure: {
+                    PMLog.D("End Background Task")
+                    application.endBackgroundTask(taskID)
+                })
+            }
+        } else {
+            delay(3, closure: {
+                application.endBackgroundTask(taskID)
+            })
+        }
+        
+        PMLog.D("Enter Background")
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -258,8 +248,19 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         }
     }
     
-    // MARK: Notification methods
+    // MARK: Background methods`
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        if sharedUserDataService.isUserCredentialStored {
+            //sharedMessageDataService.fetchNewMessagesForLocation(.inbox, notificationMessageID: nil) { (task, nil, nil ) in
+            sharedMessageDataService.backgroundFetch {
+                completionHandler(.newData)
+            }
+        } else {
+            completionHandler(.noData)
+        }
+    }
     
+    // MARK: Notification methods
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         Answers.logCustomEvent(withName: "NotificationError", customAttributes:["error" : "\(error)"])
         sharedPushNotificationService.didFailToRegisterForRemoteNotificationsWithError(error as NSError)

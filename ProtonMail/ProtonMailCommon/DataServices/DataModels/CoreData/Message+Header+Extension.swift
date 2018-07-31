@@ -34,7 +34,7 @@ extension Message {
         
         if isEncrypted == 2 {
             //return a different value if signed
-            return .none
+            return .zero_access_store
         }
         
         if isEncrypted == 7 {
@@ -52,21 +52,32 @@ extension Message {
         return .none
     }
     
-    
-    
-    
     func getSentLockType(email : String) -> PGPType {
-        
-        if self.senderAddress == email {
-            return .internal_normal
-        }
-        
         guard self.isDetailDownloaded  else {
             return .none
         }
         
         guard let header = self.header, let parsedMime = MIMEMessage(string: header) else {
             return .none
+        }
+        
+        let autoReply = parsedMime.mainPart.headers.first { (left) -> Bool in
+            return left.name == "X-Autoreply"
+        }
+        
+        if self.senderAddress == email {
+            
+            var autoreply = false
+            if let body = autoReply?.body, body == "yes" {
+                autoreply = true
+            }
+            if autoreply {
+                return .sent_sender_server
+            }
+            if self.unencrypt_outside {
+                return .sent_sender_out_side
+            }
+            return .sent_sender_encrypted
         }
         
         let authentication = parsedMime.mainPart.headers.first { (left) -> Bool in
@@ -85,12 +96,18 @@ extension Message {
             return .none
         }
         
+        if enctype == "none" {
+            self.unencrypt_outside = true
+        }
+        
         
         if authtype == "pgp-inline" {
             if enctype == "pgp-inline-pinned" {
                 return .pgp_encrypt_trusted_key
+            } else if enctype == "none" {
+                return .pgp_signed
             }
-            return .pgp_signed
+            return .pgp_encrypted
         }
         
         if authtype == "pgp-pm" {
@@ -103,8 +120,31 @@ extension Message {
         if authtype == "pgp-mime" {
             if enctype == "pgp-mime-pinned" {
                 return .pgp_encrypt_trusted_key
+            } else if enctype == "none" {
+                return .pgp_signed
             }
             return .pgp_encrypted
+        }
+        
+        if authtype == "pgp-eo" {
+            return .eo
+        }
+        
+        if authtype == "none" {
+            if enctype == "pgp-pm" {
+                return .internal_normal
+            }
+            if enctype == "pgp-mime" || enctype == "pgp-inline" {
+                return .pgp_encrypted
+            }
+            if enctype == "pgp-mime-pinned" || enctype == "pgp-inline-pinned" {
+                return .pgp_encrypt_trusted_key
+            }
+            if enctype == "pgp-pm-pinned" {
+                return .internal_trusted_key
+            }
+            
+            return .none
         }
         
         return .none

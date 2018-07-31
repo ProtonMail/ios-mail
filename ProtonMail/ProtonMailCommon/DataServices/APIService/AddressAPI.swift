@@ -11,7 +11,6 @@ import Foundation
 
 // Mark : get addresses
 final class GetAddressesRequest : ApiRequestNew<AddressesResponse> {
-    
     override func path() -> String {
         return AddressesAPI.path + AppConstants.DEBUG_OPTION
     }
@@ -38,7 +37,7 @@ final class UpdateAddressOrder : ApiRequest<ApiResponse> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return AddressesAPI.path + "/order" + AppConstants.DEBUG_OPTION
     }
     

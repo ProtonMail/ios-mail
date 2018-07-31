@@ -200,10 +200,6 @@ struct LabelAPI {
     /// Delete a label [DELETE]
     static let v_delete_label : Int = 3
     
-    //TODO:: need move it into message when api to v3
-    static let V_ApplyLabelToMessageRequest : Int = 1
-    static let V_RemoveLabelFromMessageRequest : Int = 1
-    
     //doesn't impl yet
     /// Change label priority [PUT]
     static let v_order_labels : Int = 3
@@ -246,6 +242,12 @@ struct MessageAPI {
     
     //Undelete Messages [/messages/undelete]
     static let v_undelete_msgs : Int = 3
+    
+    //Label/Move Messages [/messages/label] [PUT]
+    static let v_apply_label_to_messages : Int = 3
+    
+    //Unlabel Messages [/messages/unlabel] [PUT]
+    static let v_remove_label_from_message : Int = 3
 }
 
 //Organization API
@@ -339,7 +341,5 @@ struct UsersAPI {
     
     /// Send a verification code [POST]
     static let v_send_verification_code : Int = 3
-    
-    static let V_GetUserPublicKeysRequest : Int = 2  //TODO:: need move to message
 }
 

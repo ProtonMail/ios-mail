@@ -18,9 +18,6 @@
 import Foundation
 import Pm
 
-let OpenPGPErrorDomain = "com.ProtonMail.OpenPGP"
-
-let sharedOpenPGP = PmOpenPGP()!
 
 extension PmOpenPGP {
     func random(byte: Int) -> Data? {
@@ -34,7 +31,7 @@ extension PmOpenPGP {
     
     class func updateKeysPassword(_ old_keys : [Key], old_pass: String, new_pass: String ) throws -> [Key] {
         var outKeys : [Key] = [Key]()
-        for okey in old_keys {            
+        for okey in old_keys {
             do {
                 let new_private_key = try sharedOpenPGP.updatePrivateKeyPassphrase(okey.private_key,
                                                                                    oldPassphrase: old_pass,
@@ -65,7 +62,7 @@ extension PmOpenPGP {
             if u_k.is_updated == false {
                 continue
             }
-            let result = PMNOpenPgp.checkPassphrase(u_k.private_key, passphrase: new_pass)
+            let result = PmCheckPassphrase(u_k.private_key, new_pass)
             guard result == true else {
                 throw UpdatePasswordError.keyUpdateFailed.error
             }
@@ -109,7 +106,7 @@ extension PmOpenPGP {
                 if u_k.is_updated == false {
                     continue
                 }
-                let result = PMNOpenPgp.checkPassphrase(u_k.private_key, passphrase: new_pass)
+                let result = PmCheckPassphrase(u_k.private_key, new_pass)
                 guard result == true else {
                     throw UpdatePasswordError.keyUpdateFailed.error
                 }
@@ -136,6 +133,8 @@ extension PmOpenPGP {
         return out_addresses
     }
 }
+
+
 //
 extension PMNOpenPgp {
 //    enum ErrorCode: Int {
@@ -200,63 +199,6 @@ extension PMNOpenPgp {
 //    }
 //}
 
-// MARK: - OpenPGP String extension
-
-extension String {
-    
-    func getSignature() throws -> String? {
-        var error : NSError?
-        let dec_out_att : String = PmReadClearSignedMessage(self, &error)
-        if let err = error {
-            throw err
-        }
-        return dec_out_att
-    }
-    
-    func decryptMessage(binKeys: Data, passphrase: String) throws -> String? {
-        return try sharedOpenPGP.decryptMessageBinKey(self, privateKey: binKeys, passphrase: passphrase)
-    }
-    
-    func verifyMessage(verifier: Data, binKeys: Data, passphrase: String) throws -> PmDecryptSignedVerify? {
-        return try sharedOpenPGP.decryptMessageVerifyBinKeyPrivbinkeys(self, veriferKey: verifier, privateKeys: binKeys, passphrase: passphrase, verifyTime: 0)
-    }
-    
-    func decryptMessageWithSinglKey(_ privateKey: String, passphrase: String) throws -> String? {
-        return try sharedOpenPGP.decryptMessage(self, privateKey: privateKey, passphrase: passphrase)
-    }
-
-    func split() throws -> PmEncryptedSplit? {
-        var error : NSError?
-        let out = PmSeparateKeyAndData(self, &error)
-        if let err = error {
-            throw err
-        }
-        return out
-    }
-    
-    func encrypt(withAddr address_id: String, mailbox_pwd: String) throws -> String? {
-        let privateKey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
-        return try sharedOpenPGP.encryptMessage(self, publicKey: privateKey, privateKey: privateKey, passphrase: mailbox_pwd, trim: true)
-    }
-
-    func encrypt(withPubKey publicKey: String, privateKey: String, mailbox_pwd: String) throws -> String? {
-        return try sharedOpenPGP.encryptMessage(self, publicKey: publicKey, privateKey: privateKey, passphrase: mailbox_pwd, trim: true)
-    }
-
-    func encrypt(withPwd passphrase: String) throws -> String? {
-        return try sharedOpenPGP.encryptMessage(withPassword: self, password: passphrase)
-    }
-
-    func decrypt(withPwd passphrase: String) throws -> String? {
-        return try sharedOpenPGP.decryptMessage(withPassword: self, password: passphrase)
-    }
-    
-    //self is private key
-    func check(passphrase: String) -> Bool {
-        return PmCheckPassphrase(self, passphrase)
-    }
-}
-
 extension Data {
     func decryptAttachment(_ keyPackage:Data!, passphrase: String) throws -> Data? {
         let privKeys = sharedUserDataService.addressPrivKeys
@@ -271,6 +213,13 @@ extension Data {
         let pubkey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
         return try sharedOpenPGP.encryptAttachment(self, fileName: fileName, publicKey: pubkey)
     }
+    
+    func signAttachment(_ address_id: String, mailbox_pwd: String) throws -> String? {
+        let privateKey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
+        return try sharedOpenPGP.signBinDetached(self, privateKey: privateKey, passphrase: mailbox_pwd)
+    }
+    
+    
     //
 //    func encryptAttachmentWithSingleKey(_ publicKey: String, fileName:String, privateKey: String, mailbox_pwd: String) throws -> PMNEncryptPackage? {
 //        var out_enc_data : PMNEncryptPackage?
@@ -303,7 +252,7 @@ extension Data {
     
     func getKeyPackage(strKey publicKey: String) throws -> Data? {
         let session = PmSessionSplit()!
-        session.setSession( self)
+        session.setSession(self)
         session.setAlgo("aes256")
         
         var error : NSError?

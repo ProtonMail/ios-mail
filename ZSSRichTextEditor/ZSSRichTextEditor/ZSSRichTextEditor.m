@@ -22,9 +22,9 @@
 @implementation UIWebView (HackishAccessoryHiding)
 
 static const char * const hackishFixClassName = "UIWebBrowserViewMinusAccessoryView";
-static Class hackishFixClass = Nil;
+static Class hackishFixClass_C = Nil;
 
-- (UIView *)hackishlyFoundBrowserView {
+- (UIView *)hackishlyFoundBrowserView_C {
     UIScrollView *scrollView = self.scrollView;
     
     UIView *browserView = nil;
@@ -41,32 +41,32 @@ static Class hackishFixClass = Nil;
     return nil;
 }
 
-- (void)ensureHackishSubclassExistsOfBrowserViewClass:(Class)browserViewClass {
-    if (!hackishFixClass) {
+- (void)ensureHackishSubclassExistsOfBrowserViewClass_C:(Class)browserViewClass {
+    if (!hackishFixClass_C) {
         Class newClass = objc_allocateClassPair(browserViewClass, hackishFixClassName, 0);
         newClass = objc_allocateClassPair(browserViewClass, hackishFixClassName, 0);
         IMP nilImp = [self methodForSelector:@selector(methodReturningNil)];
         class_addMethod(newClass, @selector(inputAccessoryView), nilImp, "@@:");
         objc_registerClassPair(newClass);
         
-        hackishFixClass = newClass;
+        hackishFixClass_C = newClass;
     }
 }
 
 - (BOOL) hidesInputAccessoryView {
-    UIView *browserView = [self hackishlyFoundBrowserView];
-    return [browserView class] == hackishFixClass;
+    UIView *browserView = [self hackishlyFoundBrowserView_C];
+    return [browserView class] == hackishFixClass_C;
 }
 
 - (void) setHidesInputAccessoryView:(BOOL)value {
-    UIView *browserView = [self hackishlyFoundBrowserView];
+    UIView *browserView = [self hackishlyFoundBrowserView_C];
     if (browserView == nil) {
         return;
     }
-    [self ensureHackishSubclassExistsOfBrowserViewClass:[browserView class]];
+    [self ensureHackishSubclassExistsOfBrowserViewClass_C:[browserView class]];
     
     if (value) {
-        object_setClass(browserView, hackishFixClass);
+        object_setClass(browserView, hackishFixClass_C);
     }
     else {
         Class normalClass = objc_getClass("UIWebBrowserView");

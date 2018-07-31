@@ -137,6 +137,10 @@ class EmailHeaderView: UIView {
     
     fileprivate var spamScore: MessageSpamScore = .others
     
+    
+    var isShowingDetail: Bool = true
+    
+    
     fileprivate var fromSinglelineAttr : NSMutableAttributedString! {
         get {
             let n = self.sender?.name ?? ""
@@ -958,8 +962,6 @@ class EmailHeaderView: UIView {
 //            let _ = make?.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
 //        }
     }
-    
-    fileprivate var isShowingDetail: Bool = false
     
     @objc internal func detailsButtonTapped() {
         self.isShowingDetail = !self.isShowingDetail

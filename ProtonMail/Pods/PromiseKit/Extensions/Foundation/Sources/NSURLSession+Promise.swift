@@ -92,6 +92,7 @@ extension URLSession {
     }
 
     /// - Remark: we force a `to` parameter because Apple deletes the downloaded file immediately after the underyling completion handler returns.
+    /// - Note: we do not create the destination directory for you, because we move the file with FileManager.moveItem which changes it behavior depending on the directory status of the URL you provide. So create your own directory first!
     public func downloadTask(_: PMKNamespacer, with convertible: URLRequestConvertible, to saveLocation: URL) -> Promise<(saveLocation: URL, response: URLResponse)> {
         return Promise { seal in
             downloadTask(with: convertible.pmkRequest, completionHandler: { tmp, rsp, err in

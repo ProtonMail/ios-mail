@@ -1490,6 +1490,7 @@ class MessageDataService {
                     //TODO:: here need check is encryptdata is nil and return the error to user.
                     let keyPacket = encrypt_data?.keyPacket()
                     let dataPacket = encrypt_data?.dataPacket()
+                    let signed = attachment.sign(byAddrID: default_address_id, mailbox_pwd: pwd)
                     let completionWrapper: CompletionBlock = { task, response, error in
                         PMLog.D("SendAttachmentDebug == finish upload att!")
                         if error == nil {
@@ -1516,6 +1517,7 @@ class MessageDataService {
                                              parameters: params,
                                              keyPackets: keyPacket,
                                              dataPacket: dataPacket,
+                                             signature: signed,
                                              headers: ["x-pm-apiversion":3],
                                              authenticated: true,
                                              completion: completionWrapper)
@@ -1561,9 +1563,6 @@ class MessageDataService {
         self.dequeueIfNeeded()
         completion?(nil, nil, NSError.badParameter("\(location)"))
     }
-    
-    
-
     
     fileprivate func send(byID messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
@@ -1762,6 +1761,7 @@ class MessageDataService {
         errorBlock(nil, nil, NSError.badParameter(messageID))
     }
     
+    //deprecated
     fileprivate func sendMessageID(_ messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
@@ -2018,7 +2018,23 @@ class MessageDataService {
         }
     }
     
-    fileprivate func dequeueIfNeeded() {
+    var dequieNotify : (() -> Void)?
+    
+    func backgroundFetch(notify : (() -> Void)?) {
+        self.dequeueIfNeeded(notify: notify)
+    }
+    
+    fileprivate func dequeueIfNeeded(notify : (() -> Void)? = nil) {
+        
+        if notify == nil {
+            if sharedMessageQueue.count <= 0 && readQueue.count <= 0 {
+                self.dequieNotify?()
+                self.dequieNotify = nil
+            }
+        } else {
+            self.dequieNotify = notify
+        }
+        
         if let (uuid, messageID, actionString) = sharedMessageQueue.nextMessage() {
             PMLog.D("SendAttachmentDebug == dequeue --- \(actionString)")
             if let action = MessageAction(rawValue: actionString) {
@@ -2048,6 +2064,7 @@ class MessageDataService {
             dequeueIfNeeded()
         }
     }
+    
     
     fileprivate func queue(_ message: Message, action: MessageAction) {
         if action == .saveDraft || action == .send {

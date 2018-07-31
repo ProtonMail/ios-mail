@@ -56,7 +56,7 @@ final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
         return .post
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return AuthAPI.path + "/info" + AppConstants.DEBUG_OPTION
     }
     
@@ -76,7 +76,7 @@ final class AuthModulusRequest : ApiRequest<AuthModulusResponse> {
         return .get
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return AuthAPI.path + "/modulus" + AppConstants.DEBUG_OPTION
     }
     
@@ -145,7 +145,7 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
         return .post
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return AuthAPI.path + AppConstants.DEBUG_OPTION
     }
     
@@ -187,7 +187,7 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
         return .post
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return AuthAPI.path + "/refresh" + AppConstants.DEBUG_OPTION
     }
     

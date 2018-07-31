@@ -174,18 +174,18 @@ final class ComposeViewModelImpl : ComposeViewModel {
         return sharedUserDataService.userAddresses
     }
     
-    override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?) -> Void)?) {
+    override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
         progress()
         
         let context = sharedCoreDataService.newManagedObjectContext()
         async {
             guard let c = model as? ContactVO else {
-                complete?(nil)
+                complete?(nil, -1)
                 return
             }
             
             guard let emial = model.displayEmail else {
-                complete?(nil)
+                complete?(nil, -1)
                 return
             }
             let getEmail = UserEmailPubKeys(email: emial).run()
@@ -204,13 +204,22 @@ final class ComposeViewModelImpl : ComposeViewModel {
                             c.pgpType = .pgp_encrypt_trusted_key
                         } else if contact.sign {
                             c.pgpType = .pgp_signed
+                            if let pwd = self.message?.password, pwd != "" {
+                                c.pgpType = .eo
+                            }
+                        }
+                    } else {
+                        if let pwd = self.message?.password, pwd != "" {
+                            c.pgpType = .eo
+                        } else {
+                            c.pgpType = .none
                         }
                     }
                 }
-                complete?(c.lock)
+                complete?(c.lock, c.pgpType.rawValue)
             }.catch({ (error) in
                 PMLog.D(error.localizedDescription)
-                complete?(nil)
+                complete?(nil, -1)
             })
         }
     }
@@ -239,8 +248,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         return true;
     }
     
-    fileprivate func updateContacts(_ oldLocation : MessageLocation?)
-    {
+    fileprivate func updateContacts(_ oldLocation : MessageLocation?) {
         if message != nil {
             switch messageAction!
             {
@@ -379,7 +387,26 @@ final class ComposeViewModelImpl : ComposeViewModel {
             self.message?.setLabelLocation(.draft)
             MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil, mailbox_pwd: sharedUserDataService.mailboxPassword!)
             
-            if let context = message!.managedObjectContext {
+            if let context = message?.managedObjectContext {
+                context.perform {
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)")
+                    }
+                }
+            }
+        }
+    }
+    
+    override func updateEO(expir:TimeInterval, pwd:String, pwdHit:String) -> Void {
+        if message != nil {
+            self.message?.time = Date()
+            self.message?.password = pwd
+            self.message?.passwordHint = pwdHit
+            self.message?.expirationOffset = Int32(expir)
+            if expir > 0 {
+                self.message?.expirationTime = Date(timeIntervalSinceNow: expir)
+            }
+            if let context = message?.managedObjectContext {
                 context.perform {
                     if let error = context.saveUpstreamIfNeeded() {
                         PMLog.D(" error: \(error)")
@@ -563,12 +590,13 @@ extension ComposeViewModelImpl {
         return strJson
     }
     func toContacts(_ json : String) -> [ContactVO] {
-        
         var out : [ContactVO] = [ContactVO]();
-        
-        let recipients : [[String : String]] = json.parseJson()!
-        for dict:[String : String] in recipients {
-            out.append(ContactVO(id: "", name: dict["Name"], email: dict["Address"]))
+        if let recipients : [[String : Any]] = json.parseJson() {
+            for dict:[String : Any] in recipients {
+                let name = dict["Name"] as? String ?? ""
+                let email = dict["Address"] as? String ?? ""
+                out.append(ContactVO(id: "", name: name, email: email))
+            }
         }
         return out
     }

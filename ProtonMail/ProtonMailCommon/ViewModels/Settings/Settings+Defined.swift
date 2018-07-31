@@ -175,7 +175,7 @@ public enum SGItems: Int, CustomStringConvertible {
         case .autoLoadImage:
             return LocalString._auto_show_images
         case .notificationsSnooze:
-            return NSLocalizedString("Snooze Notifications", comment: "settings general section title")
+            return LocalString._snooze_notifications
         }
     }
 }

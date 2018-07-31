@@ -106,14 +106,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         let contentView = DKPhotoImageView()
         return contentView
     }
-    
-    open override func prepareForReuse() {
-        super.prepareForReuse()
         
-        (self.contentView as! DKPhotoImageView).image = nil
-        (self.contentView as! DKPhotoImageView).animatedImage = nil
-    }
-    
     override public func updateContentView(with content: Any) {
         guard let contentView = self.contentView as? DKPhotoImageView else { return }
         

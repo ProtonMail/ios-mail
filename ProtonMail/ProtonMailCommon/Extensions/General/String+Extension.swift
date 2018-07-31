@@ -109,7 +109,7 @@ extension String {
      
      :returns: [ [String:String] ]
      */
-    func parseJson() -> [[String:String]]? {
+    func parseJson() -> [[String:Any]]? {
         if self.isEmpty {
             return [];
         }
@@ -117,7 +117,7 @@ extension String {
         PMLog.D(self)
         do {
             if let data = self.data(using: String.Encoding.utf8) {
-                let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [[String:String]]
+                let decoded = try JSONSerialization.jsonObject(with: data, options: []) as? [[String : Any]]
                 return decoded
             }
         } catch let ex as NSError {
@@ -134,11 +134,12 @@ extension String {
      */
     func getDisplayAddress() -> String {
         var lists: [String] = []
-        let recipients : [[String : String]] = self.parseJson()!
-        for dict:[String : String] in recipients {
-            let to = dict.getDisplayName()
-            if !to.isEmpty  {
-                lists.append(to)
+        if let recipients : [[String : Any]] = self.parseJson() {
+            for dict:[String : Any] in recipients {
+                let to = dict.getDisplayName()
+                if !to.isEmpty  {
+                    lists.append(to)
+                }
             }
         }
         return lists.joined(separator: ",")
@@ -179,12 +180,13 @@ extension String {
     func formatJsonContact(_ mailto : Bool = false) -> String {
         var lists: [String] = []
         
-        let recipients : [[String : String]] = self.parseJson()!
-        for dict:[String : String] in recipients {
-            if mailto {
-                lists.append(dict.getName() + " &lt;<a href=\"mailto:\(dict.getAddress())\" class=\"\">\(dict.getAddress())</a>&gt;")
-            } else {
-                lists.append(dict.getName() + "&lt;\(dict.getAddress())&gt;")
+        if let recipients : [[String : Any]] = self.parseJson() {
+            for dict:[String : Any] in recipients {
+                if mailto {
+                    lists.append(dict.getName() + " &lt;<a href=\"mailto:\(dict.getAddress())\" class=\"\">\(dict.getAddress())</a>&gt;")
+                } else {
+                    lists.append(dict.getName() + "&lt;\(dict.getAddress())&gt;")
+                }
             }
         }
         return lists.joined(separator: ",")
@@ -215,7 +217,7 @@ extension String {
     }
     
     func plainText() -> String {
-        return self;
+        return self
     }
     
     
@@ -228,7 +230,7 @@ extension String {
                                                                 range: NSRange(location: 0, length: self.count),
                                                                 withTemplate: "")
             if !replacedString.isEmpty && replacedString.count > 0 {
-                return replacedString;
+                return replacedString
             }
         } catch let ex as NSError {
             PMLog.D("\(ex)")
@@ -249,7 +251,7 @@ extension String {
                                                                 range: NSRange(location: 0, length: self.count),
                                                                 withTemplate: replaceto)
             if !replacedString.isEmpty && replacedString.count > 0 {
-                return replacedString;
+                return replacedString
             }
         } catch let ex as NSError {
             PMLog.D("\(ex)")
@@ -301,7 +303,7 @@ extension String {
         var out = self.preg_replace("\\ssrc='(?!cid:)", replaceto: " data-src='")
         out = out.preg_replace("\\ssrc=\"(?!cid:)", replaceto: " data-src=\"")
         out = out.preg_replace("srcset=", replaceto: " data-srcset=")
-        out = out.preg_replace("xlink:href=", replaceto: " data-xlink:href=");
+        out = out.preg_replace("xlink:href=", replaceto: " data-xlink:href=")
         out = out.preg_replace("poster=", replaceto: " data-poster=")
         out = out.preg_replace("background=", replaceto: " data-background=")
         out = out.preg_replace("url\\(|url&#40;|url&#x28;|url&lpar;", replaceto: " data-url(")
@@ -319,7 +321,7 @@ extension String {
         var out = self.preg_replace(" data-src='", replaceto: " src='")
         out = out.preg_replace(" data-src=\"", replaceto: " src=\"")
         out = out.preg_replace(" data-srcset=", replaceto: " srcset=")
-        out = out.preg_replace(" data-xlink:href=", replaceto: " xlink:href=");
+        out = out.preg_replace(" data-xlink:href=", replaceto: " xlink:href=")
         out = out.preg_replace(" data-poster=", replaceto: " poster=")
         out = out.preg_replace(" data-background=", replaceto: " background=")
         out = out.preg_replace(" data-url\\(", replaceto: " url(")
@@ -328,7 +330,7 @@ extension String {
     }
     
     func stringBySetupInlineImage(_ from : String, to: String) -> String {
-        return self.preg_replace_none_regex(from, replaceto:to);
+        return self.preg_replace_none_regex(from, replaceto:to)
     }
     
     func stringByPurifyHTML() -> String {
@@ -483,9 +485,12 @@ extension String {
     //
     func toContacts() -> [ContactVO] {
         var out : [ContactVO] = [ContactVO]();
-        let recipients : [[String : String]] = self.parseJson()!
-        for dict:[String : String] in recipients {
-            out.append(ContactVO(id: "", name: dict["Name"], email: dict["Address"]))
+        if let recipients : [[String : Any]] = self.parseJson() {
+            for dict:[String : Any] in recipients {
+                let name = dict["Name"] as? String ?? ""
+                let email = dict["Address"] as? String ?? ""
+                out.append(ContactVO(id: "", name: name, email: email))
+            }
         }
         return out
     }
@@ -515,20 +520,6 @@ extension String {
             PMLog.D("\(ex)")
         }
         return ["":""]
-    }
-    
-    func parseObjectAny () -> [String:Any]? {
-        if self.isEmpty {
-            return nil
-        }
-        do {
-            let data : Data! = self.data(using: String.Encoding.utf8)
-            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:Any]
-            return decoded
-        } catch let ex as NSError {
-            PMLog.D("\(ex)")
-        }
-        return nil
     }
     
     func stringByAppendingPathComponent(_ pathComponent: String) -> String {

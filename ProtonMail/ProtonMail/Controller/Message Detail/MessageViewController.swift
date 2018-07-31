@@ -69,6 +69,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             self.emailView?.updateEmailAttachment(atts);
         }
         
+        self.emailView?.showDetails(show: self.message.hasLocation(location: .outbox))
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.delegate = self
@@ -659,11 +660,12 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
             if let c = model as? ContactVO {
                 if self.message.hasLocation(location: .outbox) {
                     c.pgpType = self.message.getSentLockType(email: c.displayEmail ?? "")
+                    complete?(nil, -1)
                 } else {
                     c.pgpType = self.message.getInboxType(email: c.displayEmail ?? "", signature: .notSigned)
                     if self.message.checkedSign {
                         c.pgpType = self.message.pgpType
-                        complete?(nil)
+                        complete?(nil, -1)
                     } else {
                         if self.message.checkingSign {
                             
@@ -671,7 +673,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                             self.message.checkingSign = true
                             guard let emial = model.displayEmail else {
                                 self.message.checkingSign = false
-                                complete?(nil)
+                                complete?(nil, -1)
                                 return
                             }
                             let context = sharedCoreDataService.newManagedObjectContext()
@@ -693,29 +695,73 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                                             c.pgpType = .internal_trusted_key_verify_failed
                                         }
                                     }
+                                    //get all keys compromised
+//                                    var iscompromised = false
+//                                    if  let compromisedKeys = keyRes.getCompromisedKeys(), compromisedKeys.count > 0 {
+//                                        let status = self.message.verifyBody(verifier: compromisedKeys)
+//                                        switch status {
+//                                        case .ok:
+//                                            iscompromised = true
+//                                            c.pgpType = .internal_trusted_key_verify_failed
+//                                        case .notSigned, .noVerifier, .failed:
+//                                            break
+//                                        }
+//                                    }
+//
+//                                    if !iscompromised {
+//                                        var verifier = Data()
+//                                        //get verify keys from getEmail
+//                                        if  let verifyKeys = keyRes.getVerifyKeys(), verifyKeys.count > 0 {
+//                                            verifier.append(verifyKeys)
+//                                        }
+//                                        //get verify keys from pgpkeys
+//                                        if let contact = contacts.first, let pgpKeys = contact.pgpKeys, pgpKeys.count > 0 {
+//                                            verifier.append(pgpKeys)
+//                                        }
+//                                        
+//                                        if verifier.count > 0 {
+//                                            let status = self.message.verifyBody(verifier: verifier)
+//                                            switch status {
+//                                            case .ok:
+//                                                c.pgpType = .internal_trusted_key
+//                                            case .notSigned:
+//                                                c.pgpType = .internal_normal
+//                                            case .noVerifier:
+//                                                c.pgpType = .internal_normal
+//                                            case .failed:
+//                                                c.pgpType = .internal_trusted_key_verify_failed
+//                                            }
+//                                        }
+//                                    }
                                 } else {
                                     if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
                                         let status = self.message.verifyBody(verifier: pgpKeys)
                                         switch status {
                                         case .ok:
-                                            c.pgpType = .pgp_encrypt_trusted_key
-                                        case .notSigned:
-                                            c.pgpType = .pgp_encrypted
-                                        case .noVerifier:
-                                            c.pgpType = .pgp_encrypted
+                                            if c.pgpType == .zero_access_store {
+                                                c.pgpType = .pgp_signed_verified
+                                            } else {
+                                                c.pgpType = .pgp_encrypt_trusted_key
+                                            }
+                                        case .notSigned, .noVerifier:
+                                            break
                                         case .failed:
-                                            c.pgpType = .pgp_encrypt_trusted_key_verify_failed
+                                            if c.pgpType == .zero_access_store {
+                                                c.pgpType = .pgp_signed_verify_failed
+                                            } else {
+                                                c.pgpType = .pgp_encrypt_trusted_key_verify_failed
+                                            }
                                         }
                                     }
                                 }
                                 self.message.pgpType = c.pgpType
                                 self.message.checkedSign = true
                                 self.message.checkingSign = false
-                                complete?(c.lock)
+                                complete?(c.lock, c.pgpType.rawValue)
                             }.catch({ (error) in
                                 self.message.checkingSign = false
                                 PMLog.D(error.localizedDescription)
-                                complete?(nil)
+                                complete?(nil, -1)
                             })
                             
                         }

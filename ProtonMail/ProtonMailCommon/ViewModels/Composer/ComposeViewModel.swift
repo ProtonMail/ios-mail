@@ -125,6 +125,11 @@ class ComposeViewModel {
          NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
+    func updateEO(expir:TimeInterval, pwd:String, pwdHit:String) -> Void {
+        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
+    }
+    
+    
     func getAttachments() -> [Attachment]? {
         fatalError("This method must be overridden")
     }
@@ -153,7 +158,7 @@ class ComposeViewModel {
         fatalError("This method must be overridden")
     }
     
-    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?) -> Void)?) {
+    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
         fatalError("This method must be overridden")
     }
 }

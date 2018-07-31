@@ -43,7 +43,7 @@ public class PushNotificationService {
     
     public func registerForRemoteNotifications() {
         if sharedUserDataService.isSignedIn {
-           UIApplication.shared.registerForRemoteNotifications()
+            UIApplication.shared.registerForRemoteNotifications()
         }
     }
     

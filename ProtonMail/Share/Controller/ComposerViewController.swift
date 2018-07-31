@@ -390,26 +390,12 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     
     internal func sendMessage () {
         if self.composeViewController.expirationTimeInterval > 0 {
-            if self.composeViewController.hasOutSideEmails && self.encryptionPassword.count <= 0 {
-                let emails = self.composeViewController.allEmails
-                //show loading
-                ActivityIndicatorHelper.showActivityIndicator(at: view)
-                let api = GetUserPublicKeysRequest<EmailsCheckResponse>(emails: emails)
-                api.call({ (task, response: EmailsCheckResponse?, hasError : Bool) in
-                    //hide loading
-                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-                    if let res = response, res.hasOutsideEmails == false {
-                        self.sendMessageStepTwo()
-                    } else {
-                        self.composeViewController.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_pls_set_password)
-                    }
-                })
+            if self.composeViewController.hasNonePMEmails && self.encryptionPassword.count <= 0 {
+                self.composeViewController.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_pls_set_password)
                 return
             }
         }
-        delay(0.3) {
-            self.sendMessageStepTwo()
-        }
+        self.sendMessageStepTwo()
     }
     
     internal func sendMessageStepTwo() {
@@ -440,6 +426,13 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
             self.composeViewController.updateAttachmentButton(false)
         }
     }
+    
+    func updateEO() {
+        self.viewModel.updateEO(expir: self.composeViewController.expirationTimeInterval,
+                                pwd: self.encryptionPassword,
+                                pwdHit: self.encryptionPasswordHint)
+        self.composeViewController.reloadPicker()
+    }
 }
 
 extension ComposerViewController : PasswordEncryptViewControllerDelegate {
@@ -454,6 +447,7 @@ extension ComposerViewController : PasswordEncryptViewControllerDelegate {
         self.encryptionPasswordHint    = hint
         
         self.composeViewController.showEncryptionDone()
+        self.updateEO()
     }
     
     func Removed() {
@@ -462,6 +456,7 @@ extension ComposerViewController : PasswordEncryptViewControllerDelegate {
         self.encryptionPasswordHint    = ""
         
         self.composeViewController.showEncryptionRemoved()
+        self.updateEO()
     }
 }
 
@@ -488,7 +483,7 @@ extension ComposerViewController : ComposeViewDelegate {
                         self.present(alertController, animated: true, completion: nil)
                     } else {
                         if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
-//                            self.updateSignature("\(signature)")
+                            //self.updateSignature("\(signature)")
                         }
                         
                         ActivityIndicatorHelper.showActivityIndicator(at: self.view)
@@ -559,31 +554,27 @@ extension ComposerViewController : ComposeViewDelegate {
         }
     }
     
-    func composeViewDidTapExpirationButton(_ composeView: ComposeView)
-    {
+    func composeViewDidTapExpirationButton(_ composeView: ComposeView) {
         self.expirationPicker.alpha = 1;
         self.view.bringSubview(toFront: expirationPicker)
     }
     
-    func composeViewHideExpirationView(_ composeView: ComposeView)
-    {
+    func composeViewHideExpirationView(_ composeView: ComposeView) {
         self.expirationPicker.alpha = 0;
     }
     
-    func composeViewCancelExpirationData(_ composeView: ComposeView)
-    {
+    func composeViewCancelExpirationData(_ composeView: ComposeView) {
         self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
         self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
     }
     
-    func composeViewCollectExpirationData(_ composeView: ComposeView)
-    {
+    func composeViewCollectExpirationData(_ composeView: ComposeView) {
         let selectedDay = expirationPicker.selectedRow(inComponent: 0)
         let selectedHour = expirationPicker.selectedRow(inComponent: 1)
-        if self.composeViewController.setExpirationValue(selectedDay, hour: selectedHour)
-        {
+        if self.composeViewController.setExpirationValue(selectedDay, hour: selectedHour) {
             self.expirationPicker.alpha = 0;
         }
+        self.updateEO()
     }
     
     func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker) {

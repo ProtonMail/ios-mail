@@ -1,4 +1,4 @@
-module Pods_ShareDev {
+framework module Pods_ShareDev {
   umbrella header "Pods-ShareDev-umbrella.h"
 
   export *

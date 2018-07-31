@@ -34,6 +34,9 @@ extension DKPhotoBasePreviewVC {
         } else if item.videoURL != nil {
             return DKPhotoPlayerPreviewVC.self
             
+        } else if #available(iOS 11.0, *), item.pdfURL != nil {
+            return DKPhotoPDFPreviewVC.self
+
         } else {
             assertionFailure()
             return DKPhotoBasePreviewVC.self

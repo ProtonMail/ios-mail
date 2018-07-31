@@ -31,7 +31,7 @@ class TouchID {
                 }
                 let timeInterval : Int = Int(Date().timeIntervalSince1970)
                 let diff = timeInterval - exitTime
-                if diff > (timeIndex*60) || diff <= 0 {
+                if diff > (timeIndex*60) || diff < 0 {
                     return true
                 }
             }

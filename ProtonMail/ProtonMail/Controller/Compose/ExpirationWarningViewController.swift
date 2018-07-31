@@ -75,18 +75,10 @@ class ExpirationWarningViewController : UIViewController {
         
         
         self.tableView.tableFooterView = footerView
-        textLabel.text = "Tap send anyway to send without expiration to these recipients"
-        let text = "Learn more here"
-//        let titleString : NSMutableAttributedString = NSMutableAttributedString(string: text)
-//        titleString.addAttribute(NSAttributedStringKey.underlineStyle,
-//                                 value: UIColor.blue,
-//                                 range: NSMakeRange(0, text.utf8.count))
-////        learnMore.setAttributedTitle(titleString, for: .normal)
-        
+        textLabel.text = LocalString._tap_send_anyway_to_send_without_expiration_to_these_recipients
+        let text = LocalString._learn_more_here
         learnMore.setTitle(text, for: .normal)
-        
-        headerLabel.text = "Not all recipients support message expiration"
-        
+        headerLabel.text = LocalString._not_all_recipients_support_message_expiration
         cancelButton.layer.borderWidth = 1.0
         cancelButton.layer.borderColor = UIColor.darkGray.cgColor
     }
@@ -159,11 +151,11 @@ extension ExpirationWarningViewController : UITableViewDataSource {
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kHeaderID) as? ExpirationWarningHeaderCell
         
         if type == .pwd {
-            cell?.ConfigHeader(title: "Please add a password for the following recipients",
+            cell?.ConfigHeader(title: LocalString._please_add_a_password_for_the_following_recipients,
                                section: section,
                                expend: expend)
         } else {
-            cell?.ConfigHeader(title: "Please disable PGP Sending for following addresses",
+            cell?.ConfigHeader(title: LocalString._please_disable_pgp_sending_for_following_addresses,
                                section: section,
                                expend: expend)
         }

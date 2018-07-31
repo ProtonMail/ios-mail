@@ -23,8 +23,8 @@ enum SignStatus : Int {
     case failed = 3
 }
 
-enum PGPType : Int {
-    case none = 0 /// normal outgoing
+ enum PGPType : Int {
+    case none = 0 /// default none
     case pgp_signed = 1 /// external pgp signed only
     case pgp_encrypt_trusted_key = 2 /// external encrypted and signed with trusted key
     case internal_normal = 3 /// protonmail normal keys
@@ -35,6 +35,11 @@ enum PGPType : Int {
     case pgp_signed_verify_failed = 9
     case eo = 10
     case pgp_encrypted = 11
+    case sent_sender_out_side = 12
+    case sent_sender_encrypted = 13
+    case zero_access_store = 14
+    case sent_sender_server = 15
+    case pgp_signed_verified = 16
 }
 
 public class ContactVO: NSObject, ContactPickerModelProtocol {
@@ -82,6 +87,12 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     
     var pgpType: PGPType = .none
     
+    func setType(type: Int) {
+        if let pgp_type = PGPType(rawValue: type) {
+            self.pgpType = pgp_type
+        }
+    }
+    
     func notes(type: Int) -> String {
         //0 composer, 1 inbox 2 sent
         if type == 1 {
@@ -106,7 +117,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             case .pgp_encrypt_trusted_key_verify_failed:
                 return UIImage(named: "pgp_trusted_sign_failed")
             case .pgp_signed_verify_failed:
-                return UIImage(named: "pgp_clear_sign_failed")
+                return UIImage(named: "pgp_signed_verify_failed")
             case .internal_trusted_key_verify_failed:
                 return UIImage(named: "internal_sign_failed")
             case .internal_normal_verify_failed:
@@ -115,6 +126,15 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                 return UIImage(named: "pgp_encrypted")
             case .none:
                 return nil
+            case .sent_sender_out_side,
+                 .zero_access_store:
+                return UIImage(named: "zero_access_encryption")
+            case .sent_sender_encrypted:
+                return UIImage(named: "internal_normal")
+            case .sent_sender_server:
+                return UIImage(named: "internal_normal")
+            case .pgp_signed_verified:
+                return UIImage(named: "pgp_signed_verified")
             }
         }
     }
@@ -125,7 +145,6 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             switch self.pgpType {
             case .pgp_encrypt_trusted_key,
                  .pgp_encrypted,
-                 .eo,
                  .pgp_encrypt_trusted_key_verify_failed:
                 return true
             default:
@@ -156,7 +175,6 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             switch self.pgpType {
             case .eo:
                 return LocalString._end_to_end_encrypted
-                
             case .pgp_encrypt_trusted_key: //PM --> non-PM PGP (encrypted+signed/pinned)
                 return LocalString._pgp_encrypted
             case .pgp_signed://PM --> non-PM PGP (signed)
@@ -173,6 +191,11 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                  .internal_trusted_key_verify_failed,
                  .internal_normal_verify_failed,
                  .pgp_signed_verify_failed,
+                 .sent_sender_out_side,
+                 .sent_sender_encrypted,
+                 .zero_access_store,
+                 .sent_sender_server,
+                 .pgp_signed_verified,
                  .none:
                 return ""
             }
@@ -182,26 +205,35 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     var sentNotes: String {
         get {
             switch self.pgpType {
-            case .none, .eo:
+            case .none:
                 return LocalString._stored_with_zero_access_encryption
-                
+            case .eo:
+                return LocalString._end_to_end_encrypted
             case .internal_normal: //PM --> PM (encrypted+signed)
-                return LocalString._sent_by_you_with_end_to_end_encryption
+                return LocalString._end_to_end_encrypted
             case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
-                return LocalString._sent_by_you_with_end_to_end_encryption
-                
+                return LocalString._end_to_end_encrypted_to_verified_address
             case .pgp_encrypted:
                 return LocalString._pgp_encrypted_message
             case .pgp_encrypt_trusted_key:
-                return LocalString._pgp_encrypted_message_from_verified_address
+                return LocalString._pgp_encrypted
             case .pgp_signed://non-PM signed PGP --> PM (pinned)
-                return LocalString._pgp_signed_message_from_verified_address
-                
+                return LocalString._pgp_signed
             case .pgp_encrypt_trusted_key_verify_failed,
                  .internal_trusted_key_verify_failed,
                  .internal_normal_verify_failed,
                  .pgp_signed_verify_failed:
                 return LocalString._sender_verification_failed
+            case .sent_sender_out_side:
+                return LocalString._stored_with_zero_access_encryption
+            case .sent_sender_encrypted:
+                return LocalString._sent_by_you_with_end_to_end_encryption
+            case .zero_access_store:
+                return LocalString._stored_with_zero_access_encryption
+            case .sent_sender_server:
+                return LocalString._sent_by_protonMail_with_end_to_end_encryption
+            case .pgp_signed_verified:
+                return LocalString._pgp_signed_message_from_verified_address
             }
         }
     }
@@ -231,6 +263,16 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                  .internal_normal_verify_failed,
                  .pgp_signed_verify_failed:
                 return LocalString._sender_verification_failed
+            case .sent_sender_out_side:
+                return LocalString._end_to_end_encrypted_message
+            case .sent_sender_encrypted:
+                return LocalString._end_to_end_encrypted_message
+            case .zero_access_store:
+                return LocalString._stored_with_zero_access_encryption
+            case .sent_sender_server:
+                return LocalString._sent_by_protonMail_with_end_to_end_encryption
+            case .pgp_signed_verified:
+                return LocalString._pgp_signed_message_from_verified_address
             }
         }
     }
@@ -264,10 +306,10 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                         }
                     }
                 }
-                complete?(nil)
+                complete?(nil, -1)
             }.catch({ (error) in
                 PMLog.D(error.localizedDescription)
-                complete?(nil)
+                complete?(nil, -1)
             })
         }
         

@@ -1,4 +1,4 @@
-module Pods_PushServiceDev {
+framework module Pods_PushServiceDev {
   umbrella header "Pods-PushServiceDev-umbrella.h"
 
   export *

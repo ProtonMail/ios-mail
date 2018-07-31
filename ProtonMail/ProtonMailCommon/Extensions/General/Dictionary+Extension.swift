@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Dictionary where Key: ExpressibleByStringLiteral, Value: ExpressibleByStringLiteral { //email name
+extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any { //email name
     public func getDisplayName() -> String {    //this function only for the To CC BCC list parsing
         if let key = "Name" as? Key {
             let name = self[key] as? String ?? ""

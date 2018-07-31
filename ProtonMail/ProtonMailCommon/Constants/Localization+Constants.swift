@@ -266,8 +266,8 @@ class LocalizedString {
     lazy var _composer_define_expiration_placeholder = NSLocalizedString("Define Expiration Date", comment: "Placeholder")
     /// "Define Password"
     lazy var _composer_define_password = NSLocalizedString("Define Password", comment: "place holder")
-    
-    
+    /// "Define Hint (Optional)"
+    lazy var _define_hint_optional = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
 
     
     
@@ -357,8 +357,8 @@ class LocalizedString {
     lazy var _contacts_name_title = NSLocalizedString("Name", comment: "title")
     /// "Notes"
     lazy var _contacts_info_notes = NSLocalizedString("Notes", comment: "title")
-    
-    
+    /// "Upload Contacts"
+    lazy var _contacts_upload_contacts = NSLocalizedString("Upload Contacts",  comment: "Action")
     
     
     // Mark Labels
@@ -1017,7 +1017,7 @@ class LocalizedString {
     lazy var _authentication = NSLocalizedString("Authentication", comment: "Title")
 
     /// "Enter"
-    lazy var _enter = NSLocalizedString("Enter", comment: "Action")
+    lazy var _enter = NSLocalizedString("Enter", comment: "Action in 2fa popup view")
 
     /// "Space Warning"
     lazy var _space_warning = NSLocalizedString("Space Warning", comment: "Title")
@@ -1364,7 +1364,7 @@ class LocalizedString {
     lazy var _the_passwords_you_entered_do_not_match = NSLocalizedString("The passwords you entered do not match.", comment: "Description")
 
     /// "Can't load share content!"
-    lazy var _cant_load_share_content = NSLocalizedString("Can't load share content!", comment: "Description")
+    lazy var _cant_load_share_content = NSLocalizedString("Can't load share content!", comment: "This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly")
 
     /// "Share Alert"
     lazy var _share_alert = NSLocalizedString("Share Alert", comment: "Title")
@@ -1397,6 +1397,8 @@ class LocalizedString {
     lazy var _stored_with_zero_access_encryption = NSLocalizedString("Stored with zero access encryption", comment: "encryption lock description")
     /// "Sent by you with end-to-end encryption"
     lazy var _sent_by_you_with_end_to_end_encryption = NSLocalizedString("Sent by you with end-to-end encryption", comment: "encryption lock description")
+    /// "Sent by ProtonMail with end-to-end encryption"
+    lazy var _sent_by_protonMail_with_end_to_end_encryption  = NSLocalizedString("Sent by ProtonMail with end-to-end encryption", comment: "encryption lock description")
     /// "PGP-encrypted message"
     lazy var _pgp_encrypted_message = NSLocalizedString("PGP-encrypted message", comment: "encryption lock description")
     /// "PGP-encrypted message from verified address"
@@ -1421,6 +1423,19 @@ class LocalizedString {
     lazy var _looking_to_edit_or_disable_your_mobile_signature = NSLocalizedString("Looking to edit or disable your mobile signature?", comment: "alert description")
     /// "ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature."
     lazy var _plus_visionary_enables_you_to_customize_mobile_signature = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." , comment: "alert description")
+    
+    // MARK: - Composer expiration warning
+    
+    ///"Tap send anyway to send without expiration to these recipients"
+    lazy var _tap_send_anyway_to_send_without_expiration_to_these_recipients = NSLocalizedString("Tap send anyway to send without expiration to these recipients", comment: "alert description")
+    /// "Learn more here"
+    lazy var _learn_more_here = NSLocalizedString("Learn more here", comment: "learn more button")
+    /// "Not all recipients support message expiration"
+    lazy var _not_all_recipients_support_message_expiration = NSLocalizedString("Not all recipients support message expiration", comment: "alert description")
+    /// "Please add a password for the following recipients"
+    lazy var _please_add_a_password_for_the_following_recipients = NSLocalizedString("Please add a password for the following recipients", comment: "alert description")
+    /// "Please disable PGP Sending for following addresses"
+    lazy var _please_disable_pgp_sending_for_following_addresses = NSLocalizedString("Please disable PGP Sending for following addresses", comment: "alert description")
     
     
     // MARK: - Notifcations Snooze feature

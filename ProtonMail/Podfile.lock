@@ -26,23 +26,23 @@ PODS:
     - DKImagePickerController/Core
     - DKPhotoGallery
   - DKImagePickerController/Resource (4.0.0-beta2)
-  - DKPhotoGallery (0.0.6):
-    - DKPhotoGallery/Core (= 0.0.6)
-    - DKPhotoGallery/Model (= 0.0.6)
-    - DKPhotoGallery/Preview (= 0.0.6)
-    - DKPhotoGallery/Resource (= 0.0.6)
+  - DKPhotoGallery (0.0.7):
+    - DKPhotoGallery/Core (= 0.0.7)
+    - DKPhotoGallery/Model (= 0.0.7)
+    - DKPhotoGallery/Preview (= 0.0.7)
+    - DKPhotoGallery/Resource (= 0.0.7)
     - SDWebImage/GIF
-  - DKPhotoGallery/Core (0.0.6):
+  - DKPhotoGallery/Core (0.0.7):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Preview
     - SDWebImage/GIF
-  - DKPhotoGallery/Model (0.0.6):
+  - DKPhotoGallery/Model (0.0.7):
     - SDWebImage/GIF
-  - DKPhotoGallery/Preview (0.0.6):
+  - DKPhotoGallery/Preview (0.0.7):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Resource
     - SDWebImage/GIF
-  - DKPhotoGallery/Resource (0.0.6):
+  - DKPhotoGallery/Resource (0.0.7):
     - SDWebImage/GIF
   - FLAnimatedImage (1.0.12)
   - Groot (3.0.1):
@@ -55,19 +55,19 @@ PODS:
   - OpenPGP (1.0.5):
     - OpenSSL
   - OpenSSL (1.0.210)
-  - PromiseKit (6.3.0):
-    - PromiseKit/CorePromise (= 6.3.0)
-    - PromiseKit/Foundation (= 6.3.0)
-    - PromiseKit/UIKit (= 6.3.0)
-  - PromiseKit/CorePromise (6.3.0)
-  - PromiseKit/Foundation (6.3.0):
+  - PromiseKit (6.3.4):
+    - PromiseKit/CorePromise (= 6.3.4)
+    - PromiseKit/Foundation (= 6.3.4)
+    - PromiseKit/UIKit (= 6.3.4)
+  - PromiseKit/CorePromise (6.3.4)
+  - PromiseKit/Foundation (6.3.4):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.3.0):
+  - PromiseKit/UIKit (6.3.4):
     - PromiseKit/CorePromise
   - RHAddressBook (1.1.1)
   - RichEditorView (5.0.0)
-  - SDWebImage/Core (4.4.1)
-  - SDWebImage/GIF (4.4.1):
+  - SDWebImage/Core (4.4.2)
+  - SDWebImage/GIF (4.4.2):
     - FLAnimatedImage (~> 1.0)
     - SDWebImage/Core
   - SWRevealViewController (2.3.0)
@@ -142,7 +142,7 @@ SPEC CHECKSUMS:
   AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
   AwaitKit: d8a6e30eeb2da916630270b44636b31033388bd8
   DKImagePickerController: 43789fb00974b13f26263cc1ee0de5c2e6c6390d
-  DKPhotoGallery: 3eb2402aa9b9b12ef863f494140712baf54e9fae
+  DKPhotoGallery: 7f07b6d8a47733fdd76856113c474456b92fc769
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -151,15 +151,15 @@ SPEC CHECKSUMS:
   "NSDate+Helper": 78f517ac1c67914096433466fa7d20b812b9d86c
   OpenPGP: 1462a488aa857e65e3a9b810867032f80aee1009
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
-  PromiseKit: cf84bbb1235a61473b326c5cf0b41f6828f87ba5
+  PromiseKit: e1425568123ec844a944c93f2bcb29d511d39cf5
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
   RichEditorView: 1bbb07b87ca2d479ac29a6877014b38b8df233ef
-  SDWebImage: 47e9b5b925cbce75946c23f0c42dd19464189af4
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: 53fd660ed37df3ccc3752ab15a04a4fdca35e6d2
 
-PODFILE CHECKSUM: 4f17ef21b8661034080e1ccd666ed2d511c75aa4
+PODFILE CHECKSUM: 9d90b127bf1e450a9803a3265b94b61b44846449
 
 COCOAPODS: 1.5.3

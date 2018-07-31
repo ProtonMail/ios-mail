@@ -15,7 +15,7 @@ final class GetLabelsRequest : ApiRequest<GetLabelsResponse> {
         return ["Type" : 1]
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return LabelAPI.path + AppConstants.DEBUG_OPTION
     }
     
@@ -29,69 +29,6 @@ final class GetLabelsResponse : ApiResponse {
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.labels =  response["Labels"]  as? [[String : Any]]
         return true
-    }
-}
-
-
-// MARK : apply label to message
-final class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
-    var labelID: String!
-    var messages:[String]!
-    
-    init(labelID:String!, messages: [String]!) {
-        self.labelID = labelID
-        self.messages = messages
-    }
-    
-    override func toDictionary() -> [String : Any]? {
-        var out : [String : Any] = [String : Any]()
-        out["MessageIDs"] = messages
-        return out
-    }
-    
-    
-    override func method() -> APIService.HTTPMethod {
-        return .put
-    }
-    
-    override open func path() -> String {
-        return LabelAPI.path + "/apply/" + self.labelID + AppConstants.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return LabelAPI.V_ApplyLabelToMessageRequest
-    }
-}
-
-// MARK : remove label from message
-final class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
-    
-    var labelID: String!
-    var messages:[String]!
-    
-    init(labelID:String!, messages: [String]!) {
-        self.labelID = labelID
-        self.messages = messages
-    }
-    
-    override func toDictionary() -> [String : Any]? {
-        var out : [String : Any] = [String : Any]()
-        out["MessageIDs"] = messages
-        //PMLog.D(self.JSONStringify(out, prettyPrinted: true))
-        return out
-    }
-    
-    
-    override func method() -> APIService.HTTPMethod {
-        return .put
-    }
-    
-    override open func path() -> String {
-        return LabelAPI.path + "/remove/" + self.labelID + AppConstants.DEBUG_OPTION
-    }
-    
-    override func apiVersion() -> Int {
-        return LabelAPI.V_RemoveLabelFromMessageRequest
     }
 }
 
@@ -124,7 +61,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return .post
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return LabelAPI.path + AppConstants.DEBUG_OPTION
     }
     
@@ -160,7 +97,7 @@ final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return .put
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return LabelAPI.path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     
@@ -192,7 +129,7 @@ final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return .delete
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return LabelAPI.path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     

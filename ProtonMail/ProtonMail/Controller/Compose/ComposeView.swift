@@ -250,6 +250,12 @@ class ComposeView: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    func reloadPicker() {
+        self.toContactPicker.reload()
+        self.ccContactPicker.reload()
+        self.bccContactPicker.reload()
+    }
+    
     @IBAction func contactPlusButtonTapped(_ sender: UIButton) {
         self.plusButtonHandle();
         self.notifyViewSize(true)
@@ -426,7 +432,7 @@ class ComposeView: UIViewController {
     }
     
     internal func showPasswordHintView() {
-        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Hint (Optional)", comment: "place holder")
+        self.encryptedPasswordTextField.placeholder = LocalString._define_hint_optional
         self.encryptedPasswordTextField.isSecureTextEntry = false
         self.encryptedPasswordTextField.text = ""
     }
@@ -619,7 +625,7 @@ class ComposeView: UIViewController {
 // MARK: - ContactPickerDataSource
 extension ComposeView: ContactPickerDataSource {
     
-    func picker(contactPicker: ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?) -> Void)?) {
+    func picker(contactPicker: ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
         self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
     }
     

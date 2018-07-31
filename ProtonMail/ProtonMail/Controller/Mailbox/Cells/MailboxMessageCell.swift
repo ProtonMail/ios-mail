@@ -57,8 +57,8 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         
         self.locationLabel.layer.cornerRadius = 2
         
-        lockImage.isHidden = true
-        lockWidth.constant = 0.0
+        self.lockImage.isHidden = true
+        self.lockWidth.constant = 0.0
     }
     
     private var accessibilityActionBoxes: [MCSwipeCompletionBlockBox] = []

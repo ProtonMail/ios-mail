@@ -159,6 +159,10 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.emailHeader.frame = CGRect(x: 0, y: 0, width: w, height: self.emailHeader.getHeight())
     }
     
+    func showDetails(show : Bool ) {
+        self.emailHeader.isShowingDetail = show
+    }
+    
     fileprivate func setupContentView() {
         self.contentWebView = PMWebView()
         self.contentWebView.scalesPageToFit = true;

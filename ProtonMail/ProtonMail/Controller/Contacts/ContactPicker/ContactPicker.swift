@@ -13,7 +13,7 @@ protocol ContactPickerDataSource: NSObjectProtocol {
     func contactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol]
     func selectedContactModelsForContactPicker(contactPickerView: ContactPicker) -> [ContactPickerModelProtocol]
     //
-    func picker(contactPicker :ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?) -> Void)?)
+    func picker(contactPicker :ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?)
 }
 
 protocol ContactPickerDelegate: ContactCollectionViewDelegate {
@@ -164,6 +164,11 @@ class ContactPicker: UIView {
         self.contactCollectionView.layoutIfNeeded()
         self.contactCollectionView.scrollToEntryAnimated(animated: false, onComplete: nil)
         self.hideSearchTableView()
+    }
+    
+    
+    func reload() {
+        self.contactCollectionView.reloadData()
     }
     
     //
@@ -325,14 +330,14 @@ class ContactPicker: UIView {
 extension ContactPicker : ContactCollectionViewDelegate {
 
     internal func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
-        self.delegate?.collectionContactCell(lockCheck: model, progress: progress) { image in
-            complete?(image)
+        self.delegate.collectionContactCell(lockCheck: model, progress: progress) { (image, type) in
+            complete?(image, type)
             self.contactCollectionView.performBatchUpdates({
                 self.layoutIfNeeded()
             }) { (finished) in
-
+                
             }
-        }
+        }        
     }
     
     internal func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {

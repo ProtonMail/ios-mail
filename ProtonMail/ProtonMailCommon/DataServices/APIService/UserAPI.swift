@@ -16,7 +16,7 @@ typealias SendVerificationCodeBlock = (Bool, NSError?) -> Void
 
 
 // MARK : update right swipe action
-class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
+class CreateNewUser : ApiRequest<ApiResponse> {
     
     let userName : String!
     let recaptchaToken : String!
@@ -114,7 +114,7 @@ final class GetUserInfoResponse : ApiResponse {
 }
 
 
-class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
+class GetHumanCheckToken : ApiRequest<GetHumanCheckResponse> {
     
     override init() {
     }
@@ -146,7 +146,7 @@ class GetHumanCheckResponse : ApiResponse {
     }
 }
 
-class HumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
+class HumanCheckRequest : ApiRequest<ApiResponse> {
     var token : String
     var type : String
     
@@ -173,7 +173,7 @@ class HumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
+class CheckUserExist : ApiRequest<CheckUserExistResponse> {
     
     let userName : String!
     
@@ -213,7 +213,7 @@ class CheckUserExistResponse : ApiResponse {
 }
 
 
-class DirectRequest<T : ApiResponse> : ApiRequest<T> {
+class DirectRequest : ApiRequest<DirectResponse> {
     
     override func toDictionary() -> [String : Any]? {
         return nil
@@ -268,7 +268,7 @@ enum VerifyCodeType : Int {
     }
 }
 
-class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
+class VerificationCodeRequest : ApiRequest<ApiResponse> {
     
     let userName : String!
     let destination : String!
@@ -306,61 +306,5 @@ class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func apiVersion() -> Int {
         return UsersAPI.v_send_verification_code
-    }
-}
-
-
-class GetUserPublicKeysRequest<T : ApiResponse> : ApiRequest<T> {
-    var emails : String
-    var requestPath : String =  UsersAPI.path + "/pubkeys"
-    
-    init(emails : String) {
-        self.emails = emails
-        if let base64Emails = emails.base64Encoded() {
-            let escapedValue : String? = base64Emails.addingPercentEncoding(withAllowedCharacters: CharacterSet(charactersIn: "/+=\n").inverted)
-            self.requestPath = UsersAPI.path.stringByAppendingPathComponent("pubkeys").stringByAppendingPathComponent(escapedValue ?? base64Emails)
-            PMLog.D(self.requestPath)
-        }
-    }
-    
-    override func method() -> APIService.HTTPMethod {
-        return .get
-    }
-    
-    override func path() -> String {
-        return requestPath
-    }
-    
-    override func apiVersion() -> Int {
-        return UsersAPI.V_GetUserPublicKeysRequest
-    }
-}
-
-class PublicKeysResponse : ApiResponse {
-
-    var publicKeys : [String : String] = [String : String]()
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        for (k,v) in response {
-            if k != "Code" {
-                publicKeys[k] = (v as? String) ?? ""
-            }
-        }
-        return true
-    }
-}
-
-class EmailsCheckResponse : PublicKeysResponse {
-    var hasOutsideEmails : Bool = false
-    
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        if super.ParseResponse(response) {
-            for (_, v) in publicKeys {
-                if v.isEmpty {
-                    hasOutsideEmails = true
-                }
-            }
-            return true
-        }
-        return false
     }
 }

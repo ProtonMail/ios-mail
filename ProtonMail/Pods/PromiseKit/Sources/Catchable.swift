@@ -45,8 +45,10 @@ public class PMKFinalizer {
     let pending = Guarantee<Void>.pending()
 
     /// `finally` is the same as `ensure`, but it is not chainable
-    public func finally(_ body: @escaping () -> Void) {
-        pending.guarantee.done(body)
+    public func finally(on: DispatchQueue? = conf.Q.return, flags: DispatchWorkItemFlags? = nil, _ body: @escaping () -> Void) {
+        pending.guarantee.done(on: on, flags: flags) {
+            body()
+        }
     }
 }
 
@@ -183,8 +185,9 @@ public extension CatchMixin {
      Consumes the Swift unused-result warning.
      - Note: You should `catch`, but in situations where you know you don’t need a `catch`, `cauterize` makes your intentions clear.
      */
-    func cauterize() {
-        self.catch {
+    @discardableResult
+    func cauterize() -> PMKFinalizer {
+        return self.catch {
             Swift.print("PromiseKit:cauterized-error:", $0)
         }
     }

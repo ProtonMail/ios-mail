@@ -1,4 +1,4 @@
-module Pods_ProtonMailTests {
+framework module Pods_ProtonMailTests {
   umbrella header "Pods-ProtonMailTests-umbrella.h"
 
   export *

@@ -10,7 +10,7 @@ import Foundation
 
 // Mark : get all settings
 final class TestOffline : ApiRequest<ApiResponse> {
-    override open func path() -> String {
+    override func path() -> String {
         return AppConstants.API_PATH + "/tests/offline"
     }
     override func apiVersion() -> Int {
@@ -20,7 +20,7 @@ final class TestOffline : ApiRequest<ApiResponse> {
 }
 
 final class TestBadRequest : ApiRequestNew<ApiResponse> {
-    override open func path() -> String {
+    override func path() -> String {
         return AppConstants.API_PATH + "/tests/offline1"
     }
     override func apiVersion() -> Int {

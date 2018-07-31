@@ -10,6 +10,7 @@ DKPhotoGallery
 
 - PNG|JPEG|GIF|PHAsset
 - AVPlayer
+- PDF
 - Image caching with SDWebImage
 - Original image download
 - Extract QR Code(Text、URL)
@@ -67,6 +68,9 @@ open class DKPhotoGalleryItem: NSObject {
     open var imageURL: URL?
     
     open var videoURL: URL?
+
+    /// iOS 11 or higher required.
+    @objc open var pdfURL: URL?
     
     /**
      DKPhotoGallery will automatically decide whether to create ImagePreview or PlayerPreview via the mediaType of the asset.

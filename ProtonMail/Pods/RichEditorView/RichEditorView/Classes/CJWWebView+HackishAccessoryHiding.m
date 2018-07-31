@@ -8,7 +8,7 @@
 #import <objc/runtime.h>
 #import "CJWWebView+HackishAccessoryHiding.h"
 
-@implementation UIWebView (HackishAccessoryHiding)
+@implementation UIWebView (CJWHackishAccessoryHiding)
 
 static const char * const hackishFixClassName = "UIWebBrowserViewMinusAccessoryView";
 static Class hackishFixClass = Nil;

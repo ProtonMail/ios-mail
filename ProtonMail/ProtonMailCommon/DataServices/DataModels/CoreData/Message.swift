@@ -75,5 +75,7 @@ final public class Message: NSManagedObject {
     var checkingSign : Bool = false
     var checkedSign : Bool = false
     var pgpType : PGPType = .none
+    
+    var unencrypt_outside : Bool = false
 }
 

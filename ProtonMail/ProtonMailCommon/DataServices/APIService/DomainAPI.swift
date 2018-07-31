@@ -16,7 +16,7 @@ final class GetAvailableDomainsRequest : ApiRequest<AvailableDomainsResponse> {
         return false
     }
     
-    override open func path() -> String {
+    override func path() -> String {
         return DomainsAPI.path + "/available"
     }
     

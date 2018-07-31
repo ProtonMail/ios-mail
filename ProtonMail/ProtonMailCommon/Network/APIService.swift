@@ -54,6 +54,7 @@ class APIService {
         //sessionManager.requestSerializer.timeoutInterval = 20.0;
         sessionManager.securityPolicy.validatesDomainName = false
         sessionManager.securityPolicy.allowInvalidCertificates = false
+        sessionManager.responseSerializer.acceptableContentTypes?.insert("text/html")
         
         #if DEBUG
             sessionManager.securityPolicy.allowInvalidCertificates = true
@@ -311,6 +312,7 @@ class APIService {
                           parameters: Any?,
                           keyPackets : Data!,
                           dataPacket : Data!,
+                          signature : Data?,
                           headers: [String : Any]?,
                           authenticated: Bool = true,
                           completion: @escaping CompletionBlock) {
@@ -323,7 +325,11 @@ class APIService {
                 let request = self.sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST", urlString: url, parameters: parameters as! [String:String], constructingBodyWith: { (formData) -> Void in
                     let data: AFMultipartFormData = formData
                     data.appendPart(withFileData: keyPackets, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
-                    data.appendPart(withFileData: dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" ) }, error: nil)
+                    data.appendPart(withFileData: dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" )
+                    if let sign = signature {
+                        data.appendPart(withFileData: sign, name: "Signature", fileName: "Signature.txt", mimeType: "" )
+                    }
+                }, error: nil)
                 
                 if let header = headers {
                     for (k, v) in header {
@@ -491,6 +497,9 @@ class APIService {
                 }, downloadProgress: { (progress) in
                     //TODO::add later
                 }, completionHandler: { (urlresponse, res, error) in
+                    
+                    
+                    
                     parseBlock(task, res, error)
                 })
                 task!.resume()

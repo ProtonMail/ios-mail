@@ -33,7 +33,7 @@ open class DKPhotoGalleryTransitionDismiss: NSObject, UIViewControllerAnimatedTr
             fromContentView.clipsToBounds = self.gallery.currentContentView().clipsToBounds
             
             self.gallery.currentContentView().isHidden = true
-        } else { // .video
+        } else if (self.gallery.currentContentVC().previewType == .video) {
             let playerView = self.gallery.currentContentView() as! DKPlayerView
             playerView.autoresizingMask = []
             let frame = self.gallery.currentContentView().superview!.convert(playerView.frame, to: nil)
@@ -43,6 +43,16 @@ open class DKPhotoGalleryTransitionDismiss: NSObject, UIViewControllerAnimatedTr
             fromContentView.contentMode = playerView.contentMode
             fromContentView.layer.cornerRadius = playerView.layer.cornerRadius
             fromContentView.clipsToBounds = playerView.clipsToBounds
+        } else if #available(iOS 11.0, *), self.gallery.currentContentVC().previewType == .pdf {
+            let pdfView = self.gallery.currentContentView() as! DKPDFView
+            pdfView.autoresizingMask = []
+            let frame = self.gallery.currentContentView().superview!.convert(pdfView.frame, to: nil)
+            
+            fromContentView = DKPhotoContentAnimationView(view: pdfView)
+            fromContentView.frame = frame
+            fromContentView.contentMode = pdfView.contentMode
+            fromContentView.layer.cornerRadius = pdfView.layer.cornerRadius
+            fromContentView.clipsToBounds = pdfView.clipsToBounds
         }
         
         containerView.addSubview(fromContentView)

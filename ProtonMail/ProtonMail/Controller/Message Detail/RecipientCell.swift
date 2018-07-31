@@ -74,7 +74,12 @@ class RecipientCell: UITableViewCell {
             self.email.text =  e
             
             if _showLocker {
+                self.lockButton.isHidden = false
+                self.lockImage.isHidden = false
                 self.checkLock()
+            } else {
+                self.lockButton.isHidden = true
+                self.lockImage.isHidden = true
             }
         }
     }
@@ -83,7 +88,9 @@ class RecipientCell: UITableViewCell {
         self.delegate?.recipientView(lockCheck: self.model, progress: {
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
-        }, complete: { image in
+        }, complete: { image, type in
+            self.lockButton.isHidden = false
+            self._model.setType(type: type)
             if let img = image {
                 self.lockImage.image = img
                 self.lockImage.isHidden = false
@@ -91,8 +98,9 @@ class RecipientCell: UITableViewCell {
                 self.lockImage.image = lock
                 self.lockImage.isHidden = false
             } else {
-                self.lockImage.image = UIImage(named: "zero_access_encryption")
-                self.lockImage.isHidden = false
+                self.lockImage.image =  nil
+                self.lockImage.isHidden = true
+                self.lockButton.isHidden = true
             }
             self.activityView.stopAnimating()
         })

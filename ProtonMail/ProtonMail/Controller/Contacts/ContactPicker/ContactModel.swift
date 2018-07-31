@@ -9,7 +9,7 @@
 import UIKit
 
 typealias LockCheckProgress = (() -> Void)
-typealias LockCheckComplete = ((_ lock: UIImage?) -> Void)
+typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType : Int) -> Void)
 
 @objc protocol ContactPickerModelProtocol {
     
@@ -24,6 +24,6 @@ typealias LockCheckComplete = ((_ lock: UIImage?) -> Void)
     var hasPGPPined : Bool {get}
     var hasNonePM : Bool {get}
     func notes(type: Int) -> String
+    func setType(type: Int)
     func lockCheck(progress: LockCheckProgress, complete: LockCheckComplete?)
-    
 }
