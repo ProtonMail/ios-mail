@@ -24,16 +24,17 @@ import Foundation
     }
     
     fileprivate var queueURL: URL
-    fileprivate var queueName: String
+    fileprivate let queueName: String
     
     dynamic fileprivate(set) var queue: [Any] {
         didSet {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.background).sync { () -> Void in
                 let data = NSKeyedArchiver.archivedData(withRootObject: self.queue)
-                if !((try? data.write(to: self.queueURL, options: [.atomic])) != nil) {
-                    PMLog.D("Unable to save queue: \(self.queue as NSArray)\n to \(self.queueURL.absoluteString)")
-                } else {
+                do {
+                    try data.write(to: self.queueURL, options: [.atomic])
                     self.queueURL.excludeFromBackup()
+                } catch {
+                    PMLog.D("Unable to save queue: \(self.queue as NSArray)\n to \(self.queueURL.absoluteString)")
                 }
             }
         }
@@ -51,8 +52,13 @@ import Foundation
     
     init(queueName: String) {
         self.queueName = "\(QueueConstant.queueIdentifer).\(queueName)"
-        //TODO:: need to handle the empty instead of !
+        #if APP_EXTENSION
+        // we do not want to persist queue in Extensions so far, cuz if queue contains some crashy/memory abusing operation it will continue crashing forever. We'll just put the url outside our sandbox to OS will not let us save the file
+        // TODO: persist queue in CoreData so the app will have access to all the queues, but every Extension process - only to his own
+        self.queueURL = URL(string: "/")!
+        #else
         self.queueURL = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent(self.queueName)
+        #endif
         if let data = try? Data(contentsOf: queueURL) {
             self.queue = (NSKeyedUnarchiver.unarchiveObject(with: data) ?? []) as! [Any]
         }
