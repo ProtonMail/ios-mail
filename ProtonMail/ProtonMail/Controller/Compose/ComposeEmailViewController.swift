@@ -536,6 +536,13 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
 
 // MARK : - view extensions
 extension ComposeEmailViewController : ComposeViewDelegate {
+    func composeViewWillPresentSubview() {
+        self.webView?.scrollView.isScrollEnabled = false
+    }
+    func composeViewWillDismissSubview() {
+        self.webView?.scrollView.isScrollEnabled = true
+    }
+    
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.viewModel.lockerCheck(model: model, progress: progress, complete: complete)
     }

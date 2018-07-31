@@ -463,6 +463,13 @@ extension ComposerViewController : PasswordEncryptViewControllerDelegate {
 
 // MARK : - view extensions
 extension ComposerViewController : ComposeViewDelegate {
+    func composeViewWillPresentSubview() {
+        self.webView?.scrollView.isScrollEnabled = false
+    }
+    func composeViewWillDismissSubview() {
+        self.webView?.scrollView.isScrollEnabled = true
+    }
+    
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.viewModel.lockerCheck(model: model, progress: progress, complete: complete)
     }

@@ -10,6 +10,9 @@ import UIKit
 import Masonry
 
 protocol ComposeViewDelegate: class {
+    func composeViewWillPresentSubview()
+    func composeViewWillDismissSubview()
+    
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool)
     func ComposeViewDidOffsetChanged(_ offset: CGPoint)
     func composeViewDidTapNextButton(_ composeView: ComposeView)
@@ -617,7 +620,10 @@ class ComposeView: UIViewController {
         } else {
             fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight
         }
-        contactPicker.contactCollectionView!.add(border: .bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
+        contactPicker.contactCollectionView?.add(border: .bottom,
+                                                 color: UIColor.ProtonMail.Gray_C9CED4,
+                                                 borderWidth: 1.0,
+                                                 at: newHeight)
     }
 }
 
@@ -654,10 +660,11 @@ extension ComposeView: ContactPickerDelegate {
     }
     
     func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker) { 
-
+        self.delegate?.composeViewWillPresentSubview()
     }
     
     func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker) {
+        self.delegate?.composeViewWillDismissSubview()
         self.view.sendSubview(toBack: contactPicker)
         if (contactPicker.frame.size.height > contactPicker.currentContentHeight) {
             self.updateContactPickerHeight(contactPicker, newHeight: contactPicker.currentContentHeight)

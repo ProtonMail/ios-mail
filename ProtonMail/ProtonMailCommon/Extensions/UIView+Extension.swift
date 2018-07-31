@@ -18,7 +18,7 @@ import Foundation
 
 extension UIView {
     
-    enum BorderSide {
+    enum BorderSide: String {
         case top, bottom, left, right
     }
     
@@ -39,19 +39,25 @@ extension UIView {
         })
     }
     
-    func add(border side: BorderSide, color: UIColor, borderWidth: CGFloat) {
+    func add(border side: BorderSide, color: UIColor, borderWidth: CGFloat, at level: CGFloat? = nil) {
         let border = CALayer()
+        border.name = side.rawValue
         border.backgroundColor = color.cgColor
         switch side {
         case .top:
-            border.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: borderWidth)
+            let level = level ?? 0
+            border.frame = CGRect(x: 0, y: level, width: self.frame.size.width, height: borderWidth)
         case .bottom:
-            border.frame = CGRect(x: 0, y: self.frame.size.height - borderWidth, width: self.frame.size.width, height: borderWidth)
+            let level = level ?? self.frame.size.height
+            border.frame = CGRect(x: 0, y: level - borderWidth, width: self.frame.size.width, height: borderWidth)
         case .left:
-            border.frame = CGRect(x: 0, y: 0, width: borderWidth, height: self.frame.size.height)
+            let level = level ?? 0
+            border.frame = CGRect(x: level, y: 0, width: borderWidth, height: self.frame.size.height)
         case .right:
-            border.frame = CGRect(x: self.frame.size.width - borderWidth, y: 0, width: borderWidth, height: self.frame.size.height)
+            let level = level ?? self.frame.size.width
+            border.frame = CGRect(x: level - borderWidth, y: 0, width: borderWidth, height: self.frame.size.height)
         }
+        self.layer.sublayers?.removeAll(where: { $0.name == border.name })
         self.layer.addSublayer(border)
     }
     
