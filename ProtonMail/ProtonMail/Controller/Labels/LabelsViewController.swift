@@ -61,9 +61,14 @@ class LablesViewController : UIViewController {
         super.viewDidLoad()
         contentView.layer.cornerRadius = 4;
         
+        addLabelButton.titleLabel?.numberOfLines = 0
+        addLabelButton.titleLabel?.lineBreakMode = .byWordWrapping
         addLabelButton.setTitle(LocalString._labels_add_label_action, for: .normal)
+        addFolderButton.titleLabel?.numberOfLines = 0
+        addFolderButton.titleLabel?.lineBreakMode = .byWordWrapping
         addFolderButton.setTitle(LocalString._labels_add_folder_action, for: .normal)
         archiveOptionLabel.text = LocalString._labels_apply_archive_check
+        
 
         self.setupFetchedResultsController()
         titleLabel.text = viewModel.getTitle()
@@ -75,7 +80,8 @@ class LablesViewController : UIViewController {
             archiveConstrains.constant = 0
         }
         
-        tableView.allowsSelection = true
+        self.tableView.allowsSelection = true
+        self.tableView.estimatedRowHeight = 45.0
         
         switch viewModel.getFetchType() {
         case .all:
@@ -153,10 +159,6 @@ class LablesViewController : UIViewController {
         self.fetchedLabels?.delegate = nil
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToCreateFolder {
             let popup = segue.destination as! LableEditViewController
@@ -186,7 +188,7 @@ extension LablesViewController: UITableViewDataSource {
         return 1
     }
     
-    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let labelCell = tableView.dequeueReusableCell(withIdentifier: "labelApplyCell", for: indexPath) as! LabelTableViewCell
         if let label = fetchedLabels?.object(at: indexPath) as? Label {
             let lm = viewModel.getLabelMessage(label)
@@ -207,12 +209,12 @@ extension LablesViewController: UITableViewDataSource {
         return labelCell
     }
     
-    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = fetchedLabels?.numberOfRows(in: section) ?? 0
         return count
     }
     
-    @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.zeroMargin()
     }
 }
@@ -220,19 +222,19 @@ extension LablesViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension LablesViewController: UITableViewDelegate {
-    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 45.0
     }
     
-    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // verify whether the user is checking messages or not
         if let label = fetchedLabels?.object(at: indexPath) as? Label {
             viewModel.cellClicked(label)
             switch viewModel.getFetchType()
             {
             case .all, .label:
-                tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-                break;
+                tableView.reloadRows(at: [indexPath], with: .automatic)
             case .folder:
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) { () -> Void in
                     tableView.reloadData()
