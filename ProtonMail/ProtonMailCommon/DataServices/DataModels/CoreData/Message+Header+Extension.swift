@@ -66,7 +66,6 @@ extension Message {
         }
         
         if self.senderAddress == email {
-            
             var autoreply = false
             if let body = autoReply?.body, body == "yes" {
                 autoreply = true

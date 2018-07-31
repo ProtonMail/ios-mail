@@ -371,11 +371,11 @@ extension Message {
         let keys = sharedUserDataService.addressPrivKeys
 
         do {
-            if let verify = try body.verifyMessage(verifier: verifier, binKeys: keys, passphrase: passphrase) {
+            let time : Int64 = Int64(round(self.time?.timeIntervalSince1970 ?? 0))
+            if let verify = try body.verifyMessage(verifier: verifier, binKeys: keys, passphrase: passphrase, time: time) {
                 let status = verify.verify()
                 return SignStatus(rawValue: status) ?? .notSigned
             }
-            
         } catch {
         }
         return .failed
