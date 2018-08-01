@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17F77" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -238,11 +238,6 @@
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="isRead" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="IsRead"/>
-            </userInfo>
-        </attribute>
         <attribute name="isReplied" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="IsReplied"/>
@@ -372,6 +367,11 @@
             <userInfo>
                 <entry key="JSONKeyPath" value="TotalSize"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="unRead" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Unread"/>
             </userInfo>
         </attribute>
         <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment" syncable="YES">

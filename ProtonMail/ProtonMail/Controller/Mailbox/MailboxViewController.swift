@@ -384,7 +384,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     @objc internal func unreadButtonTapped() {
-        selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
+        selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.unRead)
         cancelButtonTapped();
     }
     
@@ -404,7 +404,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Mark Read",  comment: "Action"),
                                                     style: .default, handler: { (action) -> Void in
-                self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isRead)
+                self.selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.unRead)
                 self.cancelButtonTapped();
                 self.navigationController?.popViewController(animated: true)
             }))
@@ -1016,10 +1016,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             
             do {
                 if let messages = try context.fetch(fetchRequest) as? [Message] {
-                    if key == Message.Attributes.isRead {
+                    if key == Message.Attributes.unRead {
                         if let changeto = value as? Bool {
                             for msg in messages {
-                                self.viewModel.updateBadgeNumberWhenRead(msg, changeToRead: changeto)
+                                self.viewModel.updateBadgeNumberWhenRead(msg, unRead: changeto)
                             }
                         }
                     }
@@ -1530,7 +1530,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
                 tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
                 if self.needToShowNewMessage == true {
                     if let newMsg = anObject as? Message {
-                        if let msgTime = newMsg.time, !newMsg.isRead {
+                        if let msgTime = newMsg.time, newMsg.unRead {
                             let updateTime = viewModel.lastUpdateTime()
                             if msgTime.compare(updateTime.start as Date) != ComparisonResult.orderedAscending {
                                 self.newMessageCount += 1

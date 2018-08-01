@@ -204,7 +204,7 @@ class CreateDraft : ApiRequest<MessageResponse> {
         var messsageDict : [String : Any] = [
             "Body" : message.body,
             "Subject" : message.title,
-            "IsRead" : message.isRead]
+            "Unread" : message.unRead]
         
         let fromaddr = message.fromAddress ?? message.defaultAddress
         let name = fromaddr?.display_name ?? "unknow"

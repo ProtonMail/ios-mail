@@ -12,11 +12,12 @@
 
 import UIKit
 
+//TODO:: no referance try to delete it later
+
 @objc protocol MailboxTableViewCellDelegate {
     func mailboxTableViewCell(_ cell: MailboxTableViewCell, didChangeStarred: Bool)
     func mailBoxTableViewCell(_ cell: MailboxTableViewCell, didChangeChecked: Bool)
 }
-
 
 class MailboxTableViewCell: UITableViewCell {
     
@@ -185,10 +186,10 @@ class MailboxTableViewCell: UITableViewCell {
             }
         }
         
-        if (message.isRead) {
-            changeStyleToReadDesign()
-        } else {
+        if (message.unRead) {
             changeStyleToUnreadDesign()
+        } else {
+            changeStyleToReadDesign()
         }
         
         if  message.isRepliedAll {

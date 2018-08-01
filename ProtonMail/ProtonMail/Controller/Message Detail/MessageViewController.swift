@@ -76,7 +76,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         self.emailView!.topMessageView.delegate = self
         self.emailView?.delegate = self
         self.emailView?.emailHeader.updateAttConstraints(false)
-        self.updateBadgeNumberWhenRead(message, changeToRead: true)
+        self.updateBadgeNumberWhenRead(message, unRead: false)
         loadMessageDetailes()
         
     }
@@ -223,7 +223,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     @objc internal func unreadButtonTapped() {
         if !actionTapped {
             actionTapped = true
-            messagesSetRead(isRead: false)
+            messagesSetRead(unRead: true)
             self.popViewController()
         }
     }
@@ -365,10 +365,10 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         }
     }
     
-    fileprivate func messagesSetRead(isRead: Bool) {
+    fileprivate func messagesSetRead(unRead: Bool) {
         if let context = message.managedObjectContext {
-            self.updateBadgeNumberWhenRead(message, changeToRead: isRead)
-            message.isRead = isRead
+            self.updateBadgeNumberWhenRead(message, unRead: unRead)
+            message.unRead = unRead
             message.needsUpdate = true
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D(" error: \(error)")
@@ -376,14 +376,14 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         }
     }
     
-    func updateBadgeNumberWhenRead(_ message : Message, changeToRead : Bool) {
+    func updateBadgeNumberWhenRead(_ message : Message, unRead : Bool) {
         let location = message.location
         
-        if message.isRead == changeToRead {
+        if message.unRead == unRead {
             return
         }
         var count = lastUpdatedStore.UnreadCountForKey(location)
-        count = count + (changeToRead ? -1 : 1)
+        count = count + (unRead ? 1 : -1)
         if count < 0 {
             count = 0
         }
@@ -391,7 +391,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         
         if message.isStarred {
             var staredCount = lastUpdatedStore.UnreadCountForKey(.starred)
-            staredCount = staredCount + (changeToRead ? -1 : 1)
+            staredCount = staredCount + (unRead ? 1 : -1)
             if staredCount < 0 {
                 staredCount = 0
             }
@@ -442,14 +442,12 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        
         NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.statusBarHit(_:)), name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
         NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.reachabilityChanged(_:)), name: NSNotification.Name.reachabilityChanged, object: nil)
         
         if message != nil {
             if let context = message.managedObjectContext {
-                message.isRead = true
+                message.unRead = false
                 message.needsUpdate = true
                 if let error = context.saveUpstreamIfNeeded() {
                     PMLog.D(" error: \(error)")

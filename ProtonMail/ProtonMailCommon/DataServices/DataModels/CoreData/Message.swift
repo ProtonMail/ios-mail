@@ -30,7 +30,7 @@ final public class Message: NSManagedObject {
     @NSManaged public var isDetailDownloaded: Bool
     @NSManaged public var isEncrypted: NSNumber
     @NSManaged public var isForwarded: Bool
-    @NSManaged public var isRead: Bool
+    @NSManaged public var unRead: Bool
     @NSManaged public var isReplied: Bool
     @NSManaged public var isRepliedAll: Bool
     @NSManaged public var isStarred: Bool    //Deprecated, use LabelIDs instead

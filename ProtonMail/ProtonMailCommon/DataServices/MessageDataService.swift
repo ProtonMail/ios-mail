@@ -665,13 +665,13 @@ class MessageDataService {
                         if IncrementalUpdateType.insert == msg.Action {
                             if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
                                 if cachedMessage.location != MessageLocation.draft && cachedMessage.location != MessageLocation.outbox {
-                                    self.tempUnreadAddjustCount = cachedMessage.isRead ? -1 : 0
+                                    self.tempUnreadAddjustCount = cachedMessage.unRead ? 0 : -1
                                     continue
                                 }
                             }
                             if let notify_msg_id = notificationMessageID {
                                 if notify_msg_id == msg.ID {
-                                    let _ = msg.message?.removeValue(forKey: "IsRead")
+                                    let _ = msg.message?.removeValue(forKey: "Unread")
                                 }
                             }
                             msg.message?["messageStatus"] = 1
@@ -858,7 +858,7 @@ class MessageDataService {
                                 message.isDetailDownloaded = true
                                 message.messageStatus = 1
                                 message.needsUpdate = true
-                                message.isRead = true
+                                message.unRead = false
                                 let _ = message.managedObjectContext?.saveUpstreamIfNeeded()
                                 error = context.saveUpstreamIfNeeded()
                                 DispatchQueue.main.async {
@@ -907,7 +907,7 @@ class MessageDataService {
                                             message_n.messageStatus = 1
                                             message_n.isDetailDownloaded = true
                                             message_n.needsUpdate = true
-                                            message_n.isRead = true
+                                            message_n.unRead = false
                                             if let ctx = message_n.managedObjectContext {
                                                 if let error = ctx.saveUpstreamIfNeeded() {
                                                     PMLog.D("\(error)")
@@ -970,7 +970,7 @@ class MessageDataService {
                                 do {
                                     var needOffset = 0
                                     if let msg = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                                        needOffset = msg.isRead ? 0 : -1
+                                        needOffset = msg.unRead ? -1 : 0
                                     }
                                     if let message_out = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
                                         message_out.messageStatus = 1
@@ -978,8 +978,8 @@ class MessageDataService {
                                         message_out.needsUpdate = false
                                         
                                         var count = lastUpdatedStore.UnreadCountForKey(.inbox)
-                                        if message_out.isRead == false {
-                                            message_out.isRead = true
+                                        if message_out.unRead == true {
+                                            message_out.unRead = false
                                             self.queue(message_out, action: .read)
                                             
                                             count = count + needOffset
@@ -1722,7 +1722,7 @@ class MessageDataService {
                         //TODO::fix later 1.7
                         message.mimeType = "text/html"
                         message.needsUpdate = false
-                        message.isRead = true
+                        message.unRead = false
                         lastUpdatedStore.ReadMailboxMessage(message.location)
                         message.location = MessageLocation.outbox
                         message.isDetailDownloaded = false
@@ -1844,7 +1844,7 @@ class MessageDataService {
                             message.mimeType = "text/html"
                             
                             message.needsUpdate = false
-                            message.isRead = true
+                            message.unRead = false
                             lastUpdatedStore.ReadMailboxMessage(message.location)
                             message.location = MessageLocation.outbox
                             message.isDetailDownloaded = false
@@ -2053,6 +2053,8 @@ class MessageDataService {
                     emptyMessageWithLocation("trash", writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .emptySpam:
                     emptyMessageWithLocation("spam", writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .read, .unread: //1.9.1
+                    sharedAPIService.PUT(MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 default:
                     sharedAPIService.PUT(MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 }
@@ -2106,9 +2108,9 @@ class MessageDataService {
             }
         })
         
-        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isRead, handler: { message in
+        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.unRead, handler: { message in
             if message.needsUpdate {
-                let action: MessageAction = message.isRead ? .read : .unread
+                let action: MessageAction = message.unRead ? .unread : .read
                 self.queue(message, action: action)
             }
         })

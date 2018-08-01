@@ -370,7 +370,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                                                              mailbox_pwd: sharedUserDataService.mailboxPassword!, //better to check nil later
                                                              inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
             self.message?.password = pwd
-            self.message?.isRead = true
+            self.message?.unRead = false
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
             
@@ -381,7 +381,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             self.message?.title = self.subject
             self.message?.time = Date()
             self.message?.password = pwd
-            self.message?.isRead = true
+            self.message?.unRead = false
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
             self.message?.setLabelLocation(.draft)
@@ -429,7 +429,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
     
     override func markAsRead() {
         if message != nil {
-            message?.isRead = true;
+            message?.unRead = false
             if let context = message!.managedObjectContext {
                 context.perform {
                     if let error = context.saveUpstreamIfNeeded() {
