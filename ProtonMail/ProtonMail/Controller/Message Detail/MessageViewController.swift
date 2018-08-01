@@ -83,40 +83,49 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     internal func loadMessageDetailes () {
         showEmailLoading()
-        if !message.isDetailDownloaded && sharedInternetReachability.currentReachabilityStatus() == NotReachable {
-            self.emailView?.showNoInternetErrorMessage()
-            self.updateEmailBodyWithError(LocalString._general_no_connectivity_detected)
-        } else {
-            message.fetchDetailIfNeeded() { _, _, msg, error in
-                if let error = error {
-                    let code = error.code
-                    if code == NSURLErrorTimedOut {
-                        self.emailView?.showTimeOutErrorMessage()
-                        self.updateEmailBodyWithError(LocalString._general_request_timed_out)
-                    } else if code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
-                        self.emailView?.showNoInternetErrorMessage()
-                        self.updateEmailBodyWithError(LocalString._general_no_connectivity_detected)
-                    } else if code == APIErrorCode.API_offline {
-                        self.emailView?.showErrorMessage(error.localizedDescription)
-                        self.updateEmailBodyWithError(error.localizedDescription)
-                    } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
-                        self.emailView?.showErrorMessage(LocalString._general_api_server_not_reachable)
-                        self.updateEmailBodyWithError(LocalString._general_api_server_not_reachable)
-                    } else if code < 0{
-                        self.emailView?.showErrorMessage(LocalString._cant_download_message_body_please_try_again)
-                        self.updateEmailBodyWithError(LocalString._cant_download_message_body_please_try_again)
-                    } else {
-                        self.emailView?.showErrorMessage(LocalString._cant_download_message_body_please_try_again)
-                        self.updateEmailBodyWithError(LocalString._cant_download_message_body_please_try_again)
-                    }
-                    PMLog.D("error: \(error)")
-                }
-                else
-                {
-                    self.updateContent()
-                }
+        message.fetchDetailIfNeeded() { _, _, msg, error in
+            if let error = error {
+                self.processError(error: error)
+            } else {
+                self.updateContent()
             }
         }
+    }
+    
+    internal func processError(error: NSError, errorInBody: Bool = true) {
+        let code = error.code
+        if code == NSURLErrorTimedOut {
+            self.emailView?.showTimeOutErrorMessage()
+            if errorInBody {
+                self.updateEmailBodyWithError(LocalString._general_request_timed_out)
+            }
+        } else if code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
+            self.emailView?.showNoInternetErrorMessage()
+            if errorInBody {
+                self.updateEmailBodyWithError(LocalString._general_no_connectivity_detected)
+            }
+        } else if code == APIErrorCode.API_offline {
+            self.emailView?.showErrorMessage(error.localizedDescription)
+            if errorInBody {
+                self.updateEmailBodyWithError(error.localizedDescription)
+            }
+        } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
+            self.emailView?.showErrorMessage(LocalString._general_api_server_not_reachable)
+            if errorInBody {
+                self.updateEmailBodyWithError(LocalString._general_api_server_not_reachable)
+            }
+        } else if code < 0{
+            self.emailView?.showErrorMessage(LocalString._cant_download_message_body_please_try_again)
+            if errorInBody {
+                self.updateEmailBodyWithError(LocalString._cant_download_message_body_please_try_again)
+            }
+        } else {
+            self.emailView?.showErrorMessage(LocalString._cant_download_message_body_please_try_again)
+            if errorInBody {
+                self.updateEmailBodyWithError(LocalString._cant_download_message_body_please_try_again)
+            }
+        }
+        PMLog.D("error: \(error)")
     }
     
     internal func recheckMessageDetails () {
@@ -672,6 +681,10 @@ extension MessageViewController :  EmailViewActionsProtocol {
 // MARK
 fileprivate var tempFileUri : URL?
 extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteractionControllerDelegate {
+    func downloadFailed(error: NSError) {
+        self.processError(error: error, errorInBody: false)
+    }
+    
     func recipientView(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         if !self.message.isDetailDownloaded {
             progress()

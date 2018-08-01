@@ -19,6 +19,8 @@ protocol EmailHeaderActionsProtocol: RecipientViewDelegate, ShowImageViewProtoco
     func star(changed isStarred : Bool)
     
     func showImage()
+    
+    func downloadFailed(error: NSError)
 }
 
 class EmailHeaderView: UIView {
@@ -1388,6 +1390,7 @@ extension EmailHeaderView: UITableViewDelegate {
     // MARK: Private methods
     
     fileprivate func downloadAttachment(_ attachment: Attachment, forIndexPath indexPath: IndexPath) {
+        //TODO:: network call should move out from this view to a vm
         sharedMessageDataService.fetchAttachmentForAttachment(attachment, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in
             if let cell = self.attachmentView!.cellForRow(at: indexPath) as? AttachmentTableViewCell {
                 cell.progressView.alpha = 1.0
@@ -1408,10 +1411,11 @@ extension EmailHeaderView: UITableViewDelegate {
                 })
             }
             }, completion: { (_, url, error) -> Void in
-                if let e = error {
-                    e.alertErrorToast()
-                } else {
-                    if let cell = self.attachmentView!.cellForRow(at: indexPath) as? AttachmentTableViewCell {
+                if let cell = self.attachmentView!.cellForRow(at: indexPath) as? AttachmentTableViewCell {
+                    if let e = error {
+                        cell.progressView.isHidden = true
+                        self.downloadFailed(e)
+                    } else {
                         UIView.animate(withDuration: 0.25, animations: { () -> Void in
                             cell.progressView.isHidden = true
                             if let localURL = attachment.localURL {
@@ -1430,6 +1434,10 @@ extension EmailHeaderView: UITableViewDelegate {
                             }
                         })
                     }
+                } else {
+                    if let e = error {
+                        e.alertErrorToast()
+                    }
                 }
         })
     }
@@ -1438,4 +1446,9 @@ extension EmailHeaderView: UITableViewDelegate {
     fileprivate func openLocalURL(_ localURL: URL, keyPackage:Data, fileName:String, type: String, forCell cell: UITableViewCell) {
         self.delegate?.quickLook(attachment: localURL, keyPackage: keyPackage, fileName: fileName, type: type)
     }
+    
+    fileprivate func downloadFailed(_ error : NSError) {
+        self.delegate?.downloadFailed(error: error)
+    }
+    
 }
