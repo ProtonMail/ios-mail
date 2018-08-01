@@ -34,7 +34,7 @@ struct Constants {
     static let rediectURL = "https://protonmail.ch"
 }
 
-final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
+final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     
     var username : String!
     
@@ -278,12 +278,12 @@ final public class AuthInfoResponse : ApiResponse {
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         
-        self.Modulus = response["Modulus"] as? String
+        self.Modulus         = response["Modulus"] as? String
         self.ServerEphemeral = response["ServerEphemeral"] as? String
-        self.Version = response["Version"] as? Int ?? 0
-        self.Salt = response["Salt"] as? String
-        self.SRPSession = response["SRPSession"] as? String
-        self.TwoFactor = response["TwoFactor"] as? Int ?? 0
+        self.Version         = response["Version"] as? Int ?? 0
+        self.Salt            = response["Salt"] as? String
+        self.SRPSession      = response["SRPSession"] as? String
+        self.TwoFactor       = response["TwoFactor"] as? Int ?? 0
         
         return true
     }

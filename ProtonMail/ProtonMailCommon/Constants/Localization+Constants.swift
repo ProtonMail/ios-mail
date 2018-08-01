@@ -1076,6 +1076,15 @@ class LocalizedString {
 
     /// "Print"
     lazy var _print = NSLocalizedString("Print", comment: "Action")
+    
+    /// "Report Phishing"
+    lazy var _report_phishing = NSLocalizedString("Report Phishing", comment: "message details-> more action-> report phishing")
+    
+    /// "Confirm phishing report"
+    lazy var _confirm_phishing_report = NSLocalizedString("Confirm phishing report", comment: "alert title")
+    
+    /// "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full."
+    lazy var _reporting_a_message_as_a_phishing_ = NSLocalizedString("Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.", comment: "alert message")
 
     /// "Unable to decrypt message."
     lazy var _unable_to_decrypt_message = NSLocalizedString("Unable to decrypt message.", comment: "Error")

@@ -321,7 +321,6 @@
 		3E30E2232D703928A764AA1BBC80C690 /* MailboxViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0D4124C61390A1D788A83DD1A9FFC /* MailboxViewModelImpl.swift */; };
 		3EC67E702729C7FDFE0BA9E909A6E4D6 /* LabelboxViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07485BF822F9851BDFC28AE2401632AB /* LabelboxViewModelImpl.swift */; };
 		3ED21A9491F877F002BB7E252E046899 /* APIService+ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6B492F6F532F6FE805CC7F50C82509 /* APIService+ErrorExtension.swift */; };
-		3EE435874932F66F42184FB54C96C674 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A3F7FEB833E1B45FB6F23517638989 /* Logger.swift */; };
 		3F259B0BFD466EEC1BB1DDE67B7A3E78 /* OpenPGP+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C5DCC81C6E61BD8EE0FA7C2E54CD7 /* OpenPGP+String+Extension.swift */; };
 		3F4E2BB0216F0E3F69D3034CD4CFC9B3 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A17542C9E75573C9AE7D50D090DC4BC /* AuthCredential.swift */; };
 		3FC009592FCFF1270C0CD3CC67656F9B /* MonitorSavesDataService+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DE22D2A52126D2B633EBEDD802C63B /* MonitorSavesDataService+Extension.swift */; };
@@ -919,7 +918,6 @@
 		B227B580CB2F218C2B5532C3C2DABAEC /* TextInsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C3B687B70DE77A12589A2A697360F0 /* TextInsetTextField.swift */; };
 		B22959D2565B4C5A4B64B405C3C8586A /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE81D376E0F8F347F32607EFABE1337 /* LoadingView.swift */; };
 		B2532B4715BB66A323F64B4E01ACAC6A /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACBA5552678233742A247A4F9B9B094 /* SettingTableViewController.swift */; };
-		B259D74710CBF5AFFC00B77B7A672881 /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7915305A9078452FD4617B7895B4E803 /* APIService+AuthenticationExtension.swift */; };
 		B2705D210E0B3F14A1D214CA152121E4 /* AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83367E04E7FA6F07D0BA1041B066B8F /* AttachmentExtension.swift */; };
 		B2848E4B35EC6E482D5A2F2AF2D5B827 /* SettingsWeekdaysTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44E8C94EC355ADF770FAB0226BEC145 /* SettingsWeekdaysTableViewController.swift */; };
 		B2FC14632CE10220D59C22E10A137B6A /* ContactUpgradeCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304EBAE13534EEE358F03C9DF7F79797 /* ContactUpgradeCellDelegate.swift */; };
@@ -4196,14 +4194,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B259D74710CBF5AFFC00B77B7A672881 /* APIService+AuthenticationExtension.swift in Sources */,
 				948AE53265DB086B11CA8B3E15FE989E /* AppVersionTests.swift in Sources */,
 				6CE7BAC5FEA98024576DD1B93B33E1E9 /* AuthAPITests.swift in Sources */,
 				D9E1F5D8A1D9BBF47D56FAA028FF64A4 /* CalendarIntervalRuleTests.swift in Sources */,
 				9C3B841CCD848FA7D6DE94ED5D2BF9F8 /* ComposeViewModelTests.swift in Sources */,
 				6CB05D83812878B94588321FDD387885 /* GoOpenPGPTests.swift in Sources */,
 				CFE00E85FB61BB461C5C80563127445A /* LastUpdateCacheTests.swift in Sources */,
-				3EE435874932F66F42184FB54C96C674 /* Logger.swift in Sources */,
 				CEA3E8BC7CCB2588E48BBD76FF2513EA /* OpenPGPDefines.swift in Sources */,
 				CCA051B6A323A02C4591B0F4D5D28A29 /* OpenPGPTests.swift in Sources */,
 				F9EA06F36FF372CC4A6D7461F3E3D361 /* ProtonMail-Bridging-Header.cpp in Sources */,
@@ -5990,7 +5986,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 830618ABE4869953324AE823B8628469 /* Pods-ProtonMail.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
 				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -6106,7 +6102,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B07957F0BFEE3F393983F4EFEAFA6094 /* Pods-ProtonMail.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
 				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -6263,7 +6259,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E6286CDFA472ABD288218EA86185FB40 /* Pods-ProtonMail.distribution.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
 				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";

@@ -22,6 +22,15 @@ public class BugDataService {
         
     }
     
+    func reportPhishing(messageID : String, messageBody : String) {
+        let api = ReportPhishing(msgID: messageID,
+                                 mimeType: "text/html",
+                                 body: messageBody)
+        api.call { (task, res, hasError) in
+            
+        }
+    }
+    
     public func reportBug(_ bug: String, completion: ((NSError?) -> Void)?) {
         let systemVersion = UIDevice.current.systemVersion;
         let model = UIDevice.current.model

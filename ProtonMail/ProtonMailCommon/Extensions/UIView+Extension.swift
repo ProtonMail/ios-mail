@@ -57,7 +57,13 @@ extension UIView {
             let level = level ?? self.frame.size.width
             border.frame = CGRect(x: level - borderWidth, y: 0, width: borderWidth, height: self.frame.size.height)
         }
-        self.layer.sublayers?.removeAll(where: { $0.name == border.name })
+        ////TODO:: change when switch to swift 4.2
+        //self.layer.sublayers?.removeAll(where: { $0.name == border.name })
+        
+        //swift 4
+        while let index = self.layer.sublayers?.index(where: { $0.name == border.name }) {
+            self.layer.sublayers?.remove(at: index)
+        }
         self.layer.addSublayer(border)
     }
     

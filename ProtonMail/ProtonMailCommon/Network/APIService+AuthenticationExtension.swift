@@ -26,7 +26,7 @@ extension APIService {
         var forceRetryVersion = 2
         
         func tryAuth() {
-            AuthInfoRequest<AuthInfoResponse>(username: username).call() { task, res, hasError in
+            AuthInfoRequest(username: username).call() { task, res, hasError in
                 if hasError {
                     guard let error = res?.error else {
                         return completion(task, nil, .resCheck, NSError.authInvalidGrant())
@@ -36,8 +36,7 @@ extension APIService {
                     } else {
                         return completion(task, nil, .resCheck, error)
                     }
-                }
-                else if res?.code == 1000 {// caculate pwd
+                } else if res?.code == 1000 {// caculate pwd
                     if let code = res?.TwoFactor {
                         if  code == 1 && twoFACode == nil {
                             return completion(task, nil, .ask2FA, nil)

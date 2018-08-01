@@ -55,23 +55,6 @@
                BlueprintName = "ProtonMailTests"
                ReferencedContainer = "container:ProtonMail.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "AuthAPITests">
-               </Test>
-               <Test
-                  Identifier = "ComposeViewModelTests">
-               </Test>
-               <Test
-                  Identifier = "LastUpdateCacheTests">
-               </Test>
-               <Test
-                  Identifier = "OpenPGPTests">
-               </Test>
-               <Test
-                  Identifier = "SrpTests">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

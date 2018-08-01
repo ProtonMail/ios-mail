@@ -46,7 +46,7 @@ extension Message {
         }
         
         if isEncrypted == 9 {
-            return .pgp_signed
+            return .zero_access_store
         }
         
         return .none
@@ -66,7 +66,6 @@ extension Message {
         }
         
         if self.senderAddress == email {
-            
             var autoreply = false
             if let body = autoReply?.body, body == "yes" {
                 autoreply = true

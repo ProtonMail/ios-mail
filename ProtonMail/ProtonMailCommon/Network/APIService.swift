@@ -51,10 +51,13 @@ class APIService {
         
         sessionManager = AFHTTPSessionManager(baseURL: URL(string: AppConstants.API_HOST_URL)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
+        sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
+
         //sessionManager.requestSerializer.timeoutInterval = 20.0;
         sessionManager.securityPolicy.validatesDomainName = false
         sessionManager.securityPolicy.allowInvalidCertificates = false
         sessionManager.responseSerializer.acceptableContentTypes?.insert("text/html")
+        
         
         #if DEBUG
             sessionManager.securityPolicy.allowInvalidCertificates = true
@@ -257,7 +260,6 @@ class APIService {
                 let request = self.sessionManager.requestSerializer.request(withMethod: HTTPMethod.get.toString(),
                                                                             urlString: url,
                                                                             parameters: nil, error: nil)
-                
                 if let header = headers {
                     for (k, v) in header {
                         request.setValue("\(v)", forHTTPHeaderField: k)

@@ -53,6 +53,10 @@ class ComposePasswordViewController: UIViewController {
         hintField.placeholder            = LocalString._define_hint_optional
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
         removeButton.setTitle(LocalString._general_remove_button, for: .normal)
+        
+        applyButton.titleLabel?.numberOfLines = 1;
+        applyButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        applyButton.titleLabel?.minimumScaleFactor = 10.0 / 16.0
         applyButton.setTitle(LocalString._general_apply_button, for: .normal)
     }
     
