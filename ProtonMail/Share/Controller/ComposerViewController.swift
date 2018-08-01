@@ -490,7 +490,7 @@ extension ComposerViewController : ComposeViewDelegate {
                         self.present(alertController, animated: true, completion: nil)
                     } else {
                         if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
-                            //self.updateSignature("\(signature)")
+                            self.editorView.update(signature: "\(signature)")
                         }
                         
                         ActivityIndicatorHelper.showActivityIndicator(at: self.view)
@@ -725,3 +725,9 @@ extension ComposerViewController : UIPickerViewDelegate {
     
 }
 
+extension RichEditorView {
+    func update(signature: String) {
+        let injection = String.init(format: "'%@'", signature.stringByPurifyHTML())
+        self.webView.stringByEvaluatingJavaScript(from: "document.getElementById('protonmail_signature_block').innerHTML = \(injection)")
+    }
+}
