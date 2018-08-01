@@ -522,7 +522,7 @@ class UserDataService {
                 
                 repeat {
                     // get auto info
-                    let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
+                    let info = try AuthInfoRequest(username: _username).syncCall()
                     guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
                         throw UpdatePasswordError.invalideAuthInfo.error
                     }
@@ -652,7 +652,7 @@ class UserDataService {
                 
                 repeat {
                     // get auto info
-                    let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
+                    let info = try AuthInfoRequest(username: _username).syncCall()
                     guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
                         throw UpdatePasswordError.invalideAuthInfo.error
                     }
@@ -761,7 +761,7 @@ class UserDataService {
                 
                 repeat {
                     // get auto info
-                    let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
+                    let info = try AuthInfoRequest(username: _username).syncCall()
                     guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
                         throw UpdateNotificationEmailError.invalideAuthInfo.error
                     }
