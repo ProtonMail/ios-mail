@@ -347,7 +347,7 @@ class EmailHeaderView: UIView {
         let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
         let at = LocalString._general_at_label
         self.emailShortTime.text = "\(at) \(self.date.string(format:timeformat))".lowercased()
-        let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' \(timeformat)")
+        let tm = self.date.formattedWith("'\(LocalString._composer_on)' EE, MMM d, yyyy '\(at)' \(timeformat)")
         self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
 
 //        let lockType : LockTypes = encType.lockType
@@ -728,7 +728,7 @@ class EmailHeaderView: UIView {
         self.emailDetailDateLabel.numberOfLines = 1
         if let messageTime = self.date {
             let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
-            let tm = messageTime.formattedWith("'On' EE, MMM d, yyyy 'at' \(timeformat)")
+            let tm = messageTime.formattedWith("'\(LocalString._composer_on)' EE, MMM d, yyyy '\(LocalString._general_at_label)' \(timeformat)")
             self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
         } else {
             self.emailDetailDateLabel.text = String(format: LocalString._date, "")
