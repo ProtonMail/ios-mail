@@ -485,6 +485,18 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         )
     }
     
+    override func getHTML() -> String! {
+        // this method is copy of super's with one difference: it escapes backslash before calling private removeQuotesFromHTML: and tidyHTML:, since they are messing up backslash with some other special symbols and replace it with other unexpected things. This problem is implementation detail of ZSSRichTextEditor.
+        guard var html = self.webView.stringByEvaluatingJavaScript(from: "zss_editor.getHTML();") else {
+            return ""
+        }
+        html = html.replacingOccurrences(of: "\\", with: "&#92;", options: .caseInsensitive, range: nil)
+        html = self.perform(Selector(("removeQuotesFromHTML:")), with: html).takeUnretainedValue() as! String
+        html = self.perform(Selector(("tidyHTML:")), with: html).takeUnretainedValue() as! String
+        
+        return html
+    }
+    
     fileprivate func checkEmbedImageEdit(_ orignal: String, edited: String) {
         PMLog.D(edited)
         if let atts = viewModel.getAttachments() {
