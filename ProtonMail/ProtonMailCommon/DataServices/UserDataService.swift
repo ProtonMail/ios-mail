@@ -358,8 +358,8 @@ class UserDataService {
             let mailSettingsRes = try await(mailSettingsApi.run())
             
             userRes.userInfo?.set(addresses: addrRes.addresses)
-            userRes.userInfo?.set(userSettings: userSettingsRes.userSettings)
-            userRes.userInfo?.set(mailSettings: mailSettingsRes.mailSettings)
+            userRes.userInfo?.parse(userSettings: userSettingsRes.userSettings)
+            userRes.userInfo?.parse(mailSettings: mailSettingsRes.mailSettings)
             
             self.userInfo = userRes.userInfo
             return self.userInfo
@@ -367,7 +367,10 @@ class UserDataService {
     }
     
     func updateUserInfoFromEventLog (_ userInfo : UserInfo){
-        self.userInfo = userInfo
+        if let user = self.userInfo {
+            user.set(userinfo: userInfo)
+            self.userInfo = user
+        }
     }
     
     func isMailboxPasswordValid(_ password: String, privateKey : String) -> Bool {

@@ -115,7 +115,15 @@ final class UserInfo : NSObject {
         self.userAddresses = addresses
     }
     
-    func set(userSettings: [String : Any]?) {
+    func set(userinfo : UserInfo) {
+        
+    }
+    //enable later
+//    func parse(userinfo : [String : Any]?) {
+//
+//    }
+    
+    func parse(userSettings: [String : Any]?) {
         if let settings = userSettings {
             if let email = settings["Email"] as? [String : Any] {
                 self.notificationEmail = email["Value"] as? String ?? ""
@@ -124,7 +132,7 @@ final class UserInfo : NSObject {
         }
     }
     
-    func set(mailSettings: [String : Any]?) {
+    func parse(mailSettings: [String : Any]?) {
         if let settings = mailSettings {
             self.displayName = settings["DisplayName"] as? String ?? "'"
             self.defaultSignature = settings["Signature"] as? String ?? ""

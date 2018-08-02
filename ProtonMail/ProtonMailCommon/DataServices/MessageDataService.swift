@@ -29,9 +29,9 @@ let sharedMessageDataService = MessageDataService()
 class MessageDataService {
     
     //TODO:: those 3 var need to double check to clean up
-    fileprivate let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
-    fileprivate let lastUpdatedMaximumTimeInterval: TimeInterval = 24 /*hours*/ * 3600
-    fileprivate let maximumCachedMessageCount = 5000
+    private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
+    private let lastUpdatedMaximumTimeInterval: TimeInterval = 24 /*hours*/ * 3600
+    private let maximumCachedMessageCount = 5000
     
     typealias CompletionBlock = APIService.CompletionBlock
     typealias CompletionFetchDetail = APIService.CompletionFetchDetail
@@ -39,12 +39,6 @@ class MessageDataService {
     
     fileprivate var readQueue: [ReadBlock] = []
     var pushNotificationMessageID : String? = nil
-    
-//    struct Key {
-//        static let read = "read"
-//        static let total = "total"
-//        static let unread = "unread"
-//    }
     
     fileprivate var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
@@ -534,6 +528,7 @@ class MessageDataService {
     
     func processIncrementalUpdateUserInfo(_ userinfo: [String : Any]?) {
         if let userData = userinfo {
+            
             let userInfo = UserInfo( response: userData )
             sharedUserDataService.updateUserInfoFromEventLog(userInfo);
         }
@@ -2096,7 +2091,7 @@ class MessageDataService {
         dequeueIfNeeded()
     }
     
-    // MARK: Setup
+    // MARK: message monitor
     fileprivate func setupMessageMonitoring() {
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.locationNumber, handler: { message in
             if message.needsUpdate {
@@ -2122,40 +2117,7 @@ class MessageDataService {
             }
         })
     }
-}
-
-// MARK: - NSFileManager extension
-extension FileManager {
-    var attachmentDirectory: URL {
-        let attachmentDirectory = applicationSupportDirectoryURL.appendingPathComponent("attachments", isDirectory: true)
-        //TODO:: need to handle the empty instead of !
-        if !self.fileExists(atPath: attachmentDirectory.absoluteString) {
-            do {
-                //TODO:: need to handle the empty instead of !
-                try self.createDirectory(at: attachmentDirectory, withIntermediateDirectories: true, attributes: nil)
-            }
-            catch let ex as NSError {
-                PMLog.D(" error : \(ex).")
-            }
-        }
-        //TODO:: need to handle the empty instead of !
-        return attachmentDirectory
-    }
     
-    func cleanCachedAtts() {
-        let attachmentDirectory = applicationSupportDirectoryURL.appendingPathComponent("attachments", isDirectory: true)
-        let path = attachmentDirectory.path
-        do {
-            if self.fileExists(atPath: path) {
-                let filePaths = try self.contentsOfDirectory(atPath: path)
-                for fileName in filePaths {
-                    let filePathName = "\(path)/\(fileName)"
-                    try self.removeItem(atPath: filePathName)
-                }
-            }
-        }
-        catch let ex as NSError {
-            PMLog.D("cleanCachedAtts error : \(ex).")
-        }
-    }
+    
+    // MARK: process events
 }
