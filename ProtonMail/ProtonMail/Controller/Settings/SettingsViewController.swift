@@ -11,7 +11,7 @@
 //
 
 import UIKit
-
+//TODO:: not in used 
 class SettingsViewController: ProtonMailViewController {
     typealias CompletionBlock = APIService.CompletionBlock
     
@@ -221,7 +221,7 @@ class SettingsViewController: ProtonMailViewController {
         
         recoveryEmailTextField.text = sharedUserDataService.notificationEmail
         displayNameTextField.text = sharedUserDataService.displayName
-        signatureTextView.text = sharedUserDataService.signature
+        signatureTextView.text = sharedUserDataService.userDefaultSignature
         
         let usedSpace = sharedUserDataService.usedSpace
         let maxSpace = sharedUserDataService.maxSpace

@@ -12,14 +12,14 @@ import Foundation
 struct News : OptionSet {
     let rawValue: Int
     //255 means throw out client cache and reload everything from server, 1 is mail, 2 is contacts
-    static let announcements     = RefreshStatus(rawValue: 1 << 0) //1 is announcements
-    static let features         = RefreshStatus(rawValue: 1 << 1) //2 is features
-    static let newsletter         = RefreshStatus(rawValue: 1 << 2) //4 is newsletter
-    static let all      = RefreshStatus(rawValue: 0xFF)
+    static let announcements = RefreshStatus(rawValue: 1 << 0) //1 is announcements
+    static let features      = RefreshStatus(rawValue: 1 << 1) //2 is features
+    static let newsletter    = RefreshStatus(rawValue: 1 << 2) //4 is newsletter
+    static let all           = RefreshStatus(rawValue: 0xFF)
 }
 
-// Mark : get all settings
-final class GetSettings : ApiRequestNew<SettingsResponse> {
+// Mark : get settings
+final class GetUserSettings : ApiRequestNew<SettingsResponse> {
     override func path() -> String {
         return SettingsAPI.path + AppConstants.DEBUG_OPTION
     }
@@ -30,8 +30,11 @@ final class GetSettings : ApiRequestNew<SettingsResponse> {
 }
 
 final class SettingsResponse : ApiResponse {
-    //
+    var userSettings: [String : Any]?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        if let settings = response["UserSettings"] as? [String : Any] {
+            self.userSettings = settings
+        }
         //        {
         //            "Code": 1000,
         //            "UserSettings": {
@@ -53,6 +56,68 @@ final class SettingsResponse : ApiResponse {
     }
 }
 
+
+// Mark : get mail settings
+final class GetMailSettings : ApiRequestNew<MailSettingsResponse> {
+    override func path() -> String {
+        return SettingsAPI.path + "/mail" + AppConstants.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return SettingsAPI.v_get_general_settings
+    }
+}
+
+final class MailSettingsResponse : ApiResponse {
+    var mailSettings: [String : Any]?
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        if let settings = response["MailSettings"] as? [String : Any] {
+            self.mailSettings = settings
+        }
+        
+//        "MailSettings": {
+//            "DisplayName": "Put Chinese Here",
+//            "Signature": "Your signature here",
+//            "Theme": "<CSS>",
+//            "AutoResponder": {
+//                "StartTime": 0, // seconds relative to the start of the period (unix timestamp for fixed interval)
+//                "Endtime" :  0, // seconds relative to the end of the period (unix timestamp for fixed interval)
+//                "Repeat": 0, // Mode: 0 => fixed interval, 1 => daily, 2 => weekly, 3 => monthly, 4 => permanent
+//                "DaysSelected": [], // For daily mode: the day of the week expressed as an integer between 0 and 6. 0 is Sunday, 1 is Monday, etc.
+//                "Subject": "Auto", // The subject prefix: e.g. "Re" for "Re: <original subject>"
+//                "Message": "",
+//                "IsEnabled: false,
+//                "Zone": "Europe/Zurich"
+//            },
+//            "AutoSaveContacts": 1,
+//            "AutoWildcardSearch": 1,
+//            "ComposerMode": 1,
+//            "MessageButtons": 0,
+//            "ShowImages": 1,
+//            "ShowMoved": 3,
+//            "ViewMode": 0,
+//            "ViewLayout": 0,
+//            "SwipeLeft": 0,
+//            "SwipeRight": 3,
+//            "AlsoArchive": 0,
+//            "Hotkeys": 1,
+//            "PMSignature": 1,
+//            "ImageProxy": 0,
+//            "TLS": 0,
+//            "RightToLeft": 0,
+//            "AttachPublicKey": 0,
+//            "Sign": 0,
+//            "PGPScheme": 16,
+//            "PromptPin": 1,
+//            "Autocrypt": 1,
+//            "NumMessagePerPage": 50,
+//            "DraftMIMEType": "text/html",
+//            "ReceiveMIMEType": "text/html",
+//            "ShowMIMEType": "text/html"
+//        }
+        return true
+    }
+}
 
 
 // MARK : update email notifiy
