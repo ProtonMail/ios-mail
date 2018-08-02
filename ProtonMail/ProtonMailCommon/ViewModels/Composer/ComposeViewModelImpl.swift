@@ -444,11 +444,11 @@ final class ComposeViewModelImpl : ComposeViewModel {
         //sharedUserDataService.signature
         let signature = self.getDefaultSendAddress()?.signature ?? "\(sharedUserDataService.signature)"
         
-        let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
+        let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
         
-        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\">\(signature)</div>" : ""
+        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\">\(signature)</div>" : ""
         
-        let head = "<html><head></head><body>"
+        let head = "<html><head></head><body><div><br></div>"
         let foot = "</body></html>"
         let htmlString = "\(defaultSignature) \(mobileSignature)"
         
