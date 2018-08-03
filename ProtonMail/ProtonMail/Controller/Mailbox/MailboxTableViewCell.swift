@@ -12,13 +12,13 @@
 
 import UIKit
 
-//TODO:: no referance try to delete it later
-
+@available(*, deprecated, message: "remove it when refactoring")
 @objc protocol MailboxTableViewCellDelegate {
     func mailboxTableViewCell(_ cell: MailboxTableViewCell, didChangeStarred: Bool)
     func mailBoxTableViewCell(_ cell: MailboxTableViewCell, didChangeChecked: Bool)
 }
 
+@available(*, deprecated, message: "remove it when refactoring")
 class MailboxTableViewCell: UITableViewCell {
     
     weak var delegate: MailboxTableViewCellDelegate?
