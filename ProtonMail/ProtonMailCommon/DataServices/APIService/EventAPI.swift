@@ -67,43 +67,85 @@ final class EventCheckResponse : ApiResponse {
     var messages : [[String : Any]]?
     var contacts : [[String : Any]]?
     var contactEmails : [[String : Any]]?
-    var userinfo : [String : Any]?
-    var unreads : [String : Any]?
-    var total : [String : Any]?
     var labels : [[String : Any]]?
-    var usedSpace : String?
-    var notices : [String]?
+    
+    var subscription : [String : Any]? // for later
+    
+    var user : [String : Any]?
+    var userSettings : [String : Any]?
+    var mailSettings : [String : Any]?
+    
+    var vpnSettings : [String : Any]? // for later
+    var invoices : [String : Any]? // for later
+    var members : [[String : Any]]? // for later
+    var domains : [[String : Any]]? // for later
+    
+    var addresses : [[String : Any]]?
+    
+    var organization : [String : Any]? // for later
+    
     var messageCounts: [[String : Any]]?
     
+    var conversationCounts: [[String : Any]]? // for later
+    
+    var usedSpace : String?
+    var notices : [String]?
+    
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-
         //PMLog.D(response.JSONStringify(prettyPrinted: true))
-        
         self.eventID = response["EventID"] as? String ?? ""
-        self.messages =  response["Messages"] as? [[String : Any]]
         self.refresh = RefreshStatus(rawValue: response["Refresh"] as? Int ?? 0)
-        self.more = response["More"] as? Int ?? 0
+        self.more    = response["More"] as? Int ?? 0
         
-        self.userinfo = response["User"] as? [String : Any]
-        
-        self.unreads = response["Unread"] as? [String : Any]
-
-        self.usedSpace = response["UsedSpace"] as? String
-        
-        self.total = response["Total"] as? [String : Any]
-        
-        self.labels =  response["Labels"] as? [[String : Any]]
-        
-        self.contacts = response["Contacts"] as? [[String : Any]]
-        
+        self.messages      = response["Messages"] as? [[String : Any]]
+        self.contacts      = response["Contacts"] as? [[String : Any]]
         self.contactEmails = response["ContactEmails"] as? [[String : Any]]
+        self.labels        = response["Labels"] as? [[String : Any]]
         
-        self.notices = response["Notices"] as? [String]
+        //self.subscription = response["Subscription"] as? [String : Any]
+        
+        self.user         = response["User"] as? [String : Any]
+        self.userSettings = response["UserSettings"] as? [String : Any]
+        self.mailSettings = response["MailSettings"] as? [String : Any]
+
+        //self.vpnSettings = response["VPNSettings"] as? [String : Any]
+        //self.invoices = response["Invoices"] as? [String : Any]
+        //self.members  = response["Members"] as? [[String : Any]]
+        //self.domains  = response["Domains"] as? [[String : Any]]
+        
+        self.addresses  = response["Addresses"] as? [[String : Any]]
+        
+        //self.organization = response["Organization"] as? [String : Any]
         
         self.messageCounts = response["MessageCounts"] as? [[String : Any]]
         
+        //self.conversationCounts = response["ConversationCounts"] as? [[String : Any]]
+        
+        self.usedSpace = response["UsedSpace"] as? String
+        self.notices = response["Notices"] as? [String]
+        
         return true
     }
+}
+
+enum EventAction : Int {
+    case delete = 0
+    case insert = 1
+    case update1 = 2
+    case update2 = 3
+    
+    case unknown = 255
+}
+
+class Event {
+    var action : EventAction
+    var ID : String?
+    
+    init(id: String?, action: EventAction) {
+        self.ID = id
+        self.action = action
+    }
+
 }
 
 final class MessageEvent {
@@ -187,7 +229,6 @@ final class EmailEvent {
 }
 
 final class LabelEvent {
-    
     var Action : Int!
     var ID : String!;
     var label : [String : Any]?
@@ -196,6 +237,17 @@ final class LabelEvent {
         self.Action = event["Action"] as! Int
         self.label =  event["Label"] as? [String : Any]
         self.ID =  event["ID"] as! String
+    }
+}
+
+
+final class AddressEvent : Event {
+    var address : [String : Any]?
+    init(event: [String : Any]!) {
+        let actionInt = event["Action"] as? Int ?? 255
+        super.init(id: event["ID"] as? String,
+                   action: EventAction(rawValue: actionInt) ?? .unknown)
+        self.address =  event["Address"] as? [String : Any]
     }
 }
 

@@ -365,11 +365,47 @@ class UserDataService {
             return self.userInfo
         }
     }
-    
-    func updateUserInfoFromEventLog (_ userInfo : UserInfo){
+
+    //
+    func updateFromEvents(userInfo: [String : Any]?) {
+        if let userData = userInfo {
+            let newUserInfo = UserInfo(response: userData)
+            if let user = self.userInfo {
+                user.set(userinfo: newUserInfo)
+                self.userInfo = user
+            }
+        }
+    }
+    //
+    func updateFromEvents(userSettings: [String : Any]?) {
         if let user = self.userInfo {
-            user.set(userinfo: userInfo)
+            user.parse(userSettings: userSettings)
             self.userInfo = user
+        }
+    }
+    func updateFromEvents(mailSettings: [String : Any]?) {
+        if let user = self.userInfo {
+            user.parse(mailSettings: mailSettings)
+            self.userInfo = user
+        }
+    }
+
+    func setFromEvents(address: Address) {
+        if let user = self.userInfo {
+            if let index = user.userAddresses.index(where: { $0.address_id == address.address_id }) {
+                user.userAddresses.remove(at: index)
+            }
+            user.userAddresses.append(address)
+            self.userInfo = user
+        }
+    }
+    
+    func deleteFromEvents(addressID: String) {
+        if let user = self.userInfo {
+            if let index = user.userAddresses.index(where: { $0.address_id == addressID }) {
+                user.userAddresses.remove(at: index)
+                self.userInfo = user
+            }
         }
     }
     

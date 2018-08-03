@@ -17,17 +17,17 @@ import Foundation
 
 @objc(UserInfo)
 final class UserInfo : NSObject {
-    let userStatus: Int //not in used remove later
+    var userStatus: Int //not in used remove later
     
     //1.9.0 phone local cache
-    let language : String
+    var language : String
     
     //1.9.1 user object
-    let delinquent : Int
-    let role : Int
-    let maxSpace: Int64
-    let usedSpace: Int64
-    let maxUpload: Int64
+    var delinquent : Int
+    var role : Int
+    var maxSpace: Int64
+    var usedSpace: Int64
+    var maxUpload: Int64
     
     var userKeys: [Key] //user key
     //"VPN": { //TODO::handle this in the future
@@ -111,17 +111,32 @@ final class UserInfo : NSObject {
         self.userKeys = keys ?? [Key]()
     }
     
+    /// Update user addresses
+    ///
+    /// - Parameter addresses: new addresses
     func set(addresses : [Address]) {
         self.userAddresses = addresses
     }
-    
+
+    /// set User, copy the data from input user object
+    ///
+    /// - Parameter userinfo: New user info
     func set(userinfo : UserInfo) {
+        self.maxSpace = userinfo.maxSpace
+        self.usedSpace = userinfo.usedSpace
+        self.userStatus = userinfo.userStatus
+        self.language = userinfo.language
+        self.maxUpload = userinfo.maxUpload
+        self.role = userinfo.role
+        self.delinquent = userinfo.delinquent
         
+        self.userKeys = userinfo.userKeys
     }
-    //enable later
-//    func parse(userinfo : [String : Any]?) {
-//
-//    }
+    
+    //for later
+    func parse(userinfo : [String : Any]?) {
+
+    }
     
     func parse(userSettings: [String : Any]?) {
         if let settings = userSettings {

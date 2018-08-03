@@ -165,7 +165,7 @@ class MessageDataService {
                                     let counterApi = MessageCount()
                                     counterApi.call({ (task, response, hasError) in
                                         if !hasError {
-                                            self.processMessageCounts(response?.counts)
+                                            self.processEvents(counts: response?.counts)
                                         }
                                     })
                                 }
@@ -305,18 +305,21 @@ class MessageDataService {
                     } else if eventsRes.refresh.contains(.contacts) {
                         sharedContactDataService.clean()
                         sharedContactDataService.fetchContacts(completion: nil)
-                    } else if eventsRes.messages != nil {
-                        self.processIncrementalUpdateMessages(notificationMessageID, messages: eventsRes.messages!, task: task) { task, res, error in
+                    } else if let messageEvents = eventsRes.messages {
+                        self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID, task: task) { task, res, error in
                             if error == nil {
                                 lastUpdatedStore.lastEventID = eventsRes.eventID
-                                self.processMessageCounts(eventsRes.messageCounts)
-                                self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
-                                self.processIncrementalUpdateLabels(eventsRes.labels)
-                                self.processIncrementalUpdateContacts(eventsRes.contacts)
-                                self.processIncrementalUpdateContactEmails(eventsRes.contactEmails)
+                                self.processEvents(contacts: eventsRes.contacts)
+                                self.processEvents(contactEmails: eventsRes.contactEmails)
+                                self.processEvents(labels: eventsRes.labels)
+                                self.processEvents(user: eventsRes.user)
+                                self.processEvents(userSettings: eventsRes.userSettings)
+                                self.processEvents(mailSettings: eventsRes.mailSettings)
+                                self.processEvents(addresses: eventsRes.addresses)
+                                self.processEvents(counts: eventsRes.messageCounts)
                                 
                                 var outMessages : [Any] = [];
-                                for message in eventsRes.messages! {
+                                for message in messageEvents {
                                     let msg = MessageEvent(event: message)
                                     if msg.Action == 1 {
                                         outMessages.append(msg)
@@ -328,15 +331,17 @@ class MessageDataService {
                                 completion?(task, nil, error)
                             }
                         }
-                    }
-                    else {
+                    } else {
                         if eventsRes.code == 1000 {
                             lastUpdatedStore.lastEventID = eventsRes.eventID
-                            self.processMessageCounts(eventsRes.messageCounts)
-                            self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
-                            self.processIncrementalUpdateLabels(eventsRes.labels)
-                            self.processIncrementalUpdateContacts(eventsRes.contacts)
-                            self.processIncrementalUpdateContactEmails(eventsRes.contactEmails)
+                            self.processEvents(contacts: eventsRes.contacts)
+                            self.processEvents(contactEmails: eventsRes.contactEmails)
+                            self.processEvents(labels: eventsRes.labels)
+                            self.processEvents(user: eventsRes.user)
+                            self.processEvents(userSettings: eventsRes.userSettings)
+                            self.processEvents(mailSettings: eventsRes.mailSettings)
+                            self.processEvents(addresses: eventsRes.addresses)
+                            self.processEvents(counts: eventsRes.messageCounts)
                         }
                         if _hasEventsError {
                             completion?(task, nil, eventsRes.error)
@@ -356,7 +361,7 @@ class MessageDataService {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response, hasError in
                 if let eventsRes = response {
-                    if eventsRes.refresh.contains(.all) ||  eventsRes.refresh.contains(.mail) || (hasError && eventsRes.code == 18001) {
+                    if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (hasError && eventsRes.code == 18001) {
                         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
                         getLatestEventID.call() { task, _IDRes, hasIDError in
                             if let IDRes = _IDRes, !hasIDError && !IDRes.eventID.isEmpty {
@@ -379,18 +384,21 @@ class MessageDataService {
                     } else if eventsRes.refresh.contains(.contacts) {
                         sharedContactDataService.clean()
                         sharedContactDataService.fetchContacts(completion: nil)
-                    } else if eventsRes.messages != nil {
-                        self.processIncrementalUpdateMessages(notificationMessageID, messages: eventsRes.messages!, task: task) { task, res, error in
+                    } else if let messageEvents = eventsRes.messages {
+                        self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID, task: task) { task, res, error in
                             if error == nil {
                                 lastUpdatedStore.lastEventID = eventsRes.eventID
-                                self.processMessageCounts(eventsRes.messageCounts)
-                                self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
-                                self.processIncrementalUpdateLabels(eventsRes.labels)
-                                self.processIncrementalUpdateContacts(eventsRes.contacts)
-                                self.processIncrementalUpdateContactEmails(eventsRes.contactEmails)
+                                self.processEvents(contacts: eventsRes.contacts)
+                                self.processEvents(contactEmails: eventsRes.contactEmails)
+                                self.processEvents(labels: eventsRes.labels)
+                                self.processEvents(user: eventsRes.user)
+                                self.processEvents(userSettings: eventsRes.userSettings)
+                                self.processEvents(mailSettings: eventsRes.mailSettings)
+                                self.processEvents(addresses: eventsRes.addresses)
+                                self.processEvents(counts: eventsRes.messageCounts)
                                 
                                 var outMessages : [Any] = [];
-                                for message in eventsRes.messages! {
+                                for message in messageEvents {
                                     let msg = MessageEvent(event: message)
                                     if msg.Action == 1 {
                                         outMessages.append(msg)
@@ -402,15 +410,17 @@ class MessageDataService {
                                 completion?(task, nil, error)
                             }
                         }
-                    }
-                    else {
+                    } else {
                         if eventsRes.code == 1000 {
                             lastUpdatedStore.lastEventID = eventsRes.eventID
-                            self.processMessageCounts(eventsRes.messageCounts)
-                            self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
-                            self.processIncrementalUpdateLabels(eventsRes.labels)
-                            self.processIncrementalUpdateContacts(eventsRes.contacts)
-                            self.processIncrementalUpdateContactEmails(eventsRes.contactEmails)
+                            self.processEvents(contacts: eventsRes.contacts)
+                            self.processEvents(contactEmails: eventsRes.contactEmails)
+                            self.processEvents(labels: eventsRes.labels)
+                            self.processEvents(user: eventsRes.user)
+                            self.processEvents(userSettings: eventsRes.userSettings)
+                            self.processEvents(mailSettings: eventsRes.mailSettings)
+                            self.processEvents(addresses: eventsRes.addresses)
+                            self.processEvents(counts: eventsRes.messageCounts)
                         }
                         if hasError {
                             completion?(task, nil, eventsRes.error)
@@ -424,348 +434,7 @@ class MessageDataService {
             }
         }
     }
-    
-    func processIncrementalUpdateContacts(_ contacts: [[String : Any]]?) {
-        if let contacts = contacts {
-            let context = sharedCoreDataService.newMainManagedObjectContext()
-            context.perform { () -> Void in
-                for contact in contacts {
-                    let contactObj = ContactEvent(event: contact)
-                    switch(contactObj.action) {
-                    case .delete:
-                        if let contactID = contactObj.ID {
-                            if let tempContact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
-                                context.delete(tempContact)
-                            }
-                        }
-                    case .insert, .update:
-                        do {
-                            if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
-                                                                 fromJSONArray: contactObj.contacts,
-                                                                 in: context) as? [Contact] {
-                                for c in outContacts {
-                                    c.isDownloaded = false
-                                }
-                            }
-
-                        } catch let ex as NSError {
-                            PMLog.D(" error: \(ex)")
-                        }
-                    default:
-                        PMLog.D(" unknown type in contact: \(contact)")
-                    }
-                }
-                if let error = context.saveUpstreamIfNeeded()  {
-                    PMLog.D(" error: \(error)")
-                }
-            }
-        }
-    }
-    
-    func processIncrementalUpdateContactEmails(_ contactEmails: [[String : Any]]?) {
-        guard let emails = contactEmails else {
-            return
-        }
-        
-        let context = sharedCoreDataService.newMainManagedObjectContext()
-        context.perform { () -> Void in
-            for email in emails {
-                let emailObj = EmailEvent(event: email)
-                switch(emailObj.action) {
-                case .delete:
-                    if let emailID = emailObj.ID {
-                        if let tempEmail = Email.EmailForID(emailID, inManagedObjectContext: context) {
-                            context.delete(tempEmail)
-                        }
-                    }
-                case .insert, .update:
-                    do {
-                        if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
-                                                                              fromJSONArray: emailObj.contacts,
-                                                                              in: context) as? [Contact] {
-                            for c in outContacts {
-                                c.isDownloaded = false
-                            }
-                        }
-                        
-                    } catch let ex as NSError {
-                        PMLog.D(" error: \(ex)")
-                    }
-                default:
-                    PMLog.D(" unknown type in contact: \(email)")
-                }
-            }
-            
-            if let error = context.saveUpstreamIfNeeded()  {
-                PMLog.D(" error: \(error)")
-            }
-        }
-    }
-    
-    
-    func processIncrementalUpdateTotal(_ totals: [String : Any]?) {
-        
-        if let star = totals?["Starred"] as? Int {
-            let updateTime = lastUpdatedStore.inboxLastForKey(MessageLocation.starred)
-            updateTime.total = Int32(star)
-            lastUpdatedStore.updateInboxForKey(MessageLocation.starred, updateTime: updateTime)
-        }
-        
-        if let locations = totals?["Locations"] as? [[String : Any]] {
-            for location:[String : Any] in locations {
-                if let l = location["Location"] as? Int {
-                    if let c = location["Count"] as? Int {
-                        if let lo = MessageLocation(rawValue: l) {
-                            let updateTime = lastUpdatedStore.inboxLastForKey(lo)
-                            updateTime.total = Int32(c)
-                            lastUpdatedStore.updateInboxForKey(lo, updateTime: updateTime)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    func processIncrementalUpdateUserInfo(_ userinfo: [String : Any]?) {
-        if let userData = userinfo {
-            
-            let userInfo = UserInfo( response: userData )
-            sharedUserDataService.updateUserInfoFromEventLog(userInfo);
-        }
-    }
-    
-    func processIncrementalUpdateLabels(_ labels: [[String : Any]]?) {
-        
-        struct IncrementalUpdateType {
-            static let delete = 0
-            static let insert = 1
-            static let update = 2
-        }
-        
-        if let labels = labels {
-            // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
-            self.incrementalUpdateQueue.sync {
-                let context = sharedCoreDataService.newMainManagedObjectContext()
-                context.perform { () -> Void in
-                    for labelEvent in labels {
-                        let label = LabelEvent(event: labelEvent)
-                        switch(label.Action) {
-                        case .some(IncrementalUpdateType.delete):
-                            if let labelID = label.ID {
-                                if let dLabel = Label.labelForLableID(labelID, inManagedObjectContext: context) {
-                                    context.delete(dLabel)
-                                }
-                            }
-                        case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update):
-                            do {
-                                if let new_or_update_label = label.label {
-                                    try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: new_or_update_label, in: context)
-                                }
-                            } catch let ex as NSError {
-                                PMLog.D(" error: \(ex)")
-                            }
-                        default:
-                            PMLog.D(" unknown type in message: \(label)")
-                        }
-                    }
-                    if let error = context.saveUpstreamIfNeeded(){
-                        PMLog.D(" error: \(error)")
-                    }
-                }
-            }
-            
-        }
-    }
-    
-    func processMessageCounts(_ msgCounts: [[String : Any]]?) {
-        guard let messageCounts = msgCounts, messageCounts.count > 0 else {
-            return
-        }
-        
-        lastUpdatedStore.resetUnreadCounts()
-        for count in messageCounts {
-            if let labelID = count["LabelID"] as? String {
-                guard let unread = count["Unread"] as? Int else {
-                    continue
-                }
-                lastUpdatedStore.updateLabelsUnreadCountForKey(labelID, count: unread)
-            }
-        }
-        
-        var badgeNumber = lastUpdatedStore.UnreadCountForKey(.inbox)
-        if  badgeNumber < 0 {
-            badgeNumber = 0
-        }
-        UIApplication.setBadge(badge: badgeNumber)
-        //UIApplication.shared.applicationIconBadgeNumber = badgeNumber
-    }
-    
-    func cleanLocalMessageCache(_ completion: CompletionBlock?) {
-        let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
-        getLatestEventID.call() { task, response, hasError in
-            if response != nil && !hasError && !response!.eventID.isEmpty {
-                let completionWrapper: CompletionBlock = { task, responseDict, error in
-                    if error == nil {
-                        lastUpdatedStore.clear();
-                        lastUpdatedStore.lastEventID = response!.eventID
-                    }
-                    completion?(task, nil, error)
-                }
-                
-                self.cleanMessage()
-                sharedContactDataService.clean()
-                sharedLabelsDataService.fetchLabels();
-                self.fetchMessagesForLocation(MessageLocation.inbox, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-               
-                sharedContactDataService.fetchContacts(completion: nil)
-            }
-        }
-    }
-    
-    
-    /**
-     this function to process the event logs
-     
-     :param: messages   the message event log
-     :param: task       NSURL session task
-     :param: completion complete call back
-     */
-    fileprivate func processIncrementalUpdateMessages(_ notificationMessageID: String?, messages: [[String : Any]], task: URLSessionDataTask!, completion: CompletionBlock?) {
-        struct IncrementalUpdateType {
-            static let delete = 0
-            static let insert = 1
-            static let update1 = 2
-            static let update2 = 3
-        }
-        
-        // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
-        self.incrementalUpdateQueue.sync {
-            let context = sharedCoreDataService.newMainManagedObjectContext()
-            context.perform { () -> Void in
-                var error: NSError?
-                var messagesNoCache : [Message] = [];
-                for message in messages {
-                    let msg = MessageEvent(event: message)
-                    switch(msg.Action) {
-                    case .some(IncrementalUpdateType.delete):
-                        if let messageID = msg.ID {
-                            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                                let labelObjs = message.mutableSetValue(forKey: "labels")
-                                labelObjs.removeAllObjects()
-                                message.setValue(labelObjs, forKey: "labels")
-                                context.delete(message)
-                            }
-                        }
-                    case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update1), .some(IncrementalUpdateType.update2):
-                        if IncrementalUpdateType.insert == msg.Action {
-                            if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
-                                if cachedMessage.location != MessageLocation.draft && cachedMessage.location != MessageLocation.outbox {
-                                    self.tempUnreadAddjustCount = cachedMessage.unRead ? 0 : -1
-                                    continue
-                                }
-                            }
-                            if let notify_msg_id = notificationMessageID {
-                                if notify_msg_id == msg.ID {
-                                    let _ = msg.message?.removeValue(forKey: "Unread")
-                                }
-                            }
-                            msg.message?["messageStatus"] = 1
-                        }
-                        
-                        if let lo = msg.message?["Location"] as? Int {
-                            if lo == 1 { //if it is a draft
-                                if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
-                                    if exsitMes.messageStatus == 1 {
-                                        if let subject = msg.message?["Subject"] as? String {
-                                            exsitMes.title = subject
-                                        }
-                                        if let timeValue = msg.message?["Time"] {
-                                            if let timeString = timeValue as? NSString {
-                                                let time = timeString.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            } else if let dateNumber = timeValue as? NSNumber {
-                                                let time = dateNumber.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            }
-                                        }
-                                        continue;
-                                    }
-                                }
-                            }
-                        }
-                        do {
-                            if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String : Any](), in: context) as? Message {
-                                // apply the label changes
-                                if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
-                                    for delete in deleted {
-                                        let labelID = delete as! String
-                                        if let label = Label.labelForLableID(labelID, inManagedObjectContext: context) {
-                                            let labelObjs = messageObject.mutableSetValue(forKey: "labels")
-                                            if labelObjs.count > 0 {
-                                                labelObjs.remove(label)
-                                                messageObject.setValue(labelObjs, forKey: "labels")
-                                            }
-                                        }
-                                        if labelID == "1" {
-                                            messageObject.isDetailDownloaded = false
-                                        }
-                                    }
-                                }
-                                
-                                if let added = msg.message?["LabelIDsAdded"] as? NSArray {
-                                    for add in added {
-                                        if let label = Label.labelForLableID(add as! String, inManagedObjectContext: context) {
-                                            let labelObjs = messageObject.mutableSetValue(forKey: "labels")
-                                            labelObjs.add(label)
-                                            messageObject.setValue(labelObjs, forKey: "labels")
-                                        }
-                                    }
-                                }
-                                
-                                if let labels = msg.message?["LabelIDs"] as? NSArray {
-                                    PMLog.D("\(labels)")
-                                    //TODO : add later need to know whne it is happending
-                                }
-                                
-                                if messageObject.messageStatus == 0 {
-                                    if messageObject.subject.isEmpty {
-                                        messagesNoCache.append(messageObject)
-                                    } else {
-                                        messageObject.messageStatus = 1
-                                    }
-                                }
-                            } else {
-                                PMLog.D(" case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2): insert empty")
-                            }
-                        } catch {
-                            PMLog.D(" error: \(error)")
-                        }
-                    default:
-                        PMLog.D(" unknown type in message: \(message)")
-                    }
-                }
-                
-                error = context.saveUpstreamIfNeeded()
-                
-                if error != nil  {
-                    PMLog.D(" error: \(String(describing: error))")
-                }
-                
-                self.fetchMessagesWithIDs(messagesNoCache)
-                
-                DispatchQueue.main.async {
-                    completion?(task, nil, error)
-                    return
-                }
-            }
-        }
-    }
-    
-    
+ 
     func fetchMessagesWithIDs (_ messages : [Message]) {
         if messages.count > 0 {
             queue {
@@ -948,7 +617,6 @@ class MessageDataService {
             }
         }
     }
-    
     
     func fetchNotificationMessageDetail(_ messageID: String, completion: @escaping CompletionFetchDetail) {
         queue {
@@ -2119,5 +1787,375 @@ class MessageDataService {
     }
     
     
+    func cleanLocalMessageCache(_ completion: CompletionBlock?) {
+        let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
+        getLatestEventID.call() { task, response, hasError in
+            if response != nil && !hasError && !response!.eventID.isEmpty {
+                let completionWrapper: CompletionBlock = { task, responseDict, error in
+                    if error == nil {
+                        lastUpdatedStore.clear();
+                        lastUpdatedStore.lastEventID = response!.eventID
+                    }
+                    completion?(task, nil, error)
+                }
+                
+                self.cleanMessage()
+                sharedContactDataService.clean()
+                sharedLabelsDataService.fetchLabels();
+                self.fetchMessagesForLocation(MessageLocation.inbox, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
+                
+                sharedContactDataService.fetchContacts(completion: nil)
+            }
+        }
+    }
+    
+    
     // MARK: process events
+    
+    /**
+     this function to process the event logs
+     
+     :param: messages   the message event log
+     :param: task       NSURL session task
+     :param: completion complete call back
+     */
+    private func processEvents(messages: [[String : Any]], notificationMessageID: String?, task: URLSessionDataTask!, completion: CompletionBlock?) {
+        struct IncrementalUpdateType {
+            static let delete = 0
+            static let insert = 1
+            static let update1 = 2
+            static let update2 = 3
+        }
+        
+        // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
+        self.incrementalUpdateQueue.sync {
+            let context = sharedCoreDataService.newMainManagedObjectContext()
+            context.perform { () -> Void in
+                var error: NSError?
+                var messagesNoCache : [Message] = [];
+                for message in messages {
+                    let msg = MessageEvent(event: message)
+                    switch(msg.Action) {
+                    case .some(IncrementalUpdateType.delete):
+                        if let messageID = msg.ID {
+                            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                                let labelObjs = message.mutableSetValue(forKey: "labels")
+                                labelObjs.removeAllObjects()
+                                message.setValue(labelObjs, forKey: "labels")
+                                context.delete(message)
+                            }
+                        }
+                    case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update1), .some(IncrementalUpdateType.update2):
+                        if IncrementalUpdateType.insert == msg.Action {
+                            if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
+                                if cachedMessage.location != MessageLocation.draft && cachedMessage.location != MessageLocation.outbox {
+                                    self.tempUnreadAddjustCount = cachedMessage.unRead ? 0 : -1
+                                    continue
+                                }
+                            }
+                            if let notify_msg_id = notificationMessageID {
+                                if notify_msg_id == msg.ID {
+                                    let _ = msg.message?.removeValue(forKey: "Unread")
+                                }
+                            }
+                            msg.message?["messageStatus"] = 1
+                        }
+                        
+                        if let lo = msg.message?["Location"] as? Int {
+                            if lo == 1 { //if it is a draft
+                                if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
+                                    if exsitMes.messageStatus == 1 {
+                                        if let subject = msg.message?["Subject"] as? String {
+                                            exsitMes.title = subject
+                                        }
+                                        if let timeValue = msg.message?["Time"] {
+                                            if let timeString = timeValue as? NSString {
+                                                let time = timeString.doubleValue as TimeInterval
+                                                if time != 0 {
+                                                    exsitMes.time = time.asDate()
+                                                }
+                                            } else if let dateNumber = timeValue as? NSNumber {
+                                                let time = dateNumber.doubleValue as TimeInterval
+                                                if time != 0 {
+                                                    exsitMes.time = time.asDate()
+                                                }
+                                            }
+                                        }
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                        do {
+                            if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String : Any](), in: context) as? Message {
+                                // apply the label changes
+                                if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
+                                    for delete in deleted {
+                                        let labelID = delete as! String
+                                        if let label = Label.labelForLableID(labelID, inManagedObjectContext: context) {
+                                            let labelObjs = messageObject.mutableSetValue(forKey: "labels")
+                                            if labelObjs.count > 0 {
+                                                labelObjs.remove(label)
+                                                messageObject.setValue(labelObjs, forKey: "labels")
+                                            }
+                                        }
+                                        if labelID == "1" {
+                                            messageObject.isDetailDownloaded = false
+                                        }
+                                    }
+                                }
+                                
+                                if let added = msg.message?["LabelIDsAdded"] as? NSArray {
+                                    for add in added {
+                                        if let label = Label.labelForLableID(add as! String, inManagedObjectContext: context) {
+                                            let labelObjs = messageObject.mutableSetValue(forKey: "labels")
+                                            labelObjs.add(label)
+                                            messageObject.setValue(labelObjs, forKey: "labels")
+                                        }
+                                    }
+                                }
+                                
+                                if let labels = msg.message?["LabelIDs"] as? NSArray {
+                                    PMLog.D("\(labels)")
+                                    //TODO : add later need to know whne it is happending
+                                }
+                                
+                                if messageObject.messageStatus == 0 {
+                                    if messageObject.subject.isEmpty {
+                                        messagesNoCache.append(messageObject)
+                                    } else {
+                                        messageObject.messageStatus = 1
+                                    }
+                                }
+                            } else {
+                                PMLog.D(" case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2): insert empty")
+                            }
+                        } catch {
+                            PMLog.D(" error: \(error)")
+                        }
+                    default:
+                        PMLog.D(" unknown type in message: \(message)")
+                    }
+                }
+                
+                error = context.saveUpstreamIfNeeded()
+                
+                if error != nil  {
+                    PMLog.D(" error: \(String(describing: error))")
+                }
+                
+                self.fetchMessagesWithIDs(messagesNoCache)
+                
+                DispatchQueue.main.async {
+                    completion?(task, nil, error)
+                    return
+                }
+            }
+        }
+    }
+    
+    /// Process contacts from event logs
+    ///
+    /// - Parameter contacts: contact events
+    private func processEvents(contacts: [[String : Any]]?) {
+        if let contacts = contacts {
+            let context = sharedCoreDataService.newMainManagedObjectContext()
+            context.perform { () -> Void in
+                for contact in contacts {
+                    let contactObj = ContactEvent(event: contact)
+                    switch(contactObj.action) {
+                    case .delete:
+                        if let contactID = contactObj.ID {
+                            if let tempContact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
+                                context.delete(tempContact)
+                            }
+                        }
+                    case .insert, .update:
+                        do {
+                            if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                                  fromJSONArray: contactObj.contacts,
+                                                                                  in: context) as? [Contact] {
+                                for c in outContacts {
+                                    c.isDownloaded = false
+                                }
+                            }
+                        } catch let ex as NSError {
+                            PMLog.D(" error: \(ex)")
+                        }
+                    default:
+                        PMLog.D(" unknown type in contact: \(contact)")
+                    }
+                }
+                if let error = context.saveUpstreamIfNeeded()  {
+                    PMLog.D(" error: \(error)")
+                }
+            }
+        }
+    }
+    
+    /// Process contact emails this is like metadata update
+    ///
+    /// - Parameter contactEmails: contact email events
+    private func processEvents(contactEmails: [[String : Any]]?) {
+        guard let emails = contactEmails else {
+            return
+        }
+        
+        let context = sharedCoreDataService.newMainManagedObjectContext()
+        context.perform { () -> Void in
+            for email in emails {
+                let emailObj = EmailEvent(event: email)
+                switch(emailObj.action) {
+                case .delete:
+                    if let emailID = emailObj.ID {
+                        if let tempEmail = Email.EmailForID(emailID, inManagedObjectContext: context) {
+                            context.delete(tempEmail)
+                        }
+                    }
+                case .insert, .update:
+                    do {
+                        if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                              fromJSONArray: emailObj.contacts,
+                                                                              in: context) as? [Contact] {
+                            for c in outContacts {
+                                c.isDownloaded = false
+                            }
+                        }
+                        
+                    } catch let ex as NSError {
+                        PMLog.D(" error: \(ex)")
+                    }
+                default:
+                    PMLog.D(" unknown type in contact: \(email)")
+                }
+            }
+            
+            if let error = context.saveUpstreamIfNeeded()  {
+                PMLog.D(" error: \(error)")
+            }
+        }
+    }
+    
+    /// Process Labels include Folders and Labels.
+    ///
+    /// - Parameter labels: labels events
+    private func processEvents(labels: [[String : Any]]?) {
+        struct IncrementalUpdateType {
+            static let delete = 0
+            static let insert = 1
+            static let update = 2
+        }
+        
+        if let labels = labels {
+            // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
+            self.incrementalUpdateQueue.sync {
+                let context = sharedCoreDataService.newMainManagedObjectContext()
+                context.perform { () -> Void in
+                    for labelEvent in labels {
+                        let label = LabelEvent(event: labelEvent)
+                        switch(label.Action) {
+                        case .some(IncrementalUpdateType.delete):
+                            if let labelID = label.ID {
+                                if let dLabel = Label.labelForLableID(labelID, inManagedObjectContext: context) {
+                                    context.delete(dLabel)
+                                }
+                            }
+                        case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update):
+                            do {
+                                if let new_or_update_label = label.label {
+                                    try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: new_or_update_label, in: context)
+                                }
+                            } catch let ex as NSError {
+                                PMLog.D(" error: \(ex)")
+                            }
+                        default:
+                            PMLog.D(" unknown type in message: \(label)")
+                        }
+                    }
+                    if let error = context.saveUpstreamIfNeeded(){
+                        PMLog.D(" error: \(error)")
+                    }
+                }
+            }
+        }
+    }
+    
+    /// Process User information
+    ///
+    /// - Parameter userInfo: User dict
+    private func processEvents(user: [String : Any]?) {
+        guard let userEvent = user else {
+            return
+        }
+        sharedUserDataService.updateFromEvents(userInfo: userEvent)
+    }
+    private func processEvents(userSettings: [String : Any]?) {
+        guard let userSettingEvent = userSettings else {
+            return
+        }
+        sharedUserDataService.updateFromEvents(userSettings: userSettingEvent)
+    }
+    private func processEvents(mailSettings: [String : Any]?) {
+        guard let mailSettingEvent = mailSettings else {
+            return
+        }
+        sharedUserDataService.updateFromEvents(mailSettings: mailSettingEvent)
+    }
+    private func processEvents(addresses: [[String : Any]]?) {
+        guard let addrEvents = addresses else {
+            return
+        }
+        self.incrementalUpdateQueue.sync {
+            for addrEvent in addrEvents {
+                let address = AddressEvent(event: addrEvent)
+                switch(address.action) {
+                case .delete:
+                    if let addrID = address.ID {
+                        sharedUserDataService.deleteFromEvents(addressID: addrID)
+                    }
+                case .insert, .update1:
+                    guard let addrID = address.ID, let addrDict = address.address else {
+                        break
+                    }
+                    let addrRes = AddressesResponse()
+                    addrRes.parseAddr(res: addrDict)
+                    
+                    guard addrRes.addresses.count == 1, let parsedAddr = addrRes.addresses.first, parsedAddr.address_id == addrID else {
+                        break
+                    }
+                    sharedUserDataService.setFromEvents(address: parsedAddr)
+                default:
+                    PMLog.D(" unknown type in message: \(address)")
+                }
+            }
+        }
+    }
+    
+    /// Process Message count from event logs
+    ///
+    /// - Parameter counts: message count dict
+    private func processEvents(counts: [[String : Any]]?) {
+        guard let messageCounts = counts, messageCounts.count > 0 else {
+            return
+        }
+        
+        lastUpdatedStore.resetUnreadCounts()
+        for count in messageCounts {
+            if let labelID = count["LabelID"] as? String {
+                guard let unread = count["Unread"] as? Int else {
+                    continue
+                }
+                lastUpdatedStore.updateLabelsUnreadCountForKey(labelID, count: unread)
+            }
+        }
+        
+        var badgeNumber = lastUpdatedStore.UnreadCountForKey(.inbox)
+        if  badgeNumber < 0 {
+            badgeNumber = 0
+        }
+        UIApplication.setBadge(badge: badgeNumber)
+    }
+
+    
+    
 }
