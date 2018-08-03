@@ -1734,7 +1734,6 @@ class MessageDataService {
     
     fileprivate func queue(_ message: Message, action: MessageAction) {
         if action == .saveDraft || action == .send {
-            //TODO:: need to handle the empty instead of !
             let _ = sharedMessageQueue.addMessage(message.objectID.uriRepresentation().absoluteString, action: action)
         } else {
             if message.managedObjectContext != nil && !message.messageID.isEmpty {

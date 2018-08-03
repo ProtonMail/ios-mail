@@ -20,17 +20,14 @@ import Foundation
 extension FileManager {
     var attachmentDirectory: URL {
         let attachmentDirectory = applicationSupportDirectoryURL.appendingPathComponent("attachments", isDirectory: true)
-        //TODO:: need to handle the empty instead of !
         if !self.fileExists(atPath: attachmentDirectory.absoluteString) {
             do {
-                //TODO:: need to handle the empty instead of !
                 try self.createDirectory(at: attachmentDirectory, withIntermediateDirectories: true, attributes: nil)
             }
             catch let ex as NSError {
                 PMLog.D(" error : \(ex).")
             }
         }
-        //TODO:: need to handle the empty instead of !
         return attachmentDirectory
     }
     
