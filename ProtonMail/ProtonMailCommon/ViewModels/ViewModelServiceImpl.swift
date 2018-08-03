@@ -12,7 +12,7 @@ import UICKeyChainStore
 //keep this unique
 let sharedVMService : ViewModelServiceImpl = ViewModelServiceImpl()
 class ViewModelServiceImpl: ViewModelService {
-    //latest composer view model, not in used now.
+    @available(*, deprecated)
     private var latestComposerViewModel : ComposeViewModel?
     
     //the active view controller needs to be reset when resetComposerView be called

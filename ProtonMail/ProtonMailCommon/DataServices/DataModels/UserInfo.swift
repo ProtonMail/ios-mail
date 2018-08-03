@@ -17,7 +17,8 @@ import Foundation
 
 @objc(UserInfo)
 final class UserInfo : NSObject {
-    var userStatus: Int //not in used remove later
+    @available(*, deprecated, message: "remove it when refactoring")
+    var userStatus: Int
     
     //1.9.0 phone local cache
     var language : String
@@ -131,11 +132,6 @@ final class UserInfo : NSObject {
         self.delinquent = userinfo.delinquent
         
         self.userKeys = userinfo.userKeys
-    }
-    
-    //for later
-    func parse(userinfo : [String : Any]?) {
-
     }
     
     func parse(userSettings: [String : Any]?) {

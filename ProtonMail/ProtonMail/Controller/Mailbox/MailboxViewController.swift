@@ -104,8 +104,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kDefaultSpaceShow : CGFloat = 4.0
     fileprivate var latestSpaceHide : CGFloat = 0.0
     
-    
-    //not in used
     func setViewModel(_ vm: Any) {
         self.viewModel = vm as! MailboxViewModel
     }

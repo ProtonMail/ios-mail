@@ -42,7 +42,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate var needShowShowImageView : Bool             = false
     private var actionTapped : Bool                          = false
     fileprivate var latestPresentedView : UIViewController?  = nil
-    //not in used
+    
     func setViewModel(_ vm: Any) {
     }
     

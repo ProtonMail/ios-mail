@@ -69,24 +69,24 @@ final class EventCheckResponse : ApiResponse {
     var contactEmails : [[String : Any]]?
     var labels : [[String : Any]]?
     
-    var subscription : [String : Any]? // for later
+    var subscription : [String : Any]? //TODO:: we will use this when we impl in app purchase
     
     var user : [String : Any]?
     var userSettings : [String : Any]?
     var mailSettings : [String : Any]?
     
-    var vpnSettings : [String : Any]? // for later
-    var invoices : [String : Any]? // for later
-    var members : [[String : Any]]? // for later
-    var domains : [[String : Any]]? // for later
+    var vpnSettings : [String : Any]? //TODO:: vpn settings events, to use this when we add vpn setting in the app
+    var invoices : [String : Any]? //TODO:: use when we add invoice setting
+    var members : [[String : Any]]? //TODO:: use when we add memebers setting in the app
+    var domains : [[String : Any]]? //TODO:: use when we add domain configure in the app
     
     var addresses : [[String : Any]]?
     
-    var organization : [String : Any]? // for later
+    var organization : [String : Any]? //TODO:: use when we add org setting in the app
     
     var messageCounts: [[String : Any]]?
     
-    var conversationCounts: [[String : Any]]? // for later
+    var conversationCounts: [[String : Any]]? //TODO:: use when we add conversation view
     
     var usedSpace : String?
     var notices : [String]?

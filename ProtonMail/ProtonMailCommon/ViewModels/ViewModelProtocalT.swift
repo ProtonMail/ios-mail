@@ -9,7 +9,7 @@
 import Foundation
 
 
-/// this file is not in used.
+/// this file is not in use because it is an experimental structure.
 /// reason: everytime access viewModel needs to go thorugh this wrapper which is not good.
 
 private var viewModelKey: UInt8 = 0

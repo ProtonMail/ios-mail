@@ -10,9 +10,8 @@ import Foundation
 
 import Photos
 
-// not in used
+@available(*, deprecated)
 extension PHAsset {
-    
     var originalFilename: String? {
         
         var fname:String?

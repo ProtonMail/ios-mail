@@ -121,7 +121,7 @@ final class KeysResponse : ApiResponse {
     }
 }
 
-//MARK : get keys salt  #not in used
+@available(*, deprecated)
 final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
     
     override func method() -> APIService.HTTPMethod {

@@ -43,7 +43,6 @@ extension APIService {
                 let env = 7
             #endif
         #else
-            // for later
             // const PROVIDER_FCM_IOS = 4;
             // const PROVIDER_FCM_IOS_BETA = 5;
             #if DEBUG

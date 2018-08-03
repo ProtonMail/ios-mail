@@ -12,17 +12,18 @@ import Foundation
 
 final class Address: NSObject {
     let address_id: String
-    let email: String   //email address name
+    let email: String   // email address name
     let status : Int    // 0 is disabled, 1 is enabled, can be set by user
-    let type : Int      //1 is original PM, 2 is PM alias, 3 is custom domain address
+    let type : Int      // 1 is original PM, 2 is PM alias, 3 is custom domain address
     let receive: Int    // 1 is active address (Status =1 and has key), 0 is inactive (cannot send or receive)
-    var order: Int      // address order replace send //1.6.7
-    var send: Int       // v<1.6.7 address order  v>=1.6.7 not in use
+    var order: Int      // address order
+    // 0 means you can’t send with it 1 means you can pm.me addresses have Send 0 for free users, for instance so do addresses without keys
+    var send: Int
     let keys: [Key]
     
-    let mailbox: Int   //Not inuse
-    var display_name: String  //not inuse
-    var signature: String //not inuse
+    @available(*, deprecated) let mailbox: Int   //Not inuse
+    var display_name: String
+    var signature: String
     
     required init(addressid: String?,
                   email: String?,
@@ -51,6 +52,7 @@ final class Address: NSObject {
     }
 }
 
+// MARK: - TODO:: we'd better move to Codable or at least NSSecureCoding when will happen to refactor this part of app from Anatoly
 extension Address: NSCoding {
     //the keys all messed up but it works ( don't copy paste there looks really bad)
     fileprivate struct CoderKey {

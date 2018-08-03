@@ -11,7 +11,8 @@
 //
 
 import UIKit
-//TODO:: not in used 
+
+@available(*, deprecated, message:"remove it when refactoring")
 class SettingsViewController: ProtonMailViewController {
     typealias CompletionBlock = APIService.CompletionBlock
     
