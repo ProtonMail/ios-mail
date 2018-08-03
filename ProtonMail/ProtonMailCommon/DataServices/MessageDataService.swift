@@ -499,7 +499,7 @@ class MessageDataService {
                                                         completion?(task, fileURL, error)
                 })
             } else {
-                PMLog.D("The attachment not exist") //TODO:: need add log here
+                PMLog.D("The attachment not exist")
                 completion?(nil, nil, nil)
             }
         }
