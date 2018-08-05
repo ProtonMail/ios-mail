@@ -1321,8 +1321,11 @@ class LocalizedString {
     /// "FORGOT PASSWORD?"
     lazy var _forgot_password = NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd")
 
-
-
+    // "Sending Message"
+    lazy var _sending_message = NSLocalizedString("Sending message", comment: "Alert title")
+    // "This can take a while, please do not dismiss the app"
+    lazy var _please_wait_in_foreground = NSLocalizedString("This can take a while depending on your Internet connection and attachmetns size, please do not dismiss the app", comment: "Alert message")
+    
 
     /// "Please use the web application to reset your password."
     lazy var _please_use_the_web_application_to_reset_your_password = NSLocalizedString("Please use the web application to reset your password.", comment: "Alert")

@@ -176,7 +176,9 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     
     private var observation: NSKeyValueObservation?
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
-        let alert = UIAlertController(title: "Working", message: "Please wait", preferredStyle: .alert)
+        let alert = UIAlertController(title: LocalString._sending_message,
+                                      message: LocalString._please_wait_in_foreground,
+                                      preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         
         self.observation = sharedMessageQueue.observe(\.queue) { [weak self] _, change in
