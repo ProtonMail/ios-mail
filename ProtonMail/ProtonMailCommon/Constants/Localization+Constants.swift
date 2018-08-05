@@ -268,7 +268,10 @@ class LocalizedString {
     lazy var _composer_define_password = NSLocalizedString("Define Password", comment: "place holder")
     /// "Define Hint (Optional)"
     lazy var _define_hint_optional = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
-
+    /// "Too many recipients"
+    lazy var _too_many_recipients = NSLocalizedString("Define Hint (Optional)", comment: "Alert title")
+    /// "The maximum number of Recipients is 25."
+    lazy var _max_number_of_recipients_is = NSLocalizedString("The maximum number of Recipients is 25.", comment: "Alert message")
     
     
     // Mark Contacts

@@ -30,12 +30,13 @@ struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
 
 
 class ComposeViewModel {
+    private let maxNumberOfRecipients: Int = 25
     var message : Message?
     var messageAction : ComposeMessageAction!
-    var toSelectedContacts: [ContactVO]! = [ContactVO]()
-    var ccSelectedContacts: [ContactVO]! = [ContactVO]()
-    var bccSelectedContacts: [ContactVO]! = [ContactVO]()
-    var contacts: [ContactVO]! = [ContactVO]()
+    var toSelectedContacts: [ContactVO] = [ContactVO]()
+    var ccSelectedContacts: [ContactVO] = [ContactVO]()
+    var bccSelectedContacts: [ContactVO] = [ContactVO]()
+    var contacts: [ContactVO] = [ContactVO]()
     
     var subject : String! = ""
     var body : String! = ""
@@ -58,6 +59,11 @@ class ComposeViewModel {
     var bodyChanged : Bool = false;
     
     init() { }
+    
+    func validateNumberOfRecipients() -> Bool {
+        let overallRecipients = [toSelectedContacts, ccSelectedContacts, bccSelectedContacts].map{ $0.count }.reduce(0, +)
+        return overallRecipients < self.maxNumberOfRecipients
+    }
     
     func getSubject() -> String {
         return self.subject
