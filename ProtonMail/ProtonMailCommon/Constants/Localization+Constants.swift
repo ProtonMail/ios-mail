@@ -268,7 +268,10 @@ class LocalizedString {
     lazy var _composer_define_password = NSLocalizedString("Define Password", comment: "place holder")
     /// "Define Hint (Optional)"
     lazy var _define_hint_optional = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
-
+    /// "Too many recipients"
+    lazy var _too_many_recipients = NSLocalizedString("Define Hint (Optional)", comment: "Alert title")
+    /// "The maximum number of Recipients is 25."
+    lazy var _max_number_of_recipients_is = NSLocalizedString("The maximum number of Recipients is 25.", comment: "Alert message")
     
     
     // Mark Contacts
@@ -1318,8 +1321,11 @@ class LocalizedString {
     /// "FORGOT PASSWORD?"
     lazy var _forgot_password = NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd")
 
-
-
+    // "Sending Message"
+    lazy var _sending_message = NSLocalizedString("Sending message", comment: "Alert title")
+    // "This can take a while, please do not dismiss the app"
+    lazy var _please_wait_in_foreground = NSLocalizedString("This can take a while depending on your Internet connection and attachmetns size, please do not dismiss the app", comment: "Alert message")
+    
 
     /// "Please use the web application to reset your password."
     lazy var _please_use_the_web_application_to_reset_your_password = NSLocalizedString("Please use the web application to reset your password.", comment: "Alert")

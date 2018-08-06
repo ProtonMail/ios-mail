@@ -45,7 +45,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     // private vars
     fileprivate var timer : Timer!
     fileprivate var draggin : Bool! = false
-    fileprivate var contacts: [ContactVO]! = [ContactVO]()
+    fileprivate var contacts: [ContactVO] = [ContactVO]()
     fileprivate var actualEncryptionStep = EncryptionStep.DefinePassword
     fileprivate var encryptionPassword: String = ""
     fileprivate var encryptionConfirmPassword: String = ""
@@ -693,6 +693,15 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     }
     
     func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker) {
+        guard self.viewModel.validateNumberOfRecipients() else {
+            let alert = UIAlertController(title: LocalString._too_many_recipients,
+                                          message: LocalString._max_number_of_recipients_is,
+                                          preferredStyle: .alert)
+            alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            picker.reloadData()
+            return
+        }
         if (picker == composeView.toContactPicker) {
             self.viewModel.toSelectedContacts.append(contact)
         } else if (picker == composeView.ccContactPicker) {
@@ -707,7 +716,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         if (picker == composeView.toContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.toSelectedContacts
-            for (index, selectedContact) in (selectedContacts?.enumerated())! {
+            for (index, selectedContact) in selectedContacts.enumerated() {
                 if (contact.email == selectedContact.email) {
                     contactIndex = index
                 }
@@ -718,7 +727,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         } else if (picker == composeView.ccContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.ccSelectedContacts
-            for (index, selectedContact) in (selectedContacts?.enumerated())! {
+            for (index, selectedContact) in selectedContacts.enumerated() {
                 if (contact.email == selectedContact.email) {
                     contactIndex = index
                 }
@@ -729,7 +738,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         } else if (picker == composeView.bccContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.bccSelectedContacts
-            for (index, selectedContact) in (selectedContacts?.enumerated())! {
+            for (index, selectedContact) in selectedContacts.enumerated() {
                 if (contact.email == selectedContact.email) {
                     contactIndex = index
                 }

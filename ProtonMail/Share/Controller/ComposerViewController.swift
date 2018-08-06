@@ -176,7 +176,9 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     
     private var observation: NSKeyValueObservation?
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
-        let alert = UIAlertController(title: "Working", message: "Please wait", preferredStyle: .alert)
+        let alert = UIAlertController(title: LocalString._sending_message,
+                                      message: LocalString._please_wait_in_foreground,
+                                      preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         
         self.observation = sharedMessageQueue.observe(\.queue) { [weak self] _, change in
@@ -585,6 +587,15 @@ extension ComposerViewController : ComposeViewDelegate {
     }
     
     func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker) {
+        guard self.viewModel.validateNumberOfRecipients() else {
+            let alert = UIAlertController(title: LocalString._too_many_recipients,
+                                          message: LocalString._max_number_of_recipients_is,
+                                          preferredStyle: .alert)
+            alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            picker.reloadData()
+            return
+        }
         if (picker == composeView.toContactPicker) {
             self.viewModel.toSelectedContacts.append(contact)
         } else if (picker == composeView.ccContactPicker) {
@@ -599,7 +610,7 @@ extension ComposerViewController : ComposeViewDelegate {
         if (picker == composeView.toContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.toSelectedContacts
-            for (index, selectedContact) in (selectedContacts?.enumerated())! {
+            for (index, selectedContact) in selectedContacts.enumerated() {
                 if (contact.email == selectedContact.email) {
                     contactIndex = index
                 }
@@ -610,7 +621,7 @@ extension ComposerViewController : ComposeViewDelegate {
         } else if (picker == composeView.ccContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.ccSelectedContacts
-            for (index, selectedContact) in (selectedContacts?.enumerated())! {
+            for (index, selectedContact) in selectedContacts.enumerated() {
                 if (contact.email == selectedContact.email) {
                     contactIndex = index
                 }
@@ -621,7 +632,7 @@ extension ComposerViewController : ComposeViewDelegate {
         } else if (picker == composeView.bccContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.bccSelectedContacts
-            for (index, selectedContact) in (selectedContacts?.enumerated())! {
+            for (index, selectedContact) in selectedContacts.enumerated() {
                 if (contact.email == selectedContact.email) {
                     contactIndex = index
                 }

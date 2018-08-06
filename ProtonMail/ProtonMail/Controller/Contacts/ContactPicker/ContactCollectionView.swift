@@ -148,9 +148,6 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         }
         set {
             self._allowsTextInput = newValue
-            if self.indexPathsForVisibleItems.contains(self.entryCellIndexPath) {//&& self.entryCellIndexPath
-                self.reloadItems(at: [self.entryCellIndexPath])
-            }
         }
     }
 
@@ -165,26 +162,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             return self._showPrompt
         }
         set {
-            if self._showPrompt == newValue {
-                return
-            }
-            
             _showPrompt = newValue
-            
-            // If there aren't any visible cells, then one of the following is true:
-            //
-            // 1)   -[UICollectionView reloadData] hasn't yet been called.  In that case, calling `insertItemsAtIndexPaths:` or
-            //      `deleteItemsAtIndexPaths:` could cause undesired behavior.
-            // 2)   There really aren't any cells.  This shouldn't happen since, at a minimum, the entry cell should be present.
-            if self.visibleCells.count == 0 {
-                return
-            }
-            
-            if self._showPrompt {
-                self.insertItems(at: [IndexPath(row: 0, section: 0)])
-            } else {
-                self.deleteItems(at: [IndexPath(row: 0, section: 0)])
-            }
         }
     }
     
@@ -194,14 +172,6 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         }
         set {
             self._prompt = newValue
-            // If there aren't any visible cells, then one of the following is true:
-            //
-            // 1)   -[UICollectionView reloadData] hasn't yet been called.  In that case, calling `reloadItemsAtIndexPaths:` could cause undesired behavior.
-            // 2)   There really aren't any cells.  This shouldn't happen since, at a minimum, the entry cell should be present.
-            if (self.showPrompt && self.visibleCells.count > 0)
-            {
-                self.reloadItems(at: [IndexPath(row: 0, section: 0)])
-            }
         }
     }
     
