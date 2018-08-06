@@ -189,7 +189,7 @@ class MessageDataService {
                 }
             }
             
-            let request = FetchMessages(location: location, endTime: Time);
+            let request = FetchMessages(location: location, endTime: Time)
             sharedAPIService.GET(request, completion: completionWrapper)
         }
     }
@@ -261,7 +261,7 @@ class MessageDataService {
                     self.fetchMessagesForLocation(location, MessageID: MessageID, Time: Time, foucsClean: false, completion: completionWrapper)
                     
                     sharedContactDataService.fetchContacts(completion: nil)
-                    sharedLabelsDataService.fetchLabels();
+                    sharedLabelsDataService.fetchLabels()
                 }  else {
                     completion?(task, nil, nil)
                 }
@@ -297,7 +297,7 @@ class MessageDataService {
                                 sharedContactDataService.clean()
                                 self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
                                 sharedContactDataService.fetchContacts(completion: nil)
-                                sharedLabelsDataService.fetchLabels();
+                                sharedLabelsDataService.fetchLabels()
                             } else {
                                 completion?(task, nil, nil)
                             }
@@ -318,7 +318,7 @@ class MessageDataService {
                                 self.processEvents(addresses: eventsRes.addresses)
                                 self.processEvents(counts: eventsRes.messageCounts)
                                 
-                                var outMessages : [Any] = [];
+                                var outMessages : [Any] = []
                                 for message in messageEvents {
                                     let msg = MessageEvent(event: message)
                                     if msg.Action == 1 {
@@ -376,7 +376,7 @@ class MessageDataService {
                                 sharedContactDataService.clean()
                                 self.fetchMessagesForLabels(labelID, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
                                 sharedContactDataService.fetchContacts(completion: nil)
-                                sharedLabelsDataService.fetchLabels();
+                                sharedLabelsDataService.fetchLabels()
                             } else {
                                 completion?(task, nil, nil)
                             }
@@ -397,7 +397,7 @@ class MessageDataService {
                                 self.processEvents(addresses: eventsRes.addresses)
                                 self.processEvents(counts: eventsRes.messageCounts)
                                 
-                                var outMessages : [Any] = [];
+                                var outMessages : [Any] = []
                                 for message in messageEvents {
                                     let msg = MessageEvent(event: message)
                                     if msg.Action == 1 {
@@ -873,7 +873,7 @@ class MessageDataService {
             do {
                 
                 if let badMessages = try context.fetch(fetchRequest) as? [Message] {
-                    self.fetchMessagesWithIDs(badMessages);
+                    self.fetchMessagesWithIDs(badMessages)
                 }
             } catch let ex as NSError {
                 ex.upload(toFabric: "purgeOldMessages")
@@ -1028,12 +1028,12 @@ class MessageDataService {
                                     message.messageID = messageID
                                     message.isDetailDownloaded = true
                                     
-                                    var hasTemp = false;
+                                    var hasTemp = false
                                     let attachments = message.mutableSetValue(forKey: "attachments")
                                     for att in attachments {
                                         if let att = att as? Attachment {
                                             if att.isTemp {
-                                                hasTemp = true;
+                                                hasTemp = true
                                                 context.delete(att)
                                             }
                                             att.keyChanged = false
@@ -1106,11 +1106,11 @@ class MessageDataService {
                                 }
                             })
                         }
-                        return;
+                        return
                     }
                 } catch let ex as NSError {
                     completion?(nil, nil, ex)
-                    return;
+                    return
                 }
             }
         }
@@ -1122,9 +1122,9 @@ class MessageDataService {
     }
     
     
-    fileprivate func uploadAttachmentWithAttachmentID (_ addressID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
+    private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         if let context = managedObjectContext {
-            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(addressID) {
+            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(managedObjectID) {
                 
                 var msgObject : NSManagedObject?
                 do {
@@ -1157,19 +1157,21 @@ class MessageDataService {
                     let completionWrapper: CompletionBlock = { task, response, error in
                         PMLog.D("SendAttachmentDebug == finish upload att!")
                         if error == nil {
-                            if let messageID = response?["AttachmentID"] as? String {
-                                attachment.attachmentID = messageID
-                                attachment.keyPacket = keyPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                                
-                                // since the encrypted attachment is successfully uploaded, we no longer need it cleartext in db
-                                attachment.fileData = nil
-                                if let fileUrl = attachment.localURL,
-                                    let _ = try? FileManager.default.removeItem(at: fileUrl)
-                                {
-                                    attachment.localURL = nil
-                                }
-                                if let error = context.saveUpstreamIfNeeded() {
-                                    PMLog.D(" error: \(error)")
+                            if let attDict = response?["Attachment"] as? [String : Any] {
+                                if let messageID = attDict["ID"] as? String {
+                                    attachment.attachmentID = messageID
+                                    attachment.keyPacket = keyPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                                    
+                                    // since the encrypted attachment is successfully uploaded, we no longer need it cleartext in db
+                                    attachment.fileData = nil
+                                    if let fileUrl = attachment.localURL,
+                                        let _ = try? FileManager.default.removeItem(at: fileUrl)
+                                    {
+                                        attachment.localURL = nil
+                                    }
+                                    if let error = context.saveUpstreamIfNeeded() {
+                                        PMLog.D(" error: \(error)")
+                                    }
                                 }
                             }
                         }
@@ -1193,10 +1195,10 @@ class MessageDataService {
         let _ = sharedMessageQueue.remove(writeQueueUUID)
         self.dequeueIfNeeded()
         
-        completion?(nil, nil, NSError.badParameter(addressID))
+        completion?(nil, nil, NSError.badParameter(managedObjectID))
     }
     
-    fileprivate func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
+    private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         if let _ = managedObjectContext {
             let api = DeleteAttachment(attID: deleteObject)
             api.call({ (task, response, hasError) -> Void in
@@ -1212,22 +1214,41 @@ class MessageDataService {
         completion?(nil, nil, NSError.badParameter(deleteObject))
     }
     
-    fileprivate func emptyMessageWithLocation (_ location: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        if let _ = managedObjectContext {
-            let api = MessageEmptyRequest(location: location);
-            api.call({ (task, response, hasError) -> Void in
-                completion?(task, nil, nil)
-            })
+    private func emptyMessage(at location: MessageLocation, completion: CompletionBlock?) {
+        guard location == .spam || location == .trash || location == .draft else {
+            completion?(nil, nil, nil)
             return
         }
-        
-        // nothing to send, dequeue request
-        let _ = sharedMessageQueue.remove(writeQueueUUID)
-        self.dequeueIfNeeded()
-        completion?(nil, nil, NSError.badParameter("\(location)"))
+        let labelID = "\(location.rawValue)"
+        let api = EmptyMessage(labelID: labelID)
+        api.call({ (task, response, hasError) -> Void in
+            completion?(task, nil, nil)
+        })
+
     }
     
-    fileprivate func send(byID messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
+    
+    private func labelMessage(_ location: MessageLocation, messageID: String, completion: CompletionBlock?) {
+        let labelID = "\(location.rawValue)"
+        let api = ApplyLabelToMessages(labelID: labelID, messages: [messageID])
+        api.call({ (task, response, hasError) -> Void in
+            completion?(task, nil, response?.error)
+        })
+    }
+    
+    private func unLabelMessage(_ location: MessageLocation, messageID: String, completion: CompletionBlock?) {
+        guard location == .starred else {
+            completion?(nil, nil, nil)
+            return
+        }
+        let labelID = "\(location.rawValue)"
+        let api = RemoveLabelFromMessages(labelID: labelID, messages: [messageID])
+        api.call({ (task, response, hasError) -> Void in
+            completion?(task, nil, response?.error)
+        })
+    }
+    
+    private func send(byID messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
             let _ = sharedMessageQueue.remove(writeQueueUUID)
@@ -1243,7 +1264,7 @@ class MessageDataService {
                 let err = RuntimeError.bad_draft.error
                 Crashlytics.sharedInstance().recordError(err)
                 errorBlock(nil, nil, err)
-                return ;
+                return
             }
             
             var requests : [UserEmailPubKeys] = [UserEmailPubKeys]()
@@ -1368,18 +1389,18 @@ class MessageDataService {
                             if sendBuilder.outSideUser {
                                 message.isEncrypted =  NSNumber(value: EncryptTypes.outEnc.rawValue)
                             } else {
-                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
+                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue)
                             }
                         } else {
                             if sendBuilder.outSideUser {
-                                message.isEncrypted = NSNumber(value: EncryptTypes.outPlain.rawValue);
+                                message.isEncrypted = NSNumber(value: EncryptTypes.outPlain.rawValue)
                             } else {
-                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
+                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue)
                             }
                         }
                         
                         if attachments.count > 0 {
-                            message.hasAttachments = true;
+                            message.hasAttachments = true
                             message.numAttachments = NSNumber(value: attachments.count)
                         }
                         //TODO::fix later 1.7
@@ -1414,9 +1435,18 @@ class MessageDataService {
                 }
                 completion?(nil, nil, error)
             }.catch { (error) in
-                PMLog.D(error.localizedDescription)
                 let err = error as NSError
-                NSError.alertMessageSentError(details: error.localizedDescription)
+                PMLog.D(error.localizedDescription)
+                if err.code == 9001 {
+                    //here need let user to show the human check.
+                    sharedMessageQueue.isRequiredHumanCheck = true
+                    NSError.alertMessageSentError(details: err.localizedDescription)
+                } else if err.code == 15198 {
+                    NSError.alertMessageSentError(details: err.localizedDescription)
+                }  else {
+                    NSError.alertMessageSentError(details: err.localizedDescription)
+                }
+                err.upload(toFabric: SendingErrorTitle)
                 completion?(nil, nil, err)
             }
             return
@@ -1448,7 +1478,7 @@ class MessageDataService {
                     let err = RuntimeError.bad_draft.error
                     Crashlytics.sharedInstance().recordError(err)
                     errorBlock(task, nil, err)
-                    return ;
+                    return
                 }
                 
                 // is encrypt outside
@@ -1460,7 +1490,7 @@ class MessageDataService {
                 // create package for internal
                 let sendMessage = self.generatMessagePackage(message, keys: response, atts:attachments, encrptOutside: isEncryptOutside)
                 
-                let reskeys = response;
+                let reskeys = response
                 
                 // parse the response for keys
                 //_ = try? self.messageBodyForMessage(message, response: response)
@@ -1479,8 +1509,8 @@ class MessageDataService {
                                     }
                                     if let publicKey = v as? String {
                                         if publicKey.isEmpty {
-                                            isOutsideUser = true;
-                                            break;
+                                            isOutsideUser = true
+                                            break
                                         }
                                     }
                                 }
@@ -1489,18 +1519,18 @@ class MessageDataService {
                                 if isOutsideUser {
                                     message.isEncrypted =  NSNumber(value: EncryptTypes.outEnc.rawValue)
                                 } else {
-                                    message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
+                                    message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue)
                                 }
                             } else {
                                 if isOutsideUser {
-                                    message.isEncrypted = NSNumber(value: EncryptTypes.outPlain.rawValue);
+                                    message.isEncrypted = NSNumber(value: EncryptTypes.outPlain.rawValue)
                                 } else {
-                                    message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue);
+                                    message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue)
                                 }
                             }
                             
                             if attachments.count > 0 {
-                                message.hasAttachments = true;
+                                message.hasAttachments = true
                                 message.numAttachments = NSNumber(value: attachments.count)
                             }
                             //TODO::fix later 1.7
@@ -1554,7 +1584,7 @@ class MessageDataService {
         errorBlock(nil, nil, NSError.badParameter(messageID))
     }
 
-    fileprivate func markReplyStatus(_ oriMsgID : String?, action : NSNumber?) {
+    private func markReplyStatus(_ oriMsgID : String?, action : NSNumber?) {
         if let _ = managedObjectContext {
             if let originMessageID = oriMsgID {
                 if let act = action {
@@ -1565,11 +1595,11 @@ class MessageDataService {
                                 if let message : Message = fetchedMessageController.fetchedObjects?.first as? Message  {
                                     //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
                                     if act == 0 {
-                                        message.isReplied = true;
+                                        message.isReplied = true
                                     } else if act == 1 {
-                                        message.isRepliedAll = true;
+                                        message.isRepliedAll = true
                                     } else if act == 2{
-                                        message.isForwarded = true;
+                                        message.isForwarded = true
                                     } else {
                                         //ignore
                                     }
@@ -1614,7 +1644,7 @@ class MessageDataService {
                 self.dequeueIfNeeded()
             } else {
                 PMLog.D(" error: \(String(describing: error))")
-                var statusCode = 200;
+                var statusCode = 200
                 var isInternetIssue = false
                 if let errorUserInfo = error?.userInfo {
                     if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
@@ -1658,9 +1688,9 @@ class MessageDataService {
                 if statusCode == 200 && error?.code == 9001 {
                     
                 } else if statusCode == 200 && error?.code > 1000 {
-                    //show error
                     let _ = sharedMessageQueue.remove(elementID)
-                    //TODO:: pop some errors here
+                } else if statusCode == 200 && error?.code < 200 {
+                    let _ = sharedMessageQueue.remove(elementID)
                 }
                 
                 if statusCode != 200 && statusCode != 404 && statusCode != 500 && !isInternetIssue {
@@ -1705,20 +1735,32 @@ class MessageDataService {
                 sharedMessageQueue.isInProgress = true
                 switch action {
                 case .saveDraft:
-                    draft(save: messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-                case .send:
-                    send(byID: messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.draft(save: messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .uploadAtt:
-                    uploadAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.uploadAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .deleteAtt:
-                    deleteAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.deleteAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .send:
+                    self.send(byID: messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .emptyTrash:
-                    emptyMessageWithLocation("trash", writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.emptyMessage(at: .trash, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .emptySpam:
-                    emptyMessageWithLocation("spam", writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.emptyMessage(at: .spam, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .read, .unread: //1.9.1
                     sharedAPIService.PUT(MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-                default:
+                case .inbox:
+                    self.labelMessage(.inbox, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .spam:
+                    self.labelMessage(.spam, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .trash:
+                    self.labelMessage(.trash, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .archive:
+                    self.labelMessage(.archive, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .star:
+                    self.labelMessage(.starred, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .unstar:
+                    self.unLabelMessage(.starred, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                default://delete.
                     sharedAPIService.PUT(MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 }
             } else {
@@ -1792,7 +1834,7 @@ class MessageDataService {
             if response != nil && !hasError && !response!.eventID.isEmpty {
                 let completionWrapper: CompletionBlock = { task, responseDict, error in
                     if error == nil {
-                        lastUpdatedStore.clear();
+                        lastUpdatedStore.clear()
                         lastUpdatedStore.lastEventID = response!.eventID
                     }
                     completion?(task, nil, error)
@@ -1800,7 +1842,7 @@ class MessageDataService {
                 
                 self.cleanMessage()
                 sharedContactDataService.clean()
-                sharedLabelsDataService.fetchLabels();
+                sharedLabelsDataService.fetchLabels()
                 self.fetchMessagesForLocation(MessageLocation.inbox, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
                 
                 sharedContactDataService.fetchContacts(completion: nil)
@@ -1831,7 +1873,7 @@ class MessageDataService {
             let context = sharedCoreDataService.newMainManagedObjectContext()
             context.perform { () -> Void in
                 var error: NSError?
-                var messagesNoCache : [Message] = [];
+                var messagesNoCache : [Message] = []
                 for message in messages {
                     let msg = MessageEvent(event: message)
                     switch(msg.Action) {
@@ -1880,7 +1922,7 @@ class MessageDataService {
                                                 }
                                             }
                                         }
-                                        continue;
+                                        continue
                                     }
                                 }
                             }

@@ -250,7 +250,7 @@ class CreateDraft : ApiRequest<MessageResponse> {
 
 /// message update draft api request
 final class UpdateDraft : CreateDraft {
-
+    
     override func path() -> String {
         return MessageAPI.path + "/" + message.messageID + AppConstants.DEBUG_OPTION
     }
@@ -271,8 +271,8 @@ final class MessageActionRequest : ApiRequest<ApiResponse> {
     let messages : [Message]!
     let action : String!
     var ids : [String] = [String] ()
-
-    public init(action:String, messages: [Message]!) {
+    
+    init(action:String, messages: [Message]!) {
         self.messages = messages
         self.action = action
         for message in messages {
@@ -282,7 +282,7 @@ final class MessageActionRequest : ApiRequest<ApiResponse> {
         }
     }
     
-    public init(action:String, ids : [String]!) {
+    init(action:String, ids : [String]!) {
         self.action = action
         self.ids = ids
         self.messages = [Message]()
@@ -307,11 +307,11 @@ final class MessageActionRequest : ApiRequest<ApiResponse> {
 }
 
 /// empty trash or spam
-final class MessageEmptyRequest : ApiRequest <ApiResponse> {
-    let location : String!
+final class EmptyMessage : ApiRequest <ApiResponse> {
+    let labelID : String
     
-    public init(location: String! ) {
-        self.location = location
+    init(labelID: String) {
+        self.labelID = labelID
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -319,7 +319,7 @@ final class MessageEmptyRequest : ApiRequest <ApiResponse> {
     }
     
     override func path() -> String {
-        return MessageAPI.path + "/" + location + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/empty?LabelID=" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -459,7 +459,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
             }
             packages.append(htmlAddress)
         }
-       
+        
         if mimePackage.count > 0 {
             //mime
             var mimeAddress : [String : Any] = [String : Any]()
@@ -521,7 +521,7 @@ final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     }
     
     override func toDictionary() -> [String : Any]? {
-
+        
         
         var out : [String : Any] = [String : Any]()
         
@@ -576,9 +576,9 @@ final class MessagePackage : Package {
     /// default sender email address
     let address : String!
     /** send encrypt message package type
-    *   1 internal
-    *   2 external
-    */
+     *   1 internal
+     *   2 external
+     */
     let type : Int!
     /// encrypt message body
     let body : String!
@@ -592,17 +592,17 @@ final class MessagePackage : Package {
     let attPackets : [AttachmentKeyPackage]
     
     /**
-    message packages
-    
-    :param: address    addresses
-    :param: type       package type
-    :param: body       package encrypt body
-    :param: token      eo token optional only for encrypt outside
-    :param: encToken   eo encToken optional only for encrypt outside
-    :param: attPackets attachment package
-    
-    :returns: self
-    */
+     message packages
+     
+     :param: address    addresses
+     :param: type       package type
+     :param: body       package encrypt body
+     :param: token      eo token optional only for encrypt outside
+     :param: encToken   eo encToken optional only for encrypt outside
+     :param: attPackets attachment package
+     
+     :returns: self
+     */
     init(address:String, type : Int, body :String!, attPackets:[AttachmentKeyPackage]=[AttachmentKeyPackage](), token : String! = "", encToken : String! = "", passwordHint : String! = "") {
         self.address = address
         self.type = type
@@ -664,13 +664,13 @@ final class AttachmentKeyPackage : Package {
 }
 
 /**
-*  temporary table for formating the message send package
-*/
+ *  temporary table for formating the message send package
+ */
 final class TempAttachment {
     let ID : String!
     let Session : Data?
     
-    public init(id: String, session: Data?) {
+    init(id: String, session: Data?) {
         self.ID = id
         self.Session = session
     }

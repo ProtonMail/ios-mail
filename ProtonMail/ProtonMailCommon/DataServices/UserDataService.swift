@@ -873,7 +873,7 @@ class UserDataService {
                     self.userInfo = userInfo
                 }
             }
-            completion(task, nil, nil)
+            completion(task, nil, response?.error)
         }
     }
     
