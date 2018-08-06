@@ -36,7 +36,8 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     }
     
     // private views
-    fileprivate weak var webView : UIWebView?
+    fileprivate weak var webView: UIWebView?
+    fileprivate weak var webViewBottomLine: NSLayoutConstraint!
     fileprivate lazy var composeViewController: ComposeView = {
         let composeViewController = ComposeView(nibName: "ComposeView", bundle: nil)
         composeViewController.delegate = self
@@ -73,6 +74,15 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         super.viewDidLoad()
         self.edgesForExtendedLayout = []
         
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardShown(_:)),
+                                               name: Notification.Name.UIKeyboardWillShow,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardShown(_:)),
+                                               name: Notification.Name.UIKeyboardWillHide,
+                                               object: nil)
+        
         // navigation bar items
         self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button,
                                             style: .plain,
@@ -92,7 +102,8 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
             self.editorView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
             self.editorView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
             self.editorView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            self.editorView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+            self.webViewBottomLine = self.editorView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            self.webViewBottomLine.isActive = true
         }
 
         // compose view
@@ -121,6 +132,18 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         let _ = self.composeViewController.toContactPicker.becomeFirstResponder() // FIXME: there is another one when contacts loaded
         
         self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc private func keyboardShown(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
+            return
+        }
+        self.webViewBottomLine.constant = -1 * keyboardFrame.size.height
+        self.webView?.scrollView.contentInset = .init(top: 0, left: 0, bottom: self.composeViewController.view.bounds.height, right: 0)
     }
     
     @objc func send_clicked(sender: UIBarButtonItem) {

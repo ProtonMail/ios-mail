@@ -41,6 +41,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     fileprivate var webView : UIWebView!
     fileprivate var composeView : ComposeView!
     fileprivate var cancelButton: UIBarButtonItem!
+    fileprivate weak var webViewBottomLine: NSLayoutConstraint!
     
     // private vars
     fileprivate var timer : Timer!
@@ -69,6 +70,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     fileprivate var isShowingConfirm : Bool = false
     
     deinit {
+        NotificationCenter.default.removeObserver(self)
         if let wv = self.webView {
             wv.delegate = nil
             wv.stopLoading()
@@ -77,6 +79,15 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardShown(_:)),
+                                               name: Notification.Name.UIKeyboardWillShow,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardShown(_:)),
+                                               name: Notification.Name.UIKeyboardWillHide,
+                                               object: nil)
         
         self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button,
                                             style: UIBarButtonItemStyle.plain,
@@ -87,8 +98,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         configureNavigationBar()
         setNeedsStatusBarAppearanceUpdate()
         
-        self.baseURL = URL( fileURLWithPath: "https://protonmail.ch")
-        //self.formatHTML = false
+        self.baseURL = URL(fileURLWithPath: "https://protonmail.ch")
         self.webView = self.getWebView()
         
         // init views
@@ -104,6 +114,11 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         self.composeView.datasource = self
         self.webView.scrollView.addSubview(composeView.view)
         self.webView.scrollView.bringSubview(toFront: composeView.view)
+        
+        if #available(iOS 9.0, *) {
+            self.webViewBottomLine = self.webView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            self.webViewBottomLine.isActive = true
+        }
         
         // update content values
         updateMessageView()
@@ -125,6 +140,14 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         self.viewModel.markAsRead();
         
         self.formatHTML = true
+    }
+    
+    @objc private func keyboardShown(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
+            return
+        }
+        self.webViewBottomLine.constant = -1 * keyboardFrame.size.height
+        self.webView?.scrollView.contentInset = .init(top: 0, left: 0, bottom: composeViewSize, right: 0)
     }
     
     
