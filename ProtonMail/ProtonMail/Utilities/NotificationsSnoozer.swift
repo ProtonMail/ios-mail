@@ -11,7 +11,7 @@ import Foundation
 // controller
 @available(iOS 10.0, *)
 final class NotificationsSnoozer: NotificationsSnoozerCore {
-    internal static var appVersion = AppVersion("1.9.1")
+    internal static var appVersion = AppVersion("1.9.2")
     
     internal func overview(at date: Date,
                            ofCase type: NotificationsSnoozerCore.Configuration.CodingKeys? = nil) -> String

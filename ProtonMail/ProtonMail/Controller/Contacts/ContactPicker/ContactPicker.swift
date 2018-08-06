@@ -114,11 +114,18 @@ class ContactPicker: UIView {
         self.addSubview(contactCollectionView)
         
         self.contactCollectionView = contactCollectionView
-        if #available(iOS 9.0, *) { // we're dropping iOS8 by this version
+        if #available(iOS 9.0, *) {
             self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
             self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
             self.contactCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
             self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        } else {
+            NSLayoutConstraint.activate([
+                NSLayoutConstraint(item: self.contactCollectionView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0.0),
+                NSLayoutConstraint(item: self.contactCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0),
+                NSLayoutConstraint(item: self.contactCollectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0.0),
+                NSLayoutConstraint(item: self.contactCollectionView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0.0)
+            ])
         }
         
         self.maxVisibleRows = ContactPickerDefined.kMaxVisibleRows

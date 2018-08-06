@@ -104,6 +104,14 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
             self.editorView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
             self.webViewBottomLine = self.editorView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
             self.webViewBottomLine.isActive = true
+        } else if #available(iOSApplicationExtension 8.0, *) {
+            NSLayoutConstraint.activate([
+                NSLayoutConstraint(item: self.editorView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1.0, constant: 0.0),
+                NSLayoutConstraint(item: self.editorView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1.0, constant: 0.0),
+                NSLayoutConstraint(item: self.editorView, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1.0, constant: 0.0)
+            ])
+            self.webViewBottomLine = NSLayoutConstraint(item: self.editorView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+            self.webViewBottomLine.isActive = true
         }
 
         // compose view
