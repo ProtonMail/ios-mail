@@ -328,8 +328,8 @@ class UserDataService {
         return (userInfo?.notify ?? 0 ) == 1;
     }
     
-    var signature: String {
-        return (userInfo?.signature ?? "").ln2br()
+    var userDefaultSignature: String {
+        return (userInfo?.defaultSignature ?? "").ln2br()
     }
     
     var isSet : Bool {
@@ -349,23 +349,64 @@ class UserDataService {
             
             let addrApi = GetAddressesRequest()
             let userApi = GetUserInfoRequest()
-            let settingsApi = GetSettings()
-            
+            let userSettingsApi = GetUserSettings()
+            let mailSettingsApi = GetMailSettings()
             
             let addrRes = try await(addrApi.run())
             let userRes = try await(userApi.run())
-//            let settingsRes = try await(settingsApi.run())
+            let userSettingsRes = try await(userSettingsApi.run())
+            let mailSettingsRes = try await(mailSettingsApi.run())
             
-            userRes.userInfo?.setAddresses(addresses: addrRes.addresses)
-            userRes.userInfo?.setSettings()
+            userRes.userInfo?.set(addresses: addrRes.addresses)
+            userRes.userInfo?.parse(userSettings: userSettingsRes.userSettings)
+            userRes.userInfo?.parse(mailSettings: mailSettingsRes.mailSettings)
             
             self.userInfo = userRes.userInfo
             return self.userInfo
         }
     }
+
+    //
+    func updateFromEvents(userInfo: [String : Any]?) {
+        if let userData = userInfo {
+            let newUserInfo = UserInfo(response: userData)
+            if let user = self.userInfo {
+                user.set(userinfo: newUserInfo)
+                self.userInfo = user
+            }
+        }
+    }
+    //
+    func updateFromEvents(userSettings: [String : Any]?) {
+        if let user = self.userInfo {
+            user.parse(userSettings: userSettings)
+            self.userInfo = user
+        }
+    }
+    func updateFromEvents(mailSettings: [String : Any]?) {
+        if let user = self.userInfo {
+            user.parse(mailSettings: mailSettings)
+            self.userInfo = user
+        }
+    }
+
+    func setFromEvents(address: Address) {
+        if let user = self.userInfo {
+            if let index = user.userAddresses.index(where: { $0.address_id == address.address_id }) {
+                user.userAddresses.remove(at: index)
+            }
+            user.userAddresses.append(address)
+            self.userInfo = user
+        }
+    }
     
-    func updateUserInfoFromEventLog (_ userInfo : UserInfo){
-        self.userInfo = userInfo
+    func deleteFromEvents(addressID: String) {
+        if let user = self.userInfo {
+            if let index = user.userAddresses.index(where: { $0.address_id == addressID }) {
+                user.userAddresses.remove(at: index)
+                self.userInfo = user
+            }
+        }
     }
     
     func isMailboxPasswordValid(_ password: String, privateKey : String) -> Bool {

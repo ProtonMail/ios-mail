@@ -117,7 +117,7 @@ final class AddressesResponse : ApiResponse {
         return true
     }
     
-    private func parseAddr(res: [String : Any]!) {
+    func parseAddr(res: [String : Any]!) {
         var keys: [Key] = [Key]()
         if let address_keys = res["Keys"] as? [[String : Any]] {
             for key_res in address_keys {

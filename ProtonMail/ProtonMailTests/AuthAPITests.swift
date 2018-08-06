@@ -11,9 +11,6 @@ import XCTest
 
 class AuthAPITests: XCTestCase {
 
-  //
-    
-    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -25,8 +22,6 @@ class AuthAPITests: XCTestCase {
     }
 
     func testExample() {
-        
-        
 //        sharedAPIService.authAuth(username: "feng", password: "123") { auth, error in
 //            if error == nil {
 //                self.isSignedIn = true
@@ -51,7 +46,6 @@ class AuthAPITests: XCTestCase {
 //                completion(nil, error)
 //            }
 //        }
-
         XCTAssert(true, "Pass")
     }
 
@@ -62,8 +56,7 @@ class AuthAPITests: XCTestCase {
         }
     }
     
-    func testAuth()
-    {
+    func testAuth() {
 //        apiService.authAuth(username: "zhj4478", password: "31Feng31"){ auth, error in
 //            if error == nil {
 //                XCTAssert(true, "Pass")

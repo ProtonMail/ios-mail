@@ -99,19 +99,13 @@ final class FetchMessages : ApiRequest<ApiResponse> {
     
     override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = ["Sort" : "Time"]
-        if self.location == MessageLocation.starred {
-            out["Starred"] = 1
-        } else {
-            out["Location"] = self.location.rawValue
-        }
-        if(self.endTime > 0)
-        {
+        let labelIDRaw = self.location.rawValue >= 0 ? self.location.rawValue : 0
+        out["LabelID"] = "\(labelIDRaw)"
+        if self.endTime > 0 {
             let newTime = self.endTime - 1
             out["End"] = newTime
         }
-        
         PMLog.D( out.json(prettyPrinted: true) )
-        
         return out
     }
     
@@ -169,7 +163,7 @@ final class FetchMessagesByLabel : ApiRequest<ApiResponse> {
     
     override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = ["Sort" : "Time"]
-        out["Label"] = self.labelID
+        out["LabelID"] = self.labelID
         if self.endTime > 0 {
             let newTime = self.endTime - 1
             out["End"] = newTime
@@ -204,7 +198,7 @@ class CreateDraft : ApiRequest<MessageResponse> {
         var messsageDict : [String : Any] = [
             "Body" : message.body,
             "Subject" : message.title,
-            "IsRead" : message.isRead]
+            "Unread" : message.unRead]
         
         let fromaddr = message.fromAddress ?? message.defaultAddress
         let name = fromaddr?.display_name ?? "unknow"

@@ -239,7 +239,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
         if let addr = sharedUserDataService.userAddresses.defaultAddress() {
             return addr.signature
         }
-        return sharedUserDataService.signature
+        return sharedUserDataService.userDefaultSignature
     }
     
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {

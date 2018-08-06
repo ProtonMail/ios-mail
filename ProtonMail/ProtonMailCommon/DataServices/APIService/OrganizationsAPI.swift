@@ -8,9 +8,7 @@
 
 import Foundation
 
-
-
-//MARK : get keys salt  #not in used
+//MARK : get keys salt
 final class GetOrgKeys : ApiRequest<OrgKeyResponse> {
     
     override func method() -> APIService.HTTPMethod {
@@ -25,7 +23,7 @@ final class GetOrgKeys : ApiRequest<OrgKeyResponse> {
         return OrganizationsAPI.v_get_org_keys
     }
 }
-//TODO::check public key
+
 final class OrgKeyResponse : ApiResponse {
     var privKey : String?
     

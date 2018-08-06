@@ -11,7 +11,7 @@ import Foundation
 
 class AppConstants {
     
-    static let CacheVersion : Int = 105
+    static let CacheVersion : Int = 106
     static let AuthCacheVersion : Int = 15
     static let SpaceWarningThreshold: Int = 80
     static let SpaceWarningThresholdDouble: Double = 80
@@ -29,16 +29,18 @@ class AppConstants {
     static let URL_HOST : String = "api.protonmail.ch"
     static let API_PATH : String = ""
     
+    //blue test
+//    static let URL_HOST : String = "protonmail.blue"
+//    static let API_PATH : String = "/api"
+    //static let URL_HOST : String = "midnight.protonmail.blue"
+    
     //live test api
     //static let URL_HOST : String = "test-api.protonmail.ch"
     
     //live dev api
     //static let URL_HOST : String = "dev-api.protonmail.ch"
 //    static let URL_HOST : String = "dev.protonmail.com"
-    
-    //blue test
-//    static let URL_HOST : String = "protonmail.blue"
-    //static let URL_HOST : String = "midnight.protonmail.blue"
+
     
     //static let URL_HOST : String = "http://127.0.0.1"  //http
     //static let URL_HOST : String = "http://protonmail.xyz"  //http

@@ -24,7 +24,6 @@ extension Message {
         static let entityName = "Message"
         static let locationNumber = "locationNumber"
         static let isDetailDownloaded = "isDetailDownloaded"
-        static let isRead = "isRead"
         static let isStarred = "isStarred"
         static let messageID = "messageID"
         static let recipientList = "recipientList"
@@ -36,6 +35,9 @@ extension Message {
         
         static let messageType = "messageType"
         static let messageStatus = "messageStatus"
+        
+        // 1.9.1
+        static let unRead = "unRead"
     }
     
     struct Constants {

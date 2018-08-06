@@ -12,12 +12,13 @@
 
 import UIKit
 
+@available(*, deprecated, message: "remove it when refactoring")
 @objc protocol MailboxTableViewCellDelegate {
     func mailboxTableViewCell(_ cell: MailboxTableViewCell, didChangeStarred: Bool)
     func mailBoxTableViewCell(_ cell: MailboxTableViewCell, didChangeChecked: Bool)
 }
 
-
+@available(*, deprecated, message: "remove it when refactoring")
 class MailboxTableViewCell: UITableViewCell {
     
     weak var delegate: MailboxTableViewCellDelegate?
@@ -185,10 +186,10 @@ class MailboxTableViewCell: UITableViewCell {
             }
         }
         
-        if (message.isRead) {
-            changeStyleToReadDesign()
-        } else {
+        if (message.unRead) {
             changeStyleToUnreadDesign()
+        } else {
+            changeStyleToReadDesign()
         }
         
         if  message.isRepliedAll {

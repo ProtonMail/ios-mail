@@ -106,7 +106,7 @@ class MailboxViewModel {
         var fromCount = lastUpdatedStore.UnreadCountForKey(fromLocation)
         var toCount = lastUpdatedStore.UnreadCountForKey(toLocation)
         
-        let offset = message.isRead ? 0 : 1
+        let offset = message.unRead ? 1 : 0
         
         if toLocation != .starred {
             fromCount = fromCount + (-1 * offset)
@@ -134,14 +134,14 @@ class MailboxViewModel {
         }
     }
     
-    func updateBadgeNumberWhenRead(_ message : Message, changeToRead : Bool) {
+    func updateBadgeNumberWhenRead(_ message : Message, unRead : Bool) {
         let location = message.location
         
-        if message.isRead == changeToRead {
+        if message.unRead == unRead {
             return
         }
         var count = lastUpdatedStore.UnreadCountForKey(location)
-        count = count + (changeToRead ? -1 : 1)
+        count = count + (unRead ? 1 : -1)
         if count < 0 {
             count = 0
         }
@@ -149,7 +149,7 @@ class MailboxViewModel {
         
         if message.isStarred {
             var staredCount = lastUpdatedStore.UnreadCountForKey(.starred)
-            staredCount = staredCount + (changeToRead ? -1 : 1)
+            staredCount = staredCount + (unRead ? 1 : -1)
             if staredCount < 0 {
                 staredCount = 0
             }

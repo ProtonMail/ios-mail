@@ -201,10 +201,10 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             labelsView.configLables( message.displaySender, labels: labels)
         }
         
-        if (message.isRead) {
-            changeStyleToReadDesign()
-        } else {
+        if message.unRead {
             changeStyleToUnreadDesign()
+        } else {
+            changeStyleToReadDesign()
         }
         
         if  message.isRepliedAll {

@@ -79,7 +79,8 @@ public class PushNotificationService {
         if let view = front.viewControllers.first {
             if view.isKind(of: MailboxViewController.self) ||
                 view.isKind(of: ContactsViewController.self) ||
-                view.isKind(of: SettingsViewController.self) {
+                view.isKind(of: SettingsViewController.self) ||
+                view.isKind(of: SettingTableViewController.self) {
                 self.launchOptions = nil
             }
         }
