@@ -118,6 +118,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         if #available(iOS 9.0, *) {
             self.webViewBottomLine = self.webView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
             self.webViewBottomLine.isActive = true
+        } else {
+            self.webViewBottomLine = NSLayoutConstraint(item: self.webView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+            self.webViewBottomLine.isActive = true
         }
         
         // update content values
