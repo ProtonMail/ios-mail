@@ -22,12 +22,12 @@ public class BugDataService {
         
     }
     
-    func reportPhishing(messageID : String, messageBody : String) {
+    func reportPhishing(messageID : String, messageBody : String, completion: ((NSError?) -> Void)?) {
         let api = ReportPhishing(msgID: messageID,
                                  mimeType: "text/html",
                                  body: messageBody)
         api.call { (task, res, hasError) in
-            
+            completion?(res?.error)
         }
     }
     

@@ -140,10 +140,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
             if let atts = self.getAttachments() {
                 for att in atts {
                     do {
-                        guard let session = try att.getSession() else {
+                        guard let sessionPack = try att.getSession() else {
                             continue
                         }
-                        guard let newKeyPack = try session.getKeyPackage(strKey: key.publicKey)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                        guard let newKeyPack = try sessionPack.session().getKeyPackage(strKey: key.publicKey, algo: sessionPack.algo())?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
                             continue
                         }
                         
