@@ -883,6 +883,7 @@ class MessageDataService {
     }
     
     // MARK: - Private methods
+    @available(*, deprecated)
     fileprivate func generatMessagePackage<T : ApiResponse> (_ message: Message!, keys : [String : Any]?, atts : [Attachment], encrptOutside : Bool) -> MessageSendRequest<T>! {
         
         let outRequest : MessageSendRequest = MessageSendRequest<T>(messageID: message.messageID, expirationTime: message.expirationOffset, messagePackage: nil, clearBody: "", attPackages: nil)
@@ -892,7 +893,8 @@ class MessageDataService {
             for att in atts {
                 if att.managedObjectContext != nil {
                     if let sessionKey = try att.getSession() {
-                        tempAtts.append(TempAttachment(id: att.attachmentID, session: sessionKey))
+                        tempAtts.append(TempAttachment(id: att.attachmentID,
+                                                       session: sessionKey.session()))
                     }
                 }
             }
@@ -923,8 +925,8 @@ class MessageDataService {
                                 // encrypt keys use key
                                 var attPack : [AttachmentKeyPackage] = []
                                 for att in tempAtts {
-                                    let newKeyPack = try att.Session?.getSymmetricPacket(withPwd: message.password)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                                    let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
+                                    let newKeyPack = try att.Session?.getSymmetricPacket(withPwd: message.password, algo: "aes256")?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                                    let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack, Algo: "")
                                     attPack.append(attPacket)
                                 }
                                 
@@ -941,8 +943,8 @@ class MessageDataService {
                             var attPack : [AttachmentKeyPackage] = []
                             for att in tempAtts {
                                 //attID:String!, attKey:String!, Algo : String! = ""
-                                let newKeyPack = try att.Session?.getKeyPackage(strKey: publicKey)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                                let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
+                                let newKeyPack = try att.Session?.getKeyPackage(strKey: publicKey, algo: "aes256")?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+                                let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack, Algo : "")
                                 attPack.append(attPacket)
                             }
                             //create inside packet
@@ -1297,7 +1299,7 @@ class MessageDataService {
                     throw RuntimeError.cant_decrypt.error
                 }
 
-                sendBuilder.update(bodyData: bodyData, bodySession: session.session())
+                sendBuilder.update(bodyData: bodyData, bodySession: session.session(), algo: session.algo())
                 sendBuilder.set(pwd: message.password, hit: message.passwordHint)
                 for (index, result) in results.enumerated() {
                     switch result {
@@ -1330,8 +1332,11 @@ class MessageDataService {
                 
                 for att in attachments {
                     if att.managedObjectContext != nil {
-                        if let sessionKey = try att.getSession() {
-                            sendBuilder.add(att: PreAttachment(id: att.attachmentID, session: sessionKey, att: att))
+                        if let sessionPack = try att.getSession() {
+                            sendBuilder.add(att: PreAttachment(id: att.attachmentID,
+                                                               session: sessionPack.session(),
+                                                               algo: sessionPack.algo(),
+                                                               att: att))
                         }
                     }
                 }
@@ -1455,6 +1460,7 @@ class MessageDataService {
     }
     
     //deprecated
+    @available(*, deprecated)
     fileprivate func sendMessageID(_ messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request

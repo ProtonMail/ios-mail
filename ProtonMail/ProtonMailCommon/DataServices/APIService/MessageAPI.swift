@@ -641,11 +641,12 @@ final class MessagePackage : Package {
 }
 
 // message attachment key package
+@available(*, deprecated)
 final class AttachmentKeyPackage : Package {
-    let ID : String!
-    let keyPacket : String!
-    let algo : String!
-    init(attID:String!, attKey:String!, Algo : String! = "") {
+    let ID : String
+    let keyPacket : String
+    let algo : String
+    init(attID:String, attKey:String, Algo : String) {
         self.ID = attID
         self.keyPacket = attKey
         self.algo = Algo
@@ -666,6 +667,7 @@ final class AttachmentKeyPackage : Package {
 /**
  *  temporary table for formating the message send package
  */
+@available(*, deprecated)
 final class TempAttachment {
     let ID : String!
     let Session : Data?

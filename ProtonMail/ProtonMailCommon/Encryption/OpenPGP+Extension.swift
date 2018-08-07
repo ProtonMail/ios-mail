@@ -250,10 +250,10 @@ extension Data {
 //        return key_session_out
 //    }
     
-    func getKeyPackage(strKey publicKey: String) throws -> Data? {
+    func getKeyPackage(strKey publicKey: String, algo : String) throws -> Data? {
         let session = PmSessionSplit()!
         session.setSession(self)
-        session.setAlgo("aes256")
+        session.setAlgo(algo) //default is "aes256"
         
         var error : NSError?
         let packet : Data? = PmKeyPacketWithPublicKey(session, publicKey, &error)
@@ -263,10 +263,10 @@ extension Data {
         return packet
     }
     
-    func getKeyPackage(dataKey publicKey: Data) throws -> Data? {
+    func getKeyPackage(dataKey publicKey: Data, algo : String) throws -> Data? {
         let session = PmSessionSplit()!
         session.setSession( self)
-        session.setAlgo("aes256")
+        session.setAlgo(algo) //default is "aes256"
         
         var error : NSError?
         let packet : Data? = PmKeyPacketWithPublicKeyBin(session, publicKey, &error)
@@ -276,10 +276,10 @@ extension Data {
         return packet
     }
     
-    func getSymmetricPacket(withPwd pwd: String) throws -> Data? {
-        let session = PmSessionSplit()
-        session?.setSession(self)
-        session?.setAlgo("aes256")
+    func getSymmetricPacket(withPwd pwd: String, algo : String) throws -> Data? {
+        let session = PmSessionSplit()!
+        session.setSession(self)
+        session.setAlgo(algo) //default is "aes256"
         
         
         var error : NSError?

@@ -22,23 +22,25 @@ final class AttachmentPackage {
 // message attachment key package for clear text
 final class ClearAttachmentPackage {
     /// attachment id
-    let ID : String!
+    let ID : String
     /// based64 encoded session key
-    let encodedSession : String!
-    let algo : String = "aes256"
-    init(attID:String!, encodedSession:String!) {
+    let encodedSession : String
+    let algo : String //default is "aes256"
+    init(attID: String, encodedSession: String, algo: String) {
         self.ID = attID
         self.encodedSession = encodedSession
+        self.algo = algo
     }
 }
 
 // message attachment key package for clear text
 final class ClearBodyPackage {
     /// based64 encoded session key
-    let key : String!
-    let algo : String = "aes256"
-    init(key : String) {
+    let key : String
+    let algo : String // default is "aes256"
+    init(key : String, algo: String) {
         self.key = key
+        self.algo = algo
     }
 }
 
