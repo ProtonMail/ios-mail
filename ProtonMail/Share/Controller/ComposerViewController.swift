@@ -56,6 +56,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     fileprivate var encryptionConfirmPassword: String = ""
     fileprivate var encryptionPasswordHint: String = ""
     fileprivate var hasAccessToAddressBook: Bool = false
+    fileprivate var isSending = false
     //
     fileprivate var attachments: [Any]?
     
@@ -206,7 +207,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     
     private var observation: NSKeyValueObservation?
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
-        let alert = UIAlertController(title: LocalString._sending_message,
+        let alert = UIAlertController(title: self.isSending ? LocalString._sending_message : LocalString._closing_draft,
                                       message: LocalString._please_wait_in_foreground,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
@@ -418,7 +419,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         }
     }
     
-    internal func sendMessage () {
+    private func sendMessage() {
         if self.composeViewController.expirationTimeInterval > 0 {
             if self.composeViewController.hasNonePMEmails && self.encryptionPassword.count <= 0 {
                 self.composeViewController.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_pls_set_password)
@@ -428,7 +429,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         self.sendMessageStepTwo()
     }
     
-    internal func sendMessageStepTwo() {
+    private func sendMessageStepTwo() {
         if self.viewModel.toSelectedContacts.count <= 0 &&
             self.viewModel.ccSelectedContacts.count <= 0 &&
             self.viewModel.bccSelectedContacts.count <= 0 {
@@ -442,9 +443,11 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         
         stopAutoSave()
         self.collectDraft()
+        self.isSending = true
         self.viewModel.sendMessage()
         
         self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
+            self.isSending = false
             self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
         })
     }
