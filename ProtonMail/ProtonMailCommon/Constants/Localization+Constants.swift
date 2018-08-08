@@ -512,6 +512,8 @@ class LocalizedString {
     lazy var _messages_spam_100_warning = NSLocalizedString("This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
     /// "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!"
     lazy var _messages_spam_101_warning = NSLocalizedString("This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
+    /// "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate."
+    lazy var _messages_spam_102_warning = NSLocalizedString("This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.", comment: "spam score warning")
 
     /// "Human Check Failed"
     lazy var _error_human_check_failed = NSLocalizedString("Human Check Failed", comment: "Description")
