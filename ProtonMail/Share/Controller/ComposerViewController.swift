@@ -150,8 +150,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         guard let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
             return
         }
-        self.webViewBottomLine.constant = -1 * keyboardFrame.size.height
-        self.webView?.scrollView.contentInset = .init(top: 0, left: 0, bottom: self.composeViewController.view.bounds.height, right: 0)
+        self.webViewBottomLine.constant = keyboardFrame.origin.y - self.view.window!.bounds.height
     }
     
     @objc func send_clicked(sender: UIBarButtonItem) {
@@ -362,8 +361,6 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
                     continue
                 } else {
                     let h : CGFloat = self.composeViewSize
-//                    self.updateFooterOffset(h) // FIXME
-//                    self.editor.webView.scrollView.contentOffset
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
                 }
             }
