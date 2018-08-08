@@ -444,11 +444,11 @@ final class ComposeViewModelImpl : ComposeViewModel {
         //sharedUserDataService.signature
         let signature = self.getDefaultSendAddress()?.signature ?? sharedUserDataService.userDefaultSignature
         
-        let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
+        let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
         
-        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\">\(signature)</div>" : ""
+        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\">\(signature)</div>" : ""
         
-        let head = "<html><head></head><body><div><br></div>"
+        let head = "<html><head></head><body>"
         let foot = "</body></html>"
         let htmlString = "\(defaultSignature) \(mobileSignature)"
         
@@ -482,7 +482,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingStyleHTML()
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
-                body = body.preg_replace("\r\n", replaceto: "")
                 let on = LocalString._composer_on
                 let at = LocalString._general_at_label
                 let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
@@ -537,7 +536,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingStyleHTML()
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
-                body = body.preg_replace("\r\n", replaceto: "")
                 var sp = "<blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
                 sp = sp.stringByStrippingStyleHTML()
                 sp = sp.stringByStrippingBodyStyle()

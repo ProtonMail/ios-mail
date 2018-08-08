@@ -221,13 +221,14 @@ extension String {
     }
     
     
-    func stringByStrippingStyleHTML() -> String {
+    func stringByStrippingStyleHTML() -> String {        
+        let trimmed = self.preg_replace_none_regex("\r\n", replaceto: "")
         let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
             let regex = try NSRegularExpression(pattern: "<style[^>]*?>.*?</style>", options:options)
-            let replacedString = regex.stringByReplacingMatches(in: self,
+            let replacedString = regex.stringByReplacingMatches(in: trimmed,
                                                                 options: NSRegularExpression.MatchingOptions(rawValue: 0),
-                                                                range: NSRange(location: 0, length: self.count),
+                                                                range: NSRange(location: 0, length: trimmed.count),
                                                                 withTemplate: "")
             if !replacedString.isEmpty && replacedString.count > 0 {
                 return replacedString
