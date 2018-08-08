@@ -734,9 +734,8 @@ class SettingTableViewController: ProtonMailViewController {
             case .servicePlan:
                 let coordinator = SettingsCoordinator()
                 coordinator.controller = self
-                let nextCoordinator: ServiceLevelCoordinator = coordinator.go(to: .serviceLevel)
-                coordinator.show(child: nextCoordinator.controller)
-                break
+                coordinator.go(to: .serviceLevel, creating: ServiceLevelViewController.self)
+                
             
             default:
                 break

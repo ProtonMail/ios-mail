@@ -9,7 +9,7 @@
 import Foundation
 
 class SettingsCoordinator: Coordinator {
-    @discardableResult func go<SomeCoordinator: Coordinator>(to next: SettingsCoordinator.Destination) -> SomeCoordinator {
+    func make<SomeCoordinator: Coordinator>(coordinatorFor next: SettingsCoordinator.Destination) -> SomeCoordinator {
         guard next == .serviceLevel else {
             fatalError()
         }
@@ -25,7 +25,7 @@ class SettingsCoordinator: Coordinator {
 }
 
 class ServiceLevelCoordinator: Coordinator {
-    func go<SomeCoordinator: Coordinator>(to next: ServiceLevelCoordinator.Destination) -> SomeCoordinator {
+    func make<SomeCoordinator: Coordinator>(coordinatorFor next: ServiceLevelCoordinator.Destination) -> SomeCoordinator {
         var child: SomeCoordinator!
         
         switch next {
@@ -37,11 +37,7 @@ class ServiceLevelCoordinator: Coordinator {
         return child
     }
     
-    lazy var controller: UIViewController! = {
-        var controller = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewController.self)
-        controller.coordinator = self
-        return controller
-    }()
+    lazy var controller: UIViewController! = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewController.self)
     
     enum Destination {
         case changePayedPlan(to: ServicePlan)
@@ -52,17 +48,16 @@ class ServiceLevelCoordinator: Coordinator {
 }
 
 class BuyMoreCoordinator: Coordinator {
-    func go<SomeCoordinator: Coordinator>(to next: Never) -> SomeCoordinator {
+    func make<SomeCoordinator: Coordinator>(coordinatorFor next: Never) -> SomeCoordinator {
         fatalError()
     }
     
-    lazy var controller: UIViewController! = {
-        let controller = UIStoryboard(name: "ServiceLevel", bundle: .main).make(BuyMoreViewController.self)
-        return controller
-    }()
+    lazy var controller: UIViewController! = UIStoryboard(name: "ServiceLevel", bundle: .main).make(BuyMoreViewController.self)
     
     typealias Destination = Never
 }
-class BuyMoreViewController: UIViewController {
+class BuyMoreViewController: UIViewController, Coordinated {
+    typealias CoordinatorType = BuyMoreCoordinator
+    
     
 }

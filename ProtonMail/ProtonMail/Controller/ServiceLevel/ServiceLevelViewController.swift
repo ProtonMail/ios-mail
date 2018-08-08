@@ -19,13 +19,6 @@ class ServiceLevelViewController: UICollectionViewController, Coordinated {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let nextCoordinator = self.coordinator.go(to: .buyMore) as BuyMoreCoordinator
-        self.coordinator.show(child: nextCoordinator.controller)
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        
-        
+        self.coordinator.go(to: .buyMore, creating: BuyMoreViewController.self)
     }
 }
