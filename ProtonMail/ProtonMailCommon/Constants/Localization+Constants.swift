@@ -1323,8 +1323,12 @@ class LocalizedString {
 
     // "Sending Message"
     lazy var _sending_message = NSLocalizedString("Sending message", comment: "Alert title")
+    
+    // "Sending Message"
+    lazy var _closing_draft = NSLocalizedString("Closing", comment: "Alert title")
+    
     // "This can take a while, please do not dismiss the app"
-    lazy var _please_wait_in_foreground = NSLocalizedString("This can take a while depending on your Internet connection and attachmetns size, please do not dismiss the app", comment: "Alert message")
+    lazy var _please_wait_in_foreground = NSLocalizedString("This can take a while, please do not dismiss the app", comment: "Alert message")
     
 
     /// "Please use the web application to reset your password."

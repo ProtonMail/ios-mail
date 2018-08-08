@@ -1374,19 +1374,19 @@
 			remoteGlobalIDString = 3DD8FCED3FB5276FDB35E89899093113;
 			remoteInfo = PushServiceDev;
 		};
-		7DE64AAD46503A1688D8AD15767E9C22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 528CABDE5FC7422D1D0E7976ADAA8CAD;
-			remoteInfo = ShareDev;
-		};
 		93C7CCEC8340199F110B903A630A4E63 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 73B959411C37C32C3517112463FDCDDE;
 			remoteInfo = ProtonMailDev;
+		};
+		7DE64AAD46503A1688D8AD15767E9C22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 528CABDE5FC7422D1D0E7976ADAA8CAD;
+			remoteInfo = ShareDev;
 		};
 		B7D253984C10449C96DA3F44C61F9EAB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
