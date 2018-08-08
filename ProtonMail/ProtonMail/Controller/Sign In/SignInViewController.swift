@@ -109,7 +109,7 @@ class SignInViewController: ProtonMailViewController {
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         for l in ELanguage.allItems() {
             if l != current_language {
-                alertController.addAction(UIAlertAction(title: l.description, style: .default, handler: { (action) -> Void in
+                alertController.addAction(UIAlertAction(title: l.nativeDescription, style: .default, handler: { (action) -> Void in
                     let _ = self.navigationController?.popViewController(animated: true)
                     LanguageManager.saveLanguage(byCode: l.code)
                     LocalizedString.reset()
