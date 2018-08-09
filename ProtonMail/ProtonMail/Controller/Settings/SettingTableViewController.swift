@@ -27,7 +27,7 @@ class SettingTableViewController: ProtonMailViewController {
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
-                                                            .star, .archive]
+                                                            .star, .archive, .unread]
     
     var setting_protection_items : [SProtectionItems]    = [] // [.touchID, .pinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
     var setting_addresses_items : [SAddressItems]        = [.addresses,

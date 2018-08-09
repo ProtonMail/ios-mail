@@ -95,6 +95,24 @@ class MailboxViewModel {
         return .nothing
     }
     
+    func unreadMessage(_ msg: Message) -> SwipeResponse {
+        guard msg.unRead == false else {
+            return .nothing
+        }
+        
+        self.updateBadgeNumberWhenRead(msg, unRead: true)
+        msg.unRead = true
+        msg.needsUpdate = true
+        if let context = msg.managedObjectContext {
+            context.perform {
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
+            }
+        }
+        return .nothing
+    }
+    
     func updateBadgeNumberWhenMove(_ message : Message, to : MessageLocation) {
         let fromLocation = message.location
         let toLocation = to
