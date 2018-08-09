@@ -13,6 +13,7 @@ import Foundation
 enum MessageSpamScore: Int, CustomStringConvertible {
     case spam_100 = 100
     case spam_101 = 101
+    case spam_102 = 102
     case others = 0
 
     var description : String {
@@ -22,6 +23,8 @@ enum MessageSpamScore: Int, CustomStringConvertible {
                 return LocalString._messages_spam_100_warning
             case .spam_101:
                 return LocalString._messages_spam_101_warning
+            case .spam_102:
+                return LocalString._messages_spam_102_warning
             case .others:
                 return ""
             }
