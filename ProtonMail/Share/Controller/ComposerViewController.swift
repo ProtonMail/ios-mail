@@ -37,7 +37,11 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     
     // private views
     fileprivate weak var webView: UIWebView?
-    fileprivate weak var webViewBottomLine: NSLayoutConstraint!
+    fileprivate weak var webViewBottomLine: NSLayoutConstraint! {
+        didSet {
+            self.webView?.scrollView.contentInset = .init(top: 0, left: 0, bottom: -self.webViewBottomLine.constant, right: 0)
+        }
+    }
     fileprivate lazy var composeViewController: ComposeView = {
         let composeViewController = ComposeView(nibName: "ComposeView", bundle: nil)
         composeViewController.delegate = self
