@@ -458,7 +458,7 @@ import UIKit
     /// Called repeatedly to make sure the caret is always visible when inputting text.
     /// Works only if the `lineHeight` of the editor is available.
     private func scrollCaretToVisible() {
-        let scrollView = self.webView.scrollView
+        /*let scrollView = self.webView.scrollView
         
         let contentHeight = clientHeight > 0 ? CGFloat(clientHeight) : scrollView.frame.height
         scrollView.contentSize = CGSize(width: scrollView.frame.width, height: contentHeight)
@@ -483,7 +483,7 @@ import UIKit
 
         if let offset = offset {
             scrollView.setContentOffset(offset, animated: true)
-        }
+        }*/
     }
     
     /// Called when actions are received from JavaScript
