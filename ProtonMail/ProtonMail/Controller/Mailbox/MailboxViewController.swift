@@ -160,6 +160,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         self.undoView.isHidden = true
         
         cleanRateReviewCell()
+        
+        
+        self.leftSwipeAction = sharedUserDataService.swiftLeft
+        self.rightSwipeAction = sharedUserDataService.swiftRight
     }
     
     deinit {
@@ -177,8 +181,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                                                selector:#selector(MailboxViewController.doEnterForeground),
                                                name:  NSNotification.Name.UIApplicationWillEnterForeground,
                                                object: nil)
-        leftSwipeAction = sharedUserDataService.swiftLeft
-        rightSwipeAction = sharedUserDataService.swiftRight
         self.refreshControl.endRefreshing()
     }
     
