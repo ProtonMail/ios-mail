@@ -1429,6 +1429,7 @@ class LocalizedString {
     /// "Sender Verification Failed"
     lazy var _sender_verification_failed = NSLocalizedString("Sender Verification Failed", comment: "encryption lock description")
     /// "Encrypted outside"
+    @available(*, deprecated)
     lazy var _encrypted_outside = NSLocalizedString("Encrypted outside", comment: "encryption lock description")
     /// "End-to-end encrypted message"
     lazy var _end_to_end_encrypted_message = NSLocalizedString("End-to-end encrypted message", comment: "encryption lock description")
