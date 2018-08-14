@@ -17,6 +17,23 @@
 import Foundation
 
 extension UIView {
+    @discardableResult func loadFromNib<T : UIView>() -> T? {
+        let name = String(describing: type(of: self))
+        let nib = UINib(nibName: name, bundle: Bundle(for: type(of: self)))
+        
+        guard let subview = nib.instantiate(withOwner: self, options: nil).first as? T else {
+            return nil
+        }
+        subview.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.addSubview(subview)
+        subview.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        subview.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        subview.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        subview.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        
+        return subview
+    }
     
     enum BorderSide: String {
         case top, bottom, left, right
