@@ -89,7 +89,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         pickerButton.setTitle(self.countryCode, for: UIControlState())
     }
     
-    override func shouldShowSideMenu() -> Bool {
+    func shouldShowSideMenu() -> Bool {
         return false
     }
     
