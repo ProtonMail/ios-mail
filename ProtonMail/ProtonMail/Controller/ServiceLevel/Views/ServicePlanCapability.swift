@@ -41,7 +41,7 @@ class ServicePlanCapability: UIView {
     
     private func setupSubviews() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.serviceIcon.tintColor = UIColor.ProtonMail.MessageCell_UnRead_Color
+        self.serviceIcon.tintColor = .gray
         self.serviceIcon.image = UIImage(named: "pin_code_confirm")?.withRenderingMode(.alwaysTemplate)
         self.icon.tintColor = UIColor.ProtonMail.ButtonBackground
     }
