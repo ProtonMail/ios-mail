@@ -8,9 +8,8 @@
 
 import Foundation
 
-/**
- Get user's labels/contact groups in the order to be displayed from the server
- */
+
+/// Get user's labels/contact groups in the order to be displayed from the server
 final class GetLabelsRequest : ApiRequest<GetLabelsResponse> {
     var type: Int = 1
     init(type: Int = 1) {
@@ -30,9 +29,8 @@ final class GetLabelsRequest : ApiRequest<GetLabelsResponse> {
     }
 }
 
-/**
- Parse the response from the server of the GetLabelsRequest() call
- */
+
+/// Parse the response from the server of the GetLabelsRequest() call
 final class GetLabelsResponse : ApiResponse {
     var labels : [[String : Any]]?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
@@ -41,9 +39,8 @@ final class GetLabelsResponse : ApiResponse {
     }
 }
 
-/**
- Create a label/contact group on the server
- */
+
+/// Create a label/contact group on the server
 final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     var labelName: String
     var color:String
@@ -83,9 +80,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-/**
- Parse the response from the server of the GetLabelsRequest() call
- */
+/// Parse the response from the server of the GetLabelsRequest() call
 final class CreateLabelRequestResponse : ApiResponse {
     var label:[String : Any]?
     
@@ -137,9 +132,6 @@ final class UpdateLabelRequest<T: ApiResponse> : ApiRequest<T> {
  Delete a contact group on the server
  
  Type don't need to be specified here since we have the exact labelID to work with
- 
- Question:
- 1. What will happen to the emails in the contact group? Automatically unset?
  */
 final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
     var labelID: String

@@ -336,3 +336,37 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
+// Contact group APIs
+/*
+ Questions
+ 1. Is the contact group ordering sorted locally, or are we following the API?
+ */
+
+/// Add designated contact emails into a certain contact group
+final class ContactLabelAnArrayOfContactEmailsRequest<T: ApiResponse>: ApiRequest<T>
+{
+    
+}
+
+
+/// Process the response of ContactLabelAnArrayOfContactEmailsRequest
+final class ContactLabelAnArrayOfContactEmailsResponse: ApiResponse {
+    override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        return true
+    }
+}
+
+
+/// Remove designated contact emails from a certain contact group
+final class ContactUnlabelAnArrayOfContactEmailsRequest<T: ApiResponse>: ApiRequest<T>
+{
+    
+}
+
+
+/// Process the response of ContactUnlabelAnArrayOfContactEmailsRequest
+final class ContactUnlabelAnArrayOfContactEmailsResponse: ApiResponse {
+    override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        return true
+    }
+}

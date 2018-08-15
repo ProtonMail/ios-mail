@@ -76,10 +76,8 @@ class ContactDataService {
     }
     
     /**
-     add a new conact
+     add a new contact
      
-     - Parameter name: contact name
-     - Parameter emails: contact email list
      - Parameter cards: vcard contact data -- 4 different types
      - Parameter completion: async add contact complete response
      **/
