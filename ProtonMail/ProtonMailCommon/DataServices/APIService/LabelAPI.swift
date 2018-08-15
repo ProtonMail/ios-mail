@@ -8,11 +8,17 @@
 
 import Foundation
 
-// MARK : Get messages part
+/**
+ Get user's labels/contact groups in the order to be displayed from the server
+ */
 final class GetLabelsRequest : ApiRequest<GetLabelsResponse> {
+    var type: Int = 1
+    init(type: Int = 1) {
+        self.type = type
+    }
     
     override func toDictionary() -> [String : Any]? {
-        return ["Type" : 1]
+        return ["Type" : type]
     }
     
     override func path() -> String {
@@ -24,6 +30,9 @@ final class GetLabelsRequest : ApiRequest<GetLabelsResponse> {
     }
 }
 
+/**
+ Parse the response from the server of the GetLabelsRequest() call
+ */
 final class GetLabelsResponse : ApiResponse {
     var labels : [[String : Any]]?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
@@ -32,17 +41,20 @@ final class GetLabelsResponse : ApiResponse {
     }
 }
 
-
-// MARK : create label
+/**
+ Create a label/contact group on the server
+ */
 final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     var labelName: String
     var color:String
     var exclusive : Bool = false
+    var type: Int = 1
     
-    init(name:String, color:String, exclusive : Bool) {
+    init(name:String, color:String, exclusive : Bool, type: Int = 1) {
         self.labelName = name
         self.color = color
         self.exclusive = exclusive
+        self.type = type
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -51,6 +63,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
             "Name": self.labelName,
             "Color": self.color,
             "Display": 0,
+            "Type": self.type,
             "Exclusive" : self.exclusive
         ]
 
@@ -70,10 +83,24 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-
-// MARK : update label
-final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
+/**
+ Parse the response from the server of the GetLabelsRequest() call
+ */
+final class CreateLabelRequestResponse : ApiResponse {
+    var label:[String : Any]?
     
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        self.label = response["Label"] as? [String : Any]
+        return true
+    }
+}
+
+/**
+ Update the data of a label/contact group on the server
+ 
+ Type don't need to be specified here since we have the exact labelID to work with
+ */
+final class UpdateLabelRequest<T: ApiResponse> : ApiRequest<T> {
     var labelID : String
     var labelName: String
     var color:String
@@ -106,19 +133,15 @@ final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-final class CreateLabelRequestResponse : ApiResponse {
-    var label:[String : Any]?
-    
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.label = response["Label"] as? [String : Any]
-        return true
-    }
-}
-
-
-// MARK : create label
+/**
+ Delete a contact group on the server
+ 
+ Type don't need to be specified here since we have the exact labelID to work with
+ 
+ Question:
+ 1. What will happen to the emails in the contact group? Automatically unset?
+ */
 final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
-    
     var labelID: String
     
     init(lable_id: String) {
