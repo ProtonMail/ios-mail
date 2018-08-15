@@ -9,6 +9,7 @@
 import UIKit
 
 protocol ServiceLevelViewModel {
+    var title: String { get }
     var collectionViewLayout: UICollectionViewLayout { get }
     var sections: [Section<UIView>] { get }
     var cellTypes: [UICollectionViewCell.Type] { get }
@@ -27,6 +28,7 @@ extension ServiceLevelViewModel {
 }
 
 class ServiceLevelViewModelTable: ServiceLevelViewModel {
+    let title = "HEY"
     let cellTypes: [UICollectionViewCell.Type] = [ConfigurableCell.self]
     let accessoryTypes: [UICollectionReusableView.Type] = [Separator.self]
     

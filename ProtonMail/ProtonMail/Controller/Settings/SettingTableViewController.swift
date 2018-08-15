@@ -19,7 +19,6 @@ class SettingTableViewController: ProtonMailViewController {
                                                             .swipeAction,
                                                             .language,
                                                             .storage,
-                                                            .servicePlan,
                                                             .version] //.Debug,
     
     var setting_general_items : [SGItems]                = [.notifyEmail, .loginPWD,
@@ -209,8 +208,6 @@ class SettingTableViewController: ProtonMailViewController {
                 return 1
             case .labels:
                 return setting_labels_items.count
-            case .servicePlan:
-                return 1
             }
         }
         return 0
@@ -473,12 +470,6 @@ class SettingTableViewController: ProtonMailViewController {
                 
             case .version:
                 break
-                
-            case .servicePlan:
-                let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
-                cell.configCell("SERVICE PLAN", right: "")
-                cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
-                cellout = cell
             }
         }
         
@@ -730,13 +721,6 @@ class SettingTableViewController: ProtonMailViewController {
                 alertController.popoverPresentationController?.sourceView = cell ?? self.view
                 alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
                 present(alertController, animated: true, completion: nil)
-            
-            case .servicePlan:
-                let coordinator = SettingsCoordinator()
-                coordinator.controller = self
-                coordinator.go(to: .serviceLevel, creating: ServiceLevelViewController.self)
-                
-            
             default:
                 break
             }

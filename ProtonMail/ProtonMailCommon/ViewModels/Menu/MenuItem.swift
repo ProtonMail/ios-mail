@@ -23,6 +23,7 @@ enum MenuItem: String {//change to Int later.
     case signout = "Logout"
     case feedback = "Feedback"
     case lockapp = "Lock The App"
+    case servicePlan = "Service Plan"
     
     //var identifier: String { return rawValue }
     
@@ -56,6 +57,8 @@ enum MenuItem: String {//change to Int later.
             return LocalString._menu_feedback_title
         case .lockapp:
             return LocalString._menu_lockapp_title
+        case .servicePlan:
+            return LocalString._menu_service_plan_title
         }
     }
     
@@ -101,6 +104,8 @@ enum MenuItem: String {//change to Int later.
             image = "menu_lockapp"
         case .allmail:
             image = "menu_allmail"
+        case .servicePlan:
+            image = "menu_allmail"
         }
         return image;
     }
@@ -135,6 +140,8 @@ enum MenuItem: String {//change to Int later.
         case .lockapp:
             image = "menu_lockapp"
         case .allmail:
+            image = "menu_allmail-active"
+        case .servicePlan:
             image = "menu_allmail-active"
         }
         return image;

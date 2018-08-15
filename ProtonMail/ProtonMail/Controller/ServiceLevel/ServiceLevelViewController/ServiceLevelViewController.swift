@@ -14,7 +14,7 @@ class ServiceLevelViewController: UICollectionViewController, Coordinated {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.title = self.viewModel.title
         if let collectionView = self.collectionView {
             self.viewModel.cellTypes.forEach(collectionView.register)
             collectionView.setCollectionViewLayout(self.viewModel.collectionViewLayout, animated: true, completion: nil)

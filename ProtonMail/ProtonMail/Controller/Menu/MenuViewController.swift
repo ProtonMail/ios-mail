@@ -262,6 +262,10 @@ extension MenuViewController: UITableViewDelegate {
                 userCachedStatus.lockedApp = true;
                 (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: true)
                 sharedVMService.resetView()
+            } else if item == .servicePlan {
+                let coordinator = MenuCoordinator()
+                coordinator.controller = self
+                coordinator.go(to: .serviceLevel, creating: ServiceLevelViewController.self)
             }
         case .labels:
             self.performSegue(withIdentifier: kSegueToLabelbox, sender: indexPath);

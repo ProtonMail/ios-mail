@@ -27,6 +27,7 @@ extension Coordinated where Self: UIViewController {
 protocol Coordinator: class {
     associatedtype Destination
     func make<SomeCoordinator: Coordinator>(coordinatorFor next: Destination) -> SomeCoordinator
+    func insertIntoHierarchy(_ child: UIViewController)
     var controller: UIViewController! { get set }
 }
 extension Coordinator {
