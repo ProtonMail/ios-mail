@@ -33,6 +33,8 @@ class ContactsResponse : ApiResponse {
     var total : Int = -1
     var contacts : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        PMLog.D("[Contact] Get contacts response \(response)")
+        
         self.total = response?["Total"] as? Int ?? -1
         self.contacts = response?["Contacts"] as? [[String : Any]] ?? []
         return true
@@ -71,6 +73,8 @@ class ContactEmailsResponse : ApiResponse {
     var total : Int = -1
     var contacts : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        PMLog.D("[Contact] Get contact emails response \(response)")
+        
         self.total = response?["Total"] as? Int ?? -1
         if let tempContacts = response?["ContactEmails"] as? [[String : Any]] {
             for contact in tempContacts {
@@ -130,6 +134,7 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
 class ContactDetailResponse : ApiResponse {
     var contact : [String : Any]?
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
+//      PMLog.D("[Contact] Get contact detail response \(response)")
         PMLog.D(response.json(prettyPrinted: true))
         contact = response["Contact"] as? [String : Any]
         return true
@@ -370,6 +375,7 @@ final class ContactLabelAnArrayOfContactEmailsRequest: ApiRequest<ApiResponse>
 /// TODO: check return body
 final class ContactLabelAnArrayOfContactEmailsResponse: ApiResponse {
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        PMLog.D("[Contact] label an array of contact emails response \(response)")
         return true
     }
 }
@@ -407,6 +413,7 @@ final class ContactUnlabelAnArrayOfContactEmailsRequest: ApiRequest<ApiResponse>
 /// TODO: check return body
 final class ContactUnlabelAnArrayOfContactEmailsResponse: ApiResponse {
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        PMLog.D("[Contact] unlabel an array of contact emails response \(response)")
         return true
     }
 }
