@@ -163,6 +163,9 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         } else if (segue.identifier == kAddContactSugue) {
             let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController)
+        } else if (segue.identifier == kAddContactGroupSugue) {
+            let addContactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupViewController
+            sharedVMService.contactAddViewModel(addContactGroupViewController)
         } else if (segue.identifier == "toCompose") {
         } else if segue.identifier == kSegueToImportView{
             let popup = segue.destination as! ContactImportViewController
@@ -201,7 +204,10 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             (action) -> Void in
             self.addContactTapped()
         }))
-        alertController.addAction(UIAlertAction(title: "[locale] Create Group", style: .default, handler: nil))
+        alertController.addAction(UIAlertAction(title: "[locale] Create Group", style: .default, handler: {
+            (action) -> Void in
+            self.addContactGroupTapped()
+        }))
         alertController.addAction(UIAlertAction(title: LocalString._contacts_upload_contacts, style: .default, handler: { (action) -> Void in
             self.navigationController?.popViewController(animated: true)
             

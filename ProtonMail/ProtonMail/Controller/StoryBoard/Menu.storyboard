@@ -1309,7 +1309,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WN4-FR-nyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5058" y="3056"/>
+            <point key="canvasLocation" x="5458" y="2794"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="z3E-8M-2ks">
@@ -2717,6 +2717,7 @@
                         <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="oQx-RX-nff"/>
                         <segue destination="Cjq-Ic-Ywz" kind="show" identifier="toContactDetailsSegue" id="QZE-iH-gR5"/>
                         <segue destination="0cK-fo-ga2" kind="presentation" identifier="toImportContacts" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="BCF-zs-3TT"/>
+                        <segue destination="HW2-St-HGr" kind="presentation" identifier="toAddContactGroup" id="VmO-wi-11j"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Rs-Sb-Nje" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2730,6 +2731,32 @@
                 </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="2256.8000000000002" y="3603.1484257871066"/>
+        </scene>
+        <!--Contact Group View Controller-->
+        <scene sceneID="iBB-uT-79R">
+            <objects>
+                <tableViewController id="7ET-fg-Ufg" userLabel="Contact Group View Controller" customClass="ContactGroupViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" title="Create Contact Group" id="ndZ-4u-uFf"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Ux-6i-4Yz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5609" y="4301"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="LY1-jV-d6l">
+            <objects>
+                <navigationController id="HW2-St-HGr" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Th3-i1-b8z">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="7ET-fg-Ufg" kind="relationship" relationship="rootViewController" id="CUq-3j-VPs"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jm5-av-Bom" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4660" y="4301"/>
         </scene>
         <!--Contact Edit -->
         <scene sceneID="Lgo-jO-tY2">
@@ -3688,7 +3715,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uqF-zP-yCE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4388" y="4792.353823088456"/>
+            <point key="canvasLocation" x="4660" y="5158"/>
         </scene>
         <!--Contact Navigation Controller-->
         <scene sceneID="SEY-3E-LYY">
@@ -3745,7 +3772,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nYN-hA-qJH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3559" y="4794"/>
+            <point key="canvasLocation" x="3879" y="5158"/>
         </scene>
         <!--Search Navigation Controller-->
         <scene sceneID="arq-ry-cmQ">
@@ -4559,7 +4586,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="5921" y="3055"/>
+            <point key="canvasLocation" x="6334" y="2794"/>
         </scene>
         <!--TwoFA Code View Controller-->
         <scene sceneID="w0j-1V-fOM">
@@ -5253,7 +5280,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YRb-zN-b8Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5182" y="4793"/>
+            <point key="canvasLocation" x="5530" y="5158"/>
         </scene>
         <!--Contact Import View Controller-->
         <scene sceneID="k4S-Ko-GQp">
@@ -5696,7 +5723,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jiv-Wi-eAq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5056.8000000000002" y="3810.9445277361324"/>
+            <point key="canvasLocation" x="5457" y="3532"/>
         </scene>
     </scenes>
     <resources>
@@ -5732,17 +5759,17 @@
         <image name="upgrade_background" width="325" height="437"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="sDR-N5-yCe"/>
+        <segue reference="oC7-Qd-EW1"/>
         <segue reference="oa9-8b-dT8"/>
         <segue reference="Yep-Vd-dxY"/>
         <segue reference="0zg-HM-MdK"/>
-        <segue reference="Lm0-2L-Xlj"/>
+        <segue reference="5rJ-hC-fsT"/>
         <segue reference="PpL-SW-U8F"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="ddm-eA-erE"/>
         <segue reference="oQx-RX-nff"/>
         <segue reference="f3k-3A-WEA"/>
-        <segue reference="XIN-Jt-JzU"/>
+        <segue reference="CfN-TC-C8a"/>
         <segue reference="LdN-DE-nXL"/>
     </inferredMetricsTieBreakers>
 </document>
