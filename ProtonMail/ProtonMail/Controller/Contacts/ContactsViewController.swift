@@ -18,10 +18,11 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate let kContactCellIdentifier: String = "ContactCell"
     fileprivate let kProtonMailImage: UIImage      = UIImage(named: "encrypted_main")!
-    //
+    
     fileprivate let kContactDetailsSugue : String  = "toContactDetailsSegue";
     fileprivate let kAddContactSugue : String      = "toAddContact"
-    
+    fileprivate let kAddContactGroupSugue: String      = "toAddContactGroup"
+
     fileprivate let kSegueToImportView : String    = "toImportContacts"
     
     fileprivate var searchString : String = ""
@@ -42,7 +43,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
     
     fileprivate var addBarButtonItem : UIBarButtonItem!
-    fileprivate var moreBarButtonItem : UIBarButtonItem!
     
     func inactiveViewModel() {
     }
@@ -116,23 +116,17 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
                                    target: nil,
                                    action: nil)
         self.navigationItem.backBarButtonItem = back
-        
-        if self.addBarButtonItem == nil {
+    
+        if #available(iOS 9.0, *) {
             self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
                                                          target: self,
-                                                         action: #selector(self.addContactTapped))
-        }
-        var rightButtons: [UIBarButtonItem] = [self.addBarButtonItem]
-        if #available(iOS 9.0, *) {
-            if (self.moreBarButtonItem == nil) {
-                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"),
-                                                         style: UIBarButtonItemStyle.plain,
-                                                         target: self,
-                                                         action: #selector(self.moreButtonTapped))
-            }
-            rightButtons.append(self.moreBarButtonItem)
+                                                         action: #selector(self.addButtonTapped))
+        } else {
+            // Fallback on earlier versions
         }
 
+        
+        let rightButtons: [UIBarButtonItem] = [self.addBarButtonItem]
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
         
         //get all contacts
@@ -193,11 +187,21 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.performSegue(withIdentifier: kAddContactSugue, sender: self)
     }
     
+    @objc internal func addContactGroupTapped() {
+        self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
+    }
+    
     @available(iOS 9.0, *)
-    @objc internal func moreButtonTapped() {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+    @objc internal func addButtonTapped() {
+        /// set title
+        let alertController = UIAlertController(title: "[locale] Select An Option", message: nil, preferredStyle: .actionSheet)
         
+        /// set options
+        alertController.addAction(UIAlertAction(title: "[locale] Create Contact", style: .default, handler: {
+            (action) -> Void in
+            self.addContactTapped()
+        }))
+        alertController.addAction(UIAlertAction(title: "[locale] Create Group", style: .default, handler: nil))
         alertController.addAction(UIAlertAction(title: LocalString._contacts_upload_contacts, style: .default, handler: { (action) -> Void in
             self.navigationController?.popViewController(animated: true)
             
@@ -211,8 +215,12 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             self.present(alertController, animated: true, completion: nil)
         }))
+        
+        /// set cancel
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
     
-        alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
+        /// present 
+        alertController.popoverPresentationController?.barButtonItem = addBarButtonItem
         alertController.popoverPresentationController?.sourceRect = self.view.frame
         self.present(alertController, animated: true, completion: nil)
     }
