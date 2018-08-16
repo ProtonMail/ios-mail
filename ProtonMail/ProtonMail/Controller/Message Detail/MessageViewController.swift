@@ -60,7 +60,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             popViewController()
             return
         }
-        self.isAutoLoadImage = !sharedUserDataService.showShowImageView
+        self.isAutoLoadImage = sharedUserDataService.autoLoadRemoteImages
         
         self.updateHeader()
         

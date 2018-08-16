@@ -15,6 +15,14 @@
 //
 import Foundation
 
+struct ShowImages : OptionSet {
+    let rawValue: Int
+    // 0 for none, 1 for remote, 2 for embedded, 3 for remote and embedded (
+    static let none     = ShowImages(rawValue: 0)
+    static let remote   = ShowImages(rawValue: 1 << 0) // auto load remote images
+    static let embedded = ShowImages(rawValue: 1 << 1) // auto load embedded images
+}
+
 @objc(UserInfo)
 final class UserInfo : NSObject {
     @available(*, deprecated, message: "remove it when refactoring")
@@ -49,9 +57,15 @@ final class UserInfo : NSObject {
     var displayName: String = ""
     var defaultSignature: String = ""
     var autoSaveContact : Int = 0
-    var showImages : Int = 0 //1 is auto 0 is manual
+    var showImages : ShowImages = .none
+    var autoShowRemote : Bool {
+        get {
+            return self.showImages.contains(.remote)
+        }
+    }
     var swipeLeft : Int = 3
     var swipeRight : Int = 0
+    
     
     //1.9.1 user settings
     var notificationEmail: String = ""
@@ -87,7 +101,7 @@ final class UserInfo : NSObject {
         self.displayName = displayName ?? ""
         self.defaultSignature = signature ?? ""
         self.autoSaveContact  = autoSC ?? 0
-        self.showImages = showImage ?? 0
+        self.showImages = ShowImages(rawValue: showImage ?? 0)
         self.swipeLeft = swipeL ?? 3
         self.swipeRight = swipeR ?? 0
         
@@ -148,7 +162,7 @@ final class UserInfo : NSObject {
             self.displayName = settings["DisplayName"] as? String ?? "'"
             self.defaultSignature = settings["Signature"] as? String ?? ""
             self.autoSaveContact  = settings["AutoSaveContacts"] as? Int ?? 0
-            self.showImages = settings["ShowImages"] as? Int ?? 0
+            self.showImages = ShowImages(rawValue: settings["ShowImages"] as? Int ?? 0)
             self.swipeLeft = settings["SwipeLeft"] as? Int ?? 3
             self.swipeRight = settings["SwipeRight"] as? Int ?? 0
         }
@@ -265,7 +279,7 @@ extension UserInfo: NSCoding {
         aCoder.encode(displayName, forKey: CoderKey.displayName)
         aCoder.encode(defaultSignature, forKey: CoderKey.signature)
         aCoder.encode(autoSaveContact, forKey: CoderKey.autoSaveContact)
-        aCoder.encode(showImages, forKey: CoderKey.showImages)
+        aCoder.encode(showImages.rawValue, forKey: CoderKey.showImages)
         aCoder.encode(swipeLeft, forKey: CoderKey.swipeLeft)
         aCoder.encode(swipeRight, forKey: CoderKey.swipeRight)
     }

@@ -248,12 +248,12 @@ class SettingTableViewController: ProtonMailViewController {
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
                         cell.accessoryType = UITableViewCellAccessoryType.none
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
-                        cell.configCell(itme.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
+                        cell.configCell(itme.description, bottomLine: "", status: sharedUserDataService.autoLoadRemoteImages, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
                                     let view = UIApplication.shared.keyWindow
                                     ActivityIndicatorHelper.show(at: view)
-                                    sharedUserDataService.updateAutoLoadImage(newStatus == true ? 3 : 0) { _, _, error in
+                                    sharedUserDataService.updateAutoLoadImage(remote: newStatus, completion: { (_, _, error) in
                                         ActivityIndicatorHelper.hide(at: view)
                                         if let error = error {
                                             feedback(false)
@@ -263,7 +263,7 @@ class SettingTableViewController: ProtonMailViewController {
                                         } else {
                                             feedback(true)
                                         }
-                                    }
+                                    })
                                 } else {
                                     feedback(false)
                                 }
