@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum ServicePlan {
+enum ServicePlanDetails {
     case free
     case plus
     case pro

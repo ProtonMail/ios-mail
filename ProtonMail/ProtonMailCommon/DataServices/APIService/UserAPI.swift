@@ -85,6 +85,61 @@ class CreateNewUser : ApiRequest<ApiResponse> {
     }
 }
 
+final class GetServicePlansRequest: ApiRequestNew<GetServicePlansResponse> {
+    override func method() -> APIService.HTTPMethod {
+        return .get
+    }
+    
+    override func path() -> String {
+        return PaymentsAPI.path + "/plans"
+    }
+    
+    override func apiVersion() -> Int {
+        return PaymentsAPI.v_plans
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        return  ["Currency": "USD", "Cycle": 12]
+    }
+}
+
+final class GetServicePlansResponse: ApiResponse {
+    private struct Key : CodingKey {
+        var stringValue: String
+        var intValue: Int?
+
+        init?(stringValue: String) {
+            self.stringValue = stringValue
+            self.intValue = nil
+        }
+
+        init?(intValue: Int) {
+            self.stringValue = "\(intValue)"
+            self.intValue = intValue
+        }
+    }
+    
+    internal var availableServicePlans: [ServicePlan]?
+    
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        PMLog.D(response.json(prettyPrinted: true))
+        do {
+            let data = try JSONSerialization.data(withJSONObject: response["Plans"] as Any, options: [])
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .custom({ (_ path:[CodingKey]) -> CodingKey in
+                let original: String = path.last!.stringValue
+                let uncapitalized = original.prefix(1).lowercased() + original.dropFirst()
+                return Key(stringValue: uncapitalized) ?? path.last!
+            })
+            self.availableServicePlans = try decoder.decode([ServicePlan].self, from: data)
+            return true
+        } catch let error {
+            PMLog.D("Failed to parse ServicePlans: \(error.localizedDescription)")
+            return false
+        }
+    }
+}
+
 final class GetUserInfoRequest : ApiRequestNew<GetUserInfoResponse> {
     
     override func method() -> APIService.HTTPMethod {
