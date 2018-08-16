@@ -94,6 +94,8 @@ final class CreateLabelRequestResponse : ApiResponse {
  Update the data of a label/contact group on the server
  
  Type don't need to be specified here since we have the exact labelID to work with
+ 
+ TODO: check return body
  */
 final class UpdateLabelRequest<T: ApiResponse> : ApiRequest<T> {
     var labelID : String
@@ -132,6 +134,8 @@ final class UpdateLabelRequest<T: ApiResponse> : ApiRequest<T> {
  Delete a contact group on the server
  
  Type don't need to be specified here since we have the exact labelID to work with
+ 
+ TODO: check return body
  */
 final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
     var labelID: String

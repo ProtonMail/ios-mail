@@ -337,19 +337,37 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
 }
 
 // Contact group APIs
-/*
- Questions
- 1. Is the contact group ordering sorted locally, or are we following the API?
- */
 
 /// Add designated contact emails into a certain contact group
-final class ContactLabelAnArrayOfContactEmailsRequest<T: ApiResponse>: ApiRequest<T>
+final class ContactLabelAnArrayOfContactEmailsRequest: ApiRequest<ApiResponse>
 {
+    var labelID: String = ""
+    var contactEmailIDs: [String] = []
+    init(labelID: String, contactEmailIDs: [String]) {
+        self.labelID = labelID
+        self.contactEmailIDs = contactEmailIDs
+    }
     
+    override public func path() -> String {
+        return ContactsAPI.path + "/emails/label" +  AppConstants.DEBUG_OPTION
+    }
+    
+    override public func apiVersion() -> Int {
+        return ContactsAPI.v_label_an_array_of_contact_emails
+    }
+    
+    override func method() -> APIService.HTTPMethod {
+        return .put
+    }
+    
+    override func toDictionary() -> [String : Any]?  {
+        return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID]
+    }
 }
 
 
 /// Process the response of ContactLabelAnArrayOfContactEmailsRequest
+/// TODO: check return body
 final class ContactLabelAnArrayOfContactEmailsResponse: ApiResponse {
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
         return true
@@ -358,13 +376,35 @@ final class ContactLabelAnArrayOfContactEmailsResponse: ApiResponse {
 
 
 /// Remove designated contact emails from a certain contact group
-final class ContactUnlabelAnArrayOfContactEmailsRequest<T: ApiResponse>: ApiRequest<T>
+final class ContactUnlabelAnArrayOfContactEmailsRequest: ApiRequest<ApiResponse>
 {
+    var labelID: String = ""
+    var contactEmailIDs: [String] = []
+    init(labelID: String, contactEmailIDs: [String]) {
+        self.labelID = labelID
+        self.contactEmailIDs = contactEmailIDs
+    }
     
+    override public func path() -> String {
+        return ContactsAPI.path + "/emails/unlabel" +  AppConstants.DEBUG_OPTION
+    }
+    
+    override public func apiVersion() -> Int {
+        return ContactsAPI.v_unlabel_an_array_of_contact_emails
+    }
+    
+    override func method() -> APIService.HTTPMethod {
+        return .put
+    }
+    
+    override func toDictionary() -> [String : Any]?  {
+        return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID]
+    }
 }
 
 
 /// Process the response of ContactUnlabelAnArrayOfContactEmailsRequest
+/// TODO: check return body
 final class ContactUnlabelAnArrayOfContactEmailsResponse: ApiResponse {
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
         return true
