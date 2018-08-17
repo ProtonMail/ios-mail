@@ -25,8 +25,8 @@ class ServiceLevelCoordinator: Coordinator {
     weak var controller: UIViewController! = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewController.self)
     
     enum Destination {
-        case changePayedPlan(to: ServicePlanDetails)
-        case chooseFirstPayedPlan(ServicePlanDetails)
+        case changePayedPlan(to: ServicePlan)
+        case chooseFirstPayedPlan(ServicePlan)
         case currentPlan
         case buyMore
     }

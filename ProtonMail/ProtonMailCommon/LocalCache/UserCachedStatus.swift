@@ -53,6 +53,8 @@ final class UserCachedStatus : SharedCacheBase {
         
         // Snooze Notifications
         static let snoozeConfiguration = "snoozeConfiguration"
+        
+        static let servicePlans = "servicePlans"
     }
     
     var isForcedLogout : Bool = false
@@ -319,5 +321,18 @@ extension UserCachedStatus {
     
     func resetAskedEnableTouchID() {
         setValue(AppConstants.AskTouchID, forKey: Key.askEnableTouchID)
+    }
+    
+    var servicePlansDetails: [ServicePlanDetails]? {
+        get {
+            guard let data = self.getShared().data(forKey: Key.servicePlans) else {
+                return nil
+            }
+            return try? PropertyListDecoder().decode(Array<ServicePlanDetails>.self, from: data)
+        }
+        set {
+            let data = try? PropertyListEncoder().encode(newValue)
+            self.setValue(data, forKey: Key.servicePlans)
+        }
     }
 }

@@ -119,19 +119,20 @@ final class GetServicePlansResponse: ApiResponse {
         }
     }
     
-    internal var availableServicePlans: [ServicePlan]?
+    internal var availableServicePlans: [ServicePlanDetails]?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
         do {
             let data = try JSONSerialization.data(withJSONObject: response["Plans"] as Any, options: [])
             let decoder = JSONDecoder()
+            // this strategy is decapitalizing first letter of response's labels to get appropriate name of the ServicePlanDetails object
             decoder.keyDecodingStrategy = .custom({ (_ path:[CodingKey]) -> CodingKey in
                 let original: String = path.last!.stringValue
                 let uncapitalized = original.prefix(1).lowercased() + original.dropFirst()
                 return Key(stringValue: uncapitalized) ?? path.last!
             })
-            self.availableServicePlans = try decoder.decode([ServicePlan].self, from: data)
+            self.availableServicePlans = try decoder.decode(Array<ServicePlanDetails>.self, from: data)
             return true
         } catch let error {
             PMLog.D("Failed to parse ServicePlans: \(error.localizedDescription)")
