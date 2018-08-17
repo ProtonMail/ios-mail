@@ -22,6 +22,11 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactDetailsSugue : String  = "toContactDetailsSegue";
     fileprivate let kAddContactSugue : String      = "toAddContact"
     fileprivate let kAddContactGroupSugue: String      = "toAddContactGroup"
+    
+    /* Start Temporary code for contact group */
+    // TODO: remove this after merging of contacts and contact groups are done
+    fileprivate let kToContactGroupSegue: String = "toContactGroupSegue"
+    /* End Temporary code for contact group */
 
     fileprivate let kSegueToImportView : String    = "toImportContacts"
     
@@ -164,8 +169,11 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController)
         } else if (segue.identifier == kAddContactGroupSugue) {
-            let addContactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupViewController
+            let addContactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
             sharedVMService.contactAddViewModel(addContactGroupViewController)
+        } else if(segue.identifier == kToContactGroupSegue) {
+            let toContactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupViewController
+            sharedVMService.contactAddViewModel(toContactGroupViewController)
         } else if (segue.identifier == "toCompose") {
         } else if segue.identifier == kSegueToImportView{
             let popup = segue.destination as! ContactImportViewController
@@ -194,6 +202,10 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
     }
     
+    @objc internal func viewContactGroupsTapped() {
+        self.performSegue(withIdentifier: kToContactGroupSegue, sender: self)
+    }
+    
     @available(iOS 9.0, *)
     @objc internal func addButtonTapped() {
         /// set title
@@ -207,6 +219,10 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         alertController.addAction(UIAlertAction(title: "[locale] Create Group", style: .default, handler: {
             (action) -> Void in
             self.addContactGroupTapped()
+        }))
+        alertController.addAction(UIAlertAction(title: "[locale] View All Groups", style: .default, handler: {
+            (action) -> Void in
+            self.viewContactGroupsTapped()
         }))
         alertController.addAction(UIAlertAction(title: LocalString._contacts_upload_contacts, style: .default, handler: { (action) -> Void in
             self.navigationController?.popViewController(animated: true)
