@@ -8,10 +8,6 @@
 
 import Foundation
 
-
-
-
-
 public class PushData {
     
     //in data object

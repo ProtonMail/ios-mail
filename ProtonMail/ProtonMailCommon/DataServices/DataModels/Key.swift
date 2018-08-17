@@ -9,6 +9,7 @@
 import Foundation
 import Pm
 
+@objc(Key)
 final class Key : NSObject {
     let key_id: String
     var private_key : String
