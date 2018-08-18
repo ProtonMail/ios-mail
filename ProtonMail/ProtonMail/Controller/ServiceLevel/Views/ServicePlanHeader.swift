@@ -11,13 +11,22 @@ import UIKit
 class ServicePlanHeader: UIView {
     @IBOutlet private weak var icon: UIImageView!
     @IBOutlet private weak var subtitle: UILabel!
-
+    @IBOutlet private weak var subicon: UILabel!
+    
     convenience init(image: UIImage? = nil,
-                     title: String? = nil)
+                     title: String? = nil,
+                     subicon: (String, UIColor)? = nil)
     {
         self.init(frame: .zero)
         self.icon.image = image
         self.subtitle.text = title
+        
+        if let subicon = subicon {
+            self.subicon.text = subicon.0
+            self.subicon.textColor = subicon.1
+        } else {
+            self.subicon.isHidden = true
+        }
     }
     
     private override init(frame: CGRect) {

@@ -35,6 +35,6 @@ class ServicePlanDataService {
     }
     
     class func detailsOfServicePlan(coded code: String) -> ServicePlanDetails? {
-        return self.allPlanDetails.first(where: { $0.name == code }) // FIXME: change to iDs?
+        return self.allPlanDetails.first(where: { $0.iD == code }) // FIXME: change to iDs?
     }
 }

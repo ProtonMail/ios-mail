@@ -19,7 +19,7 @@ class ServicePlanCapability: UIView {
     {
         self.init(frame: .zero)
         if image != nil {
-            self.icon.image = image
+            self.icon.image = image?.withRenderingMode(.alwaysTemplate)
         } else {
             self.icon.isHidden = true
         }

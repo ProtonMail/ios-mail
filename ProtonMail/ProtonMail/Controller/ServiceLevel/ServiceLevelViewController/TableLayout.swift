@@ -37,9 +37,15 @@ class TableLayout: UICollectionViewFlowLayout {
         attributes.bounds.size.width = collectionView.bounds.width - sectionInset.left - sectionInset.right
         
         if indexPath.item > 0 {
+            let inset: CGFloat = 30.0
+            let thickness: CGFloat = 1
             let separator = UICollectionViewLayoutAttributes(forDecorationViewOfKind: String(describing: Separator.self), with: indexPath)
-            separator.frame = .init(origin: attributes.frame.origin, size: .init( width: attributes.bounds.size.width, height: 1))
             separator.zIndex = Int.max
+            separator.frame = .init(x: attributes.frame.origin.x + inset,
+                                    y: attributes.frame.origin.y,
+                                    width: attributes.bounds.size.width - inset,
+                                    height: thickness)
+            
             self.separators[indexPath] = separator
         }
         

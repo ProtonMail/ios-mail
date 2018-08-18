@@ -49,12 +49,12 @@ class ConfigurableCell: UICollectionViewCell {
 class Separator: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .gray
+        self.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.backgroundColor = .gray
+        self.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
     }
     
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {

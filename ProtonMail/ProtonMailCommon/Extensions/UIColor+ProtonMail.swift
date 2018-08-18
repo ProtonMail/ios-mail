@@ -62,6 +62,7 @@ extension UIColor {
         static let Menu_UnSelectBackground_Label = UIColor(RRGGBB:UInt(0x3F3E4E))
         static let Menu_SelectedBackground = UIColor(RRGGBB: UInt(0x2F2E3C))
         
+        static let TableSeparatorGray = UIColor(red: 226/255, green: 230/255, blue: 232/255, alpha: 1.0)
         static let ButtonBackground: UIColor = {
             return Menu_UnreadCountBackground
         }()

@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ServicePlanHeader" customModule="ProtonMail" customModuleProvider="target">
             <connections>
                 <outlet property="icon" destination="VDk-r0-6lZ" id="ZpU-xG-q0m"/>
+                <outlet property="subicon" destination="i0D-Rd-z78" id="QEj-jH-aHc"/>
                 <outlet property="subtitle" destination="F61-zU-Ttb" id="fbm-5C-WRN"/>
             </connections>
         </placeholder>
@@ -21,29 +22,38 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="GYC-f3-gRd">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
+                <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="GYC-f3-gRd">
+                    <rect key="frame" x="40" y="20" width="295" height="99"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="700" translatesAutoresizingMaskIntoConstraints="NO" id="VDk-r0-6lZ">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                            <rect key="frame" x="0.0" y="0.0" width="295" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="kQS-md-xhP"/>
+                                <constraint firstAttribute="height" constant="40" id="kQS-md-xhP"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This can be really long string so we'd better check beforehead that it does not get shrinked too soon" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F61-zU-Ttb">
-                            <rect key="frame" x="0.0" y="58" width="375" height="61"/>
+                            <rect key="frame" x="0.0" y="60" width="295" height="39"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                 </stackView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i0D-Rd-z78">
+                    <rect key="frame" x="40" y="60" width="295" height="18"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="GYC-f3-gRd" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="6Dz-oh-vUx"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="GYC-f3-gRd" secondAttribute="trailing" id="91g-Bq-UbQ"/>
-                <constraint firstItem="GYC-f3-gRd" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="C2s-6A-nUU"/>
+                <constraint firstItem="GYC-f3-gRd" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="6Dz-oh-vUx"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="GYC-f3-gRd" secondAttribute="trailing" constant="40" id="91g-Bq-UbQ"/>
+                <constraint firstItem="GYC-f3-gRd" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="40" id="C2s-6A-nUU"/>
+                <constraint firstItem="i0D-Rd-z78" firstAttribute="top" secondItem="VDk-r0-6lZ" secondAttribute="bottom" id="WOB-Fk-chi"/>
+                <constraint firstItem="i0D-Rd-z78" firstAttribute="width" secondItem="VDk-r0-6lZ" secondAttribute="width" id="aVI-en-7Ms"/>
+                <constraint firstItem="i0D-Rd-z78" firstAttribute="centerX" secondItem="VDk-r0-6lZ" secondAttribute="centerX" id="lTo-pq-YDM"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="GYC-f3-gRd" secondAttribute="bottom" id="uwj-qF-O0p"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

@@ -10,7 +10,7 @@ import UIKit
 
 class ServiceLevelViewController: UICollectionViewController, Coordinated {
     typealias CoordinatorType = ServiceLevelCoordinator
-    private lazy var viewModel: ServiceLevelViewModel = ServiceLevelViewModelTable()
+    internal var viewModel: ServiceLevelViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()

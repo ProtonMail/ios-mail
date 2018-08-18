@@ -44,7 +44,7 @@ class ProtonMailViewController: UIViewController, ProtonMailViewControllerProtoc
                      _ shouldShowMenu: Bool) {
         if let revealViewController = controller.revealViewController() {
             
-            if (shouldShowMenu) {
+            if (shouldShowMenu && menuButton != nil) {
                 controller.navigationItem.leftBarButtonItem = menuButton
                 menuButton.accessibilityLabel = LocalString._menu_button
                 menuButton.target = controller.revealViewController()

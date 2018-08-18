@@ -22,7 +22,13 @@ class ServiceLevelCoordinator: Coordinator {
         return child
     }
     
-    weak var controller: UIViewController! = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewController.self)
+    weak var controller: UIViewController! = ServiceLevelCoordinator.makeController()
+    
+    private class func makeController() -> ServiceLevelViewController {
+        let controller = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewController.self)
+        controller.viewModel = CurrentPlanViewModel()
+        return controller
+    }
     
     enum Destination {
         case changePayedPlan(to: ServicePlan)
