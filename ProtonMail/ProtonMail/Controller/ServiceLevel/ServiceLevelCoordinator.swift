@@ -16,7 +16,11 @@ class ServiceLevelCoordinator: Coordinator {
         case .buyMore:
             child = BuyMoreCoordinator() as? SomeCoordinator
             // setup controller
-        default: fatalError()
+            
+        case .details(of: let plan):
+            let serviceLevel = ServiceLevelCoordinator()
+            // setup controller
+            child = serviceLevel as? SomeCoordinator
         }
         
         return child
@@ -31,9 +35,7 @@ class ServiceLevelCoordinator: Coordinator {
     }
     
     enum Destination {
-        case changePayedPlan(to: ServicePlan)
-        case chooseFirstPayedPlan(ServicePlan)
-        case currentPlan
+        case details(of: ServicePlan)
         case buyMore
     }
 }

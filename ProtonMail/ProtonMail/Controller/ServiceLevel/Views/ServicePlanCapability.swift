@@ -8,14 +8,18 @@
 
 import UIKit
 
+
 class ServicePlanCapability: UIView {
+    internal private(set) var context: Any?
+    
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var serviceIcon: UIImageView!
     
     convenience init(image: UIImage? = nil,
-                     title: String? = nil,
-                     serviceIconVisible: Bool = false)
+                     title: NSAttributedString? = nil,
+                     serviceIconVisible: Bool = false,
+                     context: Any? = nil)
     {
         self.init(frame: .zero)
         if image != nil {
@@ -23,8 +27,9 @@ class ServicePlanCapability: UIView {
         } else {
             self.icon.isHidden = true
         }
-        self.title.text = title
+        self.title.attributedText = title
         self.serviceIcon.isHidden = !serviceIconVisible
+        self.context = context
     }
     
     private override init(frame: CGRect) {

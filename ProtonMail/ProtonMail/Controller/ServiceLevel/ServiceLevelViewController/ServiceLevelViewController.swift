@@ -51,6 +51,13 @@ class ServiceLevelViewController: UICollectionViewController, Coordinated {
         section.embed(indexPath.row, onto: cell)
         return cell
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let destination = self.viewModel.shouldPerformSegue(byItemOn: indexPath) else {
+            return
+        }
+        self.coordinator.go(to: destination, creating: ServiceLevelViewController.self)
+    }
 }
 
 

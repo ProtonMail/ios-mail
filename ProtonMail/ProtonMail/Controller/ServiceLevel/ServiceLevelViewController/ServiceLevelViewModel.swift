@@ -14,6 +14,8 @@ protocol ServiceLevelViewModel {
     var sections: [Section<UIView>] { get }
     var cellTypes: [UICollectionViewCell.Type] { get }
     var accessoryTypes: [UICollectionReusableView.Type] { get }
+    
+    func shouldPerformSegue(byItemOn: IndexPath) -> ServiceLevelCoordinator.Destination?
 }
 
 class CurrentPlanViewModel: ServiceLevelViewModel {
@@ -45,32 +47,39 @@ class CurrentPlanViewModel: ServiceLevelViewModel {
             return nil
         }
         
-        let multiuser1 = on([.pro], put: SPC(image: UIImage(named:"iap_users"),
-                                             title: "Unlimited messages sent/day"))
+        let multiuser1 = on([.pro],
+                            put: SPC(image: UIImage(named:"iap_users"),
+                                     title: .init(string: "Unlimited messages sent/day")))
         
-        let multiuser2 = on([.visionary], put: SPC(image: UIImage(named:"iap_users"),
-                                                   title: "Up to \(details.maxMembers) users"))
+        let multiuser2 = on([.visionary],
+                            put: SPC(image: UIImage(named:"iap_users"),
+                                     title: .init(string: "Up to \(details.maxMembers) users")))
         
         let emailAddresses = SPC(image: UIImage(named: "iap_email"),
-                                 title: "\(details.maxAddresses) email addresses")
+                                 title: .init(string: "\(details.maxAddresses) email addresses"))
         
         let storage = SPC(image: UIImage(named: "iap_hdd"),
-                          title: "\(details.maxSpace) storage capacity")
+                          title: .init(string: "\(details.maxSpace) storage capacity"))
         
-        let messageLimit = on([.free], put: SPC(image: UIImage(named: "iap_lock"),
-                                                title: "Limited to \(details.amount) messages sent/day"))
+        let messageLimit = on([.free],
+                              put: SPC(image: UIImage(named: "iap_lock"),
+                                       title: .init(string: "Limited to \(details.amount) messages sent/day")))
         
-        let bridge = on([.plus, .pro, .visionary], put: SPC(image: UIImage(named: "iap_link"),
-                                                            title: "IMAP/SMTP Support via ProtonMail Bridge"))
+        let bridge = on([.plus, .pro, .visionary],
+                        put: SPC(image: UIImage(named: "iap_link"),
+                                 title: .init(string: "IMAP/SMTP Support via ProtonMail Bridge")))
         
-        let labels = on([.plus, .pro, .visionary], put: SPC(image: UIImage(named: "iap_folder"),
-                                                            title: "Lables, Folders, Filters & More"))
+        let labels = on([.plus, .pro, .visionary],
+                        put: SPC(image: UIImage(named: "iap_folder"),
+                                 title: .init(string: "Lables, Folders, Filters & More")))
         
-        let support = on([.pro, .visionary], put: SPC(image: UIImage(named: "iap_lifering"),
-                                                      title: "Support for \(details.maxDomains) custom domains (e.g. user@yourdomain.com)"))
+        let support = on([.pro, .visionary],
+                         put: SPC(image: UIImage(named: "iap_lifering"),
+                                  title: .init(string: "Support for \(details.maxDomains) custom domains (e.g. user@yourdomain.com)")))
         
-        let vpn = on([.visionary], put: SPC(image: UIImage(),
-                                            title: "ProtonVPN included"))
+        let vpn = on([.visionary],
+                     put: SPC(image: UIImage(),
+                              title: .init(string: "ProtonVPN included")))
         
         let capabilities = [multiuser1, multiuser2, emailAddresses, storage, messageLimit, bridge, labels, support, vpn].compactMap { $0 }
         return Section(elements: capabilities, cellType: ConfigurableCell.self)
@@ -90,17 +99,28 @@ class CurrentPlanViewModel: ServiceLevelViewModel {
     }
     
     private func makeLinks() -> Section<UIView>? {
-        // FIXME: colored attributed strings
-        // FIXME: how to inject drilldown here?
-        let title = TableSectionHeader(title: "OTHER SERVICE PLANS")
-        let link1 = on([.plus, .pro, .visionary], put: ServicePlanCapability(title: "ProtonMail Free", serviceIconVisible: true))
-        let link2 = on([.free, .pro, .visionary], put: ServicePlanCapability(title: "ProtonMail Plus", serviceIconVisible: true))
-        let link3 = on([.free, .plus, .visionary], put: ServicePlanCapability(title: "ProtonMail Pro", serviceIconVisible: true))
-        let link4 = on([.free, .plus, .pro], put: ServicePlanCapability(title: "ProtonMail Visionary", serviceIconVisible: true))
+        var links: [UIView] = [ServicePlan.free, ServicePlan.plus, ServicePlan.pro, ServicePlan.visionary].compactMap { plan in
+            guard plan != self.currentPlan else {
+                return nil
+            }
+            
+            let titleColored = NSAttributedString(string: plan.subheader.0, attributes: [.foregroundColor : plan.subheader.1])
+            let attributed = NSMutableAttributedString(string: "ProtonMail ")
+            attributed.append(titleColored)
+            return ServicePlanCapability(title: attributed,
+                                         serviceIconVisible: true,
+                                         context: ServiceLevelCoordinator.Destination.details(of: plan))
+        }
         
-        return Section(elements: [title, link1, link2, link3, link4].compactMap { $0 }, cellType: ConfigurableCell.self)
+        links.insert(TableSectionHeader(title: "OTHER SERVICE PLANS"), at: 0)
+        
+        return Section(elements: links, cellType: ConfigurableCell.self)
     }
     
+    func shouldPerformSegue(byItemOn indexPath: IndexPath) -> ServiceLevelCoordinator.Destination? {
+        guard let element = self.sections[indexPath.section].elements[indexPath.item] as? ServicePlanCapability else { return nil }
+        return element.context as? ServiceLevelCoordinator.Destination
+    }
 }
 
 extension CurrentPlanViewModel {
