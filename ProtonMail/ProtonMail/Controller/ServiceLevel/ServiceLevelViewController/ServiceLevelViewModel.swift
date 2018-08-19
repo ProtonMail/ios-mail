@@ -90,14 +90,15 @@ class CurrentPlanViewModel: ServiceLevelViewModel {
     }
     
     private func makeLinks() -> Section<UIView>? {
-        // FIXME: wide lable "Other Plans"
         // FIXME: colored attributed strings
         // FIXME: how to inject drilldown here?
-        let link1 = on([.free, .pro, .visionary], put: ServicePlanCapability(title: "ProtonMail Plus", serviceIconVisible: true))
-        let link2 = on([.free, .plus, .visionary], put: ServicePlanCapability(title: "ProtonMail Pro", serviceIconVisible: true))
-        let link3 = on([.free, .plus, .pro], put: ServicePlanCapability(title: "ProtonMail Visionary", serviceIconVisible: true))
+        let title = TableSectionHeader(title: "OTHER SERVICE PLANS")
+        let link1 = on([.plus, .pro, .visionary], put: ServicePlanCapability(title: "ProtonMail Free", serviceIconVisible: true))
+        let link2 = on([.free, .pro, .visionary], put: ServicePlanCapability(title: "ProtonMail Plus", serviceIconVisible: true))
+        let link3 = on([.free, .plus, .visionary], put: ServicePlanCapability(title: "ProtonMail Pro", serviceIconVisible: true))
+        let link4 = on([.free, .plus, .pro], put: ServicePlanCapability(title: "ProtonMail Visionary", serviceIconVisible: true))
         
-        return Section(elements: [link1, link2, link3].compactMap { $0 }, cellType: ConfigurableCell.self)
+        return Section(elements: [title, link1, link2, link3, link4].compactMap { $0 }, cellType: ConfigurableCell.self)
     }
     
 }

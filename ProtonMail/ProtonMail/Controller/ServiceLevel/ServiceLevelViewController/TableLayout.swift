@@ -27,6 +27,7 @@ class TableLayout: UICollectionViewFlowLayout {
         super.invalidateLayout(with: context)
         
         // this line is crucial for separators layout. If estimated size is too different from future real size - lower separators will be misplaces
+        // FIXME: if there will be problems with these layout, consider adding cells instead of realodData() and implement initialLayoutAttributesForXXX() methods or simply add separators as section members in viewModel
         self.estimatedItemSize = .init(width: UIApplication.shared.keyWindow!.bounds.width * 0.70, height: 200)
     }
     
@@ -37,12 +38,12 @@ class TableLayout: UICollectionViewFlowLayout {
         attributes.bounds.size.width = collectionView.bounds.width - sectionInset.left - sectionInset.right
         
         if indexPath.item > 0 {
-            let inset: CGFloat = 30.0
+            let inset: CGFloat = 20.0
             let thickness: CGFloat = 1
             let separator = UICollectionViewLayoutAttributes(forDecorationViewOfKind: String(describing: Separator.self), with: indexPath)
             separator.zIndex = Int.max
             separator.frame = .init(x: attributes.frame.origin.x + inset,
-                                    y: attributes.frame.origin.y,
+                                    y: attributes.frame.origin.y - 1,
                                     width: attributes.bounds.size.width - inset,
                                     height: thickness)
             

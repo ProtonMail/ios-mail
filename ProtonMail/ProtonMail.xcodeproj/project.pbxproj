@@ -72,6 +72,7 @@
 		0AA9AD1D45388FF31E7E07B6B6B6D84C /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FA54B507F5B492266760AAACC658A6 /* SwiftTryCatch.m */; };
 		0AB3E119781E0FE840370738688AAF12 /* NSError+Alert+Extenion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504A32ED034AFC87C9FF45FDA9B0D481 /* NSError+Alert+Extenion.swift */; };
 		0AD99F38855CD71A83F1626597D6C604 /* PMWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283624B6469818966374EF6D3D48C809 /* PMWebView.swift */; };
+		0B0BBD3849203936EE0C3D044331867F /* TableSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = C979620836DBA73C8502250B22074F4B /* TableSectionHeader.xib */; };
 		0B2A217947A5A0BB21BBE2D868EA7B95 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A3F7FEB833E1B45FB6F23517638989 /* Logger.swift */; };
 		0B52B3D83B94483AEA513569A17DCEAD /* ViewDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FDFFD7E8C5D6FADBD79A09D8232C4B6 /* ViewDefined.swift */; };
 		0B70C32468F4726D8B9E2A871E996B7D /* ServiceLevelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0AF0958602CF4C011FED26FF9702D5 /* ServiceLevelViewModel.swift */; };
@@ -182,6 +183,7 @@
 		2118C70F1AE8B8D737C6AF1CD8377FFE /* FeedbackItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6917129BE6C04FCCBA484AC2473D19D /* FeedbackItem.swift */; };
 		212B7FAB7DB4B2E89C72DC183867AB3C /* UpdateTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659ADC577F02FBBD35B34B299A700FD /* UpdateTime.swift */; };
 		21352EBA64320030B9D9FD060C2A637B /* ContactUpgradeCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304EBAE13534EEE358F03C9DF7F79797 /* ContactUpgradeCellDelegate.swift */; };
+		215419CF76B4E2FC096C574FB20AA56C /* TableSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A042AC483B4593D69F127BEF1FB80E /* TableSectionHeader.swift */; };
 		2185438D12B7EE525C1B2790042A5D97 /* ContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7385ADE4EA34EE7A7F64BBA0E0E5BF7D /* ContactPicker.swift */; };
 		21A22D014CF6CB1EB6C5D86F919A7795 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */; };
 		21C61585CCE300557EEB115B8866C89E /* MultiLabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E60FC91F733F0C899B8269CF3D0E7D /* MultiLabelDisplayView.xib */; };
@@ -373,6 +375,7 @@
 		45909D36BE285AC5AE0E941C62DA7143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1ECA6547BB92EFBFF9D78045E47FD613 /* InfoPlist.strings */; };
 		459A79947F5BB4DFF95A86FD4792EC77 /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6576E6B2E5753D73F5405E8DA8E1137 /* NSManagedObjectContextExtension.swift */; };
 		45AC9F215A0583B9DD64BCF5F454E045 /* AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83367E04E7FA6F07D0BA1041B066B8F /* AttachmentExtension.swift */; };
+		45F9F0F196390F148FEF013C9C268D5A /* TableSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A042AC483B4593D69F127BEF1FB80E /* TableSectionHeader.swift */; };
 		46144FE04C87C476002403318E4E9897 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D696BC7A9D9CECB6B6E9876B61032680 /* TestAPI.swift */; };
 		4636B8BC852796F32AF4B62E369BA6BF /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB9FC5D69B6BA67F8EEF7823648FABB /* UINavigationController+Extension.swift */; };
 		46788AD27915EB5EB1EC5D6F6492280C /* ContactCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE7A25E600A79A1B5AF9F044609BC4B /* ContactCollectionView.swift */; };
@@ -935,6 +938,7 @@
 		AC2169ABF9A6B206FDE98C3FE1A3F589 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD961DC114743EC95EAE9E6B7F90274C /* UserAPI.swift */; };
 		AC88AC87B4623A044E29FB13AA932ECF /* MailboxViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0D4124C61390A1D788A83DD1A9FFC /* MailboxViewModelImpl.swift */; };
 		AC9F2845E7C86BC273B7A347BB35167F /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227296580D62465EBB981626C208052D /* AuthAPI.swift */; };
+		ACA54E8DC6B769C7D781B548A2062567 /* TableSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = C979620836DBA73C8502250B22074F4B /* TableSectionHeader.xib */; };
 		ACE3FC5DC6F54E2E1B97D7D06DEF87E8 /* ContactCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C835E09ED80CEF24F9D8FAE4D2F8718E /* ContactCollectionViewFlowLayout.swift */; };
 		ACFE5E13F22AE1E690313DEAC1DFA486 /* ChangePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B553E0FE138B6EB544BF3C3DBE10AF1 /* ChangePasswordViewModel.swift */; };
 		AD3052C99B808B30D2C85550760B58E7 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9333B1575E40465998DC664CE55B0 /* String+Extension.swift */; };
@@ -1576,6 +1580,7 @@
 		2407BF5796C9E19D445712F8FD6D18A2 /* LabelsDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelsDataService.swift; sourceTree = "<group>"; };
 		247B348B0E483258E16B538BECAAE2C4 /* Pods-ProtonMailDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.debug.xcconfig"; sourceTree = "<group>"; };
 		24BF04E5E6E9EC3C69828955C8742A7A /* ShowImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowImageView.swift; sourceTree = "<group>"; };
+		25A042AC483B4593D69F127BEF1FB80E /* TableSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSectionHeader.swift; sourceTree = "<group>"; };
 		25ECC218AFCC8562FE0728D4399BFCE8 /* MBContactCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBContactCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		25F2543A95CCB31AFB636BE8E06CD04F /* MessageDataService+FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageDataService+FileManager.swift"; sourceTree = "<group>"; };
 		262F367D949D94238B158C679184B520 /* Menu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Menu.storyboard; sourceTree = "<group>"; };
@@ -1951,6 +1956,7 @@
 		C835E09ED80CEF24F9D8FAE4D2F8718E /* ContactCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		C8467A3031510A103A6E92A47B946526 /* MessageDetailBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageDetailBottomView.xib; sourceTree = "<group>"; };
 		C8EFB2E7F66C228E239E6B8C080B2355 /* UserCachedStatus+NotificationSnoozerCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCachedStatus+NotificationSnoozerCore.swift"; sourceTree = "<group>"; };
+		C979620836DBA73C8502250B22074F4B /* TableSectionHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableSectionHeader.xib; sourceTree = "<group>"; };
 		C97B10ACFE993A5ABC3DDD43209BA369 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		C9BE9D2FABB2F4204098EE8B5588DE5C /* Settings+Defined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Settings+Defined.swift"; sourceTree = "<group>"; };
 		C9C7F21312E00992676D7D963F599A5F /* DebugDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugDetailsViewController.swift; sourceTree = "<group>"; };
@@ -3245,6 +3251,8 @@
 				E08AEEEDA70BDDB5E259A4065ECE7AD0 /* ServicePlanFooter.xib */,
 				A0E4855D3119DD0FEFE0E934AB22CFFE /* ServicePlanHeader.swift */,
 				79406072690AE38BDC2A5AA5148AEBCF /* ServicePlanHeader.xib */,
+				25A042AC483B4593D69F127BEF1FB80E /* TableSectionHeader.swift */,
+				C979620836DBA73C8502250B22074F4B /* TableSectionHeader.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3816,6 +3824,7 @@
 				81632A2DA06303254710C356D2E56E79 /* SignIn.storyboard in Resources */,
 				178B242941604A0DE39D2D0AE7590EDB /* SpamScoreWarningView.xib in Resources */,
 				62956BA6A4F7BAAACF00D87CB206C352 /* SwitchTableViewCell.xib in Resources */,
+				ACA54E8DC6B769C7D781B548A2062567 /* TableSectionHeader.xib in Resources */,
 				87E73A6BA4421FA52A30EA28ED5691A7 /* TempXIB.xib in Resources */,
 				1D5C3D806B156861755D0FC71D26AACC /* TimePickerViewController.xib in Resources */,
 				C382896EFCD962D2D4C6D87B57753C4F /* ToastMessageView.xib in Resources */,
@@ -3875,6 +3884,7 @@
 				37CC5A7C62FF7FD4DDBA192C62FCBB5F /* SignIn.storyboard in Resources */,
 				207FAD842E9CA47AB7A4978F449F9694 /* SpamScoreWarningView.xib in Resources */,
 				CF047C2027B9CF3488440E0AA16378AE /* SwitchTableViewCell.xib in Resources */,
+				0B0BBD3849203936EE0C3D044331867F /* TableSectionHeader.xib in Resources */,
 				F3060BBF4B7FBD00F0F249380A81A512 /* TempXIB.xib in Resources */,
 				7FB275FD11B3B51AD8ED3725509FFFB7 /* TimePickerViewController.xib in Resources */,
 				0A9EDBEA5F48200CE9A25C645EDCC6F9 /* ToastMessageView.xib in Resources */,
@@ -4742,6 +4752,7 @@
 				5F9C61A3B61421917B0944A475EA4BB1 /* SwitchTableViewCell.swift in Sources */,
 				DFD682D0DDB4BBEB4721AB2C0A387967 /* TableCellLabelView.swift in Sources */,
 				9C5109EA75D691AC793EF6A72B712F27 /* TableLayout.swift in Sources */,
+				45F9F0F196390F148FEF013C9C268D5A /* TableSectionHeader.swift in Sources */,
 				07079172F08408217599170910D87AB1 /* TermsWebViewModelImpl.swift in Sources */,
 				147684DE4D10FD9CE6E2A4CBC3381F88 /* TestAPI.swift in Sources */,
 				B227B580CB2F218C2B5532C3C2DABAEC /* TextInsetTextField.swift in Sources */,
@@ -5137,6 +5148,7 @@
 				E97C650E2E5051FB60F495B3F16D753E /* SwitchTableViewCell.swift in Sources */,
 				33614903A8407F333ED0ECA3437E4048 /* TableCellLabelView.swift in Sources */,
 				63758EC51331643E9136299D3BE6CD0F /* TableLayout.swift in Sources */,
+				215419CF76B4E2FC096C574FB20AA56C /* TableSectionHeader.swift in Sources */,
 				248DA163C0E7E06AE32010BCEFC74778 /* TermsWebViewModelImpl.swift in Sources */,
 				46144FE04C87C476002403318E4E9897 /* TestAPI.swift in Sources */,
 				27E86034A9B9C03D99F70C6A5D873AE6 /* TextInsetTextField.swift in Sources */,
