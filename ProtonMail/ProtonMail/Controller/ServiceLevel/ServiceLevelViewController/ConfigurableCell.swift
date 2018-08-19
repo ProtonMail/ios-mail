@@ -62,6 +62,10 @@ class Separator: UICollectionReusableView {
     }
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        return layoutAttributes
+        guard let attributes: UICollectionViewLayoutAttributes = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else {
+            return layoutAttributes
+        }
+        attributes.zIndex = Int.max - 1
+        return attributes
     }
 }

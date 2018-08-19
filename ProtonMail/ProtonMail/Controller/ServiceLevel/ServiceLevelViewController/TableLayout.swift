@@ -17,6 +17,8 @@ class TableLayout: UICollectionViewFlowLayout {
         self.minimumInteritemSpacing = 0
     }
     
+    var invalidatedOnce: Bool = false
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -25,10 +27,23 @@ class TableLayout: UICollectionViewFlowLayout {
     
     override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
         super.invalidateLayout(with: context)
-        
-        // this line is crucial for separators layout. If estimated size is too different from future real size - lower separators will be misplaces
-        // FIXME: if there will be problems with these layout, consider adding cells instead of realodData() and implement initialLayoutAttributesForXXX() methods or simply add separators as section members in viewModel
         self.estimatedItemSize = .init(width: UIApplication.shared.keyWindow!.bounds.width * 0.70, height: 200)
+    }
+    
+    override func shouldInvalidateLayout(forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes, withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes) -> Bool
+    {
+        // every separators frame depends on frame of some cell, which is calculated twice: attributes that FlowLayout calculates according to estimatedItemSize and then modified by cell according to its AutoLayout constraints. Here we are invalidating separator layout calculated BEFORE cells constraints were applied, so it will not be mispalced.
+        if originalAttributes.representedElementKind == String(describing: Separator.self) {
+            return true
+        }
+        return super.shouldInvalidateLayout(forPreferredLayoutAttributes: preferredAttributes, withOriginalAttributes: originalAttributes)
+    }
+    
+    override func layoutAttributesForDecorationView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        fatalError()
+    }
+    override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        fatalError()
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
