@@ -14,35 +14,48 @@ protocol ServiceLevelViewModel {
     var sections: [Section<UIView>] { get }
     var cellTypes: [UICollectionViewCell.Type] { get }
     var accessoryTypes: [UICollectionReusableView.Type] { get }
-    
     func shouldPerformSegue(byItemOn: IndexPath) -> ServiceLevelCoordinator.Destination?
+    func setup(with plan: ServicePlan?)
 }
 
-class CurrentPlanViewModel: ServiceLevelViewModel {
+class PlanDetailsViewModel: PlanAndLinksViewModel {
+    override func setup(with plan: ServicePlan?) {
+        self.plan = plan
+        self.details = plan?.fetchDetails()
+        self.sections = [self.makeHeader(),
+                         self.makeCapabilities(),
+                         self.makeFooter()].compactMap { $0 }
+    }
+}
+
+class PlanAndLinksViewModel: ServiceLevelViewModel {
     let cellTypes: [UICollectionViewCell.Type] = [ConfigurableCell.self]
     let accessoryTypes: [UICollectionReusableView.Type] = [Separator.self]
     
     let title = LocalString._menu_service_plan_title
-    private lazy var currentPlan: ServicePlan? = ServicePlanDataService.currentServicePlan
-    private lazy var details: ServicePlanDetails? = ServicePlanDataService.currentServicePlan?.fetchDetails()
+    fileprivate var plan: ServicePlan?
+    fileprivate var details: ServicePlanDetails?
+    internal var sections: [Section<UIView>] = []
     
-    lazy var sections: [Section<UIView>] = {
-        return [self.makeHeader(),
-                self.makeCapabilities(),
-                self.makeFooter(),
-                self.makeLinks()].compactMap { $0 }
-    }()
-    
+    internal func setup(with plan: ServicePlan?) {
+        self.plan = plan
+        self.details = plan?.fetchDetails()
+        self.sections =  [self.makeHeader(),
+                          self.makeCapabilities(),
+                          self.makeFooter(),
+                          self.makeLinks()].compactMap { $0 }
+    }
     lazy var collectionViewLayout: UICollectionViewLayout = TableLayout()
     
-    private func makeHeader() -> Section<UIView>? {
-        guard let currentPlan = self.currentPlan else { return nil }
+    fileprivate func makeHeader() -> Section<UIView>? {
+        guard let currentPlan = self.plan else { return nil }
         let image = UIImage(named: "Logo")?.withRenderingMode(.alwaysTemplate)
         let headerView = ServicePlanHeader(image: image, title: currentPlan.headerText, subicon: currentPlan.subheader)
         return Section(elements: [headerView], cellType: ConfigurableCell.self)
     }
+    
     typealias SPC = ServicePlanCapability
-    private func makeCapabilities() -> Section<UIView>? {
+    fileprivate func makeCapabilities() -> Section<UIView>? {
         guard let details = self.details else {
             return nil
         }
@@ -85,8 +98,8 @@ class CurrentPlanViewModel: ServiceLevelViewModel {
         return Section(elements: capabilities, cellType: ConfigurableCell.self)
     }
     
-    private func makeFooter() -> Section<UIView>? {
-        guard let currentPlan = self.currentPlan, let details = self.details else { return nil }
+    fileprivate func makeFooter() -> Section<UIView>? {
+        guard let currentPlan = self.plan, let details = self.details else { return nil }
         var message: String = ""
         switch currentPlan { // FIXME: check also if it was purchased via Apple
         case .free:
@@ -98,9 +111,9 @@ class CurrentPlanViewModel: ServiceLevelViewModel {
         return Section(elements: [footerView], cellType: ConfigurableCell.self)
     }
     
-    private func makeLinks() -> Section<UIView>? {
+    fileprivate func makeLinks() -> Section<UIView>? {
         var links: [UIView] = [ServicePlan.free, ServicePlan.plus, ServicePlan.pro, ServicePlan.visionary].compactMap { plan in
-            guard plan != self.currentPlan else {
+            guard plan != self.plan else {
                 return nil
             }
             
@@ -117,14 +130,14 @@ class CurrentPlanViewModel: ServiceLevelViewModel {
         return Section(elements: links, cellType: ConfigurableCell.self)
     }
     
-    func shouldPerformSegue(byItemOn indexPath: IndexPath) -> ServiceLevelCoordinator.Destination? {
+    internal func shouldPerformSegue(byItemOn indexPath: IndexPath) -> ServiceLevelCoordinator.Destination? {
         guard let element = self.sections[indexPath.section].elements[indexPath.item] as? ServicePlanCapability else { return nil }
         return element.context as? ServiceLevelCoordinator.Destination
     }
 }
 
-extension CurrentPlanViewModel {
+extension PlanAndLinksViewModel {
     private func on(_ plans: [ServicePlan], put view: UIView) -> UIView? {
-        return plans.contains(self.currentPlan) ? view : nil
+        return plans.contains(self.plan) ? view : nil
     }
 }

@@ -15,12 +15,13 @@ class ServiceLevelCoordinator: Coordinator {
         switch next {
         case .buyMore:
             child = BuyMoreCoordinator() as? SomeCoordinator
-            // setup controller
+            /* setup controller */
             
         case .details(of: let plan):
-            let serviceLevel = ServiceLevelCoordinator()
-            // setup controller
-            child = serviceLevel as? SomeCoordinator
+            child = ServiceLevelCoordinator() as? SomeCoordinator
+            let viewModel = PlanDetailsViewModel()
+            viewModel.setup(with: plan)
+            (child.controller as? ServiceLevelViewController)?.viewModel = viewModel
         }
         
         return child
@@ -30,7 +31,8 @@ class ServiceLevelCoordinator: Coordinator {
     
     private class func makeController() -> ServiceLevelViewController {
         let controller = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewController.self)
-        controller.viewModel = CurrentPlanViewModel()
+        controller.viewModel = PlanAndLinksViewModel()
+        controller.viewModel.setup(with: ServicePlanDataService.currentServicePlan)
         return controller
     }
     
