@@ -1710,7 +1710,7 @@
         <!--UpgradeAlertViewController-->
         <scene sceneID="Vr2-e9-Tzg">
             <objects>
-                <viewControllerPlaceholder storyboardName="Menu" referencedIdentifier="UIViewController-bwU-38-Jat" id="plX-Lv-x6C" userLabel="UpgradeAlertViewController" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Menu" referencedIdentifier="UpgradeAlertViewController" id="plX-Lv-x6C" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k8e-w1-vXv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5168" y="4262"/>

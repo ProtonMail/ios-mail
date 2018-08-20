@@ -3840,7 +3840,7 @@
         <!--Upgrade Alert View Controller-->
         <scene sceneID="QUA-Pe-gcX">
             <objects>
-                <viewController storyboardIdentifier="UIViewController-bwU-38-Jat" modalTransitionStyle="crossDissolve" modalPresentationStyle="overFullScreen" id="bwU-38-Jat" customClass="UpgradeAlertViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UpgradeAlertViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="overFullScreen" id="bwU-38-Jat" customClass="UpgradeAlertViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="H5J-6i-QBK"/>
                         <viewControllerLayoutGuide type="bottom" id="mPi-VI-f4g"/>
