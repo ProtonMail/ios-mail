@@ -26,6 +26,27 @@ class PlanDetailsViewModel: PlanAndLinksViewModel {
                          self.makeCapabilities(),
                          self.makeFooter()].compactMap { $0 }
     }
+    
+    override fileprivate func makeFooter() -> Section<UIView>? {
+        guard let plan = self.plan,
+            plan == .plus,
+            ServicePlanDataService.currentServicePlan == .free else
+        {
+            return super.makeFooter()
+        }
+        
+        let price = NSMutableAttributedString(string: "$69.99",
+                                              attributes: [.font: UIFont.preferredFont(forTextStyle: .title1),
+                                                           .foregroundColor: UIColor.white])
+        let caption = NSAttributedString(string: "\nfor one year", attributes: [.font: UIFont.preferredFont(forTextStyle: .body),
+                                                                                .foregroundColor: UIColor.white])
+        price.append(caption)
+        let footerView = ServicePlanFooter(subTitle: "$48 ProtonMail Plus +\n $21.99 Apple in-app purchase fee",
+                                           buttonTitle: price)
+        
+        // FIXME: put acknowledgement text here
+        return Section(elements: [footerView], cellType: ConfigurableCell.self)
+    }
 }
 
 class PlanAndLinksViewModel: ServiceLevelViewModel {
@@ -48,9 +69,9 @@ class PlanAndLinksViewModel: ServiceLevelViewModel {
     lazy var collectionViewLayout: UICollectionViewLayout = TableLayout()
     
     fileprivate func makeHeader() -> Section<UIView>? {
-        guard let currentPlan = self.plan else { return nil }
+        guard let plan = self.plan else { return nil }
         let image = UIImage(named: "Logo")?.withRenderingMode(.alwaysTemplate)
-        let headerView = ServicePlanHeader(image: image, title: currentPlan.headerText, subicon: currentPlan.subheader)
+        let headerView = ServicePlanHeader(image: image, title: plan.headerText, subicon: plan.subheader)
         return Section(elements: [headerView], cellType: ConfigurableCell.self)
     }
     
@@ -94,14 +115,14 @@ class PlanAndLinksViewModel: ServiceLevelViewModel {
                      put: SPC(image: UIImage(),
                               title: .init(string: "ProtonVPN included")))
         
-        let capabilities = [multiuser1, multiuser2, emailAddresses, storage, messageLimit, bridge, labels, support, vpn].compactMap { $0 }
+        let capabilities = [multiuser1, multiuser2, emailAddresses, storage, messageLimit, bridge, labels, support, vpn, UIView()].compactMap { $0 }
         return Section(elements: capabilities, cellType: ConfigurableCell.self)
     }
     
     fileprivate func makeFooter() -> Section<UIView>? {
-        guard let currentPlan = self.plan, let details = self.details else { return nil }
+        guard let plan = self.plan, let details = self.details else { return nil }
         var message: String = ""
-        switch currentPlan { // FIXME: check also if it was purchased via Apple
+        switch plan { // FIXME: check also if it was purchased via Apple
         case .free:
             message = "Upgrade to a paid plan to benefit from more features"
         case .plus, .pro, .visionary:

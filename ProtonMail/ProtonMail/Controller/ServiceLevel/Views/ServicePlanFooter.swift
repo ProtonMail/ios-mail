@@ -20,7 +20,7 @@ class ServicePlanFooter: UIView {
     
     convenience init(title: String? = nil,
                      subTitle: String? = nil,
-                     buttonTitle: String? = nil)
+                     buttonTitle: NSAttributedString? = nil)
     {
         self.init(frame: .zero)
         
@@ -28,7 +28,10 @@ class ServicePlanFooter: UIView {
         self.subtitle.text = subTitle
         
         if buttonTitle != nil {
-            self.buyButton.setTitle(buttonTitle, for: .normal)
+            self.buyButton.setAttributedTitle(buttonTitle, for: .normal)
+            self.buyButton.titleLabel?.numberOfLines = 0
+            self.buyButton.titleLabel?.lineBreakMode = .byWordWrapping
+            self.buyButton.titleLabel?.textAlignment = .center
         } else {
             self.buyButton.isHidden = true
         }
