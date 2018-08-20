@@ -34,23 +34,5 @@
             </objects>
             <point key="canvasLocation" x="-63.200000000000003" y="2.2488755622188905"/>
         </scene>
-        <!--Buy More View Controller-->
-        <scene sceneID="5px-To-Pwm">
-            <objects>
-                <viewController storyboardIdentifier="BuyMoreViewController" id="Xve-cG-9Nc" customClass="BuyMoreViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="goX-ig-jD0"/>
-                        <viewControllerLayoutGuide type="bottom" id="xq2-jS-wMn"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Kro-To-hM3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.37254901959999998" green="0.6588235294" blue="0.89411764709999997" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yg4-Dd-20k" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="604" y="2"/>
-        </scene>
     </scenes>
 </document>

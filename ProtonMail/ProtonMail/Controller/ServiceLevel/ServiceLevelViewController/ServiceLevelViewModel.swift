@@ -16,58 +16,11 @@ protocol ServiceLevelViewModel {
     var accessoryTypes: [UICollectionReusableView.Type] { get }
     func shouldPerformSegue(byItemOn: IndexPath) -> ServiceLevelCoordinator.Destination?
     func setup(with plan: ServicePlan?)
+    
+    var plan: ServicePlan? { get set }
+    var details: ServicePlanDetails? { get set }
 }
-
-class PlanDetailsViewModel: PlanAndLinksViewModel {
-    override func setup(with plan: ServicePlan?) {
-        self.plan = plan
-        self.details = plan?.fetchDetails()
-        self.sections = [self.makeHeader(),
-                         self.makeCapabilities(),
-                         self.makeFooter()].compactMap { $0 }
-    }
-    
-    override fileprivate func makeFooter() -> Section<UIView>? {
-        guard let plan = self.plan,
-            plan == .plus,
-            ServicePlanDataService.currentServicePlan == .free else
-        {
-            return super.makeFooter()
-        }
-        
-        let price = NSMutableAttributedString(string: "$69.99",
-                                              attributes: [.font: UIFont.preferredFont(forTextStyle: .title1),
-                                                           .foregroundColor: UIColor.white])
-        let caption = NSAttributedString(string: "\nfor one year", attributes: [.font: UIFont.preferredFont(forTextStyle: .body),
-                                                                                .foregroundColor: UIColor.white])
-        price.append(caption)
-        let footerView = ServicePlanFooter(subTitle: "$48 ProtonMail Plus +\n $21.99 Apple in-app purchase fee",
-                                           buttonTitle: price)
-        
-        // FIXME: put acknowledgement text here
-        return Section(elements: [footerView], cellType: ConfigurableCell.self)
-    }
-}
-
-class PlanAndLinksViewModel: ServiceLevelViewModel {
-    let cellTypes: [UICollectionViewCell.Type] = [ConfigurableCell.self]
-    let accessoryTypes: [UICollectionReusableView.Type] = [Separator.self]
-    
-    let title = LocalString._menu_service_plan_title
-    fileprivate var plan: ServicePlan?
-    fileprivate var details: ServicePlanDetails?
-    internal var sections: [Section<UIView>] = []
-    
-    internal func setup(with plan: ServicePlan?) {
-        self.plan = plan
-        self.details = plan?.fetchDetails()
-        self.sections =  [self.makeHeader(),
-                          self.makeCapabilities(),
-                          self.makeFooter(),
-                          self.makeLinks()].compactMap { $0 }
-    }
-    lazy var collectionViewLayout: UICollectionViewLayout = TableLayout()
-    
+extension ServiceLevelViewModel {
     fileprivate func makeHeader() -> Section<UIView>? {
         guard let plan = self.plan else { return nil }
         let image = UIImage(named: "Logo")?.withRenderingMode(.alwaysTemplate)
@@ -129,6 +82,7 @@ class PlanAndLinksViewModel: ServiceLevelViewModel {
             message = "Your plan is currently active until \(details.cycle)" // FIXME: due time?
         }
         let footerView = ServicePlanFooter(title: message)
+        
         return Section(elements: [footerView], cellType: ConfigurableCell.self)
     }
     
@@ -151,13 +105,106 @@ class PlanAndLinksViewModel: ServiceLevelViewModel {
         return Section(elements: links, cellType: ConfigurableCell.self)
     }
     
+    fileprivate func makeBuyMore() -> Section<UIView>? {
+        guard let plan = self.plan,
+            plan == .plus,
+            ServicePlanDataService.currentServicePlan == plan else
+        {
+            return nil
+        }
+        let blank = TableSectionHeader(title: "")
+        let buyMore = ServicePlanCapability(title: NSAttributedString(string: "Buy More Credits"), serviceIconVisible: true, context: ServiceLevelCoordinator.Destination.buyMore)
+        return Section(elements: [blank, buyMore], cellType: ConfigurableCell.self)
+    }
+    
+    fileprivate func makeFooterWithButton() -> Section<UIView>? {
+        let price = NSMutableAttributedString(string: "$69.99",
+                                              attributes: [.font: UIFont.preferredFont(forTextStyle: .title1),
+                                                           .foregroundColor: UIColor.white])
+        let caption = NSAttributedString(string: "\nfor one year", attributes: [.font: UIFont.preferredFont(forTextStyle: .body),
+                                                                                .foregroundColor: UIColor.white])
+        price.append(caption)
+        let footerView = ServicePlanFooter(subTitle: "$48 ProtonMail Plus +\n $21.99 Apple in-app purchase fee",
+                                           buttonTitle: price)
+        
+        // FIXME: put acknowledgement text here
+        return Section(elements: [footerView], cellType: ConfigurableCell.self)
+    }
+    
     internal func shouldPerformSegue(byItemOn indexPath: IndexPath) -> ServiceLevelCoordinator.Destination? {
         guard let element = self.sections[indexPath.section].elements[indexPath.item] as? ServicePlanCapability else { return nil }
         return element.context as? ServiceLevelCoordinator.Destination
     }
 }
 
-extension PlanAndLinksViewModel {
+class BuyMoreViewModel: ServiceLevelViewModel {
+    var collectionViewLayout: UICollectionViewLayout = TableLayout()
+    let cellTypes: [UICollectionViewCell.Type] = [ConfigurableCell.self]
+    let accessoryTypes: [UICollectionReusableView.Type] = [Separator.self]
+    let title = LocalString._menu_service_plan_title
+    var plan: ServicePlan?
+    var details: ServicePlanDetails?
+    internal var sections: [Section<UIView>] = []
+    
+    func setup(with plan: ServicePlan?) {
+        self.plan = plan
+        self.details = plan?.fetchDetails()
+        self.sections = [self.makeFooter(), self.makeFooterWithButton()].compactMap { $0 }
+    }
+}
+
+class PlanDetailsViewModel: ServiceLevelViewModel {
+    var collectionViewLayout: UICollectionViewLayout = TableLayout()
+    
+    let cellTypes: [UICollectionViewCell.Type] = [ConfigurableCell.self]
+    let accessoryTypes: [UICollectionReusableView.Type] = [Separator.self]
+    
+    let title = LocalString._menu_service_plan_title
+    var plan: ServicePlan?
+    var details: ServicePlanDetails?
+    internal var sections: [Section<UIView>] = []
+    
+    func setup(with plan: ServicePlan?) {
+        self.plan = plan
+        self.details = plan?.fetchDetails()
+        self.sections = [self.makeHeader(),
+                         self.makeCapabilities(),
+                         self.makeSimpleFooter()].compactMap { $0 }
+    }
+    
+    fileprivate func makeSimpleFooter() -> Section<UIView>? {
+        guard let plan = self.plan,
+            plan == .plus,
+            ServicePlanDataService.currentServicePlan == .free else
+        {
+            return self.makeFooter()
+        }
+        return self.makeFooterWithButton()
+    }
+}
+
+class PlanAndLinksViewModel: ServiceLevelViewModel {
+    let cellTypes: [UICollectionViewCell.Type] = [ConfigurableCell.self]
+    let accessoryTypes: [UICollectionReusableView.Type] = [Separator.self]
+    
+    let title = LocalString._menu_service_plan_title
+    var plan: ServicePlan?
+    var details: ServicePlanDetails?
+    internal var sections: [Section<UIView>] = []
+    
+    internal func setup(with plan: ServicePlan?) {
+        self.plan = plan
+        self.details = plan?.fetchDetails()
+        self.sections =  [self.makeHeader(),
+                          self.makeCapabilities(),
+                          self.makeFooter(),
+                          self.makeBuyMore(),
+                          self.makeLinks()].compactMap { $0 }
+    }
+    lazy var collectionViewLayout: UICollectionViewLayout = TableLayout()
+}
+
+extension ServiceLevelViewModel {
     private func on(_ plans: [ServicePlan], put view: UIView) -> UIView? {
         return plans.contains(self.plan) ? view : nil
     }

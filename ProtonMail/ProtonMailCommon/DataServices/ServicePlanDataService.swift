@@ -30,8 +30,10 @@ class ServicePlanDataService {
     
     // FIXME: what about multiuser?
     class var currentServicePlan: ServicePlan? {
-        guard let userInfo = sharedUserDataService.userInfo else { return nil }
-        return ServicePlan(code: userInfo.role)
+        // mock
+//        guard let userInfo = sharedUserDataService.userInfo else { return nil }
+//        return ServicePlan(code: userInfo.role)
+        return ServicePlan.plus
     }
     
     class func detailsOfServicePlan(coded code: String) -> ServicePlanDetails? {

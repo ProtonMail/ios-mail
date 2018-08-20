@@ -14,8 +14,10 @@ class ServiceLevelCoordinator: Coordinator {
         
         switch next {
         case .buyMore:
-            child = BuyMoreCoordinator() as? SomeCoordinator
-            /* setup controller */
+            child = ServiceLevelCoordinator() as? SomeCoordinator
+            let viewModel = BuyMoreViewModel()
+            viewModel.setup(with: ServicePlanDataService.currentServicePlan)
+            (child.controller as? ServiceLevelViewController)?.viewModel = viewModel
             
         case .details(of: let plan):
             child = ServiceLevelCoordinator() as? SomeCoordinator
