@@ -85,6 +85,50 @@ class CreateNewUser : ApiRequest<ApiResponse> {
     }
 }
 
+final class GetSubscriptionRequest: ApiRequestNew<GetSubscriptionResponse> {
+    override func method() -> APIService.HTTPMethod {
+        return .get
+    }
+    
+    override func path() -> String {
+        return PaymentsAPI.path + "/subscription"
+    }
+    
+    override func apiVersion() -> Int {
+        return PaymentsAPI.v_plans
+    }
+}
+
+final class GetSubscriptionResponse: ApiResponse {
+    var plans: [ServicePlanDetails]?
+    var start: Date?
+    var end: Date?
+    
+    override func ParseResponseError(_ response: [String : Any]!) -> Bool {
+        return super.ParseResponseError(response)
+    }
+    
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        PMLog.D(response.json(prettyPrinted: true))
+        guard let response = response["Subscription"] as? [String : Any],
+            let startRaw = response["PeriodStart"] as? Int,
+            let endRaw = response["PeriodEnd"] as? Int else
+        {
+            return false
+        }
+        
+        let plansParser = GetServicePlansResponse()
+        if plansParser.ParseResponse(response) {
+            self.plans = plansParser.availableServicePlans
+        }
+        
+        self.start = Date(timeIntervalSince1970: Double(startRaw))
+        self.end = Date(timeIntervalSince1970: Double(endRaw))
+        
+        return true
+    }
+}
+
 final class GetServicePlansRequest: ApiRequestNew<GetServicePlansResponse> {
     override func method() -> APIService.HTTPMethod {
         return .get

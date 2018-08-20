@@ -21,22 +21,38 @@ class ServicePlanDataService {
     
     class func updateServicePlans(completion: CompletionHandler? = nil) {
         async {
-            let servicePlanApi = GetServicePlansRequest()
-            let servicePlanRes = try await(servicePlanApi.run())
-            self.allPlanDetails = servicePlanRes.availableServicePlans ?? []
-            completion?()
+            do {
+                let servicePlanApi = GetServicePlansRequest()
+                let servicePlanRes = try await(servicePlanApi.run())
+                self.allPlanDetails = servicePlanRes.availableServicePlans ?? []
+                completion?()
+            } catch _ {
+                completion?()
+            }
         }
     }
     
-    // FIXME: what about multiuser?
-    class var currentServicePlan: ServicePlan? {
-        // mock
-//        guard let userInfo = sharedUserDataService.userInfo else { return nil }
-//        return ServicePlan(code: userInfo.role)
-        return ServicePlan.plus
+    class func updateCurrentSubscription(completion: CompletionHandler? = nil) {
+        async {
+            do {
+                let subscriptionApi = GetSubscriptionRequest()
+                let subscriptionRes = try await(subscriptionApi.run())
+                self.currentSubscription = Subscription(planDetails: subscriptionRes.plans,
+                                                        start: subscriptionRes.start,
+                                                        end: subscriptionRes.end)
+                completion?()
+            } catch let error {
+                if (error as NSError).code == 22110 {
+                    self.currentSubscription = Subscription(planDetails: nil, start: nil, end: nil)
+                }
+                completion?()
+            }
+        }
     }
     
+    static var currentSubscription: Subscription?
+    
     class func detailsOfServicePlan(coded code: String) -> ServicePlanDetails? {
-        return self.allPlanDetails.first(where: { $0.iD == code }) // FIXME: change to iDs?
+        return self.allPlanDetails.first(where: { $0.iD == code })
     }
 }

@@ -15,7 +15,6 @@ protocol ServiceLevelViewModel {
     var cellTypes: [UICollectionViewCell.Type] { get }
     var accessoryTypes: [UICollectionReusableView.Type] { get }
     func shouldPerformSegue(byItemOn: IndexPath) -> ServiceLevelCoordinator.Destination?
-    func setup(with plan: ServicePlan?)
     
     var plan: ServicePlan? { get set }
     var details: ServicePlanDetails? { get set }
@@ -65,7 +64,7 @@ extension ServiceLevelViewModel {
                                   title: .init(string: "Support for \(details.maxDomains) custom domains (e.g. user@yourdomain.com)")))
         
         let vpn = on([.visionary],
-                     put: SPC(image: UIImage(),
+                     put: SPC(image: UIImage(named: "iap_vpn"),
                               title: .init(string: "ProtonVPN included")))
         
         let capabilities = [multiuser1, multiuser2, emailAddresses, storage, messageLimit, bridge, labels, support, vpn, UIView()].compactMap { $0 }
@@ -108,7 +107,7 @@ extension ServiceLevelViewModel {
     fileprivate func makeBuyMore() -> Section<UIView>? {
         guard let plan = self.plan,
             plan == .plus,
-            ServicePlanDataService.currentServicePlan == plan else
+            ServicePlanDataService.currentSubscription?.plan == plan else
         {
             return nil
         }
@@ -151,6 +150,12 @@ class BuyMoreViewModel: ServiceLevelViewModel {
         self.details = plan?.fetchDetails()
         self.sections = [self.makeFooter(), self.makeFooterWithButton()].compactMap { $0 }
     }
+    
+    func setup(with subscription: Subscription?) {
+        self.plan = subscription?.plan
+        self.details = subscription?.details
+        self.sections = [self.makeFooter(), self.makeFooterWithButton()].compactMap { $0 }
+    }
 }
 
 class PlanDetailsViewModel: ServiceLevelViewModel {
@@ -175,7 +180,7 @@ class PlanDetailsViewModel: ServiceLevelViewModel {
     fileprivate func makeSimpleFooter() -> Section<UIView>? {
         guard let plan = self.plan,
             plan == .plus,
-            ServicePlanDataService.currentServicePlan == .free else
+            ServicePlanDataService.currentSubscription?.plan == .free else
         {
             return self.makeFooter()
         }
@@ -191,10 +196,10 @@ class PlanAndLinksViewModel: ServiceLevelViewModel {
     var plan: ServicePlan?
     var details: ServicePlanDetails?
     internal var sections: [Section<UIView>] = []
-    
-    internal func setup(with plan: ServicePlan?) {
-        self.plan = plan
-        self.details = plan?.fetchDetails()
+
+    internal func setup(with subscription: Subscription?) {
+        self.plan = subscription?.plan
+        self.details = subscription?.details
         self.sections =  [self.makeHeader(),
                           self.makeCapabilities(),
                           self.makeFooter(),
