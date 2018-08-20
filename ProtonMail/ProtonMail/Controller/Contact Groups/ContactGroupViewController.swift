@@ -18,7 +18,7 @@ import UIKit
 
 class ContactGroupViewController: ProtonMailViewController, ViewModelProtocol
 {
-    var viewModel: ContactGroupViewModelImpl!
+    var viewModel: ContactGroupViewModel!
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -62,8 +62,6 @@ extension ContactGroupViewController: UITableViewDataSource
         
         return cell
     }
-    
-    
 }
 
 extension ContactGroupViewController: ContactGroupViewModelDelegate

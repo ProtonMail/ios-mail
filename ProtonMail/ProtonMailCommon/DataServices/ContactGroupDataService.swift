@@ -20,7 +20,7 @@ let sharedContactGroupsDataService = ContactGroupsDataService()
 class ContactGroupsDataService {
     var contactGroups: [[String : Any]]?
     
-    func fetchContactGroups() {
+    func fetchContactGroups(completionHandler: @escaping () -> Void) {
         let eventAPI = GetLabelsRequest(type: 2)
         
         eventAPI.call() {
@@ -31,6 +31,7 @@ class ContactGroupsDataService {
                 // TODO: save
                 PMLog.D("[Contact Group API] result = \(latestContactGroups)")
                 self.contactGroups = latestContactGroups
+                completionHandler()
             } else {
                 // TODO: handle error
             }

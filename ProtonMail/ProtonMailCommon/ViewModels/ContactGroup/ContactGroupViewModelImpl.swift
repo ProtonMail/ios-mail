@@ -31,21 +31,27 @@ class ContactGroupViewModelImpl: ContactGroupViewModel
     var contactGroupViewControllerDelegate: ContactGroupViewModelDelegate?
     
     func fetchContactGroups() {
-        // get the contact group listing
-        sharedContactGroupsDataService.fetchContactGroups()
-        
-        // parse the data into array of contact group struct
-        var contactGroups = [ContactGroup]()
-        
-        if let data = sharedContactGroupsDataService.contactGroups {
-            for contactGroup in data {
-                let newContactGroup = ContactGroup(ID: String(describing: contactGroup["ID"]),
-                                                   name: String(describing: contactGroup["name"]),
-                                                   color: String(describing: contactGroup["color"]))
-                contactGroups.append(newContactGroup)
+        // setup completion handler
+        let completionHandler = {
+            () -> Void in
+            
+            // parse the data into array of contact group struct
+            var contactGroups = [ContactGroup]()
+            if let data = sharedContactGroupsDataService.contactGroups {
+                for contactGroup in data {
+                    let newContactGroup = ContactGroup(ID: String(describing: contactGroup["ID"]),
+                                                       name: String(describing: contactGroup["name"]),
+                                                       color: String(describing: contactGroup["color"]))
+                    contactGroups.append(newContactGroup)
+                }
             }
+            self.cachedContactGroups = contactGroups
+            
+            self.contactGroupViewControllerDelegate?.updated()
         }
-        self.cachedContactGroups = contactGroups
+        
+        // get the contact group listing
+        sharedContactGroupsDataService.fetchContactGroups(completionHandler: completionHandler)
     }
     
     func getNumberOfRowsInSection() -> Int {
@@ -65,4 +71,5 @@ class ContactGroupViewModelImpl: ContactGroupViewModel
         
         return cachedContactGroups?[indexPath.item]
     }
+    
 }
