@@ -8,8 +8,8 @@
 
 import Foundation
 
-protocol ContactGroupViewModel {
-    var contactGroupViewControllerDelegate: ContactGroupViewModelDelegate? { get set }
+protocol ContactGroupsViewModel {
+    var contactGroupsViewControllerDelegate: ContactGroupsViewModelDelegate? { get set }
     
     func fetchContactGroups()
     

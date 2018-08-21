@@ -95,6 +95,8 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
+//    func contactGroupEditViewModel(
+    
     ///////////////////////
     ///
     func upgradeAlert(signature vmp: ViewModelProtocolBase) {

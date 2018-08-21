@@ -273,7 +273,7 @@
         <!--Contact Groups-->
         <scene sceneID="7aQ-aJ-dfc">
             <objects>
-                <viewController title="Contact Groups" id="Otj-eK-LVU" customClass="ContactGroupViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Contact Groups" id="Otj-eK-LVU" customClass="ContactGroupsViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EHr-Re-GAG"/>
                         <viewControllerLayoutGuide type="bottom" id="RqS-2f-w4i"/>

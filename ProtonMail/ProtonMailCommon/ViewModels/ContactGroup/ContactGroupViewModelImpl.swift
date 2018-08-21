@@ -8,14 +8,14 @@
 
 import Foundation
 
-protocol ContactGroupViewModelDelegate {
+protocol ContactGroupsViewModelDelegate {
     func updated()
 }
 
-class ContactGroupViewModelImpl: ContactGroupViewModel
+class ContactGroupsViewModelImpl: ContactGroupsViewModel
 {
     var cachedContactGroups: [ContactGroup]?
-    var contactGroupViewControllerDelegate: ContactGroupViewModelDelegate?
+    var contactGroupsViewControllerDelegate: ContactGroupsViewModelDelegate?
     
     func fetchContactGroups() {
         // setup completion handler
@@ -33,7 +33,7 @@ class ContactGroupViewModelImpl: ContactGroupViewModel
                     self.cachedContactGroups!.append(extractedContactGroup)
                 }
             }
-            self.contactGroupViewControllerDelegate?.updated()
+            self.contactGroupsViewControllerDelegate?.updated()
         }
         
         // get the contact group listing

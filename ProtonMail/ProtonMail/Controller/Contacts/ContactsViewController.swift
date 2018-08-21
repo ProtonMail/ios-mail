@@ -172,8 +172,8 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             let addContactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
 //            sharedVMService.contactGroupsViewModel(addContactGroupViewController)
         } else if(segue.identifier == kToContactGroupSegue) {
-            let contactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupViewController
-            sharedVMService.contactGroupsViewModel(contactGroupViewController)
+            let contactGroupsViewController = segue.destination.childViewControllers[0] as! ContactGroupsViewController
+            sharedVMService.contactGroupsViewModel(contactGroupsViewController)
         } else if (segue.identifier == "toCompose") {
         } else if segue.identifier == kSegueToImportView{
             let popup = segue.destination as! ContactImportViewController

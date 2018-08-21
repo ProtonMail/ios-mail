@@ -263,7 +263,7 @@ class ViewModelServiceImpl: ViewModelService {
     // contact groups
     override func contactGroupsViewModel(_ vmp: ViewModelProtocol) {
         activeViewController = vmp
-        vmp.setViewModel(ContactGroupViewModelImpl())
+        vmp.setViewModel(ContactGroupsViewModelImpl())
     }
     
     // composer

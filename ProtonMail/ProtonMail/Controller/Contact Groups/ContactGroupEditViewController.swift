@@ -14,16 +14,9 @@ import UIKit
  2. Able to handle saving operation
  */
 
-enum ContactGroupEditViewControllerState
-{
-    case create
-    case edit
-}
-
 class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     @IBOutlet weak var ContactGroupName: UITextField!
-    var state: ContactGroupEditViewControllerState!
     
     func setViewModel(_ vm: Any) {}
     

@@ -16,9 +16,9 @@ import UIKit
  2. Tap on the cell to view detail
  */
 
-class ContactGroupViewController: ProtonMailViewController, ViewModelProtocol
+class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
 {
-    var viewModel: ContactGroupViewModel!
+    var viewModel: ContactGroupsViewModel!
     
     let kToContactGroupDetailSegue: String = "toContactGroupDetailSegue"
     
@@ -29,7 +29,7 @@ class ContactGroupViewController: ProtonMailViewController, ViewModelProtocol
     }
     
     func setViewModel(_ vm: Any) {
-        viewModel = vm as! ContactGroupViewModel
+        viewModel = vm as! ContactGroupsViewModel
     }
     
     func inactiveViewModel() {
@@ -40,9 +40,8 @@ class ContactGroupViewController: ProtonMailViewController, ViewModelProtocol
         
         tableView.noSeparatorsBelowFooter()
         
-        viewModel = ContactGroupViewModelImpl()
         viewModel.fetchContactGroups()
-        viewModel.contactGroupViewControllerDelegate = self
+        viewModel.contactGroupsViewControllerDelegate = self
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -51,8 +50,6 @@ class ContactGroupViewController: ProtonMailViewController, ViewModelProtocol
             let contactGroupEditViewController = segue.destination as! ContactGroupEditViewController
             let contactGroup = sender as! ContactGroup
             
-            contactGroupEditViewController.state = .edit
-            
             // TODO:
             // 1. use API to get contact group details
             // 2. preload the VC with data
@@ -60,7 +57,7 @@ class ContactGroupViewController: ProtonMailViewController, ViewModelProtocol
     }
 }
 
-extension ContactGroupViewController: UITableViewDataSource
+extension ContactGroupsViewController: UITableViewDataSource
 {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -83,7 +80,7 @@ extension ContactGroupViewController: UITableViewDataSource
     }
 }
 
-extension ContactGroupViewController: UITableViewDelegate
+extension ContactGroupsViewController: UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -93,7 +90,7 @@ extension ContactGroupViewController: UITableViewDelegate
     }
 }
 
-extension ContactGroupViewController: ContactGroupViewModelDelegate
+extension ContactGroupsViewController: ContactGroupsViewModelDelegate
 {
     func updated() {
         self.tableView.reloadData()
