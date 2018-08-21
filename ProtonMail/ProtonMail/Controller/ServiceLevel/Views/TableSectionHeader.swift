@@ -31,4 +31,10 @@ class TableSectionHeader: UIView {
     private func setupSubviews() {
         self.translatesAutoresizingMaskIntoConstraints = false
     }
+    
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        var textSize = self.title.textRect(forBounds: .init(origin: .zero, size: size), limitedToNumberOfLines: 0)
+        textSize = textSize.insetBy(dx: 0, dy: -20.0) // FIXME: magic number
+        return textSize.size
+    }
 }

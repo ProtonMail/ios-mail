@@ -11,7 +11,7 @@ import UIKit
 class TableLayout: UICollectionViewFlowLayout {
     override init() {
         super.init()
-        self.register(Separator.self)
+        self.register(SeparatorDecorationView.self)
         self.scrollDirection = .vertical
         self.minimumLineSpacing = 0
         self.minimumInteritemSpacing = 0
@@ -33,7 +33,7 @@ class TableLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes, withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes) -> Bool
     {
         // every separators frame depends on frame of some cell, which is calculated twice: attributes that FlowLayout calculates according to estimatedItemSize and then modified by cell according to its AutoLayout constraints. Here we are invalidating separator layout calculated BEFORE cells constraints were applied, so it will not be mispalced.
-        if originalAttributes.representedElementKind == String(describing: Separator.self) {
+        if originalAttributes.representedElementKind == String(describing: SeparatorDecorationView.self) {
             return true
         }
         return super.shouldInvalidateLayout(forPreferredLayoutAttributes: preferredAttributes, withOriginalAttributes: originalAttributes)
@@ -55,7 +55,7 @@ class TableLayout: UICollectionViewFlowLayout {
         if indexPath.item > 0 {
             let inset: CGFloat = 20.0
             let thickness: CGFloat = 1
-            let separator = UICollectionViewLayoutAttributes(forDecorationViewOfKind: String(describing: Separator.self), with: indexPath)
+            let separator = UICollectionViewLayoutAttributes(forDecorationViewOfKind: String(describing: SeparatorDecorationView.self), with: indexPath)
             separator.zIndex = Int.max
             separator.frame = .init(x: attributes.frame.origin.x + inset,
                                     y: attributes.frame.origin.y - 1,
@@ -79,3 +79,28 @@ class TableLayout: UICollectionViewFlowLayout {
         return result
     }
 }
+
+class SeparatorDecorationView: UICollectionReusableView {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
+    }
+    
+    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+        self.frame = layoutAttributes.frame
+    }
+    
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        guard let attributes: UICollectionViewLayoutAttributes = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else {
+            return layoutAttributes
+        }
+        attributes.zIndex = Int.max - 1
+        return attributes
+    }
+}
+

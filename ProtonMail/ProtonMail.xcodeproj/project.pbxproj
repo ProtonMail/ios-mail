@@ -497,6 +497,7 @@
 		5A6855663102EC324474A755DC034B9D /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7872DBC0CE90F88AD865EFB3C8D5B51C /* SignIn.storyboard */; };
 		5AB260D27701C2784A4B89F9057199B1 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A17542C9E75573C9AE7D50D090DC4BC /* AuthCredential.swift */; };
 		5AB5B6F0DF0CC8FA0D049705C9D2430D /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CC1C68F121EC52427410D7D6FA0753 /* MenuViewController.swift */; };
+		5B4AE2246932916E6EFC96EA409E5DF8 /* ServicePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6136D6B85203E35609442F0412D0B4D /* ServicePlan.swift */; };
 		5BA7D194B7209D32322F79BBD1412DF3 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE6D8F3AAEA3F00B15BDC137F506D95 /* ChangePasswordViewController.swift */; };
 		5BAF3150C3B43E4EEC0BF1D715958108 /* LabelManagerViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD05BB8416067244824CCFC22BA4288 /* LabelManagerViewModelImpl.swift */; };
 		5BE4F66CAFA62FBAF1D636596E6DBA32 /* APIService+UserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F131B12E9F6F23D7063B2C786358C896 /* APIService+UserExtension.swift */; };
@@ -685,6 +686,7 @@
 		7D0CB29468C1EE49171D025513E109AC /* LabelEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F316188242477E404DB5C128DA38712 /* LabelEditViewController.swift */; };
 		7D81F14C4054D7FC71BE89D610AAE36B /* LabelboxViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07485BF822F9851BDFC28AE2401632AB /* LabelboxViewModelImpl.swift */; };
 		7DFB4C294CAE23A769678D3AB6154E6C /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7627FEBF2F33A575273ACF9A8A0AA738 /* SettingsAPI.swift */; };
+		7E75AD637D214C26BEB4729C1AC27E8C /* ServicePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6136D6B85203E35609442F0412D0B4D /* ServicePlan.swift */; };
 		7EAD6E217711F97035777A0ADCA49746 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD961DC114743EC95EAE9E6B7F90274C /* UserAPI.swift */; };
 		7EAECA11D556F2E77BCBA829E0385696 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADC95EBCE3934AB4F7E4DFB4B0E00AF /* NotificationViewController.swift */; };
 		7F4DB1E710BF83F55E5E42F9272D22D2 /* flags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */; };
@@ -892,7 +894,7 @@
 		A47720E56248E59944EB18030C9B635A /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A60B2BD68461E88AE5BEBF3DE57C7D4 /* APIError+Auth.swift */; };
 		A496FA0AF483A85823816C423F368DD4 /* LabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3E9A265BC9A4B517966D356B1B3711 /* LabelViewModel.swift */; };
 		A4A1E7F067A1067D1B2A8381747742DF /* Message+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E4AC8179E64BE4F4E1C508F653E628 /* Message+String+Extension.swift */; };
-		A583BCE2023D751B78E51DE171DFD350 /* ConfigurableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6070F9D26F35CDA699DC010E3D01259 /* ConfigurableCell.swift */; };
+		A583BCE2023D751B78E51DE171DFD350 /* AutoLayoutSizedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6070F9D26F35CDA699DC010E3D01259 /* AutoLayoutSizedCell.swift */; };
 		A5992358AA73EDBCEF1F36BDA36C5544 /* NotificationCenter+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B924404B24EC8056D1E834431E6614 /* NotificationCenter+KeyboardExtension.swift */; };
 		A5A58A73C166578993EC9A918D0DB037 /* ContactAlertViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8C06C3305D50BDED1D25F5075C29A7 /* ContactAlertViewModelImpl.swift */; };
 		A5AE15C2180C3C4000A6A0F44ABB4185 /* UIApplication+BadgeNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7019C8F3E7C0E90344C579BCA8B18FA3 /* UIApplication+BadgeNumber.swift */; };
@@ -913,7 +915,7 @@
 		A87D01BD6E56BE610D487C5835CA7D18 /* ContactVO+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56C53C0EE62F034C5DEC86CDDB56EFE /* ContactVO+Extension.swift */; };
 		A89BDFE1911CBA8684ECCDAEEDC02315 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */; };
 		A8A6921550423D6B42CA3CF00226F48B /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87530495407CE3203D251F1AAF3A3DAD /* ToastMessageView.swift */; };
-		A8E23E8EAE382137BBFD5183D0457985 /* ConfigurableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6070F9D26F35CDA699DC010E3D01259 /* ConfigurableCell.swift */; };
+		A8E23E8EAE382137BBFD5183D0457985 /* AutoLayoutSizedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6070F9D26F35CDA699DC010E3D01259 /* AutoLayoutSizedCell.swift */; };
 		A8EE31D4C8E1B6533E35DFF49B289DE5 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2DF54E18BEB8D52362623451A13350 /* UserInfo.swift */; };
 		A90550F71DB25CC3C44267C0BE964D18 /* ContactsViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFB8736687A7913C94C156D188BF283 /* ContactsViewModelImpl.swift */; };
 		A91EC60799701CB740D0746482BA5BAC /* APIService+DeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334452152689851E51C6CDFFF44EFE36 /* APIService+DeviceExtension.swift */; };
@@ -1192,8 +1194,6 @@
 		D840DE2CD3FED303202931337E6171BA /* MailSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78935D907A4A5837283960605A94A31F /* MailSettings.swift */; };
 		D8458FB4AFBB6A7999DE5BD8A793E054 /* LabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */; };
 		D84B6EA197AE141BBC1E222ABB833417 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */; };
-		D8723471212B1AAB001BE252 /* ServicePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8723470212B1AAB001BE252 /* ServicePlan.swift */; };
-		D8723472212B1AAB001BE252 /* ServicePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8723470212B1AAB001BE252 /* ServicePlan.swift */; };
 		D880FD208C3FBBB24228D285F3F883B2 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815DFC41477DB4D20C79538B64D0893 /* Key.swift */; };
 		D895D014B1B27ABA584E4C14FBD2E403 /* LabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DF8A1F9330638F7C4A47D405EB7D23 /* LabelExtension.swift */; };
 		D898A24A4520D16660C12BB55538FA7E /* ContactCollectionViewPromptCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCDC9E5C0ABB64938146DA5CA9CE02C /* ContactCollectionViewPromptCell.swift */; };
@@ -1879,6 +1879,7 @@
 		A3B69A9A7E31F1994FD354E4E35A0260 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A4D6B81CADB11CAD01B8E46E92DF6B12 /* ContactDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailsViewModel.swift; sourceTree = "<group>"; };
 		A56C53C0EE62F034C5DEC86CDDB56EFE /* ContactVO+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactVO+Extension.swift"; sourceTree = "<group>"; };
+		A6136D6B85203E35609442F0412D0B4D /* ServicePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlan.swift; sourceTree = "<group>"; };
 		A6E60FC91F733F0C899B8269CF3D0E7D /* MultiLabelDisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiLabelDisplayView.xib; sourceTree = "<group>"; };
 		A7276672B20008AC48F0718FA117FB20 /* Pods_PushService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PushService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7C6E2D20B275A72C9CABA3AD759418E /* UnlockPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockPinCodeModelImpl.swift; sourceTree = "<group>"; };
@@ -1946,7 +1947,7 @@
 		C467E89063311611C9C038E80E4F3CD0 /* SettingDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailViewController.swift; sourceTree = "<group>"; };
 		C494D600210F73792400DA0119E37A68 /* NSError+Alert+Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Alert+Share.swift"; sourceTree = "<group>"; };
 		C57CA6DB7B96640D8E5ADE7AA38DAEB4 /* AddressBookService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookService.swift; sourceTree = "<group>"; };
-		C6070F9D26F35CDA699DC010E3D01259 /* ConfigurableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurableCell.swift; sourceTree = "<group>"; };
+		C6070F9D26F35CDA699DC010E3D01259 /* AutoLayoutSizedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayoutSizedCell.swift; sourceTree = "<group>"; };
 		C7A2AB02A85885AD70DAFACE89B74BE4 /* RecipientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientView.swift; sourceTree = "<group>"; };
 		C83367E04E7FA6F07D0BA1041B066B8F /* AttachmentExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentExtension.swift; sourceTree = "<group>"; };
 		C835E09ED80CEF24F9D8FAE4D2F8718E /* ContactCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
@@ -1985,7 +1986,6 @@
 		D736053B8C3AFD58DD1A72FF7D49DBCC /* phone_country_code.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = phone_country_code.geojson; sourceTree = "<group>"; };
 		D7E2026FD8272DE625504A4CB2374E85 /* Pods-Share.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.distribution.xcconfig"; sourceTree = "<group>"; };
 		D84A04353E5434EB3FAFEBEF48DC89CD /* Snapshot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
-		D8723470212B1AAB001BE252 /* ServicePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlan.swift; sourceTree = "<group>"; };
 		D8A51ECEB173169390A074BC71D38A1C /* ContactAddViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactAddViewModelImpl.swift; sourceTree = "<group>"; };
 		D8C674BC00A2F8ED261865474FC3C1E4 /* ContactEditAddCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditAddCell.swift; sourceTree = "<group>"; };
 		D8CFA13A53B9FD4D4305DD4B86DF8193 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
@@ -2484,7 +2484,7 @@
 		3F40D6C2668B5C6171A44EFC092D30F5 /* ServiceLevelViewController */ = {
 			isa = PBXGroup;
 			children = (
-				C6070F9D26F35CDA699DC010E3D01259 /* ConfigurableCell.swift */,
+				C6070F9D26F35CDA699DC010E3D01259 /* AutoLayoutSizedCell.swift */,
 				53FA9369D846A5682C5D52918F2B1093 /* ConfigurableSection.swift */,
 				89116D94A2E17CB58FDC13ECE1B81F36 /* ServiceLevelViewController.swift */,
 				9B0AF0958602CF4C011FED26FF9702D5 /* ServiceLevelViewModel.swift */,
@@ -3138,8 +3138,8 @@
 				8815DFC41477DB4D20C79538B64D0893 /* Key.swift */,
 				78935D907A4A5837283960605A94A31F /* MailSettings.swift */,
 				3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */,
+				A6136D6B85203E35609442F0412D0B4D /* ServicePlan.swift */,
 				42AFB2665732BDBF0C40E4F838A5D34E /* ServicePlanDetails.swift */,
-				D8723470212B1AAB001BE252 /* ServicePlan.swift */,
 				9D2DF54E18BEB8D52362623451A13350 /* UserInfo.swift */,
 				29D45CBF615966A3BF8366CB1F9699EE /* UserSettings.swift */,
 			);
@@ -4468,7 +4468,7 @@
 				D3C1A621FED969F6B8310107F924D93B /* ComposeView.swift in Sources */,
 				0E29BAA2714CDAC375CEEB88F3E4EBED /* ComposeViewModel.swift in Sources */,
 				DFE01119627DC2A77827CEFE78B5C807 /* ComposeViewModelImpl.swift in Sources */,
-				A8E23E8EAE382137BBFD5183D0457985 /* ConfigurableCell.swift in Sources */,
+				A8E23E8EAE382137BBFD5183D0457985 /* AutoLayoutSizedCell.swift in Sources */,
 				47AA3D79D62404BFE693E38A5651017E /* ConfigurableSection.swift in Sources */,
 				EFD62141BEB17E23BFB70CFEF3919152 /* Contact.swift in Sources */,
 				3062BC1DA6D34D5CEA48E0E087A3C050 /* ContactAddViewModelImpl.swift in Sources */,
@@ -4487,7 +4487,6 @@
 				F5758A935F5898404DB9D18913A7A75A /* ContactEditAddCell.swift in Sources */,
 				9E516FAACFA7BCC1FD1878B6439B7517 /* ContactEditAddressCell.swift in Sources */,
 				8DA15F347F51106B671F17EBB3EA92B1 /* ContactEditCell+Delegates.swift in Sources */,
-				D8723471212B1AAB001BE252 /* ServicePlan.swift in Sources */,
 				0C79B8F2B058ECE327587ACA418FAAFA /* ContactEditEmailCell.swift in Sources */,
 				99025D7EF5A1FA69ACB4A079BE84C585 /* ContactEditFieldCell.swift in Sources */,
 				4D52393BF773190CA0DA74283E3AB0DD /* ContactEditInformationCell.swift in Sources */,
@@ -4702,6 +4701,7 @@
 				4E50803AFE9C9EA15BF23A2E995846F8 /* ServiceLevelCoordinator.swift in Sources */,
 				209B65D42B8B9E4CE5C98F8C0F8CDAE1 /* ServiceLevelViewController.swift in Sources */,
 				7BADBB182E4B5446CD3809BA451ADBE3 /* ServiceLevelViewModel.swift in Sources */,
+				7E75AD637D214C26BEB4729C1AC27E8C /* ServicePlan.swift in Sources */,
 				0CC87AE0A6D89645903EE57D511FA23B /* ServicePlanCapability.swift in Sources */,
 				55CADAB74B88D6C4C45869E86C159E99 /* ServicePlanDataService.swift in Sources */,
 				8132564959B16582FA4B0D19287C73D8 /* ServicePlanDetails.swift in Sources */,
@@ -4864,7 +4864,7 @@
 				8A4E43703BAF0D9B55A009FCC6D1510B /* ComposeView.swift in Sources */,
 				F3E09335DB7FB95EAB0BB1D8FD818DB2 /* ComposeViewModel.swift in Sources */,
 				4B77B461130CB53376665C3AC4FA8465 /* ComposeViewModelImpl.swift in Sources */,
-				A583BCE2023D751B78E51DE171DFD350 /* ConfigurableCell.swift in Sources */,
+				A583BCE2023D751B78E51DE171DFD350 /* AutoLayoutSizedCell.swift in Sources */,
 				3584B76F4A80E53C9263FC4022531128 /* ConfigurableSection.swift in Sources */,
 				30D43080D67953D8B6780CC820D4EFB2 /* Contact.swift in Sources */,
 				2F159C02C251ACCF91EC2DB8C8CCDF35 /* ContactAddViewModelImpl.swift in Sources */,
@@ -4989,7 +4989,6 @@
 				3EC67E702729C7FDFE0BA9E909A6E4D6 /* LabelboxViewModelImpl.swift in Sources */,
 				2FBF197FDCB80D45BC37124157ADE8E8 /* LabelsDataService.swift in Sources */,
 				22F7B548ECEBA99930B8787CB9DEF545 /* LabelsView.swift in Sources */,
-				D8723472212B1AAB001BE252 /* ServicePlan.swift in Sources */,
 				859389D6C4DE3FB59F5CD2BF884E0D56 /* LabelsViewController.swift in Sources */,
 				9F05230EFD377F24AD44CE71E6722B02 /* LanguageManager.m in Sources */,
 				2A5DB85D56E6EACADF9ED2B1FDE84476 /* LastUpdatedStore.swift in Sources */,
@@ -5097,6 +5096,7 @@
 				F3EB03C720C14FF73329043C2ED3146F /* ServiceLevelCoordinator.swift in Sources */,
 				D8D82181133C8B807C04CCDBEEBCAB02 /* ServiceLevelViewController.swift in Sources */,
 				0B70C32468F4726D8B9E2A871E996B7D /* ServiceLevelViewModel.swift in Sources */,
+				5B4AE2246932916E6EFC96EA409E5DF8 /* ServicePlan.swift in Sources */,
 				FB7551F73C26910EB0F9968318E661AD /* ServicePlanCapability.swift in Sources */,
 				0EB9E2B8B9C3009FA7FBABFE623E3735 /* ServicePlanDataService.swift in Sources */,
 				E5B5A76C3DC615A4324FEC7E34D43189 /* ServicePlanDetails.swift in Sources */,

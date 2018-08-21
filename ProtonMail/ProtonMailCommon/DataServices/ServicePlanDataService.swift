@@ -17,6 +17,12 @@ class ServicePlanDataService {
         willSet { userCachedStatus.servicePlansDetails = newValue }
     }
     
+    static var currentSubscription: Subscription? = {
+        return userCachedStatus.currentSubscription
+    }() {
+        willSet { userCachedStatus.currentSubscription = newValue }
+    }
+    
     typealias CompletionHandler = ()->Void
     
     class func updateServicePlans(completion: CompletionHandler? = nil) {
@@ -50,7 +56,7 @@ class ServicePlanDataService {
         }
     }
     
-    static var currentSubscription: Subscription?
+    
     
     class func detailsOfServicePlan(coded code: String) -> ServicePlanDetails? {
         return self.allPlanDetails.first(where: { $0.iD == code })

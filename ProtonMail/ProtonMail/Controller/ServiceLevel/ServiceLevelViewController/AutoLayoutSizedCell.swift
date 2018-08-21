@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConfigurableCell: UICollectionViewCell {
+class AutoLayoutSizedCell: UICollectionViewCell {
     private var subview: UIView?
     
     override func awakeFromNib() {
@@ -26,7 +26,6 @@ class ConfigurableCell: UICollectionViewCell {
         subview.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
         subview.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true    
     }
-    var isHeightCalculated: Bool = false
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         guard let attributes: UICollectionViewLayoutAttributes = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else {
@@ -46,26 +45,12 @@ class ConfigurableCell: UICollectionViewCell {
     }
 }
 
-class Separator: UICollectionReusableView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
-    }
-    
-    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-        self.frame = layoutAttributes.frame
-    }
-    
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        guard let attributes: UICollectionViewLayoutAttributes = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else {
-            return layoutAttributes
-        }
-        attributes.zIndex = Int.max - 1
+class FirstSubviewSizedCell: AutoLayoutSizedCell {
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes
+    {
+        let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
+        guard let firstSubview = self.contentView.subviews.first else { return attributes}
+        attributes.frame.size = firstSubview.sizeThatFits(attributes.frame.size)
         return attributes
     }
 }

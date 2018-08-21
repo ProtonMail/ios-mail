@@ -10,11 +10,11 @@ import UIKit
 
 struct Section<Element: UIView> {
     fileprivate(set) var elements: Array<Element>
-    var cellType: ConfigurableCell.Type
+    var cellType: AutoLayoutSizedCell.Type
     var count: Int {
         return self.elements.count
     }
-    func embed(_ elementNumber: Int, onto cell: ConfigurableCell) {
+    func embed(_ elementNumber: Int, onto cell: AutoLayoutSizedCell) {
         cell.configure(with: self.elements[elementNumber])
     }
 }

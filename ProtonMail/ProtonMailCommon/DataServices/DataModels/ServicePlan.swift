@@ -39,7 +39,7 @@ enum ServicePlan: String {
     }
 }
 
-struct Subscription {
+struct Subscription: Codable {
     var plan: ServicePlan {
         return self.planDetails?.compactMap({ ServicePlan(rawValue: $0.iD) }).first ?? .free
     }
@@ -47,7 +47,7 @@ struct Subscription {
         return self.planDetails?.merge() ?? ServicePlanDetails.free
     }
     
-    fileprivate let planDetails: [ServicePlanDetails]?
+    let planDetails: [ServicePlanDetails]?
     let start, end: Date?
 }
 
