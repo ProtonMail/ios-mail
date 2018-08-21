@@ -513,6 +513,8 @@ class LocalizedString {
     lazy var _messages_spam_100_warning = NSLocalizedString("This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
     /// "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!"
     lazy var _messages_spam_101_warning = NSLocalizedString("This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
+    /// "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate."
+    lazy var _messages_spam_102_warning = NSLocalizedString("This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.", comment: "spam score warning")
 
     /// "Human Check Failed"
     lazy var _error_human_check_failed = NSLocalizedString("Human Check Failed", comment: "Description")
@@ -1324,8 +1326,12 @@ class LocalizedString {
 
     // "Sending Message"
     lazy var _sending_message = NSLocalizedString("Sending message", comment: "Alert title")
+    
+    // "Sending Message"
+    lazy var _closing_draft = NSLocalizedString("Closing", comment: "Alert title")
+    
     // "This can take a while, please do not dismiss the app"
-    lazy var _please_wait_in_foreground = NSLocalizedString("This can take a while depending on your Internet connection and attachmetns size, please do not dismiss the app", comment: "Alert message")
+    lazy var _please_wait_in_foreground = NSLocalizedString("This can take a while, please do not dismiss the app", comment: "Alert message")
     
 
     /// "Please use the web application to reset your password."
@@ -1424,6 +1430,7 @@ class LocalizedString {
     /// "Sender Verification Failed"
     lazy var _sender_verification_failed = NSLocalizedString("Sender Verification Failed", comment: "encryption lock description")
     /// "Encrypted outside"
+    @available(*, deprecated)
     lazy var _encrypted_outside = NSLocalizedString("Encrypted outside", comment: "encryption lock description")
     /// "End-to-end encrypted message"
     lazy var _end_to_end_encrypted_message = NSLocalizedString("End-to-end encrypted message", comment: "encryption lock description")

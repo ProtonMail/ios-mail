@@ -262,13 +262,9 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         if !actionTapped {
             actionTapped = true
             
-            self.message.removeLocationFromLabels(currentlocation: message.location, location: MessageLocation.spam, keepSent: true)
-            message.needsUpdate = true
-            message.location = .spam
-            if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            }
-            popViewController()
+            self.message.removeLocationFromLabels(currentlocation: self.message.location, location: .spam, keepSent: true)
+            self.messagesSetValue(setValue: MessageLocation.spam.rawValue, forKey: Message.Attributes.locationNumber)
+            self.popViewController()
         }
     }
     
@@ -303,9 +299,18 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                 
             }))
             alert.addAction(UIAlertAction(title: LocalString._general_confirm_action, style: .default, handler: { (action) in
-                
+                ActivityIndicatorHelper.showActivityIndicator(at: self.view)
                 if let _ = self.message.managedObjectContext {
-                   BugDataService().reportPhishing(messageID: self.message.messageID, messageBody: self.fixedBody ?? "")
+                    BugDataService().reportPhishing(messageID: self.message.messageID, messageBody: self.fixedBody ?? "") { error in
+                        ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                        if let error = error {
+                            let alert = error.alertController()
+                            alert.addOKAction()
+                            self.present(alert, animated: true, completion: nil)
+                        } else {
+                            self.spamButtonTapped()
+                        }
+                    }
                 }
                 
             }))
@@ -563,8 +568,10 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     internal func purifyEmailBody(_ message : Message!, autoloadimage : Bool) -> String? {
         do {
             var bodyText = try self.message.decryptBodyIfNeeded() ?? LocalString._unable_to_decrypt_message
+            bodyText = bodyText.stringByStrippingStyleHTML()
             bodyText = bodyText.stringByStrippingBodyStyle()
             bodyText = bodyText.stringByPurifyHTML()
+            
             self.bodyHasImages = bodyText.hasImage()
             if !autoloadimage {
                 bodyText = bodyText.stringByPurifyImages()

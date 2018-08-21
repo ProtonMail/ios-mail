@@ -206,23 +206,27 @@ class SettingDetailViewController: UIViewController {
             self.performSegue(withIdentifier: self.kAsk2FASegue, sender: self)
         } else {
             ActivityIndicatorHelper.showActivityIndicator(at: view)
-            viewModel.updateNotification(self.switcher.isOn, complete: { (value, error) -> Void in
+            self.viewModel.updateValue(self.getTextValue(),
+                                       password: self.getPasswordValue(),
+                                       tfaCode: self.cached2faCode,
+                                       complete: { value, error in
+                self.cached2faCode = nil
                 if let error = error {
+                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                     let alertController = error.alertController()
                     alertController.addOKAction()
                     self.present(alertController, animated: true, completion: nil)
                 } else {
-                    self.viewModel.updateValue(self.getTextValue(), password: self.getPasswordValue(), tfaCode: self.cached2faCode, complete: { value, error in
-                        self.cached2faCode = nil
-                        ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                    self.viewModel.updateNotification(self.switcher.isOn, complete: { (value, error) -> Void in
                         if let error = error {
+                            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                             let alertController = error.alertController()
                             alertController.addOKAction()
                             self.present(alertController, animated: true, completion: nil)
                         } else {
                             let _ = self.navigationController?.popToRootViewController(animated: true)
                         }
-                    });
+                    })
                 }
             })
         }

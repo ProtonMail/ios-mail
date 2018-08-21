@@ -12,6 +12,37 @@ import Foundation
 
 extension ELanguage {
     
+    public var nativeDescription : String {
+        get {
+            switch(self) {
+            case .english:
+                return "English"
+            case .german:
+                return "Deutsch"
+            case .french:
+                return "Français"
+            case .russian:
+                return "Русский"
+            case .spanish:
+                return "Español"
+            case .turkish:
+                return "Türkçe"
+            case .polish:
+                return "Polski"
+            case .ukrainian:
+                return "Українська"
+            case .dutch:
+                return "Nederlands"
+            case .italian:
+                return "Italiano"
+            case .portugueseBrazil:
+                return "Portuguese Brazil"
+            case .count:
+                return ""
+            }
+        }
+    }
+    
     public var description : String {
         get {
             switch(self) {

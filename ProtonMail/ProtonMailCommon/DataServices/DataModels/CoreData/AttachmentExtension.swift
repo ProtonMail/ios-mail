@@ -88,13 +88,13 @@ extension Attachment {
         }
     }
     
-    func getSession() throws -> Data? {
+    func getSession() throws -> PmSessionSplit? {
         if self.keyPacket == nil {
             return nil
         }
         let data: Data = Data(base64Encoded: self.keyPacket!, options: NSData.Base64DecodingOptions(rawValue: 0))!
         let sessionKey = try data.getSessionFromPubKeyPackage(passphrase)
-        return sessionKey?.session()
+        return sessionKey
     }
     
     func fetchAttachment(_ downloadTask: ((URLSessionDownloadTask) -> Void)?, completion:((URLResponse?, URL?, NSError?) -> Void)?) {

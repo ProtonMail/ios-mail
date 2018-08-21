@@ -9,7 +9,7 @@
 import Foundation
 
 
-
+@objc(Address)
 final class Address: NSObject {
     let address_id: String
     let email: String   // email address name

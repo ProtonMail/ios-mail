@@ -37,7 +37,11 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     
     // private views
     fileprivate weak var webView: UIWebView?
-    fileprivate weak var webViewBottomLine: NSLayoutConstraint!
+    fileprivate weak var webViewBottomLine: NSLayoutConstraint! {
+        didSet {
+            self.webView?.scrollView.contentInset = .init(top: 0, left: 0, bottom: -self.webViewBottomLine.constant, right: 0)
+        }
+    }
     fileprivate lazy var composeViewController: ComposeView = {
         let composeViewController = ComposeView(nibName: "ComposeView", bundle: nil)
         composeViewController.delegate = self
@@ -56,6 +60,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     fileprivate var encryptionConfirmPassword: String = ""
     fileprivate var encryptionPasswordHint: String = ""
     fileprivate var hasAccessToAddressBook: Bool = false
+    fileprivate var isSending = false
     //
     fileprivate var attachments: [Any]?
     
@@ -150,8 +155,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         guard let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
             return
         }
-        self.webViewBottomLine.constant = -1 * keyboardFrame.size.height
-        self.webView?.scrollView.contentInset = .init(top: 0, left: 0, bottom: self.composeViewController.view.bounds.height, right: 0)
+        self.webViewBottomLine.constant = keyboardFrame.origin.y - self.view.window!.bounds.height
     }
     
     @objc func send_clicked(sender: UIBarButtonItem) {
@@ -207,7 +211,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     
     private var observation: NSKeyValueObservation?
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
-        let alert = UIAlertController(title: LocalString._sending_message,
+        let alert = UIAlertController(title: self.isSending ? LocalString._sending_message : LocalString._closing_draft,
                                       message: LocalString._please_wait_in_foreground,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
@@ -362,8 +366,6 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
                     continue
                 } else {
                     let h : CGFloat = self.composeViewSize
-//                    self.updateFooterOffset(h) // FIXME
-//                    self.editor.webView.scrollView.contentOffset
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
                 }
             }
@@ -421,7 +423,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         }
     }
     
-    internal func sendMessage () {
+    private func sendMessage() {
         if self.composeViewController.expirationTimeInterval > 0 {
             if self.composeViewController.hasNonePMEmails && self.encryptionPassword.count <= 0 {
                 self.composeViewController.showPasswordAndConfirmDoesntMatch(LocalString._composer_eo_pls_set_password)
@@ -431,7 +433,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         self.sendMessageStepTwo()
     }
     
-    internal func sendMessageStepTwo() {
+    private func sendMessageStepTwo() {
         if self.viewModel.toSelectedContacts.count <= 0 &&
             self.viewModel.ccSelectedContacts.count <= 0 &&
             self.viewModel.bccSelectedContacts.count <= 0 {
@@ -445,9 +447,11 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         
         stopAutoSave()
         self.collectDraft()
+        self.isSending = true
         self.viewModel.sendMessage()
         
         self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
+            self.isSending = false
             self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
         })
     }

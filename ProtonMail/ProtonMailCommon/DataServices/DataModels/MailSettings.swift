@@ -9,6 +9,7 @@
 import Foundation
 
 //TODO:: move the mail setting from UserInfo object to here
+@objc(MailSettings)
 final class MailSettings: NSObject {
     //1.9.1 mail settings
 //    var displayName: String

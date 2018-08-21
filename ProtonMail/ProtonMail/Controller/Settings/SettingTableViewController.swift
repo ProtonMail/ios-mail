@@ -27,7 +27,7 @@ class SettingTableViewController: ProtonMailViewController {
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
-                                                            .star, .archive]
+                                                            .star, .archive, .unread]
     
     var setting_protection_items : [SProtectionItems]    = [] // [.touchID, .pinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
     var setting_addresses_items : [SAddressItems]        = [.addresses,
@@ -707,7 +707,7 @@ class SettingTableViewController: ProtonMailViewController {
                 alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 for l in setting_languages {
                     if l != current_language {
-                        alertController.addAction(UIAlertAction(title: l.description, style: .default, handler: { (action) -> Void in
+                        alertController.addAction(UIAlertAction(title: l.nativeDescription, style: .default, handler: { (action) -> Void in
                             let _ = self.navigationController?.popViewController(animated: true)
                             LanguageManager.saveLanguage(byCode: l.code)
                             LocalizedString.reset()

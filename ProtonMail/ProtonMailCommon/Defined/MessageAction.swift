@@ -77,6 +77,7 @@ enum MessageSwipeAction : Int, CustomStringConvertible {
     case spam = 1
     case star = 2
     case archive = 3
+    case unread = 4
     
     var description : String {
         get {
@@ -89,6 +90,8 @@ enum MessageSwipeAction : Int, CustomStringConvertible {
                 return LocalString._star
             case .archive:
                 return LocalString._locations_archive_desc
+            case .unread:
+                return LocalString._mark_as_unread 
             }
         }
     }

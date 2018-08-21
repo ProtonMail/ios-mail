@@ -3033,7 +3033,7 @@
                                                     <rect key="frame" x="229" y="107.5" width="146" height="36"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" textContentType="postal-code"/>
+                                                    <textInputTraits key="textInputTraits" textContentType="postal-code"/>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Country" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3kn-W2-Uht">
                                                     <rect key="frame" x="74.5" y="143.5" width="300.5" height="36"/>
@@ -5732,7 +5732,7 @@
         <image name="upgrade_background" width="325" height="437"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="sDR-N5-yCe"/>
+        <segue reference="oC7-Qd-EW1"/>
         <segue reference="oa9-8b-dT8"/>
         <segue reference="Yep-Vd-dxY"/>
         <segue reference="0zg-HM-MdK"/>

@@ -160,6 +160,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         self.undoView.isHidden = true
         
         cleanRateReviewCell()
+        
+        
+        self.leftSwipeAction = sharedUserDataService.swiftLeft
+        self.rightSwipeAction = sharedUserDataService.swiftRight
     }
     
     deinit {
@@ -177,8 +181,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                                                selector:#selector(MailboxViewController.doEnterForeground),
                                                name:  NSNotification.Name.UIApplicationWillEnterForeground,
                                                object: nil)
-        leftSwipeAction = sharedUserDataService.swiftLeft
-        rightSwipeAction = sharedUserDataService.swiftRight
         self.refreshControl.endRefreshing()
     }
     
@@ -661,6 +663,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         case .star:
             self.starMessageForIndexPath(indexPath)
             return false
+        case .unread:
+            self.unreadMessageForIndexPath(indexPath)
+            return false
         }
     }
     
@@ -710,6 +715,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             let _ = viewModel.starMessage(message)
+        }
+    }
+    
+    fileprivate func unreadMessageForIndexPath(_ indexPath: IndexPath) {
+        if let message = self.messageAtIndexPath(indexPath) {
+            let _ = viewModel.unreadMessage(message)
         }
     }
     

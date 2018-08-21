@@ -55,8 +55,9 @@ class LableEditViewController : UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        newLabelInput.resignFirstResponder()
-        selectedFirstLoad = viewModel.seletedIndex()
+        super.viewWillAppear(animated)
+        self.newLabelInput.becomeFirstResponder()
+        self.selectedFirstLoad = viewModel.seletedIndex()
     }
     
     @IBAction func applyAction(_ sender: AnyObject) {
