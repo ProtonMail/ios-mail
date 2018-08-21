@@ -50,9 +50,8 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
             let contactGroupEditViewController = segue.destination as! ContactGroupEditViewController
             let contactGroup = sender as! ContactGroup
             
-            // TODO:
-            // 1. use API to get contact group details
-            // 2. preload the VC with data
+            // TODO: handle the case of contactID being nil
+            sharedVMService.contactGroupEditViewModel(contactGroupEditViewController, state: .edit, contactGroupID: contactGroup.ID!)
         }
     }
 }

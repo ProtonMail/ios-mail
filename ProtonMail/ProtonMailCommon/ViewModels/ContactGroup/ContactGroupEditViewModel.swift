@@ -8,12 +8,26 @@
 
 import Foundation
 
-enum ContactGroupEditViewControllerState
-{
-    case create
-    case edit
+protocol ContactGroupEditViewModelDelegate {
+    func updated()
 }
 
 protocol ContactGroupEditViewModel {
-    var state: ContactGroupEditViewControllerState { get }
+    var state: ContactGroupEditViewControllerState { get set }
+    var contactGroup: ContactGroup { get set }
+    
+    // general operation
+    func fetchContactGroupDetail()
+    func getContactGroupDetail() -> ContactGroup
+    func addEmailsToContactGroup(emailList: [String])
+    func removeEmailsFromContactGroup(emailList: [String])
+    
+    // create
+    func saveContactGroupDetail(newContactGroup: ContactGroup)
+    
+    // edit
+    func updateContactGroupDetail(editedContactGroup: ContactGroup)
+    
+    // delete
+    func deleteContactGroup()
 }

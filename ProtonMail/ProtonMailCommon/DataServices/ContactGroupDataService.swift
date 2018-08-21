@@ -14,12 +14,12 @@ let sharedContactGroupsDataService = ContactGroupsDataService()
 
 struct ContactGroup
 {
-    let ID: String
-    let name: String
-    let color: String
+    let ID: String?
+    let name: String?
+    let color: String?
     let emailIDs: [String]?
     
-    init(ID: String, name: String, color: String, emailIDs: [String]?)
+    init(ID: String?, name: String? = nil, color: String? = nil, emailIDs: [String]? = nil)
     {
         self.ID = ID
         self.name = name

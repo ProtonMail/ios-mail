@@ -266,6 +266,13 @@ class ViewModelServiceImpl: ViewModelService {
         vmp.setViewModel(ContactGroupsViewModelImpl())
     }
     
+    override func contactGroupEditViewModel(_ vmp : ViewModelProtocol,
+                                            state: ContactGroupEditViewControllerState,
+                                            contactGroupID: String? = nil) {
+        activeViewController = vmp
+        vmp.setViewModel(ContactGroupEditViewModelImpl(state: state, contactGroupID: contactGroupID))
+    }
+    
     // composer
     override func buildComposer<T: ViewModelProtocolNew>(_ vmp: T, subject: String, content: String, files: [FileData]) {
         latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)

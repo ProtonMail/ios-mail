@@ -17,8 +17,11 @@ import UIKit
 class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     @IBOutlet weak var ContactGroupName: UITextField!
+    var viewModel: ContactGroupEditViewModel!
     
-    func setViewModel(_ vm: Any) {}
+    func setViewModel(_ vm: Any) {
+        viewModel = vm as! ContactGroupEditViewModel
+    }
     
     func inactiveViewModel() {}
     
@@ -28,9 +31,18 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewModel.fetchContactGroupDetail()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+}
+
+extension ContactGroupEditViewController: ContactGroupsViewModelDelegate
+{
+    func updated() {
+        // TODO: load data into view
     }
 }

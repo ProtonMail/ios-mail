@@ -28,8 +28,7 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
                 for contactGroup in data {
                     let extractedContactGroup = ContactGroup(ID: String(describing: contactGroup["ID"]),
                                                              name: String(describing: contactGroup["name"]),
-                                                             color: String(describing: contactGroup["color"]),
-                                                             emailIDs: nil)
+                                                             color: String(describing: contactGroup["color"]))
                     self.cachedContactGroups!.append(extractedContactGroup)
                 }
             }
