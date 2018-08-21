@@ -259,9 +259,15 @@
                                 <action selector="cancelItem:" destination="mUl-og-cdo" id="4MF-2K-PD1"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="Hmp-Na-S3U">
+                            <connections>
+                                <action selector="saveAction:" destination="mUl-og-cdo" id="Hgy-iN-bts"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="ContactGroupName" destination="3NM-zd-4W7" id="2YT-EU-ufR"/>
+                        <outlet property="saveButton" destination="Hmp-Na-S3U" id="GZw-gU-QB4"/>
                         <segue destination="8zh-da-ShX" kind="show" identifier="toContactGroupSelectColorSegue" id="HHT-44-Q1E"/>
                         <segue destination="Fg3-wo-uS7" kind="show" identifier="toContactGroupSelectEmailSegue" id="v1s-fa-DW1"/>
                     </connections>

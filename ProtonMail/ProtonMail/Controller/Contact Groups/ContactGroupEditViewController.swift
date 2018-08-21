@@ -15,8 +15,8 @@ import UIKit
  */
 
 class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocol {
-    
-    @IBOutlet weak var ContactGroupName: UITextField!
+    @IBOutlet weak var contactGroupName: UITextField!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     var viewModel: ContactGroupEditViewModel!
     
     func setViewModel(_ vm: Any) {
@@ -32,11 +32,22 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        viewModel.contactGroupEditViewDelegate = self
         viewModel.fetchContactGroupDetail()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    @IBAction func saveAction(_ sender: UIBarButtonItem) {
+        // TODO: ask view model to save it
+        viewModel.saveContactGroupDetail(name: contactGroupName.text,
+                                         color: "#f66", /* TODO: remove this hardcoded color */
+                                         emailList: nil)
+        
+        // TODO: spinning while saving... (blocking)
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

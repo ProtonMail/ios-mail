@@ -59,7 +59,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         var out : [String : Any] = [
             "Name": self.labelName,
             "Color": self.color,
-            "Display": 0,
+            "Display": type == 1 ? 0 : 1, /* Don't show the contact group on the side bar */
             "Type": self.type,
         ]
         

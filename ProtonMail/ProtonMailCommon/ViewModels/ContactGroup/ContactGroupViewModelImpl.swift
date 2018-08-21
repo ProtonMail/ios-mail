@@ -27,8 +27,8 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
             if let data = contactGroups {
                 for contactGroup in data {
                     let extractedContactGroup = ContactGroup(ID: String(describing: contactGroup["ID"]),
-                                                             name: String(describing: contactGroup["name"]),
-                                                             color: String(describing: contactGroup["color"]))
+                                                             name: String(describing: contactGroup["Name"]),
+                                                             color: String(describing: contactGroup["Color"]))
                     self.cachedContactGroups!.append(extractedContactGroup)
                 }
             }

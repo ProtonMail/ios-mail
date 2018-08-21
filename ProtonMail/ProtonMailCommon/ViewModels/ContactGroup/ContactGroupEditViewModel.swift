@@ -15,6 +15,7 @@ protocol ContactGroupEditViewModelDelegate {
 protocol ContactGroupEditViewModel {
     var state: ContactGroupEditViewControllerState { get set }
     var contactGroup: ContactGroup { get set }
+    var contactGroupEditViewDelegate: ContactGroupsViewModelDelegate! { get set }
     
     // general operation
     func fetchContactGroupDetail()
@@ -22,11 +23,8 @@ protocol ContactGroupEditViewModel {
     func addEmailsToContactGroup(emailList: [String])
     func removeEmailsFromContactGroup(emailList: [String])
     
-    // create
-    func saveContactGroupDetail(newContactGroup: ContactGroup)
-    
-    // edit
-    func updateContactGroupDetail(editedContactGroup: ContactGroup)
+    // create and edit
+    func saveContactGroupDetail(name: String?, color: String?, emailList: [String]?)
     
     // delete
     func deleteContactGroup()

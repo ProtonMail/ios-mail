@@ -50,8 +50,10 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
             let contactGroupEditViewController = segue.destination as! ContactGroupEditViewController
             let contactGroup = sender as! ContactGroup
             
-            // TODO: handle the case of contactID being nil
-            sharedVMService.contactGroupEditViewModel(contactGroupEditViewController, state: .edit, contactGroupID: contactGroup.ID!)
+            sharedVMService.contactGroupEditViewModel(contactGroupEditViewController,
+                                                      state: .edit,
+                                                      contactGroupID: contactGroup.ID,
+                                                      color: contactGroup.color)
         }
     }
 }
@@ -69,8 +71,8 @@ extension ContactGroupsViewController: UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "ContactGroupCell", for: indexPath)
         
-        if let data = viewModel.getContactGroupData(at: indexPath) {
-            cell.textLabel?.text = data.name
+        if let data = viewModel.getContactGroupData(at: indexPath), let name = data.name {
+            cell.textLabel?.text = name
         } else {
             cell.textLabel?.text = "Error in retrieving contact group name"
         }
