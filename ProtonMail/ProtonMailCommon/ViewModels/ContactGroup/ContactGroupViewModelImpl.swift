@@ -8,19 +8,6 @@
 
 import Foundation
 
-struct ContactGroup
-{
-    let ID: String
-    let name: String
-    let color: String
-    
-    init(ID: String, name: String, color: String) {
-        self.ID = ID
-        self.name = name
-        self.color = color
-    }
-}
-
 protocol ContactGroupViewModelDelegate {
     func updated()
 }
@@ -33,20 +20,19 @@ class ContactGroupViewModelImpl: ContactGroupViewModel
     func fetchContactGroups() {
         // setup completion handler
         let completionHandler = {
-            () -> Void in
+            (contactGroups: [[String : Any]]?) -> Void in
             
             // parse the data into array of contact group struct
-            var contactGroups = [ContactGroup]()
-            if let data = sharedContactGroupsDataService.contactGroups {
+            self.cachedContactGroups = [ContactGroup]()
+            if let data = contactGroups {
                 for contactGroup in data {
-                    let newContactGroup = ContactGroup(ID: String(describing: contactGroup["ID"]),
-                                                       name: String(describing: contactGroup["name"]),
-                                                       color: String(describing: contactGroup["color"]))
-                    contactGroups.append(newContactGroup)
+                    let extractedContactGroup = ContactGroup(ID: String(describing: contactGroup["ID"]),
+                                                             name: String(describing: contactGroup["name"]),
+                                                             color: String(describing: contactGroup["color"]),
+                                                             emailIDs: nil)
+                    self.cachedContactGroups!.append(extractedContactGroup)
                 }
             }
-            self.cachedContactGroups = contactGroups
-            
             self.contactGroupViewControllerDelegate?.updated()
         }
         

@@ -43,11 +43,11 @@ final class GetLabelsResponse : ApiResponse {
 /// Create a label/contact group on the server
 final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     var labelName: String
-    var color:String
-    var exclusive : Bool = false
+    var color: String
+    var exclusive: Bool = false
     var type: Int = 1
     
-    init(name:String, color:String, exclusive : Bool, type: Int = 1) {
+    init(name: String, color: String, exclusive: Bool = false, type: Int = 1) {
         self.labelName = name
         self.color = color
         self.exclusive = exclusive
@@ -56,13 +56,16 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> [String : Any]? {
         
-        let out : [String : Any] = [
+        var out : [String : Any] = [
             "Name": self.labelName,
             "Color": self.color,
             "Display": 0,
             "Type": self.type,
-            "Exclusive" : self.exclusive
         ]
+        
+        if type == 1 {
+            out["Exclusive"] = self.exclusive
+        }
 
         return out
     }

@@ -20,6 +20,8 @@ class ContactGroupViewController: ProtonMailViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupViewModel!
     
+    let kToContactGroupDetailSegue: String = "toContactGroupDetailSegue"
+    
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func cancelButton(_ sender: UIBarButtonItem) {
@@ -27,6 +29,7 @@ class ContactGroupViewController: ProtonMailViewController, ViewModelProtocol
     }
     
     func setViewModel(_ vm: Any) {
+        viewModel = vm as! ContactGroupViewModel
     }
     
     func inactiveViewModel() {
@@ -35,9 +38,25 @@ class ContactGroupViewController: ProtonMailViewController, ViewModelProtocol
     override func viewDidLoad() {
         self.navigationItem.title = "[Locale] Contact Groups"
         
+        tableView.noSeparatorsBelowFooter()
+        
         viewModel = ContactGroupViewModelImpl()
         viewModel.fetchContactGroups()
         viewModel.contactGroupViewControllerDelegate = self
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == kToContactGroupDetailSegue {
+            // setup the VC for editing state
+            let contactGroupEditViewController = segue.destination as! ContactGroupEditViewController
+            let contactGroup = sender as! ContactGroup
+            
+            contactGroupEditViewController.state = .edit
+            
+            // TODO:
+            // 1. use API to get contact group details
+            // 2. preload the VC with data
+        }
     }
 }
 
@@ -54,13 +73,23 @@ extension ContactGroupViewController: UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "ContactGroupCell", for: indexPath)
         
-        let data = viewModel.getContactGroupData(at: indexPath)
-        if data == nil {
+        if let data = viewModel.getContactGroupData(at: indexPath) {
+            cell.textLabel?.text = data.name
+        } else {
             cell.textLabel?.text = "Error in retrieving contact group name"
         }
-        cell.textLabel?.text = data?.name
         
         return cell
+    }
+}
+
+extension ContactGroupViewController: UITableViewDelegate
+{
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if let contactGroup = viewModel.getContactGroupData(at: indexPath) {
+            self.performSegue(withIdentifier: kToContactGroupDetailSegue, sender: contactGroup)
+        }
     }
 }
 

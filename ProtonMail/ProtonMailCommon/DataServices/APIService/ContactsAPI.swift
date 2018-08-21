@@ -344,7 +344,7 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
 // Contact group APIs
 
 /// Add designated contact emails into a certain contact group
-final class ContactLabelAnArrayOfContactEmailsRequest: ApiRequest<ApiResponse>
+final class ContactLabelAnArrayOfContactEmailsRequest: ApiRequest<ContactLabelAnArrayOfContactEmailsResponse>
 {
     var labelID: String = ""
     var contactEmailIDs: [String] = []
@@ -382,7 +382,7 @@ final class ContactLabelAnArrayOfContactEmailsResponse: ApiResponse {
 
 
 /// Remove designated contact emails from a certain contact group
-final class ContactUnlabelAnArrayOfContactEmailsRequest: ApiRequest<ApiResponse>
+final class ContactUnlabelAnArrayOfContactEmailsRequest: ApiRequest<ContactUnlabelAnArrayOfContactEmailsResponse>
 {
     var labelID: String = ""
     var contactEmailIDs: [String] = []

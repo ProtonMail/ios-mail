@@ -90,6 +90,11 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
+    // contact groups
+    func contactGroupsViewModel(_ vmp : ViewModelProtocol) {
+        fatalError("This method must be overridden")
+    }
+    
     ///////////////////////
     ///
     func upgradeAlert(signature vmp: ViewModelProtocolBase) {
