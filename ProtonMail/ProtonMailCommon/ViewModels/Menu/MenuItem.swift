@@ -105,7 +105,7 @@ enum MenuItem: String {//change to Int later.
         case .allmail:
             image = "menu_allmail"
         case .servicePlan:
-            image = "menu_allmail"
+            image = "menu_serviceplan"
         }
         return image;
     }
@@ -142,7 +142,7 @@ enum MenuItem: String {//change to Int later.
         case .allmail:
             image = "menu_allmail-active"
         case .servicePlan:
-            image = "menu_allmail-active"
+            image = "menu_serviceplan-active"
         }
         return image;
     }
