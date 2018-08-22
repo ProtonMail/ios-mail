@@ -68,11 +68,11 @@ class LabelsDataService {
             
             switch type {
             case .all:
-                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 0)", "(?!^\\d+$)^.+$", Label.Attributes.isDisplay)
+                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1)", "(?!^\\d+$)^.+$", Label.Attributes.type)
             case .folder:
-                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.exclusive)
+                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
             case .label:
-                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.exclusive)
+                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
             }
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
