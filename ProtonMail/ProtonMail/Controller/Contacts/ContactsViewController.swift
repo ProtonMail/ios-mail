@@ -170,7 +170,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             sharedVMService.contactAddViewModel(addContactViewController)
         } else if (segue.identifier == kAddContactGroupSugue) {
             let addContactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
-            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create)
+            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create, refreshHandler: {})
         } else if(segue.identifier == kToContactGroupSegue) {
             let contactGroupsViewController = segue.destination.childViewControllers[0] as! ContactGroupsViewController
             sharedVMService.contactGroupsViewModel(contactGroupsViewController)

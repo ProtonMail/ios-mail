@@ -269,9 +269,15 @@ class ViewModelServiceImpl: ViewModelService {
     override func contactGroupEditViewModel(_ vmp : ViewModelProtocol,
                                             state: ContactGroupEditViewControllerState,
                                             contactGroupID: String? = nil,
-                                            color: String? = nil) {
+                                            name: String? = nil,
+                                            color: String? = nil,
+                                            refreshHandler: @escaping () -> Void) {
         activeViewController = vmp
-        vmp.setViewModel(ContactGroupEditViewModelImpl(state: state, contactGroupID: contactGroupID, color: color))
+        vmp.setViewModel(ContactGroupEditViewModelImpl(state: state,
+                                                       contactGroupID: contactGroupID,
+                                                       name: name,
+                                                       color: color,
+                                                       refreshHandler: refreshHandler))
     }
     
     // composer

@@ -266,7 +266,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="ContactGroupName" destination="3NM-zd-4W7" id="2YT-EU-ufR"/>
+                        <outlet property="contactGroupNameLabel" destination="3NM-zd-4W7" id="B8g-vP-lfM"/>
+                        <outlet property="navigationBarItem" destination="dVV-Cz-FHE" id="GoF-x9-BBC"/>
                         <outlet property="saveButton" destination="Hmp-Na-S3U" id="GZw-gU-QB4"/>
                         <segue destination="8zh-da-ShX" kind="show" identifier="toContactGroupSelectColorSegue" id="HHT-44-Q1E"/>
                         <segue destination="Fg3-wo-uS7" kind="show" identifier="toContactGroupSelectEmailSegue" id="v1s-fa-DW1"/>
@@ -312,6 +313,7 @@
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="Otj-eK-LVU" id="bNm-I1-6En"/>
+                                    <outlet property="delegate" destination="Otj-eK-LVU" id="Ej2-dn-yct"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -1882,6 +1884,6 @@
         <segue reference="oC7-Qd-EW1"/>
         <segue reference="oQx-RX-nff"/>
         <segue reference="5rJ-hC-fsT"/>
-        <segue reference="VmO-wi-11j"/>
+        <segue reference="coY-bM-Dt9"/>
     </inferredMetricsTieBreakers>
 </document>

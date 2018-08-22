@@ -118,7 +118,7 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
     }
 
     override public func path() -> String {
-        return ContactsAPI.path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + AppConstants.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
@@ -127,6 +127,10 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func method() -> APIService.HTTPMethod {
         return .get
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        return ["LabelID": contactID]
     }
 }
 

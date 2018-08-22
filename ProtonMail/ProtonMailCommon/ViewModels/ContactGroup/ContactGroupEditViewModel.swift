@@ -17,6 +17,10 @@ protocol ContactGroupEditViewModel {
     var contactGroup: ContactGroup { get set }
     var contactGroupEditViewDelegate: ContactGroupsViewModelDelegate! { get set }
     
+    // title
+    func getViewTitle() -> String
+    func getContactGroupName() -> String
+    
     // general operation
     func fetchContactGroupDetail()
     func getContactGroupDetail() -> ContactGroup

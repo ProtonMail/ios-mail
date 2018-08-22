@@ -12,11 +12,35 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     var state: ContactGroupEditViewControllerState
     var contactGroup: ContactGroup
     var contactGroupEditViewDelegate: ContactGroupsViewModelDelegate!
+    var refreshHandler: () -> Void
     
-    init(state: ContactGroupEditViewControllerState = .create, contactGroupID: String? = nil, color: String? = nil)
+    init(state: ContactGroupEditViewControllerState = .create,
+         contactGroupID: String? = nil,
+         name: String? = nil,
+         color: String? = nil,
+         refreshHandler: @escaping () -> Void)
     {
         self.state = state
-        self.contactGroup = ContactGroup(ID: contactGroupID, color: color)
+        self.contactGroup = ContactGroup(ID: contactGroupID, name: name, color: color)
+        self.refreshHandler = refreshHandler
+    }
+    
+    func getViewTitle() -> String {
+        switch state {
+        case .create:
+            return "[Locale] Create contact group"
+        case .edit:
+            return "[Locale] Edit contact group"
+        }
+    }
+    
+    func getContactGroupName() -> String {
+        if state == .edit {
+            if let groupName = contactGroup.name {
+                return groupName
+            }
+        }
+        return ""
     }
     
     func fetchContactGroupDetail() {
@@ -32,7 +56,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                         }
                     }
                     
-                    self.contactGroup = ContactGroup(ID: self.contactGroup.ID,
+                    self.contactGroup = ContactGroup(ID: contactGroupID,
                                                      name: String(describing: fetchedData["Name"]),
                                                      color: self.contactGroup.color,
                                                      emailIDs: emailList.count > 0 ? emailList : nil)
@@ -77,6 +101,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             self.contactGroup.ID = ID
             self.contactGroup.name = name
             self.contactGroup.color = color
+            
+            self.refreshHandler()
         }
         
         // create contact group
@@ -95,11 +121,50 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     }
     
     private func updateContactGroupDetail(editedContactGroup: ContactGroup) {
+        let completionHandler = {
+            () -> Void in
+            
+            self.contactGroup.ID = editedContactGroup.ID
+            self.contactGroup.name = editedContactGroup.name
+            self.contactGroup.color = editedContactGroup.color
+            
+            self.refreshHandler()
+        }
         
+        // update contact group
+        if let groupID = editedContactGroup.ID,
+            let name = editedContactGroup.name,
+            let color = editedContactGroup.color {
+            sharedContactGroupsDataService.editContactGroup(groupID: groupID,
+                                                            name: name,
+                                                            color: color,
+                                                            completionHandler: completionHandler)
+        } else {
+            PMLog.D("[Contact Group API] not enough valid argument for creating the contact group = \(editedContactGroup)")
+        }
+        
+        // TODO: do local diffing, opt. API call
+        // update email IDs
+        if let emailList = contactGroup.emailIDs {
+            removeEmailsFromContactGroup(emailList: emailList)
+        }
+        
+        if let emailList = editedContactGroup.emailIDs {
+            addEmailsToContactGroup(emailList: emailList)
+        }
     }
     
     func deleteContactGroup() {
+        let completionHandler = {
+            () -> Void in
+            self.contactGroupEditViewDelegate.updated()
+        }
         
+        if let contactGroupID = contactGroup.ID {
+            sharedContactGroupsDataService.deleteContactGroup(groupID: contactGroupID, completionHandler: completionHandler)
+        } else {
+            PMLog.D("[Contact Group API] error deleting the contact group = \(self.contactGroup)")
+        }
     }
     
     func addEmailsToContactGroup(emailList: [String]) {

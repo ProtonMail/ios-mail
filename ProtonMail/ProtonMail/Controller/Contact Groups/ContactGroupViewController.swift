@@ -19,7 +19,6 @@ import UIKit
 class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupsViewModel!
-    
     let kToContactGroupDetailSegue: String = "toContactGroupDetailSegue"
     
     @IBOutlet weak var tableView: UITableView!
@@ -46,14 +45,20 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToContactGroupDetailSegue {
-            // setup the VC for editing state
-            let contactGroupEditViewController = segue.destination as! ContactGroupEditViewController
+            let contactGroupEditViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
             let contactGroup = sender as! ContactGroup
-            
+
+            let refreshHandler = {
+                () -> Void in
+                
+                self.viewModel.fetchContactGroups()
+            }
             sharedVMService.contactGroupEditViewModel(contactGroupEditViewController,
                                                       state: .edit,
                                                       contactGroupID: contactGroup.ID,
-                                                      color: contactGroup.color)
+                                                      name: contactGroup.name,
+                                                      color: contactGroup.color,
+                                                      refreshHandler: refreshHandler)
         }
     }
 }
