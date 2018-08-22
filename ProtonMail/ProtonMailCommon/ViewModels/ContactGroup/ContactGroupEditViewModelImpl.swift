@@ -13,6 +13,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     var contactGroup: ContactGroup
     var contactGroupEditViewDelegate: ContactGroupsViewModelDelegate!
     var refreshHandler: () -> Void
+    var tableContent: [[ContactGroupTableCellType]]
     
     init(state: ContactGroupEditViewControllerState = .create,
          contactGroupID: String? = nil,
@@ -23,6 +24,11 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         self.state = state
         self.contactGroup = ContactGroup(ID: contactGroupID, name: name, color: color)
         self.refreshHandler = refreshHandler
+        self.tableContent = [
+            [.selectColor],
+            [.manageContact],
+            [.deleteGroup]
+        ]
     }
     
     func getViewTitle() -> String {
@@ -157,7 +163,9 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     func deleteContactGroup() {
         let completionHandler = {
             () -> Void in
-            self.contactGroupEditViewDelegate.updated()
+            
+            self.contactGroup = ContactGroup()
+            self.refreshHandler()
         }
         
         if let contactGroupID = contactGroup.ID {
@@ -168,10 +176,73 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     }
     
     func addEmailsToContactGroup(emailList: [String]) {
+        let completionHandler = {
+            () -> Void in
+            
+            if self.contactGroup.emailIDs == nil {
+                self.contactGroup.emailIDs = [String]()
+            }
+            
+            for email in emailList {
+                if self.contactGroup.emailIDs!.contains(email) == false {
+                    self.contactGroup.emailIDs!.append(email)
+                }
+            }
+        }
         
+        if let contactGroupID = contactGroup.ID {
+            sharedContactGroupsDataService.addEmailsToContactGroup(groupID: contactGroupID,
+                                                                   emailList: emailList,
+                                                                   completionHandler: completionHandler)
+        }
     }
     
     func removeEmailsFromContactGroup(emailList: [String]) {
+        let completionHandler = {
+            () -> Void in
+            
+            guard self.contactGroup.emailIDs != nil else {
+                return
+            }
+            
+            self.contactGroup.emailIDs = self.contactGroup.emailIDs!.filter({
+                if emailList.contains($0) {
+                    return false
+                }
+                return true
+            })
+            
+            if self.contactGroup.emailIDs!.count == 0 {
+                self.contactGroup.emailIDs = nil
+            }
+        }
         
+        if let contactGroupID = contactGroup.ID {
+            sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: contactGroupID,
+                                                                        emailList: emailList,
+                                                                        completionHandler: completionHandler)
+        }
+    }
+    
+    // table
+    func getTotalSections() -> Int {
+        return self.tableContent.count
+    }
+    
+    func getTotalRows(for section: Int) -> Int {
+        guard section < tableContent.count else {
+            return 0
+        }
+        
+        return tableContent[section].count
+    }
+    
+    func getCellType(at indexPath: IndexPath) -> ContactGroupTableCellType {
+        guard indexPath.section < tableContent.count &&
+            indexPath.row < tableContent[indexPath.section].count else {
+                return .error
+        }
+        
+        return tableContent[indexPath.section][indexPath.row]
     }
 }

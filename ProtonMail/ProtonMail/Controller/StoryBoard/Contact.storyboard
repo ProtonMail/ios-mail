@@ -118,9 +118,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QTM-7Y-UaE">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="QTM-7Y-UaE">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="eIg-lX-be8">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -161,7 +161,7 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="ContactGroupColorCell" textLabel="D9N-BZ-aeq" detailTextLabel="NNG-mb-SfJ" style="IBUITableViewCellStyleValue1" id="qKA-Zu-Qwl">
-                                        <rect key="frame" x="0.0" y="108" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="135.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qKA-Zu-Qwl" id="BcN-ni-pdj">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -185,7 +185,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="ContactGroupManageCell" textLabel="XQC-uq-eag" style="IBUITableViewCellStyleDefault" id="gmS-t6-gAT">
-                                        <rect key="frame" x="0.0" y="152" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="179.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gmS-t6-gAT" id="fFu-8n-rKm">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -202,7 +202,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="ContactGroupMemberCell" textLabel="T3b-S9-6B8" detailTextLabel="i4X-B5-mbk" style="IBUITableViewCellStyleSubtitle" id="43T-RX-alc">
-                                        <rect key="frame" x="0.0" y="196" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="223.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="43T-RX-alc" id="6C8-yL-NSI">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -226,7 +226,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactGroupDeleteCell" textLabel="f8Z-oK-2TS" style="IBUITableViewCellStyleDefault" id="qI3-wg-9hk">
-                                        <rect key="frame" x="0.0" y="240" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="267.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qI3-wg-9hk" id="dMi-J1-ltM">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -243,6 +243,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="mUl-og-cdo" id="lZT-G3-ZHH"/>
+                                    <outlet property="delegate" destination="mUl-og-cdo" id="nat-eQ-m8g"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -269,6 +273,7 @@
                         <outlet property="contactGroupNameLabel" destination="3NM-zd-4W7" id="B8g-vP-lfM"/>
                         <outlet property="navigationBarItem" destination="dVV-Cz-FHE" id="GoF-x9-BBC"/>
                         <outlet property="saveButton" destination="Hmp-Na-S3U" id="GZw-gU-QB4"/>
+                        <outlet property="tableView" destination="QTM-7Y-UaE" id="gzL-iS-xSe"/>
                         <segue destination="8zh-da-ShX" kind="show" identifier="toContactGroupSelectColorSegue" id="HHT-44-Q1E"/>
                         <segue destination="Fg3-wo-uS7" kind="show" identifier="toContactGroupSelectEmailSegue" id="v1s-fa-DW1"/>
                     </connections>

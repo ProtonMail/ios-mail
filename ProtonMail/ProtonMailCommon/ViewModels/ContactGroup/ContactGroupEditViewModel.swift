@@ -12,10 +12,20 @@ protocol ContactGroupEditViewModelDelegate {
     func updated()
 }
 
+enum ContactGroupTableCellType
+{
+    case selectColor
+    case manageContact
+    case email
+    case deleteGroup
+    case error
+}
+
 protocol ContactGroupEditViewModel {
     var state: ContactGroupEditViewControllerState { get set }
     var contactGroup: ContactGroup { get set }
     var contactGroupEditViewDelegate: ContactGroupsViewModelDelegate! { get set }
+    var tableContent: [[ContactGroupTableCellType]] { get set }
     
     // title
     func getViewTitle() -> String
@@ -32,4 +42,9 @@ protocol ContactGroupEditViewModel {
     
     // delete
     func deleteContactGroup()
+    
+    // table operation
+    func getTotalSections() -> Int
+    func getTotalRows(for section: Int) -> Int
+    func getCellType(at indexPath: IndexPath) -> ContactGroupTableCellType
 }
