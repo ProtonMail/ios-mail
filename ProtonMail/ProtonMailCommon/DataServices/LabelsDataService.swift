@@ -68,7 +68,7 @@ class LabelsDataService {
             
             switch type {
             case .all:
-                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@)", "(?!^\\d+$)^.+$")
+                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 0)", "(?!^\\d+$)^.+$", Label.Attributes.isDisplay)
             case .folder:
                 fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.exclusive)
             case .label:
