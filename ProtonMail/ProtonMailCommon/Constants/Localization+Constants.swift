@@ -106,7 +106,8 @@ class LocalizedString {
     lazy var _menu_feedback_title =  NSLocalizedString("Feedback", comment: "menu title")
     /// "Lock The App"
     lazy var _menu_lockapp_title  =  NSLocalizedString("Lock The App", comment: "menu title")
-    
+    /// "Service Plan"
+    lazy var _menu_service_plan_title  =  NSLocalizedString("Service Plan", comment: "menu title")
     
     
     // Mark Message localtion

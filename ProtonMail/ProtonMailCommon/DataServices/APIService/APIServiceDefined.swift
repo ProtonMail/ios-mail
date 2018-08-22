@@ -345,3 +345,11 @@ struct UsersAPI {
     static let v_send_verification_code : Int = 3
 }
 
+//Payments API
+//Doc: FIXME
+struct PaymentsAPI {
+    static let path : String = AppConstants.API_PATH + "/payments"
+    
+    static let v_plans: Int = 3
+}
+

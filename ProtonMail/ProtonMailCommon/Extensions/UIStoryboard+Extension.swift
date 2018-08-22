@@ -40,3 +40,9 @@ extension UIStoryboard {
         return storyboard.instantiateInitialViewController()
     }
 }
+
+extension UIStoryboard {
+    func make<T>(_ type: T.Type) -> T {
+        return self.instantiateViewController(withIdentifier: .init(describing: T.self)) as! T
+    }
+}

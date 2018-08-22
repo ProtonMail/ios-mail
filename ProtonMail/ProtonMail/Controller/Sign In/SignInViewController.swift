@@ -518,7 +518,7 @@ class SignInViewController: ProtonMailViewController {
                     try AuthCredential.setupToken(mailboxPassword, isRememberMailbox: self.isRemembered)
                     MBProgressHUD.showAdded(to: view, animated: true)
                     sharedLabelsDataService.fetchLabels()
-                    
+                    ServicePlanDataService.updateCurrentSubscription()
                     sharedUserDataService.fetchUserInfo().done(on: .main) { info in
                         MBProgressHUD.hide(for: self.view, animated: true)
                         if info != nil {

@@ -13,47 +13,11 @@
 import UIKit
 import SWRevealViewController
 
-class ProtonMailViewController: UIViewController {
-    
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if let revealViewController = self.revealViewController() {
-            
-            if (self.shouldShowSideMenu()) {
-                self.menuButton.accessibilityLabel = LocalString._menu_button
-                self.menuButton.target = self.revealViewController()
-                self.menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-                self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-                
-                revealViewController.panGestureRecognizer()
-                revealViewController.tapGestureRecognizer()
-            }
-        }
-        
-        configureNavigationBar()
-        setNeedsStatusBarAppearanceUpdate()
-    }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
-    
-    func configureNavigationBar() {
-        self.navigationController?.navigationBar.barStyle = UIBarStyle.black
-        self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.tintColor = UIColor.white
-        
-        let navigationBarTitleFont = Fonts.h2.regular
-        self.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: navigationBarTitleFont
-        ]
-    }
-    
+protocol ProtonMailViewControllerProtocol {
+    func shouldShowSideMenu() -> Bool
+    func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController, style : UIModalPresentationStyle)
+}
+extension ProtonMailViewControllerProtocol where Self: UIViewController {
     func shouldShowSideMenu() -> Bool {
         return true
     }
@@ -63,6 +27,58 @@ class ProtonMailViewController: UIViewController {
         presentingController.providesPresentationContextTransitionStyle = true;
         presentingController.definesPresentationContext = true;
         presentingController.modalPresentationStyle = style
+    }
+}
+
+class ProtonMailViewController: UIViewController, ProtonMailViewControllerProtocol {
+    
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        ProtonMailViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
+    }
+    
+    class func setup(_ controller: UIViewController,
+                     _ menuButton: UIBarButtonItem!,
+                     _ shouldShowMenu: Bool) {
+        if let revealViewController = controller.revealViewController() {
+            
+            if (shouldShowMenu && menuButton != nil) {
+                controller.navigationItem.leftBarButtonItem = menuButton
+                menuButton.accessibilityLabel = LocalString._menu_button
+                menuButton.target = controller.revealViewController()
+                menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+                controller.view.addGestureRecognizer(controller.revealViewController().panGestureRecognizer())
+                
+                revealViewController.panGestureRecognizer()
+                revealViewController.tapGestureRecognizer()
+            }
+        }
+        
+        configureNavigationBar(controller)
+        controller.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
+    
+    func configureNavigationBar() {
+        ProtonMailViewController.configureNavigationBar(self)
+    }
+    
+    class func configureNavigationBar(_ controller: UIViewController) {
+        controller.navigationController?.navigationBar.barStyle = UIBarStyle.black
+        controller.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
+        controller.navigationController?.navigationBar.isTranslucent = false
+        controller.navigationController?.navigationBar.tintColor = UIColor.white
+        
+        let navigationBarTitleFont = Fonts.h2.regular
+        controller.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: navigationBarTitleFont
+        ]
     }
 
 }
