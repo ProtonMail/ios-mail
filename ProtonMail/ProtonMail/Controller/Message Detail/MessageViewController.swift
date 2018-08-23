@@ -441,7 +441,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         }
     }
     
-    override func shouldShowSideMenu() -> Bool {
+    func shouldShowSideMenu() -> Bool {
         return false
     }
     

@@ -85,6 +85,106 @@ class CreateNewUser : ApiRequest<ApiResponse> {
     }
 }
 
+final class GetSubscriptionRequest: ApiRequestNew<GetSubscriptionResponse> {
+    override func method() -> APIService.HTTPMethod {
+        return .get
+    }
+    
+    override func path() -> String {
+        return PaymentsAPI.path + "/subscription"
+    }
+    
+    override func apiVersion() -> Int {
+        return PaymentsAPI.v_plans
+    }
+}
+
+final class GetSubscriptionResponse: ApiResponse {
+    var plans: [ServicePlanDetails]?
+    var start: Date?
+    var end: Date?
+    
+    override func ParseResponseError(_ response: [String : Any]!) -> Bool {
+        return super.ParseResponseError(response)
+    }
+    
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        PMLog.D(response.json(prettyPrinted: true))
+        guard let response = response["Subscription"] as? [String : Any],
+            let startRaw = response["PeriodStart"] as? Int,
+            let endRaw = response["PeriodEnd"] as? Int else
+        {
+            return false
+        }
+        
+        let plansParser = GetServicePlansResponse()
+        if plansParser.ParseResponse(response) {
+            self.plans = plansParser.availableServicePlans
+        }
+        
+        self.start = Date(timeIntervalSince1970: Double(startRaw))
+        self.end = Date(timeIntervalSince1970: Double(endRaw))
+        
+        return true
+    }
+}
+
+final class GetServicePlansRequest: ApiRequestNew<GetServicePlansResponse> {
+    override func method() -> APIService.HTTPMethod {
+        return .get
+    }
+    
+    override func path() -> String {
+        return PaymentsAPI.path + "/plans"
+    }
+    
+    override func apiVersion() -> Int {
+        return PaymentsAPI.v_plans
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        return  ["Currency": "USD", "Cycle": 12]
+    }
+}
+
+final class GetServicePlansResponse: ApiResponse {
+    private struct Key : CodingKey {
+        var stringValue: String
+        var intValue: Int?
+
+        init?(stringValue: String) {
+            self.stringValue = stringValue
+            self.intValue = nil
+        }
+
+        init?(intValue: Int) {
+            self.stringValue = "\(intValue)"
+            self.intValue = intValue
+        }
+    }
+    
+    internal var availableServicePlans: [ServicePlanDetails]?
+    
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        PMLog.D(response.json(prettyPrinted: true))
+        do {
+            let data = try JSONSerialization.data(withJSONObject: response["Plans"] as Any, options: [])
+            let decoder = JSONDecoder()
+            // this strategy is decapitalizing first letter of response's labels to get appropriate name of the ServicePlanDetails object
+            decoder.keyDecodingStrategy = .custom({ (_ path:[CodingKey]) -> CodingKey in
+                let original: String = path.last!.stringValue
+                let uncapitalized = original.prefix(1).lowercased() + original.dropFirst()
+                return Key(stringValue: uncapitalized) ?? path.last!
+            })
+            self.availableServicePlans = try decoder.decode(Array<ServicePlanDetails>.self, from: data)
+            return true
+        } catch let error {
+            PMLog.D("Failed to parse ServicePlans: \(error.localizedDescription)")
+            return false
+        }
+    }
+}
+
 final class GetUserInfoRequest : ApiRequestNew<GetUserInfoResponse> {
     
     override func method() -> APIService.HTTPMethod {

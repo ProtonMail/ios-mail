@@ -117,7 +117,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         self.performSegue(withIdentifier: kEditContactSegue, sender: viewModel.getContact())
     }
     
-    override func shouldShowSideMenu() -> Bool {
+    func shouldShowSideMenu() -> Bool {
         return false
     }
 }
