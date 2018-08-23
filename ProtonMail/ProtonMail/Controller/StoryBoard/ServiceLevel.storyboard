@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Service Level View Controller-->
+        <!--Service Level View Controller Base-->
         <scene sceneID="VvT-3p-PQ9">
             <objects>
-                <collectionViewController storyboardIdentifier="ServiceLevelViewController" id="gQk-qv-4sL" customClass="ServiceLevelViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="ServiceLevelViewControllerBase" id="gQk-qv-4sL" customClass="ServiceLevelViewControllerBase" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" dataMode="prototypes" id="PuR-Ew-mmh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

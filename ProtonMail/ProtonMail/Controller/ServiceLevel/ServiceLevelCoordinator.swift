@@ -8,38 +8,62 @@
 
 import Foundation
 
-class ServiceLevelCoordinator: Coordinator {
-    func make<SomeCoordinator: Coordinator>(coordinatorFor next: ServiceLevelCoordinator.Destination) -> SomeCoordinator {
-        var child: SomeCoordinator!
-        
-        // FIXME: this is not very correct usage of Coordinator since we will not be able to go to other plan details from the child; child should have coordinator of separate type
-        switch next {
-        case .buyMore:
-            child = ServiceLevelCoordinator() as? SomeCoordinator
-            let viewModel = BuyMoreDataSource()
-            viewModel.delegate = child.controller as! ServiceLevelDataSourceDelegate
-            viewModel.setup(with: ServicePlanDataService.currentSubscription)
-            (child.controller as? ServiceLevelViewController)?.dataSource = viewModel
-            
-        case .details(of: let plan):
-            child = ServiceLevelCoordinator() as? SomeCoordinator
-            let viewModel = PlanDetailsDataSource()
-            viewModel.delegate = child.controller as! ServiceLevelDataSourceDelegate
-            viewModel.setup(with: plan)
-            (child.controller as? ServiceLevelViewController)?.dataSource = viewModel
-        }
-        
-        return child
+class BuyMoreCoordinator: Coordinator {
+    func make<SomeCoordinator>(coordinatorFor next: Never) -> SomeCoordinator where SomeCoordinator : Coordinator {
+        fatalError()
     }
     
-    weak var controller: UIViewController! = ServiceLevelCoordinator.makeController()
+    init() {
+        let superController = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewControllerBase.self)
+        object_setClass(superController, BuyMoreViewController.self)
+        if let subscription = ServicePlanDataService.currentSubscription {
+            (superController as! BuyMoreViewController).setup(with: subscription)
+        }
+        self.controller = superController
+    }
     
-    private class func makeController() -> ServiceLevelViewController {
-        let controller = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewController.self)
-        let viewModel = PlanAndLinksDataSource()
-        viewModel.setup(with: ServicePlanDataService.currentSubscription)
-        controller.dataSource = viewModel
-        return controller
+    weak var controller: UIViewController!
+    
+    typealias Destination = Never
+}
+
+
+class PlanDetailsCoordinator: Coordinator {
+    weak var controller: UIViewController!
+    
+    typealias Destination = Never
+    
+    func make<SomeCoordinator>(coordinatorFor next: PlanDetailsCoordinator.Destination) -> SomeCoordinator {
+        fatalError()
+    }
+    
+    init(forPlan plan: ServicePlan) {
+        let superController = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewControllerBase.self)
+        object_setClass(superController, PlanDetailsViewController.self)
+        (superController as! PlanDetailsViewController).setup(with: plan)
+        self.controller = superController
+    }
+}
+
+class ServiceLevelCoordinator: Coordinator {
+    func make<SomeCoordinator: Coordinator>(coordinatorFor next: ServiceLevelCoordinator.Destination) -> SomeCoordinator {
+        switch next {
+        case .buyMore:
+            return BuyMoreCoordinator() as! SomeCoordinator
+        case .details(of: let plan):
+            return PlanDetailsCoordinator(forPlan: plan) as! SomeCoordinator
+        }
+    }
+    
+    weak var controller: UIViewController!
+    
+    init() {
+        let superController = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewControllerBase.self)
+        object_setClass(superController, ServiceLevelViewController.self)
+        if let subscription = ServicePlanDataService.currentSubscription {
+            (superController as! ServiceLevelViewController).setup(with: subscription)
+        }
+        self.controller = superController
     }
     
     enum Destination {

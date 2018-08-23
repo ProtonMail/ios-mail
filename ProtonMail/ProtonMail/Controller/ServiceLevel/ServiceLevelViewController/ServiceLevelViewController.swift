@@ -13,23 +13,44 @@ protocol ServiceLevelDataSourceDelegate: class {
     func purchaseProduct(id: String)
 }
 
-extension ServiceLevelViewController: ServiceLevelDataSourceDelegate {
-    func purchaseProduct(id: String) {
-        try! StoreKitManager.default.purchaseProduct(withId: id, username: sharedUserDataService.username!) // FIXME: username
-    }
+class BuyMoreViewController: ServiceLevelViewControllerBase, Coordinated {
+    typealias CoordinatorType = BuyMoreCoordinator
     
-    func canPurchaseProduct(id: String) -> Bool {
-        return StoreKitManager.default.readyToPurchaseProduct(id: id, username: sharedUserDataService.username!) // FIXME: username
+    func setup(with subscription: Subscription) {
+        self.dataSource = BuyMoreDataSource(delegate: self, subscription: subscription)
     }
 }
 
-class ServiceLevelViewController: UICollectionViewController, Coordinated {
+class PlanDetailsViewController: ServiceLevelViewControllerBase, Coordinated {
+    typealias CoordinatorType = PlanDetailsCoordinator
+    
+    func setup(with plan: ServicePlan) {
+        self.dataSource = PlanDetailsDataSource(delegate: self, plan: plan)
+    }
+}
+
+class ServiceLevelViewController: ServiceLevelViewControllerBase, Coordinated {
     typealias CoordinatorType = ServiceLevelCoordinator
-    internal var dataSource: ServiceLevelDataSource! {
-        didSet {
-            dataSource.delegate = self
+    
+    func setup(with subscription: Subscription) {
+        self.dataSource = PlanAndLinksDataSource(delegate: self, subscription: ServicePlanDataService.currentSubscription)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let destination = self.dataSource.shouldPerformSegue(byItemOn: indexPath) else {
+            return
+        }
+        switch destination {
+        case .buyMore:
+            self.coordinator.go(to: destination, creating: BuyMoreViewController.self)
+        case .details:
+            self.coordinator.go(to: destination, creating: PlanDetailsViewController.self)
         }
     }
+}
+
+class ServiceLevelViewControllerBase: UICollectionViewController {
+    internal var dataSource: ServiceLevelDataSource!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,13 +91,14 @@ class ServiceLevelViewController: UICollectionViewController, Coordinated {
         section.embed(indexPath.row, onto: cell)
         return cell
     }
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let destination = self.dataSource.shouldPerformSegue(byItemOn: indexPath) else {
-            return
-        }
-        self.coordinator.go(to: destination, creating: ServiceLevelViewController.self)
-    }
 }
 
-
+extension ServiceLevelViewControllerBase: ServiceLevelDataSourceDelegate {
+    func purchaseProduct(id: String) {
+        try! StoreKitManager.default.purchaseProduct(withId: id, username: sharedUserDataService.username!) // FIXME: username
+    }
+    
+    func canPurchaseProduct(id: String) -> Bool {
+        return StoreKitManager.default.readyToPurchaseProduct(id: id, username: sharedUserDataService.username!) // FIXME: username
+    }
+}

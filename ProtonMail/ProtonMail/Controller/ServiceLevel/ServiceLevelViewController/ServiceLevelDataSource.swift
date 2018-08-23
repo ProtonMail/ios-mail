@@ -26,19 +26,14 @@ class BuyMoreDataSource: ServiceLevelDataSource {
     weak var delegate: ServiceLevelDataSourceDelegate!
     
     let title = "More Credits"
-    var plan: ServicePlan?
-    var details: ServicePlanDetails?
     internal var sections: [Section<UIView>] = []
     
-    func setup(with subscription: Subscription?) {
-        guard let subscription = subscription else {
-            self.plan = nil
-            self.details = nil
-            self.sections = []
-            return
-        }
-        self.plan = subscription.plan
-        self.details = subscription.details
+    init(delegate: ServiceLevelDataSourceDelegate, subscription: Subscription!) {
+        self.delegate = delegate
+        self.setup(with: subscription)
+    }
+    
+    private func setup(with subscription: Subscription) {
         self.sections = [ServiceLevelDataFactory.makePlanStatusSection(plan: subscription.plan, details: subscription.details),
                          ServiceLevelDataFactory.makeBuyButtonSection(plan: subscription.plan, delegate: self.delegate),
                          ServiceLevelDataFactory.makeAcknowladgementsSection()].compactMap { $0 }
@@ -47,19 +42,19 @@ class BuyMoreDataSource: ServiceLevelDataSource {
 
 class PlanDetailsDataSource: ServiceLevelDataSource {
     weak var delegate: ServiceLevelDataSourceDelegate!
+    internal var sections: [Section<UIView>] = []
+    internal var title: String
     
-    var title: String {
-        return "Get " + (self.plan?.subheader.0 ?? "Plan")
+    init(delegate: ServiceLevelDataSourceDelegate, plan: ServicePlan) {
+        self.delegate = delegate
+        self.title = "Get " + plan.subheader.0
+        guard let details = plan.fetchDetails() else {
+            return
+        }
+        self.setup(with: plan, details: details)
     }
     
-    var plan: ServicePlan?
-    var details: ServicePlanDetails?
-    internal var sections: [Section<UIView>] = []
-    
-    func setup(with plan: ServicePlan) {
-        self.plan = plan
-        self.details = plan.fetchDetails()
-        
+    private func setup(with plan: ServicePlan, details: ServicePlanDetails) {
         var capabilities: Section<UIView>?
         var footer: Section<UIView>?
         var acknowladgements: Section<UIView>?
@@ -81,22 +76,23 @@ class PlanDetailsDataSource: ServiceLevelDataSource {
 
 class PlanAndLinksDataSource: ServiceLevelDataSource {
     weak var delegate: ServiceLevelDataSourceDelegate!
-    let title = LocalString._menu_service_plan_title
-    var plan: ServicePlan?
-    var details: ServicePlanDetails?
     internal var sections: [Section<UIView>] = []
-
-    internal func setup(with subscription: Subscription?) {
+    let title = LocalString._menu_service_plan_title
+    
+    init(delegate: ServiceLevelDataSourceDelegate, subscription: Subscription?) {
+        self.delegate = delegate
         guard let subscription = subscription else {
             self.sections = [ServiceLevelDataFactory.makeLinksSection()]
             return
         }
+        self.setup(with: subscription)
+    }
+    
+    private func setup(with subscription: Subscription) {
         var buyLink: Section<UIView>?
         if subscription.plan == .plus, ServicePlanDataService.currentSubscription?.plan == subscription.plan {
             buyLink = ServiceLevelDataFactory.makeBuyLinkSection()
         }
-        self.plan = subscription.plan
-        self.details = subscription.details
         self.sections =  [ServiceLevelDataFactory.makeLogoSection(plan: subscription.plan),
                           ServiceLevelDataFactory.makeCapabilitiesSection(plan: subscription.plan, details: subscription.details),
                           ServiceLevelDataFactory.makePlanStatusSection(plan: subscription.plan, details: subscription.details),
