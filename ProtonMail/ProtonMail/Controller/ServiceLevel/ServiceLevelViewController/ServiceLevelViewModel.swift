@@ -103,16 +103,36 @@ extension ServiceLevelViewModel {
         return Section(elements: [blank, buyMore], cellType: AutoLayoutSizedCell.self)
     }
     
-    fileprivate func makeBuyButtonSection() -> Section<UIView> {
-        let price = NSMutableAttributedString(string: "$69.99",
+    fileprivate func makeBuyButtonSection(plan: ServicePlan) -> Section<UIView>? {
+        guard let productId = plan.storeKitProductId,
+            let price = StoreKitManager.default.priceLabelForProduct(id: productId) else
+        {
+            return nil
+        }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = price.1
+        guard let priceString = formatter.string(from: price.0),
+            let originalPriceString = formatter.string(from: NSNumber(value: Double(truncating: price.0) * 0.75)),
+            let feeString = formatter.string(from: NSNumber(value: Double(truncating: price.0) * 0.25)) else
+        {
+            return nil
+        }
+        
+        let title = NSMutableAttributedString(string: priceString,
                                               attributes: [.font: UIFont.preferredFont(forTextStyle: .title1),
                                                            .foregroundColor: UIColor.white])
-        let caption = NSAttributedString(string: "\nfor one year", attributes: [.font: UIFont.preferredFont(forTextStyle: .body),
-                                                                                .foregroundColor: UIColor.white])
-        price.append(caption)
-        let footerView = ServicePlanFooter(subTitle: "$48 ProtonMail Plus +\n $21.99 Apple in-app purchase fee",
-                                           buttonTitle: price)
-        
+        let caption = NSAttributedString(string: "\nfor one year",
+                                         attributes: [.font: UIFont.preferredFont(forTextStyle: .body),
+                                                      .foregroundColor: UIColor.white])
+        title.append(caption)
+        let subtitle = originalPriceString + " ProtonMail Plus +\n " + feeString + " Apple in-app purchase fee"
+        let footerView = ServicePlanFooter(subTitle: subtitle,
+                                           buttonTitle: title,
+                                           buttonEnabled: StoreKitManager.default.readyToPurchaseProduct(id: productId, username: sharedUserDataService.username!)) { button in
+            // FIXME: change availability of button to exclude double tap
+            try! StoreKitManager.default.purchaseProduct(withId: productId, username: sharedUserDataService.username!) // FIXME: username
+        }
         return Section(elements: [footerView], cellType: AutoLayoutSizedCell.self)
     }
     
@@ -154,7 +174,7 @@ class BuyMoreViewModel: ServiceLevelViewModel {
         self.plan = subscription.plan
         self.details = subscription.details
         self.sections = [self.makePlanStatusSection(plan: subscription.plan, details: subscription.details),
-                         self.makeBuyButtonSection(),
+                         self.makeBuyButtonSection(plan: subscription.plan),
                          self.makeAcknowladgementsSection()].compactMap { $0 }
     }
 }
@@ -183,7 +203,7 @@ class PlanDetailsViewModel: ServiceLevelViewModel {
         if let details = plan.fetchDetails() {
             capabilities = self.makeCapabilitiesSection(plan: plan, details: details)
             if plan == .plus, ServicePlanDataService.currentSubscription?.plan == .free {
-                footer = self.makeBuyButtonSection()
+                footer = self.makeBuyButtonSection(plan: plan)
                 acknowladgements = self.makeAcknowladgementsSection()
             } else {
                 footer = self.makePlanStatusSection(plan: plan, details: details)

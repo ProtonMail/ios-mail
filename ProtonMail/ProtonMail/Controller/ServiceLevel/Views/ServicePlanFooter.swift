@@ -13,6 +13,7 @@ class ServicePlanFooter: UIView {
     @IBOutlet private weak var title: UILabel!
     @IBOutlet private weak var buyButton: UIButton!
     @IBOutlet private weak var subtitle: UILabel!
+    private var buttonAction: ((UIButton?)->Void)?
     
     override func prepareForInterfaceBuilder() {
         self.setupSubviews()
@@ -20,7 +21,9 @@ class ServicePlanFooter: UIView {
     
     convenience init(title: String? = nil,
                      subTitle: String? = nil,
-                     buttonTitle: NSAttributedString? = nil)
+                     buttonTitle: NSAttributedString? = nil,
+                     buttonEnabled: Bool = true,
+                     buttonAction: ((UIButton?)->Void)?=nil)
     {
         self.init(frame: .zero)
         
@@ -32,9 +35,16 @@ class ServicePlanFooter: UIView {
             self.buyButton.titleLabel?.numberOfLines = 0
             self.buyButton.titleLabel?.lineBreakMode = .byWordWrapping
             self.buyButton.titleLabel?.textAlignment = .center
+            self.buttonAction = buttonAction
+            self.buyButton.addTarget(self, action: #selector(self.performButtonAction), for: .touchUpInside)
+            self.buyButton.isUserInteractionEnabled = buttonEnabled
         } else {
             self.buyButton.isHidden = true
         }
+    }
+    
+    @objc private func performButtonAction() {
+        self.buttonAction?(self.buyButton)
     }
     
     private override init(frame: CGRect) {

@@ -1035,6 +1035,7 @@
 		BD6BC8EBF539D3CB41FAD24D3A3A293F /* String+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B134B304EA7B3B50AB022AD491099FA /* String+Mime.swift */; };
 		BD743FAD81E85FED83C054DA22411229 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
 		BD8DA9C95FED514EBF7BA67F2B2B0C69 /* APIService+AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A393D6E5869452F381061A31E34594 /* APIService+AttachmentExtension.swift */; };
+		BDBD9E992072AAF7C56441B1CF474232 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B08BFFFD2CA0201C07034095A949C11A /* StoreKit.framework */; };
 		BDCAB0B8CABB9115219A25034E98A605 /* CameraAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3FFB4D121498650CDD8BDAAFC74E192 /* CameraAttachmentProvider.swift */; };
 		BDE811C742F0DA4116461805B2129B3E /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D45CBF615966A3BF8366CB1F9699EE /* UserSettings.swift */; };
 		BE184EF099D3757817B8784E7D7DFA31 /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB2C8C70329A749308561A4CE0D54D /* NSBundle+Language.m */; };
@@ -1362,6 +1363,7 @@
 		F83121E28738AA2D99ABFD04336A1736 /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77669C3C0F15ACBCAC5071A59F5E57F0 /* Threading.swift */; };
 		F887A7D1166BC7F2313EA904E6677373 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2DF54E18BEB8D52362623451A13350 /* UserInfo.swift */; };
 		F8A6FE2A4AB9DF922E8B1438B14A9E6A /* ServicePlanFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF827917250CCBC853A7E3E3ECFF234A /* ServicePlanFooter.swift */; };
+		F8AB06BA308E97379EEC19AFE8E3DF73 /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EBF32E5771CDBD303FD1803019AE8D /* StoreKitManager.swift */; };
 		F8B65B6A8E98D1EE682CA7DEAEEFFB2C /* MailboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 949A504C19F312591E9BE83B2BE13F63 /* MailboxMessageCell.xib */; };
 		F8F8306BFF45B8301F645C9EB2F0AF70 /* ComposePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8641F7C9FE8AAC5D53AA6888F93E65CC /* ComposePasswordViewController.swift */; };
 		F912FBC6BCE984E553A0F3595E507ACE /* UIAlertAction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BA643D53FC04548412B132F956D8D /* UIAlertAction+Extension.swift */; };
@@ -1807,6 +1809,7 @@
 		872DE11A0429812CCE064954F853C7D5 /* DurationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPickerViewController.swift; sourceTree = "<group>"; };
 		87530495407CE3203D251F1AAF3A3DAD /* ToastMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToastMessageView.swift; sourceTree = "<group>"; };
 		87A393D6E5869452F381061A31E34594 /* APIService+AttachmentExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+AttachmentExtension.swift"; sourceTree = "<group>"; };
+		87EBF32E5771CDBD303FD1803019AE8D /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
 		8815DFC41477DB4D20C79538B64D0893 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		88611299B9671FB8C9EC5B915B8DD4CC /* UInt8+Mime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UInt8+Mime.swift"; sourceTree = "<group>"; };
 		88818E0E2A90416423F9AE89ED3B0E5F /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
@@ -1905,6 +1908,7 @@
 		B0477F89137AAA9A42BC73B09D025A29 /* ContactModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactModel.swift; sourceTree = "<group>"; };
 		B070CDFCF9E3E2A25CD4062DECEBC482 /* ShareDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B07957F0BFEE3F393983F4EFEAFA6094 /* Pods-ProtonMail.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.release.xcconfig"; sourceTree = "<group>"; };
+		B08BFFFD2CA0201C07034095A949C11A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		B0E4AC8179E64BE4F4E1C508F653E628 /* Message+String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+String+Extension.swift"; sourceTree = "<group>"; };
 		B137A765D86C92D0E3B9007AE1FDE92B /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B1C05C331E3651D8B62311F133631FA6 /* WebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModel.swift; sourceTree = "<group>"; };
@@ -2110,6 +2114,7 @@
 				83E7FE1B13A30C16FE94F5140CB111C3 /* PM.framework in Frameworks */,
 				61F9DB611ECBEF296940B1E438C9AAFC /* Pods_ProtonMail.framework in Frameworks */,
 				0E85F59431AE555F969B4F49B87BD6A8 /* Social.framework in Frameworks */,
+				BDBD9E992072AAF7C56441B1CF474232 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2203,6 +2208,7 @@
 				06450F6DC3D5C6C237760D37B37F1620 /* PushNotificationService.swift */,
 				37A65458FB3E602C7091AED27E32E70C /* SecureStore.swift */,
 				4E27BF80474BDA474725D747C488AC95 /* ServicePlanDataService.swift */,
+				87EBF32E5771CDBD303FD1803019AE8D /* StoreKitManager.swift */,
 				406FFE6611694FCD59E3CED3992DE21D /* UserDataService+Push.swift */,
 				CF3BB387D19310E36C12298AE8E935F5 /* UserDataService.swift */,
 			);
@@ -3227,6 +3233,7 @@
 				9BD9D2C7E81A25BCF17A6EE6B7B6D9D6 /* Pods_Share.framework */,
 				E337FAA25F7ED4AC0D90F477BEC94697 /* Pods_ShareDev.framework */,
 				C0A2F260039163C3214BBFA3487444F0 /* Social.framework */,
+				B08BFFFD2CA0201C07034095A949C11A /* StoreKit.framework */,
 				3DCEB3AB6A95864C955CC7CE2F7C50B5 /* UserNotifications.framework */,
 				2C1C49FACBAAF24D0FEE27BBB85179CA /* UserNotificationsUI.framework */,
 				E3E68E3BCCE2013289DC89C654563220 /* libbz2.tbd */,
@@ -3673,6 +3680,9 @@
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
 								enabled = 1;
 							};
 							com.apple.iCloud = {
@@ -4756,6 +4766,7 @@
 				18D337EE4E9982D8792E8AC98A534966 /* SrpClient+Extension.swift in Sources */,
 				64AF52E9DAFC3EEE894A815B2022947F /* StorageLimit.swift in Sources */,
 				4C558A3C4C901D07A3DECBD805B51453 /* StorageViewCell.swift in Sources */,
+				F8AB06BA308E97379EEC19AFE8E3DF73 /* StoreKitManager.swift in Sources */,
 				7B9AC57F18FFCBCEFFA902AE398CD8FC /* String+Alert+Extension.swift in Sources */,
 				4D79CF0BE231295089BE727CA0384008 /* String+Extension.swift in Sources */,
 				717F6A090BA58E152223E7A96129BFAE /* String+Mime.swift in Sources */,
@@ -5111,7 +5122,6 @@
 				5146A3E1423616DFE009A87DE9F35F92 /* SectionHeaderCustomizing.swift in Sources */,
 				3C1F9EA04224B936F16331634B8A96B3 /* SecureStore.swift in Sources */,
 				51EEFF22E9B64026E02408EADFB78841 /* ServerNotice.swift in Sources */,
-				F3EB03C720C14FF73329043C2ED3146F /* ServiceLevelCoordinator.swift in Sources */,
 				D8D82181133C8B807C04CCDBEEBCAB02 /* ServiceLevelViewController.swift in Sources */,
 				0B70C32468F4726D8B9E2A871E996B7D /* ServiceLevelViewModel.swift in Sources */,
 				5B4AE2246932916E6EFC96EA409E5DF8 /* ServicePlan.swift in Sources */,
@@ -6270,7 +6280,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
-				PROVISIONING_PROFILE = "18f2d0e4-6a37-4fec-8257-70598a41ccc6";
+				PROVISIONING_PROFILE = "5db247ef-4f3e-41fd-ba89-927fcd5a7660";
 				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Dev";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;

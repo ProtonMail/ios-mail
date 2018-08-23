@@ -37,6 +37,20 @@ enum ServicePlan: String {
         case .visionary: return "For power users and groups of people that value full anonymity and privacy"
         }
     }
+    
+    var storeKitProductId: String? {
+        switch self {
+        case .free, .pro, .visionary: return nil
+        case .plus: return "Test_ProtonMail_Plus_3" // FIXME: use non-test id from AppstroreConnect
+        }
+    }
+    
+    init?(storeKitProductId: String) {
+        guard storeKitProductId == ServicePlan.plus.storeKitProductId else {
+            return nil
+        }
+        self = .plus
+    }
 }
 
 struct Subscription: Codable {
