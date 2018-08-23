@@ -15,6 +15,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     var refreshHandler: () -> Void
     var tableContent: [[ContactGroupTableCellType]]
     
+    /* Setup code */
     init(state: ContactGroupEditViewControllerState = .create,
          contactGroupID: String? = nil,
          name: String? = nil,
@@ -24,11 +25,14 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         self.state = state
         self.contactGroup = ContactGroup(ID: contactGroupID, name: name, color: color)
         self.refreshHandler = refreshHandler
+        
         self.tableContent = [
             [.selectColor],
             [.manageContact],
-            [.deleteGroup]
         ]
+        if self.state == .edit {
+            self.tableContent.append([.deleteGroup])
+        }
     }
     
     func getViewTitle() -> String {
@@ -49,6 +53,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         return ""
     }
     
+    /* Data operation */
     func fetchContactGroupDetail() {
         if state == .edit {
             if let contactGroupID = contactGroup.ID {
@@ -149,15 +154,29 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             PMLog.D("[Contact Group API] not enough valid argument for creating the contact group = \(editedContactGroup)")
         }
         
-        // TODO: do local diffing, opt. API call
         // update email IDs
-        if let emailList = contactGroup.emailIDs {
-            removeEmailsFromContactGroup(emailList: emailList)
+        let toRemove = contactGroup.emailIDs?.filter({
+            if editedContactGroup.emailIDs == nil {
+                return true
+            }
+            return editedContactGroup.emailIDs!.contains($0) == false
+        })
+        
+        let toAdd = editedContactGroup.emailIDs?.filter({
+            if contactGroup.emailIDs == nil {
+                return true
+            }
+            return contactGroup.emailIDs!.contains($0) == false
+        })
+        
+        if let data = toRemove {
+            removeEmailsFromContactGroup(emailList: data)
+        }
+        if let data = toAdd {
+            addEmailsToContactGroup(emailList: data)
         }
         
-        if let emailList = editedContactGroup.emailIDs {
-            addEmailsToContactGroup(emailList: emailList)
-        }
+        contactGroup.emailIDs = editedContactGroup.emailIDs
     }
     
     func deleteContactGroup() {
@@ -224,7 +243,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         }
     }
     
-    // table
+    /* table operation */
     func getTotalSections() -> Int {
         return self.tableContent.count
     }
