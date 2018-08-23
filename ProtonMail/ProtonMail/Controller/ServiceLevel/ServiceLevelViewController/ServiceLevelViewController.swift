@@ -8,27 +8,46 @@
 
 import UIKit
 
+protocol ServiceLevelDataSourceDelegate: class {
+    func canPurchaseProduct(id: String) -> Bool
+    func purchaseProduct(id: String)
+}
+
+extension ServiceLevelViewController: ServiceLevelDataSourceDelegate {
+    func purchaseProduct(id: String) {
+        try! StoreKitManager.default.purchaseProduct(withId: id, username: sharedUserDataService.username!) // FIXME: username
+    }
+    
+    func canPurchaseProduct(id: String) -> Bool {
+        return StoreKitManager.default.readyToPurchaseProduct(id: id, username: sharedUserDataService.username!) // FIXME: username
+    }
+}
+
 class ServiceLevelViewController: UICollectionViewController, Coordinated {
     typealias CoordinatorType = ServiceLevelCoordinator
-    internal var viewModel: ServiceLevelViewModel!
+    internal var dataSource: ServiceLevelDataSource! {
+        didSet {
+            dataSource.delegate = self
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = self.viewModel.title
+        self.title = self.dataSource.title
         if let collectionView = self.collectionView {
-            self.viewModel.cellTypes.forEach(collectionView.register)
-            collectionView.setCollectionViewLayout(self.viewModel.collectionViewLayout, animated: true, completion: nil)
+            [AutoLayoutSizedCell.self, FirstSubviewSizedCell.self].forEach(collectionView.register)
+            collectionView.setCollectionViewLayout(TableLayout(), animated: true, completion: nil)
         }
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.viewModel.sections.count
+        return self.dataSource.sections.count
     }
     
     override func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int
     {
-        return self.viewModel.sections[section].count
+        return self.dataSource.sections[section].count
     }
     
     override func collectionView(_ collectionView: UICollectionView,
@@ -44,7 +63,7 @@ class ServiceLevelViewController: UICollectionViewController, Coordinated {
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        let section = self.viewModel.sections[indexPath.section]
+        let section = self.dataSource.sections[indexPath.section]
         guard let cell = self.collectionView?.dequeueReusableCell(section.cellType, for: indexPath) else {
             fatalError()
         }
@@ -53,7 +72,7 @@ class ServiceLevelViewController: UICollectionViewController, Coordinated {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let destination = self.viewModel.shouldPerformSegue(byItemOn: indexPath) else {
+        guard let destination = self.dataSource.shouldPerformSegue(byItemOn: indexPath) else {
             return
         }
         self.coordinator.go(to: destination, creating: ServiceLevelViewController.self)

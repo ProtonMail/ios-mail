@@ -16,15 +16,17 @@ class ServiceLevelCoordinator: Coordinator {
         switch next {
         case .buyMore:
             child = ServiceLevelCoordinator() as? SomeCoordinator
-            let viewModel = BuyMoreViewModel()
+            let viewModel = BuyMoreDataSource()
+            viewModel.delegate = child.controller as! ServiceLevelDataSourceDelegate
             viewModel.setup(with: ServicePlanDataService.currentSubscription)
-            (child.controller as? ServiceLevelViewController)?.viewModel = viewModel
+            (child.controller as? ServiceLevelViewController)?.dataSource = viewModel
             
         case .details(of: let plan):
             child = ServiceLevelCoordinator() as? SomeCoordinator
-            let viewModel = PlanDetailsViewModel()
+            let viewModel = PlanDetailsDataSource()
+            viewModel.delegate = child.controller as! ServiceLevelDataSourceDelegate
             viewModel.setup(with: plan)
-            (child.controller as? ServiceLevelViewController)?.viewModel = viewModel
+            (child.controller as? ServiceLevelViewController)?.dataSource = viewModel
         }
         
         return child
@@ -34,9 +36,9 @@ class ServiceLevelCoordinator: Coordinator {
     
     private class func makeController() -> ServiceLevelViewController {
         let controller = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewController.self)
-        let viewModel = PlanAndLinksViewModel()
+        let viewModel = PlanAndLinksDataSource()
         viewModel.setup(with: ServicePlanDataService.currentSubscription)
-        controller.viewModel = viewModel
+        controller.dataSource = viewModel
         return controller
     }
     

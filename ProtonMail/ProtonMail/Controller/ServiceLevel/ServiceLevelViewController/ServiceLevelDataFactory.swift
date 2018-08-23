@@ -1,36 +1,22 @@
 //
-//  ServiceLevelViewModel.swift
+//  ServiceLevelDataFactory.swift
 //  ProtonMail
 //
-//  Created by Anatoly Rosencrantz on 12/08/2018.
+//  Created by Anatoly Rosencrantz on 23/08/2018.
 //  Copyright © 2018 ProtonMail. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-protocol ServiceLevelViewModel {
-    var title: String { get }
-    var collectionViewLayout: UICollectionViewLayout { get }
-    var sections: [Section<UIView>] { get }
-    var cellTypes: [UICollectionViewCell.Type] { get }
-    var accessoryTypes: [UICollectionReusableView.Type] { get }
-    func shouldPerformSegue(byItemOn: IndexPath) -> ServiceLevelCoordinator.Destination?
-}
-
-infix operator ~
-fileprivate func ~(_ right: ServicePlan, _ left: (Array<ServicePlan>, UIView)) -> UIView? {
-    return left.0.contains(right) ? left.1 : nil
-}
-
-extension ServiceLevelViewModel {
-    fileprivate func makeLogoSection(plan: ServicePlan) -> Section<UIView> {
+enum ServiceLevelDataFactory {
+    internal static func makeLogoSection(plan: ServicePlan) -> Section<UIView> {
         let image = UIImage(named: "Logo")?.withRenderingMode(.alwaysTemplate)
         let headerView = ServicePlanHeader(image: image, title: plan.headerText, subicon: plan.subheader)
         return Section(elements: [headerView], cellType: AutoLayoutSizedCell.self)
     }
     
     typealias SPC = ServicePlanCapability
-    fileprivate func makeCapabilitiesSection(plan: ServicePlan, details: ServicePlanDetails) -> Section<UIView> {
+    internal static func makeCapabilitiesSection(plan: ServicePlan, details: ServicePlanDetails) -> Section<UIView> {
         let multiuser1 = plan ~ ([.pro], SPC(image: UIImage(named:"iap_users"),
                                              title: .init(string: "Unlimited messages sent/day")))
         
@@ -62,7 +48,7 @@ extension ServiceLevelViewModel {
         return Section(elements: capabilities, cellType: AutoLayoutSizedCell.self)
     }
     
-    fileprivate func makePlanStatusSection(plan: ServicePlan, details: ServicePlanDetails) -> Section<UIView> {
+    internal static func makePlanStatusSection(plan: ServicePlan, details: ServicePlanDetails) -> Section<UIView> {
         var message: String = ""
         switch plan { // FIXME: check also if it was purchased via Apple
         case .free:
@@ -75,7 +61,7 @@ extension ServiceLevelViewModel {
         return Section(elements: [footerView], cellType: AutoLayoutSizedCell.self)
     }
     
-    fileprivate func makeLinksSection(except currentPlan: ServicePlan? = nil) -> Section<UIView> {
+    internal static func makeLinksSection(except currentPlan: ServicePlan? = nil) -> Section<UIView> {
         let links: [UIView] = [ServicePlan.free, ServicePlan.plus, ServicePlan.pro, ServicePlan.visionary].compactMap { plan in
             guard plan != currentPlan else {
                 return nil
@@ -89,21 +75,23 @@ extension ServiceLevelViewModel {
                                          serviceIconVisible: true,
                                          context: ServiceLevelCoordinator.Destination.details(of: plan))
         }
-
+        
         return Section(elements: links, cellType: AutoLayoutSizedCell.self)
     }
     
-    fileprivate func makeSectionHeader(_ text: String) -> Section<UIView> {
+    internal static func makeSectionHeader(_ text: String) -> Section<UIView> {
         return Section(elements: [TableSectionHeader(title: text)], cellType: FirstSubviewSizedCell.self)
     }
     
-    fileprivate func makeBuyLinkSection() -> Section<UIView>? {
+    internal static func makeBuyLinkSection() -> Section<UIView>? {
         let blank = TableSectionHeader(title: "")
         let buyMore = ServicePlanCapability(title: NSAttributedString(string: "Buy More Credits"), serviceIconVisible: true, context: ServiceLevelCoordinator.Destination.buyMore)
         return Section(elements: [blank, buyMore], cellType: AutoLayoutSizedCell.self)
     }
     
-    fileprivate func makeBuyButtonSection(plan: ServicePlan) -> Section<UIView>? {
+    internal static func makeBuyButtonSection(plan: ServicePlan,
+                                                 delegate: ServiceLevelDataSourceDelegate) -> Section<UIView>?
+    {
         guard let productId = plan.storeKitProductId,
             let price = StoreKitManager.default.priceLabelForProduct(id: productId) else
         {
@@ -129,14 +117,14 @@ extension ServiceLevelViewModel {
         let subtitle = originalPriceString + " ProtonMail Plus +\n " + feeString + " Apple in-app purchase fee"
         let footerView = ServicePlanFooter(subTitle: subtitle,
                                            buttonTitle: title,
-                                           buttonEnabled: StoreKitManager.default.readyToPurchaseProduct(id: productId, username: sharedUserDataService.username!)) { button in
-            // FIXME: change availability of button to exclude double tap
-            try! StoreKitManager.default.purchaseProduct(withId: productId, username: sharedUserDataService.username!) // FIXME: username
+                                           buttonEnabled: delegate.canPurchaseProduct(id: productId)) { button in
+                                            // FIXME: change availability of button to exclude double tap
+                                            delegate.purchaseProduct(id: productId)
         }
         return Section(elements: [footerView], cellType: AutoLayoutSizedCell.self)
     }
     
-    fileprivate func makeAcknowladgementsSection() -> Section<UIView> {
+    internal static func makeAcknowladgementsSection() -> Section<UIView> {
         let message = """
         var collectionViewLayout: UICollectionViewLayout = TableLayout()
         let cellTypes: [UICollectionViewCell.Type] = [ConfigurableCell.self]
@@ -148,100 +136,9 @@ extension ServiceLevelViewModel {
         """
         return Section(elements: [TableSectionHeader(title: message)], cellType: FirstSubviewSizedCell.self)
     }
-    
-    internal func shouldPerformSegue(byItemOn indexPath: IndexPath) -> ServiceLevelCoordinator.Destination? {
-        guard let element = self.sections[indexPath.section].elements[indexPath.item] as? ServicePlanCapability else { return nil }
-        return element.context as? ServiceLevelCoordinator.Destination
-    }
 }
 
-class BuyMoreViewModel: ServiceLevelViewModel {
-    var collectionViewLayout: UICollectionViewLayout = TableLayout()
-    let cellTypes: [UICollectionViewCell.Type] = [AutoLayoutSizedCell.self, FirstSubviewSizedCell.self]
-    let accessoryTypes: [UICollectionReusableView.Type] = [SeparatorDecorationView.self]
-    let title = "More Credits"
-    var plan: ServicePlan?
-    var details: ServicePlanDetails?
-    internal var sections: [Section<UIView>] = []
-    
-    func setup(with subscription: Subscription?) {
-        guard let subscription = subscription else {
-            self.plan = nil
-            self.details = nil
-            self.sections = []
-            return
-        }
-        self.plan = subscription.plan
-        self.details = subscription.details
-        self.sections = [self.makePlanStatusSection(plan: subscription.plan, details: subscription.details),
-                         self.makeBuyButtonSection(plan: subscription.plan),
-                         self.makeAcknowladgementsSection()].compactMap { $0 }
-    }
-}
-
-class PlanDetailsViewModel: ServiceLevelViewModel {
-    var collectionViewLayout: UICollectionViewLayout = TableLayout()
-    
-    let cellTypes: [UICollectionViewCell.Type] = [AutoLayoutSizedCell.self, FirstSubviewSizedCell.self]
-    let accessoryTypes: [UICollectionReusableView.Type] = [SeparatorDecorationView.self]
-    
-    var title: String {
-        return "Get " + (self.plan?.subheader.0 ?? "Plan")
-    }
-    
-    var plan: ServicePlan?
-    var details: ServicePlanDetails?
-    internal var sections: [Section<UIView>] = []
-    
-    func setup(with plan: ServicePlan) {
-        self.plan = plan
-        self.details = plan.fetchDetails()
-        
-        var capabilities: Section<UIView>?
-        var footer: Section<UIView>?
-        var acknowladgements: Section<UIView>?
-        if let details = plan.fetchDetails() {
-            capabilities = self.makeCapabilitiesSection(plan: plan, details: details)
-            if plan == .plus, ServicePlanDataService.currentSubscription?.plan == .free {
-                footer = self.makeBuyButtonSection(plan: plan)
-                acknowladgements = self.makeAcknowladgementsSection()
-            } else {
-                footer = self.makePlanStatusSection(plan: plan, details: details)
-            }
-        }
-        self.sections = [self.makeLogoSection(plan: plan),
-                         capabilities,
-                         footer,
-                         acknowladgements].compactMap { $0 }
-    }
-}
-
-class PlanAndLinksViewModel: ServiceLevelViewModel {
-    let cellTypes: [UICollectionViewCell.Type] = [AutoLayoutSizedCell.self, FirstSubviewSizedCell.self]
-    let accessoryTypes: [UICollectionReusableView.Type] = [SeparatorDecorationView.self]
-    
-    let title = LocalString._menu_service_plan_title
-    var plan: ServicePlan?
-    var details: ServicePlanDetails?
-    internal var sections: [Section<UIView>] = []
-
-    internal func setup(with subscription: Subscription?) {
-        guard let subscription = subscription else {
-            self.sections = [self.makeLinksSection()]
-            return
-        }
-        var buyLink: Section<UIView>?
-        if subscription.plan == .plus, ServicePlanDataService.currentSubscription?.plan == subscription.plan {
-            buyLink = self.makeBuyLinkSection()
-        }
-        self.plan = subscription.plan
-        self.details = subscription.details
-        self.sections =  [self.makeLogoSection(plan: subscription.plan),
-                          self.makeCapabilitiesSection(plan: subscription.plan, details: subscription.details),
-                          self.makePlanStatusSection(plan: subscription.plan, details: subscription.details),
-                          buyLink,
-                          self.makeSectionHeader("OTHER SERVICE PLANS"),
-                          self.makeLinksSection(except: subscription.plan)].compactMap { $0 }
-    }
-    lazy var collectionViewLayout: UICollectionViewLayout = TableLayout()
+infix operator ~
+fileprivate func ~(_ right: ServicePlan, _ left: (Array<ServicePlan>, UIView)) -> UIView? {
+    return left.0.contains(right) ? left.1 : nil
 }
