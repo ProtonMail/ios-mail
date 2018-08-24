@@ -40,10 +40,19 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         viewModel.contactGroupEditViewDelegate = self
         viewModel.fetchContactGroupDetail()
         
-        navigationBarItem.title = viewModel.getViewTitle()
-        contactGroupNameLabel.text = viewModel.getContactGroupName()
+        prepareTitles()
         
         tableView.noSeparatorsBelowFooter()
+    }
+    
+    func prepareTitles() {
+        navigationBarItem.title = viewModel.getViewTitle()
+        contactGroupNameLabel.text = viewModel.getContactGroupName()
+    }
+    
+    func loadDataIntoView() {
+        prepareTitles()
+        self.tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -51,10 +60,9 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     }
     
     @IBAction func saveAction(_ sender: UIBarButtonItem) {
-        // TODO: ask view model to save it
         viewModel.saveContactGroupDetail(name: contactGroupNameLabel.text,
-                                         color: "#f66", /* TODO: remove this hardcoded color */
-            emailList: nil)
+                                         color: viewModel.getCurrentColorWithDefault(),
+                                         emailList: nil)
         
         // TODO: spinning while saving... (blocking)
         self.dismiss(animated: true, completion: nil)
@@ -64,13 +72,13 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         if segue.identifier == kToContactGroupSelectColorSegue {
             let contactGroupSelectColorViewController = segue.destination as! ContactGroupSelectColorViewController
             
-            // TODO: refresh color after returning
             let refreshHandler = {
-                () -> Void in
-                
-                
+                (newColor: String?) -> Void in
+                self.viewModel.updateColor(newColor: newColor)
             }
-            sharedVMService.contactGroupSelectColorViewModel(contactGroupSelectColorViewController)
+            sharedVMService.contactGroupSelectColorViewModel(contactGroupSelectColorViewController,
+                                                             currentColor: viewModel.getCurrentColor(),
+                                                             refreshHandler: refreshHandler)
         } else if segue.identifier == kToContactGroupSelectEmailSegue {
             
         } else {
@@ -108,6 +116,18 @@ extension ContactGroupEditViewController: UITableViewDataSource
             fatalError("This is a bug")
         }
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        switch viewModel.getCellType(at: indexPath) {
+        case .selectColor:
+            // display color
+            cell.detailTextLabel?.backgroundColor = UIColor(hexString: viewModel.getCurrentColorWithDefault(), alpha: 1.0)
+        case .error:
+            fatalError("This is a bug")
+        default:
+            return
+        }
+    }
 }
 
 extension ContactGroupEditViewController: UITableViewDelegate
@@ -134,7 +154,6 @@ extension ContactGroupEditViewController: UITableViewDelegate
 extension ContactGroupEditViewController: ContactGroupsViewModelDelegate
 {
     func updated() {
-        // TODO: load data into view
-        
+        loadDataIntoView()
     }
 }

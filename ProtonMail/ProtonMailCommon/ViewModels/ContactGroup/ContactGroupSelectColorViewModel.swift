@@ -9,6 +9,12 @@
 import Foundation
 
 protocol ContactGroupSelectColorViewModel {
+    func isSelectedColor(at indexPath: IndexPath) -> Bool
     func getTotalColors() -> Int
     func getColor(at indexPath: IndexPath) -> String
+    func getCurrentColor() -> String?
+    func getCurrentColorIndex() -> Int?
+    func updateCurrentColor(to indexPath: IndexPath) 
+    
+    func save()
 }

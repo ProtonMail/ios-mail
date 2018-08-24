@@ -24,6 +24,12 @@ class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModel
     }
     
     func inactiveViewModel() { }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        viewModel.save()
+    }
 }
 
 extension ContactGroupSelectColorViewController: UICollectionViewDelegateFlowLayout
@@ -33,7 +39,7 @@ extension ContactGroupSelectColorViewController: UICollectionViewDelegateFlowLay
                         insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsetsMake(0,0,0,0);
     }
-
+    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize
@@ -60,14 +66,10 @@ extension ContactGroupSelectColorViewController: UICollectionViewDataSource
         cell.backgroundColor = UIColor(hexString: color, alpha: 1.0)
         cell.layer.cornerRadius = 17;
         
-        // TODO: deal with color cell that is already selected
-//        if selected == nil {
-//            if indexPath.row == selectedFirstLoad?.row {
-//                cell.layer.borderWidth = 4
-//                cell.layer.borderColor = UIColor.darkGray.cgColor
-//                self.selected = indexPath
-//            }
-//        }
+        if viewModel.isSelectedColor(at: indexPath) {
+            cell.layer.borderWidth = 4
+            cell.layer.borderColor = UIColor.darkGray.cgColor
+        }
         
         return cell
     }
@@ -75,5 +77,17 @@ extension ContactGroupSelectColorViewController: UICollectionViewDataSource
 
 extension ContactGroupSelectColorViewController: UICollectionViewDelegate
 {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // deselect
+        if let currentColorIndex = viewModel.getCurrentColorIndex() {
+            let cell = collectionView.cellForItem(at: IndexPath(row: currentColorIndex, section: 0))
+            cell?.layer.borderWidth = 0
+        }
+        
+        // select the new color
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.layer.borderWidth = 4
+        cell?.layer.borderColor = UIColor.darkGray.cgColor
+        viewModel.updateCurrentColor(to: indexPath)
+    }
 }

@@ -22,20 +22,22 @@ enum ContactGroupTableCellType
 }
 
 protocol ContactGroupEditViewModel {
-    var state: ContactGroupEditViewControllerState { get set }
-    var contactGroup: ContactGroup { get set }
     var contactGroupEditViewDelegate: ContactGroupsViewModelDelegate! { get set }
-    var tableContent: [[ContactGroupTableCellType]] { get set }
     
     // title
     func getViewTitle() -> String
     func getContactGroupName() -> String
     
-    // general operation
+    // fetch operation
     func fetchContactGroupDetail()
     func getContactGroupDetail() -> ContactGroup
+    func getCurrentColor() -> String?
+    func getCurrentColorWithDefault() -> String
+    
+    // mutate operation
     func addEmailsToContactGroup(emailList: [String])
     func removeEmailsFromContactGroup(emailList: [String])
+    func updateColor(newColor: String?)
     
     // create and edit
     func saveContactGroupDetail(name: String?, color: String?, emailList: [String]?)

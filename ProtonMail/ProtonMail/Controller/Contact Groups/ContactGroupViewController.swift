@@ -35,10 +35,10 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
     }
     
     override func viewDidLoad() {
-        self.navigationItem.title = "[Locale] Contact Groups"
+        self.navigationItem.title = "Contact Groups"
         
         tableView.noSeparatorsBelowFooter()
-                
+        
         viewModel.fetchContactGroups()
         viewModel.contactGroupsViewControllerDelegate = self
     }
@@ -53,6 +53,7 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
                 
                 self.viewModel.fetchContactGroups()
             }
+            
             sharedVMService.contactGroupEditViewModel(contactGroupEditViewController,
                                                       state: .edit,
                                                       contactGroupID: contactGroup.ID,

@@ -104,7 +104,9 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocol) {
+    func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocol,
+                                          currentColor: String?,
+                                          refreshHandler: @escaping (String?) -> Void) {
         fatalError("This method must be overridden")
     }
     

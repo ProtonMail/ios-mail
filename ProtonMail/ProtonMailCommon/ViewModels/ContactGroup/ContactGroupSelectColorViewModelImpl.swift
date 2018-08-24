@@ -10,9 +10,57 @@ import Foundation
 
 class ContactGroupSelectColorViewModelImpl: ContactGroupSelectColorViewModel
 {
+    var currentColor: String?
     let colors = ColorManager.forLabel
+    let refreshHandler: (String?) -> Void
     
-    func getTotalColors() -> Int {
+    init(currentColor: String?, refreshHandler: @escaping (String?) -> Void) {
+        self.currentColor = currentColor
+        self.refreshHandler = refreshHandler
+    }
+    
+    func isSelectedColor(at indexPath: IndexPath) -> Bool
+    {
+        guard indexPath.row < colors.count else {
+            return false
+        }
+        
+        if let current = currentColor {
+            return colors[indexPath.row] == current
+        }
+        return false
+    }
+    
+    func getCurrentColor() -> String?
+    {
+        return currentColor
+    }
+    
+    func getCurrentColorIndex() -> Int?
+    {
+        if let c = currentColor {
+            for (i, color) in colors.enumerated() {
+                if color == c {
+                    return i
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    func updateCurrentColor(to indexPath: IndexPath)
+    {
+        guard indexPath.row < colors.count else {
+            currentColor = nil
+            return 
+        }
+        
+        currentColor = colors[indexPath.row]
+    }
+    
+    func getTotalColors() -> Int
+    {
         return colors.count
     }
     
@@ -25,5 +73,9 @@ class ContactGroupSelectColorViewModelImpl: ContactGroupSelectColorViewModel
         }
         
         return colors[indexPath.row]
+    }
+    
+    func save() {
+        refreshHandler(currentColor)
     }
 }

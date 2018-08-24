@@ -38,9 +38,9 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     func getViewTitle() -> String {
         switch state {
         case .create:
-            return "[Locale] Create contact group"
+            return "Create contact group"
         case .edit:
-            return "[Locale] Edit contact group"
+            return "Edit contact group"
         }
     }
     
@@ -51,6 +51,17 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             }
         }
         return ""
+    }
+    
+    func getCurrentColor() -> String? {
+        return self.contactGroup.color
+    }
+    
+    func getCurrentColorWithDefault() -> String {
+        if let c = getCurrentColor() {
+            return c
+        }
+        return "#7272a7"
     }
     
     /* Data operation */
@@ -69,9 +80,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                     
                     self.contactGroup = ContactGroup(ID: contactGroupID,
                                                      name: String(describing: fetchedData["Name"]),
-                                                     color: self.contactGroup.color,
+                                                     color: String(describing: fetchedData["Color"]),
                                                      emailIDs: emailList.count > 0 ? emailList : nil)
-                    
                     self.contactGroupEditViewDelegate.updated()
                 }
                 
@@ -241,6 +251,16 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                                                                         emailList: emailList,
                                                                         completionHandler: completionHandler)
         }
+    }
+    
+    func updateColor(newColor: String?) {
+        if newColor == nil {
+            // TODO: use default
+        } else {
+            contactGroup.color = newColor
+        }
+        
+        contactGroupEditViewDelegate.updated()
     }
     
     /* table operation */

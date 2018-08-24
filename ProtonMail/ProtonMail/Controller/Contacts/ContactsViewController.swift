@@ -209,18 +209,18 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     @available(iOS 9.0, *)
     @objc internal func addButtonTapped() {
         /// set title
-        let alertController = UIAlertController(title: "[locale] Select An Option", message: nil, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: "Select An Option", message: nil, preferredStyle: .actionSheet)
         
         /// set options
-        alertController.addAction(UIAlertAction(title: "[locale] Create Contact", style: .default, handler: {
+        alertController.addAction(UIAlertAction(title: "Create Contact", style: .default, handler: {
             (action) -> Void in
             self.addContactTapped()
         }))
-        alertController.addAction(UIAlertAction(title: "[locale] Create Group", style: .default, handler: {
+        alertController.addAction(UIAlertAction(title: "Create Group", style: .default, handler: {
             (action) -> Void in
             self.addContactGroupTapped()
         }))
-        alertController.addAction(UIAlertAction(title: "[locale] View All Groups", style: .default, handler: {
+        alertController.addAction(UIAlertAction(title: "View All Groups", style: .default, handler: {
             (action) -> Void in
             self.viewContactGroupsTapped()
         }))
