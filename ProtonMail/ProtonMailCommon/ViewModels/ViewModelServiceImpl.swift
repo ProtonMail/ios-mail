@@ -280,6 +280,15 @@ class ViewModelServiceImpl: ViewModelService {
                                                        refreshHandler: refreshHandler))
     }
     
+    override func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocol) {
+        activeViewController = vmp
+        vmp.setViewModel(ContactGroupSelectColorViewModelImpl())
+    }
+    
+    override func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocol) {
+        activeViewController = vmp
+    }
+    
     // composer
     override func buildComposer<T: ViewModelProtocolNew>(_ vmp: T, subject: String, content: String, files: [FileData]) {
         latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)

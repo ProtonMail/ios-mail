@@ -15,6 +15,9 @@ import UIKit
  */
 
 class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocol {
+    let kToContactGroupSelectColorSegue = "toContactGroupSelectColorSegue"
+    let kToContactGroupSelectEmailSegue = "toContactGroupSelectEmailSegue"
+    
     @IBOutlet weak var contactGroupNameLabel: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var navigationBarItem: UINavigationItem!
@@ -56,6 +59,25 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         // TODO: spinning while saving... (blocking)
         self.dismiss(animated: true, completion: nil)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == kToContactGroupSelectColorSegue {
+            let contactGroupSelectColorViewController = segue.destination as! ContactGroupSelectColorViewController
+            
+            // TODO: refresh color after returning
+            let refreshHandler = {
+                () -> Void in
+                
+                
+            }
+            sharedVMService.contactGroupSelectColorViewModel(contactGroupSelectColorViewController)
+        } else if segue.identifier == kToContactGroupSelectEmailSegue {
+            
+        } else {
+            PMLog.D("No such segue")
+            fatalError("No such segue")
+        }
+    }
 }
 
 extension ContactGroupEditViewController: UITableViewDataSource
@@ -95,9 +117,9 @@ extension ContactGroupEditViewController: UITableViewDelegate
         
         switch viewModel.getCellType(at: indexPath) {
         case .selectColor:
-            print("go to select color view")
+            self.performSegue(withIdentifier: kToContactGroupSelectColorSegue, sender: self)
         case .manageContact:
-            print("go to select email view")
+            self.performSegue(withIdentifier: kToContactGroupSelectEmailSegue, sender: self)
         case .email:
             print("email actions")
         case .deleteGroup:

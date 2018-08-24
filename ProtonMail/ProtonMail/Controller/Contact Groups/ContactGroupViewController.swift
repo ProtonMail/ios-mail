@@ -38,7 +38,7 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
         self.navigationItem.title = "[Locale] Contact Groups"
         
         tableView.noSeparatorsBelowFooter()
-        
+                
         viewModel.fetchContactGroups()
         viewModel.contactGroupsViewControllerDelegate = self
     }
