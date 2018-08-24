@@ -81,7 +81,7 @@ extension StoreKitManager: SKProductsRequestDelegate {
     }
     
     private func hash(username: String) -> String {
-        return username // FIXME: one-way hash function
+        return username.sha256
     }
 }
 
@@ -96,7 +96,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             break // alert, pass completion
         case .purchased:
             print(transaction)
-            print(try! Data(contentsOf: Bundle.main.appStoreReceiptURL!).base64EncodedString())
+            //print(try! Data(contentsOf: Bundle.main.appStoreReceiptURL!).base64EncodedString())
             break // call server, pass completion
         case .deferred, .purchasing:
             break // show spinner
