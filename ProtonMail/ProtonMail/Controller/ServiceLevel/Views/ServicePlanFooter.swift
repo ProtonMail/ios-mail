@@ -19,7 +19,7 @@ class ServicePlanFooter: UIView {
         self.setupSubviews()
     }
     
-    convenience init(title: String? = nil,
+    convenience init(title: NSAttributedString? = nil,
                      subTitle: String? = nil,
                      buttonTitle: NSAttributedString? = nil,
                      buttonEnabled: Bool = true,
@@ -27,7 +27,7 @@ class ServicePlanFooter: UIView {
     {
         self.init(frame: .zero)
         
-        self.title.text = title
+        self.title.attributedText = title
         self.subtitle.text = subTitle
         
         if buttonTitle != nil {

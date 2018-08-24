@@ -26,8 +26,10 @@ enum ServiceLevelDataFactory {
         let emailAddresses = SPC(image: UIImage(named: "iap_email"),
                                  title: .init(string: "\(details.maxAddresses) email addresses"))
         
-        let storage = SPC(image: UIImage(named: "iap_hdd"),
-                          title: .init(string: "\(details.maxSpace) storage capacity"))
+        let formatter = ByteCountFormatter()
+        formatter.countStyle = .binary
+        let storageString = formatter.string(fromByteCount: Int64(details.maxSpace)) + " storage capacity"
+        let storage = SPC(image: UIImage(named: "iap_hdd"), title: .init(string: storageString))
         
         let messageLimit = plan ~ ([.free], SPC(image: UIImage(named: "iap_lock"),
                                                 title: .init(string: "Limited to \(details.amount) messages sent/day")))
@@ -48,13 +50,44 @@ enum ServiceLevelDataFactory {
         return Section(elements: capabilities, cellType: AutoLayoutSizedCell.self)
     }
     
-    internal static func makePlanStatusSection(plan: ServicePlan, details: ServicePlanDetails) -> Section<UIView> {
-        var message: String = ""
-        switch plan { // FIXME: check also if it was purchased via Apple
+    internal static func makeUnavailablePlanStatusSection(plan: ServicePlan) -> Section<UIView> {
+        var regularAttributes = [NSAttributedStringKey: Any]()
+        regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)
+        var coloredAttributes = regularAttributes
+        coloredAttributes[.foregroundColor] = plan.subheader.1
+        
+        let title1 = NSMutableAttributedString(string: "To migrate to ", attributes: regularAttributes)
+        let title2 = NSMutableAttributedString(string: plan.subheader.0, attributes: coloredAttributes)
+        let title3 = NSMutableAttributedString(string: ", you have to login to our website and make the necessary adjustments to comply with the plan's requirements ", attributes: regularAttributes)
+        
+        title1.append(title2)
+        title1.append(title3)
+        let footerView = ServicePlanFooter(title: title1)
+        
+        return Section(elements: [footerView], cellType: AutoLayoutSizedCell.self)
+    }
+    
+    internal static func makeCurrentPlanStatusSection(subscription: Subscription) -> Section<UIView> {
+        var message: NSAttributedString!
+        var regularAttributes = [NSAttributedStringKey: Any]()
+        regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)
+        var coloredAttributes = regularAttributes
+        coloredAttributes[.foregroundColor] = subscription.plan.subheader.1
+        
+        switch subscription.plan { // FIXME: check also if it was purchased via Apple
         case .free:
-            message = "Upgrade to a paid plan to benefit from more features"
+            message = NSAttributedString(string: "Upgrade to a paid plan to benefit from more features", attributes: regularAttributes)
         case .plus, .pro, .visionary:
-            message = "Your plan is currently active until \(details.cycle)" // FIXME: due time?
+            let formatter = DateFormatter()
+            formatter.timeStyle = .none
+            formatter.dateStyle = .short
+            
+            if let end = subscription.end {
+                let title1 = NSMutableAttributedString(string: "Your plan is currently active until ", attributes: regularAttributes)
+                let title2 = NSAttributedString(string: formatter.string(from: end), attributes: coloredAttributes)
+                title1.append(title2)
+                message = title1
+            }
         }
         let footerView = ServicePlanFooter(title: message)
         
@@ -126,13 +159,8 @@ enum ServiceLevelDataFactory {
     
     internal static func makeAcknowladgementsSection() -> Section<UIView> {
         let message = """
-        var collectionViewLayout: UICollectionViewLayout = TableLayout()
-        let cellTypes: [UICollectionViewCell.Type] = [ConfigurableCell.self]
-        let accessoryTypes: [UICollectionReusableView.Type] = [Separator.self]
-        let title = LocalString._menu_service_plan_title
-        var plan: ServicePlan?
-        var details: ServicePlanDetails?
-        internal var sections: [Section<UIView>] = []
+        Upon confirming your purchase, your iTunes account will be charged the amount displayed, which includes ProtonMail Plis, and Apple's in-app purchase fee (Apple charges a fee of approximately 30% on purchases made through your iPhone/iPad).
+        After making the purchse, you will automatically be upgraded to ProtonMail Plus for one year period, after which time you can renew or cancel, either online or through our iOS app.
         """
         return Section(elements: [TableSectionHeader(title: message)], cellType: FirstSubviewSizedCell.self)
     }

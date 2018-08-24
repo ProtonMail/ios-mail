@@ -39,6 +39,7 @@ class ServicePlanDataService {
     }
     
     class func updateCurrentSubscription(completion: CompletionHandler? = nil) {
+        self.updateServicePlans()
         async {
             do {
                 let subscriptionApi = GetSubscriptionRequest()

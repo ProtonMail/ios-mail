@@ -21,10 +21,10 @@ enum ServicePlan: String {
     // FIXME: localization, colors
     var subheader: (String, UIColor) {
         switch self {
-        case .free: return ("Free", .green)
-        case .plus: return ("Plus", .purple)
-        case .pro: return ("Professional", .brown)
-        case .visionary: return ("Visionary", .blue)
+        case .free: return ("Free", UIColor.ProtonMail.ServicePlanFree)
+        case .plus: return ("Plus", UIColor.ProtonMail.ServicePlanPlus)
+        case .pro: return ("Professional", UIColor.ProtonMail.ServicePlanPro)
+        case .visionary: return ("Visionary", UIColor.ProtonMail.ServicePlanVisionary)
         }
     }
     

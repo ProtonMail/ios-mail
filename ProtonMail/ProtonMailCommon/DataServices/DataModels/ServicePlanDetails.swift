@@ -9,7 +9,7 @@
 import Foundation
 
 struct ServicePlanDetails: Codable {
-    static var free: ServicePlanDetails = .init(amount: 0, currency: "USD", cycle: 0, features: 0, iD: "ProtonMail Free", maxAddresses: 5, maxDomains: 0, maxMembers: 1, maxSpace: 500, maxVPN: 0, name: "ProtonMail Free", quantity: 150, services: 0, title: "ProtonMail Free", type: 0)
+    static var free: ServicePlanDetails = .init(amount: 150, currency: "USD", cycle: 0, features: 0, iD: "ProtonMail Free", maxAddresses: 5, maxDomains: 0, maxMembers: 1, maxSpace: 500*1024, maxVPN: 0, name: "ProtonMail Free", quantity: 150, services: 0, title: "ProtonMail Free", type: 0)
     
     let amount: Int
     let currency: String

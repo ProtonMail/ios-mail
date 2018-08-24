@@ -34,7 +34,7 @@ class BuyMoreDataSource: ServiceLevelDataSource {
     }
     
     private func setup(with subscription: Subscription) {
-        self.sections = [ServiceLevelDataFactory.makePlanStatusSection(plan: subscription.plan, details: subscription.details),
+        self.sections = [ServiceLevelDataFactory.makeCurrentPlanStatusSection(subscription: subscription),
                          ServiceLevelDataFactory.makeBuyButtonSection(plan: subscription.plan, delegate: self.delegate),
                          ServiceLevelDataFactory.makeAcknowladgementsSection()].compactMap { $0 }
     }
@@ -64,7 +64,7 @@ class PlanDetailsDataSource: ServiceLevelDataSource {
                 footer = ServiceLevelDataFactory.makeBuyButtonSection(plan: plan, delegate: self.delegate)
                 acknowladgements = ServiceLevelDataFactory.makeAcknowladgementsSection()
             } else {
-                footer = ServiceLevelDataFactory.makePlanStatusSection(plan: plan, details: details)
+                footer = ServiceLevelDataFactory.makeUnavailablePlanStatusSection(plan: plan)
             }
         }
         self.sections = [ServiceLevelDataFactory.makeLogoSection(plan: plan),
@@ -95,7 +95,7 @@ class PlanAndLinksDataSource: ServiceLevelDataSource {
         }
         self.sections =  [ServiceLevelDataFactory.makeLogoSection(plan: subscription.plan),
                           ServiceLevelDataFactory.makeCapabilitiesSection(plan: subscription.plan, details: subscription.details),
-                          ServiceLevelDataFactory.makePlanStatusSection(plan: subscription.plan, details: subscription.details),
+                          ServiceLevelDataFactory.makeCurrentPlanStatusSection(subscription: subscription),
                           buyLink,
                           ServiceLevelDataFactory.makeSectionHeader("OTHER SERVICE PLANS"),
                           ServiceLevelDataFactory.makeLinksSection(except: subscription.plan)].compactMap { $0 }
