@@ -38,3 +38,24 @@ extension ServicePlanDetails: Equatable {
         return left.iD == right.iD
     }
 }
+
+struct PaymentMethod: Codable {
+    enum PaymentType: String, Codable {
+        case other = "other"
+        case apple = "apple"
+        case card = "card"
+        
+        init?(rawValue: String) {
+            if rawValue == PaymentType.apple.rawValue {
+                self = .apple
+            } else if rawValue == PaymentType.card.rawValue {
+                self = .card
+            } else {
+                self = .other
+            }
+        }
+    }
+    
+    let iD: String
+    let type: PaymentType
+}

@@ -83,7 +83,8 @@ enum ServiceLevelDataFactory {
             formatter.dateStyle = .short
             
             if let end = subscription.end {
-                let title1 = NSMutableAttributedString(string: "Your plan is currently active until ", attributes: regularAttributes)
+                let title0 = subscription.hadOnlinePayments ? "Your plan will automatically renew on " : "Your plan is currently active until "
+                let title1 = NSMutableAttributedString(string: title0, attributes: regularAttributes)
                 let title2 = NSAttributedString(string: formatter.string(from: end), attributes: coloredAttributes)
                 title1.append(title2)
                 message = title1

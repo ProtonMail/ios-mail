@@ -60,9 +60,16 @@ struct Subscription: Codable {
     var details: ServicePlanDetails {
         return self.planDetails?.merge() ?? ServicePlanDetails.free
     }
+    var hadOnlinePayments: Bool {
+        guard let allMethods = self.paymentMethods else {
+            return false
+        }
+        return allMethods.map { $0.type }.contains(.card)
+    }
     
     let planDetails: [ServicePlanDetails]?
     let start, end: Date?
+    var paymentMethods: [PaymentMethod]?
 }
 
 extension Array where Element == ServicePlanDetails {

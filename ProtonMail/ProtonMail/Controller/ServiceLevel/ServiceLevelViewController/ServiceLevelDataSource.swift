@@ -90,7 +90,10 @@ class PlanAndLinksDataSource: ServiceLevelDataSource {
     
     private func setup(with subscription: Subscription) {
         var buyLink: Section<UIView>?
-        if subscription.plan == .plus, ServicePlanDataService.currentSubscription?.plan == subscription.plan {
+        if subscription.plan == .plus,
+           ServicePlanDataService.currentSubscription?.plan == subscription.plan,
+           !ServicePlanDataService.currentSubscription!.hadOnlinePayments
+        {
             buyLink = ServiceLevelDataFactory.makeBuyLinkSection()
         }
         self.sections =  [ServiceLevelDataFactory.makeLogoSection(plan: subscription.plan),
