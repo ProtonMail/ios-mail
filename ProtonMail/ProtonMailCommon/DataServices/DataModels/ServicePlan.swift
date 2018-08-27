@@ -21,10 +21,10 @@ enum ServicePlan: String {
     // FIXME: localization, colors
     var subheader: (String, UIColor) {
         switch self {
-        case .free: return ("Free", .green)
-        case .plus: return ("Plus", .purple)
-        case .pro: return ("Professional", .brown)
-        case .visionary: return ("Visionary", .blue)
+        case .free: return ("Free", UIColor.ProtonMail.ServicePlanFree)
+        case .plus: return ("Plus", UIColor.ProtonMail.ServicePlanPlus)
+        case .pro: return ("Professional", UIColor.ProtonMail.ServicePlanPro)
+        case .visionary: return ("Visionary", UIColor.ProtonMail.ServicePlanVisionary)
         }
     }
     
@@ -37,6 +37,20 @@ enum ServicePlan: String {
         case .visionary: return "For power users and groups of people that value full anonymity and privacy"
         }
     }
+    
+    var storeKitProductId: String? {
+        switch self {
+        case .free, .pro, .visionary: return nil
+        case .plus: return "Test_ProtonMail_Plus_3" // FIXME: use non-test id from AppstroreConnect
+        }
+    }
+    
+    init?(storeKitProductId: String) {
+        guard storeKitProductId == ServicePlan.plus.storeKitProductId else {
+            return nil
+        }
+        self = .plus
+    }
 }
 
 struct Subscription: Codable {
@@ -46,9 +60,16 @@ struct Subscription: Codable {
     var details: ServicePlanDetails {
         return self.planDetails?.merge() ?? ServicePlanDetails.free
     }
+    var hadOnlinePayments: Bool {
+        guard let allMethods = self.paymentMethods else {
+            return false
+        }
+        return allMethods.map { $0.type }.contains(.card)
+    }
     
     let planDetails: [ServicePlanDetails]?
     let start, end: Date?
+    var paymentMethods: [PaymentMethod]?
 }
 
 extension Array where Element == ServicePlanDetails {

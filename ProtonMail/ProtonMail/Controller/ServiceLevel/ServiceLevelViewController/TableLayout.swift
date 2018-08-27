@@ -26,8 +26,8 @@ class TableLayout: UICollectionViewFlowLayout {
     private var separators: [IndexPath: UICollectionViewLayoutAttributes] = [:]
     
     override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
-        super.invalidateLayout(with: context)
         self.estimatedItemSize = .init(width: UIApplication.shared.keyWindow!.bounds.width * 0.70, height: 200)
+        super.invalidateLayout(with: context)
     }
     
     override func shouldInvalidateLayout(forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes, withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes) -> Bool

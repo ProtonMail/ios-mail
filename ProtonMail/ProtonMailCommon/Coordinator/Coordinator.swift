@@ -19,7 +19,7 @@ extension Coordinated where Self: UIViewController {
             return objc_getAssociatedObject(self, &CoordinatorKey) as? CoordinatorType
         }
         set {
-            objc_setAssociatedObject(self, &CoordinatorKey, newValue, .OBJC_ASSOCIATION_RETAIN) // FIXME: need weak ref here?
+            objc_setAssociatedObject(self, &CoordinatorKey, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
     }
 }
