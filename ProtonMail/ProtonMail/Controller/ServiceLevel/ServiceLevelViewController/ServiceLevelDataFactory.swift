@@ -17,37 +17,40 @@ enum ServiceLevelDataFactory {
     
     typealias SPC = ServicePlanCapability
     internal static func makeCapabilitiesSection(plan: ServicePlan, details: ServicePlanDetails) -> Section<UIView> {
+        var body = [NSAttributedStringKey: Any]()
+        body[.font] = UIFont.preferredFont(forTextStyle: .body)
+        
         let multiuser1 = plan ~ ([.pro], SPC(image: UIImage(named:"iap_users"),
-                                             title: .init(string: "Unlimited messages sent/day")))
+                                             title: .init(string: "Unlimited messages sent/day", attributes: body)))
         
         let multiuser2 = plan ~ ([.visionary], SPC(image: UIImage(named:"iap_users"),
-                                                   title: .init(string: "Up to \(details.maxMembers) users")))
+                                                   title: .init(string: "Up to \(details.maxMembers) users", attributes: body)))
         
         let emailAddresses = SPC(image: UIImage(named: "iap_email"),
-                                 title: .init(string: "\(details.maxAddresses) email addresses"))
+                                 title: .init(string: "\(details.maxAddresses) email addresses", attributes: body))
         
         let formatter = ByteCountFormatter()
         formatter.countStyle = .binary
         let storageString = formatter.string(fromByteCount: Int64(details.maxSpace)) + " storage capacity"
-        let storage = SPC(image: UIImage(named: "iap_hdd"), title: .init(string: storageString))
+        let storage = SPC(image: UIImage(named: "iap_hdd"), title: .init(string: storageString, attributes: body))
         
         let messageLimit = plan ~ ([.free], SPC(image: UIImage(named: "iap_lock"),
-                                                title: .init(string: "Limited to \(details.amount) messages sent/day")))
+                                                title: .init(string: "Limited to \(details.amount) messages sent/day", attributes: body)))
         
         let bridge = plan ~ ([.plus, .pro, .visionary], SPC(image: UIImage(named: "iap_link"),
-                                                            title: .init(string: "IMAP/SMTP Support via ProtonMail Bridge")))
+                                                            title: .init(string: "IMAP/SMTP Support via ProtonMail Bridge", attributes: body)))
         
         let labels = plan ~ ([.plus, .pro, .visionary], SPC(image: UIImage(named: "iap_folder"),
-                                                            title: .init(string: "Lables, Folders, Filters & More")))
+                                                            title: .init(string: "Lables, Folders, Filters & More", attributes: body)))
         
         let support = plan ~ ([.pro, .visionary], SPC(image: UIImage(named: "iap_lifering"),
-                                                      title: .init(string: "Support for \(details.maxDomains) custom domains (e.g. user@yourdomain.com)")))
+                                                      title: .init(string: "Support for \(details.maxDomains) custom domains (e.g. user@yourdomain.com)", attributes: body)))
         
         let vpn = plan ~ ([.visionary], SPC(image: UIImage(named: "iap_vpn"),
-                                            title: .init(string: "ProtonVPN included")))
+                                            title: .init(string: "ProtonVPN included", attributes: body)))
         
-        let capabilities = [multiuser1, multiuser2, emailAddresses, storage, messageLimit, bridge, labels, support, vpn, UIView()].compactMap { $0 }
-        return Section(elements: capabilities, cellType: AutoLayoutSizedCell.self)
+        let capabilities = [multiuser1, multiuser2, emailAddresses, storage, messageLimit, bridge, labels, support, vpn].compactMap { $0 }
+        return Section(elements: capabilities, cellType: FirstSubviewSizedCell.self)
     }
     
     internal static func makeUnavailablePlanStatusSection(plan: ServicePlan) -> Section<UIView> {
@@ -100,17 +103,17 @@ enum ServiceLevelDataFactory {
             guard plan != currentPlan else {
                 return nil
             }
-            
             let titleColored = NSAttributedString(string: plan.subheader.0.uppercased(),
-                                                  attributes: [.foregroundColor : plan.subheader.1])
-            let attributed = NSMutableAttributedString(string: "ProtonMail ")
+                                                  attributes: [.foregroundColor : UIColor.ProtonMail.ButtonBackground,
+                                                               .font: UIFont.preferredFont(forTextStyle: .body)])
+            var body = [NSAttributedStringKey: Any]()
+            body[.font] = UIFont.preferredFont(forTextStyle: .body)
+            let attributed = NSMutableAttributedString(string: "ProtonMail ", attributes: body)
             attributed.append(titleColored)
-            return ServicePlanCapability(title: attributed,
-                                         serviceIconVisible: true,
-                                         context: ServiceLevelCoordinator.Destination.details(of: plan))
+            return ServicePlanCapability(title: attributed, serviceIconVisible: true, context: ServiceLevelCoordinator.Destination.details(of: plan))
         }
         
-        return Section(elements: links, cellType: AutoLayoutSizedCell.self)
+        return Section(elements: links, cellType: FirstSubviewSizedCell.self)
     }
     
     internal static func makeSectionHeader(_ text: String) -> Section<UIView> {
@@ -118,9 +121,11 @@ enum ServiceLevelDataFactory {
     }
     
     internal static func makeBuyLinkSection() -> Section<UIView>? {
-        let blank = TableSectionHeader(title: "")
-        let buyMore = ServicePlanCapability(title: NSAttributedString(string: "Buy More Credits"), serviceIconVisible: true, context: ServiceLevelCoordinator.Destination.buyMore)
-        return Section(elements: [blank, buyMore], cellType: AutoLayoutSizedCell.self)
+        var body = [NSAttributedStringKey: Any]()
+        body[.font] = UIFont.preferredFont(forTextStyle: .body)
+        let blank = TableSectionHeader(title: " ")
+        let buyMore = ServicePlanCapability(title: NSAttributedString(string: "Buy More Credits", attributes: body), serviceIconVisible: true, context: ServiceLevelCoordinator.Destination.buyMore)
+        return Section(elements: [blank, buyMore], cellType: FirstSubviewSizedCell.self)
     }
     
     internal static func makeBuyButtonSection(plan: ServicePlan,
@@ -129,7 +134,8 @@ enum ServiceLevelDataFactory {
         guard let productId = plan.storeKitProductId,
             let price = StoreKitManager.default.priceLabelForProduct(id: productId) else
         {
-            return nil
+            let noStoreFooter = ServicePlanFooter(subTitle: "Could not connect to Store. Please, try later.")
+            return Section(elements: [noStoreFooter], cellType: AutoLayoutSizedCell.self)
         }
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
@@ -160,7 +166,7 @@ enum ServiceLevelDataFactory {
     
     internal static func makeAcknowladgementsSection() -> Section<UIView> {
         let message = """
-        Upon confirming your purchase, your iTunes account will be charged the amount displayed, which includes ProtonMail Plis, and Apple's in-app purchase fee (Apple charges a fee of approximately 30% on purchases made through your iPhone/iPad).
+        Upon confirming your purchase, your iTunes account will be charged the amount displayed, which includes ProtonMail Plus, and Apple's in-app purchase fee (Apple charges a fee of approximately 30% on purchases made through your iPhone/iPad).
         After making the purchse, you will automatically be upgraded to ProtonMail Plus for one year period, after which time you can renew or cancel, either online or through our iOS app.
         """
         return Section(elements: [TableSectionHeader(title: message)], cellType: FirstSubviewSizedCell.self)
