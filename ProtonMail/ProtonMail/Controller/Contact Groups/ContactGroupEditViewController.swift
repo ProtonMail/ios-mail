@@ -38,7 +38,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         super.viewDidLoad()
         
         viewModel.contactGroupEditViewDelegate = self
-        viewModel.fetchContactGroupDetail()
+        viewModel.fetchContactGroupEmailList()
         
         prepareTitles()
         
@@ -80,7 +80,17 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                                                              currentColor: viewModel.getCurrentColor(),
                                                              refreshHandler: refreshHandler)
         } else if segue.identifier == kToContactGroupSelectEmailSegue {
+            let refreshHandler = {
+                () -> Void in
+                self.viewModel.fetchContactGroupEmailList()
+            }
             
+            let contactGroupSelectEmailViewController = segue.destination as! ContactGroupSelectEmailViewController
+            let data = sender as! ContactGroupEditViewController
+            sharedVMService.contactGroupSelectEmailViewModel(contactGroupSelectEmailViewController,
+                                                             groupID: data.viewModel.getContactGroupID(),
+                                                             selectedEmails: data.viewModel.getEmailIDsInContactGroup(),
+                                                             refreshHandler: refreshHandler)
         } else {
             PMLog.D("No such segue")
             fatalError("No such segue")
@@ -108,6 +118,10 @@ extension ContactGroupEditViewController: UITableViewDataSource
             return cell
         case .email:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupMemberCell", for: indexPath)
+            
+            let (name, email) = viewModel.getEmail(at: indexPath)
+            cell.textLabel?.text = name
+            cell.detailTextLabel?.text = email
             return cell
         case .deleteGroup:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupDeleteCell", for: indexPath)

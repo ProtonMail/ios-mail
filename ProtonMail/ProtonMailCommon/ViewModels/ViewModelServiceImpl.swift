@@ -288,8 +288,14 @@ class ViewModelServiceImpl: ViewModelService {
                                                               refreshHandler: refreshHandler))
     }
     
-    override func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocol) {
+    override func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocol,
+                                                   groupID: String,
+                                                   selectedEmails: NSMutableSet,
+                                                   refreshHandler: @escaping () -> Void) {
         activeViewController = vmp
+        vmp.setViewModel(ContactGroupSelectEmailViewModelImpl(groupID: groupID,
+                                                              selectedEmails: selectedEmails,
+                                                              refreshHandler: refreshHandler))
     }
     
     // composer

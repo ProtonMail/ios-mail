@@ -8,12 +8,19 @@
 
 import Foundation
 
+/*
+ TODO:
+ 
+ Use the return value (confirmation) of the API call to update the view model
+ Currently, the code updates it locally without considering if the API call is successfully or not
+ */
 class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     var state: ContactGroupEditViewControllerState
     var contactGroup: ContactGroup
     var contactGroupEditViewDelegate: ContactGroupsViewModelDelegate!
     var refreshHandler: () -> Void
     var tableContent: [[ContactGroupTableCellType]]
+    var allEmails: [Email]
     
     /* Setup code */
     init(state: ContactGroupEditViewControllerState = .create,
@@ -26,12 +33,25 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         self.contactGroup = ContactGroup(ID: contactGroupID, name: name, color: color)
         self.refreshHandler = refreshHandler
         
+        self.tableContent = []
+        self.allEmails = sharedContactDataService.allEmails()
+        
+        resetTableContent()
+    }
+    
+    func resetTableContent() {
         self.tableContent = [
             [.selectColor],
             [.manageContact],
         ]
         if self.state == .edit {
             self.tableContent.append([.deleteGroup])
+        }
+    }
+    
+    func tableContent(addEmailWithCount: Int) {
+        for _ in 0..<addEmailWithCount {
+            self.tableContent[1].append(.email)
         }
     }
     
@@ -53,6 +73,15 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         return ""
     }
     
+    func getContactGroupID() -> String {
+        if state == .edit {
+            if let ID = contactGroup.ID {
+                return ID
+            }
+        }
+        return ""
+    }
+    
     func getCurrentColor() -> String? {
         return self.contactGroup.color
     }
@@ -64,29 +93,43 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         return "#7272a7"
     }
     
+    func getEmailIDsInContactGroup() -> NSMutableSet {
+        let result = NSMutableSet()
+        if let emailIDs = contactGroup.emailIDs {
+            result.addingObjects(from: emailIDs)
+        }
+        return result
+    }
+    
     /* Data operation */
-    func fetchContactGroupDetail() {
+    func fetchContactGroupEmailList() {
         if state == .edit {
             if let contactGroupID = contactGroup.ID {
                 let completionHandler = {
-                    (fetchedData: [String: Any]) -> Void in
+                    (emailList: [[String: Any]]) -> Void in
                     
-                    var emailList: [String] = [String]()
-                    if let contactEmails = fetchedData["ContactEmails"] as? [[String: Any]] {
-                        for record in contactEmails {
-                            emailList.append(String(describing: record["ID"]))
+                    print("email list \(emailList)")
+                    var list: [String] = [String]()
+                    for email in emailList {
+                        if let emailID = email["ID"] as? String {
+                            list.append(emailID)
+                        } else {
+                            fatalError("API result decoding error")
                         }
                     }
                     
-                    self.contactGroup = ContactGroup(ID: contactGroupID,
-                                                     name: String(describing: fetchedData["Name"]),
-                                                     color: String(describing: fetchedData["Color"]),
-                                                     emailIDs: emailList.count > 0 ? emailList : nil)
+                    if list.count > 0 {
+                        self.contactGroup.emailIDs = list
+                    }
+                    
+                    self.resetTableContent()
+                    self.tableContent(addEmailWithCount: list.count)
+                    
                     self.contactGroupEditViewDelegate.updated()
                 }
                 
-                sharedContactGroupsDataService.fetchContactGroupDetail(groupID: contactGroupID,
-                                                                       completionHandler: completionHandler)
+                sharedContactGroupsDataService.fetchContactGroupEmailList(groupID: contactGroupID,
+                                                                          completionHandler: completionHandler)
             } else {
                 PMLog.D("[Contact Group API] contact group ID is nil = \(contactGroup)")
             }
@@ -283,5 +326,34 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         }
         
         return tableContent[indexPath.section][indexPath.row]
+    }
+    
+    /**
+     Returns the email data at the designated indexPath
+     
+     - Parameter indexPath: the indexPath that is asking for data
+     - Returns: a tuple of email name and email address
+    */
+    func getEmail(at indexPath: IndexPath) -> (String, String) {
+        // TODO: precondition, all emails must be new enough!
+        
+        let index = indexPath.row - 1
+        guard contactGroup.emailIDs != nil else {
+            fatalError("Calculation error")
+        }
+        guard index < contactGroup.emailIDs!.count else {
+            fatalError("Calculation error")
+        }
+        
+        for email in allEmails {
+            print("email \(email.emailID)")
+            print("contact group emailID \(contactGroup.emailIDs![index])")
+            if email.emailID == contactGroup.emailIDs![index] {
+                return (email.name, email.email)
+            }
+        }
+        
+        fatalError("Invalid email ID error")
+        return ("Error", "Error")
     }
 }

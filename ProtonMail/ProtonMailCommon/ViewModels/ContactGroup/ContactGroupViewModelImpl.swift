@@ -17,12 +17,16 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
     var cachedContactGroups: [ContactGroup]?
     var contactGroupsViewControllerDelegate: ContactGroupsViewModelDelegate?
     
+    /**
+     Fetch all contact groups that is in the user's contact
+     
+     Only ID, name, and color, etc. is fetched at this stage (no email list)
+    */
     func fetchContactGroups() {
-        // setup completion handler
         let completionHandler = {
             (contactGroups: [[String : Any]]?) -> Void in
             
-            // parse the data into array of contact group struct
+            // TODO: parse the data into array of label struct
             self.cachedContactGroups = [ContactGroup]()
             if let data = contactGroups {
                 for contactGroup in data {
@@ -32,6 +36,7 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
                     self.cachedContactGroups!.append(extractedContactGroup)
                 }
             }
+            
             self.contactGroupsViewControllerDelegate?.updated()
         }
         

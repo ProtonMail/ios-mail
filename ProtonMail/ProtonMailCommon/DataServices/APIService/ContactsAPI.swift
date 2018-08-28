@@ -42,13 +42,15 @@ class ContactsResponse : ApiResponse {
 }
 
 // MARK : Get messages part
-class ContactEmailsRequest : ApiRequest<ContactEmailsResponse> {
+class ContactEmailsRequest<T: ApiResponse>: ApiRequest<T> {
     var page : Int = 0
     var max : Int = 100
+    let labelID: String?
     
-    init(page: Int, pageSize : Int) {
+    init(page: Int, pageSize : Int, labelID: String? = nil) {
         self.page = page
         self.max = pageSize
+        self.labelID = labelID
     }
     
     override public func path() -> String {
@@ -56,6 +58,9 @@ class ContactEmailsRequest : ApiRequest<ContactEmailsResponse> {
     }
     
     override func toDictionary() -> [String : Any]? {
+        if let ID = labelID {
+            return ["Page": page, "PageSize": max, "LabelID": ID]
+        }
         return ["Page" : page, "PageSize" : max]
     }
     
@@ -69,7 +74,7 @@ class ContactEmailsRequest : ApiRequest<ContactEmailsResponse> {
 }
 
 
-class ContactEmailsResponse : ApiResponse {
+class ContactEmailsResponse: ApiResponse {
     var total : Int = -1
     var contacts : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
@@ -104,6 +109,19 @@ class ContactEmailsResponse : ApiResponse {
             }
         }
         PMLog.D( self.contacts.json(prettyPrinted: true) )
+        return true
+    }
+}
+
+class ContactEmailsResponseForContactGroup: ApiResponse {
+    var total : Int = -1
+    var emailList : [[String : Any]] = []
+    override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        PMLog.D("[Contact] Get contact emails for contact group response \(response)")
+        
+        if let res = response?["ContactEmails"] as? [[String : Any]] {
+            emailList = res
+        }
         return true
     }
 }

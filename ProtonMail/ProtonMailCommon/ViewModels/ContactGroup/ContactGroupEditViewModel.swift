@@ -27,12 +27,14 @@ protocol ContactGroupEditViewModel {
     // title
     func getViewTitle() -> String
     func getContactGroupName() -> String
+    func getContactGroupID() -> String
     
     // fetch operation
-    func fetchContactGroupDetail()
+    func fetchContactGroupEmailList()
     func getContactGroupDetail() -> ContactGroup
     func getCurrentColor() -> String?
     func getCurrentColorWithDefault() -> String
+    func getEmailIDsInContactGroup() -> NSMutableSet
     
     // mutate operation
     func addEmailsToContactGroup(emailList: [String])
@@ -49,4 +51,5 @@ protocol ContactGroupEditViewModel {
     func getTotalSections() -> Int
     func getTotalRows(for section: Int) -> Int
     func getCellType(at indexPath: IndexPath) -> ContactGroupTableCellType
+    func getEmail(at indexPath: IndexPath) -> (String, String)
 }

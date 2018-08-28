@@ -110,7 +110,10 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocol) {
+    func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocol,
+                                          groupID: String,
+                                          selectedEmails: NSMutableSet,
+                                          refreshHandler: @escaping () -> Void) {
         fatalError("This method must be overridden")
     }
     

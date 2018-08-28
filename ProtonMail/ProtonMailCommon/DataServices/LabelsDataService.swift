@@ -24,7 +24,6 @@ class LabelsDataService {
         return sharedCoreDataService.mainManagedObjectContext
     }
     
-    //
     func cleanUp()
     {
         if let context = managedObjectContext {
@@ -46,7 +45,7 @@ class LabelsDataService {
                         let error = context.saveUpstreamIfNeeded()
                         if error == nil {
                             if labels_out.count != labels.count {
-                               PMLog.D(" error: labels insert partial failed!")
+                               PMLog.D("error: labels insert partial failed!")
                             }
                         } else {
                             //TODO:: error
