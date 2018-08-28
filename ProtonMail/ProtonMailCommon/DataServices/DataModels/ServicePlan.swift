@@ -9,10 +9,10 @@
 import Foundation
 
 enum ServicePlan: String {
-    case free = "ProtonMail Free" // FIXME: change to iDs?
-    case plus = "ziWi-ZOb28XR4sCGFCEpqQbd1FITVWYfTfKYUmV_wKKR3GsveN4HZCh9er5dhelYylEp-fhjBbUPDMHGU699fw=="
-    case pro = "j_hMLdlh76xys5eR2S3OM9vlAgYylGQBiEzDeXLw1H-huHy2jwjwVqcKAPcdd6z2cXoklLuQTegkr3gnJXCB9w=="
-    case visionary = "m-dPNuHcP8N4xfv6iapVg2wHifktAD1A1pFDU95qo5f14Vaw8I9gEHq-3GACk6ef3O12C3piRviy_D43Wh7xxQ=="
+    case free = "free"
+    case plus = "plus"
+    case pro = "professional"
+    case visionary = "visionary"
     
     func fetchDetails() -> ServicePlanDetails? {
         return ServicePlanDataService.detailsOfServicePlan(coded: self.rawValue)
@@ -55,10 +55,10 @@ enum ServicePlan: String {
 
 struct Subscription: Codable {
     var plan: ServicePlan {
-        return self.planDetails?.compactMap({ ServicePlan(rawValue: $0.iD) }).first ?? .free
+        return self.planDetails?.compactMap({ ServicePlan(rawValue: $0.name) }).first ?? .free
     }
     var details: ServicePlanDetails {
-        return self.planDetails?.merge() ?? ServicePlanDetails.free
+        return self.planDetails?.merge() ?? ServicePlanDataService.defaultPlanDetails ?? ServicePlanDetails(amount: 0, currency: "", cycle: 0, features: 0, iD: "", maxAddresses: 0, maxDomains: 0, maxMembers: 0, maxSpace: 0, maxVPN: 0, name: "", quantity: 0, services: 0, title: "", type: 0)
     }
     var hadOnlinePayments: Bool {
         guard let allMethods = self.paymentMethods else {
@@ -74,7 +74,7 @@ struct Subscription: Codable {
 
 extension Array where Element == ServicePlanDetails {
     func merge() -> ServicePlanDetails? {
-        let basicPlans = self.filter({ ServicePlan(rawValue: $0.iD) != nil })
+        let basicPlans = self.filter({ ServicePlan(rawValue: $0.name) != nil })
         guard let basic = basicPlans.first else {
             return nil
         }

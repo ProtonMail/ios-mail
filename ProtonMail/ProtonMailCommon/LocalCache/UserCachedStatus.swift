@@ -56,6 +56,7 @@ final class UserCachedStatus : SharedCacheBase {
         
         static let servicePlans = "servicePlans"
         static let currentSubscription = "currentSubscription"
+        static let defaultPlanDetails = "defaultPlanDetails"
     }
     
     var isForcedLogout : Bool = false
@@ -335,6 +336,19 @@ extension UserCachedStatus {
         set {
             let data = try? PropertyListEncoder().encode(newValue)
             self.setValue(data, forKey: Key.servicePlans)
+        }
+    }
+    
+    var defaultPlanDetails: ServicePlanDetails? {
+        get {
+            guard let data = self.getShared().data(forKey: Key.defaultPlanDetails) else {
+                return nil
+            }
+            return try? PropertyListDecoder().decode(ServicePlanDetails.self, from: data)
+        }
+        set {
+            let data = try? PropertyListEncoder().encode(newValue)
+            self.setValue(data, forKey: Key.defaultPlanDetails)
         }
     }
     

@@ -17,6 +17,12 @@ class ServicePlanDataService {
         willSet { userCachedStatus.servicePlansDetails = newValue }
     }
     
+    static var defaultPlanDetails: ServicePlanDetails? = {
+        return userCachedStatus.defaultPlanDetails
+    }() {
+        willSet { userCachedStatus.defaultPlanDetails = newValue }
+    }
+    
     static var currentSubscription: Subscription? = {
         return userCachedStatus.currentSubscription
     }() {
@@ -30,6 +36,11 @@ class ServicePlanDataService {
             let servicePlanApi = GetServicePlansRequest()
             let servicePlanRes = try await(servicePlanApi.run())
             self.allPlanDetails = servicePlanRes.availableServicePlans ?? []
+            
+            let defaultServicePlanApi = GetDefaultServicePlanRequest()
+            let defaultServicePlanRes = try await(defaultServicePlanApi.run())
+            self.defaultPlanDetails = defaultServicePlanRes.servicePlan
+
             completion?()
         }.catch { _ in
             completion?()
@@ -67,6 +78,6 @@ class ServicePlanDataService {
     }
     
     class func detailsOfServicePlan(coded code: String) -> ServicePlanDetails? {
-        return self.allPlanDetails.first(where: { $0.iD == code })
+        return self.allPlanDetails.first(where: { $0.name == code })
     }
 }
