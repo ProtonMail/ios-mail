@@ -31,6 +31,30 @@ extension ApiResponse {
     }
 }
 
+final class GetIAPStatusRequest: ApiRequestNew<GetIAPStatusResponse> {
+    override func method() -> APIService.HTTPMethod {
+        return .get
+    }
+    
+    override func path() -> String {
+        return PaymentsAPI.path + "/status"
+    }
+    
+    override func apiVersion() -> Int {
+        return PaymentsAPI.v_get_status
+    }
+}
+
+final class GetIAPStatusResponse: ApiResponse {
+    var isAvailable: Bool?
+        
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        PMLog.D(response.json(prettyPrinted: true))
+        self.isAvailable = response["Apple"] as? Bool
+        return true
+    }
+}
+
 final class GetPaymentMethodsRequest: ApiRequestNew<GetPaymentMethodsResponse> {
     override func method() -> APIService.HTTPMethod {
         return .get

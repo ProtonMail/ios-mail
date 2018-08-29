@@ -22,6 +22,12 @@ class ServicePlanDataService: NSObject {
         willSet { userCachedStatus.servicePlansDetails = newValue }
     }
     
+    var isIAPAvailable: Bool = {
+        return userCachedStatus.isIAPAvailable
+    }() {
+        willSet { userCachedStatus.isIAPAvailable = newValue }
+    }
+    
     var defaultPlanDetails: ServicePlanDetails? = {
         return userCachedStatus.defaultPlanDetails
     }() {
@@ -38,6 +44,10 @@ class ServicePlanDataService: NSObject {
     
     func updateServicePlans(completion: CompletionHandler? = nil) {
         async {
+            let statusApi = GetIAPStatusRequest()
+            let statusRes = try await(statusApi.run())
+            self.isIAPAvailable = statusRes.isAvailable ?? false
+            
             let servicePlanApi = GetServicePlansRequest()
             let servicePlanRes = try await(servicePlanApi.run())
             self.allPlanDetails = servicePlanRes.availableServicePlans ?? []

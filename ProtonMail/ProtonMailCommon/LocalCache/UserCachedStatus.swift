@@ -57,6 +57,7 @@ final class UserCachedStatus : SharedCacheBase {
         static let servicePlans = "servicePlans"
         static let currentSubscription = "currentSubscription"
         static let defaultPlanDetails = "defaultPlanDetails"
+        static let isIAPAvailable = "isIAPAvailable"
     }
     
     var isForcedLogout : Bool = false
@@ -362,6 +363,15 @@ extension UserCachedStatus {
         set {
             let data = try? PropertyListEncoder().encode(newValue)
             self.setValue(data, forKey: Key.currentSubscription)
+        }
+    }
+    
+    var isIAPAvailable: Bool {
+        get {
+            return self.getShared().bool(forKey: Key.isIAPAvailable)
+        }
+        set {
+            self.getShared().set(newValue, forKey: Key.isIAPAvailable)
         }
     }
     #endif
