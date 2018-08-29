@@ -18,6 +18,15 @@ enum ServicePlan: String {
         return ServicePlanDataService.detailsOfServicePlan(coded: self.rawValue)
     }
     
+    var backendId: String {
+        switch self {
+        case .free: return "" // FIXME
+        case .plus: return "ziWi-ZOb28XR4sCGFCEpqQbd1FITVWYfTfKYUmV_wKKR3GsveN4HZCh9er5dhelYylEp-fhjBbUPDMHGU699fw=="
+        case .pro: return "rDox3cZuqa4_sMMlxcVZg8pCaUQsMN3IrOLk9kBtO8tZ6t8hiqFwCRIAM09A8U9a0HNNlrTgr8CzXKce58815A=="
+        case .visionary: return "m-dPNuHcP8N4xfv6iapVg2wHifktAD1A1pFDU95qo5f14Vaw8I9gEHq-3GACk6ef3O12C3piRviy_D43Wh7xxQ=="
+        }
+    }
+    
     // FIXME: localization, colors
     var subheader: (String, UIColor) {
         switch self {

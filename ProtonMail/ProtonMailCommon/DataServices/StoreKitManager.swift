@@ -8,6 +8,7 @@
 
 import Foundation
 import StoreKit
+import AwaitKit
 
 class StoreKitManager: NSObject {
     static var `default` = StoreKitManager()
@@ -23,6 +24,10 @@ class StoreKitManager: NSObject {
                                   "ch.protonmail.protonmail.Test_ProtonMail_Plus_3"])
     private var availableProducts: [SKProduct] = []
     private var request: SKProductsRequest!
+    
+    private var successCompletion: (()->Void)?
+    private var errorCompletion: ((Error)->Void)?
+    private var deferredCompletion: (()->Void)?
     
     internal func subscribeToPaymentQueue() {
         SKPaymentQueue.default().add(self)
@@ -59,9 +64,15 @@ class StoreKitManager: NSObject {
                 SKPaymentTransactionState.restored].contains(state)
     }
     
-    internal func purchaseProduct(withId id: String, username: String) throws {
+    internal func purchaseProduct(withId id: String,
+                                  username: String,
+                                  successCompletion: ()->Void,
+                                  errorCompletion: (Error)->Void,
+                                  deferredCompletion: ()->Void)
+    {
         guard let product = self.availableProducts.first(where: { $0.productIdentifier == id }) else {
-            throw Errors.unavailableProduct
+            errorCompletion(Errors.unavailableProduct)
+            return
         }
         let payment = SKMutablePayment(product: product)
         payment.quantity = 1
@@ -72,6 +83,9 @@ class StoreKitManager: NSObject {
     enum Errors: Error {
         case unavailableProduct
         case neverBeenPurchased
+        case transactionFailed
+        case recieptLost
+        case haveTransactionOfAnotherUser
     }
 }
 
@@ -87,21 +101,78 @@ extension StoreKitManager: SKProductsRequestDelegate {
 
 extension StoreKitManager: SKPaymentTransactionObserver {
     internal func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        transactions.forEach(self.process)
+        DispatchQueue.global().async {
+            transactions.forEach(self.process)
+        }
     }
     
     private func process(_ transaction: SKPaymentTransaction) {
         switch transaction.transactionState {
         case .failed:
-            break // alert, pass completion
+            self.errorCompletion?(transaction.error ?? Errors.transactionFailed)
+            SKPaymentQueue.default().finishTransaction(transaction)
+            
         case .purchased:
-            print(transaction)
-            //print(try! Data(contentsOf: Bundle.main.appStoreReceiptURL!).base64EncodedString())
-            break // call server, pass completion
-        case .deferred, .purchasing:
-            break // show spinner
+            guard let hashedUsername = transaction.payment.applicationUsername,
+                let currentUsername = sharedUserDataService.username,
+                hashedUsername == self.hash(username: currentUsername) else
+            {
+                self.errorCompletion?(Errors.haveTransactionOfAnotherUser)
+                return
+            }
+            
+            guard let reciept = try? Data(contentsOf: Bundle.main.appStoreReceiptURL!).base64EncodedString() else {
+                self.errorCompletion?(Errors.recieptLost)
+                SKPaymentQueue.default().finishTransaction(transaction)
+                return
+            }
+            
+            do {
+                guard let plan = ServicePlan(storeKitProductId: transaction.payment.productIdentifier) else {
+                    throw Errors.unavailableProduct
+                }
+                let serverUpdateApi = PostRecieptRequest(reciept: reciept, andActivatePlanWithId: plan.backendId)
+                let serverUpdateRes = try await(serverUpdateApi.run())
+                if let newSubscription = serverUpdateRes.newSubscription {
+                    ServicePlanDataService.currentSubscription = newSubscription
+                }
+                self.successCompletion?()
+                SKPaymentQueue.default().finishTransaction(transaction)
+            } catch let error {
+                switch (error as NSError).code {
+                case 22101:
+                    // Amount mismatch - try report only credits without activating the plan
+                    do {
+                        let serverUpdateApi = PostCreditRequest(reciept: reciept)
+                        let _ = try await(serverUpdateApi.run())
+                        self.successCompletion?()
+                        SKPaymentQueue.default().finishTransaction(transaction)
+                    } catch let error {
+                        self.errorCompletion?(error)
+                    }
+                    
+                case 22120:
+                    // There is already an active operation - need to try later, so do nothing now
+                    break
+                    
+                case 00000:   // FIXME: number of error
+                    // Already reported this receipt - can finish transaction
+                    SKPaymentQueue.default().finishTransaction(transaction)
+                    
+                default:
+                    break
+                }
+            }
+            
+            
+        case .deferred:
+            self.deferredCompletion?()
+            
         case .restored:
-            break // never
+            break // never happens in our flow
+            
+        case .purchasing:
+            break // nothing to do here
         }
     }
 }

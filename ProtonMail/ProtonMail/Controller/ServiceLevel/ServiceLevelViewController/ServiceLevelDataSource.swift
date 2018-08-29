@@ -90,9 +90,11 @@ class PlanAndLinksDataSource: ServiceLevelDataSource {
     
     private func setup(with subscription: Subscription) {
         var buyLink: Section<UIView>?
-        if subscription.plan == .plus,
-           ServicePlanDataService.currentSubscription?.plan == subscription.plan,
-           !ServicePlanDataService.currentSubscription!.hadOnlinePayments
+        if let currentSubscription = ServicePlanDataService.currentSubscription,
+            subscription.plan == .plus, // Plus description opened
+            currentSubscription.plan == subscription.plan, // currently subscribed to Plus
+            !currentSubscription.hadOnlinePayments, // did pay only via apple
+            currentSubscription.end?.compare(Date()) == .orderedAscending //  subscrition is expired
         {
             buyLink = ServiceLevelDataFactory.makeBuyLinkSection()
         }

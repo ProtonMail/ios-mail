@@ -709,7 +709,6 @@
 		814A8979F18901E1B0342168AAE58323 /* ContactCollectionViewEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E96DF425774FBF5566AC74C2E3EBE83 /* ContactCollectionViewEntryCell.swift */; };
 		81632A2DA06303254710C356D2E56E79 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7872DBC0CE90F88AD865EFB3C8D5B51C /* SignIn.storyboard */; };
 		817A1631A7098F6E4EB0615C12A887A5 /* ContactDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934EB5CEA1ACDD4A4555A00DDA4B7F8D /* ContactDataService.swift */; };
-		8191D914997878CF4761404A2510EDF1 /* ServicePlanDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AFB2665732BDBF0C40E4F838A5D34E /* ServicePlanDetails.swift */; };
 		81963A183A14EE14752915066A9B5B5A /* UIDevice+InfoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9113A2EDD8A5974F8A575AEA948D8275 /* UIDevice+InfoExtension.swift */; };
 		819F6BE796D91EBD4FBCE0CBA9184944 /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399221AA081E74249939780EA537FD0 /* PMDocumentPickerViewController.swift */; };
 		81A58A76220AA0DDBE19E270B8C690EB /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCEB3AB6A95864C955CC7CE2F7C50B5 /* UserNotifications.framework */; };
@@ -996,7 +995,6 @@
 		B65DCCDC996ACE934E04D6F8D901E75A /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B19F69ACC56F66D3D9DCAB37BBAC68 /* Bundle+Extension.swift */; };
 		B66CF6287FB1A4BB4D3FBB1D6D686FDA /* PMView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B58EA1AD6B80AE3B0F8182EFF649C0 /* PMView.swift */; };
 		B68EF49E2501E85E528158875D7C477E /* MessageQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B142492E7764F95AE62A0DC0372EAB /* MessageQueue.swift */; };
-		B6C0AD1CBD106F183736A29C97BF39FB /* ServicePlanDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AFB2665732BDBF0C40E4F838A5D34E /* ServicePlanDetails.swift */; };
 		B6D0F31B6521BE408244AEE60EC86DCA /* TimeInterval+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0209C6CD5DA523EFB7789D59AA08104E /* TimeInterval+Extension.swift */; };
 		B6F07EED67866C6F4CB3F4E79F51DDCD /* PhotoAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */; };
 		B6FF3FCB735162A4BE4213892DE3827D /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84A04353E5434EB3FAFEBEF48DC89CD /* Snapshot.swift */; };
@@ -5426,7 +5424,6 @@
 				D0E6F54C99854B36E16A024FD4716F34 /* ProtonMail.xcdatamodeld in Sources */,
 				B1A77D1BD034F34946FEDF248B6B48BC /* QueueConstant.swift in Sources */,
 				4B101F682A604A73EAA6DC271014C959 /* Reachability.m in Sources */,
-				B6C0AD1CBD106F183736A29C97BF39FB /* ServicePlanDetails.swift in Sources */,
 				9442E4EEA9825AE9ADA9948F84634641 /* Settings+Defined.swift in Sources */,
 				A5D1DD47043C861FF8BE761A0CDFE846 /* SettingsAPI.swift in Sources */,
 				C91E6D0981798B5A65CA681C37F44260 /* ShareExtensionEntry.swift in Sources */,
@@ -5622,7 +5619,6 @@
 				4BF7A8251077B2E36057081B81E52335 /* ProtonMail.xcdatamodeld in Sources */,
 				6B83402A5AE4ADCF885F31E0C53A59D1 /* QueueConstant.swift in Sources */,
 				8EFD3A66717F5DE4FEA692888C4D7AA2 /* Reachability.m in Sources */,
-				8191D914997878CF4761404A2510EDF1 /* ServicePlanDetails.swift in Sources */,
 				371A41B911AD00F666F40C049A9EECEE /* Settings+Defined.swift in Sources */,
 				7DFB4C294CAE23A769678D3AB6154E6C /* SettingsAPI.swift in Sources */,
 				131F2D19443C376E3B630D0EE0FD509C /* ShareExtensionEntry.swift in Sources */,

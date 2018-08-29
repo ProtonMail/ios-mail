@@ -63,14 +63,11 @@ class ServicePlanDataService {
         async {
             let subscriptionApi = GetSubscriptionRequest()
             let subscriptionRes = try await(subscriptionApi.run())
-            self.currentSubscription = Subscription(planDetails: subscriptionRes.plans,
-                                                    start: subscriptionRes.start,
-                                                    end: subscriptionRes.end,
-                                                    paymentMethods: nil)
+            self.currentSubscription = subscriptionRes.subscription
             self.updatePaymentMethods()
             completion?()
         }.catch { error in
-            if (error as NSError).code == 22110 {
+            if (error as NSError).code == 22110 { // no subscription stands for free/default plan
                 self.currentSubscription = Subscription(planDetails: nil, start: nil, end: nil, paymentMethods: nil)
             }
             completion?()

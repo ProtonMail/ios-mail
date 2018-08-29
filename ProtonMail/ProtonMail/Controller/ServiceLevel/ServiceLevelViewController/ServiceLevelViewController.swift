@@ -95,10 +95,19 @@ class ServiceLevelViewControllerBase: UICollectionViewController {
 
 extension ServiceLevelViewControllerBase: ServiceLevelDataSourceDelegate {
     func purchaseProduct(id: String) {
-        try! StoreKitManager.default.purchaseProduct(withId: id, username: sharedUserDataService.username!) // FIXME: username
+        guard let username = sharedUserDataService.username else {
+            return
+        }
+        let successCompletion: ()->Void = {}
+        let errorCompletion: (Error)->Void = {_ in }
+        let deferredCompletion: ()->Void = {}
+        StoreKitManager.default.purchaseProduct(withId: id, username: username, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
     }
     
     func canPurchaseProduct(id: String) -> Bool {
-        return StoreKitManager.default.readyToPurchaseProduct(id: id, username: sharedUserDataService.username!) // FIXME: username
+        guard let username = sharedUserDataService.username else {
+            return false
+        }
+        return StoreKitManager.default.readyToPurchaseProduct(id: id, username: username)
     }
 }
