@@ -133,6 +133,16 @@ final class UpdateLabelRequest<T: ApiResponse> : ApiRequest<T> {
     }
 }
 
+/// Parse the response from the server of the UpdateLabelRequest() call
+final class UpdateLabelRequestResponse: ApiResponse {
+    var label: [String : Any]?
+    
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        self.label = response["Label"] as? [String : Any]
+        return true
+    }
+}
+
 /**
  Delete a contact group on the server
  
@@ -157,6 +167,16 @@ final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func apiVersion() -> Int {
         return LabelAPI.v_delete_label
+    }
+}
+
+/// Parse the response from the server of the DeleteLabelRequest() call
+final class DeleteLabelRequestResponse: ApiResponse {
+    var returnedCode: Int?
+    
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        self.returnedCode = response["Code"] as? Int
+        return true
     }
 }
 

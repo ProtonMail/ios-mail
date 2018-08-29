@@ -529,6 +529,11 @@ class ContactDataService {
     }
     
     /**
+     // TODO
+     Fetch contact emails
+    */
+    
+    /**
      get contact full details
      
      - Parameter contactID: contact id

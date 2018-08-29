@@ -35,57 +35,11 @@ struct ContactGroup
  */
 
 class ContactGroupsDataService {
-    /**
-     Fetch all contact groups using API call
-     
-     No email list is included in this fetching operation
-     
-     - Parameters:
-     - completionHandler: The fetched data is passed directly back to the caller by this closure
-     */
-    func fetchContactGroups(completionHandler: @escaping ([[String : Any]]?) -> Void)
-    {
-        let eventAPI = GetLabelsRequest(type: 2)
-        
-        eventAPI.call() {
-            task, response, hasError in
-            if response == nil {
-                // TODO: handle error
-                PMLog.D("fetchContactGroups error (response is nil): \(String(describing: task)) \(String(describing: response)) \(hasError)")
-            } else if let contactGroups = response?.labels {
-                // save
-                PMLog.D("fetchContactGroups result = \(contactGroups)")
-                
-                let context = sharedCoreDataService.newMainManagedObjectContext()
-                context.performAndWait() {
-                    do {
-                        let labels_out = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName,
-                                                                          fromJSONArray: contactGroups,
-                                                                          in: context)
-                        let error = context.saveUpstreamIfNeeded()
-                        if error == nil {
-                            if labels_out.count != contactGroups.count {
-                                PMLog.D("error: label insertions failed partially!")
-                            }
-                        } else {
-                            //TODO: error
-                            PMLog.D("error: \(String(describing: error))")
-                        }
-                    } catch let ex as NSError {
-                        PMLog.D("error: \(ex)")
-                    }
-                }
-                
-                completionHandler(contactGroups)
-            } else {
-                // TODO: handle error
-                PMLog.D("fetchContactGroups error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
-            }
-        }
-    }
     
     /**
      Fetch emails in a specific contact group
+     
+     TODO: eliminate this?
      */
     func fetchContactGroupEmailList(groupID: String, completionHandler: @escaping ([[String : Any]]) -> Void)
     {
@@ -112,62 +66,77 @@ class ContactGroupsDataService {
     
     func addContactGroup(name: String, color: String, completionHandler: @escaping ([String: Any]) -> Void)
     {
-        let eventAPI = CreateLabelRequest<CreateLabelRequestResponse>(name: name,
-                                                                      color: color,
-                                                                      type: 2)
-        
-        eventAPI.call() {
+        let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false, type: 2)
+        api.call() {
             task, response, hasError in
             if response == nil {
                 // TODO: handle error
-                PMLog.D("[Contact Group API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                PMLog.D("[Contact Group addContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
             } else if let newContactGroup = response?.label {
-                // TODO: save
-                PMLog.D("[Contact Group API] result = \(newContactGroup)")
+                // save
+                PMLog.D("[Contact Group addContactGroup API] result = \(newContactGroup)")
+                sharedLabelsDataService.addNewLabel(newContactGroup)
                 completionHandler(newContactGroup)
             } else {
                 // TODO: handle error
-                PMLog.D("[Contact Group API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                PMLog.D("[Contact Group addContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
             }
         }
     }
     
     func editContactGroup(groupID: String, name: String, color: String, completionHandler: @escaping () -> Void)
     {
-        let eventAPI = UpdateLabelRequest(id: groupID, name: name, color: color)
+        let eventAPI = UpdateLabelRequest<UpdateLabelRequestResponse>(id: groupID, name: name, color: color)
         
         eventAPI.call() {
             task, response, hasError in
             if response == nil {
                 // TODO: handle error
-                PMLog.D("[Contact Group API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
-            } else if response != nil {
-                // TODO: save
-                PMLog.D("[Contact Group API] result = \(String(describing: response))")
+                PMLog.D("[Contact Group editContactGroup API] response nil error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+            } else if let updatedContactGroup = response?.label {
+                // save
+                PMLog.D("[Contact Group editContactGroup API] result = \(String(describing: updatedContactGroup))")
+                sharedLabelsDataService.addNewLabel(updatedContactGroup)
                 completionHandler()
             } else {
                 // TODO: handle error
-                PMLog.D("[Contact Group API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                PMLog.D("[Contact Group editContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
             }
         }
     }
     
     func deleteContactGroup(groupID: String, completionHandler: @escaping () -> Void)
     {
-        let eventAPI = DeleteLabelRequest(lable_id: groupID)
+        let eventAPI = DeleteLabelRequest<DeleteLabelRequestResponse>(lable_id: groupID)
         
         eventAPI.call() {
             task, response, hasError in
             if response == nil {
                 // TODO: handle error
-                PMLog.D("[Contact Group API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
-            } else if response != nil {
-                // TODO: save
-                PMLog.D("[Contact Group API] result = \(String(describing: response))")
-                completionHandler()
+                PMLog.D("[Contact Group deleteContactGroup API] response nil error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+            } else if let returnedCode = response?.returnedCode {
+                PMLog.D("[Contact Group deleteContactGroup API] result = \(String(describing: returnedCode))")
+                
+                if returnedCode == 1000 {
+                    // successfully deleted on the server
+                    if let context = sharedCoreDataService.mainManagedObjectContext {
+                        context.performAndWait {
+                            () -> Void in
+                            let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
+                            if let label = label {
+                                context.delete(label)
+                            }
+                            return
+                        }
+                    }
+                    
+                    completionHandler()
+                } else {
+                    // TODO: handle error
+                }
             } else {
                 // TODO: handle error
-                PMLog.D("[Contact Group API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                PMLog.D("[Contact Group deleteContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
             }
         }
     }
@@ -180,14 +149,14 @@ class ContactGroupsDataService {
             task, response, hasError in
             if response == nil {
                 // TODO: handle error
-                PMLog.D("[Contact Group API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                PMLog.D("[Contact Group addEmailsToContactGroup API] response nil error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
             } else if response != nil {
                 // TODO: save
-                PMLog.D("[Contact Group API] result = \(String(describing: response))")
+                PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
                 completionHandler()
             } else {
                 // TODO: handle error
-                PMLog.D("[Contact Group API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                PMLog.D("[Contact Group addEmailsToContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
             }
         }
     }
@@ -200,14 +169,14 @@ class ContactGroupsDataService {
             task, response, hasError in
             if response == nil {
                 // TODO: handle error
-                PMLog.D("[Contact Group API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                PMLog.D("[Contact Group removeEmailsFromContactGroup API] response nil error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
             } else if response != nil {
                 // TODO: save
-                PMLog.D("[Contact Group API] result = \(String(describing: response))")
+                PMLog.D("[Contact Group removeEmailsFromContactGroup API] result = \(String(describing: response))")
                 completionHandler()
             } else {
                 // TODO: handle error
-                PMLog.D("[Contact Group API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                PMLog.D("[Contact Group removeEmailsFromContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
             }
         }
     }

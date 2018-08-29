@@ -10,5 +10,8 @@ import Foundation
 
 class ContactGroupsViewModelImpl: ContactGroupsViewModel
 {
-    
+    func fetchAllContactGroup()
+    {
+        sharedLabelsDataService.fetchLabels(type: 2)
+    }
 }

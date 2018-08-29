@@ -32,8 +32,15 @@ class LabelsDataService {
         }
     }
     
-    func fetchLabels() {
-        let eventAPI = GetLabelsRequest()
+    /**
+     Fetch all contact groups using API call
+     
+     No email list is included in this fetching operation
+     
+     - Parameter type: type 1 is for message labels, type 2 is for contact groups
+     */
+    func fetchLabels(type: Int = 1) {
+        let eventAPI = GetLabelsRequest(type: type)
         eventAPI.call() { task, response, hasError in
             if response == nil {
                 //TODO:: error
@@ -46,7 +53,7 @@ class LabelsDataService {
                         let error = context.saveUpstreamIfNeeded()
                         if error == nil {
                             if labels_out.count != labels.count {
-                               PMLog.D("error: labels insert partial failed!")
+                               PMLog.D("error: label insertions failed partially!")
                             }
                         } else {
                             //TODO:: error

@@ -22,6 +22,7 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
     var viewModel: ContactGroupsViewModel!
     let kToContactGroupDetailSegue: String = "toContactGroupDetailSegue"
     var fetchedContactGroupResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
+    var refreshControl: UIRefreshControl!
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func cancelButton(_ sender: UIBarButtonItem) {
@@ -42,6 +43,7 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
         
         // TODO: how to update remotely?
         fetchedContactGroupResultsController = sharedLabelsDataService.fetchedResultsController(.contactGroup)
+        fetchedContactGroupResultsController?.delegate = self
         if let fetchController = fetchedContactGroupResultsController {
             do {
                 try fetchController.performFetch()
@@ -49,6 +51,23 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
                 PMLog.D("fetchedContactGroupResultsController Error: \(error.userInfo)")
             }
         }
+        
+        // refresh control
+        refreshControl = UIRefreshControl()
+        refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
+        refreshControl.addTarget(self,
+                                 action: #selector(fireFetch),
+                                 for: UIControlEvents.valueChanged)
+        tableView.addSubview(self.refreshControl)
+        refreshControl.tintColor = UIColor.gray
+        refreshControl.tintColorDidChange()
+    }
+    
+    @objc func fireFetch() {
+        self.viewModel.fetchAllContactGroup()
+        
+        // TODO: use completion handler for ending this refreshing action
+        self.refreshControl.endRefreshing()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -122,13 +141,26 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
         tableView.endUpdates()
     }
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+        print("Here!!!")
         switch type {
         case .insert:
-            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+            print("Insert")
+            if let newIndexPath = newIndexPath {
+                PMLog.D("Section: \(newIndexPath.section) Row: \(newIndexPath.row) ")
+                tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+            }
         case .delete:
-            tableView.deleteRows(at: [indexPath!], with: .automatic)
+            print("Delete")
+            if let indexPath = indexPath {
+                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+            }
         case .update:
+            print("Update")
             let cell = tableView.cellForRow(at: indexPath!) as! UITableViewCell
             if let fetchedController = fetchedContactGroupResultsController {
                 if let label = fetchedController.object(at: indexPath!) as? Label {
@@ -139,8 +171,9 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                 }
             }
         case .move:
-            tableView.deleteRows(at: [indexPath!], with: .automatic)
-            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+//            tableView.deleteRows(at: [indexPath!], with: .automatic)
+//            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+            return
         }
     }
 }

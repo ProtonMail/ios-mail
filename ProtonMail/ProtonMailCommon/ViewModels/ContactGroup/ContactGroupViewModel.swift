@@ -9,5 +9,5 @@
 import Foundation
 
 protocol ContactGroupsViewModel {
-    
+    func fetchAllContactGroup()
 }
