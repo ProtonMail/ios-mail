@@ -85,6 +85,39 @@ class CreateNewUser : ApiRequest<ApiResponse> {
     }
 }
 
+final class GetPaymentMethodsRequest: ApiRequestNew<GetPaymentMethodsResponse> {
+    override func method() -> APIService.HTTPMethod {
+        return .get
+    }
+    
+    override func path() -> String {
+        return PaymentsAPI.path + "/methods"
+    }
+    
+    override func apiVersion() -> Int {
+        return PaymentsAPI.v_plans
+    }
+}
+
+final class GetPaymentMethodsResponse: ApiResponse {
+    var methods: [PaymentMethod]?
+    
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        PMLog.D(response.json(prettyPrinted: true))
+        do {
+            let data = try JSONSerialization.data(withJSONObject: response["PaymentMethods"] as Any, options: [])
+            let decoder = JSONDecoder()
+            // this strategy is decapitalizing first letter of response's labels to get appropriate name of the ServicePlanDetails object
+            decoder.keyDecodingStrategy = .custom(self.decapitalizeFirstLetter)
+            self.methods = try decoder.decode(Array<PaymentMethod>.self, from: data)
+            return true
+        } catch let error {
+            PMLog.D("Failed to parse PaymentMethods: \(error.localizedDescription)")
+            return false
+        }
+    }
+}
+
 final class GetSubscriptionRequest: ApiRequestNew<GetSubscriptionResponse> {
     override func method() -> APIService.HTTPMethod {
         return .get
@@ -103,10 +136,6 @@ final class GetSubscriptionResponse: ApiResponse {
     var plans: [ServicePlanDetails]?
     var start: Date?
     var end: Date?
-    
-    override func ParseResponseError(_ response: [String : Any]!) -> Bool {
-        return super.ParseResponseError(response)
-    }
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
@@ -147,22 +176,30 @@ final class GetServicePlansRequest: ApiRequestNew<GetServicePlansResponse> {
     }
 }
 
-final class GetServicePlansResponse: ApiResponse {
-    private struct Key : CodingKey {
+extension ApiResponse {
+    fileprivate struct Key : CodingKey {
         var stringValue: String
         var intValue: Int?
-
+        
         init?(stringValue: String) {
             self.stringValue = stringValue
             self.intValue = nil
         }
-
+        
         init?(intValue: Int) {
             self.stringValue = "\(intValue)"
             self.intValue = intValue
         }
     }
     
+    fileprivate func decapitalizeFirstLetter(_ path: [CodingKey]) -> CodingKey {
+        let original: String = path.last!.stringValue
+        let uncapitalized = original.prefix(1).lowercased() + original.dropFirst()
+        return Key(stringValue: uncapitalized) ?? path.last!
+    }
+}
+
+final class GetServicePlansResponse: ApiResponse {
     internal var availableServicePlans: [ServicePlanDetails]?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
@@ -171,11 +208,7 @@ final class GetServicePlansResponse: ApiResponse {
             let data = try JSONSerialization.data(withJSONObject: response["Plans"] as Any, options: [])
             let decoder = JSONDecoder()
             // this strategy is decapitalizing first letter of response's labels to get appropriate name of the ServicePlanDetails object
-            decoder.keyDecodingStrategy = .custom({ (_ path:[CodingKey]) -> CodingKey in
-                let original: String = path.last!.stringValue
-                let uncapitalized = original.prefix(1).lowercased() + original.dropFirst()
-                return Key(stringValue: uncapitalized) ?? path.last!
-            })
+            decoder.keyDecodingStrategy = .custom(self.decapitalizeFirstLetter)
             self.availableServicePlans = try decoder.decode(Array<ServicePlanDetails>.self, from: data)
             return true
         } catch let error {

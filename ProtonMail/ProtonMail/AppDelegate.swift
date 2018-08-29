@@ -169,6 +169,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         ServicePlanDataService.updateServicePlans()
         
         sharedPushNotificationService.setLaunchOptions(launchOptions)
+        StoreKitManager.default.subscribeToPaymentQueue()
+        StoreKitManager.default.updateAvailableProductsList()
         
         return true
     }

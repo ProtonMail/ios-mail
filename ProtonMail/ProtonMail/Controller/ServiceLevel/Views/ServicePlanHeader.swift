@@ -20,12 +20,18 @@ class ServicePlanHeader: UIView {
         self.init(frame: .zero)
         self.icon.image = image
         self.subtitle.text = title
+        self.icon.isAccessibilityElement = false
+        self.subtitle.isAccessibilityElement = false
+        self.subicon.isAccessibilityElement = false
+        self.isAccessibilityElement = true
         
         if let subicon = subicon {
             self.subicon.text = subicon.0
             self.subicon.textColor = subicon.1
+            self.accessibilityLabel = "ProtonMail " + subicon.0 + ": " + (title ?? "")
         } else {
             self.subicon.isHidden = true
+            self.accessibilityLabel = title
         }
     }
     
