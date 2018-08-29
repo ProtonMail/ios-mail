@@ -60,7 +60,7 @@ class PlanDetailsDataSource: ServiceLevelDataSource {
         var acknowladgements: Section<UIView>?
         if let details = plan.fetchDetails() {
             capabilities = ServiceLevelDataFactory.makeCapabilitiesSection(plan: plan, details: details)
-            if plan == .plus, ServicePlanDataService.currentSubscription?.plan == .free {
+            if plan == .plus, ServicePlanDataService.shared.currentSubscription?.plan == .free {
                 footer = ServiceLevelDataFactory.makeBuyButtonSection(plan: plan, delegate: self.delegate)
                 acknowladgements = ServiceLevelDataFactory.makeAcknowladgementsSection()
             } else {
@@ -90,7 +90,7 @@ class PlanAndLinksDataSource: ServiceLevelDataSource {
     
     private func setup(with subscription: Subscription) {
         var buyLink: Section<UIView>?
-        if let currentSubscription = ServicePlanDataService.currentSubscription,
+        if let currentSubscription = ServicePlanDataService.shared.currentSubscription,
             subscription.plan == .plus, // Plus description opened
             currentSubscription.plan == subscription.plan, // currently subscribed to Plus
             !currentSubscription.hadOnlinePayments, // did pay only via apple

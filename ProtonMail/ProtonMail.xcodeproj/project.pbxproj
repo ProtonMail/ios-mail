@@ -20,6 +20,7 @@
 		014B1FAC7C4819E15893D6B73A0D846F /* String+Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8401423E8FE838D3E637E3CAB0244D4 /* String+Alert+Extension.swift */; };
 		0161C982609A07AA9260F63437DCD50C /* Localization+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DDB6CF6C1147506E3B019ED574306E5 /* Localization+Constants.swift */; };
 		01D251FA524D6C9913EF31A24A18669A /* MailboxRateReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51839FC05409900589885A21EB220CEA /* MailboxRateReviewCell.xib */; };
+		026FDC523CDCC9EB159410811B46433B /* PaymentsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CC344BC6333396483DB05F9F1516D8 /* PaymentsAPI.swift */; };
 		02B5904D049F6EC59AC0B3A96F01FDFD /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942B9E881D2DF16816299A285CD5CDFC /* Array+Extension.swift */; };
 		02FA2D4C14FAB65F01A26CF51368DF7E /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BB002B5675ED1988C1C86F59FDB410DA /* ProtonMail.xcdatamodeld */; };
 		030575AB0D61889496C2F7F336358FC2 /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA73A35D604465146787543338B179D1 /* UIColor+ProtonMail.swift */; };
@@ -1344,6 +1345,7 @@
 		F4C882FD24C154111436466BE20A24CA /* ControllerDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D34AB48A191911B8491117634B416 /* ControllerDefined.swift */; };
 		F4DF1DC2F9464756F4BFD7937790DA97 /* APIServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2293514215254B488A7DC1E65D59FF02 /* APIServiceRequest.swift */; };
 		F4EF8D76F44033244254F81380805D58 /* MonitorSavesDataService+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DE22D2A52126D2B633EBEDD802C63B /* MonitorSavesDataService+Extension.swift */; };
+		F5066CEC44221A9F175B29EA151550B8 /* PaymentsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CC344BC6333396483DB05F9F1516D8 /* PaymentsAPI.swift */; };
 		F50F324AF1FBCB686D9B1F8312137C8C /* AttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F12D0ED95387B9A6C5AE7FAF2D3C6E /* AttachmentProvider.swift */; };
 		F53FC0B0FDD74245E5D948E63268C229 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C05C331E3651D8B62311F133631FA6 /* WebViewModel.swift */; };
 		F56312D8EF122FD87ADD73E1D7269703 /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7540794E9C555FB8DDB5720141F8D48E /* ImageProcessor.swift */; };
@@ -2066,6 +2068,7 @@
 		F603C9D7A4E9C4372230A199F1AC898E /* AnyImagePickerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyImagePickerDelegate.swift; sourceTree = "<group>"; };
 		F6917129BE6C04FCCBA484AC2473D19D /* FeedbackItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackItem.swift; sourceTree = "<group>"; };
 		F70C88329B41BBB3CE7F3D35E2402879 /* Attachments.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Attachments.storyboard; sourceTree = "<group>"; };
+		F8CC344BC6333396483DB05F9F1516D8 /* PaymentsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsAPI.swift; sourceTree = "<group>"; };
 		F8E2C32F442C17CA83E3164BCBF65585 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		F9A652392048271130CA3D52CD685F9B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F9B142492E7764F95AE62A0DC0372EAB /* MessageQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageQueue.swift; sourceTree = "<group>"; };
@@ -3285,6 +3288,7 @@
 				79805F58CE1B891A44279FF30CBE677A /* MessageAPI+SendType.swift */,
 				65E79798EF9EFDC06A9602AEDA36F519 /* MessageAPI.swift */,
 				EC8C88CF997A748C2D11C0419571595A /* OrganizationsAPI.swift */,
+				F8CC344BC6333396483DB05F9F1516D8 /* PaymentsAPI.swift */,
 				6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */,
 				7627FEBF2F33A575273ACF9A8A0AA738 /* SettingsAPI.swift */,
 				D696BC7A9D9CECB6B6E9876B61032680 /* TestAPI.swift */,
@@ -4709,6 +4713,7 @@
 				EDA34469508C3DCC374989DA1E621103 /* PMWebView.swift in Sources */,
 				36AE3CE81ADCD340524A24486FC29E29 /* Part.swift in Sources */,
 				39E7036920DA6AE8538EB9A3FFAF5BA7 /* PasswordUtils.swift in Sources */,
+				026FDC523CDCC9EB159410811B46433B /* PaymentsAPI.swift in Sources */,
 				1AEBBCD584C000FD35A6D8196CA95A5A /* PersistentQueue.swift in Sources */,
 				71D7C05A298BB27201089F4C7EFFF919 /* PhoneVerifyViewController.swift in Sources */,
 				14346E6FF9EB1D75199D8F7DAF30E2C6 /* PhotoAttachmentProvider.swift in Sources */,
@@ -5107,6 +5112,7 @@
 				0AD99F38855CD71A83F1626597D6C604 /* PMWebView.swift in Sources */,
 				764E2C83C9348ACA7169C7E4CCB81CDF /* Part.swift in Sources */,
 				76EF05856934B8F38AC34B36AC4E9CAF /* PasswordUtils.swift in Sources */,
+				F5066CEC44221A9F175B29EA151550B8 /* PaymentsAPI.swift in Sources */,
 				1DA650F751113860992907168BC4771D /* PersistentQueue.swift in Sources */,
 				9B34E04299C693889D43A0863B540F40 /* PhoneVerifyViewController.swift in Sources */,
 				B6F07EED67866C6F4CB3F4E79F51DDCD /* PhotoAttachmentProvider.swift in Sources */,

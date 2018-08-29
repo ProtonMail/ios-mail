@@ -31,9 +31,20 @@ class PlanDetailsViewController: ServiceLevelViewControllerBase, Coordinated {
 
 class ServiceLevelViewController: ServiceLevelViewControllerBase, Coordinated {
     typealias CoordinatorType = ServiceLevelCoordinator
+    private var subscriptionChanges: NSKeyValueObservation?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.subscriptionChanges = ServicePlanDataService.shared.observe(\ServicePlanDataService.currentSubscription) { [weak self] shared, change in
+            guard let newerSubscription = shared.currentSubscription else { return }
+            self?.setup(with: newerSubscription)
+            self?.collectionView?.reloadData()
+        }
+    }
     
     func setup(with subscription: Subscription) {
-        self.dataSource = PlanAndLinksDataSource(delegate: self, subscription: ServicePlanDataService.currentSubscription)
+        self.dataSource = PlanAndLinksDataSource(delegate: self, subscription: ServicePlanDataService.shared.currentSubscription)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -98,9 +109,18 @@ extension ServiceLevelViewControllerBase: ServiceLevelDataSourceDelegate {
         guard let username = sharedUserDataService.username else {
             return
         }
-        let successCompletion: ()->Void = {}
-        let errorCompletion: (Error)->Void = {_ in }
-        let deferredCompletion: ()->Void = {}
+        let successCompletion: ()->Void = {
+            self.navigationController?.popViewController(animated: true)
+        }
+        let errorCompletion: (Error)->Void = { error in
+            let alert = UIAlertController(title: "Error occured", message: error.localizedDescription, preferredStyle: .alert)
+            alert.addAction(.init(title: LocalString._general_ok_action, style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        let deferredCompletion: ()->Void = {
+            
+        }
+        
         StoreKitManager.default.purchaseProduct(withId: id, username: username, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
     }
     

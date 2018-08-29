@@ -15,19 +15,10 @@ enum ServicePlan: String {
     case visionary = "visionary"
     
     func fetchDetails() -> ServicePlanDetails? {
-        return ServicePlanDataService.detailsOfServicePlan(coded: self.rawValue)
+        return ServicePlanDataService.shared.detailsOfServicePlan(coded: self.rawValue)
     }
     
-    var backendId: String {
-        switch self {
-        case .free: return "" // FIXME
-        case .plus: return "ziWi-ZOb28XR4sCGFCEpqQbd1FITVWYfTfKYUmV_wKKR3GsveN4HZCh9er5dhelYylEp-fhjBbUPDMHGU699fw=="
-        case .pro: return "rDox3cZuqa4_sMMlxcVZg8pCaUQsMN3IrOLk9kBtO8tZ6t8hiqFwCRIAM09A8U9a0HNNlrTgr8CzXKce58815A=="
-        case .visionary: return "m-dPNuHcP8N4xfv6iapVg2wHifktAD1A1pFDU95qo5f14Vaw8I9gEHq-3GACk6ef3O12C3piRviy_D43Wh7xxQ=="
-        }
-    }
-    
-    // FIXME: localization, colors
+    // FIXME: localization
     var subheader: (String, UIColor) {
         switch self {
         case .free: return ("Free", UIColor.ProtonMail.ServicePlanFree)
@@ -50,7 +41,7 @@ enum ServicePlan: String {
     var storeKitProductId: String? {
         switch self {
         case .free, .pro, .visionary: return nil
-        case .plus: return "Test_ProtonMail_Plus_3" // FIXME: use non-test id from AppstroreConnect
+        case .plus: return "iOS_ProtonMail_Plus_1_year"
         }
     }
     
@@ -62,12 +53,12 @@ enum ServicePlan: String {
     }
 }
 
-struct Subscription: Codable {
+class Subscription: NSObject, Codable {
     var plan: ServicePlan {
         return self.planDetails?.compactMap({ ServicePlan(rawValue: $0.name) }).first ?? .free
     }
     var details: ServicePlanDetails {
-        return self.planDetails?.merge() ?? ServicePlanDataService.defaultPlanDetails ?? ServicePlanDetails(amount: 0, currency: "", cycle: 0, features: 0, iD: "", maxAddresses: 0, maxDomains: 0, maxMembers: 0, maxSpace: 0, maxVPN: 0, name: "", quantity: 0, services: 0, title: "", type: 0)
+        return self.planDetails?.merge() ?? ServicePlanDataService.shared.defaultPlanDetails ?? ServicePlanDetails(amount: 0, currency: "", cycle: 0, features: 0, iD: "", maxAddresses: 0, maxDomains: 0, maxMembers: 0, maxSpace: 0, maxVPN: 0, name: "", quantity: 0, services: 0, title: "", type: 0)
     }
     var hadOnlinePayments: Bool {
         guard let allMethods = self.paymentMethods else {
@@ -76,8 +67,17 @@ struct Subscription: Codable {
         return allMethods.map { $0.type }.contains(.card)
     }
     
-    let planDetails: [ServicePlanDetails]?
+    init(start: Date?, end: Date?, planDetails: [ServicePlanDetails]?, paymentMethods: [PaymentMethod]?) {
+        self.start = start
+        self.end = end
+        self.planDetails = planDetails
+        self.paymentMethods = paymentMethods
+        super.init()
+    }
+    
+    
     let start, end: Date?
+    private let planDetails: [ServicePlanDetails]?
     var paymentMethods: [PaymentMethod]?
 }
 
