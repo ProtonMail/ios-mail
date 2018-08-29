@@ -16,8 +16,7 @@ class StoreKitManager: NSObject {
         super.init()
     }
     
-    private var productIds = Set(["Test_ProtonMail_Plus_3",
-                                  "iOS_ProtonMail_Plus_1_year"])
+    private var productIds = Set(["iOS_ProtonMail_Plus_1_year_consumable"])
     private var availableProducts: [SKProduct] = []
     private var request: SKProductsRequest!
     
@@ -85,15 +84,15 @@ class StoreKitManager: NSObject {
         SKPaymentQueue.default().add(payment)
     }
     
-    enum Errors: Error {
+    enum Errors: LocalizedError {
         case unavailableProduct
         case recieptLost
         case haveTransactionOfAnotherUser
         case alreadyPurchasedPlanDoesNotMatchBackend
         
-        var localizedDescription: String {
+        var errorDescription: String? {
             switch self {
-            case .unavailableProduct: return "Failed to get list of available products from AppStore"
+            case .unavailableProduct: return "Failed to get list of available products from AppStore."
             case .recieptLost: return "AppStore receipt lost. Please contact support if your plan was not activated."
             case .haveTransactionOfAnotherUser: return "Another user have unfinished in-app purchases on this device. Please, login with that user so we'll be able to complete the purchase and activate the plan."
             case .alreadyPurchasedPlanDoesNotMatchBackend: return "We were not available to match AppStore product with products on our server. Please, contact support."
