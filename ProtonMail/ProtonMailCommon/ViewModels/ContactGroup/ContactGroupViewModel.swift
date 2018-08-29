@@ -9,10 +9,5 @@
 import Foundation
 
 protocol ContactGroupsViewModel {
-    var contactGroupsViewControllerDelegate: ContactGroupsViewModelDelegate? { get set }
     
-    func fetchContactGroups()
-    
-    func getNumberOfRowsInSection() -> Int
-    func getContactGroupData(at indexPath: IndexPath) -> ContactGroup?
 }

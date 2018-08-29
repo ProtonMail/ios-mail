@@ -17,7 +17,6 @@ import Foundation
 class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     var state: ContactGroupEditViewControllerState
     var contactGroup: ContactGroup
-    var contactGroupEditViewDelegate: ContactGroupsViewModelDelegate!
     var refreshHandler: () -> Void
     var tableContent: [[ContactGroupTableCellType]]
     var allEmails: [Email]
@@ -124,8 +123,6 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                     
                     self.resetTableContent()
                     self.tableContent(addEmailWithCount: list.count)
-                    
-                    self.contactGroupEditViewDelegate.updated()
                 }
                 
                 sharedContactGroupsDataService.fetchContactGroupEmailList(groupID: contactGroupID,
@@ -302,8 +299,6 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         } else {
             contactGroup.color = newColor
         }
-        
-        contactGroupEditViewDelegate.updated()
     }
     
     /* table operation */
@@ -333,7 +328,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      
      - Parameter indexPath: the indexPath that is asking for data
      - Returns: a tuple of email name and email address
-    */
+     */
     func getEmail(at indexPath: IndexPath) -> (String, String) {
         // TODO: precondition, all emails must be new enough!
         

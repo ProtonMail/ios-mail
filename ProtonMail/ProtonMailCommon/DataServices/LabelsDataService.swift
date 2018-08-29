@@ -16,6 +16,7 @@ enum LabelFetchType : Int {
     case all = 0
     case label = 1
     case folder = 2
+    case contactGroup = 3
 }
 
 class LabelsDataService {
@@ -72,6 +73,8 @@ class LabelsDataService {
                 fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
             case .label:
                 fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+            case .contactGroup:
+                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 2)", "(?!^\\d+$)^.+$", Label.Attributes.type)
             }
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)

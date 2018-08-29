@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 /*
  This is a temporary view. This should be integrate into the contact VC.
@@ -20,7 +21,7 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupsViewModel!
     let kToContactGroupDetailSegue: String = "toContactGroupDetailSegue"
-    
+    var fetchedContactGroupResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func cancelButton(_ sender: UIBarButtonItem) {
@@ -39,24 +40,30 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
         
         tableView.noSeparatorsBelowFooter()
         
-        viewModel.fetchContactGroups()
-        viewModel.contactGroupsViewControllerDelegate = self
+        // TODO: how to update remotely?
+        fetchedContactGroupResultsController = sharedLabelsDataService.fetchedResultsController(.contactGroup)
+        if let fetchController = fetchedContactGroupResultsController {
+            do {
+                try fetchController.performFetch()
+            } catch let error as NSError {
+                PMLog.D("fetchedContactGroupResultsController Error: \(error.userInfo)")
+            }
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToContactGroupDetailSegue {
             let contactGroupEditViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
-            let contactGroup = sender as! ContactGroup
-
+            let contactGroup = sender as! Label
+            
             let refreshHandler = {
                 () -> Void in
-                
-                self.viewModel.fetchContactGroups()
+                return
             }
             
             sharedVMService.contactGroupEditViewModel(contactGroupEditViewController,
                                                       state: .edit,
-                                                      contactGroupID: contactGroup.ID,
+                                                      contactGroupID: contactGroup.labelID,
                                                       name: contactGroup.name,
                                                       color: contactGroup.color,
                                                       refreshHandler: refreshHandler)
@@ -71,16 +78,22 @@ extension ContactGroupsViewController: UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.getNumberOfRowsInSection()
+        if let fetchedController = fetchedContactGroupResultsController {
+            return fetchedController.fetchedObjects?.count ?? 0
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "ContactGroupCell", for: indexPath)
         
-        if let data = viewModel.getContactGroupData(at: indexPath), let name = data.name {
-            cell.textLabel?.text = name
-        } else {
-            cell.textLabel?.text = "Error in retrieving contact group name"
+        if let fetchedController = fetchedContactGroupResultsController {
+            if let label = fetchedController.object(at: indexPath) as? Label {
+                cell.textLabel?.text = label.name
+            } else {
+                // TODO; better error handling
+                cell.textLabel?.text = "Error in retrieving contact group name in core data"
+            }
         }
         
         return cell
@@ -91,15 +104,43 @@ extension ContactGroupsViewController: UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let contactGroup = viewModel.getContactGroupData(at: indexPath) {
-            self.performSegue(withIdentifier: kToContactGroupDetailSegue, sender: contactGroup)
+        
+        if let fetchedController = fetchedContactGroupResultsController {
+            self.performSegue(withIdentifier: kToContactGroupDetailSegue,
+                              sender: fetchedController.object(at: indexPath))
         }
     }
 }
 
-extension ContactGroupsViewController: ContactGroupsViewModelDelegate
+extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
 {
-    func updated() {
-        self.tableView.reloadData()
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+        case .delete:
+            tableView.deleteRows(at: [indexPath!], with: .automatic)
+        case .update:
+            let cell = tableView.cellForRow(at: indexPath!) as! UITableViewCell
+            if let fetchedController = fetchedContactGroupResultsController {
+                if let label = fetchedController.object(at: indexPath!) as? Label {
+                    cell.textLabel?.text = label.name
+                } else {
+                    // TODO: better error handling
+                    cell.textLabel?.text = "Error in retrieving contact group name in core data"
+                }
+            }
+        case .move:
+            tableView.deleteRows(at: [indexPath!], with: .automatic)
+            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+        }
     }
 }

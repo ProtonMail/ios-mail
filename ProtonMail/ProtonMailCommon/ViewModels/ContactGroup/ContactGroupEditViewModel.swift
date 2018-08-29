@@ -21,9 +21,7 @@ enum ContactGroupTableCellType
     case error
 }
 
-protocol ContactGroupEditViewModel {
-    var contactGroupEditViewDelegate: ContactGroupsViewModelDelegate! { get set }
-    
+protocol ContactGroupEditViewModel {    
     // title
     func getViewTitle() -> String
     func getContactGroupName() -> String

@@ -73,42 +73,43 @@ class ContactEmailsRequest<T: ApiResponse>: ApiRequest<T> {
     }
 }
 
-
+// TODO: performance enhancement?
 class ContactEmailsResponse: ApiResponse {
     var total : Int = -1
-    var contacts : [[String : Any]] = []
+    var contacts : [[String : Any]] = [] // [["ID": ..., "Name": ..., "ContactEmails": ...], ...]
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
         PMLog.D("[Contact] Get contact emails response \(response)")
         
         self.total = response?["Total"] as? Int ?? -1
-        if let tempContacts = response?["ContactEmails"] as? [[String : Any]] {
-            for contact in tempContacts {
-                if let contactID = contact["ContactID"] as? String, let name = contact["Name"] as? String {
+        if let tempContactEmails = response?["ContactEmails"] as? [[String : Any]] {
+            for email in tempContactEmails { // for every email in ContactEmails
+                if let contactID = email["ContactID"] as? String, let name = email["Name"] as? String {
+                    // we put emails that is under the same ContactID together
                     var found = false
                     for (index, var c) in contacts.enumerated() {
-                        if let obj = c["ID"] as? String, obj == contactID {
+                        if let obj = c["ID"] as? String, obj == contactID { // same contactID
                             found = true
                             if var emails = c["ContactEmails"] as? [[String : Any]] {
-                                emails.append(contact)
+                                emails.append(email) // insert email
                                 c["ContactEmails"] = emails
                             } else {
-                                c["ContactEmails"] = [contact]
+                                c["ContactEmails"] = [email]
                             }
                             contacts[index] = c
                         }
                     }
                     if !found {
-                        let newContact : [String : Any] = [
-                            "ID" : contactID,
-                            "Name" : name,
-                            "ContactEmails" : [contact]
+                        let newContact : [String : Any] = [ // this is contact object
+                            "ID" : contactID, // contactID
+                            "Name" : name, // contact name (email don't have their individual name, so it's contact's name?)
+                            "ContactEmails" : [email] // these are the email objects (contact has a relation to email)
                         ]
                         self.contacts.append(newContact)
                     }
                 }
             }
         }
-        PMLog.D( self.contacts.json(prettyPrinted: true) )
+        PMLog.D("contacts: \n \(self.contacts.json(prettyPrinted: true))")
         return true
     }
 }

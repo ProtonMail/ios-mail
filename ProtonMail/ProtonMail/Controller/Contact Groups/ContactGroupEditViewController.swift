@@ -37,7 +37,6 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.contactGroupEditViewDelegate = self
         viewModel.fetchContactGroupEmailList()
         
         prepareTitles()
@@ -165,9 +164,3 @@ extension ContactGroupEditViewController: UITableViewDelegate
     }
 }
 
-extension ContactGroupEditViewController: ContactGroupsViewModelDelegate
-{
-    func updated() {
-        loadDataIntoView()
-    }
-}

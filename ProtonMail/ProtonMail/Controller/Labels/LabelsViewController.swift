@@ -102,6 +102,8 @@ class LablesViewController : UIViewController {
             addLabelCenterConstraint.priority = UILayoutPriority(rawValue: 750)
             addLabelButton.isHidden = true
             addFolderButton.isHidden = false
+        case .contactGroup:
+            break
         }
         
         applyButtonText = viewModel.getApplyButtonText()
@@ -239,6 +241,8 @@ extension LablesViewController: UITableViewDelegate {
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) { () -> Void in
                     tableView.reloadData()
                 }
+            case .contactGroup:
+                break
             }
         }
         tableView.deselectRow(at: indexPath, animated: true)
