@@ -20,6 +20,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     var refreshHandler: () -> Void
     var tableContent: [[ContactGroupTableCellType]]
     var allEmails: [Email]
+    var delegate: ContactGroupEditViewModelDelegate!
     
     /* Setup code */
     init(state: ContactGroupEditViewControllerState = .create,
@@ -123,6 +124,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                     
                     self.resetTableContent()
                     self.tableContent(addEmailWithCount: list.count)
+                    
+                    self.delegate.update()
                 }
                 
                 sharedContactGroupsDataService.fetchContactGroupEmailList(groupID: contactGroupID,
@@ -299,6 +302,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         } else {
             contactGroup.color = newColor
         }
+        
+        self.delegate.update()
     }
     
     /* table operation */

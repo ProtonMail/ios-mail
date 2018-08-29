@@ -146,28 +146,24 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                     at indexPath: IndexPath?,
                     for type: NSFetchedResultsChangeType,
                     newIndexPath: IndexPath?) {
-        print("Here!!!")
         switch type {
         case .insert:
-            print("Insert")
             if let newIndexPath = newIndexPath {
-                PMLog.D("Section: \(newIndexPath.section) Row: \(newIndexPath.row) ")
                 tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
             }
         case .delete:
-            print("Delete")
             if let indexPath = indexPath {
                 tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
             }
         case .update:
-            print("Update")
-            let cell = tableView.cellForRow(at: indexPath!) as! UITableViewCell
-            if let fetchedController = fetchedContactGroupResultsController {
-                if let label = fetchedController.object(at: indexPath!) as? Label {
-                    cell.textLabel?.text = label.name
-                } else {
-                    // TODO: better error handling
-                    cell.textLabel?.text = "Error in retrieving contact group name in core data"
+            if let cell = tableView.cellForRow(at: indexPath!) {
+                if let fetchedController = fetchedContactGroupResultsController {
+                    if let label = fetchedController.object(at: indexPath!) as? Label {
+                        cell.textLabel?.text = label.name
+                    } else {
+                        // TODO: better error handling
+                        cell.textLabel?.text = "Error in retrieving contact group name in core data"
+                    }
                 }
             }
         case .move:

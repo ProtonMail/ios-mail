@@ -9,7 +9,7 @@
 import Foundation
 
 protocol ContactGroupEditViewModelDelegate {
-    func updated()
+    func update()
 }
 
 enum ContactGroupTableCellType
@@ -21,7 +21,10 @@ enum ContactGroupTableCellType
     case error
 }
 
-protocol ContactGroupEditViewModel {    
+protocol ContactGroupEditViewModel {
+    // delegate
+    var delegate: ContactGroupEditViewModelDelegate! { get set }
+    
     // title
     func getViewTitle() -> String
     func getContactGroupName() -> String
