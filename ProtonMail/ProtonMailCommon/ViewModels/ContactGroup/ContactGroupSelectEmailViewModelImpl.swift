@@ -26,10 +26,11 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
     /**
      Initializes a new ContactGroupSelectEmailViewModel
     */
-    init(groupID: String, selectedEmails: NSMutableSet, refreshHandler: @escaping () -> Void) {
+    init(groupID: String, selectedEmails: NSSet, refreshHandler: @escaping () -> Void) {
         self.allEmails = sharedContactDataService.allEmails()
         self.groupID = groupID
-        self.selectedEmails = selectedEmails
+        // TODO: fix this
+        self.selectedEmails = selectedEmails.mutableCopy() as! NSMutableSet
         self.refreshHandler = refreshHandler
     }
     

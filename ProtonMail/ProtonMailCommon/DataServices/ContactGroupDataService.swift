@@ -12,58 +12,13 @@ import Groot
 
 let sharedContactGroupsDataService = ContactGroupsDataService()
 
-// TODO: merge into Label struct
-struct ContactGroup
-{
-    var ID: String?
-    var name: String?
-    var color: String?
-    var emailIDs: [String]?
-    
-    init(ID: String? = nil, name: String? = nil, color: String? = nil, emailIDs: [String]? = nil)
-    {
-        self.ID = ID
-        self.name = name
-        self.color = color
-        self.emailIDs = emailIDs
-    }
-}
-
 /*
  Prototyping:
  1. Currently all of the operations are not saved.
  */
 
 class ContactGroupsDataService {
-    /**
-     Fetch emails in a specific contact group
-     
-     TODO: use var to send option in to decide whether we are making API calls?
-     */
-    func fetchContactGroupEmailList(groupID: String, completionHandler: @escaping ([[String : Any]]) -> Void)
-    {
-        // TODO: fetch from local cache
-        let eventAPI = ContactEmailsRequest<ContactEmailsResponseForContactGroup>(page: 0,
-                                                                                  pageSize: 100,
-                                                                                  labelID: groupID)
-        
-        eventAPI.call() {
-            task, response, hasError in
-            if response == nil {
-                // TODO: handle error
-                PMLog.D("fetchContactGroupEmailList response nil error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
-            } else if let emailList = response?.emailList {
-                // TODO: save
-                PMLog.D("fetchContactGroupEmailList result = \(emailList)")
-                completionHandler(emailList)
-            } else {
-                // TODO: handle error
-                PMLog.D("fetchContactGroupEmailList error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
-            }
-        }
-    }
-    
-    func addContactGroup(name: String, color: String, completionHandler: @escaping ([String: Any]) -> Void)
+    func addContactGroup(name: String, color: String, completionHandler: @escaping () -> Void)
     {
         let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false, type: 2)
         api.call() {
@@ -75,7 +30,7 @@ class ContactGroupsDataService {
                 // save
                 PMLog.D("[Contact Group addContactGroup API] result = \(newContactGroup)")
                 sharedLabelsDataService.addNewLabel(newContactGroup)
-                completionHandler(newContactGroup)
+                completionHandler()
             } else {
                 // TODO: handle error
                 PMLog.D("[Contact Group addContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")

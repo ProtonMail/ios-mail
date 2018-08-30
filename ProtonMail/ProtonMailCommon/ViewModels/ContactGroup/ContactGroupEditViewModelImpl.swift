@@ -16,9 +16,9 @@ import Foundation
  */
 class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     var state: ContactGroupEditViewControllerState
-    var contactGroup: ContactGroup
-    var tableContent: [[ContactGroupTableCellType]]
+    var contactGroup: Label! // TODO: fix this
     var allEmails: [Email]
+    var tableContent: [[ContactGroupTableCellType]]
     var delegate: ContactGroupEditViewModelDelegate!
     
     /* Setup code */
@@ -26,12 +26,13 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
          contactGroupID: String? = nil)
     {
         self.state = state
-        self.contactGroup = ContactGroup(ID: contactGroupID)
-        
+        self.allEmails = []
         self.tableContent = []
-        self.allEmails = sharedContactDataService.allEmails()
         
+        self.loadContactGroupFromCache(contactGroupID: contactGroupID)
         resetTableContent()
+        
+        print("After init \(self.contactGroup)")
     }
     
     func resetTableContent() {
@@ -41,6 +42,33 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         ]
         if self.state == .edit {
             self.tableContent.append([.deleteGroup])
+        }
+    }
+    
+    func loadContactGroupFromCache(contactGroupID: String?) {
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            switch self.state {
+            case .edit:
+                if let ID = contactGroupID,
+                    let label = Label.labelForLableID(ID,
+                                                      inManagedObjectContext: context) {
+                    self.contactGroup = label
+                    if let temp = self.contactGroup.emails.allObjects as? [Email] {
+                        self.allEmails = temp
+                    } else {
+                        // TODO: handle this gracefully
+                        fatalError("Can't convert to [email]")
+                    }
+                } else {
+                    // TODO: handle this gracefully
+                    fatalError("Can't load contact group data")
+                }
+            case .create:
+                self.contactGroup = Label(context: context)
+            }
+        } else {
+            // TODO: handle this gracefully
+            fatalError("Can't load contact group data")
         }
     }
     
@@ -60,242 +88,167 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     }
     
     func getContactGroupName() -> String {
-        if state == .edit {
-            if let groupName = contactGroup.name {
-                return groupName
-            }
-        }
-        return ""
+        return contactGroup.name
     }
     
     func getContactGroupID() -> String {
-        if state == .edit {
-            if let ID = contactGroup.ID {
-                return ID
-            }
-        }
-        return ""
+        return contactGroup.labelID
     }
     
-    func getCurrentColor() -> String? {
-        return self.contactGroup.color
-    }
-    
+    // TODO: default?
     func getCurrentColorWithDefault() -> String {
-        if let c = getCurrentColor() {
-            return c
-        }
-        return "#7272a7"
+        return contactGroup.color == "" ? ColorManager.defaultColor : contactGroup.color
     }
     
-    func getEmailIDsInContactGroup() -> NSMutableSet {
-        let result = NSMutableSet()
-        if let emailIDs = contactGroup.emailIDs {
-            result.addingObjects(from: emailIDs)
-        }
-        return result
+    func getEmailIDsInContactGroup() -> NSSet {
+        return contactGroup.emails
     }
     
     /* Data operation */
-    func fetchContactGroupEmailList() {
-        if state == .edit {
-            if let contactGroupID = contactGroup.ID {
-                let completionHandler = {
-                    (emailList: [[String: Any]]) -> Void in
-                    
-                    print("email list \(emailList)")
-                    var list: [String] = [String]()
-                    for email in emailList {
-                        if let emailID = email["ID"] as? String {
-                            list.append(emailID)
-                        } else {
-                            fatalError("API result decoding error")
-                        }
-                    }
-                    
-                    if list.count > 0 {
-                        self.contactGroup.emailIDs = list
-                    }
-                    
-                    self.resetTableContent()
-                    self.tableContent(addEmailWithCount: list.count)
-                    
-                    self.delegate.update()
-                }
-                
-                sharedContactGroupsDataService.fetchContactGroupEmailList(groupID: contactGroupID,
-                                                                          completionHandler: completionHandler)
-            } else {
-                PMLog.D("[Contact Group API] contact group ID is nil = \(contactGroup)")
-            }
-        }
-    }
-    
-    func getContactGroupDetail() -> ContactGroup {
-        return self.contactGroup
-    }
-    
-    func saveContactGroupDetail(name: String?, color: String?, emailList: [String]?) {
+    func saveContactGroupDetail(name: String, color: String, emailList: NSSet) {
         switch state {
         case .create:
-            let data = ContactGroup(name: name, color: color, emailIDs: emailList)
-            createContactGroupDetail(newContactGroup: data)
+            createContactGroupDetail(name: name, color: color, emailList: emailList)
         case .edit:
-            let data = ContactGroup(ID: contactGroup.ID,
-                                    name: name ?? contactGroup.name,
-                                    color: color ?? contactGroup.color,
-                                    emailIDs: emailList ?? contactGroup.emailIDs)
-            updateContactGroupDetail(editedContactGroup: data)
+            updateContactGroupDetail(name: name, color: color, emailList: emailList)
         }
     }
     
-    private func createContactGroupDetail(newContactGroup: ContactGroup) {
+    private func createContactGroupDetail(name: String,
+                                          color: String,
+                                          emailList: NSSet) {
         let completionHandler = {
-            (createdContactGroup: [String: Any]) -> Void in
-            
-            let ID = String(describing: createdContactGroup["ID"])
-            let name = String(describing: createdContactGroup["Name"])
-            let color = String(describing: createdContactGroup["Color"])
-            
-            self.contactGroup.ID = ID
-            self.contactGroup.name = name
-            self.contactGroup.color = color
-            
+            () -> Void in
             self.delegate.update()
         }
         
         // create contact group
-        if let name = newContactGroup.name, let color = newContactGroup.color {
-            sharedContactGroupsDataService.addContactGroup(name: name,
-                                                           color: color,
-                                                           completionHandler: completionHandler)
-        } else {
-            PMLog.D("[Contact Group API] not enough valid argument for creating the contact group = \(newContactGroup)")
-        }
+        // TODO: error (nil) check
+        sharedContactGroupsDataService.addContactGroup(name: name,
+                                                       color: color,
+                                                       completionHandler: completionHandler)
         
-        // add email IDs
-        if let emailList = newContactGroup.emailIDs {
-            addEmailsToContactGroup(emailList: emailList)
-        }
+        // TODO: add email IDs
+        //        if let emailList = newContactGroup.emailIDs {
+        //            addEmailsToContactGroup(emailList: emailList)
+        //        }
     }
     
-    private func updateContactGroupDetail(editedContactGroup: ContactGroup) {
+    private func updateContactGroupDetail(name: String,
+                                          color: String,
+                                          emailList: NSSet) {
         let completionHandler = {
             () -> Void in
-            
-            self.contactGroup.ID = editedContactGroup.ID
-            self.contactGroup.name = editedContactGroup.name
-            self.contactGroup.color = editedContactGroup.color
-            
             self.delegate.update()
         }
         
         // update contact group
-        if let groupID = editedContactGroup.ID,
-            let name = editedContactGroup.name,
-            let color = editedContactGroup.color {
-            sharedContactGroupsDataService.editContactGroup(groupID: groupID,
-                                                            name: name,
-                                                            color: color,
-                                                            completionHandler: completionHandler)
-        } else {
-            PMLog.D("[Contact Group API] not enough valid argument for creating the contact group = \(editedContactGroup)")
-        }
+        sharedContactGroupsDataService.editContactGroup(groupID: contactGroup.labelID,
+                                                        name: name,
+                                                        color: color,
+                                                        completionHandler: completionHandler)
         
         // update email IDs
-        let toRemove = contactGroup.emailIDs?.filter({
-            if editedContactGroup.emailIDs == nil {
-                return true
-            }
-            return editedContactGroup.emailIDs!.contains($0) == false
-        })
-        
-        let toAdd = editedContactGroup.emailIDs?.filter({
-            if contactGroup.emailIDs == nil {
-                return true
-            }
-            return contactGroup.emailIDs!.contains($0) == false
-        })
-        
-        if let data = toRemove {
-            removeEmailsFromContactGroup(emailList: data)
-        }
-        if let data = toAdd {
-            addEmailsToContactGroup(emailList: data)
-        }
-        
-        contactGroup.emailIDs = editedContactGroup.emailIDs
+        //        let toRemove = contactGroup.emailIDs?.filter({
+        //            if editedContactGroup.emailIDs == nil {
+        //                return true
+        //            }
+        //            return editedContactGroup.emailIDs!.contains($0) == false
+        //        })
+        //
+        //        let toAdd = editedContactGroup.emailIDs?.filter({
+        //            if contactGroup.emailIDs == nil {
+        //                return true
+        //            }
+        //            return contactGroup.emailIDs!.contains($0) == false
+        //        })
+        //
+        //        if let data = toRemove {
+        //            removeEmailsFromContactGroup(emailList: data)
+        //        }
+        //        if let data = toAdd {
+        //            addEmailsToContactGroup(emailList: data)
+        //        }
+        //
+        //        contactGroup.emailIDs = editedContactGroup.emailIDs
     }
     
     func deleteContactGroup() {
         let completionHandler = {
             () -> Void in
             
-            self.contactGroup = ContactGroup()
+            // TODO: handle self.contactGroup gracefully
             self.delegate.update()
         }
         
-        if let contactGroupID = contactGroup.ID {
-            sharedContactGroupsDataService.deleteContactGroup(groupID: contactGroupID, completionHandler: completionHandler)
-        } else {
-            PMLog.D("[Contact Group API] error deleting the contact group = \(self.contactGroup)")
-        }
+        sharedContactGroupsDataService.deleteContactGroup(groupID: contactGroup.labelID,
+                                                          completionHandler: completionHandler)
     }
     
-    func addEmailsToContactGroup(emailList: [String]) {
+    // TODO
+    func addEmailsToContactGroup(emailList: NSSet) {
         let completionHandler = {
             () -> Void in
             
-            if self.contactGroup.emailIDs == nil {
-                self.contactGroup.emailIDs = [String]()
-            }
-            
-            for email in emailList {
-                if self.contactGroup.emailIDs!.contains(email) == false {
-                    self.contactGroup.emailIDs!.append(email)
-                }
-            }
+            //            if self.contactGroup.emailIDs == nil {
+            //                self.contactGroup.emailIDs = [String]()
+            //            }
+            //
+            //            for email in emailList {
+            //                if self.contactGroup.emailIDs!.contains(email) == false {
+            //                    self.contactGroup.emailIDs!.append(email)
+            //                }
+            //            }
         }
         
-        if let contactGroupID = contactGroup.ID {
-            sharedContactGroupsDataService.addEmailsToContactGroup(groupID: contactGroupID,
-                                                                   emailList: emailList,
-                                                                   completionHandler: completionHandler)
+        let temp = emailList.allObjects as! [Email]
+        var emails = [String]()
+        for t in temp {
+            emails.append(t.email)
         }
+        
+        sharedContactGroupsDataService.addEmailsToContactGroup(groupID: contactGroup.labelID,
+                                                               emailList: emails,
+                                                               completionHandler: completionHandler)
     }
     
-    func removeEmailsFromContactGroup(emailList: [String]) {
+    // TODO
+    func removeEmailsFromContactGroup(emailList: NSSet) {
         let completionHandler = {
             () -> Void in
             
-            guard self.contactGroup.emailIDs != nil else {
-                return
-            }
-            
-            self.contactGroup.emailIDs = self.contactGroup.emailIDs!.filter({
-                if emailList.contains($0) {
-                    return false
-                }
-                return true
-            })
-            
-            if self.contactGroup.emailIDs!.count == 0 {
-                self.contactGroup.emailIDs = nil
-            }
+            //            guard self.contactGroup.emailIDs != nil else {
+            //                return
+            //            }
+            //
+            //            self.contactGroup.emailIDs = self.contactGroup.emailIDs!.filter({
+            //                if emailList.contains($0) {
+            //                    return false
+            //                }
+            //                return true
+            //            })
+            //
+            //            if self.contactGroup.emailIDs!.count == 0 {
+            //                self.contactGroup.emailIDs = nil
+            //            }
         }
         
-        if let contactGroupID = contactGroup.ID {
-            sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: contactGroupID,
-                                                                        emailList: emailList,
-                                                                        completionHandler: completionHandler)
+        let temp = emailList.allObjects as! [Email]
+        var emails = [String]()
+        for t in temp {
+            emails.append(t.email)
         }
+        
+        sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: contactGroup.labelID,
+                                                                    emailList: emails,
+                                                                    completionHandler: completionHandler)
     }
     
     func updateColor(newColor: String?) {
-        if newColor == nil {
-            // TODO: use default
-        } else {
+        if let newColor = newColor {
             contactGroup.color = newColor
+        } else {
+            // TODO: use default
         }
         
         self.delegate.update()
@@ -330,25 +283,11 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - Returns: a tuple of email name and email address
      */
     func getEmail(at indexPath: IndexPath) -> (String, String) {
-        // TODO: precondition, all emails must be new enough!
-        
         let index = indexPath.row - 1
-        guard contactGroup.emailIDs != nil else {
-            fatalError("Calculation error")
-        }
-        guard index < contactGroup.emailIDs!.count else {
+        guard index < allEmails.count else {
             fatalError("Calculation error")
         }
         
-        for email in allEmails {
-            print("email \(email.emailID)")
-            print("contact group emailID \(contactGroup.emailIDs![index])")
-            if email.emailID == contactGroup.emailIDs![index] {
-                return (email.name, email.email)
-            }
-        }
-        
-        fatalError("Invalid email ID error")
-        return ("Error", "Error")
+        return (allEmails[index].name, allEmails[index].email)
     }
 }

@@ -37,8 +37,6 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.fetchContactGroupEmailList()
-        
         viewModel.delegate = self
         
         prepareTitles()
@@ -61,9 +59,11 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     }
     
     @IBAction func saveAction(_ sender: UIBarButtonItem) {
-        viewModel.saveContactGroupDetail(name: contactGroupNameLabel.text,
+        // TODO: perform checking
+        // use return value maybe?
+        viewModel.saveContactGroupDetail(name: contactGroupNameLabel.text!,
                                          color: viewModel.getCurrentColorWithDefault(),
-                                         emailList: nil)
+                                         emailList: NSSet())
         
         // TODO: spinning while saving... (blocking)
         self.dismiss(animated: true, completion: nil)
@@ -78,12 +78,13 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                 self.viewModel.updateColor(newColor: newColor)
             }
             sharedVMService.contactGroupSelectColorViewModel(contactGroupSelectColorViewController,
-                                                             currentColor: viewModel.getCurrentColor(),
+                                                             currentColor: viewModel.getCurrentColorWithDefault(),
                                                              refreshHandler: refreshHandler)
         } else if segue.identifier == kToContactGroupSelectEmailSegue {
             let refreshHandler = {
                 () -> Void in
-                self.viewModel.fetchContactGroupEmailList()
+                
+                // TODO: take the new NSSet as a pass-in value?
             }
             
             let contactGroupSelectEmailViewController = segue.destination as! ContactGroupSelectEmailViewController

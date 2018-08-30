@@ -92,7 +92,7 @@ class ContactEmailsResponse: ApiResponse {
                             
                             return [
                                 "ID": labelID,
-                                "Type": 2
+                                "Type": 2 /* don't forget about it... */
                             ]
                         })
                         

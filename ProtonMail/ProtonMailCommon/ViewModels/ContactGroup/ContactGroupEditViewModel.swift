@@ -31,19 +31,16 @@ protocol ContactGroupEditViewModel {
     func getContactGroupID() -> String
     
     // fetch operations
-    func fetchContactGroupEmailList()
-    func getContactGroupDetail() -> ContactGroup
-    func getCurrentColor() -> String?
     func getCurrentColorWithDefault() -> String
-    func getEmailIDsInContactGroup() -> NSMutableSet
+    func getEmailIDsInContactGroup() -> NSSet
     
     // mutate operations
-    func addEmailsToContactGroup(emailList: [String])
-    func removeEmailsFromContactGroup(emailList: [String])
+    func addEmailsToContactGroup(emailList: NSSet)
+    func removeEmailsFromContactGroup(emailList: NSSet)
     func updateColor(newColor: String?)
     
     // create and edit
-    func saveContactGroupDetail(name: String?, color: String?, emailList: [String]?)
+    func saveContactGroupDetail(name: String, color: String, emailList: NSSet)
 
     // delete
     func deleteContactGroup()

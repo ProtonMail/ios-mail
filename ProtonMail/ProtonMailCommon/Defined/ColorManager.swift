@@ -17,4 +17,6 @@ struct ColorManager
         "#8989ac", "#cf7e7e", "#c793ca", "#9b94d1", "#a8c4d5",
         "#97c9c1", "#9db99f", "#c6cd97", "#e7d292", "#dfb286"
     ]
+    
+    static let defaultColor = ColorManager.forLabel[0]
 }
