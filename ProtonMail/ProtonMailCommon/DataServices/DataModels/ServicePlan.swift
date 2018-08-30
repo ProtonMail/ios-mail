@@ -15,7 +15,7 @@ enum ServicePlan: String {
     case visionary = "visionary"
     
     func fetchDetails() -> ServicePlanDetails? {
-        return ServicePlanDataService.shared.detailsOfServicePlan(coded: self.rawValue)
+        return ServicePlanDataService.shared.detailsOfServicePlan(named: self.rawValue)
     }
     
     // FIXME: localization

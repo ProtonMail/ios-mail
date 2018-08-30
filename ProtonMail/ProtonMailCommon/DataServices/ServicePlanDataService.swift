@@ -9,40 +9,51 @@
 import Foundation
 import AwaitKit
 
-// FIXME: dependency injection + test this class
+protocol ServicePlanDataStorage {
+    var servicePlansDetails: [ServicePlanDetails]? { get set }
+    var isIAPAvailable: Bool { get set }
+    var defaultPlanDetails: ServicePlanDetails? { get set }
+    var currentSubscription: Subscription? { get set }
+}
+
 class ServicePlanDataService: NSObject {
-    static var shared = ServicePlanDataService()
-    private override init() {
+    typealias CompletionHandler = ()->Void
+    
+    static var shared = ServicePlanDataService(localStorage: userCachedStatus)
+    private let localStorage: ServicePlanDataStorage
+
+    internal init(localStorage: ServicePlanDataStorage) {
+        self.localStorage = localStorage
+        self.allPlanDetails = localStorage.servicePlansDetails ?? []
+        self.isIAPAvailable = localStorage.isIAPAvailable
+        self.defaultPlanDetails = localStorage.defaultPlanDetails
+        self.currentSubscription = localStorage.currentSubscription
         super.init()
     }
     
-    private var allPlanDetails: [ServicePlanDetails] = {
-        return userCachedStatus.servicePlansDetails ?? []
-    }() {
+    private var allPlanDetails: [ServicePlanDetails] {
         willSet { userCachedStatus.servicePlansDetails = newValue }
     }
     
-    var isIAPAvailable: Bool = {
-        return userCachedStatus.isIAPAvailable
-    }() {
+    var isIAPAvailable: Bool {
         willSet { userCachedStatus.isIAPAvailable = newValue }
     }
     
-    var defaultPlanDetails: ServicePlanDetails? = {
-        return userCachedStatus.defaultPlanDetails
-    }() {
+    var defaultPlanDetails: ServicePlanDetails? {
         willSet { userCachedStatus.defaultPlanDetails = newValue }
     }
     
-    @objc dynamic var currentSubscription: Subscription? = {
-        return userCachedStatus.currentSubscription
-    }() {
+    @objc dynamic var currentSubscription: Subscription? {
         willSet { userCachedStatus.currentSubscription = newValue }
     }
     
-    typealias CompletionHandler = ()->Void
-    
-    func updateServicePlans(completion: CompletionHandler? = nil) {
+    internal func detailsOfServicePlan(named name: String) -> ServicePlanDetails? {
+        return self.allPlanDetails.first(where: { $0.name == name }) ?? self.defaultPlanDetails
+    }
+}
+
+extension ServicePlanDataService {
+    internal func updateServicePlans(completion: CompletionHandler? = nil) {
         async {
             let statusApi = GetIAPStatusRequest()
             let statusRes = try await(statusApi.run())
@@ -62,7 +73,7 @@ class ServicePlanDataService: NSObject {
         }
     }
     
-    func updatePaymentMethods(completion: CompletionHandler? = nil) {
+    internal func updatePaymentMethods(completion: CompletionHandler? = nil) {
         async {
             let paymentMethodsApi = GetPaymentMethodsRequest()
             let paymentMethodsRes = try await(paymentMethodsApi.run())
@@ -73,7 +84,7 @@ class ServicePlanDataService: NSObject {
         }
     }
     
-    func updateCurrentSubscription(completion: CompletionHandler? = nil) {
+    internal func updateCurrentSubscription(completion: CompletionHandler? = nil) {
         self.updateServicePlans()
         async {
             let subscriptionApi = GetSubscriptionRequest()
@@ -87,9 +98,5 @@ class ServicePlanDataService: NSObject {
             }
             completion?()
         }
-    }
-    
-    func detailsOfServicePlan(coded code: String) -> ServicePlanDetails? {
-        return self.allPlanDetails.first(where: { $0.name == code }) ?? self.defaultPlanDetails
     }
 }

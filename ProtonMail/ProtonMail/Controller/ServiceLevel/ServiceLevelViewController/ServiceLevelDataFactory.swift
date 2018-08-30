@@ -35,7 +35,7 @@ enum ServiceLevelDataFactory {
         let storage = SPC(image: UIImage(named: "iap_hdd"), title: .init(string: storageString, attributes: body))
         
         let messageLimit = plan ~ ([.free], SPC(image: UIImage(named: "iap_lock"),
-                                                title: .init(string: "Limited to \(details.amount) messages sent/day", attributes: body)))
+                                                title: .init(string: "Limited to 150 messages sent/day", attributes: body)))
         
         let bridge = plan ~ ([.plus, .pro, .visionary], SPC(image: UIImage(named: "iap_link"),
                                                             title: .init(string: "IMAP/SMTP Support via ProtonMail Bridge", attributes: body)))

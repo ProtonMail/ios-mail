@@ -331,8 +331,11 @@ extension UserCachedStatus {
     func resetAskedEnableTouchID() {
         setValue(AppConstants.AskTouchID, forKey: Key.askEnableTouchID)
     }
-    
-    #if !APP_EXTENSION
+}
+
+
+#if !APP_EXTENSION
+extension UserCachedStatus: ServicePlanDataStorage {
     var servicePlansDetails: [ServicePlanDetails]? {
         get {
             guard let data = self.getShared().data(forKey: Key.servicePlans) else {
@@ -380,5 +383,5 @@ extension UserCachedStatus {
             self.setValue(newValue, forKey: Key.isIAPAvailable)
         }
     }
-    #endif
 }
+#endif
