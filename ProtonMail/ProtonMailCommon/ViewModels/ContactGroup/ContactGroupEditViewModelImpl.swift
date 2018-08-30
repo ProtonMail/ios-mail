@@ -17,21 +17,16 @@ import Foundation
 class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     var state: ContactGroupEditViewControllerState
     var contactGroup: ContactGroup
-    var refreshHandler: () -> Void
     var tableContent: [[ContactGroupTableCellType]]
     var allEmails: [Email]
     var delegate: ContactGroupEditViewModelDelegate!
     
     /* Setup code */
     init(state: ContactGroupEditViewControllerState = .create,
-         contactGroupID: String? = nil,
-         name: String? = nil,
-         color: String? = nil,
-         refreshHandler: @escaping () -> Void)
+         contactGroupID: String? = nil)
     {
         self.state = state
-        self.contactGroup = ContactGroup(ID: contactGroupID, name: name, color: color)
-        self.refreshHandler = refreshHandler
+        self.contactGroup = ContactGroup(ID: contactGroupID)
         
         self.tableContent = []
         self.allEmails = sharedContactDataService.allEmails()
@@ -166,7 +161,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             self.contactGroup.name = name
             self.contactGroup.color = color
             
-            self.refreshHandler()
+            self.delegate.update()
         }
         
         // create contact group
@@ -192,7 +187,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             self.contactGroup.name = editedContactGroup.name
             self.contactGroup.color = editedContactGroup.color
             
-            self.refreshHandler()
+            self.delegate.update()
         }
         
         // update contact group
@@ -237,7 +232,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             () -> Void in
             
             self.contactGroup = ContactGroup()
-            self.refreshHandler()
+            self.delegate.update()
         }
         
         if let contactGroupID = contactGroup.ID {

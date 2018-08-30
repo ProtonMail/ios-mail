@@ -82,8 +82,23 @@ class ContactEmailsResponse: ApiResponse {
         
         self.total = response?["Total"] as? Int ?? -1
         if let tempContactEmails = response?["ContactEmails"] as? [[String : Any]] {
-            for email in tempContactEmails { // for every email in ContactEmails
+            // setup emails
+            for var email in tempContactEmails { // for every email in ContactEmails
                 if let contactID = email["ContactID"] as? String, let name = email["Name"] as? String {
+                    // convert the labelID strings into JSON dictionary
+                    if let labelIDs = email["LabelIDs"] as? [String] {
+                        let mapping: [[String: Any]] = labelIDs.map({
+                            (labelID: String) -> [String: Any] in
+                            
+                            return [
+                                "ID": labelID,
+                                "Type": 2
+                            ]
+                        })
+                        
+                        email["LabelIDs"] = mapping
+                    }
+                    
                     // we put emails that is under the same ContactID together
                     var found = false
                     for (index, var c) in contacts.enumerated() {

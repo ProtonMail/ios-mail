@@ -63,10 +63,9 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
         refreshControl.tintColorDidChange()
     }
     
+    // TODO: fix me
     @objc func fireFetch() {
         self.viewModel.fetchAllContactGroup()
-        
-        // TODO: use completion handler for ending this refreshing action
         self.refreshControl.endRefreshing()
     }
     
@@ -75,17 +74,9 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
             let contactGroupEditViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
             let contactGroup = sender as! Label
             
-            let refreshHandler = {
-                () -> Void in
-                return
-            }
-            
             sharedVMService.contactGroupEditViewModel(contactGroupEditViewController,
                                                       state: .edit,
-                                                      contactGroupID: contactGroup.labelID,
-                                                      name: contactGroup.name,
-                                                      color: contactGroup.color,
-                                                      refreshHandler: refreshHandler)
+                                                      contactGroupID: contactGroup.labelID)
         }
     }
 }

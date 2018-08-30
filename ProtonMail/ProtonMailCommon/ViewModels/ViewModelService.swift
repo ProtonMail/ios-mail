@@ -97,10 +97,7 @@ class ViewModelService {
     
     func contactGroupEditViewModel(_ vmp: ViewModelProtocol,
                                    state: ContactGroupEditViewControllerState,
-                                   contactGroupID: String?,
-                                   name: String?,
-                                   color: String?,
-                                   refreshHandler: @escaping () -> Void) {
+                                   contactGroupID: String?) {
         fatalError("This method must be overridden")
     }
     

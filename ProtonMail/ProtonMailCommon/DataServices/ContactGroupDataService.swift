@@ -35,15 +35,14 @@ struct ContactGroup
  */
 
 class ContactGroupsDataService {
-    
     /**
      Fetch emails in a specific contact group
      
-     TODO: eliminate this?
+     TODO: use var to send option in to decide whether we are making API calls?
      */
     func fetchContactGroupEmailList(groupID: String, completionHandler: @escaping ([[String : Any]]) -> Void)
     {
-        // TODO: need to perform exhaustive API call on this
+        // TODO: fetch from local cache
         let eventAPI = ContactEmailsRequest<ContactEmailsResponseForContactGroup>(page: 0,
                                                                                   pageSize: 100,
                                                                                   labelID: groupID)

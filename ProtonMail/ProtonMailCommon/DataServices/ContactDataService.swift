@@ -432,9 +432,9 @@ class ContactDataService {
             return
         }
         self.isFetching = true
-        
         {
             do {
+                // fetch contacts, without their respective emails
                 var currentPage = 0
                 var fetched = -1
                 let pageSize = 1000
@@ -472,6 +472,11 @@ class ContactDataService {
                     }
                 }
                 
+                // fetch contact groups
+                // TODO: if I don't manually store the labels first, the record won't be saved automatically? (cascade)
+                sharedLabelsDataService.fetchLabels(type: 2)
+                
+                // fetch contact emails
                 currentPage = 0
                 fetched = -1
                 loop = 1
@@ -505,7 +510,7 @@ class ContactDataService {
                                         let _ = contact.fixName(force: true)
                                     }
                                     if let error = context.saveUpstreamIfNeeded() {
-                                        PMLog.D(" error: \(error)")
+                                        PMLog.D("contact emails saving error: \(error)")
                                         //completion?(nil, error)
                                     } else {
                                         //completion?(contacts, nil)
@@ -513,7 +518,7 @@ class ContactDataService {
                                     }
                                 }
                             } catch let ex as NSError {
-                                PMLog.D(" error: \(ex)")
+                                PMLog.D("GRTJSONSerialization contact emails error: \(ex) \(ex.userInfo)")
                                 //completion?(nil, ex)
                             }
                         }

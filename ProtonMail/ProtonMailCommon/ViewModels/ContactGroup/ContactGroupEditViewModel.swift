@@ -25,26 +25,26 @@ protocol ContactGroupEditViewModel {
     // delegate
     var delegate: ContactGroupEditViewModelDelegate! { get set }
     
-    // title
+    // get operations
     func getViewTitle() -> String
     func getContactGroupName() -> String
     func getContactGroupID() -> String
     
-    // fetch operation
+    // fetch operations
     func fetchContactGroupEmailList()
     func getContactGroupDetail() -> ContactGroup
     func getCurrentColor() -> String?
     func getCurrentColorWithDefault() -> String
     func getEmailIDsInContactGroup() -> NSMutableSet
     
-    // mutate operation
+    // mutate operations
     func addEmailsToContactGroup(emailList: [String])
     func removeEmailsFromContactGroup(emailList: [String])
     func updateColor(newColor: String?)
     
     // create and edit
     func saveContactGroupDetail(name: String?, color: String?, emailList: [String]?)
-    
+
     // delete
     func deleteContactGroup()
     
