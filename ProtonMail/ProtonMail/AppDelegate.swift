@@ -166,7 +166,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         
         //setup language
         LanguageManager.setupCurrentLanguage()
-        ServicePlanDataService.updateServicePlans()
+        ServicePlanDataService.shared.updateServicePlans()
         
         sharedPushNotificationService.setLaunchOptions(launchOptions)
         StoreKitManager.default.subscribeToPaymentQueue()

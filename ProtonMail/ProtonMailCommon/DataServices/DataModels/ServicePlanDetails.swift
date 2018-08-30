@@ -8,14 +8,12 @@
 
 import Foundation
 
-struct ServicePlanDetails: Codable {
-    static var free: ServicePlanDetails = .init(amount: 150, currency: "USD", cycle: 0, features: 0, iD: "ProtonMail Free", maxAddresses: 5, maxDomains: 0, maxMembers: 1, maxSpace: 500*1024*1024, maxVPN: 0, name: "ProtonMail Free", quantity: 150, services: 0, title: "ProtonMail Free", type: 0)
-    
-    let amount: Int
-    let currency: String
-    let cycle: Int
+struct ServicePlanDetails: Codable {    
+    let amount: Int!
+    let currency: String!
+    let cycle: Int!
     let features: Int
-    let iD: String
+    let iD: String!
     let maxAddresses: Int
     let maxDomains: Int
     let maxMembers: Int
@@ -35,7 +33,7 @@ extension ServicePlanDetails: Equatable {
     }
     
     static func ==(left: ServicePlanDetails, right: ServicePlanDetails) -> Bool {
-        return left.iD == right.iD
+        return left.name == right.name
     }
 }
 

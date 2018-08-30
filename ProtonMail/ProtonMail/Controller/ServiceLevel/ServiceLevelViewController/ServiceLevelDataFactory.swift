@@ -77,7 +77,7 @@ enum ServiceLevelDataFactory {
         var coloredAttributes = regularAttributes
         coloredAttributes[.foregroundColor] = subscription.plan.subheader.1
         
-        switch subscription.plan { // FIXME: check also if it was purchased via Apple
+        switch subscription.plan {
         case .free:
             message = NSAttributedString(string: "Upgrade to a paid plan to benefit from more features", attributes: regularAttributes)
         case .plus, .pro, .visionary:
@@ -155,12 +155,13 @@ enum ServiceLevelDataFactory {
                                                       .foregroundColor: UIColor.white])
         title.append(caption)
         let subtitle = originalPriceString + " ProtonMail Plus +\n " + feeString + " Apple in-app purchase fee"
+        let buttonAction: (UIButton?)->Void = { _ in
+            delegate.purchaseProduct(id: productId)
+        }
         let footerView = ServicePlanFooter(subTitle: subtitle,
                                            buttonTitle: title,
-                                           buttonEnabled: delegate.canPurchaseProduct(id: productId)) { button in
-                                            // FIXME: change availability of button to exclude double tap
-                                            delegate.purchaseProduct(id: productId)
-        }
+                                           buttonEnabled: delegate.canPurchaseProduct(id: productId),
+                                           buttonAction: buttonAction)
         return Section(elements: [footerView], cellType: AutoLayoutSizedCell.self)
     }
     

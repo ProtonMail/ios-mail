@@ -16,7 +16,7 @@ class BuyMoreCoordinator: Coordinator {
     init() {
         let superController = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewControllerBase.self)
         object_setClass(superController, BuyMoreViewController.self)
-        if let subscription = ServicePlanDataService.currentSubscription {
+        if let subscription = ServicePlanDataService.shared.currentSubscription {
             (superController as! BuyMoreViewController).setup(with: subscription)
         }
         self.controller = superController
@@ -60,7 +60,7 @@ class ServiceLevelCoordinator: Coordinator {
     init() {
         let superController = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewControllerBase.self)
         object_setClass(superController, ServiceLevelViewController.self)
-        if let subscription = ServicePlanDataService.currentSubscription {
+        if let subscription = ServicePlanDataService.shared.currentSubscription {
             (superController as! ServiceLevelViewController).setup(with: subscription)
         }
         self.controller = superController

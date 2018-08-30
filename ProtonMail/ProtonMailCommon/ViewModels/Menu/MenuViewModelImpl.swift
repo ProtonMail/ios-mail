@@ -30,6 +30,9 @@ class MenuViewModelImpl : MenuViewModel {
         {
             otherItems = otherItems.filter { $0 != .lockapp }
         }
+        if !ServicePlanDataService.shared.isIAPAvailable || Bundle.main.bundleIdentifier != "ch.protonmail.protonmail" {
+            otherItems = otherItems.filter { $0 != .servicePlan }
+        }
     }
     
     override func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {
