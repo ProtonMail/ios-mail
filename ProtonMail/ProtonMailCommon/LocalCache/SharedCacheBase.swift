@@ -30,8 +30,7 @@ public class SharedCacheBase {
         //
     }
     
-    func setValue(_ value: Any?, forKey key: String)
-    {
+    func setValue(_ value: Any?, forKey key: String) {
         self.userDefaults.setValue(value, forKey: key)
         self.userDefaults.synchronize()
     }

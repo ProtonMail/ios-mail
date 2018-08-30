@@ -37,6 +37,10 @@ extension Message {
             return .zero_access_store
         }
         
+        if isEncrypted == 6 {
+            return .eo //same as internal_message
+        }
+        
         if isEncrypted == 7 {
             return .pgp_encrypted
         }

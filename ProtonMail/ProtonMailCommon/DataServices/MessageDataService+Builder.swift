@@ -264,10 +264,9 @@ class SendBuilder {
     func buildMime(pubKey: String, privKey : String) -> Promise<SendBuilder> {
         return Promise { seal in
             async {
-                
                 /// decrypt attachments
-                let messageBody = self.clearBody ?? ""
-            
+                var messageBody = self.clearBody ?? ""
+                messageBody = QuotedPrintable.encode(string: messageBody)
                 var signbody = ""
                 let boundaryMsg : String = "uF5XZWCLa1E8CXCUr2Kg8CSEyuEhhw9WU222" //TODO::this need to change
                 let typeMessage = "Content-Type: multipart/mixed; boundary=\"\(boundaryMsg)\""
@@ -311,10 +310,7 @@ class SendBuilder {
                     signbody.append(contentsOf: "--\(boundaryMsg)--")
                     
                     //PMLog.D(signbody)
-                    
-                    do {
-                        
-                    }
+
                     let encrypted = try signbody.encrypt(withPubKey: pubKey,
                                                          privateKey: privKey,
                                                          mailbox_pwd: sharedUserDataService.mailboxPassword!)

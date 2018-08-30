@@ -48,19 +48,18 @@ class APIService {
     init() {
         // init lock
         pthread_mutex_init(&mutex, nil)
-        
+        URLCache.shared.removeAllCachedResponses()
         sessionManager = AFHTTPSessionManager(baseURL: URL(string: AppConstants.API_HOST_URL)!)
-        sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
+        sessionManager.requestSerializer = AFJSONRequestSerializer()
         sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
-
-        //sessionManager.requestSerializer.timeoutInterval = 20.0;
-        sessionManager.securityPolicy.validatesDomainName = false
-        sessionManager.securityPolicy.allowInvalidCertificates = false
+        sessionManager.requestSerializer.stringEncoding = String.Encoding.utf8.rawValue
+        
         sessionManager.responseSerializer.acceptableContentTypes?.insert("text/html")
         
-        
+        sessionManager.securityPolicy.validatesDomainName = false
+        sessionManager.securityPolicy.allowInvalidCertificates = false
         #if DEBUG
-            sessionManager.securityPolicy.allowInvalidCertificates = true
+        sessionManager.securityPolicy.allowInvalidCertificates = true
         #endif
         
         setupValueTransforms()
@@ -115,7 +114,8 @@ class APIService {
                     
                     if authenticated && responseCode == 401 {
                         AuthCredential.expireOrClear(auth?.token)
-                        if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
+                        //TODO:: tempery no need later shoun't hard code here and need a better way to handle the case
+                        if path.contains("https://api.protonmail.ch/refresh") {
 //                            self.delegate?.onError(error: error)
 //                            UserTempCachedStatus.backup()
 //                            sharedUserDataService.signOut(true);
@@ -471,8 +471,10 @@ class APIService {
                 }
                 
                 let url = AppConstants.API_HOST_URL + path
-                let request = AFJSONRequestSerializer().request(withMethod: method.toString(), urlString: url, parameters: parameters, error: nil)
-                //request.timeoutInterval = 120
+                let request = self.sessionManager.requestSerializer.request(withMethod: method.toString(),
+                                                                            urlString: url,
+                                                                            parameters: parameters,
+                                                                            error: nil)
                 if let header = headers {
                     for (k, v) in header {
                         request.setValue("\(v)", forHTTPHeaderField: k)
@@ -499,9 +501,13 @@ class APIService {
                 }, downloadProgress: { (progress) in
                     //TODO::add later
                 }, completionHandler: { (urlresponse, res, error) in
-                    
-                    
-                    
+                    //DEBUG INFO
+//                    print(urlresponse)
+//                    if let data = res as? Data {
+//                        let resObj = String(data: data, encoding: .utf8)
+//                        print(resObj)
+//                    }
+                    //TODO:: #1 parse out the server time #2
                     parseBlock(task, res, error)
                 })
                 task!.resume()

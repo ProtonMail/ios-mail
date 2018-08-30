@@ -248,10 +248,12 @@ final class UpdateDisplayNameRequest : ApiRequest<ApiResponse> {
 
 //MARK : update display name
 
-//Here need to change to 0 for none, 1 for remote, 2 for embedded, 3 for remote and embedded
-final class UpdateShowImagesRequest : ApiRequest<ApiResponse> {
-    let status : Int!
+final class UpdateShowImages : ApiRequest<ApiResponse> {
+    let status : Int
     
+    /// Initial
+    ///
+    /// - Parameter status: //0 for none, 1 for remote, 2 for embedded, 3 for remote and embedded
     init(status: Int) {
         self.status = status
     }

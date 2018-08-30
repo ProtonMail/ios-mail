@@ -98,11 +98,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     // MARK: TopMessage
     @IBOutlet weak var topMessageView: TopMessageView!
     @IBOutlet weak var topMsgTopConstraint: NSLayoutConstraint!
+    fileprivate let kDefaultTopMsgHeight : CGFloat = 34.0
     
     @IBOutlet weak var topMsgHeightConstraint: NSLayoutConstraint!
-    fileprivate let kDefaultSpaceHide : CGFloat = -34.0
+    fileprivate let kDefaultSpaceHide : CGFloat = -38.0
     fileprivate let kDefaultSpaceShow : CGFloat = 4.0
-    fileprivate var latestSpaceHide : CGFloat = 0.0
+    fileprivate var latestMsgHeight : CGFloat = 0.0
     
     func setViewModel(_ vm: Any) {
         self.viewModel = vm as! MailboxViewModel
@@ -1293,12 +1294,11 @@ extension MailboxViewController : MailboxCaptchaVCDelegate {
 extension MailboxViewController : TopMessageViewDelegate {
     
     internal func showErrorMessage(_ error: NSError?) {
-        if error != nil {
+        if let error = error {
+            self.latestMsgHeight = self.topMessageView.message(error: error)
             self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-            self.latestSpaceHide = self.topMessageView.updateMessage(error: error!)
-            self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
+            self.topMsgHeightConstraint.constant = self.latestMsgHeight > 0.0 ? self.latestMsgHeight : self.kDefaultTopMsgHeight
             self.updateViewConstraints()
-            
             UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 self.view.layoutIfNeeded()
             })
@@ -1306,9 +1306,9 @@ extension MailboxViewController : TopMessageViewDelegate {
     }
     
     internal func showTimeOutErrorMessage() {
+        self.latestMsgHeight = self.topMessageView.message(timeOut: LocalString._general_request_timed_out)
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(timeOut: LocalString._general_request_timed_out)
-        self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
+        self.topMsgHeightConstraint.constant = self.latestMsgHeight > 0.0 ? self.latestMsgHeight : self.kDefaultTopMsgHeight
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -1316,9 +1316,10 @@ extension MailboxViewController : TopMessageViewDelegate {
     }
     
     internal func showNoInternetErrorMessage() {
+    
+        self.latestMsgHeight = self.topMessageView.message(noInternet : LocalString._general_no_connectivity_detected)
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : LocalString._general_no_connectivity_detected)
-        self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
+        self.topMsgHeightConstraint.constant = self.latestMsgHeight > 0.0 ? self.latestMsgHeight : self.kDefaultTopMsgHeight
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -1326,9 +1327,9 @@ extension MailboxViewController : TopMessageViewDelegate {
     }
     
     internal func showOfflineErrorMessage(_ error : NSError?) {
+        self.latestMsgHeight = self.topMessageView.message(noInternet : error?.localizedDescription ?? LocalString._general_pm_offline)
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : error?.localizedDescription ?? LocalString._general_pm_offline)
-        self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
+        self.topMsgHeightConstraint.constant = self.latestMsgHeight > 0.0 ? self.latestMsgHeight : self.kDefaultTopMsgHeight
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -1336,11 +1337,10 @@ extension MailboxViewController : TopMessageViewDelegate {
     }
     
     internal func show503ErrorMessage(_ error : NSError?) {
+        self.latestMsgHeight = self.topMessageView.message(noInternet: LocalString._general_api_server_not_reachable)
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet: LocalString._general_api_server_not_reachable)
-        self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
+        self.topMsgHeightConstraint.constant = self.latestMsgHeight > 0.0 ? self.latestMsgHeight : self.kDefaultTopMsgHeight
         self.updateViewConstraints()
-        
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
             self.view.layoutIfNeeded()
         })
@@ -1352,13 +1352,13 @@ extension MailboxViewController : TopMessageViewDelegate {
             self.needToShowNewMessage = false
             self.newMessageCount = 0
             if count > 0 {
-                self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
                 if count == 1 {
-                    self.latestSpaceHide = self.topMessageView.updateMessage(newMessage: LocalString._messages_you_have_new_email)
+                    self.latestMsgHeight = self.topMessageView.message(string: LocalString._messages_you_have_new_email)
                 } else {
-                    self.latestSpaceHide = self.topMessageView.updateMessage(newMessage: String(format: LocalString._messages_you_have_new_emails_with, count))
+                    self.latestMsgHeight = self.topMessageView.message(string: String(format: LocalString._messages_you_have_new_emails_with, count))
                 }
-                self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
+                self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
+                self.topMsgHeightConstraint.constant = self.latestMsgHeight > 0.0 ? self.latestMsgHeight : self.kDefaultTopMsgHeight
                 self.updateViewConstraints()
                 UIView.animate(withDuration: 0.25, animations: { () -> Void in
                     self.view.layoutIfNeeded()
@@ -1390,19 +1390,19 @@ extension MailboxViewController : TopMessageViewDelegate {
         {
         case NotReachable:
             PMLog.D("Access Not Available")
+            self.latestMsgHeight = self.topMessageView.message(noInternet: LocalString._general_no_connectivity_detected)
             self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-            self.latestSpaceHide = self.topMessageView.updateMessage(noInternet: LocalString._general_no_connectivity_detected)
-            self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
+            self.topMsgHeightConstraint.constant = self.latestMsgHeight > 0.0 ? self.latestMsgHeight : self.kDefaultTopMsgHeight
             self.updateViewConstraints()
         case ReachableViaWWAN:
             //PMLog.D("Reachable WWAN")
-            self.topMsgTopConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : self.latestSpaceHide
-            self.latestSpaceHide = 0.0
+            self.topMsgTopConstraint.constant = self.kDefaultSpaceHide
+            self.latestMsgHeight = 0.0
             self.updateViewConstraints()
         case ReachableViaWiFi:
             //PMLog.D("Reachable WiFi")
-            self.topMsgTopConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : self.latestSpaceHide
-            self.latestSpaceHide = 0.0
+            self.topMsgTopConstraint.constant = self.kDefaultSpaceHide
+            self.latestMsgHeight = 0.0
             self.updateViewConstraints()
         default:
             PMLog.D("Reachable default unknow")
@@ -1414,8 +1414,9 @@ extension MailboxViewController : TopMessageViewDelegate {
     }
     
     func hideTopMessage() {
-        self.topMsgTopConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : self.latestSpaceHide
-        self.latestSpaceHide = 0.0
+        self.topMsgTopConstraint.constant = self.kDefaultSpaceHide
+        self.topMsgHeightConstraint.constant = self.kDefaultTopMsgHeight
+        self.latestMsgHeight = 0.0
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
             self.view.layoutIfNeeded()

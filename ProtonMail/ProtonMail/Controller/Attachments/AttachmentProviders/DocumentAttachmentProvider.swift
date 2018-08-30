@@ -25,7 +25,8 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                 kUTTypeGNUZipArchive as String,
                 kUTTypeBzip2Archive as String,
                 kUTTypeZipArchive as String,
-                kUTTypeData as String
+                kUTTypeData as String,
+                kUTTypeVCard as String
             ]
             
             if #available(iOS 11.0, *) {

@@ -18,7 +18,7 @@ class ShareUnlockViewController: UIViewController {
     fileprivate var inputSubject : String! = ""
     fileprivate var inputContent : String! = ""
     fileprivate var inputAttachments : String! = ""
-    fileprivate var files = Array<FileData>()
+    fileprivate var files = [FileData]()
     fileprivate let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000
     fileprivate var currentAttachmentSize : Int = 0
     
@@ -30,7 +30,8 @@ class ShareUnlockViewController: UIViewController {
     private let file_types : [String]  = [kUTTypeImage as String,
                                           kUTTypeMovie as String,
                                           kUTTypeVideo as String,
-                                          kUTTypeFileURL as String]
+                                          kUTTypeFileURL as String,
+                                          kUTTypeVCard as String]
     private let propertylist_ket = kUTTypePropertyList as String
     private let url_key = kUTTypeURL as String
     private var localized_errors: [String] = []
@@ -146,8 +147,10 @@ class ShareUnlockViewController: UIViewController {
     
     private func tryTouchID() {
         switch getViewFlow() {
-        case .requireTouchID: self.authenticateUser()
-        case .restore, .requirePin: break
+        case .requireTouchID:
+            self.authenticateUser()
+        case .restore, .requirePin:
+            break
         }
     }
     
@@ -169,11 +172,13 @@ class ShareUnlockViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        delay(0.3) { self.tryTouchID() }
+        delay(0.3) {
+            self.tryTouchID()
+        }
     }
 
     fileprivate func getViewFlow() -> SignInUIFlow {
-        guard !sharedTouchID.showTouchIDOrPin() else {
+        guard sharedTouchID.showTouchIDOrPin() else {
             return SignInUIFlow.restore
         }
         
@@ -364,11 +369,21 @@ extension ShareUnlockViewController: AttachmentController {
                 self.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
                 return
             }
-
+        
             if let url = item as? URL {
                 self.documentAttachmentProvider.process(fileAt: url) // sync
             } else if let img = item as? UIImage {
                 self.imageAttachmentProvider.process(original: img) // sync
+            } else if let data = item as? Data {
+                //TODO:: the process functions above ^. they could be abstracted out. all type of process in the same place.
+                var fileName = "\(NSUUID().uuidString).vcf"
+                if #available(iOSApplicationExtension 11.0, *) {
+                    if let name = itemProvider.suggestedName {
+                        fileName = name
+                    }
+                }
+                let fileData = ConcreteFileData<Data>(name: fileName, ext: "text/vcard", contents: data)
+                self.finish(fileData)
             } else {
                 self.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
             }

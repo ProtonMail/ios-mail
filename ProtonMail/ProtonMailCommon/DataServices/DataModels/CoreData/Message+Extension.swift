@@ -408,12 +408,11 @@ extension Message {
             return body
         } else {
             if var body = try decryptBody() {
-                PMLog.D(body)
+                //PMLog.D(body)
                 if isEncrypted == 8 || isEncrypted == 9 {
                     if let mimeMsg = MIMEMessage(string: body) {
                         if let html = mimeMsg.mainPart.part(ofType: "text/html")?.bodyString {
                             body = html
-                            
                         } else if let text = mimeMsg.mainPart.part(ofType: "text/plain")?.plainString {
                             body = text.encodeHtml()
                             body = "<html><body>\(body.ln2br())</body></html>"

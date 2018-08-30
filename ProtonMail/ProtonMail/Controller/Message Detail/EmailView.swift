@@ -250,7 +250,7 @@ extension EmailView {
         topMessageView.mas_updateConstraints { (make) in
             let _ = make?.top.equalTo()(self)?.offset()(self.self.kDefaultSpaceShow)
         }
-        let _ = self.topMessageView.updateMessage(timeOut: "The request timed out.")
+        let _ = self.topMessageView.message(timeOut: "The request timed out.")
         UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
             self.layoutIfNeeded()
         })
@@ -260,7 +260,7 @@ extension EmailView {
         topMessageView.mas_updateConstraints { (make) in
             let _ = make?.top.equalTo()(self)?.offset()(self.self.kDefaultSpaceShow)
         }
-        let _ = self.topMessageView.updateMessage(noInternet : "No connectivity detected...")
+        let _ = self.topMessageView.message(noInternet : "No connectivity detected...")
         UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
             self.layoutIfNeeded()
         })
@@ -270,7 +270,7 @@ extension EmailView {
         topMessageView.mas_updateConstraints { (make) in
             let _ = make?.top.equalTo()(self)?.offset()(self.self.kDefaultSpaceShow)
         }
-        let _ = self.topMessageView.updateMessage(errorMsg : errorMsg)
+        let _ = self.topMessageView.message(errorMsg : errorMsg)
         UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
             self.layoutIfNeeded()
         })
@@ -293,7 +293,7 @@ extension EmailView {
             topMessageView.mas_updateConstraints { (make) in
                 let _ = make?.top.equalTo()(self)?.offset()(self.self.kDefaultSpaceShow)
             }
-            let _ = self.topMessageView.updateMessage(noInternet: "No connectivity detected...")
+            let _ = self.topMessageView.message(noInternet: "No connectivity detected...")
         case ReachableViaWWAN:
             PMLog.D("Reachable WWAN")
             topMessageView.mas_updateConstraints { (make) in
@@ -318,7 +318,7 @@ extension EmailView {
             let _ = make?.top.equalTo()(self)?.offset()(self.kDefaultSpaceHide)
         }
         UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
-           self.layoutIfNeeded()
+            self.layoutIfNeeded()
         })
     }
 
