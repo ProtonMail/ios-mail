@@ -9,14 +9,10 @@
 import UIKit
 import CoreData
 
-/*
- This is a temporary view. This should be integrate into the contact VC.
- 
- Prototyping goals:
- 1. Present all contact groups here
- 2. Tap on the cell to view detail
+/**
+ When the core data that provides data to this controller has data changes,
+ the update will be performed immediately and automatically by core data
  */
-
 class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupsViewModel!

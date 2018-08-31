@@ -7,13 +7,11 @@
 //
 
 import UIKit
+import PromiseKit
 
-/*
- Prototyping goals:
- 1. Able to handle create/edit/delete operations, without caching mechanism
- 2. Able to handle saving operation
+/**
+ The design for now is no auto-saving
  */
-
 class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocol {
     let kToContactGroupSelectColorSegue = "toContactGroupSelectColorSegue"
     let kToContactGroupSelectEmailSegue = "toContactGroupSelectEmailSegue"
@@ -39,18 +37,15 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         
         viewModel.delegate = self
         
-        prepareTitles()
+        loadDataIntoView()
         
         tableView.noSeparatorsBelowFooter()
     }
     
-    func prepareTitles() {
+    func loadDataIntoView() {
         navigationBarItem.title = viewModel.getViewTitle()
         contactGroupNameLabel.text = viewModel.getContactGroupName()
-    }
-    
-    func loadDataIntoView() {
-        prepareTitles()
+        
         self.tableView.reloadData()
     }
     
@@ -59,14 +54,37 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     }
     
     @IBAction func saveAction(_ sender: UIBarButtonItem) {
-        // TODO: perform checking
-        // use return value maybe?
-        viewModel.saveContactGroupDetail(name: contactGroupNameLabel.text!,
-                                         color: viewModel.getCurrentColorWithDefault(),
-                                         emailList: NSSet())
-        
         // TODO: spinning while saving... (blocking)
-        self.dismiss(animated: true, completion: nil)
+//        do {
+//            try viewModel.saveContactGroupDetail(name: contactGroupNameLabel.text,
+//                                                 color: viewModel.getCurrentColorWithDefault(),
+//                                                 emailList: NSSet())
+//            self.dismiss(animated: true, completion: nil)
+//        } catch {
+//            let alert = UIAlertController(title: "Can't not save contact group",
+//                                          message: error.localizedDescription,
+//                                          preferredStyle: .alert)
+//            alert.addOKAction()
+//            present(alert, animated: true, completion: nil)
+//        }
+        
+        firstly {
+            viewModel.saveContactGroupDetail(name: contactGroupNameLabel.text,
+                                             color: viewModel.getCurrentColorWithDefault(),
+                                             emailList: NSSet())
+            }.done {
+                (_) -> Void in
+                
+                self.dismiss(animated: true, completion: nil)
+            }.catch {
+                error in
+                
+                let alert = UIAlertController(title: "Can't not save contact group",
+                                              message: error.localizedDescription,
+                                              preferredStyle: .alert)
+                alert.addOKAction()
+                self.present(alert, animated: true, completion: nil)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

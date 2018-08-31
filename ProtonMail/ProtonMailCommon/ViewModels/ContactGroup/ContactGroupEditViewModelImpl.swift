@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 /*
  TODO:
@@ -18,7 +19,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     var state: ContactGroupEditViewControllerState
     var contactGroup: Label! // TODO: fix this
     var allEmails: [Email]
-    var tableContent: [[ContactGroupTableCellType]]
+    var tableContent: [[ContactGroupEditTableCellType]]
     var delegate: ContactGroupEditViewModelDelegate!
     
     /* Setup code */
@@ -105,13 +106,34 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     }
     
     /* Data operation */
-    func saveContactGroupDetail(name: String, color: String, emailList: NSSet) {
-        switch state {
-        case .create:
-            createContactGroupDetail(name: name, color: color, emailList: emailList)
-        case .edit:
-            updateContactGroupDetail(name: name, color: color, emailList: emailList)
+    func saveContactGroupDetail(name: String?,
+                                color: String,
+                                emailList: NSSet) -> Promise<Void> {
+        let (promise, seal) = Promise<Void>.pending()
+        
+        // error check
+        guard name != nil && name != "" else {
+            seal.reject(ContactGroupEditError.noNameForGroup)
+            return promise
         }
+        
+        guard emailList.count > 0 else {
+            seal.reject(ContactGroupEditError.noEmailInGroup)
+            return promise
+        }
+        
+        if let name = name {
+            switch state {
+            case .create:
+                createContactGroupDetail(name: name, color: color, emailList: emailList)
+                seal.fulfill(())
+            case .edit:
+                updateContactGroupDetail(name: name, color: color, emailList: emailList)
+                seal.fulfill(())
+            }
+        }
+        
+        return promise
     }
     
     private func createContactGroupDetail(name: String,
@@ -128,15 +150,13 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                                                        color: color,
                                                        completionHandler: completionHandler)
         
-        // TODO: add email IDs
-        //        if let emailList = newContactGroup.emailIDs {
-        //            addEmailsToContactGroup(emailList: emailList)
-        //        }
+        // add email IDs
+        addEmailsToContactGroup(emailList: emailList)
     }
     
     private func updateContactGroupDetail(name: String,
                                           color: String,
-                                          emailList: NSSet) {
+                                          emailList: NSSet)  {
         let completionHandler = {
             () -> Void in
             self.delegate.update()
@@ -267,7 +287,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         return tableContent[section].count
     }
     
-    func getCellType(at indexPath: IndexPath) -> ContactGroupTableCellType {
+    func getCellType(at indexPath: IndexPath) -> ContactGroupEditTableCellType {
         guard indexPath.section < tableContent.count &&
             indexPath.row < tableContent[indexPath.section].count else {
                 return .error

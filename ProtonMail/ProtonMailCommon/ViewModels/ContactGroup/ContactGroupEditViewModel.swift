@@ -7,12 +7,30 @@
 //
 
 import Foundation
+import PromiseKit
 
 protocol ContactGroupEditViewModelDelegate {
     func update()
 }
 
-enum ContactGroupTableCellType
+enum ContactGroupEditError: Error
+{
+    case noEmailInGroup
+    case noNameForGroup
+}
+
+extension ContactGroupEditError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .noEmailInGroup:
+            return NSLocalizedString("No email is selected in the contact group", comment: "Contact group no email")
+        case .noNameForGroup:
+            return NSLocalizedString("No name is provided for the contact group", comment: "Contact group no name")
+        }
+    }
+}
+
+enum ContactGroupEditTableCellType
 {
     case selectColor
     case manageContact
@@ -35,12 +53,12 @@ protocol ContactGroupEditViewModel {
     func getEmailIDsInContactGroup() -> NSSet
     
     // mutate operations
-    func addEmailsToContactGroup(emailList: NSSet)
-    func removeEmailsFromContactGroup(emailList: NSSet)
     func updateColor(newColor: String?)
     
     // create and edit
-    func saveContactGroupDetail(name: String, color: String, emailList: NSSet)
+    func saveContactGroupDetail(name: String?,
+                                color: String,
+                                emailList: NSSet) -> Promise<Void>
 
     // delete
     func deleteContactGroup()
@@ -48,6 +66,6 @@ protocol ContactGroupEditViewModel {
     // table operation
     func getTotalSections() -> Int
     func getTotalRows(for section: Int) -> Int
-    func getCellType(at indexPath: IndexPath) -> ContactGroupTableCellType
+    func getCellType(at indexPath: IndexPath) -> ContactGroupEditTableCellType
     func getEmail(at indexPath: IndexPath) -> (String, String)
 }
