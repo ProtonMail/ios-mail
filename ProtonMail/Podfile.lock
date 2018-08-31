@@ -55,14 +55,14 @@ PODS:
   - OpenPGP (1.0.5):
     - OpenSSL
   - OpenSSL (1.0.210)
-  - PromiseKit (6.3.4):
-    - PromiseKit/CorePromise (= 6.3.4)
-    - PromiseKit/Foundation (= 6.3.4)
-    - PromiseKit/UIKit (= 6.3.4)
-  - PromiseKit/CorePromise (6.3.4)
-  - PromiseKit/Foundation (6.3.4):
+  - PromiseKit (6.4.0):
+    - PromiseKit/CorePromise (= 6.4.0)
+    - PromiseKit/Foundation (= 6.4.0)
+    - PromiseKit/UIKit (= 6.4.0)
+  - PromiseKit/CorePromise (6.4.0)
+  - PromiseKit/Foundation (6.4.0):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.3.4):
+  - PromiseKit/UIKit (6.4.0):
     - PromiseKit/CorePromise
   - RHAddressBook (1.1.1)
   - RichEditorView (5.0.0)
@@ -151,7 +151,7 @@ SPEC CHECKSUMS:
   "NSDate+Helper": 78f517ac1c67914096433466fa7d20b812b9d86c
   OpenPGP: 1462a488aa857e65e3a9b810867032f80aee1009
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
-  PromiseKit: e1425568123ec844a944c93f2bcb29d511d39cf5
+  PromiseKit: ae3616f45d7bb9bf4ff1e91abc9b7a8c48a340e0
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
   RichEditorView: 1bbb07b87ca2d479ac29a6877014b38b8df233ef
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
@@ -160,6 +160,6 @@ SPEC CHECKSUMS:
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: 53fd660ed37df3ccc3752ab15a04a4fdca35e6d2
 
-PODFILE CHECKSUM: dbbba882eb1a96da0c990792d5788e85fc6dcdcc
+PODFILE CHECKSUM: 71f7159e9764b03a2a9b5c20e2df97d69ec50f26
 
 COCOAPODS: 1.5.3
