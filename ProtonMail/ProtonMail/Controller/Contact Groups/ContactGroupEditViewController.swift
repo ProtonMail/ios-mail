@@ -21,6 +21,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     @IBOutlet weak var navigationBarItem: UINavigationItem!
     @IBOutlet weak var tableView: UITableView!
     var viewModel: ContactGroupEditViewModel!
+    var activeText: UIResponder? = nil
     
     func setViewModel(_ vm: Any) {
         viewModel = vm as! ContactGroupEditViewModel
@@ -29,6 +30,11 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     func inactiveViewModel() {}
     
     @IBAction func cancelItem(_ sender: UIBarButtonItem) {
+        // becuase the object might not be deinit right away
+        // we need to restore the data
+        dismissKeyboard()
+        
+        viewModel.reset()
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -36,15 +42,15 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         super.viewDidLoad()
         
         viewModel.delegate = self
+        contactGroupNameLabel.delegate = self
         
         loadDataIntoView()
-        
         tableView.noSeparatorsBelowFooter()
     }
     
     func loadDataIntoView() {
         navigationBarItem.title = viewModel.getViewTitle()
-        contactGroupNameLabel.text = viewModel.getContactGroupName()
+        contactGroupNameLabel.text = viewModel.getName()
         
         self.tableView.reloadData()
     }
@@ -53,25 +59,19 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         super.didReceiveMemoryWarning()
     }
     
+    func dismissKeyboard() {
+        if let t = activeText {
+            t.resignFirstResponder()
+            activeText = nil
+        }
+    }
+    
     @IBAction func saveAction(_ sender: UIBarButtonItem) {
         // TODO: spinning while saving... (blocking)
-//        do {
-//            try viewModel.saveContactGroupDetail(name: contactGroupNameLabel.text,
-//                                                 color: viewModel.getCurrentColorWithDefault(),
-//                                                 emailList: NSSet())
-//            self.dismiss(animated: true, completion: nil)
-//        } catch {
-//            let alert = UIAlertController(title: "Can't not save contact group",
-//                                          message: error.localizedDescription,
-//                                          preferredStyle: .alert)
-//            alert.addOKAction()
-//            present(alert, animated: true, completion: nil)
-//        }
         
+        dismissKeyboard()
         firstly {
-            viewModel.saveContactGroupDetail(name: contactGroupNameLabel.text,
-                                             color: viewModel.getCurrentColorWithDefault(),
-                                             emailList: NSSet())
+            viewModel.saveDetail()
             }.done {
                 (_) -> Void in
                 
@@ -93,10 +93,10 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
             
             let refreshHandler = {
                 (newColor: String?) -> Void in
-                self.viewModel.updateColor(newColor: newColor)
+                self.viewModel.setColor(newColor: newColor)
             }
             sharedVMService.contactGroupSelectColorViewModel(contactGroupSelectColorViewController,
-                                                             currentColor: viewModel.getCurrentColorWithDefault(),
+                                                             currentColor: viewModel.getColor(),
                                                              refreshHandler: refreshHandler)
         } else if segue.identifier == kToContactGroupSelectEmailSegue {
             let refreshHandler = {
@@ -108,8 +108,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
             let contactGroupSelectEmailViewController = segue.destination as! ContactGroupSelectEmailViewController
             let data = sender as! ContactGroupEditViewController
             sharedVMService.contactGroupSelectEmailViewModel(contactGroupSelectEmailViewController,
-                                                             groupID: data.viewModel.getContactGroupID(),
-                                                             selectedEmails: data.viewModel.getEmailIDsInContactGroup(),
+                                                             selectedEmails: data.viewModel.getEmails(),
                                                              refreshHandler: refreshHandler)
         } else {
             PMLog.D("No such segue")
@@ -155,7 +154,8 @@ extension ContactGroupEditViewController: UITableViewDataSource
         switch viewModel.getCellType(at: indexPath) {
         case .selectColor:
             // display color
-            cell.detailTextLabel?.backgroundColor = UIColor(hexString: viewModel.getCurrentColorWithDefault(), alpha: 1.0)
+            cell.detailTextLabel?.backgroundColor = UIColor(hexString: viewModel.getColor(),
+                                                            alpha: 1.0)
         case .error:
             fatalError("This is a bug")
         default:
@@ -185,7 +185,25 @@ extension ContactGroupEditViewController: UITableViewDelegate
     }
 }
 
-extension ContactGroupEditViewController: ContactGroupEditViewModelDelegate
+extension ContactGroupEditViewController: UITextFieldDelegate
+{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        activeText = textField
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField)  {
+        contactGroupNameLabel.text = textField.text
+        viewModel.setName(name: textField.text ?? "")
+        
+        activeText = nil
+    }
+}
+
+extension ContactGroupEditViewController: ContactGroupEditViewControllerDelegate
 {
     func update() {
         loadDataIntoView()

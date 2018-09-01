@@ -9,7 +9,7 @@
 import Foundation
 import PromiseKit
 
-protocol ContactGroupEditViewModelDelegate {
+protocol ContactGroupEditViewControllerDelegate: class {
     func update()
 }
 
@@ -41,25 +41,25 @@ enum ContactGroupEditTableCellType
 
 protocol ContactGroupEditViewModel {
     // delegate
-    var delegate: ContactGroupEditViewModelDelegate! { get set }
+    var delegate: ContactGroupEditViewControllerDelegate? { get set }
+    
+    // set operations
+    func setName(name: String)
+    func setEmails(emails: NSSet)
+    func setColor(newColor: String?)
     
     // get operations
     func getViewTitle() -> String
-    func getContactGroupName() -> String
-    func getContactGroupID() -> String
+    func getName() -> String
+    func getContactGroupID() -> String?
+    func getColor() -> String
+    func getEmails() -> NSSet
     
-    // fetch operations
-    func getCurrentColorWithDefault() -> String
-    func getEmailIDsInContactGroup() -> NSSet
-    
-    // mutate operations
-    func updateColor(newColor: String?)
+    func reset()
     
     // create and edit
-    func saveContactGroupDetail(name: String?,
-                                color: String,
-                                emailList: NSSet) -> Promise<Void>
-
+    func saveDetail() -> Promise<Void>
+    
     // delete
     func deleteContactGroup()
     

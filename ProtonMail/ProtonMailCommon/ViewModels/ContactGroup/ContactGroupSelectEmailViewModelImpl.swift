@@ -17,18 +17,14 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
     /// the list of email that is current in the contact group
     let selectedEmails: NSMutableSet
     
-    /// the contact group ID
-    let groupID: String
-    
     /// after saving the email list, we refresh the edit view controller's data
     let refreshHandler: () -> Void
     
     /**
      Initializes a new ContactGroupSelectEmailViewModel
     */
-    init(groupID: String, selectedEmails: NSSet, refreshHandler: @escaping () -> Void) {
+    init(selectedEmails: NSSet, refreshHandler: @escaping () -> Void) {
         self.allEmails = sharedContactDataService.allEmails()
-        self.groupID = groupID
         // TODO: fix this
         self.selectedEmails = selectedEmails.mutableCopy() as! NSMutableSet
         self.refreshHandler = refreshHandler
@@ -58,7 +54,6 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
     }
     
     func getTotalEmailCount() -> Int {
-        print("total count \(allEmails.count)")
         return allEmails.count
     }
     
@@ -72,13 +67,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
     */
     // TODO: fix this function
     func save() {
-        let emailList: [String] = selectedEmails.map{($0 as! Email).emailID}
-        sharedContactGroupsDataService.addEmailsToContactGroup(groupID: groupID,
-                                                               emailList: emailList,
-                                                               completionHandler: {
-                                                                () -> Void in
-                                                                self.refreshHandler()
-        })
+
     }
     
 }

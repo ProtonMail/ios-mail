@@ -12,13 +12,16 @@ import Groot
 
 let sharedContactGroupsDataService = ContactGroupsDataService()
 
-/*
- Prototyping:
- 1. Currently all of the operations are not saved.
- */
-
 class ContactGroupsDataService {
-    func addContactGroup(name: String, color: String, completionHandler: @escaping () -> Void)
+    /**
+     Create a new contact group on the server and save it in core data
+     
+     - Parameters:
+     - name: The name of the contact group
+     - color: The color of the contact group
+     - completionHandler: The completion handler called upon successful creation
+    */
+    func createContactGroup(name: String, color: String, completionHandler: @escaping () -> Void)
     {
         let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false, type: 2)
         api.call() {
@@ -38,6 +41,14 @@ class ContactGroupsDataService {
         }
     }
     
+    /**
+     Edit a contact group on the server and edit it in core data
+     
+     - Parameters:
+     - name: The name of the contact group
+     - color: The color of the contact group
+     - completionHandler: The completion handler called upon successful editing
+     */
     func editContactGroup(groupID: String, name: String, color: String, completionHandler: @escaping () -> Void)
     {
         let eventAPI = UpdateLabelRequest<UpdateLabelRequestResponse>(id: groupID, name: name, color: color)
@@ -59,6 +70,13 @@ class ContactGroupsDataService {
         }
     }
     
+    /**
+     Delete a contact group on the server and delete it in core data
+     
+     - Parameters:
+     - name: The name of the contact group
+     - completionHandler: The completion handler called upon successful deletion
+     */
     func deleteContactGroup(groupID: String, completionHandler: @escaping () -> Void)
     {
         let eventAPI = DeleteLabelRequest<DeleteLabelRequestResponse>(lable_id: groupID)
@@ -95,9 +113,13 @@ class ContactGroupsDataService {
         }
     }
     
-    func addEmailsToContactGroup(groupID: String, emailList: [String], completionHandler: @escaping () -> Void)
+    func addEmailsToContactGroup(groupID: String, emailList: [Email], completionHandler: @escaping () -> Void)
     {
-        let eventAPI = ContactLabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emailList)
+        let emails = emailList.map({
+            (email: Email) -> String in
+            return email.emailID
+        })
+        let eventAPI = ContactLabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
         
         eventAPI.call() {
             task, response, hasError in
@@ -115,9 +137,13 @@ class ContactGroupsDataService {
         }
     }
     
-    func removeEmailsFromContactGroup(groupID: String, emailList: [String], completionHandler: @escaping () -> Void)
+    func removeEmailsFromContactGroup(groupID: String, emailList: [Email], completionHandler: @escaping () -> Void)
     {
-        let eventAPI = ContactUnlabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emailList)
+        let emails = emailList.map({
+            (email: Email) -> String in
+            return email.emailID
+        })
+        let eventAPI = ContactUnlabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
         
         eventAPI.call() {
             task, response, hasError in

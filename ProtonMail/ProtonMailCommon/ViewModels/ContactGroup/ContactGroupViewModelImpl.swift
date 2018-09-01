@@ -17,6 +17,6 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
     */
     func fetchAllContactGroup()
     {
-        // sharedLabelsDataService.fetchLabels(type: 2)
+         sharedLabelsDataService.fetchLabels(type: 2)
     }
 }
