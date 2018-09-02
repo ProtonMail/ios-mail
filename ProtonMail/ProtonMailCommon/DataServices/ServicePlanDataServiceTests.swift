@@ -38,10 +38,7 @@ class ServicePlanDataServiceTests: XCTestCase {
     lazy var visName = "Vis"
     lazy var freeName = "Free"
     lazy var noName = UUID().uuidString
-    lazy var proPlanDetails = ServicePlanDetails(amount: 42,
-                                            currency: "USD",
-                                            cycle: 42,
-                                            features: 42,
+    lazy var proPlanDetails = ServicePlanDetails(features: 42,
                                             iD: UUID().uuidString,
                                             maxAddresses: 42,
                                             maxDomains: 42,
@@ -53,10 +50,7 @@ class ServicePlanDataServiceTests: XCTestCase {
                                             services: 42,
                                             title: "Professional",
                                             type: 42)
-    lazy var visPlanDetails = ServicePlanDetails(amount: 100500,
-                                            currency: "EUR",
-                                            cycle: 100500,
-                                            features: 100500,
+    lazy var visPlanDetails = ServicePlanDetails(features: 100500,
                                             iD: UUID().uuidString,
                                             maxAddresses: 100500,
                                             maxDomains: 100500,
@@ -68,10 +62,7 @@ class ServicePlanDataServiceTests: XCTestCase {
                                             services: 100500,
                                             title: "Visionary",
                                             type: 100500)
-    lazy var nonamePlanDetails = ServicePlanDetails(amount: 1,
-                                               currency: "EUR",
-                                               cycle: 1,
-                                               features: 1,
+    lazy var nonamePlanDetails = ServicePlanDetails(features: 1,
                                                iD: UUID().uuidString,
                                                maxAddresses: 1,
                                                maxDomains: 1,
@@ -83,10 +74,7 @@ class ServicePlanDataServiceTests: XCTestCase {
                                                services: 1,
                                                title: "+1Tb",
                                                type: 1)
-    lazy var freePlanDetails = ServicePlanDetails(amount: 0,
-                                             currency: "EUR",
-                                             cycle: 0,
-                                             features: 0,
+    lazy var freePlanDetails = ServicePlanDetails(features: 0,
                                              iD: UUID().uuidString,
                                              maxAddresses: 0,
                                              maxDomains: 0,
