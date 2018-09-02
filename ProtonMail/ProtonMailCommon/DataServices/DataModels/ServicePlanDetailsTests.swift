@@ -30,11 +30,23 @@ class ServicePlanDetailsTests: XCTestCase {
                                        maxMembers: 1,
                                        maxSpace: 5368709120,
                                        maxVPN: 0,
-                                       name: "plus",
+                                       name: "professional",
                                        quantity: 1,
                                        services: 1,
                                        title: "ProtonMail Professional",
                                        type: 1)
+    lazy var address5 = ServicePlanDetails(features: 1,
+                                      iD: "BzHqSTaqcpjIY9SncE5s7FpjBrPjiGOucCyJmwA6x4nTNqlElfKvCQFr9xUa2KgQxAiHv4oQQmAkcA56s3ZiGQ==",
+                                      maxAddresses: 5,
+                                      maxDomains: 0,
+                                      maxMembers: 0,
+                                      maxSpace: 0,
+                                      maxVPN: 0,
+                                      name: "5address",
+                                      quantity: 1,
+                                      services: 1,
+                                      title: "+5 Addresses",
+                                      type: 0)
     
     lazy var json = """
     {
@@ -257,5 +269,16 @@ class ServicePlanDetailsTests: XCTestCase {
     
     func testMerge() {
         // TODO: when merge logic will be implemented
+    }
+    
+    func testSubscription() {
+        let subscription = Subscription(start: .distantPast,
+                                        end: .distantFuture,
+                                        planDetails: [self.address5, self.pro],
+                                        paymentMethods: [.init(iD: "424242", type: .card)])
+        
+        XCTAssertEqual(subscription.plan, .pro)
+        XCTAssertEqual(subscription.details, [self.address5, self.pro].merge())
+        XCTAssertTrue(subscription.hadOnlinePayments)
     }
 }
