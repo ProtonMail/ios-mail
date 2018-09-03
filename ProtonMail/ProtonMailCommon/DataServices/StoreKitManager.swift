@@ -16,7 +16,7 @@ class StoreKitManager: NSObject {
         super.init()
     }
     
-    private var productIds = Set(["iOS_ProtonMail_Plus_1_year_consumable"])
+    private var productIds = Set([ServicePlan.plus.storeKitProductId!])
     private var availableProducts: [SKProduct] = []
     private var request: SKProductsRequest!
     
