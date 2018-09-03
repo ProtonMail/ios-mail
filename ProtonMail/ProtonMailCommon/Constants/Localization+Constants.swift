@@ -1390,6 +1390,12 @@ class LocalizedString {
 
     /// "Share Alert"
     lazy var _share_alert = NSLocalizedString("Share Alert", comment: "Title")
+    
+    /// "Failed to determine type of file"
+    lazy var _failed_to_determine_file_type = NSLocalizedString("Failed to determine type of file", comment: "Error message")
+    
+    /// "Unsupported file type"
+    lazy var _unsupported_file = NSLocalizedString("Unsupported file type", comment: "Error message")
 
     /// "Please use ProtonMail App login first"
     lazy var _please_use_protonmail_app_login_first = NSLocalizedString("Please use ProtonMail App login first", comment: "Description")

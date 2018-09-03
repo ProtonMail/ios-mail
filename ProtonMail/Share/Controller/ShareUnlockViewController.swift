@@ -366,26 +366,40 @@ extension ShareUnlockViewController: AttachmentController {
             }
             
             guard error == nil else {
-                self.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
+                self.error(error.localizedDescription)
                 return
             }
         
+            //TODO:: the process(XXX:) functions below. they could be abstracted out. all type of process in the same place.
             if let url = item as? URL {
                 self.documentAttachmentProvider.process(fileAt: url) // sync
             } else if let img = item as? UIImage {
                 self.imageAttachmentProvider.process(original: img) // sync
-            } else if let data = item as? Data {
-                //TODO:: the process functions above ^. they could be abstracted out. all type of process in the same place.
+            } else if (type as CFString == kUTTypeVCard), let data = item as? Data {
                 var fileName = "\(NSUUID().uuidString).vcf"
-                if #available(iOSApplicationExtension 11.0, *) {
-                    if let name = itemProvider.suggestedName {
-                        fileName = name
-                    }
+                if #available(iOSApplicationExtension 11.0, *), let name = itemProvider.suggestedName {
+                    fileName = name
                 }
                 let fileData = ConcreteFileData<Data>(name: fileName, ext: "text/vcard", contents: data)
                 self.finish(fileData)
+            } else if let data = item as? Data {
+                var fileName = NSUUID().uuidString
+                if #available(iOSApplicationExtension 11.0, *), let name = itemProvider.suggestedName {
+                    fileName = name
+                }
+                
+                let type = (itemProvider.registeredTypeIdentifiers.first ?? type) as CFString
+                // this method does not work correctly with "text/vcard" mime by some reson, so VCards have separate `else if`
+                guard let filetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassFilenameExtension)?.takeRetainedValue() as String?,
+                    let mimetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType)?.takeRetainedValue() as String? else
+                {
+                    self.error(LocalString._failed_to_determine_file_type)
+                    return
+                }
+                let fileData = ConcreteFileData<Data>(name: fileName + "." + filetype, ext: mimetype, contents: data)
+                self.finish(fileData)
             } else {
-                self.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
+                self.error(LocalString._unsupported_file)
             }
         }
     }
