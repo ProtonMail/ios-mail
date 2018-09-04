@@ -98,10 +98,10 @@ class LabelsDataService {
                 do {
                     try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: label, in: context)
                     if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
+                        PMLog.D("addNewLabel error: \(error)")
                     }
                 } catch let ex as NSError {
-                    PMLog.D("error: \(ex)")
+                    PMLog.D("addNewLabel error: \(ex)")
                 }
             }
         }

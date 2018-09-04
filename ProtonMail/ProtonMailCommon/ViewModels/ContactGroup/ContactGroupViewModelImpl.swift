@@ -17,11 +17,12 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
     */
     func fetchAllContactGroup()
     {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            Label.deleteAll(inContext: context)
-        } else {
-            PMLog.D("Can't get context for fetchAllContactGroup")
-        }
+        // TODO: why error?
+//        if let context = sharedCoreDataService.mainManagedObjectContext {
+//            Label.deleteAll(inContext: context)
+//        } else {
+//            PMLog.D("Can't get context for fetchAllContactGroup")
+//        }
         sharedLabelsDataService.fetchLabels(type: 2)
     }
 }

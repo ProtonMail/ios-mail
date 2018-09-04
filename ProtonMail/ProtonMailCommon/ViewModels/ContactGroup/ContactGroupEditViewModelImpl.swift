@@ -42,8 +42,10 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         self.tableContent = []
         
         if let contactGroup = contactGroup {
+            // .edit
             self.contactGroup = contactGroup
         } else {
+            // .create
             if let context = sharedCoreDataService.mainManagedObjectContext {
                 self.contactGroup = Label(context: context)
                 self.contactGroup.color = self.getColor()
@@ -246,17 +248,21 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                                           color: String,
                                           emailList: NSSet) {
         let completionHandler = {
-            () -> Void in
-            return
+            (contactGroupID: String?) -> Void in
+            
+            if let contactGroupID = contactGroupID {
+                self.contactGroup.labelID = contactGroupID
+                
+                // add email IDs
+                // TODO: no contactGroupID check
+                self.addEmailsToContactGroup(emailList: emailList)
+            }
         }
         
         // create contact group
         sharedContactGroupsDataService.createContactGroup(name: name,
                                                           color: color,
                                                           completionHandler: completionHandler)
-        
-        // add email IDs
-        addEmailsToContactGroup(emailList: emailList)
     }
     
     /**

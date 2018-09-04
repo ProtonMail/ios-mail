@@ -21,7 +21,7 @@ class ContactGroupsDataService {
      - color: The color of the contact group
      - completionHandler: The completion handler called upon successful creation
     */
-    func createContactGroup(name: String, color: String, completionHandler: @escaping () -> Void)
+    func createContactGroup(name: String, color: String, completionHandler: @escaping (String?) -> Void)
     {
         let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false, type: 2)
         api.call() {
@@ -33,7 +33,7 @@ class ContactGroupsDataService {
                 // save
                 PMLog.D("[Contact Group addContactGroup API] result = \(newContactGroup)")
                 sharedLabelsDataService.addNewLabel(newContactGroup)
-                completionHandler()
+                completionHandler(newContactGroup["ID"] as? String)
             } else {
                 // TODO: handle error
                 PMLog.D("[Contact Group addContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
@@ -133,25 +133,37 @@ class ContactGroupsDataService {
                 if let context = sharedCoreDataService.mainManagedObjectContext {
                     let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                     
-                    if let label = label, var newSet = label.emails as? Set<Email> {
+                    if let label = label {
                         for emailID in emailIDs {
                             for email in emailList {
                                 if email.emailID == emailID {
-                                    newSet.insert(email)
+                                    context.performAndWait {
+                                        () -> Void in
+                                        
+                                        // update label's set
+                                        let emailSet = label.mutableSetValue(forKey: "emails")
+                                        emailSet.add(email)
+                                        label.setValue(emailSet, forKey: "emails")
+                                    }
                                     break
                                 }
                             }
                         }
                         
-                        label.emails = newSet as NSSet
-                        
-                        do {
-                            try context.save()
-                        } catch {
-                            PMLog.D("addEmailsToContactGroup updating error: \(error)")
+                        context.perform {
+                            let error = context.saveUpstreamIfNeeded()
+                            if let error = error {
+                                PMLog.D("error: \(error)")
+                            }
                         }
+                        
+//                        do {
+//                            try context.save()
+//                        } catch {
+//                            PMLog.D("addEmailsToContactGroup updating error: \(error)")
+//                        }
                     } else {
-                        PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
+                        PMLog.D("addEmailsToContactGroup error: can't get label")
                     }
                 } else {
                     PMLog.D("addEmailsToContactGroup error: can't get context")
