@@ -24,7 +24,7 @@ class StoreKitManager: NSObject {
     private var deferredCompletion: (()->Void)?
     private var errorCompletion: (Error)->Void = { error in
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            let alert = UIAlertController(title: "Error occured", message: error.localizedDescription, preferredStyle: .alert)
+            let alert = UIAlertController(title: LocalString._error_occured, message: error.localizedDescription, preferredStyle: .alert)
             alert.addAction(.init(title: LocalString._general_ok_action, style: .cancel, handler: nil))
             UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
         }
@@ -92,10 +92,10 @@ class StoreKitManager: NSObject {
         
         var errorDescription: String? {
             switch self {
-            case .unavailableProduct: return "Failed to get list of available products from AppStore."
-            case .recieptLost: return "AppStore receipt lost. Please contact support if your plan was not activated."
-            case .haveTransactionOfAnotherUser: return "Another user have unfinished in-app purchases on this device. Please, login with that user so we'll be able to complete the purchase and activate the plan."
-            case .alreadyPurchasedPlanDoesNotMatchBackend: return "We were not available to match AppStore product with products on our server. Please, contact support."
+            case .unavailableProduct: return LocalString._unavailable_product
+            case .recieptLost: return LocalString._reciept_lost
+            case .haveTransactionOfAnotherUser: return LocalString._another_user_transaction
+            case .alreadyPurchasedPlanDoesNotMatchBackend: return LocalString._backend_mismatch
             }
         }
     }

@@ -1505,4 +1505,75 @@ class LocalizedString {
     lazy var _expires = NSLocalizedString("Expires", comment: "VoiceOver: email can expire")
     /// "Unread"
     lazy var _unread = NSLocalizedString("Unread", comment: "VoiceOver: email is not read yet")
+    
+    
+    // Mark: - IAP
+    
+    lazy var _unlimited_messages_sent = NSLocalizedString("Unlimited messages sent/day", comment: "Service plan capability;")
+    
+    lazy var _up_to_n_users = NSLocalizedString("Up to %i users", comment: "Service plan capability; i = 6")
+    
+    lazy var _n_email_address = NSLocalizedString("%i email address", comment: "Service plan capability; i = 1")
+    lazy var _n_email_addresses = NSLocalizedString("%i email addresses", comment: "Service plan capability; i = 5 or 50")
+    lazy var _total = NSLocalizedString("(Total)", comment: "Service plan capability detail; like in '50 email addresses (Total)'")
+    lazy var _per_user = NSLocalizedString("/user", comment: "Service plan capability detail; like in '5 email addresses/user'")
+    
+    lazy var _storage_capacity = NSLocalizedString("%@ storage capacity", comment: "Service plan capability")
+    
+    lazy var _limited_to_150_messages = NSLocalizedString("Limited to 150 messages sent/day", comment: "Service plan capability")
+    
+    lazy var _bridge_support = NSLocalizedString("IMAP/SMTP Support via ProtonMail Bridge", comment: "Service plan capability")
+    
+    lazy var _labels_folders_filters = NSLocalizedString("Lables, Folders, Filters & More", comment: "Service plan capability")
+    
+    lazy var _support_n_domains = NSLocalizedString("Support for %i custom domains (e.g. user@yourdomain.com)", comment: "Service plan capability; i = 2")
+    
+    lazy var _vpn_included = NSLocalizedString("ProtonVPN included", comment: "Service plan capability")
+    
+    lazy var _migrate_beginning = NSLocalizedString("To migrate to ", comment: "Service plan description footer; beginning of sentence 'To migrate to ProtonMail Professional, you have to login...'")
+    lazy var _migrate_end = NSLocalizedString(", you have to login to our website and make the necessary adjustments to comply with the plan's requirements", comment: "Service plan description footer; end of sentence 'To migrate to ProtonMail Professional, you have to login...'")
+    
+    lazy var _upgrade_to_paid = NSLocalizedString("Upgrade to a paid plan to benefit from more features", comment: "Service plan description footer")
+    
+    lazy var _will_renew = NSLocalizedString("Your plan will automatically renew on", comment: "Service plan description footer")
+    
+    lazy var _active_until = NSLocalizedString("Your plan is currently active until", comment: "Service plan description footer")
+    
+    lazy var _buy_more_credits = NSLocalizedString("Buy More Credits", comment: "Link to More Credits screen")
+    
+    lazy var _cant_connect_to_store = NSLocalizedString("Could not connect to Store. Please, try later.", comment: "Error message")
+    
+    lazy var _for_one_year = NSLocalizedString("for one year", comment: "Buy button second line")
+    
+    lazy var _iap_fee = NSLocalizedString("Apple in-app purchase fee", comment: "Price breakdown")
+    
+    lazy var _iap_disclamer = NSLocalizedString(self._iap_disclamer_private, comment: "Terms of purchase")
+    private lazy var _iap_disclamer_private = """
+    Upon confirming your purchase, your iTunes account will be charged the amount displayed, which includes ProtonMail Plus, and Apple's in-app purchase fee (Apple charges a fee of approximately 30% on purchases made through your iPhone/iPad).
+    After making the purchse, you will automatically be upgraded to ProtonMail Plus for one year period, after which time you can renew or cancel, either online or through our iOS app.
+    """
+    
+    lazy var _more_credits = NSLocalizedString("More Credits", comment: "Screen header")
+    
+    lazy var _get_plan = NSLocalizedString("Get %@", comment: "Screen header, like 'Get VISIONARY'")
+    
+    lazy var _other_plans = NSLocalizedString("OTHER SERVICE PLANS", comment: "Section header")
+    
+    lazy var _error_occured = NSLocalizedString("Error occured", comment: "Error alert title")
+    
+    lazy var _free_header = NSLocalizedString("For individuals looking to benefit from secure communication at no cost", comment: "Service Plan description")
+    
+    lazy var _plus_header = NSLocalizedString("For individuals that need more capacity, customization and advanced features", comment: "Service Plan description")
+    
+    lazy var _pro_header = NSLocalizedString("For organizations that need multi-user support nd additional productivity features", comment: "Service Plan description")
+    
+    lazy var _vis_header = NSLocalizedString("For power users and groups of people that value full anonymity and privacy", comment: "Service Plan description")
+    
+    lazy var _unavailable_product = NSLocalizedString("Failed to get list of available products from AppStore.", comment: "Error message")
+    
+    lazy var _reciept_lost = NSLocalizedString("AppStore receipt lost. Please contact support if your plan was not activated.", comment: "Error message")
+    
+    lazy var _another_user_transaction = NSLocalizedString("Another user have unfinished in-app purchases on this device. Please, login with that user so we'll be able to complete the purchase and activate the plan.", comment: "Error message")
+    
+    lazy var _backend_mismatch = NSLocalizedString("We were not available to match AppStore product with products on our server. Please, contact support.", comment: "Error message")
 }

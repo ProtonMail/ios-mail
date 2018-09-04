@@ -31,10 +31,10 @@ enum ServicePlan: String {
     // FIXME: localization
     internal var headerText: String {
         switch self {
-        case .free: return "For individuals looking to benefit from secure communication at no cost"
-        case .plus: return "For individuals that need more capacity, customization and advanced features"
-        case .pro: return "For organizations that need multi-user support nd additional productivity features"
-        case .visionary: return "For power users and groups of people that value full anonymity and privacy"
+        case .free: return LocalString._free_header
+        case .plus: return LocalString._plus_header
+        case .pro: return LocalString._pro_header
+        case .visionary: return LocalString._vis_header
         }
     }
     

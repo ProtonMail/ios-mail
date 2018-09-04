@@ -113,7 +113,7 @@ extension ServiceLevelViewControllerBase: ServiceLevelDataSourceDelegate {
             self.navigationController?.popViewController(animated: true)
         }
         let errorCompletion: (Error)->Void = { error in
-            let alert = UIAlertController(title: "Error occured", message: error.localizedDescription, preferredStyle: .alert)
+            let alert = UIAlertController(title: LocalString._error_occured, message: error.localizedDescription, preferredStyle: .alert)
             alert.addAction(.init(title: LocalString._general_ok_action, style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
