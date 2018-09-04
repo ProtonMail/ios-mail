@@ -29,16 +29,14 @@ final class GetLabelsRequest : ApiRequest<GetLabelsResponse> {
     }
 }
 
-
 /// Parse the response from the server of the GetLabelsRequest() call
 final class GetLabelsResponse : ApiResponse {
     var labels : [[String : Any]]?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.labels =  response["Labels"]  as? [[String : Any]]
+        self.labels =  response["Labels"] as? [[String : Any]]
         return true
     }
 }
-
 
 /// Create a label/contact group on the server
 final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {

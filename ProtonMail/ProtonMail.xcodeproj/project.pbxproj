@@ -899,6 +899,7 @@
 		A0B13DBE786FFB4D428541DDFDFD7B62 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB243FAF3121155DBEE7A75E1784BBE3 /* UIView+Extension.swift */; };
 		A0BE5474D057B897319ACBA944107E83 /* ExpirationWarningEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC182C1B583843D594847F2DB05E0E1 /* ExpirationWarningEmailCell.swift */; };
 		A0BF952287E1A20A21A4CABC80CACBF4 /* ContactEditEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD844432E7428B17D6FA2D53A82737AA /* ContactEditEmailCell.swift */; };
+		A0CD6D99A0C4F0F0DE22401E6E0BBE8E /* ContactTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9473962A2C56DE5ECF2323A45D6BB0 /* ContactTabBarViewController.swift */; };
 		A0DE1E92087C4A9BE20A0C9A83D570B3 /* Fonts+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AD55DA0F745D466C56681D98172724 /* Fonts+Constants.swift */; };
 		A11B2611FE597A0F073EE46629DE0449 /* SharedCacheBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFCE533884CA182718B493B6066DAB3 /* SharedCacheBase.swift */; };
 		A133C64EC1BA43F20E04DE18F8DF49CC /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8C577A5F3B3CB7F718420FF1C7FCB0 /* UserTempCachedStatus.swift */; };
@@ -1206,6 +1207,7 @@
 		D52C6389F6A71C017C60A4D6CB086CB2 /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 14F9568A88F8951E16C13659E130542C /* editor.css */; };
 		D53CCA2D4BA18FBCEECA1ABE23059331 /* ContactDetailsDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539074996CE23757D22112375FC84A40 /* ContactDetailsDisplayCell.swift */; };
 		D5680476E4D22D8C0B895AB7DF8E33F3 /* ContactGroupViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE4733926A58198B65D2DC1B50F00 /* ContactGroupViewModelImpl.swift */; };
+		D5A85D9DE9EAC07F2FBA45295CF660B7 /* ContactTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9473962A2C56DE5ECF2323A45D6BB0 /* ContactTabBarViewController.swift */; };
 		D5EA6291DEA64F5AC2747C1B877BBCA1 /* Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 65AEFDCB007ECCDB7EF98DB95F136C12 /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D6619F5C83A901BD7C19AA13D4099C5C /* UpgradeAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31A8775E09B34F474D6DACB8E7FB5FE /* UpgradeAlertViewController.swift */; };
 		D69F402C749630AAE0CC17B1267330A0 /* ViewModelServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14199450E90754880823E59D3068A8F4 /* ViewModelServiceImpl.swift */; };
@@ -2060,6 +2062,7 @@
 		DC6B6DA72FC64376C0F63D8E75593A09 /* DomainAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainAPI.swift; sourceTree = "<group>"; };
 		DC99702EB4FAE95D39DBCC4235BBC74C /* ComposeViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModelTests.swift; sourceTree = "<group>"; };
 		DCAB5DB98BC9590C78EF30CF1746F200 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DD9473962A2C56DE5ECF2323A45D6BB0 /* ContactTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTabBarViewController.swift; sourceTree = "<group>"; };
 		DDD33FB43FF1E3BBC252FE8EEE22868F /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		DE677B6AB0CC74F46204BFAA6D60C178 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DEE657FA689CA1A6D37EA52D7D1CCFA7 /* TableLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableLayout.swift; sourceTree = "<group>"; };
@@ -2727,6 +2730,7 @@
 				0B66B717082BCBF83C07032363F49B8D /* Settings */,
 				ECDFE4C747EE53D7F577784F4E85B95A /* Sign In */,
 				5FAF94FB0527C3A0AE08C96B1BA59D3A /* StoryBoard */,
+				B9410A9A43451F289CCB1D6CB30F804F /* Tabbar */,
 				804338D8197BB5DE52EF8E071DB242AC /* Upgrade */,
 				2AF3359203835E353281F42161F5BB46 /* Views */,
 				F3918532981DC56433B3F9F8552DA9AC /* BaseViewController.swift */,
@@ -2760,6 +2764,14 @@
 				841FE5B998A88D78555BB0DAA153C2C1 /* TouchIDCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		B9410A9A43451F289CCB1D6CB30F804F /* Tabbar */ = {
+			isa = PBXGroup;
+			children = (
+				DD9473962A2C56DE5ECF2323A45D6BB0 /* ContactTabBarViewController.swift */,
+			);
+			path = Tabbar;
 			sourceTree = "<group>";
 		};
 		75E2E13B8E037303B40BA64F98DBB702 /* Resource */ = {
@@ -4639,6 +4651,7 @@
 				3C926312F77D55CADD5B126B3A57F03D /* ContactPickerDefined.swift in Sources */,
 				1A1C51D868EC3D1420F45CBA454204C0 /* ContactSearchTableViewController.swift in Sources */,
 				DD689CDC73E8E07910D2F8CF30D2454D /* ContactSectionHeadView.swift in Sources */,
+				A0CD6D99A0C4F0F0DE22401E6E0BBE8E /* ContactTabBarViewController.swift in Sources */,
 				B8964E5BF41339B3E6BF3D5FC7A05DC5 /* ContactTypeAddCustomCell.swift in Sources */,
 				9950580C4342AD679917C79045365942 /* ContactTypeViewController.swift in Sources */,
 				8D69E305D576E1A527FF2F0CE1895111 /* ContactTypeViewModel.swift in Sources */,
@@ -5052,6 +5065,7 @@
 				F959265686C9E10230394B20E6B7883F /* ContactPickerDefined.swift in Sources */,
 				47CAC71E8CC3E0CE82662935B2A39739 /* ContactSearchTableViewController.swift in Sources */,
 				1F41471EE68B6375498F2AAD5EA910F0 /* ContactSectionHeadView.swift in Sources */,
+				D5A85D9DE9EAC07F2FBA45295CF660B7 /* ContactTabBarViewController.swift in Sources */,
 				77D70776DA12C02B714154E55DCDF625 /* ContactTypeAddCustomCell.swift in Sources */,
 				71EFC09B9B2CCE09DFC707507A698CCD /* ContactTypeViewController.swift in Sources */,
 				00B3D598F50FCBC9A676DCCC47C870F8 /* ContactTypeViewModel.swift in Sources */,

@@ -90,6 +90,7 @@ class ContactEmailsResponse: ApiResponse {
                         let mapping: [[String: Any]] = labelIDs.map({
                             (labelID: String) -> [String: Any] in
                             
+                            // TODO: check if this will clear other fields or noang
                             return [
                                 "ID": labelID,
                                 "Type": 2 /* don't forget about it... */

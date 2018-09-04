@@ -41,7 +41,9 @@ class LabelsDataService {
      */
     func fetchLabels(type: Int = 1) {
         let eventAPI = GetLabelsRequest(type: type)
-        eventAPI.call() { task, response, hasError in
+        eventAPI.call() {
+            task, response, hasError in
+            
             if response == nil {
                 //TODO:: error
             } else if let labels = response?.labels {

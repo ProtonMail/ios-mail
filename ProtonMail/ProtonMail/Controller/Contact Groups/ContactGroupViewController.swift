@@ -21,15 +21,15 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
     var refreshControl: UIRefreshControl!
     @IBOutlet weak var tableView: UITableView!
     
-    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
     func setViewModel(_ vm: Any) {
         viewModel = vm as! ContactGroupsViewModel
     }
     
     func inactiveViewModel() {
+    }
+    
+    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {

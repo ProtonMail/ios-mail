@@ -20,15 +20,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kProtonMailImage: UIImage      = UIImage(named: "encrypted_main")!
     
     fileprivate let kContactDetailsSugue : String  = "toContactDetailsSegue";
-    fileprivate let kAddContactSugue : String      = "toAddContact"
-    fileprivate let kAddContactGroupSugue: String      = "toAddContactGroup"
-    
-    /* Start Temporary code for contact group */
-    // TODO: remove this after merging of contacts and contact groups are done
-    fileprivate let kToContactGroupSegue: String = "toContactGroupSegue"
-    /* End Temporary code for contact group */
-
-    fileprivate let kSegueToImportView : String    = "toImportContacts"
     
     fileprivate var searchString : String = ""
  
@@ -46,8 +37,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
-    
-    fileprivate var addBarButtonItem : UIBarButtonItem!
     
     func inactiveViewModel() {
     }
@@ -116,24 +105,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.tableView.noSeparatorsBelowFooter()
         self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
         
-        let back = UIBarButtonItem(title: LocalString._general_back_action,
-                                   style: UIBarButtonItemStyle.plain,
-                                   target: nil,
-                                   action: nil)
-        self.navigationItem.backBarButtonItem = back
-    
-        if #available(iOS 9.0, *) {
-            self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
-                                                         target: self,
-                                                         action: #selector(self.addButtonTapped))
-        } else {
-            // Fallback on earlier versions
-        }
-
-        
-        let rightButtons: [UIBarButtonItem] = [self.addBarButtonItem]
-        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
-        
         //get all contacts
         self.viewModel.setupFetchedResults(delaget: self)
         tableView.reloadData()
@@ -165,19 +136,7 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             let contactDetailsViewController = segue.destination as! ContactDetailViewController
             let contact = sender as? Contact
             sharedVMService.contactDetailsViewModel(contactDetailsViewController, contact: contact!)
-        } else if (segue.identifier == kAddContactSugue) {
-            let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
-            sharedVMService.contactAddViewModel(addContactViewController)
-        } else if (segue.identifier == kAddContactGroupSugue) {
-            let addContactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
-            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create)
-        } else if(segue.identifier == kToContactGroupSegue) {
-            let contactGroupsViewController = segue.destination.childViewControllers[0] as! ContactGroupsViewController
-            sharedVMService.contactGroupsViewModel(contactGroupsViewController)
         } else if (segue.identifier == "toCompose") {
-        } else if segue.identifier == kSegueToImportView{
-            let popup = segue.destination as! ContactImportViewController
-            self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
         }
     }
     
@@ -192,59 +151,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             self.refreshControl.endRefreshing()
             self.tableView.reloadData()
         }
-    }
-    
-    @objc internal func addContactTapped() {
-        self.performSegue(withIdentifier: kAddContactSugue, sender: self)
-    }
-    
-    @objc internal func addContactGroupTapped() {
-        self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
-    }
-    
-    @objc internal func viewContactGroupsTapped() {
-        self.performSegue(withIdentifier: kToContactGroupSegue, sender: self)
-    }
-    
-    @available(iOS 9.0, *)
-    @objc internal func addButtonTapped() {
-        /// set title
-        let alertController = UIAlertController(title: "Select An Option", message: nil, preferredStyle: .actionSheet)
-        
-        /// set options
-        alertController.addAction(UIAlertAction(title: "Create Contact", style: .default, handler: {
-            (action) -> Void in
-            self.addContactTapped()
-        }))
-        alertController.addAction(UIAlertAction(title: "Create Group", style: .default, handler: {
-            (action) -> Void in
-            self.addContactGroupTapped()
-        }))
-        alertController.addAction(UIAlertAction(title: "View All Groups", style: .default, handler: {
-            (action) -> Void in
-            self.viewContactGroupsTapped()
-        }))
-        alertController.addAction(UIAlertAction(title: LocalString._contacts_upload_contacts, style: .default, handler: { (action) -> Void in
-            self.navigationController?.popViewController(animated: true)
-            
-            let alertController = UIAlertController(title: LocalString._contacts_title,
-                                                    message: LocalString._upload_ios_contacts_to_protonmail,
-                                                    preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action,
-                                                    style: .default, handler: { (action) -> Void in
-                self.performSegue(withIdentifier: self.kSegueToImportView, sender: self)
-            }))
-            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            self.present(alertController, animated: true, completion: nil)
-        }))
-        
-        /// set cancel
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-    
-        /// present 
-        alertController.popoverPresentationController?.barButtonItem = addBarButtonItem
-        alertController.popoverPresentationController?.sourceRect = self.view.frame
-        self.present(alertController, animated: true, completion: nil)
     }
 }
 

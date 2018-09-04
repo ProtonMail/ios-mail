@@ -110,7 +110,6 @@ class ApiRequest<T : ApiResponse> : Package {
             defer {
                 sema.signal();
             }
-            PMLog.D("[Contact Group API] in the completion wrapper")
             let realType = T.self
             let apiRes = realType.init()
             if error != nil {
@@ -138,14 +137,12 @@ class ApiRequest<T : ApiResponse> : Package {
             ret_res = apiRes
         }
         
-        PMLog.D("[Contact Group API] before making the request")
         sharedAPIService.request(method: self.method(),
                                  path: self.path(),
                                  parameters: self.toDictionary(),
                                  headers: ["x-pm-apiversion": self.apiVersion()],
                                  authenticated: self.getIsAuthFunction(),
                                  completion: completionWrapper)
-        PMLog.D("[Contact Group API] after making the request")
 
         //wait operations
         let _ = sema.wait(timeout: DispatchTime.distantFuture)

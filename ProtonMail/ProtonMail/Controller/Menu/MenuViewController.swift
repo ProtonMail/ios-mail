@@ -157,8 +157,16 @@ class MenuViewController: UIViewController {
                     }
                 }
             } else if (segueID == kSegueToContacts ) {
-                if let contactViewController = navigation.firstViewController() as? ViewModelProtocol {
-                    sharedVMService.contactsViewModel(contactViewController)
+                // setup contact group view controller
+                if let tabBarController = navigation.firstViewController() as? UITabBarController,
+                    let viewControllers = tabBarController.viewControllers {
+                    if let contactViewController = viewControllers[0] as? ContactsViewController {
+                        sharedVMService.contactsViewModel(contactViewController)
+                    }
+                    
+                    if let contactGroupsViewController = viewControllers[1] as? ContactGroupsViewController {
+                        sharedVMService.contactGroupsViewModel(contactGroupsViewController)
+                    }
                 }
             }
         }
