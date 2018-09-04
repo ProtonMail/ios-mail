@@ -409,8 +409,18 @@ final class ContactLabelAnArrayOfContactEmailsRequest: ApiRequest<ContactLabelAn
 /// Process the response of ContactLabelAnArrayOfContactEmailsRequest
 /// TODO: check return body
 final class ContactLabelAnArrayOfContactEmailsResponse: ApiResponse {
+    var emailIDs: [String] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
         PMLog.D("[Contact] label an array of contact emails response \(response)")
+        if let responses = response["Responses"] as? [[String: Any]] {
+            for data in responses {
+                if let ID = data["ID"] as? String, let tmp = data["Response"] as? [String: Any] {
+                    if let code = tmp["Code"] as? Int, code == 1000 {
+                        emailIDs.append(ID)
+                    }
+                }
+            }
+        }
         return true
     }
 }

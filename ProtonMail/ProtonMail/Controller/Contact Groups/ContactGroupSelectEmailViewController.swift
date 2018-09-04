@@ -8,14 +8,6 @@
 
 import UIKit
 
-/*
- Prototyping goals:
- 1. Use native UITableView and native cell
- 2. When the view appears, the cells are available for multiselection
- 3. When the backward button is pressed, send the labelling request
- 4. Maintain labelling information using NSSet
- */
-
 class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupSelectEmailViewModel!
@@ -25,16 +17,16 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         viewModel = vm as! ContactGroupSelectEmailViewModel
     }
     
+    override func viewDidLoad() {
+        tableView.allowsMultipleSelection = true
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.save()
+        viewModel.save(indexPaths: tableView.indexPathsForSelectedRows)
     }
     
     func inactiveViewModel() {}
-    
-    // table view
-    
-    // selection 
 }
 
 extension ContactGroupSelectEmailViewController: UITableViewDataSource
@@ -43,12 +35,26 @@ extension ContactGroupSelectEmailViewController: UITableViewDataSource
         return viewModel.getTotalEmailCount()
     }
     
+    // TODO: for custom cell, override setSelected()
+    // https://medium.com/ios-os-x-development/ios-multiple-selections-in-table-view-88dc2249c3a2
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupSelectEmailCell",
                                                  for: indexPath)
-        cell.textLabel?.text = viewModel.getCellData(at: indexPath)
-        print(viewModel.getCellData(at: indexPath))
+        
+        let ret = viewModel.getCellData(at: indexPath)
+        cell.textLabel?.text = ret.name
+        cell.detailTextLabel?.text = ret.email
+        
+        cell.selectionStyle = .none
+        if ret.isSelected {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            cell.accessoryType = .checkmark
+        } else {
+            tableView.deselectRow(at: indexPath, animated: true)
+            cell.accessoryType = .none
+        }
+        
         return cell
     }
 }
@@ -56,15 +62,14 @@ extension ContactGroupSelectEmailViewController: UITableViewDataSource
 extension ContactGroupSelectEmailViewController: UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let status = viewModel.selectEmail(at: indexPath)
-        
-        let alert = UIAlertController(title: "Selected email",
-                                      message: "You have \(status ? "" : "de")selected email \(viewModel.getCellData(at: indexPath))",
-            preferredStyle: .alert)
-        alert.addOKAction()
-        
-        present(alert, animated: true, completion: nil)
+        let cell = tableView.cellForRow(at: indexPath)
+        cell?.isSelected = true
+        cell?.accessoryType = .checkmark
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        cell?.isSelected = false
+        cell?.accessoryType = .none
     }
 }

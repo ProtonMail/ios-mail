@@ -15,59 +15,71 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
     let allEmails: [Email]
     
     /// the list of email that is current in the contact group
-    let selectedEmails: NSMutableSet
+    var selectedEmails: Set<Email>
     
     /// after saving the email list, we refresh the edit view controller's data
-    let refreshHandler: () -> Void
+    let refreshHandler: (NSSet) -> Void
     
     /**
      Initializes a new ContactGroupSelectEmailViewModel
     */
-    init(selectedEmails: NSSet, refreshHandler: @escaping () -> Void) {
+    init(selectedEmails: NSSet, refreshHandler: @escaping (NSSet) -> Void) {
         self.allEmails = sharedContactDataService.allEmails()
-        // TODO: fix this
-        self.selectedEmails = selectedEmails.mutableCopy() as! NSMutableSet
+        self.allEmails.sort {
+            if $0.name == $1.name {
+                return $0.email < $1.email
+            }
+            return $0.name < $1.name
+        }
+        
+        // TODO: do conversion check
+        self.selectedEmails = selectedEmails as! Set
         self.refreshHandler = refreshHandler
     }
     
     /**
-     Call this function when the a specific row is selected
+     For the given indexPath, returns if it is in the email list or not
      
-     - Parameter indexPath: The row that is selected
-     - Returns: The status of current row, after selection, is in the contact group or not
+     - Parameter indexPath: IndexPath
+     - Returns: true if the given indexPath is in the email list, false otherwise
     */
-    func selectEmail(at indexPath: IndexPath) -> Bool {
-        let selectedEmail = allEmails[indexPath.row]
-        let currentSelectionState = selectedEmails.contains(selectedEmail)
-        
-        if currentSelectionState == true {
-            selectedEmails.remove(selectedEmail)
-        } else {
-            selectedEmails.add(selectedEmail)
-        }
-        
-        return !currentSelectionState
-    }
-    
     func getSelectionStatus(at indexPath: IndexPath) -> Bool {
-        return false
+        let selectedEmail = allEmails[indexPath.row]
+        return selectedEmails.contains(selectedEmail)
     }
     
+    /**
+     Return the total number of emails in the email list
+     
+     - Returns: total email in the list
+    */
     func getTotalEmailCount() -> Int {
         return allEmails.count
     }
     
-    // TODO: fix this function
-    func getCellData(at indexPath: IndexPath) -> String {
-        return String(describing: allEmails[indexPath.row].email)
+    /**
+     Return the name and the email of the given indexPath
+     
+     - Parameter indexPath: IndexPath
+     - Returns: a tuple of name and email at the given indexPath
+    */
+    func getCellData(at indexPath: IndexPath) -> (name: String, email: String, isSelected: Bool) {
+        let selectedEmail = allEmails[indexPath.row]
+        return (selectedEmail.name, selectedEmail.email, selectedEmails.contains(selectedEmail))
     }
     
     /**
-     Save the selected emails to the contact group
+     Return the selected emails to the contact group
     */
-    // TODO: fix this function
-    func save() {
-
+    func save(indexPaths: [IndexPath]?) {
+        selectedEmails = Set<Email>()
+        if let indexPaths = indexPaths {
+            for indexPath in indexPaths {
+                print("Selected: \(allEmails[indexPath.row].email)")
+                selectedEmails.insert(allEmails[indexPath.row])
+            }
+        }
+        refreshHandler(selectedEmails as NSSet)
     }
     
 }

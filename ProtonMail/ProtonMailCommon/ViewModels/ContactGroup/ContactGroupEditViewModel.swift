@@ -55,7 +55,7 @@ protocol ContactGroupEditViewModel {
     func getColor() -> String
     func getEmails() -> NSSet
     
-    func reset()
+    func cancel()
     
     // create and edit
     func saveDetail() -> Promise<Void>

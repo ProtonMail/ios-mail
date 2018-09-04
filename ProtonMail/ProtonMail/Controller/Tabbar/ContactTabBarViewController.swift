@@ -35,6 +35,10 @@ class ContactTabBarViewController: UITabBarController, ProtonMailViewControllerP
         
         let rightButtons: [UIBarButtonItem] = [self.importBarButtonItem, self.addBarButtonItem]
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
+        
+        // setup tab bar item title
+        self.tabBar.items?[0].title = "Contacts"
+        self.tabBar.items?[1].title = "Groups"
     }
 
     override func didReceiveMemoryWarning() {

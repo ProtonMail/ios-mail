@@ -76,8 +76,11 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             self.tableContent[1].append(.email)
         }
     }
-    
-    func reset() {
+
+    /**
+     Rollback the modifications on the contact group object
+    */
+    func cancel() {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             context.refresh(contactGroup, mergeChanges: false)
         }
@@ -217,10 +220,10 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             return promise
         }
         
-//        guard contactGroup.emails.count > 0 else {
-//            seal.reject(ContactGroupEditError.noEmailInGroup)
-//            return promise
-//        }
+        guard contactGroup.emails.count > 0 else {
+            seal.reject(ContactGroupEditError.noEmailInGroup)
+            return promise
+        }
         
         switch state {
         case .create:
@@ -295,8 +298,6 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         
         addEmailsToContactGroup(emailList: toAdd as NSSet)
         removeEmailsFromContactGroup(emailList: toDelete as NSSet)
-        
-        contactGroup.emails = updatedEmailList
     }
     
     /**

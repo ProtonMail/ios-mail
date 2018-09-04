@@ -34,7 +34,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         // we need to restore the data
         dismissKeyboard()
         
-        viewModel.reset()
+        viewModel.cancel()
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -95,14 +95,15 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                 (newColor: String?) -> Void in
                 self.viewModel.setColor(newColor: newColor)
             }
-            sharedVMService.contactGroupSelectColorViewModel(contactGroupSelectColorViewController,
+            sharedVMService.contactGroupSelectColorViewModel(
+                contactGroupSelectColorViewController,
                                                              currentColor: viewModel.getColor(),
                                                              refreshHandler: refreshHandler)
         } else if segue.identifier == kToContactGroupSelectEmailSegue {
             let refreshHandler = {
-                () -> Void in
+                (emailIDs: NSSet) -> Void in
                 
-                // TODO: take the new NSSet as a pass-in value?
+                self.viewModel.setEmails(emails: emailIDs)
             }
             
             let contactGroupSelectEmailViewController = segue.destination as! ContactGroupSelectEmailViewController

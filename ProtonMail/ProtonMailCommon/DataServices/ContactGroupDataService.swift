@@ -126,7 +126,7 @@ class ContactGroupsDataService {
             if response == nil {
                 // TODO: handle error
                 PMLog.D("[Contact Group addEmailsToContactGroup API] response nil error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
-            } else if response != nil {
+            } else if let emailIDs = response?.emailIDs {
                 // TODO: save
                 PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
                 completionHandler()

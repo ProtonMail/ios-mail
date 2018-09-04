@@ -21,7 +21,6 @@ class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModel
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
         viewModel.save()
     }
 }

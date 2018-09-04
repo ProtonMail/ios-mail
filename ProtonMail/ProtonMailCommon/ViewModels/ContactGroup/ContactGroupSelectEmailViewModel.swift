@@ -10,10 +10,9 @@ import Foundation
 
 protocol ContactGroupSelectEmailViewModel
 {
-    func selectEmail(at indexPath: IndexPath) -> Bool
     func getSelectionStatus(at indexPath: IndexPath) -> Bool
     
     func getTotalEmailCount() -> Int
-    func getCellData(at indexPath: IndexPath) -> String
-    func save()
+    func getCellData(at indexPath: IndexPath) -> (name: String, email: String, isSelected: Bool)
+    func save(indexPaths: [IndexPath]?)
 }
