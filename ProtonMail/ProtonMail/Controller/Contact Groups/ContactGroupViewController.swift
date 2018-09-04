@@ -28,10 +28,6 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
     func inactiveViewModel() {
     }
     
-    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
     override func viewDidLoad() {
         self.navigationItem.title = "Contact Groups"
         
@@ -72,7 +68,7 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
             
             sharedVMService.contactGroupEditViewModel(contactGroupEditViewController,
                                                       state: .edit,
-                                                      contactGroupID: contactGroup.labelID)
+                                                      contactGroup: contactGroup)
         }
     }
 }

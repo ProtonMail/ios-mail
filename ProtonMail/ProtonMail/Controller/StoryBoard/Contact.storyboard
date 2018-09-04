@@ -326,11 +326,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="Ox6-cM-KkO"/>
                     <navigationItem key="navigationItem" id="a3d-2J-OJR">
-                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="7tP-wK-zQH">
-                            <connections>
-                                <action selector="cancelButton:" destination="Otj-eK-LVU" id="y8w-R1-8ia"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="7tP-wK-zQH"/>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="PSd-wW-WIb" id="dXs-ic-asq"/>

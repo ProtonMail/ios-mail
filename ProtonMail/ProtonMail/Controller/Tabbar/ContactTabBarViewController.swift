@@ -9,6 +9,8 @@
 import UIKit
 
 class ContactTabBarViewController: UITabBarController, ProtonMailViewControllerProtocol {
+    
+    
     fileprivate let kAddContactSugue: String      = "toAddContact"
     fileprivate let kAddContactGroupSugue: String = "toAddContactGroup"
     fileprivate let kSegueToImportView: String    = "toImportContacts"
@@ -131,3 +133,4 @@ class ContactTabBarViewController: UITabBarController, ProtonMailViewControllerP
         }
     }
 }
+

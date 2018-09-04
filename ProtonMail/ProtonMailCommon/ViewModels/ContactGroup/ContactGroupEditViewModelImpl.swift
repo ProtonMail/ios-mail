@@ -20,11 +20,11 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     
     /// the contact group that we will be manipulating
     /// TODO: consistency, always up to date
-    var contactGroup: Label! // TODO: fix this
+    var contactGroup: Label
     
     /// all of the emails in the contact group
     /// not using NSSet so the tableView can easily get access to a specific row
-    var allEmails: [Email]
+    var emailsInGroup: [Email]
     
     /// this array structures the layout of the tableView in ContactGroupEditViewController
     var tableContent: [[ContactGroupEditTableCellType]]
@@ -36,16 +36,25 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      Setup the view model
      */
     init(state: ContactGroupEditViewControllerState = .create,
-         contactGroupID: String? = nil) {
+         contactGroup: Label? = nil) {
         self.state = state
-        self.allEmails = []
-        
+        self.emailsInGroup = []
         self.tableContent = []
-        resetTableContent()
         
-        self.loadContactGroupFromCache(contactGroupID: contactGroupID)
+        if let contactGroup = contactGroup {
+            self.contactGroup = contactGroup
+        } else {
+            if let context = sharedCoreDataService.mainManagedObjectContext {
+                self.contactGroup = Label(context: context)
+                self.contactGroup.color = self.getColor()
+            } else {
+                // TODO: handle the error
+                PMLog.D("Can't get context")
+                fatalError("Can't get context")
+            }
+        }
         
-        print("init \(contactGroup)")
+        self.prepareEmails()
     }
     
     /**
@@ -86,44 +95,20 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         }
     }
     
-    /**
-     Get the latest data from cache (core data)
-     
-     If there are any changes from event API or manual refresh, we need to get the latest data
-     from cache
-     
-     - Parameter contactGroupID: the contact group ID to load the data of
-     */
-    func loadContactGroupFromCache(contactGroupID: String?) {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            switch self.state {
-            case .edit:
-                if let ID = contactGroupID,
-                    let label = Label.labelForLableID(ID,
-                                                      inManagedObjectContext: context) {
-                    self.contactGroup = label
-                    
-                    // get email as an array
-                    if let temp = self.contactGroup.emails.allObjects as? [Email] {
-                        self.allEmails = temp
-                        updateTableContent(emailCount: self.allEmails.count)
-                    } else {
-                        // TODO: handle this gracefully
-                        fatalError("Can't convert to [email]")
-                    }
-                } else {
-                    // TODO: handle this gracefully
-                    fatalError("Can't load contact group data")
+    func prepareEmails() {
+        // get email as an array
+        if let temp = self.contactGroup.emails.allObjects as? [Email] {
+            self.emailsInGroup = temp
+            self.emailsInGroup.sort {
+                if $0.name == $1.name {
+                    return $0.email < $1.email
                 }
-            case .create:
-                self.contactGroup = Label(context: context)
-                
-                // default value
-                self.contactGroup.color = self.getColor()
+                return $0.name < $1.name
             }
+            updateTableContent(emailCount: self.emailsInGroup.count)
         } else {
             // TODO: handle this gracefully
-            fatalError("Can't load contact group data")
+            fatalError("Can't convert to [email]")
         }
     }
     
@@ -151,6 +136,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     func setEmails(emails: NSSet)
     {
         contactGroup.emails = emails
+        prepareEmails()
+        self.delegate?.update()
     }
     
     /**
@@ -225,16 +212,22 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             return promise
         }
         
+        // TODO: promise
+        let name = contactGroup.name
+        let color = contactGroup.color
+        let emails = contactGroup.emails
+        cancel() // if no cancel() call, we are using the modified object for saving, which doesn't make sense
+        
         switch state {
         case .create:
-            createContactGroupDetail(name: contactGroup.name,
-                                     color: contactGroup.color,
-                                     emailList: contactGroup.emails)
+            createContactGroupDetail(name: name,
+                                     color: color,
+                                     emailList: emails)
             seal.fulfill(())
         case .edit:
-            updateContactGroupDetail(name: contactGroup.name,
-                                     color: contactGroup.color,
-                                     updatedEmailList: contactGroup.emails)
+            updateContactGroupDetail(name: name,
+                                     color: color,
+                                     updatedEmailList: emails)
             seal.fulfill(())
         }
         
@@ -325,7 +318,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             return
         }
         
-        // TODO: handle the error
+        // TODO: handle the conversion error
         let emails = (emailList.allObjects as! [Email])
         sharedContactGroupsDataService.addEmailsToContactGroup(groupID: contactGroup.labelID,
                                                                emailList: emails,
@@ -343,7 +336,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             return
         }
         
-        // TODO: handle the error
+        // TODO: handle the conversion error
         let emails = (emailList.allObjects as! [Email])
         sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: contactGroup.labelID,
                                                                     emailList: emails,
@@ -380,10 +373,10 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      */
     func getEmail(at indexPath: IndexPath) -> (String, String) {
         let index = indexPath.row - 1
-        guard index < allEmails.count else {
+        guard index < emailsInGroup.count else {
             fatalError("Calculation error")
         }
         
-        return (allEmails[index].name, allEmails[index].email)
+        return (emailsInGroup[index].name, emailsInGroup[index].email)
     }
 }

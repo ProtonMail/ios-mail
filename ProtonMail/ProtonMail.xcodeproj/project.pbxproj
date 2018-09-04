@@ -2766,14 +2766,6 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		B9410A9A43451F289CCB1D6CB30F804F /* Tabbar */ = {
-			isa = PBXGroup;
-			children = (
-				DD9473962A2C56DE5ECF2323A45D6BB0 /* ContactTabBarViewController.swift */,
-			);
-			path = Tabbar;
-			sourceTree = "<group>";
-		};
 		75E2E13B8E037303B40BA64F98DBB702 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -3074,6 +3066,14 @@
 				E77368B93333AC4EFB38D113EE990299 /* TimePickerViewController.xib */,
 			);
 			path = TimePickerViewController;
+			sourceTree = "<group>";
+		};
+		B9410A9A43451F289CCB1D6CB30F804F /* Tabbar */ = {
+			isa = PBXGroup;
+			children = (
+				DD9473962A2C56DE5ECF2323A45D6BB0 /* ContactTabBarViewController.swift */,
+			);
+			path = Tabbar;
 			sourceTree = "<group>";
 		};
 		BB82EEE28824EF5BD7903942CD1D81AB /* Push */ = {
@@ -3776,7 +3776,6 @@
 					};
 					7CC48161B0FC946A8DB234B96B6A66DD = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = 2SB5Z68H26;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
@@ -6404,8 +6403,9 @@
 				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6421,8 +6421,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
-				PROVISIONING_PROFILE = "5db247ef-4f3e-41fd-ba89-927fcd5a7660";
-				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Dev";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
@@ -6518,9 +6518,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
 				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6536,8 +6537,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
-				PROVISIONING_PROFILE = "8f08b2e9-2dbe-4c92-974b-afd91f4875c6";
-				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Release";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
@@ -6682,9 +6683,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon;
 				CODE_SIGN_ENTITLEMENTS = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 2SB5Z68H26;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6700,8 +6702,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
-				PROVISIONING_PROFILE = "8f08b2e9-2dbe-4c92-974b-afd91f4875c6";
-				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Release";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
