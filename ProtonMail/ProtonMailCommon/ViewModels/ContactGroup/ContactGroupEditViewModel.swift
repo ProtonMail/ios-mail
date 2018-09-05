@@ -39,6 +39,25 @@ enum ContactGroupEditTableCellType
     case error
 }
 
+struct ContactGroupData
+{
+    var ID: String?
+    var name: String?
+    var color: String
+    var emailIDs: NSSet
+    
+    init(ID: String? = nil,
+         name: String? = nil,
+         color: String? = nil,
+         emailIDs: NSSet = NSSet())
+    {
+        self.ID = ID
+        self.name = name
+        self.color = color ?? ColorManager.defaultColor
+        self.emailIDs = emailIDs
+    }
+}
+
 protocol ContactGroupEditViewModel {
     // delegate
     var delegate: ContactGroupEditViewControllerDelegate? { get set }
@@ -54,8 +73,6 @@ protocol ContactGroupEditViewModel {
     func getContactGroupID() -> String?
     func getColor() -> String
     func getEmails() -> NSSet
-    
-    func cancel()
     
     // create and edit
     func saveDetail() -> Promise<Void>

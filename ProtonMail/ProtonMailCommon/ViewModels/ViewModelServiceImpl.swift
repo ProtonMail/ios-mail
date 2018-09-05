@@ -268,10 +268,16 @@ class ViewModelServiceImpl: ViewModelService {
     
     override func contactGroupEditViewModel(_ vmp : ViewModelProtocol,
                                             state: ContactGroupEditViewControllerState,
-                                            contactGroup: Label? = nil) {
+                                            groupID: String? = nil,
+                                            name: String? = nil,
+                                            color: String? = nil,
+                                            emailIDs: NSSet = NSSet()) {
         activeViewController = vmp
         vmp.setViewModel(ContactGroupEditViewModelImpl(state: state,
-                                                       contactGroup: contactGroup))
+                                                       groupID: groupID,
+                                                       name: name,
+                                                       color: color,
+                                                       emailIDs: emailIDs))
     }
     
     override func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocol,

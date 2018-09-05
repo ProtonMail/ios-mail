@@ -97,7 +97,10 @@ class ViewModelService {
     
     func contactGroupEditViewModel(_ vmp: ViewModelProtocol,
                                    state: ContactGroupEditViewControllerState,
-                                   contactGroup: Label?) {
+                                   groupID: String? = nil,
+                                   name: String? = nil,
+                                   color: String? = nil,
+                                   emailIDs: NSSet = NSSet()) {
         fatalError("This method must be overridden")
     }
     

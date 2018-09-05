@@ -69,7 +69,10 @@ class ContactGroupsViewController: UIViewController, ViewModelProtocol
             
             sharedVMService.contactGroupEditViewModel(contactGroupEditViewController,
                                                       state: .edit,
-                                                      contactGroup: contactGroup)
+                                                      groupID: contactGroup.labelID,
+                                                      name: contactGroup.name,
+                                                      color: contactGroup.color,
+                                                      emailIDs: contactGroup.emails)
         }
     }
 }

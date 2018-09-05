@@ -18,9 +18,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     /// the state of the controller, can only be either create or edit
     var state: ContactGroupEditViewControllerState
     
-    /// the contact group that we will be manipulating
-    /// TODO: consistency, always up to date
-    var contactGroup: Label
+    /// the contact group data
+    var contactGroup: ContactGroupData
     
     /// all of the emails in the contact group
     /// not using NSSet so the tableView can easily get access to a specific row
@@ -36,25 +35,17 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      Setup the view model
      */
     init(state: ContactGroupEditViewControllerState = .create,
-         contactGroup: Label? = nil) {
+         groupID: String? = nil,
+         name: String?,
+         color: String?,
+         emailIDs: NSSet) {
         self.state = state
         self.emailsInGroup = []
         self.tableContent = []
-        
-        if let contactGroup = contactGroup {
-            // .edit
-            self.contactGroup = contactGroup
-        } else {
-            // .create
-            if let context = sharedCoreDataService.mainManagedObjectContext {
-                self.contactGroup = Label(context: context)
-                self.contactGroup.color = self.getColor()
-            } else {
-                // TODO: handle the error
-                PMLog.D("Can't get context")
-                fatalError("Can't get context")
-            }
-        }
+        self.contactGroup = ContactGroupData(ID: groupID,
+                                             name: name,
+                                             color: color,
+                                             emailIDs: emailIDs)
         
         self.prepareEmails()
     }
@@ -64,7 +55,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      
      This is called automatically in the updateTableContent(emailCount:)
      */
-    func resetTableContent() {
+    private func resetTableContent() {
         self.tableContent = [
             [.selectColor],
             [.manageContact],
@@ -80,37 +71,31 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      
      - Parameter emailCount: the email fields to be added to the tableContent array
      */
-    func updateTableContent(emailCount: Int) {
+    private func updateTableContent(emailCount: Int) {
         resetTableContent()
         
         for _ in 0..<emailCount {
             self.tableContent[1].append(.email)
         }
     }
-
-    /**
-     Rollback the modifications on the contact group object
-    */
-    func cancel() {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            context.refresh(contactGroup, mergeChanges: false)
-        }
-    }
     
-    func prepareEmails() {
+    private func prepareEmails() {
         // get email as an array
-        if let temp = self.contactGroup.emails.allObjects as? [Email] {
-            self.emailsInGroup = temp
+        if let emailIDs = contactGroup.emailIDs.allObjects as? [Email] {
+            // sort
+            self.emailsInGroup = emailIDs
             self.emailsInGroup.sort {
                 if $0.name == $1.name {
                     return $0.email < $1.email
                 }
                 return $0.name < $1.name
             }
+            
+            // update
             updateTableContent(emailCount: self.emailsInGroup.count)
         } else {
-            // TODO: handle this gracefully
-            fatalError("Can't convert to [email]")
+            // TODO: handle error
+            PMLog.D("Can't convert NSSet to [Email]")
         }
     }
     
@@ -121,7 +106,11 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      */
     func setName(name: String)
     {
-        contactGroup.name = name
+        if name.count == 0 {
+            contactGroup.name = nil
+        } else {
+            contactGroup.name = name
+        }
     }
     
     /**
@@ -137,7 +126,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      */
     func setEmails(emails: NSSet)
     {
-        contactGroup.emails = emails
+        contactGroup.emailIDs = emails
+        
         prepareEmails()
         self.delegate?.update()
     }
@@ -158,7 +148,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - Returns: the contact group name
      */
     func getName() -> String {
-        return contactGroup.name
+        return contactGroup.name ?? ""
     }
     
     /**
@@ -168,21 +158,21 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         if state == .create {
             return nil
         }
-        return contactGroup.labelID
+        return contactGroup.ID
     }
     
     /**
      - Returns: the color of the contact group
      */
     func getColor() -> String {
-        return contactGroup.color == "" ? ColorManager.defaultColor : contactGroup.color
+        return contactGroup.color
     }
     
     /**
      - Returns: the emails in the contact group
      */
     func getEmails() -> NSSet {
-        return contactGroup.emails
+        return contactGroup.emailIDs
     }
     
     /* Data operation */
@@ -204,21 +194,20 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         let (promise, seal) = Promise<Void>.pending()
         
         // error check
-        guard contactGroup.name != "" else {
+        guard contactGroup.name != nil else {
             seal.reject(ContactGroupEditError.noNameForGroup)
             return promise
         }
         
-        guard contactGroup.emails.count > 0 else {
+        guard contactGroup.emailIDs.count > 0 else {
             seal.reject(ContactGroupEditError.noEmailInGroup)
             return promise
         }
         
         // TODO: promise
-        let name = contactGroup.name
+        let name = contactGroup.name!
         let color = contactGroup.color
-        let emails = contactGroup.emails
-        cancel() // if no cancel() call, we are using the modified object for saving, which doesn't make sense
+        let emails = contactGroup.emailIDs
         
         switch state {
         case .create:
@@ -251,11 +240,12 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             (contactGroupID: String?) -> Void in
             
             if let contactGroupID = contactGroupID {
-                self.contactGroup.labelID = contactGroupID
+                self.contactGroup.ID = contactGroupID
                 
                 // add email IDs
-                // TODO: no contactGroupID check
                 self.addEmailsToContactGroup(emailList: emailList)
+            } else {
+                // TODO: no contactGroupID check
             }
         }
         
@@ -282,14 +272,18 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         }
         
         // update contact group
-        sharedContactGroupsDataService.editContactGroup(groupID: contactGroup.labelID,
-                                                        name: name,
-                                                        color: color,
-                                                        completionHandler: completionHandler)
+        if let ID = contactGroup.ID {
+            sharedContactGroupsDataService.editContactGroup(groupID: ID,
+                                                            name: name,
+                                                            color: color,
+                                                            completionHandler: completionHandler)
+        } else {
+            PMLog.D("No contact group ID")
+        }
         
         // update email IDs
         // TODO: handle the conversion gracefully
-        let original = contactGroup.emails as! Set<Email>
+        let original = contactGroup.emailIDs as! Set<Email>
         let updated = updatedEmailList as! Set<Email>
         
         let toAdd = updated.subtracting(original)
@@ -309,8 +303,12 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             return
         }
         
-        sharedContactGroupsDataService.deleteContactGroup(groupID: contactGroup.labelID,
-                                                          completionHandler: completionHandler)
+        if let ID = contactGroup.ID {
+            sharedContactGroupsDataService.deleteContactGroup(groupID: ID,
+                                                              completionHandler: completionHandler)
+        } else {
+            PMLog.D("No contact group ID")
+        }
     }
     
     /**
@@ -326,9 +324,13 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         
         // TODO: handle the conversion error
         let emails = (emailList.allObjects as! [Email])
-        sharedContactGroupsDataService.addEmailsToContactGroup(groupID: contactGroup.labelID,
-                                                               emailList: emails,
-                                                               completionHandler: completionHandler)
+        if let ID = contactGroup.ID {
+            sharedContactGroupsDataService.addEmailsToContactGroup(groupID: ID,
+                                                                   emailList: emails,
+                                                                   completionHandler: completionHandler)
+        } else {
+            PMLog.D("No contact group ID")
+        }
     }
     
     /**
@@ -344,9 +346,14 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         
         // TODO: handle the conversion error
         let emails = (emailList.allObjects as! [Email])
-        sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: contactGroup.labelID,
-                                                                    emailList: emails,
-                                                                    completionHandler: completionHandler)
+        
+        if let ID = contactGroup.ID {
+            sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: ID,
+                                                                        emailList: emails,
+                                                                        completionHandler: completionHandler)
+        } else {
+            PMLog.D("No contact group ID")
+        }
     }
     
     /* table operation */

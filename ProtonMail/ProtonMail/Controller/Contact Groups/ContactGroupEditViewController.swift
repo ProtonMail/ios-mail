@@ -34,7 +34,6 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         // we need to restore the data
         dismissKeyboard()
         
-        viewModel.cancel()
         self.dismiss(animated: true, completion: nil)
     }
     

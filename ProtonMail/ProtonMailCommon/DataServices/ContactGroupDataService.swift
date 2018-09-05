@@ -20,7 +20,7 @@ class ContactGroupsDataService {
      - name: The name of the contact group
      - color: The color of the contact group
      - completionHandler: The completion handler called upon successful creation
-    */
+     */
     func createContactGroup(name: String, color: String, completionHandler: @escaping (String?) -> Void)
     {
         let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false, type: 2)
@@ -143,7 +143,7 @@ class ContactGroupsDataService {
                             for emailID in emailIDs {
                                 for email in emailList {
                                     if email.emailID == emailID {
-                                        newSet.remove(email)
+                                        newSet.insert(email)
                                         break
                                     }
                                 }
@@ -151,7 +151,11 @@ class ContactGroupsDataService {
                             
                             label.emails = newSet as NSSet
                             
-                            context.saveUpstreamIfNeeded()
+                            do {
+                                try context.save()
+                            } catch {
+                                PMLog.D("addEmailsToContactGroup updating error: \(error)")
+                            }
                         } else {
                             PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
                         }
@@ -189,7 +193,7 @@ class ContactGroupsDataService {
             } else if let emailIDs = response?.emailIDs {
                 // save
                 PMLog.D("[Contact Group removeEmailsFromContactGroup API] result = \(String(describing: response))")
-        
+                
                 if let context = sharedCoreDataService.mainManagedObjectContext {
                     let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                     
