@@ -20,12 +20,13 @@ class ContactGroupsViewCell: UITableViewCell {
     var detail = ""
     var color = ColorManager.defaultColor
     
-    @IBAction func sendButtonTapped(_ sender: UIButton) {
+    
+    @IBAction func sendEmailButtonTapped(_ sender: UIButton) {
         // TODO
         
         let alert = UIAlertController(title: "Send an email to \(name)",
-                                      message: "Code to be implemented",
-                                      preferredStyle: .alert)
+            message: "Code to be implemented",
+            preferredStyle: .alert)
         alert.addOKAction()
         
         UIApplication.shared.keyWindow?.rootViewController?.present(alert,

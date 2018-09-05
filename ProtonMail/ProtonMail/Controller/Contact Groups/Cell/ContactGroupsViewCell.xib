@@ -56,6 +56,9 @@
                             <constraint firstAttribute="width" constant="18" id="zVu-bQ-t6I"/>
                         </constraints>
                         <state key="normal" title="Button" image="feedback_contact"/>
+                        <connections>
+                            <action selector="sendEmailButtonTapped:" destination="bwS-JS-53w" eventType="touchUpInside" id="nqI-E8-qko"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>

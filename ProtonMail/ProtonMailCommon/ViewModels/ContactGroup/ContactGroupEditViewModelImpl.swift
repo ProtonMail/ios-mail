@@ -283,7 +283,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         
         // update email IDs
         // TODO: handle the conversion gracefully
-        let original = contactGroup.emailIDs as! Set<Email>
+        let original = contactGroup.originalEmailIDs as! Set<Email>
         let updated = updatedEmailList as! Set<Email>
         
         let toAdd = updated.subtracting(original)

@@ -44,6 +44,7 @@ struct ContactGroupData
     var ID: String?
     var name: String?
     var color: String
+    let originalEmailIDs: NSSet
     var emailIDs: NSSet
     
     init(ID: String? = nil,
@@ -54,6 +55,7 @@ struct ContactGroupData
         self.ID = ID
         self.name = name
         self.color = color ?? ColorManager.defaultColor
+        self.originalEmailIDs = emailIDs
         self.emailIDs = emailIDs
     }
 }
