@@ -8,12 +8,9 @@
 
 import Foundation
 
-struct ServicePlanDetails: Codable {    
-    let amount: Int!
-    let currency: String!
-    let cycle: Int!
+struct ServicePlanDetails: Codable {
     let features: Int
-    let iD: String!
+    let iD: String?
     let maxAddresses: Int
     let maxDomains: Int
     let maxMembers: Int
@@ -28,7 +25,7 @@ struct ServicePlanDetails: Codable {
 
 extension ServicePlanDetails: Equatable {
     static func +(left: ServicePlanDetails, right: ServicePlanDetails) -> ServicePlanDetails {
-        // FIXME: implement upgrade logic
+        // TODO: implement upgrade logic
         return left
     }
     
@@ -37,23 +34,14 @@ extension ServicePlanDetails: Equatable {
     }
 }
 
-struct PaymentMethod: Codable {
-    enum PaymentType: String, Codable {
-        case other = "other"
-        case apple = "apple"
-        case card = "card"
-        
-        init?(rawValue: String) {
-            if rawValue == PaymentType.apple.rawValue {
-                self = .apple
-            } else if rawValue == PaymentType.card.rawValue {
-                self = .card
-            } else {
-                self = .other
-            }
+extension Array where Element == ServicePlanDetails {
+    func merge() -> ServicePlanDetails? {
+        let basicPlans = self.filter({ ServicePlan(rawValue: $0.name) != nil })
+        guard let basic = basicPlans.first else {
+            return nil
         }
+        return self.reduce(basic, { (result, next) -> ServicePlanDetails in
+            return (next != basic) ? (result + next) : result
+        })
     }
-    
-    let iD: String
-    let type: PaymentType
 }

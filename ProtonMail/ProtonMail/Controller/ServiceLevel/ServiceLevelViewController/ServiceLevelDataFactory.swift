@@ -21,33 +21,40 @@ enum ServiceLevelDataFactory {
         body[.font] = UIFont.preferredFont(forTextStyle: .body)
         
         let multiuser1 = plan ~ ([.pro], SPC(image: UIImage(named:"iap_users"),
-                                             title: .init(string: "Unlimited messages sent/day", attributes: body)))
+                                             title: .init(string: LocalString._unlimited_messages_sent, attributes: body)))
         
         let multiuser2 = plan ~ ([.visionary], SPC(image: UIImage(named:"iap_users"),
-                                                   title: .init(string: "Up to \(details.maxMembers) users", attributes: body)))
+                                                   title: .init(string: String(format: LocalString._up_to_n_users, details.maxMembers), attributes: body)))
         
+        
+        var emailAddressesString = String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses)
+        switch plan {
+        case .pro: emailAddressesString += LocalString._per_user
+        case .visionary: emailAddressesString += " " + LocalString._total
+        default: break
+        }
         let emailAddresses = SPC(image: UIImage(named: "iap_email"),
-                                 title: .init(string: "\(details.maxAddresses) email addresses", attributes: body))
+                                 title: .init(string: emailAddressesString, attributes: body))
         
         let formatter = ByteCountFormatter()
         formatter.countStyle = .binary
-        let storageString = formatter.string(fromByteCount: Int64(details.maxSpace)) + " storage capacity"
+        let storageString = String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))
         let storage = SPC(image: UIImage(named: "iap_hdd"), title: .init(string: storageString, attributes: body))
         
         let messageLimit = plan ~ ([.free], SPC(image: UIImage(named: "iap_lock"),
-                                                title: .init(string: "Limited to \(details.amount) messages sent/day", attributes: body)))
+                                                title: .init(string: LocalString._limited_to_150_messages, attributes: body)))
         
         let bridge = plan ~ ([.plus, .pro, .visionary], SPC(image: UIImage(named: "iap_link"),
-                                                            title: .init(string: "IMAP/SMTP Support via ProtonMail Bridge", attributes: body)))
+                                                            title: .init(string: LocalString._bridge_support, attributes: body)))
         
         let labels = plan ~ ([.plus, .pro, .visionary], SPC(image: UIImage(named: "iap_folder"),
-                                                            title: .init(string: "Lables, Folders, Filters & More", attributes: body)))
+                                                            title: .init(string: LocalString._labels_folders_filters, attributes: body)))
         
         let support = plan ~ ([.pro, .visionary], SPC(image: UIImage(named: "iap_lifering"),
-                                                      title: .init(string: "Support for \(details.maxDomains) custom domains (e.g. user@yourdomain.com)", attributes: body)))
+                                                      title: .init(string: String(format: LocalString._support_n_domains, details.maxDomains), attributes: body)))
         
         let vpn = plan ~ ([.visionary], SPC(image: UIImage(named: "iap_vpn"),
-                                            title: .init(string: "ProtonVPN included", attributes: body)))
+                                            title: .init(string: LocalString._vpn_included, attributes: body)))
         
         let capabilities = [multiuser1, multiuser2, emailAddresses, storage, messageLimit, bridge, labels, support, vpn].compactMap { $0 }
         return Section(elements: capabilities, cellType: FirstSubviewSizedCell.self)
@@ -59,9 +66,9 @@ enum ServiceLevelDataFactory {
         var coloredAttributes = regularAttributes
         coloredAttributes[.foregroundColor] = plan.subheader.1
         
-        let title1 = NSMutableAttributedString(string: "To migrate to ", attributes: regularAttributes)
+        let title1 = NSMutableAttributedString(string: LocalString._migrate_beginning, attributes: regularAttributes)
         let title2 = NSMutableAttributedString(string: plan.subheader.0, attributes: coloredAttributes)
-        let title3 = NSMutableAttributedString(string: ", you have to login to our website and make the necessary adjustments to comply with the plan's requirements ", attributes: regularAttributes)
+        let title3 = NSMutableAttributedString(string: LocalString._migrate_end, attributes: regularAttributes)
         
         title1.append(title2)
         title1.append(title3)
@@ -79,15 +86,15 @@ enum ServiceLevelDataFactory {
         
         switch subscription.plan {
         case .free:
-            message = NSAttributedString(string: "Upgrade to a paid plan to benefit from more features", attributes: regularAttributes)
+            message = NSAttributedString(string: LocalString._upgrade_to_paid, attributes: regularAttributes)
         case .plus, .pro, .visionary:
             let formatter = DateFormatter()
             formatter.timeStyle = .none
             formatter.dateStyle = .short
             
             if let end = subscription.end {
-                let title0 = subscription.hadOnlinePayments ? "Your plan will automatically renew on " : "Your plan is currently active until "
-                let title1 = NSMutableAttributedString(string: title0, attributes: regularAttributes)
+                let title0 = subscription.hadOnlinePayments ? LocalString._will_renew : LocalString._active_until
+                let title1 = NSMutableAttributedString(string: title0 + " ", attributes: regularAttributes)
                 let title2 = NSAttributedString(string: formatter.string(from: end), attributes: coloredAttributes)
                 title1.append(title2)
                 message = title1
@@ -124,7 +131,7 @@ enum ServiceLevelDataFactory {
         var body = [NSAttributedStringKey: Any]()
         body[.font] = UIFont.preferredFont(forTextStyle: .body)
         let blank = TableSectionHeader(title: " ")
-        let buyMore = ServicePlanCapability(title: NSAttributedString(string: "Buy More Credits", attributes: body), serviceIconVisible: true, context: ServiceLevelCoordinator.Destination.buyMore)
+        let buyMore = ServicePlanCapability(title: NSAttributedString(string: LocalString._buy_more_credits, attributes: body), serviceIconVisible: true, context: ServiceLevelCoordinator.Destination.buyMore)
         return Section(elements: [blank, buyMore], cellType: FirstSubviewSizedCell.self)
     }
     
@@ -134,7 +141,7 @@ enum ServiceLevelDataFactory {
         guard let productId = plan.storeKitProductId,
             let price = StoreKitManager.default.priceLabelForProduct(id: productId) else
         {
-            let noStoreFooter = ServicePlanFooter(subTitle: "Could not connect to Store. Please, try later.")
+            let noStoreFooter = ServicePlanFooter(subTitle: LocalString._cant_connect_to_store)
             return Section(elements: [noStoreFooter], cellType: AutoLayoutSizedCell.self)
         }
         let formatter = NumberFormatter()
@@ -150,11 +157,11 @@ enum ServiceLevelDataFactory {
         let title = NSMutableAttributedString(string: priceString,
                                               attributes: [.font: UIFont.preferredFont(forTextStyle: .title1),
                                                            .foregroundColor: UIColor.white])
-        let caption = NSAttributedString(string: "\nfor one year",
+        let caption = NSAttributedString(string: "\n" + LocalString._for_one_year,
                                          attributes: [.font: UIFont.preferredFont(forTextStyle: .body),
                                                       .foregroundColor: UIColor.white])
         title.append(caption)
-        let subtitle = originalPriceString + " ProtonMail Plus +\n " + feeString + " Apple in-app purchase fee"
+        let subtitle = String(format: "%@ ProtonMail %@\n%@ %@", originalPriceString, plan.subheader.0, feeString, LocalString._iap_fee)
         let buttonAction: (UIButton?)->Void = { _ in
             delegate.purchaseProduct(id: productId)
         }
@@ -166,11 +173,7 @@ enum ServiceLevelDataFactory {
     }
     
     internal static func makeAcknowladgementsSection() -> Section<UIView> {
-        let message = """
-        Upon confirming your purchase, your iTunes account will be charged the amount displayed, which includes ProtonMail Plus, and Apple's in-app purchase fee (Apple charges a fee of approximately 30% on purchases made through your iPhone/iPad).
-        After making the purchse, you will automatically be upgraded to ProtonMail Plus for one year period, after which time you can renew or cancel, either online or through our iOS app.
-        """
-        return Section(elements: [TableSectionHeader(title: message)], cellType: FirstSubviewSizedCell.self)
+        return Section(elements: [TableSectionHeader(title: LocalString._iap_disclamer)], cellType: FirstSubviewSizedCell.self)
     }
 }
 

@@ -50,7 +50,7 @@ end
 ```
 
 PromiseKit 6, 5 and 4 support Xcode 8.3, 9.x and 10.0; Swift 3.1,
-3.2, 3.3, 4.0, 4.1 and 4.2; iOS, macOS, tvOS, watchOS, Linux and Android; CocoaPods,
+3.2, 3.3, 3.4, 4.0, 4.1 and 4.2; iOS, macOS, tvOS, watchOS, Linux and Android; CocoaPods,
 Carthage and SwiftPM; ([CI Matrix](https://travis-ci.org/mxcl/PromiseKit)).
 
 For Carthage, SwiftPM, etc., or for instructions when using older Swifts or
@@ -104,7 +104,8 @@ extensions for `URLSession`:
 // pod 'PromiseKit/Foundation'  # https://github.com/PromiseKit/Foundation
 
 firstly {
-    URLSession.shared.dataTask(.promise, with: try makeUrlRequest())
+    URLSession.shared.dataTask(.promise, with: try makeUrlRequest()).validate()
+    // ^^ we provide `.validate()` so that eg. 404s get converted to errors
 }.map {
     try JSONDecoder().decode(Foo.self, with: $0.data)
 }.done { foo in
@@ -123,7 +124,7 @@ func makeUrlRequest() throws -> URLRequest {
 }
 ```
 
-[Alamofire]:
+And [Alamofire]:
 
 ```swift
 // pod 'PromiseKit/Alamofire'  # https://github.com/PromiseKit/Alamofire-
@@ -139,33 +140,16 @@ firstly {
 }
 ```
 
-And [OMGHTTPURLRQ]:
-
-```swift
-// pod 'PromiseKit/OMGHTTPURLRQ'  # https://github.com/PromiseKit/OMGHTTPURLRQ
-
-firstly {
-    URLSession.shared.POST("http://example.com", JSON: params)
-}.map {
-    try JSONDecoder().decoder(Foo.self, with: $0.data)
-}.done { foo in
-    //…
-}.catch { error in
-    //…
-}
-```
-
 Nowadays, considering that:
 
 * We almost always POST JSON
 * We now have `JSONDecoder`
 * PromiseKit now has `map` and other functional primitives
+* PromiseKit (like Alamofire, but not raw-URLSession) also defaults to having callbacks go to the main thread
 
 We recommend vanilla `URLSession`. It uses fewer black boxes and sticks closer to the
 metal. Alamofire was essential until the three bulletpoints above became true,
-but nowadays it isn’t really necessary. OMGHTTPURLRQ was developed before JSON
-was the modern standard and thus REST requests were hard, but these days you
-rarely need to speak any format but JSON.
+but nowadays it isn’t really necessary.
 
 # Support
 

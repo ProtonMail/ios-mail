@@ -14,12 +14,12 @@ enum ServicePlan: String {
     case pro = "professional"
     case visionary = "visionary"
     
-    func fetchDetails() -> ServicePlanDetails? {
-        return ServicePlanDataService.shared.detailsOfServicePlan(coded: self.rawValue)
+    internal func fetchDetails() -> ServicePlanDetails? {
+        return ServicePlanDataService.shared.detailsOfServicePlan(named: self.rawValue)
     }
     
     // FIXME: localization
-    var subheader: (String, UIColor) {
+    internal var subheader: (String, UIColor) {
         switch self {
         case .free: return ("Free", UIColor.ProtonMail.ServicePlanFree)
         case .plus: return ("Plus", UIColor.ProtonMail.ServicePlanPlus)
@@ -29,66 +29,26 @@ enum ServicePlan: String {
     }
     
     // FIXME: localization
-    var headerText: String {
+    internal var headerText: String {
         switch self {
-        case .free: return "For individuals looking to benefit from secure communication at no cost"
-        case .plus: return "For individuals that need more capacity, customization and advanced features"
-        case .pro: return "For organizations that need multi-user support nd additional productivity features"
-        case .visionary: return "For power users and groups of people that value full anonymity and privacy"
+        case .free: return LocalString._free_header
+        case .plus: return LocalString._plus_header
+        case .pro: return LocalString._pro_header
+        case .visionary: return LocalString._vis_header
         }
     }
     
-    var storeKitProductId: String? {
+    internal var storeKitProductId: String? {
         switch self {
         case .free, .pro, .visionary: return nil
-        case .plus: return "iOS_ProtonMail_Plus_1_year_consumable"
+        case .plus: return "ios_plus_12_usd_consumable"
         }
     }
     
-    init?(storeKitProductId: String) {
+    internal init?(storeKitProductId: String) {
         guard storeKitProductId == ServicePlan.plus.storeKitProductId else {
             return nil
         }
         self = .plus
-    }
-}
-
-class Subscription: NSObject, Codable {
-    var plan: ServicePlan {
-        return self.planDetails?.compactMap({ ServicePlan(rawValue: $0.name) }).first ?? .free
-    }
-    var details: ServicePlanDetails {
-        return self.planDetails?.merge() ?? ServicePlanDataService.shared.defaultPlanDetails ?? ServicePlanDetails(amount: 0, currency: "", cycle: 0, features: 0, iD: "", maxAddresses: 0, maxDomains: 0, maxMembers: 0, maxSpace: 0, maxVPN: 0, name: "", quantity: 0, services: 0, title: "", type: 0)
-    }
-    var hadOnlinePayments: Bool {
-        guard let allMethods = self.paymentMethods else {
-            return false
-        }
-        return allMethods.map { $0.type }.contains(.card)
-    }
-    
-    init(start: Date?, end: Date?, planDetails: [ServicePlanDetails]?, paymentMethods: [PaymentMethod]?) {
-        self.start = start
-        self.end = end
-        self.planDetails = planDetails
-        self.paymentMethods = paymentMethods
-        super.init()
-    }
-    
-    
-    let start, end: Date?
-    private let planDetails: [ServicePlanDetails]?
-    var paymentMethods: [PaymentMethod]?
-}
-
-extension Array where Element == ServicePlanDetails {
-    func merge() -> ServicePlanDetails? {
-        let basicPlans = self.filter({ ServicePlan(rawValue: $0.name) != nil })
-        guard let basic = basicPlans.first else {
-            return nil
-        }
-        return self.reduce(basic, { (result, next) -> ServicePlanDetails in
-            return (next != basic) ? (result + next) : result
-        })
     }
 }
