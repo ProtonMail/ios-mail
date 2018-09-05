@@ -16,6 +16,7 @@ import CoreData
 class ContactGroupsViewController: UIViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupsViewModel!
+    fileprivate let kContactGroupCellIdentifier: String = "ContactGroupCustomCell"
     let kToContactGroupDetailSegue: String = "toContactGroupDetailSegue"
     var fetchedContactGroupResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
     var refreshControl: UIRefreshControl!
@@ -29,11 +30,11 @@ class ContactGroupsViewController: UIViewController, ViewModelProtocol
     }
     
     override func viewDidLoad() {
-        self.navigationItem.title = "Contact Groups"
+        tableView.register(UINib(nibName: "ContactGroupsViewCell", bundle: Bundle.main),
+                           forCellReuseIdentifier: kContactGroupCellIdentifier)
         
         tableView.noSeparatorsBelowFooter()
         
-        // TODO: how to update remotely?
         fetchedContactGroupResultsController = sharedLabelsDataService.fetchedResultsController(.contactGroup)
         fetchedContactGroupResultsController?.delegate = self
         if let fetchController = fetchedContactGroupResultsController {
@@ -58,7 +59,7 @@ class ContactGroupsViewController: UIViewController, ViewModelProtocol
     // TODO: fix me
     @objc func fireFetch() {
         self.viewModel.fetchAllContactGroup()
-        self.refreshControl.endRefreshing()
+        self.refreshControl.endRefreshing() // this is fake
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -87,14 +88,20 @@ extension ContactGroupsViewController: UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "ContactGroupCell", for: indexPath)
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: kContactGroupCellIdentifier, for: indexPath)
         
-        if let fetchedController = fetchedContactGroupResultsController {
-            if let label = fetchedController.object(at: indexPath) as? Label {
-                cell.textLabel?.text = label.name
-            } else {
-                // TODO; better error handling
-                cell.textLabel?.text = "Error in retrieving contact group name in core data"
+        if let cell = cell as? ContactGroupsViewCell {
+            if let fetchedController = fetchedContactGroupResultsController {
+                if let label = fetchedController.object(at: indexPath) as? Label {
+                    cell.config(name: label.name,
+                                count: label.emails.count,
+                                color: label.color)
+                } else {
+                    // TODO; better error handling
+                    cell.config(name: "Error in retrieving contact group name in core data",
+                                count: 0,
+                                color: nil)
+                }
             }
         }
         
@@ -139,13 +146,17 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                 tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
             }
         case .update:
-            if let cell = tableView.cellForRow(at: indexPath!) {
+            if let cell = tableView.cellForRow(at: indexPath!) as? ContactGroupsViewCell {
                 if let fetchedController = fetchedContactGroupResultsController {
                     if let label = fetchedController.object(at: indexPath!) as? Label {
-                        cell.textLabel?.text = label.name
+                        cell.config(name: label.name,
+                                    count: label.emails.count,
+                                    color: label.color)
                     } else {
-                        // TODO: better error handling
-                        cell.textLabel?.text = "Error in retrieving contact group name in core data"
+                        // TODO; better error handling
+                        cell.config(name: "Error in retrieving contact group name in core data",
+                                    count: 0,
+                                    color: nil)
                     }
                 }
             }

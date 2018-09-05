@@ -136,27 +136,25 @@ class ContactGroupsDataService {
                 PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
                 
                 if let context = sharedCoreDataService.mainManagedObjectContext {
-                    let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
-                    
-                    if let label = label, var newSet = label.emails as? Set<Email> {
-                        for emailID in emailIDs {
-                            for email in emailList {
-                                if email.emailID == emailID {
-                                    newSet.remove(email)
-                                    break
+                    context.performAndWait {
+                        let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
+                        
+                        if let label = label, var newSet = label.emails as? Set<Email> {
+                            for emailID in emailIDs {
+                                for email in emailList {
+                                    if email.emailID == emailID {
+                                        newSet.remove(email)
+                                        break
+                                    }
                                 }
                             }
+                            
+                            label.emails = newSet as NSSet
+                            
+                            context.saveUpstreamIfNeeded()
+                        } else {
+                            PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
                         }
-                        
-                        label.emails = newSet as NSSet
-                        
-                        do {
-                            try context.save()
-                        } catch {
-                            PMLog.D("addEmailsToContactGroup updating error: \(error)")
-                        }
-                    } else {
-                        PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
                     }
                 } else {
                     PMLog.D("addEmailsToContactGroup error: can't get context")

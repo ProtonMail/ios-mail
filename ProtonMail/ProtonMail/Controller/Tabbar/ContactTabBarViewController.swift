@@ -47,13 +47,13 @@ class ContactTabBarViewController: ProtonMailTabBarController {
                                                 preferredStyle: .actionSheet)
         
         /// set options
-        alertController.addAction(UIAlertAction(title: "Create Contact",
+        alertController.addAction(UIAlertAction(title: "Add new contact",
                                                 style: .default,
                                                 handler: {
             (action) -> Void in
             self.addContactTapped()
         }))
-        alertController.addAction(UIAlertAction(title: "Create Group",
+        alertController.addAction(UIAlertAction(title: "Add new contact group",
                                                 style: .default,
                                                 handler: {
             (action) -> Void in

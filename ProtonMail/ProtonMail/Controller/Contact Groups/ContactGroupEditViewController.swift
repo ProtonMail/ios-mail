@@ -79,7 +79,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
             }.catch {
                 error in
                 
-                let alert = UIAlertController(title: "Can't not save contact group",
+                let alert = UIAlertController(title: "Can not save contact group",
                                               message: error.localizedDescription,
                                               preferredStyle: .alert)
                 alert.addOKAction()
