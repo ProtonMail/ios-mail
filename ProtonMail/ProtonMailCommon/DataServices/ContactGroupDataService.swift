@@ -115,6 +115,11 @@ class ContactGroupsDataService {
     
     func addEmailsToContactGroup(groupID: String, emailList: [Email], completionHandler: @escaping () -> Void)
     {
+        if emailList.count == 0 {
+            completionHandler()
+            return
+        }
+        
         let emails = emailList.map({
             (email: Email) -> String in
             return email.emailID
@@ -133,37 +138,25 @@ class ContactGroupsDataService {
                 if let context = sharedCoreDataService.mainManagedObjectContext {
                     let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                     
-                    if let label = label {
+                    if let label = label, var newSet = label.emails as? Set<Email> {
                         for emailID in emailIDs {
                             for email in emailList {
                                 if email.emailID == emailID {
-                                    context.performAndWait {
-                                        () -> Void in
-                                        
-                                        // update label's set
-                                        let emailSet = label.mutableSetValue(forKey: "emails")
-                                        emailSet.add(email)
-                                        label.setValue(emailSet, forKey: "emails")
-                                    }
+                                    newSet.remove(email)
                                     break
                                 }
                             }
                         }
                         
-                        context.perform {
-                            let error = context.saveUpstreamIfNeeded()
-                            if let error = error {
-                                PMLog.D("error: \(error)")
-                            }
-                        }
+                        label.emails = newSet as NSSet
                         
-//                        do {
-//                            try context.save()
-//                        } catch {
-//                            PMLog.D("addEmailsToContactGroup updating error: \(error)")
-//                        }
+                        do {
+                            try context.save()
+                        } catch {
+                            PMLog.D("addEmailsToContactGroup updating error: \(error)")
+                        }
                     } else {
-                        PMLog.D("addEmailsToContactGroup error: can't get label")
+                        PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
                     }
                 } else {
                     PMLog.D("addEmailsToContactGroup error: can't get context")
@@ -179,6 +172,11 @@ class ContactGroupsDataService {
     
     func removeEmailsFromContactGroup(groupID: String, emailList: [Email], completionHandler: @escaping () -> Void)
     {
+        if emailList.count == 0 {
+            completionHandler()
+            return
+        }
+        
         let emails = emailList.map({
             (email: Email) -> String in
             return email.emailID

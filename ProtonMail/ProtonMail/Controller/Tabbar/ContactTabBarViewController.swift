@@ -21,13 +21,6 @@ class ContactTabBarViewController: ProtonMailTabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        // setup navigtion bar
-//        let back = UIBarButtonItem(title: LocalString._general_back_action,
-//                                   style: UIBarButtonItemStyle.plain,
-//                                   target: nil,
-//                                   action: nil)
-//        self.navigationItem.backBarButtonItem = back
-        
         self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
                                                      target: self,
                                                      action: #selector(self.addButtonTapped))
