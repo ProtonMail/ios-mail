@@ -61,7 +61,6 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="1TK-5y-hvZ"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="menuButton" destination="G3m-Jr-Xhu" id="iLB-dg-whJ"/>
                         <outlet property="searchDisplayController" destination="mKK-GV-NK5" id="yU5-XN-CG5"/>
                         <outlet property="searchView" destination="AOf-GB-wad" id="T02-fR-U3L"/>
                         <outlet property="searchViewConstraint" destination="vIq-jf-Eon" id="U2r-b7-7AF"/>
@@ -1948,13 +1947,16 @@
             <objects>
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="HLX-xi-kWa" customClass="ContactTabBarViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="Ywd-ql-O5c"/>
+                    <navigationItem key="navigationItem" id="Ywd-ql-O5c">
+                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="Zuw-9D-0zE"/>
+                    </navigationItem>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XP2-at-4g0">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
+                        <outlet property="menuButton" destination="Zuw-9D-0zE" id="w0h-Zr-RYq"/>
                         <segue destination="dsh-3G-k23" kind="relationship" relationship="viewControllers" id="t4p-ws-V5I"/>
                         <segue destination="Otj-eK-LVU" kind="relationship" relationship="viewControllers" id="XFY-Wd-AW4"/>
                         <segue destination="d3P-H0-xNt" kind="presentation" identifier="toAddContact" id="9IC-uT-T7Z"/>
@@ -1976,7 +1978,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="oC7-Qd-EW1"/>
         <segue reference="oQx-RX-nff"/>
-        <segue reference="9IC-uT-T7Z"/>
-        <segue reference="ioS-76-SJw"/>
+        <segue reference="Lm0-2L-Xlj"/>
+        <segue reference="coY-bM-Dt9"/>
     </inferredMetricsTieBreakers>
 </document>
