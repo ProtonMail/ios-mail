@@ -13,7 +13,7 @@ import CoreData
  When the core data that provides data to this controller has data changes,
  the update will be performed immediately and automatically by core data
  */
-class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
+class ContactGroupsViewController: UIViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupsViewModel!
     let kToContactGroupDetailSegue: String = "toContactGroupDetailSegue"

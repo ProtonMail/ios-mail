@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ContactTabBarViewController: UITabBarController, ProtonMailViewControllerProtocol {
+class ContactTabBarViewController: ProtonMailTabBarController {
     
     
     fileprivate let kAddContactSugue: String      = "toAddContact"
@@ -21,12 +21,12 @@ class ContactTabBarViewController: UITabBarController, ProtonMailViewControllerP
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // setup navigtion bar
-        let back = UIBarButtonItem(title: LocalString._general_back_action,
-                                   style: UIBarButtonItemStyle.plain,
-                                   target: nil,
-                                   action: nil)
-        self.navigationItem.backBarButtonItem = back
+//        // setup navigtion bar
+//        let back = UIBarButtonItem(title: LocalString._general_back_action,
+//                                   style: UIBarButtonItemStyle.plain,
+//                                   target: nil,
+//                                   action: nil)
+//        self.navigationItem.backBarButtonItem = back
         
         self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
                                                      target: self,

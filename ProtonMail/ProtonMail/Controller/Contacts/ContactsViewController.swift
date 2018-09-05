@@ -14,7 +14,7 @@ import UIKit
 import Contacts
 import CoreData
 
-class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactsViewController: UIViewController, ViewModelProtocol {
     
     fileprivate let kContactCellIdentifier: String = "ContactCell"
     fileprivate let kProtonMailImage: UIImage      = UIImage(named: "encrypted_main")!
