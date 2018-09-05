@@ -11,21 +11,34 @@ import UIKit
 class ContactGroupsViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
-    @IBOutlet weak var sendEmailImage: UIImageView!
     @IBOutlet weak var groupImage: UIImageView!
     
     let highlightedColor = "#BFBFBF"
     let normalColor = "#9497CE"
+    
+    var name = ""
+    var detail = ""
+    var color = ColorManager.defaultColor
+    
+    @IBAction func sendButtonTapped(_ sender: UIButton) {
+        // TODO
+        
+        let alert = UIAlertController(title: "Send an email to \(name)",
+                                      message: "Code to be implemented",
+                                      preferredStyle: .alert)
+        alert.addOKAction()
+        
+        UIApplication.shared.keyWindow?.rootViewController?.present(alert,
+                                                                    animated: true,
+                                                                    completion: nil)
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         self.groupImage.layer.cornerRadius = 20.0
     }
-    
-    var name = ""
-    var detail = ""
-    var color = ColorManager.defaultColor
+
     func config(name: String, count: Int, color: String?) {
         // setup and save
         let detail = "\(count) Member\(count > 1 ? "s" : "")"
