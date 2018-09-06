@@ -23,6 +23,12 @@ extension String {
 //        return newString
 //    }
     
+    var armored : Bool {
+        get {
+            return self.hasPrefix("-----BEGIN PGP MESSAGE-----")
+        }
+    }
+    
     func contains(check s: String) -> Bool {
         return self.range(of: s, options: NSString.CompareOptions.caseInsensitive) != nil ? true : false
     }
