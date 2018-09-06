@@ -32,7 +32,6 @@ extension ContactGroupEditError: LocalizedError {
 
 enum ContactGroupEditTableCellType
 {
-    case selectColor
     case manageContact
     case email
     case deleteGroup

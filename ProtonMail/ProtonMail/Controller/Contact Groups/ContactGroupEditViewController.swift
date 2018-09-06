@@ -19,9 +19,14 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
     
     @IBOutlet weak var contactGroupNameLabel: UITextField!
+    @IBOutlet weak var contactGroupImage: UIImageView!
+    
     @IBOutlet weak var saveButton: UIBarButtonItem!
+    
     @IBOutlet weak var navigationBarItem: UINavigationItem!
+    
     @IBOutlet weak var tableView: UITableView!
+    
     var viewModel: ContactGroupEditViewModel!
     var activeText: UIResponder? = nil
     
@@ -39,6 +44,10 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func changeColorTapped(_ sender: UIButton) {
+        self.performSegue(withIdentifier: kToContactGroupSelectColorSegue, sender: self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -50,11 +59,15 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         
         loadDataIntoView()
         tableView.noSeparatorsBelowFooter()
+        
+        contactGroupImage.layer.cornerRadius = 20.0
     }
     
     func loadDataIntoView() {
         navigationBarItem.title = viewModel.getViewTitle()
         contactGroupNameLabel.text = viewModel.getName()
+        contactGroupImage.backgroundColor = UIColor(hexString: viewModel.getColor(),
+                                                    alpha: 1.0)
         
         self.tableView.reloadData()
     }
@@ -138,9 +151,6 @@ extension ContactGroupEditViewController: UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch viewModel.getCellType(at: indexPath) {
-        case .selectColor:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupColorCell", for: indexPath)
-            return cell
         case .manageContact:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupManageCell", for: indexPath)
             cell.textLabel?.text = "Manage Addresses"
@@ -160,18 +170,18 @@ extension ContactGroupEditViewController: UITableViewDataSource
         }
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        switch viewModel.getCellType(at: indexPath) {
-        case .selectColor:
-            // display color
-            cell.detailTextLabel?.backgroundColor = UIColor(hexString: viewModel.getColor(),
-                                                            alpha: 1.0)
-        case .error:
-            fatalError("This is a bug")
-        default:
-            return
-        }
-    }
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        switch viewModel.getCellType(at: indexPath) {
+//        case .selectColor:
+//            // display color
+//            cell.detailTextLabel?.backgroundColor = UIColor(hexString: viewModel.getColor(),
+//                                                            alpha: 1.0)
+//        case .error:
+//            fatalError("This is a bug")
+//        default:
+//            return
+//        }
+//    }
 }
 
 extension ContactGroupEditViewController: UITableViewDelegate
@@ -180,8 +190,6 @@ extension ContactGroupEditViewController: UITableViewDelegate
         tableView.deselectRow(at: indexPath, animated: true)
         
         switch viewModel.getCellType(at: indexPath) {
-        case .selectColor:
-            self.performSegue(withIdentifier: kToContactGroupSelectColorSegue, sender: self)
         case .manageContact:
             self.performSegue(withIdentifier: kToContactGroupSelectEmailSegue, sender: self)
         case .email:

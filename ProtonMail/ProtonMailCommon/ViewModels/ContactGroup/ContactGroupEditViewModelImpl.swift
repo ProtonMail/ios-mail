@@ -62,7 +62,6 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     private func resetTable() {
         // content
         self.tableContent = [
-            [.selectColor],
             [.manageContact],
             []
         ]
@@ -92,10 +91,10 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         resetTable()
         
         for _ in 0..<emailCount {
-            self.tableContent[2].append(.email)
+            self.tableContent[1].append(.email)
         }
         
-        tableSectionTitle[2] = "\(emailCount) MEMBER\(emailCount > 1 ? "S" : "")"
+        tableSectionTitle[1] = "\(emailCount) MEMBER\(emailCount > 1 ? "S" : "")"
     }
     
     /**
