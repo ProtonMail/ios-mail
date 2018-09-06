@@ -11,7 +11,7 @@ import Foundation
 
 class SignatureAlertViewModelImpl : UpgradeAlertViewModel {
     override var title2 : String {
-        return LocalString._looking_to_secure_your_contacts_details
+        return LocalString._looking_to_edit_or_disable_your_mobile_signature
     }
     
     override var message : String {
