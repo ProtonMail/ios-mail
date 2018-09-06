@@ -43,7 +43,7 @@ class ServiceLevelViewController: ServiceLevelViewControllerBase, Coordinated {
         }
     }
     
-    func setup(with subscription: Subscription) {
+    func setup(with subscription: Subscription?) {
         self.dataSource = PlanAndLinksDataSource(delegate: self, subscription: ServicePlanDataService.shared.currentSubscription)
     }
     

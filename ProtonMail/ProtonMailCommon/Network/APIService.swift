@@ -502,11 +502,11 @@ class APIService {
                     //TODO::add later
                 }, completionHandler: { (urlresponse, res, error) in
                     //DEBUG INFO
-//                    print(urlresponse)
-//                    if let data = res as? Data {
-//                        let resObj = String(data: data, encoding: .utf8)
-//                        print(resObj)
-//                    }
+                    //print(urlresponse)
+                    //if let data = res as? Data {
+                        //let resObj = String(data: data, encoding: .utf8)
+                        //print(resObj)
+                    //}
                     //TODO:: #1 parse out the server time #2
                     parseBlock(task, res, error)
                 })

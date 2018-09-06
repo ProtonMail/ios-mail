@@ -65,7 +65,7 @@ extension ServicePlanDataService {
             
             let defaultServicePlanApi = GetDefaultServicePlanRequest()
             let defaultServicePlanRes = try await(defaultServicePlanApi.run())
-            self.defaultPlanDetails = defaultServicePlanRes.servicePlan
+            self.defaultPlanDetails = defaultServicePlanRes.defaultMailPlan
 
             completion?()
         }.catch { _ in

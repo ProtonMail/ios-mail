@@ -143,7 +143,15 @@ final class GetDefaultServicePlanRequest: ApiRequestNew<GetDefaultServicePlanRes
 }
 
 final class GetDefaultServicePlanResponse: ApiResponse {
-    internal var servicePlan: ServicePlanDetails?
+    internal var servicePlans: [ServicePlanDetails]?
+    
+    var defaultMailPlan : ServicePlanDetails? {
+        get {
+            return self.servicePlans?.filter({ (details) -> Bool in
+                return details.title.contains(check: "ProtonMail Free")
+            }).first
+        }
+    }
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
@@ -152,7 +160,7 @@ final class GetDefaultServicePlanResponse: ApiResponse {
             let decoder = JSONDecoder()
             // this strategy is decapitalizing first letter of response's labels to get appropriate name of the ServicePlanDetails object
             decoder.keyDecodingStrategy = .custom(self.decapitalizeFirstLetter)
-            self.servicePlan = try decoder.decode(ServicePlanDetails.self, from: data)
+            self.servicePlans = try decoder.decode(Array<ServicePlanDetails>.self, from: data)
             return true
         } catch let error {
             PMLog.D("Failed to parse ServicePlans: \(error.localizedDescription)")
