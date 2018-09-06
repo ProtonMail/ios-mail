@@ -89,7 +89,7 @@
                 <outlet property="contactSourceImageView" destination="Ueb-Ca-8K0" id="2rf-Ap-1D1"/>
                 <outlet property="shortName" destination="S8m-bp-7Jy" id="zLU-JH-bFq"/>
             </connections>
-            <point key="canvasLocation" x="267" y="363"/>
+            <point key="canvasLocation" x="432" y="361"/>
         </tableViewCell>
     </objects>
     <resources>

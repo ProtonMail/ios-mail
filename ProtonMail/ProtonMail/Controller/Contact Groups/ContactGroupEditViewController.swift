@@ -16,6 +16,8 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     let kToContactGroupSelectColorSegue = "toContactGroupSelectColorSegue"
     let kToContactGroupSelectEmailSegue = "toContactGroupSelectEmailSegue"
     
+    let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
+    
     @IBOutlet weak var contactGroupNameLabel: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var navigationBarItem: UINavigationItem!
@@ -39,6 +41,9 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
+                           forCellReuseIdentifier: kContactGroupEditCellIdentifier)
         
         viewModel.delegate = self
         contactGroupNameLabel.delegate = self
@@ -136,11 +141,11 @@ extension ContactGroupEditViewController: UITableViewDataSource
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupManageCell", for: indexPath)
             return cell
         case .email:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupMemberCell", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupEditCellIdentifier,
+                                                     for: indexPath) as! ContactGroupEditViewCell
             
             let (name, email) = viewModel.getEmail(at: indexPath)
-            cell.textLabel?.text = name
-            cell.detailTextLabel?.text = email
+            cell.config(name: name, email: email)
             return cell
         case .deleteGroup:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupDeleteCell", for: indexPath)

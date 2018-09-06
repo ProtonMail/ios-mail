@@ -61,6 +61,7 @@
 		087CD058E064EEE2E717602818378501 /* ExpirationWarningHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667B259499756B936C5965740FB1C262 /* ExpirationWarningHeaderCell.swift */; };
 		0882139F4F3ADA776896A5883CD7191C /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CFA13A53B9FD4D4305DD4B86DF8193 /* FeedbackViewController.swift */; };
 		08AD56558FCA5D0A5649F284D92BCEF0 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AD8790D4C0DE38F62EEDA96A8973CD35 /* libstdc++.tbd */; };
+		0926CB8661C79BF3214C69AA551080DF /* ContactGroupEditViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18440551DE62B22C93A285894881F509 /* ContactGroupEditViewCell.swift */; };
 		0938782E2535FE2942502EF8BE06C676 /* ContactEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */; };
 		094F3E702945675F314FAF6330691FA9 /* Pods_ProtonMailTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B28DCB0803630A3B44E183F3040FBF3 /* Pods_ProtonMailTests.framework */; };
 		09774923BE6C942B4403375CED80EA9C /* DomainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AA34A18E2E22A96A8348C10B43A531 /* DomainsTableViewCell.swift */; };
@@ -380,6 +381,7 @@
 		44F5D14DCFA2F573BEE3FBFBFBFA8351 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE81D376E0F8F347F32607EFABE1337 /* LoadingView.swift */; };
 		450274178DA746A715093E42431BFF60 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A3F7FEB833E1B45FB6F23517638989 /* Logger.swift */; };
 		450818E1FCADD68E679DEDEAAA97676D /* Foundation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B223C187D4D099D474CBF5E75C09A4 /* Foundation+Extension.swift */; };
+		450FBD95015B99734A0C618D8BEE9593 /* ContactGroupEditViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AE8D82B4296D43BDF2F9E5F25ED52A3 /* ContactGroupEditViewCell.xib */; };
 		452A67F853121FBF0CA05279C69A3364 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227296580D62465EBB981626C208052D /* AuthAPI.swift */; };
 		4535DD66CB9FA2CA18B6CD30828102E9 /* IBDesignableLabeled.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFE29C974A82B95E8F6D51572C3B354 /* IBDesignableLabeled.swift */; };
 		457F70C151512FF255C31504B8AA5DB2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CC1C68F121EC52427410D7D6FA0753 /* MenuViewController.swift */; };
@@ -473,6 +475,7 @@
 		53A25777BE3320B7FE5A4F458B272A3A /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8C577A5F3B3CB7F718420FF1C7FCB0 /* UserTempCachedStatus.swift */; };
 		5402A95BC89FAB1B95D2368975FF39B1 /* AutoLayoutSizedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACEBDD0C5A2D287BBA44E5CFC3C78F73 /* AutoLayoutSizedCell.swift */; };
 		540CC792864925114E442B03FFDED274 /* String+Parse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F996E06B90F64A83A7976D0EF4012E /* String+Parse+Extension.swift */; };
+		5446133D837F9D2267140E36F92A5D71 /* ContactGroupEditViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AE8D82B4296D43BDF2F9E5F25ED52A3 /* ContactGroupEditViewCell.xib */; };
 		54488797C6447FE287C34F2A9F342B0F /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780829CF1C02F4C2F3D316D9263AB303 /* WebViewController.swift */; };
 		5456D28DAA72FA380E90D950AC8DA532 /* MessageQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B142492E7764F95AE62A0DC0372EAB /* MessageQueue.swift */; };
 		545B11D6CE84977628E24821F509641D /* RecipientCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6956D627BFECFC9A37C5F99BE26217BB /* RecipientCell.xib */; };
@@ -1264,6 +1267,7 @@
 		DDA3EE8AF4047097918859411C3C4E64 /* ActivityIndicatorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F668C31C82BEA50A922F88311FCB9D /* ActivityIndicatorHelper.swift */; };
 		DDAF977C701787637111DE70FFF6382F /* EmailAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DEECD545CB13CB019BB43ED956B9CC /* EmailAttachmentView.swift */; };
 		DDB680A5113E268AF78522E93B55B293 /* CountryPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E881FED17DB3A7856062CCB053EBDBD3 /* CountryPickerViewController.swift */; };
+		DDC0B8F61EEB43B56989666AD81A1CF6 /* ContactGroupEditViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18440551DE62B22C93A285894881F509 /* ContactGroupEditViewCell.swift */; };
 		DDCDB7791D9D58BC5ADC5E989C10AA59 /* ContactGroupDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C976B26437FACD375C470F5BAD0747D /* ContactGroupDataService.swift */; };
 		DDE1F0E986DBAD24F12A6332BBA3426E /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C5A44A396F31F83DCAFDDFF6FF0381 /* PMImagePickerController.swift */; };
 		DE25A58F063F9553B41A12F653064371 /* ExpirationWarningHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */; };
@@ -1596,6 +1600,7 @@
 		16F5408DF95C062F7A79C7C4B2C8D2EE /* ExpirationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpirationView.swift; sourceTree = "<group>"; };
 		17A9290E97B86BEF7B76F5C74E77B040 /* MessageDataService+Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageDataService+Builder.swift"; sourceTree = "<group>"; };
 		17F9333B1575E40465998DC664CE55B0 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		18440551DE62B22C93A285894881F509 /* ContactGroupEditViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupEditViewCell.swift; sourceTree = "<group>"; };
 		18ADBB64D79C5384AB24B501F49BF6F2 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		18D268BE6C958860B247B9BE76D6DDED /* ContactEditCell+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactEditCell+Delegates.swift"; sourceTree = "<group>"; };
 		19B220E1C9F1C225BFD6FE2E75455144 /* SettingDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewModel.swift; sourceTree = "<group>"; };
@@ -1713,6 +1718,7 @@
 		4A7DF3E3EC0C6D1E955782E2B9F0AE44 /* UISearchBar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extension.swift"; sourceTree = "<group>"; };
 		4AC8B46F567BE34418EFC96C5472E216 /* ProtonMail.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProtonMail.xcdatamodel; sourceTree = "<group>"; };
 		4ACDE1DAAB38F6186B5D1B8E877760A4 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		4AE8D82B4296D43BDF2F9E5F25ED52A3 /* ContactGroupEditViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactGroupEditViewCell.xib; sourceTree = "<group>"; };
 		4BBAB84228923785043E0A71A3520CB0 /* Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Share.entitlements; sourceTree = "<group>"; };
 		4BF7C2537D8C49E40CBBE2E368651A31 /* EventAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAPI.swift; sourceTree = "<group>"; };
 		4D3719085F278C51B2B1D58303FCF558 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -3104,6 +3110,8 @@
 		BF4CBEA121E287A3FDA5D2CF4E7B894F /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				18440551DE62B22C93A285894881F509 /* ContactGroupEditViewCell.swift */,
+				4AE8D82B4296D43BDF2F9E5F25ED52A3 /* ContactGroupEditViewCell.xib */,
 				FEDDA628A0CBF1A40EB99BA815D85481 /* ContactGroupsViewCell.swift */,
 				380360BB9B1BCDAA8C4DBCC0B027C134 /* ContactGroupsViewCell.xib */,
 			);
@@ -3918,6 +3926,7 @@
 				0F7E6BD08FF7A01CA1F4D9EA65C18B39 /* ComposeView.xib in Resources */,
 				57F8A687A1582541DC9BF89E37032BE1 /* Contact.storyboard in Resources */,
 				505DC82E54FC1F329CDB9743C00A26F5 /* ContactCollectionViewContactCell.xib in Resources */,
+				450FBD95015B99734A0C618D8BEE9593 /* ContactGroupEditViewCell.xib in Resources */,
 				BAD37F444719F9CF124BB69AD434AF3C /* ContactGroupsViewCell.xib in Resources */,
 				9FD73B446F3F0931EF91E64B20F6E5A0 /* ContactSectionHeadView.xib in Resources */,
 				DCDAF9746D0666389643A22ED9FCC456 /* ContactsTableViewCell.xib in Resources */,
@@ -3979,6 +3988,7 @@
 				9A94BA41C9C8FA4B70480BEA5B6D2DA1 /* ComposeView.xib in Resources */,
 				7F8A712DEBBDFA0860FDA29AFE58BA41 /* Contact.storyboard in Resources */,
 				8101491AE70F00A1794B28FF1676CCDA /* ContactCollectionViewContactCell.xib in Resources */,
+				5446133D837F9D2267140E36F92A5D71 /* ContactGroupEditViewCell.xib in Resources */,
 				A375428D87EB3F0762E4EC1C21F7BC42 /* ContactGroupsViewCell.xib in Resources */,
 				1271DC63F29907F20E0886920C06E9B5 /* ContactSectionHeadView.xib in Resources */,
 				390C25BD03B839126D8505BF8E600820 /* ContactsTableViewCell.xib in Resources */,
@@ -4650,6 +4660,7 @@
 				4DBFFF58172DE9015F7AF24CE60E1B6D /* ContactFieldType.swift in Sources */,
 				DDCDB7791D9D58BC5ADC5E989C10AA59 /* ContactGroupDataService.swift in Sources */,
 				45A58EAEF9A54A056925720B7EE35977 /* ContactGroupDefined.swift in Sources */,
+				DDC0B8F61EEB43B56989666AD81A1CF6 /* ContactGroupEditViewCell.swift in Sources */,
 				7E76EEDF88C7A68CBD15B13B8BBD3E08 /* ContactGroupEditViewController.swift in Sources */,
 				FBDCF01A4F770C5ABBC710D3003D202B /* ContactGroupEditViewModel.swift in Sources */,
 				612989C95ECD0B8E5F52802998A42EEC /* ContactGroupEditViewModelImpl.swift in Sources */,
@@ -5065,6 +5076,7 @@
 				B791AD6661A8B7C3578B92187AD7A5AB /* ContactFieldType.swift in Sources */,
 				5C79744F9469DA49B0B96132345E1666 /* ContactGroupDataService.swift in Sources */,
 				465C162FFDCBE57159F0826F0C0842FE /* ContactGroupDefined.swift in Sources */,
+				0926CB8661C79BF3214C69AA551080DF /* ContactGroupEditViewCell.swift in Sources */,
 				B30BA28804D61FC2C0A090277F851DB7 /* ContactGroupEditViewController.swift in Sources */,
 				4EB1576580F702DBE7F7727135F2BD9C /* ContactGroupEditViewModel.swift in Sources */,
 				F3362F61C4F30A4B1BABB2A1E0DD0E67 /* ContactGroupEditViewModelImpl.swift in Sources */,

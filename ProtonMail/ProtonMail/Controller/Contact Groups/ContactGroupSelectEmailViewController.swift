@@ -18,6 +18,8 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     }
     
     override func viewDidLoad() {
+        title = "Add Addresses"
+        
         tableView.allowsMultipleSelection = true
     }
     

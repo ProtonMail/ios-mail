@@ -16,7 +16,7 @@ import CoreData
 class ContactGroupsViewController: UIViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupsViewModel!
-    fileprivate let kContactGroupCellIdentifier: String = "ContactGroupCustomCell"
+    let kContactGroupCellIdentifier: String = "ContactGroupCustomCell"
     let kToContactGroupDetailSegue: String = "toContactGroupDetailSegue"
     var fetchedContactGroupResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
     var refreshControl: UIRefreshControl!
