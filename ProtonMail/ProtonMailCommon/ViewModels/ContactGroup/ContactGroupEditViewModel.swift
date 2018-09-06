@@ -75,6 +75,7 @@ protocol ContactGroupEditViewModel {
     func getContactGroupID() -> String?
     func getColor() -> String
     func getEmails() -> NSSet
+    func getSectionTitle(for: Int) -> String
     
     // create and edit
     func saveDetail() -> Promise<Void>

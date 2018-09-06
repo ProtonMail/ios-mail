@@ -28,6 +28,9 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     /// this array structures the layout of the tableView in ContactGroupEditViewController
     var tableContent: [[ContactGroupEditTableCellType]]
     
+    /// this array holds the section titles for the tableView
+    var tableSectionTitle: [String]
+    
     /// for updating the ContactGroupEditViewController
     weak var delegate: ContactGroupEditViewControllerDelegate? = nil
     
@@ -42,6 +45,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         self.state = state
         self.emailsInGroup = []
         self.tableContent = []
+        self.tableSectionTitle = []
         self.contactGroup = ContactGroupData(ID: groupID,
                                              name: name,
                                              color: color,
@@ -55,14 +59,27 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      
      This is called automatically in the updateTableContent(emailCount:)
      */
-    private func resetTableContent() {
+    private func resetTable() {
+        // content
         self.tableContent = [
             [.selectColor],
             [.manageContact],
+            []
         ]
         
         if self.state == .edit {
             self.tableContent.append([.deleteGroup])
+        }
+        
+        // title
+        self.tableSectionTitle = [
+            "",
+            "",
+            ""
+        ]
+        
+        if self.state == .edit {
+            self.tableSectionTitle.append("")
         }
     }
     
@@ -72,13 +89,18 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - Parameter emailCount: the email fields to be added to the tableContent array
      */
     private func updateTableContent(emailCount: Int) {
-        resetTableContent()
+        resetTable()
         
         for _ in 0..<emailCount {
-            self.tableContent[1].append(.email)
+            self.tableContent[2].append(.email)
         }
+        
+        tableSectionTitle[2] = "\(emailCount) MEMBER\(emailCount > 1 ? "S" : "")"
     }
     
+    /**
+     Load email content and prepare the tableView for displaying them
+    */
     private func prepareEmails() {
         // get email as an array
         if let emailIDs = contactGroup.emailIDs.allObjects as? [Email] {
@@ -173,6 +195,16 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      */
     func getEmails() -> NSSet {
         return contactGroup.emailIDs
+    }
+    
+    /**
+     - Returns: the section title
+    */
+    func getSectionTitle(for section: Int) -> String {
+        guard section < tableSectionTitle.count else {
+            return ""
+        }
+        return tableSectionTitle[section]
     }
     
     /* Data operation */
@@ -385,7 +417,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - Returns: a tuple of email name and email address
      */
     func getEmail(at indexPath: IndexPath) -> (String, String) {
-        let index = indexPath.row - 1
+        let index = indexPath.row
         guard index < emailsInGroup.count else {
             fatalError("Calculation error")
         }

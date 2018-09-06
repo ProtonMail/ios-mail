@@ -132,6 +132,10 @@ extension ContactGroupEditViewController: UITableViewDataSource
         return viewModel.getTotalRows(for: section)
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.getSectionTitle(for: section)
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch viewModel.getCellType(at: indexPath) {
         case .selectColor:
@@ -139,6 +143,7 @@ extension ContactGroupEditViewController: UITableViewDataSource
             return cell
         case .manageContact:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupManageCell", for: indexPath)
+            cell.textLabel?.text = "Manage Addresses"
             return cell
         case .email:
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupEditCellIdentifier,
