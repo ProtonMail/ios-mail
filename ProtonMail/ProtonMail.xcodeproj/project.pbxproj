@@ -131,6 +131,7 @@
 		1618555CAFF94EC13FE4DF078D531CDF /* ContactsViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFB8736687A7913C94C156D188BF283 /* ContactsViewModelImpl.swift */; };
 		162DF13E122DAC3901024E4C6EEBF248 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B08BFFFD2CA0201C07034095A949C11A /* StoreKit.framework */; };
 		162F7F24C1BBACB682DCE9100C7E30B5 /* MessageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E79798EF9EFDC06A9602AEDA36F519 /* MessageAPI.swift */; };
+		168E8ACAB68B4E829B74EE7A8D50FF06 /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
 		16E3697B45454767A0628F08D62F6429 /* DataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7172825915E9D32EB8B24F78F70667 /* DataService+Error.swift */; };
 		16EE76A92E90745123E67EBB39F10317 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815DFC41477DB4D20C79538B64D0893 /* Key.swift */; };
 		16F0E3E31AC970BAB7E33A82F73C3A72 /* PinCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070475F75227B69A2718C78F69C33998 /* PinCodeModel.swift */; };
@@ -245,6 +246,7 @@
 		2AF1E6976FAD662610AFBC6B8EB04018 /* TouchIDCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE5B998A88D78555BB0DAA153C2C1 /* TouchIDCell.swift */; };
 		2B3EE26EC500760E04A4A07EE565DCEE /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A60B2BD68461E88AE5BEBF3DE57C7D4 /* APIError+Auth.swift */; };
 		2B51CC3F7BA482B502F79F033A2F742B /* Message+Header+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3962A53C77C0454D3750041EC8679593 /* Message+Header+Extension.swift */; };
+		2B65665CB7C4CFDF941D12F6B39B65C0 /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
 		2B6ABBCD4248FEC54E996024F4CE3159 /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03C21BED10B6A6ED8D7D2660C78D4A2 /* LabelAPI.swift */; };
 		2BC9792AB92B546071E0DD4558DCACF3 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2DF54E18BEB8D52362623451A13350 /* UserInfo.swift */; };
 		2C4B489ED5D2C7214A8D36C2514F1D6A /* ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BEF2277925C9831648E416C2F27B01 /* ContactExtension.swift */; };
@@ -661,10 +663,6 @@
 		759615B64EBA6C81044604CD4E8CC779 /* PinCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070475F75227B69A2718C78F69C33998 /* PinCodeModel.swift */; };
 		75E3E625A137E008ACDC04C18E18120D /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7540794E9C555FB8DDB5720141F8D48E /* ImageProcessor.swift */; };
 		75EC480816F82223F98EE85D0655440A /* KeysAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D78E546E3F3806274A9F329BEF35A4 /* KeysAPI.swift */; };
-		75F4826121420A470079EA67 /* BugDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE482702915B1DBA8BB4B4473E61AC73 /* BugDataService.swift */; };
-		75F4826221420A480079EA67 /* BugDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE482702915B1DBA8BB4B4473E61AC73 /* BugDataService.swift */; };
-		75F4826321420A570079EA67 /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
-		75F4826421420A580079EA67 /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
 		75F656EC41ACEDA0CA1B09C8C96D3FC8 /* MessageDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B58028DD144CB7DBE3910795D25907 /* MessageDataService.swift */; };
 		76341350BD484FB4954719F527056488 /* ContactSectionHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45E225D395E3FBF26473033706769 /* ContactSectionHeadView.swift */; };
 		764E2C83C9348ACA7169C7E4CCB81CDF /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E69C5B65182DB326ABC46A0FAAE2CE1 /* Part.swift */; };
@@ -821,6 +819,7 @@
 		93A4792B8D0AFB6929EB721D35DDF560 /* Data+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64B6ABEC2E603996347C40E51E0189F /* Data+Mime.swift */; };
 		9414AC451DC3832A7CC960CE3086EC7D /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FA54B507F5B492266760AAACC658A6 /* SwiftTryCatch.m */; };
 		9442E4EEA9825AE9ADA9948F84634641 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BE9D2FABB2F4204098EE8B5588DE5C /* Settings+Defined.swift */; };
+		946EFE2BD395638E4B98D70582531EF3 /* BugDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE482702915B1DBA8BB4B4473E61AC73 /* BugDataService.swift */; };
 		948AE53265DB086B11CA8B3E15FE989E /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E503FA48E816D788CBE16EFDC359D08 /* AppVersionTests.swift */; };
 		950338D41E41C08DB171FAE68290A7C9 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EDC4C70B6C0984A3A7109AFA69BD16 /* UICollectionView+Extension.swift */; };
 		95092C4430BA5BDFCDDF35C6E4DB97CD /* NSError+Alert+Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350DB1CE5A6D9FB0346D24A0319EB2E /* NSError+Alert+Mail.swift */; };
@@ -935,6 +934,7 @@
 		A8A6921550423D6B42CA3CF00226F48B /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87530495407CE3203D251F1AAF3A3DAD /* ToastMessageView.swift */; };
 		A8EE31D4C8E1B6533E35DFF49B289DE5 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2DF54E18BEB8D52362623451A13350 /* UserInfo.swift */; };
 		A90550F71DB25CC3C44267C0BE964D18 /* ContactsViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFB8736687A7913C94C156D188BF283 /* ContactsViewModelImpl.swift */; };
+		A90A2CA597607B9C986F940F36F77351 /* BugDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE482702915B1DBA8BB4B4473E61AC73 /* BugDataService.swift */; };
 		A91EC60799701CB740D0746482BA5BAC /* APIService+DeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334452152689851E51C6CDFFF44EFE36 /* APIService+DeviceExtension.swift */; };
 		A9367265490F11199C43CD280A517B92 /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EBF32E5771CDBD303FD1803019AE8D /* StoreKitManager.swift */; };
 		A938EF1FB8EF43E5A846EC92ED933640 /* MessageDataService+FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F2543A95CCB31AFB636BE8E06CD04F /* MessageDataService+FileManager.swift */; };
@@ -5369,6 +5369,7 @@
 				D3847DC3D063CCC7CC2CB9C8D6492E24 /* AuthAPI.swift in Sources */,
 				3F4E2BB0216F0E3F69D3034CD4CFC9B3 /* AuthCredential.swift in Sources */,
 				E6BDC64FFEF73F55ACB5E49EBCE1F6CB /* BCrypt+Extension.swift in Sources */,
+				946EFE2BD395638E4B98D70582531EF3 /* BugDataService.swift in Sources */,
 				B65DCCDC996ACE934E04D6F8D901E75A /* Bundle+Extension.swift in Sources */,
 				F0961FC9E14ECF9A3497BE0CA9E417EB /* Compare+Extension.swift in Sources */,
 				854E4DF1B2BDF7CDEF4289EAB8732F97 /* ComposeErrorView.swift in Sources */,
@@ -5428,7 +5429,6 @@
 				A17DCC2DF3EDBDAA68AFE63DFEA706E4 /* LabelExtension.swift in Sources */,
 				C4AAD498D093FFBE891381CD972CC06E /* LabelboxViewModelImpl.swift in Sources */,
 				334FE475EB9338BC516ED97AF82A7B21 /* LabelsDataService.swift in Sources */,
-				75F4826321420A570079EA67 /* ReportsAPI.swift in Sources */,
 				9915208DB3B59CFA36F7E8D14582BC8A /* LanguageManager.m in Sources */,
 				5F42CB7DFBF2BB3759386C0551010150 /* LastUpdatedStore.swift in Sources */,
 				0C093207E24F37E6B5D58615B869444A /* LoadingView.swift in Sources */,
@@ -5484,6 +5484,7 @@
 				B1A77D1BD034F34946FEDF248B6B48BC /* QueueConstant.swift in Sources */,
 				88A1F5419E81730BED3A992B25CA7E06 /* QuotedPrintable.swift in Sources */,
 				4B101F682A604A73EAA6DC271014C959 /* Reachability.m in Sources */,
+				2B65665CB7C4CFDF941D12F6B39B65C0 /* ReportsAPI.swift in Sources */,
 				9442E4EEA9825AE9ADA9948F84634641 /* Settings+Defined.swift in Sources */,
 				A5D1DD47043C861FF8BE761A0CDFE846 /* SettingsAPI.swift in Sources */,
 				C91E6D0981798B5A65CA681C37F44260 /* ShareExtensionEntry.swift in Sources */,
@@ -5505,7 +5506,6 @@
 				F912FBC6BCE984E553A0F3595E507ACE /* UIAlertAction+Extension.swift in Sources */,
 				C1C16A3A376D817EBC890C1C0814FF0B /* UIAlertController+Extension.swift in Sources */,
 				CE67BCB3CBD87B39AE947DC49B71AC28 /* UIApplication+BadgeNumber+Share.swift in Sources */,
-				75F4826121420A470079EA67 /* BugDataService.swift in Sources */,
 				030575AB0D61889496C2F7F336358FC2 /* UIColor+ProtonMail.swift in Sources */,
 				C44AC2CBF1F5737BBB4C35FC06B1B70B /* UIStoryboard+Extension.swift in Sources */,
 				54C83EB89CFDAC7DBA83DFC1B3E758F4 /* UITableView+Extension.swift in Sources */,
@@ -5567,6 +5567,7 @@
 				AC9F2845E7C86BC273B7A347BB35167F /* AuthAPI.swift in Sources */,
 				5AB260D27701C2784A4B89F9057199B1 /* AuthCredential.swift in Sources */,
 				2492ED78B3ECA7F50E37AD920587F8A5 /* BCrypt+Extension.swift in Sources */,
+				A90A2CA597607B9C986F940F36F77351 /* BugDataService.swift in Sources */,
 				CC991EB544982FC7416A2D97BDC573D5 /* Bundle+Extension.swift in Sources */,
 				F49283536FC1C338B538DDAD9EEBCA99 /* Compare+Extension.swift in Sources */,
 				4FFB318A7F47E5EC94367D2D8FD43FD6 /* ComposeErrorView.swift in Sources */,
@@ -5626,7 +5627,6 @@
 				D895D014B1B27ABA584E4C14FBD2E403 /* LabelExtension.swift in Sources */,
 				C4258ED632E7FD35F56F7ADDB83A4972 /* LabelboxViewModelImpl.swift in Sources */,
 				5760367C76753230FCD257D432AEEB05 /* LabelsDataService.swift in Sources */,
-				75F4826421420A580079EA67 /* ReportsAPI.swift in Sources */,
 				6F42ADF3ED65100FB0FB7FA423EE7D25 /* LanguageManager.m in Sources */,
 				6755EA60DD06C67151033E1E9551646A /* LastUpdatedStore.swift in Sources */,
 				44F5D14DCFA2F573BEE3FBFBFBFA8351 /* LoadingView.swift in Sources */,
@@ -5682,6 +5682,7 @@
 				6B83402A5AE4ADCF885F31E0C53A59D1 /* QueueConstant.swift in Sources */,
 				61335B96C8F33EB4B56D4D459D39A01F /* QuotedPrintable.swift in Sources */,
 				8EFD3A66717F5DE4FEA692888C4D7AA2 /* Reachability.m in Sources */,
+				168E8ACAB68B4E829B74EE7A8D50FF06 /* ReportsAPI.swift in Sources */,
 				371A41B911AD00F666F40C049A9EECEE /* Settings+Defined.swift in Sources */,
 				7DFB4C294CAE23A769678D3AB6154E6C /* SettingsAPI.swift in Sources */,
 				131F2D19443C376E3B630D0EE0FD509C /* ShareExtensionEntry.swift in Sources */,
@@ -5703,7 +5704,6 @@
 				D780355919F7D2D35D8C7EA870A917E9 /* UIAlertAction+Extension.swift in Sources */,
 				AE553D5CADF1774588FD0726AA46902B /* UIAlertController+Extension.swift in Sources */,
 				4A8A40382CB914A5D192DE1A09265324 /* UIApplication+BadgeNumber+Share.swift in Sources */,
-				75F4826221420A480079EA67 /* BugDataService.swift in Sources */,
 				82D0300A46CB97B95E602981B97854BC /* UIColor+ProtonMail.swift in Sources */,
 				BC8E64D208E1125294DB9EA05B0E38C3 /* UIStoryboard+Extension.swift in Sources */,
 				0680AE959438B57E7CC698235FC3A964 /* UITableView+Extension.swift in Sources */,

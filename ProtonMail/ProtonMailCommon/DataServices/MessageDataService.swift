@@ -1254,14 +1254,25 @@ class MessageDataService {
     struct SendStatus : OptionSet {
         let rawValue: Int
         
-        static let justStart = RefreshStatus(rawValue: 0)
-        static let fetchEmails     = RefreshStatus(rawValue: 1 << 0)
-//        static let contacts = RefreshStatus(rawValue: 1 << 1)
-//        static let all      = RefreshStatus(rawValue: 1 << 2)
-//        static let ok       = RefreshStatus(rawValue: 0)
-//        static let mail     = RefreshStatus(rawValue: 1 << 0)
-//        static let contacts = RefreshStatus(rawValue: 1 << 1)
-//        static let all      = RefreshStatus(rawValue: 0xFF)
+        static let justStart             = RefreshStatus(rawValue: 0)
+        static let fetchEmailOK          = RefreshStatus(rawValue: 1 << 0)
+        static let getBody               = RefreshStatus(rawValue: 1 << 1)
+        static let updateBuilder         = RefreshStatus(rawValue: 1 << 2)
+        static let processKeyResponse    = RefreshStatus(rawValue: 1 << 3)
+        static let checkMimeAndPlainText = RefreshStatus(rawValue: 1 << 4)
+        static let setAtts               = RefreshStatus(rawValue: 1 << 5)
+        static let goNext                = RefreshStatus(rawValue: 1 << 6)
+        static let checkMime             = RefreshStatus(rawValue: 1 << 7)
+        static let buildMime             = RefreshStatus(rawValue: 1 << 8)
+        static let checkPlainText        = RefreshStatus(rawValue: 1 << 9)
+        static let buildPlainText        = RefreshStatus(rawValue: 1 << 10)
+        static let initBuilders          = RefreshStatus(rawValue: 1 << 11)
+        static let encodeBody            = RefreshStatus(rawValue: 1 << 12)
+        static let buildSend             = RefreshStatus(rawValue: 1 << 13)
+        static let sending               = RefreshStatus(rawValue: 1 << 14)
+        static let done                  = RefreshStatus(rawValue: 1 << 15)
+        static let doneWithError         = RefreshStatus(rawValue: 1 << 16)
+        static let exceptionCatched      = RefreshStatus(rawValue: 1 << 17)
     }
     
     
@@ -1304,22 +1315,29 @@ class MessageDataService {
             //build contacts if user setup key pinning
             var contacts : [PreContact] = [PreContact]()
             firstly {
-                //status.insert(.fetchEmails)
                 //fech addresses contact
                 sharedContactDataService.fetch(byEmails: emails, context: context)
             }.then { (cs) -> Guarantee<[Result<KeysResponse>]> in
+                //Debug info
+                status.insert(SendStatus.fetchEmailOK)
                 // fech email keys from api
                 contacts.append(contentsOf: cs)
                 return when(resolved: requests.promises)
             }.then { results -> Promise<SendBuilder> in
+                //Debug info
+                status.insert(SendStatus.getBody)
                 //all prebuild errors need pop up from here
                 guard let bodyData = try message.split()?.dataPacket(),
                         let session = try message.getSessionKey() else {
                     throw RuntimeError.cant_decrypt.error
                 }
-
+                //Debug info
+                status.insert(SendStatus.updateBuilder)
                 sendBuilder.update(bodyData: bodyData, bodySession: session.session(), algo: session.algo())
                 sendBuilder.set(pwd: message.password, hit: message.passwordHint)
+                //Debug info
+                status.insert(SendStatus.processKeyResponse)
+                
                 for (index, result) in results.enumerated() {
                     switch result {
                     case .fulfilled(let value):
@@ -1341,6 +1359,8 @@ class MessageDataService {
                         throw error
                     }
                 }
+                //Debug info
+                status.insert(SendStatus.checkMimeAndPlainText)
 
                 if sendBuilder.hasMime || sendBuilder.hasPlainText {
                     guard let clearbody = try message.decryptBody() else {
@@ -1348,6 +1368,8 @@ class MessageDataService {
                     }
                     sendBuilder.set(clear: clearbody)
                 }
+                //Debug info
+                status.insert(SendStatus.setAtts)
                 
                 for att in attachments {
                     if att.managedObjectContext != nil {
@@ -1359,29 +1381,49 @@ class MessageDataService {
                         }
                     }
                 }
+                //Debug info
+                status.insert(SendStatus.goNext)
+                
                 return .value(sendBuilder)
             }.then{ (sendbuilder) -> Promise<SendBuilder> in
+                //Debug info
+                status.insert(SendStatus.checkMime)
+                
                 if !sendBuilder.hasMime {
                     return .value(sendBuilder)
                 }
+                //Debug info
+                status.insert(SendStatus.buildMime)
+                
                 //build pgp sending mime body
                 let addr = message.defaultAddress!.keys.first!
                 let privateKey = addr.private_key
                 let pubKey = addr.publicKey
                 return sendBuilder.buildMime(pubKey: pubKey, privKey: privateKey)
             }.then{ (sendbuilder) -> Promise<SendBuilder> in
+                //Debug info
+                status.insert(SendStatus.checkPlainText)
+                
                 if !sendBuilder.hasPlainText {
                     return .value(sendBuilder)
                 }
+                //Debug info
+                status.insert(SendStatus.buildPlainText)
+                
                 //build pgp sending mime body
                 let addr = message.defaultAddress!.keys.first!
                 let privateKey = addr.private_key
                 let pubKey = addr.publicKey
                 return sendBuilder.buildPlainText(pubKey: pubKey, privKey: privateKey)
             } .then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
+                //Debug info
+                status.insert(SendStatus.initBuilders)
                 //build address packages
                 return when(resolved: sendbuilder.promises)
             }.then { results -> Promise<ApiResponse> in
+                //Debug info
+                status.insert(SendStatus.encodeBody)
+                
                 //build api request
                 let encodedBody = sendBuilder.bodyDataPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                 var msgs = [AddressPackageBase]()
@@ -1393,6 +1435,8 @@ class MessageDataService {
                         throw error
                     }
                 }
+                //Debug info
+                status.insert(SendStatus.buildSend)
                 
                 let sendApi = SendMessage(messageID: message.messageID,
                                           expirationTime: message.expirationOffset,
@@ -1402,10 +1446,14 @@ class MessageDataService {
                                           mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
                                           plainTextDataPacket : sendBuilder.plainBody, clearPlainTextBody : sendBuilder.clearPlainBodyPackage
                 )
-                
+                //Debug info
+                status.insert(SendStatus.sending)
                 
                 return sendApi.run()
             }.done { (res) in
+                //Debug info
+                status.insert(SendStatus.done)
+                
                 let error = res.error
                 if error == nil {
                     if (message.location == MessageLocation.draft) {
@@ -1444,6 +1492,9 @@ class MessageDataService {
                         self.markReplyStatus(message.orginalMessageID, action: message.action)
                     }
                 } else {
+                    //Debug info
+                    status.insert(SendStatus.doneWithError)
+                    
                     if error?.code == 9001 {
                         //here need let user to show the human check.
                         sharedMessageQueue.isRequiredHumanCheck = true
@@ -1462,6 +1513,9 @@ class MessageDataService {
                 }
                 completion?(nil, nil, error)
             }.catch { (error) in
+                //Debug info
+                status.insert(SendStatus.exceptionCatched)
+                
                 let err = error as NSError
                 PMLog.D(error.localizedDescription)
                 if err.code == 9001 {
