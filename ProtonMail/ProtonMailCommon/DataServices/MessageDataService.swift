@@ -1250,6 +1250,21 @@ class MessageDataService {
         })
     }
     
+    //
+    struct SendStatus : OptionSet {
+        let rawValue: Int
+        
+        static let justStart = RefreshStatus(rawValue: 0)
+        static let fetchEmails     = RefreshStatus(rawValue: 1 << 0)
+//        static let contacts = RefreshStatus(rawValue: 1 << 1)
+//        static let all      = RefreshStatus(rawValue: 1 << 2)
+//        static let ok       = RefreshStatus(rawValue: 0)
+//        static let mail     = RefreshStatus(rawValue: 1 << 0)
+//        static let contacts = RefreshStatus(rawValue: 1 << 1)
+//        static let all      = RefreshStatus(rawValue: 0xFF)
+    }
+    
+    
     private func send(byID messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
@@ -1269,6 +1284,9 @@ class MessageDataService {
                 return
             }
             
+            //start track status here :
+            var status = SendStatus.justStart
+            
             var requests : [UserEmailPubKeys] = [UserEmailPubKeys]()
             let emails = message.allEmails
             for email in emails {
@@ -1286,6 +1304,7 @@ class MessageDataService {
             //build contacts if user setup key pinning
             var contacts : [PreContact] = [PreContact]()
             firstly {
+                //status.insert(.fetchEmails)
                 //fech addresses contact
                 sharedContactDataService.fetch(byEmails: emails, context: context)
             }.then { (cs) -> Guarantee<[Result<KeysResponse>]> in
@@ -1424,8 +1443,7 @@ class MessageDataService {
                     } else {
                         self.markReplyStatus(message.orginalMessageID, action: message.action)
                     }
-                }
-                else {
+                } else {
                     if error?.code == 9001 {
                         //here need let user to show the human check.
                         sharedMessageQueue.isRequiredHumanCheck = true
@@ -1436,7 +1454,11 @@ class MessageDataService {
                         error?.alertErrorToast()
                     }
                     NSError.alertMessageSentErrorToast()
-                    error?.upload(toFabric: SendingErrorTitle)
+                    BugDataService.sendingIssue(title: SendingErrorTitle,
+                                                bug: error?.localizedDescription ?? "unknown",
+                                                status: status.rawValue,
+                                                emials: emails,
+                                                attCount: attachments.count)
                 }
                 completion?(nil, nil, error)
             }.catch { (error) in
@@ -1451,7 +1473,13 @@ class MessageDataService {
                 }  else {
                     NSError.alertMessageSentError(details: err.localizedDescription)
                 }
-                err.upload(toFabric: SendingErrorTitle)
+                
+                
+                BugDataService.sendingIssue(title: SendingErrorTitle,
+                                            bug: err.localizedDescription,
+                                            status: status.rawValue,
+                                            emials: emails,
+                                            attCount: attachments.count)
                 completion?(nil, nil, err)
             }
             return

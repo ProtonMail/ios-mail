@@ -661,6 +661,10 @@
 		759615B64EBA6C81044604CD4E8CC779 /* PinCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070475F75227B69A2718C78F69C33998 /* PinCodeModel.swift */; };
 		75E3E625A137E008ACDC04C18E18120D /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7540794E9C555FB8DDB5720141F8D48E /* ImageProcessor.swift */; };
 		75EC480816F82223F98EE85D0655440A /* KeysAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D78E546E3F3806274A9F329BEF35A4 /* KeysAPI.swift */; };
+		75F4826121420A470079EA67 /* BugDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE482702915B1DBA8BB4B4473E61AC73 /* BugDataService.swift */; };
+		75F4826221420A480079EA67 /* BugDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE482702915B1DBA8BB4B4473E61AC73 /* BugDataService.swift */; };
+		75F4826321420A570079EA67 /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
+		75F4826421420A580079EA67 /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
 		75F656EC41ACEDA0CA1B09C8C96D3FC8 /* MessageDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B58028DD144CB7DBE3910795D25907 /* MessageDataService.swift */; };
 		76341350BD484FB4954719F527056488 /* ContactSectionHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45E225D395E3FBF26473033706769 /* ContactSectionHeadView.swift */; };
 		764E2C83C9348ACA7169C7E4CCB81CDF /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E69C5B65182DB326ABC46A0FAAE2CE1 /* Part.swift */; };
@@ -5424,6 +5428,7 @@
 				A17DCC2DF3EDBDAA68AFE63DFEA706E4 /* LabelExtension.swift in Sources */,
 				C4AAD498D093FFBE891381CD972CC06E /* LabelboxViewModelImpl.swift in Sources */,
 				334FE475EB9338BC516ED97AF82A7B21 /* LabelsDataService.swift in Sources */,
+				75F4826321420A570079EA67 /* ReportsAPI.swift in Sources */,
 				9915208DB3B59CFA36F7E8D14582BC8A /* LanguageManager.m in Sources */,
 				5F42CB7DFBF2BB3759386C0551010150 /* LastUpdatedStore.swift in Sources */,
 				0C093207E24F37E6B5D58615B869444A /* LoadingView.swift in Sources */,
@@ -5500,6 +5505,7 @@
 				F912FBC6BCE984E553A0F3595E507ACE /* UIAlertAction+Extension.swift in Sources */,
 				C1C16A3A376D817EBC890C1C0814FF0B /* UIAlertController+Extension.swift in Sources */,
 				CE67BCB3CBD87B39AE947DC49B71AC28 /* UIApplication+BadgeNumber+Share.swift in Sources */,
+				75F4826121420A470079EA67 /* BugDataService.swift in Sources */,
 				030575AB0D61889496C2F7F336358FC2 /* UIColor+ProtonMail.swift in Sources */,
 				C44AC2CBF1F5737BBB4C35FC06B1B70B /* UIStoryboard+Extension.swift in Sources */,
 				54C83EB89CFDAC7DBA83DFC1B3E758F4 /* UITableView+Extension.swift in Sources */,
@@ -5620,6 +5626,7 @@
 				D895D014B1B27ABA584E4C14FBD2E403 /* LabelExtension.swift in Sources */,
 				C4258ED632E7FD35F56F7ADDB83A4972 /* LabelboxViewModelImpl.swift in Sources */,
 				5760367C76753230FCD257D432AEEB05 /* LabelsDataService.swift in Sources */,
+				75F4826421420A580079EA67 /* ReportsAPI.swift in Sources */,
 				6F42ADF3ED65100FB0FB7FA423EE7D25 /* LanguageManager.m in Sources */,
 				6755EA60DD06C67151033E1E9551646A /* LastUpdatedStore.swift in Sources */,
 				44F5D14DCFA2F573BEE3FBFBFBFA8351 /* LoadingView.swift in Sources */,
@@ -5696,6 +5703,7 @@
 				D780355919F7D2D35D8C7EA870A917E9 /* UIAlertAction+Extension.swift in Sources */,
 				AE553D5CADF1774588FD0726AA46902B /* UIAlertController+Extension.swift in Sources */,
 				4A8A40382CB914A5D192DE1A09265324 /* UIApplication+BadgeNumber+Share.swift in Sources */,
+				75F4826221420A480079EA67 /* BugDataService.swift in Sources */,
 				82D0300A46CB97B95E602981B97854BC /* UIColor+ProtonMail.swift in Sources */,
 				BC8E64D208E1125294DB9EA05B0E38C3 /* UIStoryboard+Extension.swift in Sources */,
 				0680AE959438B57E7CC698235FC3A964 /* UITableView+Extension.swift in Sources */,
