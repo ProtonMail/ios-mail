@@ -148,6 +148,7 @@ class SettingDetailViewController: UIViewController {
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         } else if segue.identifier == self.kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController
+            popup.delegate = self
             sharedVMService.upgradeAlert(signature: popup)
         }
     }
@@ -241,6 +242,23 @@ extension SettingDetailViewController : TwoFACodeViewControllerDelegate {
     
     func Cancel2FA() {
     }
+}
+
+extension SettingDetailViewController : UpgradeAlertVCDelegate {
+    func goPlans() {
+        self.navigationController?.popViewController(animated: true)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: MenuViewController.observerSwitchView),
+                                        object: MenuItem.servicePlan)
+        
+    }
+    
+    func learnMore() {
+        UIApplication.shared.openURL(URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!)
+    }
+    
+    func cancel() {
+    }
+    
 }
 
 // MARK: - UITextFieldDelegate

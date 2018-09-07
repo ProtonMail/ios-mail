@@ -11,10 +11,10 @@ import Foundation
 
 class SignatureAlertViewModelImpl : UpgradeAlertViewModel {
     override var title2 : String {
-        return LocalString._looking_to_edit_or_disable_your_mobile_signature
+        return LocalString._a_paid_rotonMail_plan_is_required_to_use_this_feature
     }
     
     override var message : String {
-        return LocalString._plus_visionary_enables_you_to_customize_mobile_signature
+        return LocalString._upgrade_to_get_all_paid_features
     }
 }

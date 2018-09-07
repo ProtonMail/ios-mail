@@ -11,10 +11,10 @@ import Foundation
 
 class ContactAlertViewModelImpl : UpgradeAlertViewModel {
     override var title2 : String {
-        return LocalString._looking_to_secure_your_contacts_details
+        return LocalString._a_paid_rotonMail_plan_is_required_to_use_this_feature
     }
     
     override var message : String {
-        return LocalString._protonmail_plus_enables_you_to_add_and_edit_contact_details_beyond_
+        return LocalString._upgrade_to_get_all_paid_features
     }
 }

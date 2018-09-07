@@ -13,7 +13,6 @@ class UpgradeAlertViewModel {
     /// | --- titel       --- |
     /// | --- title two   --- |
     /// | --- message     --- |
-    /// | --- message two --- |
     /// | --- button      --- |
     //
     var title : String {
@@ -27,14 +26,16 @@ class UpgradeAlertViewModel {
     var message : String {
         fatalError("This method must be overridden")
     }
-    
-    var message2 : String {
-        return LocalString._upgrading_is_not_possible_in_the_app
+
+    var button1: String {
+        return LocalString._learn_more
     }
     
-    var button: String {
-        return LocalString._got_it
+    var button2: String {
+        return LocalString._not_now
     }
     
-    
+    var button3: String {
+        return LocalString._view_plans
+    }
 }

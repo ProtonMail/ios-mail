@@ -90,7 +90,8 @@ class ReportBugsViewController: ProtonMailViewController {
                         alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
                         self.present(alert, animated: true, completion: {
                             self.reset()
-                            NotificationCenter.default.post(name: Notification.Name(rawValue: MenuViewController.ObserverSwitchView), object: nil)
+                            NotificationCenter.default.post(name: Notification.Name(rawValue: MenuViewController.observerSwitchView),
+                                                            object: nil)
                         })
                     }
                 })
