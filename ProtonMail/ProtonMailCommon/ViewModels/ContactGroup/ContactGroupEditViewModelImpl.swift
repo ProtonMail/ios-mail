@@ -19,7 +19,11 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     var state: ContactGroupEditViewControllerState
     
     /// the contact group data
-    var contactGroup: ContactGroupData
+    var contactGroup: ContactGroupData {
+        didSet {
+            prepareEmails()
+        }
+    }
     
     /// all of the emails in the contact group
     /// not using NSSet so the tableView can easily get access to a specific row
@@ -50,8 +54,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                                              name: name,
                                              color: color,
                                              emailIDs: emailIDs)
-        
-        self.prepareEmails()
+        prepareEmails()
     }
     
     /**
@@ -149,7 +152,6 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     {
         contactGroup.emailIDs = emails
         
-        prepareEmails()
         self.delegate?.update()
     }
     
