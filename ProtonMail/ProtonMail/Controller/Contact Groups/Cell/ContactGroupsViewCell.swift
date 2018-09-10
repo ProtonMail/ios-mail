@@ -12,7 +12,7 @@ class ContactGroupsViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var groupImage: UIImageView!
-    
+        
     let highlightedColor = "#BFBFBF"
     let normalColor = "#9497CE"
     

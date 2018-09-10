@@ -28,6 +28,7 @@
 		0330415DE44B1BB17541F7ECFCF50B05 /* TouchID+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E341C7A4C59A405508EE4D80B2D742E /* TouchID+Helper.swift */; };
 		03707D2C6D04541FD01546ECC5C5A420 /* MailboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15A32EFCD58FF1DBC64A3F0D7E7074D /* MailboxViewModel.swift */; };
 		03CEAB1972A6DBDFB9869F8B6B74A6F6 /* PM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30072FD1F33EAA148C54584943839E8 /* PM.framework */; };
+		03D06091652289C418391D5E3E5D40B8 /* ContactGroupDetailViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E5115764FDFD724E7F73CD01929A1B /* ContactGroupDetailViewModelImpl.swift */; };
 		03D536EB5E269CF090DF0C39BD9158B0 /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00345B8B27EA3497339A80F5B054645B /* Header.swift */; };
 		040BC1756816F0C4AA4AF34117FAC798 /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A3F237F354027F5849B79009233900 /* AttachmentAPI.swift */; };
 		04150D26F2A19E6FB53CBEB2302BCD02 /* Fonts+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AD55DA0F745D466C56681D98172724 /* Fonts+Constants.swift */; };
@@ -521,6 +522,7 @@
 		5BAF3150C3B43E4EEC0BF1D715958108 /* LabelManagerViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD05BB8416067244824CCFC22BA4288 /* LabelManagerViewModelImpl.swift */; };
 		5BE4F66CAFA62FBAF1D636596E6DBA32 /* APIService+UserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F131B12E9F6F23D7063B2C786358C896 /* APIService+UserExtension.swift */; };
 		5BE96214CBB0B914408CFE9ED120C54A /* FeedbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBBFBFA33313B8B3C9E7C6EDCD43F89 /* FeedbackTableViewCell.swift */; };
+		5C05D817AC96B1B10F5348F7823CBD8F /* ContactGroupDetailViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E5115764FDFD724E7F73CD01929A1B /* ContactGroupDetailViewModelImpl.swift */; };
 		5C2712380BD9E0263321582C41E6922E /* AddressAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04025B7C6436895719C25378EBFF48C9 /* AddressAPI.swift */; };
 		5C56480223AC89083A884B0C44D0D525 /* HumanCheckViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF547CEFCD814853B222CFBADF77BA6 /* HumanCheckViewModel.swift */; };
 		5C5D92354DECD3F4992AB81A5C21481E /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB243FAF3121155DBEE7A75E1784BBE3 /* UIView+Extension.swift */; };
@@ -544,6 +546,7 @@
 		5F9C61A3B61421917B0944A475EA4BB1 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B407C906A05CDC7454653B0AD961BC1 /* SwitchTableViewCell.swift */; };
 		5FBC7E38BF61CE739ACAB89758FBB3C6 /* AnyImagePickerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603C9D7A4E9C4372230A199F1AC898E /* AnyImagePickerDelegate.swift */; };
 		5FF13942718159EFB2BCADAEF2A0364F /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5E9998E7EE18E2896590E4A25AF8E2 /* LanguageManager.m */; };
+		6018EF1B3EAB11D9E7C207D0111A0377 /* ContactGroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D5DFE2634FAF06FD70058B916FE86F /* ContactGroupDetailViewController.swift */; };
 		6032658A32AA3D0DB307F7AE5C91D06E /* ContactGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7E2650D5B2BA5C995439ECF2D48E1 /* ContactGroupViewModel.swift */; };
 		609DE3EC0CA993B8521524E1E5F22192 /* Message+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB29120F5790918FFD03682C6F93931D /* Message+Extension.swift */; };
 		611508EE286DFE83A1FDDC11F212FB20 /* ContactEditPhoneCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6AC93EA817E53F80A6B7F61686052 /* ContactEditPhoneCell.swift */; };
@@ -1001,6 +1004,7 @@
 		B0C9EFCA9BF46A186213F4C92E252C2A /* UIDevice+InfoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9113A2EDD8A5974F8A575AEA948D8275 /* UIDevice+InfoExtension.swift */; };
 		B0DABD95F3DCDB3B8CBDBD5191083AF8 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1498B5ACE198B189543C431190024381 /* AppConstants.swift */; };
 		B1A77D1BD034F34946FEDF248B6B48BC /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28648BC22177DBCB7499250A93D64316 /* QueueConstant.swift */; };
+		B1C54F14BAE034ECB6F096D114EECB70 /* ContactGroupDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADC24E80EEFDC87919D4B7125217067 /* ContactGroupDetailViewModel.swift */; };
 		B227B580CB2F218C2B5532C3C2DABAEC /* TextInsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C3B687B70DE77A12589A2A697360F0 /* TextInsetTextField.swift */; };
 		B22959D2565B4C5A4B64B405C3C8586A /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE81D376E0F8F347F32607EFABE1337 /* LoadingView.swift */; };
 		B2532B4715BB66A323F64B4E01ACAC6A /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACBA5552678233742A247A4F9B9B094 /* SettingTableViewController.swift */; };
@@ -1016,6 +1020,7 @@
 		B517D94B02F7887984B173943373D24E /* APIService+ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7E1E9A56A7D74BBF9EFBB27C845267 /* APIService+ContactExtension.swift */; };
 		B51F838BBEF3A4799001D1A990201294 /* Localization+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DDB6CF6C1147506E3B019ED574306E5 /* Localization+Constants.swift */; };
 		B54D85D76D63ED3F7EA63FAB1E55010F /* APIService+ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6B492F6F532F6FE805CC7F50C82509 /* APIService+ErrorExtension.swift */; };
+		B574E1F775113331F24AD8F1DC048AD8 /* ContactGroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D5DFE2634FAF06FD70058B916FE86F /* ContactGroupDetailViewController.swift */; };
 		B5B27CCDF8981984DEA0C92B2AC56FB5 /* DurationPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B667127BCF3FD74EC8B166FB8B49A5 /* DurationPickerViewController.xib */; };
 		B5C1DDB6FB9E7931A1375EDFE0D85171 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB1C20863F2073B64B8819A059F313F /* Onboarding.swift */; };
 		B5C519E8B89EE12E0B2060F7168AE398 /* ExpirationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76E557A37E9C2EAF13725A6B0B37F3E0 /* ExpirationView.xib */; };
@@ -1222,6 +1227,7 @@
 		D6CD12158C3D06E3D992755C8803B04F /* ContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7385ADE4EA34EE7A7F64BBA0E0E5BF7D /* ContactPicker.swift */; };
 		D6D3A2F62B131E1718B972B70567A5E6 /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */; };
 		D6D4AE293E48173DC1A4C1CEBF117E6A /* MessageAPI+Packages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E613D0715CC835821135FDA1AAF95B22 /* MessageAPI+Packages.swift */; };
+		D729B4EF31D4012D7AD95BDE8011D851 /* ContactGroupDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADC24E80EEFDC87919D4B7125217067 /* ContactGroupDetailViewModel.swift */; };
 		D732E36B0E69097DEB800A98100B1479 /* APIServiceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAFA09C0C974E273A1A8842BE85C707 /* APIServiceResponse.swift */; };
 		D75EE4A8FCCE47CA0C98CC0B5749D4B4 /* ExpirationWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57805306D07DA8BD55BDA82FCEA2986C /* ExpirationWarningViewController.swift */; };
 		D77A806C9A9ADBCEF92201428C548FA2 /* DocumentAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C454B0EB20457CA14B2ED3F3D5809882 /* DocumentAttachmentProvider.swift */; };
@@ -1701,7 +1707,9 @@
 		41E5FF415464C7BC5B7487FC9782F5B4 /* Pods_ProtonMail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProtonMail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		429151026228BE9C624D5EC94E3564C7 /* MBContactPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBContactPicker.h; sourceTree = "<group>"; };
 		42AFB2665732BDBF0C40E4F838A5D34E /* ServicePlanDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlanDetails.swift; sourceTree = "<group>"; };
+		42D5DFE2634FAF06FD70058B916FE86F /* ContactGroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDetailViewController.swift; sourceTree = "<group>"; };
 		42E21667F1C859137B9CE6DD7A47DE59 /* ContactEditViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewModelImpl.swift; sourceTree = "<group>"; };
+		42E5115764FDFD724E7F73CD01929A1B /* ContactGroupDetailViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDetailViewModelImpl.swift; sourceTree = "<group>"; };
 		437553B32C1B4E43F061343518A57D5D /* ServiceLevel.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ServiceLevel.storyboard; sourceTree = "<group>"; };
 		44085B624A400826C97F51354D48AF8C /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		450D2530B2F47C55FBEABC6AC343D094 /* OpenPGPDefines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenPGPDefines.swift; sourceTree = "<group>"; };
@@ -1793,6 +1801,7 @@
 		6956D627BFECFC9A37C5F99BE26217BB /* RecipientCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecipientCell.xib; sourceTree = "<group>"; };
 		69A3F237F354027F5849B79009233900 /* AttachmentAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentAPI.swift; sourceTree = "<group>"; };
 		6A9E73EDBDAD67A3D064D904162F3AEE /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6ADC24E80EEFDC87919D4B7125217067 /* ContactGroupDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDetailViewModel.swift; sourceTree = "<group>"; };
 		6B5510312FDA10387130A66280981BB6 /* MessageViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewModelImpl.swift; sourceTree = "<group>"; };
 		6B553E0FE138B6EB544BF3C3DBE10AF1 /* ChangePasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModel.swift; sourceTree = "<group>"; };
 		6BA7289C7A00897216DF37D848BDD1EE /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
@@ -2527,6 +2536,8 @@
 			isa = PBXGroup;
 			children = (
 				74B9D8479C48831A69305E90F288B2A3 /* ContactGroupDefined.swift */,
+				6ADC24E80EEFDC87919D4B7125217067 /* ContactGroupDetailViewModel.swift */,
+				42E5115764FDFD724E7F73CD01929A1B /* ContactGroupDetailViewModelImpl.swift */,
 				B7266396D1BA7B60590CB76B8AF09831 /* ContactGroupEditViewModel.swift */,
 				911D7845E802C9F973CBA38E8E646EC5 /* ContactGroupEditViewModelImpl.swift */,
 				F0466DB6812B789E32ADF3673EAC8268 /* ContactGroupSelectColorViewModel.swift */,
@@ -3156,6 +3167,7 @@
 			isa = PBXGroup;
 			children = (
 				BF4CBEA121E287A3FDA5D2CF4E7B894F /* Cell */,
+				42D5DFE2634FAF06FD70058B916FE86F /* ContactGroupDetailViewController.swift */,
 				DC1352F3E82A2BE8C234D0A7E54752B2 /* ContactGroupEditViewController.swift */,
 				8782C5BEEDAF151E47F8104AC2BDCF82 /* ContactGroupSelectColorViewController.swift */,
 				B63E7B9480C2FA7A9C24089237C538FF /* ContactGroupSelectEmailViewController.swift */,
@@ -4660,6 +4672,9 @@
 				4DBFFF58172DE9015F7AF24CE60E1B6D /* ContactFieldType.swift in Sources */,
 				DDCDB7791D9D58BC5ADC5E989C10AA59 /* ContactGroupDataService.swift in Sources */,
 				45A58EAEF9A54A056925720B7EE35977 /* ContactGroupDefined.swift in Sources */,
+				B574E1F775113331F24AD8F1DC048AD8 /* ContactGroupDetailViewController.swift in Sources */,
+				B1C54F14BAE034ECB6F096D114EECB70 /* ContactGroupDetailViewModel.swift in Sources */,
+				03D06091652289C418391D5E3E5D40B8 /* ContactGroupDetailViewModelImpl.swift in Sources */,
 				DDC0B8F61EEB43B56989666AD81A1CF6 /* ContactGroupEditViewCell.swift in Sources */,
 				7E76EEDF88C7A68CBD15B13B8BBD3E08 /* ContactGroupEditViewController.swift in Sources */,
 				FBDCF01A4F770C5ABBC710D3003D202B /* ContactGroupEditViewModel.swift in Sources */,
@@ -5076,6 +5091,9 @@
 				B791AD6661A8B7C3578B92187AD7A5AB /* ContactFieldType.swift in Sources */,
 				5C79744F9469DA49B0B96132345E1666 /* ContactGroupDataService.swift in Sources */,
 				465C162FFDCBE57159F0826F0C0842FE /* ContactGroupDefined.swift in Sources */,
+				6018EF1B3EAB11D9E7C207D0111A0377 /* ContactGroupDetailViewController.swift in Sources */,
+				D729B4EF31D4012D7AD95BDE8011D851 /* ContactGroupDetailViewModel.swift in Sources */,
+				5C05D817AC96B1B10F5348F7823CBD8F /* ContactGroupDetailViewModelImpl.swift in Sources */,
 				0926CB8661C79BF3214C69AA551080DF /* ContactGroupEditViewCell.swift in Sources */,
 				B30BA28804D61FC2C0A090277F851DB7 /* ContactGroupEditViewController.swift in Sources */,
 				4EB1576580F702DBE7F7727135F2BD9C /* ContactGroupEditViewModel.swift in Sources */,

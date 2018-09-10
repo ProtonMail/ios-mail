@@ -16,8 +16,8 @@ import CoreData
 class ContactGroupsViewController: UIViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupsViewModel!
-    let kContactGroupCellIdentifier: String = "ContactGroupCustomCell"
-    let kToContactGroupDetailSegue: String = "toContactGroupDetailSegue"
+    let kContactGroupCellIdentifier = "ContactGroupCustomCell"
+    let kToContactGroupDetailSegue = "toContactGroupDetailSegue"
     var fetchedContactGroupResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
     var refreshControl: UIRefreshControl!
     @IBOutlet weak var tableView: UITableView!
@@ -64,15 +64,14 @@ class ContactGroupsViewController: UIViewController, ViewModelProtocol
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToContactGroupDetailSegue {
-            let contactGroupEditViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
+            let contactGroupDetailViewController = segue.destination as! ContactGroupDetailViewController
             let contactGroup = sender as! Label
             
-            sharedVMService.contactGroupEditViewModel(contactGroupEditViewController,
-                                                      state: .edit,
-                                                      groupID: contactGroup.labelID,
-                                                      name: contactGroup.name,
-                                                      color: contactGroup.color,
-                                                      emailIDs: contactGroup.emails)
+            sharedVMService.contactGroupDetailViewModel(contactGroupDetailViewController,
+                                                        groupID: contactGroup.labelID,
+                                                        name: contactGroup.name,
+                                                        color: contactGroup.color,
+                                                        emailIDs: contactGroup.emails)
         }
     }
 }

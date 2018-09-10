@@ -299,7 +299,17 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                                           updatedEmailList: NSSet)  {
         let completionHandler = {
             () -> Void in
-            return
+            
+            // update email IDs
+            // TODO: handle the conversion gracefully
+            let original = self.contactGroup.originalEmailIDs as! Set<Email>
+            let updated = updatedEmailList as! Set<Email>
+            
+            let toAdd = updated.subtracting(original)
+            let toDelete = original.subtracting(updated)
+            
+            self.addEmailsToContactGroup(emailList: toAdd as NSSet)
+            self.removeEmailsFromContactGroup(emailList: toDelete as NSSet)
         }
         
         // update contact group
@@ -311,17 +321,6 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         } else {
             PMLog.D("No contact group ID")
         }
-        
-        // update email IDs
-        // TODO: handle the conversion gracefully
-        let original = contactGroup.originalEmailIDs as! Set<Email>
-        let updated = updatedEmailList as! Set<Email>
-        
-        let toAdd = updated.subtracting(original)
-        let toDelete = original.subtracting(updated)
-        
-        addEmailsToContactGroup(emailList: toAdd as NSSet)
-        removeEmailsFromContactGroup(emailList: toDelete as NSSet)
     }
     
     /**

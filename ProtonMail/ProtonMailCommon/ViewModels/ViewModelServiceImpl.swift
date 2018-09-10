@@ -246,7 +246,7 @@ class ViewModelServiceImpl: ViewModelService {
         activeViewController = vmp
         vmp.setViewModel(ContactEditViewModelImpl(c: contact))
     }
-
+    
     override func contactTypeViewModel(_ vmp : ViewModelProtocol, type: ContactEditTypeInterface) {
         if latestComposerViewModel != nil {
             
@@ -264,6 +264,18 @@ class ViewModelServiceImpl: ViewModelService {
     override func contactGroupsViewModel(_ vmp: ViewModelProtocol) {
         activeViewController = vmp
         vmp.setViewModel(ContactGroupsViewModelImpl())
+    }
+    
+    override func contactGroupDetailViewModel(_ vmp: ViewModelProtocol,
+                                              groupID: String,
+                                              name: String,
+                                              color: String,
+                                              emailIDs: NSSet) {
+        activeViewController = vmp
+        vmp.setViewModel(ContactGroupDetailViewModelImpl(groupID: groupID,
+                                                         name: name,
+                                                         color: color,
+                                                         emailIDs: emailIDs))
     }
     
     override func contactGroupEditViewModel(_ vmp : ViewModelProtocol,
