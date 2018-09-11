@@ -20,17 +20,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="diegosantiviago@gmail.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nn3-rg-vzZ">
-                        <rect key="frame" x="62" y="33" width="254" height="16"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="16" id="EDn-zj-LwU"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Diego Santiviago" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a6U-nh-0SW">
-                        <rect key="frame" x="62" y="11" width="122.5" height="17"/>
+                        <rect key="frame" x="62" y="11" width="222" height="17"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="17" id="uIy-YK-sab"/>
                         </constraints>
@@ -38,38 +29,39 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PGk-tP-Iff">
-                        <rect key="frame" x="16" y="11" width="38" height="38"/>
-                        <color key="backgroundColor" red="0.82133853440000004" green="0.83856713770000002" blue="0.88747489450000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="width" secondItem="PGk-tP-Iff" secondAttribute="height" multiplier="1:1" id="993-nU-dJu"/>
-                        </constraints>
-                        <state key="normal" image="menu_allmail"/>
-                    </button>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fT-Hc-QXJ">
                         <rect key="frame" x="14" y="10" width="40" height="40"/>
                         <color key="backgroundColor" red="0.58039215690000001" green="0.59215686270000001" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="40" id="UkY-8S-fPY"/>
-                            <constraint firstAttribute="height" constant="40" id="pl8-Vp-RIG"/>
+                            <constraint firstAttribute="height" constant="40" id="EhT-ik-3ui"/>
+                            <constraint firstAttribute="width" constant="40" id="EqL-Ev-IwV"/>
+                            <constraint firstAttribute="width" secondItem="6fT-Hc-QXJ" secondAttribute="height" multiplier="1:1" id="mxF-s4-axj"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="diegosantiviago@gmail.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nn3-rg-vzZ">
+                        <rect key="frame" x="62" y="33" width="222" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="EDn-zj-LwU"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="a6U-nh-0SW" firstAttribute="leading" secondItem="PGk-tP-Iff" secondAttribute="trailing" constant="8" id="4Sh-Nl-yIw"/>
-                    <constraint firstItem="a6U-nh-0SW" firstAttribute="leading" secondItem="6fT-Hc-QXJ" secondAttribute="trailing" constant="8" id="8Al-ps-PMw"/>
-                    <constraint firstItem="PGk-tP-Iff" firstAttribute="top" secondItem="pB1-Er-ar1" secondAttribute="topMargin" id="B5S-Bm-Z5W"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="PGk-tP-Iff" secondAttribute="bottom" id="C3u-cl-FpT"/>
-                    <constraint firstItem="PGk-tP-Iff" firstAttribute="leading" secondItem="pB1-Er-ar1" secondAttribute="leadingMargin" id="Pib-gs-6Yv"/>
-                    <constraint firstItem="6fT-Hc-QXJ" firstAttribute="centerY" secondItem="pB1-Er-ar1" secondAttribute="centerY" id="Y1J-o2-eru"/>
-                    <constraint firstAttribute="trailing" secondItem="Nn3-rg-vzZ" secondAttribute="trailing" constant="4" id="gPT-0c-R2i"/>
-                    <constraint firstItem="Nn3-rg-vzZ" firstAttribute="top" secondItem="a6U-nh-0SW" secondAttribute="bottom" constant="5" id="kbw-mB-yTx"/>
-                    <constraint firstItem="Nn3-rg-vzZ" firstAttribute="bottom" secondItem="pB1-Er-ar1" secondAttribute="bottomMargin" id="oz5-vE-FJi"/>
-                    <constraint firstItem="a6U-nh-0SW" firstAttribute="top" secondItem="pB1-Er-ar1" secondAttribute="topMargin" id="uEO-5H-Ggw"/>
-                    <constraint firstItem="Nn3-rg-vzZ" firstAttribute="leading" secondItem="a6U-nh-0SW" secondAttribute="leading" id="w0o-IZ-1Nq"/>
+                    <constraint firstItem="a6U-nh-0SW" firstAttribute="centerY" secondItem="pB1-Er-ar1" secondAttribute="centerY" constant="-10.25" id="4aZ-vB-0re" userLabel="Name Label.centerY = centerY - 10"/>
+                    <constraint firstItem="Nn3-rg-vzZ" firstAttribute="leading" secondItem="6fT-Hc-QXJ" secondAttribute="trailing" constant="8" id="MZY-np-rDy"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="a6U-nh-0SW" secondAttribute="trailing" constant="20" id="U9c-Ie-v0e"/>
+                    <constraint firstAttribute="bottom" secondItem="6fT-Hc-QXJ" secondAttribute="bottom" constant="10" id="igS-zt-pqm"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Nn3-rg-vzZ" secondAttribute="trailing" constant="20" id="jrS-9q-sW8"/>
+                    <constraint firstItem="a6U-nh-0SW" firstAttribute="leading" secondItem="6fT-Hc-QXJ" secondAttribute="trailing" constant="8" id="nbO-7A-nus"/>
+                    <constraint firstItem="6fT-Hc-QXJ" firstAttribute="top" secondItem="pB1-Er-ar1" secondAttribute="top" constant="10" id="nli-cI-3rw"/>
+                    <constraint firstItem="6fT-Hc-QXJ" firstAttribute="leading" secondItem="pB1-Er-ar1" secondAttribute="leading" constant="14" id="rze-YX-63Z"/>
+                    <constraint firstItem="6fT-Hc-QXJ" firstAttribute="centerY" secondItem="pB1-Er-ar1" secondAttribute="centerY" id="u0e-Uz-Cbn"/>
+                    <constraint firstItem="Nn3-rg-vzZ" firstAttribute="centerY" secondItem="pB1-Er-ar1" secondAttribute="centerY" constant="11.25" id="w2Y-Kh-igk" userLabel="Email Label.centerY = centerY + 11"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -80,7 +72,4 @@
             <point key="canvasLocation" x="130" y="58"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="menu_allmail" width="16" height="16"/>
-    </resources>
 </document>
