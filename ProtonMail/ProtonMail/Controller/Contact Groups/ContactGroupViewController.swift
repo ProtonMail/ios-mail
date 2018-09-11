@@ -56,6 +56,11 @@ class ContactGroupsViewController: UIViewController, ViewModelProtocol
         refreshControl.tintColorDidChange()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.title = "Groups"
+    }
+    
     // TODO: fix me
     @objc func fireFetch() {
         self.viewModel.fetchAllContactGroup()

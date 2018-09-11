@@ -48,7 +48,6 @@ class ContactsViewController: UIViewController, ViewModelProtocol {
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = LocalString._contacts_title
         tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactCellIdentifier)
         searchController = UISearchController(searchResultsController: nil)
@@ -113,6 +112,7 @@ class ContactsViewController: UIViewController, ViewModelProtocol {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tableView.setEditing(false, animated: true)
+        self.tabBarController?.title = LocalString._contacts_title
     }
     
     override func viewWillAppear(_ animated: Bool) {
