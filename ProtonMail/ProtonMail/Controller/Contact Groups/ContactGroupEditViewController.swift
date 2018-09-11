@@ -88,11 +88,15 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         
         dismissKeyboard()
         firstly {
-            viewModel.saveDetail()
+            () -> Promise<Void> in
+            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            
+            return viewModel.saveDetail()
             }.done {
-                (_) -> Void in
-                
                 self.dismiss(animated: true, completion: nil)
+            }.ensure {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }.catch {
                 error in
                 
@@ -101,7 +105,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                                               preferredStyle: .alert)
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
-        }
+            }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -195,8 +199,25 @@ extension ContactGroupEditViewController: UITableViewDelegate
         case .email:
             print("email actions")
         case .deleteGroup:
-            viewModel.deleteContactGroup()
-            self.dismiss(animated: true, completion: nil)
+            firstly {
+                () -> Promise<Void> in
+                
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                return viewModel.deleteContactGroup()
+                }.done {
+                    self.dismiss(animated: true, completion: nil)
+                }.ensure {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                }.catch { (error) in
+                    let alert = UIAlertController(title: "Error deleting the contact group",
+                                                  message: error.localizedDescription,
+                                                  preferredStyle: .alert)
+                    alert.addOKAction()
+                    
+                    UIApplication.shared.keyWindow?.rootViewController?.present(alert,
+                                                                                animated: true,
+                                                                                completion: nil)
+            }
         case .error:
             fatalError("This is a bug")
         }

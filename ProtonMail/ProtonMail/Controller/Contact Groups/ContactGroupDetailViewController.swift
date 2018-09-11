@@ -54,8 +54,11 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewModel.reload()
-        refresh()
+        if viewModel.reload() == true {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            refresh()
+        }
     }
     
     private func refresh() {

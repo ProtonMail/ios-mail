@@ -10,14 +10,23 @@ import Foundation
 
 class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
 {
+    /// the contact group label ID
     let groupID: String
+    
+    /// the contact group's name
     var name: String
+    
+    /// the contact group's color
     var color: String
+    
+    /// the contact group's emails (in NSSet)
     var emailIDs: NSSet {
         didSet {
             setupEmailIDsArray()
         }
     }
+    
+    /// the contact group's email (in Array)
     var emailIDsArray: [Email]
     
     init(groupID: String, name: String, color: String, emailIDs: NSSet) {
@@ -80,13 +89,23 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
         return (emailIDsArray[indexPath.row].name, emailIDsArray[indexPath.row].email)
     }
     
-    func reload() {
+    /**
+     Reloads the contact group from core data
+     
+     - Returns: true if the contact group has been deleted from core data, false if the contact group can be fetched from core data
+    */
+    func reload() -> Bool {
         if let context = sharedCoreDataService.mainManagedObjectContext,
             let label = Label.labelForLableID(groupID,
                                               inManagedObjectContext: context) {
             name = label.name
             color = label.color
             emailIDs = label.emails
+            
+            return false
+        } else {
+            // deleted case
+            return true
         }
     }
 }

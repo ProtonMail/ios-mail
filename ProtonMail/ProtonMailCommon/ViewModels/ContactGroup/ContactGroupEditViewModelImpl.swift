@@ -224,38 +224,41 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - Returns: Promise<Void>
      */
     func saveDetail() -> Promise<Void> {
-        let (promise, seal) = Promise<Void>.pending()
-        
-        // error check
-        guard contactGroup.name != nil else {
-            seal.reject(ContactGroupEditError.noNameForGroup)
-            return promise
-        }
-        
-        guard contactGroup.emailIDs.count > 0 else {
-            seal.reject(ContactGroupEditError.noEmailInGroup)
-            return promise
-        }
-        
-        // TODO: promise
-        let name = contactGroup.name!
-        let color = contactGroup.color
-        let emails = contactGroup.emailIDs
-        
-        switch state {
-        case .create:
-            createContactGroupDetail(name: name,
-                                     color: color,
-                                     emailList: emails)
+        return firstly {
+            () -> Promise<Void> in
+            let (promise, seal) = Promise<Void>.pending()
+            
+            // error check
+            guard self.contactGroup.name != nil else {
+                seal.reject(ContactGroupEditError.noNameForGroup)
+                return promise
+            }
+            
+            guard self.contactGroup.emailIDs.count > 0 else {
+                seal.reject(ContactGroupEditError.noEmailInGroup)
+                return promise
+            }
+            
             seal.fulfill(())
-        case .edit:
-            updateContactGroupDetail(name: name,
-                                     color: color,
-                                     updatedEmailList: emails)
-            seal.fulfill(())
+            return promise
+            }.then {
+                _ -> Promise<Void> in
+                // perform
+                let name = self.contactGroup.name!
+                let color = self.contactGroup.color
+                let emails = self.contactGroup.emailIDs
+                
+                switch self.state {
+                case .create:
+                    return self.createContactGroupDetail(name: name,
+                                                         color: color,
+                                                         emailList: emails)
+                case .edit:
+                    return self.updateContactGroupDetail(name: name,
+                                                         color: color,
+                                                         updatedEmailList: emails)
+                }
         }
-        
-        return promise
     }
     
     /**
@@ -265,27 +268,43 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - name: The contact group's name
      - color: The contact group's color
      - emailList: Emails that belongs to this contact group
+     
+     - Returns: Promise<Void>
      */
     private func createContactGroupDetail(name: String,
                                           color: String,
-                                          emailList: NSSet) {
-        let completionHandler = {
-            (contactGroupID: String?) -> Void in
-            
-            if let contactGroupID = contactGroupID {
-                self.contactGroup.ID = contactGroupID
-                
-                // add email IDs
-                self.addEmailsToContactGroup(emailList: emailList)
-            } else {
-                // TODO: no contactGroupID check
-            }
-        }
+                                          emailList: NSSet) -> Promise<Void> {
         
-        // create contact group
-        sharedContactGroupsDataService.createContactGroup(name: name,
-                                                          color: color,
-                                                          completionHandler: completionHandler)
+        return Promise {
+            seal in
+            
+            let completionHandler = {
+                (contactGroupID: String?) -> Void in
+                
+                if let contactGroupID = contactGroupID {
+                    self.contactGroup.ID = contactGroupID
+                    
+                    // add email IDs
+                    firstly {
+                        self.addEmailsToContactGroup(emailList: emailList)
+                        }.done {
+                            seal.fulfill(())
+                        }.catch {
+                            error in
+                            seal.reject(error)
+                    }
+                } else {
+                    PMLog.D("No contact group ID")
+                    seal.reject(ContactGroupEditError.noContactGroupID)
+                }
+            }
+            
+            // create contact group
+            sharedContactGroupsDataService.createContactGroup(name: name,
+                                                              color: color,
+                                                              completionHandler: completionHandler)
+            
+        }
     }
     
     /**
@@ -295,51 +314,80 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - name: The contact group's name
      - color: The contact group's color
      - emailList: Emails that belongs to this contact group
+     
+     - Returns: Promise<Void>
      */
     private func updateContactGroupDetail(name: String,
                                           color: String,
-                                          updatedEmailList: NSSet)  {
-        let completionHandler = {
-            () -> Void in
-            
-            // update email IDs
-            // TODO: handle the conversion gracefully
-            let original = self.contactGroup.originalEmailIDs as! Set<Email>
-            let updated = updatedEmailList as! Set<Email>
-            
-            let toAdd = updated.subtracting(original)
-            let toDelete = original.subtracting(updated)
-            
-            self.addEmailsToContactGroup(emailList: toAdd as NSSet)
-            self.removeEmailsFromContactGroup(emailList: toDelete as NSSet)
-        }
+                                          updatedEmailList: NSSet) -> Promise<Void> {
         
-        // update contact group
-        if let ID = contactGroup.ID {
-            sharedContactGroupsDataService.editContactGroup(groupID: ID,
-                                                            name: name,
-                                                            color: color,
-                                                            completionHandler: completionHandler)
-        } else {
-            PMLog.D("No contact group ID")
+        return Promise {
+            seal in
+            
+            let completionHandler = {
+                () -> Void in
+                
+                // update email IDs
+                if let original = self.contactGroup.originalEmailIDs as? Set<Email>,
+                    let updated = updatedEmailList as? Set<Email> {
+                    
+                    let toAdd = updated.subtracting(original)
+                    let toDelete = original.subtracting(updated)
+                    
+                    firstly {
+                        () -> Promise<Void> in
+                        self.addEmailsToContactGroup(emailList: toAdd as NSSet)
+                        }.then {
+                            _ -> Promise<Void> in
+                            self.removeEmailsFromContactGroup(emailList: toDelete as NSSet)
+                        }.done {
+                            seal.fulfill(())
+                        }.catch {
+                            error in
+                            seal.reject(error)
+                    }
+                } else {
+                    PMLog.D("NSSet to Email set conversion failure")
+                    seal.reject(ContactGroupEditError.NSSetConversionToEmailSetFailure)
+                }
+            }
+            
+            // update contact group
+            if let ID = contactGroup.ID {
+                sharedContactGroupsDataService.editContactGroup(groupID: ID,
+                                                                name: name,
+                                                                color: color,
+                                                                completionHandler: completionHandler)
+            } else {
+                PMLog.D("No contact group ID")
+                seal.reject(ContactGroupEditError.noContactGroupID)
+            }
         }
     }
     
     /**
      Deletes the contact group on the server and cache
-     */
-    func deleteContactGroup() {
-        let completionHandler = {
-            () -> Void in
-            // TODO: handle self.contactGroup gracefully
-            return
-        }
-        
-        if let ID = contactGroup.ID {
-            sharedContactGroupsDataService.deleteContactGroup(groupID: ID,
-                                                              completionHandler: completionHandler)
-        } else {
-            PMLog.D("No contact group ID")
+     
+     - Returns: Promise<Void>
+    */
+    func deleteContactGroup() -> Promise<Void> {
+        return Promise {
+            seal in
+            
+            let completionHandler = {
+                () -> Void in
+                
+                seal.fulfill(())
+                return
+            }
+            
+            if let ID = contactGroup.ID {
+                sharedContactGroupsDataService.deleteContactGroup(groupID: ID,
+                                                                  completionHandler: completionHandler)
+            } else {
+                PMLog.D("No contact group ID")
+                seal.reject(ContactGroupEditError.noContactGroupID)
+            }
         }
     }
     
@@ -347,21 +395,33 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      Add the current email listing to the contact group on the server
      
      - Parameter emailList: Emails to add to the contact group
+     
+     - Returns: Promise<Void>
      */
-    func addEmailsToContactGroup(emailList: NSSet) {
-        let completionHandler = {
-            () -> Void in
-            return
-        }
-        
-        // TODO: handle the conversion error
-        let emails = (emailList.allObjects as! [Email])
-        if let ID = contactGroup.ID {
-            sharedContactGroupsDataService.addEmailsToContactGroup(groupID: ID,
-                                                                   emailList: emails,
-                                                                   completionHandler: completionHandler)
-        } else {
-            PMLog.D("No contact group ID")
+    func addEmailsToContactGroup(emailList: NSSet) -> Promise<Void> {
+        return Promise {
+            seal in
+            
+            let completionHandler = {
+                () -> Void in
+                
+                seal.fulfill(())
+            }
+            
+            if let emails = emailList.allObjects as? [Email] {
+                if let ID = contactGroup.ID {
+                    sharedContactGroupsDataService.addEmailsToContactGroup(groupID: ID,
+                                                                           emailList: emails,
+                                                                           completionHandler: completionHandler)
+                } else {
+                    PMLog.D("No contact group ID")
+                    
+                    seal.reject(ContactGroupEditError.noContactGroupID)
+                }
+            } else {
+                PMLog.D("NSSet to Email array conversion failure")
+                seal.reject(ContactGroupEditError.NSSetConversionToEmailArrayFailure)
+            }
         }
     }
     
@@ -369,22 +429,32 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      Delete the current email listing to the contact group on the server
      
      - Parameter emailList: Emails to delete from the contact group
+     
+     - Returns: Promise<Void>
      */
-    func removeEmailsFromContactGroup(emailList: NSSet) {
-        let completionHandler = {
-            () -> Void in
-            return
-        }
-        
-        // TODO: handle the conversion error
-        let emails = (emailList.allObjects as! [Email])
-        
-        if let ID = contactGroup.ID {
-            sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: ID,
-                                                                        emailList: emails,
-                                                                        completionHandler: completionHandler)
-        } else {
-            PMLog.D("No contact group ID")
+    func removeEmailsFromContactGroup(emailList: NSSet) -> Promise<Void> {
+        return Promise {
+            seal in
+            
+            let completionHandler = {
+                () -> Void in
+                
+                seal.fulfill(())
+            }
+            
+            if let emails = emailList.allObjects as? [Email] {
+                if let ID = contactGroup.ID {
+                    sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: ID,
+                                                                                emailList: emails,
+                                                                                completionHandler: completionHandler)
+                } else {
+                    PMLog.D("No contact group ID")
+                    seal.reject(ContactGroupEditError.noContactGroupID)
+                }
+            } else {
+                PMLog.D("NSSet to Email array conversion failure")
+                seal.reject(ContactGroupEditError.NSSetConversionToEmailArrayFailure)
+            }
         }
     }
     

@@ -17,15 +17,30 @@ enum ContactGroupEditError: Error
 {
     case noEmailInGroup
     case noNameForGroup
+    case noContactGroupID
+    
+    case NSSetConversionToEmailArrayFailure
+    case NSSetConversionToEmailSetFailure
 }
 
 extension ContactGroupEditError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .noEmailInGroup:
-            return NSLocalizedString("No email is selected in the contact group", comment: "Contact group no email")
+            return NSLocalizedString("No email is selected in the contact group",
+                                     comment: "Contact group no email")
         case .noNameForGroup:
-            return NSLocalizedString("No name is provided for the contact group", comment: "Contact group no name")
+            return NSLocalizedString("No name is provided for the contact group",
+                                     comment: "Contact group no name")
+        case .noContactGroupID:
+            return NSLocalizedString("No group ID is returned from the contact group API",
+                                     comment: "Contact group no ID")
+        case .NSSetConversionToEmailArrayFailure:
+            return NSLocalizedString("Can't convert NSSet to array of Email",
+                                     comment: "Contact group NSSet to array conversion failed")
+        case .NSSetConversionToEmailSetFailure:
+            return NSLocalizedString("Can't convert NSSet to Set of Email",
+                                     comment: "Contact group NSSet to Set conversion failed")
         }
     }
 }
@@ -80,7 +95,7 @@ protocol ContactGroupEditViewModel {
     func saveDetail() -> Promise<Void>
     
     // delete
-    func deleteContactGroup()
+    func deleteContactGroup() -> Promise<Void>
     
     // table operation
     func getTotalSections() -> Int

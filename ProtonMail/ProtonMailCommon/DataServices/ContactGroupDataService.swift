@@ -100,6 +100,12 @@ class ContactGroupsDataService {
                             }
                             return
                         }
+                        
+                        do {
+                            try context.save()
+                        } catch {
+                            PMLog.D("deleteContactGroup updating error: \(error)")
+                        }
                     }
                     
                     completionHandler()
