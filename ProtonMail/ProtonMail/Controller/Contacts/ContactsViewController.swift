@@ -84,9 +84,9 @@ class ContactsViewController: UIViewController, ViewModelProtocol {
             self.searchViewConstraint.constant = 0.0
             self.searchView.isHidden = true
             self.navigationController?.navigationBar.prefersLargeTitles = false
-            self.navigationItem.largeTitleDisplayMode = .never
-            self.navigationItem.hidesSearchBarWhenScrolling = false
-            self.navigationItem.searchController = self.searchController
+            self.tabBarController?.navigationItem.largeTitleDisplayMode = .never
+            self.tabBarController?.navigationItem.hidesSearchBarWhenScrolling = false
+            self.tabBarController?.navigationItem.searchController = self.searchController
         } else {
             self.searchViewConstraint.constant = self.searchController.searchBar.frame.height
             self.navigationController?.navigationBar.setBackgroundImage(UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background), for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
