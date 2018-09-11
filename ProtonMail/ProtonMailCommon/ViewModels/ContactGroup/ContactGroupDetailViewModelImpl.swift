@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
 {
@@ -36,6 +37,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
         
         emailIDsArray = []
         self.emailIDs = emailIDs
+        setupEmailIDsArray()
     }
     
     private func setupEmailIDsArray() {
@@ -92,9 +94,9 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
     /**
      Reloads the contact group from core data
      
-     - Returns: true if the contact group has been deleted from core data, false if the contact group can be fetched from core data
+     - Returns: Promise<Bool>. true if the contact group has been deleted from core data, false if the contact group can be fetched from core data
     */
-    func reload() -> Bool {
+    func reload() -> Promise<Bool> {
         if let context = sharedCoreDataService.mainManagedObjectContext,
             let label = Label.labelForLableID(groupID,
                                               inManagedObjectContext: context) {
@@ -102,10 +104,10 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
             color = label.color
             emailIDs = label.emails
             
-            return false
+            return .value(false)
         } else {
             // deleted case
-            return true
+            return .value(true)
         }
     }
 }

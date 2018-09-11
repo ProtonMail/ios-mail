@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol {
 
@@ -54,10 +55,21 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if viewModel.reload() == true {
-            self.navigationController?.popViewController(animated: true)
-        } else {
-            refresh()
+        firstly {
+            () -> Promise<Bool> in
+            
+            ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+            return self.viewModel.reload()
+            }.done {
+                (isDeleted) in
+                
+                if isDeleted {
+                    self.navigationController?.popViewController(animated: true)
+                } else {
+                    self.refresh()
+                }
+            }.ensure {
+                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
         }
     }
     

@@ -90,6 +90,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         firstly {
             () -> Promise<Void> in
             
+            ActivityIndicatorHelper.showActivityIndicator(at: self.view)
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
             return viewModel.saveDetail()
@@ -97,6 +98,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                 self.dismiss(animated: true, completion: nil)
             }.ensure {
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
             }.catch {
                 error in
                 
@@ -202,12 +204,14 @@ extension ContactGroupEditViewController: UITableViewDelegate
             firstly {
                 () -> Promise<Void> in
                 
+                ActivityIndicatorHelper.showActivityIndicator(at: self.view)
                 UIApplication.shared.isNetworkActivityIndicatorVisible = true
                 return viewModel.deleteContactGroup()
                 }.done {
                     self.dismiss(animated: true, completion: nil)
                 }.ensure {
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                 }.catch { (error) in
                     let alert = UIAlertController(title: "Error deleting the contact group",
                                                   message: error.localizedDescription,

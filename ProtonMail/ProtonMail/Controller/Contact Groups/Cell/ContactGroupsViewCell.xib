@@ -51,8 +51,6 @@
                         <rect key="frame" x="282" y="19" width="18" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="gdM-L9-DkN"/>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="kN6-Sa-V0l"/>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="18" id="n5O-Q1-2Ry"/>
                             <constraint firstAttribute="width" constant="18" id="zVu-bQ-t6I"/>
                         </constraints>
                         <state key="normal" title="Button" image="feedback_contact"/>
