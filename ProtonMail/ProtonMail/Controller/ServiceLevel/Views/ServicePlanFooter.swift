@@ -43,6 +43,7 @@ class ServicePlanFooter: UIView {
         }
     }
     
+    //FIXME: why manually set this and all the styles above.
     @objc private func performButtonAction() {
         self.buttonAction?(self.buyButton)
     }

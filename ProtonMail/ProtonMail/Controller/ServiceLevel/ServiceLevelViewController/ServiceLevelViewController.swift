@@ -8,6 +8,9 @@
 
 import UIKit
 
+//FIXME: the whole structure has an issue. when some of the data in details need to load dynamically.
+//       it is hard to change. I will leave it here and make an easy workaround. we change it later in an ideal way.
+
 protocol ServiceLevelDataSourceDelegate: class {
     func canPurchaseProduct(id: String) -> Bool
     func purchaseProduct(id: String)

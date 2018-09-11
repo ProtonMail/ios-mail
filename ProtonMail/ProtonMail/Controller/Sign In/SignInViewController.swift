@@ -608,6 +608,7 @@ class SignInViewController: ProtonMailViewController {
     }
     
     func loadContactsAfterInstall() {
+        ServicePlanDataService.shared.updateCurrentSubscription()
         sharedUserDataService.fetchUserInfo().done { (_) in
             
         }.catch { (_) in

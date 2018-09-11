@@ -102,6 +102,54 @@ final class GetSubscriptionRequest: ApiRequestNew<GetSubscriptionResponse> {
     }
 }
 
+final class GetAppleTier : ApiRequestNew<AppleTier> {
+    var currency: String
+    var country: String
+    //TODO:: add tier later
+    init(currency: String, country: String) {
+        self.currency = currency
+        self.country = country
+    }
+    override func path() -> String {
+        return PaymentsAPI.path + "/apple"
+    }
+    
+    override func apiVersion() -> Int {
+        return PaymentsAPI.v_get_apple_tier
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        return [
+            "Country":"Switzerland",
+            "Currency" : self.currency,
+            "Tier" : 54
+        ]
+    }
+}
+
+final class AppleTier : ApiResponse {
+    internal var _proceed : Decimal?
+    var price : String?
+    
+    var proceed : Decimal {
+        get {
+            return self._proceed ?? Decimal(0)
+        }
+    }
+    
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        PMLog.D(response.json(prettyPrinted: true))
+        
+        if let proceeds = response["Proceeds"] as? [String : Any],
+            let proceedPrice = proceeds["Tier 54"] as? String {
+            self._proceed = Decimal(string: proceedPrice)
+        }
+        
+        return true
+    }
+}
+
+
 final class GetSubscriptionResponse: ApiResponse {
     var subscription: Subscription?
     

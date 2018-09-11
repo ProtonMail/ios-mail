@@ -8,6 +8,10 @@
 
 import UIKit
 
+//FIXME: just got time to look into this.
+//       why does this impl better than the build in table view automatic row height?
+//       to me I feel your way fits in some complex situation when UITableview can't do.
+//       I prefer to use UITableView for the simple listing view.
 class AutoLayoutSizedCell: UICollectionViewCell {
     private var subview: UIView?
     

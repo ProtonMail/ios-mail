@@ -131,13 +131,13 @@ enum ServiceLevelDataFactory {
         var body = [NSAttributedStringKey: Any]()
         body[.font] = UIFont.preferredFont(forTextStyle: .body)
         let blank = TableSectionHeader(title: " ")
-        let buyMore = ServicePlanCapability(title: NSAttributedString(string: LocalString._buy_more_credits, attributes: body), serviceIconVisible: true, context: ServiceLevelCoordinator.Destination.buyMore)
+        let buyMore = ServicePlanCapability(title: NSAttributedString(string: LocalString._buy_more_credits, attributes: body),
+                                            serviceIconVisible: true,
+                                            context: ServiceLevelCoordinator.Destination.buyMore)
         return Section(elements: [blank, buyMore], cellType: FirstSubviewSizedCell.self)
     }
     
-    internal static func makeBuyButtonSection(plan: ServicePlan,
-                                                 delegate: ServiceLevelDataSourceDelegate) -> Section<UIView>?
-    {
+    internal static func makeBuyButtonSection(plan: ServicePlan, delegate: ServiceLevelDataSourceDelegate) -> Section<UIView>? {
         guard let productId = plan.storeKitProductId,
             let price = StoreKitManager.default.priceLabelForProduct(id: productId) else
         {
@@ -147,13 +147,19 @@ enum ServiceLevelDataFactory {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.locale = price.1
-        guard let priceString = formatter.string(from: price.0),
-            let originalPriceString = formatter.string(from: NSNumber(value: Double(truncating: price.0) * 0.75)),
-            let feeString = formatter.string(from: NSNumber(value: Double(truncating: price.0) * 0.25)) else
+        formatter.maximumFractionDigits = 2
+        
+        let tier54 = ServicePlanDataService.shared.proceedTier54
+        let total = price.0 as Decimal
+        let appleFee = tier54.isZero ? total * 0.75 : total - tier54
+        let pmPrice = tier54.isZero ? total * 0.25 : tier54
+        
+        guard let priceString = formatter.string(from: total as NSNumber),
+            let originalPriceString = formatter.string(from: pmPrice as NSNumber),
+            let feeString = formatter.string(from: appleFee as NSNumber) else
         {
             return nil
         }
-        
         let title = NSMutableAttributedString(string: priceString,
                                               attributes: [.font: UIFont.preferredFont(forTextStyle: .title1),
                                                            .foregroundColor: UIColor.white])

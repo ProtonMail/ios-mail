@@ -386,7 +386,7 @@ class APIService {
             } else {
                 let parseBlock: (_ task: URLSessionDataTask?, _ response: Any?, _ error: Error?) -> Void = { task, response, error in
                     if let error = error as NSError? {
-                        PMLog.D("Error: \(String(describing: error))")
+                        PMLog.D(api: error)
                         var httpCode : Int = 200
                         if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
                             httpCode = detail.statusCode
@@ -501,13 +501,6 @@ class APIService {
                 }, downloadProgress: { (progress) in
                     //TODO::add later
                 }, completionHandler: { (urlresponse, res, error) in
-                    //DEBUG INFO
-                    //print(urlresponse)
-                    //if let data = res as? Data {
-                        //let resObj = String(data: data, encoding: .utf8)
-                        //print(resObj)
-                    //}
-                    //TODO:: #1 parse out the server time #2
                     parseBlock(task, res, error)
                 })
                 task!.resume()

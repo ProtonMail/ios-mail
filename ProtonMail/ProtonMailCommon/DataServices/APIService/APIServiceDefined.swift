@@ -357,5 +357,7 @@ struct PaymentsAPI {
     static let v_get_default_plan: Int = 3
     static let v_post_credit: Int = 3
     static let v_post_subscription: Int = 3
+    
+    static let v_get_apple_tier : Int = 3
 }
 
