@@ -7,7 +7,12 @@
 //
 
 import Foundation
+import CoreData
 
 protocol ContactGroupsViewModel {
     func fetchAllContactGroup()
+    
+    // search
+    func setFetchResultController(fetchedResultsController: inout NSFetchedResultsController<NSFetchRequestResult>?)
+    func search(text: String?)
 }

@@ -16,10 +16,16 @@ import CoreData
 class ContactGroupsViewController: UIViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupsViewModel!
+    
     let kContactGroupCellIdentifier = "ContactGroupCustomCell"
     let kToContactGroupDetailSegue = "toContactGroupDetailSegue"
+    
     var fetchedContactGroupResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
     var refreshControl: UIRefreshControl!
+    var searchController: UISearchController!
+    
+    @IBOutlet weak var searchView: UIView!
+    @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     
     func setViewModel(_ vm: Any) {
@@ -35,6 +41,7 @@ class ContactGroupsViewController: UIViewController, ViewModelProtocol
         
         tableView.noSeparatorsBelowFooter()
         
+        // fetch controller
         fetchedContactGroupResultsController = sharedLabelsDataService.fetchedResultsController(.contactGroup)
         fetchedContactGroupResultsController?.delegate = self
         if let fetchController = fetchedContactGroupResultsController {
@@ -54,11 +61,64 @@ class ContactGroupsViewController: UIViewController, ViewModelProtocol
         tableView.addSubview(self.refreshControl)
         refreshControl.tintColor = UIColor.gray
         refreshControl.tintColorDidChange()
+        
+        self.definesPresentationContext = true
+        self.extendedLayoutIncludesOpaqueBars = true
+        self.automaticallyAdjustsScrollViewInsets = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.title = "Groups"
+        
+        prepareSearchBar()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        destroySearchBar()
+    }
+    
+    private func prepareSearchBar() {
+        print("prepareSearchBar")
+        viewModel.setFetchResultController(fetchedResultsController: &fetchedContactGroupResultsController)
+        
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = LocalString._general_search_placeholder
+        searchController.searchBar.setValue(LocalString._general_cancel_button,
+                                            forKey: "_cancelButtonText")
+        
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        
+        if #available(iOS 11.0, *) {
+            self.searchViewConstraint.constant = 0.0
+            self.searchView.isHidden = true
+            self.tabBarController?.navigationItem.largeTitleDisplayMode = .never
+            self.tabBarController?.navigationItem.hidesSearchBarWhenScrolling = false
+            self.tabBarController?.navigationItem.searchController = self.searchController
+        } else {
+            self.searchViewConstraint.constant = self.searchController.searchBar.frame.height
+            self.searchView.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
+            self.searchView.addSubview(self.searchController.searchBar)
+            self.searchController.searchBar.contactSearchSetup(textfieldBG: UIColor.init(hexColorCode: "#82829C"), placeholderColor: UIColor.init(hexColorCode: "#BBBBC9"), textColor: .white)
+        }
+        
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.automaticallyAdjustsScrollViewInsets = true
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.keyboardType = .default
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.isTranslucent = false
+        searchController.searchBar.tintColor = .white
+        searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
+        searchController.searchBar.backgroundColor = .clear
+    }
+    
+    private func destroySearchBar() {
+        
     }
     
     // TODO: fix me
@@ -78,6 +138,21 @@ class ContactGroupsViewController: UIViewController, ViewModelProtocol
                                                         color: contactGroup.color,
                                                         emailIDs: contactGroup.emails)
         }
+    }
+}
+
+extension ContactGroupsViewController: UISearchBarDelegate, UISearchResultsUpdating
+{
+    func updateSearchResults(for searchController: UISearchController) {
+        viewModel.search(text: searchController.searchBar.text)
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        
     }
 }
 
