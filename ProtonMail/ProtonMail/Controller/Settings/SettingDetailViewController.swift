@@ -247,9 +247,8 @@ extension SettingDetailViewController : TwoFACodeViewControllerDelegate {
 extension SettingDetailViewController : UpgradeAlertVCDelegate {
     func goPlans() {
         self.navigationController?.popViewController(animated: true)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: MenuViewController.observerSwitchView),
+        NotificationCenter.default.post(name: .switchView,
                                         object: MenuItem.servicePlan)
-        
     }
     
     func learnMore() {

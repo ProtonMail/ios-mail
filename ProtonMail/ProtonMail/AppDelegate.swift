@@ -25,6 +25,10 @@ let sharedUserDataService = UserDataService()
 @UIApplicationMain
 class AppDelegate: UIResponder {
     
+    deinit{
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     var window: UIWindow?
     func instantiateRootViewController() -> UIViewController? {
         let storyboard = UIStoryboard.Storyboard.signIn
@@ -174,6 +178,15 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         StoreKitManager.default.subscribeToPaymentQueue()
         StoreKitManager.default.updateAvailableProductsList()
         
+        
+        //TODO:: Tempory later move it into App coordinator
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.performForceUpgrade(_:)),
+            name: .forceUpgrade,
+            object: nil)
+
+        
         return true
     }
     
@@ -321,5 +334,10 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     func touchStatusBar() {
         let notification = Notification(name: Notification.Name(rawValue: NotificationDefined.TouchStatusBar), object: nil, userInfo: nil)
         NotificationCenter.default.post(notification)
+    }
+    
+    @objc func performForceUpgrade(_ notification: Notification) {
+        //
+        PMLog.D("")
     }
 }

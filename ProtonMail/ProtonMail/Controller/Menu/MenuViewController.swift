@@ -15,7 +15,6 @@ import CoreData
 
 
 class MenuViewController: UIViewController {
-    internal static let observerSwitchView:String = "Push_Switch_View"
     
     // MARK - Views Outlets
     @IBOutlet weak var displayNameLabel: UILabel!
@@ -76,7 +75,7 @@ class MenuViewController: UIViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(MenuViewController.performLastSegue(_:)),
-            name: NSNotification.Name(rawValue: MenuViewController.observerSwitchView),
+            name: .switchView,
             object: nil)
 
         sharedLabelsDataService.fetchLabels();

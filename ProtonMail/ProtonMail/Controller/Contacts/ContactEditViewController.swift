@@ -303,7 +303,7 @@ extension ContactEditViewController : ContactUpgradeCellDelegate {
 extension ContactEditViewController : UpgradeAlertVCDelegate {
     func goPlans() {
         self.navigationController?.dismiss(animated: false, completion: {
-            NotificationCenter.default.post(name: Notification.Name(rawValue: MenuViewController.observerSwitchView),
+            NotificationCenter.default.post(name: .switchView,
                                             object: MenuItem.servicePlan)
         })
     }
