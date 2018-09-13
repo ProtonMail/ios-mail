@@ -50,6 +50,11 @@ class ServicePlanDataService: NSObject {
     internal func detailsOfServicePlan(named name: String) -> ServicePlanDetails? {
         return self.allPlanDetails.first(where: { $0.name == name }) ?? self.defaultPlanDetails
     }
+    
+    
+    //tempory data
+    var proceedTier54 : Decimal = Decimal(0)
+    
 }
 
 extension ServicePlanDataService {
@@ -65,7 +70,7 @@ extension ServicePlanDataService {
             
             let defaultServicePlanApi = GetDefaultServicePlanRequest()
             let defaultServicePlanRes = try await(defaultServicePlanApi.run())
-            self.defaultPlanDetails = defaultServicePlanRes.servicePlan
+            self.defaultPlanDetails = defaultServicePlanRes.defaultMailPlan
 
             completion?()
         }.catch { _ in
@@ -84,6 +89,22 @@ extension ServicePlanDataService {
         }
     }
     
+    internal func updateTier() {
+        async {
+            //TODO:: workaround, later we need move this into a dynamic way
+            if let productId = ServicePlan.plus.storeKitProductId,
+                let price = StoreKitManager.default.priceLabelForProduct(id: productId),
+                let currency = price.1.currencyCode,
+                let countryCode = (price.1 as NSLocale).object(forKey: .countryCode) as? String {
+                let proceedRequest = GetAppleTier(currency: currency, country: countryCode)
+                let proceed = try await(proceedRequest.run())
+                self.proceedTier54 = proceed.proceed
+            }
+        }.catch { _ in
+            self.proceedTier54 = Decimal(0)
+        }
+    }
+    
     internal func updateCurrentSubscription(completion: CompletionHandler? = nil) {
         self.updateServicePlans()
         async {
@@ -97,6 +118,9 @@ extension ServicePlanDataService {
                 self.currentSubscription = Subscription(start: nil, end: nil, planDetails: nil, paymentMethods: nil)
             }
             completion?()
+        }.finally {
+            self.updateTier()
         }
+
     }
 }

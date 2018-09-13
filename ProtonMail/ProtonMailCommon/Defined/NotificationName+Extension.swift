@@ -8,10 +8,29 @@
 
 import Foundation
 
+
+extension Notification.Name {
+    
+    /// notify menu controller to switch views
+    static var switchView: Notification.Name {
+        return .init(rawValue: "MenuController.SwitchView")
+    }
+    
+    /// notify when status bar is clicked
+    static var touchStatusBar: Notification.Name {
+        return .init(rawValue: "Application.TouchStatusBar")
+    }
+    
+    /// notify user the app need to be upgraded
+    static var forceUpgrade: Notification.Name {
+        return .init(rawValue: "Application.ForceUpgrade")
+    }
+}
+
+
 struct NotificationDefined {
     
     static let CustomizeURLSchema = "customize_url_schema"
-    static let TouchStatusBar     = "touchStatusBarClick"
     
     static let didSignOut         = "UserDataServiceDidSignOutNotification"
     static let didSignIn          = "UserDataServiceDidSignInNotification"

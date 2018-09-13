@@ -246,16 +246,22 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     override func viewWillAppear(_ animated: Bool) {
         self.updateAttachmentButton()
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.statusBarHit(_:)), name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(ComposeEmailViewController.statusBarHit(_:)),
+                                               name: .touchStatusBar,
+                                               object:nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)),
+                                               name: .UIApplicationWillResignActive,
+                                               object:nil)
         setupAutoSave()
     }
     
+    
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
-        
+        NotificationCenter.default.removeObserver(self)
         stopAutoSave()
     }
     

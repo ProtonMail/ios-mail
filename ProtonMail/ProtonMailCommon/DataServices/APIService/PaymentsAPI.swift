@@ -102,6 +102,54 @@ final class GetSubscriptionRequest: ApiRequestNew<GetSubscriptionResponse> {
     }
 }
 
+final class GetAppleTier : ApiRequestNew<AppleTier> {
+    var currency: String
+    var country: String
+    //TODO:: add tier later
+    init(currency: String, country: String) {
+        self.currency = currency
+        self.country = country
+    }
+    override func path() -> String {
+        return PaymentsAPI.path + "/apple"
+    }
+    
+    override func apiVersion() -> Int {
+        return PaymentsAPI.v_get_apple_tier
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        return [
+            "Country":"Switzerland",
+            "Currency" : self.currency,
+            "Tier" : 54
+        ]
+    }
+}
+
+final class AppleTier : ApiResponse {
+    internal var _proceed : Decimal?
+    var price : String?
+    
+    var proceed : Decimal {
+        get {
+            return self._proceed ?? Decimal(0)
+        }
+    }
+    
+    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+        PMLog.D(response.json(prettyPrinted: true))
+        
+        if let proceeds = response["Proceeds"] as? [String : Any],
+            let proceedPrice = proceeds["Tier 54"] as? String {
+            self._proceed = Decimal(string: proceedPrice)
+        }
+        
+        return true
+    }
+}
+
+
 final class GetSubscriptionResponse: ApiResponse {
     var subscription: Subscription?
     
@@ -143,7 +191,15 @@ final class GetDefaultServicePlanRequest: ApiRequestNew<GetDefaultServicePlanRes
 }
 
 final class GetDefaultServicePlanResponse: ApiResponse {
-    internal var servicePlan: ServicePlanDetails?
+    internal var servicePlans: [ServicePlanDetails]?
+    
+    var defaultMailPlan : ServicePlanDetails? {
+        get {
+            return self.servicePlans?.filter({ (details) -> Bool in
+                return details.title.contains(check: "ProtonMail Free")
+            }).first
+        }
+    }
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
@@ -152,7 +208,7 @@ final class GetDefaultServicePlanResponse: ApiResponse {
             let decoder = JSONDecoder()
             // this strategy is decapitalizing first letter of response's labels to get appropriate name of the ServicePlanDetails object
             decoder.keyDecodingStrategy = .custom(self.decapitalizeFirstLetter)
-            self.servicePlan = try decoder.decode(ServicePlanDetails.self, from: data)
+            self.servicePlans = try decoder.decode(Array<ServicePlanDetails>.self, from: data)
             return true
         } catch let error {
             PMLog.D("Failed to parse ServicePlans: \(error.localizedDescription)")

@@ -224,9 +224,8 @@ final class AuthDeleteRequest : ApiRequest<ApiResponse> {
 
 
 // MARK : Response part
-final public class AuthResponse : ApiResponse {
+final class AuthResponse : ApiResponse {
     
-    var encPrivateKey : String?
     var accessToken : String?
     var expiresIn : TimeInterval?
     var refreshToken : String?
@@ -244,10 +243,7 @@ final public class AuthResponse : ApiResponse {
     var userStatus : Int = 0
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        
-        PMLog.D(response.json(prettyPrinted: true))
-        self.encPrivateKey = response["EncPrivateKey"] as? String
-        self.userID = response["Uid"] as? String
+        self.userID = response["UID"] as? String
         self.accessToken = response["AccessToken"] as? String
         self.expiresIn = response["ExpiresIn"] as? TimeInterval
         self.scope = response["Scope"] as? String
@@ -262,12 +258,11 @@ final public class AuthResponse : ApiResponse {
         
         self.keySalt = response["KeySalt"] as? String
         self.refreshToken = response["RefreshToken"] as? String
-        
         return true
     }
 }
 
-final public class AuthInfoResponse : ApiResponse {
+final class AuthInfoResponse : ApiResponse {
     
     var Modulus : String?
     var ServerEphemeral : String?

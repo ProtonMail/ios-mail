@@ -20,12 +20,11 @@ public class PushData {
     let smallIcon: String?
     let badge: NSNumber?
     let msgID: String
+    @available(*, deprecated, message:"remove it when refactoring")
     let customID: String?
-    
     //
     let type: String?
     let version: Int?
-    
     
     init(title: String,
          subTitle: String?,

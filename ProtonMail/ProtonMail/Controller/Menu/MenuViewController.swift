@@ -14,9 +14,7 @@ import UIKit
 import CoreData
 
 
-
 class MenuViewController: UIViewController {
-    internal static let ObserverSwitchView:String = "Push_Switch_View"
     
     // MARK - Views Outlets
     @IBOutlet weak var displayNameLabel: UILabel!
@@ -77,7 +75,7 @@ class MenuViewController: UIViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(MenuViewController.performLastSegue(_:)),
-            name: NSNotification.Name(rawValue: MenuViewController.ObserverSwitchView),
+            name: .switchView,
             object: nil)
 
         sharedLabelsDataService.fetchLabels();
@@ -201,6 +199,14 @@ class MenuViewController: UIViewController {
     
     //@objc for #seclector()
     @objc func performLastSegue(_ notification: Notification) {
+        if let nextTo = notification.object as? MenuItem {
+            if nextTo == .servicePlan {
+                let coordinator = MenuCoordinator()
+                coordinator.controller = self
+                coordinator.go(to: .serviceLevel, creating: ServiceLevelViewController.self)
+                return
+            }
+        }
         self.performSegue(withIdentifier: lastSegue, sender: IndexPath(row: 0, section: 0))
     }
 }

@@ -14,7 +14,7 @@ struct ServicePlanDetails: Codable {
     let maxAddresses: Int
     let maxDomains: Int
     let maxMembers: Int
-    let maxSpace: Int
+    let maxSpace: Int64
     let maxVPN: Int
     let name: String
     let quantity: Int

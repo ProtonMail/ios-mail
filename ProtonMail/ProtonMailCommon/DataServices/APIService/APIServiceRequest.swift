@@ -205,6 +205,11 @@ class ApiRequestNew<T : ApiResponse> : Package {
             let apiRes = realType.init()
             
             if error != nil {
+                #if DEBUG
+                if let res = res {
+                    PMLog.D(res.json(prettyPrinted: true))
+                }
+                #endif
                 //TODO check error
                 apiRes.ParseHttpError(error!)
                 deferred.resolver.reject(error!)

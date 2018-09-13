@@ -1257,7 +1257,12 @@ class LocalizedString {
     /// "Please check your cell phone for the verification code."
     lazy var _please_check_your_cell_phone_for_the_verification_code = NSLocalizedString("Please check your cell phone for the verification code.", comment: "Description")
     /// "Got it"
+    @available(*, deprecated)
     lazy var _got_it = NSLocalizedString("Got it", comment: "Action")
+    
+    lazy var _learn_more = NSLocalizedString("Learn More", comment: "Action")
+    lazy var _not_now = NSLocalizedString("Not Now", comment: "Action")
+    lazy var _view_plans = NSLocalizedString("View Plans", comment: "Action")
 
     /// "PREMIUM FEATURE"
     lazy var _premium_feature = NSLocalizedString("PREMIUM FEATURE", comment: "Upgrade warning title")
@@ -1269,6 +1274,7 @@ class LocalizedString {
     lazy var _protonmail_plus_enables_you_to_add_and_edit_contact_details_beyond_ = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.", comment: "Upgrade warning message")
 
     /// "Upgrading is not possible in the app."
+    @available(*, deprecated)
     lazy var _upgrading_is_not_possible_in_the_app = NSLocalizedString("Upgrading is not possible in the app.", comment: "Upgrade warning message")
 
     /// "The verification failed!"
@@ -1449,9 +1455,18 @@ class LocalizedString {
     lazy var _edit_signature = NSLocalizedString("Edit signature", comment: "title")
     
     /// "Looking to edit or disable your mobile signature?"
+    @available(*, deprecated)
     lazy var _looking_to_edit_or_disable_your_mobile_signature = NSLocalizedString("Looking to edit or disable your mobile signature?", comment: "alert description")
     /// "ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature."
+    @available(*, deprecated)
     lazy var _plus_visionary_enables_you_to_customize_mobile_signature = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." , comment: "alert description")
+    
+    // "A paid ProtonMail plan is required to use this feature"
+    lazy var _a_paid_rotonMail_plan_is_required_to_use_this_feature = NSLocalizedString("A paid ProtonMail plan is required to use this feature", comment: "alert description")
+    // "Upgrade to get all paid features."
+    lazy var _upgrade_to_get_all_paid_features = NSLocalizedString("Upgrade to get all paid features.", comment: "alert description")
+    
+    
     
     // MARK: - Composer expiration warning
     
@@ -1582,4 +1597,12 @@ class LocalizedString {
     lazy var _another_user_transaction = NSLocalizedString("Another user have unfinished in-app purchases on this device. Please, login with that user so we'll be able to complete the purchase and activate the plan.", comment: "Error message")
     
     lazy var _backend_mismatch = NSLocalizedString("We were not available to match AppStore product with products on our server. Please, contact support.", comment: "Error message")
+    
+    
+    // Mark : Force Upgrade
+    
+    /// "Update Required"
+    lazy var _update_required = NSLocalizedString("Update Required", comment: "title")
+    /// "Update Now"
+    lazy var _update_now = NSLocalizedString("Update Now", comment: "title")
 }

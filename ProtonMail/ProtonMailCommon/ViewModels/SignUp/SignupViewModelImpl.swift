@@ -223,6 +223,7 @@ final class SignupViewModelImpl : SignupViewModel {
                                             let _ = try UpdateSwiftRightAction(action: MessageSwipeAction.trash).syncCall()
 
                                             sharedLabelsDataService.fetchLabels()
+                                            ServicePlanDataService.shared.updateCurrentSubscription()
                                             sharedUserDataService.fetchUserInfo().done(on: .main) { info in
                                                 if info != nil {
                                                     sharedUserDataService.isNewUser = true

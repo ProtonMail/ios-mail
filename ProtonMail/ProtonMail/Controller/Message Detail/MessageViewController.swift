@@ -447,8 +447,14 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.statusBarHit(_:)), name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.reachabilityChanged(_:)), name: NSNotification.Name.reachabilityChanged, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(MessageViewController.statusBarHit(_:)),
+                                               name: .touchStatusBar,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(MessageViewController.reachabilityChanged(_:)),
+                                               name: .reachabilityChanged,
+                                               object: nil)
         
         if message != nil {
             if let context = message.managedObjectContext {
@@ -471,8 +477,8 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.reachabilityChanged, object:nil)
+        NotificationCenter.default.removeObserver(self, name: .touchStatusBar, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.reachabilityChanged, object: nil)
         self.stopExpirationTimer()
     }
     
