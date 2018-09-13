@@ -136,6 +136,8 @@ class MenuViewController: UIViewController {
             settings.performSegue(withIdentifier: settings.kNotificationsSnoozeSegue, sender: sender)
         }
         
+        
+        
         if let navigation = segue.destination as? UINavigationController {
             let segueID = segue.identifier
             //right now all mailbox view controller all could process together.
@@ -168,6 +170,17 @@ class MenuViewController: UIViewController {
                         sharedVMService.contactGroupsViewModel(contactGroupsViewController)
                     }
                 }
+            }
+        } else if let tabBarController = segue.destination as? UITabBarController,
+            let viewControllers = tabBarController.viewControllers {
+            if let contactNavigation = viewControllers[0] as? UINavigationController,
+                let contactViewController = contactNavigation.firstViewController() as? ContactsViewController {
+                sharedVMService.contactsViewModel(contactViewController)
+            }
+            
+            if let contactGroupNavigation = viewControllers[1] as? UINavigationController,
+                let contactGroupsViewController = contactGroupNavigation.firstViewController() as? ContactGroupsViewController {
+                sharedVMService.contactGroupsViewModel(contactGroupsViewController)
             }
         }
     }
