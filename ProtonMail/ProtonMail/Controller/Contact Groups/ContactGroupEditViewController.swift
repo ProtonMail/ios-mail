@@ -166,7 +166,7 @@ extension ContactGroupEditViewController: UITableViewDataSource
                                                      for: indexPath) as! ContactGroupEditViewCell
             
             let (name, email) = viewModel.getEmail(at: indexPath)
-            cell.config(name: name, email: email)
+            cell.config(name: name, email: email, viewModel: viewModel)
             return cell
         case .deleteGroup:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupDeleteCell", for: indexPath)

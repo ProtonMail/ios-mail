@@ -117,6 +117,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             
             // update
             updateTableContent(emailCount: self.emailsInGroup.count)
+            self.delegate?.update()
         } else {
             // TODO: handle error
             PMLog.D("Can't convert NSSet to [Email]")
@@ -150,9 +151,24 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      */
     func setEmails(emails: NSSet)
     {
-        contactGroup.emailIDs = emails
+        contactGroup.emailIDs = NSMutableSet(set: emails)
+    }
+    
+    /**
+ 
+    */
+    func removeEmail(name: String, email: String) {
+        for emailObj in emailsInGroup {
+            if emailObj.email == email && emailObj.contact.name == name {
+                // remove email from set
+                contactGroup.emailIDs.remove(emailObj)
+                prepareEmails()
+                return
+            }
+        }
         
-        self.delegate?.update()
+        // TODO: handle error
+        fatalError("Email to delete doesn't exist")
     }
     
     /**

@@ -12,10 +12,13 @@ class ContactGroupEditViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var shortNameLabel: UILabel!
+    @IBOutlet weak var deleteButton: UIButton!
     
     var name: String = ""
     var email: String = ""
     var shortName: String = ""
+    
+    var viewModel: ContactGroupEditViewModel?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,9 +26,21 @@ class ContactGroupEditViewCell: UITableViewCell {
         shortNameLabel.layer.cornerRadius = 20.0
     }
     
-    func config(name: String, email: String) {
+    @IBAction func deleteButtonTapped(_ sender: UIButton) {
+        if let viewModel = self.viewModel {
+            viewModel.removeEmail(name: self.name, email: self.email)
+        }
+    }
+    
+    func config(name: String, email: String, viewModel: ContactGroupEditViewModel? = nil) {
         self.name = name
         self.email = email
+        self.viewModel = viewModel
+        
+        // hide the button if there is no view model present
+        if viewModel == nil {
+            deleteButton.isHidden = true
+        }
         
         nameLabel.text = name
         emailLabel.text = email

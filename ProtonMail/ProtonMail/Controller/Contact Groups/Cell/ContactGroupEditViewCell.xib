@@ -21,7 +21,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Diego Santiviago" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a6U-nh-0SW">
-                        <rect key="frame" x="62" y="11" width="222" height="17"/>
+                        <rect key="frame" x="62" y="11" width="209" height="17"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="17" id="uIy-YK-sab"/>
                         </constraints>
@@ -41,8 +41,8 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="diegosantiviago@gmail.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nn3-rg-vzZ">
-                        <rect key="frame" x="62" y="33" width="222" height="16"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="diegosantiviago@gmail.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nn3-rg-vzZ">
+                        <rect key="frame" x="62" y="33" width="209" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="EDn-zj-LwU"/>
                         </constraints>
@@ -50,13 +50,25 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i99-F4-ZFJ">
+                        <rect key="frame" x="279" y="18" width="25" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="J99-oQ-VPq"/>
+                            <constraint firstAttribute="width" constant="25" id="xfu-23-yHh"/>
+                        </constraints>
+                        <state key="normal" title="Button" image="compose_expiration_cancel"/>
+                        <connections>
+                            <action selector="deleteButtonTapped:" destination="z2E-gP-kHW" eventType="touchUpInside" id="4nf-9m-rRS"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="a6U-nh-0SW" firstAttribute="centerY" secondItem="pB1-Er-ar1" secondAttribute="centerY" constant="-10.25" id="4aZ-vB-0re" userLabel="Name Label.centerY = centerY - 10"/>
+                    <constraint firstItem="i99-F4-ZFJ" firstAttribute="leading" secondItem="a6U-nh-0SW" secondAttribute="trailing" constant="8" id="4hD-h5-rwB"/>
+                    <constraint firstItem="i99-F4-ZFJ" firstAttribute="centerY" secondItem="pB1-Er-ar1" secondAttribute="centerY" id="C8d-dc-288"/>
                     <constraint firstItem="Nn3-rg-vzZ" firstAttribute="leading" secondItem="6fT-Hc-QXJ" secondAttribute="trailing" constant="8" id="MZY-np-rDy"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="a6U-nh-0SW" secondAttribute="trailing" constant="20" id="U9c-Ie-v0e"/>
+                    <constraint firstItem="i99-F4-ZFJ" firstAttribute="trailing" secondItem="pB1-Er-ar1" secondAttribute="trailingMargin" id="OCb-W1-WEy"/>
                     <constraint firstAttribute="bottom" secondItem="6fT-Hc-QXJ" secondAttribute="bottom" constant="10" id="igS-zt-pqm"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="Nn3-rg-vzZ" secondAttribute="trailing" constant="20" id="jrS-9q-sW8"/>
                     <constraint firstItem="a6U-nh-0SW" firstAttribute="leading" secondItem="6fT-Hc-QXJ" secondAttribute="trailing" constant="8" id="nbO-7A-nus"/>
                     <constraint firstItem="6fT-Hc-QXJ" firstAttribute="top" secondItem="pB1-Er-ar1" secondAttribute="top" constant="10" id="nli-cI-3rw"/>
                     <constraint firstItem="6fT-Hc-QXJ" firstAttribute="leading" secondItem="pB1-Er-ar1" secondAttribute="leading" constant="14" id="rze-YX-63Z"/>
@@ -65,11 +77,15 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="deleteButton" destination="i99-F4-ZFJ" id="RVD-um-6lh"/>
                 <outlet property="emailLabel" destination="Nn3-rg-vzZ" id="JPc-JR-AP4"/>
                 <outlet property="nameLabel" destination="a6U-nh-0SW" id="Do8-d3-wyQ"/>
                 <outlet property="shortNameLabel" destination="6fT-Hc-QXJ" id="shI-Zg-oFG"/>
             </connections>
-            <point key="canvasLocation" x="130" y="58"/>
+            <point key="canvasLocation" x="-206" y="-73"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="compose_expiration_cancel" width="22" height="22"/>
+    </resources>
 </document>
