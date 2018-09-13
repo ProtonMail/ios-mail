@@ -155,11 +155,11 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     }
     
     /**
- 
+     Remove an email from the listing in the contact group.
     */
-    func removeEmail(name: String, email: String) {
+    func removeEmail(emailID: String) {
         for emailObj in emailsInGroup {
-            if emailObj.email == email && emailObj.contact.name == name {
+            if emailObj.emailID == emailID {
                 // remove email from set
                 contactGroup.emailIDs.remove(emailObj)
                 prepareEmails()
@@ -509,12 +509,12 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - Parameter indexPath: the indexPath that is asking for data
      - Returns: a tuple of email name and email address
      */
-    func getEmail(at indexPath: IndexPath) -> (String, String) {
+    func getEmail(at indexPath: IndexPath) -> (String, String, String) {
         let index = indexPath.row
         guard index < emailsInGroup.count else {
             fatalError("Calculation error")
         }
         
-        return (emailsInGroup[index].name, emailsInGroup[index].email)
+        return (emailsInGroup[index].emailID, emailsInGroup[index].name, emailsInGroup[index].email)
     }
 }

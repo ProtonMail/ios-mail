@@ -96,7 +96,7 @@ protocol ContactGroupEditViewModel {
     func setEmails(emails: NSSet)
     func setColor(newColor: String?)
     
-    func removeEmail(name: String, email: String)
+    func removeEmail(emailID: String)
     
     // get operations
     func getViewTitle() -> String
@@ -116,5 +116,5 @@ protocol ContactGroupEditViewModel {
     func getTotalSections() -> Int
     func getTotalRows(for section: Int) -> Int
     func getCellType(at indexPath: IndexPath) -> ContactGroupEditTableCellType
-    func getEmail(at indexPath: IndexPath) -> (String, String)
+    func getEmail(at indexPath: IndexPath) -> (String, String, String)
 }

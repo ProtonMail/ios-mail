@@ -82,7 +82,7 @@
                 <outlet property="nameLabel" destination="a6U-nh-0SW" id="Do8-d3-wyQ"/>
                 <outlet property="shortNameLabel" destination="6fT-Hc-QXJ" id="shI-Zg-oFG"/>
             </connections>
-            <point key="canvasLocation" x="-206" y="-73"/>
+            <point key="canvasLocation" x="-462" y="-109"/>
         </tableViewCell>
     </objects>
     <resources>

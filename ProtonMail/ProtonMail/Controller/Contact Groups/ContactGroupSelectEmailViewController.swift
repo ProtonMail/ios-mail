@@ -13,6 +13,8 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     var viewModel: ContactGroupSelectEmailViewModel!
     @IBOutlet weak var tableView: UITableView!
     
+    let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
+    
     func setViewModel(_ vm: Any) {
         viewModel = vm as! ContactGroupSelectEmailViewModel
     }
@@ -21,6 +23,8 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         title = "Add Addresses"
         
         tableView.allowsMultipleSelection = true
+        tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
+                           forCellReuseIdentifier: kContactGroupEditCellIdentifier)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -41,20 +45,25 @@ extension ContactGroupSelectEmailViewController: UITableViewDataSource
     // https://medium.com/ios-os-x-development/ios-multiple-selections-in-table-view-88dc2249c3a2
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupSelectEmailCell",
-                                                 for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupEditCellIdentifier,
+                                                 for: indexPath) as! ContactGroupEditViewCell
         
         let ret = viewModel.getCellData(at: indexPath)
-        cell.textLabel?.text = ret.name
-        cell.detailTextLabel?.text = ret.email
+        cell.config(name: ret.name,
+                    email: ret.email,
+                    state: .selectEmailView)
         
         cell.selectionStyle = .none
         if ret.isSelected {
+            /*
+             Calling this method does not cause the delegate to receive a tableView(_:willSelectRowAt:) or tableView(_:didSelectRowAt:) message,
+             nor does it send selectionDidChangeNotification notifications to observers.
+             */
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-            cell.accessoryType = .checkmark
+            cell.setSelected(true, animated: true)
         } else {
             tableView.deselectRow(at: indexPath, animated: true)
-            cell.accessoryType = .none
+            cell.setSelected(false, animated: true)
         }
         
         return cell
@@ -66,12 +75,10 @@ extension ContactGroupSelectEmailViewController: UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         cell?.isSelected = true
-        cell?.accessoryType = .checkmark
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         cell?.isSelected = false
-        cell?.accessoryType = .none
     }
 }

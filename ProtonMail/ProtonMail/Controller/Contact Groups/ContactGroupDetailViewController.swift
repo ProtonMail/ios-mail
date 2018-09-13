@@ -138,7 +138,9 @@ extension ContactGroupDetailViewController: UITableViewDataSource
                                                  for: indexPath) as! ContactGroupEditViewCell
         
         let ret = viewModel.getEmail(at: indexPath)
-        cell.config(name: ret.name, email: ret.email)
+        cell.config(name: ret.name,
+                    email: ret.email,
+                    state: .detailView)
         
         return cell
     }

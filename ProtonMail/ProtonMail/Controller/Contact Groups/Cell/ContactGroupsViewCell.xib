@@ -78,7 +78,7 @@
                 <outlet property="groupImage" destination="LvN-FM-L9L" id="7Dr-Jy-HZI"/>
                 <outlet property="nameLabel" destination="Vde-5V-24G" id="dg0-SD-aCe"/>
             </connections>
-            <point key="canvasLocation" x="-20" y="125"/>
+            <point key="canvasLocation" x="38" y="126"/>
         </tableViewCell>
     </objects>
     <resources>
