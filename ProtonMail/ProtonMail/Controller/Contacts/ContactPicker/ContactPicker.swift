@@ -44,13 +44,13 @@ class ContactPicker: UIView {
     }
     
     @objc private func keyboardShown(_ notification: Notification) {
-        guard let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             return
         }
         self.keyboardFrame = keyboardFrame
         
         // should work only for device orientation changes
-        if notification.name == .UIKeyboardWillHide {
+        if notification.name == UIResponder.keyboardWillHideNotification {
             self.hideSearchTableView()
         }
     }
@@ -140,11 +140,11 @@ class ContactPicker: UIView {
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardShown(_:)),
-                                               name: Notification.Name.UIKeyboardWillShow,
+                                               name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardShown(_:)),
-                                               name: Notification.Name.UIKeyboardWillHide,
+                                               name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
     }
     
@@ -264,7 +264,7 @@ class ContactPicker: UIView {
         
         if !self.isFirstResponder {
             if let index = self.contactCollectionView.indexPathOfSelectedCell {
-                self.contactCollectionView.scrollToItem(at: index, at: UICollectionViewScrollPosition(rawValue: 0), animated: true)
+                self.contactCollectionView.scrollToItem(at: index, at: UICollectionView.ScrollPosition(rawValue: 0), animated: true)
             } else {
                 self.contactCollectionView.setFocusOnEntry()
             }
@@ -298,7 +298,7 @@ class ContactPicker: UIView {
         self.searchWindow = self.searchWindow ?? UIWindow(frame: self.frameForContactSearch)
         self.searchWindow?.rootViewController = self.searchTableViewController
         self.searchWindow?.isHidden = false
-        self.searchWindow?.windowLevel = UIWindowLevelNormal
+        self.searchWindow?.windowLevel = UIWindow.Level.normal
         #if APP_EXTENSION
          // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to  it's hierarchy explicitly
         self.window?.addSubview(searchWindow!)

@@ -53,7 +53,7 @@ class PinCodeViewController : UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.view.layoutIfNeeded()
-        NotificationCenter.default.addObserver(self, selector:#selector(PinCodeViewController.doEnterForeground), name:  NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(PinCodeViewController.doEnterForeground), name:  UIApplication.willEnterForegroundNotification, object: nil)
         pinCodeView.updateCorner()
     }
     

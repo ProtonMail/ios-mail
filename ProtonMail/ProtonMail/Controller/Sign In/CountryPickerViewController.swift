@@ -129,7 +129,7 @@ extension CountryPickerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         if let selectIndex = indexCache[title] {
             tableView.scrollToRow(at: IndexPath(row: selectIndex, section: 0),
-                                  at: UITableViewScrollPosition.top, animated: true)
+                                  at: UITableView.ScrollPosition.top, animated: true)
         }
         return -1
     }

@@ -27,7 +27,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     func inactiveViewModel() { 
         self.stopAutoSave()
         NotificationCenter.default.removeObserver(self,
-                                                  name: NSNotification.Name.UIApplicationWillResignActive,
+                                                  name: UIApplication.willResignActiveNotification,
                                                   object:nil)
         self.dismissKeyboard()
         if self.presentingViewController != nil {
@@ -80,7 +80,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         super.viewDidLoad()
         
         self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button,
-                                            style: UIBarButtonItemStyle.plain,
+                                            style: UIBarButtonItem.Style.plain,
                                             target: self,
                                             action: #selector(ComposeEmailViewController.cancel_clicked(_:)))
         self.navigationItem.leftBarButtonItem = cancelButton
@@ -103,7 +103,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         self.composeView.delegate = self
         self.composeView.datasource = self
         self.webView.scrollView.addSubview(composeView.view)
-        self.webView.scrollView.bringSubview(toFront: composeView.view)
+        self.webView.scrollView.bringSubviewToFront(composeView.view)
         
         // update content values
         updateMessageView()
@@ -298,7 +298,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                                                object:nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)),
-                                               name: .UIApplicationWillResignActive,
+                                               name: UIApplication.willResignActiveNotification,
                                                object:nil)
         setupAutoSave()
     }
@@ -332,8 +332,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         
         let navigationBarTitleFont = Fonts.h2.light
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: navigationBarTitleFont
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: navigationBarTitleFont
         ]
         
         self.navigationItem.leftBarButtonItem?.title = LocalString._general_cancel_button
@@ -716,7 +716,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     
     func composeViewDidTapExpirationButton(_ composeView: ComposeView) {
         self.expirationPicker.alpha = 1
-        self.view.bringSubview(toFront: expirationPicker)
+        self.view.bringSubviewToFront(expirationPicker)
     }
     
     func composeViewHideExpirationView(_ composeView: ComposeView) {

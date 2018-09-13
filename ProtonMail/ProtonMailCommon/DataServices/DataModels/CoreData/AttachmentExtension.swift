@@ -233,7 +233,7 @@ extension UIImage: AttachmentConvertible {
         return self.toData().count
     }
     private func toData() -> Data! {
-        return UIImageJPEGRepresentation(self, 0)
+        return self.jpegData(compressionQuality: 0)
     }
     func toAttachment (_ message:Message, fileName : String, type:String) -> Attachment? {
         if let fileData = self.toData() {

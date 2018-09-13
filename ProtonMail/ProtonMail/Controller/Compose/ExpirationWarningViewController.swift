@@ -66,7 +66,7 @@ class ExpirationWarningViewController : UIViewController {
         /// setup types
         let nib = UINib(nibName: kHeaderView, bundle: nil)
         self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: kHeaderID)
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 60.0
         
         self.tableView.dataSource = self
@@ -221,7 +221,7 @@ extension ExpirationWarningViewController : UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-       return UITableViewAutomaticDimension
+       return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
@@ -243,7 +243,7 @@ extension ExpirationWarningViewController : ExpirationWarningHeaderCellDelegate 
         tableView.reloadSections([section], with: .automatic)
         if expend {
             tableView.scrollToRow(at: IndexPath(row: 0, section: section),
-                                  at: UITableViewScrollPosition.top,
+                                  at: UITableView.ScrollPosition.top,
                                   animated: true)
         } else {
             tableView.setContentOffset(.zero, animated: true)

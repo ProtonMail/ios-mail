@@ -41,9 +41,9 @@ extension NotificationCenter {
         var notificationName: String {
             switch(self) {
             case .willHide:
-                return NSNotification.Name.UIKeyboardWillHide.rawValue
+                return UIResponder.keyboardWillHideNotification.rawValue
             default:
-                return NSNotification.Name.UIKeyboardWillShow.rawValue
+                return UIResponder.keyboardWillShowNotification.rawValue
             }
         }
         

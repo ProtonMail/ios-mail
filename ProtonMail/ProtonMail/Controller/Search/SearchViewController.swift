@@ -64,8 +64,8 @@ class SearchViewController: ProtonMailViewController {
         searchTextField.tintColor = UIColor.white
         searchTextField.attributedPlaceholder = NSAttributedString(string: LocalString._general_search_placeholder, attributes:
             [
-                NSAttributedStringKey.foregroundColor: UIColor.white,
-                NSAttributedStringKey.font: Fonts.h3.light
+                NSAttributedString.Key.foregroundColor: UIColor.white,
+                NSAttributedString.Key.font: Fonts.h3.light
             ])
         
         managedObjectContext = sharedCoreDataService.newMainManagedObjectContext()
@@ -80,7 +80,7 @@ class SearchViewController: ProtonMailViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
     }
     
     // my selector that was defined above
@@ -101,7 +101,7 @@ class SearchViewController: ProtonMailViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willResignActiveNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -262,11 +262,11 @@ extension SearchViewController: NSFetchedResultsControllerDelegate {
         switch(type) {
         case .delete:
             if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         case .update:
             if let indexPath = indexPath {

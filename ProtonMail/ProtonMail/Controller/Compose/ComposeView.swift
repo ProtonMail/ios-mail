@@ -238,10 +238,10 @@ class ComposeView: UIViewController {
         self.configureExpirationField()
         self.configureErrorMessage()
         
-        self.view.bringSubview(toFront: showCcBccButton)
-        self.view.bringSubview(toFront: subject);
-        self.view.sendSubview(toBack: ccContactPicker)
-        self.view.sendSubview(toBack: bccContactPicker)
+        self.view.bringSubviewToFront(showCcBccButton)
+        self.view.bringSubviewToFront(subject);
+        self.view.sendSubviewToBack(ccContactPicker)
+        self.view.sendSubviewToBack(bccContactPicker)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -281,9 +281,9 @@ class ComposeView: UIViewController {
     
     func updateAttachmentButton(_ hasAtts: Bool) {
         if hasAtts {
-            self.attachmentButton.setImage(UIImage(named: "compose_attachment-active"), for: UIControlState())
+            self.attachmentButton.setImage(UIImage(named: "compose_attachment-active"), for: UIControl.State())
         } else {
-            self.attachmentButton.setImage(UIImage(named: "compose_attachment"), for: UIControlState())
+            self.attachmentButton.setImage(UIImage(named: "compose_attachment"), for: UIControl.State())
         }
     }
     
@@ -335,33 +335,33 @@ class ComposeView: UIViewController {
     fileprivate func configureEncryptionPasswordField() {
         let passwordLeftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: self.encryptedPasswordTextField.frame.size.height))
         encryptedPasswordTextField.leftView = passwordLeftPaddingView
-        encryptedPasswordTextField.leftViewMode = UITextFieldViewMode.always
+        encryptedPasswordTextField.leftViewMode = UITextField.ViewMode.always
         
         let nextButton = UIButton()
-        nextButton.addTarget(self, action: #selector(ComposeView.didTapNextButton), for: UIControlEvents.touchUpInside)
-        nextButton.setImage(UIImage(named: "next"), for: UIControlState())
+        nextButton.addTarget(self, action: #selector(ComposeView.didTapNextButton), for: UIControl.Event.touchUpInside)
+        nextButton.setImage(UIImage(named: "next"), for: UIControl.State())
         nextButton.sizeToFit()
         
         let nextView = UIView(frame: CGRect(x: 0, y: 0, width: nextButton.frame.size.width + 10, height: nextButton.frame.size.height))
         nextView.addSubview(nextButton)
         encryptedPasswordTextField.rightView = nextView
-        encryptedPasswordTextField.rightViewMode = UITextFieldViewMode.always
+        encryptedPasswordTextField.rightViewMode = UITextField.ViewMode.always
     }
     
     fileprivate func configureExpirationField() {
         let expirationLeftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: self.expirationDateTextField.frame.size.height))
         expirationDateTextField.leftView = expirationLeftPaddingView
-        expirationDateTextField.leftViewMode = UITextFieldViewMode.always
+        expirationDateTextField.leftViewMode = UITextField.ViewMode.always
         
         self.confirmExpirationButton = UIButton()
-        confirmExpirationButton.addTarget(self, action: #selector(ComposeView.didTapConfirmExpirationButton), for: UIControlEvents.touchUpInside)
-        confirmExpirationButton.setImage(UIImage(named: "next"), for: UIControlState())
+        confirmExpirationButton.addTarget(self, action: #selector(ComposeView.didTapConfirmExpirationButton), for: UIControl.Event.touchUpInside)
+        confirmExpirationButton.setImage(UIImage(named: "next"), for: UIControl.State())
         confirmExpirationButton.sizeToFit()
         
         let confirmView = UIView(frame: CGRect(x: 0, y: 0, width: confirmExpirationButton.frame.size.width + 10, height: confirmExpirationButton.frame.size.height))
         confirmView.addSubview(confirmExpirationButton)
         expirationDateTextField.rightView = confirmView
-        expirationDateTextField.rightViewMode = UITextFieldViewMode.always
+        expirationDateTextField.rightViewMode = UITextField.ViewMode.always
         expirationDateTextField.delegate = self
     }
     
@@ -382,7 +382,7 @@ class ComposeView: UIViewController {
     
     ///
     internal func notifyViewSize(_ animation : Bool) {
-        UIView.animate(withDuration: animation ? self.kAnimationDuration : 0, delay:0, options: UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: animation ? self.kAnimationDuration : 0, delay:0, options: UIView.AnimationOptions(), animations: {
             self.updateViewSize()
             let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height + self.pickerHeight)
             self.delegate?.ComposeViewDidSizeChanged(size, showPicker: self.pickerHeight > 0.0)
@@ -392,7 +392,7 @@ class ComposeView: UIViewController {
     internal func configureSubject() {
         let subjectLeftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: self.subject.frame.size.height))
         self.subject.leftView = subjectLeftPaddingView
-        self.subject.leftViewMode = UITextFieldViewMode.always
+        self.subject.leftViewMode = UITextField.ViewMode.always
         self.subject.autocapitalizationType = .sentences
         
     }
@@ -403,7 +403,7 @@ class ComposeView: UIViewController {
                 self.fakeContactPickerHeightConstraint.constant = self.toContactPicker.currentContentHeight
                 self.ccContactPicker.alpha = 0.0
                 self.bccContactPicker.alpha = 0.0
-                self.showCcBccButton.setImage(UIImage(named: "compose_pluscontact"), for:UIControlState() )
+                self.showCcBccButton.setImage(UIImage(named: "compose_pluscontact"), for:UIControl.State() )
                 self.view.layoutIfNeeded()
             })
         } else {
@@ -411,7 +411,7 @@ class ComposeView: UIViewController {
                 self.ccContactPicker.alpha = 1.0
                 self.bccContactPicker.alpha = 1.0
                 self.fakeContactPickerHeightConstraint.constant = self.toContactPicker.currentContentHeight + self.ccContactPicker.currentContentHeight + self.bccContactPicker.currentContentHeight
-                self.showCcBccButton.setImage(UIImage(named: "compose_minuscontact"), for:UIControlState() )
+                self.showCcBccButton.setImage(UIImage(named: "compose_minuscontact"), for:UIControl.State() )
                 self.view.layoutIfNeeded()
             })
         }
@@ -444,12 +444,12 @@ class ComposeView: UIViewController {
         didTapEncryptedDismissButton(encryptedButton)
         self.encryptedPasswordTextField.placeholder = LocalString._composer_define_password
         self.encryptedPasswordTextField.isSecureTextEntry = true
-        self.encryptedButton.setImage(UIImage(named: "compose_lock-active"), for: UIControlState())
+        self.encryptedButton.setImage(UIImage(named: "compose_lock-active"), for: UIControl.State())
     }
     
     internal func showEncryptionRemoved() {
         didTapEncryptedDismissButton(encryptedButton)
-        self.encryptedButton.setImage(UIImage(named: "compose_lock"), for: UIControlState())
+        self.encryptedButton.setImage(UIImage(named: "compose_lock"), for: UIControl.State())
     }
     
     internal func showExpirationPicker() {
@@ -517,13 +517,13 @@ class ComposeView: UIViewController {
             
         } else {
             if (!hasExpirationSchedule) {
-                self.expirationButton.setImage(UIImage(named: "compose_expiration-active"), for: UIControlState())
-                self.confirmExpirationButton.setImage(UIImage(named: "compose_expiration_cancel"), for: UIControlState())
+                self.expirationButton.setImage(UIImage(named: "compose_expiration-active"), for: UIControl.State())
+                self.confirmExpirationButton.setImage(UIImage(named: "compose_expiration_cancel"), for: UIControl.State())
             } else {
                 self.expirationDateTextField.text = ""
                 self.expirationTimeInterval  = 0;
-                self.expirationButton.setImage(UIImage(named: "compose_expiration"), for: UIControlState())
-                self.confirmExpirationButton.setImage(UIImage(named: "next"), for: UIControlState())
+                self.expirationButton.setImage(UIImage(named: "compose_expiration"), for: UIControl.State())
+                self.confirmExpirationButton.setImage(UIImage(named: "next"), for: UIControl.State())
                 self.delegate?.composeViewCancelExpirationData(self)
                 
             }
@@ -665,7 +665,7 @@ extension ComposeView: ContactPickerDelegate {
     
     func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker) {
         self.delegate?.composeViewWillDismissSubview()
-        self.view.sendSubview(toBack: contactPicker)
+        self.view.sendSubviewToBack(contactPicker)
         if (contactPicker.frame.size.height > contactPicker.currentContentHeight) {
             self.updateContactPickerHeight(contactPicker, newHeight: contactPicker.currentContentHeight)
         }

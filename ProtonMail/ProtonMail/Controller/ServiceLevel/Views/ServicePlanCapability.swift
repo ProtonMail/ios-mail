@@ -37,7 +37,7 @@ class ServicePlanCapability: UIView {
         self.serviceIcon.isAccessibilityElement = false
         
         self.accessibilityLabel = title?.string
-        self.accessibilityTraits = serviceIconVisible ? UIAccessibilityTraitButton : UIAccessibilityTraitStaticText
+        self.accessibilityTraits = serviceIconVisible ? UIAccessibilityTraits.button : UIAccessibilityTraits.staticText
     }
     
     private override init(frame: CGRect) {

@@ -93,7 +93,7 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
             strongSelf.galleryDelegate?.photoGallery?(strongSelf, didShow: index)
         }
         
-        contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel,
+        contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel,
                                                                      target: self,
                                                                      action: #selector(DKPhotoGallery.dismissGallery))
         

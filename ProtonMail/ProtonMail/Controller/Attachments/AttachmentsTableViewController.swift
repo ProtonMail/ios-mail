@@ -81,7 +81,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.doneButton = UIBarButtonItem(title: LocalString._general_done_button, style: UIBarButtonItemStyle.plain, target: self, action: #selector(AttachmentsTableViewController.doneAction(_:)))
+        self.doneButton = UIBarButtonItem(title: LocalString._general_done_button, style: UIBarButtonItem.Style.plain, target: self, action: #selector(AttachmentsTableViewController.doneAction(_:)))
         self.navigationItem.leftBarButtonItem = doneButton
         
         self.tableView.register(UINib(nibName: "\(AttachmentTableViewCell.self)", bundle: nil),
@@ -104,8 +104,8 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         
         let navigationBarTitleFont = Fonts.h2.light
         navigationController.navigationBar.titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: navigationBarTitleFont
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: navigationBarTitleFont
         ]
     }
     
@@ -134,7 +134,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         alertController.popoverPresentationController?.sourceRect = self.view.frame
         
         self.attachmentProviders.map{ $0.alertAction }.forEach(alertController.addAction)
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: UIAlertActionStyle.cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: UIAlertAction.Style.cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
     

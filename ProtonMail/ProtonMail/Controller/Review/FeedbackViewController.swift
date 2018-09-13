@@ -22,7 +22,7 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate, UI
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.rowHeight = UITableViewAutomaticDimension;
+        tableView.rowHeight = UITableView.automaticDimension;
         tableView.estimatedRowHeight = 36.0
     }
     

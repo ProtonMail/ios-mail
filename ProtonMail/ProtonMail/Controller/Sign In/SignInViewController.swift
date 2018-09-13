@@ -113,7 +113,7 @@ class SignInViewController: ProtonMailViewController {
                     let _ = self.navigationController?.popViewController(animated: true)
                     LanguageManager.saveLanguage(byCode: l.code)
                     LocalizedString.reset()
-                    UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+                    UIView.animate(withDuration: 0.25, delay: 0, options: UIView.AnimationOptions(), animations: { () -> Void in
                         self.setupTextFields()
                         self.setupButtons()
                         self.setupVersionLabel()
@@ -182,7 +182,7 @@ class SignInViewController: ProtonMailViewController {
         touchIDButton.layer.cornerRadius = 25
         touchIDButton.isHidden = false
         signUpTopConstraint.priority = UILayoutPriority(rawValue: 1)
-        UIView.animate(withDuration: animated ? 0.25 : 0, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+        UIView.animate(withDuration: animated ? 0.25 : 0, delay: 0, options: UIView.AnimationOptions(), animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
@@ -191,7 +191,7 @@ class SignInViewController: ProtonMailViewController {
         touchIDButton.layer.cornerRadius = 25
         touchIDButton.isHidden = true
         signUpTopConstraint.priority = UILayoutPriority(rawValue: 750)
-        UIView.animate(withDuration: animated ? 0.25 : 0, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+        UIView.animate(withDuration: animated ? 0.25 : 0, delay: 0, options: UIView.AnimationOptions(), animations: { () -> Void in
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
@@ -226,7 +226,7 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
-    override func didMove(toParentViewController parent: UIViewController?) {
+    override func didMove(toParent parent: UIViewController?) {
         if (!(parent?.isEqual(self.parent) ?? false)) {
         }
         
@@ -266,7 +266,7 @@ class SignInViewController: ProtonMailViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addKeyboardObserver(self)
-        NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground), name:  NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground), name:  UIApplication.willEnterForegroundNotification, object: nil)
         let uName = (usernameTextField.text ?? "").trim()
         let pwd = (passwordTextField.text ?? "") //.trim()
         
@@ -438,9 +438,9 @@ class SignInViewController: ProtonMailViewController {
         signInTitle.text = LocalString._user_login
         
         usernameTextField.attributedPlaceholder = NSAttributedString(string: LocalString._username,
-                                                                     attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
+                                                                     attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#cecaca")])
         passwordTextField.attributedPlaceholder = NSAttributedString(string: LocalString._password,
-                                                                     attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
+                                                                     attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#cecaca")])
     }
     
     func setupButtons() {
@@ -715,7 +715,7 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollBottomPaddingConstraint.constant = keyboardSize.height;
         }
         self.configConstraint(true)

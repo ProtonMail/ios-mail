@@ -51,7 +51,7 @@ class ShareUnlockViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         self.navigationItem.title = ""
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel,
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel,
                                                                 target: self,
                                                                 action: #selector(ShareUnlockViewController.cancelButtonTapped(sender:)))
     }
@@ -212,7 +212,7 @@ class ShareUnlockViewController: UIViewController {
                                       content: self.inputContent,
                                       files: self.files)
         
-        let w = UIScreen.main.applicationFrame.width;                               
+        let w = UIScreen.main.bounds.width;
         composer.view.frame = CGRect(x: 0, y: 0, width: w, height: 186 + 60)
         self.navigationController?.setViewControllers([composer], animated: true) //71mb
     }
@@ -222,8 +222,8 @@ class ShareUnlockViewController: UIViewController {
         let pinVC = SharePinUnlockViewController(nibName: "SharePinUnlockViewController", bundle: nil)
         pinVC.viewModel = ShareUnlockPinCodeModelImpl()
         pinVC.delegate = self
-        let w = UIScreen.main.applicationFrame.width;
-        let h = UIScreen.main.applicationFrame.height;
+        let w = UIScreen.main.bounds.width;
+        let h = UIScreen.main.bounds.height;
         pinVC.view.frame = CGRect(x: 0, y: 0, width: w, height: h)
         self.present(pinVC, animated: true, completion: nil)
     }
@@ -321,8 +321,8 @@ class ShareUnlockViewController: UIViewController {
             bar.isTranslucent = false
             bar.tintColor = UIColor.white
             bar.titleTextAttributes = [
-                NSAttributedStringKey.foregroundColor: UIColor.white,
-                NSAttributedStringKey.font: Fonts.h2.regular
+                NSAttributedString.Key.foregroundColor: UIColor.white,
+                NSAttributedString.Key.font: Fonts.h2.regular
             ]
         }
     }
@@ -366,7 +366,7 @@ extension ShareUnlockViewController: AttachmentController {
             }
             
             guard error == nil else {
-                self.error(error!.localizedDescription)
+                self.error(error?.localizedDescription ?? "")
                 return
             }
         

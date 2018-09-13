@@ -44,7 +44,12 @@ final class AuthCredential: NSObject, NSCoding {
     var passwordKeySalt : String?
     
     override var description: String {
-        return "\n  token: \(String(describing: plainToken))\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
+        return """
+        Token: \(plainToken ?? "NONE")
+        RefreshToken: \(refreshToken ?? "NONE")
+        Expiration: \(expiration ?? Date(timeIntervalSinceNow: 0))
+        UserID: \(userID ?? "NONE")
+        """
     }
     
     var isExpired: Bool {
@@ -211,6 +216,13 @@ final class AuthCredential: NSObject, NSCoding {
 extension AuthCredential {
     convenience init(authInfo: APIService.AuthInfo) {
         let expiration = Date(timeIntervalSinceNow: (authInfo.expiresId ?? 0))
-        self.init(accessToken: authInfo.accessToken, refreshToken: authInfo.refreshToken, userID: authInfo.userID, expiration: expiration, key : "", plain: authInfo.accessToken, pwd: "", salt: "")
+        self.init(accessToken: authInfo.accessToken,
+                  refreshToken: authInfo.refreshToken,
+                  userID: authInfo.userID,
+                  expiration: expiration,
+                  key : "",
+                  plain: authInfo.accessToken,
+                  pwd: "",
+                  salt: "")
     }
 }

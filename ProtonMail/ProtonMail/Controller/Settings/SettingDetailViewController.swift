@@ -51,7 +51,7 @@ class SettingDetailViewController: UIViewController {
         
         self.navigationItem.hidesBackButton = true
         let newBackButton = UIBarButtonItem(title: LocalString._general_back_action,
-                                            style: UIBarButtonItemStyle.plain,
+                                            style: UIBarButtonItem.Style.plain,
                                             target: self,
                                             action: #selector(SettingDetailViewController.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton

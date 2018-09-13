@@ -226,18 +226,18 @@ class SettingTableViewController: ProtonMailViewController {
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description
                         cell.RightText.text = userInfo?.notificationEmail
-                        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+                        cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .loginPWD, .mbp, .singlePWD:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description
                         cell.RightText.text = LocalString._settings_secret_x_string
-                        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+                        cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .cleanCache:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
                         cell.configCell(itme.description, right: "")
-                        cell.accessoryType = UITableViewCellAccessoryType.none
+                        cell.accessoryType = UITableViewCell.AccessoryType.none
                         cellout = cell
                     case .notificationsSnooze:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
@@ -246,8 +246,8 @@ class SettingTableViewController: ProtonMailViewController {
                         cellout = cell
                     case .autoLoadImage:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
-                        cell.accessoryType = UITableViewCellAccessoryType.none
-                        cell.selectionStyle = UITableViewCellSelectionStyle.none
+                        cell.accessoryType = UITableViewCell.AccessoryType.none
+                        cell.selectionStyle = UITableViewCell.SelectionStyle.none
                         cell.configCell(itme.description, bottomLine: "", status: sharedUserDataService.autoLoadRemoteImages, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
@@ -280,8 +280,8 @@ class SettingTableViewController: ProtonMailViewController {
                     switch item {
                     case .touchID, .faceID:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
-                        cell.accessoryType = UITableViewCellAccessoryType.none
-                        cell.selectionStyle = UITableViewCellSelectionStyle.none
+                        cell.accessoryType = UITableViewCell.AccessoryType.none
+                        cell.selectionStyle = UITableViewCell.SelectionStyle.none
                         cell.configCell(item.description, bottomLine: "", status: userCachedStatus.isTouchIDEnabled, complete: { (cell, newStatus, feedback) -> Void in
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
@@ -330,8 +330,8 @@ class SettingTableViewController: ProtonMailViewController {
                         cellout = cell
                     case .pinCode:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
-                        cell.accessoryType = UITableViewCellAccessoryType.none
-                        cell.selectionStyle = UITableViewCellSelectionStyle.none
+                        cell.accessoryType = UITableViewCell.AccessoryType.none
+                        cell.selectionStyle = UITableViewCell.SelectionStyle.none
                         cell.configCell(item.description, bottomLine: "", status: userCachedStatus.isPinCodeEnabled, complete: { (cell, newStatus, feedback) -> Void in
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
@@ -353,12 +353,12 @@ class SettingTableViewController: ProtonMailViewController {
                     case .updatePin:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
                         cell.configCell(item.description, right: "")
-                        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+                        cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .autoLogout:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
-                        cell.accessoryType = UITableViewCellAccessoryType.none
-                        cell.selectionStyle = UITableViewCellSelectionStyle.none
+                        cell.accessoryType = UITableViewCell.AccessoryType.none
+                        cell.selectionStyle = UITableViewCell.SelectionStyle.none
                         cell.configCell(item.description, bottomLine: "", status: userCachedStatus.isPinCodeEnabled, complete: { (cell, newStatus, feedback) -> Void in
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
@@ -388,7 +388,7 @@ class SettingTableViewController: ProtonMailViewController {
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = item.description
                         cell.RightText.text = text
-                        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+                        cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     }
                 }
@@ -397,7 +397,7 @@ class SettingTableViewController: ProtonMailViewController {
                     let label_item = setting_labels_items[indexPath.row]
                     let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
                     cell.configCell(label_item.description, right: "")
-                    cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+                    cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                     cellout = cell
                 }
             case .multiDomain:
@@ -412,7 +412,7 @@ class SettingTableViewController: ProtonMailViewController {
                             cell.domainText.text = LocalString._general_unknown_title
                         }
                         cell.defaultMark.text = LocalString._general_default
-                        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+                        cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .displayName:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
@@ -422,17 +422,17 @@ class SettingTableViewController: ProtonMailViewController {
                         } else {
                             cell.RightText.text = sharedUserDataService.displayName
                         }
-                        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+                        cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .signature:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
                         cell.configCell(address_item.description, right: "")
-                        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+                        cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .defaultMobilSign:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
                         cell.configCell(address_item.description, right: "")
-                        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+                        cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     }
                 }
@@ -443,7 +443,7 @@ class SettingTableViewController: ProtonMailViewController {
                     let action = actionItem == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
                     cell.domainText.text = actionItem.description
                     cell.defaultMark.text = action?.description
-                    cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+                    cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                     cellout = cell
                 }
             case .storage:
@@ -451,7 +451,7 @@ class SettingTableViewController: ProtonMailViewController {
                 let usedSpace = sharedUserDataService.usedSpace
                 let maxSpace = sharedUserDataService.maxSpace
                 cell.setValue(usedSpace, maxSpace: maxSpace)
-                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 cellout = cell
             case .debug:
                 if setting_debug_items.count > indexPath.row {
@@ -465,7 +465,7 @@ class SettingTableViewController: ProtonMailViewController {
                 let language: ELanguage =  LanguageManager.currentLanguageEnum()
                 let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
                 cell.configCell(language.description, right: "")
-                cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+                cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                 cellout = cell
                 
             case .version:
@@ -478,7 +478,7 @@ class SettingTableViewController: ProtonMailViewController {
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
             cell.configCell("", right: "")
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
     }
@@ -739,11 +739,11 @@ class SettingTableViewController: ProtonMailViewController {
     }
     
     // Override to support editing the table view.
-    @objc func tableView(_ tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: IndexPath) {
+    @objc func tableView(_ tableView: UITableView, commitEditingStyle editingStyle: UITableViewCell.EditingStyle, forRowAtIndexPath indexPath: IndexPath) {
     }
     
-    @objc func tableView(_ tableView: UITableView, editingStyleForRowAtIndexPath indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        return UITableViewCellEditingStyle.none
+    @objc func tableView(_ tableView: UITableView, editingStyleForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return UITableViewCell.EditingStyle.none
     }
     
     @objc func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAtIndexPath indexPath: IndexPath) -> Bool {

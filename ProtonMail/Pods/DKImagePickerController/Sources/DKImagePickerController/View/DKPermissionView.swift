@@ -51,7 +51,7 @@ open class DKPermissionView: UIView {
 	}
 	
 	@objc open func gotoSettings() {
-        if let appSettings = URL(string: UIApplicationOpenSettingsURLString) {
+        if let appSettings = URL(string: UIApplication.openSettingsURLString) {
             if #available(iOS 10.0, *) {
                 UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
             } else {

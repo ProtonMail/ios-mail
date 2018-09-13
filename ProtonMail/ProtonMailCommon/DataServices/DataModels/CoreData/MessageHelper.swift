@@ -53,7 +53,7 @@ final class MessageHelper {
                 if let attachments = attachments {
                     for (index, attachment) in attachments.enumerated() {
                         if let image = attachment as? UIImage {
-                            if let fileData = UIImagePNGRepresentation(image) {
+                            if let fileData = image.pngData() {
                                 let attachment = Attachment(context: context)
                                 attachment.attachmentID = "0"
                                 attachment.message = message

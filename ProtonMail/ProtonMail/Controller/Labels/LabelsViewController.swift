@@ -107,8 +107,8 @@ class LablesViewController : UIViewController {
         }
         
         applyButtonText = viewModel.getApplyButtonText()
-        applyButton.setTitle(applyButtonText, for: UIControlState())
-        cancelButton.setTitle(viewModel.getCancelButtonText(), for: UIControlState())
+        applyButton.setTitle(applyButtonText, for: UIControl.State())
+        cancelButton.setTitle(viewModel.getCancelButtonText(), for: UIControl.State())
         
         tableView.noSeparatorsBelowFooter()
     }
@@ -120,9 +120,9 @@ class LablesViewController : UIViewController {
     @IBAction func archiveSelectAction(_ sender: UIButton) {
         archiveMessage = !archiveMessage
         if archiveMessage {
-            archiveSelectButton.setImage(UIImage(named: "mail_check-active"), for: UIControlState())
+            archiveSelectButton.setImage(UIImage(named: "mail_check-active"), for: UIControl.State())
         } else {
-            archiveSelectButton.setImage(UIImage(named: "mail_check"), for: UIControlState())
+            archiveSelectButton.setImage(UIImage(named: "mail_check"), for: UIControl.State())
         }
     }
     @IBAction func addFolder(_ sender: AnyObject) {
@@ -275,15 +275,15 @@ extension LablesViewController : NSFetchedResultsControllerDelegate {
         switch(type) {
         case .delete:
             if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         case .update:
             if let index = indexPath {
-                tableView.reloadRows(at: [index], with: UITableViewRowAnimation.automatic)
+                tableView.reloadRows(at: [index], with: UITableView.RowAnimation.automatic)
             }
         default:
             return

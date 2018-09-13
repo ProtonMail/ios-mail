@@ -134,7 +134,6 @@ final class AddressesResponse : ApiResponse {
             email:res["Email"] as? String,
             order: res["Order"] as? Int,
             receive: res["Receive"] as? Int,
-            mailbox: res["Mailbox"] as? Int,
             display_name: res["DisplayName"] as? String,
             signature: res["Signature"] as? String,
             keys : keys,

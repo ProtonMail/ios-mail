@@ -20,8 +20,6 @@ final class Address: NSObject {
     // 0 means you can’t send with it 1 means you can pm.me addresses have Send 0 for free users, for instance so do addresses without keys
     var send: Int
     let keys: [Key]
-    
-    @available(*, deprecated) let mailbox: Int   //Not inuse
     var display_name: String
     var signature: String
     
@@ -29,7 +27,6 @@ final class Address: NSObject {
                   email: String?,
                   order: Int?,
                   receive: Int?,
-                  mailbox: Int?,
                   display_name: String?,
                   signature: String?,
                   keys: [Key]?,
@@ -39,7 +36,6 @@ final class Address: NSObject {
         self.address_id = addressid ?? ""
         self.email = email ?? ""
         self.receive = receive ?? 0
-        self.mailbox = mailbox ?? 0
         self.display_name = display_name ?? ""
         self.signature = signature ?? ""
         self.keys = keys ?? [Key]()
@@ -76,7 +72,6 @@ extension Address: NSCoding {
             email: aDecoder.decodeStringForKey(CoderKey.email),
             order: aDecoder.decodeInteger(forKey: CoderKey.order),
             receive: aDecoder.decodeInteger(forKey: CoderKey.receive),
-            mailbox: aDecoder.decodeInteger(forKey: CoderKey.mailbox),
             display_name: aDecoder.decodeStringForKey(CoderKey.display_name),
             signature: aDecoder.decodeStringForKey(CoderKey.signature),
             keys: aDecoder.decodeObject(forKey: CoderKey.keys) as?  [Key],
@@ -92,7 +87,6 @@ extension Address: NSCoding {
         aCoder.encode(email, forKey: CoderKey.email)
         aCoder.encode(order, forKey: CoderKey.order)
         aCoder.encode(receive, forKey: CoderKey.receive)
-        aCoder.encode(mailbox, forKey: CoderKey.mailbox)
         aCoder.encode(display_name, forKey: CoderKey.display_name)
         aCoder.encode(signature, forKey: CoderKey.signature)
         aCoder.encode(keys, forKey: CoderKey.keys)

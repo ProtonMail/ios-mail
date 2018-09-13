@@ -49,7 +49,7 @@ extension UISearchBar {
     
     func setPlaceholderTextColor(color: UIColor) {
         if let textField = getSearchBarTextField() {
-            textField.attributedPlaceholder = NSAttributedString(string: self.placeholder != nil ? self.placeholder! : "", attributes: [NSAttributedStringKey.foregroundColor: color])
+            textField.attributedPlaceholder = NSAttributedString(string: self.placeholder != nil ? self.placeholder! : "", attributes: [NSAttributedString.Key.foregroundColor: color])
         }
     }
     
@@ -59,7 +59,8 @@ extension UISearchBar {
 
             let button = textField.value(forKey: "clearButton") as! UIButton
             if let _ = button.imageView?.image {
-                button.setImage(UIImage.imageWithColor(color), for: .normal)
+                button.setImage(UIImage.image(with: color),
+                                for: .normal)
             }
         }
     }
@@ -67,7 +68,7 @@ extension UISearchBar {
     func setSearchImageColor(color: UIColor) {
 
         if let imageView = getSearchBarTextField()?.leftView as? UIImageView {
-            imageView.image = UIImage.imageWithColor(color)
+            imageView.image = UIImage.image(with: color)
         }
     }
     
@@ -92,7 +93,7 @@ extension UISearchBar {
                 }
             }
             
-            textField.attributedPlaceholder = NSAttributedString(string: self.placeholder != nil ? self.placeholder! : "", attributes: [NSAttributedStringKey.foregroundColor: placeholderColor])
+            textField.attributedPlaceholder = NSAttributedString(string: self.placeholder != nil ? self.placeholder! : "", attributes: [NSAttributedString.Key.foregroundColor: placeholderColor])
             
             textField.textColor = textColor
         }

@@ -77,7 +77,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         let layout = self.collectionViewLayout as! ContactCollectionViewFlowLayout
         layout.minimumInteritemSpacing = 0 //5
         layout.minimumLineSpacing = 0 // 1
-        layout.sectionInset = UIEdgeInsetsMake(0, 6, 0, 6)
+        layout.sectionInset = UIEdgeInsets.init(top: 0, left: 6, bottom: 0, right: 6)
 
         self.prototypeCell = ContactCollectionViewContactCell()
         
@@ -247,7 +247,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
                 self.selectedContacts.remove(at: index)
                 self.deselectItem(at: self.indexPathOfSelectedCell!, animated: false)
                 self.deleteItems(at: [IndexPath(row: index + (self.showPrompt ? 1 : 0), section: 0)])
-                self.scrollToItem(at: self.entryCellIndexPath, at: UICollectionViewScrollPosition(rawValue: 0), animated: true)
+                self.scrollToItem(at: self.entryCellIndexPath, at: UICollectionView.ScrollPosition(rawValue: 0), animated: true)
             }) { (finished) in
                 
                 completion?()

@@ -128,7 +128,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     }
     
     func widthForCell() -> CGFloat {
-        let size = self._model.contactTitle.size(withAttributes: [NSAttributedStringKey.font:  Fonts.h6.light])
+        let size = self._model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
         let offset = self.widthConstant.constant == 0 ? 0 : 14
         return size.width.rounded(.up) + 20 + CGFloat(offset) //34 // 20 + self.contactTitleLabel.frame.height + 6
     }
@@ -144,7 +144,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         //
         //        let size3 = model.contactTitle.size(withAttributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0)])
         //
-        let size = model.contactTitle.size(withAttributes: [NSAttributedStringKey.font:  Fonts.h6.light])
+        let size = model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
         return size.width.rounded(.up) + 20 + 14 //34 //20 + self.contactTitleLabel.frame.height + 6
     }
 }

@@ -59,9 +59,9 @@ public class PushNotificationService {
         PMLog.D(" \(error)")
     }
     
-    public func setLaunchOptions (_ launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
+    public func setLaunchOptions (_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if let launchoption = launchOptions {
-            if let remoteNotification = launchoption[UIApplicationLaunchOptionsKey.remoteNotification ] as? [AnyHashable: Any] {
+            if let remoteNotification = launchoption[UIApplication.LaunchOptionsKey.remoteNotification ] as? [AnyHashable: Any] {
                 self.launchOptions = remoteNotification
             }
         }
@@ -79,7 +79,6 @@ public class PushNotificationService {
         if let view = front.viewControllers.first {
             if view.isKind(of: MailboxViewController.self) ||
                 view.isKind(of: ContactsViewController.self) ||
-                view.isKind(of: SettingsViewController.self) ||
                 view.isKind(of: SettingTableViewController.self) {
                 self.launchOptions = nil
             }
@@ -99,7 +98,7 @@ public class PushNotificationService {
             let application = UIApplication.shared
             if let messageid = messageIDForUserInfo(userInfo) {
                 // if the app is in the background, then switch to the inbox and load the message detail
-                if application.applicationState == UIApplicationState.inactive || application.applicationState == UIApplicationState.background || forceProcess {
+                if application.applicationState == UIApplication.State.inactive || application.applicationState == UIApplication.State.background || forceProcess {
                     if let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController {
                         //revealViewController
                         sharedMessageDataService.fetchNotificationMessageDetail(messageid, completion: { (task, response, message, error) -> Void in

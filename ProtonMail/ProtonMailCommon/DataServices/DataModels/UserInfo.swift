@@ -25,8 +25,6 @@ struct ShowImages : OptionSet {
 
 @objc(UserInfo)
 final class UserInfo : NSObject {
-    @available(*, deprecated, message: "remove it when refactoring")
-    var userStatus: Int
     
     //1.9.0 phone local cache
     var language : String
@@ -77,7 +75,7 @@ final class UserInfo : NSObject {
     // init from cache
     required init(
         displayName: String?, maxSpace: Int64?, notificationEmail: String?, signature: String?,
-        usedSpace: Int64?, userStatus: Int?, userAddresses: [Address]?,
+        usedSpace: Int64?, userAddresses: [Address]?,
         autoSC:Int?, language:String?, maxUpload:Int64?, notify:Int?, showImage:Int?,  //v1.0.8
         swipeL:Int?, swipeR:Int?,  //v1.1.4
         role:Int?,
@@ -86,7 +84,6 @@ final class UserInfo : NSObject {
     {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
-        self.userStatus = userStatus ?? 0
         self.language = language ?? "en_US"
         self.maxUpload = maxUpload ?? 0
         self.role = role ?? 0
@@ -110,14 +107,13 @@ final class UserInfo : NSObject {
     }
 
     // init from api
-    required init(maxSpace: Int64?, usedSpace: Int64?, userStatus: Int?,
+    required init(maxSpace: Int64?, usedSpace: Int64?,
                   language:String?, maxUpload:Int64?,
                   role:Int?,
                   delinquent : Int?,
                   keys : [Key]?) {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
-        self.userStatus = userStatus ?? 0
         self.language = language ?? "en_US"
         self.maxUpload = maxUpload ?? 0
         self.role = role ?? 0
@@ -139,7 +135,6 @@ final class UserInfo : NSObject {
     func set(userinfo : UserInfo) {
         self.maxSpace = userinfo.maxSpace
         self.usedSpace = userinfo.usedSpace
-        self.userStatus = userinfo.userStatus
         self.language = userinfo.language
         self.maxUpload = userinfo.maxUpload
         self.role = userinfo.role
@@ -195,7 +190,6 @@ extension UserInfo {
         self.init(
             maxSpace: maxS?.int64Value,
             usedSpace: usedS?.int64Value,
-            userStatus: response["UserStatus"] as? Int,
             language : response["Language"] as? String,
             maxUpload: response["MaxUpload"] as? Int64,
             role : response["Role"] as? Int,
@@ -240,7 +234,6 @@ extension UserInfo: NSCoding {
             notificationEmail: aDecoder.decodeStringForKey(CoderKey.notificationEmail),
             signature: aDecoder.decodeStringForKey(CoderKey.signature),
             usedSpace: aDecoder.decodeInt64(forKey: CoderKey.usedSpace),
-            userStatus: aDecoder.decodeInteger(forKey: CoderKey.userStatus),
             userAddresses: aDecoder.decodeObject(forKey: CoderKey.userAddress) as? [Address],
             
             autoSC:aDecoder.decodeInteger(forKey: CoderKey.autoSaveContact),
@@ -264,7 +257,6 @@ extension UserInfo: NSCoding {
         aCoder.encode(maxSpace, forKey: CoderKey.maxSpace)
         aCoder.encode(notificationEmail, forKey: CoderKey.notificationEmail)
         aCoder.encode(usedSpace, forKey: CoderKey.usedSpace)
-        aCoder.encode(userStatus, forKey: CoderKey.userStatus)
         aCoder.encode(userAddresses, forKey: CoderKey.userAddress)
         
         aCoder.encode(language, forKey: CoderKey.language)

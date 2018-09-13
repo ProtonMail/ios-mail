@@ -210,11 +210,11 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate func setupRightButtons() {
         var rightButtons: [UIBarButtonItem] = []
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MessageViewController.moreButtonTapped(_:))))
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MessageViewController.removeButtonTapped)))
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_folder"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MessageViewController.folderButtonTapped)))
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MessageViewController.labelButtonTapped)))
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MessageViewController.unreadButtonTapped)))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MessageViewController.moreButtonTapped(_:))))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MessageViewController.removeButtonTapped)))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_folder"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MessageViewController.folderButtonTapped)))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MessageViewController.labelButtonTapped)))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MessageViewController.unreadButtonTapped)))
         
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
@@ -271,7 +271,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .default, .spam : .default, .archive : .default]
+        let locations: [MessageLocation : UIAlertAction.Style] = [.inbox : .default, .spam : .default, .archive : .default]
         for (location, style) in locations {
             if !message.hasLocation(location: location) {
                 if self.message.location == .outbox && location == .inbox {
@@ -450,7 +450,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         } else if segue.identifier == kToAddContactSegue {
             if let contact = sender as? ContactVO {
-                let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
+                let addContactViewController = segue.destination.children[0] as! ContactEditViewController
                 sharedVMService.contactAddViewModel(addContactViewController, contactVO: contact)
             }
         }
@@ -839,16 +839,16 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                     //TODO:: the hard code string need change it to enum later
                     if (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
                         let pkfile = try? Data(contentsOf: tempFileUri!) {
-                        var error : NSError? = nil
-                        let pass : PKPass = PKPass(data: pkfile, error: &error)
-                        if error != nil {
+                        do {
+                            let pass : PKPass = try PKPass(data: pkfile)
+                            if let vc = PKAddPassesViewController(pass: pass) {
+                                self.present(vc, animated: true, completion: nil)
+                            }
+                        } catch {
                             let previewQL = QuickViewViewController()
                             previewQL.dataSource = self
                             latestPresentedView = previewQL
                             self.present(previewQL, animated: true, completion: nil)
-                        } else {
-                            let vc = PKAddPassesViewController(pass: pass) as PKAddPassesViewController
-                            self.present(vc, animated: true, completion: nil)
                         }
                     } else {
                         let previewQL = QuickViewViewController()

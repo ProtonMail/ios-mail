@@ -61,7 +61,7 @@ class AppDelegate: UIResponder {
         } else {
             UIView.animate(withDuration: ViewDefined.animationDuration/2,
                            delay: 0,
-                           options: UIViewAnimationOptions(),
+                           options: UIView.AnimationOptions(),
                            animations: { () -> Void in
                             rootViewController.view.alpha = 0
             }, completion: { (finished) -> Void in
@@ -80,7 +80,7 @@ class AppDelegate: UIResponder {
                 window.rootViewController = viewController
                 
                 UIView.animate(withDuration: ViewDefined.animationDuration/2,
-                               delay: 0, options: UIViewAnimationOptions(),
+                               delay: 0, options: UIView.AnimationOptions(),
                                animations: { () -> Void in
                                 viewController.view.alpha = 1.0
                 }, completion: nil)
@@ -141,7 +141,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         }
     }
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         Fabric.with([Crashlytics()])
         application.registerForRemoteNotifications()
         
@@ -221,7 +221,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
             let timeInterval : Int = Int(Date().timeIntervalSince1970)
             userCachedStatus.exitTime = "\(timeInterval)";
         }
-        var taskID : UIBackgroundTaskIdentifier = 0
+        var taskID : UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask {
             //timed out
         }
@@ -230,12 +230,12 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
             sharedMessageDataService.backgroundFetch {
                 delay(3, closure: {
                     PMLog.D("End Background Task")
-                    application.endBackgroundTask(taskID)
+                    application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(taskID.rawValue))
                 })
             }
         } else {
             delay(3, closure: {
-                application.endBackgroundTask(taskID)
+                application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(taskID.rawValue))
             })
         }
         
@@ -346,7 +346,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         }
         
         if let exsitView = upgradeView {
-            keywindow.bringSubview(toFront: exsitView)
+            keywindow.bringSubviewToFront(exsitView)
             return
         }
         
@@ -363,7 +363,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(AppDelegate.rotated),
-                                               name: .UIDeviceOrientationDidChange,
+                                               name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
     }
     
@@ -374,7 +374,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
             }
             
             UIView.animate(withDuration: 0.25, delay: 0.0,
-                           options: UIViewAnimationOptions.layoutSubviews, animations: {
+                           options: UIView.AnimationOptions.layoutSubviews, animations: {
                 view.frame = keywindow.frame
                 view.layoutIfNeeded()
             }, completion: nil)
@@ -393,4 +393,9 @@ extension AppDelegate : ForceUpgradeViewDelegate {
             UIApplication.shared.openURL(.appleStore)
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
+	return UIBackgroundTaskIdentifier(rawValue: input)
 }

@@ -42,7 +42,7 @@ class AutoLayoutSizedCell: UICollectionViewCell {
         self.setNeedsLayout()
         self.layoutIfNeeded()
         
-        let desiredHeight = self.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        let desiredHeight = self.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         newFrame.size.height = desiredHeight
         attributes.frame = newFrame
         return attributes

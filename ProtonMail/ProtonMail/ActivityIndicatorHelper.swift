@@ -16,7 +16,7 @@ private let ACTIVITY_INDICATOR_FADE_ANIMATION_DURATION = 0.25
 
 class ActivityIndicatorHelper {
     
-    class func showActivityIndicator(at view: UIView, style: UIActivityIndicatorViewStyle) {
+    class func showActivityIndicator(at view: UIView, style: UIActivityIndicatorView.Style) {
         view.isUserInteractionEnabled = false
         let block = { () -> Void in
             var activityIndicator: UIActivityIndicatorView?
@@ -56,11 +56,11 @@ class ActivityIndicatorHelper {
         guard let v = view else {
             return
         }
-        showActivityIndicator(at: v, style: UIActivityIndicatorViewStyle.whiteLarge)
+        showActivityIndicator(at: v, style: UIActivityIndicatorView.Style.whiteLarge)
     }
     
     class func showActivityIndicator(at view: UIView) {
-        showActivityIndicator(at: view, style: UIActivityIndicatorViewStyle.whiteLarge)
+        showActivityIndicator(at: view, style: UIActivityIndicatorView.Style.whiteLarge)
     }
     
     class func hide(at view: UIView?) {
@@ -93,13 +93,13 @@ class ActivityIndicatorHelper {
         })
     }
     
-    fileprivate class func setupActivityIndicator(by style: UIActivityIndicatorViewStyle?) -> UIActivityIndicatorView {
+    fileprivate class func setupActivityIndicator(by style: UIActivityIndicatorView.Style?) -> UIActivityIndicatorView {
         var activityIndicator: UIActivityIndicatorView!
         
         if let indicatorStyle = style {
-            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: indicatorStyle)
+            activityIndicator = UIActivityIndicatorView(style: indicatorStyle)
         } else {
-            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.whiteLarge)
         }
         
         activityIndicator.backgroundColor = UIColor.black

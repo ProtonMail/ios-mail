@@ -43,9 +43,9 @@ class LableEditViewController : UIViewController {
         newLabelInput.text = name
         
         applyButtonText = viewModel.rightButtonText()
-        applyButton.setTitle(applyButtonText, for: UIControlState.disabled)
-        applyButton.setTitle(applyButtonText, for: UIControlState())
-        cancelButton.setTitle(LocalString._general_cancel_button, for: UIControlState())
+        applyButton.setTitle(applyButtonText, for: UIControl.State.disabled)
+        applyButton.setTitle(applyButtonText, for: UIControl.State())
+        cancelButton.setTitle(LocalString._general_cancel_button, for: UIControl.State())
         
         applyButton.isEnabled = !name.isEmpty
     }
@@ -147,7 +147,7 @@ extension LableEditViewController: UICollectionViewDelegateFlowLayout, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0,0,0,0);
+        return UIEdgeInsets.init(top: 0,left: 0,bottom: 0,right: 0);
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize

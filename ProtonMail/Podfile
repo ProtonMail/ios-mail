@@ -11,7 +11,7 @@ def common_pods
     
     #
     pod 'Groot', '3.0.1'
-    pod 'AFNetworking', '3.2.0'
+    pod 'AFNetworking', '3.2.1'
     pod 'AFNetworkActivityLogger', :git => 'https://github.com/AFNetworking/AFNetworkActivityLogger.git', :branch => '3_0_0'
     
     #based on 1.0.4
@@ -73,6 +73,8 @@ end
 
 target 'ProtonMailTests' do
 	pm_pods
+    
+    pod 'OHHTTPStubs/Swift'
 end
 
 target 'Share' do
@@ -90,6 +92,7 @@ post_install do | installer |
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
             config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+            config.build_settings['SWIFT_VERSION'] = '4.2'
             if config.name == 'Release'
                 config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
                 else

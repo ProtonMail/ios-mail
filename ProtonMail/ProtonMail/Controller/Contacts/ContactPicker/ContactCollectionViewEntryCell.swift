@@ -69,12 +69,12 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
         self.addSubview(textField)
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[textField]|",
-                                                           options: NSLayoutFormatOptions(rawValue: 0),
+                                                           options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
                                                            views: ["textField": textField]))
         
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[textField]|",
-                                                           options: NSLayoutFormatOptions(rawValue: 0),
+                                                           options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
                                                            views: ["textField": textField]))
         

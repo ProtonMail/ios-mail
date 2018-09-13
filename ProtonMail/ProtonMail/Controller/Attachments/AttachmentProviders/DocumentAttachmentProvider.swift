@@ -16,7 +16,7 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     }
     
     var alertAction: UIAlertAction {
-        return UIAlertAction(title: LocalString._import_file_from_, style: UIAlertActionStyle.default, handler: { (action) -> Void in
+        return UIAlertAction(title: LocalString._import_file_from_, style: UIAlertAction.Style.default, handler: { (action) -> Void in
             let types = [
                 kUTTypeMovie as String,
                 kUTTypeImage as String,

@@ -46,8 +46,8 @@ class MenuLabelViewCell: UITableViewCell {
             }
             titleLabel.text = item.name;
             
-            titleImageView.image = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-            titleImageView.highlightedImage = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            titleImageView.image = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+            titleImageView.highlightedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
             titleImageView.tintColor = color
         }
     }

@@ -82,11 +82,11 @@ final class ContactsTableViewCell: MCSwipeTableViewCell {
             range: range,
             using: { (textCheckingResult, matchingFlags, stop) -> Void in
                 let subRange = textCheckingResult?.range
-                attributedString.addAttribute(NSAttributedStringKey.foregroundColor,
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor,
                                               value: UIColor.ProtonMail.Blue_6789AB,
                                               range: subRange!)
                 
-                attributedString.addAttribute(NSAttributedStringKey.font,
+                attributedString.addAttribute(NSAttributedString.Key.font,
                                               value: font,
                                               range: subRange!)
         })

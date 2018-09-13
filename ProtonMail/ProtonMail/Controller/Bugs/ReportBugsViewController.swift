@@ -29,7 +29,7 @@ class ReportBugsViewController: ProtonMailViewController {
         super.viewDidLoad()
         
         self.sendButton = UIBarButtonItem(title: LocalString._general_send_action,
-                                          style: UIBarButtonItemStyle.plain,
+                                          style: UIBarButtonItem.Style.plain,
                                           target: self,
                                           action: #selector(ReportBugsViewController.sendAction(_:)))
         self.navigationItem.rightBarButtonItem = sendButton

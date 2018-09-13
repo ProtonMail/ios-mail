@@ -30,15 +30,15 @@ class QuickViewViewController: QLPreviewController {
         
         let navigationBarTitleFont = Fonts.h2.light
         navigationController.navigationBar.titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: navigationBarTitleFont
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: navigationBarTitleFont
         ]
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let views = self.childViewControllers
+        let views = self.children
         if views.count > 0 {
             if let nav = views[0] as? UINavigationController {
                 configureNavigationBar(nav)

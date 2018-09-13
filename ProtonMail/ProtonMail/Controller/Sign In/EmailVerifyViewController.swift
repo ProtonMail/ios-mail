@@ -65,9 +65,9 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         emailTextField.attributedPlaceholder = NSAttributedString(string: LocalString._contacts_email_address_placeholder,
-                                                                  attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+                                                                  attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: LocalString._enter_verification_code,
-                                                                       attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+                                                                       attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
         
         topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
@@ -131,9 +131,9 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         let count = self.viewModel.getTimerSet()
         UIView.performWithoutAnimation { () -> Void in
             if count != 0 {
-                self.sendCodeButton.setTitle(String(format: LocalString._retry_after_seconds, count), for: UIControlState())
+                self.sendCodeButton.setTitle(String(format: LocalString._retry_after_seconds, count), for: UIControl.State())
             } else {
-                self.sendCodeButton.setTitle(LocalString._send_verification_code, for: UIControlState())
+                self.sendCodeButton.setTitle(LocalString._send_verification_code, for: UIControl.State())
             }
             self.sendCodeButton.layoutIfNeeded()
         }
@@ -284,7 +284,7 @@ extension EmailVerifyViewController: NSNotificationCenterKeyboardObserverProtoco
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollBottomPaddingConstraint.constant = keyboardSize.height;
         }
         self.configConstraint(true)

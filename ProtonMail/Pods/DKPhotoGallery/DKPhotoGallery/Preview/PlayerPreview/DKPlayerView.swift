@@ -148,7 +148,7 @@ open class DKPlayerView: UIView {
     private let durationLabel = UILabel()
     private var tapGesture: UITapGestureRecognizer!
     private lazy var bufferingIndicator: UIActivityIndicatorView = {
-        return UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        return UIActivityIndicatorView(style: .gray)
     }()
     
     private var playerLayer: AVPlayerLayer {
@@ -165,8 +165,8 @@ open class DKPlayerView: UIView {
         set {
             guard let _ = self.player.currentItem else { return }
             
-            let newTime = CMTimeMakeWithSeconds(Double(Int64(newValue)), 1)
-            self.player.seek(to: newTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+            let newTime = CMTimeMakeWithSeconds(Double(Int64(newValue)), preferredTimescale: 1)
+            self.player.seek(to: newTime, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
         }
     }
     
@@ -730,7 +730,7 @@ open class DKPlayerView: UIView {
             if let newDurationAsValue = change?[NSKeyValueChangeKey.newKey] as? NSValue {
                 newDuration = newDurationAsValue.timeValue
             } else {
-                newDuration = kCMTimeZero
+                newDuration = CMTime.zero
             }
             
             let hasValidDuration = newDuration.isNumeric && newDuration.value != 0
@@ -758,10 +758,10 @@ open class DKPlayerView: UIView {
              Handle `NSNull` value for `NSKeyValueChangeNewKey`, i.e. when
              `player.currentItem` is nil.
              */
-            let newStatus: AVPlayerItemStatus
+            let newStatus: AVPlayerItem.Status
             
             if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber {
-                newStatus = AVPlayerItemStatus(rawValue: newStatusAsNumber.intValue)!
+                newStatus = AVPlayerItem.Status(rawValue: newStatusAsNumber.intValue)!
             } else {
                 newStatus = .unknown
             }

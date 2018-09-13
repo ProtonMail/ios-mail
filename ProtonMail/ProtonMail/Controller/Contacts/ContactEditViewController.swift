@@ -68,7 +68,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         super.viewDidLoad()
         
         self.doneItem = UIBarButtonItem(title: LocalString._general_done_button,
-                                        style: UIBarButtonItemStyle.plain,
+                                        style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(ContactEditViewController.doneAction))
         self.navigationItem.rightBarButtonItem = doneItem
        
@@ -86,7 +86,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         let nib = UINib(nibName: kContactDetailsHeaderView, bundle: nil)
         self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
         self.tableView.estimatedRowHeight = 70
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         
         self.tableView.isEditing = true
         self.tableView.noSeparatorsBelowFooter()
@@ -206,7 +206,7 @@ extension ContactEditViewController: NSNotificationCenterKeyboardObserverProtoco
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             tableViewBottomOffset.constant = keyboardSize.height
         }
         self.view.setNeedsUpdateConstraints()
@@ -490,7 +490,7 @@ extension ContactEditViewController: UITableViewDataSource {
         return outCell!
     }
     
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         let section = indexPath.section
         let row = indexPath.row
         
@@ -560,7 +560,7 @@ extension ContactEditViewController: UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         dismissKeyboard()
 
         let section = indexPath.section
@@ -692,7 +692,7 @@ extension ContactEditViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let sections = viewModel.getSections()
         if sections[indexPath.section] == .notes {
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         }
         
         if sections[indexPath.section] == .home_address {
@@ -707,7 +707,7 @@ extension ContactEditViewController: UITableViewDelegate {
         }
         
         if sections[indexPath.section] == .emails {
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         }
 
         return 48.0

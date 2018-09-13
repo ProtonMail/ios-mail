@@ -76,8 +76,8 @@ class ProtonMailViewController: UIViewController, ProtonMailViewControllerProtoc
         
         let navigationBarTitleFont = Fonts.h2.regular
         controller.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: navigationBarTitleFont
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: navigationBarTitleFont
         ]
     }
 
@@ -131,8 +131,8 @@ class ProtonMailTabBarController: UITabBarController, ProtonMailViewControllerPr
         
         let navigationBarTitleFont = Fonts.h2.regular
         controller.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: navigationBarTitleFont
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: navigationBarTitleFont
         ]
     }
     

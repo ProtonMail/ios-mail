@@ -192,7 +192,7 @@ extension ChangePasswordViewController: NSNotificationCenterKeyboardObserverProt
     
     func keyboardWillShowNotification(_ notification: Notification) {
         let info: NSDictionary = notification.userInfo! as NSDictionary
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = keyboardSize.height
             updateView()
         }

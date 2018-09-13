@@ -64,7 +64,7 @@ class PinCodeView : PMView {
     
     func updateViewText(_ title : String, cancelText : String, resetPin : Bool) {
         titleLabel.text = title
-        logoutButton.setTitle(cancelText, for: UIControlState())
+        logoutButton.setTitle(cancelText, for: UIControl.State())
         if resetPin {
             self.resetPin()
         }

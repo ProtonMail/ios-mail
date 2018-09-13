@@ -38,20 +38,20 @@ class EncryptionSetupViewController: UIViewController {
         let font = Fonts.h4.bold
         let attrHigh = NSMutableAttributedString(
             string: " " + LocalString._high_security,
-            attributes: [NSAttributedStringKey.font:font])
+            attributes: [NSAttributedString.Key.font:font])
         let font1 = Fonts.h4.regular
         let attrHighSize = NSMutableAttributedString(
             string: " " +  LocalString._signup_key_2048_size,
-            attributes: [NSAttributedStringKey.font:font1])
+            attributes: [NSAttributedString.Key.font:font1])
         attrHigh.append(attrHighSize)
         highBitLevel.setAttributedTitle(attrHigh, for: .normal)
         
         let attrExtreme = NSMutableAttributedString(
             string: LocalString._extreme_security,
-            attributes: [NSAttributedStringKey.font:font])
+            attributes: [NSAttributedString.Key.font:font])
         let attrExtremeSize = NSMutableAttributedString(
             string: " " + LocalString._signup_key_4096_size,
-            attributes: [NSAttributedStringKey.font:font1])
+            attributes: [NSAttributedString.Key.font:font1])
         attrExtreme.append(attrExtremeSize)
         normalBitLevel.setAttributedTitle(attrExtreme, for: .normal)
         
@@ -60,11 +60,11 @@ class EncryptionSetupViewController: UIViewController {
         let notesfont = Fonts.s13.regular
         let attr1 = NSMutableAttributedString(
             string: LocalString._the_highest_level_of_encryption_available + " ",
-            attributes: [NSAttributedStringKey.font:notesfont])
+            attributes: [NSAttributedString.Key.font:notesfont])
         let notesfont1 = Fonts.s13.bold
         let attr2 = NSMutableAttributedString(
             string: LocalString._can_take_several_minutes_to_setup,
-            attributes: [NSAttributedStringKey.font:notesfont1])
+            attributes: [NSAttributedString.Key.font:notesfont1])
         attr1.append(attr2)
         extremeSecurityNoteLabel.attributedText = attr1
         continueButton.setTitle(LocalString._genernal_continue, for: .normal)

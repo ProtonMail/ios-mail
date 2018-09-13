@@ -1367,6 +1367,7 @@ class LocalizedString {
     lazy var _mark_as_unread = NSLocalizedString("Mark as unread", comment: "Action")
 
     /// "All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!"
+    @available(*, deprecated )
     lazy var _all_of_your_existing_encrypted_emails_will_be_lost_forever_but_you_will_still_be_able_to_view_your_unencrypted_emails_ = NSLocalizedString("All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!", comment: "Description")
 
     /// "Display Name Updated"

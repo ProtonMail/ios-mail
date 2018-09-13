@@ -17,7 +17,7 @@ public class DKImageAssetDiskPurger {
     private var directories = Set<URL>()
     
     private init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(removeFiles), name: .UIApplicationWillTerminate, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(removeFiles), name: UIApplication.willTerminateNotification, object: nil)
     }
     
     deinit {
@@ -325,12 +325,12 @@ open class DKImageAssetExporter: DKImageBaseManager {
         if #available(iOS 10.0, *), let ciImage = CIImage(data: imageData), let colorSpace = ciImage.colorSpace {
             return CIContext().jpegRepresentation(of: ciImage, colorSpace: colorSpace, options:[:])
         } else if let image = UIImage(data: imageData) {
-            return UIImageJPEGRepresentation(image, 0.9)
+            return image.jpegData(compressionQuality: 0.9)
         } else {
             return nil
         }
     }
-    
+
     private func generateAuxiliaryPath(with url: URL) -> (auxiliaryDirectory: URL, auxiliaryFilePath: URL) {
         let parentDirectory = url.deletingLastPathComponent()
         let auxiliaryDirectory = parentDirectory.appendingPathComponent(".tmp")
@@ -462,7 +462,7 @@ open class DKImageAssetExporter: DKImageBaseManager {
                 }
                 
                 do {
-                    try write(data: UIImageJPEGRepresentation(asset.image!, 0.9)!, to: asset.localTemporaryPath!)
+                    try write(data: asset.image!.jpegData(compressionQuality: 0.9)!, to: asset.localTemporaryPath!)
                     completion(nil)
                 } catch {
                     completion(error)

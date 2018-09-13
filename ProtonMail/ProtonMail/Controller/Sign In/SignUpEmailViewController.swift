@@ -55,9 +55,9 @@ class SignUpEmailViewController: UIViewController {
         super.viewDidLoad()
         userCachedStatus.showTourNextTime()
         recoveryEmailField.attributedPlaceholder = NSAttributedString(string: LocalString._recovery_email,
-                                                                      attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+                                                                      attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         displayNameField.attributedPlaceholder = NSAttributedString(string: LocalString._settings_display_name_title,
-                                                                    attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+                                                                    attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
         topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
         topTitleLabel.text = LocalString._congratulations
@@ -219,7 +219,7 @@ extension SignUpEmailViewController: NSNotificationCenterKeyboardObserverProtoco
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollBottomPaddingConstraint.constant = keyboardSize.height;
         }
         self.configConstraint(true)

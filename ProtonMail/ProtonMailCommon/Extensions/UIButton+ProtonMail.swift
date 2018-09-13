@@ -19,7 +19,7 @@ import Foundation
 extension UIButton {
     convenience init(image: UIImage) {
         self.init()
-        self.setImage(image, for: UIControlState())
+        self.setImage(image, for: UIControl.State())
         self.sizeToFit()
     }
 }

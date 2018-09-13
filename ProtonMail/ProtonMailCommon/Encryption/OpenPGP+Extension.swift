@@ -116,7 +116,6 @@ extension PmOpenPGP {
                                    email: addr.email,
                                    order: addr.order,
                                    receive: addr.receive,
-                                   mailbox: addr.mailbox,
                                    display_name: addr.display_name,
                                    signature: addr.signature,
                                    keys: outKeys,
