@@ -23,7 +23,7 @@ jobs:
                 command: fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "ProtonMail" --device "iPhone 8" --clean
                 environment:
                     SCAN_DEVICE: iPhone 8
-                    SCAN_SCHEME: ProtonMailDev
+                    SCAN_SCHEME: ProtonMail
             - store_test_results:
                 path: output/scan
 
