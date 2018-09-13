@@ -21,6 +21,9 @@ enum ContactGroupEditError: Error
     
     case NSSetConversionToEmailArrayFailure
     case NSSetConversionToEmailSetFailure
+    
+    case addFailed
+    case updateFailed
 }
 
 extension ContactGroupEditError: LocalizedError {
@@ -41,6 +44,13 @@ extension ContactGroupEditError: LocalizedError {
         case .NSSetConversionToEmailSetFailure:
             return NSLocalizedString("Can't convert NSSet to Set of Email",
                                      comment: "Contact group NSSet to Set conversion failed")
+        case .addFailed:
+            return NSLocalizedString("Can't create contact group through API",
+                                     comment: "Contact group creation failed")
+        case .updateFailed:
+            return NSLocalizedString("Can't update contact group through API",
+                                     comment: "Contact group update failed")
+            
         }
     }
 }

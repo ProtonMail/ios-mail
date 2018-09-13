@@ -13,7 +13,7 @@ import CoreData
  When the core data that provides data to this controller has data changes,
  the update will be performed immediately and automatically by core data
  */
-class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
+class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
 {
     var viewModel: ContactGroupsViewModel!
     
@@ -68,6 +68,8 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
         self.automaticallyAdjustsScrollViewInsets = false
         
         self.prepareSearchBar()
+        
+        self.prepareNavigationItem()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -127,6 +129,17 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
                                                         name: contactGroup.name,
                                                         color: contactGroup.color,
                                                         emailIDs: contactGroup.emails)
+        } else if (segue.identifier == kAddContactSugue) {
+            let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
+            sharedVMService.contactAddViewModel(addContactViewController)
+        } else if (segue.identifier == kAddContactGroupSugue) {
+            let addContactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
+            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create)
+        } else if segue.identifier == kSegueToImportView {
+            let popup = segue.destination as! ContactImportViewController
+            self.setPresentationStyleForSelfController(self,
+                                                       presentingController: popup,
+                                                       style: .overFullScreen)
         }
     }
 }

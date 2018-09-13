@@ -295,7 +295,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                     }
                 } else {
                     PMLog.D("No contact group ID")
-                    seal.reject(ContactGroupEditError.noContactGroupID)
+                    seal.reject(ContactGroupEditError.addFailed)
                 }
             }
             
@@ -325,30 +325,34 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             seal in
             
             let completionHandler = {
-                () -> Void in
+                (success: Bool) -> Void in
                 
-                // update email IDs
-                if let original = self.contactGroup.originalEmailIDs as? Set<Email>,
-                    let updated = updatedEmailList as? Set<Email> {
-                    
-                    let toAdd = updated.subtracting(original)
-                    let toDelete = original.subtracting(updated)
-                    
-                    firstly {
-                        () -> Promise<Void> in
-                        self.addEmailsToContactGroup(emailList: toAdd as NSSet)
-                        }.then {
-                            _ -> Promise<Void> in
-                            self.removeEmailsFromContactGroup(emailList: toDelete as NSSet)
-                        }.done {
-                            seal.fulfill(())
-                        }.catch {
-                            error in
-                            seal.reject(error)
+                if success {
+                    // update email IDs
+                    if let original = self.contactGroup.originalEmailIDs as? Set<Email>,
+                        let updated = updatedEmailList as? Set<Email> {
+                        
+                        let toAdd = updated.subtracting(original)
+                        let toDelete = original.subtracting(updated)
+                        
+                        firstly {
+                            () -> Promise<Void> in
+                            self.addEmailsToContactGroup(emailList: toAdd as NSSet)
+                            }.then {
+                                _ -> Promise<Void> in
+                                self.removeEmailsFromContactGroup(emailList: toDelete as NSSet)
+                            }.done {
+                                seal.fulfill(())
+                            }.catch {
+                                error in
+                                seal.reject(error)
+                        }
+                    } else {
+                        PMLog.D("NSSet to Email set conversion failure")
+                        seal.reject(ContactGroupEditError.NSSetConversionToEmailSetFailure)
                     }
                 } else {
-                    PMLog.D("NSSet to Email set conversion failure")
-                    seal.reject(ContactGroupEditError.NSSetConversionToEmailSetFailure)
+                    seal.reject(ContactGroupEditError.updateFailed)
                 }
             }
             

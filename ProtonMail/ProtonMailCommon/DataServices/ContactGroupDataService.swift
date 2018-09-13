@@ -28,7 +28,8 @@ class ContactGroupsDataService {
             task, response, hasError in
             if response == nil {
                 // TODO: handle error
-                PMLog.D("[Contact Group addContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                PMLog.D("[Contact Group addContactGroup API] error = \(String(describing: task.debugDescription)) \(String(describing: response)) \(hasError)")
+                completionHandler(nil)
             } else if let newContactGroup = response?.label {
                 // save
                 PMLog.D("[Contact Group addContactGroup API] result = \(newContactGroup)")
@@ -36,7 +37,8 @@ class ContactGroupsDataService {
                 completionHandler(newContactGroup["ID"] as? String)
             } else {
                 // TODO: handle error
-                PMLog.D("[Contact Group addContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                PMLog.D("[Contact Group addContactGroup API] error = \(String(describing: task.debugDescription)) \(String(describing: response)) \(hasError)")
+                completionHandler(nil)
             }
         }
     }
@@ -49,7 +51,7 @@ class ContactGroupsDataService {
      - color: The color of the contact group
      - completionHandler: The completion handler called upon successful editing
      */
-    func editContactGroup(groupID: String, name: String, color: String, completionHandler: @escaping () -> Void)
+    func editContactGroup(groupID: String, name: String, color: String, completionHandler: @escaping (Bool) -> Void)
     {
         let eventAPI = UpdateLabelRequest<UpdateLabelRequestResponse>(id: groupID, name: name, color: color)
         
@@ -57,15 +59,17 @@ class ContactGroupsDataService {
             task, response, hasError in
             if response == nil {
                 // TODO: handle error
-                PMLog.D("[Contact Group editContactGroup API] response nil error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                PMLog.D("[Contact Group editContactGroup API] response nil error = \(String(describing: task.debugDescription)) \(String(describing: response)) \(hasError)")
+                completionHandler(false)
             } else if let updatedContactGroup = response?.label {
                 // save
                 PMLog.D("[Contact Group editContactGroup API] result = \(String(describing: updatedContactGroup))")
                 sharedLabelsDataService.addNewLabel(updatedContactGroup)
-                completionHandler()
+                completionHandler(true)
             } else {
                 // TODO: handle error
-                PMLog.D("[Contact Group editContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                PMLog.D("[Contact Group editContactGroup API] error = \(String(describing: task.debugDescription)) \(String(describing: response)) \(hasError)")
+                completionHandler(false)
             }
         }
     }

@@ -14,7 +14,8 @@ import UIKit
 import Contacts
 import CoreData
 
-class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
+{
     
     fileprivate let kContactCellIdentifier: String = "ContactCell"
     fileprivate let kProtonMailImage: UIImage      = UIImage(named: "encrypted_main")!
@@ -82,6 +83,8 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         self.viewModel.setupFetchedResults(delaget: self)
         tableView.reloadData()
         self.prepareSearchBar()
+        
+        prepareNavigationItem()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -144,6 +147,17 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             let contact = sender as? Contact
             sharedVMService.contactDetailsViewModel(contactDetailsViewController, contact: contact!)
         } else if (segue.identifier == "toCompose") {
+        } else if (segue.identifier == kAddContactSugue) {
+            let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
+            sharedVMService.contactAddViewModel(addContactViewController)
+        } else if (segue.identifier == kAddContactGroupSugue) {
+            let addContactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
+            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create)
+        } else if segue.identifier == kSegueToImportView {
+            let popup = segue.destination as! ContactImportViewController
+            self.setPresentationStyleForSelfController(self,
+                                                       presentingController: popup,
+                                                       style: .overFullScreen)
         }
     }
     

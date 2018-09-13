@@ -57,7 +57,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="CONTACTS" id="dNI-3f-weZ">
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="G3m-Jr-Xhu"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="1TK-5y-hvZ"/>
                     </navigationItem>
                     <connections>
                         <outlet property="menuButton" destination="G3m-Jr-Xhu" id="MWn-nO-giN"/>
@@ -68,6 +67,9 @@
                         <outlet property="tableViewBottomConstraint" destination="Rc8-Bf-RFt" id="FH3-BY-nIT"/>
                         <segue destination="1jS-uV-TRv" kind="presentation" identifier="toCompose" id="oQx-RX-nff"/>
                         <segue destination="Cjq-Ic-Ywz" kind="show" identifier="toContactDetailsSegue" id="QZE-iH-gR5"/>
+                        <segue destination="iCl-CV-gT2" kind="presentation" identifier="toImportContacts" id="6gL-17-Vjp"/>
+                        <segue destination="d3P-H0-xNt" kind="presentation" identifier="toAddContact" id="pLm-6L-kNd"/>
+                        <segue destination="HW2-St-HGr" kind="presentation" identifier="toAddContactGroup" id="3li-n2-ywX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Rs-Sb-Nje" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -96,7 +98,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jm5-av-Bom" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5648.8000000000002" y="4990.2548725637189"/>
+            <point key="canvasLocation" x="7127" y="5133"/>
         </scene>
         <!--Edit Group-->
         <scene sceneID="SHl-nY-g7K">
@@ -290,7 +292,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSc-Bf-OE3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6696.8000000000002" y="4990.2548725637189"/>
+            <point key="canvasLocation" x="8177" y="5135"/>
         </scene>
         <!--Contact Groups-->
         <scene sceneID="7aQ-aJ-dfc">
@@ -360,6 +362,9 @@
                         <outlet property="searchViewConstraint" destination="ysN-oo-Xni" id="rtz-j1-PG4"/>
                         <outlet property="tableView" destination="PSd-wW-WIb" id="dXs-ic-asq"/>
                         <segue destination="JZ0-Zf-iCa" kind="show" identifier="toContactGroupDetailSegue" id="r15-Xs-j7U"/>
+                        <segue destination="HW2-St-HGr" kind="presentation" identifier="toAddContactGroup" id="cjF-6k-L7o"/>
+                        <segue destination="d3P-H0-xNt" kind="presentation" identifier="toAddContact" id="HIr-Zm-YHr"/>
+                        <segue destination="iCl-CV-gT2" kind="presentation" identifier="toImportContacts" id="7yS-kj-Eid"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v9c-YF-3Yf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -372,7 +377,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="3104.8000000000002" y="4989.3553223388308"/>
+            <point key="canvasLocation" x="4585" y="5134"/>
         </scene>
         <!--View Contact Group Details-->
         <scene sceneID="CfH-2f-OmI">
@@ -481,7 +486,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SJ4-LB-3WW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4348" y="4988.4557721139436"/>
+            <point key="canvasLocation" x="5842" y="5689"/>
         </scene>
         <!--Contact Edit -->
         <scene sceneID="Lgo-jO-tY2">
@@ -1691,7 +1696,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TF4-Th-N3Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5648.8000000000002" y="3626.5367316341831"/>
+            <point key="canvasLocation" x="5742" y="2740"/>
         </scene>
         <!--Select Color-->
         <scene sceneID="eFG-lI-0gt">
@@ -1756,7 +1761,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Otv-tc-1Yr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7800.8000000000002" y="4527.8860569715143"/>
+            <point key="canvasLocation" x="9281" y="4673"/>
         </scene>
         <!--Select Email-->
         <scene sceneID="RqY-US-k1v">
@@ -1819,7 +1824,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hxp-fk-D6C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7800.8000000000002" y="5451.7241379310353"/>
+            <point key="canvasLocation" x="9281" y="5597"/>
         </scene>
         <!--Contact Type-->
         <scene sceneID="kfF-I9-UhM">
@@ -1939,7 +1944,7 @@
                 <viewControllerPlaceholder storyboardName="Menu" referencedIdentifier="UINavigationController-fzN-Ci-Qyg" id="1jS-uV-TRv" userLabel="Composer Navigation Controller" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="adi-5J-K40" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5365" y="2799"/>
+            <point key="canvasLocation" x="7245" y="2635"/>
         </scene>
         <!--UpgradeAlertViewController-->
         <scene sceneID="Vr2-e9-Tzg">
@@ -2069,7 +2074,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dpk-Rd-D2X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5030" y="1594"/>
+            <point key="canvasLocation" x="4431" y="2348"/>
         </scene>
         <!--Contact Tab Bar View Controller-->
         <scene sceneID="BZX-Z0-Uzv">
@@ -2087,9 +2092,6 @@
                     <connections>
                         <segue destination="Osq-ep-MaY" kind="relationship" relationship="viewControllers" id="t4p-ws-V5I"/>
                         <segue destination="Zar-1f-ezc" kind="relationship" relationship="viewControllers" id="XFY-Wd-AW4"/>
-                        <segue destination="d3P-H0-xNt" kind="presentation" identifier="toAddContact" id="9IC-uT-T7Z"/>
-                        <segue destination="HW2-St-HGr" kind="presentation" identifier="toAddContactGroup" id="ioS-76-SJw"/>
-                        <segue destination="iCl-CV-gT2" kind="presentation" identifier="toImportContacts" id="6X8-sA-KF5"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pci-9B-fcc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2132,7 +2134,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6xz-iK-YS6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2165.5999999999999" y="4989.3553223388308"/>
+            <point key="canvasLocation" x="3646" y="5134"/>
         </scene>
     </scenes>
     <resources>
@@ -2144,9 +2146,10 @@
         <image name="signup_logo" width="98" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oC7-Qd-EW1"/>
+        <segue reference="6gL-17-Vjp"/>
+        <segue reference="sDR-N5-yCe"/>
         <segue reference="oQx-RX-nff"/>
-        <segue reference="9IC-uT-T7Z"/>
-        <segue reference="ioS-76-SJw"/>
+        <segue reference="pLm-6L-kNd"/>
+        <segue reference="3li-n2-ywX"/>
     </inferredMetricsTieBreakers>
 </document>

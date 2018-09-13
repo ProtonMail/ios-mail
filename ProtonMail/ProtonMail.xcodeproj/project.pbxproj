@@ -992,6 +992,7 @@
 		AF8A1FB087770A50D595F4CE6D0F5553 /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399221AA081E74249939780EA537FD0 /* PMDocumentPickerViewController.swift */; };
 		AFCB9D83BE3960601910519DBAC2FA2D /* UIApplication+InfoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956A4E85B917F86878D23ECA9ED1FA55 /* UIApplication+InfoExtension.swift */; };
 		AFD544874ABDF70200E5379B126277BE /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03C21BED10B6A6ED8D7D2660C78D4A2 /* LabelAPI.swift */; };
+		AFF71E45B670DD26BF830EC8D3FEB2C7 /* ContactsAndGroupsSharedCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B331400E3C129F3C812798EA95BD0CC /* ContactsAndGroupsSharedCode.swift */; };
 		AFFDA993D82E923B0118FC74565F4ECF /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = B752C6886D60C2FFFC352721ED52A5F3 /* backup.css */; };
 		B00F46CCA2F56FDE634933CEA03F459F /* Fonts+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AD55DA0F745D466C56681D98172724 /* Fonts+Constants.swift */; };
 		B0400A9C85C34B61675A749C1B7506B0 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB6E3213453075852FF02AF616CE4F7 /* Reachability.m */; };
@@ -1062,6 +1063,7 @@
 		BB638014191D0105298EAB2E71CBFC9D /* ContactEditTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B13E32145C9E9E7885E6588E3F7F3C5 /* ContactEditTextViewCell.swift */; };
 		BB653B7C382ADF99992E478611BB6CD0 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06450F6DC3D5C6C237760D37B37F1620 /* PushNotificationService.swift */; };
 		BC14E98526DE0E6EE331C5063121C968 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3918532981DC56433B3F9F8552DA9AC /* BaseViewController.swift */; };
+		BC323190BFC84F91DC4070BF7A0226BE /* ContactsAndGroupsSharedCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B331400E3C129F3C812798EA95BD0CC /* ContactsAndGroupsSharedCode.swift */; };
 		BC8C341890EB568A59E3E8104C4725B4 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780829CF1C02F4C2F3D316D9263AB303 /* WebViewController.swift */; };
 		BC8E64D208E1125294DB9EA05B0E38C3 /* UIStoryboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C995A5395A5FEBA384F6A27BB2C2A2C /* UIStoryboard+Extension.swift */; };
 		BC98A05C235CFD45E40F281F9B9DCF07 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C05C331E3651D8B62311F133631FA6 /* WebViewModel.swift */; };
@@ -1617,6 +1619,7 @@
 		1B13E32145C9E9E7885E6588E3F7F3C5 /* ContactEditTextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditTextViewCell.swift; sourceTree = "<group>"; };
 		1B28DCB0803630A3B44E183F3040FBF3 /* Pods_ProtonMailTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProtonMailTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B3055A244AAD264664E2E6C96BE6938 /* Pods-ProtonMailTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.distribution.xcconfig"; sourceTree = "<group>"; };
+		1B331400E3C129F3C812798EA95BD0CC /* ContactsAndGroupsSharedCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContactsAndGroupsSharedCode.swift; path = /Users/henrybear327/Documents/ProtonMail/protonmail_ios/ProtonMail/ProtonMail/Controller/Tabbar/ContactsAndGroupsSharedCode.swift; sourceTree = "<absolute>"; };
 		1BBAB3378173BB2EA0DA5B8ED856A693 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1C6975591022B24982654B9F6C071D9C /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		1E1D2C6642E07C8BB129A67146BE1541 /* SignupViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModelImpl.swift; sourceTree = "<group>"; };
@@ -3095,6 +3098,7 @@
 			isa = PBXGroup;
 			children = (
 				DD9473962A2C56DE5ECF2323A45D6BB0 /* ContactTabBarViewController.swift */,
+				1B331400E3C129F3C812798EA95BD0CC /* ContactsAndGroupsSharedCode.swift */,
 			);
 			path = Tabbar;
 			sourceTree = "<group>";
@@ -4704,6 +4708,7 @@
 				C8400F7745B20650B273FDE53FC334A4 /* ContactVO+Extension.swift in Sources */,
 				67B7DC25EBEE6CA76A7D769919E92E0A /* ContactVO.swift in Sources */,
 				83039E8A04B668CFAD9CCCE416BAE37A /* ContactsAPI.swift in Sources */,
+				AFF71E45B670DD26BF830EC8D3FEB2C7 /* ContactsAndGroupsSharedCode.swift in Sources */,
 				3A85F1421FDC1E1736776A6E5F7C0C4B /* ContactsDefined.swift in Sources */,
 				7021EAAECF7677217BEE22C1BE4B78B7 /* ContactsDetailsWarningCell.swift in Sources */,
 				17EC9C6C1419DACA98146CA1DABB62F9 /* ContactsTableViewCell.swift in Sources */,
@@ -5123,6 +5128,7 @@
 				4A62C1D3D12DD55081EC7DDC38EAB20D /* ContactVO+Extension.swift in Sources */,
 				71271CE749D48B3913631C5A087860C3 /* ContactVO.swift in Sources */,
 				8DB8DE3272D109E6AAA722080DAAFA4F /* ContactsAPI.swift in Sources */,
+				BC323190BFC84F91DC4070BF7A0226BE /* ContactsAndGroupsSharedCode.swift in Sources */,
 				37DAE617BC5F06C3B3B62EC876B9BDA5 /* ContactsDefined.swift in Sources */,
 				270C5CE050A2B4BE21757902232B36DB /* ContactsDetailsWarningCell.swift in Sources */,
 				2688AF39DAC93913336234E7BD6EDEE2 /* ContactsTableViewCell.swift in Sources */,
