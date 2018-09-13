@@ -337,7 +337,7 @@ class APIService {
                             if responseCode.forceUpgrade {
                                 // old check responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004
                                 // new logic will not log user out
-                                NotificationCenter.default.post(name: .forceUpgrade, object: nil)
+                                NotificationCenter.default.post(name: .forceUpgrade, object: errorMessage)
                                 completion?(task, responseDict, displayError)
                             } else if responseCode == APIErrorCode.API_offline {
                                 completion?(task, responseDict, displayError)
@@ -370,8 +370,9 @@ class APIService {
                                              authenticated: authenticated,
                                              completion: completion)
                             } else if responseCode.forceUpgrade  {
-                                //responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004
-                                NSError.alertUpdatedToast()
+                                //FIXME: shouldn't be here
+                                let errorMessage = responseDictionary["Error"] as? String
+                                NotificationCenter.default.post(name: .forceUpgrade, object: errorMessage)
                                 completion?(task, responseDictionary, error)
                             } else if responseCode == APIErrorCode.API_offline {
                                 completion?(task, responseDictionary, error)

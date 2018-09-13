@@ -1597,4 +1597,12 @@ class LocalizedString {
     lazy var _another_user_transaction = NSLocalizedString("Another user have unfinished in-app purchases on this device. Please, login with that user so we'll be able to complete the purchase and activate the plan.", comment: "Error message")
     
     lazy var _backend_mismatch = NSLocalizedString("We were not available to match AppStore product with products on our server. Please, contact support.", comment: "Error message")
+    
+    
+    // Mark : Force Upgrade
+    
+    /// "Update Required"
+    lazy var _update_required = NSLocalizedString("Update Required", comment: "title")
+    /// "Update Now"
+    lazy var _update_now = NSLocalizedString("Update Now", comment: "title")
 }

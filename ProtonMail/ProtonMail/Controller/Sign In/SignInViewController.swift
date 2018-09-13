@@ -490,9 +490,11 @@ class SignInViewController: ProtonMailViewController {
                 MBProgressHUD.hide(for: self.view, animated: true)
                 PMLog.D("error: \(error)")
                 self.ShowLoginViews();
-                let alertController = error.alertController()
-                alertController.addOKAction()
-                self.present(alertController, animated: true, completion: nil)
+                if !error.code.forceUpgrade {
+                    let alertController = error.alertController()
+                    alertController.addOKAction()
+                    self.present(alertController, animated: true, completion: nil)
+                }
             },
             onSuccess: { (mailboxpwd) in
                 //ok
