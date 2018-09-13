@@ -1454,19 +1454,19 @@
 			remoteGlobalIDString = 3DD8FCED3FB5276FDB35E89899093113;
 			remoteInfo = PushServiceDev;
 		};
+		D67206EDE7A3E400AA7DECCD197D8B91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7CC48161B0FC946A8DB234B96B6A66DD;
+			remoteInfo = ProtonMail;
+		};
 		7DE64AAD46503A1688D8AD15767E9C22 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 528CABDE5FC7422D1D0E7976ADAA8CAD;
 			remoteInfo = ShareDev;
-		};
-		93C7CCEC8340199F110B903A630A4E63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 73B959411C37C32C3517112463FDCDDE;
-			remoteInfo = ProtonMailDev;
 		};
 		B7D253984C10449C96DA3F44C61F9EAB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3626,7 +3626,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				AFB98F33D750FC9EF304782BE94E0AA2 /* PBXTargetDependency */,
+				36825F4497A04DA925FB6478D4699F4A /* PBXTargetDependency */,
 			);
 			name = ProtonMailTests;
 			productName = ProtonMailTests;
@@ -3765,7 +3765,7 @@
 						DevelopmentTeam = 6UN54H93QT;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Manual;
-						TestTargetID = 73B959411C37C32C3517112463FDCDDE;
+						TestTargetID = 7CC48161B0FC946A8DB234B96B6A66DD;
 					};
 					E900B623493DA0C67875BBDA4D4D90ED = {
 						CreatedOnToolsVersion = 9.1;
@@ -5776,10 +5776,10 @@
 			target = 55608604485FE7632E52ED7BBE6A939B /* PushService */;
 			targetProxy = C1413F955C68DB50312C878280E547D5 /* PBXContainerItemProxy */;
 		};
-		AFB98F33D750FC9EF304782BE94E0AA2 /* PBXTargetDependency */ = {
+		36825F4497A04DA925FB6478D4699F4A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 73B959411C37C32C3517112463FDCDDE /* ProtonMailDev */;
-			targetProxy = 93C7CCEC8340199F110B903A630A4E63 /* PBXContainerItemProxy */;
+			target = 7CC48161B0FC946A8DB234B96B6A66DD /* ProtonMail */;
+			targetProxy = D67206EDE7A3E400AA7DECCD197D8B91 /* PBXContainerItemProxy */;
 		};
 		B5512F1FD8180155D82C74560A54E210 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
