@@ -345,7 +345,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
             return
         }
         
-        guard upgradeView == nil else {
+        if let exsitView = upgradeView {
+            keywindow.bringSubview(toFront: exsitView)
             return
         }
         
