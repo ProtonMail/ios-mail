@@ -81,7 +81,7 @@ class ContactGroupsDataService {
      - name: The name of the contact group
      - completionHandler: The completion handler called upon successful deletion
      */
-    func deleteContactGroup(groupID: String, completionHandler: @escaping () -> Void)
+    func deleteContactGroup(groupID: String, completionHandler: @escaping (Bool) -> Void)
     {
         let eventAPI = DeleteLabelRequest<DeleteLabelRequestResponse>(lable_id: groupID)
         
@@ -90,6 +90,7 @@ class ContactGroupsDataService {
             if response == nil {
                 // TODO: handle error
                 PMLog.D("[Contact Group deleteContactGroup API] response nil error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                completionHandler(false)
             } else if let returnedCode = response?.returnedCode {
                 PMLog.D("[Contact Group deleteContactGroup API] result = \(String(describing: returnedCode))")
                 
@@ -107,18 +108,22 @@ class ContactGroupsDataService {
                         
                         do {
                             try context.save()
+                            completionHandler(true)
                         } catch {
                             PMLog.D("deleteContactGroup updating error: \(error)")
+                            completionHandler(false)
                         }
+                    } else {
+                        completionHandler(false)
                     }
-                    
-                    completionHandler()
                 } else {
                     // TODO: handle error
+                    completionHandler(false)
                 }
             } else {
                 // TODO: handle error
                 PMLog.D("[Contact Group deleteContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                completionHandler(false)
             }
         }
     }

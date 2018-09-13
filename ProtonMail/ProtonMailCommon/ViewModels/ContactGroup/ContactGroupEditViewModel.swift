@@ -24,6 +24,7 @@ enum ContactGroupEditError: Error
     
     case addFailed
     case updateFailed
+    case deleteFailed
 }
 
 extension ContactGroupEditError: LocalizedError {
@@ -50,7 +51,9 @@ extension ContactGroupEditError: LocalizedError {
         case .updateFailed:
             return NSLocalizedString("Can't update contact group through API",
                                      comment: "Contact group update failed")
-            
+        case .deleteFailed:
+            return NSLocalizedString("Can't delete contact group through API",
+                                     comment: "Contact group delete failed")
         }
     }
 }

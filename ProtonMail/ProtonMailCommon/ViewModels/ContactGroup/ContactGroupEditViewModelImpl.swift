@@ -379,10 +379,13 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             seal in
             
             let completionHandler = {
-                () -> Void in
+                (success: Bool) -> Void in
                 
-                seal.fulfill(())
-                return
+                if success {
+                    seal.fulfill(())
+                } else {
+                    seal.reject(ContactGroupEditError.deleteFailed)
+                }
             }
             
             if let ID = contactGroup.ID {

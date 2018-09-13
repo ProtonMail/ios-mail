@@ -82,10 +82,13 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     }
     
     private func prepareSearchBar() {
+        viewModel.setFetchResultController(fetchedResultsController: &fetchedContactGroupResultsController)
+        
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = LocalString._general_search_placeholder
         searchController.searchBar.setValue(LocalString._general_cancel_button,
                                             forKey:"_cancelButtonText")
+        
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
@@ -147,7 +150,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
 extension ContactGroupsViewController: UISearchBarDelegate, UISearchResultsUpdating
 {
     func updateSearchResults(for searchController: UISearchController) {
-        //viewModel.search(text: searchController.searchBar.text)
+        viewModel.search(text: searchController.searchBar.text)
+        tableView.reloadData()
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

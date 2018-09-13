@@ -83,6 +83,7 @@ class LabelsDataService {
             case .label:
                 fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
             case .contactGroup:
+                // in contact group searching, predicate must be consistent with this one
                 fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
             }
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]

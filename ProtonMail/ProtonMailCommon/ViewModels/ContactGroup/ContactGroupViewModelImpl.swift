@@ -11,7 +11,6 @@ import CoreData
 
 class ContactGroupsViewModelImpl: ContactGroupsViewModel
 {
-    var searchText: String? = nil
     var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
     
     /**
@@ -42,23 +41,21 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
      
      */
     func search(text: String?) {
-        searchText = text
-        
         if let text = text {
             if text == "" {
-                fetchedResultsController?.fetchRequest.predicate = nil
+                fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
             } else {
-                fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@",
-                                                                               argumentArray: [text, text])
+                fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "%K == 2 AND (name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@)",
+                                                                               argumentArray: [Label.Attributes.type, text, text])
             }
         } else {
-            fetchedResultsController?.fetchRequest.predicate = nil
+            fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
         }
         
         do {
             try fetchedResultsController?.performFetch()
         } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+            PMLog.D("contact group search error: \(ex)")
         }
     }
 }
