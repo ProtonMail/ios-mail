@@ -67,9 +67,7 @@ class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
         self.extendedLayoutIncludesOpaqueBars = true
         self.automaticallyAdjustsScrollViewInsets = false
         
-        
-        prepareSearchBar()
-
+        self.prepareSearchBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {

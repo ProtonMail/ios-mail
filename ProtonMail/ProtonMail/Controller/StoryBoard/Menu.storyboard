@@ -4161,7 +4161,7 @@
         <!--Contact Storyboard-->
         <scene sceneID="lfj-HT-x7A">
             <objects>
-                <viewControllerPlaceholder storyboardName="Contact" referencedIdentifier="UINavigationController-PFX-v3-PCL" id="9an-Gq-bcn" userLabel="Contact Storyboard" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Contact" referencedIdentifier="UITabbarControllerContactsAndGroups" id="9an-Gq-bcn" userLabel="Contact Storyboard" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hmt-T7-TJX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1162" y="3604"/>

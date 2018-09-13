@@ -1442,21 +1442,6 @@
             </objects>
             <point key="canvasLocation" x="7900" y="3626.5367316341831"/>
         </scene>
-        <!--Contact Navigation Controller-->
-        <scene sceneID="SEY-3E-LYY">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PFX-v3-PCL" userLabel="Contact Navigation Controller" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="n9F-Oz-CJH">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pqM-EV-O7S" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1121" y="4182"/>
-        </scene>
         <!--AddContact Navigation-->
         <scene sceneID="IQb-f9-tk6">
             <objects>
@@ -2089,7 +2074,7 @@
         <!--Contact Tab Bar View Controller-->
         <scene sceneID="BZX-Z0-Uzv">
             <objects>
-                <tabBarController storyboardIdentifier="UINavigationController-PFX-v3-PCL" automaticallyAdjustsScrollViewInsets="NO" id="HLX-xi-kWa" customClass="ContactTabBarViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="UITabbarControllerContactsAndGroups" automaticallyAdjustsScrollViewInsets="NO" id="HLX-xi-kWa" customClass="ContactTabBarViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Ywd-ql-O5c">
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="Zuw-9D-0zE"/>
