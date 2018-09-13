@@ -13,7 +13,7 @@ import CoreData
  When the core data that provides data to this controller has data changes,
  the update will be performed immediately and automatically by core data
  */
-class ContactGroupsViewController: UIViewController, ViewModelProtocol
+class ContactGroupsViewController: ProtonMailViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupsViewModel!
     
@@ -36,6 +36,7 @@ class ContactGroupsViewController: UIViewController, ViewModelProtocol
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         tableView.register(UINib(nibName: "ContactGroupsViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactGroupCellIdentifier)
         
@@ -65,60 +66,52 @@ class ContactGroupsViewController: UIViewController, ViewModelProtocol
         self.definesPresentationContext = true
         self.extendedLayoutIncludesOpaqueBars = true
         self.automaticallyAdjustsScrollViewInsets = false
+        
+        
+        prepareSearchBar()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.title = "Groups"
-        
-        prepareSearchBar()
+        self.title = "Groups"
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        destroySearchBar()
     }
     
     private func prepareSearchBar() {
-        print("prepareSearchBar")
-        viewModel.setFetchResultController(fetchedResultsController: &fetchedContactGroupResultsController)
-        
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = LocalString._general_search_placeholder
         searchController.searchBar.setValue(LocalString._general_cancel_button,
-                                            forKey: "_cancelButtonText")
-        
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
+                                            forKey:"_cancelButtonText")
+        self.searchController.searchResultsUpdater = self
+        self.searchController.dimsBackgroundDuringPresentation = false
+        self.searchController.searchBar.delegate = self
+        self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.automaticallyAdjustsScrollViewInsets = true
+        self.searchController.searchBar.sizeToFit()
+        self.searchController.searchBar.keyboardType = .default
+        self.searchController.searchBar.autocapitalizationType = .none
+        self.searchController.searchBar.isTranslucent = false
+        self.searchController.searchBar.tintColor = .white
+        self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
+        self.searchController.searchBar.backgroundColor = .clear
         
         if #available(iOS 11.0, *) {
             self.searchViewConstraint.constant = 0.0
             self.searchView.isHidden = true
-            self.tabBarController?.navigationItem.largeTitleDisplayMode = .never
-            self.tabBarController?.navigationItem.hidesSearchBarWhenScrolling = false
-            self.tabBarController?.navigationItem.searchController = self.searchController
+            self.navigationItem.largeTitleDisplayMode = .never
+            self.navigationItem.hidesSearchBarWhenScrolling = false
+            self.navigationItem.searchController = self.searchController
         } else {
             self.searchViewConstraint.constant = self.searchController.searchBar.frame.height
             self.searchView.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
             self.searchView.addSubview(self.searchController.searchBar)
-            self.searchController.searchBar.contactSearchSetup(textfieldBG: UIColor.init(hexColorCode: "#82829C"), placeholderColor: UIColor.init(hexColorCode: "#BBBBC9"), textColor: .white)
+            self.searchController.searchBar.contactSearchSetup(textfieldBG: UIColor.init(hexColorCode: "#82829C"),
+                                                               placeholderColor: UIColor.init(hexColorCode: "#BBBBC9"), textColor: .white)
         }
-        
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.automaticallyAdjustsScrollViewInsets = true
-        searchController.searchBar.sizeToFit()
-        searchController.searchBar.keyboardType = .default
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.searchBar.isTranslucent = false
-        searchController.searchBar.tintColor = .white
-        searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
-        searchController.searchBar.backgroundColor = .clear
-    }
-    
-    private func destroySearchBar() {
-        
     }
     
     // TODO: fix me
@@ -131,7 +124,6 @@ class ContactGroupsViewController: UIViewController, ViewModelProtocol
         if segue.identifier == kToContactGroupDetailSegue {
             let contactGroupDetailViewController = segue.destination as! ContactGroupDetailViewController
             let contactGroup = sender as! Label
-            
             sharedVMService.contactGroupDetailViewModel(contactGroupDetailViewController,
                                                         groupID: contactGroup.labelID,
                                                         name: contactGroup.name,
@@ -144,7 +136,7 @@ class ContactGroupsViewController: UIViewController, ViewModelProtocol
 extension ContactGroupsViewController: UISearchBarDelegate, UISearchResultsUpdating
 {
     func updateSearchResults(for searchController: UISearchController) {
-        viewModel.search(text: searchController.searchBar.text)
+        //viewModel.search(text: searchController.searchBar.text)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

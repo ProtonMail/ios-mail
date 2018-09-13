@@ -14,7 +14,7 @@ import UIKit
 import Contacts
 import CoreData
 
-class ContactsViewController: UIViewController, ViewModelProtocol {
+class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate let kContactCellIdentifier: String = "ContactCell"
     fileprivate let kProtonMailImage: UIImage      = UIImage(named: "encrypted_main")!
@@ -67,9 +67,9 @@ class ContactsViewController: UIViewController, ViewModelProtocol {
         if #available(iOS 11.0, *) {
             self.navigationController?.navigationBar.prefersLargeTitles = false
         } else {
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background), for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background),
+                                                                        for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
             self.navigationController?.navigationBar.shadowImage = UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background)
-            
             self.refreshControl.backgroundColor = .white
         }
         self.definesPresentationContext = true
@@ -81,34 +81,31 @@ class ContactsViewController: UIViewController, ViewModelProtocol {
         //get all contacts
         self.viewModel.setupFetchedResults(delaget: self)
         tableView.reloadData()
+        self.prepareSearchBar()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tableView.setEditing(false, animated: true)
-        self.tabBarController?.title = LocalString._contacts_title
+        self.title = LocalString._contacts_title
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.viewModel.setupTimer(true)
         NotificationCenter.default.addKeyboardObserver(self)
-        
-        prepareSearchBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.viewModel.stopTimer()
         NotificationCenter.default.removeKeyboardObserver(self)
-        
-        destroySearchBar()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
-    
+    //run once
     private func prepareSearchBar() {
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = LocalString._general_search_placeholder
@@ -126,29 +123,18 @@ class ContactsViewController: UIViewController, ViewModelProtocol {
         self.searchController.searchBar.tintColor = .white
         self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
         self.searchController.searchBar.backgroundColor = .clear
-        
         if #available(iOS 11.0, *) {
             self.searchViewConstraint.constant = 0.0
             self.searchView.isHidden = true
-            self.tabBarController?.navigationItem.largeTitleDisplayMode = .never
-            self.tabBarController?.navigationItem.hidesSearchBarWhenScrolling = false
-            self.tabBarController?.navigationItem.searchController = self.searchController
+            self.navigationItem.largeTitleDisplayMode = .never
+            self.navigationItem.hidesSearchBarWhenScrolling = false
+            self.navigationItem.searchController = self.searchController
         } else {
             self.searchViewConstraint.constant = self.searchController.searchBar.frame.height
             self.searchView.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
             self.searchView.addSubview(self.searchController.searchBar)
-            self.searchController.searchBar.contactSearchSetup(textfieldBG: UIColor.init(hexColorCode: "#82829C"), placeholderColor: UIColor.init(hexColorCode: "#BBBBC9"), textColor: .white)
-        }
-    }
-    
-    private func destroySearchBar() {
-        // TODO: if searching -> set to non-searching state
-        
-        if #available(iOS 11.0, *) {
-            self.tabBarController?.navigationItem.searchController?.isActive = false
-            self.tabBarController?.navigationItem.searchController = nil
-        } else {
-            self.searchController.searchBar.removeFromSuperview()
+            self.searchController.searchBar.contactSearchSetup(textfieldBG: UIColor.init(hexColorCode: "#82829C"),
+                                                               placeholderColor: UIColor.init(hexColorCode: "#BBBBC9"), textColor: .white)
         }
     }
     

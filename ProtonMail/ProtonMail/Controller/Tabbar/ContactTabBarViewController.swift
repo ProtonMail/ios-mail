@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ContactTabBarViewController: ProtonMailTabBarController {
+class ContactTabBarViewController: UITabBarController {
     
     
     fileprivate let kAddContactSugue: String      = "toAddContact"
@@ -21,19 +21,19 @@ class ContactTabBarViewController: ProtonMailTabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
-                                                     target: self,
-                                                     action: #selector(self.addButtonTapped))
-        self.importBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .bookmarks,
-                                                        target: self,
-                                                        action: #selector(self.importButtonTapped))
+//        self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
+//                                                     target: self,
+//                                                     action: #selector(self.addButtonTapped))
+//        self.importBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .bookmarks,
+//                                                        target: self,
+//                                                        action: #selector(self.importButtonTapped))
+//        
+//        let rightButtons: [UIBarButtonItem] = [self.importBarButtonItem, self.addBarButtonItem]
+//        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
         
-        let rightButtons: [UIBarButtonItem] = [self.importBarButtonItem, self.addBarButtonItem]
-        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
-        
-        // setup tab bar item title
-        self.tabBar.items?[0].title = "Contacts"
-        self.tabBar.items?[1].title = "Groups"
+//        // setup tab bar item title
+//        self.tabBar.items?[0].title = "Contacts"
+//        self.tabBar.items?[1].title = "Groups"
     }
 
     override func didReceiveMemoryWarning() {
@@ -120,9 +120,9 @@ class ContactTabBarViewController: ProtonMailTabBarController {
             sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create)
         } else if segue.identifier == kSegueToImportView {
             let popup = segue.destination as! ContactImportViewController
-            self.setPresentationStyleForSelfController(self,
-                                                       presentingController: popup,
-                                                       style: .overFullScreen)
+//            self.setPresentationStyleForSelfController(self,
+//                                                       presentingController: popup,
+//                                                       style: .overFullScreen)
         }
     }
 }
