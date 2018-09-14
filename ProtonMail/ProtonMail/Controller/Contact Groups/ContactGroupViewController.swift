@@ -243,8 +243,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                 
                 // reset navigation bar
                 self.updateNavigationBar()
-                
-                // TODO: reload data?
             }.catch {
                 error in
                 let alert = UIAlertController(title: "Error deleting groups",

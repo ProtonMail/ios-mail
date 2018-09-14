@@ -40,8 +40,8 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
             if text == "" {
                 fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
             } else {
-                fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "%K == 2 AND (name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@)",
-                                                                               argumentArray: [Label.Attributes.type, text, text])
+                fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "%K == 2 AND name CONTAINS[cd] %@",
+                                                                               argumentArray: [Label.Attributes.type, text])
             }
         } else {
             fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
