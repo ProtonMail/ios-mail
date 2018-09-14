@@ -9,6 +9,8 @@ import Foundation
 
 class ContactsAndGroupsSharedCode: ProtonMailViewController
 {
+    var navigationItemRightNotEditing: [UIBarButtonItem]? = nil
+    var navigationItemLeftNotEditing: [UIBarButtonItem]? = nil
     private var addBarButtonItem: UIBarButtonItem!
     private var importBarButtonItem: UIBarButtonItem!
     
@@ -16,7 +18,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController
     let kAddContactGroupSugue: String = "toAddContactGroup"
     let kSegueToImportView: String    = "toImportContacts"
     
-    func prepareNavigationItem() {
+    func prepareNavigationItemRightDefault() {
         self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
                                                      target: self,
                                                      action: #selector(self.addButtonTapped))
@@ -26,6 +28,9 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController
         
         let rightButtons: [UIBarButtonItem] = [self.importBarButtonItem, self.addBarButtonItem]
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
+        
+        navigationItemLeftNotEditing = navigationItem.leftBarButtonItems
+        navigationItemRightNotEditing = navigationItem.rightBarButtonItems
     }
     
     @objc private func addButtonTapped() {

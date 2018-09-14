@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import PromiseKit
 
 class ContactGroupsViewModelImpl: ContactGroupsViewModel
 {
@@ -30,16 +31,10 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
     }
     
     // search
-    /**
-     
-     */
     func setFetchResultController(fetchedResultsController: inout NSFetchedResultsController<NSFetchRequestResult>?) {
         self.fetchedResultsController = fetchedResultsController
     }
     
-    /**
-     
-     */
     func search(text: String?) {
         if let text = text {
             if text == "" {
@@ -58,4 +53,31 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
             PMLog.D("contact group search error: \(ex)")
         }
     }
+    
+    // TODO: requires rewrite
+    func deleteGroups(groupIDs: [String]) -> Promise<Void> {
+        return Promise {
+            seal in
+            
+            let lock = NSLock()
+            var count = 0
+            let completionHandler = { (ok: Bool) -> Void in
+                if ok == false {
+                    seal.reject(ContactGroupEditError.deleteFailed)
+                } else {
+                    lock.lock()
+                    count += 1
+                    if count == groupIDs.count {
+                        seal.fulfill(())
+                    }
+                    lock.unlock()
+                }
+            }
+            
+            for groupID in groupIDs {
+                sharedContactGroupsDataService.deleteContactGroup(groupID: groupID,
+                                                                  completionHandler: completionHandler)
+        }
+    }
+}
 }

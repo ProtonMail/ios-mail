@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import PromiseKit
 
 protocol ContactGroupsViewModel {
     func fetchAllContactGroup()
@@ -15,4 +16,7 @@ protocol ContactGroupsViewModel {
     // search
     func setFetchResultController(fetchedResultsController: inout NSFetchedResultsController<NSFetchRequestResult>?)
     func search(text: String?)
+    
+    // contact groups deletion
+    func deleteGroups(groupIDs: [String]) -> Promise<Void>
 }

@@ -84,7 +84,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
         tableView.reloadData()
         self.prepareSearchBar()
         
-        prepareNavigationItem()
+        prepareNavigationItemRightDefault()
     }
     
     override func viewDidAppear(_ animated: Bool) {

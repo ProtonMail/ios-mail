@@ -86,7 +86,15 @@ class LabelsDataService {
                 // in contact group searching, predicate must be consistent with this one
                 fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
             }
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
+            
+            if type != .contactGroup {
+                fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
+            } else {
+                let strComp = NSSortDescriptor(key: Label.Attributes.name,
+                                               ascending: true,
+                                               selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
+                fetchRequest.sortDescriptors = [strComp]
+            }
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
         return nil

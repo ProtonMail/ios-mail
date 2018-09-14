@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import PromiseKit
 
 /**
  When the core data that provides data to this controller has data changes,
@@ -15,14 +16,27 @@ import CoreData
  */
 class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
 {
-    var viewModel: ContactGroupsViewModel!
+    private var viewModel: ContactGroupsViewModel!
     
-    let kContactGroupCellIdentifier = "ContactGroupCustomCell"
-    let kToContactGroupDetailSegue = "toContactGroupDetailSegue"
+    // long press related vars
+    private var isEditingState: Bool = false
+    private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
+    private var trashcanBarButtonItem: UIBarButtonItem? = nil
+    private var cancelBarButtonItem: UIBarButtonItem? = nil
+    private var totalSelectedContactGroups: Int! {
+        didSet {
+            if isEditingState, let total = totalSelectedContactGroups {
+                title = "\(total) Selected"
+            }
+        }
+    }
     
-    var fetchedContactGroupResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
-    var refreshControl: UIRefreshControl!
-    var searchController: UISearchController!
+    private let kContactGroupCellIdentifier = "ContactGroupCustomCell"
+    private let kToContactGroupDetailSegue = "toContactGroupDetailSegue"
+    
+    private var fetchedContactGroupResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
+    private var refreshControl: UIRefreshControl!
+    private var searchController: UISearchController!
     
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
@@ -37,12 +51,31 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(UINib(nibName: "ContactGroupsViewCell", bundle: Bundle.main),
-                           forCellReuseIdentifier: kContactGroupCellIdentifier)
         
-        tableView.noSeparatorsBelowFooter()
+        self.definesPresentationContext = true
+        self.extendedLayoutIncludesOpaqueBars = true
         
-        // fetch controller
+        self.prepareTable()
+        
+        self.prepareFetchedResultsController()
+        
+        self.prepareRefreshController()
+        
+        self.prepareSearchBar()
+        
+        self.prepareLongPressGesture()
+        prepareNavigationItemRightDefault()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    private func prepareFetchedResultsController() {
         fetchedContactGroupResultsController = sharedLabelsDataService.fetchedResultsController(.contactGroup)
         fetchedContactGroupResultsController?.delegate = self
         if let fetchController = fetchedContactGroupResultsController {
@@ -52,8 +85,9 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                 PMLog.D("fetchedContactGroupResultsController Error: \(error.userInfo)")
             }
         }
-        
-        // refresh control
+    }
+    
+    private func prepareRefreshController() {
         refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
         refreshControl.addTarget(self,
@@ -62,23 +96,166 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         tableView.addSubview(self.refreshControl)
         refreshControl.tintColor = UIColor.gray
         refreshControl.tintColorDidChange()
-        
-        self.definesPresentationContext = true
-        self.extendedLayoutIncludesOpaqueBars = true
-        self.automaticallyAdjustsScrollViewInsets = false
-        
-        self.prepareSearchBar()
-        
-        self.prepareNavigationItem()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.title = "Groups"
+    private func prepareTable() {
+        tableView.register(UINib(nibName: "ContactGroupsViewCell", bundle: Bundle.main),
+                           forCellReuseIdentifier: kContactGroupCellIdentifier)
+        
+        tableView.noSeparatorsBelowFooter()
     }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    
+    private func prepareLongPressGesture() {
+        totalSelectedContactGroups = 0
+        
+        let longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress(_:)))
+        longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
+        self.tableView.addGestureRecognizer(longPressGestureRecognizer)
+    }
+    
+    @objc private func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        // mark the location that it is on
+        markLongPressLocation(longPressGestureRecognizer)
+    }
+    
+    private func markLongPressLocation(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        let pressingLocation = longPressGestureRecognizer.location(in: tableView)
+        let pressedIndexPath = tableView.indexPathForRow(at: pressingLocation)
+        
+        if let pressedIndexPath = pressedIndexPath {
+            if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
+                // set state
+                isEditingState = true
+                tableView.allowsMultipleSelection = true
+                
+                // prepare the navigationItems
+                updateNavigationBar()
+                
+                // set cell
+                if let visibleIndexPaths = tableView.indexPathsForVisibleRows {
+                    for visibleIndexPath in visibleIndexPaths {
+                        if visibleIndexPath == pressedIndexPath {
+                            // mark this indexPath as selected
+                            if let cell = tableView.cellForRow(at: pressedIndexPath) as? ContactGroupsViewCell {
+                                cell.selectionStyle = .none
+                                tableView.selectRow(at: pressedIndexPath,
+                                                    animated: true,
+                                                    scrollPosition: .none)
+                                totalSelectedContactGroups = totalSelectedContactGroups + 1
+                            } else {
+                                PMLog.D("Error: can't get the cell of pressed index path ")
+                            }
+                        }
+                    }
+                } else {
+                    PMLog.D("No visible index path")
+                }
+            }
+        } else {
+            PMLog.D("Not long pressed on the cell")
+        }
+    }
+    
+    private func updateNavigationBar() {
+        prepareNavigationItemLeft()
+        prepareNavigationItemTitle()
+        prepareNavigationItemRight()
+    }
+    
+    private func prepareNavigationItemLeft() {
+        if isEditingState {
+            // make cancel button and selector
+            if cancelBarButtonItem == nil {
+                cancelBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .cancel,
+                                                           target: self,
+                                                           action: #selector(self.cancelBarButtonTapped))
+            }
+            
+            navigationItem.leftBarButtonItems = [cancelBarButtonItem!]
+        } else {
+            // restore the left bar
+            navigationItem.leftBarButtonItems = navigationItemLeftNotEditing
+        }
+    }
+    
+    @objc private func cancelBarButtonTapped() {
+        // reset state
+        isEditingState = false
+        tableView.allowsMultipleSelection = false
+        
+        // reset navigation bar
+        updateNavigationBar()
+        
+        // unselect all
+        totalSelectedContactGroups = 0
+        if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+            for selectedIndexPath in selectedIndexPaths {
+                tableView.deselectRow(at: selectedIndexPath,
+                                      animated: true)
+            }
+        }
+    }
+    
+    private func prepareNavigationItemTitle() {
+        if isEditingState {
+            // TODO: selected count
+            self.title = "\(0) Selected"
+        } else {
+            self.title = "Groups"
+        }
+    }
+    
+    private func prepareNavigationItemRight() {
+        if isEditingState {
+            // make trash can and selector
+            if trashcanBarButtonItem == nil {
+                trashcanBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .trash,
+                                                             target: self,
+                                                             action: #selector(self.trashcanBarButtonTapped))
+            }
+            
+            navigationItem.rightBarButtonItems = [trashcanBarButtonItem!]
+        } else {
+            // restore the right bar
+            navigationItem.rightBarButtonItems = navigationItemRightNotEditing
+        }
+    }
+    
+    @objc private func trashcanBarButtonTapped() {
+        firstly {
+            () -> Promise<Void> in
+            // attempt to delete selected groups
+            var groupIDs: [String] = []
+            if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+                for selectedIndexPath in selectedIndexPaths {
+                    if let cell = tableView.cellForRow(at: selectedIndexPath) as? ContactGroupsViewCell {
+                        groupIDs.append(cell.labelID)
+                    }
+                }
+            }
+            
+            return viewModel.deleteGroups(groupIDs: groupIDs)
+            }.done {
+                // reset state
+                self.isEditingState = false
+                self.tableView.allowsMultipleSelection = false
+                self.totalSelectedContactGroups = 0
+                
+                // reset navigation bar
+                self.updateNavigationBar()
+                
+                // TODO: reload data?
+            }.catch {
+                error in
+                let alert = UIAlertController(title: "Error deleting groups",
+                                              message: error.localizedDescription,
+                                              preferredStyle: .alert)
+                alert.addOKAction()
+                
+                self.present(alert,
+                             animated: true,
+                             completion: nil)
+        }
     }
     
     private func prepareSearchBar() {
@@ -153,14 +330,6 @@ extension ContactGroupsViewController: UISearchBarDelegate, UISearchResultsUpdat
         viewModel.search(text: searchController.searchBar.text)
         tableView.reloadData()
     }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        
-    }
 }
 
 extension ContactGroupsViewController: UITableViewDataSource
@@ -182,12 +351,14 @@ extension ContactGroupsViewController: UITableViewDataSource
         if let cell = cell as? ContactGroupsViewCell {
             if let fetchedController = fetchedContactGroupResultsController {
                 if let label = fetchedController.object(at: indexPath) as? Label {
-                    cell.config(name: label.name,
+                    cell.config(labelID: label.labelID,
+                                name: label.name,
                                 count: label.emails.count,
                                 color: label.color)
                 } else {
                     // TODO; better error handling
-                    cell.config(name: "Error in retrieving contact group name in core data",
+                    cell.config(labelID: "",
+                                name: "Error in retrieving contact group name in core data",
                                 count: 0,
                                 color: nil)
                 }
@@ -201,11 +372,28 @@ extension ContactGroupsViewController: UITableViewDataSource
 extension ContactGroupsViewController: UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        if let fetchedController = fetchedContactGroupResultsController {
-            self.performSegue(withIdentifier: kToContactGroupDetailSegue,
-                              sender: fetchedController.object(at: indexPath))
+        if isEditingState {
+            if let cell = tableView.cellForRow(at: indexPath) {
+                cell.selectionStyle = .none
+                tableView.selectRow(at: indexPath,
+                                    animated: true,
+                                    scrollPosition: .none)
+                totalSelectedContactGroups = totalSelectedContactGroups + 1
+            }
+        } else {
+            tableView.deselectRow(at: indexPath, animated: true)
+            
+            if let fetchedController = fetchedContactGroupResultsController {
+                self.performSegue(withIdentifier: kToContactGroupDetailSegue,
+                                  sender: fetchedController.object(at: indexPath))
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if isEditingState {
+            tableView.deselectRow(at: indexPath, animated: true)
+            totalSelectedContactGroups = totalSelectedContactGroups - 1
         }
     }
 }
@@ -238,20 +426,22 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
             if let cell = tableView.cellForRow(at: indexPath!) as? ContactGroupsViewCell {
                 if let fetchedController = fetchedContactGroupResultsController {
                     if let label = fetchedController.object(at: indexPath!) as? Label {
-                        cell.config(name: label.name,
+                        cell.config(labelID: label.labelID,
+                                    name: label.name,
                                     count: label.emails.count,
                                     color: label.color)
                     } else {
                         // TODO; better error handling
-                        cell.config(name: "Error in retrieving contact group name in core data",
+                        cell.config(labelID: "",
+                                    name: "Error in retrieving contact group name in core data",
                                     count: 0,
                                     color: nil)
                     }
                 }
             }
         case .move:
-//            tableView.deleteRows(at: [indexPath!], with: .automatic)
-//            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+            //            tableView.deleteRows(at: [indexPath!], with: .automatic)
+            //            tableView.insertRows(at: [newIndexPath!], with: .automatic)
             return
         }
     }
