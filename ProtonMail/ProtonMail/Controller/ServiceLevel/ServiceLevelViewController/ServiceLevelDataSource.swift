@@ -25,7 +25,7 @@ extension ServiceLevelDataSource {
 class BuyMoreDataSource: ServiceLevelDataSource {
     weak var delegate: ServiceLevelDataSourceDelegate!
     
-    let title = "More Credits"
+    let title = LocalString._more_credits
     internal var sections: [Section<UIView>] = []
     
     init(delegate: ServiceLevelDataSourceDelegate, subscription: Subscription!) {
@@ -47,7 +47,7 @@ class PlanDetailsDataSource: ServiceLevelDataSource {
     
     init(delegate: ServiceLevelDataSourceDelegate, plan: ServicePlan) {
         self.delegate = delegate
-        self.title = "Get " + plan.subheader.0
+        self.title = String(format: LocalString._get_plan, plan.subheader.0)
         guard let details = plan.fetchDetails() else {
             return
         }
@@ -60,7 +60,7 @@ class PlanDetailsDataSource: ServiceLevelDataSource {
         var acknowladgements: Section<UIView>?
         if let details = plan.fetchDetails() {
             capabilities = ServiceLevelDataFactory.makeCapabilitiesSection(plan: plan, details: details)
-            if plan == .plus, ServicePlanDataService.currentSubscription?.plan == .free {
+            if plan == .plus, ServicePlanDataService.shared.currentSubscription?.plan == .free {
                 footer = ServiceLevelDataFactory.makeBuyButtonSection(plan: plan, delegate: self.delegate)
                 acknowladgements = ServiceLevelDataFactory.makeAcknowladgementsSection()
             } else {
@@ -90,9 +90,11 @@ class PlanAndLinksDataSource: ServiceLevelDataSource {
     
     private func setup(with subscription: Subscription) {
         var buyLink: Section<UIView>?
-        if subscription.plan == .plus,
-           ServicePlanDataService.currentSubscription?.plan == subscription.plan,
-           !ServicePlanDataService.currentSubscription!.hadOnlinePayments
+        if let currentSubscription = ServicePlanDataService.shared.currentSubscription,
+            subscription.plan == .plus, // Plus description opened
+            currentSubscription.plan == subscription.plan, // currently subscribed to Plus
+            !currentSubscription.hadOnlinePayments, // did pay only via apple
+            currentSubscription.end?.compare(Date()) == .orderedAscending //  subscrition is expired
         {
             buyLink = ServiceLevelDataFactory.makeBuyLinkSection()
         }
@@ -100,7 +102,7 @@ class PlanAndLinksDataSource: ServiceLevelDataSource {
                           ServiceLevelDataFactory.makeCapabilitiesSection(plan: subscription.plan, details: subscription.details),
                           ServiceLevelDataFactory.makeCurrentPlanStatusSection(subscription: subscription),
                           buyLink,
-                          ServiceLevelDataFactory.makeSectionHeader("OTHER SERVICE PLANS"),
+                          ServiceLevelDataFactory.makeSectionHeader(LocalString._other_plans),
                           ServiceLevelDataFactory.makeLinksSection(except: subscription.plan)].compactMap { $0 }
     }
 }

@@ -91,9 +91,9 @@ class PasswordEncryptViewController: UIViewController {
         passwordErrorLabel.isHidden = true
         confirmPasswordErrorLabel.isHidden = true
         
-        let pwd = (passwordField.text ?? "").trim()
-        let pwdConfirm = (confirmPasswordField.text ?? "").trim()
-        let hint = (hintField.text ?? "").trim()
+        let pwd = (passwordField.text ?? "")
+        let pwdConfirm = (confirmPasswordField.text ?? "")
+        let hint = (hintField.text ?? "")
         
         if pwd.isEmpty {
             passwordErrorLabel.isHidden = false

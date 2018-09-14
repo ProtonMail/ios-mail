@@ -188,8 +188,8 @@ class UserDataService {
         return userInfo?.usedSpace ?? 0
     }
     
-    var showShowImageView: Bool {
-        return userInfo?.showImages == 0
+    var autoLoadRemoteImages: Bool {
+        return userInfo?.autoShowRemote ?? false
     }
     
     var firstUserPublicKey: String? {
@@ -519,19 +519,30 @@ class UserDataService {
         }
     }
     
-    func updateAutoLoadImage(_ status : Int, completion: UserInfoBlock?) {
-        let api = UpdateShowImagesRequest(status: status)
-        api.call() { task, response, hasError in
+    func updateAutoLoadImage(remote status: Bool, completion: @escaping UserInfoBlock) {
+        guard let userInfo = self.userInfo else {
+            return completion(nil, nil, nil) //TODO:: add a error return here
+        }
+        
+        var newStatus = userInfo.showImages
+        if status {
+            newStatus.insert(.remote)
+        } else {
+            newStatus.remove(.remote)
+        }
+        
+        let api = UpdateShowImages(status: newStatus.rawValue)
+        api.call { (task, response, hasError) in
             if !hasError {
                 if let userInfo = self.userInfo {
-                    userInfo.showImages = status
+                    userInfo.showImages = newStatus
                     self.userInfo = userInfo
                 }
             }
-            completion?(self.userInfo, nil, nil)
+            completion(self.userInfo, nil, response?.error)
         }
     }
-    
+
     func updatePassword(_ login_password: String, new_password: String, twoFACode:String?, completion: @escaping CompletionBlock) {
         {//asyn
             do {

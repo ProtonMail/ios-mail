@@ -18,7 +18,7 @@ class ShareUnlockViewController: UIViewController {
     fileprivate var inputSubject : String! = ""
     fileprivate var inputContent : String! = ""
     fileprivate var inputAttachments : String! = ""
-    fileprivate var files = Array<FileData>()
+    fileprivate var files = [FileData]()
     fileprivate let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000
     fileprivate var currentAttachmentSize : Int = 0
     
@@ -30,7 +30,8 @@ class ShareUnlockViewController: UIViewController {
     private let file_types : [String]  = [kUTTypeImage as String,
                                           kUTTypeMovie as String,
                                           kUTTypeVideo as String,
-                                          kUTTypeFileURL as String]
+                                          kUTTypeFileURL as String,
+                                          kUTTypeVCard as String]
     private let propertylist_ket = kUTTypePropertyList as String
     private let url_key = kUTTypeURL as String
     private var localized_errors: [String] = []
@@ -146,8 +147,10 @@ class ShareUnlockViewController: UIViewController {
     
     private func tryTouchID() {
         switch getViewFlow() {
-        case .requireTouchID: self.authenticateUser()
-        case .restore, .requirePin: break
+        case .requireTouchID:
+            self.authenticateUser()
+        case .restore, .requirePin:
+            break
         }
     }
     
@@ -169,11 +172,13 @@ class ShareUnlockViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        delay(0.3) { self.tryTouchID() }
+        delay(0.3) {
+            self.tryTouchID()
+        }
     }
 
     fileprivate func getViewFlow() -> SignInUIFlow {
-        guard !sharedTouchID.showTouchIDOrPin() else {
+        guard sharedTouchID.showTouchIDOrPin() else {
             return SignInUIFlow.restore
         }
         
@@ -361,16 +366,40 @@ extension ShareUnlockViewController: AttachmentController {
             }
             
             guard error == nil else {
-                self.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
+                self.error(error.localizedDescription)
                 return
             }
-
+        
+            //TODO:: the process(XXX:) functions below. they could be abstracted out. all type of process in the same place.
             if let url = item as? URL {
                 self.documentAttachmentProvider.process(fileAt: url) // sync
             } else if let img = item as? UIImage {
                 self.imageAttachmentProvider.process(original: img) // sync
+            } else if (type as CFString == kUTTypeVCard), let data = item as? Data {
+                var fileName = "\(NSUUID().uuidString).vcf"
+                if #available(iOSApplicationExtension 11.0, *), let name = itemProvider.suggestedName {
+                    fileName = name
+                }
+                let fileData = ConcreteFileData<Data>(name: fileName, ext: "text/vcard", contents: data)
+                self.finish(fileData)
+            } else if let data = item as? Data {
+                var fileName = NSUUID().uuidString
+                if #available(iOSApplicationExtension 11.0, *), let name = itemProvider.suggestedName {
+                    fileName = name
+                }
+                
+                let type = (itemProvider.registeredTypeIdentifiers.first ?? type) as CFString
+                // this method does not work correctly with "text/vcard" mime by some reson, so VCards have separate `else if`
+                guard let filetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassFilenameExtension)?.takeRetainedValue() as String?,
+                    let mimetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType)?.takeRetainedValue() as String? else
+                {
+                    self.error(LocalString._failed_to_determine_file_type)
+                    return
+                }
+                let fileData = ConcreteFileData<Data>(name: fileName + "." + filetype, ext: mimetype, contents: data)
+                self.finish(fileData)
             } else {
-                self.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
+                self.error(LocalString._unsupported_file)
             }
         }
     }

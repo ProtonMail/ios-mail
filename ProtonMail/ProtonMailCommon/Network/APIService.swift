@@ -48,105 +48,21 @@ class APIService {
     init() {
         // init lock
         pthread_mutex_init(&mutex, nil)
-        
+        URLCache.shared.removeAllCachedResponses()
         sessionManager = AFHTTPSessionManager(baseURL: URL(string: AppConstants.API_HOST_URL)!)
-        sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
+        sessionManager.requestSerializer = AFJSONRequestSerializer()
         sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
-
-        //sessionManager.requestSerializer.timeoutInterval = 20.0;
-        sessionManager.securityPolicy.validatesDomainName = false
-        sessionManager.securityPolicy.allowInvalidCertificates = false
+        sessionManager.requestSerializer.stringEncoding = String.Encoding.utf8.rawValue
+        
         sessionManager.responseSerializer.acceptableContentTypes?.insert("text/html")
         
-        
+        sessionManager.securityPolicy.validatesDomainName = false
+        sessionManager.securityPolicy.allowInvalidCertificates = false
         #if DEBUG
-            sessionManager.securityPolicy.allowInvalidCertificates = true
+        sessionManager.securityPolicy.allowInvalidCertificates = true
         #endif
         
         setupValueTransforms()
-    }
-    
-    internal func afNetworkingBlocksForRequest(_ method: HTTPMethod, path: String, parameters: Any?, auth: AuthCredential?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
-        if let completion = completion {
-            let failure: AFNetworkingFailureBlock = { task, error in
-                //TODO::Swift
-                let error = error! as NSError
-                PMLog.D("Error: \(String(describing: error))")
-                var errorCode : Int = 200
-                if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
-                    errorCode = detail.statusCode
-                }
-                else {
-                    errorCode = error.code
-                }
-                
-                if authenticated && errorCode == 401 {
-                    AuthCredential.expireOrClear(auth?.token)
-                    if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
-                        self.delegate?.onError(error: error)
-                        UserTempCachedStatus.backup()
-                        sharedUserDataService.signOut(true);
-                        userCachedStatus.signOut()
-                    }else {
-                        self.request(method: method,
-                                     path: path,
-                                     parameters: parameters,
-                                     headers: ["x-pm-apiversion": 3],
-                                     authenticated: authenticated,
-                                     completion: completion)
-                    }
-                } else {
-                    completion(task, nil, error)
-                }
-            }
-            
-            let success: AFNetworkingSuccessBlock = { task, responseObject in
-                if responseObject == nil {
-                    completion(task, [:], nil)
-                } else if let responseDictionary = responseObject as? [String : Any] {
-                    var error : NSError?
-                    let responseCode = responseDictionary["Code"] as? Int
-                    
-                    if responseCode != 1000 && responseCode != 1001 {
-                        let errorMessage = responseDictionary["Error"] as? String
-                        let errorDetails = responseDictionary["ErrorDescription"] as? String
-                        error = NSError.protonMailError(responseCode ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
-                    }
-                    
-                    if authenticated && responseCode == 401 {
-                        AuthCredential.expireOrClear(auth?.token)
-                        if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
-//                            self.delegate?.onError(error: error)
-//                            UserTempCachedStatus.backup()
-//                            sharedUserDataService.signOut(true);
-//                            userCachedStatus.signOut()
-                        }else {
-                            self.request(method: method,
-                                         path: path,
-                                         parameters: parameters,
-                                         headers: ["x-pm-apiversion": 3],
-                                         authenticated: authenticated,
-                                         completion: completion)
-                        }
-                    } else if responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004 {
-                        NSError.alertUpdatedToast()
-                        completion(task, responseDictionary, error)
-                        UserTempCachedStatus.backup()
-                        sharedUserDataService.signOut(true);
-                        userCachedStatus.signOut()
-                    } else if responseCode == APIErrorCode.API_offline {
-                        completion(task, responseDictionary, error)
-                    }
-                    else {
-                        completion(task, responseDictionary, error)
-                    }
-                } else {
-                    completion(task, nil, NSError.unableToParseResponse(responseObject))
-                }
-            }
-            return (success, failure)
-        }
-        return (nil, nil)
     }
     
     internal func completionWrapperParseCompletion(_ completion: CompletionBlock?, forKey key: String) -> CompletionBlock? {
@@ -386,7 +302,7 @@ class APIService {
             } else {
                 let parseBlock: (_ task: URLSessionDataTask?, _ response: Any?, _ error: Error?) -> Void = { task, response, error in
                     if let error = error as NSError? {
-                        PMLog.D("Error: \(String(describing: error))")
+                        PMLog.D(api: error)
                         var httpCode : Int = 200
                         if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
                             httpCode = detail.statusCode
@@ -418,13 +334,11 @@ class APIService {
                                                                    localizedDescription: errorMessage,
                                                                    localizedFailureReason: errorDetails,
                                                                    localizedRecoverySuggestion: nil)
-                            
-                            if responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004 {
-                                NSError.alertUpdatedToast()
+                            if responseCode.forceUpgrade {
+                                // old check responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004
+                                // new logic will not log user out
+                                NotificationCenter.default.post(name: .forceUpgrade, object: errorMessage)
                                 completion?(task, responseDict, displayError)
-                                UserTempCachedStatus.backup()
-                                sharedUserDataService.signOut(true);
-                                userCachedStatus.signOut()
                             } else if responseCode == APIErrorCode.API_offline {
                                 completion?(task, responseDict, displayError)
                             } else {
@@ -436,13 +350,16 @@ class APIService {
                     } else {
                         if response == nil {
                             completion?(task, [:], nil)
-                        } else if let responseDictionary = response as? [String : Any] {
+                        } else if let responseDictionary = response as? [String : Any],
+                            let responseCode = responseDictionary["Code"] as? Int {
                             var error : NSError?
-                            let responseCode = responseDictionary["Code"] as? Int
                             if responseCode != 1000 && responseCode != 1001 {
                                 let errorMessage = responseDictionary["Error"] as? String
                                 let errorDetails = responseDictionary["ErrorDescription"] as? String
-                                error = NSError.protonMailError(responseCode ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
+                                error = NSError.protonMailError(responseCode,
+                                                                localizedDescription: errorMessage ?? "",
+                                                                localizedFailureReason: errorDetails,
+                                                                localizedRecoverySuggestion: nil)
                             }
                             
                             if authenticated && responseCode == 401 {
@@ -452,12 +369,11 @@ class APIService {
                                              headers: ["x-pm-apiversion": 3],
                                              authenticated: authenticated,
                                              completion: completion)
-                            } else if responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004 {
-                                NSError.alertUpdatedToast()
+                            } else if responseCode.forceUpgrade  {
+                                //FIXME: shouldn't be here
+                                let errorMessage = responseDictionary["Error"] as? String
+                                NotificationCenter.default.post(name: .forceUpgrade, object: errorMessage)
                                 completion?(task, responseDictionary, error)
-                                UserTempCachedStatus.backup()
-                                sharedUserDataService.signOut(true);
-                                userCachedStatus.signOut()
                             } else if responseCode == APIErrorCode.API_offline {
                                 completion?(task, responseDictionary, error)
                             }
@@ -471,8 +387,10 @@ class APIService {
                 }
                 
                 let url = AppConstants.API_HOST_URL + path
-                let request = AFJSONRequestSerializer().request(withMethod: method.toString(), urlString: url, parameters: parameters, error: nil)
-                //request.timeoutInterval = 120
+                let request = self.sessionManager.requestSerializer.request(withMethod: method.toString(),
+                                                                            urlString: url,
+                                                                            parameters: parameters,
+                                                                            error: nil)
                 if let header = headers {
                     for (k, v) in header {
                         request.setValue("\(v)", forHTTPHeaderField: k)
@@ -499,9 +417,6 @@ class APIService {
                 }, downloadProgress: { (progress) in
                     //TODO::add later
                 }, completionHandler: { (urlresponse, res, error) in
-                    
-                    
-                    
                     parseBlock(task, res, error)
                 })
                 task!.resume()

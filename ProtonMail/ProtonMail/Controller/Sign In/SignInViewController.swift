@@ -490,9 +490,11 @@ class SignInViewController: ProtonMailViewController {
                 MBProgressHUD.hide(for: self.view, animated: true)
                 PMLog.D("error: \(error)")
                 self.ShowLoginViews();
-                let alertController = error.alertController()
-                alertController.addOKAction()
-                self.present(alertController, animated: true, completion: nil)
+                if !error.code.forceUpgrade {
+                    let alertController = error.alertController()
+                    alertController.addOKAction()
+                    self.present(alertController, animated: true, completion: nil)
+                }
             },
             onSuccess: { (mailboxpwd) in
                 //ok
@@ -518,7 +520,7 @@ class SignInViewController: ProtonMailViewController {
                     try AuthCredential.setupToken(mailboxPassword, isRememberMailbox: self.isRemembered)
                     MBProgressHUD.showAdded(to: view, animated: true)
                     sharedLabelsDataService.fetchLabels()
-                    ServicePlanDataService.updateCurrentSubscription()
+                    ServicePlanDataService.shared.updateCurrentSubscription()
                     sharedUserDataService.fetchUserInfo().done(on: .main) { info in
                         MBProgressHUD.hide(for: self.view, animated: true)
                         if info != nil {
@@ -608,6 +610,7 @@ class SignInViewController: ProtonMailViewController {
     }
     
     func loadContactsAfterInstall() {
+        ServicePlanDataService.shared.updateCurrentSubscription()
         sharedUserDataService.fetchUserInfo().done { (_) in
             
         }.catch { (_) in

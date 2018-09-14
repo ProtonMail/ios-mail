@@ -25,6 +25,14 @@ let sharedUserDataService = UserDataService()
 @UIApplicationMain
 class AppDelegate: UIResponder {
     
+    //FIXME: tempory
+    var upgradeView : ForceUpgradeView?
+    
+    deinit{
+        // MARK: FIXME: from the doc, we don't need to do this in the deint.  //
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     var window: UIWindow?
     func instantiateRootViewController() -> UIViewController? {
         let storyboard = UIStoryboard.Storyboard.signIn
@@ -166,11 +174,22 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         
         //setup language
         LanguageManager.setupCurrentLanguage()
-        ServicePlanDataService.updateServicePlans()
+        
+        //TODO::remove from here. load after user login/restore from cache
+        ServicePlanDataService.shared.updateServicePlans()
         
         sharedPushNotificationService.setLaunchOptions(launchOptions)
         StoreKitManager.default.subscribeToPaymentQueue()
         StoreKitManager.default.updateAvailableProductsList()
+        
+        
+        //TODO:: Tempory later move it into App coordinator
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.performForceUpgrade(_:)),
+            name: .forceUpgrade,
+            object: nil)
+
         
         return true
     }
@@ -317,7 +336,61 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     func touchStatusBar() {
-        let notification = Notification(name: Notification.Name(rawValue: NotificationDefined.TouchStatusBar), object: nil, userInfo: nil)
+        let notification = Notification(name: .touchStatusBar, object: nil, userInfo: nil)
         NotificationCenter.default.post(notification)
+    }
+    
+    @objc func performForceUpgrade(_ notification: Notification) {
+        guard let keywindow = UIApplication.shared.keyWindow else {
+            return
+        }
+        
+        if let exsitView = upgradeView {
+            keywindow.bringSubview(toFront: exsitView)
+            return
+        }
+        
+        let view = ForceUpgradeView(frame: keywindow.bounds)
+        self.upgradeView = view
+        if let msg = notification.object as? String {
+            view.messageLabel.text = msg
+        }
+        view.delegate = self
+        UIView.transition(with: keywindow, duration: 0.25,
+                          options: .transitionCrossDissolve, animations: {
+            keywindow.addSubview(view)
+        }, completion: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(AppDelegate.rotated),
+                                               name: .UIDeviceOrientationDidChange,
+                                               object: nil)
+    }
+    
+    @objc func rotated() {
+        if let view = self.upgradeView {
+            guard let keywindow = UIApplication.shared.keyWindow else {
+                return
+            }
+            
+            UIView.animate(withDuration: 0.25, delay: 0.0,
+                           options: UIViewAnimationOptions.layoutSubviews, animations: {
+                view.frame = keywindow.frame
+                view.layoutIfNeeded()
+            }, completion: nil)
+        }
+    }
+}
+
+extension AppDelegate : ForceUpgradeViewDelegate {
+    func learnMore() {
+        if UIApplication.shared.canOpenURL(.kbUpdateRequired) {
+            UIApplication.shared.openURL(.kbUpdateRequired)
+        }
+    }
+    func update() {
+        if UIApplication.shared.canOpenURL(.appleStore) {
+            UIApplication.shared.openURL(.appleStore)
+        }
     }
 }

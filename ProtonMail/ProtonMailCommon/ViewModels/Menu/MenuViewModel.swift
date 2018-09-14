@@ -80,4 +80,8 @@ class MenuViewModel {
         fatalError("This method must be overridden")
     }
     
+    func find( section : MenuSection, item : MenuItem) -> IndexPath {
+        fatalError("This method must be overridden")
+    }
+    
 }

@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
     public enum Kind: String {
         case returnPath = "return-path"
@@ -21,6 +22,7 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         case listUnsubscribe = "list-unsubscribe"
         case contentType = "content-type"
         case contentTransferEncoding = "content-transfer-encoding"
+        case dkimSignature = "DKIM-Signature"
         case contentID = "content-id"
     }
     
@@ -40,15 +42,17 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
     }
     
     var keyValues: [String: String] {
-        let components = self.body.components(separatedBy: ",")
+        let trimThese = CharacterSet(charactersIn: "\"").union(.whitespacesAndNewlines)
+        let commaComponents = self.body.components(separatedBy: ",")
+        let seimcolonComponents = self.body.components(separatedBy: ";")
+        let components = seimcolonComponents.count > 1 ? seimcolonComponents : commaComponents
         var results: [String: String] = [:]
         
         for component in components {
             let pieces = component.components(separatedBy: "=")
             guard pieces.count >= 2 else { continue }
-            let key = pieces[0].trimmingCharacters(in: .quotes).components(separatedBy: .whitespaces).last!
-            let arrary = Array(pieces[1...])
-            results[key] = arrary.joined(separator: "=").trimmingCharacters(in: .quotes)
+            let key = pieces[0].trimmingCharacters(in: trimThese).components(separatedBy: .whitespaces).last!
+            results[key] = Array(pieces[1...]).joined(separator: "=").trimmingCharacters(in: trimThese)
         }
         return results
     }
@@ -71,10 +75,7 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
     
     var boundaryValue: String? {
         for (key, value) in self.keyValues {
-            if key.contains("boundary") {
-                let pieces = value.components(separatedBy: ";")
-                return pieces.first?.trimmingCharacters(in: .quotes)
-            }
+            if key.contains("boundary") { return value }
         }
         return nil
     }
@@ -88,7 +89,6 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
     
     public var debugDescription: String { return self.description }
 }
-
 
 extension Array where Element == Header {
     func allHeaders(ofKind kind: Header.Kind) -> [Header] {

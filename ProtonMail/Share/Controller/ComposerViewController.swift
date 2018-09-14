@@ -155,7 +155,12 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         guard let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
             return
         }
-        self.webViewBottomLine.constant = keyboardFrame.origin.y - self.view.window!.bounds.height
+        
+        //TODO:: check the logic later. some how the window is empty sometimes. 
+        guard let window = self.view.window else {
+            return
+        }
+        self.webViewBottomLine?.constant = keyboardFrame.origin.y - window.bounds.height
     }
     
     @objc func send_clicked(sender: UIBarButtonItem) {

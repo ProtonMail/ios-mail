@@ -30,6 +30,9 @@ class MenuViewModelImpl : MenuViewModel {
         {
             otherItems = otherItems.filter { $0 != .lockapp }
         }
+        if !ServicePlanDataService.shared.isIAPAvailable || Bundle.main.bundleIdentifier != "ch.protonmail.protonmail" {
+            otherItems = otherItems.filter { $0 != .servicePlan }
+        }
     }
     
     override func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {
@@ -87,4 +90,20 @@ class MenuViewModelImpl : MenuViewModel {
         }
         return nil
     }
+    
+    override func find( section : MenuSection, item : MenuItem) -> IndexPath {
+        var s = 0
+        var r = 0
+        s = sections.index(of: section) ?? 0
+        switch section {
+        case .inboxes:
+            r = inboxItems.index(of: item) ?? 0
+        case .others:
+            r = otherItems.index(of: item) ?? 0
+        default:
+            break
+        }
+        return IndexPath(row: r, section: s)
+    }
+    
 }

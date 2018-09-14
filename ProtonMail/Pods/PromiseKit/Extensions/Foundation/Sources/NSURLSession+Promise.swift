@@ -168,7 +168,7 @@ private func adapter<T, U>(_ seal: Resolver<(data: T, response: U)>) -> (T?, U?,
 
 
 #if swift(>=3.1)
-public enum PMKHTTPError: Error, LocalizedError {
+public enum PMKHTTPError: Error, LocalizedError, CustomStringConvertible {
     case badStatusCode(Int, Data, HTTPURLResponse)
 
     public var errorDescription: String? {
@@ -183,10 +183,42 @@ public enum PMKHTTPError: Error, LocalizedError {
         }
     }
 
+    public func decodeResponse<T: Decodable>(_ t: T.Type, decoder: JSONDecoder = JSONDecoder()) -> T? {
+        switch self {
+        case .badStatusCode(_, let data, _):
+            return try? decoder.decode(t, from: data)
+        }
+    }
+
+    //TODO rename responseJSON
     public var jsonDictionary: Any? {
         switch self {
         case .badStatusCode(_, let data, _):
             return try? JSONSerialization.jsonObject(with: data)
+        }
+    }
+
+    var responseBodyString: String? {
+        switch self {
+        case .badStatusCode(_, let data, _):
+            return String(data: data, encoding: .utf8)
+        }
+    }
+
+    public var failureReason: String? {
+        return responseBodyString
+    }
+
+    public var description: String {
+        switch self {
+        case .badStatusCode(let code, let data, let response):
+            var dict: [String: Any] = [
+                "Status Code": code,
+                "Body": String(data: data, encoding: .utf8) ?? "\(data.count) bytes"
+            ]
+            dict["URL"] = response.url
+            dict["Headers"] = response.allHeaderFields
+            return "<NSHTTPResponse> \(NSDictionary(dictionary: dict))" // as NSDictionary makes the output look like NSHTTPURLResponse looks
         }
     }
 }

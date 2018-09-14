@@ -65,13 +65,15 @@ final class AuthCredential: NSObject, NSCoding {
     }
     
     func setupToken (_ password:String) throws {
-        if let key = self.privateKey {
+        if encryptToken.armored, let key = self.privateKey  {
             self.plainToken = try sharedOpenPGP.decryptMessage(encryptToken,
                                                                privateKey: key,
                                                                passphrase: password)
         } else {
             self.plainToken = encryptToken
         }
+        
+        
         self.password = password;
         self.storeInKeychain()
     }
@@ -87,7 +89,7 @@ final class AuthCredential: NSObject, NSCoding {
         }
         self.userID = res.userID
         self.expiration = Date(timeIntervalSinceNow: res.expiresIn ?? 0)
-        self.privateKey = res.encPrivateKey
+        self.privateKey = res.privateKey
         self.passwordKeySalt = res.keySalt
     }
     

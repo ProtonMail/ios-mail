@@ -355,6 +355,14 @@ struct UsersAPI {
 struct PaymentsAPI {
     static let path : String = AppConstants.API_PATH + "/payments"
     
-    static let v_plans: Int = 3
+    static let v_get_status: Int = 3
+    static let v_get_plans: Int = 3
+    static let v_get_payment_methods: Int = 3
+    static let v_get_subscription: Int = 3
+    static let v_get_default_plan: Int = 3
+    static let v_post_credit: Int = 3
+    static let v_post_subscription: Int = 3
+    
+    static let v_get_apple_tier : Int = 3
 }
 

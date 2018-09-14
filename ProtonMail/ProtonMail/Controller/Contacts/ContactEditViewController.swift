@@ -301,9 +301,22 @@ extension ContactEditViewController : ContactUpgradeCellDelegate {
 }
 
 extension ContactEditViewController : UpgradeAlertVCDelegate {
+    func goPlans() {
+        self.navigationController?.dismiss(animated: false, completion: {
+            NotificationCenter.default.post(name: .switchView,
+                                            object: MenuItem.servicePlan)
+        })
+    }
+    
+    func learnMore() {
+        UIApplication.shared.openURL(URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!)
+    }
+    
     func cancel() {
         self.showingUpgrade = false
     }
+    
+
 }
 
 

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 public struct Part: CustomStringConvertible {
     public enum ContentEncoding: String { case base64 }
     
@@ -22,34 +21,35 @@ public struct Part: CustomStringConvertible {
     }
     
     public var bodyString: String {
-        let data = self.data
-        guard let string = String(data: data, encoding: .utf8) ?? String(data: data, encoding: .ascii) else { return "\(data.count) bytes" }
-        return string
+        var data = self.data.unwrap7BitLineBreaks()
+        let ascii = String(data: data, encoding: .ascii) ?? ""
+        
+        if ascii.contains("=3D") { data = data.convertFromMangledUTF8() }
+        
+        return String(data: data, encoding: .utf8) ?? String(malformedUTF8: data)
     }
-    
+
     public var rawBodyString: String? {
-        guard let string = String(data: body, encoding: .utf8) ?? String(data: body, encoding: .ascii) else { return nil }
-        return string
+        return String(data: body, encoding: .utf8) ?? String(malformedUTF8: body)
     }
     
     public var plainString : String {
         return self.string
     }
-    
-    public var contentType: String? { return self.headers[.contentType]?.body }
-    public var contentCID: String? { return self.headers[.contentID]?.name }
-    public var cid: String? { return self.headers[.contentID]?.body }
-    
-    public var contentEncoding: ContentEncoding? { return ContentEncoding(rawValue: self.headers[.contentTransferEncoding]?.body ?? "") }
-    func part(ofType type: String) -> Part? {
-        if self.contentType?.contains(type) == true { return self }
+
+    public func bodyString(convertingFromUTF8: Bool) -> String {
+        var data = self.data.unwrap7BitLineBreaks()
+        let ascii = String(data: data, encoding: .ascii) ?? ""
         
-        for part in self.subParts {
-            if let sub = part.part(ofType: type) { return sub }
-        }
-        return nil
+        if ascii.contains("=3D") { data = data.convertFromMangledUTF8() }
+        
+        guard let string = String(data: data, encoding: .utf8) ?? String(data: data, encoding: .ascii) else { return "\(data.count) bytes" }
+        
+        return string
     }
     
+    public var contentCID: String? { return self.headers[.contentID]?.name }
+    public var cid: String? { return self.headers[.contentID]?.body }
     func partCID() -> Part? {
         if self.contentCID?.contains("Content-ID") == true { return self }
         for part in self.subParts {
@@ -58,6 +58,18 @@ public struct Part: CustomStringConvertible {
         return nil
     }
     
+    
+    public var contentType: String? { return self.headers[.contentType]?.body }
+    public var contentEncoding: ContentEncoding? { return ContentEncoding(rawValue: self.headers[.contentTransferEncoding]?.body ?? "") }
+    func part(ofType type: String) -> Part? {
+        let lower = type.lowercased()
+        if self.contentType?.lowercased().contains(lower) == true { return self }
+        
+        for part in self.subParts {
+            if let sub = part.part(ofType: lower) { return sub }
+        }
+        return nil
+    }
     
     var data: Data {
         if self.contentEncoding == .base64,
@@ -68,28 +80,29 @@ public struct Part: CustomStringConvertible {
         return self.body
     }
     
-    init(components: Data.Components) {
-        if let blankIndex = components.index(of: "") {
-            self.headers = components[0..<blankIndex].map { Header($0) }
-            self.body = components[blankIndex..<components.count]
-            self.string = components[blankIndex..<components.count].joined(separator: "\n")
+    init?(data: Data) {
+        if let contentStart = data.mimeContentStart {
+            let subData = data[0...contentStart]
+            guard let components = subData.unwrapTabs().components() else { return nil }
+            
+            self.headers = components.all.map { Header($0) }
+            self.body = data[contentStart...].convertFromMangledUTF8()
+            self.string = String(data: data[contentStart...], encoding: .utf8) ?? String(malformedUTF8: data[contentStart...])
             var parts: [Part] = []
             if let boundary = self.headers[.contentType]?.boundaryValue {
-                let groups = components.separated(by: boundary)
-                let gcount = groups.count
-                if gcount > 0 {
-                    for i in 1..<groups.count {
-                        let group = groups[i]
-                        let subpart = Part(components: group)
+                let groups = data.separated(by: "--" + boundary)
+                
+                for i in 0..<groups.count {
+                    if let subpart = Part(data: Data(groups[i])) {
                         parts.append(subpart)
                     }
                 }
             }
             self.subParts = parts
         } else {
-            self.headers = components.all.map { Header($0) }
+            self.headers = []
             self.subParts = []
-            self.body = Data()
+            self.body = data
             self.string = ""
         }
     }
@@ -102,7 +115,7 @@ public struct Part: CustomStringConvertible {
         }
         
         string += "\n"
-        string += self.bodyString
+        string += self.bodyString(convertingFromUTF8: true)
         return string
     }
 }

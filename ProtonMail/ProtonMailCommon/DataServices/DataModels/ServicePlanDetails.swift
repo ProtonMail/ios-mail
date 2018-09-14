@@ -9,17 +9,12 @@
 import Foundation
 
 struct ServicePlanDetails: Codable {
-    static var free: ServicePlanDetails = .init(amount: 150, currency: "USD", cycle: 0, features: 0, iD: "ProtonMail Free", maxAddresses: 5, maxDomains: 0, maxMembers: 1, maxSpace: 500*1024*1024, maxVPN: 0, name: "ProtonMail Free", quantity: 150, services: 0, title: "ProtonMail Free", type: 0)
-    
-    let amount: Int
-    let currency: String
-    let cycle: Int
     let features: Int
-    let iD: String
+    let iD: String?
     let maxAddresses: Int
     let maxDomains: Int
     let maxMembers: Int
-    let maxSpace: Int
+    let maxSpace: Int64
     let maxVPN: Int
     let name: String
     let quantity: Int
@@ -30,32 +25,23 @@ struct ServicePlanDetails: Codable {
 
 extension ServicePlanDetails: Equatable {
     static func +(left: ServicePlanDetails, right: ServicePlanDetails) -> ServicePlanDetails {
-        // FIXME: implement upgrade logic
+        // TODO: implement upgrade logic
         return left
     }
     
     static func ==(left: ServicePlanDetails, right: ServicePlanDetails) -> Bool {
-        return left.iD == right.iD
+        return left.name == right.name
     }
 }
 
-struct PaymentMethod: Codable {
-    enum PaymentType: String, Codable {
-        case other = "other"
-        case apple = "apple"
-        case card = "card"
-        
-        init?(rawValue: String) {
-            if rawValue == PaymentType.apple.rawValue {
-                self = .apple
-            } else if rawValue == PaymentType.card.rawValue {
-                self = .card
-            } else {
-                self = .other
-            }
+extension Array where Element == ServicePlanDetails {
+    func merge() -> ServicePlanDetails? {
+        let basicPlans = self.filter({ ServicePlan(rawValue: $0.name) != nil })
+        guard let basic = basicPlans.first else {
+            return nil
         }
+        return self.reduce(basic, { (result, next) -> ServicePlanDetails in
+            return (next != basic) ? (result + next) : result
+        })
     }
-    
-    let iD: String
-    let type: PaymentType
 }

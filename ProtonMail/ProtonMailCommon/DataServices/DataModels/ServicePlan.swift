@@ -9,17 +9,17 @@
 import Foundation
 
 enum ServicePlan: String {
-    case free = "ProtonMail Free" // FIXME: change to iDs?
-    case plus = "ziWi-ZOb28XR4sCGFCEpqQbd1FITVWYfTfKYUmV_wKKR3GsveN4HZCh9er5dhelYylEp-fhjBbUPDMHGU699fw=="
-    case pro = "j_hMLdlh76xys5eR2S3OM9vlAgYylGQBiEzDeXLw1H-huHy2jwjwVqcKAPcdd6z2cXoklLuQTegkr3gnJXCB9w=="
-    case visionary = "m-dPNuHcP8N4xfv6iapVg2wHifktAD1A1pFDU95qo5f14Vaw8I9gEHq-3GACk6ef3O12C3piRviy_D43Wh7xxQ=="
+    case free = "free"
+    case plus = "plus"
+    case pro = "professional"
+    case visionary = "visionary"
     
-    func fetchDetails() -> ServicePlanDetails? {
-        return ServicePlanDataService.detailsOfServicePlan(coded: self.rawValue)
+    internal func fetchDetails() -> ServicePlanDetails? {
+        return ServicePlanDataService.shared.detailsOfServicePlan(named: self.rawValue)
     }
     
-    // FIXME: localization, colors
-    var subheader: (String, UIColor) {
+    // FIXME: localization
+    internal var subheader: (String, UIColor) {
         switch self {
         case .free: return ("Free", UIColor.ProtonMail.ServicePlanFree)
         case .plus: return ("Plus", UIColor.ProtonMail.ServicePlanPlus)
@@ -29,57 +29,28 @@ enum ServicePlan: String {
     }
     
     // FIXME: localization
-    var headerText: String {
+    internal var headerText: String {
         switch self {
-        case .free: return "For individuals looking to benefit from secure communication at no cost"
-        case .plus: return "For individuals that need more capacity, customization and advanced features"
-        case .pro: return "For organizations that need multi-user support nd additional productivity features"
-        case .visionary: return "For power users and groups of people that value full anonymity and privacy"
+        case .free: return LocalString._free_header
+        case .plus: return LocalString._plus_header
+        case .pro: return LocalString._pro_header
+        case .visionary: return LocalString._vis_header
         }
     }
     
-    var storeKitProductId: String? {
+    internal var storeKitProductId: String? {
         switch self {
         case .free, .pro, .visionary: return nil
-        case .plus: return "Test_ProtonMail_Plus_3" // FIXME: use non-test id from AppstroreConnect
+        case .plus:
+            //"ios_plus_12_usd_consumable" -- old one
+            return "ios_plus_12_usd_non_renewing"
         }
     }
     
-    init?(storeKitProductId: String) {
+    internal init?(storeKitProductId: String) {
         guard storeKitProductId == ServicePlan.plus.storeKitProductId else {
             return nil
         }
         self = .plus
-    }
-}
-
-struct Subscription: Codable {
-    var plan: ServicePlan {
-        return self.planDetails?.compactMap({ ServicePlan(rawValue: $0.iD) }).first ?? .free
-    }
-    var details: ServicePlanDetails {
-        return self.planDetails?.merge() ?? ServicePlanDetails.free
-    }
-    var hadOnlinePayments: Bool {
-        guard let allMethods = self.paymentMethods else {
-            return false
-        }
-        return allMethods.map { $0.type }.contains(.card)
-    }
-    
-    let planDetails: [ServicePlanDetails]?
-    let start, end: Date?
-    var paymentMethods: [PaymentMethod]?
-}
-
-extension Array where Element == ServicePlanDetails {
-    func merge() -> ServicePlanDetails? {
-        let basicPlans = self.filter({ ServicePlan(rawValue: $0.iD) != nil })
-        guard let basic = basicPlans.first else {
-            return nil
-        }
-        return self.reduce(basic, { (result, next) -> ServicePlanDetails in
-            return (next != basic) ? (result + next) : result
-        })
     }
 }

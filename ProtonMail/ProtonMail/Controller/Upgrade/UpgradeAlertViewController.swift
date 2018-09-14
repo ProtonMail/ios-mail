@@ -11,6 +11,8 @@ import Contacts
 
 protocol UpgradeAlertVCDelegate {
     func cancel()
+    func goPlans()
+    func learnMore()
 }
 
 class UpgradeAlertViewController: UIViewController, ViewModelProtocolNew {
@@ -31,23 +33,29 @@ class UpgradeAlertViewController: UIViewController, ViewModelProtocolNew {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var okButton: UIButton!
     
+    @IBOutlet weak var notNowButton: UIButton!
+    @IBOutlet weak var plansButton: UIButton!
+    
+    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var titleLabelTwo: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var messageLabelTwo: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.viewContainer.layer.cornerRadius = 4.0
-        self.okButton.layer.cornerRadius = 8.0
+        self.okButton.layer.cornerRadius = 6.0
+        self.notNowButton.layer.cornerRadius = 6.0
+        self.plansButton.layer.cornerRadius = 6.0
         
         //set text
-        self.okButton.setTitle(self.viewModel.button, for: UIControlState.normal)
+        self.okButton.setTitle(self.viewModel.button1, for: UIControlState.normal)
+        self.notNowButton.setTitle(self.viewModel.button2, for: UIControlState.normal)
+        self.plansButton.setTitle(self.viewModel.button3, for: UIControlState.normal)
         
         self.titleLabel.text = self.viewModel.title
         self.titleLabelTwo.text = self.viewModel.title2
         self.messageLabel.text = self.viewModel.message
-        self.messageLabelTwo.text = self.viewModel.message2
     }
     
     override func didReceiveMemoryWarning() {
@@ -59,8 +67,21 @@ class UpgradeAlertViewController: UIViewController, ViewModelProtocolNew {
         super.viewWillDisappear(animated)
     }
     
+    //TODO:: Rename to learnmore later
     @IBAction func cancelTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: {
+            self.delegate?.learnMore()
+        })
+    }
+    
+    @IBAction func notNowAction(_ sender: Any) {
         self.dismiss()
+    }
+    
+    @IBAction func plansAction(_ sender: Any) {
+        self.dismiss(animated: true, completion: {
+            self.delegate?.goPlans()
+        })
     }
     
     private func dismiss() {

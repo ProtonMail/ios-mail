@@ -56,4 +56,22 @@ public class BugDataService {
         let errors = NSError(domain: dataServiceDomain, code: -10000000, userInfo: userInfo)
         Crashlytics.sharedInstance().recordError(errors)
     }
+    
+    
+    public class func sendingIssue(title: String,
+                                   bug: String,
+                                   status: Int,
+                                   emials: [String],
+                                   attCount: Int) {
+        let userInfo = [
+            NSLocalizedDescriptionKey: "ProtonMail App bug debugging.",
+            NSLocalizedFailureReasonErrorKey: "Parser issue.",
+            NSLocalizedRecoverySuggestionErrorKey: "Parser failed.",
+            "Title": title,
+            "Value": bug,
+        ]
+        
+        let errors = NSError(domain: dataServiceDomain, code: -10000000, userInfo: userInfo)
+        Crashlytics.sharedInstance().recordError(errors)
+    }
 }

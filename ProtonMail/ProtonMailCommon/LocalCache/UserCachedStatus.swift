@@ -54,8 +54,11 @@ final class UserCachedStatus : SharedCacheBase {
         // Snooze Notifications
         static let snoozeConfiguration = "snoozeConfiguration"
         
+        // FIX ME: double check if the value belongs to user. move it into user object. 2.0
         static let servicePlans = "servicePlans"
         static let currentSubscription = "currentSubscription"
+        static let defaultPlanDetails = "defaultPlanDetails"
+        static let isIAPAvailable = "isIAPAvailable"
     }
     
     var isForcedLogout : Bool = false
@@ -183,7 +186,7 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.isPM_MEWarningDisabled)
         
         //touch id
-        getShared().removeObject(forKey: Key.touchIDEmail);
+        getShared().removeObject(forKey: Key.touchIDEmail)
         
         //pin code
         getShared().removeObject(forKey: Key.isPinCodeEnabled)
@@ -202,24 +205,29 @@ final class UserCachedStatus : SharedCacheBase {
         sharedKeychain.keychain().removeItem(forKey: Key.autoLockTime)
         sharedKeychain.keychain().removeItem(forKey: Key.enterBackgroundTime)
         
+        // Clean the keys Anatoly added
+        getShared().removeObject(forKey: Key.snoozeConfiguration)
+        getShared().removeObject(forKey: Key.servicePlans)
+        getShared().removeObject(forKey: Key.currentSubscription)
+        getShared().removeObject(forKey: Key.defaultPlanDetails)
+        getShared().removeObject(forKey: Key.isIAPAvailable)
+                        
         getShared().synchronize()
     }
     
     func cleanGlobal() {
         getShared().removeObject(forKey: Key.lastSplashViersion)
-        getShared().removeObject(forKey: Key.lastTourViersion);
+        getShared().removeObject(forKey: Key.lastTourViersion)
         
         //touch id
         getShared().removeObject(forKey: Key.isTouchIDEnabled)
-        getShared().removeObject(forKey: Key.autoLogoutTime);
+        getShared().removeObject(forKey: Key.autoLogoutTime)
         getShared().removeObject(forKey: Key.askEnableTouchID)
         getShared().removeObject(forKey: Key.isManuallyLockApp)
         
         //
-        
-        //
         getShared().removeObject(forKey: Key.lastLocalMobileSignature)
-        
+       
         getShared().synchronize()
     }
 }
@@ -323,8 +331,11 @@ extension UserCachedStatus {
     func resetAskedEnableTouchID() {
         setValue(AppConstants.AskTouchID, forKey: Key.askEnableTouchID)
     }
-    
-    #if !APP_EXTENSION
+}
+
+
+#if !APP_EXTENSION
+extension UserCachedStatus: ServicePlanDataStorage {
     var servicePlansDetails: [ServicePlanDetails]? {
         get {
             guard let data = self.getShared().data(forKey: Key.servicePlans) else {
@@ -335,6 +346,19 @@ extension UserCachedStatus {
         set {
             let data = try? PropertyListEncoder().encode(newValue)
             self.setValue(data, forKey: Key.servicePlans)
+        }
+    }
+    
+    var defaultPlanDetails: ServicePlanDetails? {
+        get {
+            guard let data = self.getShared().data(forKey: Key.defaultPlanDetails) else {
+                return nil
+            }
+            return try? PropertyListDecoder().decode(ServicePlanDetails.self, from: data)
+        }
+        set {
+            let data = try? PropertyListEncoder().encode(newValue)
+            self.setValue(data, forKey: Key.defaultPlanDetails)
         }
     }
     
@@ -350,5 +374,14 @@ extension UserCachedStatus {
             self.setValue(data, forKey: Key.currentSubscription)
         }
     }
-    #endif
+    
+    var isIAPAvailable: Bool {
+        get {
+            return self.getShared().bool(forKey: Key.isIAPAvailable)
+        }
+        set {
+            self.setValue(newValue, forKey: Key.isIAPAvailable)
+        }
+    }
 }
+#endif

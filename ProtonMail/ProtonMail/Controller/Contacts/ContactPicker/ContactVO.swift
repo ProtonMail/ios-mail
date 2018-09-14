@@ -243,10 +243,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             switch self.pgpType {
             case .none:
                 return LocalString._stored_with_zero_access_encryption
-            case .eo:
-                return LocalString._encrypted_outside
-                
-            case .internal_normal: //PM --> PM (encrypted+signed)
+            case .eo, .internal_normal: //PM --> PM (encrypted+signed)
                 return LocalString._end_to_end_encrypted_message
             case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
                 return LocalString._end_to_end_encrypted_message_from_verified_address
