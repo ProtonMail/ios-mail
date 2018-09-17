@@ -680,6 +680,7 @@ extension ContactEditViewController: UITableViewDelegate {
         if sections[indexPath.section] == .notes {
             return UITableViewAutomaticDimension
         }
+        
         if sections[indexPath.section] == .home_address {
             let count = viewModel.getAddresses().count
             if indexPath.row != count {
@@ -689,6 +690,10 @@ extension ContactEditViewController: UITableViewDelegate {
         
         if sections[indexPath.section] == .upgrade {
              return 200 //  280.0
+        }
+        
+        if sections[indexPath.section] == .emails {
+            return UITableViewAutomaticDimension
         }
 
         return 48.0
