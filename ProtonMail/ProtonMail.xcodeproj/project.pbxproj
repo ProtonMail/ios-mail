@@ -968,8 +968,8 @@
 		A87D01BD6E56BE610D487C5835CA7D18 /* ContactVO+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56C53C0EE62F034C5DEC86CDDB56EFE /* ContactVO+Extension.swift */; };
 		A89BDFE1911CBA8684ECCDAEEDC02315 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */; };
 		A8A6921550423D6B42CA3CF00226F48B /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87530495407CE3203D251F1AAF3A3DAD /* ToastMessageView.swift */; };
-		A8E4A5E6164FF8693A21733E2CA6D961 /* ContactGroupsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDA628A0CBF1A40EB99BA815D85481 /* ContactGroupsViewCell.swift */; };
 		A8B26C2B7C53981220BD13D381E2BD8C /* ExternalURL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE6E5D71D01C07A5C2C758B1597F905 /* ExternalURL+Extension.swift */; };
+		A8E4A5E6164FF8693A21733E2CA6D961 /* ContactGroupsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDA628A0CBF1A40EB99BA815D85481 /* ContactGroupsViewCell.swift */; };
 		A8EE31D4C8E1B6533E35DFF49B289DE5 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2DF54E18BEB8D52362623451A13350 /* UserInfo.swift */; };
 		A902FA681F6E1741802D042BF58BBEC7 /* ContactGroupSelectColorViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9567663E4789DC9C691D57DA60A5ED80 /* ContactGroupSelectColorViewModelImpl.swift */; };
 		A90550F71DB25CC3C44267C0BE964D18 /* ContactsViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFB8736687A7913C94C156D188BF283 /* ContactsViewModelImpl.swift */; };
@@ -1141,8 +1141,8 @@
 		C44AC2CBF1F5737BBB4C35FC06B1B70B /* UIStoryboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C995A5395A5FEBA384F6A27BB2C2A2C /* UIStoryboard+Extension.swift */; };
 		C45CBD1F2A54E7C00165CC2BC0FB1C11 /* PinCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070475F75227B69A2718C78F69C33998 /* PinCodeModel.swift */; };
 		C46D3753789881DB6A31028E43A9102E /* ContactVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB56C83DFD8EA948F5E667BA7D8ECE3 /* ContactVO.swift */; };
-		C48428FFC6B71DC9149EC55DC3EF3370 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CF03A84450B0FBE0379C2BB330FFE47 /* ColorManager.swift */; };
 		C478D13095AD68E44EC47329D24B8FA5 /* Test Second Encoding.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3D862595AAE0D77A38550B7D182DA51F /* Test Second Encoding.bundle */; };
+		C48428FFC6B71DC9149EC55DC3EF3370 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CF03A84450B0FBE0379C2BB330FFE47 /* ColorManager.swift */; };
 		C4AAD498D093FFBE891381CD972CC06E /* LabelboxViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07485BF822F9851BDFC28AE2401632AB /* LabelboxViewModelImpl.swift */; };
 		C598B1CCED44E6732A81E8ECE5BDFDFE /* PersistentQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E5E13AFADBB0364C9E03E546AD572 /* PersistentQueue.swift */; };
 		C5D1E1029A2029E2A5A6DEFF1D88A74F /* UInt8+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88611299B9671FB8C9EC5B915B8DD4CC /* UInt8+Mime.swift */; };
@@ -1506,13 +1506,6 @@
 			remoteGlobalIDString = 3DD8FCED3FB5276FDB35E89899093113;
 			remoteInfo = PushServiceDev;
 		};
-		D67206EDE7A3E400AA7DECCD197D8B91 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7CC48161B0FC946A8DB234B96B6A66DD;
-			remoteInfo = ProtonMail;
-		};
 		7DE64AAD46503A1688D8AD15767E9C22 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
@@ -1533,6 +1526,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 55608604485FE7632E52ED7BBE6A939B;
 			remoteInfo = PushService;
+		};
+		D67206EDE7A3E400AA7DECCD197D8B91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7CC48161B0FC946A8DB234B96B6A66DD;
+			remoteInfo = ProtonMail;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1804,7 +1804,6 @@
 		5C3C45196C742337934AB7387537109A /* DomainsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DomainsTableViewCell.xib; sourceTree = "<group>"; };
 		5D1BEB8606CB3CF8775F504C746071BA /* NSBundle+Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Language.h"; sourceTree = "<group>"; };
 		5D2CEFA26A1BF2F0E6FED78804862460 /* SignUpUserNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpUserNameViewController.swift; sourceTree = "<group>"; };
-		5DB70CD125DBA94CA84EEFCA591D2366 /* NotificationDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDefined.swift; sourceTree = "<group>"; };
 		5EC7E2650D5B2BA5C995439ECF2D48E1 /* ContactGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupViewModel.swift; sourceTree = "<group>"; };
 		5F0A6DAFDF49785FC75C1ECF770E55C9 /* CountryCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCode.swift; sourceTree = "<group>"; };
 		5F930869E164E33DA04392630B47C5E7 /* ServicePlanCapability.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServicePlanCapability.xib; sourceTree = "<group>"; };
@@ -5953,15 +5952,15 @@
 			target = 528CABDE5FC7422D1D0E7976ADAA8CAD /* ShareDev */;
 			targetProxy = 7DE64AAD46503A1688D8AD15767E9C22 /* PBXContainerItemProxy */;
 		};
-		3B31B3A96BECC9233592F2F72526195E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 55608604485FE7632E52ED7BBE6A939B /* PushService */;
-			targetProxy = C1413F955C68DB50312C878280E547D5 /* PBXContainerItemProxy */;
-		};
 		36825F4497A04DA925FB6478D4699F4A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 7CC48161B0FC946A8DB234B96B6A66DD /* ProtonMail */;
 			targetProxy = D67206EDE7A3E400AA7DECCD197D8B91 /* PBXContainerItemProxy */;
+		};
+		3B31B3A96BECC9233592F2F72526195E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55608604485FE7632E52ED7BBE6A939B /* PushService */;
+			targetProxy = C1413F955C68DB50312C878280E547D5 /* PBXContainerItemProxy */;
 		};
 		B5512F1FD8180155D82C74560A54E210 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

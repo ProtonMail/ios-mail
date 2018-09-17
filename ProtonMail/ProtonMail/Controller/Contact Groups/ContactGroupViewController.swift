@@ -55,16 +55,31 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.definesPresentationContext = true
         self.extendedLayoutIncludesOpaqueBars = true
         
-        self.prepareTable()
+        prepareTable()
         
-        self.prepareFetchedResultsController()
+        prepareFetchedResultsController()
         
-        self.prepareRefreshController()
+        prepareRefreshController()
         
-        self.prepareSearchBar()
+        prepareSearchBar()
         
-        self.prepareLongPressGesture()
         prepareNavigationItemRightDefault()
+        
+        totalSelectedContactGroups = 0 // TODO: find a better way to init it
+        
+        switch viewModel.getState() {
+        case .ContactGroupsView:
+            prepareLongPressGesture()
+        case .ContactSelectGroups:
+            isEditingState = true
+            tableView.allowsMultipleSelection = true
+            
+            // TODO
+            // the prepare vab bar must be changed!
+            // the title can be reused
+        }
+        
+        updateNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {

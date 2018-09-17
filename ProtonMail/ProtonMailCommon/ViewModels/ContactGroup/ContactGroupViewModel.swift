@@ -10,7 +10,15 @@ import Foundation
 import CoreData
 import PromiseKit
 
+enum ContactGroupsViewModelState
+{
+    case ContactGroupsView
+    case ContactSelectGroups
+}
+
 protocol ContactGroupsViewModel {
+    func getState() -> ContactGroupsViewModelState
+    
     func fetchAllContactGroup()
     
     // search

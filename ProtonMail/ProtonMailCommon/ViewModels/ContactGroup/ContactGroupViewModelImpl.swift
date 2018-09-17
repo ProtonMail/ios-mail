@@ -13,6 +13,26 @@ import PromiseKit
 class ContactGroupsViewModelImpl: ContactGroupsViewModel
 {
     var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
+    let state: ContactGroupsViewModelState
+    let refreshHandler: ((NSSet) -> Void)?
+    
+    /**
+     Init the view model with state
+     
+     State "ContactGroupsView" is for showing all contact groups in the contact group tab
+     State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
+    */
+    init(state: ContactGroupsViewModelState, refreshHandler: ((NSSet) -> Void)? = nil) {
+        self.state = state
+        self.refreshHandler = refreshHandler
+    }
+    
+    /**
+     - Returns: ContactGroupsViewModelState
+    */
+    func getState() -> ContactGroupsViewModelState {
+        return state
+    }
     
     /**
      Fetch all contact groups from the server using API
