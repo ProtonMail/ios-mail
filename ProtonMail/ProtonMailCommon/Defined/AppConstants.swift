@@ -30,8 +30,8 @@ class AppConstants {
     static let API_PATH : String = ""
     
     //blue test
-    //static let URL_HOST : String = "protonmail.blue"
-    //static let API_PATH : String = "/api"
+//    static let URL_HOST : String = "protonmail.blue"
+//    static let API_PATH : String = "/api"
     //static let URL_HOST : String = "midnight.protonmail.blue"
     
     //live test api

@@ -174,13 +174,13 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                             self.errorCompletion(error)
                         }
                     }
-                    
+//                case 22914: //TODO:: need to handle this properly
+//                    SKPaymentQueue.default().finishTransaction(transaction)
+//                    self.successCompletion?()
                 default:
                     self.errorCompletion(error)
                 }
             }
-            
-            
         case .deferred, .purchasing:
             self.deferredCompletion?()
             
