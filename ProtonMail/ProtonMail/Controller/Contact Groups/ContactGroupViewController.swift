@@ -70,16 +70,13 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         switch viewModel.getState() {
         case .ContactGroupsView:
             prepareLongPressGesture()
+            updateNavigationBar()
         case .ContactSelectGroups:
             isEditingState = true
             tableView.allowsMultipleSelection = true
             
-            // TODO
-            // the prepare vab bar must be changed!
-            // the title can be reused
-        }
-        
-        updateNavigationBar()
+            prepareNavigationItemTitle()
+        }  
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,6 +85,21 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        if viewModel.getState() == .ContactSelectGroups {
+            if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+                viewModel.returnSelectedGroups(groupIDs: selectedIndexPaths.map({
+                    selectedIndexPath -> String in
+                    
+                    if let cell = self.tableView.cellForRow(at: selectedIndexPath) as? ContactGroupsViewCell {
+                        return cell.labelID
+                    } else {
+                        // TODO: handle error
+                        fatalError("Conversion error")
+                    }
+                }))
+            }
+        }
     }
     
     private func prepareFetchedResultsController() {

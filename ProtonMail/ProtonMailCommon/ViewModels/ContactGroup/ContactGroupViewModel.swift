@@ -18,6 +18,7 @@ enum ContactGroupsViewModelState
 
 protocol ContactGroupsViewModel {
     func getState() -> ContactGroupsViewModelState
+    func returnSelectedGroups(groupIDs: [String])
     
     func fetchAllContactGroup()
     

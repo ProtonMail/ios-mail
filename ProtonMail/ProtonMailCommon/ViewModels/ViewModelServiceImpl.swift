@@ -259,6 +259,11 @@ class ViewModelServiceImpl: ViewModelService {
         vmp.setViewModel(ContactTypeViewModelImpl(t: type))
     }
     
+    override func contactSelectContactGroupsViewModel(_ vmp: ViewModelProtocol,
+                                                      refreshHandler: @escaping (NSSet) -> Void) {
+        activeViewController = vmp
+        vmp.setViewModel(ContactGroupsViewModelImpl(state: .ContactSelectGroups, refreshHandler: refreshHandler))
+    }
     
     // contact groups
     override func contactGroupsViewModel(_ vmp: ViewModelProtocol) {

@@ -38,6 +38,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     //const segue
     fileprivate let kToContactTypeSegue : String      = "toContactTypeSegue"
+    fileprivate let kToSelectContactGroupSegue: String = "toSelectContactGroupSegue"
     fileprivate let kToUpgradeAlertSegue : String     = "toUpgradeAlertSegue"
     
     //
@@ -127,6 +128,11 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             sharedVMService.upgradeAlert(contacts: popup)
             popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
+        } else if segue.identifier == kToSelectContactGroupSegue {
+            let destination = segue.destination as! ContactGroupsViewController
+            let refreshHandler = (sender as! ContactEditEmailCell).refreshHandler
+            sharedVMService.contactSelectContactGroupsViewModel(destination,
+                                                                refreshHandler: refreshHandler)
         }
     }
     
@@ -232,6 +238,12 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
         dismissKeyboard()
         self.performSegue(withIdentifier: kToContactTypeSegue, sender: typeInterface)
     }
+    
+    func toSelectContactGroups(sender: ContactEditEmailCell) {
+        self.performSegue(withIdentifier: kToSelectContactGroupSegue,
+                          sender: sender)
+    }
+    
     //reuseable
     func beginEditing(textField: UITextField) {
         self.activeText = textField

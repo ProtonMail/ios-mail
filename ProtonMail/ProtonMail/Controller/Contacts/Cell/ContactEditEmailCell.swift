@@ -21,6 +21,13 @@ final class ContactEditEmailCell: UITableViewCell {
     @IBOutlet weak var valueField: UITextField!
     @IBOutlet weak var sepratorView: UIView!
     
+    internal let refreshHandler = {
+        (contactGroups: NSSet) -> Void in
+        
+        // TODO: add group info into the emailID
+        print(contactGroups.debugDescription)
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
@@ -49,7 +56,7 @@ final class ContactEditEmailCell: UITableViewCell {
     }
     
     @IBAction func chooseContactGroup(_ sender: UIButton) {
-        
+        delegate?.toSelectContactGroups(sender: self)
     }
     
     override func layoutSubviews() {

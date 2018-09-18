@@ -24,6 +24,11 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
     */
     init(state: ContactGroupsViewModelState, refreshHandler: ((NSSet) -> Void)? = nil) {
         self.state = state
+        
+        // TODO: handle error
+        if state == .ContactSelectGroups && refreshHandler == nil {
+            fatalError("Missing handler")
+        }
         self.refreshHandler = refreshHandler
     }
     
@@ -34,6 +39,12 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
         return state
     }
     
+    func returnSelectedGroups(groupIDs: [String]) {
+        if state == .ContactSelectGroups,
+            let refreshHandler = refreshHandler {
+            refreshHandler(NSSet.init(array: groupIDs))
+        }
+    }
     /**
      Fetch all contact groups from the server using API
      

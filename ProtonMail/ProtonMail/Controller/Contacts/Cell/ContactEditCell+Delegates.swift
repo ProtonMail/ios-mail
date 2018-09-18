@@ -12,6 +12,7 @@ import Foundation
 
 protocol ContactEditCellDelegate {
     func pick(typeInterface: ContactEditTypeInterface, sender: UITableViewCell)
+    func toSelectContactGroups(sender: ContactEditEmailCell)
     func beginEditing(textField: UITextField)
     func featureBlocked()
 }
