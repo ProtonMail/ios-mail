@@ -39,6 +39,9 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
         return state
     }
     
+    /**
+     Call this function when we are in "ContactSelectGroups" for returning the selected conatct groups
+    */
     func returnSelectedGroups(groupIDs: [String]) {
         if state == .ContactSelectGroups,
             let refreshHandler = refreshHandler {

@@ -1,6 +1,6 @@
 //
 //  ContactsAndGroupsSharedCode.swift
-//  
+//
 //
 //  Created by Chun-Hung Tseng on 2018/9/13.
 //

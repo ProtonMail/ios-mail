@@ -63,19 +63,20 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         
         prepareSearchBar()
         
-        prepareNavigationItemRightDefault()
-        
         totalSelectedContactGroups = 0 // TODO: find a better way to init it
         
         switch viewModel.getState() {
         case .ContactGroupsView:
             prepareLongPressGesture()
+            prepareNavigationItemRightDefault()
             updateNavigationBar()
         case .ContactSelectGroups:
             isEditingState = true
             tableView.allowsMultipleSelection = true
             
             prepareNavigationItemTitle()
+            
+            self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem
         }  
     }
     

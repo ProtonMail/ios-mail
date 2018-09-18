@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/henrybear327/Documents/ProtonMail/protonmail_ios/ProtonMail/ProtonMail/Controller/Tabbar/ContactsAndGroupsSharedCode.swift">
-   </FileRef>
-   <FileRef
       location = "group:ProtonMail.xcodeproj">
    </FileRef>
    <FileRef
