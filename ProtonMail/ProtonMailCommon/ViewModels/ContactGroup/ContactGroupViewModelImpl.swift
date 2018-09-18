@@ -10,11 +10,12 @@ import Foundation
 import CoreData
 import PromiseKit
 
-class ContactGroupsViewModelImpl: ContactGroupsViewModel
+class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
 {
-    var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
-    let state: ContactGroupsViewModelState
-    let refreshHandler: ((NSSet) -> Void)?
+    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
+    private var isFetching: Bool = false
+    private let state: ContactGroupsViewModelState
+    private let refreshHandler: ((NSSet) -> Void)?
     
     /**
      Init the view model with state
@@ -52,14 +53,13 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
     /**
      Fetch all contact groups from the server using API
      */
-    private var isFetching: Bool = false
-    func fetchAllContactGroup() -> Promise<Void>
+    func fetchLatestContactGroup() -> Promise<Void>
     {
         return Promise {
             seal in
             
-            if isFetching == false {
-                isFetching = true
+            if self.isFetching == false {
+                self.isFetching = true
                 
                 sharedMessageDataService.fetchNewMessagesForLocation(.inbox,
                                                                      notificationMessageID: nil,
@@ -76,6 +76,28 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
                 seal.fulfill(())
             }
         }
+    }
+    
+    func timerStart(_ run: Bool = true) {
+        super.setupTimer(run)
+    }
+    
+    func timerStop() {
+        super.stopTimer()
+    }
+    
+    private func fetchContacts() {
+        if isFetching == false {
+            isFetching = true
+            
+            sharedMessageDataService.fetchNewMessagesForLocation(.inbox, notificationMessageID: nil, completion: { (task, res, error) in
+                self.isFetching = false
+            })
+        }
+    }
+    
+    override internal func fireFetch() {
+        self.fetchContacts()
     }
     
     // search

@@ -82,6 +82,10 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if viewModel.getState() == .ContactGroupsView {
+            self.viewModel.timerStart(true)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -100,6 +104,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                     }
                 }))
             }
+        } else if viewModel.getState() == .ContactGroupsView {
+            self.viewModel.timerStop()
         }
     }
     
@@ -320,10 +326,23 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         }
     }
     
-    // TODO: fix me
     @objc func fireFetch() {
-        self.viewModel.fetchAllContactGroup()
-        self.refreshControl.endRefreshing() // this is fake
+        firstly {
+            return self.viewModel.fetchLatestContactGroup()
+            }.done {
+                self.refreshControl.endRefreshing()
+            }.catch {
+                error in
+                
+                let alert = UIAlertController(title: "Error deleting groups",
+                                              message: error.localizedDescription,
+                                              preferredStyle: .alert)
+                alert.addOKAction()
+                
+                self.present(alert,
+                             animated: true,
+                             completion: nil)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
