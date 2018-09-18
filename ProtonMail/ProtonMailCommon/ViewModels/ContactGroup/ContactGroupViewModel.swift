@@ -20,7 +20,7 @@ protocol ContactGroupsViewModel {
     func getState() -> ContactGroupsViewModelState
     func returnSelectedGroups(groupIDs: [String])
     
-    func fetchAllContactGroup()
+    func fetchAllContactGroup() -> Promise<Void> 
     
     // search
     func setFetchResultController(fetchedResultsController: inout NSFetchedResultsController<NSFetchRequestResult>?)

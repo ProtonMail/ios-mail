@@ -21,7 +21,7 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
      
      State "ContactGroupsView" is for showing all contact groups in the contact group tab
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
-    */
+     */
     init(state: ContactGroupsViewModelState, refreshHandler: ((NSSet) -> Void)? = nil) {
         self.state = state
         
@@ -34,34 +34,48 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
     
     /**
      - Returns: ContactGroupsViewModelState
-    */
+     */
     func getState() -> ContactGroupsViewModelState {
         return state
     }
     
     /**
      Call this function when we are in "ContactSelectGroups" for returning the selected conatct groups
-    */
+     */
     func returnSelectedGroups(groupIDs: [String]) {
         if state == .ContactSelectGroups,
             let refreshHandler = refreshHandler {
             refreshHandler(NSSet.init(array: groupIDs))
         }
     }
+    
     /**
      Fetch all contact groups from the server using API
-     
-     TODO: use event!
      */
-    func fetchAllContactGroup()
+    private var isFetching: Bool = false
+    func fetchAllContactGroup() -> Promise<Void>
     {
-        // TODO: why error?
-        //        if let context = sharedCoreDataService.mainManagedObjectContext {
-        //            Label.deleteAll(inContext: context)
-        //        } else {
-        //            PMLog.D("Can't get context for fetchAllContactGroup")
-        //        }
-        sharedLabelsDataService.fetchLabels(type: 2)
+        return Promise {
+            seal in
+            
+            if isFetching == false {
+                isFetching = true
+                
+                sharedMessageDataService.fetchNewMessagesForLocation(.inbox,
+                                                                     notificationMessageID: nil,
+                                                                     completion: { (task, res, error) in
+                                                                        self.isFetching = false
+                                                                        
+                                                                        if let error = error {
+                                                                            seal.reject(error)
+                                                                        } else {
+                                                                            seal.fulfill(())
+                                                                        }
+                })
+            } else {
+                seal.fulfill(())
+            }
+        }
     }
     
     // search
@@ -111,7 +125,7 @@ class ContactGroupsViewModelImpl: ContactGroupsViewModel
             for groupID in groupIDs {
                 sharedContactGroupsDataService.deleteContactGroup(groupID: groupID,
                                                                   completionHandler: completionHandler)
+            }
         }
     }
-}
 }

@@ -134,7 +134,7 @@ class ContactEmailsResponseForContactGroup: ApiResponse {
     var total : Int = -1
     var emailList : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D("[Contact] Get contact emails for contact group response \(response)")
+        PMLog.D("[Contact] Get contact emails for contact group response \(String(describing: response))")
         
         if let res = response?["ContactEmails"] as? [[String : Any]] {
             emailList = res
