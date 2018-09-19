@@ -137,13 +137,12 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 self.errorCompletion(Errors.haveTransactionOfAnotherUser)
                 return
             }
-            
+            NSLog(Bundle.main.appStoreReceiptURL!.absoluteString)
             guard let reciept = try? Data(contentsOf: Bundle.main.appStoreReceiptURL!).base64EncodedString() else {
                 self.errorCompletion(Errors.recieptLost)
                 SKPaymentQueue.default().finishTransaction(transaction)
                 return
             }
-            
             do {
                 guard let plan = ServicePlan(storeKitProductId: transaction.payment.productIdentifier),
                     let details = plan.fetchDetails(),

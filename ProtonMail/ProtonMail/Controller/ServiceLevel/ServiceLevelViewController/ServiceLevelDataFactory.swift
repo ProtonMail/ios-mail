@@ -167,7 +167,7 @@ enum ServiceLevelDataFactory {
                                          attributes: [.font: UIFont.preferredFont(forTextStyle: .body),
                                                       .foregroundColor: UIColor.white])
         title.append(caption)
-        let subtitle = String(format: "%@ ProtonMail %@\n%@ %@", originalPriceString, plan.subheader.0, feeString, LocalString._iap_fee)
+        let subtitle = "" // String(format: "%@ ProtonMail %@\n%@ %@", originalPriceString, plan.subheader.0, feeString, LocalString._iap_fee)
         let buttonAction: (UIButton?)->Void = { _ in
             delegate.purchaseProduct(id: productId)
         }
