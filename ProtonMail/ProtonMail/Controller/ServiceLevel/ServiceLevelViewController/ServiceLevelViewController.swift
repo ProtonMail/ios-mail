@@ -132,9 +132,7 @@ extension ServiceLevelViewControllerBase: ServiceLevelDataSourceDelegate {
     }
     
     func canPurchaseProduct(id: String) -> Bool {
-        guard let username = sharedUserDataService.username else {
-            return false
-        }
-        return StoreKitManager.default.readyToPurchaseProduct(id: id, username: username)
+        // no matter which user is logged in now, if there is any unfinished transaction - we do not want to give opportunity to start new purchase. BE currently can process only last transaction in Receipts, so we do not want to mess up the older ones.
+        return StoreKitManager.default.readyToPurchaseProduct()
     }
 }

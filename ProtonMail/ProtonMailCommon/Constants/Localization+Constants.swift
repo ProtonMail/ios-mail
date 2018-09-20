@@ -1598,6 +1598,7 @@ class LocalizedString {
     
     lazy var _backend_mismatch = NSLocalizedString("We were not available to match AppStore product with products on our server. Please, contact support.", comment: "Error message")
     
+    lazy var _sandbox_receipt = NSLocalizedString("Due to TestFlight limitations, we can not proceed with the in-app purchase in beta version of the app. Everything worked as expected and you will not be charged for the purchase. Thanks a lot for participating in public beta!", comment: "Error message for beta users")
     
     // Mark : Force Upgrade
     
