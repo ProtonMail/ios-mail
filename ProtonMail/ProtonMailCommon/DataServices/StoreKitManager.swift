@@ -47,13 +47,13 @@ class StoreKitManager: NSObject {
         return (product.price, product.priceLocale)
     }
     
-    internal func readyToPurchaseProduct(id productId: String,
-                          username: String) -> Bool
+    internal func readyToPurchaseProduct(id productId: String? = nil,
+                          username: String? = nil) -> Bool
     {
         let newestTransaction = SKPaymentQueue.default().transactions.filter {
-            $0.payment.productIdentifier == productId
-                && $0.payment.applicationUsername == self.hash(username: username)
-            }.reduce(nil) { (previous, next) -> SKPaymentTransaction? in
+                (productId == nil || $0.payment.productIdentifier == productId!)
+                && (username == nil || $0.payment.applicationUsername == self.hash(username: username!))
+        }.reduce(nil) { (previous, next) -> SKPaymentTransaction? in
                 guard let previous = previous else { return next }
                 return previous.transactionDate < next.transactionDate ? next : previous
         }
@@ -89,6 +89,7 @@ class StoreKitManager: NSObject {
         case recieptLost
         case haveTransactionOfAnotherUser
         case alreadyPurchasedPlanDoesNotMatchBackend
+        case sandboxReceipt
         
         var errorDescription: String? {
             switch self {
@@ -96,6 +97,7 @@ class StoreKitManager: NSObject {
             case .recieptLost: return LocalString._reciept_lost
             case .haveTransactionOfAnotherUser: return LocalString._another_user_transaction
             case .alreadyPurchasedPlanDoesNotMatchBackend: return LocalString._backend_mismatch
+            case .sandboxReceipt: return LocalString._sandbox_receipt
             }
         }
     }
@@ -138,7 +140,15 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 return
             }
             
-            guard let reciept = try? Data(contentsOf: Bundle.main.appStoreReceiptURL!).base64EncodedString() else {
+            guard let receiptUrl = Bundle.main.appStoreReceiptURL,
+                !receiptUrl.lastPathComponent.contains("sandbox") else
+            {
+                self.errorCompletion(Errors.sandboxReceipt)
+                SKPaymentQueue.default().finishTransaction(transaction)
+                return
+            }
+            
+            guard let reciept = try? Data(contentsOf: receiptUrl).base64EncodedString() else {
                 self.errorCompletion(Errors.recieptLost)
                 SKPaymentQueue.default().finishTransaction(transaction)
                 return

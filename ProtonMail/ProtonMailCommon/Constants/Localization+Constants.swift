@@ -1598,6 +1598,7 @@ class LocalizedString {
     
     lazy var _backend_mismatch = NSLocalizedString("We were not available to match AppStore product with products on our server. Please, contact support.", comment: "Error message")
     
+    lazy var _sandbox_receipt = NSLocalizedString("Sorry, we cannot process purchases in the beta version of the iOS app. To upgrade your plan, please uninstall the beta app and download ProtonMail from the App Store. Thank you for participating in our public beta!", comment: "Error message for beta users")
     
     // Mark : Force Upgrade
     
