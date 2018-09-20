@@ -66,7 +66,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     var origType : ContactFieldType = .empty
     var origEmail : String = ""
     var isNew : Bool = false
-    var contactGroups: NSSet
+    var contactGroups: [String]? = nil
     
     var newOrder : Int = 0
     var newType : ContactFieldType = .empty
@@ -81,7 +81,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     init(order: Int,
          type: ContactFieldType,
          email: String,
-         contactGroups: NSSet = NSSet(),
+         contactGroups: [String]?,
          isNew: Bool,
          keys : [PMNIKey]?,
          encrypt : PMNIPMEncrypt?,

@@ -44,11 +44,14 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         if let c = contact, c.managedObjectContext != nil {
             profile = ContactEditProfile(o_displayname: c.name)
             let cards = c.getCardData()
-            for c in cards {
+            var type0Card: PMNIVCard? = nil
+            for c in cards.sorted(by: {$0.type.rawValue < $1.type.rawValue}) {
                 switch c.type {
                 case .PlainText:
                     PMLog.D(c.data)
                     if let vcard = PMNIEzvcard.parseFirst(c.data) {
+                        type0Card = vcard
+                        
                         let emails = vcard.getEmails()
                         var order : Int = 1
                         for e in emails {
@@ -65,8 +68,20 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                             let schemeType = vcard.getPMScheme(group)
                             let mimeType = vcard.getPMMimeType(group)
                             
-                            let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false,
-                                                      keys: keys, encrypt: encrypt, sign: sign, scheme: schemeType, mimeType: mimeType)
+                            // contact group
+                            // TODO: fix group case issue
+                            let contactGroups = vcard.getCategories("ITEM\(order)")
+                            
+                            let ce = ContactEditEmail(order: order,
+                                                      type:type == .empty ? .email : type,
+                                                      email:e.getValue(),
+                                                      contactGroups: contactGroups?.getValues(),
+                                                      isNew: false,
+                                                      keys: keys,
+                                                      encrypt: encrypt,
+                                                      sign: sign,
+                                                      scheme: schemeType,
+                                                      mimeType: mimeType)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -94,8 +109,19 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                             let schemeType = vcard.getPMScheme(group)
                             let mimeType = vcard.getPMMimeType(group)
                             
-                            let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false,
-                                                      keys: keys, encrypt: encrypt, sign: sign, scheme: schemeType, mimeType: mimeType)
+                            // TODO: fix group case issue
+                            let contactGroups = type0Card?.getCategories("ITEM\(order)")?.getValues()
+                            
+                            let ce = ContactEditEmail(order: order,
+                                                      type:type == .empty ? .email : type,
+                                                      email:e.getValue(),
+                                                      contactGroups: contactGroups ?? nil,
+                                                      isNew: false,
+                                                      keys: keys,
+                                                      encrypt: encrypt,
+                                                      sign: sign,
+                                                      scheme: schemeType,
+                                                      mimeType: mimeType)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -358,6 +384,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         let email = ContactEditEmail(order: emails.count,
                                      type: type,
                                      email:"",
+                                     contactGroups: nil,
                                      isNew: true,
                                      keys: nil,
                                      encrypt: nil,
@@ -427,6 +454,27 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     
     override func done(complete : @escaping ContactEditSaveComplete) {
         if let c = contact, c.managedObjectContext != nil {
+            var cards : [CardData] = []
+            
+            // contact group, card type 0
+            let vCard0 = PMNIVCard.createInstance()
+            if let vCard0 = vCard0 {
+                for (i, email) in getEmails().enumerated() {
+                    let group = "ITEM\(i + 1)"
+                    
+                    let newCategories = PMNICategories.createInstance(group,
+                                                                      value: email.contactGroups ?? [])
+                    vCard0.add(newCategories)
+                }
+                
+                let vcard0Str = PMNIEzvcard.write(vCard0)
+                PMLog.D(vcard0Str)
+                let card0 = CardData(t: .PlainText,
+                                     d: vcard0Str,
+                                     s: "")
+                
+                cards.append(card0)
+            }
 
             if origvCard2 == nil {
                 origvCard2 = PMNIVCard.createInstance()
@@ -437,7 +485,6 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             }
             
             var uid : PMNIUid? = nil
-            var cards : [CardData] = []
             if let vcard2 = origvCard2 {
                 
                 var defaultName = LocalString._general_unknown_title
@@ -512,6 +559,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 // add others later
                 let vcard2Str = PMNIEzvcard.write(vcard2)
+                PMLog.D(vcard2Str);
                 //TODO:: fix try later
                 let signed_vcard2 = try? sharedOpenPGP.signTextDetached(vcard2Str,
                                                                         privateKey: userkey.private_key,
