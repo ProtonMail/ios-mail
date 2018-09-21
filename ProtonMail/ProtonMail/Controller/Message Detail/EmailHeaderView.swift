@@ -803,6 +803,7 @@ class EmailHeaderView: UIView {
         }
         
         emailDetailView.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.emailTitle)
             let _ = make?.right.equalTo()(self.emailHeaderView)
             let _ = make?.top.equalTo()(self.emailDetailButton.mas_bottom)
@@ -810,12 +811,14 @@ class EmailHeaderView: UIView {
         }
         
         emailFrom.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.emailHeaderView)
             let _ = make?.right.equalTo()(self.emailTitle)
             let _ = make?.top.equalTo()(self.emailTitle.mas_bottom)?.with().offset()(self.kEmailRecipientsViewMarginTop)
         }
         
         emailFromTable.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(36)
             let _ = make?.right.equalTo()(self.emailHeaderView)
             let _ = make?.top.equalTo()(self.emailTitle.mas_bottom)?.with().offset()(self.kEmailRecipientsViewMarginTop)
@@ -825,12 +828,14 @@ class EmailHeaderView: UIView {
         let toOffset = self.showTo ? kEmailRecipientsViewMarginTop : 0
         let toHeight = self.showTo ? 16 : 0
         emailTo.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.emailHeaderView)
             let _ = make?.right.equalTo()(self.emailTitle)
             let _ = make?.top.equalTo()(self.emailFrom.mas_bottom)?.with().offset()(toOffset)
             let _ = make?.height.equalTo()(toHeight)
         }
         emailToTable.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(36)
             let _ = make?.right.equalTo()(self.emailHeaderView)
             let _ = make?.top.equalTo()(self.emailFrom.mas_bottom)?.with().offset()(toOffset)
@@ -839,11 +844,13 @@ class EmailHeaderView: UIView {
         
         let ccOffset = self.showCc ? kEmailRecipientsViewMarginTop : 0
         emailCc.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.emailHeaderView)
             let _ = make?.right.equalTo()(self.emailTitle)
             let _ = make?.top.equalTo()(self.emailTo.mas_bottom)?.with().offset()(ccOffset)
         }
         emailCcTable.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(36)
             let _ = make?.right.equalTo()(self.emailHeaderView)
             let _ = make?.top.equalTo()(self.emailTo.mas_bottom)?.with().offset()(ccOffset)
@@ -852,6 +859,7 @@ class EmailHeaderView: UIView {
         
         emailShortTime.sizeToFit()
         emailShortTime.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.emailHeaderView)
             let _ = make?.width.equalTo()(self.emailShortTime.frame.size.width)
             let _ = make?.height.equalTo()(self.emailShortTime.frame.size.height)
@@ -859,6 +867,7 @@ class EmailHeaderView: UIView {
         }
         
         emailDetailButton.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.emailShortTime.mas_right)?.with().offset()(self.kEmailDetailButtonMarginLeft)
             let _ = make?.bottom.equalTo()(self.emailShortTime)
             let _ = make?.top.equalTo()(self.emailShortTime)
@@ -866,6 +875,7 @@ class EmailHeaderView: UIView {
         }
         
         emailDetailView.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.emailTitle)
             let _ = make?.right.equalTo()(self.emailHeaderView)
             let _ = make?.top.equalTo()(self.emailDetailButton.mas_bottom)
@@ -874,6 +884,7 @@ class EmailHeaderView: UIView {
         
         emailDetailDateLabel.sizeToFit()
         emailDetailDateLabel.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.emailDetailView)
             let _ = make?.top.equalTo()(self.emailDetailView)
             let _ = make?.width.equalTo()(self.emailDetailDateLabel.frame.size.width)
@@ -884,6 +895,7 @@ class EmailHeaderView: UIView {
         let lbOffset = self.showLabels ? kEmailRecipientsViewMarginTop : 0
         let lbHeight = self.showLabels ? self.LabelOne.frame.size.height : 0
         LabelOne.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.emailHeaderView)
             let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lbOffset)
             let _ = make?.width.equalTo()(self.LabelOne.frame.size.width)
@@ -894,6 +906,7 @@ class EmailHeaderView: UIView {
         let lb2Offset = self.showLabels ? kEmailRecipientsViewMarginTop : 0
         let lb2Height = self.showLabels ? self.LabelTwo.frame.size.height : 0
         LabelTwo.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.LabelOne.mas_right)?.with().offset()(2)
             let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb2Offset)
             let _ = make?.width.equalTo()(self.LabelTwo.frame.size.width)
@@ -904,6 +917,7 @@ class EmailHeaderView: UIView {
         let lb3Offset = self.showLabels ? kEmailRecipientsViewMarginTop : 0
         let lb3Height = self.showLabels ? self.LabelThree.frame.size.height : 0
         LabelThree.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.LabelTwo.mas_right)?.with().offset()(2)
             let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb3Offset)
             let _ = make?.width.equalTo()(self.LabelThree.frame.size.width)
@@ -914,6 +928,7 @@ class EmailHeaderView: UIView {
         let lb4Offset = self.showLabels ? kEmailRecipientsViewMarginTop : 0
         let lb4Height = self.showLabels ? self.LabelFour.frame.size.height : 0
         LabelFour.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.LabelThree.mas_right)?.with().offset()(2)
             let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb4Offset)
             let _ = make?.width.equalTo()(self.LabelFour.frame.size.width)
@@ -924,6 +939,7 @@ class EmailHeaderView: UIView {
         let lb5Offset = self.showLabels ? kEmailRecipientsViewMarginTop : 0
         let lb5Height = self.showLabels ? self.LabelFive.frame.size.height : 0
         LabelFive.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.left.equalTo()(self.LabelFour.mas_right)?.with().offset()(2)
             let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb5Offset)
             let _ = make?.width.equalTo()(self.LabelFive.frame.size.width)
@@ -931,6 +947,7 @@ class EmailHeaderView: UIView {
         }
         
         emailAttachmentsAmount.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.right.equalTo()(self.emailHeaderView)?.offset()(-16)
             let _ = make?.bottom.equalTo()(self.emailDetailButton)
             let _ = make?.height.equalTo()(self.emailAttachmentsAmount.frame.height)
@@ -938,6 +955,7 @@ class EmailHeaderView: UIView {
         }
         
         emailHasAttachmentsImageView.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
             let _ = make?.right.equalTo()(self.emailAttachmentsAmount.mas_left)?.with().offset()(self.kEmailHasAttachmentsImageViewMarginRight)
             let _ = make?.bottom.equalTo()(self.emailAttachmentsAmount)
             let _ = make?.height.equalTo()(self.emailHasAttachmentsImageView.frame.height)
