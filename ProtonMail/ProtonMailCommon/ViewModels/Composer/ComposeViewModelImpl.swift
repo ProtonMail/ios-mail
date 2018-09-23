@@ -116,6 +116,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func uploadAtt(_ att: Attachment!) {
+        self.updateDraft()
         sharedMessageDataService.uploadAttachment(att)
         self.updateDraft()
     }
@@ -388,7 +389,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil, mailbox_pwd: sharedUserDataService.mailboxPassword!)
             
             if let context = message?.managedObjectContext {
-                context.perform {
+                context.performAndWait {
                     if let error = context.saveUpstreamIfNeeded() {
                         PMLog.D(" error: \(error)")
                     }
