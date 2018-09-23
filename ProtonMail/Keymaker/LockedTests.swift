@@ -12,18 +12,36 @@ import XCTest
 class LockedTests: XCTestCase {
     let message = "Santa does not exhist"
     
-    func testCodableLockUnlock() {
+    private func makeKey() -> Keymaker.Key {
         var key = Array<UInt8>(repeating: 0, count: 32)
         let status = SecRandomCopyBytes(kSecRandomDefault, key.count, &key)
-        guard status == 0 else {
+        if status != 0 {
             XCTAssert(false, "failed to create cryptographically secure key")
-            return
         }
+        return key
+    }
+    
+    func testCodableLockUnlock() {
+        let key = self.makeKey()
         
         do {
             let locked = try Locked<[String]>.init(clearValue: [message], with: key)
             let unlocked = try locked.unlock(with: key)
             XCTAssertEqual(message, unlocked.first!)
+        } catch let error {
+            XCTAssertNil(error)
+        }
+    }
+    
+    func testDataLockUnlock() {
+        let key = self.makeKey()
+        let data = "Agrarian revolution was a mistake".data(using: .utf8)!
+        
+        do {
+            let locked = try Locked<Data>.init(clearValue: data, with: key)
+            let unlocked = try locked.unlock(with: key)
+            
+            XCTAssertEqual(message, String(data: unlocked, encoding: .utf8))
         } catch let error {
             XCTAssertNil(error)
         }

@@ -74,7 +74,6 @@ public class Keymaker: NSObject {
     private let controlThread = DispatchQueue.global(qos: .utility)
     
     public func wipeMainKey() {
-        // TODO: remove additional keychain items of all protectors
         NoneProtection.removeCyphertext(from: self.keychain)
         BioProtection.removeCyphertext(from: self.keychain)
         PinProtection.removeCyphertext(from: self.keychain)

@@ -164,6 +164,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        AppVersion.current.migration()
+        
         Fabric.with([Crashlytics()])
         application.registerForRemoteNotifications()
         

@@ -895,7 +895,7 @@ class MessageDataService {
         var messageBody: [String : String] = ["self" : message.body]
         
         let privKey = message.defaultAddress?.keys[0].private_key ?? ""
-        let pwd = sharedUserDataService.mailboxPassword ?? ""
+        let pwd = sharedUserDataService.mailboxPassword!
         
         do {
             if let keys = response?["keys"] as? [[String : String]] {
@@ -1052,7 +1052,7 @@ class MessageDataService {
                         default_address_id = attachment.message.getAddressID
                     }
                     
-                    let pwd = sharedUserDataService.mailboxPassword ?? ""
+                    let pwd = sharedUserDataService.mailboxPassword!
                     let encrypt_data = attachment.encrypt(byAddrID: default_address_id, mailbox_pwd: pwd)
                     //TODO:: here need check is encryptdata is nil and return the error to user.
                     let keyPacket = encrypt_data?.keyPacket()

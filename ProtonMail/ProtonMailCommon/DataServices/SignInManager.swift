@@ -99,7 +99,7 @@ class SignInManager: NSObject {
         sharedUserDataService.signOut(true)
         userCachedStatus.signOut()
         sharedMessageDataService.launchCleanUpIfNeeded()
-        keymaker.wipeMainKey()
+        keymaker.generateNewMainKeyWithDefaultProtection()
     }
 }
 

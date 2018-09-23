@@ -15,12 +15,14 @@
 //
 
 import Foundation
+import Keymaker
 
 //TODO:: refactor required later
 final class AuthCredential: NSObject, NSCoding {
     
     struct Key{
-        static let keychainStore = "keychainStoreKey"
+        static let keychainStorePreMainKey = "keychainStoreKey"
+        static let keychainStore = "keychainStoreKeyProtectedWithMainKey"
     }
     
     struct CoderKey {
@@ -35,13 +37,13 @@ final class AuthCredential: NSObject, NSCoding {
     }
     
     var userID: String!
-    var encryptToken: String!
+    private var encryptToken: String!
     var refreshToken: String!
-    var expiration: Date!
-    var privateKey : String?
-    var plainToken : String?
+    private var expiration: Date!
+    private var privateKey : String?
+    private var plainToken : String?
     var password : String?
-    var passwordKeySalt : String?
+    private var passwordKeySalt : String?
     
     override var description: String {
         return """
@@ -57,16 +59,7 @@ final class AuthCredential: NSObject, NSCoding {
     }
     
     class func setupToken (_ password:String, isRememberMailbox : Bool = true) throws {
-        if let data = sharedKeychain.keychain.data(forKey: Key.keychainStore) {
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PushService.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PushServiceDev.AuthCredential")
-            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                try authCredential.setupToken(password)
-            }
-        }
+        try self.fetchFromKeychain()?.setupToken(password)
     }
     
     func setupToken (_ password:String) throws {
@@ -95,7 +88,7 @@ final class AuthCredential: NSObject, NSCoding {
         self.userID = res.userID
         self.expiration = Date(timeIntervalSinceNow: res.expiresIn ?? 0)
         self.privateKey = res.privateKey
-        self.passwordKeySalt = res.keySalt
+        self.passwordKeySalt = res.keySalt // FIXME: don't we need to store AuthCredential in keychain now?
     }
     
     required init(res : AuthResponse!) {
@@ -138,35 +131,21 @@ final class AuthCredential: NSObject, NSCoding {
     
     func storeInKeychain() {
         userCachedStatus.isForcedLogout = false
-        sharedKeychain.keychain.setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
+        let data = NSKeyedArchiver.archivedData(withRootObject: self)
+        guard let mainKey = keymaker.mainKey,
+            let locked = try? Locked<Data>.init(clearValue: data, with: mainKey) else
+        {
+            return
+        }
+        sharedKeychain.keychain.setData(locked.encryptedValue, forKey: Key.keychainStore)
     }
     
-    class func getPrivateKey() -> String {
-        if let data = sharedKeychain.keychain.data(forKey: Key.keychainStore) {
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PushService.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PushServiceDev.AuthCredential")
-            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                return authCredential.privateKey ?? ""
-            }
-        }
-        return ""
+    class func getPrivateKey() -> String! {
+        return self.fetchFromKeychain()?.privateKey
     }
     
     class func getKeySalt() -> String? {
-        if let data = sharedKeychain.keychain.data(forKey: Key.keychainStore) {
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PushService.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PushServiceDev.AuthCredential")
-            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                return authCredential.passwordKeySalt
-            }
-        }
-        return ""
+        return self.fetchFromKeychain()?.passwordKeySalt
     }
     
     // MARK - Class methods
@@ -188,17 +167,23 @@ final class AuthCredential: NSObject, NSCoding {
     }
     
     class func fetchFromKeychain() -> AuthCredential? {
-        if let data = sharedKeychain.keychain.data(forKey: Key.keychainStore) {
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PushService.AuthCredential")
-            NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PushServiceDev.AuthCredential")
-            if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential {
-                return authCredential
-            }
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.AuthCredential")
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PushService.AuthCredential")
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PushServiceDev.AuthCredential")
+        
+        guard let mainKey = keymaker.mainKey,
+            let encryptedData = sharedKeychain.keychain.data(forKey: Key.keychainStore),
+            case let locked = Locked<Data>(encryptedValue: encryptedData),
+            let data = try? locked.unlock(with: mainKey),
+            let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential else
+        {
+            return nil
         }
-        return nil
+        
+        return authCredential
     }
     
     func encode(with aCoder: NSCoder) {

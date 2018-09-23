@@ -86,73 +86,61 @@ class APIService {
     internal func fetchAuthCredential(_ completion: @escaping AuthCredentialBlock) {
         DispatchQueue.global(qos: .default).async {
             pthread_mutex_lock(&self.mutex)
+            
             //fetch auth info
-            if let credential = AuthCredential.fetchFromKeychain() {
-                if !credential.isExpired { // access token time is valid
-                    if (credential.password ?? "").isEmpty { // mailbox pwd is empty should show error and logout
-                        //clean auth cache let user relogin
-                        AuthCredential.clearFromKeychain()
-                        pthread_mutex_unlock(&self.mutex)
-                        DispatchQueue.main.async {
-                            completion(nil, NSError.AuthCachePassEmpty())
-                            UserTempCachedStatus.backup()
-                            sharedUserDataService.signOut(true) //NOTES:signout + errors
-                            userCachedStatus.signOut()
-                            NSError.alertBadTokenToast()
-                        }
-                    } else {
-                        pthread_mutex_unlock(&self.mutex)
-                        DispatchQueue.main.async {
-                            completion(credential, nil)
-                        }
-                    }
-                } else {
-                    if (credential.password ?? "").isEmpty {
-                        AuthCredential.clearFromKeychain()
-                        pthread_mutex_unlock(&self.mutex)
-                        DispatchQueue.main.async {
-                            completion(nil, NSError.AuthCachePassEmpty())
-                            UserTempCachedStatus.backup()
-                            sharedUserDataService.signOut(true)
-                            userCachedStatus.signOut()
-                            NSError.alertBadTokenToast()
-                        }
-                    } else {
-                        self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
-                            pthread_mutex_unlock(&self.mutex)
-                            if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
-                                AuthCredential.clearFromKeychain()
-                                DispatchQueue.main.async {
-                                    NSError.alertBadTokenToast()
-                                    self.fetchAuthCredential(completion)
-                                }
-                            } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                                AuthCredential.clearFromKeychain()
-                                DispatchQueue.main.async {
-                                    NSError.alertBadTokenToast()
-                                    self.fetchAuthCredential(completion)
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    completion(authCredential, error)
-                                }
-                            }
-                        }
-                    }
-                }
-            } else { //the cache have issues
-                AuthCredential.clearFromKeychain()
+            guard let credential = AuthCredential.fetchFromKeychain() else { // app is locked, fail with error gracefully
                 pthread_mutex_unlock(&self.mutex)
                 DispatchQueue.main.async {
                     if sharedUserDataService.isSignedIn {
                         completion(nil, NSError.authCacheBad())
-                        UserTempCachedStatus.backup()
-                        sharedUserDataService.signOut(true)
-                        userCachedStatus.signOut()
                     } else {
                         completion(nil, NSError.AuthCachePassEmpty())
                     }
                 }
+                return
+            }
+            
+            guard !(credential.password ?? "").isEmpty else { // mailbox pwd is empty should show error and logout
+                //clean auth cache let user relogin
+                AuthCredential.clearFromKeychain()
+                pthread_mutex_unlock(&self.mutex)
+                DispatchQueue.main.async {
+                    completion(nil, NSError.AuthCachePassEmpty())
+                    UserTempCachedStatus.backup()
+                    sharedUserDataService.signOut(true) //NOTES:signout + errors
+                    userCachedStatus.signOut()
+                    NSError.alertBadTokenToast()
+                }
+                return
+            }
+            
+            guard !credential.isExpired else { // access token time is valid
+                self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
+                    pthread_mutex_unlock(&self.mutex)
+                    if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
+                        AuthCredential.clearFromKeychain()
+                        DispatchQueue.main.async {
+                            NSError.alertBadTokenToast()
+                            self.fetchAuthCredential(completion)
+                        }
+                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
+                        AuthCredential.clearFromKeychain()
+                        DispatchQueue.main.async {
+                            NSError.alertBadTokenToast()
+                            self.fetchAuthCredential(completion)
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            completion(authCredential, error)
+                        }
+                    }
+                }
+                return
+            }
+            
+            pthread_mutex_unlock(&self.mutex)
+            DispatchQueue.main.async {
+                completion(credential, nil)
             }
         }
         

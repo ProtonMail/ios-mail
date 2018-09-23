@@ -48,7 +48,7 @@ extension Attachment {
     }
     
     fileprivate var passphrase: String {
-        return sharedUserDataService.mailboxPassword ?? ""
+        return sharedUserDataService.mailboxPassword!
     }
     
     

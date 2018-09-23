@@ -49,6 +49,20 @@ extension Locked where T == String {
     }
 }
 
+extension Locked where T == Data {
+    public init(clearValue: T, with key: Keymaker.Key) throws {
+        let aes = try AES(key: key, blockMode: ECB())
+        let cypherBytes = try aes.encrypt(clearValue.bytes)
+        self.encryptedValue = Data(bytes: cypherBytes)
+    }
+    
+    public func unlock(with key: Keymaker.Key) throws -> T {
+        let aes = try AES(key: key, blockMode: ECB())
+        let clearBytes = try aes.decrypt(self.encryptedValue.bytes)
+        return Data(bytes: clearBytes)
+    }
+}
+
 extension Locked where T: Codable {
     public init(clearValue: T, with key: Keymaker.Key) throws {
         let data = try PropertyListEncoder().encode(clearValue)

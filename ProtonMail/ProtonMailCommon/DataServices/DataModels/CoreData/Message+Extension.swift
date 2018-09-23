@@ -489,7 +489,7 @@ extension Message {
     
     // MARK: Private variables
     fileprivate var passphrase: String {
-        return sharedUserDataService.mailboxPassword ?? ""
+        return sharedUserDataService.mailboxPassword!
     }
     
     var getAddressID: String {
