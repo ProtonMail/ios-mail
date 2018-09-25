@@ -66,7 +66,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     var origType : ContactFieldType = .empty
     var origEmail : String = ""
     var isNew : Bool = false
-    var contactGroups: [String]? = nil
+    var contactGroupIDs: [String] = []
     
     var newOrder : Int = 0
     var newType : ContactFieldType = .empty
@@ -81,7 +81,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     init(order: Int,
          type: ContactFieldType,
          email: String,
-         contactGroups: [String]?,
+         contactGroupNames: [String],
          isNew: Bool,
          keys : [PMNIKey]?,
          encrypt : PMNIPMEncrypt?,
@@ -91,7 +91,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
         self.newOrder = order
         self.newType = type
         self.newEmail = email
-        self.contactGroups = contactGroups
+        self.getContactGroupIDsFrom(names: contactGroupNames)
         self.origOrder = self.newOrder
         
         //
@@ -108,7 +108,6 @@ final class ContactEditEmail: ContactEditTypeInterface {
         }
     }
     
-    //
     func getCurrentType() -> ContactFieldType {
         return newType
     }
@@ -128,6 +127,55 @@ final class ContactEditEmail: ContactEditTypeInterface {
         return ContactEmail(e: newEmail, t: newType.vcardType)
     }
     
+    // contact group
+    private func getContactGroupIDsFrom(names: [String]) {
+        // we decide to stick with using core data information for now
+        contactGroupIDs = []
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            for name in names {
+                if let label = Label.labelForLabelName(name,
+                                                       inManagedObjectContext: context) {
+                    contactGroupIDs.append(label.labelID)
+                } else {
+                    // TODO: handle error
+                    PMLog.D(("Can't get label from name"))
+                }
+            }
+        } else {
+            // TODO: handle error
+            PMLog.D(("Can't get main context"))
+        }
+    }
+    
+    func getContactGroupNames() -> [String] {
+        var result: [String] = []
+        for labelID in contactGroupIDs {
+            if let context = sharedCoreDataService.mainManagedObjectContext {
+                if let label = Label.labelForLableID(labelID,
+                                                     inManagedObjectContext: context) {
+                    result.append(label.name)
+                } else {
+                    // TODO: handle error
+                    PMLog.D(("Can't get label from ID"))
+                }
+            } else {
+                // TODO: handle error
+                PMLog.D(("Can't get main context"))
+            }
+        }
+        
+        return result
+    }
+    
+    func getContactGroupsID() -> [String] {
+        return contactGroupIDs
+    }
+    
+    func updateContactGroups(newContactGroupIDs: [String]) {
+        contactGroupIDs = newContactGroupIDs
+    }
+    
+    // TODO?
     func needsUpdate() -> Bool {
         if isNew && newEmail.isEmpty {
             return false

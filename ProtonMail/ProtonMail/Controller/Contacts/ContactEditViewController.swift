@@ -131,7 +131,9 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         } else if segue.identifier == kToSelectContactGroupSegue {
             let destination = segue.destination as! ContactGroupsViewController
             let refreshHandler = (sender as! ContactEditEmailCell).refreshHandler
+            let contactGroupIDs = (sender as! ContactEditEmailCell).getContactGroupIDs()
             sharedVMService.contactSelectContactGroupsViewModel(destination,
+                                                                selectedGroupIDs: contactGroupIDs,
                                                                 refreshHandler: refreshHandler)
         }
     }

@@ -74,10 +74,10 @@ struct ContactGroupData
     let originalEmailIDs: NSSet
     var emailIDs: NSMutableSet
     
-    init(ID: String? = nil,
-         name: String? = nil,
-         color: String? = nil,
-         emailIDs: NSSet = NSSet())
+    init(ID: String?,
+         name: String?,
+         color: String?,
+         emailIDs: NSSet)
     {
         self.ID = ID
         self.name = name

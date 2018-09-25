@@ -21,11 +21,19 @@ final class ContactEditEmailCell: UITableViewCell {
     @IBOutlet weak var valueField: UITextField!
     @IBOutlet weak var sepratorView: UIView!
     
-    internal let refreshHandler = {
-        (contactGroups: NSSet) -> Void in
-        
-        // TODO: add group info into the emailID
-        print(contactGroups.debugDescription)
+    func refreshHandler(newContactGroups: NSSet)
+    {
+        print(newContactGroups.debugDescription)
+        if let data = newContactGroups.allObjects as? [String] {
+            email.updateContactGroups(newContactGroupIDs: data)
+        } else {
+            // TODO: handle error
+            email.updateContactGroups(newContactGroupIDs: [])
+        }
+    }
+    
+    func getContactGroupIDs() -> [String] {
+        return email.getContactGroupsID()
     }
     
     override func awakeFromNib() {

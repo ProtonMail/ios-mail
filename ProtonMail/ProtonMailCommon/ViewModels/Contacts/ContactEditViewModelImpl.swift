@@ -69,13 +69,12 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                             let mimeType = vcard.getPMMimeType(group)
                             
                             // contact group
-                            // TODO: fix group case issue
-                            let contactGroups = vcard.getCategories("ITEM\(order)")
+                            let contactGroups = type0Card?.getCategories(group)?.getValues() ?? []
                             
                             let ce = ContactEditEmail(order: order,
                                                       type:type == .empty ? .email : type,
                                                       email:e.getValue(),
-                                                      contactGroups: contactGroups?.getValues(),
+                                                      contactGroupNames: contactGroups,
                                                       isNew: false,
                                                       keys: keys,
                                                       encrypt: encrypt,
@@ -109,13 +108,12 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                             let schemeType = vcard.getPMScheme(group)
                             let mimeType = vcard.getPMMimeType(group)
                             
-                            // TODO: fix group case issue
-                            let contactGroups = type0Card?.getCategories("ITEM\(order)")?.getValues()
+                            let contactGroups = type0Card?.getCategories("ITEM\(order)")?.getValues() ?? []
                             
                             let ce = ContactEditEmail(order: order,
                                                       type:type == .empty ? .email : type,
                                                       email:e.getValue(),
-                                                      contactGroups: contactGroups ?? nil,
+                                                      contactGroupNames: contactGroups,
                                                       isNew: false,
                                                       keys: keys,
                                                       encrypt: encrypt,
@@ -384,7 +382,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         let email = ContactEditEmail(order: emails.count,
                                      type: type,
                                      email:"",
-                                     contactGroups: nil,
+                                     contactGroupNames: [],
                                      isNew: true,
                                      keys: nil,
                                      encrypt: nil,
@@ -463,7 +461,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     let group = "ITEM\(i + 1)"
                     
                     let newCategories = PMNICategories.createInstance(group,
-                                                                      value: email.contactGroups ?? [])
+                                                                      value: email.getContactGroupNames())
                     vCard0.add(newCategories)
                 }
                 

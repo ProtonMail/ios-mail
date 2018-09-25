@@ -109,7 +109,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         let email = ContactEditEmail(order: emails.count,
                                      type: type,
                                      email:"",
-                                     contactGroups: nil,
+                                     contactGroupNames: [],
                                      isNew: true,
                                      keys: nil,
                                      encrypt: nil,

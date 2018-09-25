@@ -16,6 +16,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
     private var isFetching: Bool = false
     private let state: ContactGroupsViewModelState
     private let refreshHandler: ((NSSet) -> Void)?
+    private let selectedGroupIDs: [String]
     
     /**
      Init the view model with state
@@ -23,8 +24,15 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
      State "ContactGroupsView" is for showing all contact groups in the contact group tab
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
      */
-    init(state: ContactGroupsViewModelState, refreshHandler: ((NSSet) -> Void)? = nil) {
+    init(state: ContactGroupsViewModelState,
+         selectedGroupIDs: [String]? = nil,
+         refreshHandler: ((NSSet) -> Void)? = nil) {
         self.state = state
+        if let selectedGroupIDs = selectedGroupIDs {
+            self.selectedGroupIDs = selectedGroupIDs
+        } else {
+            self.selectedGroupIDs = []
+        }
         
         // TODO: handle error
         if state == .ContactSelectGroups && refreshHandler == nil {
@@ -38,6 +46,14 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
      */
     func getState() -> ContactGroupsViewModelState {
         return state
+    }
+    
+    func isSelected(groupID: String) -> Bool {
+        if state == .ContactSelectGroups {
+            return selectedGroupIDs.contains(groupID)
+        }
+        
+        return false
     }
     
     /**

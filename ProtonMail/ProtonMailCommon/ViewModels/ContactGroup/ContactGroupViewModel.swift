@@ -19,6 +19,7 @@ enum ContactGroupsViewModelState
 protocol ContactGroupsViewModel {
     func getState() -> ContactGroupsViewModelState
     func returnSelectedGroups(groupIDs: [String])
+    func isSelected(groupID: String) -> Bool
     
     func fetchLatestContactGroup() -> Promise<Void>
     func timerStart(_ run: Bool)

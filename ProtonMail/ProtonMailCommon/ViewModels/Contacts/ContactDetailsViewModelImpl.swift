@@ -158,12 +158,12 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         let type = ContactFieldType.get(raw: typeRaw)
                         
                         // contact group
-                        let contactGroups = vcard.getCategories("ITEM\(order)")
+                        let contactGroups = vcard.getCategories(e.getGroup())
                         
                         let ce = ContactEditEmail(order: order,
                                                   type: type == .empty ? .email : type,
                                                   email:e.getValue(),
-                                                  contactGroups: contactGroups?.getValues(),
+                                                  contactGroupNames: contactGroups?.getValues() ?? [],
                                                   isNew: false,
                                                   keys: nil,
                                                   encrypt: nil,
@@ -207,12 +207,12 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         let typeRaw = types.count > 0 ? types.first! : ""
                         let type = ContactFieldType.get(raw: typeRaw)
                         
-                        let contactGroups = type0Card?.getCategories("ITEM\(order)")?.getValues() 
+                        let contactGroups = type0Card?.getCategories("ITEM\(order)")?.getValues() ?? []
                         
                         let ce = ContactEditEmail(order: order,
                                                   type:type == .empty ? .email : type,
                                                   email:e.getValue(),
-                                                  contactGroups: contactGroups,
+                                                  contactGroupNames: contactGroups,
                                                   isNew: false,
                                                   keys: nil,
                                                   encrypt: nil,

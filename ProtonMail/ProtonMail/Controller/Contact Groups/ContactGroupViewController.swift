@@ -97,7 +97,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                     selectedIndexPath -> String in
                     
                     if let cell = self.tableView.cellForRow(at: selectedIndexPath) as? ContactGroupsViewCell {
-                        return cell.labelID
+                        return cell.getLabelID()
                     } else {
                         // TODO: handle error
                         fatalError("Conversion error")
@@ -263,7 +263,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
                 for selectedIndexPath in selectedIndexPaths {
                     if let cell = tableView.cellForRow(at: selectedIndexPath) as? ContactGroupsViewCell {
-                        groupIDs.append(cell.labelID)
+                        groupIDs.append(cell.getLabelID())
                     }
                 }
             }
@@ -399,18 +399,42 @@ extension ContactGroupsViewController: UITableViewDataSource
                     cell.config(labelID: label.labelID,
                                 name: label.name,
                                 count: label.emails.count,
-                                color: label.color)
+                                color: label.color,
+                                delegate: self)
                 } else {
                     // TODO; better error handling
                     cell.config(labelID: "",
                                 name: "Error in retrieving contact group name in core data",
                                 count: 0,
-                                color: nil)
+                                color: nil,
+                                delegate: self)
                 }
             }
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? ContactGroupsViewCell {
+            if viewModel.getState() == .ContactSelectGroups {
+                if viewModel.isSelected(groupID: cell.getLabelID()) {
+                    tableView.selectRow(at: indexPath,
+                                        animated: true,
+                                        scrollPosition: .none)
+                    totalSelectedContactGroups += 1
+                }
+            }
+        } else {
+            PMLog.D("Downcasting failed")
+        }
+    }
+}
+
+extension ContactGroupsViewController: ContactGroupsViewCellDelegate
+{
+    func isMultiSelect() -> Bool {
+        return isEditingState || viewModel.getState() == .ContactSelectGroups
     }
 }
 
@@ -474,13 +498,15 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                         cell.config(labelID: label.labelID,
                                     name: label.name,
                                     count: label.emails.count,
-                                    color: label.color)
+                                    color: label.color,
+                                    delegate: self)
                     } else {
                         // TODO; better error handling
                         cell.config(labelID: "",
                                     name: "Error in retrieving contact group name in core data",
                                     count: 0,
-                                    color: nil)
+                                    color: nil,
+                                    delegate: self)
                     }
                 }
             }
