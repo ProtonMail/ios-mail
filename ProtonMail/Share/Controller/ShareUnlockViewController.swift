@@ -366,11 +366,7 @@ extension ShareUnlockViewController: AttachmentController {
             }
             
             guard error == nil else {
-                if let error = error {
-                    self.error(error.localizedDescription)
-                } else {
-                    self.error("No localized error description")
-                }
+                self.error(error!.localizedDescription)
                 return
             }
         

@@ -38,6 +38,7 @@ class ServicePlanFooter: UIView {
             self.buttonAction = buttonAction
             self.buyButton.addTarget(self, action: #selector(self.performButtonAction), for: .touchUpInside)
             self.buyButton.isUserInteractionEnabled = buttonEnabled
+            self.buyButton.backgroundColor = buttonEnabled ? UIColor.ProtonMail.ButtonBackground : UIColor.ProtonMail.TableSeparatorGray
         } else {
             self.buyButton.isHidden = true
         }
