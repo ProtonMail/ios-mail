@@ -1332,7 +1332,7 @@ extension MailboxViewController : TopMessageViewDelegate {
         self.needToShowNewMessage = false
         self.newMessageCount = 0
         let message = count == 1 ? LocalString._messages_you_have_new_email : String(format: LocalString._messages_you_have_new_emails_with, count)
-        showBanner(message, appearance: .purple)
+        message.alertToastBottom()
     }
     
     @objc internal func reachabilityChanged(_ note : Notification) {
