@@ -1289,16 +1289,21 @@ extension MailboxViewController : TopMessageViewDelegate {
                             appearance: TopMessageView.Appearance,
                             buttons: Set<TopMessageView.Buttons> = [])
     {
-        let newMessageView = TopMessageView(appearance: appearance, message: message, buttons: buttons)
+        if let oldMessageView = self.topMessageView {
+            oldMessageView.remove(animated: true)
+        }
+        
+        let newMessageView = TopMessageView(appearance: appearance,
+                                            message: message,
+                                            buttons: buttons,
+                                            lowerPoint: self.navigationController!.navigationBar.frame.size.height + self.self.navigationController!.navigationBar.frame.origin.y + 8.0)
         newMessageView.delegate = self
         if let superview = self.navigationController?.view {
             self.topMessageView = newMessageView
-            superview.addSubview(newMessageView)
             superview.insertSubview(newMessageView, belowSubview: self.navigationController!.navigationBar)
             newMessageView.showAnimation(withSuperView: superview)
         }
     }
-    
     
     internal func showErrorMessage(_ error: NSError?) {
         guard let error = error else { return }
@@ -1350,7 +1355,7 @@ extension MailboxViewController : TopMessageViewDelegate {
         switch (netStatus){
         case NotReachable:
             PMLog.D("Access Not Available")
-            showBanner(LocalString._general_no_connectivity_detected, appearance: .red, buttons: [.close])
+            self.showNoInternetErrorMessage()
             
         case ReachableViaWWAN:
             PMLog.D("Reachable WWAN")

@@ -8,11 +8,9 @@
 
 import Foundation
 
-
-
-
-protocol TopMessageViewDelegate {
-    func retry()
+@objc protocol TopMessageViewDelegate {
+    @objc optional func retry()
+    @objc optional func close()
 }
 
 class TopMessageView : PMView {
@@ -24,6 +22,8 @@ class TopMessageView : PMView {
     private weak var superView: UIView!
     private var didTouch: Bool = false
 
+    private var lowerPoint: CGFloat = 0
+    
     @IBOutlet private weak var closeButton: UIButton!
     @IBOutlet private var backgroundView: UIView!
     @IBOutlet private weak var messageLabel: UILabel!
@@ -37,6 +37,10 @@ class TopMessageView : PMView {
     
     override func setup() {
         closeButton.setTitle(LocalString._retry, for: .normal)
+    }
+    
+    @IBAction func closeAction(_ sender: UIButton) {
+        delegate?.retry?()
     }
     
     enum Appearance {
@@ -64,8 +68,13 @@ class TopMessageView : PMView {
         case close
     }
     
-    init(appearance: Appearance, message: String, buttons: Set<Buttons>) {
+    init(appearance: Appearance,
+         message: String,
+         buttons: Set<Buttons>,
+         lowerPoint: CGFloat = 0.0)
+    {
         super.init(frame: CGRect.zero)
+        self.lowerPoint = lowerPoint
         
         self.roundCorners()
         self.messageLabel.text = message
@@ -85,74 +94,6 @@ class TopMessageView : PMView {
     // TODO: For EmailView only, remove
     override init(frame: CGRect) {
         super.init(frame: frame)
-    }
-}
-
-
-// TODO: For EmailView only, remove
-extension TopMessageView {
-    func message(string message: String) -> CGFloat {
-        messageLabel.text = message
-        messageLabel.textColor = UIColor.white
-        backgroundView.backgroundColor = UIColor(RRGGBB: UInt(0x9199CB))
-        backgroundView.alpha = 0.9
-        messageLabel.sizeToFit()
-        closeButton.isHidden = true
-        self.timerAutoDismiss?.invalidate()
-        self.timerAutoDismiss = nil
-        self.timerAutoDismiss = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(TopMessageView.timerTriggered), userInfo: nil, repeats: false)
-        return (messageLabel.frame.height + 16)
-    }
-    
-    @objc func timerTriggered() {
-        self.timerAutoDismiss?.invalidate()
-        self.timerAutoDismiss = nil
-//        delegate?.close()
-    }
-    
-    func message(timeOut message: String) -> CGFloat {
-        messageLabel.text = message
-        messageLabel.textColor = UIColor.white
-        backgroundView.backgroundColor = UIColor.red
-        backgroundView.alpha = 0.9
-        messageLabel.sizeToFit()
-        closeButton.isHidden = false
-        return (messageLabel.frame.height + 16)
-    }
-    
-    func message(noInternet message : String) -> CGFloat {
-        messageLabel.text = message
-        messageLabel.textColor = UIColor.white
-        backgroundView.backgroundColor = UIColor.red
-        backgroundView.alpha = 0.9
-        messageLabel.sizeToFit()
-        closeButton.isHidden = false
-        return (messageLabel.frame.height + 16)
-    }
-    
-    func message(errorMsg message : String) -> CGFloat {
-        messageLabel.text = message
-        messageLabel.textColor = UIColor.white
-        backgroundView.backgroundColor = UIColor.lightGray
-        backgroundView.alpha = 0.9
-        messageLabel.sizeToFit()
-        closeButton.isHidden = true
-        return (messageLabel.frame.height + 16)
-    }
-    
-    func message(error : NSError) -> CGFloat {
-        messageLabel.text = error.localizedDescription
-        messageLabel.textColor = UIColor.white
-        backgroundView.backgroundColor = UIColor.lightGray
-        backgroundView.alpha = 0.9
-        messageLabel.sizeToFit()
-        closeButton.isHidden = true
-        return (messageLabel.frame.height + 16)
-    }
-    
-    @IBAction func closeAction(_ sender: UIButton) {
-        delegate?.retry()
-        //delegate?.close()
     }
 }
 
@@ -179,10 +120,8 @@ extension TopMessageView: UIGestureRecognizerDelegate {
         self.dynamicAnimator = UIDynamicAnimator(referenceView: view)
         
         //slider
-        slide = UIAttachmentBehavior.slidingAttachment(with: self,
-                                                               attachmentAnchor: CGPoint(x: 0, y:0),
-                                                               axisOfTranslation: CGVector(dx: 0, dy: 1))
-        slide.attachmentRange = UIFloatRange(minimum: -self.bounds.height - 68.0, maximum: 0)
+        slide = UIAttachmentBehavior.slidingAttachment(with: self, attachmentAnchor: CGPoint(x: 0, y:0), axisOfTranslation: CGVector(dx: 0, dy: 1))
+        slide.attachmentRange = UIFloatRange(minimum: -self.bounds.height - self.lowerPoint , maximum: 0)
         self.dynamicAnimator.addBehavior(slide)
         
         // push
