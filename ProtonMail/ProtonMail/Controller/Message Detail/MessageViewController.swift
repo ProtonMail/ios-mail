@@ -73,7 +73,6 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.delegate = self
-        self.emailView!.topMessageView.delegate = self
         self.emailView?.delegate = self
         self.emailView?.emailHeader.updateAttConstraints(false)
         self.updateBadgeNumberWhenRead(message, unRead: false)
@@ -181,7 +180,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     override func loadView() {
-        emailView = EmailView(frame: UIScreen.main.applicationFrame)
+        emailView = EmailView(frame: UIScreen.main.bounds)
         self.view = emailView
     }
     
