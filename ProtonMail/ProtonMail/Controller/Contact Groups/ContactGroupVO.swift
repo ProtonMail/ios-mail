@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ContactGroupVO: ContactPickerModelProtocol
+class ContactGroupVO: NSObject, ContactPickerModelProtocol
 {
     var modelType: ContactPickerModelState {
         get {

@@ -117,7 +117,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             }.done {
                 () -> Void in
                 
-                // TODO: figure what to put this thing
+//                 TODO: figure what to put this thing
                 self.contacts.append(contentsOf: sharedContactGroupsDataService.getAllContactGroupVOs())
                 
                 // This is done for contact also
