@@ -11,7 +11,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "xunique &quot;${PROJECT_FILE_PATH}/project.pbxproj&quot;">
+               scriptText = "xunique &quot;${PROJECT_FILE_PATH}/project.pbxproj&quot;&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
@@ -39,6 +39,20 @@
                ReferencedContainer = "container:ProtonMail.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7CC48161B0FC946A8DB234B96B6A66DD"
+               BuildableName = "ProtonMail.app"
+               BlueprintName = "ProtonMail"
+               ReferencedContainer = "container:ProtonMail.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -48,6 +62,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "55608604485FE7632E52ED7BBE6A939B"
+            BuildableName = "PushService.appex"
+            BlueprintName = "PushService"
+            ReferencedContainer = "container:ProtonMail.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

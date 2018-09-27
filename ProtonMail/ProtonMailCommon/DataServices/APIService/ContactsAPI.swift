@@ -33,8 +33,7 @@ class ContactsResponse : ApiResponse {
     var total : Int = -1
     var contacts : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D("[Contact] Get contacts response \(response)")
-        
+        //PMLog.D("[Contact] Get contacts response \(response)")
         self.total = response?["Total"] as? Int ?? -1
         self.contacts = response?["Contacts"] as? [[String : Any]] ?? []
         return true
@@ -78,8 +77,7 @@ class ContactEmailsResponse: ApiResponse {
     var total : Int = -1
     var contacts : [[String : Any]] = [] // [["ID": ..., "Name": ..., "ContactEmails": ...], ...]
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D("[Contact] Get contact emails response \(response)")
-        
+        //PMLog.D("[Contact] Get contact emails response \(response)")
         self.total = response?["Total"] as? Int ?? -1
         if let tempContactEmails = response?["ContactEmails"] as? [[String : Any]] {
             // setup emails
@@ -412,7 +410,7 @@ final class ContactLabelAnArrayOfContactEmailsResponse: ApiResponse {
     var emailIDs: [String] = []
     
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D("[Contact] label an array of contact emails response \(response)")
+        //PMLog.D("[Contact] label an array of contact emails response \(response)")
         if let responses = response["Responses"] as? [[String: Any]] {
             for data in responses {
                 if let ID = data["ID"] as? String, let tmp = data["Response"] as? [String: Any] {
@@ -461,8 +459,7 @@ final class ContactUnlabelAnArrayOfContactEmailsResponse: ApiResponse {
     var emailIDs: [String] = []
     
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D("[Contact] unlabel an array of contact emails response \(response)")
-        
+        //PMLog.D("[Contact] unlabel an array of contact emails response \(response)")
         if let responses = response["Responses"] as? [[String: Any]] {
             for data in responses {
                 if let ID = data["ID"] as? String, let tmp = data["Response"] as? [String: Any] {

@@ -19,4 +19,9 @@ extension URL {
     static var kbUpdateRequired : URL {
         return URL(string: "https://protonmail.com/support/knowledge-base/update-required")!
     }
+    
+    // leanr more about encrypt outside - composer view
+    static var kEOLearnMore : URL {
+        return URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
+    }
 }

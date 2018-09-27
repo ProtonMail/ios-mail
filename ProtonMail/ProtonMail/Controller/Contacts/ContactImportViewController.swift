@@ -58,14 +58,11 @@ class ContactImportViewController: UIViewController {
         super.viewDidLoad()
         progressView.progress = 0.0
         titleLabel.text = LocalString._contacts_import_title
-        if #available(iOS 9.0, *) {
-            delay(0.5) {
-                self.fetchedResultsController = self.getFetchedResultsController()
-                self.messageLabel.text = LocalString._contacts_reading_contacts_data
-                self.getContacts()
-            }
-        } else {
-            self.dismiss()
+        
+        delay(0.5) {
+            self.fetchedResultsController = self.getFetchedResultsController()
+            self.messageLabel.text = LocalString._contacts_reading_contacts_data
+            self.getContacts()
         }
     }
     

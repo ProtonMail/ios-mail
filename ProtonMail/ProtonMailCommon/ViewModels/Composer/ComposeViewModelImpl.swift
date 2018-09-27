@@ -415,7 +415,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                                                              recipientList: toJsonString(self.toSelectedContacts),
                                                              bccList: toJsonString(self.bccSelectedContacts),
                                                              ccList: toJsonString(self.ccSelectedContacts),
-                                                             title: self.subject,
+                                                             title: self.getSubject(),
                                                              encryptionPassword: "",
                                                              passwordHint: "",
                                                              expirationTimeInterval: expir,
@@ -432,7 +432,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             self.message?.recipientList = toJsonString(self.toSelectedContacts)
             self.message?.ccList = toJsonString(self.ccSelectedContacts)
             self.message?.bccList = toJsonString(self.bccSelectedContacts)
-            self.message?.title = self.subject
+            self.message?.title = self.getSubject()
             self.message?.time = Date()
             self.message?.password = pwd
             self.message?.unRead = false
@@ -496,9 +496,11 @@ final class ComposeViewModelImpl : ComposeViewModel {
     
     override func getHtmlBody() -> String {
         //sharedUserDataService.signature
-        let signature = self.getDefaultSendAddress()?.signature ?? sharedUserDataService.userDefaultSignature
-        
-        let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
+        var signature = self.getDefaultSendAddress()?.signature ?? sharedUserDataService.userDefaultSignature
+        // sometimes user will input 's in signature. we have to escape it first. need to make sure not to escape twice
+        signature = signature.escaped
+        var mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
+        mobileSignature = mobileSignature.escaped
         
         let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\">\(signature)</div>" : ""
         
@@ -538,6 +540,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
                 body = body.escaped
+                
                 let on = LocalString._composer_on
                 let at = LocalString._general_at_label
                 let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
@@ -552,11 +555,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 replyHeader = replyHeader.stringByStrippingStyleHTML()
                 replyHeader = replyHeader.stringByStrippingBodyStyle()
                 replyHeader = replyHeader.stringByPurifyHTML()
-                
                 let w = LocalString._composer_wrote
-                let sp = "<div><br><div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+                let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
                 
-                return " \(head) \(htmlString) \(sp) \(body)</blockquote> \(foot)"
+                return " \(head) \(htmlString) \(sp) \(body)</blockquote><div><br></div><div><br></div>\(foot)"
             case .forward:
                 let on = LocalString._composer_on
                 let at = LocalString._general_at_label
@@ -597,8 +599,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 sp = sp.stringByStrippingStyleHTML()
                 sp = sp.stringByStrippingBodyStyle()
                 sp = sp.stringByPurifyHTML()
-                sp = sp.escaped
-                
                 return "\(head)\(htmlString)\(sp)\(body)\(foot)"
             case .newDraft:
                 if !self.body.isEmpty {
@@ -607,7 +607,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     return newhtmlString
                 } else {
                     if htmlString.trim().isEmpty {
-                        let ret_body = "<div><br><div><div><br></div><div><br></div><div><br></div>" //add some space
+                        let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>" //add some space
                         return ret_body
                     }
                 }
@@ -618,7 +618,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     return newhtmlString
                 } else {
                     if htmlString.trim().isEmpty {
-                        let ret_body = "<div><br><div><div><br></div><div><br></div><div><br></div>" //add some space
+                        let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>" //add some space
                         return ret_body
                     }
                 }
@@ -626,7 +626,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
             }
 
         }
-        //when goes here , need log error
         return htmlString
     }
 }
@@ -646,7 +645,7 @@ extension ComposeViewModelImpl {
                 let contact = contact as! ContactVO
                 let to: [String : String] = [
                     "Group": "",
-                    "Name" : contact.name ?? "",
+                    "Name" : contact.name,
                     "Address" : contact.email ?? ""
                 ]
                 print(to)

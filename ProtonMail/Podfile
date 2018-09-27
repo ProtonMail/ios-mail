@@ -25,6 +25,8 @@ def common_pods
     pod 'PromiseKit', '~> 6.0'
     pod 'AwaitKit', '~> 5.0.0'
     #pod 'ReachabilitySwift' #use this later
+    
+    pod 'SwiftSoup', '~> 1.7.5'
 end
 
 #target 'ProtonMail','ProtonMailDev','ProtonMailTests'

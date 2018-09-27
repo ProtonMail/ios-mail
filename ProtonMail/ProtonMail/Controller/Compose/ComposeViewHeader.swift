@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import Masonry
 
-protocol ComposeViewDelegate: class {
+protocol ComposeViewHeaderDelegate: class {
     func composeViewWillPresentSubview()
     func composeViewWillDismissSubview()
     
@@ -18,9 +18,6 @@ protocol ComposeViewDelegate: class {
     func composeViewDidTapNextButton(_ composeView: ComposeView)
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView)
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView)
-    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
-                                                   contactGroup: ContactGroupVO,
-                                                   callback: @escaping (([DraftEmailData]) -> Void))
     
     func composeView(_ composeView: ComposeView, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker)
     func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker)
@@ -41,12 +38,14 @@ protocol ComposeViewDataSource: class {
 }
 
 class ComposeView: UIViewController {
+    
     var pickerHeight : CGFloat = 0.0
     
     var toContactPicker: ContactPicker!
     var toContacts: String {
         return toContactPicker.contactList
     }
+    
     
     var hasOutSideEmails : Bool {
         let toHas = toContactPicker.hasOutsideEmails
@@ -213,7 +212,7 @@ class ComposeView: UIViewController {
     
     //
     fileprivate var errorView: ComposeErrorView!
-    fileprivate var isShowingCcBccView: Bool = false
+    fileprivate var isShowingCcBccView: Bool = true
     fileprivate var hasExpirationSchedule: Bool = false
     
     override func viewDidLoad() {
@@ -563,7 +562,7 @@ class ComposeView: UIViewController {
         
         ccContactPicker.datasource = self
         ccContactPicker.delegate = self
-        ccContactPicker.alpha = 0.0
+        ccContactPicker.alpha = 1.0
         
         ccContactPicker.mas_makeConstraints { (make) -> Void in
             let _ = make?.top.equalTo()(self.toContactPicker.mas_bottom)
@@ -579,7 +578,7 @@ class ComposeView: UIViewController {
         
         bccContactPicker.datasource = self
         bccContactPicker.delegate = self
-        bccContactPicker.alpha = 0.0
+        bccContactPicker.alpha = 1.0
         
         bccContactPicker.mas_makeConstraints { (make) -> Void in
             let _ = make?.top.equalTo()(self.ccContactPicker.mas_bottom)
@@ -725,22 +724,8 @@ extension ComposeView: ContactPickerDelegate {
         
     }
     
-    
     func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
         
-    }
-    
-    func collectionView(at: ContactCollectionView,
-                        didSelect contact: ContactPickerModelProtocol,
-                        callback: @escaping (([DraftEmailData]) -> Void))
-    {
-        // if the selected type is contact group
-        // we present the sub-selection view
-        if let contactGroup = contact as? ContactGroupVO {
-            self.delegate?.composeViewDidTapContactGroupSubSelection(self,
-                                                                     contactGroup: contactGroup,
-                                                                     callback: callback)
-        }
     }
     
     func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol) {
@@ -851,3 +836,4 @@ extension ContactPicker {
         return out
     }
 }
+

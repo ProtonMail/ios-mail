@@ -128,6 +128,8 @@ final class EventCheckResponse : ApiResponse {
     }
 }
 
+/// TODO:: refactor the events they have same format
+
 enum EventAction : Int {
     case delete = 0
     case insert = 1
@@ -148,13 +150,12 @@ class Event {
 
 }
 
+// TODO:: remove the hard convert
 final class MessageEvent {
-    
     var Action : Int!
     var ID : String!;
     var message : [String : Any]?
-    
-    init(event: [String : Any]!) {
+    init(event: [String : Any]) {
         self.Action = event["Action"] as! Int
         self.message =  event["Message"] as? [String : Any]
         self.ID =  event["ID"] as! String

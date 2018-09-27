@@ -40,7 +40,7 @@ zss_editor.updateScrollOffset = false;
  * The initializer function that must be called onLoad
  */
 zss_editor.init = function() {
-    
+
     $('#zss_editor_content').on('touchend', function(e) {
                                 //zss_editor.enabledEditingItems(e);
                                 var clicked = $(e.target);
@@ -48,17 +48,17 @@ zss_editor.init = function() {
                                         $('img').removeClass('zs_active');
                                     }
                                 });
-    
+
     $(document).on('selectionchange',function(e){
                        zss_editor.calculateEditorHeightWithCaretPosition();
                        zss_editor.setScrollPosition();
                        //zss_editor.enabledEditingItems(e);
                    });
-    
+
     $(window).on('scroll', function(e) {
                      zss_editor.updateOffset();
                  });
-    
+
     // Make sure that when we tap anywhere in the document we focus on the editor
     $(window).on('touchmove', function(e) {
                      zss_editor.isDragging = true;
@@ -74,30 +74,30 @@ zss_editor.init = function() {
                          zss_editor.focusEditor();
                      }
                  });
-    
+
     $('#zss_editor_content').on('paste', function(e) {
                                 //var pasteData = e.originalEvent.clipboardData.getData('text')
                                 //window.location = 'paste://'+ e //.clipboardData.types;
 //                                window.location = 'paste://'+ e.originalEvent.clipboardData;
-                        
+
                                 });
-    
+
 }//end
 
 zss_editor.updateOffset = function() {
-    
+
     if (!zss_editor.updateScrollOffset)
         return;
-    
+
     var offsetY = window.document.body.scrollTop;
-    
+
     var footer = $('#zss_editor_footer');
-    
+
     var maxOffsetY = footer.offset().top - zss_editor.contentHeight;
-    
+
     if (maxOffsetY < 0)
         maxOffsetY = 0;
-    
+
     if (offsetY > maxOffsetY)
     {
         window.scrollTo(0, maxOffsetY);
@@ -119,9 +119,9 @@ zss_editor.setScrollPosition = function() {
 
 
 zss_editor.setPlaceholder = function(placeholder) {
-    
+
     var editor = $('#zss_editor_content');
-    
+
     //set placeHolder
     if(editor.text().length == 1){
         editor.text(placeholder);
@@ -139,7 +139,7 @@ zss_editor.setPlaceholder = function(placeholder) {
                                      $(this).css("color","gray");
                                  }
                              });
-    
+
 }
 
 zss_editor.setFooterHeight = function(footerHeight) {
@@ -161,28 +161,28 @@ zss_editor.getCaretYPosition = function() {
 }
 
 zss_editor.calculateEditorHeightWithCaretPosition = function() {
-    
+
     var padding = 50;
     var c = zss_editor.getCaretYPosition();
     var e = document.getElementById('zss_editor_content');
-    
+
     var editor = $('#zss_editor_content');
-    
+
     var offsetY = window.document.body.scrollTop;
     var height = zss_editor.contentHeight;
-    
+
     var newPos = window.pageYOffset;
-    
+
     if (c < offsetY) {
         window.location = 'debug://'+c + ':' + offsetY;
         newPos = c;
     } else if (c > (offsetY + height - padding)) {
-        
+
         window.location = 'debug://'+c + ':' + offsetY + ':' + height + ':' + padding;
         var newPos = c - height + padding - 18;
-        
+
     }
-    
+
     window.scrollTo(0, newPos);
 }
 
@@ -273,7 +273,7 @@ zss_editor.setHeading = function(heading) {
     } else {
         document.execCommand('formatBlock', false, '<'+heading+'>');
     }
-    
+
     zss_editor.enabledEditingItems();
 }
 
@@ -287,7 +287,7 @@ zss_editor.setParagraph = function() {
     } else {
         document.execCommand('formatBlock', false, '<p>');
     }
-    
+
     zss_editor.enabledEditingItems();
 }
 
@@ -364,17 +364,17 @@ zss_editor.setBackgroundColor = function(color) {
 // Needs addClass method
 
 zss_editor.insertLink = function(url, title) {
-    
+
     zss_editor.restorerange();
     var sel = document.getSelection();
     console.log(sel);
     if (sel.toString().length != 0) {
         if (sel.rangeCount) {
-            
+
             var el = document.createElement("a");
             el.setAttribute("href", url);
             el.setAttribute("title", title);
-            
+
             var range = sel.getRangeAt(0).cloneRange();
             range.surroundContents(el);
             sel.removeAllRanges();
@@ -385,38 +385,38 @@ zss_editor.insertLink = function(url, title) {
     {
         document.execCommand("insertHTML",false,"<a href='"+url+"'>"+title+"</a>");
     }
-    
+
     zss_editor.enabledEditingItems();
 }
 
 zss_editor.updateLink = function(url, title) {
-    
+
     zss_editor.restorerange();
-    
+
     if (zss_editor.currentEditingLink) {
         var c = zss_editor.currentEditingLink;
         c.attr('href', url);
         c.attr('title', title);
     }
     zss_editor.enabledEditingItems();
-    
+
 }//end
 
 zss_editor.updateImage = function(url, alt) {
-    
+
     zss_editor.restorerange();
-    
+
     if (zss_editor.currentEditingImage) {
         var c = zss_editor.currentEditingImage;
         c.attr('src', url);
         c.attr('alt', alt);
     }
     zss_editor.enabledEditingItems();
-    
+
 }//end
 
 zss_editor.unlink = function() {
-    
+
     if (zss_editor.currentEditingLink) {
         var c = zss_editor.currentEditingLink;
         c.contents().unwrap();
@@ -425,7 +425,7 @@ zss_editor.unlink = function() {
 }
 
 zss_editor.quickLink = function() {
-    
+
     var sel = document.getSelection();
     var link_url = "";
     var test = new String(sel);
@@ -450,10 +450,10 @@ zss_editor.quickLink = function() {
             link_url = sel;
         }
     }
-    
+
     var html_code = '<a href="' + link_url + '">' + sel + '</a>';
     zss_editor.insertHTML(html_code);
-    
+
 }
 
 zss_editor.prepareInsert = function() {
@@ -461,9 +461,9 @@ zss_editor.prepareInsert = function() {
 }
 
 zss_editor.insertImage = function(url, alt) {
-    
+
     window.location = 'debug://insertimage';
-    
+
     zss_editor.restorerange();
     var html = '<img src="'+url+'" alt="'+alt+'" />';
     zss_editor.insertHTML(html);
@@ -529,7 +529,7 @@ zss_editor.getEditedEmbedImages = function() {
 
 
 zss_editor.getHTML = function() {
-    
+
     // Images
     var img = $('img');
     if (img.length != 0) {
@@ -544,7 +544,7 @@ zss_editor.getHTML = function() {
                           }
                       });
     }
-    
+
     // Blockquote
     var bq = $('blockquote');
     if (bq.length != 0) {
@@ -558,10 +558,10 @@ zss_editor.getHTML = function() {
                     }
                 });
     }
-    
+
     // Get the contents
     var h = document.getElementById("zss_editor_content").innerHTML;
-    
+
     var outstring = $('<div></div>').append(h);
     if (outstring.length > 0) {
         var editor = outstring.find('img');
@@ -578,10 +578,10 @@ zss_editor.getHTML = function() {
                             }
                         });
         }
-        
+
         h = outstring.html();
     }
-    
+
     return h;
 }
 
@@ -594,7 +594,7 @@ zss_editor.isCommandEnabled = function(commandName) {
 }
 
 zss_editor.enabledEditingItems = function(e) {
-    
+
     console.log('enabledEditingItems');
     var items = [];
     if (zss_editor.isCommandEnabled('bold')) {
@@ -645,15 +645,15 @@ zss_editor.enabledEditingItems = function(e) {
                       $('img').removeClass('zs_active');
                       $(this).addClass('zs_active');
                   });
-    
+
     // Use jQuery to figure out those that are not supported
     if (typeof(e) != "undefined") {
-        
+
         // The target element
         var s = zss_editor.getSelectedNode();
         var t = $(s);
         var nodeName = e.target.nodeName.toLowerCase();
-        
+
         // Background Color
         var bgColor = t.css('backgroundColor');
         if (bgColor.length != 0 && bgColor != 'rgba(0, 0, 0, 0)' && bgColor != 'rgb(0, 0, 0)' && bgColor != 'transparent') {
@@ -672,7 +672,7 @@ zss_editor.enabledEditingItems = function(e) {
             if (t.attr('title') !== undefined) {
                 items.push('link-title:'+t.attr('title'));
             }
-            
+
         } else {
             zss_editor.currentEditingLink = null;
         }
@@ -687,13 +687,13 @@ zss_editor.enabledEditingItems = function(e) {
             if (t.attr('alt') !== undefined) {
                 items.push('image-alt:'+t.attr('alt'));
             }
-            
+
         } else {
             zss_editor.currentEditingImage = null;
         }
-        
+
     }
-    
+
     if (items.length > 0) {
         if (zss_editor.isUsingiOS) {
             //window.location = "zss-callback/"+items.join(',');
@@ -708,11 +708,11 @@ zss_editor.enabledEditingItems = function(e) {
             console.log("callback://");
         }
     }
-    
+
 }
 
 zss_editor.focusEditor = function() {
-    
+
     // the following was taken from http://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity/3866442#3866442
     // and ensures we move the cursor to the end of the editor
 //    var range = document.createRange();
@@ -726,3 +726,99 @@ zss_editor.focusEditor = function() {
 zss_editor.blurEditor = function() {
     $('#zss_editor_content').blur();
 }//end
+
+
+
+//html_editor.removeFormat = function() {
+//    document.execCommand('removeFormat', false, null);
+//};
+
+//
+//html_editor.setHeight = function(size) {
+//    html_editor.editor.style.height = size;
+//};
+//
+//
+//html_editor.insertImage = function(url, alt) {
+//    var img = document.createElement('img');
+//    img.setAttribute("src", url);
+//    img.setAttribute("alt", alt);
+//    img.onload = RE.updateHeight;
+//
+//    html_editor.insertHTML(img.outerHTML);
+//    html_editor.callback("input");
+//};
+//
+//
+//html_editor.focus = function() {
+//    var range = document.createRange();
+//    range.selectNodeContents(RE.editor);
+//    range.collapse(false);
+//    var selection = window.getSelection();
+//    selection.removeAllRanges();
+//    selection.addRange(range);
+//    html_editor.editor.focus();
+//};
+//
+//html_editor.focusAtPoint = function(x, y) {
+//    var range = document.caretRangeFromPoint(x, y) || document.createRange();
+//    var selection = window.getSelection();
+//    selection.removeAllRanges();
+//    selection.addRange(range);
+//    html_editor.editor.focus();
+//};
+//
+///**
+// Recursively search element ancestors to find a element nodeName e.g. A
+// **/
+//var _findNodeByNameInContainer = function(element, nodeName, rootElementId) {
+//    if (element.nodeName == nodeName) {
+//        return element;
+//    } else {
+//        if (element.id === rootElementId) {
+//            return null;
+//        }
+//        _findNodeByNameInContainer(element.parentElement, nodeName, rootElementId);
+//    }
+//};
+//
+//var isAnchorNode = function(node) {
+//    return ("A" == node.nodeName);
+//};
+//
+//html_editor.getAnchorTagsInNode = function(node) {
+//    var links = [];
+//
+//    while (node.nextSibling !== null && node.nextSibling !== undefined) {
+//        node = node.nextSibling;
+//        if (isAnchorNode(node)) {
+//            links.push(node.getAttribute('href'));
+//        }
+//    }
+//    return links;
+//};
+
+//// Returns the cursor position relative to its current position onscreen.
+//// Can be negative if it is above what is visible
+//html_editor.getRelativeCaretYPosition = function() {
+//    var y = 0;
+//    var sel = window.getSelection();
+//    if (sel.rangeCount) {
+//        var range = sel.getRangeAt(0);
+//        var needsWorkAround = (range.startOffset == 0)
+//        /* Removing fixes bug when node name other than 'div' */
+//        // && range.startContainer.nodeName.toLowerCase() == 'div');
+//        if (needsWorkAround) {
+//            y = range.startContainer.offsetTop - window.pageYOffset;
+//        } else {
+//            if (range.getClientRects) {
+//                var rects=range.getClientRects();
+//                if (rects.length > 0) {
+//                    y = rects[0].top;
+//                }
+//            }
+//        }
+//    }
+//
+//    return y;
+//    };

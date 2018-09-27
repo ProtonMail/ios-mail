@@ -11,33 +11,25 @@ import Foundation
 
 public class PMLog {
     
-    public static func D(nstring message: NSString, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column)
-    {
-        return
+    static func D(nstring message: NSString, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column) {
         #if DEBUG
             print("\(function) : \(line) : \(column) ↓ \r\n \(file) : \r\n\(message)")
         #endif
     }
     
-    public static func D(_ message: String, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column)
-    {
-        return
+    static func D(_ message: String, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column) {
         #if DEBUG
             print("\(function) : \(line) : \(column) ↓ \r\n \(file) : \r\n\(message)")
         #endif
     }
     
-    public static func D(any message: Any, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column )
-    {
-        return
+    static func D(any message: Any, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column ) {
         #if DEBUG
             print("\(function) : \(line) : \(column) ↓ \r\n \(file) : \r\n\(message)")
         #endif
     }
     
-    public static func D(api error: NSError, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column )
-    {
-        return
+    static func D(api error: NSError, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column ) {
         #if DEBUG
             print("\(function) : \(line) : \(column) ↓ \r\n \(file) :")
             print("Domain = " + error.domain)

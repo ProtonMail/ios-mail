@@ -29,7 +29,7 @@ protocol ContactPickerDelegate: ContactCollectionViewDelegate {
 
 class ContactPicker: UIView {
     private var keyboardFrame: CGRect = .zero
-    private var searchWindow: UIWindow?
+    //private var searchWindow: UIWindow?
     private var searchTableViewController: ContactSearchTableViewController?
     private func createSearchTableViewController() -> ContactSearchTableViewController {
         let controller = ContactSearchTableViewController()
@@ -64,7 +64,7 @@ class ContactPicker: UIView {
         }
     }
     
-    internal weak var delegate : (ContactPickerDelegate&UIViewController)!
+    internal weak var delegate : ContactPickerDelegate?
     internal weak var datasource : ContactPickerDataSource?
     
     private var _showPrompt : Bool = true
@@ -108,6 +108,14 @@ class ContactPicker: UIView {
         self.setup()
     }
 
+    override var intrinsicContentSize : CGSize {
+        let s = super.intrinsicContentSize
+        // let cs = contentStackview.intrinsicContentSize
+//        let sf = contentStackview.sizeThatFits(CGSize.zero)
+        let sf = self.contactCollectionView.sizeThatFits(.zero)
+        return s
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -123,19 +131,11 @@ class ContactPicker: UIView {
         self.addSubview(contactCollectionView)
         
         self.contactCollectionView = contactCollectionView
-        if #available(iOS 9.0, *) {
-            self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-            self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-            self.contactCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-            self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        } else {
-            NSLayoutConstraint.activate([
-                NSLayoutConstraint(item: self.contactCollectionView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0.0),
-                NSLayoutConstraint(item: self.contactCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0),
-                NSLayoutConstraint(item: self.contactCollectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0.0),
-                NSLayoutConstraint(item: self.contactCollectionView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0.0)
-            ])
-        }
+        
+        self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        self.contactCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         
         self.maxVisibleRows = ContactPickerDefined.kMaxVisibleRows
         self.animationSpeed = ContactPickerDefined.kAnimationSpeed
@@ -305,39 +305,40 @@ class ContactPicker: UIView {
         }
         guard self.searchTableViewController == nil else { return }
         self.searchTableViewController = self.createSearchTableViewController()
-        self.searchWindow = self.searchWindow ?? UIWindow(frame: self.frameForContactSearch)
-        self.searchWindow?.rootViewController = self.searchTableViewController
-        self.searchWindow?.isHidden = false
-        self.searchWindow?.windowLevel = UIWindow.Level.normal
-        #if APP_EXTENSION
-         // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to  it's hierarchy explicitly
-        self.window?.addSubview(searchWindow!)
-        #endif
-        self.delegate.didShowFilteredContactsForContactPicker(contactPicker: self)
+//        self.searchWindow = self.searchWindow ?? UIWindow(frame: self.frameForContactSearch)
+//        self.searchWindow?.rootViewController = self.searchTableViewController
+//        self.searchWindow?.isHidden = false
+//        self.searchWindow?.windowLevel = UIWindow.Level.normal
+//        #if APP_EXTENSION
+//         // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to  it's hierarchy explicitly
+//        self.window?.addSubview(searchWindow!)
+//        #endif
+        
+        self.delegate?.didShowFilteredContactsForContactPicker(contactPicker: self)
     }
 
     private func hideSearchTableView() {
         guard let _ = self.searchTableViewController else { return }
         self.searchTableViewController = nil
-        self.searchWindow?.rootViewController = nil
-        self.searchWindow?.isHidden = true
-        #if !APP_EXTENSION
-        // in app extenison window is strongly held by _UIHostedWindow and we can not change that since removeFromSuperview() does not work properly, so we'll just reuse same window all over again
-        self.searchWindow = nil
-        #endif
-        self.delegate.didHideFilteredContactsForContactPicker(contactPicker: self)
+//        self.searchWindow?.rootViewController = nil
+//        self.searchWindow?.isHidden = true
+//        #if !APP_EXTENSION
+//        // in app extenison window is strongly held by _UIHostedWindow and we can not change that since removeFromSuperview() does not work properly, so we'll just reuse same window all over again
+//        self.searchWindow = nil
+//        #endif
+        self.delegate?.didHideFilteredContactsForContactPicker(contactPicker: self)
     }
     
-    private var frameForContactSearch: CGRect {
-        guard let window = self.delegate?.view.window else {
-            return .zero
-        }
-
-        var topLine = self.convert(CGPoint.zero, to: window)
-        topLine.y += self.frame.size.height
-        let size = CGSize(width: window.bounds.width, height: window.bounds.size.height - self.keyboardFrame.size.height - topLine.y)
-        return .init(origin: topLine, size: size)
-    }
+//    private var frameForContactSearch: CGRect {
+//        guard let window = self.delegate?.view.window else {
+//            return .zero
+//        }
+//
+//        var topLine = self.convert(CGPoint.zero, to: window)
+//        topLine.y += self.frame.size.height
+//        let size = CGSize(width: window.bounds.width, height: window.bounds.size.height - self.keyboardFrame.size.height - topLine.y)
+//        return .init(origin: topLine, size: size)
+//    }
 }
 
 
@@ -347,7 +348,7 @@ class ContactPicker: UIView {
 extension ContactPicker : ContactCollectionViewDelegate {
 
     internal func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
-        self.delegate.collectionContactCell(lockCheck: model, progress: progress) { (image, type) in
+        self.delegate?.collectionContactCell(lockCheck: model, progress: progress) { (image, type) in
             complete?(image, type)
             self.contactCollectionView.performBatchUpdates({
                 self.layoutIfNeeded()

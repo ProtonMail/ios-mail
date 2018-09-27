@@ -24,6 +24,8 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kSegueToApplyLabels : String = "toApplyLabelsSegue"
     fileprivate let kToAddContactSegue : String  = "toAddContact"
     
+    fileprivate let kTest : String = "toComposeTest"
+    
     /// message info
     var message: Message!
     
@@ -427,12 +429,24 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == kToComposerSegue {
             if let contact = sender as? ContactVO {
                 let composeViewController = segue.destination as! ComposeEmailViewController
                 sharedVMService.newDraft(vmp: composeViewController, with: contact)
             } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft{
                 let composeViewController = segue.destination as! ComposeEmailViewController
+                sharedVMService.newDraft(vmp: composeViewController, with: message, action: tapped)
+            } else {
+                let composeViewController = segue.destination as! ComposeEmailViewController
+                sharedVMService.newDraft(vmp: composeViewController, with: self.url)
+            }
+        } else if segue.identifier == kTest {
+            if let contact = sender as? ContactVO {
+                let composeViewController = segue.destination as! ComposeEmailViewController
+                sharedVMService.newDraft(vmp: composeViewController, with: contact)
+            } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft{
+                let composeViewController = segue.destination.children[0] as! ComposeViewController
                 sharedVMService.newDraft(vmp: composeViewController, with: message, action: tapped)
             } else {
                 let composeViewController = segue.destination as! ComposeEmailViewController
@@ -664,7 +678,7 @@ extension MessageViewController : TopMessageViewDelegate {
 extension MessageViewController : MessageDetailBottomViewProtocol {
     func replyClicked() {
         if self.message.isDetailDownloaded {
-            self.performSegue(withIdentifier: kToComposerSegue, sender: ComposeMessageAction.reply.rawValue)
+            self.performSegue(withIdentifier: kTest, sender: ComposeMessageAction.reply.rawValue)
         } else {
             self.showAlertWhenNoDetails()
         }

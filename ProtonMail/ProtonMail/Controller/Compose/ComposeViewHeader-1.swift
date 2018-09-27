@@ -6,30 +6,27 @@
 //  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
 import Foundation
-import UIKit
-import Masonry
+//import UIKit
+//import Masonry
 
 protocol ComposeViewDelegate: class {
     func composeViewWillPresentSubview()
     func composeViewWillDismissSubview()
-    
+
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool)
     func ComposeViewDidOffsetChanged(_ offset: CGPoint)
     func composeViewDidTapNextButton(_ composeView: ComposeView)
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView)
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView)
-    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
-                                                   contactGroup: ContactGroupVO,
-                                                   callback: @escaping (([DraftEmailData]) -> Void))
-    
+
     func composeView(_ composeView: ComposeView, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker)
     func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker)
-    
+
     func composeViewHideExpirationView(_ composeView: ComposeView)
     func composeViewCancelExpirationData(_ composeView: ComposeView)
     func composeViewDidTapExpirationButton(_ composeView: ComposeView)
     func composeViewCollectExpirationData(_ composeView: ComposeView)
-    
+
     func composeViewPickFrom(_ composeView: ComposeView)
 
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
@@ -41,6 +38,7 @@ protocol ComposeViewDataSource: class {
 }
 
 class ComposeView: UIViewController {
+    
     var pickerHeight : CGFloat = 0.0
     
     var toContactPicker: ContactPicker!
@@ -725,22 +723,8 @@ extension ComposeView: ContactPickerDelegate {
         
     }
     
-    
     func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
         
-    }
-    
-    func collectionView(at: ContactCollectionView,
-                        didSelect contact: ContactPickerModelProtocol,
-                        callback: @escaping (([DraftEmailData]) -> Void))
-    {
-        // if the selected type is contact group
-        // we present the sub-selection view
-        if let contactGroup = contact as? ContactGroupVO {
-            self.delegate?.composeViewDidTapContactGroupSubSelection(self,
-                                                                     contactGroup: contactGroup,
-                                                                     callback: callback)
-        }
     }
     
     func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol) {
@@ -851,3 +835,4 @@ extension ContactPicker {
         return out
     }
 }
+
