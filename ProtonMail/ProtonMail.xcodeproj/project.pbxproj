@@ -406,6 +406,7 @@
 		47965230D29D78C91E4A627974C4C0E5 /* MenuLabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DE7858BA56DBC87D4AF3B339EADD91 /* MenuLabelViewCell.swift */; };
 		47AA3D79D62404BFE693E38A5651017E /* ConfigurableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FA9369D846A5682C5D52918F2B1093 /* ConfigurableSection.swift */; };
 		47CAC71E8CC3E0CE82662935B2A39739 /* ContactSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030C21C9C16C7CA8E12A9016B7208942 /* ContactSearchTableViewController.swift */; };
+		47EF097B725B2A4845186DC4DEA1BD0A /* ContactGroupVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0370BFE274351AB9C924130EF20A69C5 /* ContactGroupVO.swift */; };
 		486D82D72FF8532B7344BA17A6A37D6D /* Compare+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031430313BF59E1536595C41587D12E2 /* Compare+Extension.swift */; };
 		48863A6D1CDE0533C89DEE9F0202E5FE /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C97B10ACFE993A5ABC3DDD43209BA369 /* Fabric.framework */; };
 		48A9EC002F94922DA7F319ACAA7DD69F /* LabelCreatingViewModelImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0852EA8136DF638576DE78C9E6D2FF1D /* LabelCreatingViewModelImple.swift */; };
@@ -1149,6 +1150,7 @@
 		C5F7E2AA2A613504310750E6F3030A7A /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA36F62FC193FD9B79943EDBC1E64B97 /* Dictionary+Extension.swift */; };
 		C61DEEC298A92439BBE28F66BAE0ECDE /* ZSSRichTextEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 8ABE8018821856432368075B017C939D /* ZSSRichTextEditor.js */; };
 		C655A8047C4902C34716969970217422 /* PolicyWebViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD602DFC4145CFBB78BFAF3C7D2EE1C /* PolicyWebViewModelImpl.swift */; };
+		C668E9B4A75991130E644E1A07FFE80E /* ContactGroupVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0370BFE274351AB9C924130EF20A69C5 /* ContactGroupVO.swift */; };
 		C6BB1053BD4ECF210D9603A19E96D604 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */; };
 		C715C1E816A1A6D64A152C25C81A988C /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C97B10ACFE993A5ABC3DDD43209BA369 /* Fabric.framework */; };
 		C7925EA49140B87D43801B4CF4576E2E /* SrpClient+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740706FF89123145777644994BE4C5BB /* SrpClient+Extension.swift */; };
@@ -1586,6 +1588,7 @@
 		03341659B0BBA12D8FF7BDBEF9C7CEB7 /* VCard+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VCard+Extension.swift"; sourceTree = "<group>"; };
 		033BA643D53FC04548412B132F956D8D /* UIAlertAction+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+Extension.swift"; sourceTree = "<group>"; };
 		0350DB1CE5A6D9FB0346D24A0319EB2E /* NSError+Alert+Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Alert+Mail.swift"; sourceTree = "<group>"; };
+		0370BFE274351AB9C924130EF20A69C5 /* ContactGroupVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupVO.swift; sourceTree = "<group>"; };
 		03B667127BCF3FD74EC8B166FB8B49A5 /* DurationPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DurationPickerViewController.xib; sourceTree = "<group>"; };
 		04025B7C6436895719C25378EBFF48C9 /* AddressAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressAPI.swift; sourceTree = "<group>"; };
 		04CAE4733926A58198B65D2DC1B50F00 /* ContactGroupViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupViewModelImpl.swift; sourceTree = "<group>"; };
@@ -3227,6 +3230,7 @@
 				DC1352F3E82A2BE8C234D0A7E54752B2 /* ContactGroupEditViewController.swift */,
 				8782C5BEEDAF151E47F8104AC2BDCF82 /* ContactGroupSelectColorViewController.swift */,
 				B63E7B9480C2FA7A9C24089237C538FF /* ContactGroupSelectEmailViewController.swift */,
+				0370BFE274351AB9C924130EF20A69C5 /* ContactGroupVO.swift */,
 				BCA86D387CD62DD41CC1C2829433A892 /* ContactGroupViewController.swift */,
 			);
 			path = "Contact Groups";
@@ -4757,6 +4761,7 @@
 				25CD1EDB272821857C8E72C2200E654A /* ContactGroupSelectEmailViewController.swift in Sources */,
 				44D5B94E288F1DFB58B401F5C310ADAE /* ContactGroupSelectEmailViewModel.swift in Sources */,
 				DBA9A63B855DDA9101810026C5B2E685 /* ContactGroupSelectEmailViewModelImpl.swift in Sources */,
+				47EF097B725B2A4845186DC4DEA1BD0A /* ContactGroupVO.swift in Sources */,
 				F7A9538140E0CBD3BE3D42B233EA0312 /* ContactGroupViewController.swift in Sources */,
 				C082BD051C76935D5D3BC3BF8B0CCF11 /* ContactGroupViewModel.swift in Sources */,
 				10159D8FA61DFAF925AEDE5E09DE2490 /* ContactGroupViewModelImpl.swift in Sources */,
@@ -5184,6 +5189,7 @@
 				D1B33F2253179C17B8768E3D0530F52D /* ContactGroupSelectEmailViewController.swift in Sources */,
 				73092BF5B460D677E2F06DDDD6E356A1 /* ContactGroupSelectEmailViewModel.swift in Sources */,
 				F37BDB4CEA6A9D574E224FD8EFA92B06 /* ContactGroupSelectEmailViewModelImpl.swift in Sources */,
+				C668E9B4A75991130E644E1A07FFE80E /* ContactGroupVO.swift in Sources */,
 				00AEC522B35B39CD9254011904C2C6C2 /* ContactGroupViewController.swift in Sources */,
 				6032658A32AA3D0DB307F7AE5C91D06E /* ContactGroupViewModel.swift in Sources */,
 				D5680476E4D22D8C0B895AB7DF8E33F3 /* ContactGroupViewModelImpl.swift in Sources */,

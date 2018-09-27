@@ -11,8 +11,15 @@ import UIKit
 typealias LockCheckProgress = (() -> Void)
 typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType : Int) -> Void)
 
-@objc protocol ContactPickerModelProtocol {
+@objc enum ContactPickerModelState: Int
+{
+    case contact = 1
+    case contactGroup = 2
+}
+
+@objc protocol ContactPickerModelProtocol: class {
     
+    var modelType: ContactPickerModelState { get }
     var contactTitle : String { get }
     
     //@optional

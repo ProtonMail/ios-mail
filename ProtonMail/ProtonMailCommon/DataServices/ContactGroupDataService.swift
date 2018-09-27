@@ -244,4 +244,15 @@ class ContactGroupsDataService {
         }
     }
     
+    func getAllContactGroupVOs() -> [ContactGroupVO] {
+        let labels = sharedLabelsDataService.getAllLabels(of: .contactGroup)
+        
+        var result: [ContactGroupVO] = []
+        for label in labels {
+            result.append(ContactGroupVO.init(ID: label.labelID,
+                                              name: label.name))
+        }
+        
+        return result
+    }
 }

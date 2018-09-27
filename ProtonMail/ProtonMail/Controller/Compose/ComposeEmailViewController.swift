@@ -45,7 +45,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     // private vars
     fileprivate var timer : Timer!
     fileprivate var draggin : Bool! = false
-    fileprivate var contacts: [ContactVO] = [ContactVO]()
+    fileprivate var contacts: [ContactPickerModelProtocol] = []
     fileprivate var actualEncryptionStep = EncryptionStep.DefinePassword
     fileprivate var encryptionPassword: String = ""
     fileprivate var encryptionConfirmPassword: String = ""
@@ -108,9 +108,73 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         // update content values
         updateMessageView()
         
-        // load all contacts
-        self.contacts = sharedContactDataService.allContactVOs()
-        retrieveAllContacts()
+        // load all contacts and groups
+        firstly {
+            () -> Promise<Void> in
+            
+            self.contacts = sharedContactDataService.allContactVOs()
+            return retrieveAllContacts()
+            }.done {
+                () -> Void in
+                
+                // TODO: figure what to put this thing
+                self.contacts.append(contentsOf: sharedContactGroupsDataService.getAllContactGroupVOs())
+                
+                // This is done for contact also
+                self.contacts.sort {
+                    (first: ContactPickerModelProtocol, second: ContactPickerModelProtocol) -> Bool in
+                    
+                    if let first = first as? ContactVO,
+                        let second = second as? ContactVO {
+                        return first.name.lowercased() == second.name.lowercased() ?
+                            first.email.lowercased() < second.email.lowercased() :
+                            first.name.lowercased() < second.name.lowercased()
+                    } else if let first = first as? ContactGroupVO,
+                        let second = second as? ContactGroupVO {
+                        return first.contactTitle.lowercased() < second.contactTitle.lowercased()
+                    } else {
+                        // same title, the one with email goes second
+                        if first.contactTitle.lowercased() == second.contactTitle.lowercased() {
+                            if let _ = first as? ContactVO {
+                                return false
+                            }
+                            return true
+                        }
+                        return first.contactTitle.lowercased() < second.contactTitle.lowercased()
+                    }
+                }
+                for tmp in self.contacts {
+                    print("result in \(tmp.contactTitle)")
+                }
+                
+                self.composeView.toContactPicker.reloadData()
+                self.composeView.ccContactPicker.reloadData()
+                self.composeView.bccContactPicker.reloadData()
+                
+                self.composeView.toContactPicker.contactCollectionView!.layoutIfNeeded()
+                self.composeView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
+                self.composeView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
+                
+                switch self.viewModel.messageAction!
+                {
+                case .openDraft, .reply, .replyAll:
+                    if !self.isShowingConfirm {
+                        self.focus()
+                    }
+                    self.composeView.notifyViewSize(true)
+                    break
+                default:
+                    if !self.isShowingConfirm {
+                        let _ = self.composeView.toContactPicker.becomeFirstResponder()
+                    }
+                    break
+                }
+            }.catch {
+                error in
+                
+                // TODO: handle error
+                PMLog.D("Load all contacts and groups error \(error)")
+        }
         
         self.expirationPicker.alpha = 0.0
         self.expirationPicker.dataSource = self
@@ -118,7 +182,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         
         self.attachments = viewModel.getAttachments()
         
-        // update header layous
+        // update header layout
         updateContentLayout(false)
         
         //change message as read
@@ -149,35 +213,20 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     }
     
     
-    internal func retrieveAllContacts() {
-        sharedContactDataService.getContactVOs { (contacts, error) in
-            if let error = error {
-                PMLog.D(" error: \(error)")
-            }
+    internal func retrieveAllContacts() -> Promise<Void> {
+        return Promise {
+            seal in
             
-            self.contacts = contacts
-            
-            self.composeView.toContactPicker.reloadData()
-            self.composeView.ccContactPicker.reloadData()
-            self.composeView.bccContactPicker.reloadData()
-            
-            self.composeView.toContactPicker.contactCollectionView!.layoutIfNeeded()
-            self.composeView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
-            self.composeView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
-            
-            switch self.viewModel.messageAction!
-            {
-            case .openDraft, .reply, .replyAll:
-                if !self.isShowingConfirm {
-                    self.focus()
+            sharedContactDataService.getContactVOs { (contacts, error) in
+                if let error = error {
+                    PMLog.D(" error: \(error)")
+                    
+                    // seal.reject(error) // TODO: should I?
                 }
-                self.composeView.notifyViewSize(true)
-                break
-            default:
-                if !self.isShowingConfirm {
-                    let _ = self.composeView.toContactPicker.becomeFirstResponder()
-                }
-                break
+                
+                self.contacts = contacts
+                
+                seal.fulfill(())
             }
         }
     }

@@ -606,7 +606,10 @@ extension ContactDataService {
         var contacts: [ContactVO] = []
         
         for email in sharedContactDataService.allEmails() {
-            contacts.append(ContactVO(id: email.contactID, name: email.name, email: email.email, isProtonMailContact: true))
+            contacts.append(ContactVO(id: email.contactID,
+                                      name: email.name,
+                                      email: email.email,
+                                      isProtonMailContact: true))
         }
         
         return contacts

@@ -71,6 +71,37 @@ class LabelsDataService {
         }
     }
     
+    func getAllLabels(of type : LabelFetchType) -> [Label] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
+        switch type {
+        case .all:
+            fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1)", "(?!^\\d+$)^.+$", Label.Attributes.type)
+        case .folder:
+            fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+        case .label:
+            fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+        case .contactGroup:
+            // in contact group searching, predicate must be consistent with this one
+            fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
+        }
+        
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            do {
+                let results = try context.fetch(fetchRequest)
+                if let results = results as? [Label] {
+                    return results
+                } else {
+                    // TODO: handle error
+                    PMLog.D("COnversion to Label error")
+                }
+            } catch {
+                PMLog.D("Get context failed")
+            }
+        }
+        
+        return []
+    }
+    
     func fetchedResultsController(_ type : LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
