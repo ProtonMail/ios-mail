@@ -797,6 +797,7 @@
 		88B0A5AA5395BE20441E608D69CECFD1 /* LabelEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2ECDE676236E467CC81AEDFAF886B7 /* LabelEditViewModel.swift */; };
 		88FA0CC6E54940A3C4CD47996DD4D0D3 /* ComposerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47E6C6516E4914A548087D78DFD0C41B /* ComposerViewController.xib */; };
 		8911B3E0448510AE9F31C7EA0700209A /* ContactDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934EB5CEA1ACDD4A4555A00DDA4B7F8D /* ContactDataService.swift */; };
+		89247110592AC762EB3D96A58D4B7D44 /* ContactGroupVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0370BFE274351AB9C924130EF20A69C5 /* ContactGroupVO.swift */; };
 		894458D6BEE71AADCC3BEAE62867E030 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1C852E9CC196C3905CADD4C2704291 /* MenuItem.swift */; };
 		896C1B8DE3BBD5EF41813218B8F3F08B /* GeneralSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA7289C7A00897216DF37D848BDD1EE /* GeneralSettingViewCell.swift */; };
 		899B289FF6339103D81AEA51AC327B19 /* OpenPGP+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD83722A1989FBEACE70896416C38CF /* OpenPGP+Extension.swift */; };
@@ -899,6 +900,7 @@
 		9BFFAF8C3F49CFDB874CC27B586366AA /* ContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0477F89137AAA9A42BC73B09D025A29 /* ContactModel.swift */; };
 		9C3B841CCD848FA7D6DE94ED5D2BF9F8 /* ComposeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC99702EB4FAE95D39DBCC4235BBC74C /* ComposeViewModelTests.swift */; };
 		9C5109EA75D691AC793EF6A72B712F27 /* TableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE657FA689CA1A6D37EA52D7D1CCFA7 /* TableLayout.swift */; };
+		9CE5414E2C163107560EC6B02F8ED2D5 /* ContactGroupVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0370BFE274351AB9C924130EF20A69C5 /* ContactGroupVO.swift */; };
 		9CEE379D2972180C86BA507E0CF028C9 /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493E60450A08C78D9D259E95FA6E897C /* CalendarIntervalRule.swift */; };
 		9D6BCDEBEEA003C807FBD21883C666E3 /* AttachmentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E128E6B209F18F6AD6E52E140D8684F7 /* AttachmentCollectionViewCell.swift */; };
 		9D8AA94044019EE989862A88469971C1 /* GeneralSettingViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51A9677C42715B118E115E2A2F45923B /* GeneralSettingViewCell.xib */; };
@@ -5599,6 +5601,7 @@
 				8BCF66C81EAD3178AABF41C686CA566F /* ContactExtension.swift in Sources */,
 				F6C23A83A51D9A24887AE79DA1FA8654 /* ContactFieldType.swift in Sources */,
 				D4B269EBE80EB202EBFECC4BD0F9AEFB /* ContactGroupDefined.swift in Sources */,
+				9CE5414E2C163107560EC6B02F8ED2D5 /* ContactGroupVO.swift in Sources */,
 				9717061947CD25B973A744B1BAE5FD65 /* ContactModel.swift in Sources */,
 				E58CB37E3EE15655942A918C2FF36521 /* ContactPicker.swift in Sources */,
 				066B9EAC905451A3766D949D632243BF /* ContactPickerDefined.swift in Sources */,
@@ -5799,6 +5802,7 @@
 				2C4B489ED5D2C7214A8D36C2514F1D6A /* ContactExtension.swift in Sources */,
 				B809FF45FFF530146F0A53308238C6EE /* ContactFieldType.swift in Sources */,
 				7CC0A1B87B176EE865FCD8317F7C9FA6 /* ContactGroupDefined.swift in Sources */,
+				89247110592AC762EB3D96A58D4B7D44 /* ContactGroupVO.swift in Sources */,
 				B5E54E172352C4B4338D56DCAFBF0481 /* ContactModel.swift in Sources */,
 				D6CD12158C3D06E3D992755C8803B04F /* ContactPicker.swift in Sources */,
 				0CEE2E2473A5DE6369AD900851B72585 /* ContactPickerDefined.swift in Sources */,

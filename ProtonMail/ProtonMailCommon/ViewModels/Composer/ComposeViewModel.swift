@@ -33,10 +33,9 @@ class ComposeViewModel {
     private let maxNumberOfRecipients: Int = 25
     var message : Message?
     var messageAction : ComposeMessageAction!
-    var toSelectedContacts: [ContactVO] = [ContactVO]()
-    var ccSelectedContacts: [ContactVO] = [ContactVO]()
-    var bccSelectedContacts: [ContactVO] = [ContactVO]()
-    var contacts: [ContactVO] = [ContactVO]()
+    var toSelectedContacts: [ContactPickerModelProtocol] = []
+    var ccSelectedContacts: [ContactPickerModelProtocol] = []
+    var bccSelectedContacts: [ContactPickerModelProtocol] = []
     
     var subject : String! = ""
     var body : String! = ""
@@ -61,7 +60,10 @@ class ComposeViewModel {
     init() { }
     
     func validateNumberOfRecipients() -> Bool {
-        let overallRecipients = [toSelectedContacts, ccSelectedContacts, bccSelectedContacts].map{ $0.count }.reduce(0, +)
+        // TODO: count non-duplicating emails
+        let overallRecipients = [toSelectedContacts,
+                                 ccSelectedContacts,
+                                 bccSelectedContacts].map{ $0.count }.reduce(0, +)
         return overallRecipients < self.maxNumberOfRecipients
     }
     
@@ -77,15 +79,15 @@ class ComposeViewModel {
         self.body = body
     }
     
-     func addToContacts(_ contacts: ContactVO! ) {
+     func addToContacts(_ contacts: ContactPickerModelProtocol! ) {
         toSelectedContacts.append(contacts)
     }
     
-     func addCcContacts(_ contacts: ContactVO! ) {
+     func addCcContacts(_ contacts: ContactPickerModelProtocol! ) {
         ccSelectedContacts.append(contacts)
     }
     
-     func addBccContacts(_ contacts: ContactVO! ) {
+     func addBccContacts(_ contacts: ContactPickerModelProtocol! ) {
         bccSelectedContacts.append(contacts)
     }
     

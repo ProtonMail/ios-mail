@@ -117,7 +117,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             }.done {
                 () -> Void in
                 
-//                 TODO: figure what to put this thing
+                // TODO: figure what to put this thing
                 self.contacts.append(contentsOf: sharedContactGroupsDataService.getAllContactGroupVOs())
                 
                 // This is done for contact also
@@ -747,7 +747,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         self.composeView.reloadPicker()
     }
     
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker) {
+    func composeView(_ composeView: ComposeView, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker) {
         guard self.viewModel.validateNumberOfRecipients() else {
             let alert = UIAlertController(title: LocalString._too_many_recipients,
                                           message: LocalString._max_number_of_recipients_is,
@@ -766,14 +766,20 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         }
     }
     
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: ContactPicker) {
+    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker) {
         // here each logic most same, need refactor later
         if (picker == composeView.toContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.toSelectedContacts
             for (index, selectedContact) in selectedContacts.enumerated() {
-                if (contact.email == selectedContact.email) {
-                    contactIndex = index
+                if let contact = contact as? ContactVO {
+                    if (contact.displayEmail == selectedContact.displayEmail) {
+                        contactIndex = index
+                    }
+                } else if let contactGroup = contact as? ContactGroupVO {
+                    if (contact.contactTitle == selectedContact.contactTitle) {
+                        contactIndex = index
+                    }
                 }
             }
             if (contactIndex >= 0) {
@@ -783,8 +789,14 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             var contactIndex = -1
             let selectedContacts = self.viewModel.ccSelectedContacts
             for (index, selectedContact) in selectedContacts.enumerated() {
-                if (contact.email == selectedContact.email) {
-                    contactIndex = index
+                if let contact = contact as? ContactVO {
+                    if (contact.displayEmail == selectedContact.displayEmail) {
+                        contactIndex = index
+                    }
+                } else if let contactGroup = contact as? ContactGroupVO {
+                    if (contact.contactTitle == selectedContact.contactTitle) {
+                        contactIndex = index
+                    }
                 }
             }
             if (contactIndex >= 0) {
@@ -794,8 +806,14 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             var contactIndex = -1
             let selectedContacts = self.viewModel.bccSelectedContacts
             for (index, selectedContact) in selectedContacts.enumerated() {
-                if (contact.email == selectedContact.email) {
-                    contactIndex = index
+                if let contact = contact as? ContactVO {
+                    if (contact.displayEmail == selectedContact.displayEmail) {
+                        contactIndex = index
+                    }
+                } else if let contactGroup = contact as? ContactGroupVO {
+                    if (contact.contactTitle == selectedContact.contactTitle) {
+                        contactIndex = index
+                    }
                 }
             }
             if (contactIndex >= 0) {
@@ -814,7 +832,7 @@ extension ComposeEmailViewController : ComposeViewDataSource {
     }
     
     func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) ->  [ContactPickerModelProtocol] {
-        var selectedContacts: [ContactVO] = [ContactVO]()
+        var selectedContacts: [ContactPickerModelProtocol] = []
         if (picker == composeView.toContactPicker) {
             selectedContacts = self.viewModel.toSelectedContacts
         } else if (picker == composeView.ccContactPicker) {

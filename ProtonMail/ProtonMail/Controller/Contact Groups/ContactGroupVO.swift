@@ -36,13 +36,13 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol
     
     init(ID: String, name: String) {
         self.ID = ID
-        contactTitle = name
-        displayName = nil
-        displayEmail = nil
-        contactSubtitle = ""
-        contactImage = nil
-        lock = nil
-        hasPGPPined = false
-        hasNonePM = false
+        self.contactTitle = name
+        self.displayName = nil
+        self.displayEmail = nil
+        self.contactSubtitle = ""
+        self.contactImage = nil
+        self.lock = nil
+        self.hasPGPPined = false
+        self.hasNonePM = false
     }
 }
