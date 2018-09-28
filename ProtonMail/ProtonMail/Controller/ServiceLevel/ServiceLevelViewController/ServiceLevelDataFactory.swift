@@ -106,7 +106,7 @@ enum ServiceLevelDataFactory {
     }
     
     internal static func makeLinksSection(except currentPlan: ServicePlan? = nil) -> Section<UIView> {
-        let links: [UIView] = [ServicePlan.free, ServicePlan.plus, ServicePlan.pro, ServicePlan.visionary].compactMap { plan in
+        let links: [UIView] = [ServicePlan.free, ServicePlan.plus /*, ServicePlan.pro, ServicePlan.visionary*/].compactMap { plan in
             guard plan != currentPlan else {
                 return nil
             }
