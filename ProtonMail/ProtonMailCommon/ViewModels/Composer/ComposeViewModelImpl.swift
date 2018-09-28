@@ -36,7 +36,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         
     }
     
-    
+    // for the share target to init composer VM
     init(subject: String, body: String, files: [FileData], action : ComposeMessageAction!) {
         super.init()
         self.message = nil
@@ -253,102 +253,146 @@ final class ComposeViewModelImpl : ComposeViewModel {
         return true;
     }
     
+    /**
+     Load the contacts and groups back for the message
+     
+     contact group only shows up in draft, so the reply, reply all, etc., no contact group will show up
+    */
     fileprivate func updateContacts(_ oldLocation : MessageLocation?) {
-        // TODO: add contact groups support
         if message != nil {
             switch messageAction!
             {
             case .newDraft, .forward, .newDraftFromShare:
-                break;
+                break
             case .openDraft:
-                break
-//                let toContacts = self.toContacts(self.message!.recipientList)
-//                for cont in toContacts {
-//                    if !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
-//                        self.toSelectedContacts.append(cont)
-//                    }
-//                }
-//
-//                let ccContacts = self.toContacts(self.message!.ccList)
-//                for cont in ccContacts {
-//                    if  !cont.isDuplicatedWithContacts(self.ccSelectedContacts) {
-//                        self.ccSelectedContacts.append(cont)
-//                    }
-//                }
-//                let bccContacts = self.toContacts(self.message!.bccList)
-//                for cont in bccContacts {
-//                    if !cont.isDuplicatedWithContacts(self.bccSelectedContacts) {
-//                        self.bccSelectedContacts.append(cont)
-//                    }
-//                }
+                let toContacts = self.toContacts(self.message!.recipientList) // Json to contact/group objects
+                for cont in toContacts {
+                    switch cont.modelType {
+                    case .contact:
+                        if let cont = cont as? ContactVO {
+                            if !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                                self.toSelectedContacts.append(cont)
+                            }
+                        } else {
+                            // TODO: error handling
+                        }
+                    case .contactGroup:
+                        if let group = cont as? ContactGroupVO {
+                            self.toSelectedContacts.append(group)
+                        } else {
+                            // TODO: error handling
+                        }
+                    }
+                }
+                
+                let ccContacts = self.toContacts(self.message!.ccList)
+                for cont in ccContacts {
+                    switch cont.modelType {
+                    case .contact:
+                        if let cont = cont as? ContactVO {
+                            if !cont.isDuplicatedWithContacts(self.ccSelectedContacts) {
+                                self.ccSelectedContacts.append(cont)
+                            }
+                        } else {
+                            // TODO: error handling
+                        }
+                    case .contactGroup:
+                        if let group = cont as? ContactGroupVO {
+                            self.toSelectedContacts.append(group)
+                        } else {
+                            // TODO: error handling
+                        }
+                    }
+                }
+                
+                let bccContacts = self.toContacts(self.message!.bccList)
+                for cont in bccContacts {
+                    switch cont.modelType {
+                    case .contact:
+                        if let cont = cont as? ContactVO {
+                            if !cont.isDuplicatedWithContacts(self.bccSelectedContacts) {
+                                self.bccSelectedContacts.append(cont)
+                            }
+                        } else {
+                            // TODO: error handling
+                        }
+                    case .contactGroup:
+                        if let group = cont as? ContactGroupVO {
+                            self.toSelectedContacts.append(group)
+                        } else {
+                            // TODO: error handling
+                        }
+                    }
+                }
             case .reply:
-                break
-//                if oldLocation == .outbox {
-//                    let toContacts = self.toContacts(self.message!.recipientList)
-//                    for cont in toContacts {
-//                        self.toSelectedContacts.append(cont)
-//                    }
-//                } else {
-//                    var senders = [ContactVO]()
-//                    let replytos = self.toContacts(self.message?.replyTos ?? "")
-//                    if replytos.count > 0 {
-//                        senders.append(contentsOf: replytos)
-//                    } else {
-//                        if let newSender = self.toContact(self.message!.senderObject ?? "") {
-//                            senders.append(newSender)
-//                        } else {
-//                            senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
-//                        }
-//                    }
-//                    self.toSelectedContacts.append(contentsOf: senders)
-//                }
+                if oldLocation == .outbox {
+                    let toContacts = self.toContacts(self.message!.recipientList)
+                    for cont in toContacts {
+                        self.toSelectedContacts.append(cont)
+                    }
+                } else {
+                    var senders: [ContactPickerModelProtocol] = []
+                    let replytos = self.toContacts(self.message?.replyTos ?? "")
+                    if replytos.count > 0 {
+                        senders += replytos
+                    } else {
+                        if let newSender = self.toContact(self.message!.senderObject ?? "") {
+                            senders.append(newSender)
+                        } else {
+                            senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
+                        }
+                    }
+                    self.toSelectedContacts.append(contentsOf: senders)
+                }
             case .replyAll:
-                break
-//                if oldLocation == .outbox {
-//                    let toContacts = self.toContacts(self.message!.recipientList)
-//                    for cont in toContacts {
-//                        self.toSelectedContacts.append(cont)
-//                    }
-//                    let senderContacts = self.toContacts(self.message!.ccList)
-//                    for cont in senderContacts {
-//                        self.ccSelectedContacts.append(cont)
-//                    }
-//                } else {
-//                    let userAddress = sharedUserDataService.userAddresses
-//                    var senders = [ContactVO]()
-//                    let replytos = self.toContacts(self.message?.replyTos ?? "")
-//                    if replytos.count > 0 {
-//                        senders.append(contentsOf: replytos)
-//                    } else {
-//                        if let newSender = self.toContact(self.message!.senderObject ?? "") {
-//                            senders.append(newSender)
-//                        } else {
-//                            senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
-//                        }
-//                    }
-//
-//                    for sender in senders {
-//                        if !sender.isDuplicated(userAddress) {
-//                            self.toSelectedContacts.append(sender)
-//                        }
-//                    }
-//
-//                    let toContacts = self.toContacts(self.message!.recipientList)
-//                    for cont in toContacts {
-//                        if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
-//                            self.toSelectedContacts.append(cont)
-//                        }
-//                    }
-//                    if self.toSelectedContacts.count <= 0 {
-//                        self.toSelectedContacts.append(contentsOf: senders)
-//                    }
-//                    let senderContacts = self.toContacts(self.message!.ccList)
-//                    for cont in senderContacts {
-//                        if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
-//                            self.ccSelectedContacts.append(cont)
-//                        }
-//                    }
-//                }
+                if oldLocation == .outbox {
+                    let toContacts = self.toContacts(self.message!.recipientList)
+                    for cont in toContacts {
+                        self.toSelectedContacts.append(cont)
+                    }
+                    let senderContacts = self.toContacts(self.message!.ccList)
+                    for cont in senderContacts {
+                        self.ccSelectedContacts.append(cont)
+                    }
+                } else {
+                    let userAddress = sharedUserDataService.userAddresses
+                    var senders = [ContactPickerModelProtocol]()
+                    let replytos = self.toContacts(self.message?.replyTos ?? "")
+                    if replytos.count > 0 {
+                        senders += replytos
+                    } else {
+                        if let newSender = self.toContact(self.message!.senderObject ?? "") {
+                            senders.append(newSender)
+                        } else {
+                            senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
+                        }
+                    }
+
+                    for sender in senders {
+                        if let sender = sender as? ContactVO,
+                            !sender.isDuplicated(userAddress) {
+                            self.toSelectedContacts.append(sender)
+                        }
+                    }
+
+                    let toContacts = self.toContacts(self.message!.recipientList)
+                    for cont in toContacts {
+                        if let cont = cont as? ContactVO,
+                            !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                            self.toSelectedContacts.append(cont)
+                        }
+                    }
+                    if self.toSelectedContacts.count <= 0 {
+                        self.toSelectedContacts.append(contentsOf: senders)
+                    }
+                    let senderContacts = self.toContacts(self.message!.ccList)
+                    for cont in senderContacts {
+                        if let cont = cont as? ContactVO,
+                            !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                            self.ccSelectedContacts.append(cont)
+                        }
+                    }
+                }
             }
         }
     }
@@ -583,22 +627,34 @@ final class ComposeViewModelImpl : ComposeViewModel {
 }
 
 extension ComposeViewModelImpl {
+    // The JSON string for the message object to take
+    // It's currently Group, Address, and Name
     func toJsonString(_ contacts : [ContactPickerModelProtocol]) -> String {
         var out : [[String : String]] = [[String : String]]();
         for contact in contacts {
             if let contact = contact as? ContactVO {
                 let to: [String : String] = [
-                    "ModelType": String.init(contact.modelType.rawValue),
+                    "Group": "",
                     "Name" : contact.name ?? "",
                     "Address" : contact.email ?? ""
                 ]
                 out.append(to)
             } else if let contactGroup = contact as? ContactGroupVO {
-                let to: [String : String] = [
-                    "ModelType": String.init(contactGroup.modelType.rawValue),
-                    "Name" : contactGroup.contactTitle,
-                ]
-                out.append(to)
+                // TODO: expansion duplication issue
+                if let context = sharedCoreDataService.mainManagedObjectContext {
+                    let label = Label.labelForLabelName(contactGroup.contactTitle,
+                                                        inManagedObjectContext: context)
+                    if let label = label {
+                        for emailObj in label.emails.allObjects as! [Email] {
+                            let to: [String : String] = [
+                                "Group": contactGroup.contactTitle,
+                                "Name" : emailObj.name,
+                                "Address" : emailObj.email
+                            ]
+                            out.append(to)
+                        }
+                    }
+                }
             }
         }
         
@@ -608,44 +664,59 @@ extension ComposeViewModelImpl {
         return strJson
     }
     
-//    func toContacts(_ json : String) -> [ContactVO] {
-//        var out : [ContactVO] = [ContactVO]();
-//        if let recipients : [[String : Any]] = json.parseJson() {
-//            for dict:[String : Any] in recipients {
-//                let name = dict["Name"] as? String ?? ""
-//                let email = dict["Address"] as? String ?? ""
-//                out.append(ContactVO(id: "", name: name, email: email))
-//            }
-//        }
-//        return out
-//    }
+    // Decode the Json string from message object
+    func toContacts(_ json : String) -> [ContactPickerModelProtocol] {
+        var out : [ContactPickerModelProtocol] = [];
+        var groups: Set<String> = Set<String>()
+        if let recipients : [[String : Any]] = json.parseJson() {
+            for dict in recipients {
+                if let group = dict["Group"] as? String {
+                    if group.isEmpty {
+                        let name = dict["Name"] as? String ?? ""
+                        let email = dict["Address"] as? String ?? ""
+                        out.append(ContactVO(id: "", name: name, email: email))
+                    } else {
+                        let name = dict["Group"] as? String ?? ""
+                        groups.insert(name)
+                    }
+                } else {
+                    PMLog.D("Decoding error")
+                }
+            }
+            
+            for group in groups {
+                out.append(ContactGroupVO(ID: "", name: group))
+            }
+        }
+        return out
+    }
     
-//    func toContact(_ json : String) -> ContactVO? {
-//        var out : ContactVO? = nil
-//        let recipients : [String : String] = self.parse(json)
-//
-//        let name = recipients["Name"] ?? ""
-//        let address = recipients["Address"] ?? ""
-//
-//        if !address.isEmpty {
-//            out = ContactVO(id: "", name: name, email: address)
-//        }
-//        return out
-//    }
+    func toContact(_ json : String) -> ContactVO? {
+        var out : ContactVO? = nil
+        let recipients : [String : String] = self.parse(json)
+
+        let name = recipients["Name"] ?? ""
+        let address = recipients["Address"] ?? ""
+
+        if !address.isEmpty {
+            out = ContactVO(id: "", name: name, email: address)
+        }
+        return out
+    }
     
-//    func parse (_ json : String) -> [String:String] {
-//        if json.isEmpty {
-//            return ["" : ""];
-//        }
-//        do {
-//            let data : Data! = json.data(using: String.Encoding.utf8)
-//            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:String]
-//            return decoded ?? ["" : ""]
-//        } catch {
-//            PMLog.D(" func parseJson() -> error error \(error)")
-//        }
-//        return ["":""]
-//    }
+    func parse (_ json: String) -> [String:String] {
+        if json.isEmpty {
+            return ["" : ""];
+        }
+        do {
+            let data : Data! = json.data(using: String.Encoding.utf8)
+            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:String]
+            return decoded ?? ["" : ""]
+        } catch {
+            PMLog.D(" func parseJson() -> error error \(error)")
+        }
+        return ["":""]
+    }
 }
 
 

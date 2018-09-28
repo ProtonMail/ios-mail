@@ -379,7 +379,6 @@ extension ContactPicker : ContactCollectionViewDelegate {
                                     self.contactCollectionView.selectedContacts)
         }
         
-        // TODO: Fix predicate
         let filteredContacts = self.contacts.filter { predicate.evaluate(with: $0) }
         if self.hideWhenNoResult && filteredContacts.isEmpty {
             self.hideSearchTableView()
