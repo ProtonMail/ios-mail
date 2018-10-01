@@ -1086,6 +1086,9 @@ class LocalizedString {
     /// "Report Phishing"
     lazy var _report_phishing = NSLocalizedString("Report Phishing", comment: "message details-> more action-> report phishing")
     
+    /// "View headers"
+    lazy var _view_message_headers = NSLocalizedString("View Headers", comment: "message details-> more action-> view headers")
+    
     /// "Confirm phishing report"
     lazy var _confirm_phishing_report = NSLocalizedString("Confirm phishing report", comment: "alert title")
     
