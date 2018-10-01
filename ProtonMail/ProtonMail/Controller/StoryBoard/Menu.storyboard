@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -3172,7 +3168,7 @@
                                                         <rect key="frame" x="0.0" y="371" width="304.5" height="45"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6u-kW-eeN">
-                                                                <rect key="frame" x="202.5" y="1" width="102" height="44"/>
+                                                                <rect key="frame" x="203" y="1" width="101.5" height="44"/>
                                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                 <state key="normal" title="Apply">
@@ -3203,7 +3199,7 @@
                                                                 </connections>
                                                             </button>
                                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CTd-8G-IRS">
-                                                                <rect key="frame" x="101.5" y="1" width="101" height="44"/>
+                                                                <rect key="frame" x="101.5" y="1" width="101.5" height="44"/>
                                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                 <state key="normal" title="Remove">
@@ -3888,7 +3884,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xpS-yb-mG5">
-                                        <rect key="frame" x="62" y="381" width="200" height="48"/>
+                                        <rect key="frame" x="62.5" y="381" width="200" height="48"/>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="Rsz-ww-eOz"/>
@@ -3920,7 +3916,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ofJ-y9-98I">
-                                        <rect key="frame" x="62" y="433" width="200" height="48"/>
+                                        <rect key="frame" x="62.5" y="433" width="200" height="48"/>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="hF8-fb-LNE"/>
@@ -4045,7 +4041,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qKI-ab-188">
-                                                    <rect key="frame" x="16" y="41" width="189" height="48"/>
+                                                    <rect key="frame" x="16" y="40.5" width="189" height="48.5"/>
                                                     <state key="normal" title="Button"/>
                                                     <connections>
                                                         <action selector="learnMoreAction:" destination="7xX-l3-4we" eventType="touchUpInside" id="rAO-lu-jLq"/>
@@ -4203,13 +4199,13 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Logo" width="228" height="36"/>
-        <image name="attached_main" width="14" height="16"/>
+        <image name="Logo" width="228" height="36.5"/>
+        <image name="attached_main" width="14.5" height="16.5"/>
         <image name="bug_selected" width="52" height="52"/>
         <image name="contact_selected" width="20" height="27"/>
-        <image name="encrypted_main" width="15" height="20"/>
-        <image name="favorite_main" width="19" height="19"/>
-        <image name="favorite_main_selected" width="19" height="19"/>
+        <image name="encrypted_main" width="15" height="20.5"/>
+        <image name="favorite_main" width="19.5" height="19"/>
+        <image name="favorite_main_selected" width="19.5" height="19"/>
         <image name="feedback_contact" width="16" height="16"/>
         <image name="hamburger" width="20" height="16"/>
         <image name="label_edit-active" width="24" height="24"/>
@@ -4220,22 +4216,20 @@
         <image name="menu_inbox" width="16" height="16"/>
         <image name="menu_inbox-active" width="16" height="16"/>
         <image name="menu_label" width="24" height="24"/>
-        <image name="menu_snooze" width="24" height="24"/>
-        <image name="menu_snooze-active" width="24" height="24"/>
-        <image name="menu_snooze-none" width="24" height="24"/>
-        <image name="popup_behind_image" width="106" height="153"/>
-        <image name="reply" width="28" height="23"/>
+        <image name="menu_snooze" width="48" height="48"/>
+        <image name="menu_snooze-active" width="48" height="48"/>
+        <image name="menu_snooze-none" width="48" height="48"/>
+        <image name="popup_behind_image" width="320" height="460"/>
+        <image name="reply" width="28" height="23.5"/>
         <image name="search" width="22" height="22"/>
-        <image name="sent_compose" width="26" height="22"/>
+        <image name="sent_compose" width="26.5" height="22"/>
         <image name="signout_selected" width="20" height="30"/>
         <image name="signup_logo" width="98" height="16"/>
         <image name="top_menu" width="24" height="24"/>
         <image name="unchecked" width="22" height="22"/>
-        <image name="upgrade_background" width="325" height="437"/>
+        <image name="upgrade_background" width="325.5" height="437"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Dpt-T7-EMY"/>
-        <segue reference="DdZ-uz-fPQ"/>
         <segue reference="oa9-8b-dT8"/>
         <segue reference="Yep-Vd-dxY"/>
         <segue reference="0zg-HM-MdK"/>

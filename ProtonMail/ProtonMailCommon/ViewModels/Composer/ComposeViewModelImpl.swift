@@ -627,20 +627,25 @@ final class ComposeViewModelImpl : ComposeViewModel {
 }
 
 extension ComposeViewModelImpl {
-    // The JSON string for the message object to take
-    // It's currently Group, Address, and Name
+    /**
+     Encode to the JSON request format for the API from the message object
+     
+     Currently, the fields are: Group, Address, and Name
+    */
     func toJsonString(_ contacts : [ContactPickerModelProtocol]) -> String {
         var out : [[String : String]] = [[String : String]]();
         for contact in contacts {
-            if let contact = contact as? ContactVO {
+            switch contact.modelType {
+            case .contact:
+                let contact = contact as! ContactVO
                 let to: [String : String] = [
                     "Group": "",
                     "Name" : contact.name ?? "",
                     "Address" : contact.email ?? ""
                 ]
                 out.append(to)
-            } else if let contactGroup = contact as? ContactGroupVO {
-                // TODO: expansion duplication issue
+            case .contactGroup:
+                let contactGroup = contact as! ContactGroupVO
                 if let context = sharedCoreDataService.mainManagedObjectContext {
                     let label = Label.labelForLabelName(contactGroup.contactTitle,
                                                         inManagedObjectContext: context)
@@ -664,7 +669,11 @@ extension ComposeViewModelImpl {
         return strJson
     }
     
-    // Decode the Json string from message object
+    /**
+     Decode the JSON response from the API into the for the message object
+     
+     Currently, the fields are: Group, Address, and Name
+    */
     func toContacts(_ json : String) -> [ContactPickerModelProtocol] {
         var out : [ContactPickerModelProtocol] = [];
         var groups: Set<String> = Set<String>()

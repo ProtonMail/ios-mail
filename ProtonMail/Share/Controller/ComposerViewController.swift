@@ -627,7 +627,25 @@ extension ComposerViewController : ComposeViewDelegate {
     }
     
     func composeView(_ composeView: ComposeView, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker) {
-        guard self.viewModel.validateNumberOfRecipients() else {
+        if (picker == composeView.toContactPicker) {
+            self.viewModel.toSelectedContacts.append(contact)
+        } else if (picker == composeView.ccContactPicker) {
+            self.viewModel.ccSelectedContacts.append(contact)
+        } else if (picker == composeView.bccContactPicker) {
+            self.viewModel.bccSelectedContacts.append(contact)
+        }
+        
+        if self.viewModel.isValidNumberOfRecipients() == false {
+            // rollback
+            if (picker == composeView.toContactPicker) {
+                self.viewModel.toSelectedContacts.removeLast()
+            } else if (picker == composeView.ccContactPicker) {
+                self.viewModel.ccSelectedContacts.removeLast()
+            } else if (picker == composeView.bccContactPicker) {
+                self.viewModel.bccSelectedContacts.removeLast()
+            }
+            
+            // present error
             let alert = UIAlertController(title: LocalString._too_many_recipients,
                                           message: LocalString._max_number_of_recipients_is,
                                           preferredStyle: .alert)
@@ -635,13 +653,6 @@ extension ComposerViewController : ComposeViewDelegate {
             self.present(alert, animated: true, completion: nil)
             picker.reloadData()
             return
-        }
-        if (picker == composeView.toContactPicker) {
-            self.viewModel.toSelectedContacts.append(contact)
-        } else if (picker == composeView.ccContactPicker) {
-            self.viewModel.ccSelectedContacts.append(contact)
-        } else if (picker == composeView.bccContactPicker) {
-            self.viewModel.bccSelectedContacts.append(contact)
         }
     }
     

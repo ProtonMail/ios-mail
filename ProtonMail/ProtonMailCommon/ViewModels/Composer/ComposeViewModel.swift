@@ -59,12 +59,47 @@ class ComposeViewModel {
     
     init() { }
     
-    func validateNumberOfRecipients() -> Bool {
-        // TODO: count non-duplicating emails
-        let overallRecipients = [toSelectedContacts,
-                                 ccSelectedContacts,
-                                 bccSelectedContacts].map{ $0.count }.reduce(0, +)
-        return overallRecipients < self.maxNumberOfRecipients
+    func isValidNumberOfRecipients() -> Bool {
+        let allRecipients = [toSelectedContacts,
+                             ccSelectedContacts,
+                             bccSelectedContacts]
+        
+        var emailList = Set<String>()
+        for recipients in allRecipients {
+            print("recipients = \(recipients)")
+            for recipient in recipients {
+                print("recipient = \(recipient)")
+                switch recipient.modelType {
+                case .contact:
+                    emailList.insert((recipient as! ContactVO).email)
+                case .contactGroup:
+                    // TODO: when sub-selection is implemented, this need to be changed
+                    
+                    if let context = sharedCoreDataService.mainManagedObjectContext {
+                        let contactGroup = recipient as! ContactGroupVO
+                        let label = Label.labelForLabelName(contactGroup.contactTitle,
+                                                            inManagedObjectContext: context)
+                        
+                        if let label = label {
+                            if let emailsInGroup = label.emails.allObjects as? [Email] {
+                                for email in emailsInGroup {
+                                    emailList.insert(email.email)
+                                }
+                            } else {
+                                // TODO: handle error
+                                PMLog.D("NSSet conversion to [Email] error")
+                            }
+                        }
+                    } else {
+                        // TODO: handle error
+                        PMLog.D("Can't get context")
+                    }
+                }
+            }
+        }
+        
+        print("emailList count \(emailList.count)")
+        return emailList.count < self.maxNumberOfRecipients
     }
     
     func getSubject() -> String {
