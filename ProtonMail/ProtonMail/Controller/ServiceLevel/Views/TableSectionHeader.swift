@@ -11,9 +11,10 @@ import Foundation
 class TableSectionHeader: UIView {
     @IBOutlet private weak var title: UILabel!
     
-    convenience init(title: String) {
+    convenience init(title: String, textAlignment: NSTextAlignment) {
         self.init(frame: .zero)
         self.title.text = title
+        self.title.textAlignment = textAlignment
     }
     
     private override init(frame: CGRect) {
