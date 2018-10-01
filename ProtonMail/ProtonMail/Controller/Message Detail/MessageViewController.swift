@@ -290,6 +290,22 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             self.print(webView : self.emailView!.contentWebView)
         }))
         
+        alertController.addAction(UIAlertAction.init(title: LocalString._view_message_headers, style: .default, handler: { _ in
+            let headers = self.message.header
+            let formatter = DateFormatter()
+            formatter.calendar = Calendar(identifier: .gregorian)
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            let filename = formatter.string(from: self.message.time!) + "-" + self.message.title.components(separatedBy: CharacterSet.alphanumerics.inverted).joined(separator: "-")
+            tempFileUri = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
+            try? FileManager.default.removeItem(at: tempFileUri!)
+            try? headers?.write(to: tempFileUri!, atomically: true, encoding: .utf8)
+            let previewQL = QuickViewViewController()
+            previewQL.dataSource = self
+            self.latestPresentedView = previewQL
+            self.present(previewQL, animated: true, completion: nil)
+        }))
+        
         alertController.addAction(UIAlertAction(title: LocalString._report_phishing, style: .destructive, handler: { (action) -> Void in
             let alert = UIAlertController(title: LocalString._confirm_phishing_report,
                                           message: LocalString._reporting_a_message_as_a_phishing_,
