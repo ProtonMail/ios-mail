@@ -124,13 +124,13 @@ enum ServiceLevelDataFactory {
     }
     
     internal static func makeSectionHeader(_ text: String) -> Section<UIView> {
-        return Section(elements: [TableSectionHeader(title: text)], cellType: FirstSubviewSizedCell.self)
+        return Section(elements: [TableSectionHeader(title: text, textAlignment: .left)], cellType: FirstSubviewSizedCell.self)
     }
     
     internal static func makeBuyLinkSection() -> Section<UIView>? {
         var body = [NSAttributedStringKey: Any]()
         body[.font] = UIFont.preferredFont(forTextStyle: .body)
-        let blank = TableSectionHeader(title: " ")
+        let blank = TableSectionHeader(title: " ", textAlignment: .center)
         let buyMore = ServicePlanCapability(title: NSAttributedString(string: LocalString._buy_more_credits, attributes: body),
                                             serviceIconVisible: true,
                                             context: ServiceLevelCoordinator.Destination.buyMore)
@@ -179,7 +179,7 @@ enum ServiceLevelDataFactory {
     }
     
     internal static func makeAcknowladgementsSection() -> Section<UIView> {
-        return Section(elements: [TableSectionHeader(title: LocalString._iap_disclamer)], cellType: FirstSubviewSizedCell.self)
+        return Section(elements: [TableSectionHeader(title: LocalString._iap_disclamer, textAlignment: .center)], cellType: FirstSubviewSizedCell.self)
     }
 }
 
