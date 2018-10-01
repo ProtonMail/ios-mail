@@ -11,13 +11,23 @@ import XCTest
 
 class String_ExtensionTests: XCTestCase {
 
-    func testExample() {
+    func testValidEmail1() {
         XCTAssertTrue("jovan@a.org".isValidEmail())
+    }
+    
+    func testValidEmail2() {
         XCTAssertTrue("jovan@a.co.il".isValidEmail())
-        
+    }
+    
+    func testValidEmail3() {
         XCTAssertFalse("jovan@a".isValidEmail())
+    }
+    
+    func testValidEmail4() {
         XCTAssertFalse("@jovan".isValidEmail())
+    }
+    
+    func testValidEmail5() {
         XCTAssertFalse("@jovan.ch".isValidEmail())
     }
-
 }
