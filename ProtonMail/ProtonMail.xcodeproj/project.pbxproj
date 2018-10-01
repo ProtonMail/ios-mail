@@ -46,6 +46,7 @@
 		066B9EAC905451A3766D949D632243BF /* ContactPickerDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA8ACAC5B030EF83EF34E6CBB3E73A /* ContactPickerDefined.swift */; };
 		0680AE959438B57E7CC698235FC3A964 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D359947F79BF6B029DC3D1D35D9C4B3 /* UITableView+Extension.swift */; };
 		0696394104C3C38308A216E266021717 /* MonitorSavesDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AA066E127A4E761C07732C013385F4 /* MonitorSavesDataService.swift */; };
+		06B46E22C06D6B5445D59C61F2B1A711 /* String+ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B1ACF5D8081189219FF2956764AE39 /* String+ExtensionTests.swift */; };
 		06D1C80810CD7621E12520B58765D1A4 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3837129A19F297C0079CE5AF3176490A /* ContactsTableViewCell.swift */; };
 		06F8E4CE09002AE1CC623A254CCDB438 /* EmailVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FAB9C7FB68E73B3DBE86E1C6308AC56 /* EmailVerifyViewController.swift */; };
 		07079172F08408217599170910D87AB1 /* TermsWebViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9C1DB9DCA27A1E893B9BFE52A76926 /* TermsWebViewModelImpl.swift */; };
@@ -1454,13 +1455,6 @@
 			remoteGlobalIDString = 3DD8FCED3FB5276FDB35E89899093113;
 			remoteInfo = PushServiceDev;
 		};
-		D67206EDE7A3E400AA7DECCD197D8B91 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7CC48161B0FC946A8DB234B96B6A66DD;
-			remoteInfo = ProtonMail;
-		};
 		7DE64AAD46503A1688D8AD15767E9C22 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
@@ -1481,6 +1475,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 55608604485FE7632E52ED7BBE6A939B;
 			remoteInfo = PushService;
+		};
+		D67206EDE7A3E400AA7DECCD197D8B91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7CC48161B0FC946A8DB234B96B6A66DD;
+			remoteInfo = ProtonMail;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -2035,6 +2036,7 @@
 		D7E2026FD8272DE625504A4CB2374E85 /* Pods-Share.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.distribution.xcconfig"; sourceTree = "<group>"; };
 		D84A04353E5434EB3FAFEBEF48DC89CD /* Snapshot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
 		D8A51ECEB173169390A074BC71D38A1C /* ContactAddViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactAddViewModelImpl.swift; sourceTree = "<group>"; };
+		D8B1ACF5D8081189219FF2956764AE39 /* String+ExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ExtensionTests.swift"; sourceTree = "<group>"; };
 		D8C674BC00A2F8ED261865474FC3C1E4 /* ContactEditAddCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditAddCell.swift; sourceTree = "<group>"; };
 		D8CFA13A53B9FD4D4305DD4B86DF8193 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		D911DE362A1DC4B22E34A8FF35E98592 /* UILabel+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+ProtonMail.swift"; sourceTree = "<group>"; };
@@ -3111,6 +3113,7 @@
 				0C51DC65328A7CEC55ECB5D02FF357E1 /* NSString+Extension.swift */,
 				E8401423E8FE838D3E637E3CAB0244D4 /* String+Alert+Extension.swift */,
 				17F9333B1575E40465998DC664CE55B0 /* String+Extension.swift */,
+				D8B1ACF5D8081189219FF2956764AE39 /* String+ExtensionTests.swift */,
 				760C5DA9DF82644FD4A749CF84130A95 /* String+Toast+Extension.swift */,
 			);
 			path = General;
@@ -3754,6 +3757,9 @@
 							};
 							com.apple.InAppPurchase = {
 								enabled = 1;
+							};
+							com.apple.SafariKeychain = {
+								enabled = 0;
 							};
 							com.apple.iCloud = {
 								enabled = 1;
@@ -4483,6 +4489,7 @@
 				97609BE67F6BF74B98CDF7D0D3110D20 /* ServicePlanDataServiceTests.swift in Sources */,
 				D7C1E39B89EA2933BDF800BF890D895C /* ServicePlanDetailsTests.swift in Sources */,
 				9198FAAA235A9516C067BB5DBE7FEA1E /* SrpTests.swift in Sources */,
+				06B46E22C06D6B5445D59C61F2B1A711 /* String+ExtensionTests.swift in Sources */,
 				9829B266A80AF788258DC120521C2EEE /* StringConversionTests+Marcel.swift in Sources */,
 				6A17C94096C82F4E2DB4550E24B08F64 /* StringConversionTests+PM.swift in Sources */,
 			);
@@ -5771,15 +5778,15 @@
 			target = 528CABDE5FC7422D1D0E7976ADAA8CAD /* ShareDev */;
 			targetProxy = 7DE64AAD46503A1688D8AD15767E9C22 /* PBXContainerItemProxy */;
 		};
-		3B31B3A96BECC9233592F2F72526195E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 55608604485FE7632E52ED7BBE6A939B /* PushService */;
-			targetProxy = C1413F955C68DB50312C878280E547D5 /* PBXContainerItemProxy */;
-		};
 		36825F4497A04DA925FB6478D4699F4A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 7CC48161B0FC946A8DB234B96B6A66DD /* ProtonMail */;
 			targetProxy = D67206EDE7A3E400AA7DECCD197D8B91 /* PBXContainerItemProxy */;
+		};
+		3B31B3A96BECC9233592F2F72526195E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55608604485FE7632E52ED7BBE6A939B /* PushService */;
+			targetProxy = C1413F955C68DB50312C878280E547D5 /* PBXContainerItemProxy */;
 		};
 		B5512F1FD8180155D82C74560A54E210 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

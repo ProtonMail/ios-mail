@@ -172,7 +172,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         //add
         var a_emails: [ContactEmail] = []
         for e in getEmails() {
-            if e.newEmail.isEmpty || !e.newEmail.isValid() {
+            if e.newEmail.isEmpty || !e.newEmail.isValidEmail() {
                 complete(RuntimeError.invalidEmail.toError())
                 return
             }

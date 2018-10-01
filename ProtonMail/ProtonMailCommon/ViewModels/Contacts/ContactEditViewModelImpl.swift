@@ -445,7 +445,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 //update
                 for email in getEmails() {
-                    if email.newEmail.isEmpty || !email.newEmail.isValid() {
+                    if email.newEmail.isEmpty || !email.newEmail.isValidEmail() {
                         complete(RuntimeError.invalidEmail.toError())
                         return
                     }
