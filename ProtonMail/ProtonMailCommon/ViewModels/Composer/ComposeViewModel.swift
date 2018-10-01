@@ -66,9 +66,7 @@ class ComposeViewModel {
         
         var emailList = Set<String>()
         for recipients in allRecipients {
-            print("recipients = \(recipients)")
             for recipient in recipients {
-                print("recipient = \(recipient)")
                 switch recipient.modelType {
                 case .contact:
                     emailList.insert((recipient as! ContactVO).email)
@@ -98,7 +96,6 @@ class ComposeViewModel {
             }
         }
         
-        print("emailList count \(emailList.count)")
         return emailList.count < self.maxNumberOfRecipients
     }
     
