@@ -88,11 +88,14 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         set {
             self._model = newValue
             self.contactTitleLabel.text = self._model.contactTitle
-            self.checkLock()
+            
+            if let _ = model as? ContactVO {
+                self.checkLock()
+            }
         }
     }
     
-    internal func checkLock() {
+    private func checkLock() {
         self.delegate?.collectionContactCell(lockCheck: self.model, progress: {
             self.lockImage.isHidden = true
             self.activityView.startAnimating()

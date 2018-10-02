@@ -143,9 +143,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                         return first.contactTitle.lowercased() < second.contactTitle.lowercased()
                     }
                 }
-                for tmp in self.contacts {
-                    print("result in \(tmp.contactTitle)")
-                }
                 
                 self.composeView.toContactPicker.reloadData()
                 self.composeView.ccContactPicker.reloadData()

@@ -87,7 +87,6 @@ class ContactGroupsViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        print("ID \(labelID) isMultiSelect \(delegate.isMultiSelect()) selected \(selected)")
         
         if delegate.isMultiSelect() && selected {
             // in multi-selection
