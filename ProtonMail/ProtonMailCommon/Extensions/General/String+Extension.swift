@@ -69,6 +69,25 @@ extension String {
         return check.contains(fwd)
     }
     
+    /// A string with the ' characters in it escaped.
+    /// Used when passing a string into JavaScript, so the string is not completed too soon
+    /// refer: https://github.com/cjwirth/RichEditorView
+    var escaped: String {
+        let unicode = self.unicodeScalars
+        var newString = ""
+        for char in unicode {
+            if char.value == 39 || // 39 == ' in ASCII
+                char.value < 9 ||  // 9 == horizontal tab in ASCII
+                (char.value > 9 && char.value < 32) // < 32 == special characters in ASCII
+            {
+                let escaped = char.escaped(asASCII: true)
+                newString.append(escaped)
+            } else {
+                newString.append(String(char))
+            }
+        }
+        return newString
+    }
     
     /**
      String extension check is email valid use the basic regex
@@ -333,8 +352,7 @@ extension String {
     
     func stringByPurifyHTML() -> String {
         //|<(\\/?link.*?)>   <[^>]*?alert.*?>| |<[^>]*?confirm.*?> //the comment out part case hpylink have those key works been filtered out
-        let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>|<img.*?.onerror=alert.*?>|<link[^>]*.href.[^>]*>", replaceto: " ")
-        
+        let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>|<img.*?.onerror=alert.*?>|<link[^>]*.href.[^>]*>|<[^>]*?on([a-z]+)\\s*=.*?>", replaceto: " ")
         //        var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
         //        //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
         //        out = out.preg_replace("<(\\/?script.*?)>", replaceto: "")

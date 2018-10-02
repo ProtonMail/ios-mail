@@ -1236,7 +1236,9 @@ class LocalizedString {
     lazy var _cant_load_the_file = NSLocalizedString("Can't load the file", comment: "Error")
 
     /// "System can't copy the file"
-    lazy var _system_cant_copy_the_file = NSLocalizedString("System can't copy the file", comment: "Error")
+    lazy var _system_cant_copy_the_file = 
+  
+  NSLocalizedString("System can't copy the file", comment: "Error")
 
     /// "Can't open the file"
     lazy var _cant_open_the_file = NSLocalizedString("Can't open the file", comment: "Error")
@@ -1548,14 +1550,14 @@ class LocalizedString {
     
     lazy var _bridge_support = NSLocalizedString("IMAP/SMTP Support via ProtonMail Bridge", comment: "Service plan capability")
     
-    lazy var _labels_folders_filters = NSLocalizedString("Lables, Folders, Filters & More", comment: "Service plan capability")
+    lazy var _labels_folders_filters = NSLocalizedString("Labels, Folders, Filters & More", comment: "Service plan capability")
     
     lazy var _support_n_domains = NSLocalizedString("Support for %i custom domains (e.g. user@yourdomain.com)", comment: "Service plan capability; i = 2")
     
     lazy var _vpn_included = NSLocalizedString("ProtonVPN included", comment: "Service plan capability")
     
-    lazy var _migrate_beginning = NSLocalizedString("To migrate to ", comment: "Service plan description footer; beginning of sentence 'To migrate to ProtonMail Professional, you have to login...'")
-    lazy var _migrate_end = NSLocalizedString(", you have to login to our website and make the necessary adjustments to comply with the plan's requirements", comment: "Service plan description footer; end of sentence 'To migrate to ProtonMail Professional, you have to login...'")
+    lazy var _migrate_beginning = NSLocalizedString("It is not possible to upgrade to ", comment: "")
+    lazy var _migrate_end = NSLocalizedString(" within our iOS application.", comment: "")
     
     lazy var _upgrade_to_paid = NSLocalizedString("Upgrade to a paid plan to benefit from more features", comment: "Service plan description footer")
     

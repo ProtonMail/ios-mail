@@ -106,7 +106,7 @@ enum ServiceLevelDataFactory {
     }
     
     internal static func makeLinksSection(except currentPlan: ServicePlan? = nil) -> Section<UIView> {
-        let links: [UIView] = [ServicePlan.free, ServicePlan.plus, ServicePlan.pro, ServicePlan.visionary].compactMap { plan in
+        let links: [UIView] = [ServicePlan.free, ServicePlan.plus /*, ServicePlan.pro, ServicePlan.visionary*/].compactMap { plan in
             guard plan != currentPlan else {
                 return nil
             }
@@ -167,7 +167,7 @@ enum ServiceLevelDataFactory {
                                          attributes: [.font: UIFont.preferredFont(forTextStyle: .body),
                                                       .foregroundColor: UIColor.white])
         title.append(caption)
-        let subtitle = String(format: "%@ ProtonMail %@\n%@ %@", originalPriceString, plan.subheader.0, feeString, LocalString._iap_fee)
+        let subtitle = "" // String(format: "%@ ProtonMail %@\n%@ %@", originalPriceString, plan.subheader.0, feeString, LocalString._iap_fee)
         let buttonAction: (UIButton?)->Void = { _ in
             delegate.purchaseProduct(id: productId)
         }

@@ -208,7 +208,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
             webView.stringByEvaluatingJavaScript(from: js);
         }
         self.emailLoaded = true
-        self.updateContentLayout(false)
+        self.updateContentLayout(false)        
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {

@@ -521,6 +521,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingStyleHTML()
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
+                body = body.escaped
                 return body
                 
             case .reply, .replyAll:
@@ -536,6 +537,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingStyleHTML()
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
+                body = body.escaped
                 let on = LocalString._composer_on
                 let at = LocalString._general_at_label
                 let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
@@ -590,10 +592,12 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingStyleHTML()
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
+                body = body.escaped
                 var sp = "<blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
                 sp = sp.stringByStrippingStyleHTML()
                 sp = sp.stringByStrippingBodyStyle()
                 sp = sp.stringByPurifyHTML()
+                sp = sp.escaped
                 
                 return "\(head)\(htmlString)\(sp)\(body)\(foot)"
             case .newDraft:

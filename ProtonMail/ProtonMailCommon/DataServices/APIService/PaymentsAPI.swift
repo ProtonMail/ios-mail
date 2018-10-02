@@ -120,7 +120,7 @@ final class GetAppleTier : ApiRequestNew<AppleTier> {
     
     override func toDictionary() -> [String : Any]? {
         return [
-            "Country":"Switzerland",
+            "Country": self.country,
             "Currency" : self.currency,
             "Tier" : 54
         ]
@@ -139,8 +139,10 @@ final class AppleTier : ApiResponse {
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
-        
-        if let proceeds = response["Proceeds"] as? [String : Any],
+        if let proceedPrice = response["Proceeds"] as? String {
+            self._proceed = Decimal(string: proceedPrice)
+        } else if let proceeds = response["Proceeds"] as? [String : Any],
+            //the resposne when not pass the tier
             let proceedPrice = proceeds["Tier 54"] as? String {
             self._proceed = Decimal(string: proceedPrice)
         }
