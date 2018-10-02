@@ -96,7 +96,7 @@ class ComposeViewModel {
             }
         }
         
-        return emailList.count < self.maxNumberOfRecipients
+        return emailList.count <= self.maxNumberOfRecipients
     }
     
     func getSubject() -> String {
