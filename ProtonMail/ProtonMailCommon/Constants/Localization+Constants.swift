@@ -1086,6 +1086,9 @@ class LocalizedString {
     /// "Report Phishing"
     lazy var _report_phishing = NSLocalizedString("Report Phishing", comment: "message details-> more action-> report phishing")
     
+    /// "View headers"
+    lazy var _view_message_headers = NSLocalizedString("View Headers", comment: "message details-> more action-> view headers")
+    
     /// "Confirm phishing report"
     lazy var _confirm_phishing_report = NSLocalizedString("Confirm phishing report", comment: "alert title")
     
@@ -1233,7 +1236,9 @@ class LocalizedString {
     lazy var _cant_load_the_file = NSLocalizedString("Can't load the file", comment: "Error")
 
     /// "System can't copy the file"
-    lazy var _system_cant_copy_the_file = NSLocalizedString("System can't copy the file", comment: "Error")
+    lazy var _system_cant_copy_the_file = 
+  
+  NSLocalizedString("System can't copy the file", comment: "Error")
 
     /// "Can't open the file"
     lazy var _cant_open_the_file = NSLocalizedString("Can't open the file", comment: "Error")
@@ -1599,7 +1604,6 @@ class LocalizedString {
     lazy var _backend_mismatch = NSLocalizedString("We were not available to match AppStore product with products on our server. Please, contact support.", comment: "Error message")
     
     lazy var _sandbox_receipt = NSLocalizedString("Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!", comment: "Error message for beta users")
-
     
     // Mark : Force Upgrade
     

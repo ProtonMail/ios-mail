@@ -143,6 +143,7 @@ class ApiRequest<T : ApiResponse> : Package {
                                  headers: ["x-pm-apiversion": self.apiVersion()],
                                  authenticated: self.getIsAuthFunction(),
                                  completion: completionWrapper)
+
         //wait operations
         let _ = sema.wait(timeout: DispatchTime.distantFuture)
         if let e = ret_error {

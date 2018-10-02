@@ -14,15 +14,13 @@ import UIKit
 import Contacts
 import CoreData
 
-class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
+{
     
     fileprivate let kContactCellIdentifier: String = "ContactCell"
     fileprivate let kProtonMailImage: UIImage      = UIImage(named: "encrypted_main")!
-    //
-    fileprivate let kContactDetailsSugue : String  = "toContactDetailsSegue";
-    fileprivate let kAddContactSugue : String      = "toAddContact"
     
-    fileprivate let kSegueToImportView : String    = "toImportContacts"
+    fileprivate let kContactDetailsSugue : String  = "toContactDetailsSegue";
     
     fileprivate var searchString : String = ""
  
@@ -41,9 +39,6 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
     
-    fileprivate var addBarButtonItem : UIBarButtonItem!
-    fileprivate var moreBarButtonItem : UIBarButtonItem!
-    
     func inactiveViewModel() {
     }
     
@@ -54,25 +49,8 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = LocalString._contacts_title
         tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactCellIdentifier)
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = LocalString._general_search_placeholder
-        searchController.searchBar.setValue(LocalString._general_cancel_button,
-                                            forKey:"_cancelButtonText")
-        self.searchController.searchResultsUpdater = self
-        self.searchController.dimsBackgroundDuringPresentation = false
-        self.searchController.searchBar.delegate = self
-        self.searchController.hidesNavigationBarDuringPresentation = true
-        self.searchController.automaticallyAdjustsScrollViewInsets = true
-        self.searchController.searchBar.sizeToFit()
-        self.searchController.searchBar.keyboardType = .default
-        self.searchController.searchBar.autocapitalizationType = .none
-        self.searchController.searchBar.isTranslucent = false
-        self.searchController.searchBar.tintColor = .white
-        self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
-        self.searchController.searchBar.backgroundColor = .clear
         
         refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
@@ -88,61 +66,31 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
         refreshControl.tintColorDidChange()
         
         if #available(iOS 11.0, *) {
-            self.searchViewConstraint.constant = 0.0
-            self.searchView.isHidden = true
             self.navigationController?.navigationBar.prefersLargeTitles = false
-            self.navigationItem.largeTitleDisplayMode = .never
-            self.navigationItem.hidesSearchBarWhenScrolling = false
-            self.navigationItem.searchController = self.searchController
         } else {
-            self.searchViewConstraint.constant = self.searchController.searchBar.frame.height
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background), for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background),
+                                                                        for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
             self.navigationController?.navigationBar.shadowImage = UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background)
-            
             self.refreshControl.backgroundColor = .white
-            
-            self.searchView.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
-            self.searchView.addSubview(self.searchController.searchBar)
-            self.searchController.searchBar.contactSearchSetup(textfieldBG: UIColor.init(hexColorCode: "#82829C"), placeholderColor: UIColor.init(hexColorCode: "#BBBBC9"), textColor: .white)
         }
-        self.definesPresentationContext = true;
+        self.definesPresentationContext = true
         self.extendedLayoutIncludesOpaqueBars = true
         self.automaticallyAdjustsScrollViewInsets = false
         self.tableView.noSeparatorsBelowFooter()
         self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
         
-        let back = UIBarButtonItem(title: LocalString._general_back_action,
-                                   style: UIBarButtonItemStyle.plain,
-                                   target: nil,
-                                   action: nil)
-        self.navigationItem.backBarButtonItem = back
-        
-        if self.addBarButtonItem == nil {
-            self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
-                                                         target: self,
-                                                         action: #selector(self.addContactTapped))
-        }
-        var rightButtons: [UIBarButtonItem] = [self.addBarButtonItem]
-        if #available(iOS 9.0, *) {
-            if (self.moreBarButtonItem == nil) {
-                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"),
-                                                         style: UIBarButtonItemStyle.plain,
-                                                         target: self,
-                                                         action: #selector(self.moreButtonTapped))
-            }
-            rightButtons.append(self.moreBarButtonItem)
-        }
-
-        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
-        
         //get all contacts
         self.viewModel.setupFetchedResults(delaget: self)
         tableView.reloadData()
+        self.prepareSearchBar()
+        
+        prepareNavigationItemRightDefault()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tableView.setEditing(false, animated: true)
+        self.title = LocalString._contacts_title
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -160,19 +108,56 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
+    //run once
+    private func prepareSearchBar() {
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = LocalString._general_search_placeholder
+        searchController.searchBar.setValue(LocalString._general_cancel_button,
+                                            forKey:"_cancelButtonText")
+        self.searchController.searchResultsUpdater = self
+        self.searchController.dimsBackgroundDuringPresentation = false
+        self.searchController.searchBar.delegate = self
+        self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.automaticallyAdjustsScrollViewInsets = true
+        self.searchController.searchBar.sizeToFit()
+        self.searchController.searchBar.keyboardType = .default
+        self.searchController.searchBar.autocapitalizationType = .none
+        self.searchController.searchBar.isTranslucent = false
+        self.searchController.searchBar.tintColor = .white
+        self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
+        self.searchController.searchBar.backgroundColor = .clear
+        if #available(iOS 11.0, *) {
+            self.searchViewConstraint.constant = 0.0
+            self.searchView.isHidden = true
+            self.navigationItem.largeTitleDisplayMode = .never
+            self.navigationItem.hidesSearchBarWhenScrolling = false
+            self.navigationItem.searchController = self.searchController
+        } else {
+            self.searchViewConstraint.constant = self.searchController.searchBar.frame.height
+            self.searchView.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
+            self.searchView.addSubview(self.searchController.searchBar)
+            self.searchController.searchBar.contactSearchSetup(textfieldBG: UIColor.init(hexColorCode: "#82829C"),
+                                                               placeholderColor: UIColor.init(hexColorCode: "#BBBBC9"), textColor: .white)
+        }
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == kContactDetailsSugue) {
             let contactDetailsViewController = segue.destination as! ContactDetailViewController
             let contact = sender as? Contact
             sharedVMService.contactDetailsViewModel(contactDetailsViewController, contact: contact!)
+        } else if (segue.identifier == "toCompose") {
         } else if (segue.identifier == kAddContactSugue) {
             let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController)
-        } else if (segue.identifier == "toCompose") {
-        } else if segue.identifier == kSegueToImportView{
+        } else if (segue.identifier == kAddContactGroupSugue) {
+            let addContactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
+            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create)
+        } else if segue.identifier == kSegueToImportView {
             let popup = segue.destination as! ContactImportViewController
-            self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
+            self.setPresentationStyleForSelfController(self,
+                                                       presentingController: popup,
+                                                       style: .overFullScreen)
         }
     }
     
@@ -188,42 +173,10 @@ class ContactsViewController: ProtonMailViewController, ViewModelProtocol {
             self.tableView.reloadData()
         }
     }
-    
-    @objc internal func addContactTapped() {
-        self.performSegue(withIdentifier: kAddContactSugue, sender: self)
-    }
-    
-    @available(iOS 9.0, *)
-    @objc internal func moreButtonTapped() {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-        
-        alertController.addAction(UIAlertAction(title: LocalString._contacts_upload_contacts, style: .default, handler: { (action) -> Void in
-            self.navigationController?.popViewController(animated: true)
-            
-            let alertController = UIAlertController(title: LocalString._contacts_title,
-                                                    message: LocalString._upload_ios_contacts_to_protonmail,
-                                                    preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action,
-                                                    style: .default, handler: { (action) -> Void in
-                self.performSegue(withIdentifier: self.kSegueToImportView, sender: self)
-            }))
-            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            self.present(alertController, animated: true, completion: nil)
-        }))
-    
-        alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
-        alertController.popoverPresentationController?.sourceRect = self.view.frame
-        self.present(alertController, animated: true, completion: nil)
-    }
 }
 
 //Search part
 extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
-    
-    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        
-    }
     
     func updateSearchResults(for searchController: UISearchController) {
         self.searchString = searchController.searchBar.text ?? "";

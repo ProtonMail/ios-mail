@@ -33,6 +33,8 @@ class ContactsResponse : ApiResponse {
     var total : Int = -1
     var contacts : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        PMLog.D("[Contact] Get contacts response \(response)")
+        
         self.total = response?["Total"] as? Int ?? -1
         self.contacts = response?["Contacts"] as? [[String : Any]] ?? []
         return true
@@ -40,13 +42,15 @@ class ContactsResponse : ApiResponse {
 }
 
 // MARK : Get messages part
-class ContactEmailsRequest : ApiRequest<ContactEmailsResponse> {
+class ContactEmailsRequest<T: ApiResponse>: ApiRequest<T> {
     var page : Int = 0
     var max : Int = 100
+    let labelID: String?
     
-    init(page: Int, pageSize : Int) {
+    init(page: Int, pageSize : Int, labelID: String? = nil) {
         self.page = page
         self.max = pageSize
+        self.labelID = labelID
     }
     
     override public func path() -> String {
@@ -54,6 +58,9 @@ class ContactEmailsRequest : ApiRequest<ContactEmailsResponse> {
     }
     
     override func toDictionary() -> [String : Any]? {
+        if let ID = labelID {
+            return ["Page": page, "PageSize": max, "LabelID": ID]
+        }
         return ["Page" : page, "PageSize" : max]
     }
     
@@ -66,40 +73,72 @@ class ContactEmailsRequest : ApiRequest<ContactEmailsResponse> {
     }
 }
 
-
-class ContactEmailsResponse : ApiResponse {
+// TODO: performance enhancement?
+class ContactEmailsResponse: ApiResponse {
     var total : Int = -1
-    var contacts : [[String : Any]] = []
+    var contacts : [[String : Any]] = [] // [["ID": ..., "Name": ..., "ContactEmails": ...], ...]
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        PMLog.D("[Contact] Get contact emails response \(response)")
+        
         self.total = response?["Total"] as? Int ?? -1
-        if let tempContacts = response?["ContactEmails"] as? [[String : Any]] {
-            for contact in tempContacts {
-                if let contactID = contact["ContactID"] as? String, let name = contact["Name"] as? String {
+        if let tempContactEmails = response?["ContactEmails"] as? [[String : Any]] {
+            // setup emails
+            for var email in tempContactEmails { // for every email in ContactEmails
+                if let contactID = email["ContactID"] as? String, let name = email["Name"] as? String {
+                    // convert the labelID strings into JSON dictionary
+                    if let labelIDs = email["LabelIDs"] as? [String] {
+                        let mapping: [[String: Any]] = labelIDs.map({
+                            (labelID: String) -> [String: Any] in
+                            
+                            // TODO: check if this will clear other fields or noang
+                            return [
+                                "ID": labelID,
+                                "Type": 2 /* don't forget about it... */
+                            ]
+                        })
+                        
+                        email["LabelIDs"] = mapping
+                    }
+                    
+                    // we put emails that is under the same ContactID together
                     var found = false
                     for (index, var c) in contacts.enumerated() {
-                        if let obj = c["ID"] as? String, obj == contactID {
+                        if let obj = c["ID"] as? String, obj == contactID { // same contactID
                             found = true
                             if var emails = c["ContactEmails"] as? [[String : Any]] {
-                                emails.append(contact)
+                                emails.append(email) // insert email
                                 c["ContactEmails"] = emails
                             } else {
-                                c["ContactEmails"] = [contact]
+                                c["ContactEmails"] = [email]
                             }
                             contacts[index] = c
                         }
                     }
                     if !found {
-                        let newContact : [String : Any] = [
-                            "ID" : contactID,
-                            "Name" : name,
-                            "ContactEmails" : [contact]
+                        let newContact : [String : Any] = [ // this is contact object
+                            "ID" : contactID, // contactID
+                            "Name" : name, // contact name (email don't have their individual name, so it's contact's name?)
+                            "ContactEmails" : [email] // these are the email objects (contact has a relation to email)
                         ]
                         self.contacts.append(newContact)
                     }
                 }
             }
         }
-        PMLog.D( self.contacts.json(prettyPrinted: true) )
+        PMLog.D("contacts: \n \(self.contacts.json(prettyPrinted: true))")
+        return true
+    }
+}
+
+class ContactEmailsResponseForContactGroup: ApiResponse {
+    var total : Int = -1
+    var emailList : [[String : Any]] = []
+    override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        PMLog.D("[Contact] Get contact emails for contact group response \(String(describing: response))")
+        
+        if let res = response?["ContactEmails"] as? [[String : Any]] {
+            emailList = res
+        }
         return true
     }
 }
@@ -112,7 +151,7 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
     init(cid : String) {
         self.contactID = cid
     }
-
+    
     override public func path() -> String {
         return ContactsAPI.path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
     }
@@ -130,6 +169,7 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
 class ContactDetailResponse : ApiResponse {
     var contact : [String : Any]?
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
+//      PMLog.D("[Contact] Get contact detail response \(response)")
         PMLog.D(response.json(prettyPrinted: true))
         contact = response["Contact"] as? [String : Any]
         return true
@@ -336,3 +376,103 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
+// Contact group APIs
+
+/// Add designated contact emails into a certain contact group
+final class ContactLabelAnArrayOfContactEmailsRequest: ApiRequest<ContactLabelAnArrayOfContactEmailsResponse>
+{
+    var labelID: String = ""
+    var contactEmailIDs: [String] = []
+    init(labelID: String, contactEmailIDs: [String]) {
+        self.labelID = labelID
+        self.contactEmailIDs = contactEmailIDs
+    }
+    
+    override public func path() -> String {
+        return ContactsAPI.path + "/emails/label" +  AppConstants.DEBUG_OPTION
+    }
+    
+    override public func apiVersion() -> Int {
+        return ContactsAPI.v_label_an_array_of_contact_emails
+    }
+    
+    override func method() -> APIService.HTTPMethod {
+        return .put
+    }
+    
+    override func toDictionary() -> [String : Any]?  {
+        return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID]
+    }
+}
+
+
+/// Process the response of ContactLabelAnArrayOfContactEmailsRequest
+/// TODO: check return body
+final class ContactLabelAnArrayOfContactEmailsResponse: ApiResponse {
+    var emailIDs: [String] = []
+    
+    override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        PMLog.D("[Contact] label an array of contact emails response \(response)")
+        if let responses = response["Responses"] as? [[String: Any]] {
+            for data in responses {
+                if let ID = data["ID"] as? String, let tmp = data["Response"] as? [String: Any] {
+                    if let code = tmp["Code"] as? Int, code == 1000 {
+                        emailIDs.append(ID)
+                    }
+                }
+            }
+        }
+        return true
+    }
+}
+
+
+/// Remove designated contact emails from a certain contact group
+final class ContactUnlabelAnArrayOfContactEmailsRequest: ApiRequest<ContactUnlabelAnArrayOfContactEmailsResponse>
+{
+    var labelID: String = ""
+    var contactEmailIDs: [String] = []
+    init(labelID: String, contactEmailIDs: [String]) {
+        self.labelID = labelID
+        self.contactEmailIDs = contactEmailIDs
+    }
+    
+    override public func path() -> String {
+        return ContactsAPI.path + "/emails/unlabel" +  AppConstants.DEBUG_OPTION
+    }
+    
+    override public func apiVersion() -> Int {
+        return ContactsAPI.v_unlabel_an_array_of_contact_emails
+    }
+    
+    override func method() -> APIService.HTTPMethod {
+        return .put
+    }
+    
+    override func toDictionary() -> [String : Any]?  {
+        return ["ContactEmailIDs": contactEmailIDs, "LabelID": labelID]
+    }
+}
+
+
+/// Process the response of ContactUnlabelAnArrayOfContactEmailsRequest
+/// TODO: check return body
+final class ContactUnlabelAnArrayOfContactEmailsResponse: ApiResponse {
+    var emailIDs: [String] = []
+    
+    override func ParseResponse (_ response: [String : Any]!) -> Bool {
+        PMLog.D("[Contact] unlabel an array of contact emails response \(response)")
+        
+        if let responses = response["Responses"] as? [[String: Any]] {
+            for data in responses {
+                if let ID = data["ID"] as? String, let tmp = data["Response"] as? [String: Any] {
+                    if let code = tmp["Code"] as? Int, code == 1000 {
+                        emailIDs.append(ID)
+                    }
+                }
+            }
+        }
+        
+        return true
+    }
+}

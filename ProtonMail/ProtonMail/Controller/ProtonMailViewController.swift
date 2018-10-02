@@ -82,3 +82,58 @@ class ProtonMailViewController: UIViewController, ProtonMailViewControllerProtoc
     }
 
 }
+
+
+// FIXME: this is a temporary class. refactor it later
+class ProtonMailTabBarController: UITabBarController, ProtonMailViewControllerProtocol {
+    
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        ProtonMailTabBarController.setup(self, self.menuButton, self.shouldShowSideMenu())
+    }
+    
+    class func setup(_ controller: UIViewController,
+                     _ menuButton: UIBarButtonItem!,
+                     _ shouldShowMenu: Bool) {
+        if let revealViewController = controller.revealViewController() {
+            
+            if (shouldShowMenu && menuButton != nil) {
+                controller.navigationItem.leftBarButtonItem = menuButton
+                menuButton.accessibilityLabel = LocalString._menu_button
+                menuButton.target = controller.revealViewController()
+                menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+                controller.view.addGestureRecognizer(controller.revealViewController().panGestureRecognizer())
+                
+                revealViewController.panGestureRecognizer()
+                revealViewController.tapGestureRecognizer()
+            }
+        }
+        
+        configureNavigationBar(controller)
+        controller.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
+    
+    func configureNavigationBar() {
+        ProtonMailTabBarController.configureNavigationBar(self)
+    }
+    
+    class func configureNavigationBar(_ controller: UIViewController) {
+        controller.navigationController?.navigationBar.barStyle = UIBarStyle.black
+        controller.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
+        controller.navigationController?.navigationBar.isTranslucent = false
+        controller.navigationController?.navigationBar.tintColor = UIColor.white
+        
+        let navigationBarTitleFont = Fonts.h2.regular
+        controller.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: navigationBarTitleFont
+        ]
+    }
+    
+}

@@ -20,7 +20,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     var origInformations : [ContactEditInformation] = []
     var origFields : [ContactEditField] = []
     var origNotes: [ContactEditNote] = []
-    
     var origUrls: [ContactEditUrl] = []
     
     var verifyType2 : Bool = true
@@ -145,17 +144,32 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     private func setupEmails() {
         //  origEmails
         let cards = self.contact.getCardData()
-        for c in cards {
+        var type0Card: PMNIVCard? = nil
+        for c in cards.sorted(by: {$0.type.rawValue < $1.type.rawValue}) {
             switch c.type {
             case .PlainText:
                 if let vcard = PMNIEzvcard.parseFirst(c.data) {
+                    type0Card = vcard
                     let emails = vcard.getEmails()
                     var order : Int = 1
                     for e in emails {
                         let types = e.getTypes()
                         let typeRaw = types.count > 0 ? types.first! : ""
                         let type = ContactFieldType.get(raw: typeRaw)
-                        let ce = ContactEditEmail(order: order, type: type == .empty ? .email : type, email:e.getValue(), isNew: false, keys: nil, encrypt: nil, sign: nil , scheme: nil, mimeType: nil)
+                        
+                        // contact group
+                        let contactGroups = vcard.getCategories(e.getGroup())
+                        
+                        let ce = ContactEditEmail(order: order,
+                                                  type: type == .empty ? .email : type,
+                                                  email:e.getValue(),
+                                                  contactGroupNames: contactGroups?.getValues() ?? [],
+                                                  isNew: false,
+                                                  keys: nil,
+                                                  encrypt: nil,
+                                                  sign: nil ,
+                                                  scheme: nil,
+                                                  mimeType: nil)
                         origEmails.append(ce)
                         order += 1
                     }
@@ -192,7 +206,19 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         let types = e.getTypes()
                         let typeRaw = types.count > 0 ? types.first! : ""
                         let type = ContactFieldType.get(raw: typeRaw)
-                        let ce = ContactEditEmail(order: order, type:type == .empty ? .email : type, email:e.getValue(), isNew: false, keys: nil, encrypt: nil, sign: nil , scheme: nil, mimeType: nil)
+                        
+                        let contactGroups = type0Card?.getCategories("ITEM\(order)")?.getValues() ?? []
+                        
+                        let ce = ContactEditEmail(order: order,
+                                                  type:type == .empty ? .email : type,
+                                                  email:e.getValue(),
+                                                  contactGroupNames: contactGroups,
+                                                  isNew: false,
+                                                  keys: nil,
+                                                  encrypt: nil,
+                                                  sign: nil ,
+                                                  scheme: nil,
+                                                  mimeType: nil)
                         origEmails.append(ce)
                         order += 1
                     }

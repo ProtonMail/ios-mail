@@ -40,6 +40,14 @@ extension FileManager {
         return urls.first!
     }
     
+    public var temporaryDirectoryUrl: URL {
+        if #available(iOS 10.0, *) {
+            return FileManager.default.temporaryDirectory
+        } else {
+            return URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        }
+    }
+    
     public var appGroupsTempDirectoryURL: URL {
         var tempUrl = self.appGroupsDirectoryURL.appendingPathComponent("tmp", isDirectory: true)
         if !FileManager.default.fileExists(atPath: tempUrl.path) {

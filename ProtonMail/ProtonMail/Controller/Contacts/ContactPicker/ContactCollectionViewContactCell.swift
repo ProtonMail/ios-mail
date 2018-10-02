@@ -87,12 +87,15 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         }
         set {
             self._model = newValue
-            self.contactTitleLabel.text = self._model.contactTitle
-            self.checkLock()
+            self.contactTitleLabel.text = self._model.contactTitle;
+            
+            {
+                self.checkLock()
+            } ~> .main
         }
     }
     
-    internal func checkLock() {
+    private func checkLock() {
         self.delegate?.collectionContactCell(lockCheck: self.model, progress: {
             self.lockImage.isHidden = true
             self.activityView.startAnimating()

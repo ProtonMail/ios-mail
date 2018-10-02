@@ -12,14 +12,29 @@ import Foundation
 
 final class ContactEditEmailCell: UITableViewCell {
     
-    fileprivate var email : ContactEditEmail!
+    fileprivate var email: ContactEditEmail!
     
-    fileprivate var delegate : ContactEditCellDelegate?
+    fileprivate var delegate: ContactEditCellDelegate?
     
-    @IBOutlet weak var typeLabel: UILabel!
+    @IBOutlet weak var groupButton: UIButton!
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
     @IBOutlet weak var sepratorView: UIView!
+    
+    func refreshHandler(newContactGroups: NSSet)
+    {
+        print(newContactGroups.debugDescription)
+        if let data = newContactGroups.allObjects as? [String] {
+            email.updateContactGroups(newContactGroupIDs: data)
+        } else {
+            // TODO: handle error
+            email.updateContactGroups(newContactGroupIDs: [])
+        }
+    }
+    
+    func getContactGroupIDs() -> [String] {
+        return email.getContactGroupsID()
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,10 +42,13 @@ final class ContactEditEmailCell: UITableViewCell {
         self.valueField.placeholder = LocalString._contacts_email_address_placeholder
     }
     
-    func configCell(obj : ContactEditEmail, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+    func configCell(obj: ContactEditEmail,
+                    callback: ContactEditCellDelegate?,
+                    becomeFirstResponder: Bool = false) {
         self.email = obj
         
-        typeLabel.text = self.email.newType.title
+        typeButton.setTitle(self.email.newType.title,
+                            for: .normal)
         valueField.text = self.email.newEmail
         self.delegate = callback
         
@@ -43,6 +61,10 @@ final class ContactEditEmailCell: UITableViewCell {
     
     @IBAction func typeAction(_ sender: UIButton) {
         delegate?.pick(typeInterface: email, sender: self)
+    }
+    
+    @IBAction func chooseContactGroup(_ sender: UIButton) {
+        delegate?.toSelectContactGroups(sender: self)
     }
     
     override func layoutSubviews() {

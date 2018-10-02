@@ -76,10 +76,8 @@ class ContactDataService {
     }
     
     /**
-     add a new conact
+     add a new contact
      
-     - Parameter name: contact name
-     - Parameter emails: contact email list
      - Parameter cards: vcard contact data -- 4 different types
      - Parameter completion: async add contact complete response
      **/
@@ -434,9 +432,9 @@ class ContactDataService {
             return
         }
         self.isFetching = true
-        
         {
             do {
+                // fetch contacts, without their respective emails
                 var currentPage = 0
                 var fetched = -1
                 let pageSize = 1000
@@ -474,6 +472,11 @@ class ContactDataService {
                     }
                 }
                 
+                // fetch contact groups
+                // TODO: if I don't manually store the labels first, the record won't be saved automatically? (cascade)
+                sharedLabelsDataService.fetchLabels(type: 2)
+                
+                // fetch contact emails
                 currentPage = 0
                 fetched = -1
                 loop = 1
@@ -483,7 +486,7 @@ class ContactDataService {
                         break
                     }
                     loop = loop - 1
-                    let api = ContactEmailsRequest(page: currentPage, pageSize: pageSize)
+                    let api = ContactEmailsRequest<ContactEmailsResponse>(page: currentPage, pageSize: pageSize)
                     if let contactsRes = try api.syncCall() {
                         currentPage = currentPage + 1
                         let contactsArray = contactsRes.contacts
@@ -507,7 +510,7 @@ class ContactDataService {
                                         let _ = contact.fixName(force: true)
                                     }
                                     if let error = context.saveUpstreamIfNeeded() {
-                                        PMLog.D(" error: \(error)")
+                                        PMLog.D("contact emails saving error: \(error)")
                                         //completion?(nil, error)
                                     } else {
                                         //completion?(contacts, nil)
@@ -515,7 +518,7 @@ class ContactDataService {
                                     }
                                 }
                             } catch let ex as NSError {
-                                PMLog.D(" error: \(ex)")
+                                PMLog.D("GRTJSONSerialization contact emails error: \(ex) \(ex.userInfo)")
                                 //completion?(nil, ex)
                             }
                         }
@@ -529,6 +532,11 @@ class ContactDataService {
             }
         } ~> .async
     }
+    
+    /**
+     // TODO
+     Fetch contact emails
+    */
     
     /**
      get contact full details
@@ -598,7 +606,10 @@ extension ContactDataService {
         var contacts: [ContactVO] = []
         
         for email in sharedContactDataService.allEmails() {
-            contacts.append(ContactVO(id: email.contactID, name: email.name, email: email.email, isProtonMailContact: true))
+            contacts.append(ContactVO(id: email.contactID,
+                                      name: email.name,
+                                      email: email.email,
+                                      isProtonMailContact: true))
         }
         
         return contacts

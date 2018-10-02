@@ -103,25 +103,15 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         
         // webview
         self.view.addSubview(self.editorView)
-        if #available(iOSApplicationExtension 9.0, *) {
-            self.editorView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-            self.editorView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-            self.editorView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            self.webViewBottomLine = self.editorView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-            self.webViewBottomLine.isActive = true
-        } else if #available(iOSApplicationExtension 8.0, *) {
-            NSLayoutConstraint.activate([
-                NSLayoutConstraint(item: self.editorView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1.0, constant: 0.0),
-                NSLayoutConstraint(item: self.editorView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1.0, constant: 0.0),
-                NSLayoutConstraint(item: self.editorView, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1.0, constant: 0.0)
-            ])
-            self.webViewBottomLine = NSLayoutConstraint(item: self.editorView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1.0, constant: 0.0)
-            self.webViewBottomLine.isActive = true
-        }
+        self.editorView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8.0).isActive = true
+        self.editorView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 8.0).isActive = true
+        self.editorView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.webViewBottomLine = self.editorView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        self.webViewBottomLine.isActive = true
 
         // compose view
         let w = UIScreen.main.applicationFrame.width;
-        self.composeViewController.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
+        self.composeViewController.view.frame = CGRect(x: -8, y: 0, width: w, height: composeViewSize + 60)
         self.addChildViewController(self.composeViewController)
         self.webView?.scrollView.addSubview(composeViewController.view);
         self.webView?.scrollView.bringSubview(toFront: composeViewController.view)
@@ -315,7 +305,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         var frame = self.view.frame
         frame.size.width = w
         self.view.frame = frame
-        self.composeViewController.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
+        self.composeViewController.view.frame = CGRect(x: -8, y: 0, width: w, height: composeViewSize)
     }
     
     // ******************
@@ -370,7 +360,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
                 } else if sub is UIImageView {
                     continue
                 } else {
-                    let h : CGFloat = self.composeViewSize
+                    let h : CGFloat = self.composeViewSize + 8.0
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
                 }
             }
@@ -562,7 +552,7 @@ extension ComposerViewController : ComposeViewDelegate {
             self.updateComposeFrame()
         } else {
             let w = UIScreen.main.applicationFrame.width
-            self.composeViewController.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
+            self.composeViewController.view.frame = CGRect(x: -8, y: 0, width: w, height: composeViewSize)
         }
         self.updateContentLayout(true)
         self.webView?.scrollView.isScrollEnabled = !showPicker
@@ -626,8 +616,26 @@ extension ComposerViewController : ComposeViewDelegate {
         self.updateEO()
     }
     
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker) {
-        guard self.viewModel.validateNumberOfRecipients() else {
+    func composeView(_ composeView: ComposeView, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker) {
+        if (picker == composeView.toContactPicker) {
+            self.viewModel.toSelectedContacts.append(contact)
+        } else if (picker == composeView.ccContactPicker) {
+            self.viewModel.ccSelectedContacts.append(contact)
+        } else if (picker == composeView.bccContactPicker) {
+            self.viewModel.bccSelectedContacts.append(contact)
+        }
+        
+        if self.viewModel.isValidNumberOfRecipients() == false {
+            // rollback
+            if (picker == composeView.toContactPicker) {
+                self.viewModel.toSelectedContacts.removeLast()
+            } else if (picker == composeView.ccContactPicker) {
+                self.viewModel.ccSelectedContacts.removeLast()
+            } else if (picker == composeView.bccContactPicker) {
+                self.viewModel.bccSelectedContacts.removeLast()
+            }
+            
+            // present error
             let alert = UIAlertController(title: LocalString._too_many_recipients,
                                           message: LocalString._max_number_of_recipients_is,
                                           preferredStyle: .alert)
@@ -636,23 +644,22 @@ extension ComposerViewController : ComposeViewDelegate {
             picker.reloadData()
             return
         }
-        if (picker == composeView.toContactPicker) {
-            self.viewModel.toSelectedContacts.append(contact)
-        } else if (picker == composeView.ccContactPicker) {
-            self.viewModel.ccSelectedContacts.append(contact)
-        } else if (picker == composeView.bccContactPicker) {
-            self.viewModel.bccSelectedContacts.append(contact)
-        }
     }
     
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker:ContactPicker) {
+    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker:ContactPicker) {
         // here each logic most same, need refactor later
         if (picker == composeView.toContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.toSelectedContacts
             for (index, selectedContact) in selectedContacts.enumerated() {
-                if (contact.email == selectedContact.email) {
-                    contactIndex = index
+                if let contact = contact as? ContactVO {
+                    if (contact.displayEmail == selectedContact.displayEmail) {
+                        contactIndex = index
+                    }
+                } else if let contactGroup = contact as? ContactGroupVO {
+                    if (contact.contactTitle == selectedContact.contactTitle) {
+                        contactIndex = index
+                    }
                 }
             }
             if (contactIndex >= 0) {
@@ -662,8 +669,14 @@ extension ComposerViewController : ComposeViewDelegate {
             var contactIndex = -1
             let selectedContacts = self.viewModel.ccSelectedContacts
             for (index, selectedContact) in selectedContacts.enumerated() {
-                if (contact.email == selectedContact.email) {
-                    contactIndex = index
+                if let contact = contact as? ContactVO {
+                    if (contact.displayEmail == selectedContact.displayEmail) {
+                        contactIndex = index
+                    }
+                } else if let contactGroup = contact as? ContactGroupVO {
+                    if (contact.contactTitle == selectedContact.contactTitle) {
+                        contactIndex = index
+                    }
                 }
             }
             if (contactIndex >= 0) {
@@ -673,8 +686,14 @@ extension ComposerViewController : ComposeViewDelegate {
             var contactIndex = -1
             let selectedContacts = self.viewModel.bccSelectedContacts
             for (index, selectedContact) in selectedContacts.enumerated() {
-                if (contact.email == selectedContact.email) {
-                    contactIndex = index
+                if let contact = contact as? ContactVO {
+                    if (contact.displayEmail == selectedContact.displayEmail) {
+                        contactIndex = index
+                    }
+                } else if let contactGroup = contact as? ContactGroupVO {
+                    if (contact.contactTitle == selectedContact.contactTitle) {
+                        contactIndex = index
+                    }
                 }
             }
             if (contactIndex >= 0) {
@@ -693,7 +712,7 @@ extension ComposerViewController : ComposeViewDataSource {
     }
     
     func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) ->  [ContactPickerModelProtocol] {
-        var selectedContacts: [ContactVO] = [ContactVO]()
+        var selectedContacts: [ContactPickerModelProtocol] = []
         if (picker == composeView.toContactPicker) {
             selectedContacts = self.viewModel.toSelectedContacts
         } else if (picker == composeView.ccContactPicker) {

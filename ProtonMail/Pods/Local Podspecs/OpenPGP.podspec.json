@@ -7,7 +7,7 @@
   "license": "ProtonMail",
   "authors": "Yanfeng Zhang",
   "platforms": {
-    "ios": "8.0"
+    "ios": "9.0"
   },
   "source_files": "include/OpenPGP/*.h",
   "public_header_files": "include/OpenPGP/*.h",

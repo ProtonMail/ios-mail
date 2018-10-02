@@ -124,6 +124,11 @@
             </userInfo>
         </attribute>
         <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="emails" inverseEntity="Contact" syncable="YES"/>
+        <relationship name="labels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Label" inverseName="emails" inverseEntity="Label" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="LabelIDs"/>
+            </userInfo>
+        </relationship>
         <userInfo>
             <entry key="identityAttribute" value="emailID"/>
         </userInfo>
@@ -168,6 +173,7 @@
                 <entry key="NumberTransformer" value="NumberTransformer"/>
             </userInfo>
         </attribute>
+        <relationship name="emails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Email" inverseName="labels" inverseEntity="Email" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="labels" inverseEntity="Message" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="labelID"/>
@@ -392,8 +398,8 @@
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="210"/>
         <element name="Contact" positionX="1240" positionY="-3582" width="128" height="210"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
-        <element name="Email" positionX="1539" positionY="-3582" width="128" height="165"/>
-        <element name="Label" positionX="2095" positionY="-3357" width="128" height="165"/>
+        <element name="Email" positionX="1539" positionY="-3582" width="128" height="30"/>
+        <element name="Label" positionX="2095" positionY="-3357" width="128" height="178"/>
         <element name="Message" positionX="1717" positionY="-3867" width="128" height="765"/>
     </elements>
 </model>

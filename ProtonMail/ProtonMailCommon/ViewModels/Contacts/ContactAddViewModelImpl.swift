@@ -106,7 +106,16 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     override func newEmail() -> ContactEditEmail {
         let type = pick(newType: ContactFieldType.emailTypes, pickedTypes: emails)
-        let email = ContactEditEmail(order: emails.count, type: type, email:"", isNew: true, keys: nil, encrypt: nil, sign: nil , scheme: nil, mimeType: nil)
+        let email = ContactEditEmail(order: emails.count,
+                                     type: type,
+                                     email:"",
+                                     contactGroupNames: [],
+                                     isNew: true,
+                                     keys: nil,
+                                     encrypt: nil,
+                                     sign: nil ,
+                                     scheme: nil,
+                                     mimeType: nil)
         emails.append(email)
         return email
     }
@@ -172,7 +181,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         //add
         var a_emails: [ContactEmail] = []
         for e in getEmails() {
-            if e.newEmail.isEmpty || !e.newEmail.isValid() {
+            if e.newEmail.isEmpty || !e.newEmail.isValidEmail() {
                 complete(RuntimeError.invalidEmail.toError())
                 return
             }

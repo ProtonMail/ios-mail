@@ -38,6 +38,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     //const segue
     fileprivate let kToContactTypeSegue : String      = "toContactTypeSegue"
+    fileprivate let kToSelectContactGroupSegue: String = "toSelectContactGroupSegue"
     fileprivate let kToUpgradeAlertSegue : String     = "toUpgradeAlertSegue"
     
     //
@@ -127,6 +128,13 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             sharedVMService.upgradeAlert(contacts: popup)
             popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
+        } else if segue.identifier == kToSelectContactGroupSegue {
+            let destination = segue.destination as! ContactGroupsViewController
+            let refreshHandler = (sender as! ContactEditEmailCell).refreshHandler
+            let contactGroupIDs = (sender as! ContactEditEmailCell).getContactGroupIDs()
+            sharedVMService.contactSelectContactGroupsViewModel(destination,
+                                                                selectedGroupIDs: contactGroupIDs,
+                                                                refreshHandler: refreshHandler)
         }
     }
     
@@ -232,6 +240,12 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
         dismissKeyboard()
         self.performSegue(withIdentifier: kToContactTypeSegue, sender: typeInterface)
     }
+    
+    func toSelectContactGroups(sender: ContactEditEmailCell) {
+        self.performSegue(withIdentifier: kToSelectContactGroupSegue,
+                          sender: sender)
+    }
+    
     //reuseable
     func beginEditing(textField: UITextField) {
         self.activeText = textField
@@ -680,6 +694,7 @@ extension ContactEditViewController: UITableViewDelegate {
         if sections[indexPath.section] == .notes {
             return UITableViewAutomaticDimension
         }
+        
         if sections[indexPath.section] == .home_address {
             let count = viewModel.getAddresses().count
             if indexPath.row != count {
@@ -689,6 +704,10 @@ extension ContactEditViewController: UITableViewDelegate {
         
         if sections[indexPath.section] == .upgrade {
              return 200 //  280.0
+        }
+        
+        if sections[indexPath.section] == .emails {
+            return UITableViewAutomaticDimension
         }
 
         return 48.0
