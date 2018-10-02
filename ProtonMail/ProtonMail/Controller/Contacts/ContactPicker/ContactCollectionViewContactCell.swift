@@ -87,11 +87,11 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         }
         set {
             self._model = newValue
-            self.contactTitleLabel.text = self._model.contactTitle
+            self.contactTitleLabel.text = self._model.contactTitle;
             
-            if let _ = model as? ContactVO {
+            {
                 self.checkLock()
-            }
+            } ~> .main
         }
     }
     
