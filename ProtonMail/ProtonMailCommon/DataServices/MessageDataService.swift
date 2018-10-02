@@ -1850,8 +1850,6 @@ class MessageDataService {
                     self.unLabelMessage(.starred, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .delete:
                     sharedAPIService.PUT(MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-                default://delete.
-                    sharedAPIService.PUT(MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 }
             } else {
                 PMLog.D(" Unsupported action \(actionString), removing from queue.")

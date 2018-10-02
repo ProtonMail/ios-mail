@@ -4,6 +4,7 @@
 #import <Foundation/Foundation.h>
 @class PMNIAddress;
 @class PMNIBirthday;
+@class PMNICategories;
 @class PMNIEmail;
 @class PMNIFormattedName;
 @class PMNIGender;
@@ -150,6 +151,14 @@
 - (void)setKeys:(nonnull NSArray<PMNIKey *> *)keys;
 
 - (void)clearKeys;
+
+- (nullable PMNICategories *)getCategories:(nonnull NSString *)group;
+
+- (void)addCategories:(nullable PMNICategories *)c;
+
+- (void)setCategories:(nullable PMNICategories *)c;
+
+- (void)clearCategories;
 
 - (nonnull NSArray<PMNIUrl *> *)getUrls;
 

@@ -36,7 +36,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         
     }
     
-    
+    // for the share target to init composer VM
     init(subject: String, body: String, files: [FileData], action : ComposeMessageAction!) {
         super.init()
         self.message = nil
@@ -176,6 +176,11 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
+        if let _ = model as? ContactGroupVO {
+            complete?(nil, -1)
+            return
+        }
+        
         progress()
         
         let context = sharedCoreDataService.newManagedObjectContext()
@@ -249,30 +254,75 @@ final class ComposeViewModelImpl : ComposeViewModel {
         return true;
     }
     
+    /**
+     Load the contacts and groups back for the message
+     
+     contact group only shows up in draft, so the reply, reply all, etc., no contact group will show up
+    */
     fileprivate func updateContacts(_ oldLocation : MessageLocation?) {
         if message != nil {
             switch messageAction!
             {
             case .newDraft, .forward, .newDraftFromShare:
-                break;
+                break
             case .openDraft:
-                let toContacts = self.toContacts(self.message!.recipientList)
+                let toContacts = self.toContacts(self.message!.recipientList) // Json to contact/group objects
                 for cont in toContacts {
-                    if !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
-                        self.toSelectedContacts.append(cont)
+                    switch cont.modelType {
+                    case .contact:
+                        if let cont = cont as? ContactVO {
+                            if !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                                self.toSelectedContacts.append(cont)
+                            }
+                        } else {
+                            // TODO: error handling
+                        }
+                    case .contactGroup:
+                        if let group = cont as? ContactGroupVO {
+                            self.toSelectedContacts.append(group)
+                        } else {
+                            // TODO: error handling
+                        }
                     }
                 }
                 
                 let ccContacts = self.toContacts(self.message!.ccList)
                 for cont in ccContacts {
-                    if  !cont.isDuplicatedWithContacts(self.ccSelectedContacts) {
-                        self.ccSelectedContacts.append(cont)
+                    switch cont.modelType {
+                    case .contact:
+                        if let cont = cont as? ContactVO {
+                            if !cont.isDuplicatedWithContacts(self.ccSelectedContacts) {
+                                self.ccSelectedContacts.append(cont)
+                            }
+                        } else {
+                            // TODO: error handling
+                        }
+                    case .contactGroup:
+                        if let group = cont as? ContactGroupVO {
+                            self.toSelectedContacts.append(group)
+                        } else {
+                            // TODO: error handling
+                        }
                     }
                 }
+                
                 let bccContacts = self.toContacts(self.message!.bccList)
                 for cont in bccContacts {
-                    if !cont.isDuplicatedWithContacts(self.bccSelectedContacts) {
-                        self.bccSelectedContacts.append(cont)
+                    switch cont.modelType {
+                    case .contact:
+                        if let cont = cont as? ContactVO {
+                            if !cont.isDuplicatedWithContacts(self.bccSelectedContacts) {
+                                self.bccSelectedContacts.append(cont)
+                            }
+                        } else {
+                            // TODO: error handling
+                        }
+                    case .contactGroup:
+                        if let group = cont as? ContactGroupVO {
+                            self.toSelectedContacts.append(group)
+                        } else {
+                            // TODO: error handling
+                        }
                     }
                 }
             case .reply:
@@ -282,10 +332,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         self.toSelectedContacts.append(cont)
                     }
                 } else {
-                    var senders = [ContactVO]()
+                    var senders: [ContactPickerModelProtocol] = []
                     let replytos = self.toContacts(self.message?.replyTos ?? "")
                     if replytos.count > 0 {
-                        senders.append(contentsOf: replytos)
+                        senders += replytos
                     } else {
                         if let newSender = self.toContact(self.message!.senderObject ?? "") {
                             senders.append(newSender)
@@ -307,10 +357,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     }
                 } else {
                     let userAddress = sharedUserDataService.userAddresses
-                    var senders = [ContactVO]()
+                    var senders = [ContactPickerModelProtocol]()
                     let replytos = self.toContacts(self.message?.replyTos ?? "")
                     if replytos.count > 0 {
-                        senders.append(contentsOf: replytos)
+                        senders += replytos
                     } else {
                         if let newSender = self.toContact(self.message!.senderObject ?? "") {
                             senders.append(newSender)
@@ -318,16 +368,18 @@ final class ComposeViewModelImpl : ComposeViewModel {
                             senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
                         }
                     }
-                    
+
                     for sender in senders {
-                        if !sender.isDuplicated(userAddress) {
+                        if let sender = sender as? ContactVO,
+                            !sender.isDuplicated(userAddress) {
                             self.toSelectedContacts.append(sender)
                         }
                     }
-                    
+
                     let toContacts = self.toContacts(self.message!.recipientList)
                     for cont in toContacts {
-                        if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                        if let cont = cont as? ContactVO,
+                            !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
                             self.toSelectedContacts.append(cont)
                         }
                     }
@@ -336,7 +388,8 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     }
                     let senderContacts = self.toContacts(self.message!.ccList)
                     for cont in senderContacts {
-                        if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                        if let cont = cont as? ContactVO,
+                            !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
                             self.ccSelectedContacts.append(cont)
                         }
                     }
@@ -575,12 +628,40 @@ final class ComposeViewModelImpl : ComposeViewModel {
 }
 
 extension ComposeViewModelImpl {
-    func toJsonString(_ contacts : [ContactVO]) -> String {
-        
+    /**
+     Encode to the JSON request format for the API from the message object
+     
+     Currently, the fields are: Group, Address, and Name
+    */
+    func toJsonString(_ contacts : [ContactPickerModelProtocol]) -> String {
         var out : [[String : String]] = [[String : String]]();
         for contact in contacts {
-            let to : [String : String] = ["Name" : contact.name ?? "", "Address" : contact.email ?? ""]
-            out.append(to)
+            switch contact.modelType {
+            case .contact:
+                let contact = contact as! ContactVO
+                let to: [String : String] = [
+                    "Group": "",
+                    "Name" : contact.name ?? "",
+                    "Address" : contact.email ?? ""
+                ]
+                out.append(to)
+            case .contactGroup:
+                let contactGroup = contact as! ContactGroupVO
+                if let context = sharedCoreDataService.mainManagedObjectContext {
+                    let label = Label.labelForLabelName(contactGroup.contactTitle,
+                                                        inManagedObjectContext: context)
+                    if let label = label {
+                        for emailObj in label.emails.allObjects as! [Email] {
+                            let to: [String : String] = [
+                                "Group": contactGroup.contactTitle,
+                                "Name" : emailObj.name,
+                                "Address" : emailObj.email
+                            ]
+                            out.append(to)
+                        }
+                    }
+                }
+            }
         }
         
         let bytes : Data = try! JSONSerialization.data(withJSONObject: out, options: JSONSerialization.WritingOptions())
@@ -588,13 +669,33 @@ extension ComposeViewModelImpl {
         
         return strJson
     }
-    func toContacts(_ json : String) -> [ContactVO] {
-        var out : [ContactVO] = [ContactVO]();
+    
+    /**
+     Decode the JSON response from the API into the for the message object
+     
+     Currently, the fields are: Group, Address, and Name
+    */
+    func toContacts(_ json : String) -> [ContactPickerModelProtocol] {
+        var out : [ContactPickerModelProtocol] = [];
+        var groups: Set<String> = Set<String>()
         if let recipients : [[String : Any]] = json.parseJson() {
-            for dict:[String : Any] in recipients {
-                let name = dict["Name"] as? String ?? ""
-                let email = dict["Address"] as? String ?? ""
-                out.append(ContactVO(id: "", name: name, email: email))
+            for dict in recipients {
+                if let group = dict["Group"] as? String {
+                    if group.isEmpty {
+                        let name = dict["Name"] as? String ?? ""
+                        let email = dict["Address"] as? String ?? ""
+                        out.append(ContactVO(id: "", name: name, email: email))
+                    } else {
+                        let name = dict["Group"] as? String ?? ""
+                        groups.insert(name)
+                    }
+                } else {
+                    PMLog.D("Decoding error")
+                }
+            }
+            
+            for group in groups {
+                out.append(ContactGroupVO(ID: "", name: group))
             }
         }
         return out
@@ -603,17 +704,17 @@ extension ComposeViewModelImpl {
     func toContact(_ json : String) -> ContactVO? {
         var out : ContactVO? = nil
         let recipients : [String : String] = self.parse(json)
-        
+
         let name = recipients["Name"] ?? ""
         let address = recipients["Address"] ?? ""
-        
+
         if !address.isEmpty {
             out = ContactVO(id: "", name: name, email: address)
         }
         return out
     }
     
-    func parse (_ json : String) -> [String:String] {
+    func parse (_ json: String) -> [String:String] {
         if json.isEmpty {
             return ["" : ""];
         }

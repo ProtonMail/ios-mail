@@ -42,4 +42,11 @@ extension Label {
     class func labelForLableID(_ labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.labelID, matchingValue: labelID) as? Label
     }
+    
+    class func labelForLabelName(_ name: String,
+                                 inManagedObjectContext context: NSManagedObjectContext) -> Label? {
+        return context.managedObjectWithEntityName(Attributes.entityName,
+                                                   forKey: Attributes.name,
+                                                   matchingValue: name) as? Label
+    }
 }

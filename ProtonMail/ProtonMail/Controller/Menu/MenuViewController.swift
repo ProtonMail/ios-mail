@@ -134,6 +134,8 @@ class MenuViewController: UIViewController {
             settings.performSegue(withIdentifier: settings.kNotificationsSnoozeSegue, sender: sender)
         }
         
+        
+        
         if let navigation = segue.destination as? UINavigationController {
             let segueID = segue.identifier
             //right now all mailbox view controller all could process together.
@@ -155,9 +157,28 @@ class MenuViewController: UIViewController {
                     }
                 }
             } else if (segueID == kSegueToContacts ) {
-                if let contactViewController = navigation.firstViewController() as? ViewModelProtocol {
-                    sharedVMService.contactsViewModel(contactViewController)
+                // setup contact group view controller
+                if let tabBarController = navigation.firstViewController() as? UITabBarController,
+                    let viewControllers = tabBarController.viewControllers {
+                    if let contactViewController = viewControllers[0] as? ContactsViewController {
+                        sharedVMService.contactsViewModel(contactViewController)
+                    }
+                    
+                    if let contactGroupsViewController = viewControllers[1] as? ContactGroupsViewController {
+                        sharedVMService.contactGroupsViewModel(contactGroupsViewController)
+                    }
                 }
+            }
+        } else if let tabBarController = segue.destination as? UITabBarController,
+            let viewControllers = tabBarController.viewControllers {
+            if let contactNavigation = viewControllers[0] as? UINavigationController,
+                let contactViewController = contactNavigation.firstViewController() as? ContactsViewController {
+                sharedVMService.contactsViewModel(contactViewController)
+            }
+            
+            if let contactGroupNavigation = viewControllers[1] as? UINavigationController,
+                let contactGroupsViewController = contactGroupNavigation.firstViewController() as? ContactGroupsViewController {
+                sharedVMService.contactGroupsViewModel(contactGroupsViewController)
             }
         }
     }

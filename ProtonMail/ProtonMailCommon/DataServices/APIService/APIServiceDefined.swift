@@ -112,6 +112,11 @@ struct ContactsAPI {
     static let v_delete_contacts : Int = 3
     
     /// group
+    /// label an array of emails to a certain contact group
+    static let v_label_an_array_of_contact_emails: Int = 3
+    
+    /// unlabel an array of emails from a certain contact group
+    static let v_unlabel_an_array_of_contact_emails: Int = 3
     
     /// export
     

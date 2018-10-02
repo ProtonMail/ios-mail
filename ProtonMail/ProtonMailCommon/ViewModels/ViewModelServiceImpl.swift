@@ -246,7 +246,7 @@ class ViewModelServiceImpl: ViewModelService {
         activeViewController = vmp
         vmp.setViewModel(ContactEditViewModelImpl(c: contact))
     }
-
+    
     override func contactTypeViewModel(_ vmp : ViewModelProtocol, type: ContactEditTypeInterface) {
         if latestComposerViewModel != nil {
             
@@ -259,6 +259,64 @@ class ViewModelServiceImpl: ViewModelService {
         vmp.setViewModel(ContactTypeViewModelImpl(t: type))
     }
     
+    override func contactSelectContactGroupsViewModel(_ vmp: ViewModelProtocol,
+                                                      selectedGroupIDs: [String],
+                                                      refreshHandler: @escaping (NSSet) -> Void) {
+        activeViewController = vmp
+        vmp.setViewModel(ContactGroupsViewModelImpl(state: .ContactSelectGroups,
+                                                    selectedGroupIDs: selectedGroupIDs,
+                                                    refreshHandler: refreshHandler))
+    }
+    
+    // contact groups
+    override func contactGroupsViewModel(_ vmp: ViewModelProtocol) {
+        activeViewController = vmp
+        vmp.setViewModel(ContactGroupsViewModelImpl(state: .ContactGroupsView))
+    }
+    
+    override func contactGroupDetailViewModel(_ vmp: ViewModelProtocol,
+                                              groupID: String,
+                                              name: String,
+                                              color: String,
+                                              emailIDs: NSSet) {
+        activeViewController = vmp
+        vmp.setViewModel(ContactGroupDetailViewModelImpl(groupID: groupID,
+                                                         name: name,
+                                                         color: color,
+                                                         emailIDs: emailIDs))
+    }
+    
+    override func contactGroupEditViewModel(_ vmp : ViewModelProtocol,
+                                            state: ContactGroupEditViewControllerState,
+                                            groupID: String? = nil,
+                                            name: String? = nil,
+                                            color: String? = nil,
+                                            emailIDs: NSSet = NSSet()) {
+        activeViewController = vmp
+        vmp.setViewModel(ContactGroupEditViewModelImpl(state: state,
+                                                       groupID: groupID,
+                                                       name: name,
+                                                       color: color,
+                                                       emailIDs: emailIDs))
+    }
+    
+    override func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocol,
+                                                   currentColor: String?,
+                                                   refreshHandler: @escaping (String?) -> Void) {
+        activeViewController = vmp
+        vmp.setViewModel(ContactGroupSelectColorViewModelImpl(currentColor: currentColor,
+                                                              refreshHandler: refreshHandler))
+    }
+    
+    override func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocol,
+                                                   selectedEmails: NSSet,
+                                                   refreshHandler: @escaping (NSSet) -> Void) {
+        activeViewController = vmp
+        vmp.setViewModel(ContactGroupSelectEmailViewModelImpl(selectedEmails: selectedEmails,
+                                                              refreshHandler: refreshHandler))
+    }
+    
+    // composer
     override func buildComposer<T: ViewModelProtocolNew>(_ vmp: T, subject: String, content: String, files: [FileData]) {
         latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)
         guard let viewModel = latestComposerViewModel as? T.argType else {

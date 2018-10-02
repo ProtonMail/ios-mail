@@ -55,8 +55,12 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     @objc public var email: String!
     public var isProtonMailContact: Bool = false
     
+    var modelType: ContactPickerModelState {
+        get {
+            return .contact
+        }
+    }
     
-    //
     var contactTitle : String {
         get {
             return title

@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.homepage     = "http://protonmail.ch"
   s.license      = "ProtonMail"
   s.author       = "Yanfeng Zhang"
-  s.platform     = :ios, "8.0"
+  s.platform     = :ios, "9.0"
   s.source_files  = "include/OpenPGP/*.h"
   s.public_header_files = "include/OpenPGP/*.h"
   s.header_dir = "OpenPGP"

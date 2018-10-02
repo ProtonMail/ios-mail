@@ -33,10 +33,9 @@ class ComposeViewModel {
     private let maxNumberOfRecipients: Int = 25
     var message : Message?
     var messageAction : ComposeMessageAction!
-    var toSelectedContacts: [ContactVO] = [ContactVO]()
-    var ccSelectedContacts: [ContactVO] = [ContactVO]()
-    var bccSelectedContacts: [ContactVO] = [ContactVO]()
-    var contacts: [ContactVO] = [ContactVO]()
+    var toSelectedContacts: [ContactPickerModelProtocol] = []
+    var ccSelectedContacts: [ContactPickerModelProtocol] = []
+    var bccSelectedContacts: [ContactPickerModelProtocol] = []
     
     var subject : String! = ""
     var body : String! = ""
@@ -60,9 +59,44 @@ class ComposeViewModel {
     
     init() { }
     
-    func validateNumberOfRecipients() -> Bool {
-        let overallRecipients = [toSelectedContacts, ccSelectedContacts, bccSelectedContacts].map{ $0.count }.reduce(0, +)
-        return overallRecipients < self.maxNumberOfRecipients
+    func isValidNumberOfRecipients() -> Bool {
+        let allRecipients = [toSelectedContacts,
+                             ccSelectedContacts,
+                             bccSelectedContacts]
+        
+        var emailList = Set<String>()
+        for recipients in allRecipients {
+            for recipient in recipients {
+                switch recipient.modelType {
+                case .contact:
+                    emailList.insert((recipient as! ContactVO).email)
+                case .contactGroup:
+                    // TODO: when sub-selection is implemented, this need to be changed
+                    
+                    if let context = sharedCoreDataService.mainManagedObjectContext {
+                        let contactGroup = recipient as! ContactGroupVO
+                        let label = Label.labelForLabelName(contactGroup.contactTitle,
+                                                            inManagedObjectContext: context)
+                        
+                        if let label = label {
+                            if let emailsInGroup = label.emails.allObjects as? [Email] {
+                                for email in emailsInGroup {
+                                    emailList.insert(email.email)
+                                }
+                            } else {
+                                // TODO: handle error
+                                PMLog.D("NSSet conversion to [Email] error")
+                            }
+                        }
+                    } else {
+                        // TODO: handle error
+                        PMLog.D("Can't get context")
+                    }
+                }
+            }
+        }
+        
+        return emailList.count <= self.maxNumberOfRecipients
     }
     
     func getSubject() -> String {
@@ -77,15 +111,15 @@ class ComposeViewModel {
         self.body = body
     }
     
-     func addToContacts(_ contacts: ContactVO! ) {
+     func addToContacts(_ contacts: ContactPickerModelProtocol! ) {
         toSelectedContacts.append(contacts)
     }
     
-     func addCcContacts(_ contacts: ContactVO! ) {
+     func addCcContacts(_ contacts: ContactPickerModelProtocol! ) {
         ccSelectedContacts.append(contacts)
     }
     
-     func addBccContacts(_ contacts: ContactVO! ) {
+     func addBccContacts(_ contacts: ContactPickerModelProtocol! ) {
         bccSelectedContacts.append(contacts)
     }
     

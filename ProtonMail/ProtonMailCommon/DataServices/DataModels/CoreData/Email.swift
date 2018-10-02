@@ -22,4 +22,5 @@ class Email: NSManagedObject {
     @NSManaged var type: String
     
     @NSManaged var contact: Contact
+    @NSManaged var labels: NSSet
 }

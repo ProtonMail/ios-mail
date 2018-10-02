@@ -616,8 +616,26 @@ extension ComposerViewController : ComposeViewDelegate {
         self.updateEO()
     }
     
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker) {
-        guard self.viewModel.validateNumberOfRecipients() else {
+    func composeView(_ composeView: ComposeView, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker) {
+        if (picker == composeView.toContactPicker) {
+            self.viewModel.toSelectedContacts.append(contact)
+        } else if (picker == composeView.ccContactPicker) {
+            self.viewModel.ccSelectedContacts.append(contact)
+        } else if (picker == composeView.bccContactPicker) {
+            self.viewModel.bccSelectedContacts.append(contact)
+        }
+        
+        if self.viewModel.isValidNumberOfRecipients() == false {
+            // rollback
+            if (picker == composeView.toContactPicker) {
+                self.viewModel.toSelectedContacts.removeLast()
+            } else if (picker == composeView.ccContactPicker) {
+                self.viewModel.ccSelectedContacts.removeLast()
+            } else if (picker == composeView.bccContactPicker) {
+                self.viewModel.bccSelectedContacts.removeLast()
+            }
+            
+            // present error
             let alert = UIAlertController(title: LocalString._too_many_recipients,
                                           message: LocalString._max_number_of_recipients_is,
                                           preferredStyle: .alert)
@@ -626,23 +644,22 @@ extension ComposerViewController : ComposeViewDelegate {
             picker.reloadData()
             return
         }
-        if (picker == composeView.toContactPicker) {
-            self.viewModel.toSelectedContacts.append(contact)
-        } else if (picker == composeView.ccContactPicker) {
-            self.viewModel.ccSelectedContacts.append(contact)
-        } else if (picker == composeView.bccContactPicker) {
-            self.viewModel.bccSelectedContacts.append(contact)
-        }
     }
     
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker:ContactPicker) {
+    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker:ContactPicker) {
         // here each logic most same, need refactor later
         if (picker == composeView.toContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.toSelectedContacts
             for (index, selectedContact) in selectedContacts.enumerated() {
-                if (contact.email == selectedContact.email) {
-                    contactIndex = index
+                if let contact = contact as? ContactVO {
+                    if (contact.displayEmail == selectedContact.displayEmail) {
+                        contactIndex = index
+                    }
+                } else if let contactGroup = contact as? ContactGroupVO {
+                    if (contact.contactTitle == selectedContact.contactTitle) {
+                        contactIndex = index
+                    }
                 }
             }
             if (contactIndex >= 0) {
@@ -652,8 +669,14 @@ extension ComposerViewController : ComposeViewDelegate {
             var contactIndex = -1
             let selectedContacts = self.viewModel.ccSelectedContacts
             for (index, selectedContact) in selectedContacts.enumerated() {
-                if (contact.email == selectedContact.email) {
-                    contactIndex = index
+                if let contact = contact as? ContactVO {
+                    if (contact.displayEmail == selectedContact.displayEmail) {
+                        contactIndex = index
+                    }
+                } else if let contactGroup = contact as? ContactGroupVO {
+                    if (contact.contactTitle == selectedContact.contactTitle) {
+                        contactIndex = index
+                    }
                 }
             }
             if (contactIndex >= 0) {
@@ -663,8 +686,14 @@ extension ComposerViewController : ComposeViewDelegate {
             var contactIndex = -1
             let selectedContacts = self.viewModel.bccSelectedContacts
             for (index, selectedContact) in selectedContacts.enumerated() {
-                if (contact.email == selectedContact.email) {
-                    contactIndex = index
+                if let contact = contact as? ContactVO {
+                    if (contact.displayEmail == selectedContact.displayEmail) {
+                        contactIndex = index
+                    }
+                } else if let contactGroup = contact as? ContactGroupVO {
+                    if (contact.contactTitle == selectedContact.contactTitle) {
+                        contactIndex = index
+                    }
                 }
             }
             if (contactIndex >= 0) {
@@ -683,7 +712,7 @@ extension ComposerViewController : ComposeViewDataSource {
     }
     
     func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) ->  [ContactPickerModelProtocol] {
-        var selectedContacts: [ContactVO] = [ContactVO]()
+        var selectedContacts: [ContactPickerModelProtocol] = []
         if (picker == composeView.toContactPicker) {
             selectedContacts = self.viewModel.toSelectedContacts
         } else if (picker == composeView.ccContactPicker) {

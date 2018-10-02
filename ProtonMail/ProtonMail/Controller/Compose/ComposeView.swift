@@ -19,8 +19,8 @@ protocol ComposeViewDelegate: class {
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView)
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView)
     
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: ContactPicker)
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: ContactPicker)
+    func composeView(_ composeView: ComposeView, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker)
+    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker)
     
     func composeViewHideExpirationView(_ composeView: ComposeView)
     func composeViewCancelExpirationData(_ composeView: ComposeView)
@@ -730,13 +730,13 @@ extension ComposeView: ContactPickerDelegate {
     func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol) {
         let contactPicker = contactPickerForContactCollectionView(at)
         self.notifyViewSize(true)
-        self.delegate?.composeView(self, didAddContact: contact as! ContactVO, toPicker: contactPicker)
+        self.delegate?.composeView(self, didAddContact: contact, toPicker: contactPicker)
     }
     
     func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol) {
         let contactPicker = contactPickerForContactCollectionView(at)
         self.notifyViewSize(true)
-        self.delegate?.composeView(self, didRemoveContact: contact as! ContactVO, fromPicker: contactPicker)
+        self.delegate?.composeView(self, didRemoveContact: contact, fromPicker: contactPicker)
     }
     
     func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
@@ -774,6 +774,7 @@ extension ComposeView: UITextFieldDelegate {
 
 // MARK: - ContactPicker extension
 extension ContactPicker {
+    // TODO: contact group email expansion
     var contactList: String {
         var contactList = ""
         let contactsSelected = NSArray(array: self.contactsSelected)
@@ -782,6 +783,7 @@ extension ContactPicker {
         }
         return contactList
     }
+
     //TODO:: the hard code at here should be moved to enum / struture
     var hasOutsideEmails: Bool {
         let contactsSelected = NSArray(array: self.contactsSelected)

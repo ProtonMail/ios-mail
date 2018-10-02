@@ -59,6 +59,7 @@
 #import <OpenPGP/PMNIAddress.h>
 #import <OpenPGP/PMNITelephone.h>
 #import <OpenPGP/PMNIEmail.h>
+#import <OpenPGP/PMNICategories.h>
 #import <OpenPGP/PMNIUrl.h>
 #import <OpenPGP/PMNIUid.h>
 #import <OpenPGP/PMNIStructuredName.h>
