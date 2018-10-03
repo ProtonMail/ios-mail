@@ -28,7 +28,7 @@
 
 import Foundation
 
-typealias CheckUserNameBlock = (Bool, NSError?) -> Void
+typealias CheckUserNameBlock = (Result<CheckUserExistResponse.AvailabilityStatus>) -> Void
 typealias CreateUserBlock = (Bool, Bool, String, Error?) -> Void
 typealias GenerateKey = (Bool, String?, NSError?) -> Void
 typealias SendVerificationCodeBlock = (Bool, NSError?) -> Void
@@ -190,7 +190,7 @@ class HumanCheckRequest : ApiRequest<ApiResponse> {
 
 class CheckUserExist : ApiRequest<CheckUserExistResponse> {
     
-    let userName : String!
+    let userName : String
     
     init(userName : String) {
         self.userName = userName;
@@ -209,7 +209,7 @@ class CheckUserExist : ApiRequest<CheckUserExistResponse> {
     }
     
     override func path() -> String {
-        return UsersAPI.path + "/available/" + userName
+        return UsersAPI.path + "/available?Name=" + (userName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
     }
     
     override func apiVersion() -> Int {
@@ -218,11 +218,38 @@ class CheckUserExist : ApiRequest<CheckUserExistResponse> {
 }
 
 class CheckUserExistResponse : ApiResponse {
-    var isAvailable : Bool?
+    enum AvailabilityStatus {
+        case available                          // "Status" : 0
+        case invalidCharacters                  // "Status" : 1
+        case startWithSpecialCharacterForbidden // "Status" : 2
+        case endWithSpecialCharacterForbidden   // "Status" : 3
+        case tooLong                            // "Status" : 4
+        case unavailable(suggestions: [String]) // "Status" : 5
+        
+        init?(code: Int, suggestions: [String]) {
+            switch code {
+            case 0: self = .available
+            case 1: self = .invalidCharacters
+            case 2: self = .startWithSpecialCharacterForbidden
+            case 3: self = .endWithSpecialCharacterForbidden
+            case 4: self = .tooLong
+            case 5: self = .unavailable(suggestions: suggestions)
+            default: return nil
+            }
+        }
+    }
+    
+    internal var availabilityStatus : AvailabilityStatus?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
-        isAvailable =  response["Available"] as? Bool
+        guard let statusRaw = response["Status"] as? Int,
+            let suggestions = response["Suggestions"] as? [String] else
+        {
+            return false
+        }
+        
+        self.availabilityStatus = AvailabilityStatus(code: statusRaw, suggestions: suggestions)
         return true
     }
 }

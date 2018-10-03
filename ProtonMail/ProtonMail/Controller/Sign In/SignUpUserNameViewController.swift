@@ -186,19 +186,20 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         warningIcon.isHidden = true
     }
     
-    func finishChecking(_ isOk : Bool) {
-        if isOk {
-            checkUserStatus = true
-            warningView.isHidden = false
-            warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-            warningLabel.text = LocalString._user_is_available
-            warningIcon.isHidden = false
-        } else {
+    func finishChecking(_ status : CheckUserExistResponse.AvailabilityStatus) {
+        guard case CheckUserExistResponse.AvailabilityStatus.available = status else {
             warningView.isHidden = false
             warningLabel.textColor = UIColor.red
-            warningLabel.text = LocalString._user_already_exist
+            warningLabel.text = status.description
             warningIcon.isHidden = true
+            return
         }
+        
+        checkUserStatus = true
+        warningView.isHidden = false
+        warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
+        warningLabel.text = status.description
+        warningIcon.isHidden = false
     }
     
     @IBAction func createAccountAction(_ sender: UIButton) {
@@ -212,17 +213,19 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
                 let userName = (usernameTextField.text ?? "").trim()
                 if !userName.isEmpty {
                     startChecking()
-                    viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
+                    viewModel.checkUserName(userName, complete: { result in
                         MBProgressHUD.hide(for: self.view, animated: true)
-                        if error != nil {
-                            self.finishChecking(false)
-                        } else {
-                            if isOk {
-                                self.finishChecking(true)
+                        switch result {
+                        case .fulfilled(let status):
+                            self.finishChecking(status)
+                            if case CheckUserExistResponse.AvailabilityStatus.available = status {
                                 self.goPasswordsView()
-                            } else {
-                                self.finishChecking(false)
                             }
+                        case .rejected(let error):
+                            let alert = error.localizedDescription.alertController()
+                            alert.addOKAction()
+                            self.present(alert, animated: true, completion: nil)
+                            self.resetChecking()
                         }
                     })
                 } else {
@@ -335,27 +338,22 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     }
     
     func checkUserName() {
-        if !stopLoading {
-            if !checkUserStatus {
-                let userName = (usernameTextField.text ?? "").trim()
-                if !userName.isEmpty {
-                    startChecking()
-                    viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
-                        if error != nil {
-                            self.finishChecking(false)
-                        } else {
-                            if isOk {
-                                self.finishChecking(true)
-                            } else {
-                                self.finishChecking(false)
-                            }
-                        }
-                    })
-                } else {
-                    
-                }
-            }
+        let userName = (usernameTextField.text ?? "").trim()
+        guard !stopLoading && !checkUserStatus && !userName.isEmpty else {
+            return
         }
+        startChecking()
+        viewModel.checkUserName(userName, complete: { (response) -> Void in
+            switch response {
+            case .fulfilled(let status):
+                self.finishChecking(status)
+            case .rejected(let error):
+                let alert = error.localizedDescription.alertController()
+                alert.addOKAction()
+                self.present(alert, animated: true, completion: nil)
+                self.resetChecking()
+            }
+        })
     }
     
     func updateCreateButton() {
@@ -415,5 +413,19 @@ extension SignUpUserNameViewController: NSNotificationCenterKeyboardObserverProt
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
+    }
+}
+
+
+extension CheckUserExistResponse.AvailabilityStatus: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .available: return LocalString._user_is_available
+        case .invalidCharacters: return LocalString._invalid_characters
+        case .startWithSpecialCharacterForbidden: return LocalString._start_with_special_character
+        case .endWithSpecialCharacterForbidden: return LocalString._end_with_special_character
+        case .tooLong: return LocalString._too_long_username
+        case .unavailable: return LocalString._user_already_exist
+        }
     }
 }

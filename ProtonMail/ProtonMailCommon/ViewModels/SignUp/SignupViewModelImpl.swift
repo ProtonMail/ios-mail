@@ -85,7 +85,13 @@ final class SignupViewModelImpl : SignupViewModel {
         // need valide user name format
         let api = CheckUserExist(userName: username)
         api.call { (task, response, hasError) -> Void in
-            complete(response?.isAvailable ?? false, response?.error)
+            if let error = response?.error {
+                complete(.rejected(error))
+            } else if let status = response?.availabilityStatus {
+                complete(.fulfilled(status))
+            } else {
+                complete(.rejected(NSError.init(domain: "", code: 0, localizedDescription: "Failed to determine status")))
+            }
         }
     }
     
