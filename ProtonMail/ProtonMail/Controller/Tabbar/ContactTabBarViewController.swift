@@ -14,7 +14,9 @@ class ContactTabBarViewController: UITabBarController {
         
         // setup tab bar item title
         self.tabBar.items?[0].title = "Contacts"
+        self.tabBar.items?[0].image = UIImage.init(named: "contact_groups_contacts_tabbar")
         self.tabBar.items?[1].title = "Groups"
+        self.tabBar.items?[1].image = UIImage.init(named: "contact_groups_groups_tabbar")
     }
 }
 
