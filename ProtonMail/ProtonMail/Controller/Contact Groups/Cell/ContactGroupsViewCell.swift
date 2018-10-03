@@ -73,10 +73,15 @@ class ContactGroupsViewCell: UITableViewCell {
         nameLabel.text = name
         detailLabel.text = detail
         
-        groupImage.image = UIImage(named: "iap_users")
-        groupImage.backgroundColor = UIColor(hexColorCode: color)
-        groupImage.layer.borderWidth = 0
-        groupImage.layer.borderColor = UIColor.white.cgColor
+        groupImage.image = UIImage(named: "contact_groups_icon")
+        groupImage.setupImage(contentMode: .center,
+                              renderingMode: .alwaysTemplate,
+                              scale: 0.5,
+                              makeCircleBorder: true,
+                              tintColor: UIColor.white,
+                              backgroundColor: color,
+                              borderWidth: 0,
+                              borderColor: UIColor.white.cgColor)
         
         self.selectionStyle = .default
     }
@@ -90,10 +95,15 @@ class ContactGroupsViewCell: UITableViewCell {
         
         if delegate.isMultiSelect() && selected {
             // in multi-selection
-            groupImage.image = UIImage(named: "checked_signin")
-            groupImage.layer.backgroundColor = UIColor.white.cgColor
-            groupImage.layer.borderWidth = 1.0
-            groupImage.layer.borderColor = UIColor.gray.cgColor
+            groupImage.image = UIImage(named: "contact_groups_check")
+            groupImage.setupImage(contentMode: .center,
+                                  renderingMode: .alwaysOriginal,
+                                  scale: 0.5,
+                                  makeCircleBorder: true,
+                                  tintColor: UIColor.white,
+                                  backgroundColor: ColorManager.white,
+                                  borderWidth: 1.0,
+                                  borderColor: UIColor.gray.cgColor)
         } else if delegate.isMultiSelect() == false && selected {
             // normal selection
             groupImage.backgroundColor = UIColor(hexColorCode: highlightedColor)

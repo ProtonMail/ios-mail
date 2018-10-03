@@ -3829,11 +3829,11 @@
                         <viewControllerLayoutGuide type="bottom" id="yLP-fD-PN0"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="CTu-r9-gax">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="rMv-dt-zfT">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="contacts_details_display_cell" rowHeight="75" id="kZI-Ff-Bgl" customClass="ContactDetailsDisplayCell" customModule="ProtonMail" customModuleProvider="target">
@@ -4042,7 +4042,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="rMv-dt-zfT" id="Hju-O5-rMY"/>
-                        <segue destination="d3P-H0-xNt" kind="presentation" identifier="toEditContactSegue" id="Grd-B0-e0M"/>
                         <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="rru-oY-8Lv"/>
                         <segue destination="bwU-38-Jat" kind="presentation" identifier="toUpgradeAlertSegue" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="sDR-N5-yCe"/>
                     </connections>
@@ -4655,6 +4654,7 @@
         <image name="attached_main" width="14.5" height="16.5"/>
         <image name="bug_selected" width="52" height="52"/>
         <image name="contact_selected" width="20" height="27"/>
+        <image name="contacts_warnings" width="25" height="25"/>
         <image name="encrypted_main" width="15" height="20.5"/>
         <image name="favorite_main" width="19.5" height="19"/>
         <image name="favorite_main_selected" width="19.5" height="19"/>
@@ -4682,10 +4682,10 @@
         <image name="upgrade_background" width="325.5" height="437"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="sDR-N5-yCe"/>
         <segue reference="oa9-8b-dT8"/>
         <segue reference="Yep-Vd-dxY"/>
         <segue reference="0zg-HM-MdK"/>
-        <segue reference="gfN-F5-Ywe"/>
         <segue reference="PpL-SW-U8F"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="ddm-eA-erE"/>

@@ -83,9 +83,12 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         
         groupDetailLabel.text = viewModel.getTotalEmailString()
         
-        groupImage.backgroundColor = UIColor(hexString: viewModel.getColor(),
-                                             alpha: 1.0)
-        groupImage.layer.cornerRadius = 20.0
+        groupImage.setupImage(contentMode: .center,
+                              renderingMode: .alwaysTemplate,
+                              scale: 0.5,
+                              makeCircleBorder: true,
+                              tintColor: UIColor.white,
+                              backgroundColor: viewModel.getColor())
     }
     
     private func prepareTable() {

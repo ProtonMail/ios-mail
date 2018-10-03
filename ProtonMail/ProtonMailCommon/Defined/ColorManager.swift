@@ -19,4 +19,6 @@ struct ColorManager
     ]
     
     static let defaultColor = ColorManager.forLabel[0]
+    
+    static let white = "#FFFFFF"
 }

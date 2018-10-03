@@ -22,7 +22,8 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController
         self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
                                                      target: self,
                                                      action: #selector(self.addButtonTapped))
-        self.importBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .bookmarks,
+        self.importBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "mail_attachment-closed"),
+                                                        style: .plain,
                                                         target: self,
                                                         action: #selector(self.importButtonTapped))
         

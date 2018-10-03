@@ -28,6 +28,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactEditAddCell: String       = "ContactEditAddCell"
     fileprivate let kContactEditDeleteCell: String    = "ContactEditDeleteCell"
     fileprivate let kContactEditEmailCell: String     = "ContactEditEmailCell"
+    fileprivate let kContactAddEmailCell: String      = "ContactAddEmailCell"
     fileprivate let kContactEditCellphoneCell: String = "ContactEditCellphoneCell"
     fileprivate let kContactEditAddressCell: String   = "ContactEditAddressCell"
     fileprivate let kContactEditCellInfoCell: String  = "ContactEditInformationCell"
@@ -394,10 +395,17 @@ extension ContactEditViewController: UITableViewDataSource {
                 cell.selectionStyle = .default
                 outCell = cell
             } else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditEmailCell, for: indexPath) as! ContactEditEmailCell
-                cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getEmails()[row], callback: self, becomeFirstResponder: firstResponder)
-                outCell = cell
+                if viewModel.isNew() {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: kContactAddEmailCell, for: indexPath) as! ContactAddEmailCell
+                    cell.selectionStyle = .none
+                    cell.configCell(obj: viewModel.getEmails()[row], callback: self, becomeFirstResponder: firstResponder)
+                    outCell = cell
+                } else {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditEmailCell, for: indexPath) as! ContactEditEmailCell
+                    cell.selectionStyle = .none
+                    cell.configCell(obj: viewModel.getEmails()[row], callback: self, becomeFirstResponder: firstResponder)
+                    outCell = cell
+                }
             }
         case .cellphone:
             let cellCount = viewModel.getCells().count
@@ -689,6 +697,7 @@ extension ContactEditViewController: UITableViewDelegate {
     }
     
     
+    // TODO: use autolayout
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let sections = viewModel.getSections()
         if sections[indexPath.section] == .notes {
@@ -707,7 +716,13 @@ extension ContactEditViewController: UITableViewDelegate {
         }
         
         if sections[indexPath.section] == .emails {
-            return UITableView.automaticDimension
+            let emailCount = viewModel.getEmails().count
+            
+            if viewModel.isNew() || indexPath.row == emailCount {
+                return 48.0
+            } else {
+                return 48.0 * 2
+            }
         }
 
         return 48.0

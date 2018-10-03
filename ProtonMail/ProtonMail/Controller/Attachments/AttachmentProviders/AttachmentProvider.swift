@@ -34,7 +34,7 @@ extension AttachmentsTableViewController {
     func finish(_ fileData: FileData) {
         DispatchQueue.main.async { [weak self] in
             guard let `self` = self else { return }
-            let size = fileData.contents.size
+            let size = fileData.contents.dataSize
             guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
                 self.sizeError(0)
                 PMLog.D(" Size too big Orig: \(size) -- Limit: \(self.kDefaultAttachmentFileSize)")

@@ -20,6 +20,7 @@ final class ContactEditEmailCell: UITableViewCell {
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
     @IBOutlet weak var sepratorView: UIView!
+    @IBOutlet weak var horizontalSeparator: UIView!
     
     func refreshHandler(newContactGroups: NSSet)
     {
@@ -70,6 +71,7 @@ final class ContactEditEmailCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         sepratorView.gradient()
+        horizontalSeparator.gradient()
     }
 }
 

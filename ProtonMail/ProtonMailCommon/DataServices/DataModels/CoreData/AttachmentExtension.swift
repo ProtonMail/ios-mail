@@ -224,12 +224,12 @@ extension Attachment {
 }
 
 protocol AttachmentConvertible {
-    var size: Int { get }
+    var dataSize: Int { get }
     func toAttachment (_ message:Message, fileName : String, type:String) -> Attachment?
 }
 
 extension UIImage: AttachmentConvertible {
-    var size: Int {
+    var dataSize: Int {
         return self.toData().count
     }
     private func toData() -> Data! {
@@ -268,7 +268,7 @@ extension UIImage: AttachmentConvertible {
 }
 
 extension Data: AttachmentConvertible {
-    var size: Int {
+    var dataSize: Int {
         return self.count
     }
     func toAttachment (_ message:Message, fileName : String) -> Attachment? {
@@ -310,7 +310,7 @@ extension URL: AttachmentConvertible {
         attachment.fileName = fileName
         attachment.mimeType = type
         attachment.fileData = nil
-        attachment.fileSize = NSNumber(value: self.size)
+        attachment.fileSize = NSNumber(value: self.dataSize)
         attachment.isTemp = false
         attachment.keyPacket = ""
         attachment.localURL = self
@@ -329,7 +329,7 @@ extension URL: AttachmentConvertible {
         return attachment
     }
     
-    var size: Int {
+    var dataSize: Int {
         guard let attributes = try? FileManager.default.attributesOfItem(atPath: self.path),
             let size = attributes[.size] as? NSNumber else
         {
