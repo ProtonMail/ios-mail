@@ -11,7 +11,7 @@ import Foundation
 extension UIImageView
 {
     func setupImage(contentMode: UIView.ContentMode,
-                    renderingMode: UIImageRenderingMode,
+                    renderingMode: UIImage.RenderingMode,
                     scale: CGFloat,
                     makeCircleBorder: Bool,
                     tintColor: UIColor? = nil,

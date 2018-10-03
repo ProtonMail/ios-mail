@@ -831,40 +831,50 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func quickLook(attachment tempfile: URL, keyPackage: Data, fileName: String, type: String) {
-        if let data : Data = try? Data(contentsOf: tempfile) {
-            do {
-                tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)
-                if let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!) {
-                    try? decryptData.write(to: tempFileUri!, options: [.atomic])
-                    //TODO:: the hard code string need change it to enum later
-                    if (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
-                        let pkfile = try? Data(contentsOf: tempFileUri!) {
-                        do {
-                            let pass : PKPass = try PKPass(data: pkfile)
-                            if let vc = PKAddPassesViewController(pass: pass) {
-                                self.present(vc, animated: true, completion: nil)
-                            }
-                        } catch {
-                            let previewQL = QuickViewViewController()
-                            previewQL.dataSource = self
-                            latestPresentedView = previewQL
-                            self.present(previewQL, animated: true, completion: nil)
-                        }
-                    } else {
-                        let previewQL = QuickViewViewController()
-                        previewQL.dataSource = self
-                        latestPresentedView = previewQL
-                        self.present(previewQL, animated: true, completion: nil)
-                    }
-                }
-            } catch _ {
-                let alert = LocalString._cant_decrypt_this_attachment.alertController();
-                alert.addOKAction()
-                latestPresentedView = alert
-                self.present(alert, animated: true, completion: nil)
+
+        guard let data: Data = try? Data(contentsOf: tempfile) else {
+            let alert = LocalString._cant_find_this_attachment.alertController()
+            alert.addOKAction()
+            latestPresentedView = alert
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        do {
+            tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)
+            guard let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!),
+                let _ = try? decryptData.write(to: tempFileUri!, options: [.atomic]) else
+            {
+                throw NSError()
             }
-        } else{
-            let alert = LocalString._cant_find_this_attachment.alertController();
+            
+            //TODO:: the hard code string need change it to enum later
+            guard (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
+                let pkfile = try? Data(contentsOf: tempFileUri!) else
+            {
+                let previewQL = QuickViewViewController()
+                previewQL.dataSource = self
+                latestPresentedView = previewQL
+                self.present(previewQL, animated: true, completion: nil)
+                return
+            }
+            
+            //TODO:: I add some change here for conflict but not sure if it is ok -- from Feng
+            guard let pass = try? PKPass(data: pkfile),
+                let vc = PKAddPassesViewController(pass: pass),
+                // as of iOS 12.0 SDK, PKAddPassesViewController will not be initialized on iPads without any warning 🤯
+                (vc as UIViewController?) != nil else
+            {
+                let previewQL = QuickViewViewController()
+                previewQL.dataSource = self
+                latestPresentedView = previewQL
+                self.present(previewQL, animated: true, completion: nil)
+                return
+            }
+
+            self.present(vc, animated: true, completion: nil)
+        } catch _ {
+            let alert = LocalString._cant_decrypt_this_attachment.alertController();
             alert.addOKAction()
             latestPresentedView = alert
             self.present(alert, animated: true, completion: nil)
