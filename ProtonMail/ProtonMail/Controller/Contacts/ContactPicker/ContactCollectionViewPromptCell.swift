@@ -49,7 +49,7 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
     }
     
     func setup() {
-        self.insets = UIEdgeInsetsMake(0, 0, 0, 0)
+        self.insets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
         
         #if DEBUG_BORDERS
         self.layer.borderWidth = 1.0
@@ -61,12 +61,12 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
         self.addSubview(label)
     
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label]|",
-                                                           options: NSLayoutFormatOptions(rawValue: 0),
+                                                           options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
                                                            views: ["label": label]))
 
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[label]|",
-                                                           options: NSLayoutFormatOptions(rawValue: 0),
+                                                           options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
                                                            views: ["label": label]))
         

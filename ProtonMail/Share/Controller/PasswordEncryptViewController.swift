@@ -128,7 +128,7 @@ class PasswordEncryptViewController: UIViewController {
 extension PasswordEncryptViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         scrollBottomPaddingConstraint.constant = 0.0
-        guard let duration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double) else {
+        guard let duration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double) else {
                 return
         }
         UIView.animate(withDuration: duration, delay: 0, options: .curveLinear, animations: { () -> Void in
@@ -137,8 +137,8 @@ extension PasswordEncryptViewController: NSNotificationCenterKeyboardObserverPro
     }
     
     func keyboardWillShowNotification(_ notification: Notification) {
-        guard let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
-            let duration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double) else {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
+            let duration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double) else {
                 return
         }
         scrollBottomPaddingConstraint.constant = keyboardSize.height;

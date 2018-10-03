@@ -12,7 +12,7 @@ import Foundation
 class EmailAttachmentView: UITableView {
     
     required init() {
-        super.init(frame: CGRect.zero, style: UITableViewStyle.plain)
+        super.init(frame: CGRect.zero, style: UITableView.Style.plain)
         self.backgroundColor = UIColor.white
         self.layoutIfNeeded()
     }

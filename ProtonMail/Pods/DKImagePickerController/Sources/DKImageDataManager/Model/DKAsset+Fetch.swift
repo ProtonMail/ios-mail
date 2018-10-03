@@ -76,9 +76,9 @@ public extension DKAsset {
         } else {
             if let image = self.image {
                 if self.hasAlphaChannel(image: image) {
-                    completeBlock(UIImagePNGRepresentation(image), nil)
+                    completeBlock(image.pngData(), nil)
                 } else {
-                    completeBlock(UIImageJPEGRepresentation(image, 0.9), nil)
+                    completeBlock(image.jpegData(compressionQuality: 0.9), nil)
                 }
             } else {
                 assert(false)

@@ -39,8 +39,8 @@ open class DKAssetGroupDetailVC: UIViewController,
         let button = UIButton()
 		
         #if swift(>=4.0)
-        let globalTitleColor = UINavigationBar.appearance().titleTextAttributes?[NSAttributedStringKey.foregroundColor] as? UIColor
-        let globalTitleFont = UINavigationBar.appearance().titleTextAttributes?[NSAttributedStringKey.font] as? UIFont
+        let globalTitleColor = UINavigationBar.appearance().titleTextAttributes?[NSAttributedString.Key.foregroundColor] as? UIColor
+        let globalTitleFont = UINavigationBar.appearance().titleTextAttributes?[NSAttributedString.Key.font] as? UIFont
         #else
         let globalTitleColor = UINavigationBar.appearance().titleTextAttributes?[NSForegroundColorAttributeName] as? UIColor
         let globalTitleFont = UINavigationBar.appearance().titleTextAttributes?[NSFontAttributeName] as? UIFont

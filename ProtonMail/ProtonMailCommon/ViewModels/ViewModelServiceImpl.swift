@@ -12,9 +12,6 @@ import UICKeyChainStore
 //keep this unique
 let sharedVMService : ViewModelServiceImpl = ViewModelServiceImpl()
 class ViewModelServiceImpl: ViewModelService {
-    @available(*, deprecated)
-    private var latestComposerViewModel : ComposeViewModel?
-    
     //the active view controller needs to be reset when resetComposerView be called
     private var activeViewController : ViewModelProtocol?
     //the active mailbox
@@ -25,7 +22,6 @@ class ViewModelServiceImpl: ViewModelService {
     
     private func setup(composer vmp: ViewModelProtocolBase, viewModel: ComposeViewModel) {
         vmp.setModel(vm: viewModel)
-        self.latestComposerViewModel = viewModel
         self.activeViewControllerNew = vmp
     }
     
@@ -50,7 +46,6 @@ class ViewModelServiceImpl: ViewModelService {
                 self.activeViewControllerNew = nil
             }
         }
-        latestComposerViewModel = nil
     }
     
     override func newDraft(vmp: ViewModelProtocolBase) {
@@ -188,10 +183,6 @@ class ViewModelServiceImpl: ViewModelService {
     
     //contacts
     override func contactsViewModel(_ vmp: ViewModelProtocol) {
-        if latestComposerViewModel != nil {
-            
-        }
-        
         if activeViewController != nil {
             
         }
@@ -200,10 +191,6 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func contactDetailsViewModel(_ vmp: ViewModelProtocol, contact: Contact!) {
-        if latestComposerViewModel != nil {
-            
-        }
-        
         if activeViewController != nil {
             
         }
@@ -212,10 +199,6 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func contactAddViewModel(_ vmp: ViewModelProtocol) {
-        if latestComposerViewModel != nil {
-            
-        }
-        
         if activeViewController != nil {
             
         }
@@ -224,10 +207,6 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func contactAddViewModel(_ vmp: ViewModelProtocol, contactVO: ContactVO!) {
-        if latestComposerViewModel != nil {
-            
-        }
-        
         if activeViewController != nil {
             
         }
@@ -236,10 +215,6 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func contactEditViewModel(_ vmp: ViewModelProtocol, contact: Contact!) {
-        if latestComposerViewModel != nil {
-            
-        }
-        
         if activeViewController != nil {
             
         }
@@ -248,9 +223,6 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func contactTypeViewModel(_ vmp : ViewModelProtocol, type: ContactEditTypeInterface) {
-        if latestComposerViewModel != nil {
-            
-        }
         
         if activeViewController != nil {
             
@@ -318,7 +290,7 @@ class ViewModelServiceImpl: ViewModelService {
     
     // composer
     override func buildComposer<T: ViewModelProtocolNew>(_ vmp: T, subject: String, content: String, files: [FileData]) {
-        latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)
+        let latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)
         guard let viewModel = latestComposerViewModel as? T.argType else {
             return
         }

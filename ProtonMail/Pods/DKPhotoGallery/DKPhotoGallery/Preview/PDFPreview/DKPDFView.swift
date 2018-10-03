@@ -46,7 +46,7 @@ open class DKPDFView: UIView {
     public let openButton = UIButton(type: .custom)
     
     private lazy var bufferingIndicator: UIActivityIndicatorView = {
-        return UIActivityIndicatorView(activityIndicatorStyle: .white)
+        return UIActivityIndicatorView(style: .white)
     }()
     
     private var pdfView = PDFView()

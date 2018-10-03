@@ -48,16 +48,16 @@ class LabelTableViewCell: UITableViewCell {
     func updateStatusButton () {
         switch self.model.currentStatus {
         case 0:
-            selectStatusButton.setImage(UIImage(named:"mail_check"), for: UIControlState())
+            selectStatusButton.setImage(UIImage(named:"mail_check"), for: UIControl.State())
             break
         case 1:
-            selectStatusButton.setImage(UIImage(named:"mail_check-neutral"), for: UIControlState())
+            selectStatusButton.setImage(UIImage(named:"mail_check-neutral"), for: UIControl.State())
             break;
         case 2:
-            selectStatusButton.setImage(UIImage(named:"mail_check-active"), for: UIControlState())
+            selectStatusButton.setImage(UIImage(named:"mail_check-active"), for: UIControl.State())
             break
         default:
-            selectStatusButton.setImage(UIImage(named:"mail_check"), for: UIControlState())
+            selectStatusButton.setImage(UIImage(named:"mail_check"), for: UIControl.State())
             break
         }
     }
@@ -77,8 +77,8 @@ class LabelTableViewCell: UITableViewCell {
                     image = UIImage(named: "menu_folder")
                 }
                 
-                labelIcon.image = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-                labelIcon.highlightedImage = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+                labelIcon.image = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+                labelIcon.highlightedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
                 labelIcon.tintColor = color
             } else {
                 labelIcon.isHidden = true

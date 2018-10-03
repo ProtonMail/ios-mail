@@ -56,7 +56,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
         refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
         refreshControl.addTarget(self,
                                  action: #selector(fireFetch),
-                                 for: UIControlEvents.valueChanged)
+                                 for: UIControl.Event.valueChanged)
         
         tableView.addSubview(self.refreshControl)
         tableView.dataSource = self
@@ -68,9 +68,9 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
         if #available(iOS 11.0, *) {
             self.navigationController?.navigationBar.prefersLargeTitles = false
         } else {
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background),
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage.image(with: UIColor.ProtonMail.Nav_Bar_Background),
                                                                         for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
-            self.navigationController?.navigationBar.shadowImage = UIImage.imageWithColor(UIColor.ProtonMail.Nav_Bar_Background)
+            self.navigationController?.navigationBar.shadowImage = UIImage.image(with: UIColor.ProtonMail.Nav_Bar_Background)
             self.refreshControl.backgroundColor = .white
         }
         self.definesPresentationContext = true
@@ -148,10 +148,10 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
             sharedVMService.contactDetailsViewModel(contactDetailsViewController, contact: contact!)
         } else if (segue.identifier == "toCompose") {
         } else if (segue.identifier == kAddContactSugue) {
-            let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
+            let addContactViewController = segue.destination.children[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController)
         } else if (segue.identifier == kAddContactGroupSugue) {
-            let addContactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
+            let addContactGroupViewController = segue.destination.children[0] as! ContactGroupEditViewController
             sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create)
         } else if segue.identifier == kSegueToImportView {
             let popup = segue.destination as! ContactImportViewController
@@ -226,7 +226,7 @@ extension ContactsViewController: UITableViewDelegate {
         return 60.0
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
     }
     
@@ -319,7 +319,7 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             UIView.animate(withDuration: keyboardInfo.duration,
                            delay: 0,
                            options: keyboardInfo.animationOption, animations: { () -> Void in
@@ -355,12 +355,12 @@ extension ContactsViewController : NSFetchedResultsControllerDelegate {
         switch(type) {
         case .delete:
             if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
             }
         case .insert:
             if let newIndexPath = newIndexPath {
                 PMLog.D("Section: \(newIndexPath.section) Row: \(newIndexPath.row) ")
-                tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         case .update:
             if let indexPath = indexPath {

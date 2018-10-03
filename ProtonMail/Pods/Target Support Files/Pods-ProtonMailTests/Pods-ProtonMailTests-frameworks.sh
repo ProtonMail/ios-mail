@@ -161,6 +161,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework"
@@ -181,6 +182,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework"
 fi
 if [[ "$CONFIGURATION" == "Distribution" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworkActivityLogger/AFNetworkActivityLogger.framework"
@@ -201,6 +203,7 @@ if [[ "$CONFIGURATION" == "Distribution" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

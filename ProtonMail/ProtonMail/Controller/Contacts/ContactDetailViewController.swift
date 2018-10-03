@@ -48,7 +48,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.doneItem = UIBarButtonItem(title: LocalString._general_edit_action,
-                                        style: UIBarButtonItemStyle.plain,
+                                        style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(didTapEditButton(sender:)))
         self.navigationItem.rightBarButtonItem = doneItem
         
@@ -66,7 +66,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
 
         let nib = UINib(nibName: kContactDetailsHeaderView, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 60.0
         tableView.noSeparatorsBelowFooter()
         
@@ -97,11 +97,11 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == kEditContactSegue) {
             let contact = sender as! Contact
-            let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
+            let addContactViewController = segue.destination.children[0] as! ContactEditViewController
             addContactViewController.delegate = self
             sharedVMService.contactEditViewModel(addContactViewController, contact: contact)
         } else if (segue.identifier == kToComposeSegue) {
-            let composerVC = segue.destination.childViewControllers[0] as! ComposeEmailViewController
+            let composerVC = segue.destination.children[0] as! ComposeEmailViewController
             let contact = sender as? ContactVO
             sharedVMService.newDraft(vmp: composerVC, with: contact)
         } else if segue.identifier == kToUpgradeAlertSegue {
@@ -370,7 +370,7 @@ extension ContactDetailViewController: UITableViewDelegate {
         case .display_name, .emails, .cellphone, .home_address,
              .information, .custom_field, .notes, .url,
              .type2_warning, .type3_error, .type3_warning, .debuginfo:
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         case .email_header, .encrypted_header, .delete:
             return 0.0
         case .upgrade:

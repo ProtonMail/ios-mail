@@ -149,8 +149,8 @@ class LabelsView: PMView {
                         labelView.layer.borderColor = color.cgColor
                         
                         let image = UIImage(named: "mail_label-collapsed")
-                        imageView.image = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-                        imageView.highlightedImage = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+                        imageView.image = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+                        imageView.highlightedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
                         imageView.tintColor = color
                         
                         labelsSize.append(labelView.sizeThatFits(CGSize.zero).width)

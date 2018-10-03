@@ -17,7 +17,7 @@ enum ServiceLevelDataFactory {
     
     typealias SPC = ServicePlanCapability
     internal static func makeCapabilitiesSection(plan: ServicePlan, details: ServicePlanDetails) -> Section<UIView> {
-        var body = [NSAttributedStringKey: Any]()
+        var body = [NSAttributedString.Key: Any]()
         body[.font] = UIFont.preferredFont(forTextStyle: .body)
         
         let multiuser1 = plan ~ ([.pro], SPC(image: UIImage(named:"iap_users"),
@@ -61,7 +61,7 @@ enum ServiceLevelDataFactory {
     }
     
     internal static func makeUnavailablePlanStatusSection(plan: ServicePlan) -> Section<UIView> {
-        var regularAttributes = [NSAttributedStringKey: Any]()
+        var regularAttributes = [NSAttributedString.Key: Any]()
         regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)
         var coloredAttributes = regularAttributes
         coloredAttributes[.foregroundColor] = plan.subheader.1
@@ -79,7 +79,7 @@ enum ServiceLevelDataFactory {
     
     internal static func makeCurrentPlanStatusSection(subscription: Subscription) -> Section<UIView> {
         var message: NSAttributedString!
-        var regularAttributes = [NSAttributedStringKey: Any]()
+        var regularAttributes = [NSAttributedString.Key: Any]()
         regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)
         var coloredAttributes = regularAttributes
         coloredAttributes[.foregroundColor] = subscription.plan.subheader.1
@@ -113,7 +113,7 @@ enum ServiceLevelDataFactory {
             let titleColored = NSAttributedString(string: plan.subheader.0.uppercased(),
                                                   attributes: [.foregroundColor : UIColor.ProtonMail.ButtonBackground,
                                                                .font: UIFont.preferredFont(forTextStyle: .body)])
-            var body = [NSAttributedStringKey: Any]()
+            var body = [NSAttributedString.Key: Any]()
             body[.font] = UIFont.preferredFont(forTextStyle: .body)
             let attributed = NSMutableAttributedString(string: "ProtonMail ", attributes: body)
             attributed.append(titleColored)
@@ -128,7 +128,7 @@ enum ServiceLevelDataFactory {
     }
     
     internal static func makeBuyLinkSection() -> Section<UIView>? {
-        var body = [NSAttributedStringKey: Any]()
+        var body = [NSAttributedString.Key: Any]()
         body[.font] = UIFont.preferredFont(forTextStyle: .body)
         let blank = TableSectionHeader(title: " ", textAlignment: .center)
         let buyMore = ServicePlanCapability(title: NSAttributedString(string: LocalString._buy_more_credits, attributes: body),

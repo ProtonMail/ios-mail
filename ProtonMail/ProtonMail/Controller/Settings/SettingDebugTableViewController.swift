@@ -66,7 +66,7 @@ class SettingDebugViewController: UITableViewController {
     
     @objc override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "setting_debug_cell", for: indexPath) 
-        cell.selectionStyle = UITableViewCellSelectionStyle.none
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
         
         var element : [String : Any]!
         if indexPath.section == 0
@@ -127,10 +127,10 @@ class SettingDebugViewController: UITableViewController {
     }
     
     // Override to support editing the table view.
-    @objc override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    @objc override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     }
     
-    @objc override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    @objc override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none;
     }
     

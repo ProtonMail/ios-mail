@@ -446,7 +446,7 @@ open class DKImagePickerController: UINavigationController, DKImageBaseManagerOb
     
     @objc open func saveImage(_ image: UIImage, _ metadata: [AnyHashable : Any]?, _ completeBlock: @escaping ((_ asset: DKAsset) -> Void)) {
         if let metadata = metadata {
-            let imageData = UIImageJPEGRepresentation(image, 1)!
+            let imageData = image.jpegData(compressionQuality: 1)!
             
             if #available(iOS 9.0, *) {
                 if let imageDataWithMetadata = self.writeMetadata(metadata, into: imageData) {

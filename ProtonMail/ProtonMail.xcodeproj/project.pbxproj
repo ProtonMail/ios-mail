@@ -717,6 +717,7 @@
 		7A76929C2D788FFB449294ADC051D34C /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1C852E9CC196C3905CADD4C2704291 /* MenuItem.swift */; };
 		7A7CFA2309F2FB3FA6E32F2872A93FEF /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 262F367D949D94238B158C679184B520 /* Menu.storyboard */; };
 		7B495BECA0F5A911A86D60CA25C78B8E /* ViewModelProtocalT.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75EBFD70984828D2EE13F30B6946825 /* ViewModelProtocalT.swift */; };
+		7B71395AE1592D80A1CFC2A0B3C7307B /* NetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */; };
 		7B9AC57F18FFCBCEFFA902AE398CD8FC /* String+Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8401423E8FE838D3E637E3CAB0244D4 /* String+Alert+Extension.swift */; };
 		7B9ACACA5757B5E06DA5D10EE1163462 /* GeneralSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA7289C7A00897216DF37D848BDD1EE /* GeneralSettingViewCell.swift */; };
 		7BEB27AE7378DB2746F3AC5615475070 /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB397285117812BF94A2953E4B56D9C /* CustomHeaderView.swift */; };
@@ -726,7 +727,6 @@
 		7CC0A1B87B176EE865FCD8317F7C9FA6 /* ContactGroupDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B9D8479C48831A69305E90F288B2A3 /* ContactGroupDefined.swift */; };
 		7CD8CAC4531AC6FBEA2752DF1D9FA831 /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7627FEBF2F33A575273ACF9A8A0AA738 /* SettingsAPI.swift */; };
 		7CE6047A859D926F1ABCFA0A3B7592DC /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = B752C6886D60C2FFFC352721ED52A5F3 /* backup.css */; };
-		7CFF4B59B2644348DEDAA0143D554AE6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DC07BE51E0C6F5DE14D7B872D60183 /* SettingsViewController.swift */; };
 		7D0CB29468C1EE49171D025513E109AC /* LabelEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F316188242477E404DB5C128DA38712 /* LabelEditViewController.swift */; };
 		7D81F14C4054D7FC71BE89D610AAE36B /* LabelboxViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07485BF822F9851BDFC28AE2401632AB /* LabelboxViewModelImpl.swift */; };
 		7DFB4C294CAE23A769678D3AB6154E6C /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7627FEBF2F33A575273ACF9A8A0AA738 /* SettingsAPI.swift */; };
@@ -924,7 +924,6 @@
 		9FF40A7A7656FDE69397612451539E89 /* ComposeErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83FBFD5F77D9FC09A7E1F0B30FC69E /* ComposeErrorView.swift */; };
 		9FFADCDC7F2EA9322340B4C7EA662974 /* UILabel+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D911DE362A1DC4B22E34A8FF35E98592 /* UILabel+ProtonMail.swift */; };
 		A0549E3B0917C4F391C34DDD4355D223 /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582E5E46BFB6B6254432DD37705FF0C /* EmailView.swift */; };
-		A06652D951AFB9C0EE3421D9BAE79007 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DC07BE51E0C6F5DE14D7B872D60183 /* SettingsViewController.swift */; };
 		A0978C5D06F4B6C098352E6F58804710 /* ProtonMail.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = BB002B5675ED1988C1C86F59FDB410DA /* ProtonMail.xcdatamodeld */; };
 		A0B13DBE786FFB4D428541DDFDFD7B62 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB243FAF3121155DBEE7A75E1784BBE3 /* UIView+Extension.swift */; };
 		A0BE5474D057B897319ACBA944107E83 /* ExpirationWarningEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC182C1B583843D594847F2DB05E0E1 /* ExpirationWarningEmailCell.swift */; };
@@ -1827,7 +1826,6 @@
 		642BAB85BF31A87E9AE6400AB84E65CF /* UpgradeAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeAlertViewModel.swift; sourceTree = "<group>"; };
 		64762B896DE435D0D6267C79BF66D6C3 /* test_html.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = test_html.html; sourceTree = "<group>"; };
 		64A7B9C7E18F14FD6D74AF9784F154FB /* MBContactModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBContactModel.m; sourceTree = "<group>"; };
-		64DC07BE51E0C6F5DE14D7B872D60183 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SettingsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		65AEFDCB007ECCDB7EF98DB95F136C12 /* Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Share.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		65BEF2277925C9831648E416C2F27B01 /* ContactExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactExtension.swift; sourceTree = "<group>"; };
 		65E79798EF9EFDC06A9602AEDA36F519 /* MessageAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAPI.swift; sourceTree = "<group>"; };
@@ -1933,6 +1931,7 @@
 		8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
 		8AFD327F9665CD8F972A0FDF58A1E1AB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8AFE7AB9915B1226EE7CDFAB86842F4C /* ServiceLevelCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLevelCoordinator.swift; sourceTree = "<group>"; };
+		8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTests.swift; sourceTree = "<group>"; };
 		8B7F1E2698842DF474D535ECC28EBA76 /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordExtension.m; sourceTree = "<group>"; };
 		8BEBDFCB90ED66ECD3805295A355FE9C /* Subscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
 		8CD94D0FDF3B2AF80193BF9882D94C43 /* EncryptTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptTypes.swift; sourceTree = "<group>"; };
@@ -2388,7 +2387,6 @@
 				3ACBA5552678233742A247A4F9B9B094 /* SettingTableViewController.swift */,
 				3B0795584292A315BA131FB8D800A1AB /* SettingsNavigationController.swift */,
 				1F37FA268CD248ACD827C2188DAB3F5F /* SettingsNotificationsSnoozeTableViewController.swift */,
-				64DC07BE51E0C6F5DE14D7B872D60183 /* SettingsViewController.swift */,
 				E44E8C94EC355ADF770FAB0226BEC145 /* SettingsWeekdaysTableViewController.swift */,
 			);
 			path = Settings;
@@ -3561,6 +3559,7 @@
 				010626773F86444E682C621F12E317AE /* CalendarIntervalRuleTests.swift */,
 				DC99702EB4FAE95D39DBCC4235BBC74C /* ComposeViewModelTests.swift */,
 				2311228F521C0D85D7EA882A10B49A40 /* LastUpdateCacheTests.swift */,
+				8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */,
 			);
 			path = ProtonMailTests;
 			sourceTree = "<group>";
@@ -3693,7 +3692,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E203DC72C731532AA546607E53282AAD /* Build configuration list for PBXNativeTarget "PushDev" */;
 			buildPhases = (
-				F9F44D98117E1CF7D6B9EC4D5779E99A /* Setup Version Number */,
+				C0C5319B94A742C187C88CBC609BB38B /* Setup Version Number */,
 				7637FF1CB0DB33050E00BF4C20BF2803 /* Sources */,
 				24F0381BA784A5E04EAB1AD58C196730 /* Frameworks */,
 				97C1125723257A54E9941DDE6F460C40 /* Resources */,
@@ -3737,7 +3736,7 @@
 			buildConfigurationList = 2D585567F9D5A0C6D468369FF5279B47 /* Build configuration list for PBXNativeTarget "ProtonMail" */;
 			buildPhases = (
 				F00EFEC03D5478819F38AF0E5CB9C21F /* [CP] Check Pods Manifest.lock */,
-				985B57ED57DC8286096D07CF37F66F36 /* Setup Version Number */,
+				0BDF6814556DCCF2A950887BAB00E1C8 /* Setup Version Number */,
 				62EAA77DF5C46BC4F2CACA119ECA6BF0 /* Sources */,
 				7CDDAC75253802DE782BC64CCCF195FE /* Frameworks */,
 				74DAC7A39D03830847662B2CA23938FC /* Resources */,
@@ -3833,6 +3832,7 @@
 					55608604485FE7632E52ED7BBE6A939B = {
 						CreatedOnToolsVersion = 9.1;
 						DevelopmentTeam = 2SB5Z68H26;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -3841,6 +3841,8 @@
 						};
 					};
 					5C6761FECCEBDA639D93B2A606D16447 = {
+						DevelopmentTeam = 2SB5Z68H26;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -3884,7 +3886,8 @@
 					};
 					7CC48161B0FC946A8DB234B96B6A66DD = {
 						CreatedOnToolsVersion = 6.1.1;
-						LastSwiftMigration = 0900;
+						DevelopmentTeam = 2SB5Z68H26;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -3904,7 +3907,7 @@
 					8150D92393298F02FA3A03CA9FE6DF20 = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = 6UN54H93QT;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Manual;
 						TestTargetID = 7CC48161B0FC946A8DB234B96B6A66DD;
 					};
@@ -4185,6 +4188,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0BDF6814556DCCF2A950887BAB00E1C8 /* Setup Version Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Setup Version Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n";
+		};
 		0DD55C25AF691272A64605F0C0621E49 /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4355,34 +4372,6 @@
 			shellPath = /bin/sh;
 			shellScript = "./Fabric.framework/run 982063ac8b41a8754cf79640ebab8b392ebe7e86 e66156cd496bbb89d6374b216ff8adf504838a4c1bf02c34c5390d289840bd02";
 		};
-		660ED989CC28144BF5D8858856E2CDE7 /* Setup Version Number */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Setup Version Number";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;";
-		};
-		985B57ED57DC8286096D07CF37F66F36 /* Setup Version Number */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Setup Version Number";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;";
-		};
 		A679E432B73D0D9378A93A019C1A0232 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4408,6 +4397,7 @@
 				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
 				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
 				"${BUILT_PRODUCTS_DIR}/ZSSRichTextEditor/ZSSRichTextEditor.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -4429,11 +4419,26 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZSSRichTextEditor.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		C0C5319B94A742C187C88CBC609BB38B /* Setup Version Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Setup Version Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n";
 		};
 		CAB74E32CCB4914091FD8C87475D8803 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4506,6 +4511,20 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		D22256CE6C6100B8BAF55113FE9AD9AB /* Setup Version Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Setup Version Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n";
 		};
 		E117BBD6ECFCD59D138CE291EDC9C951 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4597,20 +4616,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F9F44D98117E1CF7D6B9EC4D5779E99A /* Setup Version Number */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Setup Version Number";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -4624,6 +4629,7 @@
 				9C3B841CCD848FA7D6DE94ED5D2BF9F8 /* ComposeViewModelTests.swift in Sources */,
 				6CB05D83812878B94588321FDD387885 /* GoOpenPGPTests.swift in Sources */,
 				CFE00E85FB61BB461C5C80563127445A /* LastUpdateCacheTests.swift in Sources */,
+				7B71395AE1592D80A1CFC2A0B3C7307B /* NetworkTests.swift in Sources */,
 				CEA3E8BC7CCB2588E48BBD76FF2513EA /* OpenPGPDefines.swift in Sources */,
 				CCA051B6A323A02C4591B0F4D5D28A29 /* OpenPGPTests.swift in Sources */,
 				F9EA06F36FF372CC4A6D7461F3E3D361 /* ProtonMail-Bridging-Header.cpp in Sources */,
@@ -5002,7 +5008,6 @@
 				4CC3A16EB76337CD07DCA10369A2C22F /* SettingsCell.swift in Sources */,
 				2605B281DAA7D37DB492488C0D2D4857 /* SettingsNavigationController.swift in Sources */,
 				4EFE447961DCE5EFA583B3CABA40544A /* SettingsNotificationsSnoozeTableViewController.swift in Sources */,
-				A06652D951AFB9C0EE3421D9BAE79007 /* SettingsViewController.swift in Sources */,
 				B2848E4B35EC6E482D5A2F2AF2D5B827 /* SettingsWeekdaysTableViewController.swift in Sources */,
 				810300B49AE300E0B72623AAB9E71F59 /* SharedCacheBase.swift in Sources */,
 				5025825144E3BCC0EC929ED977814404 /* ShowImageView.swift in Sources */,
@@ -5429,7 +5434,6 @@
 				4E12BBDF7134F9B981506F49E70A7349 /* SettingsCell.swift in Sources */,
 				0A24A88AC8877D8D8B27FF74B7CD2D27 /* SettingsNavigationController.swift in Sources */,
 				CFCED06A20CD74A99CA490471659B454 /* SettingsNotificationsSnoozeTableViewController.swift in Sources */,
-				7CFF4B59B2644348DEDAA0143D554AE6 /* SettingsViewController.swift in Sources */,
 				3B68E4407D52E2078EF8B727575E1FE0 /* SettingsWeekdaysTableViewController.swift in Sources */,
 				D7E4E504EC2576171B04B7327EF61E83 /* SharedCacheBase.swift in Sources */,
 				ED6153906F1885F5A266D7942E534369 /* ShowImageView.swift in Sources */,
@@ -6082,7 +6086,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -6118,8 +6122,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "ProtonMail-Swift.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -6155,8 +6158,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "ProtonMail-Swift.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -6198,7 +6200,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "Enterprise USE_ON_FLY_LOCALIZATION";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -6301,7 +6303,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "Enterprise USE_ON_FLY_LOCALIZATION";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -6334,7 +6336,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "protonmail push service release";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -6429,7 +6431,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG Enterprise";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "ProtonMail-Swift.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -6456,7 +6458,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -6485,7 +6487,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -6522,7 +6524,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = Enterprise;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -6544,8 +6546,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
 			name = Release;
@@ -6582,8 +6583,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG USE_ON_FLY_LOCALIZATION";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -6624,7 +6624,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = Enterprise;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "ProtonMail-Swift.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -6661,7 +6661,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG Enterprise";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -6697,8 +6697,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -6734,8 +6733,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "ProtonMail-Swift.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -6763,7 +6761,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -6789,8 +6787,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
 			name = Debug;
@@ -6823,7 +6820,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "protonmail push service release";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -6859,8 +6856,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -6896,7 +6892,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = Enterprise;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -6937,7 +6933,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = Enterprise;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "ProtonMail-Swift.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -6964,7 +6960,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -7054,7 +7050,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -7083,7 +7079,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -7125,7 +7121,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG Enterprise USE_ON_FLY_LOCALIZATION";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -7147,8 +7143,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arctouch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
 			name = Distribution;

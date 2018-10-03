@@ -81,11 +81,11 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardShown(_:)),
-                                               name: Notification.Name.UIKeyboardWillShow,
+                                               name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardShown(_:)),
-                                               name: Notification.Name.UIKeyboardWillHide,
+                                               name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
         
         // navigation bar items
@@ -111,11 +111,11 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
 
         // compose view
         let w = UIScreen.main.applicationFrame.width;
-        self.composeViewController.view.frame = CGRect(x: -8, y: 0, width: w, height: composeViewSize + 60)
-        self.addChildViewController(self.composeViewController)
+        self.composeViewController.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
+        self.addChild(self.composeViewController)
         self.webView?.scrollView.addSubview(composeViewController.view);
-        self.webView?.scrollView.bringSubview(toFront: composeViewController.view)
-        self.composeViewController.didMove(toParentViewController: self)
+        self.webView?.scrollView.bringSubviewToFront(composeViewController.view)
+        self.composeViewController.didMove(toParent: self)
         
         // update content values
         updateMessageView()
@@ -142,7 +142,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     }
     
     @objc private func keyboardShown(_ notification: Notification) {
-        guard let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             return
         }
         
@@ -262,13 +262,13 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     override func viewWillAppear(_ animated: Bool) {
         self.updateAttachmentButton()
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(ComposerViewController.willResignActiveNotification(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ComposerViewController.willResignActiveNotification(_:)), name: UIApplication.willResignActiveNotification, object:nil)
         setupAutoSave()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object:nil)
         stopAutoSave()
     }
     
@@ -317,8 +317,8 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         
         let navigationBarTitleFont = Fonts.h2.regular
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: navigationBarTitleFont
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: navigationBarTitleFont
         ]
     }
     
@@ -595,7 +595,7 @@ extension ComposerViewController : ComposeViewDelegate {
     
     func composeViewDidTapExpirationButton(_ composeView: ComposeView) {
         self.expirationPicker.alpha = 1;
-        self.view.bringSubview(toFront: expirationPicker)
+        self.view.bringSubviewToFront(expirationPicker)
     }
     
     func composeViewHideExpirationView(_ composeView: ComposeView) {

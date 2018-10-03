@@ -172,7 +172,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                                                object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector:#selector(MailboxViewController.doEnterForeground),
-                                               name:  NSNotification.Name.UIApplicationWillEnterForeground,
+                                               name:  UIApplication.willEnterForegroundNotification,
                                                object: nil)
         self.refreshControl.endRefreshing()
     }
@@ -202,7 +202,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         
         let selectedItem: IndexPath? = self.tableView.indexPathForSelectedRow as IndexPath?
         if let selectedItem = selectedItem {
-            self.tableView.reloadRows(at: [selectedItem], with: UITableViewRowAnimation.fade)
+            self.tableView.reloadRows(at: [selectedItem], with: UITableView.RowAnimation.fade)
             self.tableView.deselectRow(at: selectedItem, animated: true)
         }
         self.startAutoFetch()
@@ -232,7 +232,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
-        self.refreshControl.addTarget(self, action: #selector(MailboxViewController.getLatestMessages), for: UIControlEvents.valueChanged)
+        self.refreshControl.addTarget(self, action: #selector(MailboxViewController.getLatestMessages), for: UIControl.Event.valueChanged)
         self.refreshControl.tintColor = UIColor.gray
         self.refreshControl.tintColorDidChange()
         
@@ -291,7 +291,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             }
         } else if segue.identifier == kSegueToComposeShow {
             self.cancelButtonTapped()
-            let composeViewController = segue.destination.childViewControllers[0] as! ComposeEmailViewController
+            let composeViewController = segue.destination.children[0] as! ComposeEmailViewController
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
                     sharedVMService.openDraft(vmp: composeViewController, with: selectedDraft ?? message)
@@ -327,7 +327,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             
         } else if segue.identifier == kSegueToCompose {
-            let composeViewController = segue.destination.childViewControllers[0] as! ComposeEmailViewController
+            let composeViewController = segue.destination.children[0] as! ComposeEmailViewController
             sharedVMService.newDraft(vmp: composeViewController)
         } else if segue.identifier == kSegueToTour {
             let popup = segue.destination as! OnboardingViewController
@@ -423,7 +423,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                 self.navigationController?.popViewController(animated: true)
             }))
             
-            var locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .default, .spam : .default, .archive : .default]
+            var locations: [MessageLocation : UIAlertAction.Style] = [.inbox : .default, .spam : .default, .archive : .default]
             if !viewModel.isCurrentLocation(.outbox) {
                 locations = [.spam : .default, .archive : .default]
             }
@@ -642,7 +642,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     
     fileprivate func processSwipeActions(_ action: MessageSwipeAction, indexPath: IndexPath) -> Bool {
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, action.description)
+        UIAccessibility.post(notification: UIAccessibility.Notification.announcement, argument: action.description)
         switch (action) {
         case .archive:
             self.archiveMessageForIndexPath(indexPath)
@@ -1107,7 +1107,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         } else {
             if (self.cancelBarButtonItem == nil) {
                 self.cancelBarButtonItem = UIBarButtonItem(title: LocalString._general_cancel_button,
-                                                           style: UIBarButtonItemStyle.plain,
+                                                           style: UIBarButtonItem.Style.plain,
                                                            target: self,
                                                            action: #selector(MailboxViewController.cancelButtonTapped))
             }
@@ -1132,15 +1132,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         
         if (!editingMode) {
             if (self.composeBarButtonItem == nil) {
-                self.composeBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_compose"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MailboxViewController.composeButtonTapped))
+                self.composeBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_compose"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MailboxViewController.composeButtonTapped))
             }
             
             if (self.searchBarButtonItem == nil) {
-                self.searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_search"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MailboxViewController.searchButtonTapped))
+                self.searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_search"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MailboxViewController.searchButtonTapped))
             }
             
             if (self.moreBarButtonItem == nil) {
-                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MailboxViewController.moreButtonTapped))
+                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MailboxViewController.moreButtonTapped))
             }
             
             if viewModel.isShowEmptyFolder() {
@@ -1150,27 +1150,27 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             }
         } else {
             if (self.unreadBarButtonItem == nil) {
-                self.unreadBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MailboxViewController.unreadButtonTapped))
+                self.unreadBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MailboxViewController.unreadButtonTapped))
             }
             
             if (self.labelBarButtonItem == nil) {
-                self.labelBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MailboxViewController.labelButtonTapped))
+                self.labelBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MailboxViewController.labelButtonTapped))
             }
             
             if (self.folderBarButtonItem == nil) {
-                self.folderBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_folder"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MailboxViewController.folderButtonTapped))
+                self.folderBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_folder"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MailboxViewController.folderButtonTapped))
             }
             
             if (self.removeBarButtonItem == nil) {
-                self.removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MailboxViewController.removeButtonTapped))
+                self.removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MailboxViewController.removeButtonTapped))
             }
             
             if (self.favoriteBarButtonItem == nil) {
-                self.favoriteBarButtonItem = UIBarButtonItem(image: UIImage(named: "favorite"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MailboxViewController.favoriteButtonTapped))
+                self.favoriteBarButtonItem = UIBarButtonItem(image: UIImage(named: "favorite"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MailboxViewController.favoriteButtonTapped))
             }
             
             if (self.moreBarButtonItem == nil) {
-                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MailboxViewController.moreButtonTapped))
+                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(MailboxViewController.moreButtonTapped))
             }
             
             if (viewModel.isDrafts()) {
@@ -1207,7 +1207,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         let indexPath: IndexPath? = self.tableView.indexPathForRow(at: point)
         
         if let indexPath = indexPath {
-            if (longPressGestureRecognizer.state == UIGestureRecognizerState.began) {
+            if (longPressGestureRecognizer.state == UIGestureRecognizer.State.began) {
                 self.listEditing = true
                 if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
                     for visibleIndexPath in indexPathsForVisibleRows {
@@ -1245,7 +1245,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     func setNavigationTitleText(_ text: String?) {
         let animation = CATransition()
         animation.duration = 0.25
-        animation.type = kCATransitionFade
+        animation.type = CATransitionType.fade
         self.navigationController?.navigationBar.layer.add(animation, forKey: "fadeText")
         if let t = text, t.count > 0 {
             self.title = t
@@ -1481,11 +1481,11 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         switch(type) {
         case .delete:
             if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
                 if self.needToShowNewMessage == true {
                     if let newMsg = anObject as? Message {
                         if let msgTime = newMsg.time, newMsg.unRead {

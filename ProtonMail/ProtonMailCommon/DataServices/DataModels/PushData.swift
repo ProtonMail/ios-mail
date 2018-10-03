@@ -20,8 +20,7 @@ public class PushData {
     let smallIcon: String?
     let badge: NSNumber?
     let msgID: String
-    @available(*, deprecated, message:"remove it when refactoring")
-    let customID: String?
+    
     //
     let type: String?
     let version: Int?
@@ -35,7 +34,6 @@ public class PushData {
          smallIcon: String?,
          badge: NSNumber?,
          msgID: String,
-         customID: String?,
          type: String?,
          version: Int?) {
         self.title = title
@@ -47,7 +45,6 @@ public class PushData {
         self.smallIcon = smallIcon
         self.badge = badge
         self.msgID = msgID
-        self.customID = customID
         self.type = type
         self.version = version
     }
@@ -88,7 +85,6 @@ public class PushData {
         let lIcon = data["largeIcon"] as? String
         let sIcon = data["smallIcon"] as? String
         let badge = data["badge"] as? NSNumber
-        let cusID = data["customId"] as? String
         
         return PushData(title: title,
                         subTitle: subtitle,
@@ -99,7 +95,6 @@ public class PushData {
                         smallIcon: sIcon,
                         badge: badge,
                         msgID: msgID,
-                        customID: cusID,
                         type: type,
                         version: version)
     }
@@ -128,7 +123,6 @@ public class PushData {
         let lIcon = data["largeIcon"] as? String
         let sIcon = data["smallIcon"] as? String
         let badge = data["badge"] as? NSNumber
-        let cusID = data["customId"] as? String
         
         return PushData(title: title,
                         subTitle: subtitle,
@@ -139,7 +133,6 @@ public class PushData {
                         smallIcon: sIcon,
                         badge: badge,
                         msgID: msgID,
-                        customID: cusID,
                         type: type,
                         version: v)
     }

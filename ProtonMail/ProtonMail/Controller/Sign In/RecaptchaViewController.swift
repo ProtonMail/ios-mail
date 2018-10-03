@@ -157,7 +157,7 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
         self.performSegue(withIdentifier: self.kSegueToNotificationEmail, sender: self)
     }
     
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
         PMLog.D("\(request)")
         let urlString = request.url?.absoluteString;
 

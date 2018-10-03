@@ -30,7 +30,7 @@ extension ContactGroupSelectColorViewController: UICollectionViewDelegateFlowLay
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0,0,0,0);
+        return UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0);
     }
     
     func collectionView(_ collectionView: UICollectionView,

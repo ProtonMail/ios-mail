@@ -150,10 +150,10 @@ class EmailHeaderView: UIView {
             let from = "\(f) \((n.isEmpty ? e : n))"
             let formRange = NSRange (location: 0, length: from.count)
             let attributedString = NSMutableAttributedString(string: from,
-                                                             attributes: [NSAttributedStringKey.font : Fonts.h6.medium,
-                                                                          NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#838897")])
-            attributedString.setAttributes([NSAttributedStringKey.font : Fonts.h6.medium,
-                                            NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#C0C4CE")],
+                                                             attributes: [NSAttributedString.Key.font : Fonts.h6.medium,
+                                                                          NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#838897")])
+            attributedString.setAttributes([NSAttributedString.Key.font : Fonts.h6.medium,
+                                            NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#C0C4CE")],
                                            range: formRange)
             
             return attributedString
@@ -166,10 +166,10 @@ class EmailHeaderView: UIView {
             let from = "\(f) "
             let formRange = NSRange (location: 0, length: from.count)
             let attributedString = NSMutableAttributedString(string: from,
-                                                             attributes: [NSAttributedStringKey.font : Fonts.h6.medium,
-                                                                          NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#838897")])
-            attributedString.setAttributes([NSAttributedStringKey.font : Fonts.h6.medium,
-                                            NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#C0C4CE")],
+                                                             attributes: [NSAttributedString.Key.font : Fonts.h6.medium,
+                                                                          NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#838897")])
+            attributedString.setAttributes([NSAttributedString.Key.font : Fonts.h6.medium,
+                                            NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#C0C4CE")],
                                            range: formRange)
             return attributedString
         }
@@ -196,10 +196,10 @@ class EmailHeaderView: UIView {
             let to = "\(t) \(strTo)"
             let formRange = NSRange (location: 0, length: to.count)
             let attributedString = NSMutableAttributedString(string: to,
-                                                             attributes: [NSAttributedStringKey.font : Fonts.h6.medium,
-                                                                          NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#838897")])
-            attributedString.setAttributes([NSAttributedStringKey.font : Fonts.h6.medium,
-                                            NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#C0C4CE")],
+                                                             attributes: [NSAttributedString.Key.font : Fonts.h6.medium,
+                                                                          NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#838897")])
+            attributedString.setAttributes([NSAttributedString.Key.font : Fonts.h6.medium,
+                                            NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#C0C4CE")],
                                            range: formRange)
             return attributedString
         }
@@ -211,10 +211,10 @@ class EmailHeaderView: UIView {
             let to = "\(t) "
             let formRange = NSRange (location: 0, length: to.count)
             let attributedString = NSMutableAttributedString(string: to,
-                                                             attributes: [NSAttributedStringKey.font : Fonts.h6.medium,
-                                                                          NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#838897")])
-            attributedString.setAttributes([NSAttributedStringKey.font : Fonts.h6.medium,
-                                            NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#C0C4CE")],
+                                                             attributes: [NSAttributedString.Key.font : Fonts.h6.medium,
+                                                                          NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#838897")])
+            attributedString.setAttributes([NSAttributedString.Key.font : Fonts.h6.medium,
+                                            NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#C0C4CE")],
                                            range: formRange)
             return attributedString
         }
@@ -226,10 +226,10 @@ class EmailHeaderView: UIView {
             let cc = "\(c) "
             let formRange = NSRange (location: 0, length: cc.count)
             let attributedString = NSMutableAttributedString(string: cc,
-                                                             attributes: [NSAttributedStringKey.font : Fonts.h6.medium,
-                                                                          NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#838897")])
-            attributedString.setAttributes([NSAttributedStringKey.font : Fonts.h6.medium,
-                                            NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#C0C4CE")],
+                                                             attributes: [NSAttributedString.Key.font : Fonts.h6.medium,
+                                                                          NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#838897")])
+            attributedString.setAttributes([NSAttributedString.Key.font : Fonts.h6.medium,
+                                            NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#C0C4CE")],
                                            range: formRange)
             return attributedString
         }
@@ -483,7 +483,7 @@ class EmailHeaderView: UIView {
         self.attachmentView!.register(nib, forHeaderFooterViewReuseIdentifier: "expiration_warning_header_cell")
         
         self.attachmentView!.separatorStyle = .none
-        self.attachmentView?.estimatedRowHeight = UITableViewAutomaticDimension
+        self.attachmentView?.estimatedRowHeight = UITableView.automaticDimension
         self.addSubview(attachmentView!)
     }
     
@@ -537,11 +537,11 @@ class EmailHeaderView: UIView {
         // favorite button
         self.emailFavoriteButton = UIButton()
         self.emailFavoriteButton.addTarget(self, action: #selector(EmailHeaderView.emailFavoriteButtonTapped), for: .touchUpInside)
-        self.emailFavoriteButton.setImage(UIImage(named: "mail_starred")!, for: UIControlState())
+        self.emailFavoriteButton.setImage(UIImage(named: "mail_starred")!, for: UIControl.State())
         self.emailFavoriteButton.setImage(UIImage(named: "mail_starred-active")!, for: .selected)
         self.emailFavoriteButton.isSelected = self.starred
-        self.emailFavoriteButton.contentVerticalAlignment = UIControlContentVerticalAlignment.center
-        self.emailFavoriteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.center
+        self.emailFavoriteButton.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
+        self.emailFavoriteButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
         self.emailHeaderView.addSubview(emailFavoriteButton)
         
         
@@ -584,11 +584,11 @@ class EmailHeaderView: UIView {
         self.emailHeaderView.addSubview(emailShortTime)
         
         self.emailDetailButton = UIButton()
-        self.emailDetailButton.addTarget(self, action: #selector(EmailHeaderView.detailsButtonTapped), for: UIControlEvents.touchUpInside)
-        self.emailDetailButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+        self.emailDetailButton.addTarget(self, action: #selector(EmailHeaderView.detailsButtonTapped), for: UIControl.Event.touchUpInside)
+        self.emailDetailButton.contentEdgeInsets = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
         self.emailDetailButton.titleLabel?.font = Fonts.h6.medium
-        self.emailDetailButton.setTitle(LocalString._details, for: UIControlState())
-        self.emailDetailButton.setTitleColor(UIColor(RRGGBB: UInt(0x9397CD)), for: UIControlState())
+        self.emailDetailButton.setTitle(LocalString._details, for: UIControl.State())
+        self.emailDetailButton.setTitleColor(UIColor(RRGGBB: UInt(0x9397CD)), for: UIControl.State())
         self.emailDetailButton.sizeToFit()
         self.emailHeaderView.addSubview(emailDetailButton)
         
@@ -601,7 +601,7 @@ class EmailHeaderView: UIView {
 //        self.emailHeaderView.addSubview(emailIsEncryptedImageView)
         
         self.emailHasAttachmentsImageView = UIImageView(image: UIImage(named: "mail_attachment"))
-        self.emailHasAttachmentsImageView.contentMode = UIViewContentMode.center
+        self.emailHasAttachmentsImageView.contentMode = UIView.ContentMode.center
         self.emailHasAttachmentsImageView.sizeToFit()
         self.emailHeaderView.addSubview(emailHasAttachmentsImageView)
         
@@ -983,7 +983,7 @@ class EmailHeaderView: UIView {
         }
     }
     
-    fileprivate let kAnimationOption: UIViewAnimationOptions = .transitionCrossDissolve
+    fileprivate let kAnimationOption: UIView.AnimationOptions = .transitionCrossDissolve
     fileprivate func updateDetailsView(_ needsShow : Bool) {
         guard self.visible == true else {
             return
@@ -1056,7 +1056,7 @@ class EmailHeaderView: UIView {
                 let _ = make?.top.equalTo()(self.emailCcTable.mas_bottom)?.with().offset()(self.kEmailTimeViewMarginTop)
             })
             
-            self.emailDetailButton.setTitle(LocalString._hide_details, for: UIControlState())
+            self.emailDetailButton.setTitle(LocalString._hide_details, for: UIControl.State())
             self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.left.equalTo()(self.emailShortTime)
@@ -1190,7 +1190,7 @@ class EmailHeaderView: UIView {
                 let _ = make?.height.equalTo()(0)
             }
             
-            self.emailDetailButton.setTitle(LocalString._details, for: UIControlState())
+            self.emailDetailButton.setTitle(LocalString._details, for: UIControl.State())
             self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.left.equalTo()(self.emailShortTime.mas_right)?.with().offset()(self.kEmailDetailButtonMarginLeft)

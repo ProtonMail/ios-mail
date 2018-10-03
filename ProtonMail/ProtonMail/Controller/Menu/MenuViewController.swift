@@ -388,11 +388,11 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
             switch(type) {
             case .delete:
                 if let indexPath = indexPath {
-                    tableView.deleteRows(at: [IndexPath(row: indexPath.row, section: 2)], with: UITableViewRowAnimation.fade)
+                    tableView.deleteRows(at: [IndexPath(row: indexPath.row, section: 2)], with: UITableView.RowAnimation.fade)
                 }
             case .insert:
                 if let newIndexPath = newIndexPath {
-                    tableView.insertRows(at: [IndexPath(row: newIndexPath.row, section: 2)], with: UITableViewRowAnimation.fade)
+                    tableView.insertRows(at: [IndexPath(row: newIndexPath.row, section: 2)], with: UITableView.RowAnimation.fade)
                 }
             case .move:
                 if let indexPath = indexPath {

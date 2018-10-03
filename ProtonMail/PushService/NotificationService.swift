@@ -42,7 +42,7 @@ class NotificationService: UNNotificationServiceExtension {
                                     //right now it is a integer should be sound name put default for now
                                 }
                                 
-                                bestAttemptContent.sound = UNNotificationSound.default()
+                                bestAttemptContent.sound = UNNotificationSound.default
                                 //if let sub = push.subTitle {
                                 //  bestAttemptContent.subtitle = sub
                                 //}

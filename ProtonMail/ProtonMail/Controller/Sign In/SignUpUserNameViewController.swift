@@ -76,7 +76,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         super.viewDidLoad()
         resetChecking()
         usernameTextField.attributedPlaceholder = NSAttributedString(string: LocalString._username,
-                                                                     attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+                                                                     attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         MBProgressHUD.showAdded(to: view, animated: true)
         pickerButton.isHidden = true
         pickedDomainLabel.isHidden = true
@@ -233,7 +233,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     func showPickerInActionSheet(_ sender : UIButton) {
         let title = ""
         let message = "\n\n\n\n\n\n\n\n\n\n";
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.actionSheet);
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.actionSheet);
         alert.isModalInPopover = true;
         
         //Create a frame (placeholder/wrapper) for the picker and then create the picker
@@ -256,13 +256,13 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         
         //Create the cancel button & set its title
         let buttonCancel: UIButton = UIButton(frame: buttonCancelFrame);
-        buttonCancel.setTitle(LocalString._general_done_button, for: UIControlState());
+        buttonCancel.setTitle(LocalString._general_done_button, for: UIControl.State());
         
-        buttonCancel.setTitleColor(UIColor.blue, for: UIControlState());
+        buttonCancel.setTitleColor(UIColor.blue, for: UIControl.State());
         toolView.addSubview(buttonCancel); //add it to the toolView
         
         //Add the target - target, function to call, the event witch will trigger the function call
-        buttonCancel.addTarget(self, action: #selector(SignUpUserNameViewController.cancelSelection(_:)), for: UIControlEvents.touchDown);
+        buttonCancel.addTarget(self, action: #selector(SignUpUserNameViewController.cancelSelection(_:)), for: UIControl.Event.touchDown);
         
         //add the toolbar to the alert controller
         alert.view.addSubview(toolView);
@@ -390,7 +390,7 @@ extension SignUpUserNameViewController: NSNotificationCenterKeyboardObserverProt
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollBottomPaddingConstraint.constant = keyboardSize.height;
         }
         self.configConstraint(true)

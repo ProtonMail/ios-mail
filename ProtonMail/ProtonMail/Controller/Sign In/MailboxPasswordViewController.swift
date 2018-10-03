@@ -50,7 +50,7 @@ class MailboxPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDecryptButton()
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: LocalString._mailbox_password, attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#cecaca")])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: LocalString._mailbox_password, attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#cecaca")])
         
         topTitleLabel.text = LocalString._decrypt_mailbox
         decryptButton.setTitle(LocalString._decrypt, for: .normal)
@@ -102,7 +102,7 @@ class MailboxPasswordViewController: UIViewController {
         }
     }
     
-    override func didMove(toParentViewController parent: UIViewController?) {
+    override func didMove(toParent parent: UIViewController?) {
         if (parent == nil) {
             SignInViewController.isComeBackFromMailbox = true
         }
@@ -154,8 +154,8 @@ class MailboxPasswordViewController: UIViewController {
         
         let navigationBarTitleFont = Fonts.h2.light
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: navigationBarTitleFont
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: navigationBarTitleFont
         ]
     }
     
@@ -304,7 +304,7 @@ extension MailboxPasswordViewController: NSNotificationCenterKeyboardObserverPro
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollBottomPaddingConstraint.constant = keyboardSize.height;
         }
         configConstraint(true)

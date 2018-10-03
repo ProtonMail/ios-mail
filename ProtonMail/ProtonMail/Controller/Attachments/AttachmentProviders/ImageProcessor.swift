@@ -27,7 +27,7 @@ extension ImageProcessor where Self: AttachmentProvider {
         var fileData: FileData!
 
         #if APP_EXTENSION
-            guard let data = UIImagePNGRepresentation(originalImage),
+            guard let data = originalImage.pngData(),
                 let newUrl = try? self.writeItemToTempDirectory(data, filename: fileName) else
             {
                 self.controller.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
@@ -74,7 +74,7 @@ extension ImageProcessor where Self: AttachmentProvider {
                 
                 if fileName.preg_match(".(heif|heic)") {
                     if let rawImage = UIImage(data: image_data) {
-                        if let newData = UIImageJPEGRepresentation(rawImage, 1.0), newData.count > 0 {
+                        if let newData = rawImage.jpegData(compressionQuality: 1.0), newData.count > 0 {
                             image_data =  newData
                             fileName = fileName.preg_replace(".(heif|heic)", replaceto: ".jpeg")
                         }

@@ -16,6 +16,8 @@
 
 
 import Foundation
+
+//TODO:: move this to core data => Labels
 final class UpdateTime : NSObject {
     var start : Date
     var end : Date

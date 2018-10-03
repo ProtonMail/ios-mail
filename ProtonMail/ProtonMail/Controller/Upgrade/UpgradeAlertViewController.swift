@@ -49,9 +49,9 @@ class UpgradeAlertViewController: UIViewController, ViewModelProtocolNew {
         self.plansButton.layer.cornerRadius = 6.0
         
         //set text
-        self.okButton.setTitle(self.viewModel.button1, for: UIControlState.normal)
-        self.notNowButton.setTitle(self.viewModel.button2, for: UIControlState.normal)
-        self.plansButton.setTitle(self.viewModel.button3, for: UIControlState.normal)
+        self.okButton.setTitle(self.viewModel.button1, for: UIControl.State.normal)
+        self.notNowButton.setTitle(self.viewModel.button2, for: UIControl.State.normal)
+        self.plansButton.setTitle(self.viewModel.button3, for: UIControl.State.normal)
         
         self.titleLabel.text = self.viewModel.title
         self.titleLabelTwo.text = self.viewModel.title2

@@ -68,7 +68,7 @@ class TwoFACodeView : PMView {
         let toolbarDone = UIToolbar.init()
         toolbarDone.sizeToFit()
         let barBtnDone = UIBarButtonItem.init(title: LocalString._recovery_code,
-                                              style: UIBarButtonItemStyle.done,
+                                              style: UIBarButtonItem.Style.done,
                                               target: self,
                                               action: #selector(TwoFACodeView.doneButtonAction))
         toolbarDone.items = [barBtnDone]

@@ -56,9 +56,9 @@ class SignUpPasswordViewController: UIViewController {
         super.viewDidLoad()
         
         loginPasswordField.attributedPlaceholder = NSAttributedString(string: LocalString._signup_choose_password,
-                                                                      attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+                                                                      attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: LocalString._composer_eo_confirm_pwd_placeholder,
-                                                                             attributes:[NSAttributedStringKey.foregroundColor : UIColor(hexColorCode: "#9898a8")])
+                                                                             attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         
         leftTopItem.setTitle(LocalString._general_back_action, for: .normal)
         topTitleLabel.text = LocalString._signup_set_passwords_title
@@ -187,7 +187,7 @@ extension SignUpPasswordViewController: NSNotificationCenterKeyboardObserverProt
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollBottomPaddingConstraint.constant = keyboardSize.height;
         }
         self.configConstraint(true)

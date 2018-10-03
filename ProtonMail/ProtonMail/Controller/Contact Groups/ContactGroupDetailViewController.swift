@@ -98,7 +98,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToContactGroupEditSegue {
-            let contactGroupEditViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
+            let contactGroupEditViewController = segue.destination.children[0] as! ContactGroupEditViewController
             
             if let sender = sender as? ContactGroupDetailViewController,
                 let viewModel = sender.viewModel {

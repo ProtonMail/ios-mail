@@ -126,7 +126,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
         refreshControl.addTarget(self,
                                  action: #selector(fireFetch),
-                                 for: UIControlEvents.valueChanged)
+                                 for: UIControl.Event.valueChanged)
         tableView.addSubview(self.refreshControl)
         refreshControl.tintColor = UIColor.gray
         refreshControl.tintColorDidChange()
@@ -157,7 +157,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         let pressedIndexPath = tableView.indexPathForRow(at: pressingLocation)
         
         if let pressedIndexPath = pressedIndexPath {
-            if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
+            if longPressGestureRecognizer.state == UIGestureRecognizer.State.began {
                 // set state
                 isEditingState = true
                 tableView.allowsMultipleSelection = true
@@ -355,10 +355,10 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                                                         color: contactGroup.color,
                                                         emailIDs: contactGroup.emails)
         } else if (segue.identifier == kAddContactSugue) {
-            let addContactViewController = segue.destination.childViewControllers[0] as! ContactEditViewController
+            let addContactViewController = segue.destination.children[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController)
         } else if (segue.identifier == kAddContactGroupSugue) {
-            let addContactGroupViewController = segue.destination.childViewControllers[0] as! ContactGroupEditViewController
+            let addContactGroupViewController = segue.destination.children[0] as! ContactGroupEditViewController
             sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create)
         } else if segue.identifier == kSegueToImportView {
             let popup = segue.destination as! ContactImportViewController
@@ -485,11 +485,11 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
         switch type {
         case .insert:
             if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         case .delete:
             if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
             }
         case .update:
             if let cell = tableView.cellForRow(at: indexPath!) as? ContactGroupsViewCell {
