@@ -42,7 +42,7 @@ class ContactGroupEditViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        shortNameLabel.layer.cornerRadius = 20.0
+        shortNameLabel.layer.cornerRadius = shortNameLabel.frame.size.width / 2
     }
     
     @IBAction func deleteButtonTapped(_ sender: UIButton) {
@@ -106,13 +106,26 @@ class ContactGroupEditViewCell: UITableViewCell {
         shortNameLabel.layer.borderColor = UIColor.white.cgColor
     }
     
-    // TODO: fix this
-    private func prepareCheckmark() {        
-        shortNameLabel.text = "v" // lol
+    private func prepareCheckmark() {
+        // setup image
+        let attachment = NSTextAttachment()
+        attachment.image = UIImage(named: "contact_groups_check")
+        if let image = attachment.image {
+            attachment.image = UIImage.resizeWithRespectTo(box: shortNameLabel.frame.size,
+                                                           scale: 0.5,
+                                                           image: image)
+        }
+        shortNameLabel.tintColor = ContactGroupEditViewCellColor.selected.text
         
-        shortNameLabel.textColor = ContactGroupEditViewCellColor.selected.text
+        // add image (checkmark) to label
+        let attachmentString = NSAttributedString(attachment: attachment)
+        let myString = NSMutableAttributedString(string: "")
+        myString.append(attachmentString)
+        shortNameLabel.attributedText = myString
+        
+        // the circle
         shortNameLabel.backgroundColor = ContactGroupEditViewCellColor.selected.background
-    
+
         shortNameLabel.layer.borderWidth = 1.0
         shortNameLabel.layer.borderColor = ContactGroupEditViewCellColor.selected.text.cgColor
     }
