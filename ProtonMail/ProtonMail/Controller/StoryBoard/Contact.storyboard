@@ -595,10 +595,10 @@
                                                     <rect key="frame" x="8" y="8" width="359" height="27.5"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OzE-tm-4Z1">
-                                                            <rect key="frame" x="0.0" y="0.0" width="359" height="14"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="359" height="13.5"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1mu-cc-tGm">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="175.5" height="14"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="175.5" height="13.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <state key="normal" title="Type">
                                                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -608,28 +608,28 @@
                                                                     </connections>
                                                                 </button>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j9a-dN-pk7">
-                                                                    <rect key="frame" x="175.5" y="0.0" width="4" height="14"/>
+                                                                    <rect key="frame" x="175.5" y="0.0" width="4" height="13.5"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="4" id="3ce-wN-9Oh"/>
                                                                     </constraints>
                                                                 </view>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kCW-du-8LE">
-                                                                    <rect key="frame" x="179.5" y="0.0" width="0.5" height="14"/>
+                                                                    <rect key="frame" x="179.5" y="0.0" width="0.5" height="13.5"/>
                                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="0.5" id="AR5-go-2JE"/>
                                                                     </constraints>
                                                                 </view>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u5g-Hj-K9T">
-                                                                    <rect key="frame" x="180" y="0.0" width="4" height="14"/>
+                                                                    <rect key="frame" x="180" y="0.0" width="4" height="13.5"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="4" id="25m-WC-xuk"/>
                                                                     </constraints>
                                                                 </view>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="drf-ho-yuq">
-                                                                    <rect key="frame" x="184" y="0.0" width="175" height="14"/>
+                                                                    <rect key="frame" x="184" y="0.0" width="175" height="13.5"/>
                                                                     <state key="normal" title="Group">
                                                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                     </state>
@@ -648,6 +648,13 @@
                                                                 <constraint firstAttribute="bottom" secondItem="1mu-cc-tGm" secondAttribute="bottom" id="wlM-fT-bf5"/>
                                                             </constraints>
                                                         </stackView>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AlL-iY-yzy" userLabel="line 1">
+                                                            <rect key="frame" x="0.0" y="13.5" width="359" height="0.5"/>
+                                                            <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="0.5" id="RFY-mF-YgC"/>
+                                                            </constraints>
+                                                        </view>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="fss-sw-XTt">
                                                             <rect key="frame" x="0.0" y="14" width="359" height="13.5"/>
                                                             <subviews>
@@ -668,12 +675,15 @@
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="fss-sw-XTt" firstAttribute="height" secondItem="OzE-tm-4Z1" secondAttribute="height" id="9jO-Ks-JjU"/>
-                                                        <constraint firstItem="fss-sw-XTt" firstAttribute="top" secondItem="OzE-tm-4Z1" secondAttribute="bottom" id="FdK-O1-tZ4"/>
+                                                        <constraint firstItem="fss-sw-XTt" firstAttribute="top" secondItem="AlL-iY-yzy" secondAttribute="bottom" id="Lk5-pS-zvR"/>
+                                                        <constraint firstItem="AlL-iY-yzy" firstAttribute="centerY" secondItem="CM6-Rg-iFa" secondAttribute="centerY" id="R5R-ER-GrA"/>
+                                                        <constraint firstItem="AlL-iY-yzy" firstAttribute="leading" secondItem="CM6-Rg-iFa" secondAttribute="leading" id="WYA-xS-S8i"/>
                                                         <constraint firstItem="fss-sw-XTt" firstAttribute="leading" secondItem="CM6-Rg-iFa" secondAttribute="leading" id="Xer-JX-iiS"/>
                                                         <constraint firstAttribute="bottom" secondItem="fss-sw-XTt" secondAttribute="bottom" id="aAp-Rn-gcA"/>
                                                         <constraint firstItem="OzE-tm-4Z1" firstAttribute="leading" secondItem="CM6-Rg-iFa" secondAttribute="leading" id="bOn-yi-28f"/>
+                                                        <constraint firstItem="AlL-iY-yzy" firstAttribute="top" secondItem="OzE-tm-4Z1" secondAttribute="bottom" id="ewo-dK-fZe"/>
                                                         <constraint firstItem="OzE-tm-4Z1" firstAttribute="top" secondItem="CM6-Rg-iFa" secondAttribute="top" id="g6S-Gl-fnt"/>
-                                                        <constraint firstItem="fss-sw-XTt" firstAttribute="top" secondItem="OzE-tm-4Z1" secondAttribute="bottom" id="k6A-Um-tux"/>
+                                                        <constraint firstAttribute="trailing" secondItem="AlL-iY-yzy" secondAttribute="trailing" id="oYu-x7-uUD"/>
                                                         <constraint firstAttribute="trailing" secondItem="fss-sw-XTt" secondAttribute="trailing" id="r1T-fb-DA3"/>
                                                         <constraint firstAttribute="trailing" secondItem="OzE-tm-4Z1" secondAttribute="trailing" id="sLv-gO-3QP"/>
                                                     </constraints>
@@ -689,6 +699,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="groupButton" destination="drf-ho-yuq" id="GR0-tQ-oXg"/>
+                                            <outlet property="horizontalSeparator" destination="AlL-iY-yzy" id="fGA-5C-NFJ"/>
                                             <outlet property="sepratorView" destination="kCW-du-8LE" id="aCZ-ae-ISt"/>
                                             <outlet property="typeButton" destination="1mu-cc-tGm" id="WdM-8W-ULr"/>
                                             <outlet property="valueField" destination="cuO-y2-fgf" id="iMt-Vl-1VE"/>
