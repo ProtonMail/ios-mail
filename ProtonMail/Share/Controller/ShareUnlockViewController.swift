@@ -349,7 +349,7 @@ extension ShareUnlockViewController: AttachmentController {
     }
     
     func finish(_ fileData: FileData) {
-        guard fileData.contents.size < ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
+        guard fileData.contents.dataSize < ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
             self.error(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
             return
         }

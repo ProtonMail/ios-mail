@@ -107,7 +107,7 @@ class ContactGroupEditViewCell: UITableViewCell {
     }
     
     // TODO: fix this
-    private func prepareCheckmark() {
+    private func prepareCheckmark() {        
         shortNameLabel.text = "v" // lol
         
         shortNameLabel.textColor = ContactGroupEditViewCellColor.selected.text

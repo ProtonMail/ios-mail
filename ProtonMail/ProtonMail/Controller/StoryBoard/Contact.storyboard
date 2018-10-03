@@ -218,7 +218,7 @@
                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iap_users" translatesAutoresizingMaskIntoConstraints="NO" id="dfj-Xv-7KH">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact_groups_icon" translatesAutoresizingMaskIntoConstraints="NO" id="dfj-Xv-7KH">
                                         <rect key="frame" x="26" y="12" width="56" height="56"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="56" id="7Mx-j8-ZZ6"/>
@@ -393,7 +393,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sFp-SQ-U22">
                                 <rect key="frame" x="0.0" y="20" width="375" height="80"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iap_users" translatesAutoresizingMaskIntoConstraints="NO" id="Gyj-Fm-pIs">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact_groups_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Gyj-Fm-pIs">
                                         <rect key="frame" x="20" y="12.5" width="55" height="55"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="55" id="AzX-tH-0fW"/>
@@ -2174,10 +2174,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="contact_groups_icon" width="40" height="40"/>
         <image name="contacts_warnings" width="25" height="25"/>
         <image name="feedback_contact" width="16" height="16"/>
         <image name="hamburger" width="20" height="16"/>
-        <image name="iap_users" width="110" height="88"/>
         <image name="popup_behind_image" width="320" height="460"/>
         <image name="signup_logo" width="98" height="16"/>
     </resources>
@@ -2187,6 +2187,6 @@
         <segue reference="oQx-RX-nff"/>
         <segue reference="HIr-Zm-YHr"/>
         <segue reference="GcK-DS-QnS"/>
-        <segue reference="cjF-6k-L7o"/>
+        <segue reference="Rzd-pg-PEg"/>
     </inferredMetricsTieBreakers>
 </document>

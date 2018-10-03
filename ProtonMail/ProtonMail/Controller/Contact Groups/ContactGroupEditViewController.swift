@@ -60,7 +60,17 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         loadDataIntoView()
         tableView.noSeparatorsBelowFooter()
         
-        contactGroupImage.layer.cornerRadius = 20.0
+        prepareContactGroupImage()
+    }
+    
+    func prepareContactGroupImage() {
+        contactGroupImage.image = UIImage.init(named: "contact_groups_icon")
+        contactGroupImage.setupImage(contentMode: .center,
+                                     renderingMode: .alwaysTemplate,
+                                     scale: 0.5,
+                                     makeCircleBorder: true,
+                                     tintColor: UIColor.white,
+                                     backgroundColor: viewModel.getColor())
     }
     
     func loadDataIntoView() {
