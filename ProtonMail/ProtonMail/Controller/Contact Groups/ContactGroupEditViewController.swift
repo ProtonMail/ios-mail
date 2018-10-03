@@ -48,6 +48,12 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         self.performSegue(withIdentifier: kToContactGroupSelectColorSegue, sender: self)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        dismissKeyboard()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -94,8 +100,6 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     }
     
     @IBAction func saveAction(_ sender: UIBarButtonItem) {
-        // TODO: spinning while saving... (blocking)
-        
         dismissKeyboard()
         firstly {
             () -> Promise<Void> in
