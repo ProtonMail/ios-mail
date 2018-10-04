@@ -825,6 +825,9 @@ class LocalizedString {
 
     /// "Unable to connect to the server"
     lazy var _unable_to_connect_to_the_server = NSLocalizedString("Unable to connect to the server", comment: "Description")
+    
+    /// "Unable to edit this message offline"
+    lazy var _unable_to_edit_offline = NSLocalizedString("Unable to edit this message offline", comment: "Description")
 
     /// "Unable to parse token"
     lazy var _unable_to_parse_token = NSLocalizedString("Unable to parse token", comment: "Error")
