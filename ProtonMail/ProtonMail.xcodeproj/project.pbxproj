@@ -3662,7 +3662,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 09DDFB4604125DF1522C2E6E57108A27 /* Build configuration list for PBXNativeTarget "PushService" */;
 			buildPhases = (
-				660ED989CC28144BF5D8858856E2CDE7 /* Setup Version Number */,
 				3955F031BAA2D8708CB8AB79F5C10AD7 /* [CP] Check Pods Manifest.lock */,
 				43C3FB7047577F022BD3185B9DA2456E /* Sources */,
 				DA48617EB402EF4F128930F987130F37 /* Frameworks */,
@@ -3849,7 +3848,6 @@
 						};
 					};
 					5C6761FECCEBDA639D93B2A606D16447 = {
-						DevelopmentTeam = 2SB5Z68H26;
 						LastSwiftMigration = 1000;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
@@ -3894,7 +3892,6 @@
 					};
 					7CC48161B0FC946A8DB234B96B6A66DD = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = 2SB5Z68H26;
 						LastSwiftMigration = 1000;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
@@ -4519,20 +4516,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		D22256CE6C6100B8BAF55113FE9AD9AB /* Setup Version Number */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Setup Version Number";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\nfi;\n";
 		};
 		E117BBD6ECFCD59D138CE291EDC9C951 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

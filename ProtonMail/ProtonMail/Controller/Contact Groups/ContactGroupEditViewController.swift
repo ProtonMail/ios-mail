@@ -71,11 +71,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     
     func prepareContactGroupImage() {
         contactGroupImage.image = UIImage.init(named: "contact_groups_icon")
-        contactGroupImage.setupImage(contentMode: .center,
-                                     renderingMode: .alwaysTemplate,
-                                     scale: 0.5,
-                                     makeCircleBorder: true,
-                                     tintColor: UIColor.white,
+        contactGroupImage.setupImage(tintColor: UIColor.white,
                                      backgroundColor: viewModel.getColor())
     }
     

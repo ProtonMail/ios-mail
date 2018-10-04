@@ -134,6 +134,12 @@ class ViewModelServiceImpl: ViewModelService {
         self.setup(composer: vmp, viewModel: viewModel)
     }
     
+    override func newDraft(vmp: ViewModelProtocolBase, with group: ContactGroupVO) {
+        let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
+        viewModel.addToContacts(group)
+        self.setup(composer: vmp, viewModel: viewModel)
+    }
+    
     // msg details
     override func messageDetails(fromList vmp: ViewModelProtocol) {
         activeViewController = vmp

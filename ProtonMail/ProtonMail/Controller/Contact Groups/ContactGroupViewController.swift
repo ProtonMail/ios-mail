@@ -33,6 +33,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     private let kContactGroupCellIdentifier = "ContactGroupCustomCell"
     private let kToContactGroupDetailSegue = "toContactGroupDetailSegue"
+    private let kToComposerSegue = "toComposer"
     
     private var fetchedContactGroupResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
     private var refreshControl: UIRefreshControl!
@@ -365,6 +366,13 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             self.setPresentationStyleForSelfController(self,
                                                        presentingController: popup,
                                                        style: .overFullScreen)
+        } else if segue.identifier == kToComposerSegue {
+            let destination = segue.destination.children[0] as! ComposeEmailViewController
+            
+            if let result = sender as? (String, String) {
+                let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
+                sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
+            }
         }
     }
 }
@@ -435,6 +443,10 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate
 {
     func isMultiSelect() -> Bool {
         return isEditingState || viewModel.getState() == .ContactSelectGroups
+    }
+    
+    func sendEmailToGroup(ID: String, name: String) {
+        self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: ID, name: name))
     }
 }
 
@@ -510,9 +522,15 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                     }
                 }
             }
-        case .move:
-            //            tableView.deleteRows(at: [indexPath!], with: .automatic)
-            //            tableView.insertRows(at: [newIndexPath!], with: .automatic)
+        case .move: // group order might change! (renaming)
+            if let indexPath = indexPath {
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
+            
+            if let newIndexPath = newIndexPath {
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+            }
+            
             return
         }
     }

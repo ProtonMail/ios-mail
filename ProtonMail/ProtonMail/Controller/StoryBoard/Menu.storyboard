@@ -1236,7 +1236,7 @@
         <!--Compose Navigation Controller-->
         <scene sceneID="4pa-9S-l0a">
             <objects>
-                <navigationController storyboardIdentifier="UINavigationController-fzN-Ci-Qyg" id="fzN-Ci-Qyg" userLabel="Compose Navigation Controller" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ComposeNavigationController" id="fzN-Ci-Qyg" userLabel="Compose Navigation Controller" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ol1-XJ-ywN">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -4688,7 +4688,7 @@
         <segue reference="0zg-HM-MdK"/>
         <segue reference="PpL-SW-U8F"/>
         <segue reference="3FM-PP-oeV"/>
-        <segue reference="ddm-eA-erE"/>
+        <segue reference="uj7-oW-fwS"/>
         <segue reference="fux-iz-qV0"/>
         <segue reference="f3k-3A-WEA"/>
         <segue reference="CfN-TC-C8a"/>

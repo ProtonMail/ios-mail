@@ -10,39 +10,30 @@ import UIKit
 
 protocol ContactGroupsViewCellDelegate {
     func isMultiSelect() -> Bool
+    func sendEmailToGroup(ID: String, name: String)
 }
 
 class ContactGroupsViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var groupImage: UIImageView!
-        
+    @IBOutlet weak var sendButton: UIButton!
+    
     let highlightedColor = "#BFBFBF"
     let normalColor = "#9497CE"
     
+    private var labelID = ""
     private var name = ""
     private var detail = ""
     private var color = ColorManager.defaultColor
-    private var labelID = ""
     private var delegate: ContactGroupsViewCellDelegate!
     
     @IBAction func sendEmailButtonTapped(_ sender: UIButton) {
-        // TODO
-        
-        let alert = UIAlertController(title: "Send an email to \(name)",
-            message: "Code to be implemented",
-            preferredStyle: .alert)
-        alert.addOKAction()
-        
-        UIApplication.shared.keyWindow?.rootViewController?.present(alert,
-                                                                    animated: true,
-                                                                    completion: nil)
+        delegate.sendEmailToGroup(ID: labelID, name: name)
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        self.groupImage.layer.cornerRadius = 20.0
     }
 
     func config(labelID: String,
@@ -60,13 +51,17 @@ class ContactGroupsViewCell: UITableViewCell {
         self.delegate = delegate
         
         // set cell data
+        if let image = sendButton.imageView?.image {
+            sendButton.imageView?.contentMode = .center
+            sendButton.imageView?.image = UIImage.resize(image: image, targetSize: CGSize.init(width: 20, height: 20))
+        }
+        
         self.nameLabel.text = name
         self.detailLabel.text = detail
-        if let color = color {
-            groupImage.backgroundColor = UIColor(hexColorCode: color)
-        } else {
-            groupImage.backgroundColor = UIColor(hexColorCode: ColorManager.defaultColor)
-        }
+        groupImage.setupImage(tintColor: UIColor.white,
+                              backgroundColor: color != nil ? color! : ColorManager.defaultColor,
+                              borderWidth: 0,
+                              borderColor: UIColor.white.cgColor)
     }
     
     private func reset() {

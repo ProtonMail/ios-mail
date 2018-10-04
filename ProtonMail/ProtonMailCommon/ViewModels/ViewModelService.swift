@@ -44,6 +44,10 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
+    func newDraft(vmp: ViewModelProtocolBase, with group: ContactGroupVO) {
+        fatalError("This method must be overridden")
+    }
+    
     
     //messgae detail part
     func messageDetails(fromList vmp : ViewModelProtocol) -> Void {

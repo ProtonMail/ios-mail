@@ -17,10 +17,12 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     @IBOutlet weak var groupDetailLabel: UILabel!
     @IBOutlet weak var groupImage: UIImageView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var sendButton: UIButton!
     
     let kToContactGroupEditSegue = "toContactGroupEditSegue"
     
     let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
+    private let kToComposerSegue = "toComposer"
     
     func setViewModel(_ vm: Any) {
         viewModel = vm as! ContactGroupDetailViewModel
@@ -29,15 +31,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     func inactiveViewModel() {}
     
     @IBAction func sendButtonTapped(_ sender: UIButton) {
-        // TODO
-        let alert = UIAlertController(title: "Send email to contact group",
-                                      message: "To be implemented",
-                                      preferredStyle: .alert)
-        alert.addOKAction()
-        
-        UIApplication.shared.keyWindow?.rootViewController?.present(alert,
-                                                                    animated: true,
-                                                                    completion: nil)
+        self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: viewModel.getGroupID(), name: viewModel.getName()))
     }
     
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
@@ -83,12 +77,13 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         
         groupDetailLabel.text = viewModel.getTotalEmailString()
         
-        groupImage.setupImage(contentMode: .center,
-                              renderingMode: .alwaysTemplate,
-                              scale: 0.5,
-                              makeCircleBorder: true,
-                              tintColor: UIColor.white,
+        groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: viewModel.getColor())
+        
+        if let image = sendButton.imageView?.image {
+            sendButton.imageView?.contentMode = .center
+            sendButton.imageView?.image = UIImage.resize(image: image, targetSize: CGSize.init(width: 20, height: 20))
+        }
     }
     
     private func prepareTable() {
@@ -114,6 +109,13 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             } else {
                 // TODO: handle error
                 fatalError("Can't prepare for the contact group edit view")
+            }
+        } else if segue.identifier == kToComposerSegue {
+            let destination = segue.destination.children[0] as! ComposeEmailViewController
+            
+            if let result = sender as? (String, String) {
+                let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
+                sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
             }
         }
     }
