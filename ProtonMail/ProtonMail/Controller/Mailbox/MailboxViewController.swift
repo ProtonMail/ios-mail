@@ -983,8 +983,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                     if error != nil {
                         PMLog.D("error: \(String(describing: error))")
                     }
-                    else
-                    {
+                    if msg != nil {
                         self.selectedDraft = msg
                         
                         if self.checkHuman() {
