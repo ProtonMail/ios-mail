@@ -23,6 +23,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     
     let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
     private let kToComposerSegue = "toComposer"
+    private let kToUpgradeAlertSegue = "toUpgradeAlertSegue"
     
     func setViewModel(_ vm: Any) {
         viewModel = vm as! ContactGroupDetailViewModel
@@ -31,7 +32,11 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     func inactiveViewModel() {}
     
     @IBAction func sendButtonTapped(_ sender: UIButton) {
-        self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: viewModel.getGroupID(), name: viewModel.getName()))
+        if sharedUserDataService.isPaidUser() {
+            self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: viewModel.getGroupID(), name: viewModel.getName()))
+        } else {
+            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+        }
     }
     
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
@@ -123,6 +128,13 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
             }
+        } else if segue.identifier == kToUpgradeAlertSegue {
+            let popup = segue.destination as! UpgradeAlertViewController
+            popup.delegate = self
+            sharedVMService.upgradeAlert(contacts: popup)
+            self.setPresentationStyleForSelfController(self,
+                                                       presentingController: popup,
+                                                       style: .overFullScreen)
         }
     }
 }

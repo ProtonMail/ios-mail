@@ -354,6 +354,13 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
             }
+        } else if segue.identifier == kToUpgradeAlertSegue {
+            let popup = segue.destination as! UpgradeAlertViewController
+            popup.delegate = self
+            sharedVMService.upgradeAlert(contacts: popup)
+            self.setPresentationStyleForSelfController(self,
+                                                       presentingController: popup,
+                                                       style: .overFullScreen)
         }
     }
     
@@ -475,10 +482,6 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate
         } else {
             self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
         }
-    }
-    
-    func sendEmailToGroup(ID: String, name: String) {
-        self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: ID, name: name))
     }
 }
 
