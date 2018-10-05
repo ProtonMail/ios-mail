@@ -14,9 +14,10 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController
     private var addBarButtonItem: UIBarButtonItem!
     private var importBarButtonItem: UIBarButtonItem!
     
-    let kAddContactSugue: String      = "toAddContact"
-    let kAddContactGroupSugue: String = "toAddContactGroup"
-    let kSegueToImportView: String    = "toImportContacts"
+    let kAddContactSugue = "toAddContact"
+    let kAddContactGroupSugue = "toAddContactGroup"
+    let kSegueToImportView = "toImportContacts"
+    let kToUpgradeAlertSegue = "toUpgradeAlertSegue"
     
     func prepareNavigationItemRightDefault() {
         self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
@@ -47,6 +48,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController
                                                     (action) -> Void in
                                                     self.addContactTapped()
         }))
+        
         alertController.addAction(UIAlertAction(title: "Add new contact group",
                                                 style: .default,
                                                 handler: {
@@ -102,6 +104,10 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController
     }
     
     @objc private func addContactGroupTapped() {
-        self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
+        if sharedUserDataService.isPaidUser() {
+            self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
+        } else {
+            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+        }
     }
 }

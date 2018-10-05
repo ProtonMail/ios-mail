@@ -158,6 +158,13 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
             self.setPresentationStyleForSelfController(self,
                                                        presentingController: popup,
                                                        style: .overFullScreen)
+        } else if segue.identifier == kToUpgradeAlertSegue {
+            let popup = segue.destination as! UpgradeAlertViewController
+            popup.delegate = self
+            sharedVMService.upgradeAlert(contacts: popup)
+            self.setPresentationStyleForSelfController(self,
+                                                       presentingController: popup,
+                                                       style: .overFullScreen)
         }
     }
     
@@ -172,6 +179,23 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
             self.refreshControl.endRefreshing()
             self.tableView.reloadData()
         }
+    }
+}
+
+extension ContactsViewController: UpgradeAlertVCDelegate {
+    func goPlans() {
+        self.navigationController?.dismiss(animated: false, completion: {
+            NotificationCenter.default.post(name: .switchView,
+                                            object: MenuItem.servicePlan)
+        })
+    }
+    
+    func learnMore() {
+        UIApplication.shared.openURL(URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!)
+    }
+    
+    func cancel() {
+        
     }
 }
 

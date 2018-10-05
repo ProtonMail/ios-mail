@@ -22,31 +22,11 @@ final class ContactEditEmailCell: UITableViewCell {
     @IBOutlet weak var sepratorView: UIView!
     @IBOutlet weak var horizontalSeparator: UIView!
     
-    func refreshHandler(newContactGroups: NSSet)
-    {
-        print(newContactGroups.debugDescription)
-        if let data = newContactGroups.allObjects as? [String] {
-            email.updateContactGroups(newContactGroupIDs: data)
-        } else {
-            // TODO: handle error
-            email.updateContactGroups(newContactGroupIDs: [])
-        }
-    }
-    
-    func getContactGroupIDs() -> [String] {
-        return email.getContactGroupsID()
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.valueField.delegate = self
-        self.valueField.placeholder = LocalString._contacts_email_address_placeholder
-    }
-    
     func configCell(obj: ContactEditEmail,
                     callback: ContactEditCellDelegate?,
                     becomeFirstResponder: Bool = false) {
         self.email = obj
+        
         
         typeButton.setTitle(self.email.newType.title,
                             for: .normal)
@@ -60,11 +40,27 @@ final class ContactEditEmailCell: UITableViewCell {
         }
     }
     
+    // called when the contact group selection view is dismissed
+    func refreshHandler(updatedContactGroups: Set<String>)
+    {
+        email.updateContactGroups(updatedContactGroups: updatedContactGroups)
+    }
+    
+    func getCurrentlySelectedContactGroupsID() -> Set<String> {
+        return email.getCurrentlySelectedContactGroupsID()
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.valueField.delegate = self
+        self.valueField.placeholder = LocalString._contacts_email_address_placeholder
+    }
+    
     @IBAction func typeAction(_ sender: UIButton) {
         delegate?.pick(typeInterface: email, sender: self)
     }
     
-    @IBAction func chooseContactGroup(_ sender: UIButton) {
+    @IBAction func toSelectContactGroups(_ sender: UIButton) {
         delegate?.toSelectContactGroups(sender: self)
     }
     

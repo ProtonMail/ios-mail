@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 enum InformationType : Int {
     case organization = 0
     case nickname = 1
@@ -97,8 +96,7 @@ enum RuntimeError : Int, Error, CustomErrorVar {
     
 }
 
-
-class ContactEditViewModel {
+class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
     
     var allowed_types: [InformationType] = [.organization,
                                             .nickname,
@@ -297,6 +295,24 @@ class ContactEditViewModel {
     func delete(complete : @escaping ContactEditSaveComplete) -> Void {
         fatalError("This method must be overridden")
     }
+    
+    // contact group
+    func getAllContactGroupCounts() -> [(ID: String, name: String, color: String, count: Int)] {
+        fatalError("This method must be overridden")
+    }
+    
+    func updateContactCounts(increase: Bool, contactGroups: Set<String>) {
+        fatalError("This method must be overridden")
+    }
+    
+    func hasEmptyGroups() -> [String]? {
+        fatalError("This method must be overridden")
+    }
 }
 
 
+protocol ContactEditViewModelContactGroupDelegate {
+    // contact group
+    func getAllContactGroupCounts() -> [(ID: String, name: String, color: String, count: Int)]
+    func updateContactCounts(increase: Bool, contactGroups: Set<String>)
+}

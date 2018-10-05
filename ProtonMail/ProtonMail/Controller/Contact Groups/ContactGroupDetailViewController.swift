@@ -23,6 +23,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     
     let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
     private let kToComposerSegue = "toComposer"
+    private let kToUpgradeAlertSegue = "toUpgradeAlertSegue"
     
     func setViewModel(_ vm: Any) {
         viewModel = vm as! ContactGroupDetailViewModel
@@ -31,10 +32,20 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     func inactiveViewModel() {}
     
     @IBAction func sendButtonTapped(_ sender: UIButton) {
-        self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: viewModel.getGroupID(), name: viewModel.getName()))
+        if sharedUserDataService.isPaidUser() {
+            self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: viewModel.getGroupID(), name: viewModel.getName()))
+        } else {
+            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+        }
     }
     
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
+        if sharedUserDataService.isPaidUser() == false {
+            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+            
+            return
+        }
+        
         performSegue(withIdentifier: kToContactGroupEditSegue,
                      sender: self)
     }
@@ -117,7 +128,31 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
             }
+        } else if segue.identifier == kToUpgradeAlertSegue {
+            let popup = segue.destination as! UpgradeAlertViewController
+            popup.delegate = self
+            sharedVMService.upgradeAlert(contacts: popup)
+            self.setPresentationStyleForSelfController(self,
+                                                       presentingController: popup,
+                                                       style: .overFullScreen)
         }
+    }
+}
+
+extension ContactGroupDetailViewController: UpgradeAlertVCDelegate {
+    func goPlans() {
+        self.navigationController?.dismiss(animated: false, completion: {
+            NotificationCenter.default.post(name: .switchView,
+                                            object: MenuItem.servicePlan)
+        })
+    }
+    
+    func learnMore() {
+        UIApplication.shared.openURL(URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!)
+    }
+    
+    func cancel() {
+        
     }
 }
 
@@ -143,7 +178,8 @@ extension ContactGroupDetailViewController: UITableViewDataSource
                                                  for: indexPath) as! ContactGroupEditViewCell
         
         let ret = viewModel.getEmail(at: indexPath)
-        cell.config(name: ret.name,
+        cell.config(emailID: ret.emailID,
+                    name: ret.name,
                     email: ret.email,
                     state: .detailView)
         

@@ -31,7 +31,7 @@ class ContactGroupEditViewCell: UITableViewCell {
     @IBOutlet weak var shortNameLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
     
-    var emailID: String?
+    var emailID: String = ""
     var name: String = ""
     var email: String = ""
     var shortName: String = ""
@@ -47,13 +47,12 @@ class ContactGroupEditViewCell: UITableViewCell {
     
     @IBAction func deleteButtonTapped(_ sender: UIButton) {
         if state == .editView,
-            let viewModel = self.viewModel,
-            let emailID = emailID {
+            let viewModel = self.viewModel {
             viewModel.removeEmail(emailID: emailID)
         }
     }
     
-    func config(emailID: String? = nil,
+    func config(emailID: String,
                 name: String,
                 email: String,
                 state: ContactGroupEditViewCellState,
@@ -71,11 +70,6 @@ class ContactGroupEditViewCell: UITableViewCell {
             guard viewModel != nil else {
                 // TODO: handle this
                 fatalError("In editing mode, view model must be present")
-            }
-            
-            guard emailID != nil else {
-                // TODO: handle this
-                fatalError("In editing mode, emailID must be present")
             }
         }
         

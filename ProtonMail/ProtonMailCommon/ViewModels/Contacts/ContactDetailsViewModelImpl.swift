@@ -169,7 +169,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                   encrypt: nil,
                                                   sign: nil ,
                                                   scheme: nil,
-                                                  mimeType: nil)
+                                                  mimeType: nil,
+                                                  delegate: nil)
                         origEmails.append(ce)
                         order += 1
                     }
@@ -218,7 +219,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                   encrypt: nil,
                                                   sign: nil ,
                                                   scheme: nil,
-                                                  mimeType: nil)
+                                                  mimeType: nil,
+                                                  delegate: nil)
                         origEmails.append(ce)
                         order += 1
                     }

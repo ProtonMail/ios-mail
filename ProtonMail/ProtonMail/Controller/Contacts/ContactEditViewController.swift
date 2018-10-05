@@ -132,9 +132,11 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         } else if segue.identifier == kToSelectContactGroupSegue {
             let destination = segue.destination as! ContactGroupsViewController
             let refreshHandler = (sender as! ContactEditEmailCell).refreshHandler
-            let contactGroupIDs = (sender as! ContactEditEmailCell).getContactGroupIDs()
+            let groupCountInformation = viewModel.getAllContactGroupCounts()
+            let selectedGroupIDs = (sender as! ContactEditEmailCell).getCurrentlySelectedContactGroupsID()
             sharedVMService.contactSelectContactGroupsViewModel(destination,
-                                                                selectedGroupIDs: contactGroupIDs,
+                                                                groupCountInformation: groupCountInformation,
+                                                                selectedGroupIDs: selectedGroupIDs,
                                                                 refreshHandler: refreshHandler)
         }
     }
@@ -168,8 +170,29 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     }
     @IBAction func doneAction(_ sender: UIBarButtonItem) {
         dismissKeyboard()
+        
+        // check if we have empty contact group
+        let hasEmptyGroupResult = viewModel.hasEmptyGroups()
+        if let emptiness = hasEmptyGroupResult {
+            var groupString = ""
+            for group in emptiness {
+                groupString += groupString.count > 0 ? ", " : ""
+                groupString += group
+            }
+            
+            let alert = UIAlertController.init(title: "Empty group error",
+                                               message: "There must be at least one group member in contact groups \(groupString)",
+                preferredStyle: .alert)
+            
+            alert.addOKAction()
+            
+            self.present(alert, animated: true)
+            return
+        }
+        
         let v : UIView = self.navigationController?.view ?? self.view
         ActivityIndicatorHelper.showActivityIndicator(at: v)
+        
         viewModel.done { (error : NSError?) in
             ActivityIndicatorHelper.hideActivityIndicator(at: v)
             if error == nil {

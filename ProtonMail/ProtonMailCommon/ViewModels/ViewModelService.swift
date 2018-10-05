@@ -95,8 +95,9 @@ class ViewModelService {
     }
     
     func contactSelectContactGroupsViewModel(_ vmp: ViewModelProtocol,
-                                             selectedGroupIDs: [String],
-                                             refreshHandler: @escaping (NSSet) -> Void) {
+                                             groupCountInformation: [(ID: String, name: String, color: String, count: Int)],
+                                             selectedGroupIDs: Set<String>,
+                                             refreshHandler: @escaping (Set<String>) -> Void) {
         fatalError("This method must be overridden")
     }
     

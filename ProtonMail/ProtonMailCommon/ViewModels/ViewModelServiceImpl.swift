@@ -238,10 +238,12 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func contactSelectContactGroupsViewModel(_ vmp: ViewModelProtocol,
-                                                      selectedGroupIDs: [String],
-                                                      refreshHandler: @escaping (NSSet) -> Void) {
+                                                      groupCountInformation: [(ID: String, name: String, color: String, count: Int)],
+                                                      selectedGroupIDs: Set<String>,
+                                                      refreshHandler: @escaping (Set<String>) -> Void) {
         activeViewController = vmp
-        vmp.setViewModel(ContactGroupsViewModelImpl(state: .ContactSelectGroups,
+        vmp.setViewModel(ContactGroupsViewModelImpl(state: .MultiSelectContactGroupsForContactEmail,
+                                                    groupCountInformation: groupCountInformation,
                                                     selectedGroupIDs: selectedGroupIDs,
                                                     refreshHandler: refreshHandler))
     }
@@ -249,7 +251,7 @@ class ViewModelServiceImpl: ViewModelService {
     // contact groups
     override func contactGroupsViewModel(_ vmp: ViewModelProtocol) {
         activeViewController = vmp
-        vmp.setViewModel(ContactGroupsViewModelImpl(state: .ContactGroupsView))
+        vmp.setViewModel(ContactGroupsViewModelImpl(state: .ViewAllContactGroups))
     }
     
     override func contactGroupDetailViewModel(_ vmp: ViewModelProtocol,

@@ -30,6 +30,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     var notes : ContactEditNote = ContactEditNote(note: "", isNew: false)
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
     var urls : [ContactEditUrl] = []
+    var contactGroupData: [String:(name: String, color: String, count: Int)] = [:]
     
     var origvCard2 : PMNIVCard?
     var origvCard3 : PMNIVCard?
@@ -38,6 +39,20 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         super.init()
         self.contact = c
         self.prepareContactData()
+        self.prepareContactGroupData()
+    }
+    
+    private func prepareContactGroupData() {
+        let groups = sharedLabelsDataService.getAllLabels(of: .contactGroup)
+        
+        for group in groups {
+            contactGroupData[group.labelID] = (name: group.name, color: group.color, count: group.emails.count)
+            
+            print("group name \(group.name) group count \(group.emails.count)")
+            for email in group.emails.allObjects as! [Email] {
+                print(email.debugDescription)
+            }
+        }
     }
     
     private func prepareContactData() {
@@ -80,7 +95,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                                       encrypt: encrypt,
                                                       sign: sign,
                                                       scheme: schemeType,
-                                                      mimeType: mimeType)
+                                                      mimeType: mimeType,
+                                                      delegate: self)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -119,7 +135,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                                       encrypt: encrypt,
                                                       sign: sign,
                                                       scheme: schemeType,
-                                                      mimeType: mimeType)
+                                                      mimeType: mimeType,
+                                                      delegate: self)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -388,7 +405,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                      encrypt: nil,
                                      sign: nil ,
                                      scheme: nil,
-                                     mimeType: nil)
+                                     mimeType: nil,
+                                     delegate: self)
         emails.append(email)
         return email
     }
@@ -734,5 +752,44 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 }
             })
         }
+    }
+    
+    override func getAllContactGroupCounts() -> [(ID: String, name: String, color: String, count: Int)] {
+        var result = self.contactGroupData.map{ return (ID:$0.key, name: $0.value.name, color: $0.value.color, count: $0.value.count) }
+        result.sort(by: {$0.name < $1.name})
+        return result
+    }
+    
+    override func updateContactCounts(increase: Bool, contactGroups: Set<String>) {
+        for group in contactGroups {
+            if increase {
+                if var value = contactGroupData[group] {
+                    value.count = value.count + 1
+                    contactGroupData.updateValue(value, forKey: group)
+                } else {
+                    // TODO: handle error
+                }
+            } else {
+                if var value = contactGroupData[group] {
+                    value.count = value.count - 1
+                    contactGroupData.updateValue(value, forKey: group)
+                } else {
+                    // TODO: handle error
+                }
+            }
+        }
+        print(contactGroupData)
+    }
+    
+    // return the contact group that is empty after editing
+    override func hasEmptyGroups() -> [String]? {
+        var emptyGroupNames = [String]()
+        for group in contactGroupData {
+            if group.value.count == 0 {
+                emptyGroupNames.append(group.value.name)
+            }
+        }
+        
+        return emptyGroupNames.count > 0 ? emptyGroupNames : nil
     }
 }

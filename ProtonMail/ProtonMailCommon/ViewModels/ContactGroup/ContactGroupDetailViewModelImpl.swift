@@ -81,14 +81,14 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
         return "\(cnt) Member\(cnt > 1 ? "s" : "")"
     }
     
-    func getEmail(at indexPath: IndexPath) -> (name: String, email: String) {
+    func getEmail(at indexPath: IndexPath) -> (emailID: String, name: String, email: String) {
         guard indexPath.row < emailIDsArray.count else {
             // TODO: handle error
             PMLog.D("Invalid index row request")
             fatalError("Invalid index row request")
         }
         
-        return (emailIDsArray[indexPath.row].name, emailIDsArray[indexPath.row].email)
+        return (emailIDsArray[indexPath.row].emailID, emailIDsArray[indexPath.row].name, emailIDsArray[indexPath.row].email)
     }
     
     /**
