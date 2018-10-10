@@ -89,24 +89,6 @@ class UserDataService {
         }
     }
     
-    // Value is only stored in the keychain
-    var password: String? {
-        get {
-            do {
-                let savedPwd = sharedKeychain.keychain().string(forKey: Key.password)
-                return try savedPwd?.decrypt(withPwd: "$Proton$" + Key.password)
-            }catch {
-                return nil
-            }
-        }
-        set {
-            do {
-                let nv = try newValue?.encrypt(withPwd: "$Proton$" + Key.password)
-                sharedKeychain.keychain().setString(nv, forKey: Key.password)
-            }catch {
-            }
-        }
-    }
     
     var switchCacheOff: Bool? = SharedCacheBase.getDefault().bool(forKey: Key.roleSwitchCache) {
         didSet {
@@ -294,7 +276,7 @@ class UserDataService {
     var isMailboxPWDOk: Bool = false
     
     var isUserCredentialStored: Bool {
-        return username != nil && password != nil && isRememberUser
+        return username != nil && isRememberUser
     }
     
     /// Value is only stored in the keychain
@@ -419,9 +401,6 @@ class UserDataService {
         self.isMailboxPWDOk = true;
     }
     
-    func isPasswordValid(_ password: String?) -> Bool {
-        return self.password == password
-    }
     
     func signIn(_ username: String, password: String, twoFACode: String?, ask2fa: @escaping LoginAsk2FABlock, onError:@escaping LoginErrorBlock, onSuccess: @escaping LoginSuccessBlock) {
         sharedAPIService.auth(username, password: password, twoFACode: twoFACode) { task, mpwd, status, error in
@@ -432,7 +411,6 @@ class UserDataService {
                 if error == nil {
                     self.isSignedIn = true
                     self.username = username
-                    self.password = password
                     self.isRememberUser = true
                     self.passwordMode = mpwd != nil ? 1 : 2
                     
@@ -610,7 +588,6 @@ class UserDataService {
                                                                 verifer: verifier.encodeBase64(),
                                                                 tfaCode: twoFACode).syncCall()
                         if updatePwd?.code == 1000 {
-                            self.password = new_password
                             forceRetry = false
                         } else {
                             throw UpdatePasswordError.default.error
@@ -907,7 +884,6 @@ class UserDataService {
         isSignedIn = false
         
         isRememberUser = false
-        password = nil
         username = nil
         
         isRememberMailboxPassword = false
@@ -941,7 +917,6 @@ class UserDataService {
     func launchCleanUp() {
         if !self.isRememberUser {
             username = nil
-            password = nil
             twoFactorStatus = 0
             passwordMode = 2
         }

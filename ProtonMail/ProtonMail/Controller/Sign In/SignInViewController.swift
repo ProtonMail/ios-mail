@@ -578,9 +578,6 @@ class SignInViewController: ProtonMailViewController {
             sharedUserDataService.isSignedIn = true
             isRemembered = true
             
-            usernameTextField.text = sharedUserDataService.username
-            passwordTextField.text = sharedUserDataService.password
-            
             self.loadContent()
         }
         else

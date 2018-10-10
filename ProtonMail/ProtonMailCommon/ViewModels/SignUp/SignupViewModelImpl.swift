@@ -284,7 +284,7 @@ final class SignupViewModelImpl : SignupViewModel {
         }
         
         if !self.recoverEmail.isEmpty {
-            sharedUserDataService.updateNotificationEmail(recoverEmail, login_password: sharedUserDataService.password ?? "", twoFACode: nil) { _, _, error in
+            sharedUserDataService.updateNotificationEmail(recoverEmail, login_password: self.plaintext_password, twoFACode: nil) { _, _, error in
 
             }
         }

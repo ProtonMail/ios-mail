@@ -32,6 +32,14 @@ final class KeychainWrapper {
             group = prefix + "ch.protonmail.protonmail"
             service = "ch.protonmail"
         #endif
+        
+        defer {
+            self.migration()
+        }
+    }
+    
+    private func migration() {
+        self.keychain()?.removeItem(forKey: UserDataService.Key.password)
     }
     
     deinit {
