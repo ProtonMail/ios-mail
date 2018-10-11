@@ -190,6 +190,31 @@ final class ContactEditEmail: ContactEditTypeInterface {
     }
     
     /**
+     - Returns: all currently selected contact group's color
+    */
+    func getCurrentlySelectedContactGroupColors() -> [String] {
+        var colors = [String]()
+        
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            for ID in newContactGroupIDs {
+                let label = Label.labelForLableID(ID, inManagedObjectContext: context)
+                
+                if let label = label {
+                    colors.append(label.color)
+                } else {
+                    // TODO: handle error
+                    PMLog.D("Can't retrieve label by ID")
+                }
+            }
+        } else {
+            // TODO: handle error
+            PMLog.D("Can't get context")
+        }
+        
+        return colors
+    }
+    
+    /**
      Update the selected contact group information for this email
     */
     func updateContactGroups(updatedContactGroups: Set<String>) {

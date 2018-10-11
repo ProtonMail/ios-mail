@@ -45,15 +45,6 @@ class ContactGroupsViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-    
-    func setCount(_ count: Int) {
-        self.count = count
-        self.setDetailString()
-    }
-    
-    private func setDetailString() {
-        self.detailLabel.text = "\(self.count) Member\(self.count > 1 ? "s" : "")"
-    }
 
     func config(labelID: String,
                 name: String,
@@ -77,7 +68,7 @@ class ContactGroupsViewCell: UITableViewCell {
         }
         
         self.nameLabel.text = name
-        self.setDetailString()
+        self.detailLabel.text = detail
         groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: color != nil ? color! : ColorManager.defaultColor,
                               borderWidth: 0,
