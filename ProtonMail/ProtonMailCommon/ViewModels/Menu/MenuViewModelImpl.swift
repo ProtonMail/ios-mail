@@ -19,14 +19,14 @@ class MenuViewModelImpl : MenuViewModel {
     fileprivate let inboxItems : [MenuItem] = [.inbox, .drafts, .sent, .starred,
                                                .archive, .spam, .trash, .allmail]
     //menu other actions rather than inboxes
-    fileprivate var otherItems : [MenuItem] = [.contacts, .settings, .servicePlan, .bugs, /*MenuItem.feedback,*/ .signout]
+    fileprivate var otherItems : [MenuItem] = [.contacts, .settings, .servicePlan, .bugs, /*MenuItem.feedback,*/ .lockapp, .signout]
     
     //fetch request result
     fileprivate var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
     
     override func setupMenu() {
-        if ((userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty) ||
-            (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled))
+        if (!userCachedStatus.isPinCodeEnabled || userCachedStatus.pinCode.isEmpty),
+            (!userCachedStatus.isTouchIDEnabled || userCachedStatus.touchIDEmail.isEmpty)
         {
             otherItems = otherItems.filter { $0 != .lockapp }
         }
