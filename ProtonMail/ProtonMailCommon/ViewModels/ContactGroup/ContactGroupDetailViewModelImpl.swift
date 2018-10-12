@@ -78,6 +78,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
     func getTotalEmailString() -> String {
         let cnt = self.getTotalEmails()
         
+        // TODO: localization
         return "\(cnt) Member\(cnt > 1 ? "s" : "")"
     }
     

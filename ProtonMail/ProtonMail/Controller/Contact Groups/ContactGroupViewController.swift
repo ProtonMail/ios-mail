@@ -26,6 +26,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     private var totalSelectedContactGroups: Int = 0 {
         didSet {
             if isEditingState {
+                // TODO: localization
                 title = "\(totalSelectedContactGroups) Selected"
             }
         }
@@ -223,10 +224,10 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     private func prepareNavigationItemTitle() {
         if isEditingState {
-            // TODO: selected count
+            // TODO: localization
             self.title = "\(0) Selected"
         } else {
-            self.title = "Groups"
+            self.title = LocalString._menu_contact_group_title
         }
     }
     
@@ -261,7 +262,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                 self.updateNavigationBar()
             }.catch {
                 error in
-                let alert = UIAlertController(title: "Error deleting groups",
+                let alert = UIAlertController(title: LocalString._contact_groups_delete_error,
                                               message: error.localizedDescription,
                                               preferredStyle: .alert)
                 alert.addOKAction()
@@ -316,7 +317,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             }.catch {
                 error in
                 
-                let alert = UIAlertController(title: "Error deleting groups",
+                let alert = UIAlertController(title: LocalString._contact_groups_fetch_error,
                                               message: error.localizedDescription,
                                               preferredStyle: .alert)
                 alert.addOKAction()

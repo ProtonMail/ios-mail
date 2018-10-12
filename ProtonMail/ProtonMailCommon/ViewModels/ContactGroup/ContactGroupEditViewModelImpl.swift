@@ -177,9 +177,9 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     func getViewTitle() -> String {
         switch state {
         case .create:
-            return "Create contact group"
+            return LocalString._contact_groups_add
         case .edit:
-            return "Edit contact group"
+            return LocalString._contact_groups_edit
         }
     }
     

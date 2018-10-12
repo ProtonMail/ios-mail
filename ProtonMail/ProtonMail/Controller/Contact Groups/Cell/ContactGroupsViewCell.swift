@@ -52,6 +52,7 @@ class ContactGroupsViewCell: UITableViewCell {
     }
     
     private func setDetailString() {
+        // TODO: localization
         self.detailLabel.text = "\(self.count) Member\(self.count > 1 ? "s" : "")"
     }
 

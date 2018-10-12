@@ -52,7 +52,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Group Details"
+        self.title = LocalString._contact_groups_detail_view_title
         
         prepareTable()
     }
@@ -168,7 +168,7 @@ extension ContactGroupDetailViewController: UITableViewDataSource
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            return "CONTACTS"
+            return LocalString._menu_contacts_title
         }
         return nil
     }

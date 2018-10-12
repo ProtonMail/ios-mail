@@ -19,6 +19,11 @@ class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModel
     
     func inactiveViewModel() { }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = LocalString._contact_groups_select_color
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewModel.save()

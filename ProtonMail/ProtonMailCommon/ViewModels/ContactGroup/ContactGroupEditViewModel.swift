@@ -31,29 +31,27 @@ extension ContactGroupEditError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .noEmailInGroup:
-            return NSLocalizedString("No email is selected in the contact group",
-                                     comment: "Contact group no email")
+            return LocalString._contact_groups_no_email_selected
         case .noNameForGroup:
-            return NSLocalizedString("No name is provided for the contact group",
-                                     comment: "Contact group no name")
+            return LocalString._contact_groups_no_name_entered
         case .noContactGroupID:
+            // TODO: localization
             return NSLocalizedString("No group ID is returned from the contact group API",
                                      comment: "Contact group no ID")
         case .NSSetConversionToEmailArrayFailure:
+            // TODO: localization
             return NSLocalizedString("Can't convert NSSet to array of Email",
                                      comment: "Contact group NSSet to array conversion failed")
         case .NSSetConversionToEmailSetFailure:
+            // TODO: localization
             return NSLocalizedString("Can't convert NSSet to Set of Email",
                                      comment: "Contact group NSSet to Set conversion failed")
         case .addFailed:
-            return NSLocalizedString("Can't create contact group through API",
-                                     comment: "Contact group creation failed")
+            return LocalString._contact_groups_api_add_error
         case .updateFailed:
-            return NSLocalizedString("Can't update contact group through API",
-                                     comment: "Contact group update failed")
+            return LocalString._contact_groups_api_update_error
         case .deleteFailed:
-            return NSLocalizedString("Can't delete contact group through API",
-                                     comment: "Contact group delete failed")
+            return LocalString._contact_groups_api_delete_error
         }
     }
 }

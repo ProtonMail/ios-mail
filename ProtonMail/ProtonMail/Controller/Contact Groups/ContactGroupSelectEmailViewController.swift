@@ -24,7 +24,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     }
     
     override func viewDidLoad() {
-        title = "Add Addresses"
+        title = LocalString._contact_groups_manage_addresses
         
         tableView.allowsMultipleSelection = true
         tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
