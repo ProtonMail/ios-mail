@@ -5,31 +5,18 @@
 //  Created by Anatoly Rosencrantz on 13/10/2018.
 //  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  There is a building. Inside this building there is a level
+//  where no elevator can go, and no stair can reach. This level
+//  is filled with doors. These doors lead to many places. Hidden
+//  places. But one door is special. One door leads to the source.
+//
 
 import Foundation
-import Crashlytics
 import LocalAuthentication
-import MBProgressHUD
-
-
-typealias SIVController = SIV&UIViewController
-protocol SIV: class {
-    func ShowLoginViews()
-    func setupView()
-    func showTouchID(_ animated: Bool)
-    
-    var showingTouchID: Bool { get set }
-    var isRemembered: Bool { get set }
-    var kSegueTo2FACodeSegue: String { get }
-    var kMailboxSegue: String { get }
-    var kSegueToPinCodeViewNoAnimation: String { get }
-}
 
 var keymaker = Keymaker()
 class Keymaker: NSObject {
-    var cachedTwoCode : String?
-    
-    func getViewFlow(_ vc: SIVController) -> SignInUIFlow {
+    internal func getViewFlow() -> SignInUIFlow {
         if sharedTouchID.showTouchIDOrPin() {
             if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
                 return SignInUIFlow.requirePin
@@ -46,114 +33,67 @@ class Keymaker: NSObject {
         }
     }
     
-    func processViewFlow(_ signinFlow: SignInUIFlow,
-                         _ vc: SIVController)
+    internal func processViewFlow(_ signinFlow: SignInUIFlow,
+                                 onRequirePin: @escaping ()->Void,
+                                 onRestore: @escaping ()->Void,
+                                 onSuccess: @escaping ()->Void)
     {
         switch signinFlow {
         case .requirePin:
             sharedUserDataService.isSignedIn = false
-            vc.performSegue(withIdentifier: vc.kSegueToPinCodeViewNoAnimation, sender: vc)
+            onRequirePin()
             
         case .requireTouchID:
             sharedUserDataService.isSignedIn = false
-            vc.showTouchID(false)
-            self.authenticateUser(vc)
+            self.biometricAuthentication(onSuccess: onRestore, onSegue: onSuccess)
             
         case .restore:
-            self.signInIfRememberedCredentials(vc)
-            vc.setupView();
+            self.signInIfRememberedCredentials(onSuccess: onSuccess)
+            onRestore()
         }
     }
     
-    func signIn(username: String,
+    internal func signIn(username: String,
                 password: String,
-                vc: SIVController)
+                cachedTwoCode: String?,
+                ask2fa: @escaping ()->Void,
+                onError: @escaping (NSError)->Void,
+                onSuccess: @escaping ()->Void,
+                onSegue: @escaping ()->Void)
     {
-        MBProgressHUD.showAdded(to: vc.view, animated: true)
-        vc.isRemembered = true
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-            clean();
+            self.clean()
         }
         
-        SignInViewController.isComeBackFromMailbox = false
-        
         //need pass twoFACode
-        sharedUserDataService.signIn(username, password: password, twoFACode: cachedTwoCode,
-                                     ask2fa: {
-                                        //2fa
-                                        MBProgressHUD.hide(for: vc.view, animated: true)
-                                        vc.performSegue(withIdentifier: vc.kSegueTo2FACodeSegue, sender: vc)
-        },
-                                     onError: { (error) in
-                                        //error
-                                        self.cachedTwoCode = nil
-                                        MBProgressHUD.hide(for: vc.view, animated: true)
-                                        PMLog.D("error: \(error)")
-                                        vc.ShowLoginViews();
-                                        if !error.code.forceUpgrade {
-                                            let alertController = error.alertController()
-                                            alertController.addOKAction()
-                                            vc.present(alertController, animated: true, completion: nil)
-                                        }
-        },
+        sharedUserDataService.signIn(username,
+                                     password: password,
+                                     twoFACode: cachedTwoCode,
+                                     ask2fa: ask2fa,
+                                     onError: onError,
                                      onSuccess: { (mailboxpwd) in
-                                        //ok
-                                        self.cachedTwoCode = nil
-                                        MBProgressHUD.hide(for: vc.view, animated: true)
-                                        if mailboxpwd != nil {
-                                            self.decryptPassword(mailboxpwd!, vc: vc)
+                                        onSuccess()
+                                        if let mailboxPassword = mailboxpwd {
+                                            self.decryptPassword(mailboxPassword, onSegue: onSegue, onError: onError)
                                         } else {
-                                            self.restoreBackup()
-                                            self.loadContent(vc)
+                                            UserTempCachedStatus.restore()
+                                            self.loadContent(onSuccess: onSegue)
                                         }
         })
     }
     
-    func authenticateUser(_ vc: SIVController) {
-        if !vc.showingTouchID {
-            vc.showingTouchID = true
-        } else {
-            return
-        }
+    internal func biometricAuthentication(onSuccess: @escaping ()->Void,
+                                          onSegue: @escaping ()->Void)
+    {
         let savedEmail = userCachedStatus.codedEmail()
-        // Get the local authentication context.
+        
         let context = LAContext()
-        // Declare a NSError variable.
         var error: NSError?
         context.localizedFallbackTitle = ""
-        // Set the reason string that will appear on the authentication alert.
         let reasonString = "\(LocalString._general_login): \(savedEmail)"
-        // Check if the device can evaluate the policy.
-        if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            context.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: Error?) in
-                vc.showingTouchID = false
-                if success {
-                    DispatchQueue.main.async {
-                        self.signInIfRememberedCredentials(vc)
-                        vc.setupView()
-                    }
-                }
-                else{
-                    DispatchQueue.main.async {
-                        switch evalPolicyError!._code {
-                        case LAError.Code.systemCancel.rawValue:
-                            LocalString._authentication_was_cancelled_by_the_system.alertToast()
-                        case LAError.Code.userCancel.rawValue:
-                            PMLog.D("Authentication was cancelled by the user")
-                        case LAError.Code.userFallback.rawValue:
-                            PMLog.D("User selected to enter custom password")
-                        default:
-                            PMLog.D("Authentication failed")
-                            LocalString._authentication_failed.alertToast()
-                        }
-                    }
-                }
-            })
-        }
-        else{
-            vc.showingTouchID = false
+        
+        guard context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) else{
             var alertString : String = "";
-            // If the security policy cannot be evaluated then show a short message depending on the error.
             switch error!.code{
             case LAError.Code.touchIDNotEnrolled.rawValue:
                 alertString = LocalString._general_touchid_not_enrolled
@@ -163,61 +103,67 @@ class Keymaker: NSObject {
                 alertString = error?.localizedDescription ?? LocalString._general_touchid_not_available
                 break
             default:
-                // The LAError.TouchIDNotAvailable case.
                 alertString = LocalString._general_touchid_not_available
             }
             alertString.alertToast()
+            return
+        }
+        
+        context.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString) { success, evalPolicyError in
+            DispatchQueue.main.async {
+                guard success else {
+                    switch evalPolicyError!._code {
+                    case LAError.Code.systemCancel.rawValue:
+                        LocalString._authentication_was_cancelled_by_the_system.alertToast()
+                    case LAError.Code.userCancel.rawValue:
+                        PMLog.D("Authentication was cancelled by the user")
+                    case LAError.Code.userFallback.rawValue:
+                        PMLog.D("User selected to enter custom password")
+                    default:
+                        PMLog.D("Authentication failed")
+                        LocalString._authentication_failed.alertToast()
+                    }
+                    return
+                }
+                self.signInIfRememberedCredentials(onSuccess: onSegue)
+                onSuccess()
+            }
         }
     }
     
-    func signInIfRememberedCredentials(_ vc: SIVController) {
+    internal func signInIfRememberedCredentials(onSuccess: ()->Void) {
         if sharedUserDataService.isUserCredentialStored {
             userCachedStatus.lockedApp = false
             sharedUserDataService.isSignedIn = true
-            vc.isRemembered = true
-            
-            self.loadContent(vc)
-        }
-        else
-        {
-            clean()
+            onSuccess()
+        } else {
+            self.clean()
         }
     }
     
-    fileprivate func loadContent(_ vc: SIVController) {
-        logUser()
+    private func loadContent(onSuccess: ()->Void) {
         if sharedUserDataService.isMailboxPasswordStored {
             UserTempCachedStatus.clearFromKeychain()
-            userCachedStatus.pinFailedCount = 0;
-            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: vc)
+            userCachedStatus.pinFailedCount = 0
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
             (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-            loadContactsAfterInstall()
+            self.loadContactsAfterInstall()
         } else {
-            vc.performSegue(withIdentifier: vc.kMailboxSegue, sender: vc)
+            onSuccess()
         }
     }
     
-    func logUser() {
-        if  let username = sharedUserDataService.username {
-            Crashlytics.sharedInstance().setUserIdentifier(username)
-            Crashlytics.sharedInstance().setUserName(username)
-        }
-    }
-    
-    func clean() {
+    internal func clean() {
         UserTempCachedStatus.backup()
         sharedUserDataService.signOut(true)
         userCachedStatus.signOut()
         sharedMessageDataService.launchCleanUpIfNeeded()
     }
     
-    func loadContactsAfterInstall() {
+    private func loadContactsAfterInstall() {
         ServicePlanDataService.shared.updateCurrentSubscription()
-        sharedUserDataService.fetchUserInfo().done { (_) in
-            
-            }.catch { (_) in
-                
-        }
+        sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
+        
         //TODO:: here need to be changed
         sharedContactDataService.fetchContacts { (contacts, error) in
             if error != nil {
@@ -228,68 +174,49 @@ class Keymaker: NSObject {
         }
     }
     
-    func decryptPassword(_ mailboxPassword:String!,
-                         vc: SIVController)
+    private func decryptPassword(_ mailboxPassword:String!,
+                         onSegue: @escaping ()->Void,
+                         onError: @escaping (NSError)->Void)
     {
-        vc.isRemembered = true
-        if sharedUserDataService.isMailboxPasswordValid(mailboxPassword, privateKey: AuthCredential.getPrivateKey()) {
-            if sharedUserDataService.isSet {
-                sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: vc.isRemembered)
-                (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-            } else {
-                do {
-                    try AuthCredential.setupToken(mailboxPassword, isRememberMailbox: vc.isRemembered)
-                    MBProgressHUD.showAdded(to: vc.view, animated: true)
-                    sharedLabelsDataService.fetchLabels()
-                    ServicePlanDataService.shared.updateCurrentSubscription()
-                    sharedUserDataService.fetchUserInfo().done(on: .main) { info in
-                        MBProgressHUD.hide(for: vc.view, animated: true)
-                        if info != nil {
-                            if info!.delinquent < 3 {
-                                userCachedStatus.pinFailedCount = 0;
-                                sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: vc.isRemembered)
-                                self.restoreBackup()
-                                self.loadContent(vc)
-                                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: vc)
-                            } else {
-                                let alertController = LocalString._general_account_disabled_non_payment.alertController()
-                                alertController.addAction(UIAlertAction.okAction({ (action) -> Void in
-                                    let _ = vc.navigationController?.popViewController(animated: true)
-                                }))
-                                vc.present(alertController, animated: true, completion: nil)
-                            }
-                        } else {
-                            let alertController = NSError.unknowError().alertController()
-                            alertController.addOKAction()
-                            vc.present(alertController, animated: true, completion: nil)
-                        }
-                        }.catch(on: .main) { (error) in
-                            MBProgressHUD.hide(for: vc.view, animated: true)
-                            if let error = error as NSError? {
-                                let alertController = error.alertController()
-                                alertController.addOKAction()
-                                vc.present(alertController, animated: true, completion: nil)
-                                if error.domain == APIServiceErrorDomain && error.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                                    let _ = vc.navigationController?.popViewController(animated: true)
-                                }
-                            }
-                    }
-                } catch let ex as NSError {
-                    MBProgressHUD.hide(for: vc.view, animated: true)
-                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? LocalString._the_mailbox_password_is_incorrect
-                    let alertController = UIAlertController(title: LocalString._incorrect_password, message: NSLocalizedString(message, comment: ""),preferredStyle: .alert)
-                    alertController.addOKAction()
-                    vc.present(alertController, animated: true, completion: nil)
-                }
+        let isRemembered = true
+        guard sharedUserDataService.isMailboxPasswordValid(mailboxPassword, privateKey: AuthCredential.getPrivateKey()) else {
+            onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
+            return
+        }
+        
+        guard !sharedUserDataService.isSet else {
+            sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: isRemembered)
+            (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+            return
+        }
+    
+        do {
+            try AuthCredential.setupToken(mailboxPassword, isRememberMailbox: isRemembered)
+        } catch let ex as NSError {
+            onError(ex)
+        }
+        
+        sharedLabelsDataService.fetchLabels()
+        ServicePlanDataService.shared.updateCurrentSubscription()
+        sharedUserDataService.fetchUserInfo().done(on: .main) { info in
+            guard info != nil else {
+                onError(NSError.unknowError())
+                return
             }
-        } else {
-            let alert = UIAlertController(title: LocalString._incorrect_password, message: LocalString._the_mailbox_password_is_incorrect, preferredStyle: .alert)
-            alert.addAction((UIAlertAction.okAction()))
-            vc.present(alert, animated: true, completion: nil)
+        
+            guard info!.delinquent < 3 else {
+                onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
+                return
+            }
+        
+            userCachedStatus.pinFailedCount = 0;
+            sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: isRemembered)
+            UserTempCachedStatus.restore()
+            self.loadContent(onSuccess: onSegue)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
+        }.catch(on: .main) { (error) in
+            fatalError() // FIXME: is this possible at all?
         }
     }
     
-    func restoreBackup () {
-        UserTempCachedStatus.restore()
-    }
 }

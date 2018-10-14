@@ -22,10 +22,8 @@ import MBProgressHUD
 
 
 //class SignInViewController: BaseViewController {
-class SignInViewController: ProtonMailViewController, SIV {
+class SignInViewController: ProtonMailViewController {
     static var isComeBackFromMailbox                = false
-    
-    internal var showingTouchID                      = false
     
     fileprivate let animationDuration: TimeInterval = 0.5
     fileprivate let keyboardPadding: CGFloat        = 12
@@ -84,8 +82,17 @@ class SignInViewController: ProtonMailViewController, SIV {
         setupButtons()
         setupVersionLabel()
         
-        let signinFlow = keymaker.getViewFlow(self)
-        keymaker.processViewFlow(signinFlow, self)
+        let signinFlow = keymaker.getViewFlow()
+        if signinFlow == .requireTouchID {
+            self.showTouchID(false)
+        }
+        keymaker.processViewFlow(signinFlow,
+                                 onRequirePin: { self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
+                                 onRestore: self.setupView,
+                                 onSuccess: {
+                                    self.isRemembered = true
+                                    self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
+        })
     }
     
     @IBAction func changeLanguagesAction(_ sender: UIButton) {
@@ -189,7 +196,10 @@ class SignInViewController: ProtonMailViewController, SIV {
     
     @IBAction func touchIDAction(_ sender: UIButton) {
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-            keymaker.authenticateUser(self)
+            keymaker.biometricAuthentication(onSuccess: self.setupView, onSegue: {
+                self.isRemembered = true
+                self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
+            })
         } else {
             hideTouchID()
         }
@@ -226,9 +236,9 @@ class SignInViewController: ProtonMailViewController, SIV {
             
             if !username.isEmpty && !password.isEmpty {
                 self.updateSignInButton(usernameText: username, passwordText: password)
-                keymaker.signIn(username: self.usernameTextField.text ?? "",
-                                password: self.passwordTextField.text ?? "",
-                                vc: self)
+                self.signIn(username: self.usernameTextField.text ?? "",
+                            password: self.passwordTextField.text ?? "",
+                            cachedTwoCode: nil) // FIXME
             }
         })
     }
@@ -256,7 +266,10 @@ class SignInViewController: ProtonMailViewController, SIV {
     
     @objc func doEnterForeground() {
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-            keymaker.authenticateUser(self)
+            keymaker.biometricAuthentication(onSuccess: self.setupView,
+                                             onSegue: {
+                                                self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
+            })
         }
     }
     
@@ -268,14 +281,14 @@ class SignInViewController: ProtonMailViewController, SIV {
         if sharedUserDataService.isNewUser {
             sharedUserDataService.isNewUser = false
             if sharedUserDataService.isUserCredentialStored {
-                keymaker.signInIfRememberedCredentials(self)
-                if(isRemembered)
-                {
-                    HideLoginViews();
-                }
-                else
-                {
-                    ShowLoginViews();
+                keymaker.signInIfRememberedCredentials(onSuccess: {
+                    self.isRemembered = true
+                    self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
+                })
+                if(isRemembered) {
+                    HideLoginViews()
+                } else {
+                    ShowLoginViews()
                 }
             }
         }
@@ -393,9 +406,9 @@ class SignInViewController: ProtonMailViewController, SIV {
     
     @IBAction func signInAction(_ sender: UIButton) {
         dismissKeyboard()
-        keymaker.signIn(username: self.usernameTextField.text ?? "",
-                        password: self.passwordTextField.text ?? "",
-                        vc: self)
+        self.signIn(username: self.usernameTextField.text ?? "",
+                    password: self.passwordTextField.text ?? "",
+                    cachedTwoCode: nil) // FIXME
     }
     
     @IBAction func fogorPasswordAction(_ sender: AnyObject) {
@@ -416,15 +429,49 @@ class SignInViewController: ProtonMailViewController, SIV {
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
+    
+    fileprivate func signIn(username: String,
+                            password: String,
+                            cachedTwoCode: String?)
+    {
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        self.isRemembered = true
+        SignInViewController.isComeBackFromMailbox = false
+        
+        keymaker.signIn(username: username,
+                        password: password,
+                        cachedTwoCode: cachedTwoCode,
+                        ask2fa: {
+                            //2fa
+                            MBProgressHUD.hide(for: self.view, animated: true)
+                            self.performSegue(withIdentifier: self.kSegueTo2FACodeSegue, sender: self)
+        },
+                        onError: { error in
+                            PMLog.D("error: \(error)")
+                            MBProgressHUD.hide(for: self.view, animated: true)
+                            self.ShowLoginViews();
+                            if !error.code.forceUpgrade {
+                                let alertController = error.alertController()
+                                alertController.addOKAction()
+                                self.present(alertController, animated: true, completion: nil)
+                            }
+        },
+                        onSuccess: {
+                            MBProgressHUD.hide(for: self.view, animated: true)
+        },
+                        onSegue: {
+                            self.isRemembered = true
+                            self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
+        })
+    }
 }
 
 extension SignInViewController : TwoFACodeViewControllerDelegate {
     func ConfirmedCode(_ code: String, pwd : String) {
         NotificationCenter.default.addKeyboardObserver(self)
-        keymaker.cachedTwoCode = code
-        keymaker.signIn(username: self.usernameTextField.text ?? "",
-                        password: self.passwordTextField.text ?? "",
-                        vc: self)
+        self.signIn(username: self.usernameTextField.text ?? "",
+                    password: self.passwordTextField.text ?? "",
+                    cachedTwoCode: code)
     }
 
     func Cancel2FA() {
@@ -441,7 +488,10 @@ extension SignInViewController : PinCodeViewControllerDelegate {
     }
     
     func Next() {
-        keymaker.signInIfRememberedCredentials(self)
+        keymaker.signInIfRememberedCredentials(onSuccess: {
+            self.isRemembered = true
+            self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
+        })
         setupView();
     }
 }
@@ -500,9 +550,9 @@ extension SignInViewController: UITextFieldDelegate {
         let pwd = (passwordTextField.text ?? "") //.trim()
         
         if !uName.isEmpty && !pwd.isEmpty {
-            keymaker.signIn(username: self.usernameTextField.text ?? "",
-                            password: self.passwordTextField.text ?? "",
-                            vc: self)
+            self.signIn(username: self.usernameTextField.text ?? "",
+                        password: self.passwordTextField.text ?? "",
+                        cachedTwoCode: nil) // FIXME
         }
         
         return true
