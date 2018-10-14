@@ -281,8 +281,8 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocol,
-                                                   currentColor: String?,
-                                                   refreshHandler: @escaping (String?) -> Void) {
+                                                   currentColor: String,
+                                                   refreshHandler: @escaping (String) -> Void) {
         activeViewController = vmp
         vmp.setViewModel(ContactGroupSelectColorViewModelImpl(currentColor: currentColor,
                                                               refreshHandler: refreshHandler))

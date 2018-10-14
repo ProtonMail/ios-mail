@@ -79,7 +79,7 @@ struct ContactGroupData
     {
         self.ID = ID
         self.name = name
-        self.color = color ?? ColorManager.defaultColor
+        self.color = color ?? ColorManager.getRandomColor()
         self.originalEmailIDs = emailIDs
         self.emailIDs = NSMutableSet(set: emailIDs)
     }
@@ -92,7 +92,7 @@ protocol ContactGroupEditViewModel {
     // set operations
     func setName(name: String)
     func setEmails(emails: NSSet)
-    func setColor(newColor: String?)
+    func setColor(newColor: String)
     
     func removeEmail(emailID: String)
     

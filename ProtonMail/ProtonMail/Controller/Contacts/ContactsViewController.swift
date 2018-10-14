@@ -49,6 +49,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactCellIdentifier)
         

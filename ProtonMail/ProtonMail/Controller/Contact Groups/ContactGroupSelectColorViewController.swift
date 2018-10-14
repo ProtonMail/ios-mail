@@ -75,15 +75,15 @@ extension ContactGroupSelectColorViewController: UICollectionViewDataSource
 
 extension ContactGroupSelectColorViewController: UICollectionViewDelegate
 {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
         // deselect
-        if let currentColorIndex = viewModel.getCurrentColorIndex() {
-            let cell = collectionView.cellForItem(at: IndexPath(row: currentColorIndex, section: 0))
-            cell?.layer.borderWidth = 0
-        }
+        let currentColorIndex = viewModel.getCurrentColorIndex()
+        var cell = collectionView.cellForItem(at: IndexPath(row: currentColorIndex, section: 0))
+        cell?.layer.borderWidth = 0
         
         // select the new color
-        let cell = collectionView.cellForItem(at: indexPath)
+        cell = collectionView.cellForItem(at: indexPath)
         cell?.layer.borderWidth = 4
         cell?.layer.borderColor = UIColor.darkGray.cgColor
         viewModel.updateCurrentColor(to: indexPath)

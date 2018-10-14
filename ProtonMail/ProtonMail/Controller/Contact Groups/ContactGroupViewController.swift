@@ -26,8 +26,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     private var totalSelectedContactGroups: Int = 0 {
         didSet {
             if isEditingState {
-                // TODO: localization
-                title = "\(totalSelectedContactGroups) Selected"
+                title = String.init(format: LocalString._contact_groups_selected_group_count_description,
+                                    totalSelectedContactGroups)
             }
         }
     }
@@ -224,8 +224,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     private func prepareNavigationItemTitle() {
         if isEditingState {
-            // TODO: localization
-            self.title = "\(0) Selected"
+            self.title = String.init(format: LocalString._contact_groups_selected_group_count_description,
+                                     0)
         } else {
             self.title = LocalString._menu_contact_group_title
         }
@@ -447,7 +447,7 @@ extension ContactGroupsViewController: UITableViewDataSource
                         cell.config(labelID: "",
                                     name: "Error in retrieving contact group name in core data",
                                     count: 0,
-                                    color: nil,
+                                    color: ColorManager.defaultColor,
                                     wasSelected: false,
                                     delegate: self)
                     }
@@ -596,7 +596,7 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                         cell.config(labelID: "",
                                     name: "Error in retrieving contact group name in core data",
                                     count: 0,
-                                    color: nil,
+                                    color: ColorManager.defaultColor,
                                     wasSelected: false,
                                     delegate: self)
                     }

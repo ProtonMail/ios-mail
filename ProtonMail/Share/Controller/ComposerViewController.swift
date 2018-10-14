@@ -575,8 +575,25 @@ extension ComposerViewController : ComposeViewDelegate {
         passwordVC.pwdDelegate                                = self
         
         passwordVC.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
-        self.present(passwordVC, animated: true) {
-            //nothing
+        self.present(passwordVC, animated: true)
+    }
+    
+    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
+                                                   contactGroup: ContactGroupVO,
+                                                   callback: @escaping (([String]) -> Void)) {
+        if let destination = UIStoryboard.init(name: "Menu",
+                                               bundle: nil).instantiateViewController(withIdentifier: "ContactGroupSubSelectionViewController") as? ContactGroupSubSelectionViewController {
+            destination.providesPresentationContextTransitionStyle = true;
+            destination.definesPresentationContext                 = true;
+            destination.modalTransitionStyle                       = .crossDissolve
+            destination.modalPresentationStyle                     = UIModalPresentationStyle.overCurrentContext
+            
+            destination.contactGroupName = contactGroup.contactTitle
+            destination.selectedEmails = contactGroup.getSelectedEmails()
+            destination.callback = callback
+            self.present(destination,
+                         animated: true,
+                         completion: nil)
         }
     }
     

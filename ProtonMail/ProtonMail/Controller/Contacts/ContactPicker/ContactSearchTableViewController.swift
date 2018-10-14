@@ -21,14 +21,29 @@ class ContactSearchTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier, for: indexPath) as! ContactsTableViewCell
-        
-        if (self.filteredContacts.count > indexPath.row) {
-            let model = self.filteredContacts[indexPath.row]
-            cell.contactEmailLabel.text = model.contactSubtitle
-            cell.contactNameLabel.text = model.contactTitle
+        let fallbackCell = tableView.dequeueReusableCell(withIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier, for: indexPath) as! ContactsTableViewCell
+        if (indexPath.row < self.filteredContacts.count) {
+            if let model = self.filteredContacts[indexPath.row] as? ContactVO {
+                let cell = tableView.dequeueReusableCell(withIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier, for: indexPath) as! ContactsTableViewCell
+                cell.config(name: model.contactTitle,
+                            email: model.contactSubtitle ?? "",
+                            highlight: "")
+                return cell
+            } else if let model = self.filteredContacts[indexPath.row] as? ContactGroupVO {
+                let cell = tableView.dequeueReusableCell(withIdentifier: ContactPickerDefined.ContactGroupTableViewCellIdentifier, for: indexPath) as! ContactGroupsViewCell
+                let info = model.getContactGroupInfo()
+                cell.config(labelID: model.ID,
+                            name: model.contactTitle,
+                            count: info.total,
+                            color: info.color,
+                            wasSelected: false)
+                return cell
+            } else {
+                return fallbackCell
+            }
+        } else {
+            return fallbackCell
         }
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

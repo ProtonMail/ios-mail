@@ -34,10 +34,20 @@ class ContactPicker: UIView {
     private func createSearchTableViewController() -> ContactSearchTableViewController {
         let controller = ContactSearchTableViewController()
         controller.tableView.rowHeight = CGFloat(ContactPickerDefined.ROW_HEIGHT)
-        controller.tableView.register(UINib.init(nibName: ContactPickerDefined.ContactsTableViewCellName, bundle: nil),
+        controller.tableView.register(UINib.init(nibName: ContactPickerDefined.ContactsTableViewCellName,
+                                                 bundle: nil),
                                  forCellReuseIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier)
+        controller.tableView.register(UINib.init(nibName: ContactPickerDefined.ContactGroupTableViewCellName,
+                                                 bundle: nil),
+                                      forCellReuseIdentifier: ContactPickerDefined.ContactGroupTableViewCellIdentifier)
+        
         controller.onSelection = { [unowned self] model in
             self.hideSearchTableView()
+            
+            // if contact group is selected, we add all emails in it as selected, initially
+            if let contactGroup = model as? ContactGroupVO {
+                contactGroup.selectAllEmail()
+            }
             self.contactCollectionView.addToSelectedContacts(model: model, withCompletion: nil)
         }
         return controller
@@ -394,6 +404,12 @@ extension ContactPicker : ContactCollectionViewDelegate {
     
     internal func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
         self.delegate?.collectionView(at: contactCollectionView, didSelect: contact)
+    }
+    
+    internal func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol, callback: @escaping (([String]) -> Void)) {
+        self.delegate?.collectionView(at: contactCollectionView,
+                                      didSelect: contact,
+                                      callback: callback)
     }
     
     internal func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol) {

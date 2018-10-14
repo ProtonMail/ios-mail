@@ -19,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ProtonMail Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vde-5V-24G">
-                        <rect key="frame" x="64" y="12.5" width="192" height="18"/>
+                        <rect key="frame" x="62" y="12.5" width="194" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="TNN-qe-nWW"/>
                         </constraints>
@@ -28,7 +28,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="64 Members" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGF-UH-owS">
-                        <rect key="frame" x="64" y="35.5" width="192" height="16"/>
+                        <rect key="frame" x="62" y="35.5" width="194" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="Lks-iQ-6nq"/>
                         </constraints>
@@ -37,10 +37,9 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact_groups_icon" translatesAutoresizingMaskIntoConstraints="NO" id="LvN-FM-L9L">
-                        <rect key="frame" x="16" y="10.5" width="40" height="40"/>
+                        <rect key="frame" x="14" y="10.5" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="6L2-gF-laJ"/>
-                            <constraint firstAttribute="width" secondItem="LvN-FM-L9L" secondAttribute="height" multiplier="1:1" id="H0L-4W-F4f"/>
                             <constraint firstAttribute="width" constant="40" id="eT6-jS-DUg"/>
                         </constraints>
                     </imageView>
@@ -59,7 +58,7 @@
                 <constraints>
                     <constraint firstItem="FGF-UH-owS" firstAttribute="leading" secondItem="LvN-FM-L9L" secondAttribute="trailing" constant="8" id="2h5-dj-rkC"/>
                     <constraint firstItem="Vde-5V-24G" firstAttribute="leading" secondItem="LvN-FM-L9L" secondAttribute="trailing" constant="8" id="Gnc-nQ-A8n"/>
-                    <constraint firstItem="LvN-FM-L9L" firstAttribute="leading" secondItem="De5-a9-SVK" secondAttribute="leading" constant="16" id="Hrr-hu-N7w"/>
+                    <constraint firstItem="LvN-FM-L9L" firstAttribute="leading" secondItem="De5-a9-SVK" secondAttribute="leading" constant="14" id="Hrr-hu-N7w"/>
                     <constraint firstAttribute="trailingMargin" secondItem="2PA-mM-WQa" secondAttribute="trailing" id="Ko5-AO-sSe"/>
                     <constraint firstItem="LvN-FM-L9L" firstAttribute="top" secondItem="De5-a9-SVK" secondAttribute="top" constant="10" id="Ors-kM-9HK"/>
                     <constraint firstItem="2PA-mM-WQa" firstAttribute="centerY" secondItem="De5-a9-SVK" secondAttribute="centerY" id="Q7x-oA-u5V"/>

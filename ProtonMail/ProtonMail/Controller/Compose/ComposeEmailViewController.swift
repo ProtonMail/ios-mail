@@ -64,6 +64,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
     fileprivate let kNumberOfHoursInTimePicker: Int = 24
     
     fileprivate let kPasswordSegue : String = "to_eo_password_segue"
+    fileprivate let kToContactGroupSubSelection = "toContactGroupSubSelection"
     fileprivate let kExpirationWarningSegue : String = "expiration_warning_segue"
     
     fileprivate var isShowingConfirm : Bool = false
@@ -117,8 +118,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             }.done {
                 () -> Void in
                 
-                // TODO: figure what to put this thing
-                self.contacts.append(contentsOf: sharedContactGroupsDataService.getAllContactGroupVOs())
+                // TODO: figure where to put this thing
+                if sharedUserDataService.isPaidUser() {
+                    self.contacts.append(contentsOf: sharedContactGroupsDataService.getAllContactGroupVOs())
+                }
                 
                 // This is done for contact also
                 self.contacts.sort {
@@ -356,6 +359,14 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
             let nonePMEmail = self.encryptionPassword.count <= 0 ? self.composeView.nonePMEmails : [String]()
             popup.config(needPwd: nonePMEmail,
                          pgp: self.composeView.pgpEmails)
+        } else if segue.identifier == kToContactGroupSubSelection {
+            let destination = segue.destination as! ContactGroupSubSelectionViewController
+            let sender = sender as! (ContactGroupVO, (([String]) -> Void))
+            
+            destination.contactGroupName = sender.0.contactTitle
+            destination.selectedEmails = sender.0.getSelectedEmails()
+            destination.callback = sender.1
+            self.setPresentationStyleForSelfController(self, presentingController: destination)
         }
     }
     
@@ -699,6 +710,13 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView) {
         self.performSegue(withIdentifier: kPasswordSegue, sender: self)
+    }
+    
+    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
+                                                   contactGroup: ContactGroupVO,
+                                                   callback: @escaping (([String]) -> Void)) {
+        self.performSegue(withIdentifier: kToContactGroupSubSelection,
+                          sender: (contactGroup, callback))
     }
     
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView) {

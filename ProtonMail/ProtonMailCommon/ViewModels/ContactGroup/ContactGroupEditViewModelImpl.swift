@@ -141,8 +141,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     /**
      - Parameter color: The color of the contact group to be set to. Notice that is the color is nil, the default color will be used
      */
-    func setColor(newColor: String?) {
-        contactGroup.color = newColor ?? ColorManager.defaultColor
+    func setColor(newColor: String) {
+        contactGroup.color = newColor
         self.delegate?.update()
     }
     

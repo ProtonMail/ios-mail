@@ -21,4 +21,8 @@ struct ColorManager
     static let defaultColor = ColorManager.forLabel[0]
     
     static let white = "#FFFFFF"
+    
+    static func getRandomColor() -> String {
+        return forLabel[Int.random(in: 0..<forLabel.count)]
+    }
 }

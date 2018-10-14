@@ -26,7 +26,7 @@ class ContactGroupsViewCell: UITableViewCell {
     private var name = ""
     private var count = 0
     private var color = ColorManager.defaultColor
-    private var delegate: ContactGroupsViewCellDelegate!
+    private var delegate: ContactGroupsViewCellDelegate?
     
     // the count of emails in a contact group
     // the assumption of this variable to work properly is that the contact group data won't be updated
@@ -39,7 +39,7 @@ class ContactGroupsViewCell: UITableViewCell {
     private var wasSelected: Bool = false
     
     @IBAction func sendEmailButtonTapped(_ sender: UIButton) {
-        delegate.sendEmailToGroup(ID: labelID, name: name)
+        delegate?.sendEmailToGroup(ID: labelID, name: name)
     }
     
     override func awakeFromNib() {
@@ -51,25 +51,36 @@ class ContactGroupsViewCell: UITableViewCell {
         self.setDetailString()
     }
     
-    private func setDetailString() {
-        // TODO: localization
-        self.detailLabel.text = "\(self.count) Member\(self.count > 1 ? "s" : "")"
+    private func setDetailString() {        
+        if self.count <= 1 {
+            self.detailLabel.text = String.init(format: LocalString._contact_groups_member_count_description,
+                                                self.count)
+        } else {
+            self.detailLabel.text = String.init(format: LocalString._contact_groups_members_count_description,
+                                                self.count)
+        }
     }
-
+    
     func config(labelID: String,
                 name: String,
                 count: Int,
-                color: String?,
+                color: String,
                 wasSelected: Bool,
-                delegate: ContactGroupsViewCellDelegate) {
+                delegate: ContactGroupsViewCellDelegate? = nil) {
         // setup and save
         self.count = count
         self.origCount = count
         self.labelID = labelID
         self.name = name
-        self.color = color ?? ColorManager.defaultColor
+        self.color = color
         self.delegate = delegate
         self.wasSelected = wasSelected
+        
+        if delegate == nil {
+            self.sendButton.isHidden = true
+        } else {
+            self.sendButton.isHidden = false
+        }
         
         // set cell data
         if let image = sendButton.imageView?.image {
@@ -80,7 +91,7 @@ class ContactGroupsViewCell: UITableViewCell {
         self.nameLabel.text = name
         self.setDetailString()
         groupImage.setupImage(tintColor: UIColor.white,
-                              backgroundColor: color != nil ? color! : ColorManager.defaultColor,
+                              backgroundColor: color,
                               borderWidth: 0,
                               borderColor: UIColor.white.cgColor)
     }
@@ -102,28 +113,30 @@ class ContactGroupsViewCell: UITableViewCell {
     func getLabelID() -> String {
         return labelID
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
-        if delegate.isMultiSelect() && selected {
-            // in multi-selection
-            self.selectionStyle = .none
-            
-            groupImage.image = UIImage(named: "contact_groups_check")
-            groupImage.setupImage(contentMode: .center,
-                                  renderingMode: .alwaysOriginal,
-                                  scale: 0.5,
-                                  makeCircleBorder: true,
-                                  tintColor: UIColor.white,
-                                  backgroundColor: ColorManager.white,
-                                  borderWidth: 1.0,
-                                  borderColor: UIColor.gray.cgColor)
-        } else if delegate.isMultiSelect() == false && selected {
-            // normal selection
-            groupImage.backgroundColor = UIColor(hexColorCode: highlightedColor)
-        } else {
-            reset()
+        if let delegate = delegate {
+            if delegate.isMultiSelect() && selected {
+                // in multi-selection
+                self.selectionStyle = .none
+                
+                groupImage.image = UIImage(named: "contact_groups_check")
+                groupImage.setupImage(contentMode: .center,
+                                      renderingMode: .alwaysOriginal,
+                                      scale: 0.5,
+                                      makeCircleBorder: true,
+                                      tintColor: UIColor.white,
+                                      backgroundColor: ColorManager.white,
+                                      borderWidth: 1.0,
+                                      borderColor: UIColor.gray.cgColor)
+            } else if delegate.isMultiSelect() == false && selected {
+                // normal selection
+                groupImage.backgroundColor = UIColor(hexColorCode: highlightedColor)
+            } else {
+                reset()
+            }
         }
     }
 }

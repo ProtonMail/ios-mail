@@ -10,11 +10,11 @@ import Foundation
 
 class ContactGroupSelectColorViewModelImpl: ContactGroupSelectColorViewModel
 {
-    var currentColor: String?
+    var currentColor: String
     let colors = ColorManager.forLabel
-    let refreshHandler: (String?) -> Void
+    let refreshHandler: (String) -> Void
     
-    init(currentColor: String?, refreshHandler: @escaping (String?) -> Void) {
+    init(currentColor: String, refreshHandler: @escaping (String) -> Void) {
         self.currentColor = currentColor
         self.refreshHandler = refreshHandler
     }
@@ -25,34 +25,27 @@ class ContactGroupSelectColorViewModelImpl: ContactGroupSelectColorViewModel
             return false
         }
         
-        if let current = currentColor {
-            return colors[indexPath.row] == current
-        }
-        return false
+        return colors[indexPath.row] == currentColor
     }
     
-    func getCurrentColor() -> String?
+    func getCurrentColorIndex() -> Int
     {
-        return currentColor
-    }
-    
-    func getCurrentColorIndex() -> Int?
-    {
-        if let c = currentColor {
-            for (i, color) in colors.enumerated() {
-                if color == c {
-                    return i
-                }
+        for (i, color) in colors.enumerated() {
+            if color == currentColor {
+                return i
             }
         }
         
-        return nil
+        // This should not happen
+        PMLog.D("Color not in the list!")
+        currentColor = ColorManager.defaultColor
+        return 0
     }
     
     func updateCurrentColor(to indexPath: IndexPath)
     {
         guard indexPath.row < colors.count else {
-            currentColor = nil
+            currentColor = ColorManager.getRandomColor()
             return 
         }
         

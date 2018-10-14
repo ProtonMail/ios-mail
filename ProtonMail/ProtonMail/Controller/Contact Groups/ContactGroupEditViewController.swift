@@ -18,9 +18,11 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     
     let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
     
+    @IBOutlet weak var contactGroupNameInstructionLabel: UILabel!
     @IBOutlet weak var contactGroupNameLabel: UITextField!
     @IBOutlet weak var contactGroupImage: UIImageView!
     
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     @IBOutlet weak var navigationBarItem: UINavigationItem!
@@ -67,6 +69,10 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         tableView.noSeparatorsBelowFooter()
         
         prepareContactGroupImage()
+        
+        contactGroupNameInstructionLabel.text = LocalString._contact_groups_group_name_instruction_label
+        saveButton.title = LocalString._general_save_action
+        cancelButton.title = LocalString._general_cancel_button
     }
     
     func prepareContactGroupImage() {
@@ -125,7 +131,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
             let contactGroupSelectColorViewController = segue.destination as! ContactGroupSelectColorViewController
             
             let refreshHandler = {
-                (newColor: String?) -> Void in
+                (newColor: String) -> Void in
                 self.viewModel.setColor(newColor: newColor)
             }
             sharedVMService.contactGroupSelectColorViewModel(

@@ -16,7 +16,8 @@ protocol ContactCollectionViewDelegate : NSObjectProtocol, ContactCollectionView
     func collectionView(at: ContactCollectionView, entryTextDidChange text: String)
     func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool)
     func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol)
-
+    func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol, callback: @escaping (([String]) -> Void))
+    
     func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol)
     func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol)
     func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool)
@@ -78,14 +79,14 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         layout.minimumInteritemSpacing = 0 //5
         layout.minimumLineSpacing = 0 // 1
         layout.sectionInset = UIEdgeInsets.init(top: 0, left: 6, bottom: 0, right: 6)
-
+        
         self.prototypeCell = ContactCollectionViewContactCell()
         
         self.allowsMultipleSelection = false
         self.allowsSelection = true
         self.backgroundColor = UIColor(hexColorCode: "#FFFFFF") //UIColorFromRGB(0xFCFEFF)
         
-//        self.register(ContactCollectionViewContactCell.self, forCellWithReuseIdentifier: "ContactCell")
+        //        self.register(ContactCollectionViewContactCell.self, forCellWithReuseIdentifier: "ContactCell")
         self.register(UINib.init(nibName: "ContactCollectionViewContactCell", bundle: nil),
                       forCellWithReuseIdentifier: "ContactCell")
         
@@ -107,7 +108,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             self.handleWidthChangeFrom(oldWidth: origWidth, to: newValue.width)
         }
     }
-
+    
     //
     func handleWidthChangeFrom(oldWidth : CGFloat, to newWidth: CGFloat) {
         if oldWidth != newWidth {
@@ -150,7 +151,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             self._allowsTextInput = newValue
         }
     }
-
+    
     // this should return ?
     var entryCellIndexPath : IndexPath {
         let r = self.selectedContacts.count + (self.showPrompt ? 1 : 0)
@@ -245,7 +246,9 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             let model = self.selectedContacts[index]
             self.performBatchUpdates({
                 self.selectedContacts.remove(at: index)
-                self.deselectItem(at: self.indexPathOfSelectedCell!, animated: false)
+                if let indexPathOfSelectedCell = self.indexPathOfSelectedCell {
+                    self.deselectItem(at: indexPathOfSelectedCell, animated: false)
+                }
                 self.deleteItems(at: [IndexPath(row: index + (self.showPrompt ? 1 : 0), section: 0)])
                 self.scrollToItem(at: self.entryCellIndexPath, at: UICollectionView.ScrollPosition(rawValue: 0), animated: true)
             }) { (finished) in
@@ -316,7 +319,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
     var entryIsVisible : Bool {
         return self.indexPathsForVisibleItems.contains(self.entryCellIndexPath)
     }
-
+    
     func scrollToEntryAnimated(animated : Bool, onComplete complete : ContactPickerComplete?) {
         if animated {
             UIView.animate(withDuration: 0.25, animations: {
@@ -448,8 +451,31 @@ extension ContactCollectionView : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? ContactCollectionViewContactCell {
             self.becomeFirstResponder()
-            cell.pickerFocused = true
-            self.contactDelegate?.collectionView(at: self, didSelect: cell.model)
+            
+            if cell.pickerFocused == false {
+                cell.pickerFocused = true
+            } else {
+                let callback = {
+                    (selectedEmailAddresses: [String]) -> Void in
+                    
+                    if let contactGroup = cell.model as? ContactGroupVO { // must be contactGroupVO
+                        if selectedEmailAddresses.count > 0 {
+                            // update cell members
+                            contactGroup.setSelectedEmails(selectedMembers: selectedEmailAddresses)
+                        } else {
+                            // No member, delete this cell
+                            self.removeFromSelectedContacts(index: self.selectedContactIndexFromRow(row: indexPath.row),
+                                                            withCompletion: nil)
+                        }
+                    } else {
+                        // TODO: handle error
+                        PMLog.D("This shouldn't happen")
+                        fatalError("This shouldn't happen")
+                    }
+                }
+                
+                self.contactDelegate?.collectionView(at: self, didSelect: cell.model, callback: callback)
+            }
         }
     }
     
