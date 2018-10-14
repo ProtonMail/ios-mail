@@ -74,9 +74,7 @@ class Keymaker: NSObject {
                                      onSuccess: { (mailboxpwd) in
                                         afterSignIn()
                                         if let mailboxPassword = mailboxpwd {
-                                            self.decryptPassword(mailboxPassword,
-                                                                 requestMailboxPassword: requestMailboxPassword,
-                                                                 onError: onError)
+                                            self.decryptPassword(mailboxPassword, onError: onError)
                                         } else {
                                             UserTempCachedStatus.restore()
                                             self.loadContent(requestMailboxPassword: requestMailboxPassword)
@@ -177,8 +175,16 @@ class Keymaker: NSObject {
         }
     }
     
-    private func decryptPassword(_ mailboxPassword: String,
-                         requestMailboxPassword: @escaping ()->Void,
+    internal func mailboxPassword(from cleartextPassword: String) -> String {
+        var mailboxPassword = cleartextPassword
+        if let keysalt = AuthCredential.getKeySalt(), !keysalt.isEmpty {
+            let keysalt_byte: Data = keysalt.decodeBase64()
+            mailboxPassword = PasswordUtils.getMailboxPassword(cleartextPassword, salt: keysalt_byte)
+        }
+        return mailboxPassword
+    }
+    
+    internal func decryptPassword(_ mailboxPassword: String,
                          onError: @escaping (NSError)->Void)
     {
         let isRemembered = true
@@ -215,7 +221,7 @@ class Keymaker: NSObject {
             userCachedStatus.pinFailedCount = 0;
             sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: isRemembered)
             UserTempCachedStatus.restore()
-            self.loadContent(requestMailboxPassword: requestMailboxPassword)
+            self.loadContent(requestMailboxPassword: { })
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
         }.catch(on: .main) { (error) in
             fatalError() // FIXME: is this possible at all?
