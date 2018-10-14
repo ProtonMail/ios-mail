@@ -16,7 +16,7 @@ import LocalAuthentication
 
 var keymaker = Keymaker()
 class Keymaker: NSObject {
-    internal func getViewFlow() -> SignInUIFlow {
+    internal func getUnlockFlow() -> SignInUIFlow {
         if sharedTouchID.showTouchIDOrPin() {
             if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
                 return SignInUIFlow.requirePin
@@ -33,22 +33,22 @@ class Keymaker: NSObject {
         }
     }
     
-    internal func processViewFlow(_ signinFlow: SignInUIFlow,
-                                 onRequirePin: @escaping ()->Void,
-                                 onRestore: @escaping ()->Void,
-                                 onSuccess: @escaping ()->Void)
+    internal func unlock(accordingToFlow signinFlow: SignInUIFlow,
+                         requestPin: @escaping ()->Void,
+                         onRestore: @escaping ()->Void,
+                         afterSignIn: @escaping ()->Void)
     {
         switch signinFlow {
         case .requirePin:
             sharedUserDataService.isSignedIn = false
-            onRequirePin()
+            requestPin()
             
         case .requireTouchID:
             sharedUserDataService.isSignedIn = false
-            self.biometricAuthentication(onSuccess: onRestore, onSegue: onSuccess)
+            self.biometricAuthentication(afterBioAuthPassed: onRestore, afterSignIn: afterSignIn)
             
         case .restore:
-            self.signInIfRememberedCredentials(onSuccess: onSuccess)
+            self.signInIfRememberedCredentials(onSuccess: afterSignIn)
             onRestore()
         }
     }
@@ -58,8 +58,8 @@ class Keymaker: NSObject {
                 cachedTwoCode: String?,
                 ask2fa: @escaping ()->Void,
                 onError: @escaping (NSError)->Void,
-                onSuccess: @escaping ()->Void,
-                onSegue: @escaping ()->Void)
+                afterSignIn: @escaping ()->Void,
+                requestMailboxPassword: @escaping ()->Void)
     {
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             self.clean()
@@ -72,18 +72,20 @@ class Keymaker: NSObject {
                                      ask2fa: ask2fa,
                                      onError: onError,
                                      onSuccess: { (mailboxpwd) in
-                                        onSuccess()
+                                        afterSignIn()
                                         if let mailboxPassword = mailboxpwd {
-                                            self.decryptPassword(mailboxPassword, onSegue: onSegue, onError: onError)
+                                            self.decryptPassword(mailboxPassword,
+                                                                 requestMailboxPassword: requestMailboxPassword,
+                                                                 onError: onError)
                                         } else {
                                             UserTempCachedStatus.restore()
-                                            self.loadContent(onSuccess: onSegue)
+                                            self.loadContent(requestMailboxPassword: requestMailboxPassword)
                                         }
         })
     }
     
-    internal func biometricAuthentication(onSuccess: @escaping ()->Void,
-                                          onSegue: @escaping ()->Void)
+    internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void,
+                                          afterSignIn: @escaping ()->Void)
     {
         let savedEmail = userCachedStatus.codedEmail()
         
@@ -125,8 +127,8 @@ class Keymaker: NSObject {
                     }
                     return
                 }
-                self.signInIfRememberedCredentials(onSuccess: onSegue)
-                onSuccess()
+                self.signInIfRememberedCredentials(onSuccess: afterSignIn)
+                afterBioAuthPassed()
             }
         }
     }
@@ -135,13 +137,14 @@ class Keymaker: NSObject {
         if sharedUserDataService.isUserCredentialStored {
             userCachedStatus.lockedApp = false
             sharedUserDataService.isSignedIn = true
-            onSuccess()
+        
+            self.loadContent(requestMailboxPassword: onSuccess)
         } else {
             self.clean()
         }
     }
     
-    private func loadContent(onSuccess: ()->Void) {
+    private func loadContent(requestMailboxPassword: ()->Void) {
         if sharedUserDataService.isMailboxPasswordStored {
             UserTempCachedStatus.clearFromKeychain()
             userCachedStatus.pinFailedCount = 0
@@ -149,7 +152,7 @@ class Keymaker: NSObject {
             (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             self.loadContactsAfterInstall()
         } else {
-            onSuccess()
+            requestMailboxPassword()
         }
     }
     
@@ -174,8 +177,8 @@ class Keymaker: NSObject {
         }
     }
     
-    private func decryptPassword(_ mailboxPassword:String!,
-                         onSegue: @escaping ()->Void,
+    private func decryptPassword(_ mailboxPassword: String,
+                         requestMailboxPassword: @escaping ()->Void,
                          onError: @escaping (NSError)->Void)
     {
         let isRemembered = true
@@ -199,12 +202,12 @@ class Keymaker: NSObject {
         sharedLabelsDataService.fetchLabels()
         ServicePlanDataService.shared.updateCurrentSubscription()
         sharedUserDataService.fetchUserInfo().done(on: .main) { info in
-            guard info != nil else {
+            guard let info = info else {
                 onError(NSError.unknowError())
                 return
             }
         
-            guard info!.delinquent < 3 else {
+            guard info.delinquent < 3 else {
                 onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
                 return
             }
@@ -212,7 +215,7 @@ class Keymaker: NSObject {
             userCachedStatus.pinFailedCount = 0;
             sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: isRemembered)
             UserTempCachedStatus.restore()
-            self.loadContent(onSuccess: onSegue)
+            self.loadContent(requestMailboxPassword: requestMailboxPassword)
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
         }.catch(on: .main) { (error) in
             fatalError() // FIXME: is this possible at all?

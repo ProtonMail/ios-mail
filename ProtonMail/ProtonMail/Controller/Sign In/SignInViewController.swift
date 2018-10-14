@@ -15,8 +15,6 @@
 //
 
 import UIKit
-import Fabric
-import Crashlytics
 import LocalAuthentication
 import MBProgressHUD
 
@@ -29,14 +27,14 @@ class SignInViewController: ProtonMailViewController {
     fileprivate let keyboardPadding: CGFloat        = 12
     fileprivate let buttonDisabledAlpha: CGFloat    = 0.5
     
-    internal let kMailboxSegue                   = "mailboxSegue"
+    fileprivate let kMailboxSegue                   = "mailboxSegue"
     fileprivate let kSignUpKeySegue                 = "sign_in_to_sign_up_segue"
     fileprivate let kSegueToSignUpWithNoAnimation   = "sign_in_to_splash_no_segue"
-    internal let kSegueToPinCodeViewNoAnimation  = "pin_code_segue"
-    internal let kSegueTo2FACodeSegue            = "2fa_code_segue"
+    fileprivate let kSegueToPinCodeViewNoAnimation  = "pin_code_segue"
+    fileprivate let kSegueTo2FACodeSegue            = "2fa_code_segue"
     
     private var isShowpwd                           = false;
-    internal var isRemembered                        = false;
+    private var isRemembered                        = false;
     
     //define
     fileprivate let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0);
@@ -82,16 +80,16 @@ class SignInViewController: ProtonMailViewController {
         setupButtons()
         setupVersionLabel()
         
-        let signinFlow = keymaker.getViewFlow()
+        let signinFlow = keymaker.getUnlockFlow()
         if signinFlow == .requireTouchID {
             self.showTouchID(false)
         }
-        keymaker.processViewFlow(signinFlow,
-                                 onRequirePin: { self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
-                                 onRestore: self.setupView,
-                                 onSuccess: {
-                                    self.isRemembered = true
-                                    self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
+        keymaker.unlock(accordingToFlow: signinFlow,
+                        requestPin: { self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
+                        onRestore: self.setupView,
+                        afterSignIn: {
+                            self.isRemembered = true
+                            self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
         })
     }
     
@@ -196,7 +194,7 @@ class SignInViewController: ProtonMailViewController {
     
     @IBAction func touchIDAction(_ sender: UIButton) {
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-            keymaker.biometricAuthentication(onSuccess: self.setupView, onSegue: {
+            keymaker.biometricAuthentication(afterBioAuthPassed: self.setupView, afterSignIn: {
                 self.isRemembered = true
                 self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
             })
@@ -249,7 +247,7 @@ class SignInViewController: ProtonMailViewController {
         NotificationCenter.default.addKeyboardObserver(self)
         NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground), name:  UIApplication.willEnterForegroundNotification, object: nil)
         let uName = (usernameTextField.text ?? "").trim()
-        let pwd = (passwordTextField.text ?? "") //.trim()
+        let pwd = (passwordTextField.text ?? "")
         
         updateSignInButton(usernameText: uName, passwordText: pwd)
         
@@ -266,8 +264,8 @@ class SignInViewController: ProtonMailViewController {
     
     @objc func doEnterForeground() {
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-            keymaker.biometricAuthentication(onSuccess: self.setupView,
-                                             onSegue: {
+            keymaker.biometricAuthentication(afterBioAuthPassed: self.setupView,
+                                             afterSignIn: {
                                                 self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
             })
         }
@@ -414,7 +412,6 @@ class SignInViewController: ProtonMailViewController {
     @IBAction func fogorPasswordAction(_ sender: AnyObject) {
         dismissKeyboard();
 
-        //UIApplication.shared.openURL(forgotPasswordURL)
         let alertStr = LocalString._please_use_the_web_application_to_reset_your_password
         let alertController = alertStr.alertController()
         alertController.addOKAction()
@@ -456,10 +453,10 @@ class SignInViewController: ProtonMailViewController {
                                 self.present(alertController, animated: true, completion: nil)
                             }
         },
-                        onSuccess: {
+                        afterSignIn: {
                             MBProgressHUD.hide(for: self.view, animated: true)
         },
-                        onSegue: {
+                        requestMailboxPassword: {
                             self.isRemembered = true
                             self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
         })
@@ -547,7 +544,7 @@ extension SignInViewController: UITextFieldDelegate {
         }
         
         let uName = (usernameTextField.text ?? "").trim()
-        let pwd = (passwordTextField.text ?? "") //.trim()
+        let pwd = (passwordTextField.text ?? "")
         
         if !uName.isEmpty && !pwd.isEmpty {
             self.signIn(username: self.usernameTextField.text ?? "",
