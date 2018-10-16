@@ -14,11 +14,12 @@
 import Foundation
 import LocalAuthentication
 import Security
-import Pm
+import CryptoSwift
 
 var keymaker = Keymaker.shared
 class Keymaker: NSObject {
-    private(set) var mainKey: SecKey?
+    typealias Key = Array<UInt8>
+    private(set) var mainKey: Key?
     
     static var shared = Keymaker()
     
@@ -40,37 +41,15 @@ class Keymaker: NSObject {
         sharedKeychain.keychain().removeItem(forKey: "mainKeyCypher")
     }
     
-    private func obtainMainKey(with handler: (SecKey)->Void) {
+    private func obtainMainKey(with handler: (Key)->Void) {
         guard let cypherBits = sharedKeychain.keychain().data(forKey: "mainKeyCypher") else {
-            // generate new mainKey
-            var error: NSError?
-            let newMainKey = PmRandomTokenWith(128, &error)
-            
-            // secure new mainKey
-            switch self.getUnlockFlow() {
-            case .requirePin:
-                // derive enclosing key from pin
-                // encrypt mainKey with this key synchronously
-                // save encryptedMainKey in keychain
-                break
-                
-            case .requireTouchID:
-                // get enclosing key pair from SE
-                // encrypt mainKey with publicKey
-                // save publicKey in keychain
-                // save encryptedMainKey in keychain
-                break
-            
-            case .restore:
-                // save encryptedMainKey in keychain
-                break
-            }
-            
-            // pass mainKey it to handler()
-            fatalError()
+            let mainKey = self.generateNewMainKey()
+            self.lockMainKey(with: Keymaker.Locker.none) // FIXME
+            handler(mainKey)
+            return
         }
 
-        let locked = Locked<SecKey>.init(encryptedValue: cypherBits)
+        let locked = Locked<Key>.init(encryptedValue: cypherBits)
         locked.unlock { data in
             switch self.getUnlockFlow() {
             case .requirePin:
@@ -89,6 +68,46 @@ class Keymaker: NSObject {
                 break
             }
         }
+    }
+    
+    private func generateNewMainKey() -> Array<UInt8> {
+        var newMainKey = Array<UInt8>(repeating: 0, count: 128)
+        let status = SecRandomCopyBytes(kSecRandomDefault, newMainKey.count, &newMainKey)
+        guard status == 0 else {
+            fatalError("failed to generate cryptographically secure key")
+        }
+        return newMainKey
+    }
+    
+    private func lockMainKey(with locker: Locker) {
+        switch locker {
+        case .pin(let pin):
+            // derive enclosing key from pin
+            break
+            
+        case .bio:
+            // get enclosing key pair from SE
+            // save publicKey in keychain
+            break
+            
+        case .bioAndPin(let pin):
+            break
+            
+        case .none:
+            break
+            
+        }
+        
+        
+        // encrypt mainKey with this key
+        // save encryptedMainKey in keychain
+    }
+    
+    enum Locker {
+        case pin(String)
+        case bio
+        case bioAndPin(String)
+        case none
     }
 }
 

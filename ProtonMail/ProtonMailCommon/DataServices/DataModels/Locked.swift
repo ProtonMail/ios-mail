@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CryptoSwift
 
 struct Locked<T> {
     private(set) var encryptedValue: Data
@@ -25,16 +26,29 @@ struct Locked<T> {
 }
 
 extension Locked where T: Codable {
-    init(clearValue: T, with key: SecKey?) throws {
-        let data = try! PropertyListEncoder().encode(clearValue)
-        // FIXME: actually encrypt the value
-        self.encryptedValue = data.base64EncodedData()
+    enum Errors: Error {
+    case noKeyAvailable
+    case failedToTurnValueIntoData
     }
     
-    func unlock(with key: SecKey?) throws -> T {
-        // FIXME: actually decrypt the value
-        let decryptedValue = Data(base64Encoded: self.encryptedValue)!
-        let value = try! PropertyListDecoder().decode(T.self, from: decryptedValue)
+    init(clearValue: T, with key: Keymaker.Key?) throws {
+        guard let key = key else {
+            throw Errors.noKeyAvailable
+        }
+        let data = try PropertyListEncoder().encode(clearValue)
+        let aes = try AES(key: key, blockMode: CBC(iv: []))
+        let cypherBytes = try aes.encrypt(data.bytes)
+        self.encryptedValue = Data(bytes: cypherBytes)
+    }
+    
+    func unlock(with key: Keymaker.Key?) throws -> T {
+        guard let key = key else {
+            throw Errors.noKeyAvailable
+        }
+        let aes = try AES(key: key, blockMode: CBC(iv: []))
+        let clearBytes = try aes.decrypt(self.encryptedValue.bytes)
+        let data = Data(bytes: clearBytes)
+        let value = try PropertyListDecoder().decode(T.self, from: data)
         return value
     }
 }
