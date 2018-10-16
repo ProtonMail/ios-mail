@@ -13,9 +13,86 @@
 
 import Foundation
 import LocalAuthentication
+import Security
+import Pm
 
-var keymaker = Keymaker()
+var keymaker = Keymaker.shared
 class Keymaker: NSObject {
+    private(set) var mainKey: SecKey?
+    
+    static var shared = Keymaker()
+    
+    private override init() {
+        super.init()
+        
+        defer {
+            self.obtainMainKey() {
+                self.mainKey = $0
+            }
+        }
+    }
+    
+    private func swallowMainKey() {
+        self.mainKey = nil
+    }
+    
+    private func destroyMainKey() {
+        sharedKeychain.keychain().removeItem(forKey: "mainKeyCypher")
+    }
+    
+    private func obtainMainKey(with handler: (SecKey)->Void) {
+        guard let cypherBits = sharedKeychain.keychain().data(forKey: "mainKeyCypher") else {
+            // generate new mainKey
+            var error: NSError?
+            let newMainKey = PmRandomTokenWith(128, &error)
+            
+            // secure new mainKey
+            switch self.getUnlockFlow() {
+            case .requirePin:
+                // derive enclosing key from pin
+                // encrypt mainKey with this key synchronously
+                // save encryptedMainKey in keychain
+                break
+                
+            case .requireTouchID:
+                // get enclosing key pair from SE
+                // encrypt mainKey with publicKey
+                // save publicKey in keychain
+                // save encryptedMainKey in keychain
+                break
+            
+            case .restore:
+                // save encryptedMainKey in keychain
+                break
+            }
+            
+            // pass mainKey it to handler()
+            fatalError()
+        }
+
+        let locked = Locked<SecKey>.init(encryptedValue: cypherBits)
+        locked.unlock { data in
+            switch self.getUnlockFlow() {
+            case .requirePin:
+                // let user enter PIN
+                // pass handler further
+                break
+                
+            case .requireTouchID:
+                // talk to secure enclave
+                // call handler()
+                break
+                
+            case .restore:
+                // main key is stored in Keychain cleartext
+                // call handler()
+                break
+            }
+        }
+    }
+}
+
+extension Keymaker {
     internal func getUnlockFlow() -> SignInUIFlow {
         if sharedTouchID.showTouchIDOrPin() {
             if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
@@ -32,7 +109,10 @@ class Keymaker: NSObject {
             return SignInUIFlow.restore
         }
     }
-    
+}
+
+#if !APP_EXTENSION
+extension Keymaker {
     internal func unlock(accordingToFlow signinFlow: SignInUIFlow,
                          requestPin: @escaping ()->Void,
                          onRestore: @escaping ()->Void,
@@ -229,3 +309,4 @@ class Keymaker: NSObject {
     }
     
 }
+#endif
