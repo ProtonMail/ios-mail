@@ -19,9 +19,12 @@ import CryptoSwift
 var keymaker = Keymaker.shared
 class Keymaker: NSObject {
     typealias Key = Array<UInt8>
+    typealias Salt = Array<UInt8>
+    
     private(set) var mainKey: Key?
     
     static var shared = Keymaker()
+    private let controlThread = DispatchQueue.global(qos: .utility)
     
     private override init() {
         super.init()
@@ -42,74 +45,148 @@ class Keymaker: NSObject {
     }
     
     private func obtainMainKey(with handler: (Key)->Void) {
-        guard let cypherBits = sharedKeychain.keychain().data(forKey: "mainKeyCypher") else {
-            let mainKey = self.generateNewMainKey()
-            self.lockMainKey(with: Keymaker.Locker.none) // FIXME
-            handler(mainKey)
-            return
-        }
-
-        let locked = Locked<Key>.init(encryptedValue: cypherBits)
-        locked.unlock { data in
-            switch self.getUnlockFlow() {
-            case .requirePin:
-                // let user enter PIN
-                // pass handler further
-                break
-                
-            case .requireTouchID:
-                // talk to secure enclave
-                // call handler()
-                break
-                
-            case .restore:
-                // main key is stored in Keychain cleartext
-                // call handler()
-                break
+        self.controlThread.sync {
+            guard self.mainKey == nil else {
+                handler(self.mainKey!)
+                return
             }
+            
+            guard let cypherBits = sharedKeychain.keychain().data(forKey: "mainKeyCypher") else {
+                let mainKey = self.generateRandomValue(length: 32)
+                try! self.lock(mainKey: mainKey, with: .none) // FIXME: get real track
+                handler(mainKey)
+                return
+            }
+
+            let mainKeyBytes = try! self.unlock(cypherBits: cypherBits.bytes, with: .none) // FIXME: get real track
+            handler(mainKeyBytes.bytes)
         }
     }
     
-    private func generateNewMainKey() -> Array<UInt8> {
-        var newMainKey = Array<UInt8>(repeating: 0, count: 128)
-        let status = SecRandomCopyBytes(kSecRandomDefault, newMainKey.count, &newMainKey)
+    private func generateRandomValue(length: Int) -> Array<UInt8> {
+        var newKey = Array<UInt8>(repeating: 0, count: length)
+        let status = SecRandomCopyBytes(kSecRandomDefault, newKey.count, &newKey)
         guard status == 0 else {
-            fatalError("failed to generate cryptographically secure key")
+            fatalError("failed to generate cryptographically secure value")
         }
-        return newMainKey
+        return newKey
     }
     
-    private func lockMainKey(with locker: Locker) {
-        switch locker {
-        case .pin(let pin):
-            // derive enclosing key from pin
+    enum Track {
+        case pin(String)
+        case bioAndPin(String)
+        case none
+        case bio
+        
+        static var secureEnclaveLabel: String = "mainKey"
+        
+        func saveCyphertextInKeychain(_ cypher: Data) {
+            // TODO: save cypher in keychain
+        }
+    }
+    
+    private func unlock(cypherBits: Key, with track: Track) throws -> Data {
+        let locked = Locked<Key>.init(encryptedValue: Data(bytes: cypherBits))
+        switch track {
+        case .pin(let userInputPin):
+            // let user enter PIN
+            // pass handler further
             break
             
         case .bio:
-            // get enclosing key pair from SE
-            // save publicKey in keychain
-            break
-            
-        case .bioAndPin(let pin):
+            // talk to secure enclave
+            // call handler()
             break
             
         case .none:
+            // main key is stored in Keychain cleartext
+            // call handler()
             break
-            
+        
+        case .bioAndPin: break // can not happen in real life: two different UIs
         }
         
-        
-        // encrypt mainKey with this key
-        // save encryptedMainKey in keychain
+        fatalError()
     }
     
-    enum Locker {
-        case pin(String)
-        case bio
-        case bioAndPin(String)
-        case none
+    private func lock(mainKey: Key, with track: Track) throws {
+        switch track {
+        case .pin(let pin):
+            // 1. generate new salt
+            // 2. derive key from pin and salt
+            // 3. encrypt mainKey with ethemeralKey
+            // 4. save salt in keychain
+            // 5. save encryptedMainKey in keychain
+            
+            let salt = self.generateRandomValue(length: 8)
+            let ethemeralKey = try PKCS5.PBKDF2(password: Array(pin.utf8), salt: salt, iterations: 4096, variant: .sha256).calculate()
+            let locked = try Locked<Key>(clearValue: mainKey, with: ethemeralKey)
+            
+            track.saveCyphertextInKeychain(locked.encryptedValue)
+            // TODO: save salt in keychain
+            
+        case .bio:
+            if #available(iOS 10.0, *) {
+                // 1. get enclosing key pair from SE
+                // 2. encrypt mainKey with public key
+                // 3. save publicKey in keychain
+                // 4. save encryptedMainKey in keychain
+                
+                var error: Unmanaged<CFError>?
+                let access = SecAccessControlCreateWithFlags(kCFAllocatorDefault,
+                                                             kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
+                                                             .privateKeyUsage,
+                                                             &error)!
+                let privateKeyAttributes: Dictionary<String, Any> = [
+                    kSecAttrIsPermanent as String:      true,
+                    kSecAttrApplicationTag as String:   Track.secureEnclaveLabel,
+                    kSecAttrAccessControl as String:    access
+                ]
+                let attributes: Dictionary<String, Any> = [
+                    kSecAttrKeyType as String:          kSecAttrKeyTypeECSECPrimeRandom as String,
+                    kSecAttrKeySizeInBits as String:    256,
+                    kSecAttrTokenID as String:          kSecAttrTokenIDSecureEnclave,
+                    kSecPrivateKeyAttrs as String:      privateKeyAttributes
+                    
+                ]
+
+                var publicKey, privateKey: SecKey?
+                let status = SecKeyGeneratePair(attributes as CFDictionary, &publicKey, &privateKey)
+                guard status == 0, publicKey != nil else {
+                    throw NSError(domain: String(describing: Keymaker.self), code: 0, localizedDescription: "Failed to generate SE elliptic keypair")
+                    // TODO: check on non-SecureEnclave-capable device with ios10-11
+                }
+                
+                let locked = try Locked<Key>(clearValue: mainKey) { cleartext -> Data in
+                    var error: Unmanaged<CFError>?
+                    let cypherdata = SecKeyCreateEncryptedData(publicKey!,
+                                                           SecKeyAlgorithm.eciesEncryptionStandardX963SHA256AESGCM,
+                                                           Data(bytes: cleartext) as CFData,
+                                                           &error)
+                    guard error == nil, cypherdata != nil else {
+                        throw NSError(domain: String(describing: Keymaker.self), code: 0, localizedDescription: "Failed to encrypt data with SE publicKey")
+                    }
+                    return cypherdata! as Data
+                }
+                
+                track.saveCyphertextInKeychain(locked.encryptedValue)
+                // TODO: save public key in keychain
+
+                
+            } else {
+                // TODO: save mainKey in keychain with touchID access _shrug_
+            }
+            
+        case .bioAndPin(let pin):
+            try self.lock(mainKey: mainKey, with: .pin(pin))
+            try self.lock(mainKey: mainKey, with: .bio)
+            
+        case .none:
+            track.saveCyphertextInKeychain(Data(bytes: mainKey))
+        }
     }
 }
+
 
 extension Keymaker {
     internal func getUnlockFlow() -> SignInUIFlow {

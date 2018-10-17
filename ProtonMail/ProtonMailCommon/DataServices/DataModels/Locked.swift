@@ -16,12 +16,12 @@ struct Locked<T> {
         self.encryptedValue = encryptedValue
     }
     
-    init(clearValue: T, with encryptor: (T)->Data) {
-        self.encryptedValue = encryptor(clearValue)
+    init(clearValue: T, with encryptor: ((T) throws -> Data)) throws  {
+        self.encryptedValue = try encryptor(clearValue)
     }
     
-    func unlock(with decryptor: (Data)->Void) {
-        return decryptor(self.encryptedValue)
+    func unlock(with decryptor: ((Data) throws ->T)) throws -> T {
+        return try decryptor(self.encryptedValue)
     }
 }
 
@@ -36,7 +36,7 @@ extension Locked where T: Codable {
             throw Errors.noKeyAvailable
         }
         let data = try PropertyListEncoder().encode(clearValue)
-        let aes = try AES(key: key, blockMode: CBC(iv: []))
+        let aes = try AES(key: key, blockMode: ECB())
         let cypherBytes = try aes.encrypt(data.bytes)
         self.encryptedValue = Data(bytes: cypherBytes)
     }
@@ -45,7 +45,7 @@ extension Locked where T: Codable {
         guard let key = key else {
             throw Errors.noKeyAvailable
         }
-        let aes = try AES(key: key, blockMode: CBC(iv: []))
+        let aes = try AES(key: key, blockMode: ECB())
         let clearBytes = try aes.decrypt(self.encryptedValue.bytes)
         let data = Data(bytes: clearBytes)
         let value = try PropertyListDecoder().decode(T.self, from: data)
