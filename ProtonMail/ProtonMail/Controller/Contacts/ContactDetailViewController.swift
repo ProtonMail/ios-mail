@@ -27,6 +27,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kContactDetailsUpgradeCell : String     = "contacts_details_upgrade_cell"
     fileprivate let kContactsDetailsShareCell: String       = "contacts_details_share_cell"
     fileprivate let kContactsDetailsWarningCell: String     = "contacts_details_warning_cell"
+    fileprivate let kContactsDetailsEmailCell: String       = "contacts_details_display_email_cell"
     
     fileprivate let kEditContactSegue : String              = "toEditContactSegue"
     fileprivate let kToComposeSegue : String                = "toCompose"
@@ -251,6 +252,15 @@ extension ContactDetailViewController: UITableViewDataSource {
             cell.configCell(forlog: self.viewModel.logs)
             cell.selectionStyle = .none
             return cell
+        } else if s == .emails {
+            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsEmailCell, for: indexPath) as! ContactDetailDisplayEmailCell
+
+            let emails = viewModel.getEmails()
+            let email = emails[row]
+            let colors = emails[row].getCurrentlySelectedContactGroupColors()
+            cell.configCell(title: email.newType.title, value: email.newEmail, contactGroupColors: colors)
+            cell.selectionStyle = .default
+            return cell
         }
         
         let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsDisplayCell, for: indexPath) as! ContactDetailsDisplayCell
@@ -260,11 +270,6 @@ extension ContactDetailViewController: UITableViewDataSource {
             let profile = viewModel.getProfile();
             cell.configCell(title: LocalString._contacts_name_title, value: profile.newDisplayName)
             cell.selectionStyle = .none
-        case .emails:
-            let emails = viewModel.getEmails()
-            let email = emails[row]
-            cell.configCell(title: email.newType.title, value: email.newEmail)
-            cell.selectionStyle = .default
         case .cellphone:
             let cells = viewModel.getPhones()
             let tel = cells[row]
@@ -297,7 +302,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             cell.selectionStyle = .default
             
         case .email_header, .encrypted_header, .delete, .upgrade, .share,
-             .type2_warning, .type3_error, .type3_warning, .debuginfo:
+             .type2_warning, .type3_error, .type3_warning, .debuginfo, .emails:
             break
         }
         return cell

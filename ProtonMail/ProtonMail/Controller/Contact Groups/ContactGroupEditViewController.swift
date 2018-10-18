@@ -18,9 +18,11 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     
     let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
     
+    @IBOutlet weak var contactGroupNameInstructionLabel: UILabel!
     @IBOutlet weak var contactGroupNameLabel: UITextField!
     @IBOutlet weak var contactGroupImage: UIImageView!
     
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     @IBOutlet weak var navigationBarItem: UINavigationItem!
@@ -67,15 +69,15 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         tableView.noSeparatorsBelowFooter()
         
         prepareContactGroupImage()
+        
+        contactGroupNameInstructionLabel.text = LocalString._contact_groups_group_name_instruction_label
+        saveButton.title = LocalString._general_save_action
+        cancelButton.title = LocalString._general_cancel_button
     }
     
     func prepareContactGroupImage() {
         contactGroupImage.image = UIImage.init(named: "contact_groups_icon")
-        contactGroupImage.setupImage(contentMode: .center,
-                                     renderingMode: .alwaysTemplate,
-                                     scale: 0.5,
-                                     makeCircleBorder: true,
-                                     tintColor: UIColor.white,
+        contactGroupImage.setupImage(tintColor: UIColor.white,
                                      backgroundColor: viewModel.getColor())
     }
     
@@ -116,7 +118,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
             }.catch {
                 error in
                 
-                let alert = UIAlertController(title: "Can not save contact group",
+                let alert = UIAlertController(title: LocalString._contact_groups_save_error,
                                               message: error.localizedDescription,
                                               preferredStyle: .alert)
                 alert.addOKAction()
@@ -129,7 +131,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
             let contactGroupSelectColorViewController = segue.destination as! ContactGroupSelectColorViewController
             
             let refreshHandler = {
-                (newColor: String?) -> Void in
+                (newColor: String) -> Void in
                 self.viewModel.setColor(newColor: newColor)
             }
             sharedVMService.contactGroupSelectColorViewModel(
@@ -173,7 +175,7 @@ extension ContactGroupEditViewController: UITableViewDataSource
         switch viewModel.getCellType(at: indexPath) {
         case .manageContact:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupManageCell", for: indexPath)
-            cell.textLabel?.text = "Manage Addresses"
+            cell.textLabel?.text = LocalString._contact_groups_manage_addresses
             return cell
         case .email:
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupEditCellIdentifier,
@@ -187,7 +189,8 @@ extension ContactGroupEditViewController: UITableViewDataSource
                         viewModel: viewModel)
             return cell
         case .deleteGroup:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupDeleteCell", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupDeleteCell", for: indexPath) as UITableViewCell
+            cell.textLabel?.text = LocalString._contact_groups_delete
             return cell
         case .error:
             fatalError("This is a bug")
@@ -231,7 +234,7 @@ extension ContactGroupEditViewController: UITableViewDelegate
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
                 }.catch { (error) in
-                    let alert = UIAlertController(title: "Error deleting the contact group",
+                    let alert = UIAlertController(title: LocalString._contact_groups_delete_error,
                                                   message: error.localizedDescription,
                                                   preferredStyle: .alert)
                     alert.addOKAction()

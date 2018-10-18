@@ -115,7 +115,8 @@ class ContactAddViewModelImpl : ContactEditViewModel {
                                      encrypt: nil,
                                      sign: nil ,
                                      scheme: nil,
-                                     mimeType: nil)
+                                     mimeType: nil,
+                                     delegate: nil)
         emails.append(email)
         return email
     }

@@ -17,7 +17,7 @@ protocol ContactGroupDetailViewModel
     func getTotalEmails() -> Int
     func getEmailIDs() -> NSSet
     func getTotalEmailString() -> String
-    func getEmail(at indexPath: IndexPath) -> (name: String, email: String)
+    func getEmail(at indexPath: IndexPath) -> (emailID: String, name: String, email: String)
     
     func reload() -> Promise<Bool>
 }

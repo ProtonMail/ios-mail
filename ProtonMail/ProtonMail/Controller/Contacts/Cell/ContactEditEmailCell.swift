@@ -17,36 +17,20 @@ final class ContactEditEmailCell: UITableViewCell {
     fileprivate var delegate: ContactEditCellDelegate?
     
     @IBOutlet weak var groupButton: UIButton!
+    @IBOutlet weak var iconStackView: UIStackView!
+    @IBOutlet weak var iconStackViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
     @IBOutlet weak var sepratorView: UIView!
     @IBOutlet weak var horizontalSeparator: UIView!
     
-    func refreshHandler(newContactGroups: NSSet)
-    {
-        print(newContactGroups.debugDescription)
-        if let data = newContactGroups.allObjects as? [String] {
-            email.updateContactGroups(newContactGroupIDs: data)
-        } else {
-            // TODO: handle error
-            email.updateContactGroups(newContactGroupIDs: [])
-        }
-    }
-    
-    func getContactGroupIDs() -> [String] {
-        return email.getContactGroupsID()
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.valueField.delegate = self
-        self.valueField.placeholder = LocalString._contacts_email_address_placeholder
-    }
+    var firstSetup = true
     
     func configCell(obj: ContactEditEmail,
                     callback: ContactEditCellDelegate?,
                     becomeFirstResponder: Bool = false) {
         self.email = obj
+        
         
         typeButton.setTitle(self.email.newType.title,
                             for: .normal)
@@ -58,14 +42,56 @@ final class ContactEditEmailCell: UITableViewCell {
                 self.valueField.becomeFirstResponder()
             })
         }
+        
+        // setup group icons
+        prepareContactGroupIcons(cell: self,
+                                 contactGroupColors: self.email.getCurrentlySelectedContactGroupColors(),
+                                 iconStackView: iconStackView,
+                                 iconStackViewWidthConstraint: iconStackViewWidthConstraint)
+        
+        if firstSetup {
+            // setup gesture recognizer
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                              action: #selector(didTapGroupViewStack(sender:)))
+            tapGestureRecognizer.numberOfTapsRequired = 1
+            iconStackView.isUserInteractionEnabled = true
+            iconStackView.addGestureRecognizer(tapGestureRecognizer)
+            
+            firstSetup = false
+        }
+    }
+    
+    // called when the contact group selection view is dismissed
+    func refreshHandler(updatedContactGroups: Set<String>)
+    {
+        email.updateContactGroups(updatedContactGroups: updatedContactGroups)
+        prepareContactGroupIcons(cell: self,
+                                 contactGroupColors: self.email.getCurrentlySelectedContactGroupColors(),
+                                 iconStackView: iconStackView,
+                                 iconStackViewWidthConstraint: iconStackViewWidthConstraint)
+    }
+    
+    func getCurrentlySelectedContactGroupsID() -> Set<String> {
+        return email.getCurrentlySelectedContactGroupsID()
+    }
+    
+
+    @IBAction func didTapGroupButton(_ sender: UIButton) {
+        delegate?.toSelectContactGroups(sender: self)
+    }
+    
+    @objc func didTapGroupViewStack(sender: UITapGestureRecognizer) {
+        delegate?.toSelectContactGroups(sender: self)
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.valueField.delegate = self
+        self.valueField.placeholder = LocalString._contacts_email_address_placeholder
     }
     
     @IBAction func typeAction(_ sender: UIButton) {
         delegate?.pick(typeInterface: email, sender: self)
-    }
-    
-    @IBAction func chooseContactGroup(_ sender: UIButton) {
-        delegate?.toSelectContactGroups(sender: self)
     }
     
     override func layoutSubviews() {
@@ -75,13 +101,15 @@ final class ContactEditEmailCell: UITableViewCell {
     }
 }
 
+extension ContactEditEmailCell: ContactCellShare {}
+
 extension ContactEditEmailCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-       delegate?.beginEditing(textField: textField)
+        delegate?.beginEditing(textField: textField)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {

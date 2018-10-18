@@ -44,6 +44,10 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
+    func newDraft(vmp: ViewModelProtocolBase, with group: ContactGroupVO) {
+        fatalError("This method must be overridden")
+    }
+    
     
     //messgae detail part
     func messageDetails(fromList vmp : ViewModelProtocol) -> Void {
@@ -91,8 +95,9 @@ class ViewModelService {
     }
     
     func contactSelectContactGroupsViewModel(_ vmp: ViewModelProtocol,
-                                             selectedGroupIDs: [String],
-                                             refreshHandler: @escaping (NSSet) -> Void) {
+                                             groupCountInformation: [(ID: String, name: String, color: String, count: Int)],
+                                             selectedGroupIDs: Set<String>,
+                                             refreshHandler: @escaping (Set<String>) -> Void) {
         fatalError("This method must be overridden")
     }
     
@@ -119,8 +124,8 @@ class ViewModelService {
     }
     
     func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocol,
-                                          currentColor: String?,
-                                          refreshHandler: @escaping (String?) -> Void) {
+                                          currentColor: String,
+                                          refreshHandler: @escaping (String) -> Void) {
         fatalError("This method must be overridden")
     }
     

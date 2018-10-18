@@ -18,6 +18,9 @@ protocol ComposeViewDelegate: class {
     func composeViewDidTapNextButton(_ composeView: ComposeView)
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView)
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView)
+    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
+                                                   contactGroup: ContactGroupVO,
+                                                   callback: @escaping (([String]) -> Void))
     
     func composeView(_ composeView: ComposeView, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker)
     func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker)
@@ -38,7 +41,6 @@ protocol ComposeViewDataSource: class {
 }
 
 class ComposeView: UIViewController {
-    
     var pickerHeight : CGFloat = 0.0
     
     var toContactPicker: ContactPicker!
@@ -723,8 +725,22 @@ extension ComposeView: ContactPickerDelegate {
         
     }
     
+    
     func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol) {
         
+    }
+    
+    func collectionView(at: ContactCollectionView,
+                        didSelect contact: ContactPickerModelProtocol,
+                        callback: @escaping (([String]) -> Void))
+    {
+        // if the selected type is contact group
+        // we present the sub-selection view
+        if let contactGroup = contact as? ContactGroupVO {
+            self.delegate?.composeViewDidTapContactGroupSubSelection(self,
+                                                                     contactGroup: contactGroup,
+                                                                     callback: callback)
+        }
     }
     
     func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol) {

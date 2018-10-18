@@ -98,6 +98,8 @@ class LocalizedString {
     lazy var _menu_spam_title     =  NSLocalizedString("Spam", comment: "menu title")
     /// "Contacts"
     lazy var _menu_contacts_title =  NSLocalizedString("Contacts", comment: "menu title")
+    /// "Contact Groups"
+    lazy var _menu_contact_group_title = NSLocalizedString("Groups", comment: "menu title (contact groups)")
     /// "Settings"
     lazy var _menu_settings_title =  NSLocalizedString("Settings", comment: "menu title")
     /// "Logout"
@@ -1612,4 +1614,52 @@ class LocalizedString {
     lazy var _update_required = NSLocalizedString("Update Required", comment: "title")
     /// "Update Now"
     lazy var _update_now = NSLocalizedString("Update Now", comment: "title")
+    
+    // contact group
+    lazy var _contacts_action_select_an_option = NSLocalizedString("Select An Option",
+                                                                    comment: "The title for the popup list, presenting a list of options for creating a contact or creating a contact group")
+    
+    lazy var _contact_groups_group_name_instruction_label = NSLocalizedString("Group Name",
+                                                                              comment: "The instruction label for the group name textfield")
+    lazy var _contact_groups_detail_view_title = NSLocalizedString("Group Details",
+                                                                   comment: "The title for the contact group detail view")
+    lazy var _contact_groups_add = NSLocalizedString("Add Group",
+                                                        comment: "The title for the contact group creation view")
+    lazy var _contact_groups_edit = NSLocalizedString("Edit Group",
+                                                      comment: "The title for the contact group editing view")
+    
+    lazy var _contact_groups_manage_addresses = NSLocalizedString("Manage Addresses",
+                                                                  comment: "The title for the view where user can manage emails in the contact group")
+    
+    lazy var _contact_groups_select_color = NSLocalizedString("Select Color",
+                                                              comment: "The title for the view where user can select the color for the group")
+    lazy var _contact_groups_delete = NSLocalizedString("Delete Group",
+                                                        comment: "The description of the button for deleting the contact group")
+    
+    lazy var _contact_groups_member_count_description = NSLocalizedString("%d Member",
+                                                                          comment: "The string that describes whether there are 0 or 1 member in the contact group")
+    lazy var _contact_groups_members_count_description = NSLocalizedString("%d Members",
+                                                                          comment: "The string that describes whether there are 2 or more members in the contact group")
+    lazy var _contact_groups_selected_group_count_description = NSLocalizedString("%d Selected",
+                                                                                  comment: "The string that describes how many contact groups are currently selected")
+    
+    // contact group errors
+    lazy var _contact_groups_save_error = NSLocalizedString("Can't save contact group",
+                                                            comment: "The error message title that will be shown when the contact group being created or edited can't be saved")
+    lazy var _contact_groups_fetch_error = NSLocalizedString("Can't fetch contact groups",
+                                                             comment: "The error message title that will be shown when the app attempts to fetch contact groups from the server but failed")
+    lazy var _contact_groups_delete_error = NSLocalizedString("Can't delete contact group",
+                                                              comment: "The error message title that will be shown when the deletion of the contact group failed")
+    
+    lazy var _contact_groups_no_email_selected = NSLocalizedString("Please select at least one email for the contact group",
+                                                                   comment: "The message will show up when the user attempts to create a contact group without any email selected")
+    lazy var _contact_groups_no_name_entered = NSLocalizedString("Please provide a group name",
+                                                                 comment: "The message will show up when the user attempts to create a contact group without any name specified")
+    
+    lazy var _contact_groups_api_add_error = NSLocalizedString("Can't create contact group through API",
+                                                                  comment: "The error message will be shown when the creation of the contact group through API failed")
+    lazy var _contact_groups_api_update_error = NSLocalizedString("Can't update contact group through API",
+                                                                  comment: "The error message will be shown when the update of the contact group through API failed")
+    lazy var _contact_groups_api_delete_error = NSLocalizedString("Can't delete contact group through API",
+                                                                  comment: "The error message will be shown when the deletionn of the contact group through API failed")
 }

@@ -10,10 +10,10 @@ import Foundation
 
 extension UIImageView
 {
-    func setupImage(contentMode: UIView.ContentMode,
-                    renderingMode: UIImage.RenderingMode,
-                    scale: CGFloat,
-                    makeCircleBorder: Bool,
+    func setupImage(contentMode: UIView.ContentMode = .center,
+                    renderingMode: UIImage.RenderingMode = .alwaysTemplate,
+                    scale: CGFloat = 0.5,
+                    makeCircleBorder: Bool = true,
                     tintColor: UIColor? = nil,
                     backgroundColor: String? = nil,
                     borderWidth: CGFloat = 0,
@@ -26,7 +26,7 @@ extension UIImageView
                                                      image: image)
         }
         if makeCircleBorder {
-            self.layer.cornerRadius = self.frame.size.width / 2
+            self.layer.cornerRadius = self.frame.size.width / 2.0
         }
         
         self.image = self.image?.withRenderingMode(renderingMode)

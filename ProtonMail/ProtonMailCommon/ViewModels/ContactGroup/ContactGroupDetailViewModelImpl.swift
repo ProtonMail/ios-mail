@@ -78,24 +78,30 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
     func getTotalEmailString() -> String {
         let cnt = self.getTotalEmails()
         
-        return "\(cnt) Member\(cnt > 1 ? "s" : "")"
+        if cnt <= 1 {
+            return String.init(format: LocalString._contact_groups_member_count_description,
+                               cnt)
+        } else {
+            return String.init(format: LocalString._contact_groups_members_count_description,
+                               cnt)
+        }
     }
     
-    func getEmail(at indexPath: IndexPath) -> (name: String, email: String) {
+    func getEmail(at indexPath: IndexPath) -> (emailID: String, name: String, email: String) {
         guard indexPath.row < emailIDsArray.count else {
             // TODO: handle error
             PMLog.D("Invalid index row request")
             fatalError("Invalid index row request")
         }
         
-        return (emailIDsArray[indexPath.row].name, emailIDsArray[indexPath.row].email)
+        return (emailIDsArray[indexPath.row].emailID, emailIDsArray[indexPath.row].name, emailIDsArray[indexPath.row].email)
     }
     
     /**
      Reloads the contact group from core data
      
      - Returns: Promise<Bool>. true if the contact group has been deleted from core data, false if the contact group can be fetched from core data
-    */
+     */
     func reload() -> Promise<Bool> {
         if let context = sharedCoreDataService.mainManagedObjectContext,
             let label = Label.labelForLableID(groupID,
