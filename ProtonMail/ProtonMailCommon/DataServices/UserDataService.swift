@@ -294,7 +294,7 @@ class UserDataService {
                 return
             }
             guard let locked = try? Locked<String>(clearValue: newValue, with: keymaker.mainKey) else {
-                return
+                fatalError("Failed to lock mailboxPassword")
             }
             sharedKeychain.keychain().setData(locked.encryptedValue, forKey: Key.mailboxPassword)
         }
@@ -415,6 +415,7 @@ class UserDataService {
                     self.username = username
                     self.isRememberUser = true
                     self.passwordMode = mpwd != nil ? 1 : 2
+                    keymaker.generateNoneProtectedMainKey()
                     
                     onSuccess(mpwd)
                 } else {

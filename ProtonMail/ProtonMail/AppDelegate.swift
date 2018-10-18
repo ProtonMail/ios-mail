@@ -33,16 +33,28 @@ class AppDelegate: UIResponder {
         NotificationCenter.default.removeObserver(self)
     }
     
-    var window: UIWindow?
+    lazy var window: UIWindow? = {
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = instantiateRootViewController()
+        window.makeKeyAndVisible()
+        return window
+    }()
+    
     func instantiateRootViewController() -> UIViewController? {
         let storyboard = UIStoryboard.Storyboard.signIn
         return UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
     }
     
     func setupWindow() {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = instantiateRootViewController()
-        window?.makeKeyAndVisible()
+        guard sharedSignIn.isSignedIn() else {
+            self.switchTo(storyboard: .signIn, animated: true)
+            return
+        }
+        
+        switch keymaker.mainKey {
+        case .some: self.switchTo(storyboard: .inbox, animated: true)
+        case .none: self.switchTo(storyboard: .signIn, animated: true)
+        }
     }
     
     // MARK: - Public methods
@@ -53,7 +65,7 @@ class AppDelegate: UIResponder {
         
         guard let rootViewController = window.rootViewController,
             rootViewController.restorationIdentifier != storyboard.restorationIdentifier else {
-            return //
+            return
         }
         
         if !animated {
@@ -118,7 +130,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return self.checkOrientation(self.window?.rootViewController)
+        return self.checkOrientation(window?.rootViewController)
     }
     
     func checkOrientation (_ viewController: UIViewController?) -> UIInterfaceOrientationMask {

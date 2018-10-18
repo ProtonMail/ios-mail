@@ -12,10 +12,18 @@ import Security
 protocol ProtectionStrategy {
     func lock(value: Keymaker.Key) throws
     func unlock(cypherBits: Data) throws -> Keymaker.Key
+    
+    func getCypherBits() -> Data?
 }
 extension ProtectionStrategy {
     func saveCyphertextInKeychain(_ cypher: Data) {
-        // TODO: save cypher in keychain
+        sharedKeychain.keychain()?.setData(cypher, forKey: String(describing: Self.self))
+    }
+    func removeCyphertextFromKeychain() {
+        sharedKeychain.keychain()?.removeItem(forKey: String(describing: Self.self))
+    }
+    func getCypherBits() -> Data? {
+        return sharedKeychain.keychain()?.data(forKey: String(describing: Self.self))
     }
     
     func generateRandomValue(length: Int) -> Array<UInt8> {
@@ -26,6 +34,8 @@ extension ProtectionStrategy {
         }
         return newKey
     }
+    
+//------------------------ MOCK --------------------------
     
     func unlock(cypherBits: Data) throws -> Keymaker.Key  {
         // TODO: implement in all the conformers

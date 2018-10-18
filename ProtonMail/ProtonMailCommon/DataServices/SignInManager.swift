@@ -131,6 +131,10 @@ extension SignInManager {
         }
     }
     
+    internal func isSignedIn() -> Bool {
+        return sharedUserDataService.isUserCredentialStored
+    }
+    
     internal func signInIfRememberedCredentials(onSuccess: ()->Void) {
         if sharedUserDataService.isUserCredentialStored {
             userCachedStatus.lockedApp = false
@@ -159,6 +163,7 @@ extension SignInManager {
         sharedUserDataService.signOut(true)
         userCachedStatus.signOut()
         sharedMessageDataService.launchCleanUpIfNeeded()
+        keymaker.wipeMainKey()
     }
     
     private func loadContactsAfterInstall() {
@@ -223,7 +228,7 @@ extension SignInManager {
             UserTempCachedStatus.restore()
             self.loadContent(requestMailboxPassword: { })
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
-            }.catch(on: .main) { (error) in
+        }.catch(on: .main) { (error) in
                 fatalError() // FIXME: is this possible at all?
         }
     }

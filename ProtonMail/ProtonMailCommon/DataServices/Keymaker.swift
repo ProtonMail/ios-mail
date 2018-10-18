@@ -17,31 +17,32 @@ var keymaker = Keymaker.shared
 class Keymaker: NSObject {
     typealias Key = Array<UInt8>
     
-    private(set) var mainKey: Key?
+    private(set) lazy var mainKey: Key? = {
+        let protector = NoneProtection()
+        guard let cypherText = protector.getCypherBits(),
+            let clearText = try? protector.unlock(cypherBits: cypherText) else
+        {
+            return nil
+        }
+        return clearText
+    }()
     
     static var shared = Keymaker()
     private let controlThread = DispatchQueue.global(qos: .utility)
-    internal var currentProtector: ProtectionStrategy?
+
     
-    private override init() {
-        super.init()
-        
-        defer {
-            self.obtainMainKey(with: self.currentProtector!) { // FIXME: get default protector somehow
-                self.mainKey = $0
-            }
-        }
-    }
-    
-    private func wipeMainKey() {
-        sharedKeychain.keychain().removeItem(forKey: "mainKeyCypher")
+    internal func wipeMainKey() {
+        // TODO: remove keychain items of all protectors
+        NoneProtection().removeCyphertextFromKeychain()
     }
     
     private func lockTheApp() {
+        // TODO: check that we have protectors other than NoneProtector
         self.mainKey = nil
     }
     
-    private func obtainMainKey(with protector: ProtectionStrategy, into handler: (Key)->Void) {
+    /*
+    private func obtainMainKey(with protector: ProtectionStrategy, into handler: (Key)->Void) throws {
         self.controlThread.sync {
             guard self.mainKey == nil else {
                 handler(self.mainKey!)
@@ -49,9 +50,7 @@ class Keymaker: NSObject {
             }
             
             guard let cypherBits = sharedKeychain.keychain().data(forKey: "mainKeyCypher") else {
-                let protector = NoneProtection()
-                let mainKey = protector.generateRandomValue(length: 32)
-                try! self.lock(mainKey: mainKey, with: [protector])
+                let mainKey = self.generateNewMainKey()
                 handler(mainKey)
                 return
             }
@@ -63,8 +62,16 @@ class Keymaker: NSObject {
             }
         }
     }
+    */
     
     private func lock(mainKey: Key, with protectors: Array<ProtectionStrategy>) throws {
         try protectors.forEach { try $0.lock(value: mainKey) }
+    }
+    
+    func generateNoneProtectedMainKey() {
+        let protector = NoneProtection()
+        let mainKey = protector.generateRandomValue(length: 32)
+        try! self.lock(mainKey: mainKey, with: [protector])
+        self.mainKey = mainKey
     }
 }

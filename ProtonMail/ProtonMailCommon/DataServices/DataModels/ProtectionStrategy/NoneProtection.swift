@@ -12,4 +12,8 @@ struct NoneProtection: ProtectionStrategy {
     func lock(value: Keymaker.Key) throws {
         self.saveCyphertextInKeychain(Data(bytes: value))
     }
+    
+    func unlock(cypherBits: Data) throws -> Keymaker.Key {
+        return cypherBits.bytes
+    }
 }
