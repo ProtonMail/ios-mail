@@ -66,7 +66,6 @@ class SetPinCodeModelImpl : PinCodeViewModel {
     override func done() {
         if self.isPinMatched() {
             userCachedStatus.isPinCodeEnabled = true
-            userCachedStatus.pinCode = self.enterPin
         }
     }
     

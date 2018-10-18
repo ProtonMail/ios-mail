@@ -77,9 +77,9 @@ class UserTempCachedStatus: NSObject, NSCoding {
         if UserTempCachedStatus.fetchFromKeychain() == nil && sharedUserDataService.isSignedIn {
             let u = UserTempCachedStatus(
                 lastLoggedInUser: sharedUserDataService.username,
-                touchIDEmail: userCachedStatus.touchIDEmail,
+                touchIDEmail: "FIXME",
                 isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
-                pinCodeCache: userCachedStatus.pinCode,
+                pinCodeCache: "FIXME",
                 autoLockTime: userCachedStatus.lockTime,
                 showMobileSignature: sharedUserDataService.showMobileSignature,
                 localMobileSignature: userCachedStatus.mobileSignature)
@@ -90,9 +90,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
     class func restore() {
         if let cache = UserTempCachedStatus.fetchFromKeychain() {
             if sharedUserDataService.username == cache.lastLoggedInUser {
-                userCachedStatus.touchIDEmail = cache.touchIDEmail ?? ""
                 userCachedStatus.isPinCodeEnabled = cache.isPinCodeEnabled
-                userCachedStatus.pinCode = cache.pinCodeCache ?? ""
                 userCachedStatus.lockTime = cache.autoLockTime ?? "-1"
                 sharedUserDataService.showMobileSignature = cache.showMobileSignature
                 userCachedStatus.mobileSignature = cache.localMobileSignature ?? ""

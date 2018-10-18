@@ -144,10 +144,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             self.performSegue(withIdentifier: self.kSegueToTour, sender: self)
         }
         
-        if userCachedStatus.isTouchIDEnabled {
-            userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
-        }
-        
         self.undoBottomDistance.constant = -88
         self.undoButton.isHidden = true
         self.undoView.isHidden = true

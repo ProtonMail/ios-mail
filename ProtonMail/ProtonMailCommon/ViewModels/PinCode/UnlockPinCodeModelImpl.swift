@@ -48,14 +48,11 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func isPinMatched() -> Bool {
-        if !enterPin.isEmpty && !userCachedStatus.pinCode.isEmpty && enterPin == userCachedStatus.pinCode {
-            userCachedStatus.pinFailedCount = 0;
-            return true
-        } else {
-            userCachedStatus.pinFailedCount += 1
+        guard sharedSignIn.match(userInputPin: enterPin) else {
             currentStep = .enterPin
             return false
         }
+        return true
     }
     
     override func getPinFailedRemainingCount() -> Int {

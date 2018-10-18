@@ -14,20 +14,43 @@ class SignInManager: NSObject {
     static var shared = SignInManager()
     
     internal func getUnlockFlow() -> SignInUIFlow {
-        if sharedTouchID.showTouchIDOrPin() {
-            if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
-                return SignInUIFlow.requirePin
-            } else {
-                //check touch id status
-                if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-                    return SignInUIFlow.requireTouchID
-                } else {
-                    return SignInUIFlow.restore
-                }
-            }
-        } else {
-            return SignInUIFlow.restore
+        guard keymaker.mainKey == nil else {
+            return .restore
         }
+        if userCachedStatus.isTouchIDEnabled {
+            return SignInUIFlow.requireTouchID
+        }
+        if userCachedStatus.isPinCodeEnabled {
+            return SignInUIFlow.requirePin
+        }
+        return SignInUIFlow.restore
+    }
+    
+    internal func match(userInputPin: String) -> Bool {
+        guard !userInputPin.isEmpty,
+            let _ = keymaker.obtainMainKey(with: PinProtection(pin: userInputPin)) else
+        {
+            userCachedStatus.pinFailedCount += 1
+            return false
+        }
+        userCachedStatus.pinFailedCount = 0;
+        return true
+    }
+    
+    internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void,
+                                          afterSignIn: @escaping ()->Void)
+    {
+        guard let _ = keymaker.obtainMainKey(with: BioProtection(keychainGroup: sharedKeychain.group)) else {
+            #if !APP_EXTENSION
+            LocalString._authentication_failed.alertToast()
+            #endif
+            return
+        }
+        
+        #if !APP_EXTENSION
+        self.signInIfRememberedCredentials(onSuccess: afterSignIn)
+        #endif
+        afterBioAuthPassed()
     }
 }
 
@@ -61,7 +84,7 @@ extension SignInManager {
                          afterSignIn: @escaping ()->Void,
                          requestMailboxPassword: @escaping ()->Void)
     {
-        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+        if (userCachedStatus.isTouchIDEnabled) {
             self.clean()
         }
         
@@ -80,55 +103,6 @@ extension SignInManager {
                                             self.loadContent(requestMailboxPassword: requestMailboxPassword)
                                         }
         })
-    }
-    
-    internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void,
-                                          afterSignIn: @escaping ()->Void)
-    {
-        let savedEmail = userCachedStatus.codedEmail()
-        
-        let context = LAContext()
-        var error: NSError?
-        context.localizedFallbackTitle = ""
-        let reasonString = "\(LocalString._general_login): \(savedEmail)"
-        
-        guard context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) else{
-            var alertString : String = "";
-            switch error!.code{
-            case LAError.Code.touchIDNotEnrolled.rawValue:
-                alertString = LocalString._general_touchid_not_enrolled
-            case LAError.Code.passcodeNotSet.rawValue:
-                alertString = LocalString._general_passcode_not_set
-            case -6:
-                alertString = error?.localizedDescription ?? LocalString._general_touchid_not_available
-                break
-            default:
-                alertString = LocalString._general_touchid_not_available
-            }
-            alertString.alertToast()
-            return
-        }
-        
-        context.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString) { success, evalPolicyError in
-            DispatchQueue.main.async {
-                guard success else {
-                    switch evalPolicyError!._code {
-                    case LAError.Code.systemCancel.rawValue:
-                        LocalString._authentication_was_cancelled_by_the_system.alertToast()
-                    case LAError.Code.userCancel.rawValue:
-                        PMLog.D("Authentication was cancelled by the user")
-                    case LAError.Code.userFallback.rawValue:
-                        PMLog.D("User selected to enter custom password")
-                    default:
-                        PMLog.D("Authentication failed")
-                        LocalString._authentication_failed.alertToast()
-                    }
-                    return
-                }
-                self.signInIfRememberedCredentials(onSuccess: afterSignIn)
-                afterBioAuthPassed()
-            }
-        }
     }
     
     internal func isSignedIn() -> Bool {

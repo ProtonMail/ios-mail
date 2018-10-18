@@ -14,7 +14,7 @@ final class KeychainWrapper {
     
     private var prefix : String!
     private var service : String!
-    private var group : String!
+    private(set) var group : String!
     
     public func keychain() ->UICKeyChainStore! {
         return UICKeyChainStore(service: service, accessGroup: group)
@@ -39,7 +39,10 @@ final class KeychainWrapper {
     }
     
     private func migration() {
+        #if !APP_EXTENSION
         self.keychain()?.removeItem(forKey: UserDataService.Key.password)
+        self.keychain()?.removeItem(forKey: UserCachedStatus.Key.pinCodeCache)
+        #endif
     }
     
     deinit {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-let sharedTouchID = TouchID ()
+ // TODO: remove this class after timeout-lock will be refactored in SignInManager
 
 class TouchID {
     

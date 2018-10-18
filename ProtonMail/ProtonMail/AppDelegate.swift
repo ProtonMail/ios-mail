@@ -256,7 +256,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         Snapshot().willEnterForeground(application)
-        if sharedTouchID.showTouchIDOrPin() {
+        if keymaker.mainKey == nil {
             sharedVMService.resetView()
             (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
         }

@@ -235,7 +235,7 @@ final class UserCachedStatus : SharedCacheBase {
 
 // touch id part
 extension UserCachedStatus {
-    var touchIDEmail : String {
+    /*var touchIDEmail : String {
         get {
             return getShared().string(forKey: Key.touchIDEmail) ?? ""
         }
@@ -258,7 +258,7 @@ extension UserCachedStatus {
     func resetTouchIDEmail() {
         setValue("", forKey: Key.touchIDEmail)
     }
-    
+    */
     var isTouchIDEnabled : Bool {
         get {
             return getShared().bool(forKey: Key.isTouchIDEnabled)
@@ -278,14 +278,14 @@ extension UserCachedStatus {
     }
     
     /// Value is only stored in the keychain
-    var pinCode : String {
+    /*var pinCode : String {
         get {
             return sharedKeychain.keychain().string(forKey: Key.pinCodeCache) ?? ""
         }
         set {
             sharedKeychain.keychain().setString(newValue, forKey: Key.pinCodeCache)
         }
-    }
+    }*/
     
     var lockTime : String {
         get {

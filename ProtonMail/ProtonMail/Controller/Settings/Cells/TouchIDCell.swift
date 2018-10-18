@@ -27,7 +27,6 @@ class TouchIDCell: UITableViewCell {
             // Check if the device can evaluate the policy.
             if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
                 userCachedStatus.isTouchIDEnabled = true
-                userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
             }
             else{
                 var alertString : String = "";
@@ -48,7 +47,6 @@ class TouchIDCell: UITableViewCell {
             }
         } else {
             userCachedStatus.isTouchIDEnabled = false
-            userCachedStatus.touchIDEmail = ""
         }
     }
     

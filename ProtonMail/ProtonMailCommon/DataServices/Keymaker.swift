@@ -41,28 +41,19 @@ class Keymaker: NSObject {
         self.mainKey = nil
     }
     
-    /*
-    private func obtainMainKey(with protector: ProtectionStrategy, into handler: (Key)->Void) throws {
-        self.controlThread.sync {
-            guard self.mainKey == nil else {
-                handler(self.mainKey!)
-                return
-            }
-            
-            guard let cypherBits = sharedKeychain.keychain().data(forKey: "mainKeyCypher") else {
-                let mainKey = self.generateNewMainKey()
-                handler(mainKey)
-                return
-            }
-
-            if let mainKeyBytes = try? protector.unlock(cypherBits: cypherBits) {
-                handler(mainKeyBytes)
-            } else {
-                // FIXME: unlock failed
-            }
+    internal func obtainMainKey(with protector: ProtectionStrategy) -> Key? {
+        guard self.mainKey == nil else {
+            return self.mainKey
         }
+        
+        guard let cypherBits = protector.getCypherBits() else {
+            return nil
+        }
+
+        let mainKeyBytes = try? protector.unlock(cypherBits: cypherBits)
+        self.mainKey = mainKeyBytes // FIXME: should we do that if the unlock failed?
+        return mainKeyBytes
     }
-    */
     
     private func lock(mainKey: Key, with protectors: Array<ProtectionStrategy>) throws {
         try protectors.forEach { try $0.lock(value: mainKey) }

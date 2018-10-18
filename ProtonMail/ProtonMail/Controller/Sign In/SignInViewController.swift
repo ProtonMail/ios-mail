@@ -193,7 +193,7 @@ class SignInViewController: ProtonMailViewController {
     }
     
     @IBAction func touchIDAction(_ sender: UIButton) {
-        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+        if userCachedStatus.isTouchIDEnabled {
             sharedSignIn.biometricAuthentication(afterBioAuthPassed: self.setupView, afterSignIn: {
                 self.isRemembered = true
                 self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
@@ -263,7 +263,7 @@ class SignInViewController: ProtonMailViewController {
     }
     
     @objc func doEnterForeground() {
-        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+        if (userCachedStatus.isTouchIDEnabled) {
             sharedSignIn.biometricAuthentication(afterBioAuthPassed: self.setupView,
                                              afterSignIn: {
                                                 self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
@@ -297,7 +297,7 @@ class SignInViewController: ProtonMailViewController {
             sharedSignIn.clean();
         }
         
-        if(UIDevice.current.isLargeScreen() && !isRemembered && userCachedStatus.touchIDEmail.isEmpty)
+        if(UIDevice.current.isLargeScreen() && !isRemembered)
         {
             usernameTextField.becomeFirstResponder()
         }

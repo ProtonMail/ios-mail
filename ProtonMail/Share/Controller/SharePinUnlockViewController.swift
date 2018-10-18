@@ -64,7 +64,7 @@ class SharePinUnlockViewController : UIViewController {
     }
     
     func doEnterForeground(){
-        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+        if userCachedStatus.isTouchIDEnabled {
             
         }
     }

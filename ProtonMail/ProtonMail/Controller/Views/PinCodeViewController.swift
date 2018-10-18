@@ -32,7 +32,7 @@ class PinCodeViewController : UIViewController {
         self.setUpView(true)
         
         if self.viewModel.checkTouchID() {
-            if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+            if userCachedStatus.isTouchIDEnabled {
                 pinCodeView.showTouchID()
                 authenticateUser()
             }
@@ -71,30 +71,27 @@ class PinCodeViewController : UIViewController {
     }
     
     @objc func doEnterForeground() {
-        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+        if userCachedStatus.isTouchIDEnabled {
             authenticateUser()
         }
     }
     
     func authenticateUser() {
-        let savedEmail = userCachedStatus.codedEmail()
+        fatalError("unify with SignInManager")
+        
         // Get the local authentication context.
         let context = LAContext()
         // Declare a NSError variable.
         var error: NSError?
         context.localizedFallbackTitle = ""
         // Set the reason string that will appear on the authentication alert.
-        let reasonString = "\(LocalString._general_login): \(savedEmail)"
+        let reasonString = "\(LocalString._general_login)"
         
         // Check if the device can evaluate the policy.
         if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             context.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: Error?) in
                 if success {
-                    DispatchQueue.main.async {
-                        self.viewModel.done()
-                        self.delegate?.Next()
-                        let _ = self.navigationController?.popViewController(animated: true)
-                    }
+                    
                 }
                 else{
                     DispatchQueue.main.async {
@@ -137,7 +134,7 @@ extension PinCodeViewController : PinCodeViewDelegate {
     
     func TouchID() {
         if self.viewModel.checkTouchID() {
-            if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+            if userCachedStatus.isTouchIDEnabled {
                 authenticateUser()
                 return
             }

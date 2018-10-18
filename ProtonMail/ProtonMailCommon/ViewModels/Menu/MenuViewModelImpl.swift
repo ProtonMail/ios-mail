@@ -25,8 +25,8 @@ class MenuViewModelImpl : MenuViewModel {
     fileprivate var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
     
     override func setupMenu() {
-        if ((userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty) ||
-            (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled))
+        if ((userCachedStatus.isPinCodeEnabled) ||
+            (userCachedStatus.isTouchIDEnabled))
         {
             otherItems = otherItems.filter { $0 != .lockapp }
         }

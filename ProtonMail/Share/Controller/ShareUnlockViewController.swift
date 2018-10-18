@@ -178,21 +178,7 @@ class ShareUnlockViewController: UIViewController {
     }
 
     fileprivate func getViewFlow() -> SignInUIFlow {
-        guard sharedTouchID.showTouchIDOrPin() else {
-            return SignInUIFlow.restore
-        }
-        
-        if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
-            self.view.backgroundColor = UIColor.red
-            return SignInUIFlow.requirePin
-        } else {
-            //check touch id status
-            if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-                return SignInUIFlow.requireTouchID
-            } else {
-                return SignInUIFlow.restore
-            }
-        }
+        return sharedSignIn.getUnlockFlow()
     }
     
     func signInIfRememberedCredentials() {
@@ -244,9 +230,11 @@ class ShareUnlockViewController: UIViewController {
     }
     
     func authenticateUser() {
+        fatalError("unify with SignInManager")
+        
         let context = LAContext() // Get the local authentication context
         context.localizedFallbackTitle = ""
-        let reasonString = "\(LocalString._general_login): \(userCachedStatus.codedEmail())"
+        let reasonString = "\(LocalString._general_login)"
         
         // Check if the device can evaluate the policy.
         var error: NSError?

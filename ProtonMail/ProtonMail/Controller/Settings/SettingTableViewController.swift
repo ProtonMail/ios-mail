@@ -293,7 +293,6 @@ class SettingTableViewController: ProtonMailViewController {
                                         // Check if the device can evaluate the policy.
                                         if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
                                             userCachedStatus.isTouchIDEnabled = true
-                                            userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
                                             self.updateTableProtectionSection()
                                         }
                                         else{
@@ -317,7 +316,6 @@ class SettingTableViewController: ProtonMailViewController {
                                         }
                                     } else {
                                         userCachedStatus.isTouchIDEnabled = false
-                                        userCachedStatus.touchIDEmail = ""
                                         self.updateTableProtectionSection()
                                     }
                                 } else {
