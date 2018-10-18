@@ -1296,6 +1296,26 @@
 		D8D82181133C8B807C04CCDBEEBCAB02 /* ServiceLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89116D94A2E17CB58FDC13ECE1B81F36 /* ServiceLevelViewController.swift */; };
 		D8D8C5DD6C6B2D48CEBA1784A45E6094 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */; };
 		D8FEA9432177648100AE73A2 /* LockedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA9422177648100AE73A2 /* LockedTests.swift */; };
+		D8FEA9492178568000AE73A2 /* ProtectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA9482178568000AE73A2 /* ProtectionStrategy.swift */; };
+		D8FEA94A2178568000AE73A2 /* ProtectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA9482178568000AE73A2 /* ProtectionStrategy.swift */; };
+		D8FEA94B2178568000AE73A2 /* ProtectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA9482178568000AE73A2 /* ProtectionStrategy.swift */; };
+		D8FEA94C2178568000AE73A2 /* ProtectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA9482178568000AE73A2 /* ProtectionStrategy.swift */; };
+		D8FEA94E217856A700AE73A2 /* NoneProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA94D217856A700AE73A2 /* NoneProtection.swift */; };
+		D8FEA94F217856A700AE73A2 /* NoneProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA94D217856A700AE73A2 /* NoneProtection.swift */; };
+		D8FEA950217856A700AE73A2 /* NoneProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA94D217856A700AE73A2 /* NoneProtection.swift */; };
+		D8FEA951217856A700AE73A2 /* NoneProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA94D217856A700AE73A2 /* NoneProtection.swift */; };
+		D8FEA953217856BE00AE73A2 /* PinProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA952217856BE00AE73A2 /* PinProtection.swift */; };
+		D8FEA954217856BE00AE73A2 /* PinProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA952217856BE00AE73A2 /* PinProtection.swift */; };
+		D8FEA955217856BE00AE73A2 /* PinProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA952217856BE00AE73A2 /* PinProtection.swift */; };
+		D8FEA956217856BE00AE73A2 /* PinProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA952217856BE00AE73A2 /* PinProtection.swift */; };
+		D8FEA958217856EB00AE73A2 /* BioProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA957217856EB00AE73A2 /* BioProtection.swift */; };
+		D8FEA959217856EB00AE73A2 /* BioProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA957217856EB00AE73A2 /* BioProtection.swift */; };
+		D8FEA95A217856EB00AE73A2 /* BioProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA957217856EB00AE73A2 /* BioProtection.swift */; };
+		D8FEA95B217856EB00AE73A2 /* BioProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA957217856EB00AE73A2 /* BioProtection.swift */; };
+		D8FEA95D21786EA100AE73A2 /* SignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA95C21786EA100AE73A2 /* SignInManager.swift */; };
+		D8FEA95E21786EA100AE73A2 /* SignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA95C21786EA100AE73A2 /* SignInManager.swift */; };
+		D8FEA95F21786EA100AE73A2 /* SignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA95C21786EA100AE73A2 /* SignInManager.swift */; };
+		D8FEA96021786EA100AE73A2 /* SignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEA95C21786EA100AE73A2 /* SignInManager.swift */; };
 		D938CBE8ACB1D06AD17D6A6CA17785CF /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614D2272BFBD1D2F8E751E112D142E6D /* UIAlertController+Extension.swift */; };
 		D9E1F5D8A1D9BBF47D56FAA028FF64A4 /* CalendarIntervalRuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010626773F86444E682C621F12E317AE /* CalendarIntervalRuleTests.swift */; };
 		DA17BF8C926357204AC2D951BE51BEEF /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFE3868B0060D33182C2D17832CAF5F /* APIService.swift */; };
@@ -2131,6 +2151,11 @@
 		D8C674BC00A2F8ED261865474FC3C1E4 /* ContactEditAddCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditAddCell.swift; sourceTree = "<group>"; };
 		D8CFA13A53B9FD4D4305DD4B86DF8193 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		D8FEA9422177648100AE73A2 /* LockedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockedTests.swift; sourceTree = "<group>"; };
+		D8FEA9482178568000AE73A2 /* ProtectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectionStrategy.swift; sourceTree = "<group>"; };
+		D8FEA94D217856A700AE73A2 /* NoneProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoneProtection.swift; sourceTree = "<group>"; };
+		D8FEA952217856BE00AE73A2 /* PinProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinProtection.swift; sourceTree = "<group>"; };
+		D8FEA957217856EB00AE73A2 /* BioProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioProtection.swift; sourceTree = "<group>"; };
+		D8FEA95C21786EA100AE73A2 /* SignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInManager.swift; sourceTree = "<group>"; };
 		D911DE362A1DC4B22E34A8FF35E98592 /* UILabel+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+ProtonMail.swift"; sourceTree = "<group>"; };
 		D96D1E2AD6D9084D66F4E597E4BDF8E7 /* InfoDev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
 		D9A1ACE667E9B0A09C1FC5F4711371B3 /* PushServiceDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PushServiceDev.entitlements; sourceTree = "<group>"; };
@@ -2352,6 +2377,7 @@
 				B88E2413886FE850E623F218CD4530D6 /* CoreDataService.swift */,
 				DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */,
 				4B29E5939B4822D639E68D797BC69537 /* Keymaker.swift */,
+				D8FEA95C21786EA100AE73A2 /* SignInManager.swift */,
 				2407BF5796C9E19D445712F8FD6D18A2 /* LabelsDataService.swift */,
 				17A9290E97B86BEF7B76F5C74E77B040 /* MessageDataService+Builder.swift */,
 				BDF208C261F450A9BBE8F9F119EF8848 /* MessageDataService+Error.swift */,
@@ -3365,6 +3391,7 @@
 				5F0A6DAFDF49785FC75C1ECF770E55C9 /* CountryCode.swift */,
 				8CD94D0FDF3B2AF80193BF9882D94C43 /* EncryptTypes.swift */,
 				8815DFC41477DB4D20C79538B64D0893 /* Key.swift */,
+				D8FEA9472178566C00AE73A2 /* ProtectionStrategy */,
 				E77365C785E2388A91009BFDE01A2C7E /* Locked.swift */,
 				D8FEA9422177648100AE73A2 /* LockedTests.swift */,
 				78935D907A4A5837283960605A94A31F /* MailSettings.swift */,
@@ -3378,6 +3405,17 @@
 				29D45CBF615966A3BF8366CB1F9699EE /* UserSettings.swift */,
 			);
 			path = DataModels;
+			sourceTree = "<group>";
+		};
+		D8FEA9472178566C00AE73A2 /* ProtectionStrategy */ = {
+			isa = PBXGroup;
+			children = (
+				D8FEA9482178568000AE73A2 /* ProtectionStrategy.swift */,
+				D8FEA94D217856A700AE73A2 /* NoneProtection.swift */,
+				D8FEA952217856BE00AE73A2 /* PinProtection.swift */,
+				D8FEA957217856EB00AE73A2 /* BioProtection.swift */,
+			);
+			path = ProtectionStrategy;
 			sourceTree = "<group>";
 		};
 		DE009103583BED5ACB1155B59CD99E46 /* Message Detail */ = {
@@ -4705,6 +4743,7 @@
 				6E8064B073D96A0A2069E5F0D2D9549B /* APIService+ResponseTransformer.swift in Sources */,
 				41C820D8868B009587B14B9836B407AA /* APIService+SettingsExtension.swift in Sources */,
 				FB6B4C530D51864A959437E82FFEB312 /* APIService+UserExtension.swift in Sources */,
+				D8FEA953217856BE00AE73A2 /* PinProtection.swift in Sources */,
 				A5D7F8C7DC7B1E6D612512DF56FFE65F /* APIService.swift in Sources */,
 				852C81FAB24147A8C7BB8E379737174B /* APIServiceDefined.swift in Sources */,
 				F4DF1DC2F9464756F4BFD7937790DA97 /* APIServiceRequest.swift in Sources */,
@@ -4827,6 +4866,7 @@
 				F984BD814BEA6C487FA370FD895AFEED /* CountryPickerViewController.swift in Sources */,
 				1CA42EED8B03E7D10ABFFC16869E0BBD /* CustomHeaderView.swift in Sources */,
 				53535A9CF76ECE0A199E3F07905732FA /* Data+Extension.swift in Sources */,
+				D8FEA94E217856A700AE73A2 /* NoneProtection.swift in Sources */,
 				D310A58C60658996C9BC2C5A0B1B8953 /* Data+Mime.swift in Sources */,
 				16E3697B45454767A0628F08D62F6429 /* DataService+Error.swift in Sources */,
 				56B9EA2FF796B33DEE72B9EA0BA85AA0 /* Date+Extension.swift in Sources */,
@@ -4852,6 +4892,7 @@
 				AC07F1813FED65206AAF0CB79AE47EF5 /* EventDataService.swift in Sources */,
 				AEBE49D25840AC49BC5F8A8617D19D4D /* ExpirationView.swift in Sources */,
 				A0BE5474D057B897319ACBA944107E83 /* ExpirationWarningEmailCell.swift in Sources */,
+				D8FEA9492178568000AE73A2 /* ProtectionStrategy.swift in Sources */,
 				73E8C640E11168F1D78350837397A3DA /* ExpirationWarningHeaderCell.swift in Sources */,
 				806214862B5FD30EF71BC9AA805703DD /* ExpirationWarningViewController.swift in Sources */,
 				EE641C0AF75DB2AB9AA0F1258A6139ED /* ExternalURL+Extension.swift in Sources */,
@@ -4881,6 +4922,7 @@
 				D880FD208C3FBBB24228D285F3F883B2 /* Key.swift in Sources */,
 				4B81CF9F101BE9D3D06447A79BEF9AE2 /* KeychainWrapper.swift in Sources */,
 				46AF4F8CC9F5743C8D32AC847C2B1C23 /* Keymaker.swift in Sources */,
+				D8FEA958217856EB00AE73A2 /* BioProtection.swift in Sources */,
 				75EC480816F82223F98EE85D0655440A /* KeysAPI.swift in Sources */,
 				FCD7706DD098F5789342A659404AF73D /* Label.swift in Sources */,
 				6BE3174840623F711663226DCFCF5C14 /* LabelAPI.swift in Sources */,
@@ -5034,6 +5076,7 @@
 				FF9485B6BF07BD9F040979B9E7A9BA92 /* SignInViewModelImpl.swift in Sources */,
 				1E7522BABCC657E429D5D4E38D7326E5 /* SignUp+Error.swift in Sources */,
 				ABB8B0A4F0A3D204C06EE4B7B0D4B6C5 /* SignUpEmailViewController.swift in Sources */,
+				D8FEA95D21786EA100AE73A2 /* SignInManager.swift in Sources */,
 				70474A0EF0D03550B6F0C27BFA883FFE /* SignUpPasswordViewController.swift in Sources */,
 				FAC70B31CEE0F40FEBED6D71819C9C0C /* SignUpUserNameViewController.swift in Sources */,
 				28108358FD7E9DF17EF3FB8A10027409 /* SignatureAlertViewModelImpl.swift in Sources */,
@@ -5253,6 +5296,7 @@
 				DF595C8B41415AC571D8F147FCF58973 /* ControllerDefined.swift in Sources */,
 				74A05E850E33FDD43986FF6BFECDBBBE /* Coordinator.swift in Sources */,
 				AA5EE75218D9E48738573CB459697C37 /* CoreDataService.swift in Sources */,
+				D8FEA950217856A700AE73A2 /* NoneProtection.swift in Sources */,
 				2FA31DE3C832A0EBE9DB380CBA70B1AD /* CountryCode.swift in Sources */,
 				DA37822B6C2BBEC1B508C8CA6B7C2E2A /* CountryCodeTableViewCell.swift in Sources */,
 				DDB680A5113E268AF78522E93B55B293 /* CountryPickerViewController.swift in Sources */,
@@ -5261,6 +5305,7 @@
 				93A4792B8D0AFB6929EB721D35DDF560 /* Data+Mime.swift in Sources */,
 				98140CA52DADACF09A66644095F94E59 /* DataService+Error.swift in Sources */,
 				00D642196380812F56CC31ACD37926D4 /* Date+Extension.swift in Sources */,
+				D8FEA955217856BE00AE73A2 /* PinProtection.swift in Sources */,
 				8020ACD54C2981A444E55BD20A6E9A1D /* DebugDetailsViewController.swift in Sources */,
 				DD96BF69ED0111EA4D21E170D0729627 /* DeviceAPI.swift in Sources */,
 				F95615E8386B110B06DCB413EE2CD828 /* DeviceInfoCache.swift in Sources */,
@@ -5283,6 +5328,7 @@
 				5E811663A8C6FC2BB2F9FBE3F49B788F /* EventDataService.swift in Sources */,
 				90C55B2C6E8CC57EBD51056F45819CD1 /* ExpirationView.swift in Sources */,
 				73FA14EFF140127BDD2C977ECD728DE0 /* ExpirationWarningEmailCell.swift in Sources */,
+				D8FEA95F21786EA100AE73A2 /* SignInManager.swift in Sources */,
 				9995BC9C337F58A8676B6DEB5B5A04E5 /* ExpirationWarningHeaderCell.swift in Sources */,
 				71CE82DC9F2233C60CD9FD6B2FCE3109 /* ExpirationWarningViewController.swift in Sources */,
 				A8B26C2B7C53981220BD13D381E2BD8C /* ExternalURL+Extension.swift in Sources */,
@@ -5313,6 +5359,7 @@
 				11AE97BE6898744D1DCB05522E091E22 /* KeychainWrapper.swift in Sources */,
 				C57BFCBE49712EF0A6CFEEAD444BE6E0 /* Keymaker.swift in Sources */,
 				A186DC54BAAC3C7313224C6E9D7977ED /* KeysAPI.swift in Sources */,
+				D8FEA94B2178568000AE73A2 /* ProtectionStrategy.swift in Sources */,
 				63BEC9A6025D8D58F3CA7AB98C30B0C0 /* Label.swift in Sources */,
 				AFD544874ABDF70200E5379B126277BE /* LabelAPI.swift in Sources */,
 				1FB7C27E695081EDB41246AB9E194048 /* LabelApplyViewModelImpl.swift in Sources */,
@@ -5365,6 +5412,7 @@
 				EBF129F32A76CF4D29C856D4878D6218 /* MessageDataService+Builder.swift in Sources */,
 				05841A4AA5433B28DCB6DFD3CA4C21B7 /* MessageDataService+Error.swift in Sources */,
 				3B002CC8F3864169108B5E3391ABE482 /* MessageDataService+FileManager.swift in Sources */,
+				D8FEA95A217856EB00AE73A2 /* BioProtection.swift in Sources */,
 				75F656EC41ACEDA0CA1B09C8C96D3FC8 /* MessageDataService.swift in Sources */,
 				5183808D993741212925BB019BFFB586 /* MessageDetailBottomView.swift in Sources */,
 				6D39B0F01E50EB165535A786A9DECEFB /* MessageHelper.swift in Sources */,
@@ -5600,6 +5648,7 @@
 				99513E28376B38DBCA0FE999EF7EBDE7 /* APIService.swift in Sources */,
 				4BC037175262FC400E28126A8E925076 /* APIServiceDefined.swift in Sources */,
 				D441FFCC8CBD6946FA018531B4C7F6B9 /* APIServiceRequest.swift in Sources */,
+				D8FEA95E21786EA100AE73A2 /* SignInManager.swift in Sources */,
 				F15E0B4F1D2877F3B3E6D0BBC24F81A7 /* APIServiceResponse.swift in Sources */,
 				E8A82AB9F2098DE1A9D84ECCD8B5CE0C /* ActivityIndicatorHelper.swift in Sources */,
 				FAF87255B31C929ACECD0E28D0D63887 /* Address.swift in Sources */,
@@ -5648,6 +5697,7 @@
 				3D9F3CE433274727A4E1D3245D831122 /* ContactsTableViewCell.swift in Sources */,
 				7C48D0416436200868B2166A299D5CBA /* ControllerDefined.swift in Sources */,
 				68BAD41109DCE9ED700F2E739969381B /* CoreDataService.swift in Sources */,
+				D8FEA94A2178568000AE73A2 /* ProtectionStrategy.swift in Sources */,
 				6B98C8A97FBE9BC84B3700AB5ED6BD5E /* Data+Extension.swift in Sources */,
 				DC0E80BBC5CC9E72BF916605EE52735C /* Data+Mime.swift in Sources */,
 				7055E2AD5DBAB9602510E786CFC0B7C3 /* DataService+Error.swift in Sources */,
@@ -5687,6 +5737,8 @@
 				69501BE6F3C2CBE806C29E0BD7DD49DD /* Locked.swift in Sources */,
 				B9B310E8F3C08FC506C8AF15A2C3AEDE /* Logger.swift in Sources */,
 				E78EC1E76187F0A6402E3F570C6E13FB /* MIMEMessage.swift in Sources */,
+				D8FEA959217856EB00AE73A2 /* BioProtection.swift in Sources */,
+				D8FEA954217856BE00AE73A2 /* PinProtection.swift in Sources */,
 				D840DE2CD3FED303202931337E6171BA /* MailSettings.swift in Sources */,
 				C26B1A00E1D862ACC9EC74846C49F2F2 /* MailboxViewModel.swift in Sources */,
 				AC88AC87B4623A044E29FB13AA932ECF /* MailboxViewModelImpl.swift in Sources */,
@@ -5736,6 +5788,7 @@
 				B1A77D1BD034F34946FEDF248B6B48BC /* QueueConstant.swift in Sources */,
 				88A1F5419E81730BED3A992B25CA7E06 /* QuotedPrintable.swift in Sources */,
 				4B101F682A604A73EAA6DC271014C959 /* Reachability.m in Sources */,
+				D8FEA94F217856A700AE73A2 /* NoneProtection.swift in Sources */,
 				2B65665CB7C4CFDF941D12F6B39B65C0 /* ReportsAPI.swift in Sources */,
 				9442E4EEA9825AE9ADA9948F84634641 /* Settings+Defined.swift in Sources */,
 				A5D1DD47043C861FF8BE761A0CDFE846 /* SettingsAPI.swift in Sources */,
@@ -5803,6 +5856,7 @@
 				DA17BF8C926357204AC2D951BE51BEEF /* APIService.swift in Sources */,
 				5A2F085CC1F662AD9E48CBCA794395C2 /* APIServiceDefined.swift in Sources */,
 				D2C2770CD46FBB36BD5D685CCED49A56 /* APIServiceRequest.swift in Sources */,
+				D8FEA96021786EA100AE73A2 /* SignInManager.swift in Sources */,
 				D732E36B0E69097DEB800A98100B1479 /* APIServiceResponse.swift in Sources */,
 				32F63C50FDCC44C1BE5E05A6F417FA97 /* ActivityIndicatorHelper.swift in Sources */,
 				904B4BDE785C86CDFD7EE47A668AC142 /* Address.swift in Sources */,
@@ -5851,6 +5905,7 @@
 				06D1C80810CD7621E12520B58765D1A4 /* ContactsTableViewCell.swift in Sources */,
 				15FB91B101D820ADACBDABE7C9452AB0 /* ControllerDefined.swift in Sources */,
 				84A1485FF687B4EDB215C80E63308A72 /* CoreDataService.swift in Sources */,
+				D8FEA94C2178568000AE73A2 /* ProtectionStrategy.swift in Sources */,
 				924E7F45F008EF93DC53E9659A1F8D8C /* Data+Extension.swift in Sources */,
 				1A23FEF39C822E826B9161B3839EE30F /* Data+Mime.swift in Sources */,
 				BA5BDD546C86F839CB64787CCD570D2E /* DataService+Error.swift in Sources */,
@@ -5890,6 +5945,8 @@
 				0DF9DD9ABF4131D385CCC8083B066D3E /* Locked.swift in Sources */,
 				69FF6B75A2D009991D64578347101051 /* Logger.swift in Sources */,
 				8D7FC0EBD7BA692C9AA38060945F915B /* MIMEMessage.swift in Sources */,
+				D8FEA95B217856EB00AE73A2 /* BioProtection.swift in Sources */,
+				D8FEA956217856BE00AE73A2 /* PinProtection.swift in Sources */,
 				FD056076A18125FFD1C5C6107D64E520 /* MailSettings.swift in Sources */,
 				B7FADD22CBBEC06A6E225AE7002A4120 /* MailboxViewModel.swift in Sources */,
 				901E1D325CCF03D6E27F563526CC1E5D /* MailboxViewModelImpl.swift in Sources */,
@@ -5939,6 +5996,7 @@
 				6B83402A5AE4ADCF885F31E0C53A59D1 /* QueueConstant.swift in Sources */,
 				61335B96C8F33EB4B56D4D459D39A01F /* QuotedPrintable.swift in Sources */,
 				8EFD3A66717F5DE4FEA692888C4D7AA2 /* Reachability.m in Sources */,
+				D8FEA951217856A700AE73A2 /* NoneProtection.swift in Sources */,
 				168E8ACAB68B4E829B74EE7A8D50FF06 /* ReportsAPI.swift in Sources */,
 				371A41B911AD00F666F40C049A9EECEE /* Settings+Defined.swift in Sources */,
 				7DFB4C294CAE23A769678D3AB6154E6C /* SettingsAPI.swift in Sources */,

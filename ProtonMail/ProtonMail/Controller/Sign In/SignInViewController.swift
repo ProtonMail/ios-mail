@@ -80,11 +80,11 @@ class SignInViewController: ProtonMailViewController {
         setupButtons()
         setupVersionLabel()
         
-        let signinFlow = keymaker.getUnlockFlow()
+        let signinFlow = sharedSignIn.getUnlockFlow()
         if signinFlow == .requireTouchID {
             self.showTouchID(false)
         }
-        keymaker.unlock(accordingToFlow: signinFlow,
+        sharedSignIn.unlock(accordingToFlow: signinFlow,
                         requestPin: { self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
                         onRestore: self.setupView,
                         afterSignIn: {
@@ -194,7 +194,7 @@ class SignInViewController: ProtonMailViewController {
     
     @IBAction func touchIDAction(_ sender: UIButton) {
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-            keymaker.biometricAuthentication(afterBioAuthPassed: self.setupView, afterSignIn: {
+            sharedSignIn.biometricAuthentication(afterBioAuthPassed: self.setupView, afterSignIn: {
                 self.isRemembered = true
                 self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
             })
@@ -210,7 +210,7 @@ class SignInViewController: ProtonMailViewController {
         if(SignInViewController.isComeBackFromMailbox)
         {
             ShowLoginViews();
-            keymaker.clean();
+            sharedSignIn.clean();
         }
     }
     
@@ -264,7 +264,7 @@ class SignInViewController: ProtonMailViewController {
     
     @objc func doEnterForeground() {
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-            keymaker.biometricAuthentication(afterBioAuthPassed: self.setupView,
+            sharedSignIn.biometricAuthentication(afterBioAuthPassed: self.setupView,
                                              afterSignIn: {
                                                 self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
             })
@@ -279,7 +279,7 @@ class SignInViewController: ProtonMailViewController {
         if sharedUserDataService.isNewUser {
             sharedUserDataService.isNewUser = false
             if sharedUserDataService.isUserCredentialStored {
-                keymaker.signInIfRememberedCredentials(onSuccess: {
+                sharedSignIn.signInIfRememberedCredentials(onSuccess: {
                     self.isRemembered = true
                     self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
                 })
@@ -294,7 +294,7 @@ class SignInViewController: ProtonMailViewController {
         if(SignInViewController.isComeBackFromMailbox)
         {
             ShowLoginViews();
-            keymaker.clean();
+            sharedSignIn.clean();
         }
         
         if(UIDevice.current.isLargeScreen() && !isRemembered && userCachedStatus.touchIDEmail.isEmpty)
@@ -435,7 +435,7 @@ class SignInViewController: ProtonMailViewController {
         self.isRemembered = true
         SignInViewController.isComeBackFromMailbox = false
         
-        keymaker.signIn(username: username,
+        sharedSignIn.signIn(username: username,
                         password: password,
                         cachedTwoCode: cachedTwoCode,
                         ask2fa: {
@@ -481,11 +481,11 @@ extension SignInViewController : PinCodeViewControllerDelegate {
     
     func Cancel() {
         UserTempCachedStatus.backup()
-        keymaker.clean()
+        sharedSignIn.clean()
     }
     
     func Next() {
-        keymaker.signInIfRememberedCredentials(onSuccess: {
+        sharedSignIn.signInIfRememberedCredentials(onSuccess: {
             self.isRemembered = true
             self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
         })

@@ -162,10 +162,10 @@ class MailboxPasswordViewController: UIViewController {
     func decryptPassword() {
         isRemembered = true
         let password = (passwordTextField.text ?? "")
-        let mailbox_password = keymaker.mailboxPassword(from: password)
+        let mailbox_password = sharedSignIn.mailboxPassword(from: password)
         
         MBProgressHUD.showAdded(to: view, animated: true)
-        keymaker.decryptPassword(mailbox_password,
+        sharedSignIn.decryptPassword(mailbox_password,
                                  onError: { error in
                                     MBProgressHUD.hide(for: self.view, animated: true)
                                     let alert = error.alertController()
