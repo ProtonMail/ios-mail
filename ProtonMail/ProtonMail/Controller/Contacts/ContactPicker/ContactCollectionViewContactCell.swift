@@ -14,7 +14,7 @@ protocol ContactCollectionViewContactCellDelegate: class {
 }
 
 class ContactCollectionViewContactCell: UICollectionViewCell {
-
+    
     @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var contactTitleLabel: UILabel!
     @IBOutlet weak var lockImage: UIImageView!
@@ -87,11 +87,33 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         }
         set {
             self._model = newValue
-            self.contactTitleLabel.text = self._model.contactTitle;
             
-            {
-                self.checkLock()
-            } ~> .main
+            if let _ = self._model as? ContactVO {
+                self.contactTitleLabel.text = self._model.contactTitle;
+                
+                {
+                    self.checkLock()
+                    } ~> .main
+            } else if let _ = self._model as? ContactGroupVO {
+                prepareTitleForContactGroup()
+            }
+        }
+    }
+    
+    func prepareTitleForContactGroup() {
+        if let contactGroup = self._model as? ContactGroupVO {
+            self.lockImage.isHidden = false
+            self.activityView.isHidden = true
+            self.leftConstant.constant = 4
+            self.widthConstant.constant = 14
+            
+            let (selectedCount, totalCount, color) = contactGroup.getGroupInformation()
+            self.contactTitleLabel.text = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
+            self.contactTitleLabel.textAlignment = .left
+            self.lockImage.image = UIImage.init(named: "contact_groups_icon")
+            self.lockImage.setupImage(scale: 0.8,
+                                      tintColor: UIColor.white,
+                                      backgroundColor: color)
         }
     }
     
@@ -128,8 +150,14 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     }
     
     func widthForCell() -> CGFloat {
-        let size = self._model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
+        var size = self._model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
+        if let _ = self._model as? ContactGroupVO {
+            if let estimation = self.contactTitleLabel.text?.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light]) {
+                size = estimation
+            }
+        }
         let offset = self.widthConstant.constant == 0 ? 0 : 14
+//        print("widthForCell = \(self.contactTitleLabel) \(size)")
         return size.width.rounded(.up) + 20 + CGFloat(offset) //34 // 20 + self.contactTitleLabel.frame.height + 6
     }
     

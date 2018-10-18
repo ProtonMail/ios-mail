@@ -20,12 +20,11 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
      
      For every given contact group, we
      (1) Attempt to get all emails associated with the group name -> email list G
-     - might be empty, if the group name is changed to others, etc.
+     - might be empty, if the group name was changed to others, etc.
      (2) For every selectedEmails, we compare it to G.
      - If the email is missing from G, we add it in, and mark as selected
      - If the email is in G, we mark it as selected
-     (3) Check is encrypted status
-     (4) Produce an email array, sorted by name, then email
+     (3) Produce an email array, sorted by name, then email
      */
     init(contactGroupName: String,
          selectedEmails: [String],
@@ -78,9 +77,6 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
             }
             
             // (3)
-            // TODO
-            
-            // (4)
             emailData.sort {
                 if $0.name == $1.name {
                     return $0.email < $1.email

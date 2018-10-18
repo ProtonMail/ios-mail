@@ -47,11 +47,6 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         
         for group in groups {
             contactGroupData[group.labelID] = (name: group.name, color: group.color, count: group.emails.count)
-            
-            print("group name \(group.name) group count \(group.emails.count)")
-            for email in group.emails.allObjects as! [Email] {
-                print(email.debugDescription)
-            }
         }
     }
     
@@ -778,7 +773,6 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 }
             }
         }
-        print(contactGroupData)
     }
     
     // return the contact group that is empty after editing

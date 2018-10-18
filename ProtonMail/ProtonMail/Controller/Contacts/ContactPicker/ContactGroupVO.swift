@@ -90,6 +90,49 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol
         return (0, ColorManager.defaultColor)
     }
     
+    /**
+     Calculates the group size, selected member count, and group color
+     Information for composer collection view cell
+    */
+    func getGroupInformation() -> (memberSelected: Int, totalMemberCount: Int, groupColor: String) {
+        let errorResponse = (0, 0, ColorManager.defaultColor)
+        
+        var emailAddresses = Set<String>()
+        var color = ""
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            // (1) get all email in the contact group
+            if let label = Label.labelForLabelName(self.contactTitle,
+                                                   inManagedObjectContext: context),
+                let emails = label.emails.allObjects as? [Email] {
+                color = label.color
+                
+                for email in emails {
+                    emailAddresses.insert(email.email)
+                }
+            } else {
+                // TODO: handle error
+                return errorResponse
+            }
+            
+            // (2) get all that is NOT in the contact group, but is selected
+            for address in self.selectedMembers {
+                if emailAddresses.contains(address) == false {
+                    if let emailObj = Email.EmailForAddress(address,
+                                                            inManagedObjectContext: context) {
+                        emailAddresses.insert(emailObj.email)
+                    } else {
+                        // TODO: handle error
+                        PMLog.D("Can't find \(address) in core data")
+                    }
+                }
+            }
+            
+            return (selectedMembers.count, emailAddresses.count, color)
+        } else {
+            return errorResponse
+        }
+    }
+    
     init(ID: String, name: String) {
         self.ID = ID
         self.contactTitle = name

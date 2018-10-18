@@ -18,6 +18,7 @@ class ContactGroupsViewCell: UITableViewCell {
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var groupImage: UIImageView!
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var sendButtonImage: UIImageView!
     
     let highlightedColor = "#BFBFBF"
     let normalColor = "#9497CE"
@@ -78,8 +79,10 @@ class ContactGroupsViewCell: UITableViewCell {
         
         if delegate == nil {
             self.sendButton.isHidden = true
+            self.sendButtonImage.isHidden = true
         } else {
             self.sendButton.isHidden = false
+            self.sendButtonImage.isHidden = false
         }
         
         // set cell data

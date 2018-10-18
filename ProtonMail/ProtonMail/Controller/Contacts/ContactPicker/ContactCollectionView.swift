@@ -462,6 +462,7 @@ extension ContactCollectionView : UICollectionViewDelegate {
                         if selectedEmailAddresses.count > 0 {
                             // update cell members
                             contactGroup.setSelectedEmails(selectedMembers: selectedEmailAddresses)
+                            cell.prepareTitleForContactGroup()
                         } else {
                             // No member, delete this cell
                             self.removeFromSelectedContacts(index: self.selectedContactIndexFromRow(row: indexPath.row),

@@ -110,6 +110,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         updateMessageView()
         
         // load all contacts and groups
+        // TODO: move to view model
         firstly {
             () -> Promise<Void> in
             
@@ -123,7 +124,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                     self.contacts.append(contentsOf: sharedContactGroupsDataService.getAllContactGroupVOs())
                 }
                 
-                // This is done for contact also
+                // Sort contacts and contact groups
                 self.contacts.sort {
                     (first: ContactPickerModelProtocol, second: ContactPickerModelProtocol) -> Bool in
                     
@@ -136,14 +137,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                         let second = second as? ContactGroupVO {
                         return first.contactTitle.lowercased() < second.contactTitle.lowercased()
                     } else {
-                        // same title, the one with email goes second
-                        if first.contactTitle.lowercased() == second.contactTitle.lowercased() {
-                            if let _ = first as? ContactVO {
-                                return false
-                            }
+                        // contact groups go first
+                        if let _ = first as? ContactGroupVO {
                             return true
+                        } else {
+                            return false
                         }
-                        return first.contactTitle.lowercased() < second.contactTitle.lowercased()
                     }
                 }
                 

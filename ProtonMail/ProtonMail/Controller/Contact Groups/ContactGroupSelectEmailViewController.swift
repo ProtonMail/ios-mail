@@ -24,6 +24,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         title = LocalString._contact_groups_manage_addresses
         
         tableView.allowsMultipleSelection = true
@@ -33,8 +34,24 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         prepareSearchBar()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // if the user is tricky enough the hold the view using the edge geatures
+        // we will need to turn this off temporarily
+        self.extendedLayoutIncludesOpaqueBars = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // set this after the layout is completed
+        // so when the view disappeared, the search bar view won't leave a
+        // black block underneath it
+        self.extendedLayoutIncludesOpaqueBars = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         viewModel.save(indexPaths: tableView.indexPathsForSelectedRows)
     }
     
