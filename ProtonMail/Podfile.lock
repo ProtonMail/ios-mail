@@ -45,6 +45,7 @@ PODS:
     - SDWebImage/GIF
   - DKPhotoGallery/Resource (0.0.7):
     - SDWebImage/GIF
+  - EllipticCurveKeyPair (1.0.2)
   - FLAnimatedImage (1.0.12)
   - Groot (3.0.1):
     - Groot/Swift (= 3.0.1)
@@ -98,6 +99,7 @@ DEPENDENCIES:
   - AwaitKit (~> 5.0.0)
   - CryptoSwift (= 0.12.0)
   - DKImagePickerController/PhotoGallery (= 4.0.0-beta2)
+  - EllipticCurveKeyPair (= 1.0.2)
   - Groot (= 3.0.1)
   - Masonry (= 1.1.0)
   - MBProgressHUD (= 0.9.2)
@@ -120,6 +122,7 @@ SPEC REPOS:
     - CryptoSwift
     - DKImagePickerController
     - DKPhotoGallery
+    - EllipticCurveKeyPair
     - FLAnimatedImage
     - Groot
     - Masonry
@@ -162,6 +165,7 @@ SPEC CHECKSUMS:
   CryptoSwift: 1c07ca50843dd48bc54e6ea53d7a4dba3b645716
   DKImagePickerController: 43789fb00974b13f26263cc1ee0de5c2e6c6390d
   DKPhotoGallery: 7f07b6d8a47733fdd76856113c474456b92fc769
+  EllipticCurveKeyPair: 80c2effda68925851c12562dcfc3fe94489b5eba
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -180,6 +184,6 @@ SPEC CHECKSUMS:
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: 53fd660ed37df3ccc3752ab15a04a4fdca35e6d2
 
-PODFILE CHECKSUM: 66003d26076510d529a1cc42c59c3dffe4dfdbd8
+PODFILE CHECKSUM: a2e23da23af4d0fd209ac6b29e86d1dc0b075e1f
 
 COCOAPODS: 1.5.3
