@@ -286,8 +286,9 @@ class SettingTableViewController: ProtonMailViewController {
                                 if indexPath == indexp {
                                     if !userCachedStatus.isTouchIDEnabled {
                                         // Enable Bio
-                                        keymaker.activate(BioProtection(keychainGroup: sharedKeychain.group))
-                                        self.updateTableProtectionSection()
+                                        keymaker.activate(BioProtection(keychainGroup: sharedKeychain.group)) { _ in
+                                            self.updateTableProtectionSection()
+                                        }
                                     } else {
                                         // Disable Bio
                                         keymaker.deactivate(BioProtection(keychainGroup: sharedKeychain.group))

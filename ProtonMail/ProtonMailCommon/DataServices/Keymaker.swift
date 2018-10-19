@@ -40,20 +40,44 @@ class Keymaker: NSObject {
         self.mainKey = nil
     }
     
-    internal func obtainMainKey(with protector: ProtectionStrategy) -> Key? {
-        guard self.mainKey == nil else {
-            return self.mainKey
-        }
-        
-        guard let cypherBits = protector.getCypherBits() else {
-            return nil
-        }
+    internal func obtainMainKey(with protector: ProtectionStrategy,
+                                handler: @escaping (Key?)->Void)
+    {
+        let isMainThread = Thread.current.isMainThread
+        self.controlThread.async {
+            guard self.mainKey == nil else {
+                isMainThread ? DispatchQueue.main.async { handler(self.mainKey) } : handler(self.mainKey)
+                return
+            }
+            
+            guard let cypherBits = protector.getCypherBits() else {
+                isMainThread ? DispatchQueue.main.async { handler(nil) } : handler(nil)
+                return
+            }
 
-        let mainKeyBytes = try? protector.unlock(cypherBits: cypherBits)
-        self.mainKey = mainKeyBytes // FIXME: should we do that if the unlock failed?
-        return mainKeyBytes
+            let mainKeyBytes = try? protector.unlock(cypherBits: cypherBits)
+            self.mainKey = mainKeyBytes
+            isMainThread ? DispatchQueue.main.async { handler(self.mainKey) } : handler(self.mainKey)
+        }
     }
     
+    internal func activate(_ protector: ProtectionStrategy,
+                           completion: @escaping (Bool)->Void)
+    {
+        let isMainThread = Thread.current.isMainThread
+        self.controlThread.async {
+            guard let mainKey = self.mainKey,
+                let _ = try? protector.lock(value: mainKey),
+                !(protector is NoneProtection) else
+            {
+                isMainThread ? DispatchQueue.main.async{ completion(false) } : completion(false)
+                return
+            }
+            
+            self.deactivate(NoneProtection())
+            isMainThread ? DispatchQueue.main.async{ completion(true) } : completion(true)
+        }
+    }
     
     internal func isProtectorActive(_ protectionType: Any.Type) -> Bool { // FIXME: rewrite with generics and static methods
         if protectionType == BioProtection.self {
@@ -68,23 +92,13 @@ class Keymaker: NSObject {
         return false
     }
     
-    @discardableResult internal func activate(_ protector: ProtectionStrategy) -> Bool {
-        guard let mainKey = self.mainKey else {
-            return false
-        }
-        
-        guard let _ = try? protector.lock(value: mainKey),
-            !(protector is NoneProtection) else
-        {
-            return false
-        }
-        self.deactivate(NoneProtection())
-        return true
-    }
-    
     @discardableResult internal func deactivate(_ protector: ProtectionStrategy) -> Bool {
         protector.removeCyphertextFromKeychain()
-        return true // FIXME: check if any other protectors are active, if not - activate NoneProtection
+        if !self.isProtectorActive(BioProtection.self), !self.isProtectorActive(PinProtection.self) {
+            self.activate(NoneProtection(), completion: { _ in })
+        }
+        
+        return true
     }
     
     func generateNoneProtectedMainKey() {

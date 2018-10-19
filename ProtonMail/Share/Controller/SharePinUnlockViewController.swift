@@ -93,26 +93,28 @@ extension SharePinUnlockViewController : PinCodeViewDelegate {
             if step != .done {
                 self.setUpView(true)
             } else {
-                if self.viewModel.isPinMatched() {
-                    self.pinCodeView.hideAttempError(true)
-                    self.viewModel.done()
-                    self.delegate?.Next()
-                    self.dismiss(animated: true, completion: {
-                    })
-                } else {
-                    let count = self.viewModel.getPinFailedRemainingCount()
-                    if count == 11 { //when setup
-                        self.pinCodeView.resetPin()
-                        self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: false)
-                    } else if count < 10 {
-                        if count <= 0 {
-                            Cancel()
-                        } else {
+                self.viewModel.isPinMatched() { matched in
+                    if matched {
+                        self.pinCodeView.hideAttempError(true)
+                        self.viewModel.done()
+                        self.delegate?.Next()
+                        self.dismiss(animated: true, completion: {
+                        })
+                    } else {
+                        let count = self.viewModel.getPinFailedRemainingCount()
+                        if count == 11 { //when setup
                             self.pinCodeView.resetPin()
-                            self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
+                            self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: false)
+                        } else if count < 10 {
+                            if count <= 0 {
+                                self.Cancel()
+                            } else {
+                                self.pinCodeView.resetPin()
+                                self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
+                            }
                         }
+                        self.pinCodeView.showError()
                     }
-                    self.pinCodeView.showError()
                 }
             }
         }

@@ -26,31 +26,39 @@ class SignInManager: NSObject {
         return SignInUIFlow.restore
     }
     
-    internal func match(userInputPin: String) -> Bool {
-        guard !userInputPin.isEmpty,
-            let _ = keymaker.obtainMainKey(with: PinProtection(pin: userInputPin)) else
-        {
+    internal func match(userInputPin: String, completion: @escaping (Bool)->Void) {
+        guard !userInputPin.isEmpty else {
             userCachedStatus.pinFailedCount += 1
-            return false
+            completion(false)
+            return
         }
-        userCachedStatus.pinFailedCount = 0;
-        return true
+        let _ = keymaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
+            guard let _ = key else {
+                userCachedStatus.pinFailedCount += 1
+                completion(false)
+                return
+            }
+            userCachedStatus.pinFailedCount = 0;
+            completion(true)
+        }
     }
     
     internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void,
                                           afterSignIn: @escaping ()->Void)
     {
-        guard let _ = keymaker.obtainMainKey(with: BioProtection(keychainGroup: sharedKeychain.group)) else {
+        keymaker.obtainMainKey(with: BioProtection(keychainGroup: sharedKeychain.group)) { key in
+            guard let _ = key else {
+                #if !APP_EXTENSION
+                LocalString._authentication_failed.alertToast()
+                #endif
+                return
+            }
+            
             #if !APP_EXTENSION
-            LocalString._authentication_failed.alertToast()
+            self.signInIfRememberedCredentials(onSuccess: afterSignIn)
             #endif
-            return
+            afterBioAuthPassed()
         }
-        
-        #if !APP_EXTENSION
-        self.signInIfRememberedCredentials(onSuccess: afterSignIn)
-        #endif
-        afterBioAuthPassed()
     }
 }
 
@@ -124,9 +132,9 @@ extension SignInManager {
         if sharedUserDataService.isMailboxPasswordStored {
             UserTempCachedStatus.clearFromKeychain()
             userCachedStatus.pinFailedCount = 0
+            self.loadContactsAfterInstall()
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
             (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-            self.loadContactsAfterInstall()
         } else {
             requestMailboxPassword()
         }
