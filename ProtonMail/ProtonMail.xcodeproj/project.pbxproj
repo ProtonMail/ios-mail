@@ -253,7 +253,6 @@
 		2A5DB85D56E6EACADF9ED2B1FDE84476 /* LastUpdatedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21126C97B5EB1DCAC67FFC28CB6D406F /* LastUpdatedStore.swift */; };
 		2A6ECD3F1F3C850A643DFE838E7C6C41 /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC12E6A05F63928C9357ACB88E7D63 /* APIService+ResponseTransformer.swift */; };
 		2A820054F36DEF33053D34C4FE01A0BD /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D431E59E92DCD1B3B034B3FE874D02 /* NSManagedObjectExtension.swift */; };
-		2AF1E6976FAD662610AFBC6B8EB04018 /* TouchIDCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE5B998A88D78555BB0DAA153C2C1 /* TouchIDCell.swift */; };
 		2B3EE26EC500760E04A4A07EE565DCEE /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A60B2BD68461E88AE5BEBF3DE57C7D4 /* APIError+Auth.swift */; };
 		2B51CC3F7BA482B502F79F033A2F742B /* Message+Header+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3962A53C77C0454D3750041EC8679593 /* Message+Header+Extension.swift */; };
 		2B65665CB7C4CFDF941D12F6B39B65C0 /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
@@ -623,7 +622,6 @@
 		6978D27F2D89F63F5405EBE927784FE9 /* MailboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15A32EFCD58FF1DBC64A3F0D7E7074D /* MailboxViewModel.swift */; };
 		69943ECF9DB94D45A0BA8056F117FEB7 /* AttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F12D0ED95387B9A6C5AE7FAF2D3C6E /* AttachmentProvider.swift */; };
 		6995C7723A12AC3995F911D37D4714D8 /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2407BF5796C9E19D445712F8FD6D18A2 /* LabelsDataService.swift */; };
-		69F89B515F08880B377162EBCD182D03 /* TouchIDCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE5B998A88D78555BB0DAA153C2C1 /* TouchIDCell.swift */; };
 		69FF6B75A2D009991D64578347101051 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A3F7FEB833E1B45FB6F23517638989 /* Logger.swift */; };
 		6A002835D9C7CE7A0979DA68EEA1DB35 /* OpenPGP+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C5DCC81C6E61BD8EE0FA7C2E54CD7 /* OpenPGP+String+Extension.swift */; };
 		6A0E256F2AD0A8BD02B861A2D114302E /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4A5F1C9B9B429AB005131084CC1554 /* KeychainWrapper.swift */; };
@@ -1550,6 +1548,13 @@
 			remoteGlobalIDString = 528CABDE5FC7422D1D0E7976ADAA8CAD;
 			remoteInfo = ShareDev;
 		};
+		93C7CCEC8340199F110B903A630A4E63 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 73B959411C37C32C3517112463FDCDDE;
+			remoteInfo = ProtonMailDev;
+		};
 		B7D253984C10449C96DA3F44C61F9EAB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
@@ -1563,13 +1568,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 55608604485FE7632E52ED7BBE6A939B;
 			remoteInfo = PushService;
-		};
-		93C7CCEC8340199F110B903A630A4E63 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 73B959411C37C32C3517112463FDCDDE;
-			remoteInfo = ProtonMailDev;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1946,7 +1944,6 @@
 		82061900AD00D062F230AFE4937B3B1E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		830618ABE4869953324AE823B8628469 /* Pods-ProtonMail.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.debug.xcconfig"; sourceTree = "<group>"; };
 		841D34AB48A191911B8491117634B416 /* ControllerDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerDefined.swift; sourceTree = "<group>"; };
-		841FE5B998A88D78555BB0DAA153C2C1 /* TouchIDCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchIDCell.swift; sourceTree = "<group>"; };
 		8505C937DDDAA8247647EF72CB03D9B7 /* ProtonMail-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProtonMail-Bridging-Header.h"; sourceTree = "<group>"; };
 		85850442C4864AE9C5F562412AEE815A /* ShareExtensionEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareExtensionEntry.swift; sourceTree = "<group>"; };
 		85E897B0825B3C43D7FBBEC6F8616ECD /* DeviceAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAPI.swift; sourceTree = "<group>"; };
@@ -2421,6 +2418,17 @@
 			path = Review;
 			sourceTree = "<group>";
 		};
+		0A908CB0CF724592E1C0F7E255C0B278 /* ProtectionStrategy */ = {
+			isa = PBXGroup;
+			children = (
+				2316366DACA87D9B263191319E0C8903 /* BioProtection.swift */,
+				A8A50931B0C5DA17F99BC2B40B3DDA51 /* NoneProtection.swift */,
+				62AD22A9DF156C6E5E0D980EC23D0596 /* PinProtection.swift */,
+				DD49450E7C11282CC466384570469803 /* ProtectionStrategy.swift */,
+			);
+			path = ProtectionStrategy;
+			sourceTree = "<group>";
+		};
 		0B66B717082BCBF83C07032363F49B8D /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -2892,7 +2900,6 @@
 				90F5A5B64761ADF908ACA015D0526FA5 /* StorageViewCell.swift */,
 				5B407C906A05CDC7454653B0AD961BC1 /* SwitchTableViewCell.swift */,
 				27365B353EBA36DFE400C2780A3DF38C /* SwitchTableViewCell.xib */,
-				841FE5B998A88D78555BB0DAA153C2C1 /* TouchIDCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3405,17 +3412,6 @@
 				29D45CBF615966A3BF8366CB1F9699EE /* UserSettings.swift */,
 			);
 			path = DataModels;
-			sourceTree = "<group>";
-		};
-		0A908CB0CF724592E1C0F7E255C0B278 /* ProtectionStrategy */ = {
-			isa = PBXGroup;
-			children = (
-				2316366DACA87D9B263191319E0C8903 /* BioProtection.swift */,
-				A8A50931B0C5DA17F99BC2B40B3DDA51 /* NoneProtection.swift */,
-				62AD22A9DF156C6E5E0D980EC23D0596 /* PinProtection.swift */,
-				DD49450E7C11282CC466384570469803 /* ProtectionStrategy.swift */,
-			);
-			path = ProtectionStrategy;
 			sourceTree = "<group>";
 		};
 		DE009103583BED5ACB1155B59CD99E46 /* Message Detail */ = {
@@ -5111,7 +5107,6 @@
 				887DE22CCE1F0CAEE9651543EC0D22C0 /* TopMessageView.swift in Sources */,
 				737373550739D495B9B4DAEE9D45FA79 /* TouchID+Helper.swift in Sources */,
 				B633D242FC5FCE8D829AE175D3C45949 /* TouchID.swift in Sources */,
-				2AF1E6976FAD662610AFBC6B8EB04018 /* TouchIDCell.swift in Sources */,
 				2A2694C1FF72FCD2E97F186917FAD911 /* TwoFACodeView.swift in Sources */,
 				F24CCD0CDAC79EA33C3BB27381CEE7CD /* TwoFACodeViewController.swift in Sources */,
 				BEEA05B8AEE78727C04DAB427C63B07D /* TwoFAViewModel.swift in Sources */,
@@ -5546,7 +5541,6 @@
 				612E6E9DC86361B03A4425C35E33AFE0 /* TopMessageView.swift in Sources */,
 				906B9E8FD660D2312ADAF7C18ACD0248 /* TouchID+Helper.swift in Sources */,
 				CE169590DDB29002DEA248296471A17E /* TouchID.swift in Sources */,
-				69F89B515F08880B377162EBCD182D03 /* TouchIDCell.swift in Sources */,
 				6F8CD847738C7080FA6492559908750D /* TwoFACodeView.swift in Sources */,
 				1893B1330F8436A5A38076EB834037BD /* TwoFACodeViewController.swift in Sources */,
 				618E4286F2CC46EDCECC5D09133EB672 /* TwoFAViewModel.swift in Sources */,
@@ -6063,15 +6057,15 @@
 			target = 55608604485FE7632E52ED7BBE6A939B /* PushService */;
 			targetProxy = C1413F955C68DB50312C878280E547D5 /* PBXContainerItemProxy */;
 		};
-		B5512F1FD8180155D82C74560A54E210 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5C6761FECCEBDA639D93B2A606D16447 /* Share */;
-			targetProxy = B7D253984C10449C96DA3F44C61F9EAB /* PBXContainerItemProxy */;
-		};
 		AFB98F33D750FC9EF304782BE94E0AA2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 73B959411C37C32C3517112463FDCDDE /* ProtonMailDev */;
 			targetProxy = 93C7CCEC8340199F110B903A630A4E63 /* PBXContainerItemProxy */;
+		};
+		B5512F1FD8180155D82C74560A54E210 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5C6761FECCEBDA639D93B2A606D16447 /* Share */;
+			targetProxy = B7D253984C10449C96DA3F44C61F9EAB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

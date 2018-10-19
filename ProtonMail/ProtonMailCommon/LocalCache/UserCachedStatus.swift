@@ -259,16 +259,13 @@ extension UserCachedStatus {
         setValue("", forKey: Key.touchIDEmail)
     }
     */
-    var isTouchIDEnabled : Bool {
-        get {
-            return getShared().bool(forKey: Key.isTouchIDEnabled)
-        }
-        set {
-            setValue(newValue, forKey: Key.isTouchIDEnabled)
-        }
+    
+    var isTouchIDEnabled: Bool {
+        return keymaker.isProtectorActive(BioProtection.self)
     }
     
     var isPinCodeEnabled : Bool {
+//        return keymaker.isProtectorActive(PinProtection.self) 
         get {
             return getShared().bool(forKey: Key.isPinCodeEnabled)
         }

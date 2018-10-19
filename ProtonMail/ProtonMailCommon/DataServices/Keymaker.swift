@@ -29,7 +29,6 @@ class Keymaker: NSObject {
     
     static var shared = Keymaker()
     private let controlThread = DispatchQueue.global(qos: .utility)
-
     
     internal func wipeMainKey() {
         // TODO: remove keychain items of all protectors
@@ -55,14 +54,43 @@ class Keymaker: NSObject {
         return mainKeyBytes
     }
     
-    private func lock(mainKey: Key, with protectors: Array<ProtectionStrategy>) throws {
-        try protectors.forEach { try $0.lock(value: mainKey) }
+    
+    internal func isProtectorActive(_ protectionType: Any.Type) -> Bool { // FIXME: rewrite with generics and static methods
+        if protectionType == BioProtection.self {
+            return BioProtection(keychainGroup: sharedKeychain.group).getCypherBits() != nil
+        }
+        if protectionType == NoneProtection.self {
+            return NoneProtection().getCypherBits() != nil
+        }
+        if protectionType == PinProtection.self {
+            return PinProtection(pin: "").getCypherBits() != nil // empty string here is on purpose: we will not check this pin ever
+        }
+        return false
+    }
+    
+    @discardableResult internal func activate(_ protector: ProtectionStrategy) -> Bool {
+        guard let mainKey = self.mainKey else {
+            return false
+        }
+        
+        guard let _ = try? protector.lock(value: mainKey),
+            !(protector is NoneProtection) else
+        {
+            return false
+        }
+        self.deactivate(NoneProtection())
+        return true
+    }
+    
+    @discardableResult internal func deactivate(_ protector: ProtectionStrategy) -> Bool {
+        protector.removeCyphertextFromKeychain()
+        return true // FIXME: check if any other protectors are active, if not - activate NoneProtection
     }
     
     func generateNoneProtectedMainKey() {
         let protector = NoneProtection()
         let mainKey = protector.generateRandomValue(length: 32)
-        try! self.lock(mainKey: mainKey, with: [protector])
+        try! protector.lock(value: mainKey)
         self.mainKey = mainKey
     }
 }

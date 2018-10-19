@@ -12,14 +12,16 @@ import CryptoSwift
 
 struct BioProtection: ProtectionStrategy {
     enum Errors: Error {
+        case accessControlError
         case unableToGenerateKeyPair
         case unableToEncryptDataWithPublicKey
         case unableToGetPrivateKeyFromSE
         case unableToDecryptDataWithPrivateKey
     }
     
-    var keychainGroup: String?
-    private let secureEnclaveLabel: String = "mainKey"
+    var keychainGroup: String
+    private let publicLabel: String = "mainKey.public"
+    private let privateLabel: String = "mainKey.private"
     
     func lock(value: Keymaker.Key) throws {
         if #available(iOS 10.0, *) {
@@ -33,9 +35,13 @@ struct BioProtection: ProtectionStrategy {
                                                          kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
                                                          .privateKeyUsage,
                                                          &error)!
+            guard error == nil else {
+                throw Errors.accessControlError
+            }
+            
             let privateKeyAttributes: Dictionary<String, Any> = [
                 kSecAttrIsPermanent as String:      true,
-                kSecAttrApplicationTag as String:   self.secureEnclaveLabel,
+                kSecAttrApplicationTag as String:   self.privateLabel,
                 kSecAttrAccessControl as String:    access
             ]
             let attributes: Dictionary<String, Any> = [
@@ -46,16 +52,18 @@ struct BioProtection: ProtectionStrategy {
                 
             ]
             
-            var publicKey, privateKey: SecKey?
+            var publicKey, privateKey: SecKey!
             let status = SecKeyGeneratePair(attributes as CFDictionary, &publicKey, &privateKey)
-            guard status == 0, publicKey != nil else {
+            guard status == 0, publicKey != nil, privateKey != nil else {
                 throw Errors.unableToGenerateKeyPair
                 // TODO: check on non-SecureEnclave-capable device with ios10-11
             }
+            try! self.savePublicKeyInKeychain(publicKey) // FIXME: do we need this publicKey ever again?
+            try! self.savePrivateKeyInKeychain(privateKey)
             
             let locked = try Locked<Keymaker.Key>(clearValue: value) { cleartext -> Data in
                 var error: Unmanaged<CFError>?
-                let cypherdata = SecKeyCreateEncryptedData(publicKey!,
+                let cypherdata = SecKeyCreateEncryptedData(publicKey,
                                                            SecKeyAlgorithm.eciesEncryptionStandardX963SHA256AESGCM,
                                                            Data(bytes: cleartext) as CFData,
                                                            &error)
@@ -104,17 +112,27 @@ struct BioProtection: ProtectionStrategy {
     @available(iOS 10.0, *)
     private func savePublicKeyInKeychain(_ publicKey: SecKey) throws {
         var query: [String: Any] = [
-            kSecClass as String: kSecClassKey,
-            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom as String,
-            kSecAttrKeyClass as String: kSecAttrKeyClassPublic,
-            kSecAttrApplicationTag as String: self.secureEnclaveLabel,
-            kSecValueRef as String: publicKey,
-            kSecAttrIsPermanent as String: true,
-            kSecReturnData as String: true
+            // TODO
         ]
-        if let group = self.keychainGroup {
-            query[kSecAttrAccessGroup as String] = group
+        query[kSecAttrAccessGroup as String] = self.keychainGroup
+        
+        var raw: CFTypeRef?
+        var status = SecItemAdd(query as CFDictionary, &raw)
+        if status == errSecDuplicateItem {
+            status = SecItemDelete(query as CFDictionary)
+            status = SecItemAdd(query as CFDictionary, &raw)
         }
+        
+        guard status == errSecSuccess else {
+            throw NSError.init(domain: String(describing: Keymaker.self), code: 1, localizedDescription: "Failed to save publicKEy in keychain")
+        }
+    }
+    @available(iOS 10.0, *)
+    private func savePrivateKeyInKeychain(_ privateKey: SecKey) throws {
+        var query: [String: Any] = [
+            // TODO
+        ]
+        query[kSecAttrAccessGroup as String] = self.keychainGroup
         
         var raw: CFTypeRef?
         var status = SecItemAdd(query as CFDictionary, &raw)
@@ -131,18 +149,26 @@ struct BioProtection: ProtectionStrategy {
     @available(iOS 10.0, *)
     private func getPublicKeyFromKeychain() -> SecKey? {
         var query: [String: Any] = [
-            kSecClass as String: kSecClassKey,
-            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom as String,
-            kSecAttrApplicationTag as String: self.secureEnclaveLabel,
-            kSecAttrKeyClass as String: kSecAttrKeyClassPublic,
-            kSecReturnData as String: true,
-            kSecReturnRef as String: true,
-            kSecReturnPersistentRef as String: true,
+            // TODO
         ]
-        if let group = self.keychainGroup {
-            query[kSecAttrAccessGroup as String] = group
-        }
+        query[kSecAttrAccessGroup as String] = self.keychainGroup
         return getKey(query: query)
+    }
+
+    @available(iOS 10.0, *)
+    private func getPrivateKeyFromSE() -> SecKey? {
+        var query: [String: Any] = [
+            // TODO
+        ]
+        query[kSecAttrAccessGroup as String] = self.keychainGroup
+        var privateKey: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &privateKey)
+        
+        guard status == errSecSuccess else {
+            return nil
+        }
+        
+        return privateKey as! SecKey
     }
     
     private func getKey(query: Dictionary<String, Any>) -> SecKey? {
@@ -155,20 +181,5 @@ struct BioProtection: ProtectionStrategy {
             return nil
         }
         return key
-    }
-    
-    @available(iOS 10.0, *)
-    private func getPrivateKeyFromSE() -> SecKey? {
-        var query: [String: Any] = [
-            kSecClass as String: kSecClassKey,
-            kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
-            kSecAttrLabel as String: self.secureEnclaveLabel,
-            kSecReturnRef as String: true,
-            kSecUseOperationPrompt as String: "MUCH IMPORTANT SO NEED",
-        ]
-        if let group = self.keychainGroup {
-            query[kSecAttrAccessGroup as String] = group
-        }
-        return getKey(query: query)
     }
 }

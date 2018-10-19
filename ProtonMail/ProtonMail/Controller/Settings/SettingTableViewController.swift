@@ -66,7 +66,6 @@ class SettingTableViewController: ProtonMailViewController {
     let HeaderCell                    = "header_cell"
     let SingleTextCell                = "single_text_cell"
     let SwitchCell                    = "switch_table_view_cell"
-    let kTouchIDCell                  = "touch_id_switch_table_cell"
     
     //
     let CellHeight : CGFloat = 30.0
@@ -286,36 +285,12 @@ class SettingTableViewController: ProtonMailViewController {
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
                                     if !userCachedStatus.isTouchIDEnabled {
-                                        // try to enable touch id
-                                        let context = LAContext()
-                                        // Declare a NSError variable.
-                                        var error: NSError?
-                                        // Check if the device can evaluate the policy.
-                                        if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-                                            userCachedStatus.isTouchIDEnabled = true
-                                            self.updateTableProtectionSection()
-                                        }
-                                        else{
-                                            var alertString : String = ""
-                                            // If the security policy cannot be evaluated then show a short message depending on the error.
-                                            switch error!.code{
-                                            case LAError.Code.touchIDNotEnrolled.rawValue:
-                                                alertString = LocalString._general_touchid_not_enrolled
-                                            case LAError.Code.passcodeNotSet.rawValue:
-                                                alertString = LocalString._general_passcode_not_set
-                                            case -6:
-                                                alertString = error?.localizedDescription ?? LocalString._general_touchid_not_available
-                                            default:
-                                                // The LAError.TouchIDNotAvailable case.
-                                                alertString = LocalString._general_touchid_not_available
-                                            }
-                                            PMLog.D(alertString)
-                                            PMLog.D("\(String(describing: error?.localizedDescription))")
-                                            alertString.alertToast()
-                                            feedback(false)
-                                        }
+                                        // Enable Bio
+                                        keymaker.activate(BioProtection(keychainGroup: sharedKeychain.group))
+                                        self.updateTableProtectionSection()
                                     } else {
-                                        userCachedStatus.isTouchIDEnabled = false
+                                        // Disable Bio
+                                        keymaker.deactivate(BioProtection(keychainGroup: sharedKeychain.group))
                                         self.updateTableProtectionSection()
                                     }
                                 } else {

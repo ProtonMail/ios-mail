@@ -2025,46 +2025,8 @@
                                     <outlet property="topLineLabel" destination="iuJ-l4-JWp" id="akG-0V-haD"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="touch_id_switch_table_cell" id="h79-GF-Flw" customClass="TouchIDCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="235.5" width="375" height="50"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="h79-GF-Flw" id="oy1-X1-srl">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z8R-KY-muI">
-                                            <rect key="frame" x="302" y="12" width="51" height="26"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="49" id="CUP-Cm-Eez"/>
-                                            </constraints>
-                                            <connections>
-                                                <action selector="switchAction:" destination="h79-GF-Flw" eventType="valueChanged" id="lGR-sn-WDW"/>
-                                            </connections>
-                                        </switch>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable TouchID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8LZ-EV-tZl">
-                                            <rect key="frame" x="24" y="6" width="270" height="35.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="centerY" secondItem="8LZ-EV-tZl" secondAttribute="centerY" priority="1" id="0gs-FZ-Yat"/>
-                                        <constraint firstAttribute="bottom" secondItem="8LZ-EV-tZl" secondAttribute="bottom" constant="8" id="6SX-8g-gbU"/>
-                                        <constraint firstItem="8LZ-EV-tZl" firstAttribute="top" secondItem="oy1-X1-srl" secondAttribute="top" priority="500" constant="6" id="LFV-Zw-sJW"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Z8R-KY-muI" secondAttribute="bottom" constant="1" id="dAJ-RR-1Le"/>
-                                        <constraint firstItem="Z8R-KY-muI" firstAttribute="leading" secondItem="8LZ-EV-tZl" secondAttribute="trailing" constant="8" id="f2N-v0-pRn"/>
-                                        <constraint firstItem="Z8R-KY-muI" firstAttribute="top" secondItem="oy1-X1-srl" secondAttribute="topMargin" constant="1" id="tQU-W7-dxY"/>
-                                        <constraint firstItem="8LZ-EV-tZl" firstAttribute="leading" secondItem="oy1-X1-srl" secondAttribute="leadingMargin" constant="8" id="y08-w1-KbZ"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Z8R-KY-muI" secondAttribute="trailing" constant="8" id="yRp-yc-gzN"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="switchView" destination="Z8R-KY-muI" id="N53-6u-CVu"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="setting_storage_cell" id="vqi-cv-zqa" customClass="StorageViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="285.5" width="375" height="50"/>
+                                <rect key="frame" x="0.0" y="235.5" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vqi-cv-zqa" id="nqq-dQ-73h">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
@@ -2106,7 +2068,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="single_text_cell" rowHeight="30" id="arS-Un-J0g" customClass="CustomHeaderView" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="335.5" width="375" height="30"/>
+                                <rect key="frame" x="0.0" y="285.5" width="375" height="30"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="arS-Un-J0g" id="ZmF-be-Psv">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="29.5"/>
@@ -2130,7 +2092,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="settings_twolines" rowHeight="120" id="7Jh-rt-PYs" customClass="SettingsCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="365.5" width="375" height="120"/>
+                                <rect key="frame" x="0.0" y="315.5" width="375" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Jh-rt-PYs" id="Pat-mZ-FC0">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="119.5"/>
@@ -4650,14 +4612,14 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Logo" width="228" height="36.5"/>
-        <image name="attached_main" width="14.5" height="16.5"/>
+        <image name="Logo" width="228" height="36"/>
+        <image name="attached_main" width="14" height="16"/>
         <image name="bug_selected" width="52" height="52"/>
         <image name="contact_selected" width="20" height="27"/>
         <image name="contacts_warnings" width="25" height="25"/>
-        <image name="encrypted_main" width="15" height="20.5"/>
-        <image name="favorite_main" width="19.5" height="19"/>
-        <image name="favorite_main_selected" width="19.5" height="19"/>
+        <image name="encrypted_main" width="15" height="20"/>
+        <image name="favorite_main" width="19" height="19"/>
+        <image name="favorite_main_selected" width="19" height="19"/>
         <image name="feedback_contact" width="16" height="16"/>
         <image name="hamburger" width="20" height="16"/>
         <image name="label_edit-active" width="24" height="24"/>
@@ -4668,18 +4630,18 @@
         <image name="menu_inbox" width="16" height="16"/>
         <image name="menu_inbox-active" width="16" height="16"/>
         <image name="menu_label" width="24" height="24"/>
-        <image name="menu_snooze" width="48" height="48"/>
-        <image name="menu_snooze-active" width="48" height="48"/>
-        <image name="menu_snooze-none" width="48" height="48"/>
-        <image name="popup_behind_image" width="320" height="460"/>
-        <image name="reply" width="28" height="23.5"/>
+        <image name="menu_snooze" width="24" height="24"/>
+        <image name="menu_snooze-active" width="24" height="24"/>
+        <image name="menu_snooze-none" width="24" height="24"/>
+        <image name="popup_behind_image" width="106" height="153"/>
+        <image name="reply" width="28" height="23"/>
         <image name="search" width="22" height="22"/>
-        <image name="sent_compose" width="26.5" height="22"/>
+        <image name="sent_compose" width="26" height="22"/>
         <image name="signout_selected" width="20" height="30"/>
         <image name="signup_logo" width="98" height="16"/>
         <image name="top_menu" width="24" height="24"/>
         <image name="unchecked" width="22" height="22"/>
-        <image name="upgrade_background" width="325.5" height="437"/>
+        <image name="upgrade_background" width="325" height="437"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="sDR-N5-yCe"/>

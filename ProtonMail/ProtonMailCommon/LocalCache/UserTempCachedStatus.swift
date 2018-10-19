@@ -90,7 +90,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
     class func restore() {
         if let cache = UserTempCachedStatus.fetchFromKeychain() {
             if sharedUserDataService.username == cache.lastLoggedInUser {
-                userCachedStatus.isPinCodeEnabled = cache.isPinCodeEnabled
+                userCachedStatus.isPinCodeEnabled = cache.isPinCodeEnabled 
                 userCachedStatus.lockTime = cache.autoLockTime ?? "-1"
                 sharedUserDataService.showMobileSignature = cache.showMobileSignature
                 userCachedStatus.mobileSignature = cache.localMobileSignature ?? ""
