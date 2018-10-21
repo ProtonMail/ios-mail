@@ -33,6 +33,7 @@ class AppDelegate: UIResponder {
         NotificationCenter.default.removeObserver(self)
     }
     
+    // FIXME: this is new navigation system Router's work
     lazy var window: UIWindow? = {
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = instantiateRootViewController()
@@ -40,11 +41,13 @@ class AppDelegate: UIResponder {
         return window
     }()
     
+    // FIXME: this is new navigation system Router's work
     func instantiateRootViewController() -> UIViewController? {
         let storyboard = UIStoryboard.Storyboard.signIn
         return UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
     }
     
+    // FIXME: this is new navigation system Router's work
     func setupWindow() {
         guard sharedSignIn.isSignedIn() else {
             self.switchTo(storyboard: .signIn, animated: true)
@@ -57,48 +60,57 @@ class AppDelegate: UIResponder {
         }
     }
     
+    // FIXME: this is new navigation system Router's work
+    @objc func switchToSignInWindow() {
+        self.switchTo(storyboard: .signIn, animated: true)
+    }
+    
     // MARK: - Public methods
+    
+    // FIXME: this is new navigation system Router's work
     func switchTo(storyboard: UIStoryboard.Storyboard, animated: Bool) {
+        // FIXME: this method should add new SignIn window and switch to it back and forth from the main app hierarchy
         guard let window = window else {
-            return //
+            return 
         }
         
-        guard let rootViewController = window.rootViewController,
-            rootViewController.restorationIdentifier != storyboard.restorationIdentifier else {
-            return
-        }
-        
-        if !animated {
-            window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-        } else {
-            UIView.animate(withDuration: ViewDefined.animationDuration/2,
-                           delay: 0,
-                           options: UIView.AnimationOptions(),
-                           animations: { () -> Void in
-                            rootViewController.view.alpha = 0
-            }, completion: { (finished) -> Void in
-                guard let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard) else {
-                    return
-                }
-                if let oldView = window.rootViewController as? SWRevealViewController {
-                    if let navigation = oldView.frontViewController as? UINavigationController {
-                        if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-                            mailboxViewController.resetFetchedResultsController()
-                            //TODO:: fix later, this logic change to viewModel service
+        DispatchQueue.main.async {
+            guard let rootViewController = window.rootViewController,
+                rootViewController.restorationIdentifier != storyboard.restorationIdentifier else {
+                return
+            }
+            
+            if !animated {
+                window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+            } else {
+                UIView.animate(withDuration: ViewDefined.animationDuration/2,
+                               delay: 0,
+                               options: UIView.AnimationOptions(),
+                               animations: { () -> Void in
+                                rootViewController.view.alpha = 0
+                }, completion: { (finished) -> Void in
+                    guard let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard) else {
+                        return
+                    }
+                    if let oldView = window.rootViewController as? SWRevealViewController {
+                        if let navigation = oldView.frontViewController as? UINavigationController {
+                            if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
+                                mailboxViewController.resetFetchedResultsController()
+                                //TODO:: fix later, this logic change to viewModel service
+                            }
                         }
                     }
-                }
-                viewController.view.alpha = 0
-                window.rootViewController = viewController
-                
-                UIView.animate(withDuration: ViewDefined.animationDuration/2,
-                               delay: 0, options: UIView.AnimationOptions(),
-                               animations: { () -> Void in
-                                viewController.view.alpha = 1.0
-                }, completion: nil)
-            })
+                    viewController.view.alpha = 0
+                    window.rootViewController = viewController
+                    
+                    UIView.animate(withDuration: ViewDefined.animationDuration/2,
+                                   delay: 0, options: UIView.AnimationOptions(),
+                                   animations: { () -> Void in
+                                    viewController.view.alpha = 1.0
+                    }, completion: nil)
+                })
+            }
         }
-        
     }
 }
 
@@ -196,12 +208,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         
         
         //TODO:: Tempory later move it into App coordinator
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.performForceUpgrade(_:)),
-            name: .forceUpgrade,
-            object: nil)
-
+        NotificationCenter.default.addObserver(self, selector: #selector(performForceUpgrade), name: .forceUpgrade, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(switchToSignInWindow), name: Keymaker.requestMainKey, object: nil)
         
         return true
     }

@@ -15,13 +15,25 @@ import Foundation
 
 var keymaker = Keymaker.shared
 class Keymaker: NSObject {
+    static let requestMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".requestMainKey")
     typealias Key = Array<UInt8>
     
-    private(set) lazy var mainKey: Key? = {
+    private var _mainKey: Key? // stored in-memory value
+    internal var mainKey: Key? { // accessor for stored value; if stored value is nill - calls provokeMainKeyObtention() method
+        if self._mainKey == nil {
+            self._mainKey = self.provokeMainKeyObtention()
+        }
+        return self._mainKey
+    }
+    
+    // Try to get main key from storage if it exists, otherwise create one.
+    // if there is any significant Protection active - post message that obtainMainKey(_:_:) is needed
+    private func provokeMainKeyObtention() -> Key? {
         // if we have any significant Protector - wait for obtainMainKey(_:_:) method to be called
         guard !self.isProtectorActive(BioProtection.self),
             !self.isProtectorActive(PinProtection.self) else
         {
+            NotificationCenter.default.post(.init(name: Keymaker.requestMainKey))
             return nil
         }
         
@@ -31,8 +43,8 @@ class Keymaker: NSObject {
         }
         
         // otherwise there is no saved mainKey at all, so we should generate a new one with default protection
-        return self.generateMainKeyWithDefaultProtection()
-    }()
+        return self.generateNewMainKeyWithDefaultProtection()
+    }
     
     static var shared = Keymaker()
     private let controlThread = DispatchQueue.global(qos: .utility)
@@ -44,8 +56,8 @@ class Keymaker: NSObject {
         PinProtection.removeCyphertextFromKeychain()
     }
     
-    private func lockTheApp() {
-        self.mainKey = nil
+    internal func lockTheApp() {
+        self._mainKey = nil
     }
     
     internal func obtainMainKey(with protector: ProtectionStrategy,
@@ -68,25 +80,29 @@ class Keymaker: NSObject {
             }
 
             let mainKeyBytes = try? protector.unlock(cypherBits: cypherBits)
-            self.mainKey = mainKeyBytes
+            self._mainKey = mainKeyBytes
             isMainThread ? DispatchQueue.main.async { handler(self.mainKey) } : handler(self.mainKey)
         }
     }
     
+    // completion says whether protector was activated or not
     internal func activate(_ protector: ProtectionStrategy,
                            completion: @escaping (Bool)->Void)
     {
         let isMainThread = Thread.current.isMainThread
         self.controlThread.async {
             guard let mainKey = self.mainKey,
-                let _ = try? protector.lock(value: mainKey),
-                !(protector is NoneProtection) else
+                let _ = try? protector.lock(value: mainKey) else
             {
                 isMainThread ? DispatchQueue.main.async{ completion(false) } : completion(false)
                 return
             }
             
-            self.deactivate(NoneProtection())
+            // we want to remove unprotected value from storage if the new Protector is significant
+            if !(protector is NoneProtection) {
+                self.deactivate(NoneProtection())
+            }
+            
             isMainThread ? DispatchQueue.main.async{ completion(true) } : completion(true)
         }
     }
@@ -106,7 +122,8 @@ class Keymaker: NSObject {
         return true
     }
     
-    func generateMainKeyWithDefaultProtection() -> Key {
+    func generateNewMainKeyWithDefaultProtection() -> Key {
+        self.wipeMainKey()
         let mainKey = NoneProtection.generateRandomValue(length: 32)
         try! NoneProtection().lock(value: mainKey)
         return mainKey
