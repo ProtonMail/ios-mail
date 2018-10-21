@@ -78,9 +78,10 @@ class PinCodeViewController : UIViewController {
     
     func authenticateUser() {
         sharedSignIn.biometricAuthentication(afterBioAuthPassed: {
-            self.viewModel.done()
-            self.delegate?.Next()
-            let _ = self.navigationController?.popViewController(animated: true)
+            self.viewModel.done() { _ in
+                self.delegate?.Next()
+                let _ = self.navigationController?.popViewController(animated: true)
+            }
         }, afterSignIn: { })
     }
 }
@@ -115,10 +116,11 @@ extension PinCodeViewController : PinCodeViewDelegate {
             } else {
                 self.viewModel.isPinMatched() { matched in
                     if matched {
-                        self.pinCodeView.hideAttempError(true)
-                        self.viewModel.done()
-                        self.delegate?.Next()
-                        let _ = self.navigationController?.popViewController(animated: true)
+                        self.viewModel.done() { _ in
+                            self.pinCodeView.hideAttempError(true)
+                            self.delegate?.Next()
+                            let _ = self.navigationController?.popViewController(animated: true)
+                        }
                     } else {
                         let count = self.viewModel.getPinFailedRemainingCount()
                         if count == 11 { //when setup

@@ -63,10 +63,10 @@ class SetPinCodeModelImpl : PinCodeViewModel {
         }
     }
     
-    override func done() {
+    override func done(completion: @escaping (Bool)->Void) {
         self.isPinMatched() { matched in
             if matched {
-                keymaker.activate(PinProtection(pin: self.enterPin), completion: { _ in })
+                keymaker.activate(PinProtection(pin: self.enterPin), completion: completion)
             }
         }
     }

@@ -96,10 +96,10 @@ extension SharePinUnlockViewController : PinCodeViewDelegate {
                 self.viewModel.isPinMatched() { matched in
                     if matched {
                         self.pinCodeView.hideAttempError(true)
-                        self.viewModel.done()
-                        self.delegate?.Next()
-                        self.dismiss(animated: true, completion: {
-                        })
+                        self.viewModel.done() { _ in
+                            self.delegate?.Next()
+                            self.dismiss(animated: true, completion: { })
+                        }
                     } else {
                         let count = self.viewModel.getPinFailedRemainingCount()
                         if count == 11 { //when setup

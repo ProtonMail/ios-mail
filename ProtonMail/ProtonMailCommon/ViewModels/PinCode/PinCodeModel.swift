@@ -50,8 +50,8 @@ class PinCodeViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
-    func done() {
-        
+    func done(completion: @escaping (Bool)->Void) {
+        completion(true)
     }
     
     func checkTouchID() -> Bool {

@@ -13,7 +13,7 @@ import EllipticCurveKeyPair
 import UICKeyChainStore
 
 struct BioProtection: ProtectionStrategy {
-    private func makeAsymmetricEncryptor() -> EllipticCurveKeyPair.Manager {
+    private static func makeAsymmetricEncryptor() -> EllipticCurveKeyPair.Manager {
         let publicAccessControl = EllipticCurveKeyPair.AccessControl(protection: kSecAttrAccessibleAlwaysThisDeviceOnly, flags: [.userPresence, .privateKeyUsage])
         let privateAccessControl = EllipticCurveKeyPair.AccessControl(protection: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, flags: [.userPresence, .privateKeyUsage])
         let config = EllipticCurveKeyPair.Config(publicLabel: String(describing: BioProtection.self) + ".public",
@@ -30,7 +30,7 @@ struct BioProtection: ProtectionStrategy {
     func lock(value: Keymaker.Key) throws {
         let locked = try Locked<Keymaker.Key>(clearValue: value) { cleartext -> Data in
             if #available(iOS 10.3, *) {
-                let encryptor = self.makeAsymmetricEncryptor()
+                let encryptor = BioProtection.makeAsymmetricEncryptor()
                 return try encryptor.encrypt(Data(bytes: cleartext))
             } else {
                 fatalError("pre ios10.3")
@@ -44,7 +44,7 @@ struct BioProtection: ProtectionStrategy {
         let locked = Locked<Keymaker.Key>(encryptedValue: cypherBits)
         let cleardata = try locked.unlock { cyphertext -> Keymaker.Key in
             if #available(iOS 10.3, *) {
-                let encryptor = self.makeAsymmetricEncryptor()
+                let encryptor = BioProtection.makeAsymmetricEncryptor()
                 return try encryptor.decrypt(cyphertext).bytes
             } else {
                 fatalError("pre ios10.3")
@@ -52,6 +52,11 @@ struct BioProtection: ProtectionStrategy {
         }
         
         return cleardata
+    }
+    
+    static func removeCyphertextFromKeychain() {
+        (self as ProtectionStrategy.Type).removeCyphertextFromKeychain()
+        try? BioProtection.makeAsymmetricEncryptor().deleteKeyPair()
     }
 }
 
