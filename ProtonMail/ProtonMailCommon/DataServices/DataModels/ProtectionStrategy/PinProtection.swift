@@ -24,7 +24,7 @@ struct PinProtection: ProtectionStrategy {
     
     func lock(value: Keymaker.Key) throws {
         let salt = PinProtection.generateRandomValue(length: 8)
-        let ethemeralKey = try PKCS5.PBKDF2(password: Array(pin.utf8), salt: salt, iterations: 4096, variant: .sha256).calculate()
+        let ethemeralKey = try PKCS5.PBKDF2(password: Array(pin.utf8), salt: salt, iterations: 2000, variant: .sha256).calculate()
         let locked = try Locked<Keymaker.Key>(clearValue: value, with: ethemeralKey)
         
         PinProtection.saveCyphertextInKeychain(locked.encryptedValue)
@@ -36,7 +36,7 @@ struct PinProtection: ProtectionStrategy {
             throw Errors.saltNotFound
         }
         do {
-            let ethemeralKey = try PKCS5.PBKDF2(password: Array(pin.utf8), salt: salt.bytes, iterations: 4096, variant: .sha256).calculate()
+            let ethemeralKey = try PKCS5.PBKDF2(password: Array(pin.utf8), salt: salt.bytes, iterations: 2000, variant: .sha256).calculate()
             let locked = Locked<Keymaker.Key>.init(encryptedValue: cypherBits)
             return try locked.unlock(with: ethemeralKey)
         } catch let error {

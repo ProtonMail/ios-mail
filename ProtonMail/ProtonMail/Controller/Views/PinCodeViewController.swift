@@ -77,55 +77,11 @@ class PinCodeViewController : UIViewController {
     }
     
     func authenticateUser() {
-        fatalError("unify with SignInManager")
-        
-        // Get the local authentication context.
-        let context = LAContext()
-        // Declare a NSError variable.
-        var error: NSError?
-        context.localizedFallbackTitle = ""
-        // Set the reason string that will appear on the authentication alert.
-        let reasonString = "\(LocalString._general_login)"
-        
-        // Check if the device can evaluate the policy.
-        if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            context.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: Error?) in
-                if success {
-                    
-                }
-                else{
-                    DispatchQueue.main.async {
-                        switch evalPolicyError!._code {
-                        case LAError.Code.systemCancel.rawValue:
-                            LocalString._authentication_was_cancelled_by_the_system.alertToast()
-                        case LAError.Code.userCancel.rawValue:
-                            PMLog.D("Authentication was cancelled by the user")
-                        case LAError.Code.userFallback.rawValue:
-                            PMLog.D("User selected to enter custom password")
-                        default:
-                            PMLog.D("Authentication failed")
-                            LocalString._authentication_failed.alertToast()
-                        }
-                    }
-                }
-            })
-        }
-        else{
-            var alertString : String = "";
-            // If the security policy cannot be evaluated then show a short message depending on the error.
-            switch error!.code{
-            case LAError.Code.touchIDNotEnrolled.rawValue:
-                alertString = LocalString._general_touchid_not_enrolled
-            case LAError.Code.passcodeNotSet.rawValue:
-                alertString = LocalString._general_passcode_not_set
-            default:
-                // The LAError.TouchIDNotAvailable case.
-                alertString = LocalString._general_touchid_not_available
-            }
-            PMLog.D(alertString)
-            PMLog.D("\(String(describing: error?.localizedDescription))")
-            alertString.alertToast()
-        }
+        sharedSignIn.biometricAuthentication(afterBioAuthPassed: {
+            self.viewModel.done()
+            self.delegate?.Next()
+            let _ = self.navigationController?.popViewController(animated: true)
+        }, afterSignIn: { })
     }
 }
 

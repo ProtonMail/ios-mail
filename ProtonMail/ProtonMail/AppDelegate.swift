@@ -36,21 +36,15 @@ class AppDelegate: UIResponder {
     // FIXME: this is new navigation system Router's work
     lazy var window: UIWindow? = {
         let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = instantiateRootViewController()
+        window.rootViewController = UIViewController() // simple black background for animation in switchTo(_:_:) method
         window.makeKeyAndVisible()
         return window
     }()
     
     // FIXME: this is new navigation system Router's work
-    func instantiateRootViewController() -> UIViewController? {
-        let storyboard = UIStoryboard.Storyboard.signIn
-        return UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-    }
-    
-    // FIXME: this is new navigation system Router's work
     func setupWindow() {
         guard sharedSignIn.isSignedIn() else {
-            self.switchTo(storyboard: .signIn, animated: true)
+            self.switchTo(storyboard: .signIn, animated: false)
             return
         }
         

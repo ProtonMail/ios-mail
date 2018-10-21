@@ -14,14 +14,11 @@ class SignInManager: NSObject {
     static var shared = SignInManager()
     
     internal func getUnlockFlow() -> SignInUIFlow {
-        guard keymaker.mainKey == nil else {
-            return .restore
+        if userCachedStatus.isPinCodeEnabled {
+            return SignInUIFlow.requirePin
         }
         if userCachedStatus.isTouchIDEnabled {
             return SignInUIFlow.requireTouchID
-        }
-        if userCachedStatus.isPinCodeEnabled {
-            return SignInUIFlow.requirePin
         }
         return SignInUIFlow.restore
     }
