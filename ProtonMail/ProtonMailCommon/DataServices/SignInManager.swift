@@ -44,17 +44,11 @@ class SignInManager: NSObject {
     {
         keymaker.obtainMainKey(with: BioProtection()) { key in
             guard let _ = key else { return }
-            
-            #if !APP_EXTENSION
             self.signInIfRememberedCredentials(onSuccess: afterSignIn)
-            #endif
             afterBioAuthPassed()
         }
     }
-}
 
-#if !APP_EXTENSION
-extension SignInManager {
     internal func unlock(accordingToFlow signinFlow: SignInUIFlow,
                          requestPin: @escaping ()->Void,
                          onRestore: @escaping ()->Void,
@@ -72,6 +66,55 @@ extension SignInManager {
         case .restore:
             self.signInIfRememberedCredentials(onSuccess: afterSignIn)
             onRestore()
+        }
+    }
+
+    
+    internal func signInIfRememberedCredentials(onSuccess: ()->Void) {
+        if sharedUserDataService.isUserCredentialStored {
+            sharedUserDataService.isSignedIn = true
+            self.loadContent(requestMailboxPassword: onSuccess)
+        } else {
+            self.clean()
+        }
+    }
+    
+    private func loadContent(requestMailboxPassword: ()->Void) {
+        if sharedUserDataService.isMailboxPasswordStored {
+            #if !APP_EXTENSION
+            UserTempCachedStatus.clearFromKeychain()
+            userCachedStatus.pinFailedCount = 0
+            self.loadContactsAfterInstall()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
+            (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+            #endif
+        } else {
+            requestMailboxPassword()
+        }
+    }
+    
+    internal func clean() {
+        UserTempCachedStatus.backup()
+        sharedUserDataService.signOut(true)
+        userCachedStatus.signOut()
+        sharedMessageDataService.launchCleanUpIfNeeded()
+        keymaker.wipeMainKey()
+    }
+}
+
+#if !APP_EXTENSION
+extension SignInManager {
+    private func loadContactsAfterInstall() {
+        ServicePlanDataService.shared.updateCurrentSubscription()
+        sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
+        
+        //TODO:: here need to be changed
+        sharedContactDataService.fetchContacts { (contacts, error) in
+            if error != nil {
+                PMLog.D("\(String(describing: error))")
+            } else {
+                PMLog.D("Contacts count: \(contacts!.count)")
+            }
         }
     }
     
@@ -106,49 +149,6 @@ extension SignInManager {
     
     internal func isSignedIn() -> Bool {
         return sharedUserDataService.isUserCredentialStored
-    }
-    
-    internal func signInIfRememberedCredentials(onSuccess: ()->Void) {
-        if sharedUserDataService.isUserCredentialStored {
-            sharedUserDataService.isSignedIn = true
-            self.loadContent(requestMailboxPassword: onSuccess)
-        } else {
-            self.clean()
-        }
-    }
-    
-    private func loadContent(requestMailboxPassword: ()->Void) {
-        if sharedUserDataService.isMailboxPasswordStored {
-            UserTempCachedStatus.clearFromKeychain()
-            userCachedStatus.pinFailedCount = 0
-            self.loadContactsAfterInstall()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
-            (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-        } else {
-            requestMailboxPassword()
-        }
-    }
-    
-    internal func clean() {
-        UserTempCachedStatus.backup()
-        sharedUserDataService.signOut(true)
-        userCachedStatus.signOut()
-        sharedMessageDataService.launchCleanUpIfNeeded()
-        keymaker.wipeMainKey()
-    }
-    
-    private func loadContactsAfterInstall() {
-        ServicePlanDataService.shared.updateCurrentSubscription()
-        sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
-        
-        //TODO:: here need to be changed
-        sharedContactDataService.fetchContacts { (contacts, error) in
-            if error != nil {
-                PMLog.D("\(String(describing: error))")
-            } else {
-                PMLog.D("Contacts count: \(contacts!.count)")
-            }
-        }
     }
     
     internal func mailboxPassword(from cleartextPassword: String) -> String {

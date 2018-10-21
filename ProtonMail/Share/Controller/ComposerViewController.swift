@@ -223,6 +223,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
                 self?.webView?.stopLoading()
                 self?.observation?.invalidate()
                 self?.observation = nil
+                keymaker.lockTheApp() // remove mainKey from extension's process
                 UIView.animate(withDuration: 0.50, animations: animationBlock, completion: completion)
             }
         }

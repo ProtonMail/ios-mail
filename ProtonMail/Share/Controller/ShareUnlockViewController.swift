@@ -6,7 +6,6 @@
 //  Copyright © 2017 ProtonMail. All rights reserved.
 //
 import UIKit
-import LocalAuthentication
 
 var sharedUserDataService : UserDataService!
 
@@ -229,66 +228,7 @@ class ShareUnlockViewController: UIViewController {
     }
     
     func authenticateUser() {
-        fatalError("unify with SignInManager")
-        
-        let context = LAContext() // Get the local authentication context
-        context.localizedFallbackTitle = ""
-        let reasonString = "\(LocalString._general_login)"
-        
-        // Check if the device can evaluate the policy.
-        var error: NSError?
-        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            var alertString : String = "";
-            // If the security policy cannot be evaluated then show a short message depending on the error
-            switch error?.code {
-            case .some(LAError.Code.touchIDNotEnrolled.rawValue):
-                alertString = LocalString._general_touchid_not_enrolled
-                
-            case .some(LAError.Code.passcodeNotSet.rawValue):
-                alertString = LocalString._general_passcode_not_set
-                
-            default: // The LAError.TouchIDNotAvailable case
-                alertString = LocalString._general_touchid_not_available
-            }
-            
-            PMLog.D(alertString)
-            PMLog.D("\(String(describing: error?.localizedDescription))")
-            let alertController = alertString.alertController()
-            alertController.addOKAction()
-            self.present(alertController, animated: true, completion: nil)
-            
-            return
-        }
-        
-        let evaluationHandler: (Bool, Error?)->Void = { (success, evalPolicyError) in
-            DispatchQueue.main.async {
-                guard success else {
-                    switch evalPolicyError?._code {
-                    case .some(LAError.Code.systemCancel.rawValue):
-                        let alertController = LocalString._authentication_was_cancelled_by_the_system.alertController()
-                        alertController.addOKAction()
-                        self.present(alertController, animated: true, completion: nil)
-                        
-                    case .some(LAError.Code.userCancel.rawValue):
-                        PMLog.D("Authentication was cancelled by the user")
-                        
-                    case .some(LAError.Code.userFallback.rawValue):
-                        PMLog.D("User selected to enter custom password")
-                        
-                    default:
-                        PMLog.D("Authentication failed")
-                        let alertController = LocalString._authentication_failed.alertController()
-                        alertController.addOKAction()
-                        self.present(alertController, animated: true, completion: nil)
-                    }
-                    return
-                }
-                self.signInIfRememberedCredentials()
-            }
-        }
-        
-        context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: evaluationHandler)
-        
+        sharedSignIn.biometricAuthentication(afterBioAuthPassed: self.goto_composer, afterSignIn: {})
     }
     
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
