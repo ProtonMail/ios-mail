@@ -10,7 +10,7 @@ import Foundation
 
 struct NoneProtection: ProtectionStrategy {
     func lock(value: Keymaker.Key) throws {
-        self.saveCyphertextInKeychain(Data(bytes: value))
+        NoneProtection.saveCyphertextInKeychain(Data(bytes: value))
     }
     
     func unlock(cypherBits: Data) throws -> Keymaker.Key {

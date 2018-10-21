@@ -18,32 +18,44 @@ class Keymaker: NSObject {
     typealias Key = Array<UInt8>
     
     private(set) lazy var mainKey: Key? = {
-        let protector = NoneProtection()
-        guard let cypherText = protector.getCypherBits(),
-            let clearText = try? protector.unlock(cypherBits: cypherText) else
+        // if we have any significant Protector - wait for obtainMainKey(_:_:) method to be called
+        guard !self.isProtectorActive(BioProtection.self),
+            !self.isProtectorActive(PinProtection.self) else
         {
             return nil
         }
-        return clearText
+        
+        // if we have NoneProtection active - get the key right ahead
+        if let cypherText = NoneProtection.getCypherBits() {
+            return try! NoneProtection().unlock(cypherBits: cypherText)
+        }
+        
+        // otherwise there is no saved mainKey at all, so we should generate a new one with default protection
+        return self.generateMainKeyWithDefaultProtection()
     }()
     
     static var shared = Keymaker()
     private let controlThread = DispatchQueue.global(qos: .utility)
     
     internal func wipeMainKey() {
-        // TODO: remove keychain items of all protectors
-        NoneProtection().removeCyphertextFromKeychain()
+        // TODO: remove additional keychain items of all protectors
+        NoneProtection.removeCyphertextFromKeychain()
+        BioProtection.removeCyphertextFromKeychain()
+        PinProtection.removeCyphertextFromKeychain()
     }
     
     private func lockTheApp() {
-        // TODO: check that we have protectors other than NoneProtector
         self.mainKey = nil
     }
     
     internal func obtainMainKey(with protector: ProtectionStrategy,
                                 handler: @escaping (Key?)->Void)
     {
+        // usually calling a method developers assume to get the callback on the same thread,
+        // so for ease of use (and since most of callbacks turned out to work with UI)
+        // we'll return to main thread explicitly here
         let isMainThread = Thread.current.isMainThread
+        
         self.controlThread.async {
             guard self.mainKey == nil else {
                 isMainThread ? DispatchQueue.main.async { handler(self.mainKey) } : handler(self.mainKey)
@@ -79,21 +91,14 @@ class Keymaker: NSObject {
         }
     }
     
-    internal func isProtectorActive(_ protectionType: Any.Type) -> Bool { // FIXME: rewrite with generics and static methods
-        if protectionType == BioProtection.self {
-            return BioProtection(keychainGroup: sharedKeychain.group).getCypherBits() != nil
-        }
-        if protectionType == NoneProtection.self {
-            return NoneProtection().getCypherBits() != nil
-        }
-        if protectionType == PinProtection.self {
-            return PinProtection(pin: "").getCypherBits() != nil // empty string here is on purpose: we will not check this pin ever
-        }
-        return false
+    internal func isProtectorActive<T: ProtectionStrategy>(_ protectionType: T.Type) -> Bool {
+        return protectionType.getCypherBits() != nil
     }
     
     @discardableResult internal func deactivate(_ protector: ProtectionStrategy) -> Bool {
         protector.removeCyphertextFromKeychain()
+        
+        // need to keep mainKey in keychain in case user switches off all the significant Protectors
         if !self.isProtectorActive(BioProtection.self), !self.isProtectorActive(PinProtection.self) {
             self.activate(NoneProtection(), completion: { _ in })
         }
@@ -101,10 +106,9 @@ class Keymaker: NSObject {
         return true
     }
     
-    func generateNoneProtectedMainKey() {
-        let protector = NoneProtection()
-        let mainKey = protector.generateRandomValue(length: 32)
-        try! protector.lock(value: mainKey)
-        self.mainKey = mainKey
+    func generateMainKeyWithDefaultProtection() -> Key {
+        let mainKey = NoneProtection.generateRandomValue(length: 32)
+        try! NoneProtection().lock(value: mainKey)
+        return mainKey
     }
 }

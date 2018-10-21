@@ -12,21 +12,25 @@ import Security
 protocol ProtectionStrategy {
     func lock(value: Keymaker.Key) throws
     func unlock(cypherBits: Data) throws -> Keymaker.Key
-    
-    func getCypherBits() -> Data?
 }
 extension ProtectionStrategy {
-    func saveCyphertextInKeychain(_ cypher: Data) {
+    static func saveCyphertextInKeychain(_ cypher: Data) {
         sharedKeychain.keychain()?.setData(cypher, forKey: String(describing: Self.self))
     }
-    func removeCyphertextFromKeychain() {
+    static func removeCyphertextFromKeychain() {
         sharedKeychain.keychain()?.removeItem(forKey: String(describing: Self.self))
     }
-    func getCypherBits() -> Data? {
+    func removeCyphertextFromKeychain() {
+        Self.removeCyphertextFromKeychain()
+    }
+    static func getCypherBits() -> Data? {
         return sharedKeychain.keychain()?.data(forKey: String(describing: Self.self))
     }
+    func getCypherBits() -> Data? {
+        return Self.getCypherBits()
+    }
     
-    func generateRandomValue(length: Int) -> Array<UInt8> {
+    static func generateRandomValue(length: Int) -> Array<UInt8> {
         var newKey = Array<UInt8>(repeating: 0, count: length)
         let status = SecRandomCopyBytes(kSecRandomDefault, newKey.count, &newKey)
         guard status == 0 else {

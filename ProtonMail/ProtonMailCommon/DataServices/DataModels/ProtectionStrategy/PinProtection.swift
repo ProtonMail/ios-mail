@@ -22,11 +22,11 @@ struct PinProtection: ProtectionStrategy {
         // 4. save salt in keychain
         // 5. save encryptedMainKey in keychain
         
-        let salt = self.generateRandomValue(length: 8)
+        let salt = PinProtection.generateRandomValue(length: 8)
         let ethemeralKey = try PKCS5.PBKDF2(password: Array(pin.utf8), salt: salt, iterations: 4096, variant: .sha256).calculate()
         let locked = try Locked<Keymaker.Key>(clearValue: value, with: ethemeralKey)
         
-        self.saveCyphertextInKeychain(locked.encryptedValue)
+        PinProtection.saveCyphertextInKeychain(locked.encryptedValue)
         // TODO: save salt in keychain
     }
 }

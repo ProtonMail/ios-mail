@@ -38,7 +38,7 @@ struct BioProtection: ProtectionStrategy {
             }
         }
         
-        self.saveCyphertextInKeychain(locked.encryptedValue)
+        BioProtection.saveCyphertextInKeychain(locked.encryptedValue)
     }
     
     func unlock(cypherBits: Data) throws -> Keymaker.Key {
