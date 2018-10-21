@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import Fabric
 import Crashlytics
-import LocalAuthentication
 
 protocol PinCodeViewControllerDelegate {
     func Cancel()

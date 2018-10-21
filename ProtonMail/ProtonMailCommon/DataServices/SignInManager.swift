@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import LocalAuthentication
 
 var sharedSignIn = SignInManager.shared
 class SignInManager: NSObject {
@@ -44,12 +43,7 @@ class SignInManager: NSObject {
                                           afterSignIn: @escaping ()->Void)
     {
         keymaker.obtainMainKey(with: BioProtection()) { key in
-            guard let _ = key else {
-                #if !APP_EXTENSION
-                LocalString._authentication_failed.alertToast()
-                #endif
-                return
-            }
+            guard let _ = key else { return }
             
             #if !APP_EXTENSION
             self.signInIfRememberedCredentials(onSuccess: afterSignIn)
