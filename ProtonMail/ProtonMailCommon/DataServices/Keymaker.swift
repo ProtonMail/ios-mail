@@ -122,10 +122,12 @@ class Keymaker: NSObject {
         return true
     }
     
-    func generateNewMainKeyWithDefaultProtection() -> Key {
-        self.wipeMainKey()
-        let mainKey = NoneProtection.generateRandomValue(length: 32)
-        try! NoneProtection().lock(value: mainKey)
-        return mainKey
+    @discardableResult func generateNewMainKeyWithDefaultProtection() -> Key {
+        self.wipeMainKey() // get rid of all old protected mainKeys
+        
+        let newMainKey = NoneProtection.generateRandomValue(length: 32)
+        try! NoneProtection().lock(value: newMainKey)
+        self._mainKey = newMainKey
+        return newMainKey
     }
 }

@@ -65,7 +65,9 @@ class SetPinCodeModelImpl : PinCodeViewModel {
     
     override func done() {
         self.isPinMatched() { matched in
-            userCachedStatus.isPinCodeEnabled = matched
+            if matched {
+                keymaker.activate(PinProtection(pin: self.enterPin), completion: { _ in })
+            }
         }
     }
     

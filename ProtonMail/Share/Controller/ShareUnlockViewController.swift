@@ -186,7 +186,6 @@ class ShareUnlockViewController: UIViewController {
             self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
             return
         }
-        userCachedStatus.lockedApp = false
         sharedUserDataService.isSignedIn = true
         self.goto_composer()
     }

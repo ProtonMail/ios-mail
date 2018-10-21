@@ -8,6 +8,7 @@
 
 import Foundation
 import CryptoSwift
+import UICKeyChainStore
 
 struct PinProtection: ProtectionStrategy {
     private let pin: String
@@ -15,18 +16,42 @@ struct PinProtection: ProtectionStrategy {
         self.pin = pin
     }
     
+    private static let saltKeychainKey = String(describing: PinProtection.self) + ".salt"
+    
+    enum Errors: Error {
+        case saltNotFound
+    }
+    
     func lock(value: Keymaker.Key) throws {
-        // 1. generate new salt
-        // 2. derive key from pin and salt
-        // 3. encrypt mainKey with ethemeralKey
-        // 4. save salt in keychain
-        // 5. save encryptedMainKey in keychain
-        
         let salt = PinProtection.generateRandomValue(length: 8)
         let ethemeralKey = try PKCS5.PBKDF2(password: Array(pin.utf8), salt: salt, iterations: 4096, variant: .sha256).calculate()
         let locked = try Locked<Keymaker.Key>(clearValue: value, with: ethemeralKey)
         
         PinProtection.saveCyphertextInKeychain(locked.encryptedValue)
-        // TODO: save salt in keychain
+        self.keychain.setData(Data(bytes: salt), forKey: PinProtection.saltKeychainKey)
+    }
+    
+    func unlock(cypherBits: Data) throws -> Keymaker.Key {
+        guard let salt = self.keychain.data(forKey: PinProtection.saltKeychainKey) else {
+            throw Errors.saltNotFound
+        }
+        do {
+            let ethemeralKey = try PKCS5.PBKDF2(password: Array(pin.utf8), salt: salt.bytes, iterations: 4096, variant: .sha256).calculate()
+            let locked = Locked<Keymaker.Key>.init(encryptedValue: cypherBits)
+            return try locked.unlock(with: ethemeralKey)
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+}
+
+extension PinProtection {
+    static var keychain: UICKeyChainStore {
+        return sharedKeychain.keychain
+    }
+    
+    var keychain: UICKeyChainStore {
+        return sharedKeychain.keychain
     }
 }

@@ -200,10 +200,10 @@ final class UserCachedStatus : SharedCacheBase {
         UICKeyChainStore.removeItem(forKey: Key.enterBackgroundTime)
         
         //for newer version > 1.6.5
-        sharedKeychain.keychain().removeItem(forKey: Key.pinCodeCache)
-        sharedKeychain.keychain().removeItem(forKey: Key.lastLoggedInUser)
-        sharedKeychain.keychain().removeItem(forKey: Key.autoLockTime)
-        sharedKeychain.keychain().removeItem(forKey: Key.enterBackgroundTime)
+        sharedKeychain.keychain.removeItem(forKey: Key.pinCodeCache)
+        sharedKeychain.keychain.removeItem(forKey: Key.lastLoggedInUser)
+        sharedKeychain.keychain.removeItem(forKey: Key.autoLockTime)
+        sharedKeychain.keychain.removeItem(forKey: Key.enterBackgroundTime)
         
         // Clean the keys Anatoly added
         getShared().removeObject(forKey: Key.snoozeConfiguration)
@@ -235,88 +235,38 @@ final class UserCachedStatus : SharedCacheBase {
 
 // touch id part
 extension UserCachedStatus {
-    /*var touchIDEmail : String {
-        get {
-            return getShared().string(forKey: Key.touchIDEmail) ?? ""
-        }
-        set {
-            setValue(newValue, forKey: Key.touchIDEmail)
-        }
-    }
-    
-    func codedEmail() -> String {
-        let email = touchIDEmail
-        let count = email.count
-        if count > 0 {
-            var out : String = String(email[0])
-            out = out.padding(toLength: count, withPad: "*", startingAt: 0)
-            return out
-        }
-        return "****"
-    }
-    
-    func resetTouchIDEmail() {
-        setValue("", forKey: Key.touchIDEmail)
-    }
-    */
-    
     var isTouchIDEnabled: Bool {
         return keymaker.isProtectorActive(BioProtection.self)
     }
     
     var isPinCodeEnabled : Bool {
-//        return keymaker.isProtectorActive(PinProtection.self) 
-        get {
-            return getShared().bool(forKey: Key.isPinCodeEnabled)
-        }
-        set {
-            setValue(newValue, forKey: Key.isPinCodeEnabled)
-        }
+        return keymaker.isProtectorActive(PinProtection.self)
     }
-    
-    /// Value is only stored in the keychain
-    /*var pinCode : String {
-        get {
-            return sharedKeychain.keychain().string(forKey: Key.pinCodeCache) ?? ""
-        }
-        set {
-            sharedKeychain.keychain().setString(newValue, forKey: Key.pinCodeCache)
-        }
-    }*/
     
     var lockTime : String {
         get {
-            return sharedKeychain.keychain().string(forKey: Key.autoLockTime) ?? "-1"
+            return sharedKeychain.keychain.string(forKey: Key.autoLockTime) ?? "-1"
         }
         set {
-            sharedKeychain.keychain().setString(newValue, forKey: Key.autoLockTime)
+            sharedKeychain.keychain.setString(newValue, forKey: Key.autoLockTime)
         }
     }
     
     var exitTime : String {
         get {
-            return sharedKeychain.keychain().string(forKey: Key.enterBackgroundTime) ?? "0"
+            return sharedKeychain.keychain.string(forKey: Key.enterBackgroundTime) ?? "0"
         }
         set {
-            sharedKeychain.keychain().setString(newValue, forKey: Key.enterBackgroundTime)
-        }
-    }
-    
-    var lockedApp : Bool {
-        get {
-            return getShared().bool(forKey: Key.isManuallyLockApp)
-        }
-        set {
-            setValue(newValue, forKey: Key.isManuallyLockApp)
+            sharedKeychain.keychain.setString(newValue, forKey: Key.enterBackgroundTime)
         }
     }
     
     var lastLoggedInUser : String? {
         get {
-            return sharedKeychain.keychain().string(forKey: Key.lastLoggedInUser)
+            return sharedKeychain.keychain.string(forKey: Key.lastLoggedInUser)
         }
         set {
-            sharedKeychain.keychain().setString(newValue, forKey: Key.lastLoggedInUser)
+            sharedKeychain.keychain.setString(newValue, forKey: Key.lastLoggedInUser)
         }
     }
     

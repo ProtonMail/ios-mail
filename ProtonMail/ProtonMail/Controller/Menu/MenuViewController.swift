@@ -286,7 +286,6 @@ extension MenuViewController: UITableViewDelegate {
             } else if item == .feedback {
                 self.performSegue(withIdentifier: kSegueToFeedback, sender: indexPath);
             } else if item == .lockapp {
-                userCachedStatus.lockedApp = true;
                 keymaker.lockTheApp() // remove mainKey from memory
                 let _ = keymaker.mainKey // provoke mainKey obtaining
                 sharedVMService.resetView() // FIXME: do we still need this?

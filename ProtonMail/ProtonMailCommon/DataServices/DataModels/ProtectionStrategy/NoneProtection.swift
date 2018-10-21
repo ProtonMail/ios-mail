@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UICKeyChainStore
 
 struct NoneProtection: ProtectionStrategy {
     func lock(value: Keymaker.Key) throws {
@@ -15,5 +16,15 @@ struct NoneProtection: ProtectionStrategy {
     
     func unlock(cypherBits: Data) throws -> Keymaker.Key {
         return cypherBits.bytes
+    }
+}
+
+extension NoneProtection {
+    static var keychain: UICKeyChainStore {
+        return sharedKeychain.keychain
+    }
+    
+    var keychain: UICKeyChainStore {
+        return sharedKeychain.keychain
     }
 }

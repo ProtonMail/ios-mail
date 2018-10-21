@@ -90,7 +90,6 @@ class UserTempCachedStatus: NSObject, NSCoding {
     class func restore() {
         if let cache = UserTempCachedStatus.fetchFromKeychain() {
             if sharedUserDataService.username == cache.lastLoggedInUser {
-                userCachedStatus.isPinCodeEnabled = cache.isPinCodeEnabled 
                 userCachedStatus.lockTime = cache.autoLockTime ?? "-1"
                 sharedUserDataService.showMobileSignature = cache.showMobileSignature
                 userCachedStatus.mobileSignature = cache.localMobileSignature ?? ""
@@ -102,12 +101,12 @@ class UserTempCachedStatus: NSObject, NSCoding {
     
     func storeInKeychain() {
         userCachedStatus.isForcedLogout = false
-        sharedKeychain.keychain().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
+        sharedKeychain.keychain.setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
     }
     
     // MARK - Class methods
     class func clearFromKeychain() {
-        sharedKeychain.keychain().removeItem(forKey: Key.keychainStore) //newer version
+        sharedKeychain.keychain.removeItem(forKey: Key.keychainStore) //newer version
     }
     
     class func fetchFromKeychain() -> UserTempCachedStatus? {

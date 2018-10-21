@@ -57,7 +57,7 @@ final class AuthCredential: NSObject, NSCoding {
     }
     
     class func setupToken (_ password:String, isRememberMailbox : Bool = true) throws {
-        if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+        if let data = sharedKeychain.keychain.data(forKey: Key.keychainStore) {
             NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
             NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")
             NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
@@ -138,11 +138,11 @@ final class AuthCredential: NSObject, NSCoding {
     
     func storeInKeychain() {
         userCachedStatus.isForcedLogout = false
-        sharedKeychain.keychain().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
+        sharedKeychain.keychain.setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
     }
     
     class func getPrivateKey() -> String {
-        if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+        if let data = sharedKeychain.keychain.data(forKey: Key.keychainStore) {
             NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
             NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")
             NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
@@ -156,7 +156,7 @@ final class AuthCredential: NSObject, NSCoding {
     }
     
     class func getKeySalt() -> String? {
-        if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+        if let data = sharedKeychain.keychain.data(forKey: Key.keychainStore) {
             NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
             NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")
             NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
@@ -172,7 +172,7 @@ final class AuthCredential: NSObject, NSCoding {
     // MARK - Class methods
     class func clearFromKeychain() {
         userCachedStatus.isForcedLogout = true
-        sharedKeychain.keychain().removeItem(forKey: Key.keychainStore) //newer version
+        sharedKeychain.keychain.removeItem(forKey: Key.keychainStore) //newer version
     }
     
     class func expireOrClear(_ token : String?) {
@@ -188,7 +188,7 @@ final class AuthCredential: NSObject, NSCoding {
     }
     
     class func fetchFromKeychain() -> AuthCredential? {
-        if let data = sharedKeychain.keychain().data(forKey: Key.keychainStore) {
+        if let data = sharedKeychain.keychain.data(forKey: Key.keychainStore) {
             NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
             NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")
             NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")

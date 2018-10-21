@@ -8,23 +8,26 @@
 
 import Foundation
 import Security
+import UICKeyChainStore
 
 protocol ProtectionStrategy {
+    static var keychain: UICKeyChainStore { get }
+    var keychain: UICKeyChainStore { get }
     func lock(value: Keymaker.Key) throws
     func unlock(cypherBits: Data) throws -> Keymaker.Key
 }
 extension ProtectionStrategy {
     static func saveCyphertextInKeychain(_ cypher: Data) {
-        sharedKeychain.keychain()?.setData(cypher, forKey: String(describing: Self.self))
+        self.keychain.setData(cypher, forKey: String(describing: Self.self))
     }
     static func removeCyphertextFromKeychain() {
-        sharedKeychain.keychain()?.removeItem(forKey: String(describing: Self.self))
+        self.keychain.removeItem(forKey: String(describing: Self.self))
     }
     func removeCyphertextFromKeychain() {
         Self.removeCyphertextFromKeychain()
     }
     static func getCypherBits() -> Data? {
-        return sharedKeychain.keychain()?.data(forKey: String(describing: Self.self))
+        return self.keychain.data(forKey: String(describing: Self.self))
     }
     func getCypherBits() -> Data? {
         return Self.getCypherBits()
@@ -37,32 +40,5 @@ extension ProtectionStrategy {
             fatalError("failed to generate cryptographically secure value")
         }
         return newKey
-    }
-    
-//------------------------ MOCK --------------------------
-    
-    func unlock(cypherBits: Data) throws -> Keymaker.Key  {
-        // TODO: implement in all the conformers
-        fatalError()
-        /*
-         switch track {
-         case .pin(let userInputPin):
-         // let user enter PIN
-         // pass handler further
-         break
-         
-         case .bio:
-         // talk to secure enclave
-         // call handler()
-         break
-         
-         case .none:
-         // main key is stored in Keychain cleartext
-         // call handler()
-         break
-         
-         case .bioAndPin: break // can not happen in real life: two different UIs
-         }
-         */
     }
 }

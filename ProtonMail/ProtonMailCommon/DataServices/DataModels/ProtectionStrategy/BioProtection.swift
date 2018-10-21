@@ -10,10 +10,9 @@ import Foundation
 import Security
 import CryptoSwift
 import EllipticCurveKeyPair
+import UICKeyChainStore
 
 struct BioProtection: ProtectionStrategy {
-    var keychainGroup: String?
-    
     private func makeAsymmetricEncryptor() -> EllipticCurveKeyPair.Manager {
         let publicAccessControl = EllipticCurveKeyPair.AccessControl(protection: kSecAttrAccessibleAlwaysThisDeviceOnly, flags: [.userPresence, .privateKeyUsage])
         let privateAccessControl = EllipticCurveKeyPair.AccessControl(protection: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, flags: [.userPresence, .privateKeyUsage])
@@ -22,8 +21,8 @@ struct BioProtection: ProtectionStrategy {
                                                   operationPrompt: "MUCH IMPORTANT SO NEED",
                                                   publicKeyAccessControl: publicAccessControl,
                                                   privateKeyAccessControl: privateAccessControl,
-                                                  publicKeyAccessGroup: self.keychainGroup,
-                                                  privateKeyAccessGroup: self.keychainGroup,
+                                                  publicKeyAccessGroup: self.keychain.accessGroup,
+                                                  privateKeyAccessGroup: self.keychain.accessGroup,
                                                   fallbackToKeychainIfSecureEnclaveIsNotAvailable: false)
         return EllipticCurveKeyPair.Manager(config: config)
     }
@@ -53,5 +52,15 @@ struct BioProtection: ProtectionStrategy {
         }
         
         return cleardata
+    }
+}
+
+extension BioProtection {
+    static var keychain: UICKeyChainStore {
+        return sharedKeychain.keychain
+    }
+    
+    var keychain: UICKeyChainStore {
+        return sharedKeychain.keychain
     }
 }

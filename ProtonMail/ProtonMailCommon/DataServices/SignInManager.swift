@@ -46,7 +46,7 @@ class SignInManager: NSObject {
     internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void,
                                           afterSignIn: @escaping ()->Void)
     {
-        keymaker.obtainMainKey(with: BioProtection(keychainGroup: sharedKeychain.group)) { key in
+        keymaker.obtainMainKey(with: BioProtection()) { key in
             guard let _ = key else {
                 #if !APP_EXTENSION
                 LocalString._authentication_failed.alertToast()
@@ -119,9 +119,7 @@ extension SignInManager {
     
     internal func signInIfRememberedCredentials(onSuccess: ()->Void) {
         if sharedUserDataService.isUserCredentialStored {
-            userCachedStatus.lockedApp = false
             sharedUserDataService.isSignedIn = true
-            
             self.loadContent(requestMailboxPassword: onSuccess)
         } else {
             self.clean()

@@ -282,7 +282,7 @@ class UserDataService {
     /// Value is only stored in the keychain
     var mailboxPassword: String? {
         get {
-            guard let cypherBits = sharedKeychain.keychain().data(forKey: Key.mailboxPassword),
+            guard let cypherBits = sharedKeychain.keychain.data(forKey: Key.mailboxPassword),
                 let key = keymaker.mainKey else
             {
                 return nil
@@ -295,11 +295,11 @@ class UserDataService {
                 let key = keymaker.mainKey,
                 let locked = try? Locked<String>(clearValue: newValue, with: key) else
             {
-                sharedKeychain.keychain().removeItem(forKey: Key.mailboxPassword)
+                sharedKeychain.keychain.removeItem(forKey: Key.mailboxPassword)
                 return
             }
             
-            sharedKeychain.keychain().setData(locked.encryptedValue, forKey: Key.mailboxPassword)
+            sharedKeychain.keychain.setData(locked.encryptedValue, forKey: Key.mailboxPassword)
         }
     }
     

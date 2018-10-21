@@ -48,8 +48,10 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func isPinMatched(completion: @escaping (Bool)->Void) {
-        sharedSignIn.match(userInputPin: enterPin, completion: completion)
-        //currentStep = .enterPin
+        sharedSignIn.match(userInputPin: enterPin) { matched in
+            if !matched { self.currentStep = .enterPin }
+            completion(matched)
+        }
     }
     
     override func getPinFailedRemainingCount() -> Int {

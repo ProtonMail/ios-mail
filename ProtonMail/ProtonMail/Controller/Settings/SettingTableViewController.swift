@@ -286,12 +286,12 @@ class SettingTableViewController: ProtonMailViewController {
                                 if indexPath == indexp {
                                     if !userCachedStatus.isTouchIDEnabled {
                                         // Enable Bio
-                                        keymaker.activate(BioProtection(keychainGroup: sharedKeychain.group)) { _ in
+                                        keymaker.activate(BioProtection()) { _ in
                                             self.updateTableProtectionSection()
                                         }
                                     } else {
                                         // Disable Bio
-                                        keymaker.deactivate(BioProtection(keychainGroup: sharedKeychain.group))
+                                        keymaker.deactivate(BioProtection())
                                         self.updateTableProtectionSection()
                                     }
                                 } else {
@@ -312,7 +312,7 @@ class SettingTableViewController: ProtonMailViewController {
                                     if !userCachedStatus.isPinCodeEnabled {
                                         self.performSegue(withIdentifier: self.kSetupPinCodeSegue, sender: self)
                                     } else {
-                                        userCachedStatus.isPinCodeEnabled = false
+                                        keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
                                         feedback(true)
                                         self.updateTableProtectionSection()
                                     }
