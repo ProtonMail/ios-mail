@@ -285,7 +285,8 @@ class UserDataService {
             guard let cypherBits = sharedKeychain.keychain.data(forKey: Key.mailboxPassword),
                 let key = keymaker.mainKey else
             {
-                return nil
+                // FIXME: for a while this will protect from crashes of force-unwrapping when app is locked, but all those places need refactor
+                return ""
             }
             let locked = Locked<String>(encryptedValue: cypherBits)
             return try? locked.unlock(with: key)

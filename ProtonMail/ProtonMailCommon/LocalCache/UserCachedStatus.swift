@@ -243,16 +243,23 @@ extension UserCachedStatus {
         return keymaker.isProtectorActive(PinProtection.self)
     }
     
-    var lockTime : String {
+    var lockTime: Keymaker.AutolockTimeout { // historically, it was saved as String
         get {
-            return sharedKeychain.keychain.string(forKey: Key.autoLockTime) ?? "-1"
+            guard let string = sharedKeychain.keychain.string(forKey: Key.autoLockTime),
+                let number = Int(string) else
+            {
+                return .never
+            }
+            return Keymaker.AutolockTimeout(rawValue: number)
         }
         set {
-            sharedKeychain.keychain.setString(newValue, forKey: Key.autoLockTime)
+            sharedKeychain.keychain.setString("\(newValue.rawValue)", forKey: Key.autoLockTime)
         }
     }
     
-    var exitTime : String {
+    
+    // is used only in push notifications system
+    @available(*, deprecated) var exitTime : String {
         get {
             return sharedKeychain.keychain.string(forKey: Key.enterBackgroundTime) ?? "0"
         }

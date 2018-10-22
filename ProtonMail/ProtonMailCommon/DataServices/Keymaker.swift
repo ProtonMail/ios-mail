@@ -15,11 +15,46 @@ import Foundation
 
 var keymaker = Keymaker.shared
 class Keymaker: NSObject {
+    enum AutolockTimeout: RawRepresentable {
+        case never
+        case always
+        case minutes(Int)
+        
+        init(rawValue: Int) {
+            switch rawValue {
+            case -1: self = .never
+            case 0: self = .always
+            case let number: self = .minutes(number)
+            }
+        }
+        
+        var rawValue: Int {
+            switch self {
+            case .never: return -1
+            case .always: return 0
+            case .minutes(let number): return number
+            }
+        }
+    }
+    
     static let requestMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".requestMainKey")
+    static let obtainedMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".obtainedMainKey")
     typealias Key = Array<UInt8>
     
-    private var _mainKey: Key? // stored in-memory value
-    internal var mainKey: Key? { // accessor for stored value; if stored value is nill - calls provokeMainKeyObtention() method
+    // stored in-memory value
+    private var _mainKey: Key? {
+        didSet {
+            if _mainKey != nil {
+                self.autolockCountdownStart = nil
+            }
+        }
+    }
+    
+    // accessor for stored value; if stored value is nill - calls provokeMainKeyObtention() method
+    internal var mainKey: Key? {
+        if self.shouldAutolockNow() {
+            self._mainKey = nil
+        }
         if self._mainKey == nil {
             self._mainKey = self.provokeMainKeyObtention()
         }
@@ -39,11 +74,14 @@ class Keymaker: NSObject {
         
         // if we have NoneProtection active - get the key right ahead
         if let cypherText = NoneProtection.getCypherBits() {
+            NotificationCenter.default.post(.init(name: Keymaker.obtainedMainKey))
             return try! NoneProtection().unlock(cypherBits: cypherText)
         }
         
         // otherwise there is no saved mainKey at all, so we should generate a new one with default protection
-        return self.generateNewMainKeyWithDefaultProtection()
+        let newKey = self.generateNewMainKeyWithDefaultProtection()
+        NotificationCenter.default.post(.init(name: Keymaker.obtainedMainKey))
+        return newKey
     }
     
     static var shared = Keymaker()
@@ -129,5 +167,28 @@ class Keymaker: NSObject {
         try! NoneProtection().lock(value: newMainKey)
         self._mainKey = newMainKey
         return newMainKey
+    }
+    
+
+    // there is no need to persist this value anywhere except memory since we can not unlock the app automatically after relaunch (except NoneProtection case)
+    // by the same reason we can benefit from system uptime value instead of current Date which can be played with in Settings.app
+    private var autolockCountdownStart: TimeInterval?
+    
+    internal func updateAutolockCountdownStart() {
+        self.autolockCountdownStart = ProcessInfo().systemUptime
+    }
+    
+    private func shouldAutolockNow() -> Bool {
+        // no countdown started - no need to lock
+        guard let lastBackgroundedAt = self.autolockCountdownStart else {
+            return false
+        }
+        
+        switch userCachedStatus.lockTime {
+        case .always: return true
+        case .never: return false
+        case .minutes(let numberOfMinutes):
+            return TimeInterval(numberOfMinutes * 60) < ProcessInfo().systemUptime - lastBackgroundedAt
+        }
     }
 }

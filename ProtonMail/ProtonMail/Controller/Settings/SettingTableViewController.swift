@@ -345,10 +345,7 @@ class SettingTableViewController: ProtonMailViewController {
                         })
                         cellout = cell
                     case .enterTime:
-                        var timeIndex : Int = -1
-                        if let t = Int(userCachedStatus.lockTime) {
-                            timeIndex = t
-                        }
+                        let timeIndex = userCachedStatus.lockTime.rawValue
                         var text = String(format: LocalString._settings_auto_lock_minutes, timeIndex)
                         if timeIndex == -1 {
                             text = LocalString._general_none
@@ -566,7 +563,7 @@ class SettingTableViewController: ProtonMailViewController {
                             }
                             alertController.addAction(UIAlertAction(title: text, style: .default, handler: { (action) -> Void in
                                 let _ = self.navigationController?.popViewController(animated: true)
-                                userCachedStatus.lockTime = "\(timeIndex)"
+                                userCachedStatus.lockTime = Keymaker.AutolockTimeout(rawValue: timeIndex)
                                 tableView.reloadData()
                             }))
                         }

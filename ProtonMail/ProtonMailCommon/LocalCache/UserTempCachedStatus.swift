@@ -80,7 +80,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
                 touchIDEmail: "FIXME",
                 isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
                 pinCodeCache: "FIXME",
-                autoLockTime: userCachedStatus.lockTime,
+                autoLockTime: "\(userCachedStatus.lockTime.rawValue)",
                 showMobileSignature: sharedUserDataService.showMobileSignature,
                 localMobileSignature: userCachedStatus.mobileSignature)
             u.storeInKeychain()
@@ -90,7 +90,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
     class func restore() {
         if let cache = UserTempCachedStatus.fetchFromKeychain() {
             if sharedUserDataService.username == cache.lastLoggedInUser {
-                userCachedStatus.lockTime = cache.autoLockTime ?? "-1"
+                userCachedStatus.lockTime = Keymaker.AutolockTimeout(rawValue: Int(cache.autoLockTime) ?? -1)
                 sharedUserDataService.showMobileSignature = cache.showMobileSignature
                 userCachedStatus.mobileSignature = cache.localMobileSignature ?? ""
             }

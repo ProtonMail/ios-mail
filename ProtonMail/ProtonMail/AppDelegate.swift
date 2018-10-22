@@ -42,7 +42,7 @@ class AppDelegate: UIResponder {
     }()
     
     // FIXME: this is new navigation system Router's work
-    func setupWindow() {
+    private func setupWindow() {
         guard sharedSignIn.isSignedIn() else {
             self.switchTo(storyboard: .signIn, animated: false)
             return
@@ -58,6 +58,9 @@ class AppDelegate: UIResponder {
     @objc func switchToSignInWindow() {
         self.switchTo(storyboard: .signIn, animated: true)
     }
+    @objc func switchToInternalWindow() {
+        self.switchTo(storyboard: .inbox, animated: true)
+    }
     
     // MARK: - Public methods
     
@@ -65,9 +68,9 @@ class AppDelegate: UIResponder {
     func switchTo(storyboard: UIStoryboard.Storyboard, animated: Bool) {
         // FIXME: this method should add new SignIn window and switch to it back and forth from the main app hierarchy
         guard let window = window else {
-            return 
+            return
         }
-        
+
         DispatchQueue.main.async {
             guard let rootViewController = window.rootViewController,
                 rootViewController.restorationIdentifier != storyboard.restorationIdentifier else {
@@ -204,6 +207,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         //TODO:: Tempory later move it into App coordinator
         NotificationCenter.default.addObserver(self, selector: #selector(performForceUpgrade), name: .forceUpgrade, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(switchToSignInWindow), name: Keymaker.requestMainKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(switchToInternalWindow), name: Keymaker.obtainedMainKey, object: nil)
         
         return true
     }
@@ -234,6 +238,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         if sharedUserDataService.isSignedIn {
             let timeInterval : Int = Int(Date().timeIntervalSince1970)
             userCachedStatus.exitTime = "\(timeInterval)";
+            keymaker.updateAutolockCountdownStart()
         }
         var taskID : UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask {
@@ -305,10 +310,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         PMLog.D("receive \(userInfo)")
         if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
-            var timeIndex : Int = -1
-            if let t = Int(userCachedStatus.lockTime) {
-                timeIndex = t
-            }
+            let timeIndex = userCachedStatus.lockTime.rawValue
             if timeIndex == 0 {
                 sharedPushNotificationService.setNotificationOptions(userInfo);
             } else if timeIndex > 0 {
