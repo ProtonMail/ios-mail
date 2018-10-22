@@ -78,15 +78,12 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                             let schemeType = vcard.getPMScheme(group)
                             let mimeType = vcard.getPMMimeType(group)
                             
-                            // contact group
-                            let contactGroups = type0Card?.getCategories(group)?.getValues() ?? []
-                            
                             let ce = ContactEditEmail(order: order,
                                                       type:type == .empty ? .email : type,
                                                       email:e.getValue(),
-                                                      contactGroupNames: contactGroups,
                                                       isNew: false,
                                                       keys: keys,
+                                                      contactID: self.contact?.contactID,
                                                       encrypt: encrypt,
                                                       sign: sign,
                                                       scheme: schemeType,
@@ -119,14 +116,12 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                             let schemeType = vcard.getPMScheme(group)
                             let mimeType = vcard.getPMMimeType(group)
                             
-                            let contactGroups = type0Card?.getCategories("ITEM\(order)")?.getValues() ?? []
-                            
                             let ce = ContactEditEmail(order: order,
                                                       type:type == .empty ? .email : type,
                                                       email:e.getValue(),
-                                                      contactGroupNames: contactGroups,
                                                       isNew: false,
                                                       keys: keys,
+                                                      contactID: self.contact?.contactID,
                                                       encrypt: encrypt,
                                                       sign: sign,
                                                       scheme: schemeType,
@@ -394,9 +389,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         let email = ContactEditEmail(order: emails.count,
                                      type: type,
                                      email:"",
-                                     contactGroupNames: [],
                                      isNew: true,
                                      keys: nil,
+                                     contactID: self.contact?.contactID,
                                      encrypt: nil,
                                      sign: nil ,
                                      scheme: nil,
@@ -720,15 +715,20 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 }
             }
             
+            let completion = {
+                (contacts : [Contact]?, error : NSError?) in
+                if error == nil {
+                    // we locally maintain the emailID by deleting all old ones
+                    // and use the response to update the core data (see sharedContactDataService.update())
+                    complete(nil)
+                } else {
+                    complete(error)
+                }
+            }
+            
             sharedContactDataService.update(contactID: c.contactID,
                                             cards: cards,
-                                            completion: { (contacts : [Contact]?, error : NSError?) in
-                                                if error == nil {
-                                                    complete(nil)
-                                                } else {
-                                                    complete(error)
-                                                }
-            })
+                                            completion: completion)
         } else {
             // pop error
         }

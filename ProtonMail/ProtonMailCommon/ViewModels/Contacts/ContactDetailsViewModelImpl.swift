@@ -157,15 +157,12 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         let typeRaw = types.count > 0 ? types.first! : ""
                         let type = ContactFieldType.get(raw: typeRaw)
                         
-                        // contact group
-                        let contactGroups = vcard.getCategories(e.getGroup())
-                        
                         let ce = ContactEditEmail(order: order,
                                                   type: type == .empty ? .email : type,
                                                   email:e.getValue(),
-                                                  contactGroupNames: contactGroups?.getValues() ?? [],
                                                   isNew: false,
                                                   keys: nil,
+                                                  contactID: self.contact.contactID,
                                                   encrypt: nil,
                                                   sign: nil ,
                                                   scheme: nil,
@@ -208,14 +205,12 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                         let typeRaw = types.count > 0 ? types.first! : ""
                         let type = ContactFieldType.get(raw: typeRaw)
                         
-                        let contactGroups = type0Card?.getCategories("ITEM\(order)")?.getValues() ?? []
-                        
                         let ce = ContactEditEmail(order: order,
                                                   type:type == .empty ? .email : type,
                                                   email:e.getValue(),
-                                                  contactGroupNames: contactGroups,
                                                   isNew: false,
                                                   keys: nil,
+                                                  contactID: self.contact.contactID,
                                                   encrypt: nil,
                                                   sign: nil ,
                                                   scheme: nil,
@@ -412,7 +407,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     }
     
     override func getDetails(loading: () -> Void) -> Promise<Contact> {
-        if contact.isDownloaded {
+        if contact.isDownloaded && contact.needsRebuild == false {
             self.setupEmails()
             return Promise.value(contact)
         }

@@ -43,8 +43,9 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol
         
         if let context = sharedCoreDataService.mainManagedObjectContext {
             for member in selectedMembers {
-                if let email = Email.EmailForAddress(member,
-                                                     inManagedObjectContext: context) {
+                if let email = Email.EmailForAddressWithContact(member,
+                                                                contactID: ID,
+                                                                inManagedObjectContext: context) {
                     result.append((self.contactTitle, email.name, member))
                 } else {
                     // TODO: handle error
@@ -117,8 +118,9 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol
             // (2) get all that is NOT in the contact group, but is selected
             for address in self.selectedMembers {
                 if emailAddresses.contains(address) == false {
-                    if let emailObj = Email.EmailForAddress(address,
-                                                            inManagedObjectContext: context) {
+                    if let emailObj = Email.EmailForAddressWithContact(address,
+                                                                    contactID: ID,
+                                                                    inManagedObjectContext: context) {
                         emailAddresses.insert(emailObj.email)
                     } else {
                         // TODO: handle error
