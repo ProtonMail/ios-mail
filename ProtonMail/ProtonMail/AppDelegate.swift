@@ -19,6 +19,7 @@ import Crashlytics
 import SWRevealViewController
 import AFNetworking
 import AFNetworkActivityLogger
+import Keymaker
 
 let sharedUserDataService = UserDataService()
 

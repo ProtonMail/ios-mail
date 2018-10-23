@@ -8,6 +8,7 @@
 
 import Foundation
 import UICKeyChainStore
+import Keymaker
 
 let userCachedStatus = UserCachedStatus()
 
@@ -243,14 +244,14 @@ extension UserCachedStatus {
         return keymaker.isProtectorActive(PinProtection.self)
     }
     
-    var lockTime: Keymaker.AutolockTimeout { // historically, it was saved as String
+    var lockTime: AutolockTimeout { // historically, it was saved as String
         get {
             guard let string = sharedKeychain.keychain.string(forKey: Key.autoLockTime),
                 let number = Int(string) else
             {
                 return .never
             }
-            return Keymaker.AutolockTimeout(rawValue: number)
+            return AutolockTimeout(rawValue: number)
         }
         set {
             sharedKeychain.keychain.setString("\(newValue.rawValue)", forKey: Key.autoLockTime)

@@ -10,10 +10,13 @@ import Foundation
 import CryptoSwift
 import UICKeyChainStore
 
-struct PinProtection: ProtectionStrategy {
+public struct PinProtection: ProtectionStrategy {
+    public let keychain: UICKeyChainStore
     private let pin: String
-    init(pin: String) {
+    
+    public init(pin: String, keychain: UICKeyChainStore) {
         self.pin = pin
+        self.keychain = keychain
     }
     
     private static let saltKeychainKey = String(describing: PinProtection.self) + ".salt"
@@ -22,16 +25,16 @@ struct PinProtection: ProtectionStrategy {
         case saltNotFound
     }
     
-    func lock(value: Keymaker.Key) throws {
+    public func lock(value: Keymaker.Key) throws {
         let salt = PinProtection.generateRandomValue(length: 8)
         let ethemeralKey = try PKCS5.PBKDF2(password: Array(pin.utf8), salt: salt, iterations: PinProtection.numberOfIterations, variant: .sha256).calculate()
         let locked = try Locked<Keymaker.Key>(clearValue: value, with: ethemeralKey)
         
-        PinProtection.saveCyphertextInKeychain(locked.encryptedValue)
+        PinProtection.saveCyphertext(locked.encryptedValue, in: self.keychain)
         self.keychain.setData(Data(bytes: salt), forKey: PinProtection.saltKeychainKey)
     }
     
-    func unlock(cypherBits: Data) throws -> Keymaker.Key {
+    public func unlock(cypherBits: Data) throws -> Keymaker.Key {
         guard let salt = self.keychain.data(forKey: PinProtection.saltKeychainKey) else {
             throw Errors.saltNotFound
         }
@@ -45,18 +48,8 @@ struct PinProtection: ProtectionStrategy {
         }
     }
     
-    static func removeCyphertextFromKeychain() {
-        (self as ProtectionStrategy.Type).removeCyphertextFromKeychain()
-        self.keychain.removeItem(forKey: self.saltKeychainKey)
-    }
-}
-
-extension PinProtection {
-    static var keychain: UICKeyChainStore {
-        return sharedKeychain.keychain
-    }
-    
-    var keychain: UICKeyChainStore {
-        return sharedKeychain.keychain
+    public static func removeCyphertext(from keychain: UICKeyChainStore) {
+        (self as ProtectionStrategy.Type).removeCyphertext(from: keychain)
+        keychain.removeItem(forKey: self.saltKeychainKey)
     }
 }

@@ -10,27 +10,26 @@ import Foundation
 import Security
 import UICKeyChainStore
 
-protocol ProtectionStrategy {
-    static var keychain: UICKeyChainStore { get }
+public protocol ProtectionStrategy {
     var keychain: UICKeyChainStore { get }
     func lock(value: Keymaker.Key) throws
     func unlock(cypherBits: Data) throws -> Keymaker.Key
 }
-extension ProtectionStrategy {
-    static func saveCyphertextInKeychain(_ cypher: Data) {
-        self.keychain.setData(cypher, forKey: String(describing: Self.self))
+public extension ProtectionStrategy {
+    static func saveCyphertext(_ cypher: Data, in keychain: UICKeyChainStore) {
+        keychain.setData(cypher, forKey: String(describing: Self.self))
     }
-    static func removeCyphertextFromKeychain() {
-        self.keychain.removeItem(forKey: String(describing: Self.self))
+    static func removeCyphertext(from keychain: UICKeyChainStore) {
+        keychain.removeItem(forKey: String(describing: Self.self))
     }
     func removeCyphertextFromKeychain() {
-        Self.removeCyphertextFromKeychain()
+        self.keychain.removeItem(forKey: String(describing: Self.self))
     }
-    static func getCypherBits() -> Data? {
-        return self.keychain.data(forKey: String(describing: Self.self))
+    static func getCypherBits(from keychain: UICKeyChainStore) -> Data? {
+        return keychain.data(forKey: String(describing: Self.self))
     }
     func getCypherBits() -> Data? {
-        return Self.getCypherBits()
+        return self.keychain.data(forKey: String(describing: Self.self))
     }
     
     static func generateRandomValue(length: Int) -> Array<UInt8> {

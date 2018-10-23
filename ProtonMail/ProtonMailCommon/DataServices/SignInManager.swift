@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Keymaker
 
 var sharedSignIn = SignInManager.shared
 class SignInManager: NSObject {

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Keymaker
 
 class SetPinCodeModelImpl : PinCodeViewModel {
     

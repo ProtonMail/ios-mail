@@ -20,10 +20,10 @@ jobs:
                 command: sudo pip install xUnique
             - run:
                 name: Run tests
-                command: fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "ProtonMailDev" --device "iPhone 8" --clean
+                command: fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "Tests" --device "iPhone 8" --clean
                 environment:
                     SCAN_DEVICE: iPhone 8
-                    SCAN_SCHEME: ProtonMailDev
+                    SCAN_SCHEME: Tests
             - store_test_results:
                 path: output/scan
 

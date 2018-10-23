@@ -8,6 +8,7 @@
 
 import UIKit
 import MBProgressHUD
+import Keymaker
 
 class SettingTableViewController: ProtonMailViewController {
     
@@ -563,7 +564,7 @@ class SettingTableViewController: ProtonMailViewController {
                             }
                             alertController.addAction(UIAlertAction(title: text, style: .default, handler: { (action) -> Void in
                                 let _ = self.navigationController?.popViewController(animated: true)
-                                userCachedStatus.lockTime = Keymaker.AutolockTimeout(rawValue: timeIndex)
+                                userCachedStatus.lockTime = AutolockTimeout(rawValue: timeIndex)
                                 tableView.reloadData()
                             }))
                         }

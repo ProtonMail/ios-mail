@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import ProtonMail
+@testable import Keymaker
 
 class LockedTests: XCTestCase {
     let message = "Santa does not exhist"
@@ -32,13 +32,13 @@ class LockedTests: XCTestCase {
     func testCustomLocker() {
         let locker: (String) throws -> Data = { cleartext in
             guard let data = cleartext.data(using: .utf8) else {
-                throw NSError.init(domain: "", code: 0, localizedDescription: "failed to turn string into data")
+                throw NSError(domain: "failed to turn string into data", code: 0, userInfo: nil)
             }
             return data
         }
         let unlocker: (Data) throws -> String = { cypher in
             guard let cleartext = String(data: cypher, encoding: .utf8) else {
-                throw NSError.init(domain: "", code: 0, localizedDescription: "failed to turn data into string")
+                throw NSError(domain: "failed to turn data into string", code: 1, userInfo: nil)
             }
             return cleartext
         }

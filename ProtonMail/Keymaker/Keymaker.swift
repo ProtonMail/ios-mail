@@ -12,47 +12,32 @@
 //
 
 import Foundation
+import UICKeyChainStore
 
-var keymaker = Keymaker.shared
-class Keymaker: NSObject {
-    enum AutolockTimeout: RawRepresentable {
-        case never
-        case always
-        case minutes(Int)
-        
-        init(rawValue: Int) {
-            switch rawValue {
-            case -1: self = .never
-            case 0: self = .always
-            case let number: self = .minutes(number)
-            }
-        }
-        
-        var rawValue: Int {
-            switch self {
-            case .never: return -1
-            case .always: return 0
-            case .minutes(let number): return number
-            }
-        }
-    }
+public class Keymaker: NSObject {
+    public static let requestMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".requestMainKey")
+    public static let obtainedMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".obtainedMainKey")
+    public typealias Key = Array<UInt8>
     
-    static let requestMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".requestMainKey")
-    static let obtainedMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".obtainedMainKey")
-    typealias Key = Array<UInt8>
+    private var autolocker: Autolocker?
+    private let keychain: UICKeyChainStore
+    public init(autolocker: Autolocker, keychain: UICKeyChainStore) {
+        self.autolocker = autolocker
+        self.keychain = keychain
+    }
     
     // stored in-memory value
     private var _mainKey: Key? {
         didSet {
             if _mainKey != nil {
-                self.autolockCountdownStart = nil
+                self.autolocker?.autolockCountdownStart = nil
             }
         }
     }
     
     // accessor for stored value; if stored value is nill - calls provokeMainKeyObtention() method
-    internal var mainKey: Key? {
-        if self.shouldAutolockNow() {
+    public var mainKey: Key? {
+        if self.autolocker?.shouldAutolockNow() == true {
             self._mainKey = nil
         }
         if self._mainKey == nil {
@@ -73,9 +58,9 @@ class Keymaker: NSObject {
         }
         
         // if we have NoneProtection active - get the key right ahead
-        if let cypherText = NoneProtection.getCypherBits() {
+        if let cypherText = NoneProtection.getCypherBits(from: self.keychain) {
             NotificationCenter.default.post(.init(name: Keymaker.obtainedMainKey))
-            return try! NoneProtection().unlock(cypherBits: cypherText)
+            return try! NoneProtection(keychain: self.keychain).unlock(cypherBits: cypherText)
         }
         
         // otherwise there is no saved mainKey at all, so we should generate a new one with default protection
@@ -84,21 +69,20 @@ class Keymaker: NSObject {
         return newKey
     }
     
-    static var shared = Keymaker()
     private let controlThread = DispatchQueue.global(qos: .utility)
     
-    internal func wipeMainKey() {
+    public func wipeMainKey() {
         // TODO: remove additional keychain items of all protectors
-        NoneProtection.removeCyphertextFromKeychain()
-        BioProtection.removeCyphertextFromKeychain()
-        PinProtection.removeCyphertextFromKeychain()
+        NoneProtection.removeCyphertext(from: self.keychain)
+        BioProtection.removeCyphertext(from: self.keychain)
+        PinProtection.removeCyphertext(from: self.keychain)
     }
     
-    internal func lockTheApp() {
+    public func lockTheApp() {
         self._mainKey = nil
     }
     
-    internal func obtainMainKey(with protector: ProtectionStrategy,
+    public func obtainMainKey(with protector: ProtectionStrategy,
                                 handler: @escaping (Key?)->Void)
     {
         // usually calling a method developers assume to get the callback on the same thread,
@@ -124,7 +108,7 @@ class Keymaker: NSObject {
     }
     
     // completion says whether protector was activated or not
-    internal func activate(_ protector: ProtectionStrategy,
+    public func activate(_ protector: ProtectionStrategy,
                            completion: @escaping (Bool)->Void)
     {
         let isMainThread = Thread.current.isMainThread
@@ -138,57 +122,38 @@ class Keymaker: NSObject {
             
             // we want to remove unprotected value from storage if the new Protector is significant
             if !(protector is NoneProtection) {
-                self.deactivate(NoneProtection())
+                self.deactivate(NoneProtection(keychain: self.keychain))
             }
             
             isMainThread ? DispatchQueue.main.async{ completion(true) } : completion(true)
         }
     }
     
-    internal func isProtectorActive<T: ProtectionStrategy>(_ protectionType: T.Type) -> Bool {
-        return protectionType.getCypherBits() != nil
+    public func isProtectorActive<T: ProtectionStrategy>(_ protectionType: T.Type) -> Bool {
+        return protectionType.getCypherBits(from: self.keychain) != nil
     }
     
-    @discardableResult internal func deactivate(_ protector: ProtectionStrategy) -> Bool {
+    @discardableResult public func deactivate(_ protector: ProtectionStrategy) -> Bool {
         protector.removeCyphertextFromKeychain()
         
         // need to keep mainKey in keychain in case user switches off all the significant Protectors
         if !self.isProtectorActive(BioProtection.self), !self.isProtectorActive(PinProtection.self) {
-            self.activate(NoneProtection(), completion: { _ in })
+            self.activate(NoneProtection(keychain: self.keychain), completion: { _ in })
         }
         
         return true
     }
     
-    @discardableResult func generateNewMainKeyWithDefaultProtection() -> Key {
+    @discardableResult public func generateNewMainKeyWithDefaultProtection() -> Key {
         self.wipeMainKey() // get rid of all old protected mainKeys
         
         let newMainKey = NoneProtection.generateRandomValue(length: 32)
-        try! NoneProtection().lock(value: newMainKey)
+        try! NoneProtection(keychain: self.keychain).lock(value: newMainKey)
         self._mainKey = newMainKey
         return newMainKey
     }
     
-
-    // there is no need to persist this value anywhere except memory since we can not unlock the app automatically after relaunch (except NoneProtection case)
-    // by the same reason we can benefit from system uptime value instead of current Date which can be played with in Settings.app
-    private var autolockCountdownStart: TimeInterval?
-    
-    internal func updateAutolockCountdownStart() {
-        self.autolockCountdownStart = ProcessInfo().systemUptime
-    }
-    
-    private func shouldAutolockNow() -> Bool {
-        // no countdown started - no need to lock
-        guard let lastBackgroundedAt = self.autolockCountdownStart else {
-            return false
-        }
-        
-        switch userCachedStatus.lockTime {
-        case .always: return true
-        case .never: return false
-        case .minutes(let numberOfMinutes):
-            return TimeInterval(numberOfMinutes * 60) < ProcessInfo().systemUptime - lastBackgroundedAt
-        }
+    public func updateAutolockCountdownStart() {
+        self.autolocker?.updateAutolockCountdownStart()
     }
 }
