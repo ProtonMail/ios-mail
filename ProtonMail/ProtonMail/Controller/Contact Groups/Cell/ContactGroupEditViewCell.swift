@@ -56,6 +56,7 @@ class ContactGroupEditViewCell: UITableViewCell {
     func config(emailID: String,
                 name: String,
                 email: String,
+                emailQueryString: String,
                 state: ContactGroupEditViewCellState,
                 viewModel: ContactGroupEditViewModel? = nil) {
         self.emailID = emailID
@@ -83,7 +84,9 @@ class ContactGroupEditViewCell: UITableViewCell {
         }
         
         nameLabel.text = name
-        emailLabel.text = email
+        emailLabel.attributedText = NSMutableAttributedString.highlightedString(text: email,
+                                                                                search: emailQueryString,
+                                                                                font: FontManager.highlightSearchTextForSubtitle)
         
         prepareShortName()
     }

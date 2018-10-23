@@ -19,6 +19,16 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController
     let kSegueToImportView = "toImportContacts"
     let kToUpgradeAlertSegue = "toUpgradeAlertSegue"
     
+    var isOnMainView = true {
+        didSet {
+            if isOnMainView {
+                self.tabBarController?.tabBar.isHidden = false
+            } else {
+                self.tabBarController?.tabBar.isHidden = true
+            }
+        }
+    }
+    
     func prepareNavigationItemRightDefault() {
         self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
                                                      target: self,

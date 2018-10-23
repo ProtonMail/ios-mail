@@ -24,7 +24,8 @@ enum ContactGroupEditError: Error
     
     case addFailed
     case updateFailed
-    case deleteFailed
+    
+    case cannotGetCoreDataContext
 }
 
 extension ContactGroupEditError: LocalizedError {
@@ -50,8 +51,8 @@ extension ContactGroupEditError: LocalizedError {
             return LocalString._contact_groups_api_add_error
         case .updateFailed:
             return LocalString._contact_groups_api_update_error
-        case .deleteFailed:
-            return LocalString._contact_groups_api_delete_error
+        case .cannotGetCoreDataContext:
+            return LocalString._cannot_get_coredata_context
         }
     }
 }

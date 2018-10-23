@@ -18,7 +18,6 @@ final class ContactEditEmailCell: UITableViewCell {
     
     @IBOutlet weak var groupButton: UIButton!
     @IBOutlet weak var iconStackView: UIStackView!
-    @IBOutlet weak var iconStackViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
     @IBOutlet weak var sepratorView: UIView!
@@ -46,8 +45,7 @@ final class ContactEditEmailCell: UITableViewCell {
         // setup group icons
         prepareContactGroupIcons(cell: self,
                                  contactGroupColors: self.email.getCurrentlySelectedContactGroupColors(),
-                                 iconStackView: iconStackView,
-                                 iconStackViewWidthConstraint: iconStackViewWidthConstraint)
+                                 iconStackView: iconStackView)
         
         if firstSetup {
             // setup gesture recognizer
@@ -67,8 +65,7 @@ final class ContactEditEmailCell: UITableViewCell {
         email.updateContactGroups(updatedContactGroups: updatedContactGroups)
         prepareContactGroupIcons(cell: self,
                                  contactGroupColors: self.email.getCurrentlySelectedContactGroupColors(),
-                                 iconStackView: iconStackView,
-                                 iconStackViewWidthConstraint: iconStackViewWidthConstraint)
+                                 iconStackView: iconStackView)
     }
     
     func getCurrentlySelectedContactGroupsID() -> Set<String> {

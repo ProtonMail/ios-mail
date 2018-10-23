@@ -34,6 +34,7 @@ class ContactSearchTableViewController: UITableViewController {
                 let info = model.getContactGroupInfo()
                 cell.config(labelID: model.ID,
                             name: model.contactTitle,
+                            queryString: "",
                             count: info.total,
                             color: info.color,
                             wasSelected: false)

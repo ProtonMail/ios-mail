@@ -64,6 +64,7 @@ class ContactGroupsViewCell: UITableViewCell {
     
     func config(labelID: String,
                 name: String,
+                queryString: String,
                 count: Int,
                 color: String,
                 wasSelected: Bool,
@@ -91,7 +92,9 @@ class ContactGroupsViewCell: UITableViewCell {
             sendButton.imageView?.image = UIImage.resize(image: image, targetSize: CGSize.init(width: 20, height: 20))
         }
         
-        self.nameLabel.text = name
+        self.nameLabel.attributedText = NSMutableAttributedString.highlightedString(text: name,
+                                                                                    search: queryString,
+                                                                                    font: FontManager.highlightSearchTextForTitle)
         self.setDetailString()
         groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: color,

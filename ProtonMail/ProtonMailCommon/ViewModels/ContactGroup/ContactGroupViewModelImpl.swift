@@ -212,9 +212,9 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
             
             let lock = NSLock()
             var count = 0
-            let completionHandler = { (ok: Bool) -> Void in
-                if ok == false {
-                    seal.reject(ContactGroupEditError.deleteFailed)
+            let completionHandler = { (error: Error?) -> Void in
+                if let error = error {
+                    seal.reject(error)
                 } else {
                     lock.lock()
                     count += 1

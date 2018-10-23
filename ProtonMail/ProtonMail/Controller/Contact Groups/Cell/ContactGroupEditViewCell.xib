@@ -54,7 +54,6 @@
                             <constraint firstAttribute="height" constant="40" id="J99-oQ-VPq" userLabel="height = 40"/>
                             <constraint firstAttribute="width" constant="80" id="xfu-23-yHh" userLabel="width = 40"/>
                         </constraints>
-                        <state key="normal" title="Button"/>
                         <connections>
                             <action selector="deleteButtonTapped:" destination="z2E-gP-kHW" eventType="touchUpInside" id="4nf-9m-rRS"/>
                         </connections>

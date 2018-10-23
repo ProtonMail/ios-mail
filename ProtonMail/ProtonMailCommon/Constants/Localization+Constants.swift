@@ -1660,6 +1660,6 @@ class LocalizedString {
                                                                   comment: "The error message will be shown when the creation of the contact group through API failed")
     lazy var _contact_groups_api_update_error = NSLocalizedString("Can't update contact group through API",
                                                                   comment: "The error message will be shown when the update of the contact group through API failed")
-    lazy var _contact_groups_api_delete_error = NSLocalizedString("Can't delete contact group through API",
+    lazy var _cannot_get_coredata_context = NSLocalizedString("Can't delete contact group through API",
                                                                   comment: "The error message will be shown when the deletionn of the contact group through API failed")
 }

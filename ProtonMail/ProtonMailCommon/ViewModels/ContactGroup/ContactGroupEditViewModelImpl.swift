@@ -97,7 +97,15 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             self.tableContent[1].append(.email)
         }
         
-        tableSectionTitle[1] = "\(emailCount) MEMBER\(emailCount > 1 ? "S" : "")"
+        if emailCount == 1 {
+            tableSectionTitle[1] = String.init(format: LocalString._contact_groups_member_count_description,
+                                               emailCount)
+        } else if emailCount > 1 {
+            tableSectionTitle[1] = String.init(format: LocalString._contact_groups_members_count_description,
+                                               emailCount)
+        } else { // 0, don't show
+            tableSectionTitle[1] = ""
+        }
     }
     
     /**
@@ -395,12 +403,12 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             seal in
             
             let completionHandler = {
-                (success: Bool) -> Void in
+                (error: Error?) -> Void in
                 
-                if success {
-                    seal.fulfill(())
+                if let error = error {
+                    seal.reject(error)
                 } else {
-                    seal.reject(ContactGroupEditError.deleteFailed)
+                    seal.fulfill(())
                 }
             }
             

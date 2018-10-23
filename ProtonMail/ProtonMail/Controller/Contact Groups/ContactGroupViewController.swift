@@ -17,6 +17,7 @@ import PromiseKit
 class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
 {
     private var viewModel: ContactGroupsViewModel!
+    private var queryString = ""
     
     // long press related vars
     private var isEditingState: Bool = false
@@ -85,6 +86,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         if viewModel.getState() == .ViewAllContactGroups {
             self.viewModel.timerStart(true)
         }
+        
+        self.isOnMainView = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -247,30 +250,45 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         }
     }
     
+    private func resetStateFromMultiSelect()
+    {
+        // reset state
+        self.isEditingState = false
+        self.tableView.allowsMultipleSelection = false
+        self.totalSelectedContactGroups = 0
+        
+        // reset navigation bar
+        self.updateNavigationBar()
+    }
+    
     @objc private func trashcanBarButtonTapped() {
-        firstly {
-            () -> Promise<Void> in
-            // attempt to delete selected groups
-            return viewModel.deleteGroups()
-            }.done {
-                // reset state
-                self.isEditingState = false
-                self.tableView.allowsMultipleSelection = false
-                self.totalSelectedContactGroups = 0
-                
-                // reset navigation bar
-                self.updateNavigationBar()
-            }.catch {
-                error in
-                let alert = UIAlertController(title: LocalString._contact_groups_delete_error,
-                                              message: error.localizedDescription,
-                                              preferredStyle: .alert)
-                alert.addOKAction()
-                
-                self.present(alert,
-                             animated: true,
-                             completion: nil)
+        let deleteHandler = {
+            (action: UIAlertAction) -> Void in
+            firstly {
+                () -> Promise<Void> in
+                // attempt to delete selected groups
+                ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                return self.viewModel.deleteGroups()
+                }.done {
+                    self.resetStateFromMultiSelect()
+                }.ensure {
+                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                }.catch {
+                    error in
+                    error.alert(at: self.view)
+            }
         }
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._delete_contact,
+                                                style: .destructive,
+                                                handler: deleteHandler))
+        
+        alertController.popoverPresentationController?.sourceView = self.view
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
+        self.present(alertController, animated: true, completion: nil)
     }
     
     private func prepareSearchBar() {
@@ -329,6 +347,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        self.isOnMainView = false // hide the tab bar
+        
         if segue.identifier == kToContactGroupDetailSegue {
             let contactGroupDetailViewController = segue.destination as! ContactGroupDetailViewController
             let contactGroup = sender as! Label
@@ -387,6 +407,7 @@ extension ContactGroupsViewController: UISearchBarDelegate, UISearchResultsUpdat
 {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.search(text: searchController.searchBar.text)
+        queryString = searchController.searchBar.text ?? ""
         tableView.reloadData()
     }
 }
@@ -418,6 +439,7 @@ extension ContactGroupsViewController: UITableViewDataSource
                 let data = viewModel.cellForRow(at: indexPath)
                 cell.config(labelID: data.ID,
                             name: data.name,
+                            queryString: self.queryString,
                             count: data.count,
                             color: data.color,
                             wasSelected: viewModel.isSelected(groupID: data.ID),
@@ -432,6 +454,7 @@ extension ContactGroupsViewController: UITableViewDataSource
                     if let label = fetchedController.object(at: indexPath) as? Label {
                         cell.config(labelID: label.labelID,
                                     name: label.name,
+                                    queryString: self.queryString,
                                     count: label.emails.count,
                                     color: label.color,
                                     wasSelected: false,
@@ -446,6 +469,7 @@ extension ContactGroupsViewController: UITableViewDataSource
                         // TODO: better error handling
                         cell.config(labelID: "",
                                     name: "Error in retrieving contact group name in core data",
+                                    queryString: "",
                                     count: 0,
                                     color: ColorManager.defaultColor,
                                     wasSelected: false,
@@ -488,6 +512,51 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate
 
 extension ContactGroupsViewController: UITableViewDelegate
 {
+    func tableView(_ tableView: UITableView,
+                   editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        self.resetStateFromMultiSelect()
+        
+        let deleteHandler = {
+            (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
+            
+            let deleteActionHandler = {
+                (action: UIAlertAction) -> Void in
+                
+                firstly {
+                    () -> Promise<Void> in
+                    // attempt to delete selected groups
+                    ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                    if let cell = self.tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell {
+                        self.viewModel.addSelectedGroup(ID: cell.getLabelID(),
+                                                        indexPath: indexPath)
+                    }
+                    return self.viewModel.deleteGroups()
+                    }.ensure {
+                        ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                    }.catch {
+                        error in
+                        error.alert(at: self.view)
+                }
+            }
+
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                    style: .cancel,
+                                                    handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._delete_contact,
+                                                    style: .destructive,
+                                                    handler: deleteActionHandler))
+
+            alertController.popoverPresentationController?.sourceView = self.view
+            alertController.popoverPresentationController?.sourceRect = self.view.frame
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
+        let deleteAction = UITableViewRowAction.init(style: .destructive,
+                                                     title: LocalString._general_delete_action,
+                                                     handler: deleteHandler)
+        return [deleteAction]
+    }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isEditingState {
             // blocks contact email cell contact group editing
@@ -587,6 +656,7 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                     if let label = fetchedController.object(at: indexPath!) as? Label {
                         cell.config(labelID: label.labelID,
                                     name: label.name,
+                                    queryString: self.queryString,
                                     count: label.emails.count,
                                     color: label.color,
                                     wasSelected: false,
@@ -595,6 +665,7 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                         // TODO; better error handling
                         cell.config(labelID: "",
                                     name: "Error in retrieving contact group name in core data",
+                                    queryString: "",
                                     count: 0,
                                     color: ColorManager.defaultColor,
                                     wasSelected: false,

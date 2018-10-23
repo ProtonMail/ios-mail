@@ -147,17 +147,6 @@ final class ContactEditEmail: ContactEditTypeInterface {
                                                                contactID: contactID,
                                                                inManagedObjectContext: context)
             if let emailObject = emailObject {
-                // Remove
-                print("fuck \(self.newEmail)")
-                let labels = emailObject.labels.allObjects as! [Label]
-                for label in labels {
-                    print("label", label.name, label.labelID)
-                    
-                    for email in label.emails.allObjects as! [Email] {
-                        print("email", email.name, email.emailID)
-                    }
-                }
-                
                 if let contactGroups = emailObject.labels.allObjects as? [Label] {
                     for contactGroup in contactGroups {
                         origContactGroupIDs.insert(contactGroup.labelID)

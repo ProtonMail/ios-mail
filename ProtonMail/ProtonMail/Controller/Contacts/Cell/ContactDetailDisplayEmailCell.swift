@@ -13,7 +13,6 @@ class ContactDetailDisplayEmailCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var value: UILabel!
     @IBOutlet weak var iconStackView: UIStackView!
-    @IBOutlet weak var iconStackViewWidthConstraint: NSLayoutConstraint!
     
     func configCell(title: String, value: String, contactGroupColors: [String]) {        
         self.title.text = title
@@ -21,9 +20,8 @@ class ContactDetailDisplayEmailCell: UITableViewCell {
         
         prepareContactGroupIcons(cell: self,
                                  contactGroupColors: contactGroupColors,
-                                 iconStackView: iconStackView,
-                                 iconStackViewWidthConstraint: iconStackViewWidthConstraint)
+                                 iconStackView: iconStackView)
     }
 }
 
-extension ContactDetailDisplayEmailCell: ContactCellShare {}
+extension ContactDetailDisplayEmailCell: ContactCellShare {} // use the default implementation

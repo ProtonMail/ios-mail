@@ -98,6 +98,8 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
         super.viewWillAppear(animated)
         self.viewModel.setupTimer(true)
         NotificationCenter.default.addKeyboardObserver(self)
+        
+        self.isOnMainView = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -143,6 +145,8 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        self.isOnMainView = false // hide the tab bar
+        
         if (segue.identifier == kContactDetailsSugue) {
             let contactDetailsViewController = segue.destination as! ContactDetailViewController
             let contact = sender as? Contact

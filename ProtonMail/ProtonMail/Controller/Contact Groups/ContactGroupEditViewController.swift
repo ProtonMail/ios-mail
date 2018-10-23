@@ -185,6 +185,7 @@ extension ContactGroupEditViewController: UITableViewDataSource
             cell.config(emailID: emailID,
                         name: name,
                         email: email,
+                        emailQueryString: "",
                         state: .editView,
                         viewModel: viewModel)
             return cell

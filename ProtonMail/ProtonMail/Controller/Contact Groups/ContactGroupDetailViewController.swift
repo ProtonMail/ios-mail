@@ -65,6 +65,8 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             
             ActivityIndicatorHelper.showActivityIndicator(at: self.view)
             return self.viewModel.reload()
+            }.ensure {
+                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
             }.done {
                 (isDeleted) in
                 
@@ -73,9 +75,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                 } else {
                     self.refresh()
                 }
-            }.ensure {
-                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-        }
+            }
     }
     
     private func refresh() {
@@ -167,7 +167,7 @@ extension ContactGroupDetailViewController: UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
+        if section == 0 && viewModel.getTotalEmails() > 0 {
             return LocalString._menu_contacts_title
         }
         return nil
@@ -181,6 +181,7 @@ extension ContactGroupDetailViewController: UITableViewDataSource
         cell.config(emailID: ret.emailID,
                     name: ret.name,
                     email: ret.email,
+                    emailQueryString: "",
                     state: .detailView)
         
         return cell
