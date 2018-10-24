@@ -8,7 +8,7 @@
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "NO"
+            buildForRunning = "YES"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
             buildForAnalyzing = "NO">
@@ -17,6 +17,20 @@
                BlueprintIdentifier = "4C4094ADA302FE10FF33218039B6C756"
                BuildableName = "KeymakerTests.xctest"
                BlueprintName = "KeymakerTests"
+               ReferencedContainer = "container:ProtonMail.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8150D92393298F02FA3A03CA9FE6DF20"
+               BuildableName = "ProtonMailTests.xctest"
+               BlueprintName = "ProtonMailTests"
                ReferencedContainer = "container:ProtonMail.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -49,6 +63,15 @@
             </BuildableReference>
          </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "7CC48161B0FC946A8DB234B96B6A66DD"
+            BuildableName = "ProtonMail.app"
+            BlueprintName = "ProtonMail"
+            ReferencedContainer = "container:ProtonMail.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -62,6 +85,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "7CC48161B0FC946A8DB234B96B6A66DD"
+            BuildableName = "ProtonMail.app"
+            BlueprintName = "ProtonMail"
+            ReferencedContainer = "container:ProtonMail.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -71,6 +104,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "4C4094ADA302FE10FF33218039B6C756"
+            BuildableName = "KeymakerTests.xctest"
+            BlueprintName = "KeymakerTests"
+            ReferencedContainer = "container:ProtonMail.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
