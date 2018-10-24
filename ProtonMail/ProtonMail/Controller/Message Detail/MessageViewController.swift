@@ -448,6 +448,13 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft{
                 let composeViewController = segue.destination.children[0] as! ComposeViewController
                 sharedVMService.newDraft(vmp: composeViewController, with: message, action: tapped)
+                
+                //TODO:: finish up here
+                let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                     vm: composeViewController.viewModel) //set view model
+                coordinator.viewController = composeViewController
+                composeViewController.set(coordinator: coordinator)
+                
             } else {
                 let composeViewController = segue.destination as! ComposeEmailViewController
                 sharedVMService.newDraft(vmp: composeViewController, with: self.url)

@@ -30,7 +30,7 @@ html_editor.setHtml = function(htmlBody) {
 
 /// get the html.
 html_editor.getHtml = function() {
-    return html_editor.editor.innerHTML
+    return html_editor.editor.innerHTML;
 };
 
 /// get clear test

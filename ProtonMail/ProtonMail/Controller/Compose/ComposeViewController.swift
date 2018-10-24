@@ -28,64 +28,76 @@
 
 
 import UIKit
-import JavaScriptCore
 import WebKit
+import JavaScriptCore
+import PromiseKit
+import AwaitKit
 
 
-class ComposeViewController : UIViewController, ViewModelProtocolNew {
+class ComposeViewController : UIViewController, ViewModelProtocolNew, CoordinatedNew {
+ 
     typealias argType = ComposeViewModel
+    typealias coordinatorType = ComposeCoordinator
     
-    // view model
-    fileprivate var viewModel : ComposeViewModel!
+    ///
+    var viewModel : ComposeViewModel! // view model
+    private var coordinator: ComposeCoordinator?
 
-    //
+    ///  UI
     @IBOutlet var htmlEditor: HtmlEditor!
+    @IBOutlet weak var expirationPicker: UIPickerView!
     private var headerView : ComposeView!
+    private var cancelButton: UIBarButtonItem! //cancel button.
     
+    ///
+    private var timer : Timer? //auto save timer
     
-    // offsets default
-    fileprivate var headerHeight : CGFloat = 186
+    /// private vars
+    private var contacts: [ContactPickerModelProtocol] = []
+    private var attachments: [Any]?
     
+    private var actualEncryptionStep              = EncryptionStep.DefinePassword
+    private var encryptionPassword: String        = ""
+    private var encryptionConfirmPassword: String = ""
+    private var encryptionPasswordHint: String    = ""
+    private var hasAccessToAddressBook: Bool      = false
+
+    private var cachedHeaderHeight : CGFloat      = 186 //offsets default
+
+    /// const values
+    private let kNumberOfColumnsInTimePicker: Int = 2
+    private let kNumberOfDaysInTimePicker: Int    = 30
+    private let kNumberOfHoursInTimePicker: Int   = 24
+
+    // view model setter
     func set(viewModel: ComposeViewModel) {
         self.viewModel = viewModel
     }
+    
+    func getCoordinator() -> CoordinatorNew? {
+        return self.coordinator
+    }
+    
+    func set(coordinator: ComposeCoordinator) {
+        self.coordinator = coordinator
+    }
+    
     
     ///
     func inactiveViewModel() {
         self.stopAutoSave()
         NotificationCenter.default.removeObserver(self)
         self.dismissKeyboard()
+        self.dismiss()
+    }
+    
+    private func dismiss() {
         if self.presentingViewController != nil {
             self.dismiss(animated: true, completion: nil)
         } else {
             let _ = self.navigationController?.popViewController(animated: true)
         }
     }
-    
-    fileprivate var cancelButton: UIBarButtonItem!
-
-    // private vars
-    fileprivate var timer : Timer!
-    fileprivate var draggin : Bool! = false
-    fileprivate var contacts: [ContactPickerModelProtocol] = []
-    fileprivate var actualEncryptionStep = EncryptionStep.DefinePassword
-    fileprivate var encryptionPassword: String = ""
-    fileprivate var encryptionConfirmPassword: String = ""
-    fileprivate var encryptionPasswordHint: String = ""
-    fileprivate var hasAccessToAddressBook: Bool = false
-
-    fileprivate var attachments: [Any]?
-
-    @IBOutlet weak var expirationPicker: UIPickerView!
-    
-    // MARK : const values
-    fileprivate let kNumberOfColumnsInTimePicker: Int = 2
-    fileprivate let kNumberOfDaysInTimePicker: Int = 30
-    fileprivate let kNumberOfHoursInTimePicker: Int = 24
-
-    // move it to coordinator
-    fileprivate let kPasswordSegue : String          = "to_eo_password_segue"
-    fileprivate let kExpirationWarningSegue : String = "expiration_warning_segue"
 
     fileprivate var isShowingConfirm : Bool = false
 
@@ -107,7 +119,9 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew {
         
         ///
         self.headerView = ComposeView(nibName: "ComposeView", bundle: nil)
-        self.headerView.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: headerHeight + 60)
+        self.headerView.view.frame = CGRect(x: 0, y: 0,
+                                            width: self.view.frame.width,
+                                            height: self.cachedHeaderHeight + 60)
         self.headerView.delegate = self
         self.headerView.datasource = self
         self.htmlEditor.delegate = self
@@ -124,9 +138,9 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew {
         self.contacts = sharedContactDataService.allContactVOs()
         self.retrieveAllContacts()
 
-       // self.expirationPicker.alpha = 0.0
-//        self.expirationPicker.dataSource = self
-//        self.expirationPicker.delegate = self
+        self.expirationPicker.alpha = 0.0
+        self.expirationPicker.dataSource = self
+        self.expirationPicker.delegate = self
 
         self.attachments = viewModel.getAttachments()
 
@@ -143,7 +157,6 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew {
                 PMLog.D(" error: \(error)")
             }
             self.contacts = contacts
-//            self.headerView.reloadData()
         }
     }
 
@@ -162,15 +175,26 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew {
     }
 
     fileprivate func dismissKeyboard() {
-        //self.headerView.dismissKeyboard()
+        self.headerView.subject.becomeFirstResponder()
+        self.headerView.subject.resignFirstResponder()
     }
 
     fileprivate func updateMessageView() {
         self.headerView.subject.text = self.viewModel.getSubject()
-        //self.shouldShowKeyboard = false
         let body = self.viewModel.getHtmlBody()
         self.htmlEditor.setHtml(body: body)
-
+        
+        // update draft if first time create
+        if viewModel.getActionType() != .openDraft {
+            self.viewModel.collectDraft (
+                self.viewModel.getSubject(),
+                body: body,
+                expir: self.headerView.expirationTimeInterval,
+                pwd:self.encryptionPassword,
+                pwdHit:self.encryptionPasswordHint
+            )
+        }
+        
         guard let addr = self.viewModel.getDefaultSendAddress() else {
             return
         }
@@ -182,7 +206,6 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew {
                 }.catch({ (_) in
                     
                 })
-                
                 if origAddr.email.lowercased().range(of: "@pm.me") != nil {
                     guard userCachedStatus.isPMMEWarningDisabled == false else {
                         return
@@ -257,21 +280,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == kPasswordSegue {
-//            let popup = segue.destination as! ComposePasswordViewController
-//            popup.pwdDelegate = self
-//            popup.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
-//            self.setPresentationStyleForSelfController(self, presentingController: popup)
-//        } else if segue.identifier == kExpirationWarningSegue {
-//            let popup = segue.destination as! ExpirationWarningViewController
-//            popup.delegate = self
-//            let nonePMEmail = self.encryptionPassword.count <= 0 ? self.composeView.nonePMEmails : [String]()
-//            popup.config(needPwd: nonePMEmail,
-//                         pgp: self.composeView.pgpEmails)
-//        }
-    }
+
     
     internal func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController) {
         presentingController.providesPresentationContextTransitionStyle = true
@@ -281,38 +290,37 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew {
     
     @IBAction func send_clicked(_ sender: AnyObject) {
         self.dismissKeyboard()
+        if let suject = self.headerView.subject.text {
+            if !suject.isEmpty {
+                self.sendMessage()
+                return
+            }
+        }
 
-//        if let suject = self.composeView.subject.text {
-//            if !suject.isEmpty {
-//                self.sendMessage()
-//                return
-//            }
-//        }
-//
-//        let alertController = UIAlertController(title: LocalString._composer_compose_action,
-//                                                message: LocalString._composer_send_no_subject_desc,
-//                                                preferredStyle: .alert)
-//        alertController.addAction(UIAlertAction(title: LocalString._general_send_action,
-//                                                style: .destructive, handler: { (action) -> Void in
-//            self.sendMessage()
-//        }))
-//        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-//        present(alertController, animated: true, completion: nil)
+        let alertController = UIAlertController(title: LocalString._composer_compose_action,
+                                                message: LocalString._composer_send_no_subject_desc,
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: LocalString._general_send_action,
+                                                style: .destructive, handler: { (action) -> Void in
+                                                    self.sendMessage()
+                                                }))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        present(alertController, animated: true, completion: nil)
     }
 
     internal func sendMessage () {
-//        if self.composeView.expirationTimeInterval > 0 {
-//            if self.composeView.hasPGPPinned ||
-//                (self.composeView.hasNonePMEmails && self.encryptionPassword.count <= 0 ) {
-//
+        if self.headerView.expirationTimeInterval > 0 {
+            if self.headerView.hasPGPPinned ||
+                (self.headerView.hasNonePMEmails && self.encryptionPassword.count <= 0 ) {
+                self.coordinator?.go(to: .expirationWarning)
 //                self.performSegue(withIdentifier: self.kExpirationWarningSegue, sender: self)
-//                return
-//            }
-//
-//        }
-//        delay(0.3) {
-//            self.sendMessageStepTwo()
-//        }
+                return
+            }
+            
+        }
+        delay(0.3) {
+            self.sendMessageStepTwo()
+        }
     }
     
     internal func sendMessageStepTwo() {
@@ -328,18 +336,18 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew {
         }
         
         stopAutoSave()
-        self.collectDraft()
-        self.viewModel.sendMessage()
-        
-        // show messagex
-        delay(0.5) {
-            NSError.alertMessageSendingToast()
-        }
-        
-        if presentingViewController != nil {
-            dismiss(animated: true, completion: nil)
-        } else {
-            let _ = navigationController?.popToRootViewController(animated: true)
+        self.collectDraftData().done {
+            self.viewModel.sendMessage()
+            // show messagex
+            delay(0.5) {
+                NSError.alertMessageSendingToast()
+            }
+            
+            if self.presentingViewController != nil {
+                self.dismiss(animated: true, completion: nil)
+            } else {
+                let _ = self.navigationController?.popToRootViewController(animated: true)
+            }
         }
     }
     
@@ -354,93 +362,102 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew {
             }
         }
         
-//        if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
-//            self.isShowingConfirm = true
-//            let alertController = UIAlertController(title: LocalString._general_confirmation_title,
-//                                                    message: nil, preferredStyle: .actionSheet)
-//            alertController.addAction(UIAlertAction(title: LocalString._composer_save_draft_action,
-//                                                    style: .default, handler: { (action) -> Void in
-//                self.stopAutoSave()
-//                self.collectDraft()
-//                self.viewModel.updateDraft()
-//                dismiss()
-//            }))
-//
-//            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
-//                                                    style: .cancel, handler: { (action) -> Void in
-//                self.isShowingConfirm = false
-//            }))
-//
-//            alertController.addAction(UIAlertAction(title: LocalString._composer_discard_draft_action,
-//                                                    style: .destructive, handler: { (action) -> Void in
-//                self.stopAutoSave()
-//                self.viewModel.deleteDraft()
-//                dismiss()
-//            }))
-//
-//            alertController.popoverPresentationController?.barButtonItem = sender
-//            alertController.popoverPresentationController?.sourceRect = self.view.frame
-//            present(alertController, animated: true, completion: nil)
-//        } else {
+        if self.viewModel.hasDraft || self.headerView.hasContent || ((attachments?.count ?? 0) > 0) {
+            self.isShowingConfirm = true
+            let alertController = UIAlertController(title: LocalString._general_confirmation_title,
+                                                    message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: LocalString._composer_save_draft_action,
+                                                    style: .default, handler: { (action) -> Void in
+                self.stopAutoSave()
+                self.collectDraftData().done {
+                    self.viewModel.updateDraft()
+                }.catch { _ in
+                    
+                }.finally {
+                    dismiss()
+                }
+            }))
+
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                    style: .cancel, handler: { (action) -> Void in
+                self.isShowingConfirm = false
+            }))
+
+            alertController.addAction(UIAlertAction(title: LocalString._composer_discard_draft_action,
+                                                    style: .destructive, handler: { (action) -> Void in
+                self.stopAutoSave()
+                self.viewModel.deleteDraft()
+                dismiss()
+            }))
+
+            alertController.popoverPresentationController?.barButtonItem = sender
+            alertController.popoverPresentationController?.sourceRect = self.view.frame
+            present(alertController, animated: true, completion: nil)
+        } else {
             dismiss()
-//        }
-    }
-    
-    // MARK: - Private methods
-    fileprivate func setupAutoSave() {
-        self.timer = Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(ComposeEmailViewController.autoSaveTimer), userInfo: nil, repeats: true)
-        if viewModel.getActionType() != .openDraft {
-            self.timer.fire()
         }
     }
     
+    // MARK: - Private methods
+    fileprivate func setupAutoSave(firstTime : Bool = false) {
+        self.timer = Timer.scheduledTimer(timeInterval: 120,
+                                          target: self,
+                                          selector: #selector(ComposeEmailViewController.autoSaveTimer),
+                                          userInfo: nil,
+                                          repeats: true)
+    }
+    
     fileprivate func stopAutoSave() {
-        if self.timer != nil {
-            self.timer.invalidate()
+        if let t = self.timer {
+            t.invalidate()
             self.timer = nil
         }
     }
     
     @objc func autoSaveTimer() {
-        //self.collectDraft()
-        self.viewModel.updateDraft()
+        self.updateCIDs().then {
+            self.collectDraftData()
+        }.done {
+            self.viewModel.updateDraft()
+        }
     }
     
-    fileprivate func collectDraft() {
-//        let orignal = self.getOrignalEmbedImages()
-//        let edited = self.getEditedEmbedImages()
-//        self.checkEmbedImageEdit(orignal!, edited: edited!)
-//        var body = self.getHTML()
-//        if (body?.isEmpty)! {
-//            body = "<div><br></div>"
-//        }
-
-//        self.viewModel.collectDraft (
-//            self.composeView.subject.text!,
-//            body: body!,
-//            expir: self.composeView.expirationTimeInterval,
-//            pwd:self.encryptionPassword,
-//            pwdHit:self.encryptionPasswordHint
-//        )
+    private func updateCIDs() -> Guarantee<Void> {
+        return Guarantee { ret in
+            let orignalPromise = self.htmlEditor.getOrignalCIDs()
+            let editedPromise  = self.htmlEditor.getEditedCIDs()
+            when(fulfilled: orignalPromise, editedPromise).done { (orignal, edited) in
+                self.checkEmbedImageEdit(orignal, edited: edited)
+            }.catch { (_) in
+                //
+            }.finally {
+                ret(())
+            }
+        }
     }
-
-//    func getHTML() -> String! {
-//        // this method is copy of super's with one difference: it escapes backslash before calling private removeQuotesFromHTML: and tidyHTML:, since they are messing up backslash with some other special symbols and replace it with other unexpected things. This problem is implementation detail of ZSSRichTextEditor.
-//        guard var html = self.webView.stringByEvaluatingJavaScript(from: "zss_editor.getHTML();") else {
-//            return ""
-//        }
-//        html = html.replacingOccurrences(of: "\\", with: "&#92;", options: .caseInsensitive, range: nil)
-//        html = self.perform(Selector(("removeQuotesFromHTML:")), with: html).takeUnretainedValue() as! String
-//        html = self.perform(Selector(("tidyHTML:")), with: html).takeUnretainedValue() as! String
-//        return html
-//    }
+    
+    private func collectDraftData()  -> Guarantee<Void>  {
+        return Guarantee { ret in
+            self.htmlEditor.getHtml().done { body in
+                self.viewModel.collectDraft (
+                    self.headerView.subject.text!,
+                    body: body,
+                    expir: self.headerView.expirationTimeInterval,
+                    pwd:self.encryptionPassword,
+                    pwdHit:self.encryptionPasswordHint
+                )
+            }.catch { _ in
+                //handle the errors
+            }.finally {
+                ret(())
+            }
+        }
+    }
     
     fileprivate func checkEmbedImageEdit(_ orignal: String, edited: String) {
-        PMLog.D(edited)
         if let atts = viewModel.getAttachments() {
             for att in atts {
                 if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
-                    PMLog.D(content_id)
                     if orignal.contains(content_id) {
                         if !edited.contains(content_id) {
                             self.viewModel.deleteAtt(att)
@@ -458,38 +475,54 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew {
             self.headerView.updateAttachmentButton(false)
         }
     }
+    
+    
+    
+    
+    
+    //    func getHTML() -> String! {
+    //        // this method is copy of super's with one difference: it escapes backslash before calling private removeQuotesFromHTML: and tidyHTML:, since they are messing up backslash with some other special symbols and replace it with other unexpected things. This problem is implementation detail of ZSSRichTextEditor.
+    //        guard var html = self.webView.stringByEvaluatingJavaScript(from: "zss_editor.getHTML();") else {
+    //            return ""
+    //        }
+    //        html = html.replacingOccurrences(of: "\\", with: "&#92;", options: .caseInsensitive, range: nil)
+    //        html = self.perform(Selector(("removeQuotesFromHTML:")), with: html).takeUnretainedValue() as! String
+    //        html = self.perform(Selector(("tidyHTML:")), with: html).takeUnretainedValue() as! String
+    //        return html
+    //    }
+    
 }
 extension ComposeViewController : HtmlEditorDelegate {
     func ContentLoaded() {
-        updateEmbedImages()
+        self.updateEmbedImages()
     }
 }
 
-//
-//extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
-//
-//    func Cancelled() {
-//
-//    }
-//
-//    func Apply(_ password: String, confirmPassword: String, hint: String) {
-//        self.encryptionPassword = password
-//        self.encryptionConfirmPassword = confirmPassword
-//        self.encryptionPasswordHint = hint
-//        self.composeView.showEncryptionDone()
-//        self.updateEO()
-//    }
-//
-//    func Removed() {
-//        self.encryptionPassword = ""
-//        self.encryptionConfirmPassword = ""
-//        self.encryptionPasswordHint = ""
-//
-//        self.composeView.showEncryptionRemoved()
-//        self.updateEO()
-//    }
-//}
-//
+
+extension ComposeViewController : ComposePasswordViewControllerDelegate {
+
+    func Cancelled() {
+
+    }
+
+    func Apply(_ password: String, confirmPassword: String, hint: String) {
+        self.encryptionPassword = password
+        self.encryptionConfirmPassword = confirmPassword
+        self.encryptionPasswordHint = hint
+        self.headerView.showEncryptionDone()
+        self.updateEO()
+    }
+
+    func Removed() {
+        self.encryptionPassword = ""
+        self.encryptionConfirmPassword = ""
+        self.encryptionPasswordHint = ""
+
+        self.headerView.showEncryptionRemoved()
+        self.updateEO()
+    }
+}
+
 // MARK : - view extensions
 extension ComposeViewController : ComposeViewDelegate {
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
@@ -499,9 +532,9 @@ extension ComposeViewController : ComposeViewDelegate {
     }
     
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {
-        self.headerHeight = size.height
+        self.cachedHeaderHeight = size.height
         // resize header view
-        self.headerView.view.frame.size.height = self.headerHeight
+        self.headerView.view.frame.size.height = self.cachedHeaderHeight
 //        self.updateContentLayout(true)
 //        self.webView.scrollView.isScrollEnabled = !showPicker
         self.htmlEditor.updateHeaderHeight()
@@ -592,7 +625,8 @@ extension ComposeViewController : ComposeViewDelegate {
     }
 
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView) {
-        self.performSegue(withIdentifier: kPasswordSegue, sender: self)
+        self.coordinator?.go(to: .password)
+//        self.performSegue(withIdentifier: kPasswordSegue, sender: self)
     }
 
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView) {
@@ -610,56 +644,53 @@ extension ComposeViewController : ComposeViewDelegate {
     }
 
     func composeViewDidTapExpirationButton(_ composeView: ComposeView) {
-//        self.expirationPicker.alpha = 1
-//        self.view.bringSubview(toFront: expirationPicker)
+        self.expirationPicker.alpha = 1
+        self.view.bringSubviewToFront(expirationPicker)
     }
 
     func composeViewHideExpirationView(_ composeView: ComposeView) {
-        //self.expirationPicker.alpha = 0
+        self.expirationPicker.alpha = 0
     }
 
     func composeViewCancelExpirationData(_ composeView: ComposeView) {
-      //  self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
-      //  self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
+        self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
+        self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
     }
 
     func composeViewCollectExpirationData(_ composeView: ComposeView) {
-//        let selectedDay = expirationPicker.selectedRow(inComponent: 0)
-//        let selectedHour = expirationPicker.selectedRow(inComponent: 1)
-//        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour) {
-//            self.expirationPicker.alpha = 0
-//        }
-//        self.updateEO()
+        let selectedDay = expirationPicker.selectedRow(inComponent: 0)
+        let selectedHour = expirationPicker.selectedRow(inComponent: 1)
+        if self.headerView.setExpirationValue(selectedDay, hour: selectedHour) {
+            self.expirationPicker.alpha = 0
+        }
+        self.updateEO()
     }
 
     func updateEO() {
-//        self.viewModel.updateEO(expir: self.composeView.expirationTimeInterval,
-//                                pwd: self.encryptionPassword,
-//                                pwdHit: self.encryptionPasswordHint)
-//        self.composeView.reloadPicker()
+        self.viewModel.updateEO(expir: self.headerView.expirationTimeInterval,
+                                pwd: self.encryptionPassword,
+                                pwdHit: self.encryptionPasswordHint)
+        self.headerView.reloadPicker()
     }
 
     func composeView(_ composeView: ComposeView, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker) {
-    //    if (picker == self.headerView.toPicker) {
-    //        self.viewModel.toSelectedContacts.append(contact)
-    //    }
-        
-//        else if (picker == composeView.ccContactPicker) {
-//            self.viewModel.ccSelectedContacts.append(contact)
-//        } else if (picker == composeView.bccContactPicker) {
-//            self.viewModel.bccSelectedContacts.append(contact)
-//        }
+        if (picker == self.headerView.toContactPicker) {
+            self.viewModel.toSelectedContacts.append(contact)
+        } else if (picker == headerView.ccContactPicker) {
+            self.viewModel.ccSelectedContacts.append(contact)
+        } else if (picker == headerView.bccContactPicker) {
+            self.viewModel.bccSelectedContacts.append(contact)
+        }
         
         if self.viewModel.isValidNumberOfRecipients() == false {
             // rollback
-    //        if (picker == self.headerView.toPicker) {
-    //            self.viewModel.toSelectedContacts.removeLast()
-    //        }
-//            else if (picker == composeView.ccContactPicker) {
-//                self.viewModel.ccSelectedContacts.removeLast()
-//            } else if (picker == composeView.bccContactPicker) {
-//                self.viewModel.bccSelectedContacts.removeLast()
-//            }
+            if (picker == self.headerView.toContactPicker) {
+                self.viewModel.toSelectedContacts.removeLast()
+            } else if (picker == headerView.ccContactPicker) {
+                self.viewModel.ccSelectedContacts.removeLast()
+            } else if (picker == headerView.bccContactPicker) {
+                self.viewModel.bccSelectedContacts.removeLast()
+            }
             
             // present error
             let alert = UIAlertController(title: LocalString._too_many_recipients,
@@ -674,47 +705,46 @@ extension ComposeViewController : ComposeViewDelegate {
 
     func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker) {
         // here each logic most same, need refactor later
-   //     if (picker == self.headerView.toPicker) {
-//            var contactIndex = -1
-//            let selectedContacts = self.viewModel.toSelectedContacts
-//            for (index, selectedContact) in selectedContacts.enumerated() {
-//                if let contact = contact as? ContactVO {
-//                    if (contact.displayEmail == selectedContact.displayEmail) {
-//                        contactIndex = index
-//                    }
-//                } else if let contactGroup = contact as? ContactGroupVO {
-//                    if (contact.contactTitle == selectedContact.contactTitle) {
-//                        contactIndex = index
-//                    }
-//                }
-//            }
-//            if (contactIndex >= 0) {
-//                self.viewModel.toSelectedContacts.remove(at: contactIndex)
-//            }
-//        }
-//        else if (picker == composeView.ccContactPicker) {
-//            var contactIndex = -1
-//            let selectedContacts = self.viewModel.ccSelectedContacts
-//            for (index, selectedContact) in selectedContacts.enumerated() {
-//                if (contact.email == selectedContact.email) {
-//                    contactIndex = index
-//                }
-//            }
-//            if (contactIndex >= 0) {
-//                self.viewModel.ccSelectedContacts.remove(at: contactIndex)
-//            }
-//        } else if (picker == composeView.bccContactPicker) {
-//            var contactIndex = -1
-//            let selectedContacts = self.viewModel.bccSelectedContacts
-//            for (index, selectedContact) in selectedContacts.enumerated() {
-//                if (contact.email == selectedContact.email) {
-//                    contactIndex = index
-//                }
-//            }
-//            if (contactIndex >= 0) {
-//                self.viewModel.bccSelectedContacts.remove(at: contactIndex)
-//            }
-//        }
+        if (picker == self.headerView.toContactPicker) {
+            var contactIndex = -1
+            let selectedContacts = self.viewModel.toSelectedContacts
+            for (index, selectedContact) in selectedContacts.enumerated() {
+                if let contact = contact as? ContactVO {
+                    if (contact.displayEmail == selectedContact.displayEmail) {
+                        contactIndex = index
+                    }
+                } else if let contactGroup = contact as? ContactGroupVO {
+                    if (contact.contactTitle == selectedContact.contactTitle) {
+                        contactIndex = index
+                    }
+                }
+            }
+            if (contactIndex >= 0) {
+                self.viewModel.toSelectedContacts.remove(at: contactIndex)
+            }
+        } else if (picker == headerView.ccContactPicker) {
+            var contactIndex = -1
+            let selectedContacts = self.viewModel.ccSelectedContacts
+            for (index, selectedContact) in selectedContacts.enumerated() {
+                if (contact.displayEmail == selectedContact.displayEmail) {
+                    contactIndex = index
+                }
+            }
+            if (contactIndex >= 0) {
+                self.viewModel.ccSelectedContacts.remove(at: contactIndex)
+            }
+        } else if (picker == headerView.bccContactPicker) {
+            var contactIndex = -1
+            let selectedContacts = self.viewModel.bccSelectedContacts
+            for (index, selectedContact) in selectedContacts.enumerated() {
+                if (contact.displayEmail == selectedContact.displayEmail) {
+                    contactIndex = index
+                }
+            }
+            if (contactIndex >= 0) {
+                self.viewModel.bccSelectedContacts.remove(at: contactIndex)
+            }
+        }
     }
 }
 
@@ -748,16 +778,18 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
     }
 
     func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment attachment: Attachment) {
-        self.collectDraft()
-        self.viewModel.uploadAtt(attachment)
+        self.collectDraftData().done {
+            self.viewModel.uploadAtt(attachment)
+        }
     }
 
     func attachments(_ attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
-        self.collectDraft()
-        if let content_id = attachment.contentID(), !content_id.isEmpty && attachment.inline() {
-            self.htmlEditor.remove(embedImage: "cid:\(content_id)")
+        self.collectDraftData().done {
+            if let content_id = attachment.contentID(), !content_id.isEmpty && attachment.inline() {
+                self.htmlEditor.remove(embedImage: "cid:\(content_id)")
+            }
+            self.viewModel.deleteAtt(attachment)
         }
-        self.viewModel.deleteAtt(attachment)
     }
 
     func attachments(_ attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) {
@@ -766,48 +798,46 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
     func attachments(_ attViewController: AttachmentsTableViewController, error: String) {
     }
 }
-//
-//// MARK: - UIPickerViewDataSource
-//
-//extension ComposeEmailViewController: UIPickerViewDataSource {
-//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-//        return kNumberOfColumnsInTimePicker
-//    }
-//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        if (component == 0) {
-//            return kNumberOfDaysInTimePicker
-//        } else {
-//            return kNumberOfHoursInTimePicker
-//        }
-//    }
-//}
-//
-//// MARK: - UIPickerViewDelegate
-//
-//extension ComposeEmailViewController: UIPickerViewDelegate {
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        if (component == 0) {
-//            return "\(row) " + LocalString._composer_eo_days_title
-//        } else {
-//            return "\(row) " + LocalString._composer_eo_hours_title
-//        }
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-//        let selectedDay = pickerView.selectedRow(inComponent: 0)
-//        let selectedHour = pickerView.selectedRow(inComponent: 1)
-//
-//        let day = "\(selectedDay) " + LocalString._composer_eo_days_title
-//        let hour = "\(selectedHour) " + LocalString._composer_eo_hours_title
-//        self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
-//    }
-//
-//    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-//        return super.canPerformAction(action, withSender: sender)
-//    }
-//
-//}
-//
+
+// MARK: - UIPickerViewDataSource
+extension ComposeViewController: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return kNumberOfColumnsInTimePicker
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if (component == 0) {
+            return kNumberOfDaysInTimePicker
+        } else {
+            return kNumberOfHoursInTimePicker
+        }
+    }
+}
+
+// MARK: - UIPickerViewDelegate
+extension ComposeViewController: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if (component == 0) {
+            return "\(row) " + LocalString._composer_eo_days_title
+        } else {
+            return "\(row) " + LocalString._composer_eo_hours_title
+        }
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedDay = pickerView.selectedRow(inComponent: 0)
+        let selectedHour = pickerView.selectedRow(inComponent: 1)
+
+        let day = "\(selectedDay) " + LocalString._composer_eo_days_title
+        let hour = "\(selectedHour) " + LocalString._composer_eo_hours_title
+        self.headerView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
+    }
+
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return super.canPerformAction(action, withSender: sender)
+    }
+
+}
+
 extension ComposeViewController: ExpirationWarningVCDelegate{
     func send() {
         self.sendMessageStepTwo()

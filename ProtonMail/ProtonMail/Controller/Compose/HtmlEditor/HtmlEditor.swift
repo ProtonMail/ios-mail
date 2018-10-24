@@ -26,6 +26,7 @@
 //  THE SOFTWARE.
 
 import UIKit
+import PromiseKit
 
 /// workaround for accessoryView
 fileprivate final class InputAccessoryHackHelper: NSObject {
@@ -41,6 +42,13 @@ protocol HtmlEditorDelegate : AnyObject {
 /// Html editor
 class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     
+    enum Exception: Error {
+        case castError
+        case resEmpty
+        case jsError(Error)
+    }
+    
+    //
     private var isEditorLoaded: Bool = false
     private var contentHTML: String = ""
     
@@ -180,37 +188,75 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
                                                 completionHandler:{ })
     }
     
-    @discardableResult
-    private func run(with jsCommand: String) -> String {
-        self.webView.evaluateJavaScript(jsCommand) { (res, error) in
-            NSLog("Error is \(error)");
-            NSLog("JS result \(res) ");
+    
+    private func run<T>(with jsCommand: String) -> Promise<T> {
+        return Promise { seal in
+            DispatchQueue.main.async {
+                self.webView.evaluateJavaScript(jsCommand) { (res, error) in
+                    if let err = error {
+                        seal.reject(Exception.jsError(err))
+                    } else {
+                        guard let response = res else {
+                            seal.reject(Exception.resEmpty)
+                            return
+                        }
+                        guard let ret = response as? T else {
+                            seal.reject(Exception.castError)
+                            return
+                        }
+                        seal.fulfill(ret)
+                    }
+                }
+            }
         }
-        return ""
     }
+    
+    private func run(with jsCommand: String) -> Promise<Void> {
+        return Promise { seal in
+            DispatchQueue.main.async {
+                self.webView.evaluateJavaScript(jsCommand) { (res, error) in
+                    if let err = error {
+                        seal.reject(Exception.jsError(err))
+                    } else {
+                        seal.fulfill(())
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    /// get html body
+    ///
+    /// - Returns: return body promise
+    func getHtml() -> Promise<String> {
+        return run(with: "html_editor.getHtml();")
+    }
+
     
     func setHtml(body: String) {
         contentHTML = body
         if isEditorLoaded {
-            self.run(with: "html_editor.setHtml('\(body)');")
-            //updateHeight()
+            self.loadContent()
         }
-        
-        // MARK: Properties
-        /// The HTML that is currently loaded in the editor view, if it is loaded. If it has not been loaded yet, it is the
-        /// HTML that will be loaded into the editor view once it finishes initializing.
-        //            public var html: String {
-        //                get {
-        //                    return runJS("RE.getHtml();")
-        //                }
-        //                set {
-        //                    contentHTML = newValue
-        //                    if isEditorLoaded {
-        //                        runJS("RE.setHtml('\(body.escaped)');")
-        //                        updateHeight()
-        //                    }
-        //                }
-        //            }
+    }
+    
+    private func loadContent() {
+        firstly { () -> Promise<Void> in
+            self.run(with: "html_editor.setHtml('\(contentHTML)');")
+        }.then { (_) -> Promise<CGFloat> in
+            self.run(with: "document.body.scrollWidth")
+        }.then { (width) -> Promise<Void> in
+            if width > self.bounds.width {
+                return self.run(with: "html_editor.setWidth('\(width)')")
+            } else {
+                return Promise.value(())
+            }
+        }.done {_ in
+            self.delegate?.ContentLoaded()
+        }.catch { (error) in
+            //
+        }
     }
     
     //
@@ -237,41 +283,31 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     ///
     /// - Parameter html: the html signatue, don't need to escape
     func update(signature html : String) {
-        self.webView.evaluateJavaScript("html_editor.updateSignature('\(html.escaped)');") { (res, error) in
-//            NSLog("Error is \(error)");
-//            NSLog("JS result \(res) ");
+        self.run(with: "html_editor.updateSignature('\(html.escaped)');").catch { (error) in
+            NSLog("Error is \(error.localizedDescription)");
         }
     }
     
     func update(embedImage cid : String, encoded blob : String) {
-        self.webView.evaluateJavaScript("html_editor.updateEmbedImage(\"\(cid)\", \"\(blob.escaped)\");") { (res, error) in
-            NSLog("Error is \(error)");
-            NSLog("JS result \(res) ");
+        self.run(with: "html_editor.updateEmbedImage(\"\(cid)\", \"\(blob.escaped)\");").catch { (error) in
+            NSLog("Error is \(error.localizedDescription)");
         }
     }
     
     func remove(embedImage cid : String) {
-        self.webView.evaluateJavaScript("html_editor.removeEmbedImage('\(cid)');") { (res, error) in
-
+        self.run(with: "html_editor.removeEmbedImage('\(cid)');").catch { (error) in
+            NSLog("Error is \(error.localizedDescription)");
         }
     }
+    
+    func getOrignalCIDs() -> Promise<String> {
+        return self.run(with: "html_editor.removeEmbedImage('');")
+    }
 
-//
-//    -(NSString*)getOrignalEmbedImages;
-//
-//
-//    -(NSString*)getEditedEmbedImages;
-//
-//
+    func getEditedCIDs() -> Promise<String> {
+        return self.run(with: "html_editor.removeEmbedImage('');")
+    }
     
-    
-//    - (void)updateSignature: (NSString *) html {
-//    NSString *cleanedHTML = [self removeQuotesFromHTML:html];
-//    NSString *trigger = [NSString stringWithFormat:@"", cleanedHTML];
-//    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-//    }
-    
-
     
 //    private func updateOffset() {
 //
@@ -934,20 +970,23 @@ extension HtmlEditor: WKNavigationDelegate {
         NSLog("Loaded")
         if !isEditorLoaded {
             isEditorLoaded = true
-            self.webView.evaluateJavaScript("html_editor.setHtml('\(contentHTML)');") { (res, error) in
-
-                NSLog("Error is \(error)");
-                NSLog("JS result \(res) ");
-                self.webView.evaluateJavaScript("document.body.scrollWidth") { (res, error) in
-                    if let width = res as? CGFloat, width > self.bounds.width {
-                        self.webView.evaluateJavaScript("html_editor.setWidth('\(width)')", completionHandler: { (res, error) in
-                        })
-                    }
-                }
-                if error == nil {
-                    self.delegate?.ContentLoaded()
-                }
-            }
+            self.loadContent()
+            
+            
+//            self.webView.evaluateJavaScript("html_editor.setHtml('\(contentHTML)');") { (res, error) in
+//
+//                NSLog("Error is \(error)");
+//                NSLog("JS result \(res) ");
+//                self.webView.evaluateJavaScript("document.body.scrollWidth") { (res, error) in
+//                    if let width = res as? CGFloat, width > self.bounds.width {
+//                        self.webView.evaluateJavaScript("html_editor.setWidth('\(width)')", completionHandler: { (res, error) in
+//                        })
+//                    }
+//                }
+//                if error == nil {
+//                    self.delegate?.ContentLoaded()
+//                }
+//            }
             
             //isContentEditable = editingEnabledVar
             //placeholder = placeholderText
@@ -955,8 +994,6 @@ extension HtmlEditor: WKNavigationDelegate {
             //delegate?.richEditorDidLoad?(self)
             //runJS("document.getElementById('editor').innerHTML='\(escaped(input: contentHTML));'")
             //runJS("RE.setHtml('\(escaped(input: contentHTML))');")
-            
-           
         }
     }
     
@@ -965,8 +1002,6 @@ extension HtmlEditor: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        
-        
         
         if let url = navigationAction.request.url {
             print(url.absoluteString)

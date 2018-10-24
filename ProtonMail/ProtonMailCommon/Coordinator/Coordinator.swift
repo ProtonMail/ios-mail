@@ -30,6 +30,7 @@ protocol Coordinator: class {
     func insertIntoHierarchy(_ child: UIViewController)
     var controller: UIViewController! { get set }
 }
+
 extension Coordinator {
     func insertIntoHierarchy(_ child: UIViewController) {
         guard let navigationController = self.controller?.navigationController else {
