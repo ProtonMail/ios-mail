@@ -22,7 +22,7 @@ var biometricType: BiometricType {
         var error: NSError?
         
         if #available(iOS 9.0, *) {
-            guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
+            guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
                 print(error?.localizedDescription ?? "")
                 return .none
             }
