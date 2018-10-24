@@ -17,15 +17,13 @@ enum ContactGroupEditError: Error
 {
     case noEmailInGroup
     case noNameForGroup
-    case noContactGroupID
     
-    case NSSetConversionToEmailArrayFailure
-    case NSSetConversionToEmailSetFailure
-    
-    case addFailed
     case updateFailed
     
     case cannotGetCoreDataContext
+    
+    case InternalError
+    case TypeCastingError
 }
 
 extension ContactGroupEditError: LocalizedError {
@@ -35,20 +33,11 @@ extension ContactGroupEditError: LocalizedError {
             return LocalString._contact_groups_no_email_selected
         case .noNameForGroup:
             return LocalString._contact_groups_no_name_entered
-        case .noContactGroupID:
-            // TODO: localization
-            return NSLocalizedString("No group ID is returned from the contact group API",
-                                     comment: "Contact group no ID")
-        case .NSSetConversionToEmailArrayFailure:
-            // TODO: localization
-            return NSLocalizedString("Can't convert NSSet to array of Email",
-                                     comment: "Contact group NSSet to array conversion failed")
-        case .NSSetConversionToEmailSetFailure:
-            // TODO: localization
-            return NSLocalizedString("Can't convert NSSet to Set of Email",
-                                     comment: "Contact group NSSet to Set conversion failed")
-        case .addFailed:
-            return LocalString._contact_groups_api_add_error
+        case .InternalError:
+            return LocalString._internal_error
+        case .TypeCastingError:
+            return LocalString._type_casting_error
+            
         case .updateFailed:
             return LocalString._contact_groups_api_update_error
         case .cannotGetCoreDataContext:

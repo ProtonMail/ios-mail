@@ -117,12 +117,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                 ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
             }.catch {
                 error in
-                
-                let alert = UIAlertController(title: LocalString._contact_groups_save_error,
-                                              message: error.localizedDescription,
-                                              preferredStyle: .alert)
-                alert.addOKAction()
-                self.present(alert, animated: true, completion: nil)
+                error.alert(at: self.view)
             }
     }
     

@@ -298,37 +298,13 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     private func createContactGroupDetail(name: String,
                                           color: String,
                                           emailList: NSSet) -> Promise<Void> {
-        
-        return Promise {
-            seal in
-            
-            let completionHandler = {
-                (contactGroupID: String?) -> Void in
-                
-                if let contactGroupID = contactGroupID {
-                    self.contactGroup.ID = contactGroupID
-                    
-                    // add email IDs
-                    firstly {
-                        self.addEmailsToContactGroup(emailList: emailList)
-                        }.done {
-                            seal.fulfill(())
-                        }.catch {
-                            error in
-                            seal.reject(error)
-                    }
-                } else {
-                    PMLog.D("No contact group ID")
-                    seal.reject(ContactGroupEditError.addFailed)
-                }
+        return firstly {
+            return sharedContactGroupsDataService.createContactGroup(name: name, color: color)
+            }.then {
+                (ID: String) -> Promise<Void> in
+                self.contactGroup.ID = ID
+                return self.addEmailsToContactGroup(emailList: emailList)
             }
-            
-            // create contact group
-            sharedContactGroupsDataService.createContactGroup(name: name,
-                                                              color: color,
-                                                              completionHandler: completionHandler)
-            
-        }
     }
     
     /**
@@ -345,51 +321,37 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                                           color: String,
                                           updatedEmailList: NSSet) -> Promise<Void> {
         
-        return Promise {
-            seal in
+        return firstly {
+                () -> Promise<Void> in
             
-            let completionHandler = {
-                (success: Bool) -> Void in
-                
-                if success {
-                    // update email IDs
-                    if let original = self.contactGroup.originalEmailIDs as? Set<Email>,
-                        let updated = updatedEmailList as? Set<Email> {
-                        
-                        let toAdd = updated.subtracting(original)
-                        let toDelete = original.subtracting(updated)
-                        
-                        firstly {
-                            () -> Promise<Void> in
-                            self.addEmailsToContactGroup(emailList: toAdd as NSSet)
-                            }.then {
-                                _ -> Promise<Void> in
-                                self.removeEmailsFromContactGroup(emailList: toDelete as NSSet)
-                            }.done {
-                                seal.fulfill(())
-                            }.catch {
-                                error in
-                                seal.reject(error)
-                        }
-                    } else {
-                        PMLog.D("NSSet to Email set conversion failure")
-                        seal.reject(ContactGroupEditError.NSSetConversionToEmailSetFailure)
-                    }
+                if let ID = contactGroup.ID {
+                    // update contact group
+                    return sharedContactGroupsDataService.editContactGroup(groupID: ID,
+                                                                           name: name,
+                                                                           color: color)
                 } else {
-                    seal.reject(ContactGroupEditError.updateFailed)
+                    return Promise.init(error: ContactGroupEditError.TypeCastingError)
                 }
-            }
-            
-            // update contact group
-            if let ID = contactGroup.ID {
-                sharedContactGroupsDataService.editContactGroup(groupID: ID,
-                                                                name: name,
-                                                                color: color,
-                                                                completionHandler: completionHandler)
-            } else {
-                PMLog.D("No contact group ID")
-                seal.reject(ContactGroupEditError.noContactGroupID)
-            }
+            }.then {
+                () -> Promise<Void> in
+                
+                if let original = self.contactGroup.originalEmailIDs as? Set<Email>,
+                    let updated = updatedEmailList as? Set<Email> {
+                    let toAdd = updated.subtracting(original)
+                    return self.addEmailsToContactGroup(emailList: toAdd as NSSet)
+                } else {
+                    return Promise.init(error: ContactGroupEditError.TypeCastingError)
+                }
+            }.then {
+                () -> Promise<Void> in
+
+                if let original = self.contactGroup.originalEmailIDs as? Set<Email>,
+                    let updated = updatedEmailList as? Set<Email> {
+                    let toDelete = original.subtracting(updated)
+                    return self.removeEmailsFromContactGroup(emailList: toDelete as NSSet)
+                } else {
+                    return Promise.init(error: ContactGroupEditError.TypeCastingError)
+                }
         }
     }
     
@@ -399,25 +361,13 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - Returns: Promise<Void>
     */
     func deleteContactGroup() -> Promise<Void> {
-        return Promise {
-            seal in
-            
-            let completionHandler = {
-                (error: Error?) -> Void in
-                
-                if let error = error {
-                    seal.reject(error)
-                } else {
-                    seal.fulfill(())
-                }
-            }
+        return firstly {
+            () -> Promise<Void> in
             
             if let ID = contactGroup.ID {
-                sharedContactGroupsDataService.deleteContactGroup(groupID: ID,
-                                                                  completionHandler: completionHandler)
+                return sharedContactGroupsDataService.deleteContactGroup(groupID: ID)
             } else {
-                PMLog.D("No contact group ID")
-                seal.reject(ContactGroupEditError.noContactGroupID)
+                return Promise.init(error: ContactGroupEditError.InternalError)
             }
         }
     }
@@ -430,30 +380,19 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - Returns: Promise<Void>
      */
     func addEmailsToContactGroup(emailList: NSSet) -> Promise<Void> {
-        return Promise {
-            seal in
-            
-            let completionHandler = {
-                () -> Void in
-                
-                seal.fulfill(())
-            }
-            
-            if let emails = emailList.allObjects as? [Email] {
-                if let ID = contactGroup.ID {
-                    sharedContactGroupsDataService.addEmailsToContactGroup(groupID: ID,
-                                                                           emailList: emails,
-                                                                           completionHandler: completionHandler)
+        return firstly {
+            () -> Promise<Void> in
+                if let emails = emailList.allObjects as? [Email] {
+                    if let ID = contactGroup.ID {
+                        return sharedContactGroupsDataService.addEmailsToContactGroup(groupID: ID,
+                                                                                      emailList: emails)
+                    } else {
+                        return Promise.init(error: ContactGroupEditError.InternalError)
+                    }
                 } else {
-                    PMLog.D("No contact group ID")
-                    
-                    seal.reject(ContactGroupEditError.noContactGroupID)
+                    return Promise.init(error: ContactGroupEditError.TypeCastingError)
                 }
-            } else {
-                PMLog.D("NSSet to Email array conversion failure")
-                seal.reject(ContactGroupEditError.NSSetConversionToEmailArrayFailure)
             }
-        }
     }
     
     /**
@@ -464,27 +403,18 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - Returns: Promise<Void>
      */
     func removeEmailsFromContactGroup(emailList: NSSet) -> Promise<Void> {
-        return Promise {
-            seal in
-            
-            let completionHandler = {
-                () -> Void in
-                
-                seal.fulfill(())
-            }
+        return firstly {
+            () -> Promise<Void> in
             
             if let emails = emailList.allObjects as? [Email] {
                 if let ID = contactGroup.ID {
-                    sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: ID,
-                                                                                emailList: emails,
-                                                                                completionHandler: completionHandler)
+                    return sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: ID,
+                                                                                       emailList: emails)
                 } else {
-                    PMLog.D("No contact group ID")
-                    seal.reject(ContactGroupEditError.noContactGroupID)
+                    return Promise.init(error: ContactGroupEditError.InternalError)
                 }
             } else {
-                PMLog.D("NSSet to Email array conversion failure")
-                seal.reject(ContactGroupEditError.NSSetConversionToEmailArrayFailure)
+                return Promise.init(error: ContactGroupEditError.TypeCastingError)
             }
         }
     }

@@ -1658,12 +1658,14 @@ class LocalizedString {
     lazy var _contact_groups_no_name_entered = NSLocalizedString("Please provide a group name",
                                                                  comment: "The message will show up when the user attempts to create a contact group without any name specified")
     
-    lazy var _contact_groups_api_add_error = NSLocalizedString("Can't create contact group through API",
-                                                                  comment: "The error message will be shown when the creation of the contact group through API failed")
     lazy var _contact_groups_api_update_error = NSLocalizedString("Can't update contact group through API",
                                                                   comment: "The error message will be shown when the update of the contact group through API failed")
     
     // general error
     lazy var _cannot_get_coredata_context = NSLocalizedString("Can't delete contact group through API",
                                                                   comment: "The error message will be shown when the deletionn of the contact group through API failed")
+    lazy var _type_casting_error = NSLocalizedString("Type casting error",
+                                                     comment: "Internal type casting error")
+    lazy var _internal_error = NSLocalizedString("Internal Error",
+                                                 comment: "The preconditions are not met")
 }
