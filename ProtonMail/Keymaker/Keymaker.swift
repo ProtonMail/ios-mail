@@ -31,6 +31,8 @@ public class Keymaker: NSObject {
         didSet {
             if _mainKey != nil {
                 self.autolocker?.autolockCountdownStart = nil
+            } else {
+                NotificationCenter.default.post(.init(name: Keymaker.requestMainKey)) // TODO: validate if it is needed here
             }
         }
     }

@@ -29,16 +29,5 @@ final class KeychainWrapper {
             group = prefix + "ch.protonmail.protonmail"
             service = "ch.protonmail"
         #endif
-        
-        defer {
-            self.migration()
-        }
-    }
-    
-    private func migration() {
-        #if !APP_EXTENSION
-        self.keychain.removeItem(forKey: UserDataService.Key.password)
-        self.keychain.removeItem(forKey: UserCachedStatus.Key.pinCodeCache)
-        #endif
     }
 }

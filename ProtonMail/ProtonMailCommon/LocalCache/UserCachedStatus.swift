@@ -62,6 +62,18 @@ final class UserCachedStatus : SharedCacheBase {
         static let isIAPAvailable = "isIAPAvailable"
     }
     
+    override init() {
+        super.init()
+        defer {
+            self.migration()
+        }
+    }
+    
+    private func migration() {
+        self.getShared().removeObject(forKey: UserCachedStatus.Key.isManuallyLockApp)
+        self.getShared().removeObject(forKey: UserCachedStatus.Key.touchIDEmail)
+    }
+    
     var isForcedLogout : Bool = false
     
     var isCheckSpaceDisabled: Bool {

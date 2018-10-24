@@ -49,6 +49,55 @@ class UserDataService {
         }
     }
     
+    init() {
+        #if !APP_EXTENSION
+        defer { self.migration() }
+        #endif
+    }
+    
+    private func migration() {
+        // Values need to be protected with mainKey
+        
+        // + mailboxPassword
+        if let cleartextMailboxPassword = sharedKeychain.keychain.string(forKey: UserDataService.Key.mailboxPasswordPreMainKey) {
+            self.mailboxPassword = cleartextMailboxPassword
+        }
+        
+        
+        // MainKey should be protected according to user settings
+        let appLockMigration = DispatchGroup()
+        var appWasLocked = false
+        
+        // + via touch id
+        if userCachedStatus.getShared().bool(forKey: UserCachedStatus.Key.isTouchIDEnabled) {
+            appWasLocked = true
+            appLockMigration.enter()
+            keymaker.activate(BioProtection()) { _ in appLockMigration.leave() }
+        }
+        
+        // + via pin
+        if userCachedStatus.getShared().bool(forKey: UserCachedStatus.Key.isPinCodeEnabled),
+            let pin = sharedKeychain.keychain.string(forKey: UserCachedStatus.Key.pinCodeCache)
+        {
+            appWasLocked = true
+            appLockMigration.enter()
+            keymaker.activate(PinProtection(pin: pin)) { _ in appLockMigration.leave() }
+        }
+        
+        // + and lock the app afterwards
+        if appWasLocked {
+            appLockMigration.notify(queue: .main) { keymaker.lockTheApp() }
+        }
+        
+        
+        // Clear up the old stuff on fresh installs also
+        sharedKeychain.keychain.removeItem(forKey: UserDataService.Key.password)
+        sharedKeychain.keychain.removeItem(forKey: UserCachedStatus.Key.pinCodeCache)
+        sharedKeychain.keychain.removeItem(forKey: UserDataService.Key.mailboxPasswordPreMainKey)
+        userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.isTouchIDEnabled)
+        userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.isPinCodeEnabled)
+    }
+    
     typealias CompletionBlock = APIService.CompletionBlock
     typealias UserInfoBlock = APIService.UserInfoBlock
     
@@ -62,7 +111,8 @@ class UserDataService {
     struct Key {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
         static let isRememberUser            = "isRememberUserKey"
-        static let mailboxPassword           = "mailboxPasswordKey"
+        static let mailboxPasswordPreMainKey = "mailboxPasswordKey"
+        static let mailboxPassword           = "mailboxPasswordKeyProtectedWithMainKey"
         static let username                  = "usernameKey"
         static let password                  = "passwordKey"
         static let userInfo                  = "userInfoKey"
