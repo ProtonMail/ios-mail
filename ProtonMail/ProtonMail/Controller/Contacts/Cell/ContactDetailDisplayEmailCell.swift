@@ -20,7 +20,8 @@ class ContactDetailDisplayEmailCell: UITableViewCell {
         
         prepareContactGroupIcons(cell: self,
                                  contactGroupColors: contactGroupColors,
-                                 iconStackView: iconStackView)
+                                 iconStackView: iconStackView,
+                                 showNoneLabel: false)
     }
 }
 

@@ -282,7 +282,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
                                                 style: .cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: LocalString._delete_contact,
+        alertController.addAction(UIAlertAction(title: LocalString._contact_groups_delete,
                                                 style: .destructive,
                                                 handler: deleteHandler))
         
@@ -543,7 +543,7 @@ extension ContactGroupsViewController: UITableViewDelegate
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
                                                     style: .cancel,
                                                     handler: nil))
-            alertController.addAction(UIAlertAction(title: LocalString._delete_contact,
+            alertController.addAction(UIAlertAction(title: LocalString._contact_groups_delete,
                                                     style: .destructive,
                                                     handler: deleteActionHandler))
 

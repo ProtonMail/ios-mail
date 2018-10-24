@@ -1633,7 +1633,7 @@ class LocalizedString {
     
     lazy var _contact_groups_select_color = NSLocalizedString("Select Color",
                                                               comment: "The title for the view where user can select the color for the group")
-    lazy var _contact_groups_delete = NSLocalizedString("Delete Group",
+    lazy var _contact_groups_delete = NSLocalizedString("Delete Contact Group",
                                                         comment: "The description of the button for deleting the contact group")
     
     lazy var _contact_groups_member_count_description = NSLocalizedString("%d Member",
@@ -1642,6 +1642,8 @@ class LocalizedString {
                                                                           comment: "The string that describes whether there are 2 or more members in the contact group")
     lazy var _contact_groups_selected_group_count_description = NSLocalizedString("%d Selected",
                                                                                   comment: "The string that describes how many contact groups are currently selected")
+    lazy var _contact_group_no_contact_group_associated_with_contact_email = NSLocalizedString("None",
+                                                                                               comment: "A *short* description saying that there is no contact group associated with this contact email")
     
     // contact group errors
     lazy var _contact_groups_save_error = NSLocalizedString("Can't save contact group",
@@ -1660,6 +1662,8 @@ class LocalizedString {
                                                                   comment: "The error message will be shown when the creation of the contact group through API failed")
     lazy var _contact_groups_api_update_error = NSLocalizedString("Can't update contact group through API",
                                                                   comment: "The error message will be shown when the update of the contact group through API failed")
+    
+    // general error
     lazy var _cannot_get_coredata_context = NSLocalizedString("Can't delete contact group through API",
                                                                   comment: "The error message will be shown when the deletionn of the contact group through API failed")
 }

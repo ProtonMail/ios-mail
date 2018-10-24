@@ -33,7 +33,6 @@ class ContactPicker: UIView {
     private var searchTableViewController: ContactSearchTableViewController?
     private func createSearchTableViewController() -> ContactSearchTableViewController {
         let controller = ContactSearchTableViewController()
-        controller.tableView.rowHeight = CGFloat(ContactPickerDefined.ROW_HEIGHT)
         controller.tableView.register(UINib.init(nibName: ContactPickerDefined.ContactsTableViewCellName,
                                                  bundle: nil),
                                  forCellReuseIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier)

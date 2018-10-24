@@ -1767,20 +1767,20 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contacts_warnings" translatesAutoresizingMaskIntoConstraints="NO" id="F4x-zD-M7D">
-                                                    <rect key="frame" x="28" y="31.5" width="25" height="25"/>
+                                                    <rect key="frame" x="35" y="31.5" width="25" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="Ho1-PT-ilq"/>
                                                         <constraint firstAttribute="width" constant="25" id="Vec-0z-FLP"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Decryption Error" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FCs-Fn-NMu">
-                                                    <rect key="frame" x="65" y="23" width="247" height="20.5"/>
+                                                    <rect key="frame" x="72" y="23" width="233" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="verification of this content's signature failed" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LVb-90-kgx">
-                                                    <rect key="frame" x="65" y="51.5" width="247" height="16"/>
+                                                    <rect key="frame" x="72" y="51.5" width="233" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -2353,10 +2353,10 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="6gL-17-Vjp"/>
-        <segue reference="sDR-N5-yCe"/>
-        <segue reference="rru-oY-8Lv"/>
-        <segue reference="Grd-B0-e0M"/>
+        <segue reference="A8I-lk-YH7"/>
+        <segue reference="oQx-RX-nff"/>
+        <segue reference="pLm-6L-kNd"/>
         <segue reference="GcK-DS-QnS"/>
-        <segue reference="Rzd-pg-PEg"/>
+        <segue reference="3li-n2-ywX"/>
     </inferredMetricsTieBreakers>
 </document>

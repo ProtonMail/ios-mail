@@ -15,7 +15,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
     
-    private var emailQueryString = ""
+    private var queryString = ""
     private var searchController: UISearchController!
     
     let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
@@ -97,7 +97,7 @@ extension ContactGroupSelectEmailViewController: UISearchBarDelegate, UISearchRe
 {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.search(query: searchController.searchBar.text)
-        emailQueryString = searchController.searchBar.text ?? ""
+        queryString = searchController.searchBar.text ?? ""
         tableView.reloadData()
     }
 }
@@ -118,7 +118,7 @@ extension ContactGroupSelectEmailViewController: UITableViewDataSource
         cell.config(emailID: ret.ID,
                     name: ret.name,
                     email: ret.email,
-                    emailQueryString: self.emailQueryString,
+                    queryString: self.queryString,
                     state: .selectEmailView)
         
         cell.selectionStyle = .none

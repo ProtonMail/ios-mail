@@ -107,7 +107,8 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
             query.count > 0 {
             let lowercaseQuery = query.lowercased()
             emailsForDisplay = allEmails.filter({
-                if $0.email.lowercased().contains(check: lowercaseQuery) {
+                if $0.email.lowercased().contains(check: lowercaseQuery) ||
+                    $0.name.lowercased().contains(check: lowercaseQuery) {
                     return true
                 } else {
                     return false

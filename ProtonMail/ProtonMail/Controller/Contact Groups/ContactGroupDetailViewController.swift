@@ -181,7 +181,7 @@ extension ContactGroupDetailViewController: UITableViewDataSource
         cell.config(emailID: ret.emailID,
                     name: ret.name,
                     email: ret.email,
-                    emailQueryString: "",
+                    queryString: "",
                     state: .detailView)
         
         return cell

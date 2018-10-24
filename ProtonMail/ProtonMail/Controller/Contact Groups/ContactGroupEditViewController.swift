@@ -185,7 +185,7 @@ extension ContactGroupEditViewController: UITableViewDataSource
             cell.config(emailID: emailID,
                         name: name,
                         email: email,
-                        emailQueryString: "",
+                        queryString: "",
                         state: .editView,
                         viewModel: viewModel)
             return cell
@@ -223,27 +223,36 @@ extension ContactGroupEditViewController: UITableViewDelegate
         case .email:
             print("email actions")
         case .deleteGroup:
-            firstly {
-                () -> Promise<Void> in
+            let deleteActionHandler = {
+                (action: UIAlertAction) -> Void in
                 
-                ActivityIndicatorHelper.showActivityIndicator(at: self.view)
-                UIApplication.shared.isNetworkActivityIndicatorVisible = true
-                return viewModel.deleteContactGroup()
-                }.done {
-                    self.dismiss(animated: true, completion: nil)
-                }.ensure {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-                }.catch { (error) in
-                    let alert = UIAlertController(title: LocalString._contact_groups_delete_error,
-                                                  message: error.localizedDescription,
-                                                  preferredStyle: .alert)
-                    alert.addOKAction()
-                    
-                    UIApplication.shared.keyWindow?.rootViewController?.present(alert,
-                                                                                animated: true,
-                                                                                completion: nil)
+                firstly {
+                    () -> Promise<Void> in
+                    ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                    return self.viewModel.deleteContactGroup()
+                    }.done {
+                        self.dismiss(animated: true, completion: nil)
+                    }.ensure {
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                    }.catch {
+                        (error) in
+                        error.alert(at: self.view)
+                }
             }
+            
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                    style: .cancel,
+                                                    handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._contact_groups_delete,
+                                                    style: .destructive,
+                                                    handler: deleteActionHandler))
+            
+            alertController.popoverPresentationController?.sourceView = self.view
+            alertController.popoverPresentationController?.sourceRect = self.view.frame
+            self.present(alertController, animated: true, completion: nil)
         case .error:
             fatalError("This is a bug")
         }
