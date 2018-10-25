@@ -8,7 +8,7 @@
 
 import Foundation
 import PromiseKit
-import Pm
+import Crypto
 
 
 class ContactDetailsViewModelImpl : ContactDetailsViewModel {
@@ -189,7 +189,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                                              verifyTime: 0, ret0_: &ok)
                             self.verifyType2 = ok.boolValue
                             if self.verifyType2 {
-                                if !PmCheckPassphrase(key.private_key, sharedUserDataService.mailboxPassword!) {
+                                if !KeyCheckPassphrase(key.private_key, sharedUserDataService.mailboxPassword!) {
                                     self.verifyType2 = false
                                 }
                                 break

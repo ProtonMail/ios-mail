@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import Pm
+import Crypto
 
 class GoOpenPGPTests: XCTestCase {
     let openpgp = PmOpenPGP()!

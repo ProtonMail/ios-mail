@@ -9,7 +9,7 @@
 import Foundation
 import PromiseKit
 import AwaitKit
-import Pm
+import Crypto
 
 extension Data {
     var html2AttributedString: NSAttributedString? {

@@ -18,7 +18,7 @@ import Foundation
 import CoreData
 import PromiseKit
 import AwaitKit
-import Pm
+import Crypto
 
 extension Attachment {
     
@@ -53,8 +53,8 @@ extension Attachment {
     
     
     // Mark : public functions
-    func encrypt(byAddrID sender_address_id : String, mailbox_pwd: String) -> PmEncryptedSplit? {
-        var out: PmEncryptedSplit? = nil
+    func encrypt(byAddrID sender_address_id : String, mailbox_pwd: String) -> ModelsEncryptedSplit? {
+        var out: ModelsEncryptedSplit? = nil
         
         autoreleasepool() {
             do {
@@ -77,7 +77,7 @@ extension Attachment {
                 return nil
             }
             var error : NSError?
-            let data = PmUnArmor(out, &error)
+            let data = ArmorUnarmor(out, &error)
             if error != nil {
                 return nil
             }
@@ -88,7 +88,7 @@ extension Attachment {
         }
     }
     
-    func getSession() throws -> PmSessionSplit? {
+    func getSession() throws -> ModelsSessionSplit? {
         if self.keyPacket == nil {
             return nil
         }

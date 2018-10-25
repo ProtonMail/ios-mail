@@ -17,7 +17,7 @@
 import Foundation
 
 import XCTest
-import Pm
+import Crypto
 
 class OpenPGPTests: XCTestCase {
     
