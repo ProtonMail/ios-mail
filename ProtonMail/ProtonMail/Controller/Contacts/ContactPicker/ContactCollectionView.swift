@@ -16,7 +16,7 @@ protocol ContactCollectionViewDelegate : NSObjectProtocol, ContactCollectionView
     func collectionView(at: ContactCollectionView, entryTextDidChange text: String)
     func collectionView(at: ContactCollectionView, didEnterCustom text: String, needFocus focus: Bool)
     func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol)
-    func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol, callback: @escaping (([String]) -> Void))
+    func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol, callback: @escaping (([DraftEmailData]) -> Void))
     
     func collectionView(at: ContactCollectionView, didAdd contact: ContactPickerModelProtocol)
     func collectionView(at: ContactCollectionView, didRemove contact: ContactPickerModelProtocol)
@@ -456,12 +456,12 @@ extension ContactCollectionView : UICollectionViewDelegate {
                 cell.pickerFocused = true
             } else {
                 let callback = {
-                    (selectedEmailAddresses: [String]) -> Void in
+                    (selectedEmailAddresses: [DraftEmailData]) -> Void in
                     
                     if let contactGroup = cell.model as? ContactGroupVO { // must be contactGroupVO
                         if selectedEmailAddresses.count > 0 {
                             // update cell members
-                            contactGroup.setSelectedEmails(selectedMembers: selectedEmailAddresses)
+                            contactGroup.overwriteSelectedEmails(with: selectedEmailAddresses)
                             cell.prepareTitleForContactGroup()
                         } else {
                             // No member, delete this cell

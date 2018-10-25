@@ -272,9 +272,9 @@ class LocalizedString {
     /// "Define Hint (Optional)"
     lazy var _define_hint_optional = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
     /// "Too many recipients"
-    lazy var _too_many_recipients = NSLocalizedString("Define Hint (Optional)", comment: "Alert title")
+    lazy var _too_many_recipients_title = NSLocalizedString("Too many recipients", comment: "Alert title")
     /// "The maximum number of Recipients is 25."
-    lazy var _max_number_of_recipients_is = NSLocalizedString("The maximum number of Recipients is 25.", comment: "Alert message")
+    lazy var _max_number_of_recipients_is_number = NSLocalizedString("The maximum number of distinct recipients is %d", comment: "Alert message")
     
     
     // Mark Contacts

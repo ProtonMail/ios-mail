@@ -93,7 +93,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                 
                 {
                     self.checkLock()
-                    } ~> .main
+                } ~> .main
             } else if let _ = self._model as? ContactGroupVO {
                 prepareTitleForContactGroup()
             }
@@ -157,21 +157,18 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             }
         }
         let offset = self.widthConstant.constant == 0 ? 0 : 14
-//        print("widthForCell = \(self.contactTitleLabel) \(size)")
         return size.width.rounded(.up) + 20 + CGFloat(offset) //34 // 20 + self.contactTitleLabel.frame.height + 6
     }
     
     func widthForCellWithContact(model: ContactPickerModelProtocol) -> CGFloat {
-        //        let font = self.contactTitleLabel.font!
-        //        let s = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
-        //        let size = NSString(string: model.contactTitle).boundingRect(with: s,
-        //                                                                     options: [.usesLineFragmentOrigin, .usesFontLeading],
-        //                                                                     attributes: [NSAttributedStringKey.font : font],
-        //                                                                     context: nil).size
-        //        let size2 = NSString(string: model.contactTitle).size(withAttributes: [NSAttributedStringKey.font : font])
-        //
-        //        let size3 = model.contactTitle.size(withAttributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0)])
-        //
+        //TODO:: i feel it isn't good
+        if let contactGroup = model as? ContactGroupVO {
+            let (selectedCount, totalCount, _) = contactGroup.getGroupInformation()
+            let title = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
+            let size = title.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
+            return size.width.rounded(.up) + 20 + 14 //
+        }
+        
         let size = model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
         return size.width.rounded(.up) + 20 + 14 //34 //20 + self.contactTitleLabel.frame.height + 6
     }

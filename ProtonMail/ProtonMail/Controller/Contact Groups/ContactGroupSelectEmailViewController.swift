@@ -11,6 +11,7 @@ import UIKit
 class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupSelectEmailViewModel!
+    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
@@ -41,6 +42,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         // if the user is tricky enough the hold the view using the edge geatures
         // we will need to turn this off temporarily
         self.extendedLayoutIncludesOpaqueBars = false
+        NotificationCenter.default.addKeyboardObserver(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,6 +56,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewModel.save()
+        NotificationCenter.default.removeKeyboardObserver(self)
     }
     
     func inactiveViewModel() {}
@@ -160,6 +163,35 @@ extension ContactGroupSelectEmailViewController: UITableViewDelegate
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupEditViewCell {
             self.deselectRow(at: indexPath, cell: cell)
+        }
+    }
+}
+
+// MARK: - NSNotificationCenterKeyboardObserverProtocol
+extension ContactGroupSelectEmailViewController: NSNotificationCenterKeyboardObserverProtocol {
+    func keyboardWillHideNotification(_ notification: Notification) {
+        self.tableViewBottomConstraint.constant = 0
+        let keyboardInfo = notification.keyboardInfo
+        UIView.animate(withDuration: keyboardInfo.duration,
+                       delay: 0,
+                       options: keyboardInfo.animationOption,
+                       animations: { () -> Void in
+                        self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    func keyboardWillShowNotification(_ notification: Notification) {
+        let keyboardInfo = notification.keyboardInfo
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            self.tableViewBottomConstraint.constant = keyboardSize.height
+            
+            UIView.animate(withDuration: keyboardInfo.duration,
+                           delay: 0,
+                           options: keyboardInfo.animationOption,
+                           animations: { () -> Void in
+                            self.view.layoutIfNeeded()
+            }, completion: nil)
         }
     }
 }

@@ -355,7 +355,7 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="bh9-82-LsH" secondAttribute="trailing" id="0eR-AA-2dU"/>
                             <constraint firstItem="bh9-82-LsH" firstAttribute="leading" secondItem="d86-wE-Bc8" secondAttribute="leading" id="ElQ-wi-ekG"/>
-                            <constraint firstItem="RqS-2f-w4i" firstAttribute="top" secondItem="PSd-wW-WIb" secondAttribute="bottom" id="TIS-LZ-AHP"/>
+                            <constraint firstAttribute="bottom" secondItem="PSd-wW-WIb" secondAttribute="bottom" id="TIS-LZ-AHP"/>
                             <constraint firstItem="bh9-82-LsH" firstAttribute="top" secondItem="EHr-Re-GAG" secondAttribute="bottom" id="Y9m-nY-3l9"/>
                             <constraint firstItem="PSd-wW-WIb" firstAttribute="leading" secondItem="d86-wE-Bc8" secondAttribute="leading" id="fe1-ia-jD4"/>
                             <constraint firstItem="PSd-wW-WIb" firstAttribute="top" secondItem="bh9-82-LsH" secondAttribute="bottom" id="j3f-RW-64b"/>
@@ -371,6 +371,7 @@
                         <outlet property="searchView" destination="bh9-82-LsH" id="txm-9w-mnj"/>
                         <outlet property="searchViewConstraint" destination="ysN-oo-Xni" id="rtz-j1-PG4"/>
                         <outlet property="tableView" destination="PSd-wW-WIb" id="dXs-ic-asq"/>
+                        <outlet property="tableViewBottomConstraint" destination="TIS-LZ-AHP" id="CMM-5e-7dV"/>
                         <segue destination="JZ0-Zf-iCa" kind="show" identifier="toContactGroupDetailSegue" id="r15-Xs-j7U"/>
                         <segue destination="HW2-St-HGr" kind="presentation" identifier="toAddContactGroup" id="cjF-6k-L7o"/>
                         <segue destination="d3P-H0-xNt" kind="presentation" identifier="toAddContact" id="HIr-Zm-YHr"/>
@@ -389,7 +390,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="4585" y="5134"/>
+            <point key="canvasLocation" x="4584.375" y="5133.8028169014087"/>
         </scene>
         <!--View Contact Group Details-->
         <scene sceneID="CfH-2f-OmI">
@@ -2026,6 +2027,7 @@
                         <outlet property="searchView" destination="r4h-Fa-M7c" id="o8Z-f9-fI4"/>
                         <outlet property="searchViewConstraint" destination="EGy-TU-KaT" id="dZG-IM-Dg7"/>
                         <outlet property="tableView" destination="MoI-SN-ADN" id="WLY-Wl-s4Q"/>
+                        <outlet property="tableViewBottomConstraint" destination="Urg-Uh-hET" id="Yve-Nt-jv4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hxp-fk-D6C" userLabel="First Responder" sceneMemberID="firstResponder"/>

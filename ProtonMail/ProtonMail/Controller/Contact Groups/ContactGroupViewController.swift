@@ -41,6 +41,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     private var refreshControl: UIRefreshControl!
     private var searchController: UISearchController!
     
+    
+    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
@@ -88,6 +90,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         }
         
         self.isOnMainView = true
+        NotificationCenter.default.addKeyboardObserver(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -97,6 +100,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         }
         
         viewModel.save()
+        NotificationCenter.default.removeKeyboardObserver(self)
     }
     
     private func prepareFetchedResultsController() {
@@ -335,14 +339,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             }.catch {
                 error in
                 
-                let alert = UIAlertController(title: LocalString._contact_groups_fetch_error,
-                                              message: error.localizedDescription,
-                                              preferredStyle: .alert)
-                alert.addOKAction()
-                
-                self.present(alert,
-                             animated: true,
-                             completion: nil)
+                error.alert(at: self.view)
         }
     }
     
@@ -373,6 +370,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
+                contactGroupVO.selectAllEmailFromGroup()
                 sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
             }
         } else if segue.identifier == kToUpgradeAlertSegue {
@@ -443,6 +441,7 @@ extension ContactGroupsViewController: UITableViewDataSource
                             count: data.count,
                             color: data.color,
                             wasSelected: viewModel.isSelected(groupID: data.ID),
+                            showSendEmailIcon: false,
                             delegate: self)
                 if viewModel.isSelected(groupID: data.ID) {
                     tableView.selectRow(at: indexPath,
@@ -458,6 +457,7 @@ extension ContactGroupsViewController: UITableViewDataSource
                                     count: label.emails.count,
                                     color: label.color,
                                     wasSelected: false,
+                                    showSendEmailIcon: true,
                                     delegate: self)
                         
                         if viewModel.isSelected(groupID: label.labelID) {
@@ -473,7 +473,7 @@ extension ContactGroupsViewController: UITableViewDataSource
                                     count: 0,
                                     color: ColorManager.defaultColor,
                                     wasSelected: false,
-                                    delegate: self)
+                                    showSendEmailIcon: false)
                     }
                 }
             }
@@ -538,7 +538,7 @@ extension ContactGroupsViewController: UITableViewDelegate
                         error.alert(at: self.view)
                 }
             }
-
+            
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
                                                     style: .cancel,
@@ -546,7 +546,7 @@ extension ContactGroupsViewController: UITableViewDelegate
             alertController.addAction(UIAlertAction(title: LocalString._contact_groups_delete,
                                                     style: .destructive,
                                                     handler: deleteActionHandler))
-
+            
             alertController.popoverPresentationController?.sourceView = self.view
             alertController.popoverPresentationController?.sourceRect = self.view.frame
             self.present(alertController, animated: true, completion: nil)
@@ -660,6 +660,7 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                                     count: label.emails.count,
                                     color: label.color,
                                     wasSelected: false,
+                                    showSendEmailIcon: true,
                                     delegate: self)
                     } else {
                         // TODO; better error handling
@@ -669,7 +670,7 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                                     count: 0,
                                     color: ColorManager.defaultColor,
                                     wasSelected: false,
-                                    delegate: self)
+                                    showSendEmailIcon: false)
                     }
                 }
             }
@@ -683,6 +684,35 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
             }
             
             return
+        }
+    }
+}
+
+// MARK: - NSNotificationCenterKeyboardObserverProtocol
+extension ContactGroupsViewController: NSNotificationCenterKeyboardObserverProtocol {
+    func keyboardWillHideNotification(_ notification: Notification) {
+        self.tableViewBottomConstraint.constant = 0
+        let keyboardInfo = notification.keyboardInfo
+        UIView.animate(withDuration: keyboardInfo.duration,
+                       delay: 0,
+                       options: keyboardInfo.animationOption,
+                       animations: { () -> Void in
+                        self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    func keyboardWillShowNotification(_ notification: Notification) {
+        let keyboardInfo = notification.keyboardInfo
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            self.tableViewBottomConstraint.constant = keyboardSize.height
+            
+            UIView.animate(withDuration: keyboardInfo.duration,
+                           delay: 0,
+                           options: keyboardInfo.animationOption,
+                           animations: { () -> Void in
+                            self.view.layoutIfNeeded()
+            }, completion: nil)
         }
     }
 }

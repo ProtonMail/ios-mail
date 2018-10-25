@@ -679,7 +679,7 @@ extension ComposeViewModelImpl {
      */
     func toContacts(_ json : String) -> [ContactPickerModelProtocol] {
         var out : [ContactPickerModelProtocol] = [];
-        var groups = [String: [String]]() // [groupName: [address]]
+        var groups = [String: [DraftEmailData]]() // [groupName: [DraftEmailData]]
         
         if let recipients : [[String : Any]] = json.parseJson() {
             // parse the contacts, and prepare the data for contact groups
@@ -693,12 +693,12 @@ extension ComposeViewModelImpl {
                         out.append(ContactVO(id: "", name: name, email: address))
                     } else {
                         // contact group
-                        let name = dict["Group"] as! String
-                        if var data = groups[name] {
-                            data.append(address)
+                        let toInsert = DraftEmailData.init(name: name, email: address)
+                        if var data = groups[group] {
+                            data.append(toInsert)
                             groups.updateValue(data, forKey: group)
                         } else {
-                            groups.updateValue([address], forKey: group)
+                            groups.updateValue([toInsert], forKey: group)
                         }
                     }
                 } else {
@@ -709,7 +709,7 @@ extension ComposeViewModelImpl {
             // finish parsing contact groups
             for group in groups {
                 let contactGroup = ContactGroupVO(ID: "", name: group.key)
-                contactGroup.setSelectedEmails(selectedMembers: group.value)
+                contactGroup.overwriteSelectedEmails(with: group.value)
                 out.append(contactGroup)
             }
         }

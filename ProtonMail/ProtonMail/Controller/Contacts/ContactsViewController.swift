@@ -111,6 +111,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
+    
     //run once
     private func prepareSearchBar() {
         searchController = UISearchController(searchResultsController: nil)
@@ -337,11 +338,13 @@ extension ContactsViewController: UITableViewDelegate {
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
+        self.tableViewBottomConstraint.constant = 0
         let keyboardInfo = notification.keyboardInfo
         UIView.animate(withDuration: keyboardInfo.duration,
                        delay: 0,
-                       options: keyboardInfo.animationOption, animations: { () -> Void in
-            self.tableViewBottomConstraint.constant = 0
+                       options: keyboardInfo.animationOption,
+                       animations: { () -> Void in
+                        self.view.layoutIfNeeded()
         }, completion: nil)
     }
     
@@ -349,10 +352,13 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
         if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            self.tableViewBottomConstraint.constant = keyboardSize.height
+            
             UIView.animate(withDuration: keyboardInfo.duration,
                            delay: 0,
-                           options: keyboardInfo.animationOption, animations: { () -> Void in
-                self.tableViewBottomConstraint.constant = keyboardSize.height
+                           options: keyboardInfo.animationOption,
+                           animations: { () -> Void in
+                            self.view.layoutIfNeeded()
             }, completion: nil)
         }
     }

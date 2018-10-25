@@ -270,7 +270,9 @@ class ContactGroupsDataService {
         var result: [ContactGroupVO] = []
         for label in labels {
             result.append(ContactGroupVO.init(ID: label.labelID,
-                                              name: label.name))
+                                              name: label.name,
+                                              groupSize: label.emails.count,
+                                              color: label.color))
         }
         
         return result

@@ -126,6 +126,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
+                contactGroupVO.selectAllEmailFromGroup()
                 sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
             }
         } else if segue.identifier == kToUpgradeAlertSegue {

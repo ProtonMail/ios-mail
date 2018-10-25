@@ -20,7 +20,7 @@ protocol ComposeViewDelegate: class {
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView)
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
                                                    contactGroup: ContactGroupVO,
-                                                   callback: @escaping (([String]) -> Void))
+                                                   callback: @escaping (([DraftEmailData]) -> Void))
     
     func composeView(_ composeView: ComposeView, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker)
     func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker)
@@ -732,7 +732,7 @@ extension ComposeView: ContactPickerDelegate {
     
     func collectionView(at: ContactCollectionView,
                         didSelect contact: ContactPickerModelProtocol,
-                        callback: @escaping (([String]) -> Void))
+                        callback: @escaping (([DraftEmailData]) -> Void))
     {
         // if the selected type is contact group
         // we present the sub-selection view

@@ -12,8 +12,8 @@ class ContactGroupSubSelectionViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var contactGroupName: String = ""
-    var selectedEmails: [String] = []
-    var callback: (([String]) -> Void)? = nil
+    var selectedEmails: [DraftEmailData] = []
+    var callback: (([DraftEmailData]) -> Void)? = nil
     
     private var viewModel: ContactGroupSubSelectionViewModel!
     private let kContactGroupSubSelectionHeaderCell = "ContactGroupSubSelectionHeaderCell"
@@ -81,11 +81,14 @@ extension ContactGroupSubSelectionViewController: UITableViewDataSource
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupSubSelectionEmailCell,
                                                      for: indexPath) as! ContactGroupSubSelectionEmailCell
             let data = viewModel.cellForRow(at: indexPath)
+            
             cell.config(emailText: data.getEmailDescription(),
                         email: data.email,
                         name: data.name,
                         isEndToEndEncrypted: data.isEncrypted,
                         isCurrentlySelected: data.isSelected,
+                        at: indexPath,
+                        checkEncryptedStatus: data.checkEncryptedStatus,
                         delegate: viewModel)
             return cell
         }

@@ -68,6 +68,7 @@ class ContactGroupsViewCell: UITableViewCell {
                 count: Int,
                 color: String,
                 wasSelected: Bool,
+                showSendEmailIcon: Bool,
                 delegate: ContactGroupsViewCellDelegate? = nil) {
         // setup and save
         self.count = count
@@ -78,7 +79,7 @@ class ContactGroupsViewCell: UITableViewCell {
         self.delegate = delegate
         self.wasSelected = wasSelected
         
-        if delegate == nil {
+        if showSendEmailIcon == false {
             self.sendButton.isHidden = true
             self.sendButtonImage.isHidden = true
         } else {

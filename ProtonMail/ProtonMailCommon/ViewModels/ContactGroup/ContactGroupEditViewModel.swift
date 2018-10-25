@@ -59,8 +59,11 @@ struct ContactGroupData
     var ID: String?
     var name: String?
     var color: String
-    let originalEmailIDs: NSSet
     var emailIDs: NSMutableSet
+    
+    let originalName: String?
+    let originalColor: String
+    let originalEmailIDs: NSSet
     
     init(ID: String?,
          name: String?,
@@ -70,8 +73,32 @@ struct ContactGroupData
         self.ID = ID
         self.name = name
         self.color = color ?? ColorManager.getRandomColor()
-        self.originalEmailIDs = emailIDs
         self.emailIDs = NSMutableSet(set: emailIDs)
+        
+        self.originalEmailIDs = emailIDs
+        self.originalName = self.name
+        self.originalColor = self.color
+    }
+    
+    func hasChanged() -> Bool {
+        if name != originalName {
+            return true
+        }
+        
+        if color != originalColor {
+            return true
+        }
+        
+        if let originalEmailIDs = originalEmailIDs as? Set<Email>,
+            let currentEmailIDs = emailIDs as? Set<Email> {
+            if originalEmailIDs != currentEmailIDs {
+                return true
+            }
+        } else {
+            return true
+        }
+        
+        return false
     }
 }
 
@@ -96,6 +123,7 @@ protocol ContactGroupEditViewModel {
     
     // create and edit
     func saveDetail() -> Promise<Void>
+    func hasUnsavedChanges() -> Bool
     
     // delete
     func deleteContactGroup() -> Promise<Void>

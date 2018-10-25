@@ -9,7 +9,7 @@
 import UIKit
 
 class ContactGroupSubSelectionEmailCell: UITableViewCell {
-
+    
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var isEndToEndEncryptedImage: UIImageView!
     @IBOutlet weak var selectionButton: UIButton!
@@ -34,53 +34,84 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
         // Initialization code
     }
     
+    func checkingInProgress()
+    {
+        self.isEndToEndEncryptedImage.isHidden = true
+        
+        self.activityIndicatorView.isHidden = false
+        self.activityIndicatorView.startAnimating()
+    }
+    
+    func endCheckingInProgress()
+    {
+        self.activityIndicatorView.stopAnimating()
+        self.activityIndicatorView.isHidden = true
+    }
+    
     func config(emailText: String,
                 email: String,
                 name: String,
                 isEndToEndEncrypted: UIImage?,
                 isCurrentlySelected: Bool,
+                at indexPath: IndexPath,
+                checkEncryptedStatus: ContactGroupSubSelectionEmailLockCheckingState,
                 delegate: ContactGroupSubSelectionViewModelEmailCellDelegate) {
-        self.email = email
-        emailLabel.text = emailText
-        self.delegate = delegate
-        
-        self.isCurrentlySelected = isCurrentlySelected
-        
         // lock check
-        if let isEndToEndEncrypted = isEndToEndEncrypted {
-            self.isEndToEndEncryptedImage.image = isEndToEndEncrypted
-        } else {
-            let progress = {
-                self.isEndToEndEncryptedImage.isHidden = true
-                self.activityIndicatorView.startAnimating()
-            }
-            
+        switch checkEncryptedStatus {
+        case .NotChecked:
+            delegate.setRequiredEncryptedCheckStatus(at: indexPath,
+                                                     to: .Checking,
+                                                     isEncrypted: nil)
             let contactVO = ContactVO.init(name: name, email: email)
             
             let complete = {
                 (image: UIImage?, type: Int) -> Void in
-                self.activityIndicatorView.stopAnimating()
-                self.activityIndicatorView.isHidden = true
+                self.endCheckingInProgress()
                 
                 contactVO.setType(type: type)
                 
                 if let img = image {
                     self.isEndToEndEncryptedImage.image = img
                     self.isEndToEndEncryptedImage.isHidden = false
-                    self.delegate.setIsEncrypted(email: email, isEncrypted: img)
+                    self.delegate.setRequiredEncryptedCheckStatus(at: indexPath,
+                                                                  to: .Checked,
+                                                                  isEncrypted: img)
                 } else if let lock = contactVO.lock {
                     self.isEndToEndEncryptedImage.image = lock
                     self.isEndToEndEncryptedImage.isHidden = false
-                    self.delegate.setIsEncrypted(email: email, isEncrypted: lock)
+                    self.delegate.setRequiredEncryptedCheckStatus(at: indexPath,
+                                                                  to: .Checked,
+                                                                  isEncrypted: lock)
                 } else {
+                    self.isEndToEndEncryptedImage.isHidden = true
                     self.isEndToEndEncryptedImage.image = nil
+                    self.delegate.setRequiredEncryptedCheckStatus(at: indexPath,
+                                                                  to: .Checked,
+                                                                  isEncrypted: nil)
                 }
             }
             
             sharedContactDataService.lockerCheck(model: contactVO,
-                                                 progress: progress,
+                                                 progress: self.checkingInProgress,
                                                  complete: complete)
+        case .Checking:
+            self.checkingInProgress()
+        case .Checked:
+            self.endCheckingInProgress() // the cell might still be refreshing for the previous owner since networking might be slow
+            
+            if let isEndToEndEncrypted = isEndToEndEncrypted {
+                self.isEndToEndEncryptedImage.isHidden = false
+                self.isEndToEndEncryptedImage.image = isEndToEndEncrypted
+            } else {
+                self.isEndToEndEncryptedImage.isHidden = true
+            }
         }
+        
+        self.email = email
+        emailLabel.text = emailText
+        self.delegate = delegate
+        
+        self.isCurrentlySelected = isCurrentlySelected
     }
     
     @IBAction func tappedSelectButton(_ sender: UIButton) {

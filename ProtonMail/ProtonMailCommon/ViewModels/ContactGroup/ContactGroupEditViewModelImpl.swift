@@ -286,6 +286,13 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     }
     
     /**
+     Returns true if the contact group is modified
+    */
+    func hasUnsavedChanges() -> Bool {
+        return self.contactGroup.hasChanged()
+    }
+    
+    /**
      Creates the contact group on the server and cache
      
      - Parameters:
