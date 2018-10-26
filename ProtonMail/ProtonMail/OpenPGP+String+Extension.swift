@@ -50,15 +50,13 @@ extension String {
         return try sharedOpenPGP.decryptMessage(self, privateKey: privateKey, passphrase: passphrase)
     }
     
-    //TODO:: missing function
     func split() throws -> ModelsEncryptedSplit? {
-//        var error : NSError?
-//        //let out = PmSeparateKeyAndData(self, &error)
-//        if let err = error {
-//            throw err
-//        }
-//        return out
-        return nil
+        var error : NSError?
+        let out = ArmorSplitArmor(self, &error)
+        if let err = error {
+            throw err
+        }
+        return out
     }
     
     func encrypt(withAddr address_id: String, mailbox_pwd: String) throws -> String? {

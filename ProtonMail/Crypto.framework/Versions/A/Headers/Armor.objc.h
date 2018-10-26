@@ -9,6 +9,7 @@
 @import Foundation;
 #include "Universe.objc.h"
 
+#include "Models.objc.h"
 
 FOUNDATION_EXPORT NSString* const ArmorARMOR_HEADER_COMMENT;
 FOUNDATION_EXPORT NSString* const ArmorARMOR_HEADER_VERSION;
@@ -30,6 +31,8 @@ FOUNDATION_EXPORT NSString* ArmorArmorWithType(NSData* input, NSString* armorTyp
  * ReadClearSignedMessage read clear message from a clearsign package
  */
 FOUNDATION_EXPORT NSString* ArmorReadClearSignedMessage(NSString* signedMessage, NSError** error);
+
+FOUNDATION_EXPORT ModelsEncryptedSplit* ArmorSplitArmor(NSString* encrypted, NSError** error);
 
 /**
  * Unarmor an armored key to bytes key
