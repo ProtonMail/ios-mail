@@ -66,7 +66,8 @@ class UserDataService {
         static let mailboxPassword           = "mailboxPasswordKeyProtectedWithMainKey"
         static let username                  = "usernameKey"
         static let password                  = "passwordKey"
-        static let userInfo                  = "userInfoKey"
+        static let userInfoPreMainKey                  = "userInfoKey"
+        static let userInfo                  = "userInfoKeyProtectedWithMainKey"
         static let twoFAStatus               = "twofaKey"
         static let userPasswordMode          = "userPasswordModeKey"
         
@@ -76,9 +77,27 @@ class UserDataService {
     
     // MARK: - Private variables
     //TODO::Fix later fileprivate(set)
-    fileprivate(set) var userInfo: UserInfo? = SharedCacheBase.getDefault().customObjectForKey(Key.userInfo) as? UserInfo {
+    fileprivate(set) var userInfo: UserInfo? = {
+        guard let mainKey = keymaker.mainKey,
+            let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.userInfo) else
+        {
+            return nil
+        }
+        
+        let locked = Locked<UserInfo>(encryptedValue: cypherData)
+        return try? locked.unlock(with: mainKey)
+    }() {
         didSet {
-            SharedCacheBase.getDefault().setCustomValue(userInfo, forKey: Key.userInfo)
+            guard let newValue = userInfo else {
+                SharedCacheBase.getDefault()?.removeObject(forKey: Key.userInfo)
+                return
+            }
+            guard let mainKey = keymaker.mainKey,
+                let locked = try? Locked<UserInfo>(clearValue: newValue, with: mainKey) else
+            {
+                return
+            }
+            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: Key.userInfo)
             SharedCacheBase.getDefault().synchronize()
         }
     }
@@ -933,3 +952,11 @@ class UserDataService {
     }
 }
 
+
+#if !APP_EXTENSION
+extension AppVersion {
+    func inject(userInfo: UserInfo, into userDataService: UserDataService) {
+        userDataService.userInfo = userInfo
+    }
+}
+#endif

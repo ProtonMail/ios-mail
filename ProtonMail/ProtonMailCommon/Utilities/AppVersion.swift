@@ -50,6 +50,11 @@ extension AppVersion {
     internal func migration() { // FIXME: this logic should depend of pre-migration version and current version
         // Values need to be protected with mainKey
         
+        // + UserInfo
+        if let userInfo = SharedCacheBase.getDefault().customObjectForKey(UserDataService.Key.userInfoPreMainKey) as? UserInfo {
+            self.inject(userInfo: userInfo, into: sharedUserDataService)
+        }
+        
         // + mailboxPassword
         if let triviallyProtectedMailboxPassword = sharedKeychain.keychain.string(forKey: UserDataService.Key.mailboxPasswordPreMainKey),
             let cleartextMailboxPassword = try? triviallyProtectedMailboxPassword.decrypt(withPwd: "$Proton$" + UserDataService.Key.mailboxPasswordPreMainKey)
@@ -99,5 +104,6 @@ extension AppVersion {
         userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.isPinCodeEnabled)
         userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.isManuallyLockApp)
         userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.touchIDEmail)
+        SharedCacheBase.getDefault()?.removeObject(forKey: UserDataService.Key.userInfoPreMainKey)
     }
 }
