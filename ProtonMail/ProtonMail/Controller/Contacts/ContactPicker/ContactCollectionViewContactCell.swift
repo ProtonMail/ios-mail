@@ -92,8 +92,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                 self.contactTitleLabel.text = self._model.contactTitle;
                 
                 {
-                    self.checkLock()
-                } ~> .main
+                    self.checkLock(caller: self.model)
+                    } ~> .main
             } else if let _ = self._model as? ContactGroupVO {
                 prepareTitleForContactGroup()
             }
@@ -117,35 +117,39 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         }
     }
     
-    private func checkLock() {
+    private func checkLock(caller: ContactPickerModelProtocol) {
         self.delegate?.collectionContactCell(lockCheck: self.model, progress: {
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
         }, complete: { image, type in
-            self._model.setType(type: type)
-            if let img = image {
-                self.lockImage.image = img
-                self.lockImage.isHidden = false
-                self.leftConstant.constant = 4
-                self.widthConstant.constant = 14
-                
-                self.contactTitleLabel.textAlignment = .left
-            } else if let lock = self.model.lock {
-                self.lockImage.image = lock
-                self.lockImage.isHidden = false
-                self.leftConstant.constant = 4
-                self.widthConstant.constant = 14
-                
-                self.contactTitleLabel.textAlignment = .left
-            } else {
-                self.lockImage.image = nil
-                self.lockImage.isHidden = true
-                self.leftConstant.constant = 0
-                self.widthConstant.constant = 0
-                
-                self.contactTitleLabel.textAlignment = .center
+            if caller.equals(self.model) {
+                self._model.setType(type: type)
+                self.lockImage.backgroundColor = nil
+                self.lockImage.tintColor = nil
+                if let img = image {
+                    self.lockImage.image = img
+                    self.lockImage.isHidden = false
+                    self.leftConstant.constant = 4
+                    self.widthConstant.constant = 14
+                    
+                    self.contactTitleLabel.textAlignment = .left
+                } else if let lock = self.model.lock {
+                    self.lockImage.image = lock
+                    self.lockImage.isHidden = false
+                    self.leftConstant.constant = 4
+                    self.widthConstant.constant = 14
+                    
+                    self.contactTitleLabel.textAlignment = .left
+                } else {
+                    self.lockImage.image = nil
+                    self.lockImage.isHidden = true
+                    self.leftConstant.constant = 0
+                    self.widthConstant.constant = 0
+                    
+                    self.contactTitleLabel.textAlignment = .center
+                }
+                self.activityView.stopAnimating()
             }
-            self.activityView.stopAnimating()
         })
     }
     

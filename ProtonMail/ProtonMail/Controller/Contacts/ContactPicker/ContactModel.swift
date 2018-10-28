@@ -33,4 +33,6 @@ typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType : Int) -> Void)
     func notes(type: Int) -> String
     func setType(type: Int)
     func lockCheck(progress: LockCheckProgress, complete: LockCheckComplete?)
+    
+    func equals(_ others: ContactPickerModelProtocol) -> Bool
 }

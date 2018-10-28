@@ -27,6 +27,7 @@ class ContactGroupSubSelectionViewController: UIViewController {
                                                                delegate: self)
         
         prepareTableView()
+        tableView.zeroMargin()
     }
     
     func prepareTableView() {
@@ -40,8 +41,6 @@ class ContactGroupSubSelectionViewController: UIViewController {
                            forCellReuseIdentifier: kContactGroupSubSelectionEmailCell)
         
         tableView.noSeparatorsBelowFooter()
-        
-        tableView.allowsSelection = false
     }
     
     /**
@@ -90,6 +89,19 @@ extension ContactGroupSubSelectionViewController: UITableViewDataSource
                         checkEncryptedStatus: data.checkEncryptedStatus,
                         delegate: viewModel)
             return cell
+        }
+    }
+}
+
+extension ContactGroupSubSelectionViewController: UITableViewDelegate
+{
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupSubSelectionHeaderCell {
+            cell.rowTapped()
+        } else if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupSubSelectionEmailCell {
+            cell.rowTapped()
         }
     }
 }

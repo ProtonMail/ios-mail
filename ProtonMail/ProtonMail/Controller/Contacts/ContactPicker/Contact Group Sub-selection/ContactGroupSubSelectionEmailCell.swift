@@ -12,19 +12,17 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
     
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var isEndToEndEncryptedImage: UIImageView!
-    @IBOutlet weak var selectionButton: UIButton!
     @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var selectionIcon: UIImageView!
     private var delegate: ContactGroupSubSelectionViewModelEmailCellDelegate!
     private var data: DraftEmailData? = nil
     
     private var isCurrentlySelected: Bool = false {
         didSet {
             if self.isCurrentlySelected {
-                selectionButton.setImage(UIImage.init(named: "mail_check-active"),
-                                         for: .normal)
+                selectionIcon.image = UIImage.init(named: "mail_check-active")
             } else {
-                selectionButton.setImage(UIImage.init(named: "mail_check"),
-                                         for: .normal)
+                selectionIcon.image = UIImage.init(named: "mail_check")
             }
         }
     }
@@ -111,13 +109,15 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
         self.delegate = delegate
         
         self.isCurrentlySelected = isCurrentlySelected
+        
+        self.selectionStyle = .none
     }
     
     private func getDisplayText() -> String {
         return "\(self.data?.name ?? "") <\(self.data?.email ?? "")>"
     }
     
-    @IBAction func tappedSelectButton(_ sender: UIButton) {
+    func rowTapped() {
         self.isCurrentlySelected = !self.isCurrentlySelected
         
         // this is the state that we currently want

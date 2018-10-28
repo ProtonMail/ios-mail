@@ -176,4 +176,8 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol
         self.hasNonePM = false
         self.selectedMembers = Set<DraftEmailData>()
     }
+    
+    func equals(_ other: ContactPickerModelProtocol) -> Bool {
+        return self.isEqual(other)
+    }
 }
