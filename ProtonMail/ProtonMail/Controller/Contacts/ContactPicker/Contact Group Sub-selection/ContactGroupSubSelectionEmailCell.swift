@@ -15,7 +15,7 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
     @IBOutlet weak var selectionButton: UIButton!
     @IBOutlet weak var emailLabel: UILabel!
     private var delegate: ContactGroupSubSelectionViewModelEmailCellDelegate!
-    private var email: String = ""
+    private var data: DraftEmailData? = nil
     
     private var isCurrentlySelected: Bool = false {
         didSet {
@@ -48,8 +48,7 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
         self.activityIndicatorView.isHidden = true
     }
     
-    func config(emailText: String,
-                email: String,
+    func config(email: String,
                 name: String,
                 isEndToEndEncrypted: UIImage?,
                 isCurrentlySelected: Bool,
@@ -107,21 +106,30 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
             }
         }
         
-        self.email = email
-        emailLabel.text = emailText
+        self.data = DraftEmailData(name: name, email: email)
+        emailLabel.text = getDisplayText()
         self.delegate = delegate
         
         self.isCurrentlySelected = isCurrentlySelected
+    }
+    
+    private func getDisplayText() -> String {
+        return "\(self.data?.name ?? "") <\(self.data?.email ?? "")>"
     }
     
     @IBAction func tappedSelectButton(_ sender: UIButton) {
         self.isCurrentlySelected = !self.isCurrentlySelected
         
         // this is the state that we currently want
-        if self.isCurrentlySelected {
-            delegate.select(email: self.email)
+        if let data = self.data {
+            if self.isCurrentlySelected {
+                delegate.select(data: data)
+            } else {
+                delegate.deselect(data: data)
+            }
         } else {
-            delegate.deselect(email: self.email)
+            // TODO: error handling
+            PMLog.D("This shouldn't happen!")
         }
     }
 }

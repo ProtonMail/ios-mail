@@ -82,8 +82,7 @@ extension ContactGroupSubSelectionViewController: UITableViewDataSource
                                                      for: indexPath) as! ContactGroupSubSelectionEmailCell
             let data = viewModel.cellForRow(at: indexPath)
             
-            cell.config(emailText: data.getEmailDescription(),
-                        email: data.email,
+            cell.config(email: data.email,
                         name: data.name,
                         isEndToEndEncrypted: data.isEncrypted,
                         isCurrentlySelected: data.isSelected,

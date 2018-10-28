@@ -101,11 +101,12 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     }
     
     /**
-     Select the given email address
+     Select the given email data
     */
-    func select(email: String) {
+    func select(data: DraftEmailData) {
         for i in emailArray.indices {
-            if emailArray[i].email == email {
+            if emailArray[i].email == data.email,
+                emailArray[i].name == data.name {
                 emailArray[i].isSelected = true
                 break
             }
@@ -128,14 +129,15 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     }
     
     /**
-     Deselect the given email address
+     Deselect the given email data
     */
-    func deselect(email: String) {
+    func deselect(data: DraftEmailData) {
         // TODO: performance improvement
         let performDeselectInHeader = self.isAllSelected()
         
         for i in emailArray.indices {
-            if emailArray[i].email == email {
+            if emailArray[i].email == data.email,
+                emailArray[i].name == data.name {
                 emailArray[i].isSelected = false
                 break
             }

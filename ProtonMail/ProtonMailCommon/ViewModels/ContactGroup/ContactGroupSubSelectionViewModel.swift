@@ -15,8 +15,8 @@ protocol ContactGroupSubSelectionViewModelDelegate
 
 protocol ContactGroupSubSelectionViewModelEmailCellDelegate
 {
-    func select(email: String)
-    func deselect(email: String)
+    func select(data: DraftEmailData)
+    func deselect(data: DraftEmailData)
     func setRequiredEncryptedCheckStatus(at indexPath: IndexPath,
                                          to: ContactGroupSubSelectionEmailLockCheckingState,
                                          isEncrypted: UIImage?)
@@ -42,11 +42,6 @@ struct ContactGroupSubSelectionViewModelEmailInfomation
         self.name = name
         self.isSelected = isSelected
         self.isEncrypted = isEncrypted
-    }
-    
-    func getEmailDescription() -> String
-    {
-        return "\(self.name) <\(self.email)>"
     }
 }
 
