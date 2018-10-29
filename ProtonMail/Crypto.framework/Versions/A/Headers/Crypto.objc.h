@@ -12,6 +12,7 @@
 #include "Armor.objc.h"
 #include "Models.objc.h"
 
+@class CryptoAttachmentProcessor;
 @class CryptoPmCrypto;
 @class CryptoSignatureCollector;
 @protocol CryptoMIMECallbacks;
@@ -23,6 +24,19 @@
 - (void)onEncryptedHeaders:(NSString*)headers;
 - (void)onError:(NSError*)err;
 - (void)onVerified:(long)verified;
+@end
+
+/**
+ * EncryptedSplit when encrypt attachment
+ */
+@interface CryptoAttachmentProcessor : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) id _ref;
+
+- (instancetype)initWithRef:(id)ref;
+- (instancetype)init;
+- (ModelsEncryptedSplit*)finish:(NSError**)error;
+- (void)process:(NSData*)plainData;
 @end
 
 /**
@@ -48,7 +62,7 @@ Called PGP crypto because it cannot have the same name as the package by gomobil
 - (ModelsDecryptSignedVerify*)decryptMessageVerifyPrivBinKeys:(NSString*)encryptedText verifierKey:(NSString*)verifierKey privateKeys:(NSData*)privateKeys passphrase:(NSString*)passphrase verifyTime:(int64_t)verifyTime error:(NSError**)error;
 - (NSString*)decryptMessageWithPassword:(NSString*)encrypted password:(NSString*)password error:(NSError**)error;
 - (ModelsEncryptedSplit*)encryptAttachment:(NSData*)plainData fileName:(NSString*)fileName publicKey:(NSString*)publicKey error:(NSError**)error;
-- (ModelsEncryptedSplit*)encryptAttachmentBinKey:(NSData*)plainData fileName:(NSString*)fileName publicKey:(NSData*)publicKey error:(NSError**)error;
+- (CryptoAttachmentProcessor*)encryptAttachmentLowMemory:(long)estimatedSize fileName:(NSString*)fileName publicKey:(NSString*)publicKey error:(NSError**)error;
 - (NSString*)encryptAttachmentWithPassword:(NSData*)plainData password:(NSString*)password error:(NSError**)error;
 - (NSString*)encryptMessage:(NSString*)plainText publicKey:(NSString*)publicKey privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase trim:(BOOL)trim error:(NSError**)error;
 - (NSString*)encryptMessageBinKey:(NSString*)plainText publicKey:(NSData*)publicKey privateKey:(NSString*)privateKey passphrase:(NSString*)passphrase trim:(BOOL)trim error:(NSError**)error;

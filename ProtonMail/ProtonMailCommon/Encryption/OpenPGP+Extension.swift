@@ -214,6 +214,11 @@ extension Data {
         return try sharedOpenPGP.encryptAttachment(self, fileName: fileName, publicKey: pubkey)
     }
     
+    static func makeEncryptAttachmentProcessor(_ address_id: String, fileName:String, totalSize: Int) throws -> CryptoAttachmentProcessor {
+        let pubkey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
+        return try sharedOpenPGP.encryptAttachmentLowMemory(totalSize, fileName: fileName, publicKey: pubkey)
+    }
+    
     func signAttachment(_ address_id: String, mailbox_pwd: String) throws -> String? {
         let privateKey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
         return try sharedOpenPGP.signBinDetached(self, privateKey: privateKey, passphrase: mailbox_pwd)
