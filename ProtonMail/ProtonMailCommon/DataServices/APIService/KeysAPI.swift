@@ -12,8 +12,12 @@ import Pm
 
 final class UserEmailPubKeys : ApiRequestNew<KeysResponse> {
     let email : String
-    init(email : String) {
+    init(email: String,
+         authCredential: AuthCredential? = nil)
+    {
         self.email = email
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {

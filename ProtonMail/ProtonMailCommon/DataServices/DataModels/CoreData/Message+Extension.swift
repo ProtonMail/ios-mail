@@ -388,7 +388,7 @@ extension Message {
     }
     
     func getSessionKey() throws -> PmSessionSplit? {
-        return try split()?.keyPacket().getSessionFromPubKeyPackage(passphrase)
+        return try split()?.keyPacket().getSessionFromPubKeyPackage(self.passphrase, privKeys: self.cachedPrivateKeys as Data?)
     }
     
     func bodyToHtml() -> String {
@@ -488,8 +488,8 @@ extension Message {
     }
     
     // MARK: Private variables
-    fileprivate var passphrase: String {
-        return sharedUserDataService.mailboxPassword!
+    fileprivate var passphrase: String! {
+        return self.cachedPassphrase ?? sharedUserDataService.mailboxPassword
     }
     
     var getAddressID: String {

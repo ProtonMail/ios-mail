@@ -155,6 +155,7 @@ class APIService {
                            destinationDirectoryURL: URL,
                            headers: [String : Any]?,
                            authenticated: Bool = true,
+                           customAuthCredential: AuthCredential? = nil,
                            downloadTask: ((URLSessionDownloadTask) -> Void)?,
                            completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
         let authBlock: AuthCredentialBlock = { auth, error in
@@ -198,10 +199,10 @@ class APIService {
             }
         }
         
-        if authenticated {
+        if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(nil, nil)
+            authBlock(customAuthCredential, nil)
         }
     }
     
@@ -221,6 +222,7 @@ class APIService {
                           signature : Data?,
                           headers: [String : Any]?,
                           authenticated: Bool = true,
+                          customAuthCredential: AuthCredential? = nil,
                           completion: @escaping CompletionBlock) {
         
         
@@ -270,10 +272,10 @@ class APIService {
             }
         }
         
-        if authenticated {
+        if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(nil, nil)
+            authBlock(customAuthCredential, nil)
         }
     }
     
@@ -283,6 +285,7 @@ class APIService {
                  path: String, parameters: Any?,
                  headers: [String : Any]?,
                  authenticated: Bool = true,
+                 customAuthCredential: AuthCredential? = nil,
                  completion: CompletionBlock?) {
         let authBlock: AuthCredentialBlock = { auth, error in
             if let error = error {
@@ -313,6 +316,7 @@ class APIService {
                                              parameters: parameters,
                                              headers: ["x-pm-apiversion": 3],
                                              authenticated: authenticated,
+                                             customAuthCredential: customAuthCredential,
                                              completion: completion)
                             }
                         } else if let responseDict = response as? [String : Any], let responseCode = responseDict["Code"] as? Int {
@@ -356,6 +360,7 @@ class APIService {
                                              parameters: parameters,
                                              headers: ["x-pm-apiversion": 3],
                                              authenticated: authenticated,
+                                             customAuthCredential: customAuthCredential,
                                              completion: completion)
                             } else if responseCode.forceUpgrade  {
                                 //FIXME: shouldn't be here
@@ -411,10 +416,10 @@ class APIService {
             }
         }
         
-        if authenticated {
+        if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(nil, nil)
+            authBlock(customAuthCredential, nil)
         }
     }
 }

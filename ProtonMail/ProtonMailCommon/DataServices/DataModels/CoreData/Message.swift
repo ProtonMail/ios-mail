@@ -71,6 +71,18 @@ final public class Message: NSManagedObject {
     @NSManaged public var attachments: NSSet
     @NSManaged public var labels: NSSet
     
+    @NSManaged public var cachedPassphrase: String? // transient
+    @NSManaged public var cachedAuthCredentialRaw: NSData? // transient // TODO: can this be kind of transient relatioship?
+    @NSManaged public var cachedPrivateKeysRaw: NSData? // transient
+    
+    var cachedAuthCredential: AuthCredential? {
+        get { return AuthCredential.unarchive(data: self.cachedAuthCredentialRaw) }
+        set { self.cachedAuthCredentialRaw = newValue?.archive() as NSData? }
+    }
+    var cachedPrivateKeys: Data? {
+        get { return self.cachedPrivateKeysRaw as Data? }
+        set { self.cachedPrivateKeysRaw = newValue as NSData? }
+    }
     //temp cache
     var checkingSign : Bool = false
     var checkedSign : Bool = false

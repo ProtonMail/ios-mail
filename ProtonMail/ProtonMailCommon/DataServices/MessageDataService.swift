@@ -992,7 +992,7 @@ class MessageDataService {
                         
                         PMLog.D("SendAttachmentDebug == start save draft!")
                         if message.isDetailDownloaded && message.messageID != "0" {
-                            let api = UpdateDraft(message: message)
+                            let api = UpdateDraft(message: message, authCredential: message.cachedAuthCredential)
                             api.call({ (task, response, hasError) -> Void in
                                 if hasError {
                                     completionWrapper(task, nil, response?.error)
@@ -1199,11 +1199,12 @@ class MessageDataService {
             
             //start track status here :
             var status = SendStatus.justStart
+            let cachedAuthCredential = message.cachedAuthCredential
             
             var requests : [UserEmailPubKeys] = [UserEmailPubKeys]()
             let emails = message.allEmails
             for email in emails {
-                requests.append(UserEmailPubKeys(email: email))
+                requests.append(UserEmailPubKeys(email: email, authCredential: cachedAuthCredential))
             }
             // is encrypt outside
             let isEO = !message.password.isEmpty
@@ -1346,8 +1347,8 @@ class MessageDataService {
                                           body: encodedBody,
                                           clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
                                           mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
-                                          plainTextDataPacket : sendBuilder.plainBody, clearPlainTextBody : sendBuilder.clearPlainBodyPackage
-                )
+                                          plainTextDataPacket : sendBuilder.plainBody, clearPlainTextBody : sendBuilder.clearPlainBodyPackage,
+                                          authCredential: cachedAuthCredential)
                 //Debug info
                 status.insert(SendStatus.sending)
                 

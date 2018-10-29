@@ -47,8 +47,8 @@ extension Attachment {
         return localURL != nil
     }
     
-    fileprivate var passphrase: String {
-        return sharedUserDataService.mailboxPassword!
+    fileprivate var passphrase: String! {
+        return self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword
     }
     
     

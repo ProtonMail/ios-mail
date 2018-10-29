@@ -51,6 +51,7 @@ class ApiRequest<T : ApiResponse> : Package {
         return true
     }
     
+    var authCredential: AuthCredential?
     
     /**
      get request path
@@ -97,6 +98,7 @@ class ApiRequest<T : ApiResponse> : Package {
                                  parameters: self.toDictionary(),
                                  headers: ["x-pm-apiversion": self.apiVersion()],
                                  authenticated: self.getIsAuthFunction(),
+                                 customAuthCredential: self.authCredential,
                                  completion: completionWrapper)
     }
     
@@ -142,6 +144,7 @@ class ApiRequest<T : ApiResponse> : Package {
                                  parameters: self.toDictionary(),
                                  headers: ["x-pm-apiversion": self.apiVersion()],
                                  authenticated: self.getIsAuthFunction(),
+                                 customAuthCredential: self.authCredential,
                                  completion: completionWrapper)
 
         //wait operations
@@ -184,6 +187,7 @@ class ApiRequestNew<T : ApiResponse> : Package {
         return true
     }
     
+    var authCredential: AuthCredential?
     
     /**
      get request path
@@ -237,6 +241,7 @@ class ApiRequestNew<T : ApiResponse> : Package {
                                  parameters: self.toDictionary(),
                                  headers: ["x-pm-apiversion": self.apiVersion()],
                                  authenticated: self.getIsAuthFunction(),
+                                 customAuthCredential: self.authCredential,
                                  completion: completionWrapper)
         
         return deferred.promise

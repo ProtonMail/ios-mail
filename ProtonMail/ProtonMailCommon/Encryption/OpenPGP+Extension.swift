@@ -230,10 +230,11 @@ extension Data {
 //    }
 //    
     //key packet part
-    func getSessionFromPubKeyPackage(_ passphrase: String) throws -> PmSessionSplit? {
+    func getSessionFromPubKeyPackage(_ passphrase: String,
+                                     privKeys: Data? = nil) throws -> PmSessionSplit?
+    {
         var error : NSError?
-        let privKeys = sharedUserDataService.addressPrivKeys
-        let out = PmGetSessionFromKeyPacketBinkeys(self, privKeys, passphrase, &error)
+        let out = PmGetSessionFromKeyPacketBinkeys(self, privKeys ?? sharedUserDataService.addressPrivKeys, passphrase, &error)
         if let err = error {
             throw err
         }

@@ -127,9 +127,7 @@ extension SignInManager {
                          afterSignIn: @escaping ()->Void,
                          requestMailboxPassword: @escaping ()->Void)
     {
-        if (userCachedStatus.isTouchIDEnabled) {
-            self.clean()
-        }
+        self.clean()
         
         //need pass twoFACode
         sharedUserDataService.signIn(username,

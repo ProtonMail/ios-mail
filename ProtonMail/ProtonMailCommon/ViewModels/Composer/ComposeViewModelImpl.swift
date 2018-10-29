@@ -399,12 +399,15 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func sendMessage() {
-        
         self.updateDraft()
-        sharedMessageDataService.send(inQueue: self.message?.messageID)  { task, response, error in
-            
-        }
         
+        // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
+        // they are transient and will not be persisted in the db, only in managed object context
+        self.message?.cachedPassphrase = sharedUserDataService.mailboxPassword
+        self.message?.cachedAuthCredential = AuthCredential.fetchFromKeychain()
+        self.message?.cachedPrivateKeys = sharedUserDataService.addressPrivKeys
+        
+        sharedMessageDataService.send(inQueue: self.message?.messageID)  { _, _, _ in }
     }
     
     override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
