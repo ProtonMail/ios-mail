@@ -10,7 +10,18 @@ import LocalAuthentication
 
 var sharedUserDataService : UserDataService!
 
-class ShareUnlockViewController: UIViewController {
+class ShareUnlockViewController: UIViewController, CoordinatedNew {
+    
+    func set(coordinator: ShareUnlockCoordinator) {
+        
+    }
+    
+    func getCoordinator() -> CoordinatorNew? {
+        return nil
+    }
+    
+    typealias coordinatorType = ShareUnlockCoordinator
+    
     @IBOutlet weak var pinUnlock: UIButton!
     @IBOutlet weak var touchID: UIButton!
     
@@ -206,7 +217,10 @@ class ShareUnlockViewController: UIViewController {
     }
     
     func goto_composer() {
-        let composer = ComposerViewController(nibName: "ComposerViewController", bundle: nil) //69 mb
+        let rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: .composer)!
+        let composer = rootViewController.children[0] as! ComposeViewController
+        //
+//        let composer = ComposerViewController(nibName: "ComposerViewController", bundle: nil) //69 mb
         sharedVMService.buildComposer(composer,
                                       subject: self.inputSubject,
                                       content: self.inputContent,
@@ -214,7 +228,10 @@ class ShareUnlockViewController: UIViewController {
         
         let w = UIScreen.main.bounds.width;
         composer.view.frame = CGRect(x: 0, y: 0, width: w, height: 186 + 60)
-        self.navigationController?.setViewControllers([composer], animated: true) //71mb
+        //self.navigationController?.setViewControllers([composer], animated: true) //71mb
+        self.navigationController?.present(rootViewController, animated: true, completion: {
+            
+        })
     }
     
     func goto_pin() {

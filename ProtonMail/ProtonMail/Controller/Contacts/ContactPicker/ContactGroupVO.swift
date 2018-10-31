@@ -20,8 +20,8 @@ struct DraftEmailData: Hashable
     }
 }
 
-class ContactGroupVO: NSObject, ContactPickerModelProtocol
-{
+class ContactGroupVO: NSObject, ContactPickerModelProtocol {
+    
     var modelType: ContactPickerModelState {
         get {
             return .contactGroup
@@ -32,11 +32,42 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol
     var contactTitle: String
     var displayName: String?
     var displayEmail: String?
-    var contactSubtitle: String?
     var contactImage: UIImage?
     var lock: UIImage?
     var hasPGPPined: Bool
     var hasNonePM: Bool
+    
+    var color: String? {
+        get {
+            if let color = groupColor {
+                return color
+            }
+            
+            if let context = sharedCoreDataService.mainManagedObjectContext {
+                if let label = Label.labelForLabelName(contactTitle,
+                                                       inManagedObjectContext: context) {
+                    groupColor = label.color
+                    groupSize = label.emails.count
+                    return label.color
+                }
+            }
+            
+            return ColorManager.defaultColor
+        }
+    }
+    
+    var contactSubtitle: String? {
+        get {
+            let count = self.contactCount
+            if count <= 1 {
+                return String.init(format: LocalString._contact_groups_member_count_description,
+                                   count)
+            } else {
+                return String.init(format: LocalString._contact_groups_members_count_description,
+                                    count)
+            }
+        }
+    }
     
     func notes(type: Int) -> String {
         return ""
@@ -145,6 +176,25 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol
         return (0, ColorManager.defaultColor)
     }
     
+    var contactCount : Int {
+        get {
+            if let size = groupSize {
+                return size
+            }
+            
+            if let context = sharedCoreDataService.mainManagedObjectContext {
+                if let label = Label.labelForLabelName(contactTitle,
+                                                       inManagedObjectContext: context) {
+                    groupColor = label.color
+                    groupSize = label.emails.count
+                    return label.emails.count
+                }
+            }
+            
+            return 0
+        }
+    }
+    
     /**
      Calculates the group size, selected member count, and group color
      Information for composer collection view cell
@@ -209,7 +259,6 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol
         
         self.displayName = nil
         self.displayEmail = nil
-        self.contactSubtitle = ""
         self.contactImage = nil
         self.lock = nil
         self.hasPGPPined = false

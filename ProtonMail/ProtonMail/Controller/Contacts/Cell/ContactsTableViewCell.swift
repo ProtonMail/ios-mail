@@ -19,26 +19,37 @@ final class ContactsTableViewCell: MCSwipeTableViewCell {
     @IBOutlet var contactNameLabel: UILabel!
     @IBOutlet var contactEmailLabel: UILabel!
     @IBOutlet var contactSourceImageView: UIImageView!
-    
+    @IBOutlet weak var groupImage: UIImageView!
     @IBOutlet weak var shortName: UILabel!
     
     override func awakeFromNib() {
         self.shortName.layer.cornerRadius = 20
     }
     
-    func config(name: String, email: String, highlight: String) {
+    func config(name: String, email: String, highlight: String, color : String? = nil) {
         if highlight.isEmpty {
             self.contactNameLabel.attributedText = nil
-            self.contactEmailLabel.attributedText = nil
             self.contactNameLabel.text = name
+            
+            self.contactEmailLabel.attributedText = nil
             self.contactEmailLabel.text = email
         } else {
-            self.contactNameLabel.attributedText = NSMutableAttributedString.highlightedString(text: name,
-                                                                                               search: highlight,
-                                                                                               font: FontManager.highlightSearchTextForTitle)
-            self.contactEmailLabel.attributedText = NSMutableAttributedString.highlightedString(text: email,
-                                                                                                search: highlight,
-                                                                                                font: FontManager.highlightSearchTextForSubtitle)
+            self.contactNameLabel.attributedText = .highlightedString(text: name,
+                                                                      search: highlight,
+                                                                      font: .highlightSearchTextForTitle)
+            self.contactEmailLabel.attributedText = .highlightedString(text: email,
+                                                                       search: highlight,
+                                                                       font: .highlightSearchTextForSubtitle)
+        }
+        
+        if let color = color { //will be show the image
+            groupImage.setupImage(tintColor: UIColor.white,
+                                  backgroundColor: color,
+                                  borderWidth: 0,
+                                  borderColor: UIColor.white.cgColor)
+            self.groupImage.isHidden = false
+        } else {
+            self.groupImage.isHidden = true
         }
         
         var shortn: String = ""

@@ -13,44 +13,29 @@ import UIKit
 
 class ShareExtensionEntry : UINavigationController {
     
-    internal let entryNibName = "ShareUnlockViewController"
-    
-    init() {
-        super.init(rootViewController: ShareUnlockViewController(nibName: entryNibName , bundle: nil))
-    }
-    
+    var appCoordinator : ShareAppCoordinator?
+
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
+        self.setup()
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.setup()
+    }
+    
+    private func setup() {
+        appCoordinator = ShareAppCoordinator(navigation: self)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-        self.view.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height)
-        UIView.animate(withDuration: 0.50, animations: { () -> Void in
-            self.view.transform = CGAffineTransform.identity
-        })
+        self.appCoordinator?.start()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
-    
+//
+//    override var preferredStatusBarStyle: UIStatusBarStyle {
+//        return .lightContent
+//    }
 }

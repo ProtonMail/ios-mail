@@ -36,7 +36,7 @@ protocol CoordinatorDelegate: class {
 }
 
 /// Used typically on view controllers to refer to it's coordinator
-protocol CoordinatedNew : CoordinatedNewBase {
+protocol CoordinatedNew : CoordinatedNewBase where coordinatorType: CoordinatorNew {
     associatedtype coordinatorType
     func set(coordinator: coordinatorType)
 }
@@ -58,7 +58,8 @@ protocol CoordinatorNew : AnyObject {
 
 /// Navigate and stop methods are optional
 extension CoordinatorNew {
-    func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) {
+    func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
+        return false
     }
     
     func stop() {
@@ -80,6 +81,23 @@ protocol DefaultCoordinator: CoordinatorNew {
 protocol PushCoordinator: DefaultCoordinator {
     var configuration: ((VC) -> ())? { get }
     var navigationController: UINavigationController { get }
+}
+
+extension PushCoordinator where VC: UIViewController, VC: CoordinatedNew {
+    func start() {
+        guard let viewController = viewController else {
+            return
+        }
+        configuration?(viewController)
+        viewController.set(coordinator: self as! Self.VC.coordinatorType)
+        navigationController.pushViewController(viewController, animated: animated)
+    }
+    
+    func stop() {
+        delegate?.willStop(in: self)
+        navigationController.popViewController(animated: animated)
+        delegate?.didStop(in: self)
+    }
 }
 
 protocol ModalCoordinator: DefaultCoordinator {

@@ -1,5 +1,5 @@
 //
-//  ComposeEmailViewController.swift
+//  ComposeViewController
 //  ProtonMail - Created on 4/21/15.
 //
 //
@@ -35,7 +35,7 @@ import AwaitKit
 
 
 class ComposeViewController : UIViewController, ViewModelProtocolNew, CoordinatedNew {
- 
+
     typealias argType = ComposeViewModel
     typealias coordinatorType = ComposeCoordinator
     
@@ -81,7 +81,9 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
     func set(coordinator: ComposeCoordinator) {
         self.coordinator = coordinator
     }
-    
+    func setCoordinator(_ coordinator: ComposeCoordinator) {
+        self.coordinator = coordinator
+    }
     
     ///
     func inactiveViewModel() {
@@ -99,7 +101,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         }
     }
 
-    fileprivate var isShowingConfirm : Bool = false
+    private var isShowingConfirm : Bool = false
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -111,7 +113,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button,
                                             style: UIBarButtonItem.Style.plain,
                                             target: self,
-                                            action: #selector(ComposeViewController.cancel_clicked(_:)))
+                                            action: #selector(ComposeViewController.cancelAction(_:)))
         self.navigationItem.leftBarButtonItem = cancelButton
         
         self.configureNavigationBar()
@@ -133,11 +135,74 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         ///
         self.headerView.delegate = self
         self.headerView.datasource = self
-
-        /// load all contacts
-        self.contacts = sharedContactDataService.allContactVOs()
-        self.retrieveAllContacts()
-
+        
+        //  update header view data
+        self.updateMessageView()
+        
+        // load all contacts and groups
+        // TODO: move to view model
+        firstly { () -> Promise<Void> in
+            self.contacts = sharedContactDataService.allContactVOs() // contacts in core data
+                return retrieveAllContacts() // contacts in phone book
+        }.done { () -> Void in
+            // get contact groups
+            
+            // TODO: figure where to put this thing
+            if sharedUserDataService.isPaidUser() {
+                self.contacts.append(contentsOf: sharedContactGroupsDataService.getAllContactGroupVOs())
+            }
+            
+            // Sort contacts and contact groups
+            self.contacts.sort {
+                (first: ContactPickerModelProtocol, second: ContactPickerModelProtocol) -> Bool in
+                
+                if let first = first as? ContactVO,
+                    let second = second as? ContactVO {
+                    return first.name.lowercased() == second.name.lowercased() ?
+                        first.email.lowercased() < second.email.lowercased() :
+                        first.name.lowercased() < second.name.lowercased()
+                } else if let first = first as? ContactGroupVO,
+                    let second = second as? ContactGroupVO {
+                    return first.contactTitle.lowercased() < second.contactTitle.lowercased()
+                } else {
+                    // contact groups go first
+                    if let _ = first as? ContactGroupVO {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+            }
+            
+            self.headerView.toContactPicker.reloadData()
+            self.headerView.ccContactPicker.reloadData()
+            self.headerView.bccContactPicker.reloadData()
+            
+            self.headerView.toContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.headerView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.headerView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
+            
+            switch self.viewModel.messageAction!
+            {
+            case .openDraft, .reply, .replyAll:
+                if !self.isShowingConfirm {
+                    //TODO:: remove the focus for now revert later
+                    //self.focus()
+                }
+                self.headerView.notifyViewSize(true)
+                break
+            default:
+                if !self.isShowingConfirm {
+                    //TODO:: remove the focus for now revert later
+                    //let _ = self.composeView.toContactPicker.becomeFirstResponder()
+                }
+                break
+            }
+        }.catch { error in
+            // TODO: handle error
+            PMLog.D("Load all contacts and groups error \(error)")
+        }
+        
         self.expirationPicker.alpha = 0.0
         self.expirationPicker.dataSource = self
         self.expirationPicker.delegate = self
@@ -146,19 +211,23 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
 
         /// change message as read
         self.viewModel.markAsRead();
-        
-        //  update header view data
-        self.updateMessageView()
     }
 
-    internal func retrieveAllContacts() {
-        sharedContactDataService.getContactVOs { (contacts, error) in
-            if let error = error {
-                PMLog.D(" error: \(error)")
+    private func retrieveAllContacts() -> Promise<Void> {
+        return Promise {
+            seal in
+            
+            sharedContactDataService.getContactVOs { (contacts, error) in
+                if let error = error {
+                    PMLog.D(" error: \(error)")
+                    // seal.reject(error) // TODO: should I?
+                }
+                self.contacts = contacts
+                seal.fulfill(())
             }
-            self.contacts = contacts
         }
     }
+    
 
     internal func updateEmbedImages() {
         if let atts = viewModel.getAttachments() {
@@ -174,12 +243,12 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         }
     }
 
-    fileprivate func dismissKeyboard() {
+    private func dismissKeyboard() {
         self.headerView.subject.becomeFirstResponder()
         self.headerView.subject.resignFirstResponder()
     }
 
-    fileprivate func updateMessageView() {
+    private func updateMessageView() {
         self.headerView.subject.text = self.viewModel.getSubject()
         let body = self.viewModel.getHtmlBody()
         self.htmlEditor.setHtml(body: body)
@@ -223,10 +292,6 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         }
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.headerView.notifyViewSize(false)
@@ -242,10 +307,6 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         setupAutoSave()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
@@ -281,14 +342,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         super.didReceiveMemoryWarning()
     }
 
-    
-    internal func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController) {
-        presentingController.providesPresentationContextTransitionStyle = true
-        presentingController.definesPresentationContext = true
-        presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-    }
-    
-    @IBAction func send_clicked(_ sender: AnyObject) {
+    @IBAction func sendAction(_ sender: AnyObject) {
         self.dismissKeyboard()
         if let suject = self.headerView.subject.text {
             if !suject.isEmpty {
@@ -303,7 +357,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         alertController.addAction(UIAlertAction(title: LocalString._general_send_action,
                                                 style: .destructive, handler: { (action) -> Void in
                                                     self.sendMessage()
-                                                }))
+        }))
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
@@ -313,7 +367,6 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
             if self.headerView.hasPGPPinned ||
                 (self.headerView.hasNonePMEmails && self.encryptionPassword.count <= 0 ) {
                 self.coordinator?.go(to: .expirationWarning)
-//                self.performSegue(withIdentifier: self.kExpirationWarningSegue, sender: self)
                 return
             }
             
@@ -340,26 +393,17 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
             self.viewModel.sendMessage()
             // show messagex
             delay(0.5) {
-                NSError.alertMessageSendingToast()
+                //NSError.alertMessageSendingToast()
             }
-            
-            if self.presentingViewController != nil {
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                let _ = self.navigationController?.popToRootViewController(animated: true)
-            }
+            self.dismiss()
         }
     }
     
-    @IBAction func cancel_clicked(_ sender: UIBarButtonItem) {
+    @IBAction func cancelAction(_ sender: UIBarButtonItem) {
         let dismiss: (() -> Void) = {
             self.isShowingConfirm = false
             self.dismissKeyboard()
-            if self.presentingViewController != nil {
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                let _ = self.navigationController?.popViewController(animated: true)
-            }
+            self.dismiss()
         }
         
         if self.viewModel.hasDraft || self.headerView.hasContent || ((attachments?.count ?? 0) > 0) {
@@ -399,15 +443,15 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
     }
     
     // MARK: - Private methods
-    fileprivate func setupAutoSave(firstTime : Bool = false) {
+    private func setupAutoSave(firstTime : Bool = false) {
         self.timer = Timer.scheduledTimer(timeInterval: 120,
                                           target: self,
-                                          selector: #selector(ComposeEmailViewController.autoSaveTimer),
+                                          selector: #selector(ComposeViewController.autoSaveTimer),
                                           userInfo: nil,
                                           repeats: true)
     }
     
-    fileprivate func stopAutoSave() {
+    private func stopAutoSave() {
         if let t = self.timer {
             t.invalidate()
             self.timer = nil
@@ -454,7 +498,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         }
     }
     
-    fileprivate func checkEmbedImageEdit(_ orignal: String, edited: String) {
+    private func checkEmbedImageEdit(_ orignal: String, edited: String) {
         if let atts = viewModel.getAttachments() {
             for att in atts {
                 if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
@@ -468,7 +512,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         }
     }
     
-    fileprivate func updateAttachmentButton () {
+    private func updateAttachmentButton () {
         if attachments?.count > 0 {
             self.headerView.updateAttachmentButton(true)
         } else {
@@ -525,40 +569,26 @@ extension ComposeViewController : ComposePasswordViewControllerDelegate {
 
 // MARK : - view extensions
 extension ComposeViewController : ComposeViewDelegate {
-    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
-                                                   contactGroup: ContactGroupVO,
-                                                   callback: @escaping (([String]) -> Void)) {
-        
-    }
-    
-    func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {
-        self.cachedHeaderHeight = size.height
-        // resize header view
-        self.headerView.view.frame.size.height = self.cachedHeaderHeight
-//        self.updateContentLayout(true)
-//        self.webView.scrollView.isScrollEnabled = !showPicker
-        self.htmlEditor.updateHeaderHeight()
-
-    }
-    
-    func ComposeViewDidOffsetChanged(_ offset: CGPoint) {
-    }
     
     func composeViewWillPresentSubview() {
-        //self.webView?.scrollView.isScrollEnabled = false
+        self.htmlEditor.isScrollEnabled = false
     }
     func composeViewWillDismissSubview() {
-       // self.webView?.scrollView.isScrollEnabled = true
+        self.htmlEditor.isScrollEnabled = true
     }
-
+    
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.viewModel.lockerCheck(model: model, progress: progress, complete: complete)
     }
-
+    
     func composeViewPickFrom(_ composeView: ComposeView) {
         var needsShow : Bool = false
-        let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to,
+                                                message: nil,
+                                                preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                style: .cancel,
+                                                handler: nil))
         let multi_domains = self.viewModel.getAddresses()
         let defaultAddr = self.viewModel.getDefaultSendAddress()
         for addr in multi_domains {
@@ -594,6 +624,19 @@ extension ComposeViewController : ComposeViewDelegate {
         }
     }
     
+    func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {
+        self.cachedHeaderHeight = size.height
+        // resize header view
+        self.headerView.view.frame.size.height = self.cachedHeaderHeight
+        self.htmlEditor.isScrollEnabled = !showPicker
+        self.htmlEditor.updateHeaderHeight()
+    }
+    
+    func ComposeViewDidOffsetChanged(_ offset: CGPoint) {
+        
+    }
+    
+    
     func composeViewDidTapNextButton(_ composeView: ComposeView) {
         switch(actualEncryptionStep) {
         case EncryptionStep.DefinePassword:
@@ -626,7 +669,12 @@ extension ComposeViewController : ComposeViewDelegate {
 
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView) {
         self.coordinator?.go(to: .password)
-//        self.performSegue(withIdentifier: kPasswordSegue, sender: self)
+    }
+    
+    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
+                                                   contactGroup: ContactGroupVO,
+                                                   callback: @escaping (([DraftEmailData]) -> Void)) {
+        self.coordinator?.go(to: .subSelection)
     }
 
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView) {
@@ -693,8 +741,9 @@ extension ComposeViewController : ComposeViewDelegate {
             }
             
             // present error
-            let alert = UIAlertController(title: LocalString._too_many_recipients,
-                                          message: LocalString._max_number_of_recipients_is,
+            let alert = UIAlertController(title: LocalString._too_many_recipients_title,
+                                          message: String.init(format: LocalString._max_number_of_recipients_is_number,
+                                                               AppConstants.MaxNumberOfRecipients),
                                           preferredStyle: .alert)
             alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
@@ -844,6 +893,7 @@ extension ComposeViewController: ExpirationWarningVCDelegate{
     }
 
     func learnMore() {
-        UIApplication.shared.openURL(.kEOLearnMore)
+        //TODO:: fix later
+       // UIApplication.shared.openURL(.kEOLearnMore)
     }
 }

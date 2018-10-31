@@ -93,9 +93,9 @@ class ContactGroupsViewCell: UITableViewCell {
             sendButton.imageView?.image = UIImage.resize(image: image, targetSize: CGSize.init(width: 20, height: 20))
         }
         
-        self.nameLabel.attributedText = NSMutableAttributedString.highlightedString(text: name,
-                                                                                    search: queryString,
-                                                                                    font: FontManager.highlightSearchTextForTitle)
+        self.nameLabel.attributedText = .highlightedString(text: name,
+                                                           search: queryString,
+                                                           font: .highlightSearchTextForTitle)
         self.setDetailString()
         groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: UIColor.init(hexString: color, alpha: 1),

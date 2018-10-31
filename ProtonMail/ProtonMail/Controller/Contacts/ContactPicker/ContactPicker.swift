@@ -29,20 +29,23 @@ protocol ContactPickerDelegate: ContactCollectionViewDelegate {
 
 class ContactPicker: UIView {
     private var keyboardFrame: CGRect = .zero
-    //private var searchWindow: UIWindow?
+    private var searchWindow: UIWindow?
     private var searchTableViewController: ContactSearchTableViewController?
     private func createSearchTableViewController() -> ContactSearchTableViewController {
         let controller = ContactSearchTableViewController()
         controller.tableView.register(UINib.init(nibName: ContactPickerDefined.ContactsTableViewCellName,
                                                  bundle: nil),
                                  forCellReuseIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier)
-        controller.tableView.register(UINib.init(nibName: ContactPickerDefined.ContactGroupTableViewCellName,
-                                                 bundle: nil),
-                                      forCellReuseIdentifier: ContactPickerDefined.ContactGroupTableViewCellIdentifier)
-        
+        controller.tableView.translatesAutoresizingMaskIntoConstraints = false
+        controller.tableView.estimatedRowHeight = 60.0
+        controller.tableView.sectionHeaderHeight = 0;
+        controller.tableView.sectionFooterHeight = 0;
+        controller.tableView.reloadData()
+        if #available(iOS 11.0, *) {
+            controller.tableView.contentInsetAdjustmentBehavior = .never
+        }
         controller.onSelection = { [unowned self] model in
             self.hideSearchTableView()
-            
             // if contact group is selected, we add all emails in it as selected, initially
             if let contactGroup = model as? ContactGroupVO {
                 contactGroup.selectAllEmailFromGroup()
@@ -64,7 +67,7 @@ class ContactPicker: UIView {
         }
     }
     
-    internal weak var delegate : ContactPickerDelegate?
+    internal weak var delegate : (ContactPickerDelegate&UIViewController)!
     internal weak var datasource : ContactPickerDataSource?
     
     private var _showPrompt : Bool = true
@@ -106,14 +109,6 @@ class ContactPicker: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setup()
-    }
-
-    override var intrinsicContentSize : CGSize {
-        let s = super.intrinsicContentSize
-        // let cs = contentStackview.intrinsicContentSize
-//        let sf = contentStackview.sizeThatFits(CGSize.zero)
-        let sf = self.contactCollectionView.sizeThatFits(.zero)
-        return s
     }
     
     deinit {
@@ -305,14 +300,14 @@ class ContactPicker: UIView {
         }
         guard self.searchTableViewController == nil else { return }
         self.searchTableViewController = self.createSearchTableViewController()
-//        self.searchWindow = self.searchWindow ?? UIWindow(frame: self.frameForContactSearch)
-//        self.searchWindow?.rootViewController = self.searchTableViewController
-//        self.searchWindow?.isHidden = false
-//        self.searchWindow?.windowLevel = UIWindow.Level.normal
-//        #if APP_EXTENSION
-//         // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to  it's hierarchy explicitly
-//        self.window?.addSubview(searchWindow!)
-//        #endif
+        self.searchWindow = self.searchWindow ?? UIWindow(frame: self.frameForContactSearch)
+        self.searchWindow?.rootViewController = self.searchTableViewController
+        self.searchWindow?.isHidden = false
+        self.searchWindow?.windowLevel = UIWindow.Level.normal
+        #if APP_EXTENSION
+         // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to  it's hierarchy explicitly
+        self.window?.addSubview(searchWindow!)
+        #endif
         
         self.delegate?.didShowFilteredContactsForContactPicker(contactPicker: self)
     }
@@ -320,25 +315,25 @@ class ContactPicker: UIView {
     private func hideSearchTableView() {
         guard let _ = self.searchTableViewController else { return }
         self.searchTableViewController = nil
-//        self.searchWindow?.rootViewController = nil
-//        self.searchWindow?.isHidden = true
-//        #if !APP_EXTENSION
-//        // in app extenison window is strongly held by _UIHostedWindow and we can not change that since removeFromSuperview() does not work properly, so we'll just reuse same window all over again
-//        self.searchWindow = nil
-//        #endif
+        self.searchWindow?.rootViewController = nil
+        self.searchWindow?.isHidden = true
+        #if !APP_EXTENSION
+        // in app extenison window is strongly held by _UIHostedWindow and we can not change that since removeFromSuperview() does not work properly, so we'll just reuse same window all over again
+        self.searchWindow = nil
+        #endif
         self.delegate?.didHideFilteredContactsForContactPicker(contactPicker: self)
     }
     
-//    private var frameForContactSearch: CGRect {
-//        guard let window = self.delegate?.view.window else {
-//            return .zero
-//        }
-//
-//        var topLine = self.convert(CGPoint.zero, to: window)
-//        topLine.y += self.frame.size.height
-//        let size = CGSize(width: window.bounds.width, height: window.bounds.size.height - self.keyboardFrame.size.height - topLine.y)
-//        return .init(origin: topLine, size: size)
-//    }
+    private var frameForContactSearch: CGRect {
+        guard let window = self.delegate?.view.window else {
+            return .zero
+        }
+        
+        var topLine = self.convert(CGPoint.zero, to: window)
+        topLine.y += self.frame.size.height
+        let size = CGSize(width: window.bounds.width, height: window.bounds.size.height - self.keyboardFrame.size.height - topLine.y)
+        return .init(origin: topLine, size: size)
+    }
 }
 
 

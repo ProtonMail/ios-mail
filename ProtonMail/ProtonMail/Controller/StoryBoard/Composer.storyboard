@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="In7-0f-UnN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -40,7 +40,7 @@
                     <navigationItem key="navigationItem" id="lNu-HA-Ydw">
                         <barButtonItem key="rightBarButtonItem" image="sent_compose" id="vYP-h5-SU9">
                             <connections>
-                                <action selector="send_clicked:" destination="WHe-68-Fm2" id="egT-CV-H4j"/>
+                                <action selector="sendAction:" destination="WHe-68-Fm2" id="WwG-rn-UWU"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

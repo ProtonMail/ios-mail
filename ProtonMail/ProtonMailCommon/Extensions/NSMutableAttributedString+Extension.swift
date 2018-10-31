@@ -8,8 +8,7 @@
 
 import Foundation
 
-extension NSMutableAttributedString
-{
+extension NSAttributedString {
     /**
      - parameters:
      - text: original string
@@ -17,7 +16,7 @@ extension NSMutableAttributedString
      */
     class func highlightedString(text: String,
                                  search: String,
-                                 font: UIFont) -> NSMutableAttributedString {
+                                 font: UIFont) -> NSAttributedString {
         let resultText = text
         let searchTerm = search
         let attributedString = NSMutableAttributedString(string: resultText)

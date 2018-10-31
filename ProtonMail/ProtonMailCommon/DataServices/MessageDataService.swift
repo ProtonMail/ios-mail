@@ -1188,6 +1188,13 @@ class MessageDataService {
         if let context = managedObjectContext,
             let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
             let message = context.find(with: objectID) as? Message {
+            
+            if message.messageID.isEmpty {//
+                errorBlock(nil, nil, NSError.badParameter(messageID))
+                return
+            }
+            
+            
 
             if message.managedObjectContext == nil {
                 NSError.alertLocalCacheErrorToast()

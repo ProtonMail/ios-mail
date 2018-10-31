@@ -232,6 +232,15 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     func getHtml() -> Promise<String> {
         return run(with: "html_editor.getHtml();")
     }
+    
+    var isScrollEnabled : Bool {
+        get {
+            return self.webView.scrollView.isScrollEnabled
+        }
+        set {
+            self.webView.scrollView.isScrollEnabled = newValue
+        }
+    }
 
     
     func setHtml(body: String) {
@@ -255,7 +264,7 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         }.done {_ in
             self.delegate?.ContentLoaded()
         }.catch { (error) in
-            //
+            NSLog("\(error)")
         }
     }
     

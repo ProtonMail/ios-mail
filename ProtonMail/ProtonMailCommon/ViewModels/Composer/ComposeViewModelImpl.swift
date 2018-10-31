@@ -614,11 +614,18 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 return htmlString
             case .newDraftFromShare:
                 if !self.body.isEmpty {
-                    let newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
+                    var newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
+                    
+                    newhtmlString = newhtmlString.stringByStrippingStyleHTML()
+                    newhtmlString = newhtmlString.stringByStrippingBodyStyle()
+                    newhtmlString = newhtmlString.stringByPurifyHTML()
+                    newhtmlString = newhtmlString.escaped
+                    
                     return newhtmlString
                 } else {
                     if htmlString.trim().isEmpty {
-                        let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>" //add some space
+                        //add some space
+                        let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
                         return ret_body
                     }
                 }

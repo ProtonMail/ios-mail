@@ -85,7 +85,7 @@ class ComposePasswordViewController: UIViewController {
     //
     
     @IBAction func getMoreInfoAction(_ sender: UIButton) {
-        UIApplication.shared.openURL(upgradePageUrl)
+       // UIApplication.shared.openURL(upgradePageUrl)
     }
 
     @IBAction func closeAction(_ sender: AnyObject) {

@@ -8,8 +8,13 @@
 
 import Foundation
 
-struct FontManager
-{
-    static let highlightSearchTextForTitle = Fonts.h2.bold
-    static let highlightSearchTextForSubtitle = Fonts.h5.bold
+extension UIFont {
+    
+    static var highlightSearchTextForTitle: UIFont {
+        return  Fonts.h2.bold
+    }
+    
+    static var highlightSearchTextForSubtitle: UIFont {
+        return  Fonts.h5.bold
+    }
 }

@@ -43,6 +43,7 @@ class ComposeCoordinator : DefaultCoordinator {
     enum Destination : String {
         case password = "to_eo_password_segue"
         case expirationWarning = "expiration_warning_segue"
+        case subSelection = "toContactGroupSubSelection"
     }
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
@@ -65,8 +66,9 @@ class ComposeCoordinator : DefaultCoordinator {
             //let nonePMEmail = self.encryptionPassword.count <= 0 ? self.headerView.nonePMEmails : [String]()
             //popup.config(needPwd: nonePMEmail, pgp: self.headerView.pgpEmails)
             return false
+        case .subSelection:
+            return true
         }
-        
         return true
     }
     
@@ -78,3 +80,27 @@ class ComposeCoordinator : DefaultCoordinator {
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: nil)
     }
 }
+
+//
+//override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//    if segue.identifier == kPasswordSegue {
+//        let popup = segue.destination as! ComposePasswordViewController
+//        popup.pwdDelegate = self
+//        popup.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
+//        self.setPresentationStyleForSelfController(self, presentingController: popup)
+//    } else if segue.identifier == kExpirationWarningSegue {
+//        let popup = segue.destination as! ExpirationWarningViewController
+//        popup.delegate = self
+//        let nonePMEmail = self.encryptionPassword.count <= 0 ? self.composeView.nonePMEmails : [String]()
+//        popup.config(needPwd: nonePMEmail,
+//                     pgp: self.composeView.pgpEmails)
+//    } else if segue.identifier == kToContactGroupSubSelection {
+//        let destination = segue.destination as! ContactGroupSubSelectionViewController
+//        let sender = sender as! (ContactGroupVO, (([DraftEmailData]) -> Void))
+//        
+//        destination.contactGroupName = sender.0.contactTitle
+//        destination.selectedEmails = sender.0.getSelectedEmailData()
+//        destination.callback = sender.1
+//        self.setPresentationStyleForSelfController(self, presentingController: destination)
+//    }
+//}

@@ -77,6 +77,13 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         }
     }
     
+    var color: String? {
+        get {
+            return nil
+        }
+    }
+    
+
     var displayName : String? {
         get {
             return name
