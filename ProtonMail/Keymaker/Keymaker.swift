@@ -74,6 +74,7 @@ public class Keymaker: NSObject {
     private let controlThread = DispatchQueue.global(qos: .utility)
     
     public func wipeMainKey() {
+        self.lockTheApp()
         NoneProtection.removeCyphertext(from: self.keychain)
         BioProtection.removeCyphertext(from: self.keychain)
         PinProtection.removeCyphertext(from: self.keychain)
@@ -147,10 +148,9 @@ public class Keymaker: NSObject {
     
     @discardableResult public func generateNewMainKeyWithDefaultProtection() -> Key {
         self.wipeMainKey() // get rid of all old protected mainKeys
-        
         let newMainKey = NoneProtection.generateRandomValue(length: 32)
-        try! NoneProtection(keychain: self.keychain).lock(value: newMainKey)
         self._mainKey = newMainKey
+        try! NoneProtection(keychain: self.keychain).lock(value: newMainKey)
         return newMainKey
     }
     

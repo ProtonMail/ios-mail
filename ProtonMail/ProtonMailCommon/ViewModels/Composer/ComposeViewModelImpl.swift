@@ -400,13 +400,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
     
     override func sendMessage() {
         self.updateDraft()
-        
-        // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
-        // they are transient and will not be persisted in the db, only in managed object context
-        self.message?.cachedPassphrase = sharedUserDataService.mailboxPassword
-        self.message?.cachedAuthCredential = AuthCredential.fetchFromKeychain()
-        self.message?.cachedPrivateKeys = sharedUserDataService.addressPrivKeys
-        
         sharedMessageDataService.send(inQueue: self.message?.messageID)  { _, _, _ in }
     }
     
@@ -473,7 +466,17 @@ final class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
+    private func cachePropertiesForBackground(in message: Message?) {
+        // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
+        // they are transient and will not be persisted in the db, only in managed object context
+        message?.cachedPassphrase = sharedUserDataService.mailboxPassword
+        message?.cachedAuthCredential = AuthCredential.fetchFromKeychain()
+        message?.cachedPrivateKeys = sharedUserDataService.addressPrivKeys
+        message?.cachedAddress = message?.defaultAddress
+    }
+    
     override func updateDraft() {
+        self.cachePropertiesForBackground(in: self.message)
         sharedMessageDataService.saveDraft(self.message);
     }
     
@@ -481,6 +484,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         if let tmpLocation = self.message?.location {
             lastUpdatedStore.ReadMailboxMessage(tmpLocation)
         }
+        self.cachePropertiesForBackground(in: self.message)
         sharedMessageDataService.deleteDraft(self.message);
     }
     

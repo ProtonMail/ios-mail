@@ -46,10 +46,20 @@ final class Address: NSObject {
         self.send = send ?? 0
         self.order = order ?? 0
     }
+   
 }
 
 // MARK: - TODO:: we'd better move to Codable or at least NSSecureCoding when will happen to refactor this part of app from Anatoly
 extension Address: NSCoding {
+    func archive() -> Data {
+        return NSKeyedArchiver.archivedData(withRootObject: self)
+    }
+    
+    static func unarchive(_ data: Data?) -> Address? {
+        guard let data = data else { return nil }
+        return NSKeyedUnarchiver.unarchiveObject(with: data) as? Address
+    }
+    
     //the keys all messed up but it works ( don't copy paste there looks really bad)
     fileprivate struct CoderKey {
         static let addressID    = "displayName"

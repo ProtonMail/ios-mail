@@ -76,18 +76,18 @@ class UserDataService {
     }
     
     // MARK: - Private variables
-    //TODO::Fix later fileprivate(set)
-    fileprivate(set) var userInfo: UserInfo? = {
-        guard let mainKey = keymaker.mainKey,
-            let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.userInfo) else
-        {
-            return nil
+    fileprivate(set) var userInfo: UserInfo? {
+        get {
+            guard let mainKey = keymaker.mainKey,
+                let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.userInfo) else
+            {
+                return nil
+            }
+            
+            let locked = Locked<UserInfo>(encryptedValue: cypherData)
+            return try? locked.unlock(with: mainKey)
         }
-        
-        let locked = Locked<UserInfo>(encryptedValue: cypherData)
-        return try? locked.unlock(with: mainKey)
-    }() {
-        didSet {
+        set {
             guard let newValue = userInfo else {
                 SharedCacheBase.getDefault()?.removeObject(forKey: Key.userInfo)
                 return

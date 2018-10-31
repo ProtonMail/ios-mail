@@ -1027,79 +1027,67 @@ class MessageDataService {
     
     
     private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        if let context = managedObjectContext {
-            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(managedObjectID) {
-                
-                var msgObject : NSManagedObject?
-                do {
-                    msgObject = try context.existingObject(with: objectID)
-                } catch {
-                    msgObject = nil
-                }
-                
-                if let attachment = msgObject as? Attachment {
-                    var params = [
-                        "Filename":attachment.fileName,
-                        "MIMEType" : attachment.mimeType,
-                        ]
-                    
-                    var default_address_id = sharedUserDataService.userAddresses.defaultSendAddress()?.address_id ?? ""
-                    //TODO::here need to fix sometime message is not valid'
-                    if attachment.message.managedObjectContext == nil {
-                        params["MessageID"] =  ""
-                    } else {
-                        params["MessageID"] =  attachment.message.messageID 
-                        default_address_id = attachment.message.getAddressID
-                    }
-                    
-                    let pwd = sharedUserDataService.mailboxPassword!
-                    let encrypt_data = attachment.encrypt(byAddrID: default_address_id, mailbox_pwd: pwd)
-                    //TODO:: here need check is encryptdata is nil and return the error to user.
-                    let keyPacket = encrypt_data?.keyPacket()
-                    let dataPacket = encrypt_data?.dataPacket()
-                    let signed = attachment.sign(byAddrID: default_address_id, mailbox_pwd: pwd)
-                    let completionWrapper: CompletionBlock = { task, response, error in
-                        PMLog.D("SendAttachmentDebug == finish upload att!")
-                        if error == nil {
-                            if let attDict = response?["Attachment"] as? [String : Any] {
-                                if let messageID = attDict["ID"] as? String {
-                                    attachment.attachmentID = messageID
-                                    attachment.keyPacket = keyPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                                    
-                                    // since the encrypted attachment is successfully uploaded, we no longer need it cleartext in db
-                                    attachment.fileData = nil
-                                    if let fileUrl = attachment.localURL,
-                                        let _ = try? FileManager.default.removeItem(at: fileUrl)
-                                    {
-                                        attachment.localURL = nil
-                                    }
-                                    if let error = context.saveUpstreamIfNeeded() {
-                                        PMLog.D(" error: \(error)")
-                                    }
-                                }
-                            }
-                        }
-                        completion?(task, response, error)
-                    }
-                    PMLog.D("SendAttachmentDebug == start upload att!")
-                    sharedAPIService.upload( byUrl: AppConstants.API_HOST_URL + AppConstants.API_PATH + "/attachments",
-                                             parameters: params,
-                                             keyPackets: keyPacket,
-                                             dataPacket: dataPacket,
-                                             signature: signed,
-                                             headers: ["x-pm-apiversion":3],
-                                             authenticated: true,
-                                             completion: completionWrapper)
-                    return
-                }
-            }
+        guard let context = managedObjectContext,
+            let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(managedObjectID),
+            let managedObject = try? context.existingObject(with: objectID),
+            let attachment = managedObject as? Attachment else
+        {
+            // nothing to send, dequeue request
+            let _ = sharedMessageQueue.remove(writeQueueUUID)
+            self.dequeueIfNeeded()
+        
+            completion?(nil, nil, NSError.badParameter(managedObjectID))
+            return
         }
         
-        // nothing to send, dequeue request
-        let _ = sharedMessageQueue.remove(writeQueueUUID)
-        self.dequeueIfNeeded()
+        let params = [
+            "Filename": attachment.fileName,
+            "MIMEType": attachment.mimeType,
+            "MessageID": attachment.message.messageID
+        ]
         
-        completion?(nil, nil, NSError.badParameter(managedObjectID))
+        let address = attachment.message.cachedAddress?.address_id ?? attachment.message.getAddressID // FIXME: check
+        let pwd = attachment.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword!
+        let signed = attachment.sign(byAddrID: address, mailbox_pwd: pwd)
+        
+        guard let encrypt_data = attachment.encrypt(byAddrID: address, mailbox_pwd: pwd) else { // FIXME: this also needs check
+            completion?(nil, nil, NSError.badParameter("Failed to encrypt attachment"))
+            return
+        }
+        
+        let completionWrapper: CompletionBlock = { task, response, error in
+            PMLog.D("SendAttachmentDebug == finish upload att!")
+            if error == nil,
+                let attDict = response?["Attachment"] as? [String : Any],
+                let id = attDict["ID"] as? String
+            {
+                attachment.attachmentID = id
+                attachment.keyPacket = encrypt_data.keyPacket().base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+                attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
+                
+                if let fileUrl = attachment.localURL,
+                    let _ = try? FileManager.default.removeItem(at: fileUrl)
+                {
+                    attachment.localURL = nil
+                }
+                
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                }
+            }
+            completion?(task, response, error)
+        }
+        
+        PMLog.D("SendAttachmentDebug == start upload att!")
+        sharedAPIService.upload( byUrl: AppConstants.API_HOST_URL + AppConstants.API_PATH + "/attachments",
+                                 parameters: params,
+                                 keyPackets: encrypt_data.keyPacket(),
+                                 dataPacket: encrypt_data.dataPacket(),
+                                 signature: signed,
+                                 headers: ["x-pm-apiversion":3],
+                                 authenticated: true,
+                                 customAuthCredential: attachment.message.cachedAuthCredential,
+                                 completion: completionWrapper)
     }
     
     private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
@@ -1199,12 +1187,12 @@ class MessageDataService {
             
             //start track status here :
             var status = SendStatus.justStart
-            let cachedAuthCredential = message.cachedAuthCredential
+            let cachedAuthCredentialIfAvailable = message.cachedAuthCredential
             
             var requests : [UserEmailPubKeys] = [UserEmailPubKeys]()
             let emails = message.allEmails
             for email in emails {
-                requests.append(UserEmailPubKeys(email: email, authCredential: cachedAuthCredential))
+                requests.append(UserEmailPubKeys(email: email, authCredential: cachedAuthCredentialIfAvailable))
             }
             // is encrypt outside
             let isEO = !message.password.isEmpty
@@ -1299,7 +1287,7 @@ class MessageDataService {
                 status.insert(SendStatus.buildMime)
                 
                 //build pgp sending mime body
-                let addr = message.defaultAddress!.keys.first!
+                let addr = (message.cachedAddress ?? message.defaultAddress)!.keys.first!  // FIXME: check
                 let privateKey = addr.private_key
                 let pubKey = addr.publicKey
                 return sendBuilder.buildMime(pubKey: pubKey, privKey: privateKey)
@@ -1314,7 +1302,7 @@ class MessageDataService {
                 status.insert(SendStatus.buildPlainText)
                 
                 //build pgp sending mime body
-                let addr = message.defaultAddress!.keys.first!
+                let addr = (message.cachedAddress ?? message.defaultAddress)!.keys.first!  // FIXME: check
                 let privateKey = addr.private_key
                 let pubKey = addr.publicKey
                 return sendBuilder.buildPlainText(pubKey: pubKey, privKey: privateKey)
@@ -1348,7 +1336,7 @@ class MessageDataService {
                                           clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
                                           mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
                                           plainTextDataPacket : sendBuilder.plainBody, clearPlainTextBody : sendBuilder.clearPlainBodyPackage,
-                                          authCredential: cachedAuthCredential)
+                                          authCredential: cachedAuthCredentialIfAvailable)
                 //Debug info
                 status.insert(SendStatus.sending)
                 
