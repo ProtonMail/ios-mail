@@ -891,35 +891,6 @@ class MessageDataService {
         return []
     }
     
-    fileprivate func messageBodyForMessage(_ message: Message, response: [String : Any]?) throws -> [String : String] {
-        var messageBody: [String : String] = ["self" : message.body]
-        
-        let privKey = message.defaultAddress?.keys[0].private_key ?? ""
-        let pwd = sharedUserDataService.mailboxPassword!
-        
-        do {
-            if let keys = response?["keys"] as? [[String : String]] {
-                if let body = try message.decryptBody() {
-                    // encrypt body with each key
-                    for publicKeys in keys {
-                        for (email, publicKey) in publicKeys {
-                            if let encryptedBody = try body.encrypt(withPubKey: publicKey, privateKey: privKey, mailbox_pwd: pwd) {
-                                messageBody[email] = encryptedBody
-                            }
-                        }
-                    }
-                    messageBody["outsiders"] = (message.checkIsEncrypted() == true ? message.passwordEncryptedBody : body)
-                }
-            } else {
-                PMLog.D(" unable to parse response: \(String(describing: response))")
-            }
-        } catch let ex as NSError {
-            PMLog.D(" unable to decrypt \(message.body) with error: \(ex)")
-            
-        }
-        return messageBody
-    }
-    
     fileprivate func draft(save messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         if let context = managedObjectContext {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
@@ -1046,11 +1017,13 @@ class MessageDataService {
             "MessageID": attachment.message.messageID
         ]
         
-        let address = attachment.message.cachedAddress?.address_id ?? attachment.message.getAddressID // FIXME: check
-        let pwd = attachment.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword!
-        let signed = attachment.sign(byAddrID: address, mailbox_pwd: pwd)
+        // THIS! IS! SPARTA!
+        let address = attachment.message.cachedAddress?.address_id ?? attachment.message.getAddressID
+        let passphrase = attachment.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword!
+        let pubkey = attachment.message.cachedAddress?.keys.first?.private_key ?? sharedUserDataService.getAddressPrivKey(address_id: address)
+        let signed = attachment.sign(byAddrID: address, mailbox_pwd: passphrase, key: pubkey)
         
-        guard let encrypt_data = attachment.encrypt(byAddrID: address, mailbox_pwd: pwd) else { // FIXME: this also needs check
+        guard let encrypt_data = attachment.encrypt(byAddrID: address, mailbox_pwd: passphrase, key: pubkey) else { // FIXME: check
             completion?(nil, nil, NSError.badParameter("Failed to encrypt attachment"))
             return
         }
@@ -1187,12 +1160,15 @@ class MessageDataService {
             
             //start track status here :
             var status = SendStatus.justStart
-            let cachedAuthCredentialIfAvailable = message.cachedAuthCredential
-            
+            let authCredential = message.cachedAuthCredential ?? AuthCredential.fetchFromKeychain()!
+            let passphrase = message.cachedPassphrase ?? sharedUserDataService.mailboxPassword!
+            let privKeys = message.cachedPrivateKeys ?? sharedUserDataService.addressPrivKeys
+            let addr = (message.cachedAddress ?? message.defaultAddress)!.keys.first!
+
             var requests : [UserEmailPubKeys] = [UserEmailPubKeys]()
             let emails = message.allEmails
             for email in emails {
-                requests.append(UserEmailPubKeys(email: email, authCredential: cachedAuthCredentialIfAvailable))
+                requests.append(UserEmailPubKeys(email: email, authCredential: authCredential))
             }
             // is encrypt outside
             let isEO = !message.password.isEmpty
@@ -1219,7 +1195,7 @@ class MessageDataService {
                 status.insert(SendStatus.getBody)
                 //all prebuild errors need pop up from here
                 guard let bodyData = try message.split()?.dataPacket(),
-                        let session = try message.getSessionKey() else {
+                    let session = try message.getSessionKey(keys: privKeys) else {
                     throw RuntimeError.cant_decrypt.error
                 }
                 //Debug info
@@ -1254,7 +1230,7 @@ class MessageDataService {
                 status.insert(SendStatus.checkMimeAndPlainText)
 
                 if sendBuilder.hasMime || sendBuilder.hasPlainText {
-                    guard let clearbody = try message.decryptBody() else {
+                    guard let clearbody = try message.decryptBody(keys: privKeys) else {
                         throw RuntimeError.cant_decrypt.error
                     }
                     sendBuilder.set(clear: clearbody)
@@ -1264,7 +1240,7 @@ class MessageDataService {
                 
                 for att in attachments {
                     if att.managedObjectContext != nil {
-                        if let sessionPack = try att.getSession() {
+                        if let sessionPack = try att.getSession(keys: privKeys) {
                             sendBuilder.add(att: PreAttachment(id: att.attachmentID,
                                                                session: sessionPack.session(),
                                                                algo: sessionPack.algo(),
@@ -1287,10 +1263,9 @@ class MessageDataService {
                 status.insert(SendStatus.buildMime)
                 
                 //build pgp sending mime body
-                let addr = (message.cachedAddress ?? message.defaultAddress)!.keys.first!  // FIXME: check
                 let privateKey = addr.private_key
                 let pubKey = addr.publicKey
-                return sendBuilder.buildMime(pubKey: pubKey, privKey: privateKey)
+                return sendBuilder.buildMime(pubKey: pubKey, privKey: privateKey, passphrase: passphrase, privKeys: privKeys)
             }.then{ (sendbuilder) -> Promise<SendBuilder> in
                 //Debug info
                 status.insert(SendStatus.checkPlainText)
@@ -1302,10 +1277,9 @@ class MessageDataService {
                 status.insert(SendStatus.buildPlainText)
                 
                 //build pgp sending mime body
-                let addr = (message.cachedAddress ?? message.defaultAddress)!.keys.first!  // FIXME: check
                 let privateKey = addr.private_key
                 let pubKey = addr.publicKey
-                return sendBuilder.buildPlainText(pubKey: pubKey, privKey: privateKey)
+                return sendBuilder.buildPlainText(pubKey: pubKey, privKey: privateKey, passphrase: passphrase, privKeys: privKeys)
             } .then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
                 //Debug info
                 status.insert(SendStatus.initBuilders)
@@ -1336,7 +1310,7 @@ class MessageDataService {
                                           clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
                                           mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
                                           plainTextDataPacket : sendBuilder.plainBody, clearPlainTextBody : sendBuilder.clearPlainBodyPackage,
-                                          authCredential: cachedAuthCredentialIfAvailable)
+                                          authCredential: authCredential)
                 //Debug info
                 status.insert(SendStatus.sending)
                 

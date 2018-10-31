@@ -358,8 +358,7 @@ extension Message {
     }
     
     // MARK: methods
-    func decryptBody() throws -> String? {
-        let keys = sharedUserDataService.addressPrivKeys
+    func decryptBody(keys: Data) throws -> String? {
         return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
     }
     
@@ -387,8 +386,8 @@ extension Message {
         return try body.split()
     }
     
-    func getSessionKey() throws -> PmSessionSplit? {
-        return try split()?.keyPacket().getSessionFromPubKeyPackage(self.passphrase, privKeys: self.cachedPrivateKeys as Data?)
+    func getSessionKey(keys: Data) throws -> PmSessionSplit? {
+        return try split()?.keyPacket().getSessionFromPubKeyPackage(self.passphrase, privKeys: keys)
     }
     
     func bodyToHtml() -> String {
@@ -407,7 +406,7 @@ extension Message {
             }
             return body
         } else {
-            if var body = try decryptBody() {
+            if var body = try decryptBody(keys: sharedUserDataService.addressPrivKeys) {
                 //PMLog.D(body)
                 if isEncrypted == 8 || isEncrypted == 9 {
                     if let mimeMsg = MIMEMessage(string: body) {
@@ -492,6 +491,7 @@ extension Message {
         return self.cachedPassphrase ?? sharedUserDataService.mailboxPassword
     }
     
+    //this function need to factor
     var getAddressID: String {
         get {
             if let addr = defaultAddress {
@@ -521,6 +521,7 @@ extension Message {
         }
     }
     
+    //this function need to factor
     var fromAddress : Address? {
         get {
             if let addressID = addressID, !addressID.isEmpty {

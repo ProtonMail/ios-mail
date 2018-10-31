@@ -141,7 +141,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             if let atts = self.getAttachments() {
                 for att in atts {
                     do {
-                        guard let sessionPack = try att.getSession() else {
+                        guard let sessionPack = try att.getSession(keys: sharedUserDataService.addressPrivKeys) else {
                             continue
                         }
                         guard let newKeyPack = try sessionPack.session().getKeyPackage(strKey: key.publicKey, algo: sessionPack.algo())?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {

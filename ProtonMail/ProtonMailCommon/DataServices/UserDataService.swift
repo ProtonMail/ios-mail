@@ -88,7 +88,7 @@ class UserDataService {
             return try? locked.unlock(with: mainKey)
         }
         set {
-            guard let newValue = userInfo else {
+            guard let newValue = newValue else {
                 SharedCacheBase.getDefault()?.removeObject(forKey: Key.userInfo)
                 return
             }

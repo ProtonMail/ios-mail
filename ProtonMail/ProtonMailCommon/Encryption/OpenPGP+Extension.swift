@@ -199,8 +199,7 @@ extension PMNOpenPgp {
 //}
 
 extension Data {
-    func decryptAttachment(_ keyPackage:Data!, passphrase: String) throws -> Data? {
-        let privKeys = sharedUserDataService.addressPrivKeys
+    func decryptAttachment(_ keyPackage:Data!, passphrase: String, privKeys: Data) throws -> Data? {
         return try sharedOpenPGP.decryptAttachmentBinKey(keyPackage, dataPacket: self, privateKeys: privKeys, passphrase: passphrase)
     }
 
@@ -208,14 +207,12 @@ extension Data {
         return try sharedOpenPGP.decryptAttachment(keyPackage, dataPacket: self, privateKey: privateKey, passphrase: passphrase)
     }
     
-    func encryptAttachment(_ address_id: String, fileName:String, mailbox_pwd: String) throws -> PmEncryptedSplit? {
-        let pubkey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
-        return try sharedOpenPGP.encryptAttachment(self, fileName: fileName, publicKey: pubkey)
+    func encryptAttachment(_ address_id: String, fileName:String, mailbox_pwd: String, key: String) throws -> PmEncryptedSplit? {
+        return try sharedOpenPGP.encryptAttachment(self, fileName: fileName, publicKey: key)
     }
     
-    func signAttachment(_ address_id: String, mailbox_pwd: String) throws -> String? {
-        let privateKey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
-        return try sharedOpenPGP.signBinDetached(self, privateKey: privateKey, passphrase: mailbox_pwd)
+    func signAttachment(_ address_id: String, mailbox_pwd: String, key: String) throws -> String? {
+        return try sharedOpenPGP.signBinDetached(self, privateKey: key, passphrase: mailbox_pwd)
     }
     
     
@@ -230,11 +227,9 @@ extension Data {
 //    }
 //    
     //key packet part
-    func getSessionFromPubKeyPackage(_ passphrase: String,
-                                     privKeys: Data? = nil) throws -> PmSessionSplit?
-    {
+    func getSessionFromPubKeyPackage(_ passphrase: String, privKeys: Data) throws -> PmSessionSplit? {
         var error : NSError?
-        let out = PmGetSessionFromKeyPacketBinkeys(self, privKeys ?? sharedUserDataService.addressPrivKeys, passphrase, &error)
+        let out = PmGetSessionFromKeyPacketBinkeys(self, privKeys, passphrase, &error)
         if let err = error {
             throw err
         }

@@ -238,10 +238,10 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         Snapshot().didEnterBackground(application)
+        keymaker.updateAutolockCountdownStart()
         if sharedUserDataService.isSignedIn {
             let timeInterval : Int = Int(Date().timeIntervalSince1970)
             userCachedStatus.exitTime = "\(timeInterval)";
-            keymaker.updateAutolockCountdownStart()
         }
         var taskID : UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask {

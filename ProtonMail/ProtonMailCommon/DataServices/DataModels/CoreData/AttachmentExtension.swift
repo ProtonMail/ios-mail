@@ -53,7 +53,7 @@ extension Attachment {
     
     
     // Mark : public functions
-    func encrypt(byAddrID sender_address_id : String, mailbox_pwd: String) -> PmEncryptedSplit? {
+    func encrypt(byAddrID sender_address_id : String, mailbox_pwd: String, key: String) -> PmEncryptedSplit? {
         var out: PmEncryptedSplit? = nil
         
         autoreleasepool() {
@@ -63,7 +63,7 @@ extension Attachment {
                     clearData = try Data(contentsOf: localURL)
                 }
                 
-                out =  try clearData?.encryptAttachment(sender_address_id, fileName: self.fileName, mailbox_pwd: mailbox_pwd)
+                out =  try clearData?.encryptAttachment(sender_address_id, fileName: self.fileName, mailbox_pwd: mailbox_pwd, key: key)
             } catch {
                 // nothing here
             }
@@ -71,9 +71,9 @@ extension Attachment {
         return out
     }
     
-    func sign(byAddrID sender_address_id : String, mailbox_pwd: String) -> Data? {
+    func sign(byAddrID sender_address_id : String, mailbox_pwd: String, key: String) -> Data? {
         do {
-            guard let out = try fileData?.signAttachment(sender_address_id, mailbox_pwd: mailbox_pwd) else {
+            guard let out = try fileData?.signAttachment(sender_address_id, mailbox_pwd: mailbox_pwd, key: key) else {
                 return nil
             }
             var error : NSError?
@@ -88,12 +88,12 @@ extension Attachment {
         }
     }
     
-    func getSession() throws -> PmSessionSplit? {
+    func getSession(keys: Data) throws -> PmSessionSplit? {
         if self.keyPacket == nil {
             return nil
         }
         let data: Data = Data(base64Encoded: self.keyPacket!, options: NSData.Base64DecodingOptions(rawValue: 0))!
-        let sessionKey = try data.getSessionFromPubKeyPackage(passphrase, privKeys: self.message.cachedPrivateKeys)
+        let sessionKey = try data.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
         return sessionKey
     }
     
@@ -158,7 +158,9 @@ extension Attachment {
                 do {
                     if let key_packet = self.keyPacket {
                         if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData = try data.decryptAttachment(keydata, passphrase: sharedUserDataService.mailboxPassword!) {
+                            if let decryptData = try data.decryptAttachment(keydata,
+                                                                            passphrase: self.passphrase,
+                                                                            privKeys: self.message.cachedPrivateKeys ?? sharedUserDataService.addressPrivKeys) {
                                 let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }
@@ -171,7 +173,9 @@ extension Attachment {
                 do {
                     if let key_packet = self.keyPacket {
                         if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData = try data.decryptAttachment(keydata, passphrase: sharedUserDataService.mailboxPassword!) {
+                            if let decryptData = try data.decryptAttachment(keydata,
+                                                                            passphrase: self.passphrase,
+                                                                            privKeys: self.message.cachedPrivateKeys ?? sharedUserDataService.addressPrivKeys) {
                                 let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }
