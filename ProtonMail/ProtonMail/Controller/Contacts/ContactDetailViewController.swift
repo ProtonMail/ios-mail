@@ -61,6 +61,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         }.catch { (error) in
             //show error
             PMLog.D(error.localizedDescription)
+            error.alert(at: self.view)
         }.finally {
             ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
         }

@@ -17,6 +17,7 @@ import PromiseKit
 class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
 {
     private var viewModel: ContactGroupsViewModel!
+    private var queryString = ""
     
     // long press related vars
     private var isEditingState: Bool = false
@@ -40,6 +41,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     private var refreshControl: UIRefreshControl!
     private var searchController: UISearchController!
     
+    
+    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
@@ -85,6 +88,9 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         if viewModel.getState() == .ViewAllContactGroups {
             self.viewModel.timerStart(true)
         }
+        
+        self.isOnMainView = true
+        NotificationCenter.default.addKeyboardObserver(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -94,6 +100,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         }
         
         viewModel.save()
+        NotificationCenter.default.removeKeyboardObserver(self)
     }
     
     private func prepareFetchedResultsController() {
@@ -247,30 +254,45 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         }
     }
     
+    private func resetStateFromMultiSelect()
+    {
+        // reset state
+        self.isEditingState = false
+        self.tableView.allowsMultipleSelection = false
+        self.totalSelectedContactGroups = 0
+        
+        // reset navigation bar
+        self.updateNavigationBar()
+    }
+    
     @objc private func trashcanBarButtonTapped() {
-        firstly {
-            () -> Promise<Void> in
-            // attempt to delete selected groups
-            return viewModel.deleteGroups()
-            }.done {
-                // reset state
-                self.isEditingState = false
-                self.tableView.allowsMultipleSelection = false
-                self.totalSelectedContactGroups = 0
-                
-                // reset navigation bar
-                self.updateNavigationBar()
-            }.catch {
-                error in
-                let alert = UIAlertController(title: LocalString._contact_groups_delete_error,
-                                              message: error.localizedDescription,
-                                              preferredStyle: .alert)
-                alert.addOKAction()
-                
-                self.present(alert,
-                             animated: true,
-                             completion: nil)
+        let deleteHandler = {
+            (action: UIAlertAction) -> Void in
+            firstly {
+                () -> Promise<Void> in
+                // attempt to delete selected groups
+                ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                return self.viewModel.deleteGroups()
+                }.done {
+                    self.resetStateFromMultiSelect()
+                }.ensure {
+                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                }.catch {
+                    error in
+                    error.alert(at: self.view)
+            }
         }
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: LocalString._contact_groups_delete,
+                                                style: .destructive,
+                                                handler: deleteHandler))
+        
+        alertController.popoverPresentationController?.sourceView = self.view
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
+        self.present(alertController, animated: true, completion: nil)
     }
     
     private func prepareSearchBar() {
@@ -317,18 +339,13 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             }.catch {
                 error in
                 
-                let alert = UIAlertController(title: LocalString._contact_groups_fetch_error,
-                                              message: error.localizedDescription,
-                                              preferredStyle: .alert)
-                alert.addOKAction()
-                
-                self.present(alert,
-                             animated: true,
-                             completion: nil)
+                error.alert(at: self.view)
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        self.isOnMainView = false // hide the tab bar
+        
         if segue.identifier == kToContactGroupDetailSegue {
             let contactGroupDetailViewController = segue.destination as! ContactGroupDetailViewController
             let contactGroup = sender as! Label
@@ -353,6 +370,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
+                contactGroupVO.selectAllEmailFromGroup()
                 sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
             }
         } else if segue.identifier == kToUpgradeAlertSegue {
@@ -387,6 +405,7 @@ extension ContactGroupsViewController: UISearchBarDelegate, UISearchResultsUpdat
 {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.search(text: searchController.searchBar.text)
+        queryString = searchController.searchBar.text ?? ""
         tableView.reloadData()
     }
 }
@@ -418,9 +437,11 @@ extension ContactGroupsViewController: UITableViewDataSource
                 let data = viewModel.cellForRow(at: indexPath)
                 cell.config(labelID: data.ID,
                             name: data.name,
+                            queryString: self.queryString,
                             count: data.count,
                             color: data.color,
                             wasSelected: viewModel.isSelected(groupID: data.ID),
+                            showSendEmailIcon: false,
                             delegate: self)
                 if viewModel.isSelected(groupID: data.ID) {
                     tableView.selectRow(at: indexPath,
@@ -432,9 +453,11 @@ extension ContactGroupsViewController: UITableViewDataSource
                     if let label = fetchedController.object(at: indexPath) as? Label {
                         cell.config(labelID: label.labelID,
                                     name: label.name,
+                                    queryString: self.queryString,
                                     count: label.emails.count,
                                     color: label.color,
                                     wasSelected: false,
+                                    showSendEmailIcon: true,
                                     delegate: self)
                         
                         if viewModel.isSelected(groupID: label.labelID) {
@@ -446,10 +469,11 @@ extension ContactGroupsViewController: UITableViewDataSource
                         // TODO: better error handling
                         cell.config(labelID: "",
                                     name: "Error in retrieving contact group name in core data",
+                                    queryString: "",
                                     count: 0,
                                     color: ColorManager.defaultColor,
                                     wasSelected: false,
-                                    delegate: self)
+                                    showSendEmailIcon: false)
                     }
                 }
             }
@@ -488,6 +512,51 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate
 
 extension ContactGroupsViewController: UITableViewDelegate
 {
+    func tableView(_ tableView: UITableView,
+                   editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        self.resetStateFromMultiSelect()
+        
+        let deleteHandler = {
+            (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
+            
+            let deleteActionHandler = {
+                (action: UIAlertAction) -> Void in
+                
+                firstly {
+                    () -> Promise<Void> in
+                    // attempt to delete selected groups
+                    ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                    if let cell = self.tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell {
+                        self.viewModel.addSelectedGroup(ID: cell.getLabelID(),
+                                                        indexPath: indexPath)
+                    }
+                    return self.viewModel.deleteGroups()
+                    }.ensure {
+                        ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                    }.catch {
+                        error in
+                        error.alert(at: self.view)
+                }
+            }
+            
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                    style: .cancel,
+                                                    handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._contact_groups_delete,
+                                                    style: .destructive,
+                                                    handler: deleteActionHandler))
+            
+            alertController.popoverPresentationController?.sourceView = self.view
+            alertController.popoverPresentationController?.sourceRect = self.view.frame
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
+        let deleteAction = UITableViewRowAction.init(style: .destructive,
+                                                     title: LocalString._general_delete_action,
+                                                     handler: deleteHandler)
+        return [deleteAction]
+    }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isEditingState {
             // blocks contact email cell contact group editing
@@ -587,18 +656,21 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                     if let label = fetchedController.object(at: indexPath!) as? Label {
                         cell.config(labelID: label.labelID,
                                     name: label.name,
+                                    queryString: self.queryString,
                                     count: label.emails.count,
                                     color: label.color,
                                     wasSelected: false,
+                                    showSendEmailIcon: true,
                                     delegate: self)
                     } else {
                         // TODO; better error handling
                         cell.config(labelID: "",
                                     name: "Error in retrieving contact group name in core data",
+                                    queryString: "",
                                     count: 0,
                                     color: ColorManager.defaultColor,
                                     wasSelected: false,
-                                    delegate: self)
+                                    showSendEmailIcon: false)
                     }
                 }
             }
@@ -612,6 +684,35 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
             }
             
             return
+        }
+    }
+}
+
+// MARK: - NSNotificationCenterKeyboardObserverProtocol
+extension ContactGroupsViewController: NSNotificationCenterKeyboardObserverProtocol {
+    func keyboardWillHideNotification(_ notification: Notification) {
+        self.tableViewBottomConstraint.constant = 0
+        let keyboardInfo = notification.keyboardInfo
+        UIView.animate(withDuration: keyboardInfo.duration,
+                       delay: 0,
+                       options: keyboardInfo.animationOption,
+                       animations: { () -> Void in
+                        self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    func keyboardWillShowNotification(_ notification: Notification) {
+        let keyboardInfo = notification.keyboardInfo
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            self.tableViewBottomConstraint.constant = keyboardSize.height
+            
+            UIView.animate(withDuration: keyboardInfo.duration,
+                           delay: 0,
+                           options: keyboardInfo.animationOption,
+                           animations: { () -> Void in
+                            self.view.layoutIfNeeded()
+            }, completion: nil)
         }
     }
 }

@@ -17,14 +17,13 @@ enum ContactGroupEditError: Error
 {
     case noEmailInGroup
     case noNameForGroup
-    case noContactGroupID
     
-    case NSSetConversionToEmailArrayFailure
-    case NSSetConversionToEmailSetFailure
-    
-    case addFailed
     case updateFailed
-    case deleteFailed
+    
+    case cannotGetCoreDataContext
+    
+    case InternalError
+    case TypeCastingError
 }
 
 extension ContactGroupEditError: LocalizedError {
@@ -34,24 +33,15 @@ extension ContactGroupEditError: LocalizedError {
             return LocalString._contact_groups_no_email_selected
         case .noNameForGroup:
             return LocalString._contact_groups_no_name_entered
-        case .noContactGroupID:
-            // TODO: localization
-            return NSLocalizedString("No group ID is returned from the contact group API",
-                                     comment: "Contact group no ID")
-        case .NSSetConversionToEmailArrayFailure:
-            // TODO: localization
-            return NSLocalizedString("Can't convert NSSet to array of Email",
-                                     comment: "Contact group NSSet to array conversion failed")
-        case .NSSetConversionToEmailSetFailure:
-            // TODO: localization
-            return NSLocalizedString("Can't convert NSSet to Set of Email",
-                                     comment: "Contact group NSSet to Set conversion failed")
-        case .addFailed:
-            return LocalString._contact_groups_api_add_error
+        case .InternalError:
+            return LocalString._internal_error
+        case .TypeCastingError:
+            return LocalString._type_casting_error
+            
         case .updateFailed:
             return LocalString._contact_groups_api_update_error
-        case .deleteFailed:
-            return LocalString._contact_groups_api_delete_error
+        case .cannotGetCoreDataContext:
+            return LocalString._cannot_get_coredata_context
         }
     }
 }
@@ -69,8 +59,11 @@ struct ContactGroupData
     var ID: String?
     var name: String?
     var color: String
-    let originalEmailIDs: NSSet
     var emailIDs: NSMutableSet
+    
+    let originalName: String?
+    let originalColor: String
+    let originalEmailIDs: NSSet
     
     init(ID: String?,
          name: String?,
@@ -80,8 +73,32 @@ struct ContactGroupData
         self.ID = ID
         self.name = name
         self.color = color ?? ColorManager.getRandomColor()
-        self.originalEmailIDs = emailIDs
         self.emailIDs = NSMutableSet(set: emailIDs)
+        
+        self.originalEmailIDs = emailIDs
+        self.originalName = self.name
+        self.originalColor = self.color
+    }
+    
+    func hasChanged() -> Bool {
+        if name != originalName {
+            return true
+        }
+        
+        if color != originalColor {
+            return true
+        }
+        
+        if let originalEmailIDs = originalEmailIDs as? Set<Email>,
+            let currentEmailIDs = emailIDs as? Set<Email> {
+            if originalEmailIDs != currentEmailIDs {
+                return true
+            }
+        } else {
+            return true
+        }
+        
+        return false
     }
 }
 
@@ -106,6 +123,7 @@ protocol ContactGroupEditViewModel {
     
     // create and edit
     func saveDetail() -> Promise<Void>
+    func hasUnsavedChanges() -> Bool
     
     // delete
     func deleteContactGroup() -> Promise<Void>

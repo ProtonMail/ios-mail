@@ -580,7 +580,7 @@ extension ComposerViewController : ComposeViewDelegate {
     
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
                                                    contactGroup: ContactGroupVO,
-                                                   callback: @escaping (([String]) -> Void)) {
+                                                   callback: @escaping (([DraftEmailData]) -> Void)) {
         if let destination = UIStoryboard.init(name: "Menu",
                                                bundle: nil).instantiateViewController(withIdentifier: "ContactGroupSubSelectionViewController") as? ContactGroupSubSelectionViewController {
             destination.providesPresentationContextTransitionStyle = true;
@@ -589,7 +589,7 @@ extension ComposerViewController : ComposeViewDelegate {
             destination.modalPresentationStyle                     = UIModalPresentationStyle.overCurrentContext
             
             destination.contactGroupName = contactGroup.contactTitle
-            destination.selectedEmails = contactGroup.getSelectedEmails()
+            destination.selectedEmails = contactGroup.getSelectedEmailData()
             destination.callback = callback
             self.present(destination,
                          animated: true,
@@ -653,8 +653,9 @@ extension ComposerViewController : ComposeViewDelegate {
             }
             
             // present error
-            let alert = UIAlertController(title: LocalString._too_many_recipients,
-                                          message: LocalString._max_number_of_recipients_is,
+            let alert = UIAlertController(title: LocalString._too_many_recipients_title,
+                                          message: String.init(format: LocalString._max_number_of_recipients_is_number,
+                                                               AppConstants.MaxNumberOfRecipients),
                                           preferredStyle: .alert)
             alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)

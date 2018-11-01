@@ -11,10 +11,12 @@ import UIKit
 class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModelProtocol
 {
     var viewModel: ContactGroupSelectEmailViewModel!
+    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
     
+    private var queryString = ""
     private var searchController: UISearchController!
     
     let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
@@ -24,6 +26,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         title = LocalString._contact_groups_manage_addresses
         
         tableView.allowsMultipleSelection = true
@@ -33,9 +36,27 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         prepareSearchBar()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.save(indexPaths: tableView.indexPathsForSelectedRows)
+        
+        // if the user is tricky enough the hold the view using the edge geatures
+        // we will need to turn this off temporarily
+        self.extendedLayoutIncludesOpaqueBars = false
+        NotificationCenter.default.addKeyboardObserver(self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // set this after the layout is completed
+        // so when the view disappeared, the search bar view won't leave a
+        // black block underneath it
+        self.extendedLayoutIncludesOpaqueBars = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.save()
+        NotificationCenter.default.removeKeyboardObserver(self)
     }
     
     func inactiveViewModel() {}
@@ -79,6 +100,7 @@ extension ContactGroupSelectEmailViewController: UISearchBarDelegate, UISearchRe
 {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.search(query: searchController.searchBar.text)
+        queryString = searchController.searchBar.text ?? ""
         tableView.reloadData()
     }
 }
@@ -99,6 +121,7 @@ extension ContactGroupSelectEmailViewController: UITableViewDataSource
         cell.config(emailID: ret.ID,
                     name: ret.name,
                     email: ret.email,
+                    queryString: self.queryString,
                     state: .selectEmailView)
         
         cell.selectionStyle = .none
@@ -140,6 +163,35 @@ extension ContactGroupSelectEmailViewController: UITableViewDelegate
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupEditViewCell {
             self.deselectRow(at: indexPath, cell: cell)
+        }
+    }
+}
+
+// MARK: - NSNotificationCenterKeyboardObserverProtocol
+extension ContactGroupSelectEmailViewController: NSNotificationCenterKeyboardObserverProtocol {
+    func keyboardWillHideNotification(_ notification: Notification) {
+        self.tableViewBottomConstraint.constant = 0
+        let keyboardInfo = notification.keyboardInfo
+        UIView.animate(withDuration: keyboardInfo.duration,
+                       delay: 0,
+                       options: keyboardInfo.animationOption,
+                       animations: { () -> Void in
+                        self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    func keyboardWillShowNotification(_ notification: Notification) {
+        let keyboardInfo = notification.keyboardInfo
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            self.tableViewBottomConstraint.constant = keyboardSize.height
+            
+            UIView.animate(withDuration: keyboardInfo.duration,
+                           delay: 0,
+                           options: keyboardInfo.animationOption,
+                           animations: { () -> Void in
+                            self.view.layoutIfNeeded()
+            }, completion: nil)
         }
     }
 }

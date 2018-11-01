@@ -30,6 +30,21 @@ extension Email {
     class func EmailForAddress(_ address: String, inManagedObjectContext context: NSManagedObjectContext) -> Email? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.email, matchingValue: address) as? Email
     }
+    
+    class func EmailForAddressWithContact(_ address: String,
+                                          contactID: String,
+                                          inManagedObjectContext context: NSManagedObjectContext) -> Email? {
+        if let tempResults = context.managedObjectsWithEntityName(Attributes.entityName,
+                                                                  forKey: Attributes.email,
+                                                                  matchingValue: address) as? [Email] {
+            for result in tempResults {
+                if result.contactID == contactID {
+                    return result
+                }
+            }
+        }
+        return nil
+    }
 
 //    class func findEmails(_ emails: [String], inManagedObjectContext context: NSManagedObjectContext) -> [Email]? {
 //        var out : [Email]?

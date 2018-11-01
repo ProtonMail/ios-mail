@@ -14,7 +14,7 @@ protocol ContactGroupSelectEmailViewModel
     
     func getTotalEmailCount() -> Int
     func getCellData(at indexPath: IndexPath) -> (ID: String, name: String, email: String, isSelected: Bool)
-    func save(indexPaths: [IndexPath]?)
+    func save()
     
     func selectEmail(ID: String)
     func deselectEmail(ID: String)

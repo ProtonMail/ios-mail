@@ -30,7 +30,6 @@ struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
 
 
 class ComposeViewModel {
-    private let maxNumberOfRecipients: Int = 25
     var message : Message?
     var messageAction : ComposeMessageAction!
     var toSelectedContacts: [ContactPickerModelProtocol] = []
@@ -64,39 +63,22 @@ class ComposeViewModel {
                              ccSelectedContacts,
                              bccSelectedContacts]
         
-        var emailList = Set<String>()
+        var emailList = Set<String>() // distinctive email addresses
         for recipients in allRecipients {
             for recipient in recipients {
                 switch recipient.modelType {
                 case .contact:
                     emailList.insert((recipient as! ContactVO).email)
                 case .contactGroup:
-                    // TODO: when sub-selection is implemented, this need to be changed
-                    
-                    if let context = sharedCoreDataService.mainManagedObjectContext {
-                        let contactGroup = recipient as! ContactGroupVO
-                        let label = Label.labelForLabelName(contactGroup.contactTitle,
-                                                            inManagedObjectContext: context)
-                        
-                        if let label = label {
-                            if let emailsInGroup = label.emails.allObjects as? [Email] {
-                                for email in emailsInGroup {
-                                    emailList.insert(email.email)
-                                }
-                            } else {
-                                // TODO: handle error
-                                PMLog.D("NSSet conversion to [Email] error")
-                            }
-                        }
-                    } else {
-                        // TODO: handle error
-                        PMLog.D("Can't get context")
+                    let contactGroup = recipient as! ContactGroupVO
+                    for email in contactGroup.getSelectedEmailAddresses() {
+                        emailList.insert(email)
                     }
                 }
             }
         }
         
-        return emailList.count <= self.maxNumberOfRecipients
+        return emailList.count <= AppConstants.MaxNumberOfRecipients
     }
     
     func getSubject() -> String {

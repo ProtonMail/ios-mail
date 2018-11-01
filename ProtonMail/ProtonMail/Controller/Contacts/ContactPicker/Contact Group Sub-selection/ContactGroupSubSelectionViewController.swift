@@ -12,8 +12,8 @@ class ContactGroupSubSelectionViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var contactGroupName: String = ""
-    var selectedEmails: [String] = []
-    var callback: (([String]) -> Void)? = nil
+    var selectedEmails: [DraftEmailData] = []
+    var callback: (([DraftEmailData]) -> Void)? = nil
     
     private var viewModel: ContactGroupSubSelectionViewModel!
     private let kContactGroupSubSelectionHeaderCell = "ContactGroupSubSelectionHeaderCell"
@@ -27,6 +27,7 @@ class ContactGroupSubSelectionViewController: UIViewController {
                                                                delegate: self)
         
         prepareTableView()
+        tableView.zeroMargin()
     }
     
     func prepareTableView() {
@@ -40,8 +41,6 @@ class ContactGroupSubSelectionViewController: UIViewController {
                            forCellReuseIdentifier: kContactGroupSubSelectionEmailCell)
         
         tableView.noSeparatorsBelowFooter()
-        
-        tableView.allowsSelection = false
     }
     
     /**
@@ -81,13 +80,28 @@ extension ContactGroupSubSelectionViewController: UITableViewDataSource
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupSubSelectionEmailCell,
                                                      for: indexPath) as! ContactGroupSubSelectionEmailCell
             let data = viewModel.cellForRow(at: indexPath)
-            cell.config(emailText: data.getEmailDescription(),
-                        email: data.email,
+            
+            cell.config(email: data.email,
                         name: data.name,
                         isEndToEndEncrypted: data.isEncrypted,
                         isCurrentlySelected: data.isSelected,
+                        at: indexPath,
+                        checkEncryptedStatus: data.checkEncryptedStatus,
                         delegate: viewModel)
             return cell
+        }
+    }
+}
+
+extension ContactGroupSubSelectionViewController: UITableViewDelegate
+{
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupSubSelectionHeaderCell {
+            cell.rowTapped()
+        } else if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupSubSelectionEmailCell {
+            cell.rowTapped()
         }
     }
 }

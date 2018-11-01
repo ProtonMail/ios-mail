@@ -15,7 +15,7 @@ import UIKit
 import MCSwipeTableViewCell
 
 final class ContactsTableViewCell: MCSwipeTableViewCell {
-
+    
     @IBOutlet var contactNameLabel: UILabel!
     @IBOutlet var contactEmailLabel: UILabel!
     @IBOutlet var contactSourceImageView: UIImageView!
@@ -33,12 +33,12 @@ final class ContactsTableViewCell: MCSwipeTableViewCell {
             self.contactNameLabel.text = name
             self.contactEmailLabel.text = email
         } else {
-            self.contactNameLabel.attributedText = self.highlightedAttributedString(text: name,
-                                                                                    search: highlight,
-                                                                                    font: Fonts.h2.bold)
-            self.contactEmailLabel.attributedText = self.highlightedAttributedString(text: email,
-                                                                                     search: highlight,
-                                                                                     font: Fonts.h5.bold)
+            self.contactNameLabel.attributedText = NSMutableAttributedString.highlightedString(text: name,
+                                                                                               search: highlight,
+                                                                                               font: FontManager.highlightSearchTextForTitle)
+            self.contactEmailLabel.attributedText = NSMutableAttributedString.highlightedString(text: email,
+                                                                                                search: highlight,
+                                                                                                font: FontManager.highlightSearchTextForSubtitle)
         }
         
         var shortn: String = ""
@@ -67,29 +67,5 @@ final class ContactsTableViewCell: MCSwipeTableViewCell {
         } else {
             shortName.backgroundColor = UIColor(hexColorCode: "#9497CE")
         }
-    }
-    
-    private func highlightedAttributedString(text: String, search: String, font: UIFont) -> NSMutableAttributedString{
-        let searchTerm = search /* SEARCH_TERM */
-        let resultText = text /* YOUR_RESULT_TEXT */
-        let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: resultText)
-        let pattern = "(\(searchTerm))"
-        let range:NSRange = NSMakeRange(0, resultText.count)
-        let regex = try! NSRegularExpression( pattern: pattern, options: .caseInsensitive)
-        regex.enumerateMatches(
-            in: resultText,
-            options: NSRegularExpression.MatchingOptions(),
-            range: range,
-            using: { (textCheckingResult, matchingFlags, stop) -> Void in
-                let subRange = textCheckingResult?.range
-                attributedString.addAttribute(NSAttributedString.Key.foregroundColor,
-                                              value: UIColor.ProtonMail.Blue_6789AB,
-                                              range: subRange!)
-                
-                attributedString.addAttribute(NSAttributedString.Key.font,
-                                              value: font,
-                                              range: subRange!)
-        })
-        return attributedString
     }
 }

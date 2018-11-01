@@ -15,7 +15,7 @@ class ContactGroupSubSelectionHeaderCell: UITableViewCell {
         // Initialization code
     }
     
-    @IBOutlet weak var selectionButton: UIButton!
+    @IBOutlet weak var selectionIcon: UIImageView!
     @IBOutlet weak var contactGroupIcon: UIImageView!
     @IBOutlet weak var contactGroupName: UILabel!
     
@@ -23,11 +23,9 @@ class ContactGroupSubSelectionHeaderCell: UITableViewCell {
     private var isAllSelected: Bool = false {
         didSet {
             if self.isAllSelected {
-                selectionButton.setImage(UIImage.init(named: "mail_check-active"),
-                                         for: .normal)
+                selectionIcon.image = UIImage.init(named: "mail_check-active")
             } else {
-                selectionButton.setImage(UIImage.init(named: "mail_check"),
-                                         for: .normal)
+                selectionIcon.image = UIImage.init(named: "mail_check")
             }
         }
     }
@@ -48,12 +46,11 @@ class ContactGroupSubSelectionHeaderCell: UITableViewCell {
         }
         
         self.isAllSelected = delegate.isAllSelected()
-        if self.isAllSelected {
-            // TODO: check the box
-        }
+        
+        self.selectionStyle = .none
     }
     
-    @IBAction func tappedSelectAllButton(_ sender: UIButton) {
+    func rowTapped() {
         self.isAllSelected = !self.isAllSelected
         
         if isAllSelected {

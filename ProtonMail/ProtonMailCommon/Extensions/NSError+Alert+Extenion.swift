@@ -44,24 +44,11 @@ extension NSError {
     
     
     public func alertToast() ->Void {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
-            return
-        }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.labelText = LocalString._general_alert_title
-        hud.detailsLabelText = localizedDescription
-        hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        MBProgressHUD.alertToast(errorString: localizedDescription)
     }
     
     public func alert(at view: UIView) ->Void {
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: view, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.labelText = LocalString._general_alert_title
-        hud.detailsLabelText = localizedDescription
-        hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        MBProgressHUD.alert(at: view, errorString: localizedDescription)
     }
     
     public func alertErrorToast() ->Void {

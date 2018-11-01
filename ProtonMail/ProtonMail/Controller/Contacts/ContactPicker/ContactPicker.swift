@@ -33,7 +33,6 @@ class ContactPicker: UIView {
     private var searchTableViewController: ContactSearchTableViewController?
     private func createSearchTableViewController() -> ContactSearchTableViewController {
         let controller = ContactSearchTableViewController()
-        controller.tableView.rowHeight = CGFloat(ContactPickerDefined.ROW_HEIGHT)
         controller.tableView.register(UINib.init(nibName: ContactPickerDefined.ContactsTableViewCellName,
                                                  bundle: nil),
                                  forCellReuseIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier)
@@ -46,7 +45,7 @@ class ContactPicker: UIView {
             
             // if contact group is selected, we add all emails in it as selected, initially
             if let contactGroup = model as? ContactGroupVO {
-                contactGroup.selectAllEmail()
+                contactGroup.selectAllEmailFromGroup()
             }
             self.contactCollectionView.addToSelectedContacts(model: model, withCompletion: nil)
         }
@@ -299,8 +298,9 @@ class ContactPicker: UIView {
     //
     //#pragma mark Helper Methods
     //
-    private func showSearchTableView(with contacts: [ContactPickerModelProtocol]) {
+    private func showSearchTableView(with contacts: [ContactPickerModelProtocol], queryString: String) {
         defer {
+            self.searchTableViewController?.queryString = queryString
             self.searchTableViewController?.filteredContacts = contacts
         }
         guard self.searchTableViewController == nil else { return }
@@ -393,7 +393,7 @@ extension ContactPicker : ContactCollectionViewDelegate {
         if self.hideWhenNoResult && filteredContacts.isEmpty {
             self.hideSearchTableView()
         } else {
-            self.showSearchTableView(with: filteredContacts)
+            self.showSearchTableView(with: filteredContacts, queryString: searchString)
         }
     }
     
@@ -406,7 +406,7 @@ extension ContactPicker : ContactCollectionViewDelegate {
         self.delegate?.collectionView(at: contactCollectionView, didSelect: contact)
     }
     
-    internal func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol, callback: @escaping (([String]) -> Void)) {
+    internal func collectionView(at: ContactCollectionView, didSelect contact: ContactPickerModelProtocol, callback: @escaping (([DraftEmailData]) -> Void)) {
         self.delegate?.collectionView(at: contactCollectionView,
                                       didSelect: contact,
                                       callback: callback)

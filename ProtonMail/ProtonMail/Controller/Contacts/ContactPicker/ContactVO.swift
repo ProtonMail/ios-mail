@@ -338,6 +338,10 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         
         return lhs.email == rhs.email
     }
+    
+    func equals(_ other: ContactPickerModelProtocol) -> Bool {
+        return self.isEqual(other)
+    }
 }
 
 //Extension::Array - contact vo

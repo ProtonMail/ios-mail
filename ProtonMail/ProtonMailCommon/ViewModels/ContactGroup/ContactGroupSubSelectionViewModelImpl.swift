@@ -11,7 +11,7 @@ import Foundation
 class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
 {
     private let groupName: String
-    private let groupColor: String?
+    private let groupColor: String
     private var emailArray: [ContactGroupSubSelectionViewModelEmailInfomation]
     private let delegate: ContactGroupSubSelectionViewModelDelegate
     
@@ -20,15 +20,14 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
      
      For every given contact group, we
      (1) Attempt to get all emails associated with the group name -> email list G
-     - might be empty, if the group name is changed to others, etc.
+     - might be empty, if the group name was changed to others, etc.
      (2) For every selectedEmails, we compare it to G.
-     - If the email is missing from G, we add it in, and mark as selected
-     - If the email is in G, we mark it as selected
-     (3) Check is encrypted status
-     (4) Produce an email array, sorted by name, then email
+     - If the (name, email) pair is missing from G, we add it in, and mark as selected
+     - If the (name, email) pair is in G, we mark it as selected
+     (3) Produce an email array, sorted by name, then email
      */
     init(contactGroupName: String,
-         selectedEmails: [String],
+         selectedEmails: [DraftEmailData],
          delegate: ContactGroupSubSelectionViewModelDelegate) {
         self.groupName = contactGroupName
         self.delegate = delegate
@@ -47,15 +46,16 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
                                                                                            name: email.name))
                 }
             } else {
-                // TODO: handle error
-                self.groupColor = nil
+                // the group might be renamed or deleted
+                self.groupColor = ColorManager.defaultColor
             }
             
             // (2)
-            for address in selectedEmails {
+            for member in selectedEmails {
                 var found = false
                 for (i, candidate) in emailData.enumerated() {
-                    if address == candidate.email {
+                    if member.email == candidate.email &&
+                        member.name == candidate.name {
                         emailData[i].isSelected = true
                         found = true
                         break
@@ -66,21 +66,12 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
                     continue
                 }
                 
-                if let emailObj = Email.EmailForAddress(address,
-                                                        inManagedObjectContext: context) {
-                    emailData.append(ContactGroupSubSelectionViewModelEmailInfomation.init(email: emailObj.email,
-                                                                                           name: emailObj.name,
-                                                                                           isSelected: true))
-                } else {
-                    // TODO: handle error
-                    PMLog.D("Can't find \(address) in core data")
-                }
+                emailData.append(ContactGroupSubSelectionViewModelEmailInfomation(email: member.email,
+                                                                                  name: member.name,
+                                                                                  isSelected: true))
             }
             
             // (3)
-            // TODO
-            
-            // (4)
             emailData.sort {
                 if $0.name == $1.name {
                     return $0.email < $1.email
@@ -89,7 +80,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
             }
         } else {
             // TODO: handle error
-            self.groupColor = nil
+            self.groupColor = ColorManager.defaultColor
         }
         
         emailArray = emailData // query
@@ -98,11 +89,11 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     /**
      - Returns: currently selected email addresses
     */
-    func getCurrentlySelectedEmails() -> [String] {
-        var result: [String] = []
+    func getCurrentlySelectedEmails() -> [DraftEmailData] {
+        var result: [DraftEmailData] = []
         for e in emailArray {
             if e.isSelected {
-                result.append(e.email)
+                result.append(DraftEmailData.init(name: e.name, email: e.email))
             }
         }
         
@@ -110,25 +101,12 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     }
     
     /**
-     Set the isEncrypted status of the email after the fetch is completed
+     Select the given email data
     */
-    func setIsEncrypted(email: String, isEncrypted: UIImage?) {
-        if let isEncryptedImage = isEncrypted {
-            for i in emailArray.indices {
-                if emailArray[i].email == email {
-                    emailArray[i].isEncrypted = isEncryptedImage
-                    break
-                }
-            }
-        }
-    }
-    
-    /**
-     Select the given email address
-    */
-    func select(email: String) {
+    func select(data: DraftEmailData) {
         for i in emailArray.indices {
-            if emailArray[i].email == email {
+            if emailArray[i].email == data.email,
+                emailArray[i].name == data.name {
                 emailArray[i].isSelected = true
                 break
             }
@@ -151,14 +129,15 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     }
     
     /**
-     Deselect the given email address
+     Deselect the given email data
     */
-    func deselect(email: String) {
+    func deselect(data: DraftEmailData) {
         // TODO: performance improvement
         let performDeselectInHeader = self.isAllSelected()
         
         for i in emailArray.indices {
-            if emailArray[i].email == email {
+            if emailArray[i].email == data.email,
+                emailArray[i].name == data.name {
                 emailArray[i].isSelected = false
                 break
             }
@@ -211,5 +190,17 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         }
         
         return self.emailArray[indexPath.row - 1] // -1 due to header row
+    }
+    
+    func setRequiredEncryptedCheckStatus(at indexPath: IndexPath,
+                                         to status: ContactGroupSubSelectionEmailLockCheckingState,
+                                         isEncrypted: UIImage?) {
+        guard indexPath.row < self.getTotalRows() else {
+            // TODO: handle error
+            fatalError("Invalid access")
+        }
+        
+        self.emailArray[indexPath.row - 1].isEncrypted = isEncrypted
+        self.emailArray[indexPath.row - 1].checkEncryptedStatus = status // -1 due to header row
     }
 }

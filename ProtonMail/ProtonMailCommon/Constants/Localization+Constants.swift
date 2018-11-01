@@ -272,9 +272,9 @@ class LocalizedString {
     /// "Define Hint (Optional)"
     lazy var _define_hint_optional = NSLocalizedString("Define Hint (Optional)", comment: "Placeholder")
     /// "Too many recipients"
-    lazy var _too_many_recipients = NSLocalizedString("Define Hint (Optional)", comment: "Alert title")
+    lazy var _too_many_recipients_title = NSLocalizedString("Too many recipients", comment: "Alert title")
     /// "The maximum number of Recipients is 25."
-    lazy var _max_number_of_recipients_is = NSLocalizedString("The maximum number of Recipients is 25.", comment: "Alert message")
+    lazy var _max_number_of_recipients_is_number = NSLocalizedString("The maximum number of distinct recipients is %d", comment: "Alert message")
     
     
     // Mark Contacts
@@ -1633,7 +1633,7 @@ class LocalizedString {
     
     lazy var _contact_groups_select_color = NSLocalizedString("Select Color",
                                                               comment: "The title for the view where user can select the color for the group")
-    lazy var _contact_groups_delete = NSLocalizedString("Delete Group",
+    lazy var _contact_groups_delete = NSLocalizedString("Delete Contact Group",
                                                         comment: "The description of the button for deleting the contact group")
     
     lazy var _contact_groups_member_count_description = NSLocalizedString("%d Member",
@@ -1642,6 +1642,8 @@ class LocalizedString {
                                                                           comment: "The string that describes whether there are 2 or more members in the contact group")
     lazy var _contact_groups_selected_group_count_description = NSLocalizedString("%d Selected",
                                                                                   comment: "The string that describes how many contact groups are currently selected")
+    lazy var _contact_group_no_contact_group_associated_with_contact_email = NSLocalizedString("None",
+                                                                                               comment: "A *short* description saying that there is no contact group associated with this contact email")
     
     // contact group errors
     lazy var _contact_groups_save_error = NSLocalizedString("Can't save contact group",
@@ -1656,10 +1658,14 @@ class LocalizedString {
     lazy var _contact_groups_no_name_entered = NSLocalizedString("Please provide a group name",
                                                                  comment: "The message will show up when the user attempts to create a contact group without any name specified")
     
-    lazy var _contact_groups_api_add_error = NSLocalizedString("Can't create contact group through API",
-                                                                  comment: "The error message will be shown when the creation of the contact group through API failed")
     lazy var _contact_groups_api_update_error = NSLocalizedString("Can't update contact group through API",
                                                                   comment: "The error message will be shown when the update of the contact group through API failed")
-    lazy var _contact_groups_api_delete_error = NSLocalizedString("Can't delete contact group through API",
+    
+    // general error
+    lazy var _cannot_get_coredata_context = NSLocalizedString("Can't delete contact group through API",
                                                                   comment: "The error message will be shown when the deletionn of the contact group through API failed")
+    lazy var _type_casting_error = NSLocalizedString("Type casting error",
+                                                     comment: "Internal type casting error")
+    lazy var _internal_error = NSLocalizedString("Internal Error",
+                                                 comment: "The preconditions are not met")
 }

@@ -18,6 +18,7 @@ class ContactGroupsViewCell: UITableViewCell {
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var groupImage: UIImageView!
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var sendButtonImage: UIImageView!
     
     let highlightedColor = "#BFBFBF"
     let normalColor = "#9497CE"
@@ -63,9 +64,11 @@ class ContactGroupsViewCell: UITableViewCell {
     
     func config(labelID: String,
                 name: String,
+                queryString: String,
                 count: Int,
                 color: String,
                 wasSelected: Bool,
+                showSendEmailIcon: Bool,
                 delegate: ContactGroupsViewCellDelegate? = nil) {
         // setup and save
         self.count = count
@@ -76,10 +79,12 @@ class ContactGroupsViewCell: UITableViewCell {
         self.delegate = delegate
         self.wasSelected = wasSelected
         
-        if delegate == nil {
+        if showSendEmailIcon == false {
             self.sendButton.isHidden = true
+            self.sendButtonImage.isHidden = true
         } else {
             self.sendButton.isHidden = false
+            self.sendButtonImage.isHidden = false
         }
         
         // set cell data
@@ -88,7 +93,9 @@ class ContactGroupsViewCell: UITableViewCell {
             sendButton.imageView?.image = UIImage.resize(image: image, targetSize: CGSize.init(width: 20, height: 20))
         }
         
-        self.nameLabel.text = name
+        self.nameLabel.attributedText = NSMutableAttributedString.highlightedString(text: name,
+                                                                                    search: queryString,
+                                                                                    font: FontManager.highlightSearchTextForTitle)
         self.setDetailString()
         groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: color,

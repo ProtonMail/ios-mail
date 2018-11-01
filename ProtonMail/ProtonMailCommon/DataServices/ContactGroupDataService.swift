@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import Groot
+import PromiseKit
 
 let sharedContactGroupsDataService = ContactGroupsDataService()
 
@@ -19,26 +20,28 @@ class ContactGroupsDataService {
      - Parameters:
      - name: The name of the contact group
      - color: The color of the contact group
-     - completionHandler: The completion handler called upon successful creation
      */
-    func createContactGroup(name: String, color: String, completionHandler: @escaping (String?) -> Void)
+    func createContactGroup(name: String, color: String) -> Promise<String>
     {
-        let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false, type: 2)
-        api.call() {
-            task, response, hasError in
-            if response == nil {
-                // TODO: handle error
-                PMLog.D("[Contact Group addContactGroup API] error = \(String(describing: task.debugDescription)) \(String(describing: response)) \(hasError)")
-                completionHandler(nil)
-            } else if let newContactGroup = response?.label {
-                // save
-                PMLog.D("[Contact Group addContactGroup API] result = \(newContactGroup)")
-                sharedLabelsDataService.addNewLabel(newContactGroup)
-                completionHandler(newContactGroup["ID"] as? String)
-            } else {
-                // TODO: handle error
-                PMLog.D("[Contact Group addContactGroup API] error = \(String(describing: task.debugDescription)) \(String(describing: response)) \(hasError)")
-                completionHandler(nil)
+        return Promise {
+            seal in
+            
+            let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false, type: 2)
+            api.call() {
+                task, response, hasError in
+                if hasError, let error = response?.error {
+                    seal.reject(error)
+                } else {
+                    if let newContactGroup = response?.label,
+                        let ID = newContactGroup["ID"] as? String {
+                        // save
+                        PMLog.D("[Contact Group addContactGroup API] result = \(newContactGroup)")
+                        sharedLabelsDataService.addNewLabel(newContactGroup)
+                        seal.fulfill(ID)
+                    } else {
+                        seal.reject(NSError.unableToParseResponse(response))
+                    }
+                }
             }
         }
     }
@@ -49,27 +52,27 @@ class ContactGroupsDataService {
      - Parameters:
      - name: The name of the contact group
      - color: The color of the contact group
-     - completionHandler: The completion handler called upon successful editing
      */
-    func editContactGroup(groupID: String, name: String, color: String, completionHandler: @escaping (Bool) -> Void)
+    func editContactGroup(groupID: String, name: String, color: String) -> Promise<Void>
     {
-        let eventAPI = UpdateLabelRequest<UpdateLabelRequestResponse>(id: groupID, name: name, color: color)
-        
-        eventAPI.call() {
-            task, response, hasError in
-            if response == nil {
-                // TODO: handle error
-                PMLog.D("[Contact Group editContactGroup API] response nil error = \(String(describing: task.debugDescription)) \(String(describing: response)) \(hasError)")
-                completionHandler(false)
-            } else if let updatedContactGroup = response?.label {
-                // save
-                PMLog.D("[Contact Group editContactGroup API] result = \(String(describing: updatedContactGroup))")
-                sharedLabelsDataService.addNewLabel(updatedContactGroup)
-                completionHandler(true)
-            } else {
-                // TODO: handle error
-                PMLog.D("[Contact Group editContactGroup API] error = \(String(describing: task.debugDescription)) \(String(describing: response)) \(hasError)")
-                completionHandler(false)
+        return Promise {
+            seal in
+            
+            let eventAPI = UpdateLabelRequest<UpdateLabelRequestResponse>(id: groupID, name: name, color: color)
+            
+            eventAPI.call() {
+                task, response, hasError in
+                if hasError, let error = response?.error {
+                    seal.reject(error)
+                } else {
+                    if let updatedContactGroup = response?.label {
+                        PMLog.D("[Contact Group editContactGroup API] result = \(String(describing: updatedContactGroup))")
+                        sharedLabelsDataService.addNewLabel(updatedContactGroup)
+                        seal.fulfill(())
+                    } else {
+                        seal.reject(NSError.unableToParseResponse(response))
+                    }
+                }
             }
         }
     }
@@ -79,167 +82,184 @@ class ContactGroupsDataService {
      
      - Parameters:
      - name: The name of the contact group
-     - completionHandler: The completion handler called upon successful deletion
      */
-    func deleteContactGroup(groupID: String, completionHandler: @escaping (Bool) -> Void)
+    func deleteContactGroup(groupID: String) -> Promise<Void>
     {
-        let eventAPI = DeleteLabelRequest<DeleteLabelRequestResponse>(lable_id: groupID)
-        
-        eventAPI.call() {
-            task, response, hasError in
-            if response == nil {
-                // TODO: handle error
-                PMLog.D("[Contact Group deleteContactGroup API] response nil error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
-                completionHandler(false)
-            } else if let returnedCode = response?.returnedCode {
-                PMLog.D("[Contact Group deleteContactGroup API] result = \(String(describing: returnedCode))")
+        return Promise {
+            seal in
+            
+            let eventAPI = DeleteLabelRequest<DeleteLabelRequestResponse>(lable_id: groupID)
+            
+            eventAPI.call() {
+                task, response, hasError in
                 
-                if returnedCode == 1000 {
-                    // successfully deleted on the server
-                    if let context = sharedCoreDataService.mainManagedObjectContext {
-                        context.performAndWait {
-                            () -> Void in
-                            let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
-                            if let label = label {
-                                context.delete(label)
-                            }
-                            return
-                        }
-                        
-                        do {
-                            try context.save()
-                            completionHandler(true)
-                        } catch {
-                            PMLog.D("deleteContactGroup updating error: \(error)")
-                            completionHandler(false)
-                        }
-                    } else {
-                        completionHandler(false)
-                    }
+                if hasError, let error = response?.error {
+                    seal.reject(error)
                 } else {
-                    // TODO: handle error
-                    completionHandler(false)
-                }
-            } else {
-                // TODO: handle error
-                PMLog.D("[Contact Group deleteContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
-                completionHandler(false)
-            }
-        }
-    }
-    
-    func addEmailsToContactGroup(groupID: String, emailList: [Email], completionHandler: @escaping () -> Void)
-    {
-        if emailList.count == 0 {
-            completionHandler()
-            return
-        }
-        
-        let emails = emailList.map({
-            (email: Email) -> String in
-            return email.emailID
-        })
-        let eventAPI = ContactLabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
-        
-        eventAPI.call() {
-            task, response, hasError in
-            if response == nil {
-                // TODO: handle error
-                PMLog.D("[Contact Group addEmailsToContactGroup API] response nil error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
-            } else if let emailIDs = response?.emailIDs {
-                // save
-                PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
-                
-                if let context = sharedCoreDataService.mainManagedObjectContext {
-                    context.performAndWait {
-                        let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
+                    if let returnedCode = response?.returnedCode {
+                        PMLog.D("[Contact Group deleteContactGroup API] result = \(String(describing: returnedCode))")
                         
-                        if let label = label, var newSet = label.emails as? Set<Email> {
-                            for emailID in emailIDs {
-                                for email in emailList {
-                                    if email.emailID == emailID {
-                                        newSet.insert(email)
-                                        break
-                                    }
+                        // successfully deleted on the server
+                        if let context = sharedCoreDataService.mainManagedObjectContext {
+                            context.performAndWait {
+                                () -> Void in
+                                let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
+                                if let label = label {
+                                    context.delete(label)
                                 }
                             }
-                            
-                            label.emails = newSet as NSSet
                             
                             do {
                                 try context.save()
+                                seal.fulfill(())
+                                return
                             } catch {
-                                PMLog.D("addEmailsToContactGroup updating error: \(error)")
+                                PMLog.D("deleteContactGroup updating error: \(error)")
+                                seal.reject(error)
+                                return
                             }
                         } else {
-                            PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
+                            seal.reject(ContactGroupEditError.cannotGetCoreDataContext)
                         }
+                    } else {
+                        PMLog.D("[Contact Group deleteContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                        seal.reject(NSError.unableToParseResponse(response))
                     }
-                } else {
-                    PMLog.D("addEmailsToContactGroup error: can't get context")
                 }
-                
-                completionHandler()
-            } else {
-                // TODO: handle error
-                PMLog.D("[Contact Group addEmailsToContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
             }
         }
     }
     
-    func removeEmailsFromContactGroup(groupID: String, emailList: [Email], completionHandler: @escaping () -> Void)
+    func addEmailsToContactGroup(groupID: String,
+                                 emailList: [Email]) -> Promise<Void>
     {
-        if emailList.count == 0 {
-            completionHandler()
-            return
-        }
-        
-        let emails = emailList.map({
-            (email: Email) -> String in
-            return email.emailID
-        })
-        let eventAPI = ContactUnlabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
-        
-        eventAPI.call() {
-            task, response, hasError in
-            if response == nil {
-                // TODO: handle error
-                PMLog.D("[Contact Group removeEmailsFromContactGroup API] response nil error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
-            } else if let emailIDs = response?.emailIDs {
-                // save
-                PMLog.D("[Contact Group removeEmailsFromContactGroup API] result = \(String(describing: response))")
-                
-                if let context = sharedCoreDataService.mainManagedObjectContext {
-                    let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
-                    
-                    if let label = label, var newSet = label.emails as? Set<Email> {
-                        for emailID in emailIDs {
-                            for email in emailList {
-                                if email.emailID == emailID {
-                                    newSet.remove(email)
-                                    break
+        return Promise {
+            seal in
+            
+            // check
+            if emailList.count == 0 {
+                seal.fulfill(())
+                return
+            }
+            
+            let emails = emailList.map({
+                (email: Email) -> String in
+                return email.emailID
+            })
+            
+            let eventAPI = ContactLabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
+            eventAPI.call() {
+                task, response, hasError in
+                if hasError, let error = response?.error {
+                    seal.reject(error)
+                } else {
+                    if let emailIDs = response?.emailIDs {
+                        // save
+                        PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
+                        
+                        if let context = sharedCoreDataService.mainManagedObjectContext {
+                            context.performAndWait {
+                                let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
+                                
+                                if let label = label,
+                                    var newSet = label.emails as? Set<Email> {
+                                    // insert those email objects that is in the response only
+                                    for emailID in emailIDs {
+                                        for email in emailList {
+                                            if email.emailID == emailID {
+                                                newSet.insert(email)
+                                                break
+                                            }
+                                        }
+                                    }
+                                    
+                                    label.emails = newSet as NSSet
+                                    
+                                    do {
+                                        try context.save()
+                                        seal.fulfill(())
+                                    } catch {
+                                        PMLog.D("addEmailsToContactGroup updating error: \(error)")
+                                        seal.reject(error)
+                                    }
+                                } else {
+                                    PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
+                                    seal.reject(ContactGroupEditError.InternalError)
                                 }
                             }
-                        }
-                        
-                        label.emails = newSet as NSSet
-                        
-                        do {
-                            try context.save()
-                        } catch {
-                            PMLog.D("addEmailsToContactGroup updating error: \(error)")
+                        } else {
+                            PMLog.D("addEmailsToContactGroup error: can't get context")
+                            seal.reject(ContactGroupEditError.cannotGetCoreDataContext)
                         }
                     } else {
-                        PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
+                        seal.reject(NSError.unableToParseResponse(response))
                     }
-                } else {
-                    PMLog.D("addEmailsToContactGroup error: can't get context")
                 }
+            }
+        }
+    }
+    
+    func removeEmailsFromContactGroup(groupID: String, emailList: [Email]) -> Promise<Void>
+    {
+        return Promise {
+            seal in
+            
+            if emailList.count == 0 {
+                seal.fulfill(())
+                return
+            }
+            
+            let emails = emailList.map({
+                (email: Email) -> String in
+                return email.emailID
+            })
+            let eventAPI = ContactUnlabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
+            
+            eventAPI.call() {
+                task, response, hasError in
                 
-                completionHandler()
-            } else {
-                // TODO: handle error
-                PMLog.D("[Contact Group removeEmailsFromContactGroup API] error = \(String(describing: task)) \(String(describing: response)) \(hasError)")
+                if hasError, let error = response?.error {
+                    seal.reject(error)
+                } else {
+                    if let emailIDs = response?.emailIDs {
+                        // save
+                        PMLog.D("[Contact Group removeEmailsFromContactGroup API] result = \(String(describing: response))")
+                        
+                        if let context = sharedCoreDataService.mainManagedObjectContext {
+                            let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
+                            
+                            // remove only the email objects in the response
+                            if let label = label, var newSet = label.emails as? Set<Email> {
+                                for emailID in emailIDs {
+                                    for email in emailList {
+                                        if email.emailID == emailID {
+                                            newSet.remove(email)
+                                            break
+                                        }
+                                    }
+                                }
+                                
+                                label.emails = newSet as NSSet
+                                
+                                do {
+                                    try context.save()
+                                    seal.fulfill(())
+                                } catch {
+                                    PMLog.D("addEmailsToContactGroup updating error: \(error)")
+                                    seal.reject(error)
+                                }
+                            } else {
+                                PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
+                                seal.reject(ContactGroupEditError.InternalError)
+                            }
+                        } else {
+                            PMLog.D("addEmailsToContactGroup error: can't get context")
+                            seal.reject(ContactGroupEditError.cannotGetCoreDataContext)
+                        }
+                    } else {
+                        seal.reject(NSError.unableToParseResponse(response))
+                    }
+                }
             }
         }
     }
@@ -250,7 +270,9 @@ class ContactGroupsDataService {
         var result: [ContactGroupVO] = []
         for label in labels {
             result.append(ContactGroupVO.init(ID: label.labelID,
-                                              name: label.name))
+                                              name: label.name,
+                                              groupSize: label.emails.count,
+                                              color: label.color))
         }
         
         return result
