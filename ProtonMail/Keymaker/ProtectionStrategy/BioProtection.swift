@@ -8,7 +8,6 @@
 
 import Foundation
 import Security
-import CryptoSwift
 import EllipticCurveKeyPair
 import UICKeyChainStore
 

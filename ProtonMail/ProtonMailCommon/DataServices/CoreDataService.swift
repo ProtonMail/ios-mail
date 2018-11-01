@@ -51,7 +51,7 @@ class CoreDataService {
     // MARK: - methods
     
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
-        if let url = URL(string: urlString) {
+        if let url = URL(string: urlString), url.scheme == "x-coredata" {
             return persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url)
         }
         return nil

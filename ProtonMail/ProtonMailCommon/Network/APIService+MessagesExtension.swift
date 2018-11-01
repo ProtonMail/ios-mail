@@ -50,40 +50,44 @@ extension APIService {
     }
     
     //new way to do the new work calls
-    func POST<T> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
+    func POST<T> ( _ apiRequest : ApiRequest<T>!, authCredential: AuthCredential? = nil, completion: CompletionBlock?) {
         let parameterStrings = apiRequest.toDictionary()
         request(method: .post,
                 path: apiRequest.path(),
                 parameters: parameterStrings,
                 headers: ["x-pm-apiversion": apiRequest.apiVersion()],
+                customAuthCredential: authCredential,
                 completion: completion)
     }
     
-    func PUT<T> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
+    func PUT<T> ( _ apiRequest : ApiRequest<T>!, authCredential: AuthCredential? = nil, completion: CompletionBlock?) {
         let parameterStrings = apiRequest.toDictionary()
         request(method: .put,
                 path: apiRequest.path(),
                 parameters: parameterStrings,
                 headers: ["x-pm-apiversion":
                     apiRequest.apiVersion()],
+                customAuthCredential: authCredential,
                 completion: completion)
     }
 
-    func GET<T> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
+    func GET<T> ( _ apiRequest : ApiRequest<T>!, authCredential: AuthCredential? = nil, completion: CompletionBlock?) {
         let parameterStrings = apiRequest.toDictionary()
         request(method: .get,
                 path: apiRequest.path(),
                 parameters: parameterStrings,
                 headers: ["x-pm-apiversion": apiRequest.apiVersion()],
+                customAuthCredential: authCredential,
                 completion: completion)
     }
     
-    func Delete<T> ( _ apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
+    func Delete<T> ( _ apiRequest : ApiRequest<T>!, authCredential: AuthCredential? = nil, completion: CompletionBlock?) {
         let parameterStrings = apiRequest.toDictionary()
         request(method: .delete,
                 path: apiRequest.path(),
                 parameters: parameterStrings,
                 headers: ["x-pm-apiversion": apiRequest.apiVersion()],
+                customAuthCredential: authCredential,
                 completion: completion)
     }
     

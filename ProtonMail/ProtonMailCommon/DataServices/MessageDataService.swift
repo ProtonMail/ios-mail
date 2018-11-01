@@ -1064,8 +1064,15 @@ class MessageDataService {
     }
     
     private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        if let _ = managedObjectContext {
-            let api = DeleteAttachment(attID: deleteObject)
+        if let context = managedObjectContext {
+            var authCredential: AuthCredential?
+            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(deleteObject),
+                let managedObject = try? context.existingObject(with: objectID),
+                let attachment = managedObject as? Attachment
+            {
+                authCredential = attachment.message.cachedAuthCredential
+            }
+            let api = DeleteAttachment(attID: deleteObject, authCredential: authCredential)
             api.call({ (task, response, hasError) -> Void in
                 completion?(task, nil, nil)
             })
@@ -1077,6 +1084,28 @@ class MessageDataService {
         self.dequeueIfNeeded()
         
         completion?(nil, nil, NSError.badParameter(deleteObject))
+    }
+    
+    private func messageAction(_ managedObjectIds: [String], writeQueueUUID: UUID, action: String, completion: CompletionBlock?) {
+        guard let context = managedObjectContext else {
+            let _ = sharedMessageQueue.remove(writeQueueUUID)
+            self.dequeueIfNeeded()
+            
+            completion?(nil, nil, NSError.badParameter(managedObjectIds))
+            return
+        }
+        
+        var authCredential: AuthCredential?
+        let messages = managedObjectIds.compactMap { (id: String) -> Message? in
+            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(id),
+                let managedObject = try? context.existingObject(with: objectID)
+            {
+                return managedObject as? Message
+            }
+            return nil
+        }
+        authCredential = messages.first?.cachedAuthCredential
+        sharedAPIService.PUT(MessageActionRequest(action: action, messages: messages), authCredential: authCredential, completion: completion)
     }
     
     private func emptyMessage(at location: MessageLocation, completion: CompletionBlock?) {
@@ -1568,8 +1597,8 @@ class MessageDataService {
                     self.emptyMessage(at: .trash, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .emptySpam:
                     self.emptyMessage(at: .spam, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-                case .read, .unread: //1.9.1
-                    sharedAPIService.PUT(MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .read, .unread, .delete:
+                    self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .inbox:
                     self.labelMessage(.inbox, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .spam:
@@ -1582,8 +1611,7 @@ class MessageDataService {
                     self.labelMessage(.starred, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .unstar:
                     self.unLabelMessage(.starred, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-                case .delete:
-                    sharedAPIService.PUT(MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                
                 }
             } else {
                 PMLog.D(" Unsupported action \(actionString), removing from queue.")
@@ -1597,7 +1625,7 @@ class MessageDataService {
     
     
     fileprivate func queue(_ message: Message, action: MessageAction) {
-        if action == .saveDraft || action == .send {
+        if action == .saveDraft || action == .send || action == .delete || action == .read || action == .unread {
             let _ = sharedMessageQueue.addMessage(message.objectID.uriRepresentation().absoluteString, action: action)
         } else {
             if message.managedObjectContext != nil && !message.messageID.isEmpty {
