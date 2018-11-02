@@ -21,6 +21,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     var origFields : [ContactEditField] = []
     var origNotes: [ContactEditNote] = []
     var origUrls: [ContactEditUrl] = []
+    var profilePicture: UIImage? = nil
     
     var verifyType2 : Bool = true
     var verifyType3 : Bool = true
@@ -29,7 +30,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     
     //default
     var typeSection: [ContactEditSectionType] = [.email_header,
-                                                 .display_name,
                                                  .emails,
                                                  .encrypted_header,
                                                  .cellphone,
@@ -44,7 +44,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         //        if paidUser() {
         typeSection = [.email_header,
                        .type2_warning,
-                       .display_name,
                        .emails,
                        .encrypted_header,
                        .type3_error,
@@ -59,7 +58,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         //        } else {
         //            typeSection = [.email_header,
         //                           .type2_warning,
-        //                           .display_name,
         //                           .emails,
         //                           .encrypted_header,
         //                           .upgrade,
@@ -334,8 +332,18 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                             self.origUrls.append(cu)
                                             order += 1
                                         }
+                                    case "Photo":
+                                        let photo = vcard.getPhoto()
+                                        print("photo", photo?.getEncodedData() ?? "",
+                                              photo?.getRawData() ?? "",
+                                              photo?.getImageType() ?? "",
+                                              photo?.getIsBinary() ?? "")
+                                        if let image = photo?.getRawData() {
+                                            let data = Data.init(bytes: image) 
+                                            self.profilePicture = UIImage.init(data: data)
+                                        }
+
                                         break
-                                        
                                         
                                         //case "Agent":
                                         //case "CalendarRequestUri":
@@ -413,6 +421,16 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
             }
             self.contact.needsRebuild = false
             let _ = self.contact.managedObjectContext?.saveUpstreamIfNeeded()
+            
+            if self.origEmails.count == 0 {
+                for (i, item) in self.typeSection.enumerated() {
+                    if item == .email_header {
+                        self.typeSection.remove(at: i)
+                        break
+                    }
+                }
+            }
+            
             return Promise.value(())
         }
     }
@@ -440,6 +458,10 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     
     override func getProfile() -> ContactEditProfile {
         return ContactEditProfile(n_displayname: contact.name, isNew: false)
+    }
+    
+    override func getProfilePicture() -> UIImage? {
+        return self.profilePicture
     }
     
     override func getEmails() -> [ContactEditEmail] {

@@ -98,7 +98,7 @@ class ContactGroupsViewCell: UITableViewCell {
                                                                                     font: FontManager.highlightSearchTextForTitle)
         self.setDetailString()
         groupImage.setupImage(tintColor: UIColor.white,
-                              backgroundColor: color,
+                              backgroundColor: UIColor.init(hexString: color, alpha: 1),
                               borderWidth: 0,
                               borderColor: UIColor.white.cgColor)
     }
@@ -112,7 +112,7 @@ class ContactGroupsViewCell: UITableViewCell {
                               scale: 0.5,
                               makeCircleBorder: true,
                               tintColor: UIColor.white,
-                              backgroundColor: color,
+                              backgroundColor: UIColor.init(hexString: color, alpha: 1),
                               borderWidth: 0,
                               borderColor: UIColor.white.cgColor)
     }
@@ -135,7 +135,7 @@ class ContactGroupsViewCell: UITableViewCell {
                                       scale: 0.5,
                                       makeCircleBorder: true,
                                       tintColor: UIColor.white,
-                                      backgroundColor: ColorManager.white,
+                                      backgroundColor: UIColor.white,
                                       borderWidth: 1.0,
                                       borderColor: UIColor.gray.cgColor)
             } else if delegate.isMultiSelect() == false && selected {

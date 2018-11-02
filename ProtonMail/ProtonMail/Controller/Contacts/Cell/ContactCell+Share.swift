@@ -54,7 +54,8 @@ extension ContactCellShare
                         imageView.setupImage(scale: 0.7,
                                              makeCircleBorder: true,
                                              tintColor: UIColor.white,
-                                             backgroundColor: contactGroupColor)
+                                             backgroundColor: UIColor.init(hexString: contactGroupColor,
+                                                                           alpha: 1))
                         imageView.translatesAutoresizingMaskIntoConstraints = false
                         let heightConstraint = NSLayoutConstraint.init(item: imageView,
                                                                        attribute: .height,

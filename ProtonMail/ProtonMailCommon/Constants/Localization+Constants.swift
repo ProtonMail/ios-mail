@@ -355,6 +355,10 @@ class LocalizedString {
     lazy var _contacts_info_gender = NSLocalizedString("Gender", comment: "contacts talbe cell gender title")
     /// "Contact Details"
     lazy var _contacts_contact_details_title = NSLocalizedString("Contact Details", comment: "contact section title")
+    lazy var _contacts_email_contact_title = NSLocalizedString("Email Contact", comment: "Send an email to the current contact (button title text)")
+    lazy var _contacts_call_contact_title = NSLocalizedString("Call Contact", comment: "Call the contact (button title text)")
+    /// "Email addresses"
+    lazy var _contacts_email_addresses_title = NSLocalizedString("Email Addresses", comment: "contact detail view, email addresses section title")
     /// "Encrypted Contact Details"
     lazy var _contacts_encrypted_contact_details_title = NSLocalizedString("Encrypted Contact Details", comment: "contact section title")
     /// "Share Contact"

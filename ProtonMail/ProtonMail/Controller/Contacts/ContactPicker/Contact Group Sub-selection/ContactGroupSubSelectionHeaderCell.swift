@@ -40,7 +40,7 @@ class ContactGroupSubSelectionHeaderCell: UITableViewCell {
             contactGroupIcon.setupImage(scale: 0.8,
                                         makeCircleBorder: true,
                                         tintColor: UIColor.white,
-                                        backgroundColor: color)
+                                        backgroundColor: UIColor.init(hexString: color, alpha: 1))
         } else {
             contactGroupIcon.isHidden = true
         }

@@ -35,6 +35,18 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
 
     @IBOutlet weak var tableView: UITableView!
     
+    // header view
+    @IBOutlet weak var profilePictureImageView: UIImageView!
+    @IBOutlet weak var shortNameLabel: UILabel!
+    @IBOutlet weak var fullNameLabel: UILabel!
+    @IBOutlet weak var shareContactImageView: UIImageView!
+    @IBOutlet weak var callContactImageView: UIImageView!
+    @IBOutlet weak var emailContactImageView: UIImageView!
+    @IBOutlet weak var emailContactLabel: UILabel!
+    @IBOutlet weak var shareContactLabel: UILabel!
+    @IBOutlet weak var callContactLabel: UILabel!
+    @IBOutlet weak var callContactButton: UIButton!
+    @IBOutlet weak var sendToPrimaryEmailButton: UIButton!
     fileprivate var doneItem: UIBarButtonItem!
     fileprivate var loaded : Bool = false
     
@@ -48,6 +60,9 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     ///
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.title = LocalString._contacts_contact_details_title
+        
         self.doneItem = UIBarButtonItem(title: LocalString._general_edit_action,
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(didTapEditButton(sender:)))
@@ -56,6 +71,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         viewModel.getDetails {
             ActivityIndicatorHelper.showActivityIndicator(at: self.view)
         }.done { (contact) in
+            self.configHeader()
             self.tableView.reloadData()
             self.loaded = true
         }.catch { (error) in
@@ -76,6 +92,99 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             self.navigationItem.largeTitleDisplayMode = .never
         }
     }
+    
+    private func configHeader() {
+        // shortname / image
+        if let profilePicture = viewModel.getProfilePicture() {
+            // show profile picture
+            shortNameLabel.isHidden = true
+            profilePictureImageView.isHidden = false
+            
+            profilePictureImageView.image = profilePicture
+            profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.size.width / 2
+            profilePictureImageView.layer.masksToBounds = true
+        } else {
+            shortNameLabel.isHidden = false
+            profilePictureImageView.isHidden = true
+            
+            // show short name
+            let name = viewModel.getProfile().newDisplayName
+            var shortName = ""
+            if name.count > 0 {
+                shortName = String(name[name.startIndex])
+            }
+            
+            shortNameLabel.text = shortName
+            
+            shortNameLabel.layer.cornerRadius = shortNameLabel.frame.size.width / 2
+            shortNameLabel.textAlignment = .center
+
+            shortNameLabel.textColor = ContactGroupEditViewCellColor.deselected.text
+            shortNameLabel.backgroundColor = UIColor.lightGray
+        }
+        
+        // full name
+        fullNameLabel.text = viewModel.getProfile().newDisplayName
+        
+        // email contact
+        emailContactLabel.text = LocalString._contacts_email_contact_title
+        emailContactImageView.image = UIImage.init(named: "iap_email")
+        emailContactImageView.setupImage(scale: 0.5,
+                                         tintColor: UIColor.white,
+                                         backgroundColor: UIColor.ProtonMail.Blue_9397CD)
+        if viewModel.getEmails().count == 0 {
+            // no email in contact, disable sending button
+            sendToPrimaryEmailButton.isUserInteractionEnabled = false
+            emailContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
+        }
+        
+        // call contact
+        callContactLabel.text = LocalString._contacts_call_contact_title
+        callContactImageView.image = UIImage.init(named: "Phone-28px-#ffffff")
+        callContactImageView.setupImage(scale: 0.5,
+                                         tintColor: UIColor.white,
+                                         backgroundColor: UIColor.ProtonMail.Blue_9397CD)
+        if self.viewModel.getPhones().count == 0 {
+            // no tel in contact, disable
+            callContactButton.isUserInteractionEnabled = false
+            callContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
+        }
+        
+        // share contact
+        shareContactLabel.text = LocalString._contacts_share_contact_action
+        shareContactImageView.image = UIImage.init(named: "Share-28px-#ffffff")
+        shareContactImageView.setupImage(scale: 0.5,
+                                         tintColor: UIColor.white,
+                                         backgroundColor: UIColor.ProtonMail.Blue_9397CD)
+    }
+    
+    @IBAction func didTapSendToPrimaryEmailButton(_ sender: UIButton) {
+        let emails = viewModel.getEmails()
+        let email = emails[0]
+        let contact = viewModel.getContact()
+        let contactVO = ContactVO(id: contact.contactID,
+                                  name: contact.name,
+                                  email: email.newEmail,
+                                  isProtonMailContact: false)
+        self.performSegue(withIdentifier: kToComposeSegue, sender: contactVO)
+    }
+    
+    @IBAction func didTapCallContactButton(_ sender: UIButton) {
+        let phone = self.viewModel.getPhones()[0]
+        let formatedNumber = phone.newPhone.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
+        let phoneUrl = "tel://\(formatedNumber)"
+        if let phoneCallURL = URL(string: phoneUrl) {
+            let application:UIApplication = UIApplication.shared
+            if (application.canOpenURL(phoneCallURL)) {
+                application.openURL(phoneCallURL)
+            }
+        }
+    }
+    
+    @IBAction func didTapShareContact(_ sender: UIButton) {
+        shareVcard()
+    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -189,7 +298,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         switch s {
         case .email_header:
             let signed = viewModel.statusType2()
-            cell?.ConfigHeader(title: LocalString._contacts_contact_details_title, signed: signed)
+            cell?.ConfigHeader(title: LocalString._contacts_email_addresses_title, signed: signed)
         case .encrypted_header:
             let signed = viewModel.statusType3()
             cell?.ConfigHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: signed)
@@ -267,10 +376,6 @@ extension ContactDetailViewController: UITableViewDataSource {
         let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsDisplayCell, for: indexPath) as! ContactDetailsDisplayCell
         cell.selectionStyle = .none
         switch s {
-        case .display_name:
-            let profile = viewModel.getProfile();
-            cell.configCell(title: LocalString._contacts_name_title, value: profile.newDisplayName)
-            cell.selectionStyle = .none
         case .cellphone:
             let cells = viewModel.getPhones()
             let tel = cells[row]
@@ -303,7 +408,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             cell.selectionStyle = .default
             
         case .email_header, .encrypted_header, .delete, .upgrade, .share,
-             .type2_warning, .type3_error, .type3_warning, .debuginfo, .emails:
+             .type2_warning, .type3_error, .type3_warning, .debuginfo, .emails, .display_name:
             break
         }
         return cell
@@ -430,39 +535,41 @@ extension ContactDetailViewController: UITableViewDelegate {
                 }
             }
         case .share:
-            
-            let exported = viewModel.export()
-            if !exported.isEmpty {
-                let filename = viewModel.exportName()
-                let tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
-                
-                try? exported.write(to: tempFileUri, atomically: true, encoding: String.Encoding.utf8)
-                
-                // set up activity view controller
-                let urlToShare = [ tempFileUri ]
-                let activityViewController = UIActivityViewController(activityItems: urlToShare, applicationActivities: nil)
-                activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
-                
-                // exclude some activity types from the list (optional)
-                activityViewController.excludedActivityTypes = [ .postToFacebook,
-                                                                 .postToTwitter,
-                                                                 .postToWeibo,
-                                                                 .copyToPasteboard,
-                                                                 .saveToCameraRoll,
-                                                                 .addToReadingList,
-                                                                 .postToFlickr,
-                                                                 .postToVimeo,
-                                                                 .postToTencentWeibo,
-                                                                 .assignToContact]
-                if #available(iOS 11.0, *) {
-                    activityViewController.excludedActivityTypes?.append(.markupAsPDF)
-                    activityViewController.excludedActivityTypes?.append(.openInIBooks)
-                }
-                self.present(activityViewController, animated: true, completion: nil)
-            }
-            
+            shareVcard()
         default:
             break
+        }
+    }
+    
+    private func shareVcard() {
+        let exported = viewModel.export()
+        if !exported.isEmpty {
+            let filename = viewModel.exportName()
+            let tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
+            
+            try? exported.write(to: tempFileUri, atomically: true, encoding: String.Encoding.utf8)
+            
+            // set up activity view controller
+            let urlToShare = [ tempFileUri ]
+            let activityViewController = UIActivityViewController(activityItems: urlToShare, applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+            
+            // exclude some activity types from the list (optional)
+            activityViewController.excludedActivityTypes = [ .postToFacebook,
+                                                             .postToTwitter,
+                                                             .postToWeibo,
+                                                             .copyToPasteboard,
+                                                             .saveToCameraRoll,
+                                                             .addToReadingList,
+                                                             .postToFlickr,
+                                                             .postToVimeo,
+                                                             .postToTencentWeibo,
+                                                             .assignToContact]
+            if #available(iOS 11.0, *) {
+                activityViewController.excludedActivityTypes?.append(.markupAsPDF)
+                activityViewController.excludedActivityTypes?.append(.openInIBooks)
+            }
+            self.present(activityViewController, animated: true, completion: nil)
         }
     }
 }

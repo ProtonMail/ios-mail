@@ -89,7 +89,8 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         groupDetailLabel.text = viewModel.getTotalEmailString()
         
         groupImage.setupImage(tintColor: UIColor.white,
-                              backgroundColor: viewModel.getColor())
+                              backgroundColor: UIColor.init(hexString: viewModel.getColor(),
+                                                            alpha: 1))
         
         if let image = sendButton.imageView?.image {
             sendButton.imageView?.contentMode = .center
