@@ -313,7 +313,7 @@ class SendBuilder {
 
                     let encrypted = try signbody.encrypt(withPubKey: pubKey,
                                                          privateKey: privKey,
-                                                         mailbox_pwd: sharedUserDataService.mailboxPassword!)
+                                                         mailbox_pwd: passphrase)
                     let spilted = try encrypted?.split()
                     let session = try spilted?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: privKeys)!
                     
@@ -341,7 +341,7 @@ class SendBuilder {
                 
                 let encrypted = try plainText.encrypt(withPubKey: pubKey,
                                                        privateKey: privKey,
-                                                       mailbox_pwd: sharedUserDataService.mailboxPassword!)
+                                                       mailbox_pwd: passphrase)
                 let spilted = try encrypted?.split()
                 let session = try spilted?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: privKeys)!
                 
@@ -399,6 +399,7 @@ class SendBuilder {
     
     var hasMime : Bool {
         get {
+            return true
             return self.contains(type: .pgpmime) ||  self.contains(type: .cmime)
         }
     }
