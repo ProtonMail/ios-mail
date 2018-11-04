@@ -645,6 +645,7 @@ extension ComposeViewModelImpl {
      Currently, the fields required in the message object are: Group, Address, and Name
     */
     func toJsonString(_ contacts : [ContactPickerModelProtocol]) -> String {
+        //TODO:: could be improved 
         var out : [[String : String]] = [[String : String]]();
         for contact in contacts {
             switch contact.modelType {
@@ -655,7 +656,6 @@ extension ComposeViewModelImpl {
                     "Name" : contact.name,
                     "Address" : contact.email ?? ""
                 ]
-                print(to)
                 out.append(to)
             case .contactGroup:
                 let contactGroup = contact as! ContactGroupVO
@@ -667,7 +667,6 @@ extension ComposeViewModelImpl {
                         "Name" : member.Name,
                         "Address" : member.Address
                     ]
-                    print(to)
                     out.append(to)
                 }
             }

@@ -239,7 +239,7 @@ extension ContactGroupEditViewController: UITableViewDelegate
         case .manageContact:
             self.performSegue(withIdentifier: kToContactGroupSelectEmailSegue, sender: self)
         case .email:
-            print("email actions")
+            PMLog.D("email actions")
         case .deleteGroup:
             let deleteActionHandler = {
                 (action: UIAlertAction) -> Void in

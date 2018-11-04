@@ -21,7 +21,7 @@ var biometricType: BiometricType {
         let context = LAContext()
         var error: NSError?
         guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
-            print(error?.localizedDescription ?? "")
+            PMLog.D(error?.localizedDescription ?? "")
             return .none
         }
         if #available(iOS 11.0, *) {

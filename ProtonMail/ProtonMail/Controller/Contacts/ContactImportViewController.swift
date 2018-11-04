@@ -152,7 +152,7 @@ class ContactImportViewController: UIViewController {
         do {
             allContainers = try contactStore.containers(matching: nil)
         } catch {
-            print("Error fetching containers")
+            PMLog.D("Error fetching containers")
         }
         
         var results: [CNContact] = []
@@ -164,7 +164,7 @@ class ContactImportViewController: UIViewController {
                 let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch)
                 results.append(contentsOf: containerResults)
             } catch {
-                print("Error fetching results for container")
+                PMLog.D("Error fetching results for container")
             }
         }
         

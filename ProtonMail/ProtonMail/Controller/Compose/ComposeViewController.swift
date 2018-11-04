@@ -131,6 +131,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         
         ///
         self.automaticallyAdjustsScrollViewInsets = false
+        self.extendedLayoutIncludesOpaqueBars = true
         
         ///
         self.headerView.delegate = self
@@ -304,12 +305,14 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
                                                selector: #selector(ComposeViewController.willResignActiveNotification(_:)),
                                                name: UIApplication.willResignActiveNotification,
                                                object:nil)
+        NotificationCenter.default.addKeyboardObserver(self)
         setupAutoSave()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeKeyboardObserver(self)
         stopAutoSave()
     }
     
@@ -628,6 +631,7 @@ extension ComposeViewController : ComposeViewDelegate {
         self.cachedHeaderHeight = size.height
         // resize header view
         self.headerView.view.frame.size.height = self.cachedHeaderHeight
+        self.headerView.view.frame.size.width = self.view.frame.width
         self.htmlEditor.isScrollEnabled = !showPicker
         self.htmlEditor.updateHeaderHeight()
     }
@@ -895,5 +899,20 @@ extension ComposeViewController: ExpirationWarningVCDelegate{
     func learnMore() {
         //TODO:: fix later
        // UIApplication.shared.openURL(.kEOLearnMore)
+    }
+}
+
+
+extension ComposeViewController: NSNotificationCenterKeyboardObserverProtocol {
+    func keyboardWillHideNotification(_ notification: Notification) {
+        self.htmlEditor.update(footer: 0.0)
+    }
+    
+    func keyboardWillShowNotification(_ notification: Notification) {
+        let keyboardInfo = notification.keyboardInfo
+        let showed = abs(keyboardInfo.beginFrame.origin.y - keyboardInfo.endFrame.origin.y) < 50
+        if !self.htmlEditor.responderCheck() && !showed {
+            self.htmlEditor.update(footer: keyboardInfo.beginFrame.height)
+        }
     }
 }
