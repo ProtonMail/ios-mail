@@ -84,7 +84,7 @@ class UnlockManager: NSObject {
         userCachedStatus.pinFailedCount = 0
         self.updateUserData()
         (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
+        NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil)
         #endif
     }
     

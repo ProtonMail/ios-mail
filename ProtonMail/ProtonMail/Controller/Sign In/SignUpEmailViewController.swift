@@ -170,7 +170,7 @@ class SignUpEmailViewController: UIViewController {
     fileprivate func loadContent() {
         logUser()
         userCachedStatus.pinFailedCount = 0;
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: self)
+        NotificationCenter.default.post(name: Notification.Name.didUnlock, object: self)
         (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
         loadContactsAfterInstall()
     }

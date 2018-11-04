@@ -442,11 +442,10 @@ class UserDataService {
                 
             }
         }
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignOut), object: self)
+        NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
         clearAll()
         clearAuthToken()
         delegate?.onLogout(animated: animated)
-        //(UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     
     func signOutAfterSignUp() {
@@ -456,7 +455,7 @@ class UserDataService {
                 
             }
         }
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignOut), object: self)
+        NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
         clearAll()
         clearAuthToken()
     }

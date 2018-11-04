@@ -161,7 +161,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         AppVersion.current.migration()
         
         Fabric.with([Crashlytics()])
-        application.registerForRemoteNotifications()
         
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         
@@ -194,7 +193,9 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         //TODO::remove from here. load after user login/restore from cache
         ServicePlanDataService.shared.updateServicePlans()
         
-        sharedPushNotificationService.setLaunchOptions(launchOptions)
+        PushNotificationService.shared.registerForRemoteNotifications()
+        PushNotificationService.shared.setLaunchOptions(launchOptions)
+        
         StoreKitManager.default.subscribeToPaymentQueue()
         StoreKitManager.default.updateAvailableProductsList()
         
@@ -296,25 +297,20 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     // MARK: Notification methods
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         Answers.logCustomEvent(withName: "NotificationError", customAttributes:["error" : "\(error)"])
-        sharedPushNotificationService.didFailToRegisterForRemoteNotificationsWithError(error as NSError)
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         PMLog.D("receive \(userInfo)")
 
         if let _ = keymaker.mainKey { // means app is unlocked
-            sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+            PushNotificationService.shared.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
         } else {
-            sharedPushNotificationService.setNotificationOptions(userInfo);
+            PushNotificationService.shared.setNotificationOptions(userInfo)
         }
     }
     
-    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-        sharedPushNotificationService.didRegisterUserNotificationSettings(notificationSettings)
-    }
-    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        sharedPushNotificationService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
+        PushNotificationService.shared.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

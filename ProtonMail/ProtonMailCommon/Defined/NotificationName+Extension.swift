@@ -25,15 +25,20 @@ extension Notification.Name {
     static var forceUpgrade: Notification.Name {
         return .init(rawValue: "Application.ForceUpgrade")
     }
+    
+    static var didSignOut: Notification.Name {
+        return .init(rawValue: "UserDataServiceDidSignOutNotification")
+    }
+    
+    static var didUnlock: Notification.Name {
+        return .init(rawValue: "UserDataServiceDidSignInNotification")
+    }
 }
 
 
 struct NotificationDefined {
     
     static let CustomizeURLSchema = "customize_url_schema"
-    
-    static let didSignOut         = "UserDataServiceDidSignOutNotification"
-    static let didSignIn          = "UserDataServiceDidSignInNotification"
     
     //static public let languageWillChange = "PM_LANGUAGE_WILL_CHANGE"
     static public let languageDidChange = "PM_LANGUAGE_DID_CHANGE"

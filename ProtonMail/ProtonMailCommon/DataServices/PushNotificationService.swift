@@ -17,47 +17,109 @@
 import Foundation
 import UIKit
 import SWRevealViewController
-
-public let sharedPushNotificationService = PushNotificationService()
+import Keymaker
 
 public class PushNotificationService {
-    
+    public static var shared = PushNotificationService()
     fileprivate var launchOptions: [AnyHashable: Any]? = nil
     
     init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(PushNotificationService.didSignInNotification(_:)), name: NSNotification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(PushNotificationService.didSignOutNotification(_:)), name: NSNotification.Name(rawValue: NotificationDefined.didSignOut), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didUnlock), name: NSNotification.Name.didUnlock, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didSignOut), name: NSNotification.Name.didSignOut, object: nil)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - registration methods
-    
-    public func registerUserNotificationSettings() {
-        let types: UIUserNotificationType = [.badge , .sound , .alert]
-        let settings = UIUserNotificationSettings(types: types, categories: nil)
-        UIApplication.shared.registerUserNotificationSettings(settings)
-    }
+    // MARK: - register for notificaitons
     
     public func registerForRemoteNotifications() {
         DispatchQueue.main.async {
             UIApplication.shared.registerForRemoteNotifications()
+        
+            let types: UIUserNotificationType = [.badge , .sound , .alert]
+            let settings = UIUserNotificationSettings(types: types, categories: nil)
+            UIApplication.shared.registerUserNotificationSettings(settings)
+        }
+        
+        self.outdatedSettings.forEach(self.unreport)
+        
+    }
+    
+    public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
+        let newSettings = APIService.PushSubscriptionSettings(token: deviceToken, deviceID: self.getDeviceID())
+
+        switch self.currentSubscription {
+        case .none, .notReported:
+            self.currentSubscription = .notReported(newSettings)
+            
+        case .pending(let oldSettings) where oldSettings != newSettings:
+            self.outdatedSettings.insert(oldSettings)
+            self.currentSubscription = .notReported(newSettings)
+            
+        case .reported(let oldSettings) where oldSettings != newSettings:
+            self.outdatedSettings.insert(oldSettings)
+            self.currentSubscription = .notReported(newSettings)
+       
+        default: break
+        }
+        
+        // is it good?
+        if SignInManager.shared.isSignedIn(), let _ = keymaker.mainKey {
+            self.didUnlock()
         }
     }
     
-    public func unregisterForRemoteNotifications() {
-        UIApplication.shared.unregisterForRemoteNotifications()
-        sharedAPIService.deviceUnregister()
+    @objc private func didUnlock() {
+        guard case Subscription.notReported(let currentSettings) = self.currentSubscription else {
+            return
+        }
+        self.report(currentSettings)
     }
     
-    
-    // MARK: - callback methods
-    
-    public func didFailToRegisterForRemoteNotificationsWithError(_ error: NSError) {
-        PMLog.D(" \(error)")
+    @objc private func didSignOut() {
+        switch self.currentSubscription {
+        case .reported(let currentSettings), .pending(let currentSettings):
+            self.unreport(currentSettings)
+        case .none, .notReported:
+            break
+        }
     }
+    
+    // register on BE and validate local values
+    private func report(_ settings: APIService.PushSubscriptionSettings) {
+        self.currentSubscription = .pending(settings)
+        sharedAPIService.device(registerWith: settings) { _, _, error in
+            guard error == nil else {
+                self.currentSubscription = .notReported(settings)
+                return
+            }
+            self.currentSubscription = .reported(settings)
+            self.outdatedSettings.remove(settings)
+        }
+    }
+    
+    // unregister on BE and validate local values
+    private func unreport(_ settings: APIService.PushSubscriptionSettings) {
+        sharedAPIService.deviceUnregister(settings) { _, _, error in
+            guard error == nil else {
+                self.outdatedSettings.insert(settings)
+                return
+            }
+            self.outdatedSettings.remove(settings)
+            
+            switch self.currentSubscription {
+            case .none: break
+            case .reported(let currentSettings), .pending(let currentSettings), .notReported(let currentSettings):
+                if settings == currentSettings {
+                    self.currentSubscription = .none
+                }
+            }
+        }
+    }
+    
+    // MARK: - launch options
     
     public func setLaunchOptions (_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if let launchoption = launchOptions {
@@ -87,11 +149,13 @@ public class PushNotificationService {
     
     public func processCachedLaunchOptions() {
         if let options = self.launchOptions {
-            sharedPushNotificationService.didReceiveRemoteNotification(options, forceProcess: true, fetchCompletionHandler: { (UIBackgroundFetchResult) -> Void in
+            self.didReceiveRemoteNotification(options, forceProcess: true, fetchCompletionHandler: { (UIBackgroundFetchResult) -> Void in
             })
             self.launchOptions = nil;
         }
     }
+    
+    // MARK: - notifications
     
     public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         if sharedUserDataService.isMailboxPasswordStored {
@@ -126,32 +190,6 @@ public class PushNotificationService {
             }
         }
     }
-    
-    public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
-        sharedAPIService.cleanBadKey(deviceToken)
-        sharedAPIService.device(registerWith: deviceToken, completion: { (_, _, error) -> Void in
-            if let error = error {
-                PMLog.D(" error: \(error)")
-            }
-        })
-    }
-    
-    public func didRegisterUserNotificationSettings(_ notificationSettings: UIUserNotificationSettings) {
-        
-    }
-    
-    
-    // MARK: - Notifications
-    
-    @objc public func didSignInNotification(_ notification: Notification) {
-        registerUserNotificationSettings()
-        registerForRemoteNotifications()
-    }
-    
-    @objc public func didSignOutNotification(_ notification: Notification) {
-        unregisterForRemoteNotifications()
-    }
-    
     
     // MARK: - Private methods
     
@@ -198,6 +236,73 @@ public class PushNotificationService {
                 return nil
             }
             return messageArray.firstObject as? String
+        }
+    }
+}
+
+extension PushNotificationService {
+    fileprivate struct DeviceKey {
+        static let token = "DeviceTokenKey"
+        static let UID = "DeviceUID"
+        
+        static let badToken = "DeviceBadToken"
+        static let badUID = "DeviceBadUID"
+    }
+    
+    enum Subscription {
+        case none // no subscription locally
+        case notReported(APIService.PushSubscriptionSettings) // not sent to BE yet
+        case pending(APIService.PushSubscriptionSettings) // not on BE yet, but sent there
+        case reported(APIService.PushSubscriptionSettings) // this is on BE
+    }
+    
+    fileprivate var currentSubscription: Subscription { // FIXME: put to keychain to process after reinstall?
+        get { return .none }
+        set { return }
+    }
+    
+    fileprivate var outdatedSettings: Set<APIService.PushSubscriptionSettings> { // FIXME: put to keychain to process after reinstall?
+        get { return [] }
+        set { return }
+    }
+    
+    // FIXME: remove
+    
+    private func getDeviceID() -> String {
+        return UIDevice.current.identifierForVendor!.uuidString // we can't proceed with registration without this ID
+    }
+    
+    private var deviceToken: String {
+        get {
+            return SharedCacheBase.getDefault().string(forKey: DeviceKey.token) ?? ""
+        }
+        set {
+            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.token)
+        }
+    }
+    private var deviceUID: String {
+        get {
+            return SharedCacheBase.getDefault().string(forKey: DeviceKey.UID) ?? ""
+        }
+        set {
+            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.UID)
+        }
+    }
+    
+    private var badToken: String {
+        get {
+            return SharedCacheBase.getDefault().string(forKey: DeviceKey.badToken) ?? ""
+        }
+        set {
+            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.badToken)
+        }
+    }
+    private var badUID: String {
+        get {
+            return SharedCacheBase.getDefault().string(forKey: DeviceKey.badUID) ?? ""
+        }
+        set {
+            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.badUID)
         }
     }
 }

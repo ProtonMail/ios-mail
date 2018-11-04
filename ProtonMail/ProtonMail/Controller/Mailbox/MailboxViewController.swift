@@ -187,7 +187,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        sharedPushNotificationService.processCachedLaunchOptions()
+        PushNotificationService.shared.processCachedLaunchOptions()
         
         let usedStorageSpace = sharedUserDataService.usedSpace
         let maxStorageSpace = sharedUserDataService.maxSpace

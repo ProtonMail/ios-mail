@@ -1473,7 +1473,7 @@ class MessageDataService {
     // MARK: Notifications
     
     fileprivate func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(MessageDataService.didSignOutNotification(_:)), name: NSNotification.Name(rawValue: NotificationDefined.didSignOut), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MessageDataService.didSignOutNotification(_:)), name: NSNotification.Name.didSignOut, object: nil)
         // TODO: add monitoring for didBecomeActive
     }
     

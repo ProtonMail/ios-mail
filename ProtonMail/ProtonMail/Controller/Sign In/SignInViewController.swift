@@ -339,7 +339,6 @@ class SignInViewController: ProtonMailViewController {
     }
     
     func ShowLoginViews() {
-        sharedPushNotificationService.unregisterForRemoteNotifications()
         UIView.animate(withDuration: 1.0, animations: { () -> Void in
             self.usernameView.alpha      = 1.0
             self.passwordView.alpha      = 1.0
