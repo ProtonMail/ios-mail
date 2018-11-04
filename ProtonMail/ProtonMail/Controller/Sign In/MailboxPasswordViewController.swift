@@ -27,7 +27,6 @@ class MailboxPasswordViewController: UIViewController {
     @IBOutlet weak var backgroundImage: UIImageView!
 
     @IBOutlet weak var passwordManagerButton: UIButton!
-    var isRemembered: Bool = sharedUserDataService.isRememberMailboxPassword
     var isShowpwd : Bool = false;
     
     //define
@@ -160,12 +159,11 @@ class MailboxPasswordViewController: UIViewController {
     }
     
     func decryptPassword() {
-        isRemembered = true
         let password = (passwordTextField.text ?? "")
-        let mailbox_password = sharedSignIn.mailboxPassword(from: password)
+        let mailbox_password = SignInManager.shared.mailboxPassword(from: password)
         
         MBProgressHUD.showAdded(to: view, animated: true)
-        sharedSignIn.decryptPassword(mailbox_password,
+        SignInManager.shared.proceedWithMailboxPassword(mailbox_password,
                                  onError: { error in
                                     MBProgressHUD.hide(for: self.view, animated: true)
                                     let alert = error.alertController()
@@ -192,11 +190,6 @@ class MailboxPasswordViewController: UIViewController {
     
     @IBAction func decryptAction(_ sender: UIButton) {
         decryptPassword()
-    }
-    
-    @IBAction func rememberButtonAction(_ sender: UIButton) {
-        self.isRemembered = !isRemembered
-        self.isRemembered = true;
     }
     
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {

@@ -161,7 +161,6 @@ class SignUpEmailViewController: UIViewController {
     }
     
     fileprivate func moveToInbox() {
-        sharedUserDataService.isSignedIn = true
 //        if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
 //            sharedOpenPGP.setAddresses(addresses);
 //        }

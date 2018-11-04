@@ -9,90 +9,8 @@
 import Foundation
 import Keymaker
 
-var sharedSignIn = SignInManager.shared
 class SignInManager: NSObject {
     static var shared = SignInManager()
-    
-    internal func getUnlockFlow() -> SignInUIFlow {
-        if userCachedStatus.isPinCodeEnabled {
-            return SignInUIFlow.requirePin
-        }
-        if userCachedStatus.isTouchIDEnabled {
-            return SignInUIFlow.requireTouchID
-        }
-        return SignInUIFlow.restore
-    }
-    
-    internal func match(userInputPin: String, completion: @escaping (Bool)->Void) {
-        guard !userInputPin.isEmpty else {
-            userCachedStatus.pinFailedCount += 1
-            completion(false)
-            return
-        }
-        let _ = keymaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
-            guard let _ = key else {
-                userCachedStatus.pinFailedCount += 1
-                completion(false)
-                return
-            }
-            userCachedStatus.pinFailedCount = 0;
-            completion(true)
-        }
-    }
-    
-    internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void,
-                                          afterSignIn: @escaping ()->Void)
-    {
-        keymaker.obtainMainKey(with: BioProtection()) { key in
-            guard let _ = key else { return }
-            self.signInIfRememberedCredentials(onSuccess: afterSignIn)
-            afterBioAuthPassed()
-        }
-    }
-
-    internal func unlock(accordingToFlow signinFlow: SignInUIFlow,
-                         requestPin: @escaping ()->Void,
-                         onRestore: @escaping ()->Void,
-                         afterSignIn: @escaping ()->Void)
-    {
-        switch signinFlow {
-        case .requirePin:
-            sharedUserDataService.isSignedIn = false
-            requestPin()
-            
-        case .requireTouchID:
-            sharedUserDataService.isSignedIn = false
-            self.biometricAuthentication(afterBioAuthPassed: onRestore, afterSignIn: afterSignIn)
-            
-        case .restore:
-            self.signInIfRememberedCredentials(onSuccess: afterSignIn)
-            onRestore()
-        }
-    }
-
-    
-    internal func signInIfRememberedCredentials(onSuccess: ()->Void) {
-        if sharedUserDataService.isUserCredentialStored {
-            sharedUserDataService.isSignedIn = true
-            self.loadContent(requestMailboxPassword: onSuccess)
-        } else {
-            self.clean()
-        }
-    }
-    
-    private func loadContent(requestMailboxPassword: ()->Void) {
-        if sharedUserDataService.isMailboxPasswordStored {
-            #if !APP_EXTENSION
-            UserTempCachedStatus.clearFromKeychain()
-            userCachedStatus.pinFailedCount = 0
-            self.loadContactsAfterInstall()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
-            (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-            #endif
-        } else {
-            requestMailboxPassword()
-        }
-    }
     
     internal func clean() {
         UserTempCachedStatus.backup()
@@ -100,23 +18,6 @@ class SignInManager: NSObject {
         userCachedStatus.signOut()
         sharedMessageDataService.launchCleanUpIfNeeded()
         keymaker.generateNewMainKeyWithDefaultProtection()
-    }
-}
-
-#if !APP_EXTENSION
-extension SignInManager {
-    private func loadContactsAfterInstall() {
-        ServicePlanDataService.shared.updateCurrentSubscription()
-        sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
-        
-        //TODO:: here need to be changed
-        sharedContactDataService.fetchContacts { (contacts, error) in
-            if error != nil {
-                PMLog.D("\(String(describing: error))")
-            } else {
-                PMLog.D("Contacts count: \(contacts!.count)")
-            }
-        }
     }
     
     internal func signIn(username: String,
@@ -129,21 +30,17 @@ extension SignInManager {
     {
         self.clean()
         
-        //need pass twoFACode
-        sharedUserDataService.signIn(username,
-                                     password: password,
-                                     twoFACode: cachedTwoCode,
-                                     ask2fa: ask2fa,
-                                     onError: onError,
-                                     onSuccess: { (mailboxpwd) in
-                                        afterSignIn()
-                                        if let mailboxPassword = mailboxpwd {
-                                            self.decryptPassword(mailboxPassword, onError: onError)
-                                        } else {
-                                            UserTempCachedStatus.restore()
-                                            self.loadContent(requestMailboxPassword: requestMailboxPassword)
-                                        }
-        })
+        let success: (String?)->Void = { mailboxpwd in
+            afterSignIn()
+            guard let mailboxPassword = mailboxpwd else {
+                UserTempCachedStatus.restore()
+                UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
+                return
+            }
+            self.proceedWithMailboxPassword(mailboxPassword, onError: onError)
+        }
+        
+        sharedUserDataService.signIn(username, password: password, twoFACode: cachedTwoCode, ask2fa: ask2fa, onError: onError, onSuccess: success)
     }
     
     internal func isSignedIn() -> Bool {
@@ -159,7 +56,7 @@ extension SignInManager {
         return mailboxPassword
     }
     
-    internal func decryptPassword(_ mailboxPassword: String,
+    internal func proceedWithMailboxPassword(_ mailboxPassword: String,
                                   onError: @escaping (NSError)->Void)
     {
         let isRemembered = true
@@ -169,7 +66,7 @@ extension SignInManager {
         }
         
         guard !sharedUserDataService.isSet else {
-            sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: isRemembered)
+            sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil)
             (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             return
         }
@@ -193,15 +90,11 @@ extension SignInManager {
                 return
             }
             
-            userCachedStatus.pinFailedCount = 0;
-            sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: isRemembered)
+            sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil)
             UserTempCachedStatus.restore()
-            self.loadContent(requestMailboxPassword: { })
-            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
+            UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: { })
         }.catch(on: .main) { (error) in
                 fatalError() // FIXME: is this possible at all?
         }
     }
-    
 }
-#endif

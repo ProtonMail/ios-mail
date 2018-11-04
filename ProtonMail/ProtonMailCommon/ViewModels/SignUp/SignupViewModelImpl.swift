@@ -227,7 +227,7 @@ final class SignupViewModelImpl : SignupViewModel {
                                             sharedUserDataService.fetchUserInfo().done(on: .main) { info in
                                                 if info != nil {
                                                     sharedUserDataService.isNewUser = true
-                                                    sharedUserDataService.setMailboxPassword(self.keypwd_with_keysalt, keysalt: nil, isRemembered: true)
+                                                    sharedUserDataService.setMailboxPassword(self.keypwd_with_keysalt, keysalt: nil)
                                                     //alway signle password mode when signup
                                                     sharedUserDataService.passwordMode = 1
                                                     complete(true, true, "", nil)

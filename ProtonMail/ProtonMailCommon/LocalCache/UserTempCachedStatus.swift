@@ -75,7 +75,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
     
     
     class func backup () {
-        if UserTempCachedStatus.fetchFromKeychain() == nil && sharedUserDataService.isSignedIn {
+        if UserTempCachedStatus.fetchFromKeychain() == nil {
             let u = UserTempCachedStatus(
                 lastLoggedInUser: sharedUserDataService.username,
                 touchIDEmail: "FIXME",

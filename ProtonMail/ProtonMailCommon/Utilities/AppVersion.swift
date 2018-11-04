@@ -100,10 +100,13 @@ extension AppVersion {
         sharedKeychain.keychain.removeItem(forKey: UserCachedStatus.Key.pinCodeCache)
         sharedKeychain.keychain.removeItem(forKey: UserDataService.Key.mailboxPasswordPreMainKey)
         sharedKeychain.keychain.removeItem(forKey: AuthCredential.Key.keychainStorePreMainKey)
+        sharedKeychain.keychain.removeItem(forKey: UserCachedStatus.Key.enterBackgroundTime)
         userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.isTouchIDEnabled)
         userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.isPinCodeEnabled)
         userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.isManuallyLockApp)
         userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.touchIDEmail)
-        SharedCacheBase.getDefault()?.removeObject(forKey: UserDataService.Key.userInfoPreMainKey)
+        userCachedStatus.getShared().removeObject(forKey: UserDataService.Key.isRememberUser)
+        userCachedStatus.getShared().removeObject(forKey: UserDataService.Key.userInfoPreMainKey)
+        userCachedStatus.getShared().removeObject(forKey: UserDataService.Key.isRememberMailboxPassword)
     }
 }

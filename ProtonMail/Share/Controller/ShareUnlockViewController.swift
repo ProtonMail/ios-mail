@@ -126,7 +126,6 @@ class ShareUnlockViewController: UIViewController {
     private func loginCheck() {
         switch getViewFlow() {
         case .requirePin:
-            sharedUserDataService.isSignedIn = false
             pinUnlock.alpha = 1.0
             pinUnlock.isEnabled = true
             if userCachedStatus.isTouchIDEnabled {
@@ -135,7 +134,6 @@ class ShareUnlockViewController: UIViewController {
             }
 
         case .requireTouchID:
-            sharedUserDataService.isSignedIn = false
             touchID.alpha = 1.0
             touchID.isEnabled = true
 
@@ -177,7 +175,7 @@ class ShareUnlockViewController: UIViewController {
     }
 
     fileprivate func getViewFlow() -> SignInUIFlow {
-        return sharedSignIn.getUnlockFlow()
+        return UnlockManager.shared.getUnlockFlow()
     }
     
     func signInIfRememberedCredentials() {
@@ -185,7 +183,6 @@ class ShareUnlockViewController: UIViewController {
             self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
             return
         }
-        sharedUserDataService.isSignedIn = true
         self.goto_composer()
     }
     
@@ -228,7 +225,7 @@ class ShareUnlockViewController: UIViewController {
     }
     
     func authenticateUser() {
-        sharedSignIn.biometricAuthentication(afterBioAuthPassed: self.goto_composer, afterSignIn: {})
+        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: self.goto_composer, afterSignIn: {})
     }
     
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {

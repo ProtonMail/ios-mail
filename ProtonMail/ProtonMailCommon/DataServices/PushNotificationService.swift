@@ -42,7 +42,7 @@ public class PushNotificationService {
     }
     
     public func registerForRemoteNotifications() {
-        if sharedUserDataService.isSignedIn {
+        DispatchQueue.main.async {
             UIApplication.shared.registerForRemoteNotifications()
         }
     }
@@ -94,7 +94,7 @@ public class PushNotificationService {
     }
     
     public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        if sharedUserDataService.isSignedIn && sharedUserDataService.isMailboxPWDOk {
+        if sharedUserDataService.isMailboxPasswordStored {
             let application = UIApplication.shared
             if let messageid = messageIDForUserInfo(userInfo) {
                 // if the app is in the background, then switch to the inbox and load the message detail

@@ -271,32 +271,13 @@ class UserDataService {
     }
     
     var isMailboxPasswordStored: Bool {
-        
-        isMailboxPWDOk = mailboxPassword != nil;
-        
         return mailboxPassword != nil
     }
     
-    var isRememberMailboxPassword: Bool = SharedCacheBase.getDefault().bool(forKey: Key.isRememberMailboxPassword) {
-        didSet {
-            SharedCacheBase.getDefault().set(isRememberMailboxPassword, forKey: Key.isRememberMailboxPassword)
-            SharedCacheBase.getDefault().synchronize()
-        }
-    }
-    
-    var isRememberUser: Bool = SharedCacheBase.getDefault().bool(forKey: Key.isRememberUser) {
-        didSet {
-            SharedCacheBase.getDefault().set(isRememberUser, forKey: Key.isRememberUser)
-            SharedCacheBase.getDefault().synchronize()
-        }
-    }
-    
-    var isSignedIn: Bool = false
     var isNewUser : Bool = false
-    var isMailboxPWDOk: Bool = false
     
     var isUserCredentialStored: Bool {
-        return username != nil && isRememberUser
+        return self.username != nil
     }
     
     /// Value is only stored in the keychain
@@ -420,10 +401,8 @@ class UserDataService {
         return privateKey.check(passphrase: password)
     }
     
-    func setMailboxPassword(_ password: String, keysalt: String?, isRemembered: Bool) {
+    func setMailboxPassword(_ password: String, keysalt: String?) {
         mailboxPassword = password
-        isRememberMailboxPassword = isRemembered
-        self.isMailboxPWDOk = true;
     }
     
     
@@ -434,9 +413,7 @@ class UserDataService {
                 ask2fa()
             } else {
                 if error == nil {
-                    self.isSignedIn = true
                     self.username = username
-                    self.isRememberUser = true
                     self.passwordMode = mpwd != nil ? 1 : 2
                     
                     onSuccess(mpwd)
@@ -906,12 +883,7 @@ class UserDataService {
     }
     
     func clearAll() {
-        isSignedIn = false
-        
-        isRememberUser = false
         username = nil
-        
-        isRememberMailboxPassword = false
         mailboxPassword = nil
         userInfo = nil
         twoFactorStatus = 0
@@ -940,14 +912,9 @@ class UserDataService {
     }
     
     func launchCleanUp() {
-        if !self.isRememberUser {
-            username = nil
+        if username == nil {
             twoFactorStatus = 0
             passwordMode = 2
-        }
-        
-        if !isRememberMailboxPassword {
-            mailboxPassword = nil
         }
     }
 }

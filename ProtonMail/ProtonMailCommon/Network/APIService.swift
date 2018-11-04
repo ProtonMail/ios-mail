@@ -91,11 +91,7 @@ class APIService {
             guard let credential = AuthCredential.fetchFromKeychain() else { // app is locked, fail with error gracefully
                 pthread_mutex_unlock(&self.mutex)
                 DispatchQueue.main.async {
-                    if sharedUserDataService.isSignedIn {
-                        completion(nil, NSError.authCacheBad())
-                    } else {
-                        completion(nil, NSError.AuthCachePassEmpty())
-                    }
+                    completion(nil, NSError.authCacheBad())
                 }
                 return
             }

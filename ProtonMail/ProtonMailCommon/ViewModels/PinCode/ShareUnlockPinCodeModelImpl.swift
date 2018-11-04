@@ -48,7 +48,7 @@ class ShareUnlockPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func isPinMatched(completion: @escaping (Bool)->Void) {
-        sharedSignIn.match(userInputPin: enterPin, completion: completion)
+        UnlockManager.shared.match(userInputPin: enterPin, completion: completion)
         //currentStep = .enterPin
     }
     

@@ -29,11 +29,6 @@ class AppDelegate: UIResponder {
     //FIXME: tempory
     var upgradeView : ForceUpgradeView?
     
-    deinit{
-        // MARK: FIXME: from the doc, we don't need to do this in the deint.  //
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     // FIXME: this is new navigation system Router's work
     lazy var window: UIWindow? = {
         let window = UIWindow(frame: UIScreen.main.bounds)
@@ -43,36 +38,35 @@ class AppDelegate: UIResponder {
     }()
     
     // FIXME: this is new navigation system Router's work
-    private func setupWindow() {
-        guard sharedSignIn.isSignedIn() else {
+    @objc func setupWindow(gotMainKey: Bool) {
+        guard SignInManager.shared.isSignedIn() else {
             self.switchTo(storyboard: .signIn, animated: false)
             return
         }
         
-        switch keymaker.mainKey {
-        case .some: self.switchTo(storyboard: .inbox, animated: true)
-        case .none: self.switchTo(storyboard: .signIn, animated: true)
+        switch gotMainKey {
+        case true: self.switchTo(storyboard: .inbox, animated: true)
+        case false: self.switchTo(storyboard: .signIn, animated: true)
         }
     }
     
-    // FIXME: this is new navigation system Router's work
-    @objc func switchToSignInWindow() {
-        self.switchTo(storyboard: .signIn, animated: true)
+    @objc func lockWindow() {
+        self.setupWindow(gotMainKey: false)
     }
-    @objc func switchToInternalWindow() {
-        self.switchTo(storyboard: .inbox, animated: true)
+    
+    @objc func unlockWindow() {
+        self.setupWindow(gotMainKey: true)
     }
     
     // MARK: - Public methods
     
     // FIXME: this is new navigation system Router's work
     func switchTo(storyboard: UIStoryboard.Storyboard, animated: Bool) {
-        // FIXME: this method should add new SignIn window and switch to it back and forth from the main app hierarchy
-        guard let window = window else {
-            return
-        }
-
         DispatchQueue.main.async {
+            guard let window = self.window else {
+                return
+            }
+            
             guard let rootViewController = window.rootViewController,
                 rootViewController.restorationIdentifier != storyboard.restorationIdentifier else {
                 return
@@ -187,10 +181,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         //start network notifier
         sharedInternetReachability.startNotifier()
         
-        setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
         sharedUserDataService.delegate = self
-        sharedPushNotificationService.registerForRemoteNotifications()
         
         if mode != .dev && mode != .sim {
             AFNetworkActivityLogger.shared().stopLogging()
@@ -209,8 +201,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         
         //TODO:: Tempory later move it into App coordinator
         NotificationCenter.default.addObserver(self, selector: #selector(performForceUpgrade), name: .forceUpgrade, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(switchToSignInWindow), name: Keymaker.requestMainKey, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(switchToInternalWindow), name: Keymaker.obtainedMainKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(lockWindow), name: Keymaker.requestMainKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(unlockWindow), name: Keymaker.obtainedMainKey, object: nil)
         
         return true
     }
@@ -239,10 +231,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     func applicationDidEnterBackground(_ application: UIApplication) {
         Snapshot().didEnterBackground(application)
         keymaker.updateAutolockCountdownStart()
-        if sharedUserDataService.isSignedIn {
-            let timeInterval : Int = Int(Date().timeIntervalSince1970)
-            userCachedStatus.exitTime = "\(timeInterval)";
-        }
+        
         var taskID : UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask {
             //timed out
@@ -312,27 +301,11 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         PMLog.D("receive \(userInfo)")
-        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
-            let timeIndex = userCachedStatus.lockTime.rawValue
-            if timeIndex == 0 {
-                sharedPushNotificationService.setNotificationOptions(userInfo);
-            } else if timeIndex > 0 {
-                var exitTime : Int = 0
-                if let t = Int(userCachedStatus.exitTime) {
-                    exitTime = t
-                }
-                let timeInterval : Int = Int(Date().timeIntervalSince1970)
-                let diff = timeInterval - exitTime
-                if diff > (timeIndex*60) || diff <= 0 {
-                    sharedPushNotificationService.setNotificationOptions(userInfo);
-                } else {
-                    sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
-                }
-            } else {
-                sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
-            }
-        } else {
+
+        if let _ = keymaker.mainKey { // means app is unlocked
             sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+        } else {
+            sharedPushNotificationService.setNotificationOptions(userInfo);
         }
     }
     

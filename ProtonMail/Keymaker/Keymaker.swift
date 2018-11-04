@@ -31,8 +31,6 @@ public class Keymaker: NSObject {
         didSet {
             if _mainKey != nil {
                 self.autolocker?.autolockCountdownStart = nil
-            } else {
-                NotificationCenter.default.post(.init(name: Keymaker.requestMainKey)) // TODO: validate if it is needed here
             }
         }
     }
@@ -55,6 +53,7 @@ public class Keymaker: NSObject {
         guard !self.isProtectorActive(BioProtection.self),
             !self.isProtectorActive(PinProtection.self) else
         {
+            // FIXME: this can cause execution cycle if observer will access keymaker.mainKey in the observation method
             NotificationCenter.default.post(.init(name: Keymaker.requestMainKey))
             return nil
         }
@@ -74,7 +73,6 @@ public class Keymaker: NSObject {
     private let controlThread = DispatchQueue.global(qos: .utility)
     
     public func wipeMainKey() {
-        self.lockTheApp()
         NoneProtection.removeCyphertext(from: self.keychain)
         BioProtection.removeCyphertext(from: self.keychain)
         PinProtection.removeCyphertext(from: self.keychain)

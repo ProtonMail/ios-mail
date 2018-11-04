@@ -258,17 +258,6 @@ extension UserCachedStatus {
         }
     }
     
-    
-    // is used only in push notifications system
-    @available(*, deprecated) var exitTime : String {
-        get {
-            return sharedKeychain.keychain.string(forKey: Key.enterBackgroundTime) ?? "0"
-        }
-        set {
-            sharedKeychain.keychain.setString(newValue, forKey: Key.enterBackgroundTime)
-        }
-    }
-    
     var lastLoggedInUser : String? {
         get {
             return sharedKeychain.keychain.string(forKey: Key.lastLoggedInUser)
