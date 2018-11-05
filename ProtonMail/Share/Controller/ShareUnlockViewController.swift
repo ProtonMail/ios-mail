@@ -11,16 +11,16 @@ import LocalAuthentication
 var sharedUserDataService : UserDataService!
 
 class ShareUnlockViewController: UIViewController, CoordinatedNew {
+    typealias coordinatorType = ShareUnlockCoordinator
+    private var coordinator: ShareUnlockCoordinator?
     
     func set(coordinator: ShareUnlockCoordinator) {
-        
+        self.coordinator = coordinator
     }
     
     func getCoordinator() -> CoordinatorNew? {
-        return nil
+        return coordinator
     }
-    
-    typealias coordinatorType = ShareUnlockCoordinator
     
     @IBOutlet weak var pinUnlock: UIButton!
     @IBOutlet weak var touchID: UIButton!
@@ -213,37 +213,12 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
         }
         userCachedStatus.lockedApp = false
         sharedUserDataService.isSignedIn = true
-        self.goto_composer()
-    }
-    
-    func goto_composer() {
-        let rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: .composer)!
-        let composer = rootViewController.children[0] as! ComposeViewController
-        //
-//        let composer = ComposerViewController(nibName: "ComposerViewController", bundle: nil) //69 mb
-        sharedVMService.buildComposer(composer,
-                                      subject: self.inputSubject,
-                                      content: self.inputContent,
-                                      files: self.files)
         
-        let w = UIScreen.main.bounds.width;
-        composer.view.frame = CGRect(x: 0, y: 0, width: w, height: 186 + 60)
-        //self.navigationController?.setViewControllers([composer], animated: true) //71mb
-        self.navigationController?.present(rootViewController, animated: true, completion: {
-            
-        })
+        self.coordinator?.go(dest: .composer)
     }
     
-    func goto_pin() {
-        pinUnlock.isEnabled = false
-        let pinVC = SharePinUnlockViewController(nibName: "SharePinUnlockViewController", bundle: nil)
-        pinVC.viewModel = ShareUnlockPinCodeModelImpl()
-        pinVC.delegate = self
-        let w = UIScreen.main.bounds.width;
-        let h = UIScreen.main.bounds.height;
-        pinVC.view.frame = CGRect(x: 0, y: 0, width: w, height: h)
-        self.present(pinVC, animated: true, completion: nil)
-    }
+
+
     
     @objc func cancelButtonTapped(sender: UIBarButtonItem) {
         self.hideExtensionWithCompletionHandler() { _ in
@@ -257,14 +232,13 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
     }
     
     @IBAction func pin_unlock_action(_ sender: Any) {
-        self.goto_pin()
+        self.coordinator?.go(dest: .pin)
     }
     
     func authenticateUser() {
         let context = LAContext() // Get the local authentication context
         context.localizedFallbackTitle = ""
         let reasonString = "\(LocalString._general_login): \(userCachedStatus.codedEmail())"
-        
         // Check if the device can evaluate the policy.
         var error: NSError?
         guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
@@ -298,13 +272,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
                         let alertController = LocalString._authentication_was_cancelled_by_the_system.alertController()
                         alertController.addOKAction()
                         self.present(alertController, animated: true, completion: nil)
-                        
                     case .some(LAError.Code.userCancel.rawValue):
                         PMLog.D("Authentication was cancelled by the user")
-                        
                     case .some(LAError.Code.userFallback.rawValue):
                         PMLog.D("User selected to enter custom password")
-                        
                     default:
                         PMLog.D("Authentication failed")
                         let alertController = LocalString._authentication_failed.alertController()

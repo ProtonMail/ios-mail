@@ -35,14 +35,63 @@ class ShareUnlockCoordinator : PushCoordinator {
     
     lazy var configuration: ((ShareUnlockViewController) -> ())? = { vc in
         // configurateion for set up the view models when needed
+        
     }
     
-    internal let entryNibName = "ShareUnlockViewController"
+    enum Destination : String {
+        case pin = "pin"
+        case composer = "composer"
+    }
+    
     init(navigation : UINavigationController) {
         //parent navigation
         self.navigationController = navigation
         //create self view controller
-        self.viewController = ShareUnlockViewController(nibName: entryNibName , bundle: nil)
+        self.viewController = ShareUnlockViewController(nibName: "ShareUnlockViewController" , bundle: nil)
     }
+    
+    private func goPin() {
+        //UI refe
+        self.viewController?.pinUnlock.isEnabled = false
+        let pinView = SharePinUnlockCoordinator(navigation: navigationController,
+                                                vm: ShareUnlockPinCodeModelImpl(),
+                                                delegate: self)
+        pinView.start()
+    }
+    
+    private func gotoComposer() {
+        //build viewModel            sharedVMService.buildComposer(composer,
+//        subject: self.inputSubject,
+//        content: self.inputContent,
+//        files: self.files)
+//        let compose = ComposeCoordinator(navigation: navigationController, vm: ComposeViewModel)
 
+        
+        
+    }
+    
+    func go(dest: Destination) {
+        switch dest {
+        case .pin:
+            self.goPin()
+        case .composer:
+            self.gotoComposer()
+        }
+    }
+}
+
+extension ShareUnlockCoordinator : SharePinUnlockViewControllerDelegate {
+    func Cancel() {
+        self.viewController?.pinUnlock.isEnabled = true
+    }
+    
+    func Next() {
+        self.viewController?.signInIfRememberedCredentials()
+    }
+    
+    func Failed() {
+        
+    }
+    
+    
 }

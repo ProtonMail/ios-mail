@@ -101,7 +101,6 @@
 		0E29BAA2714CDAC375CEEB88F3E4EBED /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29702CCB5249E56A99A11AF8FF0AED36 /* ComposeViewModel.swift */; };
 		0E72F6064C75855BB73D2166E9850007 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0742E240B9FDE75FE62CBCAA2789AF /* Address.swift */; };
 		0E85F59431AE555F969B4F49B87BD6A8 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A2F260039163C3214BBFA3487444F0 /* Social.framework */; };
-		0E8BC8D7CD673B16423B0E20A62F93C8 /* PasswordEncryptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AFF1BD0D27C7CFBFD7EEAFAAF616F7 /* PasswordEncryptViewController.swift */; };
 		0EA3768EF0793B36C302199B260FE521 /* ExpirationWarningHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */; };
 		0EB9E2B8B9C3009FA7FBABFE623E3735 /* ServicePlanDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E27BF80474BDA474725D747C488AC95 /* ServicePlanDataService.swift */; };
 		0EF91AB028CCDAB64505615526B819F3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1ECA6547BB92EFBFF9D78045E47FD613 /* InfoPlist.strings */; };
@@ -194,7 +193,6 @@
 		1FB7C27E695081EDB41246AB9E194048 /* LabelApplyViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F351276C93109510B9F97661FCF81A1B /* LabelApplyViewModelImpl.swift */; };
 		1FF8F1476C862C9E6FE82915BBF0F5DC /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE94FE1BA9AF24B47D7D08A72823DA5 /* PinCodeViewController.swift */; };
 		20030A41ECBDB268DA2775985626700E /* AttachmentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E128E6B209F18F6AD6E52E140D8684F7 /* AttachmentCollectionViewCell.swift */; };
-		2043E3C950490DD8334E03134E72F6F5 /* PasswordEncryptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AFF1BD0D27C7CFBFD7EEAFAAF616F7 /* PasswordEncryptViewController.swift */; };
 		206E77387C67AD4D220EBD2AD8E14D3C /* ServicePlanHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E4855D3119DD0FEFE0E934AB22CFFE /* ServicePlanHeader.swift */; };
 		207FAD842E9CA47AB7A4978F449F9694 /* SpamScoreWarningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E62C3AA33B3CFEBDC6C8534BCC758323 /* SpamScoreWarningView.xib */; };
 		209B65D42B8B9E4CE5C98F8C0F8CDAE1 /* ServiceLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89116D94A2E17CB58FDC13ECE1B81F36 /* ServiceLevelViewController.swift */; };
@@ -1492,6 +1490,7 @@
 		EDDBA2FA01E62287DC64ED7BA4099DBB /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680AA287FBEF2802C1CC7D4471321EF3 /* URL+Extension.swift */; };
 		EDE761D3F5EE9171EA5FC0A86C9AEB97 /* PasswordExtension.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5DCE1A915445A08E86CB35521431F753 /* PasswordExtension.strings */; };
 		EE641C0AF75DB2AB9AA0F1258A6139ED /* ExternalURL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE6E5D71D01C07A5C2C758B1597F905 /* ExternalURL+Extension.swift */; };
+		EE8A43CF7C379CFC1675C80D8EA14801 /* SharePinUnlockCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578306A989094FC9AA14DDBF059C4A3 /* SharePinUnlockCoordinator.swift */; };
 		EE929D9A66FC3CCE296CD5240C7DAC44 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFE3868B0060D33182C2D17832CAF5F /* APIService.swift */; };
 		EE951060648FC2470C6C7636EFD067EF /* VCard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03341659B0BBA12D8FF7BDBEF9C7CEB7 /* VCard+Extension.swift */; };
 		EEE15D9F801E890D3DC796D14B18FE79 /* Attachments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F70C88329B41BBB3CE7F3D35E2402879 /* Attachments.storyboard */; };
@@ -1513,6 +1512,7 @@
 		F15E0B4F1D2877F3B3E6D0BBC24F81A7 /* APIServiceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAFA09C0C974E273A1A8842BE85C707 /* APIServiceResponse.swift */; };
 		F15FA732479019F599F9A67226DE6B63 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D45CBF615966A3BF8366CB1F9699EE /* UserSettings.swift */; };
 		F19E1AAE7156602B3360B9A9B184B703 /* HtmlEditor.html in Resources */ = {isa = PBXBuildFile; fileRef = C5CAEDD4BF1C083D26B5050E226CE4DC /* HtmlEditor.html */; };
+		F1F3F93C1C1433C9DF97B2FA0BEAC3A6 /* SharePinUnlockCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578306A989094FC9AA14DDBF059C4A3 /* SharePinUnlockCoordinator.swift */; };
 		F24CCD0CDAC79EA33C3BB27381CEE7CD /* TwoFACodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDB859D696ED07B574FA18C09EFF40F /* TwoFACodeViewController.swift */; };
 		F284D2AF97095DAFCFEE47BCFCF4147B /* HtmlEditor.html in Resources */ = {isa = PBXBuildFile; fileRef = C5CAEDD4BF1C083D26B5050E226CE4DC /* HtmlEditor.html */; };
 		F2D4F1D95C15551E13635847B63412A1 /* MessageQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B142492E7764F95AE62A0DC0372EAB /* MessageQueue.swift */; };
@@ -1998,6 +1998,7 @@
 		74B9D8479C48831A69305E90F288B2A3 /* ContactGroupDefined.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDefined.swift; sourceTree = "<group>"; };
 		74C5F19E1737A4EF8EB9055319B43182 /* UIButton+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+ProtonMail.swift"; sourceTree = "<group>"; };
 		7540794E9C555FB8DDB5720141F8D48E /* ImageProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProcessor.swift; sourceTree = "<group>"; };
+		7578306A989094FC9AA14DDBF059C4A3 /* SharePinUnlockCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePinUnlockCoordinator.swift; sourceTree = "<group>"; };
 		758AF928CFCCE4CE88C577253D913FA8 /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		75CC12E6A05F63928C9357ACB88E7D63 /* APIService+ResponseTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ResponseTransformer.swift"; sourceTree = "<group>"; };
 		75FFC0F937D149117E07B6ADFEF9186F /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -3278,6 +3279,7 @@
 			children = (
 				32AF08DA6C750FB3CCBD502E820E0A26 /* ComposerViewController.swift */,
 				60AFF1BD0D27C7CFBFD7EEAFAAF616F7 /* PasswordEncryptViewController.swift */,
+				7578306A989094FC9AA14DDBF059C4A3 /* SharePinUnlockCoordinator.swift */,
 				CE71D9C4739F715B22EF067D18BD4BD2 /* SharePinUnlockViewController.swift */,
 				EC1D0B3C7C1383DD41710D67F9A11804 /* ShareUnlockCoordinator.swift */,
 				E910C23C361F11C228DD5EA51E9BD73A /* ShareUnlockViewController.swift */,
@@ -5943,7 +5945,6 @@
 				DDE1F0E986DBAD24F12A6332BBA3426E /* PMImagePickerController.swift in Sources */,
 				B66CF6287FB1A4BB4D3FBB1D6D686FDA /* PMView.swift in Sources */,
 				79467A4316EB790565DFDE8907164B69 /* Part.swift in Sources */,
-				0E8BC8D7CD673B16423B0E20A62F93C8 /* PasswordEncryptViewController.swift in Sources */,
 				6442DA0B915A7D2DDE72E1BE18E43494 /* PasswordUtils.swift in Sources */,
 				73756FCEC6A75634DFE7243CE6A72EEC /* PersistentQueue.swift in Sources */,
 				2A10A09F123AABF3474F0796C64A68AC /* PhotoAttachmentProvider.swift in Sources */,
@@ -5958,6 +5959,7 @@
 				A5D1DD47043C861FF8BE761A0CDFE846 /* SettingsAPI.swift in Sources */,
 				65F1E4F60651566208B4712F8704166A /* ShareAppCoordinator.swift in Sources */,
 				C91E6D0981798B5A65CA681C37F44260 /* ShareExtensionEntry.swift in Sources */,
+				F1F3F93C1C1433C9DF97B2FA0BEAC3A6 /* SharePinUnlockCoordinator.swift in Sources */,
 				2366E20D29480AC1CBDC5A05C6D460F5 /* SharePinUnlockViewController.swift in Sources */,
 				D04B28DDAE7C3EFF6FA24BB575F36236 /* ShareUnlockCoordinator.swift in Sources */,
 				871898B7C24C611415A842947272D3CB /* ShareUnlockPinCodeModelImpl.swift in Sources */,
@@ -6167,7 +6169,6 @@
 				CA824D3E15BACF8AC0CA1AE936B906FE /* PMImagePickerController.swift in Sources */,
 				C13EF21802FF383942A0DE1C3A2371F0 /* PMView.swift in Sources */,
 				E0DD0308DE650D66F3B54331E930965E /* Part.swift in Sources */,
-				2043E3C950490DD8334E03134E72F6F5 /* PasswordEncryptViewController.swift in Sources */,
 				588BC83CB5F729E75AF6AA0F0F5E4F8A /* PasswordUtils.swift in Sources */,
 				C598B1CCED44E6732A81E8ECE5BDFDFE /* PersistentQueue.swift in Sources */,
 				E95472B196088B3CE75E4642A5A672E7 /* PhotoAttachmentProvider.swift in Sources */,
@@ -6182,6 +6183,7 @@
 				7DFB4C294CAE23A769678D3AB6154E6C /* SettingsAPI.swift in Sources */,
 				88E8136CCD42FC01FDE5D4BEB24E80A1 /* ShareAppCoordinator.swift in Sources */,
 				131F2D19443C376E3B630D0EE0FD509C /* ShareExtensionEntry.swift in Sources */,
+				EE8A43CF7C379CFC1675C80D8EA14801 /* SharePinUnlockCoordinator.swift in Sources */,
 				C7ECCB6715E5B3C9BA34706363FBF760 /* SharePinUnlockViewController.swift in Sources */,
 				209E2CB82E8B5259A5B61C5625AF5AE3 /* ShareUnlockCoordinator.swift in Sources */,
 				44D9562BF3BFD11754EE64C1A9858052 /* ShareUnlockPinCodeModelImpl.swift in Sources */,

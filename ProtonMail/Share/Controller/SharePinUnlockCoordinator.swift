@@ -1,6 +1,6 @@
 //
-//  ShareCoordinator.swift
-//  ProtonMail - Created on 10/31/18.
+//  SharePinUnlockCoordinator.swift
+//  ProtonMail - Created on 11/4/18.
 //
 //
 //  The MIT License
@@ -24,34 +24,28 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+    
 
 import Foundation
 
-
-/// Main entry point to the app
-class ShareAppCoordinator: CoordinatorNew {
-    // navigation controller instance -- entry
-    internal var navigationController: UINavigationController
+class SharePinUnlockCoordinator : PushCoordinator {
+    typealias VC = SharePinUnlockViewController
     
-    //    let serviceHolder: ServiceHolder = {
-    //        let helper = ServiceHolder()
-    //        helper.add(SeasonsServices.self, for: TestSeasonsServices.self)
-    //        return helper
-    //    }()
-    
-    func start() {
-        self.loadUnlockCheckView()
+    var viewController: VC?
+    let viewModel: PinCodeViewModel
+    lazy var configuration: ((VC) -> ())? = { vc in
+        vc.viewModel = self.viewModel
     }
     
-    init(navigation: UINavigationController) {
+    var navigationController: UINavigationController
+    
+    init(navigation : UINavigationController, vm: PinCodeViewModel, delegate: SharePinUnlockViewControllerDelegate) {
+        //parent navigation
         self.navigationController = navigation
+        self.viewModel = vm
+        //create self view controller
+        self.viewController = SharePinUnlockViewController(nibName: "SharePinUnlockViewController", bundle: nil)
+        self.viewController?.delegate = delegate
     }
-    
-    ///
-    private func loadUnlockCheckView() {
-        // create next coordinator
-        let unlock = ShareUnlockCoordinator(navigation: navigationController)
-        unlock.start()
-    }
+
 }

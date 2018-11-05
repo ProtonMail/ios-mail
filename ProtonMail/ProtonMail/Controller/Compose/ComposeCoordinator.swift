@@ -38,6 +38,15 @@ class ComposeCoordinator : DefaultCoordinator {
         self.viewController = vc
     }
     
+    internal var navigationController: UINavigationController?
+    init(navigation: UINavigationController, vm: ComposeViewModel) {
+        self.viewModel = vm
+        self.navigationController = navigation
+        let rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: .composer)!
+        let composer = rootViewController.children[0] as! ComposeViewController
+        self.viewController = composer
+    }
+    
     weak var delegate: CoordinatorDelegate?
 
     enum Destination : String {
@@ -73,7 +82,9 @@ class ComposeCoordinator : DefaultCoordinator {
     }
     
     func start() {
-        
+        if let navigation = self.navigationController, let vc = self.viewController {
+            navigation.setViewControllers([vc], animated: true)
+        }
     }
     
     func go(to dest: Destination) {

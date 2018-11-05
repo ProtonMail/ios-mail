@@ -34,8 +34,4 @@ class ShareExtensionEntry : UINavigationController {
         
         self.appCoordinator?.start()
     }
-//
-//    override var preferredStatusBarStyle: UIStatusBarStyle {
-//        return .lightContent
-//    }
 }

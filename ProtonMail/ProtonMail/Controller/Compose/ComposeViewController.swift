@@ -81,10 +81,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
     func set(coordinator: ComposeCoordinator) {
         self.coordinator = coordinator
     }
-    func setCoordinator(_ coordinator: ComposeCoordinator) {
-        self.coordinator = coordinator
-    }
-    
+
     ///
     func inactiveViewModel() {
         self.stopAutoSave()
