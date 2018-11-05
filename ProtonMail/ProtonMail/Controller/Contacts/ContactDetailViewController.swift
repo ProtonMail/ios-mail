@@ -217,9 +217,15 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             addContactViewController.delegate = self
             sharedVMService.contactEditViewModel(addContactViewController, contact: contact)
         } else if (segue.identifier == kToComposeSegue) {
-            let composerVC = segue.destination.children[0] as! ComposeEmailViewController
+            let composerVC = segue.destination.children[0] as! ComposeViewController
             let contact = sender as? ContactVO
             sharedVMService.newDraft(vmp: composerVC, with: contact)
+            //TODO:: finish up here
+            let coordinator = ComposeCoordinator(vc: composerVC,
+                                                 vm: composerVC.viewModel) //set view model
+            coordinator.viewController = composerVC
+            composerVC.set(coordinator: coordinator)
+            
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController
             sharedVMService.upgradeAlert(contacts: popup)

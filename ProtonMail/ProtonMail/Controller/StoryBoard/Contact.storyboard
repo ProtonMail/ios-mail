@@ -2312,7 +2312,7 @@
         <!--Composer Navigation Controller-->
         <scene sceneID="LMd-h8-hIx">
             <objects>
-                <viewControllerPlaceholder storyboardName="Menu" referencedIdentifier="ComposeNavigationController" id="1jS-uV-TRv" userLabel="Composer Navigation Controller" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Composer" referencedIdentifier="ref_composer_nav_controller" id="1jS-uV-TRv" userLabel="Composer Navigation Controller" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="adi-5J-K40" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7245" y="2635"/>
@@ -2445,7 +2445,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dpk-Rd-D2X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4431" y="2348"/>
+            <point key="canvasLocation" x="4584" y="2462"/>
         </scene>
         <!--Contact Tab Bar View Controller-->
         <scene sceneID="BZX-Z0-Uzv">

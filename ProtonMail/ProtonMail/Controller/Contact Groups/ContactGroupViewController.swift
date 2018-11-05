@@ -366,12 +366,16 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                                                        presentingController: popup,
                                                        style: .overFullScreen)
         } else if segue.identifier == kToComposerSegue {
-            let destination = segue.destination.children[0] as! ComposeEmailViewController
-            
+            let destination = segue.destination.children[0] as! ComposeViewController
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
                 sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
+                //TODO:: finish up here
+                let coordinator = ComposeCoordinator(vc: destination,
+                                                     vm: destination.viewModel) //set view model
+                coordinator.viewController = destination
+                destination.set(coordinator: coordinator)
             }
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController

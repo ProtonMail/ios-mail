@@ -105,6 +105,32 @@ protocol ModalCoordinator: DefaultCoordinator {
     var navigationController: UINavigationController { get }
     var destinationNavigationController: UINavigationController? { get }
 }
+extension ModalCoordinator where VC: UIViewController, VC: CoordinatedNew {
+    func start() {
+        guard let viewController = viewController else {
+            return
+        }
+        
+        configuration?(viewController)
+        viewController.set(coordinator: self as! Self.VC.coordinatorType)
+        
+        if let destinationNavigationController = destinationNavigationController {
+            // wrapper navigation controller given, present it
+            navigationController.present(destinationNavigationController, animated: animated, completion: nil)
+        } else {
+            // no wrapper navigation controller given, present actual controller
+            navigationController.present(viewController, animated: animated, completion: nil)
+        }
+    }
+    
+    func stop() {
+        delegate?.willStop(in: self)
+        viewController?.dismiss(animated: true, completion: {
+            self.delegate?.didStop(in: self)
+        })
+    }
+}
+
 
 protocol PushModalCoordinator: DefaultCoordinator {
     var configuration: ((VC) -> ())? { get }

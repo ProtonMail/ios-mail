@@ -24,12 +24,12 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-    
+
 
 import Foundation
 class ShareUnlockCoordinator : PushCoordinator {
     typealias VC = ShareUnlockViewController
-
+    
     internal var navigationController: UINavigationController
     var viewController: ShareUnlockViewController?
     
@@ -60,14 +60,16 @@ class ShareUnlockCoordinator : PushCoordinator {
     }
     
     private func gotoComposer() {
-        //build viewModel            sharedVMService.buildComposer(composer,
-//        subject: self.inputSubject,
-//        content: self.inputContent,
-//        files: self.files)
-//        let compose = ComposeCoordinator(navigation: navigationController, vm: ComposeViewModel)
-
-        
-        
+        guard let vc = self.viewController else {
+            return
+        }
+        //TODO:: this compose should get from the current viewModel.
+        let viewModel = ComposeViewModelImpl(subject: vc.inputSubject,
+                                             body: vc.inputContent,
+                                             files: vc.files,
+                                             action: .newDraftFromShare)
+        let compose = ComposeCoordinator(navigation: navigationController, vm: viewModel)
+        compose.start()
     }
     
     func go(dest: Destination) {
@@ -81,15 +83,15 @@ class ShareUnlockCoordinator : PushCoordinator {
 }
 
 extension ShareUnlockCoordinator : SharePinUnlockViewControllerDelegate {
-    func Cancel() {
+    func cancel() {
         self.viewController?.pinUnlock.isEnabled = true
     }
     
-    func Next() {
+    func next() {
         self.viewController?.signInIfRememberedCredentials()
     }
     
-    func Failed() {
+    func failed() {
         
     }
     

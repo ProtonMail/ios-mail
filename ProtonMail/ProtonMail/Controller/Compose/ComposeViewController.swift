@@ -35,7 +35,6 @@ import AwaitKit
 
 
 class ComposeViewController : UIViewController, ViewModelProtocolNew, CoordinatedNew {
-
     typealias argType = ComposeViewModel
     typealias coordinatorType = ComposeCoordinator
     
@@ -46,7 +45,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
     ///  UI
     @IBOutlet var htmlEditor: HtmlEditor!
     @IBOutlet weak var expirationPicker: UIPickerView!
-    private var headerView : ComposeView!
+    var headerView : ComposeView!
     private var cancelButton: UIBarButtonItem! //cancel button.
     
     ///
@@ -57,17 +56,24 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
     private var attachments: [Any]?
     
     private var actualEncryptionStep              = EncryptionStep.DefinePassword
-    private var encryptionPassword: String        = ""
-    private var encryptionConfirmPassword: String = ""
-    private var encryptionPasswordHint: String    = ""
+    var encryptionPassword: String        = ""
+    var encryptionConfirmPassword: String = ""
+    var encryptionPasswordHint: String    = ""
     private var hasAccessToAddressBook: Bool      = false
-
+    
+    #if APP_EXTENSION
+    private var isSending = false
+    #endif
+    
     private var cachedHeaderHeight : CGFloat      = 186 //offsets default
 
     /// const values
     private let kNumberOfColumnsInTimePicker: Int = 2
     private let kNumberOfDaysInTimePicker: Int    = 30
     private let kNumberOfHoursInTimePicker: Int   = 24
+    
+    var pickedGroup: ContactGroupVO?
+    var pickedCallback: (([DraftEmailData]) -> Void)?
 
     // view model setter
     func set(viewModel: ComposeViewModel) {
@@ -89,15 +95,6 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         self.dismissKeyboard()
         self.dismiss()
     }
-    
-    private func dismiss() {
-        if self.presentingViewController != nil {
-            self.dismiss(animated: true, completion: nil)
-        } else {
-            let _ = self.navigationController?.popViewController(animated: true)
-        }
-    }
-
     private var isShowingConfirm : Bool = false
 
     deinit {
@@ -241,6 +238,14 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         }
     }
 
+    private func dismiss() {
+        if self.presentingViewController != nil {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            let _ = self.navigationController?.popViewController(animated: true)
+        }
+    }
+
     private func dismissKeyboard() {
         self.headerView.subject.becomeFirstResponder()
         self.headerView.subject.resignFirstResponder()
@@ -260,6 +265,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
                 pwd:self.encryptionPassword,
                 pwdHit:self.encryptionPasswordHint
             )
+            self.viewModel.updateDraft()
         }
         
         guard let addr = self.viewModel.getDefaultSendAddress() else {
@@ -376,7 +382,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         }
     }
     
-    internal func sendMessageStepTwo() {
+    func sendMessageStepTwo() {
         if self.viewModel.toSelectedContacts.count <= 0 &&
             self.viewModel.ccSelectedContacts.count <= 0 &&
             self.viewModel.bccSelectedContacts.count <= 0 {
@@ -391,19 +397,60 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
         stopAutoSave()
         self.collectDraftData().done {
             self.viewModel.sendMessage()
+            
+            #if APP_EXTENSION
+            self.isSending = true
+            self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
+                self.isSending = false
+                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            })
+            #else
             // show messagex
             delay(0.5) {
-                //NSError.alertMessageSendingToast()
+                NSError.alertMessageSendingToast()
             }
             self.dismiss()
+            #endif
         }
     }
+    
+    #if APP_EXTENSION
+    private var observation: NSKeyValueObservation?
+    func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
+        let alert = UIAlertController(title: self.isSending ? LocalString._sending_message : LocalString._closing_draft,
+                                      message: LocalString._please_wait_in_foreground,
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        
+        self.observation = sharedMessageQueue.observe(\.queue) { [weak self] _, change in
+            if sharedMessageQueue.queue.isEmpty {
+                let animationBlock: ()->Void = {
+                    if let view = self?.navigationController?.view {
+                        view.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height)
+                    }
+                }
+                alert.dismiss(animated: true, completion: nil)
+                self?.observation?.invalidate()
+                self?.observation = nil
+                UIView.animate(withDuration: 0.25, animations: animationBlock, completion: completion)
+            }
+        }
+    }
+    #endif
     
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
         let dismiss: (() -> Void) = {
             self.isShowingConfirm = false
             self.dismissKeyboard()
+            
+            #if APP_EXTENSION
+            self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
+                let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
+                self.extensionContext?.cancelRequest(withError: cancelError)
+            })
+            #else
             self.dismiss()
+            #endif
         }
         
         if self.viewModel.hasDraft || self.headerView.hasContent || ((attachments?.count ?? 0) > 0) {
@@ -441,6 +488,9 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
             dismiss()
         }
     }
+    
+    
+    
     
     // MARK: - Private methods
     private func setupAutoSave(firstTime : Bool = false) {
@@ -542,30 +592,6 @@ extension ComposeViewController : HtmlEditorDelegate {
     }
 }
 
-
-extension ComposeViewController : ComposePasswordViewControllerDelegate {
-
-    func Cancelled() {
-
-    }
-
-    func Apply(_ password: String, confirmPassword: String, hint: String) {
-        self.encryptionPassword = password
-        self.encryptionConfirmPassword = confirmPassword
-        self.encryptionPasswordHint = hint
-        self.headerView.showEncryptionDone()
-        self.updateEO()
-    }
-
-    func Removed() {
-        self.encryptionPassword = ""
-        self.encryptionConfirmPassword = ""
-        self.encryptionPasswordHint = ""
-
-        self.headerView.showEncryptionRemoved()
-        self.updateEO()
-    }
-}
 
 // MARK : - view extensions
 extension ComposeViewController : ComposeViewDelegate {
@@ -675,6 +701,8 @@ extension ComposeViewController : ComposeViewDelegate {
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void)) {
+        self.pickedGroup = contactGroup
+        self.pickedCallback = callback
         self.coordinator?.go(to: .subSelection)
     }
 
@@ -886,17 +914,6 @@ extension ComposeViewController: UIPickerViewDelegate {
         return super.canPerformAction(action, withSender: sender)
     }
 
-}
-
-extension ComposeViewController: ExpirationWarningVCDelegate{
-    func send() {
-        self.sendMessageStepTwo()
-    }
-
-    func learnMore() {
-        //TODO:: fix later
-       // UIApplication.shared.openURL(.kEOLearnMore)
-    }
 }
 
 

@@ -44,6 +44,8 @@ class ComposeCoordinator : DefaultCoordinator {
         self.navigationController = navigation
         let rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: .composer)!
         let composer = rootViewController.children[0] as! ComposeViewController
+        composer.set(viewModel: vm)
+        composer.set(coordinator: self)
         self.viewController = composer
     }
     
@@ -65,18 +67,40 @@ class ComposeCoordinator : DefaultCoordinator {
             guard let popup = destination as? ComposePasswordViewController else {
                 return false
             }
-            //popup.pwdDelegate = self
+            
+            guard let vc = viewController else {
+                return false
+            }
+            
+            popup.pwdDelegate = self
             //get this data from view model
-            popup.setupPasswords("self.encryptionPassword", confirmPassword: "self.encryptionConfirmPassword", hint: "self.encryptionPasswordHint")
-
+            popup.setupPasswords(vc.encryptionPassword, confirmPassword: vc.encryptionConfirmPassword, hint: vc.encryptionPasswordHint)
+            
         case .expirationWarning:
-            //let popup = segue.destination as! ExpirationWarningViewController
-            //popup.delegate = self
-            //let nonePMEmail = self.encryptionPassword.count <= 0 ? self.headerView.nonePMEmails : [String]()
-            //popup.config(needPwd: nonePMEmail, pgp: self.headerView.pgpEmails)
-            return false
+            guard let popup = destination as? ExpirationWarningViewController else {
+                return false
+            }
+            guard let vc = viewController else {
+                return false
+            }
+            popup.delegate = self
+            let nonePMEmail = vc.encryptionPassword.count <= 0 ? vc.headerView.nonePMEmails : [String]()
+            popup.config(needPwd: nonePMEmail,
+                         pgp: vc.headerView.pgpEmails)
         case .subSelection:
-            return true
+            guard let destination = destination as? ContactGroupSubSelectionViewController else {
+                return false
+            }
+            guard let vc = viewController else {
+                return false
+            }
+            
+            guard let group = vc.pickedGroup else {
+                return false
+            }
+            destination.contactGroupName = group.contactTitle
+            destination.selectedEmails = group.getSelectedEmailData()
+            destination.callback = vc.pickedCallback
         }
         return true
     }
@@ -92,26 +116,60 @@ class ComposeCoordinator : DefaultCoordinator {
     }
 }
 
+
+
+
+extension ComposeCoordinator : ComposePasswordViewControllerDelegate {
+    
+    func Cancelled() {
+        
+    }
+    
+    func Apply(_ password: String, confirmPassword: String, hint: String) {
+        guard let vc = viewController else {
+            return
+        }
+        vc.encryptionPassword = password
+        vc.encryptionConfirmPassword = confirmPassword
+        vc.encryptionPasswordHint = hint
+        vc.headerView.showEncryptionDone()
+        vc.updateEO()
+    }
+    
+    func Removed() {
+        guard let vc = viewController else {
+            return
+        }
+        vc.encryptionPassword = ""
+        vc.encryptionConfirmPassword = ""
+        vc.encryptionPasswordHint = ""
+        
+        vc.headerView.showEncryptionRemoved()
+        vc.updateEO()
+    }
+}
+
+
+extension ComposeCoordinator: ExpirationWarningVCDelegate{
+    func send() {
+        guard let vc = viewController else {
+            return
+        }
+        vc.sendMessageStepTwo()
+    }
+    
+    func learnMore() {
+        #if !APP_EXTENSION
+        UIApplication.shared.openURL(.kEOLearnMore)
+        #endif
+    }
+}
+
 //
 //override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//    if segue.identifier == kPasswordSegue {
-//        let popup = segue.destination as! ComposePasswordViewController
-//        popup.pwdDelegate = self
-//        popup.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
-//        self.setPresentationStyleForSelfController(self, presentingController: popup)
-//    } else if segue.identifier == kExpirationWarningSegue {
-//        let popup = segue.destination as! ExpirationWarningViewController
-//        popup.delegate = self
-//        let nonePMEmail = self.encryptionPassword.count <= 0 ? self.composeView.nonePMEmails : [String]()
-//        popup.config(needPwd: nonePMEmail,
-//                     pgp: self.composeView.pgpEmails)
+//if segue.identifier == kExpirationWarningSegue {
+
 //    } else if segue.identifier == kToContactGroupSubSelection {
-//        let destination = segue.destination as! ContactGroupSubSelectionViewController
-//        let sender = sender as! (ContactGroupVO, (([DraftEmailData]) -> Void))
-//        
-//        destination.contactGroupName = sender.0.contactTitle
-//        destination.selectedEmails = sender.0.getSelectedEmailData()
-//        destination.callback = sender.1
-//        self.setPresentationStyleForSelfController(self, presentingController: destination)
+
 //    }
 //}

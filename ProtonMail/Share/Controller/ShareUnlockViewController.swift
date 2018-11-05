@@ -26,10 +26,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
     @IBOutlet weak var touchID: UIButton!
     
     //
-    fileprivate var inputSubject : String! = ""
-    fileprivate var inputContent : String! = ""
+    var inputSubject : String! = ""
+    var inputContent : String! = ""
     fileprivate var inputAttachments : String! = ""
-    fileprivate var files = [FileData]()
+    var files = [FileData]()
     fileprivate let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000
     fileprivate var currentAttachmentSize : Int = 0
     
@@ -313,21 +313,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
                 NSAttributedString.Key.font: Fonts.h2.regular
             ]
         }
-    }
-}
-
-extension ShareUnlockViewController : SharePinUnlockViewControllerDelegate {
-    func Cancel() {
-        pinUnlock.isEnabled = true
-        //UserTempCachedStatus.backup()
-    }
-    
-    func Next() {
-        self.signInIfRememberedCredentials()
-    }
-    
-    func Failed() {
-        //clean and show error
     }
 }
 

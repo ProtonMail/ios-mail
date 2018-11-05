@@ -13,9 +13,9 @@ import Crashlytics
 import LocalAuthentication
 
 protocol SharePinUnlockViewControllerDelegate : AnyObject {
-    func Cancel()
-    func Next()
-    func Failed()
+    func cancel()
+    func next()
+    func failed()
 }
 
 class SharePinUnlockViewController : UIViewController, CoordinatedNew {
@@ -89,8 +89,9 @@ extension SharePinUnlockViewController : PinCodeViewDelegate {
     }
     
     func Cancel() {
+        //TODO:: use the coordinator delegated
         self.dismiss(animated: true) { 
-            self.delegate?.Cancel()
+            self.delegate?.cancel()
         }
     }
     
@@ -107,7 +108,7 @@ extension SharePinUnlockViewController : PinCodeViewDelegate {
                 if self.viewModel.isPinMatched() {
                     self.pinCodeView.hideAttempError(true)
                     self.viewModel.done()
-                    self.delegate?.Next()
+                    self.delegate?.next()
                     self.dismiss(animated: true, completion: {
                     })
                 } else {

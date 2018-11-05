@@ -711,7 +711,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     func composeViewDidTapEncryptedButton(_ composeView: ComposeView) {
         self.performSegue(withIdentifier: kPasswordSegue, sender: self)
     }
-    
+
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void)) {

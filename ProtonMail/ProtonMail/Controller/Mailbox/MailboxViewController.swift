@@ -291,10 +291,17 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             }
         } else if segue.identifier == kSegueToComposeShow {
             self.cancelButtonTapped()
-            let composeViewController = segue.destination.children[0] as! ComposeEmailViewController
+            //TODO:: Check
+            let composeViewController = segue.destination.children[0] as! ComposeViewController
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
                     sharedVMService.openDraft(vmp: composeViewController, with: selectedDraft ?? message)
+                    
+                    //TODO:: finish up here
+                    let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                         vm: composeViewController.viewModel) //set view model
+                    coordinator.viewController = composeViewController
+                    composeViewController.set(coordinator: coordinator)
                 } else {
                     let alert = LocalString._messages_cant_find_message.alertController()
                     alert.addOKAction()
@@ -327,8 +334,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             
         } else if segue.identifier == kSegueToCompose {
-            let composeViewController = segue.destination.children[0] as! ComposeEmailViewController
+            let composeViewController = segue.destination.children[0] as! ComposeViewController
             sharedVMService.newDraft(vmp: composeViewController)
+            
+            //TODO:: finish up here
+            let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                 vm: composeViewController.viewModel) //set view model
+            coordinator.viewController = composeViewController
+            composeViewController.set(coordinator: coordinator)
         } else if segue.identifier == kSegueToTour {
             let popup = segue.destination as! OnboardingViewController
             self.setPresentationStyleForSelfController(self, presentingController: popup)

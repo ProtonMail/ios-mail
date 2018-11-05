@@ -1,5 +1,5 @@
 //
-//  SharePinUnlockCoordinator.swift
+//  ShareUnlockViewModel.swift
 //  ProtonMail - Created on 11/4/18.
 //
 //
@@ -28,26 +28,9 @@
 
 import Foundation
 
-class SharePinUnlockCoordinator : ModalCoordinator {
-    typealias VC = SharePinUnlockViewController
+class ShareUnlockViewModel {
+
     
-    var destinationNavigationController: UINavigationController? = nil
-    
-    var viewController: VC?
-    let viewModel: PinCodeViewModel
-    lazy var configuration: ((VC) -> ())? = { vc in
-        vc.viewModel = self.viewModel
-    }
-    
-    var navigationController: UINavigationController
-    
-    init(navigation : UINavigationController, vm: PinCodeViewModel, delegate: SharePinUnlockViewControllerDelegate) {
-        //parent navigation
-        self.navigationController = navigation
-        self.viewModel = vm
-        //create self view controller
-        self.viewController = SharePinUnlockViewController(nibName: "SharePinUnlockViewController", bundle: nil)
-        self.viewController?.delegate = delegate
-    }
+    init() { }
 
 }
