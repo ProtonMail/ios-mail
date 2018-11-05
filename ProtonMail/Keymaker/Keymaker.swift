@@ -53,7 +53,7 @@ public class Keymaker: NSObject {
         guard !self.isProtectorActive(BioProtection.self),
             !self.isProtectorActive(PinProtection.self) else
         {
-            // FIXME: this can cause execution cycle if observer will access keymaker.mainKey in the observation method
+            // TODO: this can cause execution cycle if observer will access keymaker.mainKey in the observation method
             NotificationCenter.default.post(.init(name: Keymaker.requestMainKey))
             return nil
         }

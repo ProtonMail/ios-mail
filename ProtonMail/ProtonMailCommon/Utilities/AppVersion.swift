@@ -47,8 +47,21 @@ struct AppVersion: Comparable, Equatable {
 
 extension AppVersion {
     
-    internal func migration() { // FIXME: this logic should depend of pre-migration version and current version
+    internal func migration() { // TODO: this logic should depend of pre-migration version and current version
         // Values need to be protected with mainKey
+        
+        // Push subscriptions
+        if let oldToken = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeviceKey.token),
+            let oldDeviceUID = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeviceKey.UID)
+        {
+            PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: oldToken, deviceID: oldDeviceUID))
+        }
+        
+        if let badToken = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeviceKey.badToken),
+            let badDeviceUID = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeviceKey.badUID)
+        {
+            PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: badToken, deviceID: badDeviceUID))
+        }
         
         // + UserInfo
         if let userInfo = SharedCacheBase.getDefault().customObjectForKey(UserDataService.Key.userInfoPreMainKey) as? UserInfo {
@@ -108,5 +121,9 @@ extension AppVersion {
         userCachedStatus.getShared().removeObject(forKey: UserDataService.Key.isRememberUser)
         userCachedStatus.getShared().removeObject(forKey: UserDataService.Key.userInfoPreMainKey)
         userCachedStatus.getShared().removeObject(forKey: UserDataService.Key.isRememberMailboxPassword)
+        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeviceKey.token)
+        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeviceKey.UID)
+        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeviceKey.badToken)
+        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeviceKey.badUID)
     }
 }

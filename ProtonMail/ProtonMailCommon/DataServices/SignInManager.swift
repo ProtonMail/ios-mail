@@ -94,7 +94,7 @@ class SignInManager: NSObject {
             UserTempCachedStatus.restore()
             UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: { })
         }.catch(on: .main) { (error) in
-                fatalError() // FIXME: is this possible at all?
+            self.clean() // this will happen if fetchUserInfo fails - maybe because of connectivity issues
         }
     }
 }

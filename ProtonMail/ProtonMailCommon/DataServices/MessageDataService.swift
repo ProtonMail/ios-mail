@@ -1023,7 +1023,7 @@ class MessageDataService {
         let pubkey = attachment.message.cachedAddress?.keys.first?.private_key ?? sharedUserDataService.getAddressPrivKey(address_id: address)
         let signed = attachment.sign(byAddrID: address, mailbox_pwd: passphrase, key: pubkey)
         
-        guard let encrypt_data = attachment.encrypt(byAddrID: address, mailbox_pwd: passphrase, key: pubkey) else { // FIXME: check
+        guard let encrypt_data = attachment.encrypt(byAddrID: address, mailbox_pwd: passphrase, key: pubkey) else { 
             completion?(nil, nil, NSError.badParameter("Failed to encrypt attachment"))
             return
         }

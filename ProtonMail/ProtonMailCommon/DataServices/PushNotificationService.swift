@@ -23,6 +23,10 @@ public class PushNotificationService {
     public static var shared = PushNotificationService()
     fileprivate var launchOptions: [AnyHashable: Any]? = nil
     
+    // FIXME: put to keychain to process after reinstall
+    fileprivate var currentSubscription: Subscription = .none
+    fileprivate var outdatedSettings: Set<APIService.PushSubscriptionSettings> = []
+    
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(didUnlock), name: NSNotification.Name.didUnlock, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didSignOut), name: NSNotification.Name.didSignOut, object: nil)
@@ -101,7 +105,7 @@ public class PushNotificationService {
     }
     
     // unregister on BE and validate local values
-    private func unreport(_ settings: APIService.PushSubscriptionSettings) {
+    internal func unreport(_ settings: APIService.PushSubscriptionSettings) {
         sharedAPIService.deviceUnregister(settings) { _, _, error in
             guard error == nil else {
                 self.outdatedSettings.insert(settings)
@@ -241,7 +245,7 @@ public class PushNotificationService {
 }
 
 extension PushNotificationService {
-    fileprivate struct DeviceKey {
+    internal struct DeviceKey {
         static let token = "DeviceTokenKey"
         static let UID = "DeviceUID"
         
@@ -256,53 +260,7 @@ extension PushNotificationService {
         case reported(APIService.PushSubscriptionSettings) // this is on BE
     }
     
-    fileprivate var currentSubscription: Subscription { // FIXME: put to keychain to process after reinstall?
-        get { return .none }
-        set { return }
-    }
-    
-    fileprivate var outdatedSettings: Set<APIService.PushSubscriptionSettings> { // FIXME: put to keychain to process after reinstall?
-        get { return [] }
-        set { return }
-    }
-    
-    // FIXME: remove
-    
     private func getDeviceID() -> String {
-        return UIDevice.current.identifierForVendor!.uuidString // we can't proceed with registration without this ID
-    }
-    
-    private var deviceToken: String {
-        get {
-            return SharedCacheBase.getDefault().string(forKey: DeviceKey.token) ?? ""
-        }
-        set {
-            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.token)
-        }
-    }
-    private var deviceUID: String {
-        get {
-            return SharedCacheBase.getDefault().string(forKey: DeviceKey.UID) ?? ""
-        }
-        set {
-            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.UID)
-        }
-    }
-    
-    private var badToken: String {
-        get {
-            return SharedCacheBase.getDefault().string(forKey: DeviceKey.badToken) ?? ""
-        }
-        set {
-            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.badToken)
-        }
-    }
-    private var badUID: String {
-        get {
-            return SharedCacheBase.getDefault().string(forKey: DeviceKey.badUID) ?? ""
-        }
-        set {
-            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.badUID)
-        }
+        return UIDevice.current.identifierForVendor!.uuidString // we can't proceed with registration without this ID so the BE will not be spoiled with empty device ids
     }
 }
