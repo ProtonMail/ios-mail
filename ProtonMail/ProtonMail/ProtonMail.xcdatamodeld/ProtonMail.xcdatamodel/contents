@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="17G65" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="17G3025" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -204,7 +204,7 @@
         </attribute>
         <attribute name="cachedAddressRaw" optional="YES" transient="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="cachedAuthCredentialRaw" optional="YES" transient="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="cachedPassphrase" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cachedPassphraseRaw" optional="YES" transient="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="cachedPrivateKeysRaw" optional="YES" transient="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="ccList" attributeType="String" syncable="YES">
             <userInfo>

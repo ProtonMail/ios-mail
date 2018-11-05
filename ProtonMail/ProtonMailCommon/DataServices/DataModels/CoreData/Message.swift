@@ -71,10 +71,18 @@ final public class Message: NSManagedObject {
     @NSManaged public var attachments: NSSet
     @NSManaged public var labels: NSSet
     
-    @NSManaged public var cachedPassphrase: String? // transient
+    @NSManaged public var cachedPassphraseRaw: NSData? // transient
     @NSManaged public var cachedPrivateKeysRaw: NSData? // transient
     @NSManaged public var cachedAuthCredentialRaw: NSData? // transient // TODO: can this be kind of transient relatioship?
     @NSManaged public var cachedAddressRaw: NSData? // transient // TODO: addresses can also be in db, but currently they are received from UserInfo singleton via message.defaultAddress getter
+    
+    var cachedPassphrase: String? {
+        get {
+            guard let raw = self.cachedPassphraseRaw as Data? else { return nil }
+            return String(data: raw, encoding: .utf8)
+        }
+        set { self.cachedPassphraseRaw = newValue?.data(using: .utf8) as NSData? }
+    }
     
     var cachedAuthCredential: AuthCredential? {
         get { return AuthCredential.unarchive(data: self.cachedAuthCredentialRaw) }
