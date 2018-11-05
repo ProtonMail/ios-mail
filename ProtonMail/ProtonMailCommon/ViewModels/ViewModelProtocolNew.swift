@@ -14,7 +14,7 @@ import Foundation
 // view model impl control viewmodel navigate
 // View model service tracking the ui flows
 
-protocol ViewModelProtocolBase {
+protocol ViewModelProtocolBase : AnyObject {
     func setModel(vm: Any)
     func inactiveViewModel() -> Void
 }

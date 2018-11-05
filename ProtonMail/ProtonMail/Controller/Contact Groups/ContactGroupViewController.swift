@@ -14,8 +14,9 @@ import PromiseKit
  When the core data that provides data to this controller has data changes,
  the update will be performed immediately and automatically by core data
  */
-class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
-{
+class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew {
+    typealias argType = ContactGroupsViewModel
+    
     private var viewModel: ContactGroupsViewModel!
     private var queryString = ""
     
@@ -47,9 +48,10 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     
-    func setViewModel(_ vm: Any) {
-        viewModel = vm as! ContactGroupsViewModel
+    func set(viewModel: ContactGroupsViewModel) {
+        self.viewModel = viewModel
     }
+    
     
     func inactiveViewModel() {
     }
