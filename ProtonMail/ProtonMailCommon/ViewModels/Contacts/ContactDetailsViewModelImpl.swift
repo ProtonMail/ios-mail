@@ -140,9 +140,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     }
     
     private func setupEmails() -> Promise<Void> {
-        return firstly {
-            () -> Promise<Void> in
-            
+        return firstly { () -> Promise<Void> in
             //  origEmails
             let cards = self.contact.getCardData()
             var type0Card: PMNIVCard? = nil
@@ -173,25 +171,26 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                             order += 1
                         }
                     }
-                }
-                break
-            case .EncryptedOnly:
-                break
-            case .SignedOnly:
-                if let userkeys = sharedUserDataService.userInfo?.userKeys {
-                    for key in userkeys {
-                        do {
-                            var ok = ObjCBool(false)
-                            let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
-                                                                             plainText: c.data,
-                                                                             publicKey: key.publicKey,
-                                                                             verifyTime: 0, ret0_: &ok)
-                            self.verifyType2 = ok.boolValue
-                            if self.verifyType2 {
-                                if !KeyCheckPassphrase(key.private_key, sharedUserDataService.mailboxPassword!) {
-                                    self.verifyType2 = false
+                    break
+                case .EncryptedOnly:
+                    break
+                case .SignedOnly:
+                    if let userkeys = sharedUserDataService.userInfo?.userKeys {
+                        for key in userkeys {
+                            do {
+                                var ok = ObjCBool(false)
+                                let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
+                                                                                 plainText: c.data,
+                                                                                 publicKey: key.publicKey,
+                                                                                 verifyTime: 0, ret0_: &ok)
+                                self.verifyType2 = ok.boolValue
+                                if self.verifyType2 {
+                                    if !KeyCheckPassphrase(key.private_key, sharedUserDataService.mailboxPassword!) {
+                                        self.verifyType2 = false
+                                    }
+                                    break
                                 }
-                                break
+                                
                             } catch {
                                 self.verifyType2 = false
                             }
@@ -338,10 +337,10 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                               photo?.getImageType() ?? "",
                                               photo?.getIsBinary() ?? "")
                                         if let image = photo?.getRawData() {
-                                            let data = Data.init(bytes: image) 
+                                            let data = Data.init(bytes: image)
                                             self.profilePicture = UIImage.init(data: data)
                                         }
-
+                                        
                                         break
                                         
                                         //case "Agent":
