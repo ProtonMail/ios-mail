@@ -14,21 +14,18 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactGroupCustomCell" rowHeight="60" id="bwS-JS-53w" customClass="ContactGroupsViewCell" customModule="ProtonMail" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bwS-JS-53w" id="De5-a9-SVK">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="bwS-JS-53w" id="De5-a9-SVK">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ProtonMail Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vde-5V-24G">
-                        <rect key="frame" x="64" y="12.5" width="194" height="18"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="18" id="TNN-qe-nWW"/>
-                        </constraints>
+                        <rect key="frame" x="62" y="11" width="216" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="64 Members" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGF-UH-owS">
-                        <rect key="frame" x="64" y="35.5" width="194" height="16"/>
+                        <rect key="frame" x="62" y="35" width="216" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="Lks-iQ-6nq"/>
                         </constraints>
@@ -37,46 +34,59 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact_groups_icon" translatesAutoresizingMaskIntoConstraints="NO" id="LvN-FM-L9L">
-                        <rect key="frame" x="16" y="10.5" width="40" height="40"/>
+                        <rect key="frame" x="14" y="11" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="6L2-gF-laJ"/>
-                            <constraint firstAttribute="width" secondItem="LvN-FM-L9L" secondAttribute="height" multiplier="1:1" id="H0L-4W-F4f"/>
                             <constraint firstAttribute="width" constant="40" id="eT6-jS-DUg"/>
+                            <constraint firstAttribute="width" secondItem="LvN-FM-L9L" secondAttribute="height" multiplier="1:1" id="lB7-wa-2XE"/>
                         </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2PA-mM-WQa">
-                        <rect key="frame" x="266" y="20.5" width="18" height="20"/>
+                        <rect key="frame" x="240" y="11" width="80" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="gdM-L9-DkN"/>
-                            <constraint firstAttribute="width" constant="18" id="zVu-bQ-t6I"/>
+                            <constraint firstAttribute="height" constant="40" id="gdM-L9-DkN"/>
+                            <constraint firstAttribute="width" constant="80" id="zVu-bQ-t6I"/>
                         </constraints>
-                        <state key="normal" title="Button" image="feedback_contact"/>
                         <connections>
                             <action selector="sendEmailButtonTapped:" destination="bwS-JS-53w" eventType="touchUpInside" id="nqI-E8-qko"/>
                         </connections>
                     </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="feedback_contact" translatesAutoresizingMaskIntoConstraints="NO" id="N8m-7c-dnS">
+                        <rect key="frame" x="286" y="21" width="18" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="18" id="ISC-ts-EU3"/>
+                            <constraint firstAttribute="height" constant="18" id="XWN-o8-kjM"/>
+                            <constraint firstAttribute="width" secondItem="N8m-7c-dnS" secondAttribute="height" multiplier="1:1" id="mwS-PO-wha"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="FGF-UH-owS" firstAttribute="leading" secondItem="LvN-FM-L9L" secondAttribute="trailing" constant="8" id="2h5-dj-rkC"/>
-                    <constraint firstItem="Vde-5V-24G" firstAttribute="leading" secondItem="LvN-FM-L9L" secondAttribute="trailing" constant="8" id="Gnc-nQ-A8n"/>
-                    <constraint firstItem="LvN-FM-L9L" firstAttribute="leading" secondItem="De5-a9-SVK" secondAttribute="leading" constant="16" id="Hrr-hu-N7w"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="2PA-mM-WQa" secondAttribute="trailing" constant="20" id="Ko5-AO-sSe"/>
-                    <constraint firstItem="LvN-FM-L9L" firstAttribute="top" secondItem="De5-a9-SVK" secondAttribute="top" constant="10" id="Ors-kM-9HK"/>
-                    <constraint firstItem="2PA-mM-WQa" firstAttribute="centerY" secondItem="De5-a9-SVK" secondAttribute="centerY" id="Q7x-oA-u5V"/>
-                    <constraint firstAttribute="bottom" secondItem="LvN-FM-L9L" secondAttribute="bottom" constant="10" id="Ych-XV-PU6"/>
-                    <constraint firstItem="LvN-FM-L9L" firstAttribute="centerY" secondItem="De5-a9-SVK" secondAttribute="centerY" id="hBa-4j-gai"/>
-                    <constraint firstItem="FGF-UH-owS" firstAttribute="centerY" secondItem="De5-a9-SVK" secondAttribute="centerY" constant="13.25" id="kyF-o0-00v"/>
-                    <constraint firstItem="2PA-mM-WQa" firstAttribute="leading" secondItem="Vde-5V-24G" secondAttribute="trailing" constant="8" id="qCr-aO-Uad"/>
-                    <constraint firstItem="2PA-mM-WQa" firstAttribute="leading" secondItem="FGF-UH-owS" secondAttribute="trailing" constant="8" id="sdC-1g-KuL"/>
-                    <constraint firstItem="Vde-5V-24G" firstAttribute="centerY" secondItem="De5-a9-SVK" secondAttribute="centerY" constant="-8.75" id="tQI-kg-HVx"/>
+                    <constraint firstItem="Vde-5V-24G" firstAttribute="leading" secondItem="LvN-FM-L9L" secondAttribute="trailing" constant="8" id="1fk-2A-FQu"/>
+                    <constraint firstItem="LvN-FM-L9L" firstAttribute="leading" secondItem="De5-a9-SVK" secondAttribute="leading" constant="14" id="5q3-e0-uPL"/>
+                    <constraint firstItem="FGF-UH-owS" firstAttribute="trailing" secondItem="Vde-5V-24G" secondAttribute="trailing" id="Add-fa-0CY"/>
+                    <constraint firstAttribute="trailing" secondItem="2PA-mM-WQa" secondAttribute="trailing" id="C2E-db-dDC"/>
+                    <constraint firstItem="FGF-UH-owS" firstAttribute="bottom" secondItem="LvN-FM-L9L" secondAttribute="bottom" id="Dyn-Fe-dRP"/>
+                    <constraint firstItem="Vde-5V-24G" firstAttribute="top" secondItem="LvN-FM-L9L" secondAttribute="top" id="IfN-8j-fzP"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="N8m-7c-dnS" secondAttribute="trailing" id="Lw9-He-JHf"/>
+                    <constraint firstItem="2PA-mM-WQa" firstAttribute="top" secondItem="De5-a9-SVK" secondAttribute="topMargin" id="Tg0-hZ-fFH"/>
+                    <constraint firstItem="FGF-UH-owS" firstAttribute="leading" secondItem="Vde-5V-24G" secondAttribute="leading" id="cPj-Xn-IVh"/>
+                    <constraint firstItem="2PA-mM-WQa" firstAttribute="centerY" secondItem="De5-a9-SVK" secondAttribute="centerY" id="clm-bb-smM"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="LvN-FM-L9L" secondAttribute="bottom" id="ipe-fr-K0L"/>
+                    <constraint firstItem="2PA-mM-WQa" firstAttribute="top" secondItem="N8m-7c-dnS" secondAttribute="bottom" constant="-28" id="jVG-nz-tdG"/>
+                    <constraint firstItem="LvN-FM-L9L" firstAttribute="centerY" secondItem="De5-a9-SVK" secondAttribute="centerY" id="mPr-aX-jx0"/>
+                    <constraint firstItem="LvN-FM-L9L" firstAttribute="top" secondItem="De5-a9-SVK" secondAttribute="topMargin" id="ntI-eo-NBd"/>
+                    <constraint firstItem="N8m-7c-dnS" firstAttribute="centerY" secondItem="De5-a9-SVK" secondAttribute="centerY" id="vbI-yE-HR8"/>
+                    <constraint firstItem="N8m-7c-dnS" firstAttribute="leading" secondItem="Vde-5V-24G" secondAttribute="trailing" constant="8" id="wDy-iA-ITN"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="detailLabel" destination="FGF-UH-owS" id="YrA-UF-VKt"/>
                 <outlet property="groupImage" destination="LvN-FM-L9L" id="7Dr-Jy-HZI"/>
                 <outlet property="nameLabel" destination="Vde-5V-24G" id="dg0-SD-aCe"/>
+                <outlet property="sendButton" destination="2PA-mM-WQa" id="w7Y-VW-L3K"/>
+                <outlet property="sendButtonImage" destination="N8m-7c-dnS" id="WtG-8U-bmB"/>
             </connections>
-            <point key="canvasLocation" x="38" y="126"/>
+            <point key="canvasLocation" x="36.799999999999997" y="125.93703148425789"/>
         </tableViewCell>
     </objects>
     <resources>

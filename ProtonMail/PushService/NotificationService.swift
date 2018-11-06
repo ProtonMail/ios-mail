@@ -7,7 +7,7 @@
 //
 
 import UserNotifications
-import Pm
+import Crypto
 
 var sharedUserDataService : UserDataService!
 
@@ -25,7 +25,7 @@ class NotificationService: UNNotificationServiceExtension {
             #if Enterprise
             bestAttemptContent.body = "You received a new message! ."
             #endif
-            let pgp = PmOpenPGP()
+            let pgp = CryptoPmCrypto()
             _ = pgp?.getTime()
             sharedUserDataService = UserDataService()
             if sharedUserDataService.isUserCredentialStored {

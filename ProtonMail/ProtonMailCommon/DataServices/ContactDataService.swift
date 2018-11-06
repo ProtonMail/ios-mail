@@ -219,7 +219,7 @@ class ContactDataService {
      **/
     func update(contactID : String,
                 cards: [CardData],
-                completion: ContactAddComplete?) {
+                completion: ContactUpdateComplete?) {
         let api = ContactUpdateRequest<ContactDetailResponse>(contactid: contactID, cards:cards)
         api.call { (task, response, hasError) in
             if hasError {
@@ -233,6 +233,23 @@ class ContactDataService {
                 let context = sharedCoreDataService.newManagedObjectContext()
                 context.performAndWait() {
                     do {
+                        // remove all emailID associated with the current contact in the core data
+                        // since the new data will be added to the core data (parse from response)
+                        if let origContact = Contact.contactForContactID(contactID,
+                                                                         inManagedObjectContext: context) {
+                            if let emailObjects = origContact.emails.allObjects as? [Email] {
+                                for emailObject in emailObjects {
+                                    context.delete(emailObject)
+                                }
+                            } else {
+                                // TODO: handle error
+                                PMLog.D("Conversion error")
+                            }
+                        } else {
+                            // TODO: handle error
+                            PMLog.D("Can't get Contact by ID error")
+                        }
+                        
                         if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName,
                                                                          fromJSONDictionary: contactDict,
                                                                          in: context) as? Contact {
@@ -534,11 +551,6 @@ class ContactDataService {
     }
     
     /**
-     // TODO
-     Fetch contact emails
-    */
-    
-    /**
      get contact full details
      
      - Parameter contactID: contact id
@@ -595,6 +607,67 @@ class ContactDataService {
             PMLog.D(" error: \(ex)")
         }
         return []
+    }
+    
+    /**
+     The function that checks if the current dest contactVO (emailID) is an e2e encrypted
+     
+     - Parameters:
+     - model: ContactPickerModelProtocol
+     - progress: the closure that contains the actions required before and during the email status is being checked
+     - complete: the closure that contains the actions required after the email status is checked
+     */
+    func lockerCheck(model: ContactPickerModelProtocol,
+                     message: Message? = nil,
+                     progress: () -> Void,
+                     complete: ((UIImage?, Int) -> Void)?) {
+        guard let c = model as? ContactVO else {
+            complete?(nil, -1)
+            return
+        }
+        
+        guard let email = model.displayEmail else {
+            complete?(nil, -1)
+            return
+        }
+        
+        progress()
+        
+        let context = sharedCoreDataService.newManagedObjectContext()
+        async {
+            let getEmail = UserEmailPubKeys(email: email).run()
+            let getContact = sharedContactDataService.fetch(byEmails: [email], context: context)
+            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
+                if keyRes.recipientType == 1 {
+                    if let contact = contacts.first, contact.firstPgpKey != nil {
+                        c.pgpType = .internal_trusted_key
+                    } else {
+                        c.pgpType = .internal_normal
+                    }
+                } else {
+                    if let contact = contacts.first, contact.firstPgpKey != nil {
+                        if contact.encrypt {
+                            c.pgpType = .pgp_encrypt_trusted_key
+                        } else if contact.sign {
+                            c.pgpType = .pgp_signed
+                            if let pwd = message?.password, pwd != "" {
+                                c.pgpType = .eo
+                            }
+                        }
+                    } else {
+                        if let pwd = message?.password, pwd != "" {
+                            c.pgpType = .eo
+                        } else {
+                            c.pgpType = .none
+                        }
+                    }
+                }
+                complete?(c.lock, c.pgpType.rawValue)
+                }.catch({ (error) in
+                    PMLog.D(error.localizedDescription)
+                    complete?(nil, -1)
+                })
+        }
     }
 }
 

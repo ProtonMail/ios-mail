@@ -17,7 +17,7 @@
 import Foundation
 
 extension UILabel {
-
+    
     convenience init(font: UIFont, text: String, textColor: UIColor) {
         self.init()
         self.font = font
@@ -25,6 +25,25 @@ extension UILabel {
         self.text = text
         self.textColor = textColor
         self.sizeToFit()
+    }
+    
+    func setIcons(imageNames: [String], useTintColor: Bool) {
+        let myString = NSMutableAttributedString.init()
         
+        for imageName in imageNames {
+            let attachment = NSTextAttachment()
+            let image = UIImage(named: imageName)
+            
+            if useTintColor {
+                image?.withRenderingMode(.alwaysTemplate)
+            }
+            
+            attachment.image = image
+            
+            let attachmentString = NSAttributedString(attachment: attachment)
+            myString.append(attachmentString)
+        }
+        
+        self.attributedText = myString
     }
 }

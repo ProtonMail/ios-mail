@@ -30,8 +30,9 @@ class ContactGroupEditViewCell: UITableViewCell {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var shortNameLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var deleteButtonImage: UIImageView!
     
-    var emailID: String?
+    var emailID: String = ""
     var name: String = ""
     var email: String = ""
     var shortName: String = ""
@@ -47,15 +48,15 @@ class ContactGroupEditViewCell: UITableViewCell {
     
     @IBAction func deleteButtonTapped(_ sender: UIButton) {
         if state == .editView,
-            let viewModel = self.viewModel,
-            let emailID = emailID {
+            let viewModel = self.viewModel {
             viewModel.removeEmail(emailID: emailID)
         }
     }
     
-    func config(emailID: String? = nil,
+    func config(emailID: String,
                 name: String,
                 email: String,
+                queryString: String,
                 state: ContactGroupEditViewCellState,
                 viewModel: ContactGroupEditViewModel? = nil) {
         self.emailID = emailID
@@ -66,16 +67,13 @@ class ContactGroupEditViewCell: UITableViewCell {
         
         // check and set the delete button
         if state != .editView {
-            deleteButton.isHidden = true // the delete button is only for edit mode
+            // the delete button is only for edit mode
+            deleteButton.isHidden = true
+            deleteButtonImage.isHidden = true
         } else {
             guard viewModel != nil else {
                 // TODO: handle this
                 fatalError("In editing mode, view model must be present")
-            }
-            
-            guard emailID != nil else {
-                // TODO: handle this
-                fatalError("In editing mode, emailID must be present")
             }
         }
         
@@ -85,8 +83,12 @@ class ContactGroupEditViewCell: UITableViewCell {
             self.selectionStyle = .none
         }
         
-        nameLabel.text = name
-        emailLabel.text = email
+        nameLabel.attributedText = NSMutableAttributedString.highlightedString(text: name,
+                                                                               search: queryString,
+                                                                               font: FontManager.highlightSearchTextForTitle)
+        emailLabel.attributedText = NSMutableAttributedString.highlightedString(text: email,
+                                                                                search: queryString,
+                                                                                font: FontManager.highlightSearchTextForSubtitle)
         
         prepareShortName()
     }

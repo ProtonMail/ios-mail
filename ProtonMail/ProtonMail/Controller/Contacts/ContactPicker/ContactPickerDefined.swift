@@ -14,8 +14,11 @@ class ContactPickerDefined {
     static let kAnimationSpeed : CGFloat                = 0.25
     static let ROW_HEIGHT : Int                         = 64
     static let kCellHeight : Int                        = 44
-    static let ContactsTableViewCellName : String       = "ContactsTableViewCell"
-    static let ContactsTableViewCellIdentifier : String = "ContactCell"
+    
+    static let ContactsTableViewCellName                = "ContactsTableViewCell"
+    static let ContactsTableViewCellIdentifier          = "ContactCell"
+    static let ContactGroupTableViewCellName            = "ContactGroupsViewCell"
+    static let ContactGroupTableViewCellIdentifier      = "ContactGroupCustomCell"
     
     //localized prompt string //_prompt = NSLocalizedStringWithDefaultValue(@"MBContactPickerPrompt", nil, [NSBundle mainBundle], kPrompt, @"Default Prompt text shown in the prompt cell")
     static let kPrompt : String                         = "To"

@@ -16,7 +16,7 @@
 
 import Foundation
 import CoreData
-import Pm
+import Crypto
 
 extension Message {
     
@@ -382,12 +382,12 @@ extension Message {
         return .failed
     }
     
-    func split() throws -> PmEncryptedSplit? {
+    func split() throws -> ModelsEncryptedSplit? {
         return try body.split()
     }
     
-    func getSessionKey(keys: Data) throws -> PmSessionSplit? {
-        return try split()?.keyPacket().getSessionFromPubKeyPackage(self.passphrase, privKeys: keys)
+    func getSessionKey(keys: Data) throws -> ModelsSessionSplit? {
+        return try split()?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: keys)
     }
     
     func bodyToHtml() -> String {

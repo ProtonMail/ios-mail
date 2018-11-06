@@ -17,8 +17,8 @@
 import Foundation
 import AwaitKit
 import PromiseKit
-import Pm
 import Keymaker
+import Crypto
 
 //TODO:: this class need suport mutiple user later
 protocol UserDataServiceDelegate {
@@ -213,7 +213,7 @@ class UserDataService {
         var error : NSError?
         for addr in userAddresses {
             for key in addr.keys {
-                if let privK = PmUnArmor(key.private_key, &error) {
+                if let privK = ArmorUnarmor(key.private_key, &error) {
                     out.append(privK)
                 }
             }
@@ -226,7 +226,7 @@ class UserDataService {
         var error : NSError?
         for addr in userAddresses {
             for key in addr.keys {
-                if let privK = PmUnArmor(key.private_key, &error) {
+                if let privK = ArmorUnarmor(key.private_key, &error) {
                     out.append(privK)
                 }
             }
@@ -629,12 +629,13 @@ class UserDataService {
                 }
 
                 //generat keysalt
-                let new_mpwd_salt : Data = PmRandomTokenWith(16, nil) //PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
+                let new_mpwd_salt : Data = try sharedOpenPGP.randomToken(with: 16)
+                //PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
                 let new_hashed_mpwd = PasswordUtils.getMailboxPassword(new_password, salt: new_mpwd_salt)
                 
 
-                let updated_address_keys = try PmOpenPGP.updateAddrKeysPassword(user_info.userAddresses, old_pass: old_password, new_pass: new_hashed_mpwd)
-                let updated_userlevel_keys = try PmOpenPGP.updateKeysPassword(user_info.userKeys, old_pass: old_password, new_pass: new_hashed_mpwd)
+                let updated_address_keys = try CryptoPmCrypto.updateAddrKeysPassword(user_info.userAddresses, old_pass: old_password, new_pass: new_hashed_mpwd)
+                let updated_userlevel_keys = try CryptoPmCrypto.updateKeysPassword(user_info.userKeys, old_pass: old_password, new_pass: new_hashed_mpwd)
 
                 var new_org_key : String?
                 //create a key list for key updates
@@ -916,8 +917,18 @@ class UserDataService {
             passwordMode = 2
         }
     }
+    
+    /**
+     - Returns: true if the user is a paid user, otherwise return false
+     */
+    func isPaidUser() -> Bool {
+        if let role = sharedUserDataService.userInfo?.role,
+            role > 0 {
+            return true
+        }
+        return false
+    }
 }
-
 
 #if !APP_EXTENSION
 extension AppVersion {

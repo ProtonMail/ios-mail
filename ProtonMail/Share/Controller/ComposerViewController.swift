@@ -576,8 +576,25 @@ extension ComposerViewController : ComposeViewDelegate {
         passwordVC.pwdDelegate                                = self
         
         passwordVC.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
-        self.present(passwordVC, animated: true) {
-            //nothing
+        self.present(passwordVC, animated: true)
+    }
+    
+    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
+                                                   contactGroup: ContactGroupVO,
+                                                   callback: @escaping (([DraftEmailData]) -> Void)) {
+        if let destination = UIStoryboard.init(name: "Menu",
+                                               bundle: nil).instantiateViewController(withIdentifier: "ContactGroupSubSelectionViewController") as? ContactGroupSubSelectionViewController {
+            destination.providesPresentationContextTransitionStyle = true;
+            destination.definesPresentationContext                 = true;
+            destination.modalTransitionStyle                       = .crossDissolve
+            destination.modalPresentationStyle                     = UIModalPresentationStyle.overCurrentContext
+            
+            destination.contactGroupName = contactGroup.contactTitle
+            destination.selectedEmails = contactGroup.getSelectedEmailData()
+            destination.callback = callback
+            self.present(destination,
+                         animated: true,
+                         completion: nil)
         }
     }
     
@@ -637,8 +654,9 @@ extension ComposerViewController : ComposeViewDelegate {
             }
             
             // present error
-            let alert = UIAlertController(title: LocalString._too_many_recipients,
-                                          message: LocalString._max_number_of_recipients_is,
+            let alert = UIAlertController(title: LocalString._too_many_recipients_title,
+                                          message: String.init(format: LocalString._max_number_of_recipients_is_number,
+                                                               AppConstants.MaxNumberOfRecipients),
                                           preferredStyle: .alert)
             alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)

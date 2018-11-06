@@ -8,7 +8,7 @@
 
 import Foundation
 import PromiseKit
-import Pm
+import Crypto
 
 final class UserEmailPubKeys : ApiRequestNew<KeysResponse> {
     let email : String
@@ -93,7 +93,7 @@ final class KeysResponse : ApiResponse {
                 }
                 if let p = k.publicKey {
                     var error : NSError?
-                    if let data = PmUnArmor(p, &error) {
+                    if let data = ArmorUnarmor(p, &error) {
                         if error == nil && data.count > 0 {
                             pubKeys?.append(data)
                         }
@@ -113,7 +113,7 @@ final class KeysResponse : ApiResponse {
                 }
                 if let p = k.publicKey {
                     var error : NSError?
-                    if let data = PmUnArmor(p, &error) {
+                    if let data = ArmorUnarmor(p, &error) {
                         if error == nil && data.count > 0 {
                             pubKeys?.append(data)
                         }

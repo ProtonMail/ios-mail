@@ -49,6 +49,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactCellIdentifier)
         
@@ -97,6 +98,8 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
         super.viewWillAppear(animated)
         self.viewModel.setupTimer(true)
         NotificationCenter.default.addKeyboardObserver(self)
+        
+        self.isOnMainView = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -108,6 +111,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
+    
     //run once
     private func prepareSearchBar() {
         searchController = UISearchController(searchResultsController: nil)
@@ -142,6 +146,8 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        self.isOnMainView = false // hide the tab bar
+        
         if (segue.identifier == kContactDetailsSugue) {
             let contactDetailsViewController = segue.destination as! ContactDetailViewController
             let contact = sender as? Contact
@@ -155,6 +161,13 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
             sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create)
         } else if segue.identifier == kSegueToImportView {
             let popup = segue.destination as! ContactImportViewController
+            self.setPresentationStyleForSelfController(self,
+                                                       presentingController: popup,
+                                                       style: .overFullScreen)
+        } else if segue.identifier == kToUpgradeAlertSegue {
+            let popup = segue.destination as! UpgradeAlertViewController
+            popup.delegate = self
+            sharedVMService.upgradeAlert(contacts: popup)
             self.setPresentationStyleForSelfController(self,
                                                        presentingController: popup,
                                                        style: .overFullScreen)
@@ -172,6 +185,23 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
             self.refreshControl.endRefreshing()
             self.tableView.reloadData()
         }
+    }
+}
+
+extension ContactsViewController: UpgradeAlertVCDelegate {
+    func goPlans() {
+        self.navigationController?.dismiss(animated: false, completion: {
+            NotificationCenter.default.post(name: .switchView,
+                                            object: MenuItem.servicePlan)
+        })
+    }
+    
+    func learnMore() {
+        UIApplication.shared.openURL(URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!)
+    }
+    
+    func cancel() {
+        
     }
 }
 
@@ -308,11 +338,13 @@ extension ContactsViewController: UITableViewDelegate {
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
+        self.tableViewBottomConstraint.constant = 0
         let keyboardInfo = notification.keyboardInfo
         UIView.animate(withDuration: keyboardInfo.duration,
                        delay: 0,
-                       options: keyboardInfo.animationOption, animations: { () -> Void in
-            self.tableViewBottomConstraint.constant = 0
+                       options: keyboardInfo.animationOption,
+                       animations: { () -> Void in
+                        self.view.layoutIfNeeded()
         }, completion: nil)
     }
     
@@ -320,10 +352,13 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
         if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            self.tableViewBottomConstraint.constant = keyboardSize.height
+            
             UIView.animate(withDuration: keyboardInfo.duration,
                            delay: 0,
-                           options: keyboardInfo.animationOption, animations: { () -> Void in
-                self.tableViewBottomConstraint.constant = keyboardSize.height
+                           options: keyboardInfo.animationOption,
+                           animations: { () -> Void in
+                            self.view.layoutIfNeeded()
             }, completion: nil)
         }
     }

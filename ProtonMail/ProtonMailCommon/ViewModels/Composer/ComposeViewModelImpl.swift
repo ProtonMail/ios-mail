@@ -641,9 +641,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
 
 extension ComposeViewModelImpl {
     /**
-     Encode to the JSON request format for the API from the message object
+     Encode the recipient information in Contact and ContactGroupVO objects
+     into JSON request format (for the message object in the API)
      
-     Currently, the fields are: Group, Address, and Name
+     Currently, the fields required in the message object are: Group, Address, and Name
     */
     func toJsonString(_ contacts : [ContactPickerModelProtocol]) -> String {
         var out : [[String : String]] = [[String : String]]();
@@ -656,22 +657,20 @@ extension ComposeViewModelImpl {
                     "Name" : contact.name ?? "",
                     "Address" : contact.email ?? ""
                 ]
+                print(to)
                 out.append(to)
             case .contactGroup:
                 let contactGroup = contact as! ContactGroupVO
-                if let context = sharedCoreDataService.mainManagedObjectContext {
-                    let label = Label.labelForLabelName(contactGroup.contactTitle,
-                                                        inManagedObjectContext: context)
-                    if let label = label {
-                        for emailObj in label.emails.allObjects as! [Email] {
-                            let to: [String : String] = [
-                                "Group": contactGroup.contactTitle,
-                                "Name" : emailObj.name,
-                                "Address" : emailObj.email
-                            ]
-                            out.append(to)
-                        }
-                    }
+                
+                // load selected emails from the contact group
+                for member in contactGroup.getSelectedEmailsWithDetail() {
+                    let to: [String : String] = [
+                        "Group": member.Group,
+                        "Name" : member.Name,
+                        "Address" : member.Address
+                    ]
+                    print(to)
+                    out.append(to)
                 }
             }
         }
@@ -683,31 +682,43 @@ extension ComposeViewModelImpl {
     }
     
     /**
-     Decode the JSON response from the API into the for the message object
-     
-     Currently, the fields are: Group, Address, and Name
-    */
+     Decode the recipient information in Message Object from API
+     into Contact and ContactGroupVO objects
+     */
     func toContacts(_ json : String) -> [ContactPickerModelProtocol] {
         var out : [ContactPickerModelProtocol] = [];
-        var groups: Set<String> = Set<String>()
+        var groups = [String: [DraftEmailData]]() // [groupName: [DraftEmailData]]
+        
         if let recipients : [[String : Any]] = json.parseJson() {
+            // parse the contacts, and prepare the data for contact groups
             for dict in recipients {
                 if let group = dict["Group"] as? String {
+                    let name = dict["Name"] as? String ?? ""
+                    let address = dict["Address"] as? String ?? ""
+                    
                     if group.isEmpty {
-                        let name = dict["Name"] as? String ?? ""
-                        let email = dict["Address"] as? String ?? ""
-                        out.append(ContactVO(id: "", name: name, email: email))
+                        // contact
+                        out.append(ContactVO(id: "", name: name, email: address))
                     } else {
-                        let name = dict["Group"] as? String ?? ""
-                        groups.insert(name)
+                        // contact group
+                        let toInsert = DraftEmailData.init(name: name, email: address)
+                        if var data = groups[group] {
+                            data.append(toInsert)
+                            groups.updateValue(data, forKey: group)
+                        } else {
+                            groups.updateValue([toInsert], forKey: group)
+                        }
                     }
                 } else {
                     PMLog.D("Decoding error")
                 }
             }
             
+            // finish parsing contact groups
             for group in groups {
-                out.append(ContactGroupVO(ID: "", name: group))
+                let contactGroup = ContactGroupVO(ID: "", name: group.key)
+                contactGroup.overwriteSelectedEmails(with: group.value)
+                out.append(contactGroup)
             }
         }
         return out

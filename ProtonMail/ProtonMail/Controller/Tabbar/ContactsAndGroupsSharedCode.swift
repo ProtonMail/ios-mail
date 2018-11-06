@@ -14,9 +14,20 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController
     private var addBarButtonItem: UIBarButtonItem!
     private var importBarButtonItem: UIBarButtonItem!
     
-    let kAddContactSugue: String      = "toAddContact"
-    let kAddContactGroupSugue: String = "toAddContactGroup"
-    let kSegueToImportView: String    = "toImportContacts"
+    let kAddContactSugue = "toAddContact"
+    let kAddContactGroupSugue = "toAddContactGroup"
+    let kSegueToImportView = "toImportContacts"
+    let kToUpgradeAlertSegue = "toUpgradeAlertSegue"
+    
+    var isOnMainView = true {
+        didSet {
+            if isOnMainView {
+                self.tabBarController?.tabBar.isHidden = false
+            } else {
+                self.tabBarController?.tabBar.isHidden = true
+            }
+        }
+    }
     
     func prepareNavigationItemRightDefault() {
         self.addBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add,
@@ -36,18 +47,19 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController
     
     @objc private func addButtonTapped() {
         /// set title
-        let alertController = UIAlertController(title: "Select An Option",
+        let alertController = UIAlertController(title: LocalString._contacts_action_select_an_option,
                                                 message: nil,
                                                 preferredStyle: .actionSheet)
         
         /// set options
-        alertController.addAction(UIAlertAction(title: "Add new contact",
+        alertController.addAction(UIAlertAction(title: LocalString._contacts_add_contact,
                                                 style: .default,
                                                 handler: {
                                                     (action) -> Void in
                                                     self.addContactTapped()
         }))
-        alertController.addAction(UIAlertAction(title: "Add new contact group",
+        
+        alertController.addAction(UIAlertAction(title: LocalString._contact_groups_add,
                                                 style: .default,
                                                 handler: {
                                                     (action) -> Void in
@@ -66,7 +78,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController
     }
     
     @objc private func importButtonTapped() {
-        let alertController = UIAlertController(title: "Select An Option",
+        let alertController = UIAlertController(title: LocalString._contacts_action_select_an_option,
                                                 message: nil,
                                                 preferredStyle: .actionSheet)
         
@@ -102,6 +114,10 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController
     }
     
     @objc private func addContactGroupTapped() {
-        self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
+        if sharedUserDataService.isPaidUser() {
+            self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
+        } else {
+            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+        }
     }
 }

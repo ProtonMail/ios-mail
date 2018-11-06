@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Pm
+import Crypto
 
 @objc(Key)
 final class Key : NSObject {
@@ -25,7 +25,7 @@ final class Key : NSObject {
     }
     
     var publicKey : String {
-        return PmPublicKey(self.private_key, nil)
+        return KeyPublicKey(self.private_key, nil)
     }
 }
 

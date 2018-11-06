@@ -16,8 +16,6 @@
 
 import Foundation
 
-
-
 enum Fonts : CGFloat {
     case h1 = 24.0
     /// size 18

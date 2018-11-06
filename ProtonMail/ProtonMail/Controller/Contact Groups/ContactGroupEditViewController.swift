@@ -18,9 +18,11 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     
     let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
     
+    @IBOutlet weak var contactGroupNameInstructionLabel: UILabel!
     @IBOutlet weak var contactGroupNameLabel: UITextField!
     @IBOutlet weak var contactGroupImage: UIImageView!
     
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     @IBOutlet weak var navigationBarItem: UINavigationItem!
@@ -37,11 +39,32 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     func inactiveViewModel() {}
     
     @IBAction func cancelItem(_ sender: UIBarButtonItem) {
-        // becuase the object might not be deinit right away
-        // we need to restore the data
         dismissKeyboard()
         
-        self.dismiss(animated: true, completion: nil)
+        if viewModel.hasUnsavedChanges() {
+            let alertController = UIAlertController(title: LocalString._do_you_want_to_save_the_unsaved_changes,
+                                                    message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: LocalString._general_save_action,
+                                                    style: .default,
+                                                    handler: { (action) -> Void in
+                                                        //save and dismiss
+                                                        self.save()
+            }))
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                    style: .cancel,
+                                                    handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._discard_changes,
+                                                    style: .destructive,
+                                                    handler: { (action) -> Void in
+                                                        //discard and dismiss
+                                                        self.dismiss(animated: true, completion: nil)
+            }))
+            alertController.popoverPresentationController?.barButtonItem = sender
+            alertController.popoverPresentationController?.sourceRect = self.view.frame
+            present(alertController, animated: true, completion: nil)
+        } else {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     @IBAction func changeColorTapped(_ sender: UIButton) {
@@ -67,16 +90,17 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         tableView.noSeparatorsBelowFooter()
         
         prepareContactGroupImage()
+        
+        contactGroupNameInstructionLabel.text = LocalString._contact_groups_group_name_instruction_label
+        saveButton.title = LocalString._general_save_action
+        cancelButton.title = LocalString._general_cancel_button
     }
     
     func prepareContactGroupImage() {
         contactGroupImage.image = UIImage.init(named: "contact_groups_icon")
-        contactGroupImage.setupImage(contentMode: .center,
-                                     renderingMode: .alwaysTemplate,
-                                     scale: 0.5,
-                                     makeCircleBorder: true,
-                                     tintColor: UIColor.white,
-                                     backgroundColor: viewModel.getColor())
+        contactGroupImage.setupImage(tintColor: UIColor.white,
+                                     backgroundColor: UIColor.init(hexString: viewModel.getColor(),
+                                                                   alpha: 1))
     }
     
     func loadDataIntoView() {
@@ -99,8 +123,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         }
     }
     
-    @IBAction func saveAction(_ sender: UIBarButtonItem) {
-        dismissKeyboard()
+    private func save() {
         firstly {
             () -> Promise<Void> in
             
@@ -115,13 +138,13 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                 ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
             }.catch {
                 error in
-                
-                let alert = UIAlertController(title: "Can not save contact group",
-                                              message: error.localizedDescription,
-                                              preferredStyle: .alert)
-                alert.addOKAction()
-                self.present(alert, animated: true, completion: nil)
-            }
+                error.alert(at: self.view)
+        }
+    }
+    
+    @IBAction func saveAction(_ sender: UIBarButtonItem) {
+        dismissKeyboard()
+        save()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -129,7 +152,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
             let contactGroupSelectColorViewController = segue.destination as! ContactGroupSelectColorViewController
             
             let refreshHandler = {
-                (newColor: String?) -> Void in
+                (newColor: String) -> Void in
                 self.viewModel.setColor(newColor: newColor)
             }
             sharedVMService.contactGroupSelectColorViewModel(
@@ -173,7 +196,7 @@ extension ContactGroupEditViewController: UITableViewDataSource
         switch viewModel.getCellType(at: indexPath) {
         case .manageContact:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupManageCell", for: indexPath)
-            cell.textLabel?.text = "Manage Addresses"
+            cell.textLabel?.text = LocalString._contact_groups_manage_addresses
             return cell
         case .email:
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupEditCellIdentifier,
@@ -183,11 +206,13 @@ extension ContactGroupEditViewController: UITableViewDataSource
             cell.config(emailID: emailID,
                         name: name,
                         email: email,
+                        queryString: "",
                         state: .editView,
                         viewModel: viewModel)
             return cell
         case .deleteGroup:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupDeleteCell", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupDeleteCell", for: indexPath) as UITableViewCell
+            cell.textLabel?.text = LocalString._contact_groups_delete
             return cell
         case .error:
             fatalError("This is a bug")
@@ -219,27 +244,36 @@ extension ContactGroupEditViewController: UITableViewDelegate
         case .email:
             print("email actions")
         case .deleteGroup:
-            firstly {
-                () -> Promise<Void> in
+            let deleteActionHandler = {
+                (action: UIAlertAction) -> Void in
                 
-                ActivityIndicatorHelper.showActivityIndicator(at: self.view)
-                UIApplication.shared.isNetworkActivityIndicatorVisible = true
-                return viewModel.deleteContactGroup()
-                }.done {
-                    self.dismiss(animated: true, completion: nil)
-                }.ensure {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-                }.catch { (error) in
-                    let alert = UIAlertController(title: "Error deleting the contact group",
-                                                  message: error.localizedDescription,
-                                                  preferredStyle: .alert)
-                    alert.addOKAction()
-                    
-                    UIApplication.shared.keyWindow?.rootViewController?.present(alert,
-                                                                                animated: true,
-                                                                                completion: nil)
+                firstly {
+                    () -> Promise<Void> in
+                    ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                    return self.viewModel.deleteContactGroup()
+                    }.done {
+                        self.dismiss(animated: true, completion: nil)
+                    }.ensure {
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                    }.catch {
+                        (error) in
+                        error.alert(at: self.view)
+                }
             }
+            
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                    style: .cancel,
+                                                    handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._contact_groups_delete,
+                                                    style: .destructive,
+                                                    handler: deleteActionHandler))
+            
+            alertController.popoverPresentationController?.sourceView = self.view
+            alertController.popoverPresentationController?.sourceRect = self.view.frame
+            self.present(alertController, animated: true, completion: nil)
         case .error:
             fatalError("This is a bug")
         }

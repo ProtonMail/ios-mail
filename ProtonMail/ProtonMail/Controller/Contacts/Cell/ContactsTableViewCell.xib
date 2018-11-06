@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="encrypted_main" translatesAutoresizingMaskIntoConstraints="NO" id="Ueb-Ca-8K0">
-                        <rect key="frame" x="294" y="10" width="10" height="14"/>
+                        <rect key="frame" x="294" y="11" width="10" height="14"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="10" id="LQQ-6k-KSB"/>
                             <constraint firstAttribute="height" constant="14" id="Rh5-pG-PgS"/>
@@ -37,10 +35,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Diego Santiviago" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-Aj-VfK">
-                        <rect key="frame" x="62" y="11" width="232" height="17"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="17" id="ZAw-4s-C6Z"/>
-                        </constraints>
+                        <rect key="frame" x="62" y="11" width="232" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -70,13 +65,12 @@
                     <constraint firstItem="j5t-Vq-0R8" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="Ex7-mr-qXU"/>
                     <constraint firstAttribute="bottomMargin" secondItem="j5t-Vq-0R8" secondAttribute="bottom" id="Mj0-h6-qvE"/>
                     <constraint firstItem="GKP-Aj-VfK" firstAttribute="trailing" secondItem="Ueb-Ca-8K0" secondAttribute="leading" id="Njc-SL-6MQ"/>
-                    <constraint firstItem="kYh-fi-hLy" firstAttribute="top" secondItem="GKP-Aj-VfK" secondAttribute="bottom" constant="5" id="Ufp-FO-nqD"/>
+                    <constraint firstItem="Ueb-Ca-8K0" firstAttribute="top" secondItem="GKP-Aj-VfK" secondAttribute="top" id="QhD-WF-dfa"/>
+                    <constraint firstItem="S8m-bp-7Jy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="14" id="VVY-HH-AzJ"/>
                     <constraint firstAttribute="trailing" secondItem="kYh-fi-hLy" secondAttribute="trailing" constant="4" id="XPN-zX-PYd"/>
-                    <constraint firstItem="Ueb-Ca-8K0" firstAttribute="bottom" secondItem="GKP-Aj-VfK" secondAttribute="bottom" constant="-4" id="aEj-Zc-rlo"/>
                     <constraint firstItem="j5t-Vq-0R8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="bHR-te-r4K"/>
                     <constraint firstItem="S8m-bp-7Jy" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="cWO-lG-Ia3"/>
                     <constraint firstItem="GKP-Aj-VfK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="chi-gW-BO7"/>
-                    <constraint firstItem="Ueb-Ca-8K0" firstAttribute="leading" secondItem="GKP-Aj-VfK" secondAttribute="trailing" id="dof-1v-7ly"/>
                     <constraint firstItem="kYh-fi-hLy" firstAttribute="leading" secondItem="GKP-Aj-VfK" secondAttribute="leading" id="gUQ-1X-Uo7"/>
                     <constraint firstItem="GKP-Aj-VfK" firstAttribute="leading" secondItem="j5t-Vq-0R8" secondAttribute="trailing" constant="8" id="moG-eM-eJl"/>
                     <constraint firstItem="kYh-fi-hLy" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="t6K-Ob-hio"/>
@@ -93,7 +87,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="encrypted_main" width="15" height="20"/>
+        <image name="encrypted_main" width="15" height="20.5"/>
         <image name="menu_allmail" width="16" height="16"/>
     </resources>
 </document>

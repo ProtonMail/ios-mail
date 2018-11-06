@@ -109,13 +109,14 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         let email = ContactEditEmail(order: emails.count,
                                      type: type,
                                      email:"",
-                                     contactGroupNames: [],
                                      isNew: true,
                                      keys: nil,
+                                     contactID: self.contact?.contactID,
                                      encrypt: nil,
                                      sign: nil ,
                                      scheme: nil,
-                                     mimeType: nil)
+                                     mimeType: nil,
+                                     delegate: nil)
         emails.append(email)
         return email
     }

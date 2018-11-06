@@ -54,6 +54,19 @@ extension NSManagedObjectContext {
         return nil
     }
     
+    func managedObjectsWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> [NSManagedObject]? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)
+        
+        do {
+            let results = try fetch(fetchRequest)
+            return results as? [NSManagedObject]
+        } catch let ex as NSError {
+            PMLog.D("error: \(ex)")
+        }
+        return nil
+    }
+    
     func managedObjectsWithEntityName(_ entityName: String, forManagedObjectIDs objectIDs: [NSManagedObjectID], error: NSErrorPointer) -> [NSManagedObject]? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         request.predicate = NSPredicate(format: "SELF in %@", objectIDs)
