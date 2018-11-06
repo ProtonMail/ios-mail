@@ -161,6 +161,19 @@ extension PMNOpenPgp {
         }
         return out_new_key
     }
+    
+    func generateRandomKeypair() throws -> (passphrase: String, publicKey: String, privateKey: String) {
+        let randomString: ()->String = {
+            return PMNOpenPgp.randomBits(2048).base64EncodedString()
+        }
+        
+        let passphrase = randomString()
+        guard let keypair = try self.generateKey(passphrase, userName: randomString(), domain: randomString(), bits: Int32(2048)) else
+        {
+            fatalError() // FIXME
+        }
+        return (passphrase, keypair.publicKey, keypair.privateKey)
+    }
 }
 //
 

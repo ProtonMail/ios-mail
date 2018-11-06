@@ -21,11 +21,37 @@ import Keymaker
 
 public class PushNotificationService {
     public static var shared = PushNotificationService()
+    private static let keychainKey = String(describing: PushNotificationService.self)
+    fileprivate var newerDeviceToken: String?
     fileprivate var launchOptions: [AnyHashable: Any]? = nil
     
-    // FIXME: put to keychain to process after reinstall
-    fileprivate var currentSubscription: Subscription = .none
+    // these two should be in Keychain in order to unregister after reinstall
     fileprivate var outdatedSettings: Set<APIService.PushSubscriptionSettings> = []
+    fileprivate var currentSubscription: Subscription {
+        get {
+            guard let raw = sharedKeychain.keychain.data(forKey: PushNotificationService.keychainKey),
+                let subscription = try? PropertyListDecoder().decode(PushNotificationService.Subscription.self, from: raw) else
+            {
+                return .none
+            }
+            return subscription
+        }
+        set {
+            // save subscription to keychain
+            guard let raw = try? PropertyListEncoder().encode(newValue) else {
+                sharedKeychain.keychain.removeItem(forKey: PushNotificationService.keychainKey)
+                return
+            }
+            sharedKeychain.keychain.setData(raw, forKey: PushNotificationService.keychainKey)
+            
+            // save encryption kit to userdefaults
+            if case Subscription.reported(let settings) = newValue {
+                PushNotificationDecryptor.encryptionKit = settings.encryptionKit
+            } else {
+                PushNotificationDecryptor.encryptionKit = nil
+            }
+        }
+    }
     
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(didUnlock), name: NSNotification.Name.didUnlock, object: nil)
@@ -52,8 +78,21 @@ public class PushNotificationService {
     }
     
     public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
-        let newSettings = APIService.PushSubscriptionSettings(token: deviceToken, deviceID: self.getDeviceID())
-
+        self.newerDeviceToken = deviceToken
+        if SignInManager.shared.isSignedIn(), let _ = keymaker.mainKey {
+            self.didUnlock()
+        }
+    }
+    
+    @objc private func didUnlock() {
+        guard let sessionID = AuthCredential.fetchFromKeychain()?.userID,
+            let deviceToken = self.newerDeviceToken else
+        {
+            return
+        }
+        
+        let newSettings = APIService.PushSubscriptionSettings(token: deviceToken, UID: sessionID) // here new keypair will be created
+        
         switch self.currentSubscription {
         case .none, .notReported:
             self.currentSubscription = .notReported(newSettings)
@@ -65,20 +104,14 @@ public class PushNotificationService {
         case .reported(let oldSettings) where oldSettings != newSettings:
             self.outdatedSettings.insert(oldSettings)
             self.currentSubscription = .notReported(newSettings)
-       
+            
         default: break
         }
         
-        // is it good?
-        if SignInManager.shared.isSignedIn(), let _ = keymaker.mainKey {
-            self.didUnlock()
-        }
-    }
-    
-    @objc private func didUnlock() {
         guard case Subscription.notReported(let currentSettings) = self.currentSubscription else {
             return
         }
+        
         self.report(currentSettings)
     }
     
@@ -86,6 +119,7 @@ public class PushNotificationService {
         switch self.currentSubscription {
         case .reported(let currentSettings), .pending(let currentSettings):
             self.unreport(currentSettings)
+            
         case .none, .notReported:
             break
         }
@@ -259,8 +293,37 @@ extension PushNotificationService {
         case pending(APIService.PushSubscriptionSettings) // not on BE yet, but sent there
         case reported(APIService.PushSubscriptionSettings) // this is on BE
     }
+}
+
+extension PushNotificationService.Subscription: Codable {
+    internal enum CodingKeys: CodingKey {
+        case none
+        case notReported
+        case pending
+        case reported
+    }
     
-    private func getDeviceID() -> String {
-        return UIDevice.current.identifierForVendor!.uuidString // we can't proceed with registration without this ID so the BE will not be spoiled with empty device ids
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        if let settings =  try? container.decode(APIService.PushSubscriptionSettings.self, forKey: .reported) {
+            self = .reported(settings)
+            return
+        }
+        if let settings =  try? container.decode(APIService.PushSubscriptionSettings.self, forKey: .pending) {
+            self = .pending(settings)
+            return
+        }
+        
+        self = .none
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        switch self {
+        case .none, .notReported: break // no sence in saving these values - they are pretty useless until sent to BE
+        case .pending(let settings): try container.encode(settings, forKey: .pending)
+        case .reported(let settings): try container.encode(settings, forKey: .reported)
+        }
     }
 }

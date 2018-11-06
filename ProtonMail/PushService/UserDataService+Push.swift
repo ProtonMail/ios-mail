@@ -16,6 +16,18 @@
 
 import Foundation
 
+
+
+
+
+
+// LETS GET RID OF THIS!
+
+
+
+
+
+
 /// Stores information related to the user
 class UserDataService {
 

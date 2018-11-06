@@ -455,7 +455,8 @@ extension Message {
         }
         
         do {
-            self.body = try body.encrypt(withAddr: address_id, mailbox_pwd: mailbox_pwd) ?? ""
+            let key = sharedUserDataService.getAddressPrivKey(address_id: address_id)
+            self.body = try body.encrypt(withAddr: address_id, mailbox_pwd: mailbox_pwd, key: key) ?? ""
         } catch let error {//TODO:: error handling
             PMLog.D(any: error.localizedDescription)
             self.body = ""

@@ -9,8 +9,6 @@
 import UserNotifications
 import Crypto
 
-var sharedUserDataService : UserDataService!
-
 @available(iOSApplicationExtension 10.0, *)
 class NotificationService: UNNotificationServiceExtension {
     
@@ -25,63 +23,54 @@ class NotificationService: UNNotificationServiceExtension {
             #if Enterprise
             bestAttemptContent.body = "You received a new message! ."
             #endif
-            let pgp = CryptoPmCrypto()
-            _ = pgp?.getTime()
-            sharedUserDataService = UserDataService()
-            if sharedUserDataService.isUserCredentialStored {
-                if let encrypted = bestAttemptContent.userInfo["encryptedMessage"] as? String {
-                    bestAttemptContent.body = encrypted
-                    if let userkey = sharedUserDataService.userInfo?.firstUserKey(), let password = sharedUserDataService.mailboxPassword {
-                        do {
-                            let plaintext = try sharedOpenPGP.decryptMessage(encrypted,
-                                                                             privateKey: userkey.private_key,
-                                                                             passphrase: password)
-                            if let push = PushData.parse(with: plaintext) {
-                                //bestAttemptContent.title = push.title // "\(bestAttemptContent.title) [modified]"
-                                if let _ = push.sound {
-                                    //right now it is a integer should be sound name put default for now
-                                }
-                                
-                                bestAttemptContent.sound = UNNotificationSound.default
-                                //if let sub = push.subTitle {
-                                //  bestAttemptContent.subtitle = sub
-                                //}
-                                
-                                if let body = push.body {
-                                    bestAttemptContent.body = body
-                                } else {
-                                    #if Enterprise
-                                    bestAttemptContent.body = "You received a new message!..."
-                                    #endif
-                                }
-                                
-                                if let badge = push.badge, badge.intValue > 0 {
-                                    bestAttemptContent.badge = badge
-                                }
+
+            if let encrypted = bestAttemptContent.userInfo["encryptedMessage"] as? String {
+                bestAttemptContent.body = encrypted
+                if let encryptionKit = PushNotificationDecryptor.encryptionKit {
+                    do {
+                        let plaintext = try sharedOpenPGP.decryptMessage(encrypted,
+                                                                         privateKey: encryptionKit.privateKey,
+                                                                         passphrase: encryptionKit.passphrase)
+                        if let push = PushData.parse(with: plaintext) {
+                            //bestAttemptContent.title = push.title // "\(bestAttemptContent.title) [modified]"
+                            if let _ = push.sound {
+                                //right now it is a integer should be sound name put default for now
+                            }
+                            
+                            bestAttemptContent.sound = UNNotificationSound.default
+//                            if let sub = push.subTitle {
+//                              bestAttemptContent.subtitle = sub
+//                            }
+                            if let body = push.body {
+                                bestAttemptContent.body = body
                             } else {
                                 #if Enterprise
-                                bestAttemptContent.body = "You received a new message!."
+                                bestAttemptContent.body = "You received a new message!..."
                                 #endif
                             }
-                        } catch let error {
-                            NSLog("APNS: catched error -- " + error.localizedDescription)
+                            
+                            if let badge = push.badge, badge.intValue > 0 {
+                                bestAttemptContent.badge = badge
+                            }
+                        } else {
                             #if Enterprise
-                            bestAttemptContent.body = "You received a new message!.."
+                            bestAttemptContent.body = "You received a new message!."
                             #endif
                         }
-                    } else {
+                    } catch let error {
+                        NSLog("APNS: catched error -- " + error.localizedDescription)
                         #if Enterprise
-                        bestAttemptContent.body = "You received a new message! ..."
+                        bestAttemptContent.body = "You received a new message!.."
                         #endif
                     }
                 } else {
                     #if Enterprise
-                    bestAttemptContent.body = "You received a new message!!"
+                    bestAttemptContent.body = "You received a new message! ..."
                     #endif
                 }
             } else {
                 #if Enterprise
-                bestAttemptContent.body = "You received a new message! .."
+                bestAttemptContent.body = "You received a new message!!"
                 #endif
             }
             contentHandler(bestAttemptContent)

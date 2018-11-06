@@ -15,12 +15,36 @@
 //
 
 import Foundation
+import Crypto
 
 extension APIService {
+    typealias EncryptionKit = PushNotificationDecryptor.EncryptionKit
     
-    struct PushSubscriptionSettings: Hashable {
-        var token: String
-        var deviceID: String
+    struct PushSubscriptionSettings: Hashable, Codable {
+        var token, UID: String
+        var encryptionKit: EncryptionKit
+        
+        init(token: String, UID: String) {
+            self.token = token
+            self.UID = UID
+            self.encryptionKit = try! PushSubscriptionSettings.generateEncryptionKit()
+        }
+        
+        static func == (lhs: PushSubscriptionSettings, rhs: PushSubscriptionSettings) -> Bool {
+            return lhs.token == rhs.token && lhs.UID == rhs.UID
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(self.token)
+            hasher.combine(self.UID)
+        }
+        
+        private static func generateEncryptionKit() throws -> EncryptionKit {
+            let crypto = PMNOpenPgp.createInstance()!
+            let keypair = try crypto.generateRandomKeypair()
+            let encryptionKit = EncryptionKit(passphrase: keypair.passphrase, privateKey: keypair.privateKey, publicKey: keypair.publicKey)
+            return encryptionKit
+        }
     }
     
     fileprivate struct DevicePath {
@@ -29,34 +53,21 @@ extension APIService {
     
     func device(registerWith settings: PushSubscriptionSettings, completion: CompletionBlock?) {
         #if Enterprise
-            #if DEBUG
-//                let env = 20
-                let env = 7
-            #else
-//                let env = 21
-                let env = 7
-            #endif
+            let env = 7
         #else
-            #if DEBUG
-//                let env = 1
-                let env = 6
-            #else
-//                let env = 2
-                let env = 6
-            #endif
-            
+            let env = 6
         #endif
         
         let ver = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         
         let parameters = [
-            "DeviceUID" : settings.deviceID,
             "DeviceToken" : settings.token,
             "DeviceName" : UIDevice.current.name,
             "DeviceModel" : UIDevice.current.model,
             "DeviceVersion" : UIDevice.current.systemVersion,
             "AppVersion" : "iOS_\(ver)",
-            "Environment" : env
+            "Environment" : env,
+            "PublicKey" : settings.encryptionKit.publicKey
         ] as [String : Any]
         
         request(method: .post,
@@ -72,14 +83,15 @@ extension APIService {
         }
         
         let parameters = [
-            "DeviceUID": settings.deviceID,
-            "DeviceToken": settings.token
+            "DeviceToken": settings.token,
+            "UID": settings.UID
         ]
 
         request(method: .post,
                 path: AppConstants.API_PATH + DevicePath.basePath + "/delete",
                 parameters: parameters,
                 headers: ["x-pm-apiversion": 3],
+                authenticated: false,
                 completion: completion)
     }
 }

@@ -54,13 +54,15 @@ extension AppVersion {
         if let oldToken = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeviceKey.token),
             let oldDeviceUID = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeviceKey.UID)
         {
-            PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: oldToken, deviceID: oldDeviceUID))
+            // FIXME: this should somehow work with new APIs
+//            PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: oldToken, deviceID: oldDeviceUID))
         }
         
         if let badToken = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeviceKey.badToken),
             let badDeviceUID = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeviceKey.badUID)
         {
-            PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: badToken, deviceID: badDeviceUID))
+            // FIXME: this should somehow work with new APIs
+//            PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: badToken, deviceID: badDeviceUID))
         }
         
         // + UserInfo
