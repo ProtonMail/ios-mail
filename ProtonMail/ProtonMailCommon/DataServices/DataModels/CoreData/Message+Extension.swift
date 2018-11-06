@@ -607,7 +607,8 @@ extension Message {
                         if let k = key,
                             let sessionPack = try att.getSession(),
                             let session = sessionPack.session(),
-                            let newkp = try session.getKeyPackage(strKey: k.publicKey, algo: "aes256") {
+                            let algo = sessionPack.algo(),
+                            let newkp = try session.getKeyPackage(strKey: k.publicKey, algo: algo) {
                                 let encodedkp = newkp.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                                 attachment.keyPacket = encodedkp
                                 attachment.keyChanged = true
