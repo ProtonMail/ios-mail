@@ -136,6 +136,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             // no email in contact, disable sending button
             sendToPrimaryEmailButton.isUserInteractionEnabled = false
             emailContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
+        } else {
+            sendToPrimaryEmailButton.isUserInteractionEnabled = true
         }
         
         // call contact
@@ -148,6 +150,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             // no tel in contact, disable
             callContactButton.isUserInteractionEnabled = false
             callContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
+        } else {
+            callContactButton.isUserInteractionEnabled = true
         }
         
         // share contact
@@ -189,6 +193,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if loaded && self.viewModel.rebuild() {
+            self.configHeader()
             self.tableView.reloadData()
         }
     }
@@ -238,6 +243,7 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     func updated() {
+        self.configHeader()
         self.tableView.reloadData()
     }
 }
