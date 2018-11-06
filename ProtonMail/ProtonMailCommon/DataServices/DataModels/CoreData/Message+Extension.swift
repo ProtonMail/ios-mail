@@ -69,21 +69,21 @@ extension Message {
         var lists: [String] = []
         
         if !recipientList.isEmpty {
-            let to = MessageHelper.contactsToAddressesArray(recipientList)
+            let to = Message.contactsToAddressesArray(recipientList)
             if !to.isEmpty  {
                 lists.append(contentsOf: to)
             }
         }
         
         if !ccList.isEmpty {
-            let cc = MessageHelper.contactsToAddressesArray(ccList)
+            let cc = Message.contactsToAddressesArray(ccList)
             if !cc.isEmpty  {
                 lists.append(contentsOf: cc)
             }
         }
         
         if !bccList.isEmpty {
-            let bcc = MessageHelper.contactsToAddressesArray(bccList)
+            let bcc = Message.contactsToAddressesArray(bccList)
             if !bcc.isEmpty  {
                 lists.append(contentsOf: bcc)
             }
@@ -579,6 +579,13 @@ extension Message {
             PMLog.D("error: \(error)")
         }
         
+        var key: Key?
+        if let address_id = message.addressID,
+            let userinfo = sharedUserDataService.userInfo,
+            let addr = userinfo.userAddresses.indexOfAddress(address_id) {
+            key = addr.keys.first
+        }
+        
         for (index, attachment) in message.attachments.enumerated() {
             PMLog.D("index: \(index)")
             if let att = attachment as? Attachment {
@@ -595,6 +602,20 @@ extension Message {
                     attachment.keyPacket = att.keyPacket
                     attachment.isTemp = true
                     attachment.keyChanged = true
+                    
+                    do {
+                        if let k = key,
+                            let sessionPack = try att.getSession(),
+                            let session = sessionPack.session(),
+                            let newkp = try session.getKeyPackage(strKey: k.publicKey, algo: "aes256") {
+                                let encodedkp = newkp.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+                                attachment.keyPacket = encodedkp
+                                attachment.keyChanged = true
+                        }
+                    } catch {
+                        
+                    }
+                    
                     if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
                         PMLog.D("error: \(error)")
                     }
@@ -602,7 +623,6 @@ extension Message {
                 
             }
         }
-        
         return newMessage
     }
     

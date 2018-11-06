@@ -411,18 +411,18 @@ final class ComposeViewModelImpl : ComposeViewModel {
         self.setSubject(title)
         
         if message == nil || message?.managedObjectContext == nil {
-            self.message = MessageHelper.messageWithLocation(MessageLocation.draft,
-                                                             recipientList: toJsonString(self.toSelectedContacts),
-                                                             bccList: toJsonString(self.bccSelectedContacts),
-                                                             ccList: toJsonString(self.ccSelectedContacts),
-                                                             title: self.getSubject(),
-                                                             encryptionPassword: "",
-                                                             passwordHint: "",
-                                                             expirationTimeInterval: expir,
-                                                             body: body,
-                                                             attachments: nil,
-                                                             mailbox_pwd: sharedUserDataService.mailboxPassword!, //better to check nil later
-                                                             inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
+            self.message = Message.messageWithLocation(MessageLocation.draft,
+                                                       recipientList: toJsonString(self.toSelectedContacts),
+                                                       bccList: toJsonString(self.bccSelectedContacts),
+                                                       ccList: toJsonString(self.ccSelectedContacts),
+                                                       title: self.getSubject(),
+                                                       encryptionPassword: "",
+                                                       passwordHint: "",
+                                                       expirationTimeInterval: expir,
+                                                       body: body,
+                                                       attachments: nil,
+                                                       mailbox_pwd: sharedUserDataService.mailboxPassword!, //better to check nil later
+                                                       inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
             self.message?.password = pwd
             self.message?.unRead = false
             self.message?.passwordHint = pwdHit
@@ -439,7 +439,11 @@ final class ComposeViewModelImpl : ComposeViewModel {
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
             self.message?.setLabelLocation(.draft)
-            MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil, mailbox_pwd: sharedUserDataService.mailboxPassword!)
+            Message.updateMessage(self.message!,
+                                  expirationTimeInterval: expir,
+                                  body: body,
+                                  attachments: nil,
+                                  mailbox_pwd: sharedUserDataService.mailboxPassword!)
             
             if let context = message?.managedObjectContext {
                 context.performAndWait {
@@ -582,6 +586,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     forwardHeader += "\(c) \(message!.ccList.formatJsonContact(true))<br>"
                 }
                 forwardHeader += ""
+                forwardHeader = forwardHeader.stringByStrippingStyleHTML()
+                forwardHeader = forwardHeader.stringByStrippingBodyStyle()
+                forwardHeader = forwardHeader.stringByPurifyHTML()
+                forwardHeader = forwardHeader.escaped
                 var body = ""
                 
                 do {
