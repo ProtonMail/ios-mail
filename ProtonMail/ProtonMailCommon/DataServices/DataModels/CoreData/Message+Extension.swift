@@ -412,6 +412,9 @@ extension Message {
     }
     
     func decryptBodyIfNeeded() throws -> String? {
+        
+        PMLog.D("Flags: \(self.flag.description)")
+        
         if !checkIsEncrypted() {
             if isPlainText() {
                 return body.ln2br() 

@@ -80,6 +80,8 @@ final public class Message: NSManagedObject {
     //
     @NSManaged public var addressID : String?
     @NSManaged public var mimeType : String?
+    /// new value contains a lot of vars
+    @NSManaged public var flags: NSNumber
     
     /// loacal only
     @NSManaged public var messageType : NSNumber  // 0 message 1 rate
