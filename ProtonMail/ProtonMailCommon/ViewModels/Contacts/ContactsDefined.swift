@@ -62,21 +62,21 @@ final class ContactEditProfile {
 
 
 final class ContactEditEmail: ContactEditTypeInterface {
-    var origOrder : Int = 0
-    var origType : ContactFieldType = .empty
-    var origEmail : String = ""
-    var origContactGroupIDs = Set<String>() // the selection state when init is called
-    var isNew : Bool = false
+    private var origOrder = 0
+    private var origType: ContactFieldType = .empty
+    private var origEmail = ""
+    private var origContactGroupIDs = Set<String>() // the selection state when init is called
+    private var isNew = false
 
-    var newContactGroupIDs = Set<String>() // the current selection state
-    var newOrder : Int = 0
-    var newType : ContactFieldType = .empty
-    var newEmail : String = ""
+    private var newContactGroupIDs = Set<String>() // the current selection state
+    private var newOrder = 0
+    var newType: ContactFieldType = .empty
+    var newEmail = ""
     
-    var keys : [PMNIKey]?
-    var encrypt : PMNIPMEncrypt?
-    var sign : PMNIPMSign?
-    var scheme : PMNIPMScheme?
+    var keys: [PMNIKey]?
+    var encrypt: PMNIPMEncrypt?
+    var sign: PMNIPMSign?
+    var scheme: PMNIPMScheme?
     var mimeType: PMNIPMMimeType?
     
     private let delegate: ContactEditViewModelContactGroupDelegate? 
@@ -84,9 +84,9 @@ final class ContactEditEmail: ContactEditTypeInterface {
     init(order: Int,
          type: ContactFieldType,
          email: String,
-         contactGroupNames: [String],
          isNew: Bool,
          keys : [PMNIKey]?,
+         contactID: String?,
          encrypt : PMNIPMEncrypt?,
          sign : PMNIPMSign?,
          scheme : PMNIPMScheme?,
@@ -97,7 +97,12 @@ final class ContactEditEmail: ContactEditTypeInterface {
         self.newOrder = order
         self.newType = type
         self.newEmail = email
-        self.getContactGroupIDsFromCoreData()
+        if let contactID = contactID {
+            self.getContactGroupIDsFromCoreData(contactID: contactID)
+        } else {
+            origContactGroupIDs.removeAll()
+            newContactGroupIDs.removeAll()
+        }
         self.origOrder = self.newOrder
         
         self.keys = keys
@@ -133,13 +138,14 @@ final class ContactEditEmail: ContactEditTypeInterface {
         return ContactEmail(e: newEmail, t: newType.vcardType)
     }
     
-    private func getContactGroupIDsFromCoreData() {
+    private func getContactGroupIDsFromCoreData(contactID: String) {
         // we decide to stick with using core data information for now
         origContactGroupIDs.removeAll()
         
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            let emailObject = Email.EmailForAddress(self.newEmail,
-                                                    inManagedObjectContext: context)
+            let emailObject = Email.EmailForAddressWithContact(self.newEmail,
+                                                               contactID: contactID,
+                                                               inManagedObjectContext: context)
             if let emailObject = emailObject {
                 if let contactGroups = emailObject.labels.allObjects as? [Label] {
                     for contactGroup in contactGroups {

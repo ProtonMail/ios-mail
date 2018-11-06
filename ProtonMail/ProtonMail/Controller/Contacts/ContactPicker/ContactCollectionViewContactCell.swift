@@ -14,7 +14,7 @@ protocol ContactCollectionViewContactCellDelegate: class {
 }
 
 class ContactCollectionViewContactCell: UICollectionViewCell {
-
+    
     @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var contactTitleLabel: UILabel!
     @IBOutlet weak var lockImage: UIImageView!
@@ -87,63 +87,92 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         }
         set {
             self._model = newValue
-            self.contactTitleLabel.text = self._model.contactTitle;
             
-            {
-                self.checkLock()
-            } ~> .main
+            if let _ = self._model as? ContactVO {
+                self.contactTitleLabel.text = self._model.contactTitle;
+                
+                {
+                    self.checkLock(caller: self.model)
+                    } ~> .main
+            } else if let _ = self._model as? ContactGroupVO {
+                prepareTitleForContactGroup()
+            }
         }
     }
     
-    private func checkLock() {
+    func prepareTitleForContactGroup() {
+        if let contactGroup = self._model as? ContactGroupVO {
+            self.lockImage.isHidden = false
+            self.activityView.isHidden = true
+            self.leftConstant.constant = 4
+            self.widthConstant.constant = 14
+            
+            let (selectedCount, totalCount, color) = contactGroup.getGroupInformation()
+            self.contactTitleLabel.text = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
+            self.contactTitleLabel.textAlignment = .left
+            self.lockImage.image = UIImage.init(named: "contact_groups_icon")
+            self.lockImage.setupImage(scale: 0.8,
+                                      tintColor: UIColor.white,
+                                      backgroundColor: UIColor.init(hexString: color, alpha: 1))
+        }
+    }
+    
+    private func checkLock(caller: ContactPickerModelProtocol) {
         self.delegate?.collectionContactCell(lockCheck: self.model, progress: {
             self.lockImage.isHidden = true
             self.activityView.startAnimating()
         }, complete: { image, type in
-            self._model.setType(type: type)
-            if let img = image {
-                self.lockImage.image = img
-                self.lockImage.isHidden = false
-                self.leftConstant.constant = 4
-                self.widthConstant.constant = 14
-                
-                self.contactTitleLabel.textAlignment = .left
-            } else if let lock = self.model.lock {
-                self.lockImage.image = lock
-                self.lockImage.isHidden = false
-                self.leftConstant.constant = 4
-                self.widthConstant.constant = 14
-                
-                self.contactTitleLabel.textAlignment = .left
-            } else {
-                self.lockImage.image = nil
-                self.lockImage.isHidden = true
-                self.leftConstant.constant = 0
-                self.widthConstant.constant = 0
-                
-                self.contactTitleLabel.textAlignment = .center
+            if caller.equals(self.model) {
+                self._model.setType(type: type)
+                self.lockImage.backgroundColor = nil
+                self.lockImage.tintColor = nil
+                if let img = image {
+                    self.lockImage.image = img
+                    self.lockImage.isHidden = false
+                    self.leftConstant.constant = 4
+                    self.widthConstant.constant = 14
+                    
+                    self.contactTitleLabel.textAlignment = .left
+                } else if let lock = self.model.lock {
+                    self.lockImage.image = lock
+                    self.lockImage.isHidden = false
+                    self.leftConstant.constant = 4
+                    self.widthConstant.constant = 14
+                    
+                    self.contactTitleLabel.textAlignment = .left
+                } else {
+                    self.lockImage.image = nil
+                    self.lockImage.isHidden = true
+                    self.leftConstant.constant = 0
+                    self.widthConstant.constant = 0
+                    
+                    self.contactTitleLabel.textAlignment = .center
+                }
+                self.activityView.stopAnimating()
             }
-            self.activityView.stopAnimating()
         })
     }
     
     func widthForCell() -> CGFloat {
-        let size = self._model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
+        var size = self._model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
+        if let _ = self._model as? ContactGroupVO {
+            if let estimation = self.contactTitleLabel.text?.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light]) {
+                size = estimation
+            }
+        }
         let offset = self.widthConstant.constant == 0 ? 0 : 14
         return size.width.rounded(.up) + 20 + CGFloat(offset) //34 // 20 + self.contactTitleLabel.frame.height + 6
     }
     
     func widthForCellWithContact(model: ContactPickerModelProtocol) -> CGFloat {
-        //        let font = self.contactTitleLabel.font!
-        //        let s = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
-        //        let size = NSString(string: model.contactTitle).boundingRect(with: s,
-        //                                                                     options: [.usesLineFragmentOrigin, .usesFontLeading],
-        //                                                                     attributes: [NSAttributedStringKey.font : font],
-        //                                                                     context: nil).size
-        //        let size2 = NSString(string: model.contactTitle).size(withAttributes: [NSAttributedStringKey.font : font])
-        //
-        //        let size3 = model.contactTitle.size(withAttributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0)])
-        //
+        //TODO:: i feel it isn't good
+        if let contactGroup = model as? ContactGroupVO {
+            let (selectedCount, totalCount, _) = contactGroup.getGroupInformation()
+            let title = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
+            let size = title.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
+            return size.width.rounded(.up) + 20 + 14 //
+        }
+        
         let size = model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
         return size.width.rounded(.up) + 20 + 14 //34 //20 + self.contactTitleLabel.frame.height + 6
     }

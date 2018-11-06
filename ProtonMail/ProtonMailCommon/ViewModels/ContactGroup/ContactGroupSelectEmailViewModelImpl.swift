@@ -36,7 +36,6 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
         }
         self.emailsForDisplay = self.allEmails
         
-        // TODO: do conversion check
         self.selectedEmails = selectedEmails as! Set
         self.refreshHandler = refreshHandler
     }
@@ -75,19 +74,12 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
     /**
      Return the selected emails to the contact group
      */
-    func save(indexPaths: [IndexPath]?) {
-        selectedEmails = Set<Email>()
-        if let indexPaths = indexPaths {
-            for indexPath in indexPaths {
-//                print("Selected: \(allEmails[indexPath.row].email)")
-                selectedEmails.insert(allEmails[indexPath.row])
-            }
-        }
+    func save() {
         refreshHandler(selectedEmails as NSSet)
     }
     
     /**
-     Add the email address from the selection state
+     Add the emailID from the selection state
     */
     func selectEmail(ID: String) {
         for email in allEmails {
@@ -99,7 +91,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
     }
     
     /**
-     Remove the email address from the selection state
+     Remove the emailID from the selection state
     */
     func deselectEmail(ID: String) {
         for email in allEmails {
@@ -115,7 +107,8 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
             query.count > 0 {
             let lowercaseQuery = query.lowercased()
             emailsForDisplay = allEmails.filter({
-                if $0.email.lowercased().contains(check: lowercaseQuery) {
+                if $0.email.lowercased().contains(check: lowercaseQuery) ||
+                    $0.name.lowercased().contains(check: lowercaseQuery) {
                     return true
                 } else {
                     return false

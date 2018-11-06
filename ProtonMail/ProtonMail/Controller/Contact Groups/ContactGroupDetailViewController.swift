@@ -65,6 +65,8 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             
             ActivityIndicatorHelper.showActivityIndicator(at: self.view)
             return self.viewModel.reload()
+            }.ensure {
+                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
             }.done {
                 (isDeleted) in
                 
@@ -73,9 +75,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                 } else {
                     self.refresh()
                 }
-            }.ensure {
-                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-        }
+            }
     }
     
     private func refresh() {
@@ -89,7 +89,8 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         groupDetailLabel.text = viewModel.getTotalEmailString()
         
         groupImage.setupImage(tintColor: UIColor.white,
-                              backgroundColor: viewModel.getColor())
+                              backgroundColor: UIColor.init(hexString: viewModel.getColor(),
+                                                            alpha: 1))
         
         if let image = sendButton.imageView?.image {
             sendButton.imageView?.contentMode = .center
@@ -126,6 +127,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
+                contactGroupVO.selectAllEmailFromGroup()
                 sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
             }
         } else if segue.identifier == kToUpgradeAlertSegue {
@@ -167,7 +169,7 @@ extension ContactGroupDetailViewController: UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
+        if section == 0 && viewModel.getTotalEmails() > 0 {
             return LocalString._menu_contacts_title
         }
         return nil
@@ -181,6 +183,7 @@ extension ContactGroupDetailViewController: UITableViewDataSource
         cell.config(emailID: ret.emailID,
                     name: ret.name,
                     email: ret.email,
+                    queryString: "",
                     state: .detailView)
         
         return cell

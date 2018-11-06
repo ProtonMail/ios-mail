@@ -15,7 +15,7 @@ extension UIImageView
                     scale: CGFloat = 0.5,
                     makeCircleBorder: Bool = true,
                     tintColor: UIColor? = nil,
-                    backgroundColor: String? = nil,
+                    backgroundColor: UIColor? = nil,
                     borderWidth: CGFloat = 0,
                     borderColor: CGColor? = nil) {
         self.contentMode = contentMode
@@ -34,7 +34,7 @@ extension UIImageView
         
         self.tintColor = tintColor
         if let backgroundColor = backgroundColor {
-            self.backgroundColor = UIColor(hexColorCode: backgroundColor)
+            self.backgroundColor = backgroundColor
         } else {
             self.backgroundColor = nil
         }

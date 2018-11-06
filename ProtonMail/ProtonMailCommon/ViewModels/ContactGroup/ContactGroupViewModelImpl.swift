@@ -55,7 +55,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
     
     /**
      - Returns: if the give group is currently selected or not
-    */
+     */
     func isSelected(groupID: String) -> Bool {
         return selectedGroupIDs.contains(groupID)
     }
@@ -66,7 +66,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
     
     /**
      Gets the cell data for the multi-select contact group view
-    */
+     */
     func cellForRow(at indexPath: IndexPath) -> (ID: String, name: String, color: String, count: Int) {
         let row = indexPath.row
         
@@ -119,7 +119,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
     
     /**
      Remove all group IDs from the selected group list
-    */
+     */
     func removeAllSelectedGroups() {
         selectedGroupIDs.removeAll()
     }
@@ -205,30 +205,22 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
         }
     }
     
-    // TODO: requires rewrite
     func deleteGroups() -> Promise<Void> {
         return Promise {
             seal in
             
-            let lock = NSLock()
-            var count = 0
-            let completionHandler = { (ok: Bool) -> Void in
-                if ok == false {
-                    seal.reject(ContactGroupEditError.deleteFailed)
-                } else {
-                    lock.lock()
-                    count += 1
-                    if count == self.selectedGroupIDs.count {
-                        seal.fulfill(())
-                    }
-                    lock.unlock()
-                }
-            }
-            
             if selectedGroupIDs.count > 0 {
+                var arrayOfPromises: [Promise<Void>] = []
                 for groupID in selectedGroupIDs {
-                    sharedContactGroupsDataService.deleteContactGroup(groupID: groupID,
-                                                                      completionHandler: completionHandler)
+                    arrayOfPromises.append(sharedContactGroupsDataService.deleteContactGroup(groupID: groupID))
+                }
+                
+                when(fulfilled: arrayOfPromises).done {
+                    seal.fulfill(())
+                    self.selectedGroupIDs.removeAll()
+                    }.catch {
+                        error in
+                        seal.reject(error)
                 }
             } else {
                 seal.fulfill(())

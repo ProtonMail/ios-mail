@@ -219,7 +219,7 @@ class ContactDataService {
      **/
     func update(contactID : String,
                 cards: [CardData],
-                completion: ContactAddComplete?) {
+                completion: ContactUpdateComplete?) {
         let api = ContactUpdateRequest<ContactDetailResponse>(contactid: contactID, cards:cards)
         api.call { (task, response, hasError) in
             if hasError {
@@ -233,6 +233,23 @@ class ContactDataService {
                 let context = sharedCoreDataService.newManagedObjectContext()
                 context.performAndWait() {
                     do {
+                        // remove all emailID associated with the current contact in the core data
+                        // since the new data will be added to the core data (parse from response)
+                        if let origContact = Contact.contactForContactID(contactID,
+                                                                         inManagedObjectContext: context) {
+                            if let emailObjects = origContact.emails.allObjects as? [Email] {
+                                for emailObject in emailObjects {
+                                    context.delete(emailObject)
+                                }
+                            } else {
+                                // TODO: handle error
+                                PMLog.D("Conversion error")
+                            }
+                        } else {
+                            // TODO: handle error
+                            PMLog.D("Can't get Contact by ID error")
+                        }
+                        
                         if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName,
                                                                          fromJSONDictionary: contactDict,
                                                                          in: context) as? Contact {
@@ -532,11 +549,6 @@ class ContactDataService {
             }
         } ~> .async
     }
-    
-    /**
-     // TODO
-     Fetch contact emails
-    */
     
     /**
      get contact full details

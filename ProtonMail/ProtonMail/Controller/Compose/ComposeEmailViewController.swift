@@ -110,20 +110,22 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
         updateMessageView()
         
         // load all contacts and groups
+        // TODO: move to view model
         firstly {
             () -> Promise<Void> in
             
-            self.contacts = sharedContactDataService.allContactVOs()
-            return retrieveAllContacts()
+            self.contacts = sharedContactDataService.allContactVOs() // contacts in core data
+            return retrieveAllContacts() // contacts in phone book
             }.done {
                 () -> Void in
+                // get contact groups
                 
                 // TODO: figure where to put this thing
                 if sharedUserDataService.isPaidUser() {
                     self.contacts.append(contentsOf: sharedContactGroupsDataService.getAllContactGroupVOs())
                 }
                 
-                // This is done for contact also
+                // Sort contacts and contact groups
                 self.contacts.sort {
                     (first: ContactPickerModelProtocol, second: ContactPickerModelProtocol) -> Bool in
                     
@@ -136,14 +138,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                         let second = second as? ContactGroupVO {
                         return first.contactTitle.lowercased() < second.contactTitle.lowercased()
                     } else {
-                        // same title, the one with email goes second
-                        if first.contactTitle.lowercased() == second.contactTitle.lowercased() {
-                            if let _ = first as? ContactVO {
-                                return false
-                            }
+                        // contact groups go first
+                        if let _ = first as? ContactGroupVO {
                             return true
+                        } else {
+                            return false
                         }
-                        return first.contactTitle.lowercased() < second.contactTitle.lowercased()
                     }
                 }
                 
@@ -361,10 +361,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocolNew {
                          pgp: self.composeView.pgpEmails)
         } else if segue.identifier == kToContactGroupSubSelection {
             let destination = segue.destination as! ContactGroupSubSelectionViewController
-            let sender = sender as! (ContactGroupVO, (([String]) -> Void))
+            let sender = sender as! (ContactGroupVO, (([DraftEmailData]) -> Void))
             
             destination.contactGroupName = sender.0.contactTitle
-            destination.selectedEmails = sender.0.getSelectedEmails()
+            destination.selectedEmails = sender.0.getSelectedEmailData()
             destination.callback = sender.1
             self.setPresentationStyleForSelfController(self, presentingController: destination)
         }
@@ -714,7 +714,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
                                                    contactGroup: ContactGroupVO,
-                                                   callback: @escaping (([String]) -> Void)) {
+                                                   callback: @escaping (([DraftEmailData]) -> Void)) {
         self.performSegue(withIdentifier: kToContactGroupSubSelection,
                           sender: (contactGroup, callback))
     }
@@ -782,8 +782,9 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             }
             
             // present error
-            let alert = UIAlertController(title: LocalString._too_many_recipients,
-                                          message: LocalString._max_number_of_recipients_is,
+            let alert = UIAlertController(title: LocalString._too_many_recipients_title,
+                                          message: String.init(format: LocalString._max_number_of_recipients_is_number,
+                                                               AppConstants.MaxNumberOfRecipients),
                                           preferredStyle: .alert)
             alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)

@@ -63,6 +63,10 @@ class ContactDetailsViewModel : ViewModelBase {
         fatalError("This method must be overridden")
     }
     
+    func getProfilePicture() -> UIImage? {
+        fatalError("This method must be overridden")
+    }
+    
     func getEmails() -> [ContactEditEmail] {
         fatalError("This method must be overridden")
     }
