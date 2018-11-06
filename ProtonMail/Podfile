@@ -6,18 +6,25 @@ inhibit_all_warnings!
 use_frameworks!
 
 def common_pods
-    #custom
+    ##custom
+    #going to remove this soon
     pod 'OpenPGP', :path => '../OpenPGP'
     
-    #
+    ##
+    #parse respons to core data
     pod 'Groot', '3.0.1'
+    #networking
     pod 'AFNetworking', '3.2.1'
     pod 'AFNetworkActivityLogger', :git => 'https://github.com/AFNetworking/AFNetworkActivityLogger.git', :branch => '3_0_0'
     
     #based on 1.0.4
     pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
+    #key chain
     pod 'UICKeyChainStore', '2.1.1'
+    
+    #auto layou lib. need to find a replacement
     pod 'Masonry', '1.1.0'
+    #too old need to find a replacement
     pod 'RHAddressBook', '1.1.1'
     pod 'UIColor+Hex', '1.0.1'
     pod 'MCSwipeTableViewCell', '~> 2.1.4'
