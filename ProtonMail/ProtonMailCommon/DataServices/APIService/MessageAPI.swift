@@ -413,7 +413,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
                 for it in cAtts {
                     atts[it.ID] = [
                         "Key" : it.encodedSession,
-                        "Algorithm" : it.algo
+                        "Algorithm" : it.algo == "3des" ? "tripledes" : it.algo
                     ]
                 }
                 plainTextAddress["AttachmentKeys"] = atts
@@ -452,7 +452,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
                 for it in cAtts {
                     atts[it.ID] = [
                         "Key" : it.encodedSession,
-                        "Algorithm" : it.algo
+                        "Algorithm" : it.algo == "3des" ? "tripledes" : it.algo
                     ]
                 }
                 htmlAddress["AttachmentKeys"] = atts
