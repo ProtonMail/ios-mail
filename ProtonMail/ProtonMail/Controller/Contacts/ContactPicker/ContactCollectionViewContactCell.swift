@@ -113,7 +113,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             self.lockImage.image = UIImage.init(named: "contact_groups_icon")
             self.lockImage.setupImage(scale: 0.8,
                                       tintColor: UIColor.white,
-                                      backgroundColor: color)
+                                      backgroundColor: UIColor.init(hexString: color, alpha: 1))
         }
     }
     

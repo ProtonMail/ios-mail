@@ -17,6 +17,7 @@
 @class PMNIPMMimeType;
 @class PMNIPMScheme;
 @class PMNIPMSign;
+@class PMNIPhoto;
 @class PMNIStructuredName;
 @class PMNITelephone;
 @class PMNITitle;
@@ -159,6 +160,12 @@
 - (void)setCategories:(nullable PMNICategories *)c;
 
 - (void)clearCategories;
+
+- (nullable PMNIPhoto *)getPhoto;
+
+- (void)setPhoto:(nullable PMNIPhoto *)photo;
+
+- (void)clearPhotos;
 
 - (nonnull NSArray<PMNIUrl *> *)getUrls;
 
