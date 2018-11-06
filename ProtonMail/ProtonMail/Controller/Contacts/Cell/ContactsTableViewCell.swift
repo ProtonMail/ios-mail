@@ -44,7 +44,7 @@ final class ContactsTableViewCell: MCSwipeTableViewCell {
         
         if let color = color { //will be show the image
             groupImage.setupImage(tintColor: UIColor.white,
-                                  backgroundColor: color,
+                                  backgroundColor: UIColor(hexColorCode: color),
                                   borderWidth: 0,
                                   borderColor: UIColor.white.cgColor)
             self.groupImage.isHidden = false

@@ -417,6 +417,20 @@ class APIService {
                 }, downloadProgress: { (progress) in
                     //TODO::add later
                 }, completionHandler: { (urlresponse, res, error) in
+                    if let urlres = urlresponse as? HTTPURLResponse, let allheader = urlres.allHeaderFields as? [String : Any] {
+                        //PMLog.D("\(allheader.json(prettyPrinted: true))")
+                        if let strData = allheader["Date"] as? String {
+                            // create dateFormatter with UTC time format
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
+                            dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+                            if let date = dateFormatter.date(from: strData) {
+                                let timeInterval = date.timeIntervalSince1970
+                                sharedOpenPGP.updateTime(Int64(timeInterval))
+                            }
+                        }
+                    }
+                    /// parse urlresponse
                     parseBlock(task, res, error)
                 })
                 task!.resume()
