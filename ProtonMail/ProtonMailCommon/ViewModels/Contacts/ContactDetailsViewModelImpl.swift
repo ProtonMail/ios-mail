@@ -8,7 +8,7 @@
 
 import Foundation
 import PromiseKit
-import Pm
+import Crypto
 
 
 class ContactDetailsViewModelImpl : ContactDetailsViewModel {
@@ -140,9 +140,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     }
     
     private func setupEmails() -> Promise<Void> {
-        return firstly {
-            () -> Promise<Void> in
-            
+        return firstly { () -> Promise<Void> in
             //  origEmails
             let cards = self.contact.getCardData()
             var type0Card: PMNIVCard? = nil
@@ -187,7 +185,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                                                  verifyTime: 0, ret0_: &ok)
                                 self.verifyType2 = ok.boolValue
                                 if self.verifyType2 {
-                                    if !PmCheckPassphrase(key.private_key, sharedUserDataService.mailboxPassword!) {
+                                    if !KeyCheckPassphrase(key.private_key, sharedUserDataService.mailboxPassword!) {
                                         self.verifyType2 = false
                                     }
                                     break
@@ -339,10 +337,10 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                               photo?.getImageType() ?? "",
                                               photo?.getIsBinary() ?? "")
                                         if let image = photo?.getRawData() {
-                                            let data = Data.init(bytes: image) 
+                                            let data = Data.init(bytes: image)
                                             self.profilePicture = UIImage.init(data: data)
                                         }
-
+                                        
                                         break
                                         
                                         //case "Agent":

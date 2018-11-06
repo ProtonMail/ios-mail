@@ -18,7 +18,7 @@ import Foundation
 import CoreData
 import PromiseKit
 import AwaitKit
-import Pm
+import Crypto
 
 extension Attachment {
     
@@ -53,22 +53,38 @@ extension Attachment {
     
     
     // Mark : public functions
-    func encrypt(byAddrID sender_address_id : String, mailbox_pwd: String) -> PmEncryptedSplit? {
-        var out: PmEncryptedSplit? = nil
-        
-        autoreleasepool() {
-            do {
-                var clearData = self.fileData
-                if clearData == nil, let localURL = self.localURL {
-                    clearData = try Data(contentsOf: localURL)
-                }
-                
-                out =  try clearData?.encryptAttachment(sender_address_id, fileName: self.fileName, mailbox_pwd: mailbox_pwd)
-            } catch {
-                // nothing here
+    func encrypt(byAddrID sender_address_id: String, mailbox_pwd: String) -> ModelsEncryptedSplit? {
+        do {
+            if let clearData = self.fileData {
+                return try clearData.encryptAttachment(sender_address_id, fileName: self.fileName, mailbox_pwd: mailbox_pwd)
             }
+            
+            guard let localURL = self.localURL,
+                let totalSize = try FileManager.default.attributesOfItem(atPath: localURL.path)[.size] as? Int else
+            {
+                return nil
+            }
+            
+            let encryptor = try Data.makeEncryptAttachmentProcessor(sender_address_id, fileName: self.fileName, totalSize: totalSize)
+            let fileHandle = try FileHandle(forReadingFrom: localURL)
+            
+            let chunkSize = 1000000 // 1 mb
+            var offset = 0
+            while offset < totalSize {
+                autoreleasepool() {
+                    let currentChunkSize = offset + chunkSize > totalSize ? totalSize - offset : chunkSize
+                    let currentChunk = fileHandle.readData(ofLength: currentChunkSize)
+                    offset += currentChunkSize
+                    fileHandle.seek(toFileOffset: UInt64(offset))
+                    encryptor.process(currentChunk)
+                }
+            }
+            fileHandle.closeFile()
+            
+            return try encryptor.finish()
+        } catch {
+            return nil
         }
-        return out
     }
     
     func sign(byAddrID sender_address_id : String, mailbox_pwd: String) -> Data? {
@@ -77,7 +93,7 @@ extension Attachment {
                 return nil
             }
             var error : NSError?
-            let data = PmUnArmor(out, &error)
+            let data = ArmorUnarmor(out, &error)
             if error != nil {
                 return nil
             }
@@ -88,7 +104,7 @@ extension Attachment {
         }
     }
     
-    func getSession() throws -> PmSessionSplit? {
+    func getSession() throws -> ModelsSessionSplit? {
         if self.keyPacket == nil {
             return nil
         }
@@ -340,3 +356,4 @@ extension URL: AttachmentConvertible {
     
     
 }
+

@@ -7,10 +7,10 @@
 //
 
 import XCTest
-import Pm
+import Crypto
 
 class GoOpenPGPTests: XCTestCase {
-    let openpgp = PmOpenPGP()!
+    let openpgp = CryptoPmCrypto()!
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -25,7 +25,7 @@ class GoOpenPGPTests: XCTestCase {
         // This is an example of a performance test case.
         self.measure {
             for _ in 0 ... 100 {
-                let result = PmCheckPassphrase(OpenPGPDefines.privateKey, OpenPGPDefines.passphrase)
+                let result = KeyCheckPassphrase(OpenPGPDefines.privateKey, OpenPGPDefines.passphrase)
                 XCTAssertTrue(result, "checkPassphrase failed")
             }
         }
@@ -33,7 +33,7 @@ class GoOpenPGPTests: XCTestCase {
     
     //MARK: - Test methods
     func testCheckPassphrase() {
-        let result = PmCheckPassphrase(OpenPGPDefines.privateKey, OpenPGPDefines.passphrase)
+        let result = KeyCheckPassphrase(OpenPGPDefines.privateKey, OpenPGPDefines.passphrase)
         XCTAssertTrue(result, "checkPassphrase failed")
     }
     
@@ -52,7 +52,7 @@ class GoOpenPGPTests: XCTestCase {
     
     func testUnarmed() {
         var error : NSError?
-        let unArmorKey = PmUnArmor(OpenPGPDefines.publicKey, &error)
+        let unArmorKey = ArmorUnarmor(OpenPGPDefines.publicKey, &error)
         XCTAssertNil(error)
         
         do {
@@ -62,6 +62,43 @@ class GoOpenPGPTests: XCTestCase {
             XCTFail("should not have exception")
         }
         
+    }
+    
+    
+    func testCryptoAttachmentProcessor() {
+        let data = """
+        This file, its contents, concepts, methods, behavior, and operation
+        (collectively the "Software") are protected by trade secret, patent,
+        and copyright laws. The use of the Software is governed by a license
+        agreement. Disclosure of the Software to third parties, in any form,
+        in whole or in part, is expressly prohibited except as authorized by
+        the license agreement.
+        """.data(using: .utf8)!
+        let totalSize = data.count
+        
+        do {
+            // encrypt
+            let processor = try openpgp.encryptAttachmentLowMemory(totalSize, fileName: "testData", publicKey: OpenPGPDefines.publicKey)
+            
+            let chunkSize = 10
+            var offset = 0
+            while offset < totalSize {
+                let currentChunkSize = offset + chunkSize > totalSize ? totalSize - offset : chunkSize
+                let currentChunk = data.subdata(in: Range(uncheckedBounds: (lower: offset, upper: offset + currentChunkSize)))
+                offset += currentChunkSize
+                processor.process(currentChunk)
+            }
+            
+            let result = try processor.finish()
+            
+            // decrypt
+            let decrypted = try openpgp.decryptAttachment(result.keyPacket(), dataPacket: result.dataPacket(), privateKey: OpenPGPDefines.privateKey, passphrase: OpenPGPDefines.passphrase)
+            
+            // match
+            XCTAssertEqual(data, decrypted)
+        } catch {
+            XCTFail("thrown")
+        }
     }
     
 //

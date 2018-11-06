@@ -16,17 +16,18 @@
 //
 
 import Foundation
-import Pm
+import Crypto
 
 
-extension PmOpenPGP {
+extension CryptoPmCrypto {
     func random(byte: Int) -> Data? {
-        var error : NSError?
-        let out = PmRandomTokenWith(byte, &error)
-        if nil != error {
-            return nil
+        do {
+            let out = try self.randomToken(with: byte)
+            return out
+        } catch {
+            
         }
-        return out
+        return nil
     }
     
     class func updateKeysPassword(_ old_keys : [Key], old_pass: String, new_pass: String ) throws -> [Key] {
@@ -62,7 +63,7 @@ extension PmOpenPGP {
             if u_k.is_updated == false {
                 continue
             }
-            let result = PmCheckPassphrase(u_k.private_key, new_pass)
+            let result = KeyCheckPassphrase(u_k.private_key, new_pass)
             guard result == true else {
                 throw UpdatePasswordError.keyUpdateFailed.error
             }
@@ -106,7 +107,7 @@ extension PmOpenPGP {
                 if u_k.is_updated == false {
                     continue
                 }
-                let result = PmCheckPassphrase(u_k.private_key, new_pass)
+                let result = KeyCheckPassphrase(u_k.private_key, new_pass)
                 guard result == true else {
                     throw UpdatePasswordError.keyUpdateFailed.error
                 }
@@ -208,9 +209,14 @@ extension Data {
         return try sharedOpenPGP.decryptAttachment(keyPackage, dataPacket: self, privateKey: privateKey, passphrase: passphrase)
     }
     
-    func encryptAttachment(_ address_id: String, fileName:String, mailbox_pwd: String) throws -> PmEncryptedSplit? {
+    func encryptAttachment(_ address_id: String, fileName:String, mailbox_pwd: String) throws -> ModelsEncryptedSplit? {
         let pubkey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
         return try sharedOpenPGP.encryptAttachment(self, fileName: fileName, publicKey: pubkey)
+    }
+    
+    static func makeEncryptAttachmentProcessor(_ address_id: String, fileName:String, totalSize: Int) throws -> CryptoAttachmentProcessor {
+        let pubkey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
+        return try sharedOpenPGP.encryptAttachmentLowMemory(totalSize, fileName: fileName, publicKey: pubkey)
     }
     
     func signAttachment(_ address_id: String, mailbox_pwd: String) throws -> String? {
@@ -230,13 +236,9 @@ extension Data {
 //    }
 //    
     //key packet part
-    func getSessionFromPubKeyPackage(_ passphrase: String) throws -> PmSessionSplit? {
-        var error : NSError?
+    func getSessionFromPubKeyPackage(_ passphrase: String) throws -> ModelsSessionSplit? {
         let privKeys = sharedUserDataService.addressPrivKeys
-        let out = PmGetSessionFromKeyPacketBinkeys(self, privKeys, passphrase, &error)
-        if let err = error {
-            throw err
-        }
+        let out = try sharedOpenPGP.getSessionFromKeyPacketBinkeys(self, privateKey: privKeys, passphrase: passphrase)
         return out
     }
     
@@ -250,42 +252,26 @@ extension Data {
 //    }
     
     func getKeyPackage(strKey publicKey: String, algo : String) throws -> Data? {
-        let session = PmSessionSplit()!
+        let session = ModelsSessionSplit()!
         session.setSession(self)
         session.setAlgo(algo) //default is "aes256"
-        
-        var error : NSError?
-        let packet : Data? = PmKeyPacketWithPublicKey(session, publicKey, &error)
-        if let err = error {
-            throw err
-        }
+        let packet : Data? = try sharedOpenPGP.keyPacket(withPublicKey: session, publicKey: publicKey)
         return packet
     }
     
     func getKeyPackage(dataKey publicKey: Data, algo : String) throws -> Data? {
-        let session = PmSessionSplit()!
+        let session = ModelsSessionSplit()!
         session.setSession( self)
         session.setAlgo(algo) //default is "aes256"
-        
-        var error : NSError?
-        let packet : Data? = PmKeyPacketWithPublicKeyBin(session, publicKey, &error)
-        if let err = error {
-            throw err
-        }
+        let packet : Data? = try sharedOpenPGP.keyPacket(withPublicKeyBin: session, publicKey: publicKey)
         return packet
     }
     
     func getSymmetricPacket(withPwd pwd: String, algo : String) throws -> Data? {
-        let session = PmSessionSplit()!
+        let session = ModelsSessionSplit()!
         session.setSession(self)
         session.setAlgo(algo) //default is "aes256"
-        
-        
-        var error : NSError?
-        let packet : Data? = PmSymmetricKeyPacketWithPassword(session, pwd, &error)
-        if let err = error {
-            throw err
-        }
+        let packet : Data? = try sharedOpenPGP.symmetricKeyPacket(withPassword: session, password: pwd)
         return packet
     }
     
