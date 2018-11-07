@@ -51,14 +51,13 @@ html_editor.setPlaceholderText = function(text) {
 
 ///
 //html_editor.editor.addEventListener("input", function() {
-//                                    html_editor.delegate("input");
-//                                    });
+//  html_editor.delegate("input");
+//});
 
 
 //html_editor.editor.addEventListener("focus", function() {
-//                                    //RE.backuprange();
-//                                    html_editor.delegate("focus")
-//                                    });
+//  html_editor.delegate("focus")
+//});
 
 /// delegate. the swift part could catch the events
 html_editor.delegate = function(event) {
@@ -76,11 +75,6 @@ html_editor.updateEmbedImage = function(cid, blobdata) {
     if (found.length) {
         found.forEach(function(image) {
             image.setAttribute('src-original-pm-cid', cid);
-//            image.createAttribute(
-//                      var att = document.createAttribute("href");
-//                      att.value = "https://www.w3schools.com";
-//                      anchor.setAttributeNode(att);
-//            image.attr('src-original-pm-cid', cid);
             html_editor.cachedCIDs += cid;
             image.setAttribute('src', blobdata);
         });
@@ -88,12 +82,12 @@ html_editor.updateEmbedImage = function(cid, blobdata) {
 }
 
 html_editor.removeEmbedImage = function(cid) {
-    var editor = $('img[src-original-pm-cid="' + cid + '"]');
-    if (editor.length) {
-        editor.each(function(index, e) {
-            var image = $(this);
+    var found = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
+    if (found.length) {
+        found.forEach(function(image) {
             image.remove();
         });
+
     }
 }
 
