@@ -45,7 +45,7 @@ extension Message {
         let message = Message(context: context)
         message.messageID = UUID().uuidString
         message.location = location
-        message.recipientList = recipientList
+        message.toList = recipientList
         message.bccList = bccList
         message.ccList = ccList
         message.title = title

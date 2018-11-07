@@ -266,7 +266,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             case .newDraft, .forward, .newDraftFromShare:
                 break
             case .openDraft:
-                let toContacts = self.toContacts(self.message!.recipientList) // Json to contact/group objects
+                let toContacts = self.toContacts(self.message!.toList) // Json to contact/group objects
                 for cont in toContacts {
                     switch cont.modelType {
                     case .contact:
@@ -327,7 +327,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 }
             case .reply:
                 if oldLocation == .outbox {
-                    let toContacts = self.toContacts(self.message!.recipientList)
+                    let toContacts = self.toContacts(self.message!.toList)
                     for cont in toContacts {
                         self.toSelectedContacts.append(cont)
                     }
@@ -337,7 +337,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     if replytos.count > 0 {
                         senders += replytos
                     } else {
-                        if let newSender = self.toContact(self.message!.senderObject ?? "") {
+                        if let newSender = self.toContact(self.message!.sender ?? "") {
                             senders.append(newSender)
                         } else {
                             senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
@@ -347,7 +347,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 }
             case .replyAll:
                 if oldLocation == .outbox {
-                    let toContacts = self.toContacts(self.message!.recipientList)
+                    let toContacts = self.toContacts(self.message!.toList)
                     for cont in toContacts {
                         self.toSelectedContacts.append(cont)
                     }
@@ -362,7 +362,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     if replytos.count > 0 {
                         senders += replytos
                     } else {
-                        if let newSender = self.toContact(self.message!.senderObject ?? "") {
+                        if let newSender = self.toContact(self.message!.sender ?? "") {
                             senders.append(newSender)
                         } else {
                             senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
@@ -376,7 +376,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
 
-                    let toContacts = self.toContacts(self.message!.recipientList)
+                    let toContacts = self.toContacts(self.message!.toList)
                     for cont in toContacts {
                         if let cont = cont as? ContactVO,
                             !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
@@ -429,7 +429,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             self.message?.expirationOffset = Int32(expir)
             
         } else {
-            self.message?.recipientList = toJsonString(self.toSelectedContacts)
+            self.message?.toList = toJsonString(self.toSelectedContacts)
             self.message?.ccList = toJsonString(self.ccSelectedContacts)
             self.message?.bccList = toJsonString(self.bccSelectedContacts)
             self.message?.title = self.getSubject()
@@ -578,8 +578,8 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 var forwardHeader =
                 "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
                 
-                if message!.recipientList != "" {
-                    forwardHeader += "\(t) \(message!.recipientList.formatJsonContact(true))<br>"
+                if message!.toList != "" {
+                    forwardHeader += "\(t) \(message!.toList.formatJsonContact(true))<br>"
                 }
                 
                 if message!.ccList != "" {

@@ -44,11 +44,10 @@ extension APIService {
 //        } else { // not encrypt
 //            env = 5
 //        }
-        
         #if Enterprise
             #if DEBUG
 //                let env = 20
-                let env = 7
+                let env = 17
             #else
 //                let env = 21
                 let env = 7
@@ -58,7 +57,7 @@ extension APIService {
             // const PROVIDER_FCM_IOS_BETA = 5;
             #if DEBUG
 //                let env = 1
-                let env = 6
+                let env = 16
             #else
 //                let env = 2
                 let env = 6

@@ -1381,7 +1381,6 @@ class MessageDataService {
                         }
                         
                         if attachments.count > 0 {
-                            message.hasAttachments = true
                             message.numAttachments = NSNumber(value: attachments.count)
                         }
                         //TODO::fix later 1.7

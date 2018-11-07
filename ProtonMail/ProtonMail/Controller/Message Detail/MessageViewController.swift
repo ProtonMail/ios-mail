@@ -188,7 +188,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         if self.message.managedObjectContext != nil {
             self.emailView?.updateHeaderData(self.message.subject,
                                              sender: self.message.senderContactVO,
-                                             to: self.message.recipientList.toContacts(),
+                                             to: self.message.toList.toContacts(),
                                              cc: self.message.ccList.toContacts(),
                                              bcc: self.message.bccList.toContacts(),
                                              isStarred: self.message.isStarred,

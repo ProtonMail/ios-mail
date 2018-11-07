@@ -37,9 +37,9 @@ extension Message {
         static let isDetailDownloaded = "isDetailDownloaded"
         static let isStarred = "isStarred"
         static let messageID = "messageID"
-        static let recipientList = "recipientList"
+        static let toList = "toList"
         static let senderName = "senderName"
-        static let senderObject = "senderObject"
+        static let sender = "sender"
         static let time = "time"
         static let title = "title"
         static let labels = "labels"
@@ -68,8 +68,8 @@ extension Message {
     var allEmails: [String] {
         var lists: [String] = []
         
-        if !recipientList.isEmpty {
-            let to = Message.contactsToAddressesArray(recipientList)
+        if !toList.isEmpty {
+            let to = Message.contactsToAddressesArray(toList)
             if !to.isEmpty  {
                 lists.append(contentsOf: to)
             }
@@ -412,9 +412,9 @@ extension Message {
     }
     
     func decryptBodyIfNeeded() throws -> String? {
-        
         PMLog.D("Flags: \(self.flag.description)")
         
+        let flag = self.flag
         if !checkIsEncrypted() {
             if isPlainText() {
                 return body.ln2br() 
@@ -556,7 +556,7 @@ extension Message {
         let message = self
         let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext!)
         newMessage.location = MessageLocation.draft
-        newMessage.recipientList = message.recipientList
+        newMessage.toList = message.toList
         newMessage.bccList = message.bccList
         newMessage.ccList = message.ccList
         newMessage.title = message.title
@@ -565,8 +565,7 @@ extension Message {
         newMessage.isEncrypted = message.isEncrypted
         newMessage.senderAddress = message.senderAddress
         newMessage.senderName = message.senderName
-        newMessage.senderObject = message.senderObject
-        newMessage.replyTo = message.replyTo
+        newMessage.sender = message.sender
         newMessage.replyTos = message.replyTos
         
         newMessage.orginalTime = message.time
@@ -604,8 +603,6 @@ extension Message {
                     attachment.localURL = att.localURL
                     attachment.keyPacket = att.keyPacket
                     attachment.isTemp = true
-                    attachment.keyChanged = true
-                    
                     do {
                         if let k = key,
                             let sessionPack = try att.getSession(),

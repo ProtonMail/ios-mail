@@ -209,7 +209,7 @@ class CreateDraft : ApiRequest<MessageResponse> {
             "Address": address
         ]
         
-        messsageDict["ToList"]  = message.recipientList.parseJson()
+        messsageDict["ToList"]  = message.toList.parseJson()
         messsageDict["CCList"]  = message.ccList.parseJson()
         messsageDict["BCCList"] = message.bccList.parseJson()
         var out : [String : Any] = ["Message" : messsageDict]

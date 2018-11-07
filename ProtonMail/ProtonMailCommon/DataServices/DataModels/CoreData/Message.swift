@@ -29,47 +29,78 @@ import Foundation
 import CoreData
 
 final public class Message: NSManagedObject {
-    /// remote values
-    @NSManaged public var bccList: String
-    @NSManaged public var bccNameList: String
-    @NSManaged public var body: String
-    @NSManaged public var ccList: String
-    @NSManaged public var ccNameList: String
-    @NSManaged public var expirationTime: Date?
-    @available(*, deprecated, message: "removed")
-    @NSManaged public var hasAttachments: Bool   //removed
-    @NSManaged public var numAttachments: NSNumber
-    @NSManaged public var header: String?
-    @NSManaged public var isDetailDownloaded: Bool
+    ///***Those values api returns them but client skip it
+    //"Order": 367
+    //ConversationID = "wgPpo3deVBrGwP3X8qZ-KSb0TtQ7_qy8TcISzCt2UQ==";
+    //ExternalID = "a34aa56f-150f-cffc-587b-83d7ca798277@emailprivacytester.com";
+
+    /// Mark -- Remote values
     
+    /// ID : message id -- "ASnfew8asds92SDnsakr=="
+    @NSManaged public var messageID: String
+    /// Subject : message subject -- "Fw: test"
+    @NSManaged public var title: String
+    /// Unread : is message read / unread -- 0
+    @NSManaged public var unRead: Bool
+    /// Flags : bitsets for maybe different flag. defined in [Message.Flag]
+    @NSManaged public var flags: NSNumber
+    //"Sender": { "Address":"", "Name":"" }
+    @NSManaged public var sender: String?
+    @available(*, deprecated, message: "double check if ok to remove")
+    @NSManaged public var senderAddress: String
+    @available(*, deprecated, message: "double check if ok to remove")
+    @NSManaged public var senderName: String
+    //"ReplyTos": [{"Address":"", "Name":""}]
+    @NSManaged public var replyTos: String?
+    //"ToList":[ { "Address":"", "Name":"", "Group": ""} ]
+    @NSManaged public var toList: String
+    //"Time":1433649408,
+    @NSManaged public var time: Date?
+    //"Size":6959782,
+    @NSManaged public var size: NSNumber
+    //"NumAttachments":0,
+    @NSManaged public var numAttachments: NSNumber
+    //"ExpirationTime":0,
+    @NSManaged public var expirationTime: Date?
+    //"SpamScore": 101,  // 100 is PM spoofed, 101 is dmarc failed
+    @NSManaged public var spamScore: NSNumber
+    //"AddressID":"222",
+    @NSManaged public var addressID : String?
+    //"Body":"-----BEGIN PGP MESSAGE-----.*-----END PGP MESSAGE-----",
+    @NSManaged public var body: String
+    //"MIMEType": "text/html",
+    @NSManaged public var mimeType : String?
+    //"CCList":[ { "Address":"", "Name":"", "Group": ""} ]
+    @NSManaged public var ccList: String
+    //"BCCList":[ { "Address":"", "Name":"", "Group": ""} ]
+    @NSManaged public var bccList: String
+    //"Header":"(No Header)",
+    @NSManaged public var header: String?
+    
+    /// Mark -- relationship
+    
+    //"Attachments":[ { }, {} ]
+    @NSManaged public var attachments: NSSet
+    //"LabelIDs":[ "1", "d3HYa3E394T_ACXDmTaBub14w==" ],
+    @NSManaged public var labels: NSSet
+
+    
+    ///
+
+    @NSManaged public var isDetailDownloaded: Bool
     @available(*, deprecated, message: "use flag instead")
     @NSManaged public var isEncrypted: NSNumber
-    @NSManaged public var isForwarded: Bool
-    @NSManaged public var unRead: Bool
-    @NSManaged public var isReplied: Bool
-    @NSManaged public var isRepliedAll: Bool
     @available(*, deprecated, message: "use labelIDs instead")
     @NSManaged public var isStarred: Bool    //Deprecated, use LabelIDs instead
     @NSManaged public var lastModified: Date?
     @available(*, deprecated, message: "use labelIDs instead")
     @NSManaged public var locationNumber: NSNumber  //Deprecated, use LabelIDs instead
-    @NSManaged public var messageID: String
+    
     @NSManaged public var passwordEncryptedBody: String
     @NSManaged public var password: String
     @NSManaged public var passwordHint: String
-    @available(*, deprecated, message: "use replyTos instead")
-    @NSManaged public var replyTo: String?
-    @NSManaged public var replyTos: String?
-    @NSManaged public var senderObject: String?
-    @NSManaged public var recipientList: String
-    @NSManaged public var recipientNameList: String
-    @NSManaged public var senderAddress: String
-    @NSManaged public var senderName: String
-    @NSManaged public var spamScore: NSNumber
+
     @NSManaged public var tag: String
-    @NSManaged public var time: Date?
-    @NSManaged public var title: String
-    @NSManaged public var totalSize: NSNumber
     @NSManaged public var latestUpdateType : NSNumber
     @NSManaged public var needsUpdate : Bool
     @NSManaged public var orginalMessageID: String?
@@ -78,18 +109,12 @@ final public class Message: NSManagedObject {
     @NSManaged public var isSoftDelete: Bool
     @NSManaged public var expirationOffset : Int32
     //
-    @NSManaged public var addressID : String?
-    @NSManaged public var mimeType : String?
-    /// new value contains a lot of vars
-    @NSManaged public var flags: NSNumber
     
     /// loacal only
     @NSManaged public var messageType : NSNumber  // 0 message 1 rate
     @NSManaged public var messageStatus : NSNumber  // bit 0x00000000 no metadata  0x00000001 has
     
     @NSManaged public var isShowedImages : Bool
-    @NSManaged public var attachments: NSSet
-    @NSManaged public var labels: NSSet
     
     /// temp cache memory only
     var checkingSign : Bool = false
@@ -98,3 +123,7 @@ final public class Message: NSManagedObject {
     var unencrypt_outside : Bool = false
 }
 
+//IsEncrypted = 2;
+//IsForwarded = 0;
+//IsReplied = 0;
+//IsRepliedAll = 0;
