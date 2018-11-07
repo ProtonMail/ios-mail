@@ -121,7 +121,7 @@ class MailboxViewModelImpl : MailboxViewModel {
     
     override func showLocation() -> Bool {
         switch(self.location!) {
-        case .allmail, .outbox:
+        case .allmail, .outbox, .trash:
             return true
         default:
             return false
@@ -155,6 +155,10 @@ class MailboxViewModelImpl : MailboxViewModel {
     override func ignoredLocationTitle() -> String {
         if self.location == .outbox {
             return MessageLocation.outbox.title
+        }
+        
+        if self.location == .trash {
+            return MessageLocation.trash.title
         }
         return ""
     }

@@ -709,7 +709,13 @@ class MessageDataService {
     func fetchedResultsControllerForLocation(_ location: MessageLocation) -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", "\(location.rawValue)", Message.Attributes.messageStatus)
+            if location == .outbox {
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (%K > 0)",
+                                                     "\(location.rawValue)", "\(MessageLocation.trash.rawValue)", Message.Attributes.messageStatus)
+            } else {
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
+                                                     "\(location.rawValue)", Message.Attributes.messageStatus)
+            }
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
