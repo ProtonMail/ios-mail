@@ -331,10 +331,6 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                         }
                                     case "Photo":
                                         let photo = vcard.getPhoto()
-                                        print("photo", photo?.getEncodedData() ?? "",
-                                              photo?.getRawData() ?? "",
-                                              photo?.getImageType() ?? "",
-                                              photo?.getIsBinary() ?? "")
                                         if let image = photo?.getRawData() {
                                             let data = Data.init(bytes: image)
                                             self.profilePicture = UIImage.init(data: data)
@@ -436,19 +432,18 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         if contact.isDownloaded && contact.needsRebuild == false {
             return firstly {
                 self.setupEmails()
-                }.then {
-                    return Promise.value(self.contact)
+            }.then {
+                return Promise.value(self.contact)
             }
         }
         loading()
         return Promise { seal in
-            sharedContactDataService.details(contactID: contact.contactID).then {
-                _ in
+            sharedContactDataService.details(contactID: contact.contactID).then { _ in
                 self.setupEmails()
-                }.done {
-                    seal.fulfill(self.contact)
-                }.catch { (error) in
-                    seal.reject(error)
+            }.done {
+                seal.fulfill(self.contact)
+            }.catch { (error) in
+                seal.reject(error)
             }
         }
     }

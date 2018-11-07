@@ -55,14 +55,11 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         if let c = contact, c.managedObjectContext != nil {
             profile = ContactEditProfile(o_displayname: c.name)
             let cards = c.getCardData()
-            var type0Card: PMNIVCard? = nil
             for c in cards.sorted(by: {$0.type.rawValue < $1.type.rawValue}) {
                 switch c.type {
                 case .PlainText:
                     PMLog.D(c.data)
                     if let vcard = PMNIEzvcard.parseFirst(c.data) {
-                        type0Card = vcard
-                        
                         let emails = vcard.getEmails()
                         var order : Int = 1
                         for e in emails {
