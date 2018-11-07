@@ -1947,7 +1947,7 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y0x-Sh-VpS">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="Y0x-Sh-VpS">
                                             <rect key="frame" x="23" y="17" width="200" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="200" id="CLB-Yo-H6k"/>
@@ -2131,8 +2131,33 @@
                                     <outlet property="headerText" destination="i7C-fQ-acK" id="bBM-a7-6Xb"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="settings_general_single_line" editingAccessoryType="disclosureIndicator" id="a8V-rc-iwG" customClass="GeneralSettingSinglelineCell" customModule="ProtonMail" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="365.5" width="375" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a8V-rc-iwG" id="z4V-8m-HcD">
+                                    <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="QIk-df-Ewb">
+                                            <rect key="frame" x="23" y="17" width="318" height="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="QIk-df-Ewb" firstAttribute="top" secondItem="z4V-8m-HcD" secondAttribute="topMargin" constant="6" id="FwO-e8-aV2"/>
+                                        <constraint firstAttribute="trailing" secondItem="QIk-df-Ewb" secondAttribute="trailing" id="X49-GY-Y6N"/>
+                                        <constraint firstItem="QIk-df-Ewb" firstAttribute="leading" secondItem="z4V-8m-HcD" secondAttribute="leadingMargin" constant="7" id="dbc-x7-zQh"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="QIk-df-Ewb" secondAttribute="bottom" constant="6" id="lWA-U9-hk5"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="LeftText" destination="QIk-df-Ewb" id="fjI-Pt-r3X"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="settings_twolines" rowHeight="120" id="7Jh-rt-PYs" customClass="SettingsCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="365.5" width="375" height="120"/>
+                                <rect key="frame" x="0.0" y="415.5" width="375" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Jh-rt-PYs" id="Pat-mZ-FC0">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="119.5"/>
@@ -4796,7 +4821,7 @@
         <segue reference="PpL-SW-U8F"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="f3k-3A-WEA"/>
-        <segue reference="zIE-XJ-wkG"/>
+        <segue reference="GgS-nT-ctf"/>
         <segue reference="YGe-pV-72F"/>
     </inferredMetricsTieBreakers>
 </document>
