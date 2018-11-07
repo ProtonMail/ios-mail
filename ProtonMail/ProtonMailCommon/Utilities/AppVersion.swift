@@ -50,19 +50,19 @@ extension AppVersion {
     internal func migration() { // TODO: this logic should depend of pre-migration version and current version
         // Values need to be protected with mainKey
         
-        // Push subscriptions
-        if let oldToken = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeviceKey.token),
-            let oldDeviceUID = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeviceKey.UID)
+        // + Push subscriptions
+        if let oldToken = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeprecatedDeviceKeys.token),
+            let oldDeviceUID = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeprecatedDeviceKeys.UID)
         {
             // FIXME: this should somehow work with new APIs
-//            PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: oldToken, deviceID: oldDeviceUID))
+            //PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: oldToken, deviceID: oldDeviceUID))
         }
         
-        if let badToken = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeviceKey.badToken),
-            let badDeviceUID = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeviceKey.badUID)
+        if let badToken = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeprecatedDeviceKeys.badToken),
+            let badDeviceUID = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeprecatedDeviceKeys.badUID)
         {
             // FIXME: this should somehow work with new APIs
-//            PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: badToken, deviceID: badDeviceUID))
+            //PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: badToken, deviceID: badDeviceUID))
         }
         
         // + UserInfo
@@ -123,9 +123,19 @@ extension AppVersion {
         userCachedStatus.getShared().removeObject(forKey: UserDataService.Key.isRememberUser)
         userCachedStatus.getShared().removeObject(forKey: UserDataService.Key.userInfoPreMainKey)
         userCachedStatus.getShared().removeObject(forKey: UserDataService.Key.isRememberMailboxPassword)
-        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeviceKey.token)
-        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeviceKey.UID)
-        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeviceKey.badToken)
-        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeviceKey.badUID)
+        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeprecatedDeviceKeys.token)
+        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeprecatedDeviceKeys.UID)
+        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeprecatedDeviceKeys.badToken)
+        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeprecatedDeviceKeys.badUID)
+    }
+}
+
+extension PushNotificationService {
+    internal struct DeprecatedDeviceKeys { // TODO: move to migrations file
+        static let token = "DeviceTokenKey"
+        static let UID = "DeviceUID"
+        
+        static let badToken = "DeviceBadToken"
+        static let badUID = "DeviceBadUID"
     }
 }

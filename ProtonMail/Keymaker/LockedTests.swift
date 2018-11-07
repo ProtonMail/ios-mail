@@ -35,7 +35,7 @@ class LockedTests: XCTestCase {
     
     func testDataLockUnlock() {
         let key = self.makeKey()
-        let data = "Agrarian revolution was a mistake".data(using: .utf8)!
+        let data = message.data(using: .utf8)!
         
         do {
             let locked = try Locked<Data>.init(clearValue: data, with: key)

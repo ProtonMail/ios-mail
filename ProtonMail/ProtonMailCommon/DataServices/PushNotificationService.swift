@@ -20,46 +20,65 @@ import SWRevealViewController
 import Keymaker
 
 public class PushNotificationService {
-    public static var shared = PushNotificationService()
-    private static let keychainKey = String(describing: PushNotificationService.self)
+    typealias SubscriptionSettings = APIService.PushSubscriptionSettings
+    typealias EncryptionKit = PushNotificationDecryptor.EncryptionKit
+    
+    enum Subscription {
+        case none // no subscription locally
+        case notReported(SubscriptionSettings) // not sent to BE yet
+        case pending(SubscriptionSettings) // not on BE yet, but sent there
+        case reported(SubscriptionSettings) // this is on BE
+    }
+
     fileprivate var newerDeviceToken: String?
     fileprivate var launchOptions: [AnyHashable: Any]? = nil
+
+    public static var shared = PushNotificationService()
+    private let subscriptionSaver: Saver<Subscription>
+    private let outdatedSaver: Saver<Set<SubscriptionSettings>>
+    private let encryptionKitSaver: Saver<EncryptionKit>
+    private let sessionIDProvider: SessionIdProvider
+    private let deviceRegistrator: DeviceRegistrator
+    private let signInProvider: SignInProvider
     
-    // these two should be in Keychain in order to unregister after reinstall
-    fileprivate var outdatedSettings: Set<APIService.PushSubscriptionSettings> = []
-    fileprivate var currentSubscription: Subscription {
-        get {
-            guard let raw = sharedKeychain.keychain.data(forKey: PushNotificationService.keychainKey),
-                let subscription = try? PropertyListDecoder().decode(PushNotificationService.Subscription.self, from: raw) else
-            {
-                return .none
-            }
-            return subscription
+    init(subscriptionSaver: Saver<Subscription> = KeychainSaver(key: "pushNotificationSubscription"),
+         encryptionKitSaver: Saver<EncryptionKit> = PushNotificationDecryptor.saver,
+         outdatedSaver: Saver<Set<SubscriptionSettings>> = KeychainSaver(key: "pushNotificationOutdatedSubscriptions"),
+         sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
+         deviceRegistrator: DeviceRegistrator = sharedAPIService,
+         signInProvider: SignInProvider = SignInManagerProvider())
+    {
+        self.subscriptionSaver = subscriptionSaver
+        self.encryptionKitSaver = encryptionKitSaver
+        self.outdatedSaver = outdatedSaver
+        self.sessionIDProvider = sessionIDProvider
+        self.deviceRegistrator = deviceRegistrator
+        self.signInProvider = signInProvider
+        defer {
+            NotificationCenter.default.addObserver(self, selector: #selector(didUnlock), name: NSNotification.Name.didUnlock, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(didSignOut), name: NSNotification.Name.didSignOut, object: nil)
         }
-        set {
-            // save subscription to keychain
-            guard let raw = try? PropertyListEncoder().encode(newValue) else {
-                sharedKeychain.keychain.removeItem(forKey: PushNotificationService.keychainKey)
-                return
-            }
-            sharedKeychain.keychain.setData(raw, forKey: PushNotificationService.keychainKey)
-            
-            // save encryption kit to userdefaults
-            if case Subscription.reported(let settings) = newValue {
-                PushNotificationDecryptor.encryptionKit = settings.encryptionKit
-            } else {
-                PushNotificationDecryptor.encryptionKit = nil
-            }
-        }
-    }
-    
-    init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didUnlock), name: NSNotification.Name.didUnlock, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didSignOut), name: NSNotification.Name.didSignOut, object: nil)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    // these two should be in Keychain in order to unregister them after reinstall
+    fileprivate var outdatedSettings: Set<SubscriptionSettings> {
+        get { return self.outdatedSaver.get() ?? [] }
+        set { self.outdatedSaver.set(newValue: newValue) }
+    }
+    fileprivate var currentSubscription: Subscription {
+        get { return self.subscriptionSaver.get() ?? .none }
+        set {
+            self.subscriptionSaver.set(newValue: newValue)
+            
+            switch newValue { // save encryption kit to userdefaults since we do not care about its safety
+            case .reported(let settings):   self.encryptionKitSaver.set(newValue: settings.encryptionKit)
+            default:                        self.encryptionKitSaver.set(newValue: nil)
+            }
+        }
     }
     
     // MARK: - register for notificaitons
@@ -74,24 +93,21 @@ public class PushNotificationService {
         }
         
         self.outdatedSettings.forEach(self.unreport)
-        
     }
     
     public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
         self.newerDeviceToken = deviceToken
-        if SignInManager.shared.isSignedIn(), let _ = keymaker.mainKey {
+        if self.signInProvider.isSignedIn, let _ = keymaker.mainKey {
             self.didUnlock()
         }
     }
     
     @objc private func didUnlock() {
-        guard let sessionID = AuthCredential.fetchFromKeychain()?.userID,
-            let deviceToken = self.newerDeviceToken else
-        {
+        guard let sessionID = self.sessionIDProvider.sessionID, let deviceToken = self.newerDeviceToken else {
             return
         }
         
-        let newSettings = APIService.PushSubscriptionSettings(token: deviceToken, UID: sessionID) // here new keypair will be created
+        let newSettings = SubscriptionSettings(token: deviceToken, UID: sessionID) // here new keypair will be created
         
         switch self.currentSubscription {
         case .none, .notReported:
@@ -126,21 +142,22 @@ public class PushNotificationService {
     }
     
     // register on BE and validate local values
-    private func report(_ settings: APIService.PushSubscriptionSettings) {
+    private func report(_ settings: SubscriptionSettings) {
         self.currentSubscription = .pending(settings)
-        sharedAPIService.device(registerWith: settings) { _, _, error in
+        self.deviceRegistrator.device(registerWith: settings) { _, _, error in
             guard error == nil else {
                 self.currentSubscription = .notReported(settings)
                 return
             }
             self.currentSubscription = .reported(settings)
             self.outdatedSettings.remove(settings)
+            self.outdatedSettings.forEach(self.unreport)
         }
     }
     
     // unregister on BE and validate local values
-    internal func unreport(_ settings: APIService.PushSubscriptionSettings) {
-        sharedAPIService.deviceUnregister(settings) { _, _, error in
+    internal func unreport(_ settings: SubscriptionSettings) {
+        let completion: APIService.CompletionBlock = { _, _, error in
             guard error == nil else {
                 self.outdatedSettings.insert(settings)
                 return
@@ -155,6 +172,7 @@ public class PushNotificationService {
                 }
             }
         }
+        self.deviceRegistrator.deviceUnregister(settings, completion: completion)
     }
     
     // MARK: - launch options
@@ -278,22 +296,7 @@ public class PushNotificationService {
     }
 }
 
-extension PushNotificationService {
-    internal struct DeviceKey {
-        static let token = "DeviceTokenKey"
-        static let UID = "DeviceUID"
-        
-        static let badToken = "DeviceBadToken"
-        static let badUID = "DeviceBadUID"
-    }
-    
-    enum Subscription {
-        case none // no subscription locally
-        case notReported(APIService.PushSubscriptionSettings) // not sent to BE yet
-        case pending(APIService.PushSubscriptionSettings) // not on BE yet, but sent there
-        case reported(APIService.PushSubscriptionSettings) // this is on BE
-    }
-}
+// MARK: - overhead
 
 extension PushNotificationService.Subscription: Codable {
     internal enum CodingKeys: CodingKey {
@@ -306,11 +309,11 @@ extension PushNotificationService.Subscription: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        if let settings =  try? container.decode(APIService.PushSubscriptionSettings.self, forKey: .reported) {
+        if let settings =  try? container.decode(PushNotificationService.SubscriptionSettings.self, forKey: .reported) {
             self = .reported(settings)
             return
         }
-        if let settings =  try? container.decode(APIService.PushSubscriptionSettings.self, forKey: .pending) {
+        if let settings =  try? container.decode(PushNotificationService.SubscriptionSettings.self, forKey: .pending) {
             self = .pending(settings)
             return
         }
@@ -327,3 +330,30 @@ extension PushNotificationService.Subscription: Codable {
         }
     }
 }
+
+
+// MARK: - Dependency Injection sugar
+
+protocol SessionIdProvider {
+    var sessionID: String? { get }
+}
+struct AuthCredentialSessionIDProvider: SessionIdProvider {
+    var sessionID: String? {
+        return AuthCredential.fetchFromKeychain()?.userID
+    }
+}
+
+protocol SignInProvider {
+    var isSignedIn: Bool { get }
+}
+struct SignInManagerProvider: SignInProvider {
+    var isSignedIn: Bool {
+        return SignInManager.shared.isSignedIn()
+    }
+}
+
+protocol DeviceRegistrator {
+    func device(registerWith settings: APIService.PushSubscriptionSettings, completion: APIService.CompletionBlock?)
+    func deviceUnregister(_ settings: APIService.PushSubscriptionSettings, completion: @escaping APIService.CompletionBlock)
+}
+extension APIService: DeviceRegistrator {}
