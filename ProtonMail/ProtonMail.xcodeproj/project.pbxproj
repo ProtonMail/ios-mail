@@ -251,6 +251,7 @@
 		2929FC1B5DB0DF55732A29D3F89E9C90 /* OpenPGP+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD83722A1989FBEACE70896416C38CF /* OpenPGP+Extension.swift */; };
 		2941F7672C8E4E80396A992847BFEA2B /* MultiLabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED5F906B69F8814BD7FF55E4F9C5690 /* MultiLabelDisplayView.swift */; };
 		29B1FCE977921A7D75CECE7946613475 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */; };
+		29B3807946D00A1172298D4D3FB96E47 /* MultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA0810002C3F8B9C226685AD15481C5 /* MultiSet.swift */; };
 		2A07B875B14503AB79DCC0ED40B92AD3 /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FA54B507F5B492266760AAACC658A6 /* SwiftTryCatch.m */; };
 		2A10A09F123AABF3474F0796C64A68AC /* PhotoAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */; };
 		2A2694C1FF72FCD2E97F186917FAD911 /* TwoFACodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA72760EAA3C44E6CBDF96D02D86D24 /* TwoFACodeView.swift */; };
@@ -372,6 +373,7 @@
 		3F4E2BB0216F0E3F69D3034CD4CFC9B3 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A17542C9E75573C9AE7D50D090DC4BC /* AuthCredential.swift */; };
 		3F53BB66B055BB77037BCCE6F12A00AB /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815DFC41477DB4D20C79538B64D0893 /* Key.swift */; };
 		3FC009592FCFF1270C0CD3CC67656F9B /* MonitorSavesDataService+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DE22D2A52126D2B633EBEDD802C63B /* MonitorSavesDataService+Extension.swift */; };
+		3FD53F4B9E69005AB94A6C3E48B10F8F /* MultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA0810002C3F8B9C226685AD15481C5 /* MultiSet.swift */; };
 		400877C028F8A8D378E36B96F5751EE8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCEB3AB6A95864C955CC7CE2F7C50B5 /* UserNotifications.framework */; };
 		403D670A56FB705B43E723CF405E8B96 /* SignupViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1D2C6642E07C8BB129A67146BE1541 /* SignupViewModelImpl.swift */; };
 		403EF978286E1C34B5B39ED2D427AA4B /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEEE1FF865646F5FD3790C944515FA1 /* FontManager.swift */; };
@@ -617,6 +619,7 @@
 		65C49470A94EFC8FBC95F51AC8B2EA2C /* OpenPGP+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C5DCC81C6E61BD8EE0FA7C2E54CD7 /* OpenPGP+String+Extension.swift */; };
 		661F6EFDB7DC67F3BBABFF467D851BDF /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */; };
 		6680B419189C1F7035A421E6E5C88774 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
+		6684A7F1FA9DCBD385DB2AB04F17DF46 /* MultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA0810002C3F8B9C226685AD15481C5 /* MultiSet.swift */; };
 		6755EA60DD06C67151033E1E9551646A /* LastUpdatedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21126C97B5EB1DCAC67FFC28CB6D406F /* LastUpdatedStore.swift */; };
 		676DF650D1EF869785997153601FDA55 /* ContactVO+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56C53C0EE62F034C5DEC86CDDB56EFE /* ContactVO+Extension.swift */; };
 		6770D99F719B68B60255FEA370764CCB /* MailboxHumanCheckMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349F7D54D6EB9BEF5BEE14B6D967EA05 /* MailboxHumanCheckMenuVC.swift */; };
@@ -887,6 +890,7 @@
 		9442E4EEA9825AE9ADA9948F84634641 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BE9D2FABB2F4204098EE8B5588DE5C /* Settings+Defined.swift */; };
 		946EFE2BD395638E4B98D70582531EF3 /* BugDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE482702915B1DBA8BB4B4473E61AC73 /* BugDataService.swift */; };
 		948AE53265DB086B11CA8B3E15FE989E /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E503FA48E816D788CBE16EFDC359D08 /* AppVersionTests.swift */; };
+		94BFB9FF36A8459FC69EC2668783CBBD /* MultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA0810002C3F8B9C226685AD15481C5 /* MultiSet.swift */; };
 		950338D41E41C08DB171FAE68290A7C9 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EDC4C70B6C0984A3A7109AFA69BD16 /* UICollectionView+Extension.swift */; };
 		95092C4430BA5BDFCDDF35C6E4DB97CD /* NSError+Alert+Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350DB1CE5A6D9FB0346D24A0319EB2E /* NSError+Alert+Mail.swift */; };
 		957284F12040AF5EE03C681662F50916 /* UpdateTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659ADC577F02FBBD35B34B299A700FD /* UpdateTime.swift */; };
@@ -2031,6 +2035,7 @@
 		98FE0E4D30E35568E760368809109AC8 /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
 		99498D0AAFDBA306C8569EAC3640B7A8 /* PushDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A59B6B88BEF9D2AA120A41C3647CECA /* Pods-PushService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PushService/Pods-PushService.debug.xcconfig"; sourceTree = "<group>"; };
+		9AA0810002C3F8B9C226685AD15481C5 /* MultiSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSet.swift; sourceTree = "<group>"; };
 		9AAD8DBF7CB24230E04BA6EE2259E2F4 /* ContactCell+Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactCell+Share.swift"; sourceTree = "<group>"; };
 		9B134B304EA7B3B50AB022AD491099FA /* String+Mime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Mime.swift"; sourceTree = "<group>"; };
 		9B29485425779054E5C8A05FA456FC95 /* PushService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PushService.entitlements; sourceTree = "<group>"; };
@@ -2501,6 +2506,7 @@
 				7CE6E5D71D01C07A5C2C758B1597F905 /* ExternalURL+Extension.swift */,
 				0EEEE1FF865646F5FD3790C944515FA1 /* FontManager.swift */,
 				9DA5E8F1461234804B3FAB424722B8BF /* MessageAction.swift */,
+				9AA0810002C3F8B9C226685AD15481C5 /* MultiSet.swift */,
 				A37E4B7D314B8AE04FA0DD2249BC304D /* NotificationName+Extension.swift */,
 				9FDFFD7E8C5D6FADBD79A09D8232C4B6 /* ViewDefined.swift */,
 			);
@@ -5028,6 +5034,7 @@
 				513E0EAA2D2B0A9AD58188ABD1BACE75 /* MonitorSavesDataService.swift in Sources */,
 				23B95B89970A88A4B802D60600889526 /* MoreOptionsView.swift in Sources */,
 				3D3D324A5CCF99885BB0CF20A8316767 /* MultiLabelDisplayView.swift in Sources */,
+				6684A7F1FA9DCBD385DB2AB04F17DF46 /* MultiSet.swift in Sources */,
 				3D3EC5B0E3BD9CC0A2E231458DA6CF32 /* NSBundle+Language.m in Sources */,
 				71697A8EF465DF8CD727BC7FD5BD2C32 /* NSCoder+Extension.swift in Sources */,
 				4CABA31AC4D928495019100BB06962F7 /* NSError+Alert+Extenion.swift in Sources */,
@@ -5468,6 +5475,7 @@
 				750A31A0E6FD65B566C44AC57286CC5E /* MonitorSavesDataService.swift in Sources */,
 				3208DAEEF9A244B12D1F38B36F7AB62D /* MoreOptionsView.swift in Sources */,
 				2941F7672C8E4E80396A992847BFEA2B /* MultiLabelDisplayView.swift in Sources */,
+				3FD53F4B9E69005AB94A6C3E48B10F8F /* MultiSet.swift in Sources */,
 				56AB2FC32CF834C801E42DDEE3564378 /* NSBundle+Language.m in Sources */,
 				6D6DA045A212F6C91FA6522349DB7E40 /* NSCoder+Extension.swift in Sources */,
 				0AB3E119781E0FE840370738688AAF12 /* NSError+Alert+Extenion.swift in Sources */,
@@ -5807,6 +5815,7 @@
 				DB86C5A30869359ABE14B4AC9980C7EC /* MimeTypes.swift in Sources */,
 				678730A70778FD28F1D57C59CF2DDDF3 /* MonitorSavesDataService+Extension.swift in Sources */,
 				1599A0BD95566B4A87A1AD3E247750CD /* MonitorSavesDataService.swift in Sources */,
+				94BFB9FF36A8459FC69EC2668783CBBD /* MultiSet.swift in Sources */,
 				F1130D0F02453E2A7E09974CE02C945E /* NSBundle+Language.m in Sources */,
 				A8437E03C57B82EFDB1D3A82583A1E67 /* NSCoder+Extension.swift in Sources */,
 				64AF8ACB417DD0A2973E6211F4382F47 /* NSError+Alert+Share.swift in Sources */,
@@ -6019,6 +6028,7 @@
 				D4E6F863492709D4DBAA8EBD483308FE /* MimeTypes.swift in Sources */,
 				3FC009592FCFF1270C0CD3CC67656F9B /* MonitorSavesDataService+Extension.swift in Sources */,
 				0696394104C3C38308A216E266021717 /* MonitorSavesDataService.swift in Sources */,
+				29B3807946D00A1172298D4D3FB96E47 /* MultiSet.swift in Sources */,
 				BE184EF099D3757817B8784E7D7DFA31 /* NSBundle+Language.m in Sources */,
 				31F76EEFDDE266550B83AFEF70BDBAD7 /* NSCoder+Extension.swift in Sources */,
 				8DA1EC457236FFDBD492E0A0DB301AA5 /* NSError+Alert+Share.swift in Sources */,

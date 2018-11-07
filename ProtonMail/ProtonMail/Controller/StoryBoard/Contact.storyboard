@@ -1637,7 +1637,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="167"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Andy Warhol" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="p3f-M6-MDi" userLabel="Full Name Label">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="p3f-M6-MDi" userLabel="Full Name Label">
                                             <rect key="frame" x="8" y="71" width="304" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="xZa-9U-yFT"/>
@@ -1700,7 +1700,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AW" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xkK-BX-cWr" userLabel="Short Name Label">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xkK-BX-cWr" userLabel="Short Name Label">
                                             <rect key="frame" x="132.5" y="8" width="55" height="55"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="55" id="DZb-Wf-DMV"/>
@@ -2518,7 +2518,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="6gL-17-Vjp"/>
-        <segue reference="oC7-Qd-EW1"/>
+        <segue reference="sDR-N5-yCe"/>
         <segue reference="rru-oY-8Lv"/>
         <segue reference="Grd-B0-e0M"/>
         <segue reference="GcK-DS-QnS"/>
