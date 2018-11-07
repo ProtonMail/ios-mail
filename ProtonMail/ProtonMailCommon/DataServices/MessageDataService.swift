@@ -1051,21 +1051,28 @@ class MessageDataService {
                         params["MessageID"] =  attachment.message.messageID 
                         default_address_id = attachment.message.getAddressID
                     }
-                    
                     let pwd = sharedUserDataService.mailboxPassword ?? ""
-                    let encrypt_data = attachment.encrypt(byAddrID: default_address_id, mailbox_pwd: pwd)
-                    //TODO:: here need check is encryptdata is nil and return the error to user.
-                    let keyPacket = encrypt_data?.keyPacket()
-                    let dataPacket = encrypt_data?.dataPacket()
+                    guard let encrypt_data = attachment.encrypt(byAddrID: default_address_id, mailbox_pwd: pwd) else {
+                        completion?(nil, nil, NSError.encryptionError()) //
+                        return
+                    }
+                    guard let keyPacket = encrypt_data.keyPacket() else {
+                        completion?(nil, nil, NSError.encryptionError()) //
+                        return
+                    }
+                    guard let dataPacket = encrypt_data.dataPacket() else {
+                        completion?(nil, nil, NSError.encryptionError())
+                        return
+                    }
                     let signed = attachment.sign(byAddrID: default_address_id, mailbox_pwd: pwd)
+                    
                     let completionWrapper: CompletionBlock = { task, response, error in
                         PMLog.D("SendAttachmentDebug == finish upload att!")
                         if error == nil {
                             if let attDict = response?["Attachment"] as? [String : Any] {
                                 if let messageID = attDict["ID"] as? String {
                                     attachment.attachmentID = messageID
-                                    attachment.keyPacket = keyPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                                    
+                                    attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                                     // since the encrypted attachment is successfully uploaded, we no longer need it cleartext in db
                                     attachment.fileData = nil
                                     if let fileUrl = attachment.localURL,
@@ -1194,8 +1201,6 @@ class MessageDataService {
                 return
             }
             
-            
-
             if message.managedObjectContext == nil {
                 NSError.alertLocalCacheErrorToast()
                 let err = RuntimeError.bad_draft.error

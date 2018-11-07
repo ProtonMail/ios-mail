@@ -485,7 +485,8 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
             packages.append(mimeAddress)
         }
         out["Packages"] = packages
-        PMLog.D( out.json(prettyPrinted: true) )
+        //PMLog.D( out.json(prettyPrinted: true) )
+        PMLog.D( "API toDict done" )
         return out
     }
     

@@ -227,9 +227,9 @@ class APIService {
      :param: dataPacket encrypt attachment data package
      */
     internal func upload (byUrl url: String,
-                          parameters: Any?,
-                          keyPackets : Data!,
-                          dataPacket : Data!,
+                          parameters: [String:String],
+                          keyPackets : Data,
+                          dataPacket : Data,
                           signature : Data?,
                           headers: [String : Any]?,
                           authenticated: Bool = true,
@@ -240,7 +240,9 @@ class APIService {
             if let error = error {
                 completion(nil, nil, error)
             } else {
-                let request = self.sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST", urlString: url, parameters: parameters as! [String:String], constructingBodyWith: { (formData) -> Void in
+                let request = self.sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST",
+                                                                                         urlString: url, parameters: parameters,
+                                                                                         constructingBodyWith: { (formData) -> Void in
                     let data: AFMultipartFormData = formData
                     data.appendPart(withFileData: keyPackets, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
                     data.appendPart(withFileData: dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" )

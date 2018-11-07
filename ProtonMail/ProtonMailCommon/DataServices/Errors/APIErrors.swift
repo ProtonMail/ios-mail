@@ -75,6 +75,13 @@ extension NSError {
             localizedDescription: LocalString._error_bad_response_title,
             localizedFailureReason: LocalString._error_cant_parse_response_body)
     }
+    //TODO:: move to other place
+    public class func encryptionError() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.badParameter,
+            localizedDescription: "Attachment encryption failed",
+            localizedFailureReason: "Attachment encryption failed")
+    }
     
     public class func unableToParseResponse(_ response: Any?) -> NSError {
         let noObject = LocalString._error_no_object
