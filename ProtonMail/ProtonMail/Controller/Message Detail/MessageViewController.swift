@@ -363,11 +363,11 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             render.drawPage(at: i - 1, in: bounds)
         }
         UIGraphicsEndPDFContext();
-        let documentsPath = FileManager.default.attachmentDirectory.appendingPathComponent("\(self.message.subject).pdf")
+        var filename = self.message.subject
+        filename = filename.preg_replace("[^a-zA-Z0-9_]+", replaceto: "-")
+        let documentsPath = FileManager.default.attachmentDirectory.appendingPathComponent("\(filename).pdf")
         PMLog.D(documentsPath.absoluteString)
         try? pdfData.write(to: documentsPath, options: [.atomic])
-//        pdfData.write(toFile: documentsPath, atomically: true)
-        
         tempFileUri = documentsPath
         let previewQL = QuickViewViewController()
         previewQL.dataSource = self
