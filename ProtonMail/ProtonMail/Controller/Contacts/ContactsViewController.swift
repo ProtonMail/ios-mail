@@ -14,8 +14,11 @@ import UIKit
 import Contacts
 import CoreData
 
-class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
-{
+class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew {
+    typealias argType = ContactsViewModel
+    
+    // Mark: - view model
+    fileprivate var viewModel : ContactsViewModel!
     
     fileprivate let kContactCellIdentifier: String = "ContactCell"
     fileprivate let kProtonMailImage: UIImage      = UIImage(named: "encrypted_main")!
@@ -24,8 +27,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
     
     fileprivate var searchString : String = ""
  
-    // Mark: - view model
-    fileprivate var viewModel : ContactsViewModel!
     
     // MARK: - View Outlets
     @IBOutlet var tableView: UITableView!
@@ -42,10 +43,13 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
     func inactiveViewModel() {
     }
     
-    func setViewModel(_ vm: Any) {
-        viewModel = vm as! ContactsViewModel
+    func set(viewModel: ContactsViewModel) {
+        self.viewModel = viewModel
     }
     
+    deinit {
+        self.viewModel.resetFetchedController()
+    }
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,9 +73,10 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
         if #available(iOS 11.0, *) {
             self.navigationController?.navigationBar.prefersLargeTitles = false
         } else {
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage.image(with: UIColor.ProtonMail.Nav_Bar_Background),
-                                                                        for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
-            self.navigationController?.navigationBar.shadowImage = UIImage.image(with: UIColor.ProtonMail.Nav_Bar_Background)
+            self.navigationController?.navigationBar.setBackgroundImage(.image(with: UIColor.ProtonMail.Nav_Bar_Background),
+                                                                        for: UIBarPosition.any,
+                                                                        barMetrics: UIBarMetrics.default)
+            self.navigationController?.navigationBar.shadowImage = .image(with: UIColor.ProtonMail.Nav_Bar_Background)
             self.refreshControl.backgroundColor = .white
         }
         self.definesPresentationContext = true
@@ -82,7 +87,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
         
         //get all contacts
         self.viewModel.setupFetchedResults(delaget: self)
-        tableView.reloadData()
         self.prepareSearchBar()
         
         prepareNavigationItemRightDefault()
@@ -92,6 +96,8 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
         super.viewDidAppear(animated)
         tableView.setEditing(false, animated: true)
         self.title = LocalString._contacts_title
+        
+        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {

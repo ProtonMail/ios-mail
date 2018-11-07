@@ -452,9 +452,13 @@ class ContactDataService {
         
         if self.retries > 3 {
             lastUpdatedStore.contactsCached = 0
-            self.isFetching = false
-            "Retried too many times when fetching contacts.".alertToast()
-            completion?(nil, nil)
+            self.isFetching = false;
+            
+            {
+                "Retried too many times when fetching contacts.".alertToast()
+                 completion?(nil, nil)
+            } ~> .main
+            return
         }
         
         self.isFetching = true
@@ -490,12 +494,18 @@ class ContactDataService {
                                                                          fromJSONArray: contacts,
                                                                          in: context) as? [Contact]
                                 if let error = context.saveUpstreamIfNeeded() {
-                                    PMLog.D(" error: \(error)")
-                                    error.alertErrorToast()
+                                    PMLog.D(" error: \(error)");
+                                    
+                                    {
+                                        error.alertErrorToast()
+                                    } ~> .main
                                 }
                             } catch let ex as NSError {
-                                PMLog.D(" error: \(ex)")
-                                ex.alertErrorToast()
+                                PMLog.D(" error: \(ex)");
+                                
+                                {
+                                    ex.alertErrorToast()
+                                } ~> .main
                             }
                         }
                     }
@@ -539,16 +549,22 @@ class ContactDataService {
                                         let _ = contact.fixName(force: true)
                                     }
                                     if let error = context.saveUpstreamIfNeeded() {
-                                        PMLog.D("contact emails saving error: \(error)")
-                                        error.alertErrorToast()
+                                        PMLog.D("contact emails saving error: \(error)");
+                                        
+                                        {
+                                            error.alertErrorToast()
+                                        } ~> .main
                                     } else {
                                         //completion?(contacts, nil)
                                         //completion?(self.allContacts(), nil)
                                     }
                                 }
                             } catch let ex as NSError {
-                                PMLog.D("GRTJSONSerialization contact emails error: \(ex) \(ex.userInfo)")
-                                ex.alertErrorToast()
+                                PMLog.D("GRTJSONSerialization contact emails error: \(ex) \(ex.userInfo)");
+                                
+                                {
+                                    ex.alertErrorToast()
+                                } ~> .main
                             }
                         }
                     }
@@ -559,8 +575,11 @@ class ContactDataService {
                 self.retries = 0
             } catch let ex as NSError {
                 lastUpdatedStore.contactsCached = 0
-                self.isFetching = false
-                completion?(nil, ex)
+                self.isFetching = false;
+                
+                {
+                    completion?(nil, ex)
+                } ~> .main
             }
         } ~> .async
     }

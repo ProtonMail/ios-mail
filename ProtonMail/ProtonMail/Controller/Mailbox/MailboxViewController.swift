@@ -552,8 +552,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     private func checkContact() {
-        sharedContactDataService.fetchContacts { (_, error) in
-            error?.alertErrorToast()
+        sharedContactDataService.fetchContacts { (_, _) in
+
         }
     }
     

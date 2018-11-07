@@ -20,6 +20,13 @@ final class ContactsViewModelImpl : ContactsViewModel {
         self.fetchedResultsController?.delegate = delaget
     }
     
+    override func resetFetchedController() {
+        if let fetch = self.fetchedResultsController {
+            fetch.delegate = nil
+            self.fetchedResultsController = nil
+        }
+    }
+    
     func correctCachedData() {
         if let objects = fetchedResultsController?.fetchedObjects as? [Contact] {
             if let context = self.fetchedResultsController?.managedObjectContext {
@@ -92,6 +99,9 @@ final class ContactsViewModelImpl : ContactsViewModel {
     }
     
     override func item(index: IndexPath) -> Contact? {
+        guard self.fetchedResultsController?.numberOfRows(in: index.section) > index.row else {
+            return nil
+        }
         return fetchedResultsController?.object(at: index) as? Contact
     }
     
