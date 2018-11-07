@@ -190,13 +190,15 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
     func search(text: String?) {
         if let text = text {
             if text == "" {
-                fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
+                fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(%K == 2)",
+                                                                               Label.Attributes.type)
             } else {
                 fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "%K == 2 AND name CONTAINS[cd] %@",
                                                                                argumentArray: [Label.Attributes.type, text])
             }
         } else {
-            fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
+            fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(%K == 2)",
+                                                                           Label.Attributes.type)
         }
         
         do {

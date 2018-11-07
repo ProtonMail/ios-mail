@@ -123,22 +123,27 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         }
     }
     
+    private func dismiss() {
+        if self.presentingViewController != nil {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            let _ = self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
     private func save() {
-        firstly {
-            () -> Promise<Void> in
-            
+        firstly { () -> Promise<Void> in
             ActivityIndicatorHelper.showActivityIndicator(at: self.view)
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            
             return viewModel.saveDetail()
-            }.done {
-                self.dismiss(animated: true, completion: nil)
-            }.ensure {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-            }.catch {
-                error in
-                error.alert(at: self.view)
+        }.done {
+            self.dismiss()
+        }.ensure {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+        }.catch {
+            error in
+            error.alert(at: self.view)
         }
     }
     
@@ -250,7 +255,7 @@ extension ContactGroupEditViewController: UITableViewDelegate
                     UIApplication.shared.isNetworkActivityIndicatorVisible = true
                     return self.viewModel.deleteContactGroup()
                     }.done {
-                        self.dismiss(animated: true, completion: nil)
+                        self.dismiss()
                     }.ensure {
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         ActivityIndicatorHelper.hideActivityIndicator(at: self.view)

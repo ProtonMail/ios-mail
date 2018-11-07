@@ -308,7 +308,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
-        self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.hidesNavigationBarDuringPresentation = false
         self.searchController.automaticallyAdjustsScrollViewInsets = true
         self.searchController.searchBar.sizeToFit()
         self.searchController.searchBar.keyboardType = .default
@@ -317,7 +317,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.searchController.searchBar.tintColor = .white
         self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
         self.searchController.searchBar.backgroundColor = .clear
-        
         if #available(iOS 11.0, *) {
             self.searchViewConstraint.constant = 0.0
             self.searchView.isHidden = true
