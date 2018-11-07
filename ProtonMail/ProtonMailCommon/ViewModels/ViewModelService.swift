@@ -74,7 +74,7 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func contactDetailsViewModel(_ vmp : ViewModelProtocol, contact: Contact!) {
+    func contactDetailsViewModel(_ vmp : ViewModelProtocolBase, contact: Contact!) {
         fatalError("This method must be overridden")
     }
     

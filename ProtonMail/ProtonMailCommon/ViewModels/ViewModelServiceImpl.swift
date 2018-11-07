@@ -196,12 +196,9 @@ class ViewModelServiceImpl: ViewModelService {
         vmp.setViewModel(ContactsViewModelImpl())
     }
     
-    override func contactDetailsViewModel(_ vmp: ViewModelProtocol, contact: Contact!) {
-        if activeViewController != nil {
-            
-        }
-        activeViewController = vmp
-        vmp.setViewModel(ContactDetailsViewModelImpl(c: contact))
+    override func contactDetailsViewModel(_ vmp: ViewModelProtocolBase, contact: Contact!) {
+        activeViewControllerNew = vmp
+        vmp.setModel(vm: ContactDetailsViewModelImpl(c: contact))
     }
     
     override func contactAddViewModel(_ vmp: ViewModelProtocol) {

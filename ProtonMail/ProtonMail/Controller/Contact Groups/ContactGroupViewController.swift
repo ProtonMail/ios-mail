@@ -335,12 +335,10 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     @objc func fireFetch() {
         firstly {
             return self.viewModel.fetchLatestContactGroup()
-            }.done {
-                self.refreshControl.endRefreshing()
-            }.catch {
-                error in
-                
-                error.alert(at: self.view)
+        }.done {
+            self.refreshControl.endRefreshing()
+        }.catch { error in
+            error.alert(at: self.view)
         }
     }
     

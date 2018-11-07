@@ -14,7 +14,8 @@ import UIKit
 import PromiseKit
 import AwaitKit
 
-class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactDetailViewController: ProtonMailViewController, ViewModelProtocolNew {
+    typealias argType = ContactDetailsViewModel
     
     fileprivate var viewModel : ContactDetailsViewModel!
     
@@ -53,8 +54,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     func inactiveViewModel() {
     }
     
-    func setViewModel(_ vm: Any) {
-        viewModel = vm as! ContactDetailsViewModel
+    func set(viewModel: ContactDetailsViewModel) {
+        self.viewModel = viewModel
     }
     
     ///

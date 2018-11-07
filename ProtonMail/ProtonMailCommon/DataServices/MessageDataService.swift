@@ -781,8 +781,8 @@ class MessageDataService {
         sharedFailedQueue.clear()
         
         //tempary for clean contact cache
-        sharedContactDataService.clean() //here need move to a general data service manager
         sharedLabelsDataService.cleanUp()
+        sharedContactDataService.clean() //here need move to a general data service manager
     }
     
     fileprivate func cleanMessage() {

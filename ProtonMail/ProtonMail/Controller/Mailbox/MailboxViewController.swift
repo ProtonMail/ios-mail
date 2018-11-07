@@ -547,7 +547,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     @objc func refreshPage() {
         if !fetchingStopped {
-            getLatestMessages()
+            self.getLatestMessages()
+        }
+    }
+    
+    private func checkContact() {
+        sharedContactDataService.fetchContacts { (_, error) in
+            error?.alertErrorToast()
         }
     }
     
@@ -954,6 +960,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                                            completion: complete)
                 self.checkEmptyMailbox()
             }
+            
+            self.checkContact()
         }
     }
     

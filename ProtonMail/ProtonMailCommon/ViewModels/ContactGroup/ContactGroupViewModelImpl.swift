@@ -137,9 +137,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
      */
     func fetchLatestContactGroup() -> Promise<Void>
     {
-        return Promise {
-            seal in
-            
+        return Promise { seal in
             if self.isFetching == false {
                 self.isFetching = true
                 
@@ -154,6 +152,10 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
                                                                             seal.fulfill(())
                                                                         }
                 })
+                
+                sharedContactDataService.fetchContacts { (_, error) in
+                    
+                }
             } else {
                 seal.fulfill(())
             }

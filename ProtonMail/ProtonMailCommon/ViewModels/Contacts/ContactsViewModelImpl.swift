@@ -130,7 +130,12 @@ final class ContactsViewModelImpl : ContactsViewModel {
                 self.isFetching = false
                 self.fetchComplete?(nil, nil)
             })
+            
+            sharedContactDataService.fetchContacts { (_, error) in
+                
+            }
         }
+        
     }
 
     // MARK: - timer overrride

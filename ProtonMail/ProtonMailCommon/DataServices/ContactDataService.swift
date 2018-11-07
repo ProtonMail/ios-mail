@@ -444,11 +444,21 @@ class ContactDataService {
      - Parameter completion: async complete response
      **/
     fileprivate var isFetching : Bool = false
+    fileprivate var retries : Int = 0
     func fetchContacts(completion: ContactFetchComplete?) {
         if lastUpdatedStore.contactsCached == 1 || isFetching {
             return
         }
+        
+        if self.retries > 3 {
+            lastUpdatedStore.contactsCached = 0
+            self.isFetching = false
+            "Retried too many times when fetching contacts.".alertToast()
+            completion?(nil, nil)
+        }
+        
         self.isFetching = true
+        self.retries = self.retries + 1
         {
             do {
                 // fetch contacts, without their respective emails
@@ -481,15 +491,17 @@ class ContactDataService {
                                                                          in: context) as? [Contact]
                                 if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D(" error: \(error)")
+                                    error.alertErrorToast()
                                 }
                             } catch let ex as NSError {
                                 PMLog.D(" error: \(ex)")
+                                ex.alertErrorToast()
                             }
                         }
                     }
                 }
                 
-                // fetch contact groups
+                // fetch contact groups  //TDOO:: this fetch could be removed.
                 // TODO: if I don't manually store the labels first, the record won't be saved automatically? (cascade)
                 sharedLabelsDataService.fetchLabels(type: 2)
                 
@@ -528,7 +540,7 @@ class ContactDataService {
                                     }
                                     if let error = context.saveUpstreamIfNeeded() {
                                         PMLog.D("contact emails saving error: \(error)")
-                                        //completion?(nil, error)
+                                        error.alertErrorToast()
                                     } else {
                                         //completion?(contacts, nil)
                                         //completion?(self.allContacts(), nil)
@@ -536,7 +548,7 @@ class ContactDataService {
                                 }
                             } catch let ex as NSError {
                                 PMLog.D("GRTJSONSerialization contact emails error: \(ex) \(ex.userInfo)")
-                                //completion?(nil, ex)
+                                ex.alertErrorToast()
                             }
                         }
                     }
@@ -544,7 +556,10 @@ class ContactDataService {
                 
                 lastUpdatedStore.contactsCached = 1
                 self.isFetching = false
+                self.retries = 0
             } catch let ex as NSError {
+                lastUpdatedStore.contactsCached = 0
+                self.isFetching = false
                 completion?(nil, ex)
             }
         } ~> .async
