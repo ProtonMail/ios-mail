@@ -300,7 +300,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = LocalString._general_search_placeholder
-        searchController.searchBar.setValue(LocalString._general_cancel_button,
+        searchController.searchBar.setValue(LocalString._general_done_button,
                                             forKey:"_cancelButtonText")
         
         self.searchController.searchResultsUpdater = self

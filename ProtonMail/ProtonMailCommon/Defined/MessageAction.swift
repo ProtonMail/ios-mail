@@ -91,7 +91,7 @@ enum MessageSwipeAction : Int, CustomStringConvertible {
             case .archive:
                 return LocalString._locations_archive_desc
             case .unread:
-                return LocalString._mark_as_unread 
+                return LocalString._mark_as_unread_short
             }
         }
     }

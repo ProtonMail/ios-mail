@@ -16,6 +16,7 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
     @IBOutlet weak var selectionIcon: UIImageView!
     private var delegate: ContactGroupSubSelectionViewModelEmailCellDelegate!
     private var data: DraftEmailData? = nil
+    private var indexPath: IndexPath? = nil
     
     private var isCurrentlySelected: Bool = false {
         didSet {
@@ -104,6 +105,7 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
             }
         }
         
+        self.indexPath = indexPath
         self.data = DraftEmailData(name: name, email: email)
         emailLabel.text = getDisplayText()
         self.delegate = delegate
@@ -121,11 +123,11 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
         self.isCurrentlySelected = !self.isCurrentlySelected
         
         // this is the state that we currently want
-        if let data = self.data {
+        if let indexPath = self.indexPath {
             if self.isCurrentlySelected {
-                delegate.select(data: data)
+                delegate.select(indexPath: indexPath)
             } else {
-                delegate.deselect(data: data)
+                delegate.deselect(indexPath: indexPath)
             }
         } else {
             // TODO: error handling
