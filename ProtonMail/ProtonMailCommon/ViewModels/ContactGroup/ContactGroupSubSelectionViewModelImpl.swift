@@ -55,7 +55,8 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
                 var found = false
                 for (i, candidate) in emailData.enumerated() {
                     if member.email == candidate.email &&
-                        member.name == candidate.name {
+                        member.name == candidate.name &&
+                        emailData[i].isSelected == false { // case: >= 2 identical name-email pair occurs
                         emailData[i].isSelected = true
                         found = true
                         break
@@ -103,14 +104,8 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     /**
      Select the given email data
     */
-    func select(data: DraftEmailData) {
-        for i in emailArray.indices {
-            if emailArray[i].email == data.email,
-                emailArray[i].name == data.name {
-                emailArray[i].isSelected = true
-                break
-            }
-        }
+    func select(indexPath: IndexPath) {
+        emailArray[indexPath.row - 1].isSelected = true
         
         // TODO: performance improvement
         if self.isAllSelected() {
@@ -131,17 +126,11 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     /**
      Deselect the given email data
     */
-    func deselect(data: DraftEmailData) {
+    func deselect(indexPath: IndexPath) {
         // TODO: performance improvement
         let performDeselectInHeader = self.isAllSelected()
         
-        for i in emailArray.indices {
-            if emailArray[i].email == data.email,
-                emailArray[i].name == data.name {
-                emailArray[i].isSelected = false
-                break
-            }
-        }
+        emailArray[indexPath.row - 1].isSelected = false
         
         if performDeselectInHeader {
              delegate.reloadTable()
