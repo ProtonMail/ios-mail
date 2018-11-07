@@ -81,6 +81,6 @@ class AppConstants {
         }
     }
     
-    static let MaxNumberOfRecipients: Int = 25
+    static let MaxNumberOfRecipients: Int = 100
 }
 

@@ -406,6 +406,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             let notes = viewModel.getNotes()
             let note = notes[row]
             cell.configCell(title: LocalString._contacts_info_notes, value: note.newNote)
+            cell.value.numberOfLines = 0
             cell.selectionStyle = .default
         case .url:
             let urls = viewModel.getUrls()
