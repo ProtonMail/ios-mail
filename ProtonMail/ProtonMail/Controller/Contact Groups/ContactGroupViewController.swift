@@ -133,6 +133,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                            forCellReuseIdentifier: kContactGroupCellIdentifier)
         
         tableView.noSeparatorsBelowFooter()
+        tableView.estimatedRowHeight = 60.0
     }
     
     private func prepareLongPressGesture() {

@@ -54,6 +54,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew 
                                  action: #selector(fireFetch),
                                  for: UIControl.Event.valueChanged)
         
+        tableView.estimatedRowHeight = 60.0
         tableView.addSubview(self.refreshControl)
         tableView.dataSource = self
         tableView.delegate = self
@@ -87,7 +88,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew 
         super.viewDidAppear(animated)
         tableView.setEditing(false, animated: true)
         self.title = LocalString._contacts_title
-        
+
         tableView.reloadData()
     }
     
