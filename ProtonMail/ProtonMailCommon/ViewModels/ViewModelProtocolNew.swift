@@ -32,6 +32,11 @@ extension ViewModelProtocolNew {
         }
         self.set(viewModel: viewModel)
     }
+    
+    /// optional
+    func inactiveViewModel() {
+        
+    }
 }
 
 
