@@ -52,12 +52,7 @@ extension APIService {
     }
     
     func device(registerWith settings: PushSubscriptionSettings, completion: CompletionBlock?) {
-        #if Enterprise
-            let env = 7
-        #else
-            let env = 6
-        #endif
-        
+        let env = 16 // FIXME: debug value only
         let ver = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         
         let parameters = [
@@ -87,8 +82,8 @@ extension APIService {
             "UID": settings.UID
         ]
 
-        request(method: .post,
-                path: AppConstants.API_PATH + DevicePath.basePath + "/delete",
+        request(method: .delete,
+                path: AppConstants.API_PATH + DevicePath.basePath,
                 parameters: parameters,
                 headers: ["x-pm-apiversion": 3],
                 authenticated: false,

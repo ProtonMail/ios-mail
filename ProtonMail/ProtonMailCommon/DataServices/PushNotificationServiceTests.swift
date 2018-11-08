@@ -245,10 +245,16 @@ extension PushNotificationServiceTests {
     typealias SubscriptionSettings = APIService.PushSubscriptionSettings
     typealias Completion = APIService.CompletionBlock
     
-    private class InMemorySaver<T>: Saver<T> {
-        private var value: T?
-        override func get() -> T? { return self.value }
-        override func set(newValue: T?) { self.value = newValue }
+    private class InMemorySaver<T: Codable>: Saver<T> {
+        convenience init() {
+            self.init(key: "", store: StoreMock())
+        }
+    }
+    
+    class StoreMock: KeyValueStoreProvider {
+        func data(forKey key: String) -> Data? { return nil }
+        func removeItem(forKey key: String) { }
+        func setData(_ data: Data, forKey key: String) { }
     }
     
     private struct SessionIDMock: SessionIdProvider {

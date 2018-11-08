@@ -9,27 +9,21 @@
 import Foundation
 
 class KeychainSaver<T>: Saver<T> where T: Codable {
-    private let key: String
-    init(key: String) {
-        self.key = key
+    convenience init(key: String) {
+        self.init(key: key, store: sharedKeychain)
+    }
+}
+
+extension KeychainWrapper: KeyValueStoreProvider {
+    func data(forKey key: String) -> Data? {
+        return self.keychain.data(forKey: key)
     }
     
-    override func get() -> T? {
-        guard let raw = sharedKeychain.keychain.data(forKey: key),
-            let subscription = try? PropertyListDecoder().decode(T.self, from: raw) else
-        {
-            return nil
-        }
-        return subscription
+    func removeItem(forKey key: String) {
+        self.keychain.removeItem(forKey: key)
     }
     
-    override func set(newValue: T?) {
-        guard let value = newValue,
-            let raw = try? PropertyListEncoder().encode(value) else
-        {
-            sharedKeychain.keychain.removeItem(forKey: key)
-            return
-        }
-        sharedKeychain.keychain.setData(raw, forKey: key)
+    func setData(_ data: Data, forKey key: String) {
+        self.keychain.setData(data, forKey: key)
     }
 }

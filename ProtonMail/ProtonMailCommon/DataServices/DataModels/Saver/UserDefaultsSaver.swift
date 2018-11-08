@@ -9,27 +9,21 @@
 import Foundation
 
 class UserDefaultsSaver<T>: Saver<T> where T: Codable {
-    private let key: String
-    init(key: String) {
-        self.key = key
+    convenience init(key: String) {
+        self.init(key: key, store: SharedCacheBase.getDefault())
+    }
+}
+
+extension UserDefaults: KeyValueStoreProvider {
+    func data(forKey key: String) -> Data? {
+        return self.object(forKey: key) as? Data
     }
     
-    override func get() -> T? {
-        guard let raw = SharedCacheBase.getDefault()?.data(forKey: self.key),
-            let kit = try? PropertyListDecoder().decode(T.self, from: raw) else
-        {
-            return nil
-        }
-        return kit
+    func removeItem(forKey key: String) {
+        self.removeObject(forKey: key)
     }
     
-    override func set(newValue: T?) {
-        guard let kit = newValue,
-            let raw = try? PropertyListEncoder().encode(kit) else
-        {
-            SharedCacheBase.getDefault()?.removeObject(forKey: self.key)
-            return
-        }
-        SharedCacheBase.getDefault()?.setValue(raw, forKey: self.key)
+    func setData(_ data: Data, forKey key: String) {
+        self.setValue(data, forKey: key)
     }
 }

@@ -163,14 +163,16 @@ extension PMNOpenPgp {
     }
     
     func generateRandomKeypair() throws -> (passphrase: String, publicKey: String, privateKey: String) {
-        let randomString: ()->String = {
-            return PMNOpenPgp.randomBits(2048).base64EncodedString()
-        }
+        let passphrase = UUID().uuidString
+        let username = UUID().uuidString
+        let domain = "protonmail.com"
         
-        let passphrase = randomString()
-        guard let keypair = try self.generateKey(passphrase, userName: randomString(), domain: randomString(), bits: Int32(2048)) else
+        guard let keypair = try self.generateKey(passphrase,
+                                                 userName: (username + "@" + domain).isValidEmail() ? username : "noreply",
+                                                 domain: domain,
+                                                 bits: Int32(2048)) else
         {
-            fatalError() // FIXME
+            throw NSError(domain: #file, code: 1, localizedDescription: "Failed to generate random keypair")
         }
         return (passphrase, keypair.publicKey, keypair.privateKey)
     }

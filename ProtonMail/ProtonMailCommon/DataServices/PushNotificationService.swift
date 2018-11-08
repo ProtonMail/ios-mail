@@ -22,13 +22,6 @@ import Keymaker
 public class PushNotificationService {
     typealias SubscriptionSettings = APIService.PushSubscriptionSettings
     typealias EncryptionKit = PushNotificationDecryptor.EncryptionKit
-    
-    enum Subscription {
-        case none // no subscription locally
-        case notReported(SubscriptionSettings) // not sent to BE yet
-        case pending(SubscriptionSettings) // not on BE yet, but sent there
-        case reported(SubscriptionSettings) // this is on BE
-    }
 
     fileprivate var newerDeviceToken: String?
     fileprivate var launchOptions: [AnyHashable: Any]? = nil
@@ -107,7 +100,7 @@ public class PushNotificationService {
             return
         }
         
-        let newSettings = SubscriptionSettings(token: deviceToken, UID: sessionID) // here new keypair will be created
+        let newSettings = SubscriptionSettings(token: deviceToken, UID: sessionID) // Important: here the new keypair will be created. Consider defferring it in case of performance issues
         
         switch self.currentSubscription {
         case .none, .notReported:
@@ -144,7 +137,7 @@ public class PushNotificationService {
     // register on BE and validate local values
     private func report(_ settings: SubscriptionSettings) {
         self.currentSubscription = .pending(settings)
-        self.deviceRegistrator.device(registerWith: settings) { _, _, error in
+        let completion: APIService.CompletionBlock = { _, _, error in
             guard error == nil else {
                 self.currentSubscription = .notReported(settings)
                 return
@@ -153,12 +146,17 @@ public class PushNotificationService {
             self.outdatedSettings.remove(settings)
             self.outdatedSettings.forEach(self.unreport)
         }
+        
+        self.deviceRegistrator.device(registerWith: settings, completion: completion)
     }
     
     // unregister on BE and validate local values
     internal func unreport(_ settings: SubscriptionSettings) {
         let completion: APIService.CompletionBlock = { _, _, error in
-            guard error == nil else {
+            guard error == nil ||               // no errors
+                error?.code == 11211 ||         // "Device does not exist"
+                error?.code == 11200 else       // "Invalid device token"
+            {
                 self.outdatedSettings.insert(settings)
                 return
             }
@@ -172,6 +170,7 @@ public class PushNotificationService {
                 }
             }
         }
+        
         self.deviceRegistrator.deviceUnregister(settings, completion: completion)
     }
     
@@ -295,42 +294,6 @@ public class PushNotificationService {
         }
     }
 }
-
-// MARK: - overhead
-
-extension PushNotificationService.Subscription: Codable {
-    internal enum CodingKeys: CodingKey {
-        case none
-        case notReported
-        case pending
-        case reported
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        if let settings =  try? container.decode(PushNotificationService.SubscriptionSettings.self, forKey: .reported) {
-            self = .reported(settings)
-            return
-        }
-        if let settings =  try? container.decode(PushNotificationService.SubscriptionSettings.self, forKey: .pending) {
-            self = .pending(settings)
-            return
-        }
-        
-        self = .none
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        switch self {
-        case .none, .notReported: break // no sence in saving these values - they are pretty useless until sent to BE
-        case .pending(let settings): try container.encode(settings, forKey: .pending)
-        case .reported(let settings): try container.encode(settings, forKey: .reported)
-        }
-    }
-}
-
 
 // MARK: - Dependency Injection sugar
 
