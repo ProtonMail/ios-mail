@@ -278,9 +278,23 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                     continue
                 }
                 
-                alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
-                    self.message.removeLocationFromLabels(currentlocation: self.message.location, location: location, keepSent: true)
-                    self.messagesSetValue(setValue: location.rawValue, forKey: Message.Attributes.locationNumber)
+                alertController.addAction(UIAlertAction(title: location.actionTitle,
+                                                        style: style,
+                                                        handler: { (action) -> Void in
+                                                            
+                    var toLocation = location
+                    if location == .inbox {
+                        if self.message.hasLocation(location: .outbox)  {
+                            toLocation = .outbox
+                        }
+                        if self.message.hasLocation(location: .draft) {
+                            toLocation = .draft
+                        }
+                    }
+                    self.message.removeLocationFromLabels(currentlocation: self.message.location,
+                                                          location: toLocation,
+                                                          keepSent: true)
+                    self.messagesSetValue(setValue: toLocation.rawValue, forKey: Message.Attributes.locationNumber)
                     self.popViewController()
                 }))
             }

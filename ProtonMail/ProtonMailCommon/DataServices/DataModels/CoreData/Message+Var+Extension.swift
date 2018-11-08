@@ -75,4 +75,14 @@ extension Message {
             self.flag = flag
         }
     }
+    
+//    var sendOrDraft : Bool {
+//        get {
+//            if self.flag.contains(.rece) || self.flag.contains(.sent) {
+//                return true
+//            }
+//            return false
+//        }
+//        
+//    }
 }

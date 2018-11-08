@@ -216,14 +216,14 @@ extension Message {
                             }
                         }
                     }
+                    
                 }
-                
                 let toLableID = String(location.rawValue)
                 if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
                     var exsited = false
                     for l in labelObjs {
                         if let label = l as? Label {
-                            if label == toLabel {
+                            if label.labelID == toLabel.labelID {
                                 exsited = true
                                 break
                             }

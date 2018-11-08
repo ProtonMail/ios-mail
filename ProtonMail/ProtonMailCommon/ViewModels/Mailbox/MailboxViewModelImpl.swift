@@ -18,6 +18,10 @@ class MailboxViewModelImpl : MailboxViewModel {
         self.location = location
     }
     
+    override func currentLocation() -> MessageLocation? {
+        return self.location
+    }
+    
     override func getNavigationTitle() -> String {
         return self.location.title
     }
@@ -121,7 +125,7 @@ class MailboxViewModelImpl : MailboxViewModel {
     
     override func showLocation() -> Bool {
         switch(self.location!) {
-        case .allmail, .outbox, .trash:
+        case .allmail, .outbox, .trash, .archive, .draft:
             return true
         default:
             return false
@@ -157,6 +161,15 @@ class MailboxViewModelImpl : MailboxViewModel {
             return MessageLocation.outbox.title
         }
         
+        if self.location == .trash {
+            return MessageLocation.trash.title
+        }
+        if self.location == .archive {
+            return MessageLocation.archive.title
+        }
+        if self.location == .draft {
+            return MessageLocation.draft.title
+        }
         if self.location == .trash {
             return MessageLocation.trash.title
         }

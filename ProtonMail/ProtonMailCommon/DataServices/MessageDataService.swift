@@ -710,8 +710,8 @@ class MessageDataService {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             if location == .outbox {
-                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (%K > 0)",
-                                                     "\(location.rawValue)", "\(MessageLocation.trash.rawValue)", Message.Attributes.messageStatus)
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (%K > 0)",
+                                                     "\(location.rawValue)", "\(MessageLocation.trash.rawValue)", "\(MessageLocation.archive.rawValue)", Message.Attributes.messageStatus)
             } else {
                 fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
                                                      "\(location.rawValue)", Message.Attributes.messageStatus)
