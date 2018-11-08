@@ -622,7 +622,6 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             bodyText = bodyText.stringByStrippingStyleHTML()
             bodyText = bodyText.stringByStrippingBodyStyle()
             bodyText = bodyText.stringByPurifyHTML()
-            
             self.bodyHasImages = bodyText.hasImage()
             if !autoloadimage {
                 bodyText = bodyText.stringByPurifyImages()

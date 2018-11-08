@@ -937,6 +937,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                     if let more = res?["More"] as? Int {
                        loadMore = more
                     }
+                    
+                    if loadMore <= 0 {
+                        sharedMessageDataService.updateMessageCount()
+                    }
                 }
                 
                 if loadMore > 0 {

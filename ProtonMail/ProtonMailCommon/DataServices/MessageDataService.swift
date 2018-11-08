@@ -113,6 +113,15 @@ class MessageDataService {
         }
     }
     
+    func updateMessageCount() {
+        let counterApi = MessageCount()
+        counterApi.call({ (task, response, hasError) in
+            if !hasError {
+                self.processEvents(counts: response?.counts)
+            }
+        })
+    }
+    
     // MARK : fetch functions
     
     /**

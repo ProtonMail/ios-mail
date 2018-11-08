@@ -228,7 +228,7 @@ extension Attachment {
             return false
         }
         
-        if inlineCheckString.contains("inline") {
+        if inlineCheckString.contains("inline") || inlineCheckString.contains("attachment") {
             return true
         }
         return false

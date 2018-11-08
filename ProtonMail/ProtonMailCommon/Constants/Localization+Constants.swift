@@ -1599,7 +1599,7 @@ class LocalizedString {
     
     lazy var _plus_header = NSLocalizedString("For individuals that need more capacity, customization and advanced features", comment: "Service Plan description")
     
-    lazy var _pro_header = NSLocalizedString("For organizations that need multi-user support nd additional productivity features", comment: "Service Plan description")
+    lazy var _pro_header = NSLocalizedString("For organizations that need multi-user support and additional productivity features", comment: "Service Plan description")
     
     lazy var _vis_header = NSLocalizedString("For power users and groups of people that value full anonymity and privacy", comment: "Service Plan description")
     
