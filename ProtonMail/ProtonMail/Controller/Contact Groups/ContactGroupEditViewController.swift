@@ -172,8 +172,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                                                              selectedEmails: data.viewModel.getEmails(),
                                                              refreshHandler: refreshHandler)
         } else {
-            PMLog.D("No such segue")
-            fatalError("No such segue")
+            PMLog.D("FatalError: No such segue")
         }
     }
 }
@@ -210,12 +209,10 @@ extension ContactGroupEditViewController: UITableViewDataSource
                         state: .editView,
                         viewModel: viewModel)
             return cell
-        case .deleteGroup:
+        case .deleteGroup, .error: // TODO: fix this .error state
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupDeleteCell", for: indexPath) as UITableViewCell
             cell.textLabel?.text = LocalString._contact_groups_delete
             return cell
-        case .error:
-            fatalError("This is a bug")
         }
     }
     
@@ -275,7 +272,7 @@ extension ContactGroupEditViewController: UITableViewDelegate
             alertController.popoverPresentationController?.sourceRect = self.view.frame
             self.present(alertController, animated: true, completion: nil)
         case .error:
-            fatalError("This is a bug")
+            PMLog.D("FatalError: This is a bug")
         }
     }
 }

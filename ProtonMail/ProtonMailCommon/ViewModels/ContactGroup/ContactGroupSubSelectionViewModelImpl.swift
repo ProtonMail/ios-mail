@@ -175,7 +175,8 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     func cellForRow(at indexPath: IndexPath) -> ContactGroupSubSelectionViewModelEmailInfomation {
         guard indexPath.row < self.getTotalRows() else {
             // TODO: handle error
-            fatalError("Invalid access")
+            PMLog.D("FatalError: Invalid access")
+            return ContactGroupSubSelectionViewModelEmailInfomation.init(email: "", name: "")
         }
         
         return self.emailArray[indexPath.row - 1] // -1 due to header row
@@ -186,7 +187,8 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
                                          isEncrypted: UIImage?) {
         guard indexPath.row < self.getTotalRows() else {
             // TODO: handle error
-            fatalError("Invalid access")
+            PMLog.D("FatalError: Invalid access")
+            return
         }
         
         self.emailArray[indexPath.row - 1].isEncrypted = isEncrypted
