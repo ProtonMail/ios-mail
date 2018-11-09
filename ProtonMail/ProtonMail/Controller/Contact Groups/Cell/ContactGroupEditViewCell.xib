@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,31 +19,30 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Diego Santiviago" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a6U-nh-0SW">
-                        <rect key="frame" x="64" y="10.5" width="210" height="20"/>
+                        <rect key="frame" x="64" y="10" width="210" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fT-Hc-QXJ">
-                        <rect key="frame" x="16" y="10.5" width="40" height="40"/>
+                        <rect key="frame" x="16" y="10" width="40" height="40"/>
                         <color key="backgroundColor" red="0.58039215690000001" green="0.59215686270000001" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="EhT-ik-3ui"/>
                             <constraint firstAttribute="width" constant="40" id="EqL-Ev-IwV"/>
-                            <constraint firstAttribute="width" secondItem="6fT-Hc-QXJ" secondAttribute="height" multiplier="1:1" id="mxF-s4-axj"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="diegosantiviago@gmail.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nn3-rg-vzZ">
-                        <rect key="frame" x="64" y="34.5" width="210" height="16"/>
+                        <rect key="frame" x="64" y="33.5" width="210" height="16"/>
                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i99-F4-ZFJ">
-                        <rect key="frame" x="240" y="10.5" width="80" height="40"/>
+                        <rect key="frame" x="240" y="10" width="80" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="J99-oQ-VPq" userLabel="height = 40"/>
                             <constraint firstAttribute="width" constant="80" id="xfu-23-yHh" userLabel="width = 40"/>
@@ -53,7 +52,7 @@
                         </connections>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="compose_expiration_cancel" translatesAutoresizingMaskIntoConstraints="NO" id="gMx-HP-kDf">
-                        <rect key="frame" x="282" y="19.5" width="22" height="22"/>
+                        <rect key="frame" x="282" y="19" width="22" height="22"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="GQI-hA-obz"/>
                             <constraint firstAttribute="width" constant="22" id="Kw8-oT-9fD"/>
@@ -61,16 +60,15 @@
                     </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Nn3-rg-vzZ" firstAttribute="bottom" secondItem="6fT-Hc-QXJ" secondAttribute="bottom" id="5fy-QQ-HeZ"/>
+                    <constraint firstItem="Nn3-rg-vzZ" firstAttribute="top" secondItem="a6U-nh-0SW" secondAttribute="bottom" constant="3.5" id="9wc-2P-pyC"/>
                     <constraint firstItem="6fT-Hc-QXJ" firstAttribute="centerY" secondItem="pB1-Er-ar1" secondAttribute="centerY" id="BCR-ID-1Ox"/>
+                    <constraint firstItem="a6U-nh-0SW" firstAttribute="top" secondItem="pB1-Er-ar1" secondAttribute="top" constant="10" id="FoM-mD-eej"/>
                     <constraint firstItem="gMx-HP-kDf" firstAttribute="leading" secondItem="a6U-nh-0SW" secondAttribute="trailing" constant="8" id="H2H-Eu-JPM"/>
                     <constraint firstItem="6fT-Hc-QXJ" firstAttribute="leading" secondItem="pB1-Er-ar1" secondAttribute="leadingMargin" id="H8p-7J-wi7"/>
                     <constraint firstAttribute="trailing" secondItem="i99-F4-ZFJ" secondAttribute="trailing" id="I5h-RC-Jz3"/>
                     <constraint firstItem="Nn3-rg-vzZ" firstAttribute="trailing" secondItem="a6U-nh-0SW" secondAttribute="trailing" id="KeE-Kj-uKQ"/>
                     <constraint firstItem="a6U-nh-0SW" firstAttribute="leading" secondItem="6fT-Hc-QXJ" secondAttribute="trailing" constant="8" id="S2y-pB-hky"/>
-                    <constraint firstItem="6fT-Hc-QXJ" firstAttribute="top" secondItem="pB1-Er-ar1" secondAttribute="top" constant="10" id="STW-ph-zqP"/>
-                    <constraint firstItem="a6U-nh-0SW" firstAttribute="top" secondItem="6fT-Hc-QXJ" secondAttribute="top" id="WRE-I4-aaT"/>
-                    <constraint firstAttribute="bottom" secondItem="6fT-Hc-QXJ" secondAttribute="bottom" constant="10" id="gGf-Zs-9Eg"/>
+                    <constraint firstAttribute="bottom" secondItem="Nn3-rg-vzZ" secondAttribute="bottom" constant="10" id="VlK-x0-5E8"/>
                     <constraint firstItem="i99-F4-ZFJ" firstAttribute="centerY" secondItem="pB1-Er-ar1" secondAttribute="centerY" id="l83-9m-JO7"/>
                     <constraint firstItem="gMx-HP-kDf" firstAttribute="centerY" secondItem="pB1-Er-ar1" secondAttribute="centerY" id="p0Q-4z-TvO"/>
                     <constraint firstAttribute="trailingMargin" secondItem="gMx-HP-kDf" secondAttribute="trailing" id="v8v-ni-YpV"/>

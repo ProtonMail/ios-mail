@@ -13,7 +13,9 @@ protocol ContactEditViewControllerDelegate {
     func updated()
 }
 
-class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactEditViewController: ProtonMailViewController, ViewModelProtocolNew {
+    typealias argType = ContactEditViewModel
+    
     fileprivate var viewModel : ContactEditViewModel!
     
     //
@@ -58,12 +60,10 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     fileprivate var showingUpgrade : Bool = false
     
-    func inactiveViewModel() {
+    func set(viewModel: ContactEditViewModel) {
+        self.viewModel = viewModel
     }
     
-    func setViewModel(_ vm: Any) {
-        viewModel = vm as! ContactEditViewModel
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -348,7 +348,7 @@ extension ContactEditViewController : UpgradeAlertVCDelegate {
     }
     
     func learnMore() {
-        UIApplication.shared.openURL(URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!)
+        UIApplication.shared.openURL(.paidPlans)
     }
     
     func cancel() {

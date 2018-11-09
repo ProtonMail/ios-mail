@@ -195,7 +195,7 @@ extension ContactsViewController: UpgradeAlertVCDelegate {
     }
     
     func learnMore() {
-        UIApplication.shared.openURL(URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!)
+        UIApplication.shared.openURL(.paidPlans)
     }
     
     func cancel() {
@@ -388,7 +388,6 @@ extension ContactsViewController : NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChange anObject: Any,
                     at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        
         switch(type) {
         case .delete:
             if let indexPath = indexPath {
@@ -396,7 +395,6 @@ extension ContactsViewController : NSFetchedResultsControllerDelegate {
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                PMLog.D("Section: \(newIndexPath.section) Row: \(newIndexPath.row) ")
                 tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         case .update:
