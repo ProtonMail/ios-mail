@@ -83,6 +83,7 @@ class UnlockManager: NSObject {
         UserTempCachedStatus.clearFromKeychain()
         userCachedStatus.pinFailedCount = 0
         self.updateUserData()
+        sharedMessageDataService.injectTransientValuesIntoMessages()
         (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
         NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil)
         #endif

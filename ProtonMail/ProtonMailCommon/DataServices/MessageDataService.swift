@@ -53,6 +53,38 @@ class MessageDataService {
         NotificationCenter.default.removeObserver(self)
     }
     
+    func injectTransientValuesIntoMessages() {
+        let ids = sharedMessageQueue.queuedMessageIds()
+        guard let context = managedObjectContext else {
+            let error = NSError.protonMailError(500, localizedDescription: "", localizedFailureReason: nil, localizedRecoverySuggestion: nil)
+            PMLog.D(" error: \(String(describing: error))")
+            return
+        }
+        
+        ids.forEach { messageID in
+            guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
+                let managedObject = try? context.existingObject(with: objectID) else
+            {
+                return
+            }
+            if let message = managedObject as? Message {
+                self.cachePropertiesForBackground(in: message)
+            }
+            if let attachment = managedObject as? Attachment {
+                self.cachePropertiesForBackground(in: attachment.message)
+            }
+        }
+    }
+    
+    private func cachePropertiesForBackground(in message: Message) {
+        // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
+        // they are transient and will not be persisted in the db, only in managed object context
+        message.cachedPassphrase = sharedUserDataService.mailboxPassword
+        message.cachedAuthCredential = AuthCredential.fetchFromKeychain()
+        message.cachedPrivateKeys = sharedUserDataService.addressPrivKeys
+        message.cachedAddress = message.defaultAddress // computed property depending on current user settings
+    }
+    
     // MAKR : upload attachment
     func uploadAttachment(_ att: Attachment!) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
@@ -846,6 +878,7 @@ class MessageDataService {
     func saveDraft(_ message : Message!) {
         if let context = message.managedObjectContext {
             context.performAndWait {
+                self.cachePropertiesForBackground(in: message)
                 if let error = context.saveUpstreamIfNeeded() {
                     PMLog.D(" error: \(error)")
                 } else {
@@ -857,6 +890,7 @@ class MessageDataService {
     
     func deleteDraft (_ message : Message!) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
+            self.cachePropertiesForBackground(in: message)
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D(" error: \(error)")
             } else {
