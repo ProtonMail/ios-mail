@@ -128,8 +128,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
             origInformations = []
             origFields = []
             origNotes = []
-            
             origUrls = []
+            profilePicture = nil
             
             verifyType2 = true
             verifyType3 = true

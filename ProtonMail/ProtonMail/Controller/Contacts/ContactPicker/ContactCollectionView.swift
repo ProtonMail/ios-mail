@@ -470,8 +470,7 @@ extension ContactCollectionView : UICollectionViewDelegate {
                         }
                     } else {
                         // TODO: handle error
-                        PMLog.D("This shouldn't happen")
-                        fatalError("This shouldn't happen")
+                        PMLog.D("FatalError: This shouldn't happen")
                     }
                 }
                 

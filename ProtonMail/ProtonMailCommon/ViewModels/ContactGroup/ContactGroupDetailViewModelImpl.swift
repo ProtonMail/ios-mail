@@ -90,8 +90,8 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
     func getEmail(at indexPath: IndexPath) -> (emailID: String, name: String, email: String) {
         guard indexPath.row < emailIDsArray.count else {
             // TODO: handle error
-            PMLog.D("Invalid index row request")
-            fatalError("Invalid index row request")
+            PMLog.D("FatalError: Invalid index row request")
+            return ("", "", "")
         }
         
         return (emailIDsArray[indexPath.row].emailID, emailIDsArray[indexPath.row].name, emailIDsArray[indexPath.row].email)

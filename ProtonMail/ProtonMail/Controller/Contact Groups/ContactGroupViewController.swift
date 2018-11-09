@@ -174,7 +174,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                             if let cell = tableView.cellForRow(at: visibleIndexPath) as? ContactGroupsViewCell {
                                 self.selectRow(at: visibleIndexPath, groupID: cell.getLabelID())
                             } else {
-                                fatalError("Conversion failed")
+                                PMLog.D("FatalError: Conversion failed")
                             }
                         }
                     }
@@ -573,7 +573,7 @@ extension ContactGroupsViewController: UITableViewDelegate
                     cell.setCount(viewModel.cellForRow(at: indexPath).count)
                 }
             } else {
-                fatalError("Conversion failed")
+                PMLog.D("FatalError: Conversion failed")
             }
         } else {
             tableView.deselectRow(at: indexPath, animated: true)
@@ -603,7 +603,7 @@ extension ContactGroupsViewController: UITableViewDelegate
                     }
                 }
             } else {
-                fatalError("Conversion failed")
+                PMLog.D("FatalError: Conversion failed")
             }
         }
     }

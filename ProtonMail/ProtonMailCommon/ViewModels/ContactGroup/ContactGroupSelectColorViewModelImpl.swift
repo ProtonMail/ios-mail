@@ -61,8 +61,8 @@ class ContactGroupSelectColorViewModelImpl: ContactGroupSelectColorViewModel
     {
         guard indexPath.row < colors.count else {
             // TODO: handle error
-            PMLog.D("Collection view invalid request")
-            fatalError("Collection view invalid request")
+            PMLog.D("FatalError: Collection view invalid request")
+            return ColorManager.defaultColor
         }
         
         return colors[indexPath.row]

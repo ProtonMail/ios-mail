@@ -73,7 +73,9 @@ class ContactGroupEditViewCell: UITableViewCell {
         } else {
             guard viewModel != nil else {
                 // TODO: handle this
-                fatalError("In editing mode, view model must be present")
+//                fatalError("In editing mode, view model must be present")
+                PMLog.D("In editing mode, view model must be present")
+                return
             }
         }
         

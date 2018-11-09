@@ -71,7 +71,8 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
         let row = indexPath.row
         
         guard row < self.groupCountInformation.count else {
-            fatalError("The row count is not correct")
+            PMLog.D("FatalError: The row count is not correct")
+            return ("", "", "", 0)
         }
         
         return self.groupCountInformation[row]
