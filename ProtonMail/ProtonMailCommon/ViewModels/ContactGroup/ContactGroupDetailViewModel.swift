@@ -15,7 +15,7 @@ protocol ContactGroupDetailViewModel
     func getName() -> String
     func getColor() -> String
     func getTotalEmails() -> Int
-    func getEmailIDs() -> NSSet
+    func getEmailIDs() -> Set<Email>
     func getTotalEmailString() -> String
     func getEmail(at indexPath: IndexPath) -> (emailID: String, name: String, email: String)
     

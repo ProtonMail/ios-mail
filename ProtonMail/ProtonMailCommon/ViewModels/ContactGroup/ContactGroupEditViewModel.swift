@@ -59,21 +59,21 @@ struct ContactGroupData
     var ID: String?
     var name: String?
     var color: String
-    var emailIDs: NSMutableSet
+    var emailIDs: Set<Email>
     
     let originalName: String?
     let originalColor: String
-    let originalEmailIDs: NSSet
+    let originalEmailIDs: Set<Email>
     
     init(ID: String?,
          name: String?,
          color: String?,
-         emailIDs: NSSet)
+         emailIDs: Set<Email>)
     {
         self.ID = ID
         self.name = name
         self.color = color ?? ColorManager.getRandomColor()
-        self.emailIDs = NSMutableSet(set: emailIDs)
+        self.emailIDs = emailIDs
         
         self.originalEmailIDs = emailIDs
         self.originalName = self.name
@@ -89,12 +89,8 @@ struct ContactGroupData
             return true
         }
         
-        if let originalEmailIDs = originalEmailIDs as? Set<Email>,
-            let currentEmailIDs = emailIDs as? Set<Email> {
-            if originalEmailIDs != currentEmailIDs {
-                return true
-            }
-        } else {
+        let currentEmailIDs = emailIDs
+        if originalEmailIDs != currentEmailIDs {
             return true
         }
         
@@ -108,7 +104,7 @@ protocol ContactGroupEditViewModel {
     
     // set operations
     func setName(name: String)
-    func setEmails(emails: NSSet)
+    func setEmails(emails: Set<Email>)
     func setColor(newColor: String)
     
     func removeEmail(emailID: String)
@@ -118,7 +114,7 @@ protocol ContactGroupEditViewModel {
     func getName() -> String
     func getContactGroupID() -> String?
     func getColor() -> String
-    func getEmails() -> NSSet
+    func getEmails() -> Set<Email>
     func getSectionTitle(for: Int) -> String
     
     // create and edit
