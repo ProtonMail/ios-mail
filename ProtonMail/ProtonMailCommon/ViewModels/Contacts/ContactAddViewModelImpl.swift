@@ -14,8 +14,7 @@ import Foundation
 
 
 class ContactAddViewModelImpl : ContactEditViewModel {
-    var sections: [ContactEditSectionType] = [.display_name,
-                                              .emails,
+    var sections: [ContactEditSectionType] = [.emails,
                                               .encrypted_header,
                                               .cellphone,
                                               .home_address,
@@ -32,6 +31,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     var fields : [ContactEditField] = []
     var notes : ContactEditNote = ContactEditNote(note: "", isNew: true)
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
+    var profilePicture: UIImage? = nil
     
     override init() {
         super.init()
@@ -86,6 +86,18 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     
     override func getProfile() -> ContactEditProfile {
         return profile
+    }
+    
+    override func getProfilePicture() -> UIImage? {
+        return self.profilePicture
+    }
+    
+    override func setProfilePicture(image: UIImage?) {
+        self.profilePicture = image
+    }
+    
+    override func profilePictureNeedsUpdate() -> Bool {
+        return self.profilePicture != nil
     }
     
     override func getUrls() -> [ContactEditUrl] {
@@ -317,6 +329,19 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         for field in fields{
             let f = PMNIPMCustom.createInstance(field.newType.vcardType, value: field.newField)
             vcard3.add(f)
+            isCard3Set = true
+        }
+        
+        // profile image
+        vcard3.clearPhotos()
+        if let profilePicture = profilePicture,
+            let compressedImage = UIImage.resize(image: profilePicture,
+                                                 targetSize: CGSize.init(width: 30, height: 30)),
+            let jpegData = compressedImage.jpegData(compressionQuality: 0.25) {
+            let image = PMNIPhoto.createInstance(jpegData,
+                                                 type: "JPEG",
+                                                 isBinary: true)
+            vcard3.setPhoto(image)
             isCard3Set = true
         }
         

@@ -115,6 +115,8 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         contactGroupNameInstructionLabel.text = LocalString._contact_groups_group_name_instruction_label
         saveButton.title = LocalString._general_save_action
         cancelButton.title = LocalString._general_cancel_button
+        
+        contactGroupNameLabel.addBottomBorder()
     }
     
     func prepareContactGroupImage() {

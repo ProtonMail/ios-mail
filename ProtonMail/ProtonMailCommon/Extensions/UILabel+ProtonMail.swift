@@ -46,4 +46,14 @@ extension UILabel {
         
         self.attributedText = myString
     }
+    
+    func addBottomBorder() {
+        let bottomBorder = CALayer()
+        bottomBorder.borderColor = UIColor.lightGray.cgColor
+        bottomBorder.borderWidth = 0.7
+        bottomBorder.frame = CGRect.init(x: 0, y: self.frame.height - 1,
+                                         width: self.frame.width, height: 1)
+        self.clipsToBounds = true
+        self.layer.addSublayer(bottomBorder)
+    }
 }
