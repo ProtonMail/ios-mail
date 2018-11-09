@@ -31,7 +31,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
     var urls : [ContactEditUrl] = []
     var contactGroupData: [String:(name: String, color: String, count: Int)] = [:]
-    var profilePicture: UIImage? = nil
+    //var profilePicture: UIImage? = nil
     
     var origvCard2 : PMNIVCard?
     var origvCard3 : PMNIVCard?
@@ -222,16 +222,16 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                     self.urls.append(cu)
                                     order += 1
                                 }
-                            case "Photo":
-                                let photo = vcard.getPhoto()
-                                print("photo", photo?.getEncodedData() ?? "",
-                                      photo?.getRawData() ?? "",
-                                      photo?.getImageType() ?? "",
-                                      photo?.getIsBinary() ?? "")
-                                if let image = photo?.getRawData() {
-                                    let data = Data.init(bytes: image)
-                                    self.profilePicture = UIImage.init(data: data)
-                                }
+//                            case "Photo":
+//                                let photo = vcard.getPhoto()
+//                                print("photo", photo?.getEncodedData() ?? "",
+//                                      photo?.getRawData() ?? "",
+//                                      photo?.getImageType() ?? "",
+//                                      photo?.getIsBinary() ?? "")
+//                                if let image = photo?.getRawData() {
+//                                    let data = Data.init(bytes: image)
+//                                    self.profilePicture = UIImage.init(data: data)
+//                                }
                                 //case "Agent":
                                 //case "Birthday":
                                 //case "CalendarRequestUri":
@@ -709,14 +709,14 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     uid = uuid
                 }
                 
-                vcard3.clearPhotos()
-                if let profilePicture = profilePicture,
-                    let pngData = profilePicture.pngData() {
-                    let image = PMNIPhoto.createInstance(pngData,
-                                                         type: "PNG",
-                                                         isBinary: true)
-                    vcard3.setPhoto(image)
-                }
+//                vcard3.clearPhotos()
+//                if let profilePicture = profilePicture,
+//                    let pngData = profilePicture.pngData() {
+//                    let image = PMNIPhoto.createInstance(pngData,
+//                                                         type: "PNG",
+//                                                         isBinary: true)
+//                    vcard3.setPhoto(image)
+//                }
                 
                 let vcard3Str = PMNIEzvcard.write(vcard3)
                 PMLog.D(vcard3Str);
