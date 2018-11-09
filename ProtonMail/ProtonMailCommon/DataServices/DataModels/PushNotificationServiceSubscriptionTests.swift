@@ -10,7 +10,7 @@ import XCTest
 @testable import ProtonMail
 
 class PushNotificationServiceSubscriptionTests: XCTestCase {
-    typealias SubscriptionSettings = APIService.PushSubscriptionSettings
+    typealias SubscriptionSettings = PushSubscriptionSettings
     typealias Subscription = PushNotificationService.Subscription
     
     func testEquatable() {

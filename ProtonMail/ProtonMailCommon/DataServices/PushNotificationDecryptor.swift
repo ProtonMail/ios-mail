@@ -15,8 +15,8 @@ class PushNotificationDecryptor {
     }
     
     static var saver = KeychainSaver<PushSubscriptionSettings>(key: "pushNotificationEncryptionKit")
-    static var outdater = KeychainSaver<Set<PushSubscriptionSettings>>(key: "pushNotificationOutdatedSubscriptions", caching: false)
-    static var deviceTokenSaver = KeychainSaver<[String]>(key: "latestDeviceToken", caching: false)
+    static var outdater = KeychainSaver<Set<PushSubscriptionSettings>>(key: "pushNotificationOutdatedSubscriptions", cachingInMemory: false)
+    static var deviceTokenSaver = KeychainSaver<String>(key: "latestDeviceToken", cachingInMemory: false)
     
     static func encryptionKit(forSession uid: String) -> EncryptionKit? {
         guard let settings = self.saver.get(),
@@ -29,7 +29,7 @@ class PushNotificationDecryptor {
     }
     
     static func markForUnsubscribing(uid: String) {
-        guard let deviceToken = self.deviceTokenSaver.get()?.first else { return } // FIXME: ugly wrapping
+        guard let deviceToken = self.deviceTokenSaver.get() else { return }
         let settings = PushSubscriptionSettings(token: deviceToken, UID: uid)
         
         var outdated = self.outdater.get() ?? []

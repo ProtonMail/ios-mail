@@ -31,15 +31,15 @@ public class PushNotificationService {
     private let sessionIDProvider: SessionIdProvider
     private let deviceRegistrator: DeviceRegistrator
     private let signInProvider: SignInProvider
-    private let deviceTokenSaver: Saver<[String]>
+    private let deviceTokenSaver: Saver<String>
     
     init(subscriptionSaver: Saver<Subscription> = KeychainSaver(key: "pushNotificationSubscription"),
          encryptionKitSaver: Saver<PushSubscriptionSettings> = PushNotificationDecryptor.saver,
-         outdatedSaver: Saver<Set<SubscriptionSettings>> = KeychainSaver(key: "pushNotificationOutdatedSubscriptions", caching: false),
+         outdatedSaver: Saver<Set<SubscriptionSettings>> = KeychainSaver(key: "pushNotificationOutdatedSubscriptions", cachingInMemory: false),
          sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
          deviceRegistrator: DeviceRegistrator = sharedAPIService,
          signInProvider: SignInProvider = SignInManagerProvider(),
-         deviceTokenSaver: Saver<[String]> = PushNotificationDecryptor.deviceTokenSaver)
+         deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver)
     {
         self.subscriptionSaver = subscriptionSaver
         self.encryptionKitSaver = encryptionKitSaver
@@ -58,21 +58,19 @@ public class PushNotificationService {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // these should be in Keychain in order to unregister them after reinstall
-    fileprivate var newerDeviceToken: String? {
-        get { return self.deviceTokenSaver.get()?.first }
-        set { self.deviceTokenSaver.set(newValue: newValue == nil ? nil : [newValue!])}
+    fileprivate var latestDeviceToken: String? { // previous device tokens are not relevant for this class
+        didSet { self.deviceTokenSaver.set(newValue: latestDeviceToken)} // but we have to save one for PushNotificationDecryptor
     }
     fileprivate var outdatedSettings: Set<SubscriptionSettings> {
-        get { return self.outdatedSaver.get() ?? [] }
-        set { self.outdatedSaver.set(newValue: newValue) }
+        get { return self.outdatedSaver.get() ?? [] } // cuz PushNotificationDecryptor can add values to this colletion while app is running
+        set { self.outdatedSaver.set(newValue: newValue) } // in keychain cuz should persist over reinstalls
     }
     fileprivate var currentSubscription: Subscription {
         get { return self.subscriptionSaver.get() ?? .none }
         set {
-            self.subscriptionSaver.set(newValue: newValue)
+            self.subscriptionSaver.set(newValue: newValue) // in keychain cuz should persist over reinstalls
             
-            switch newValue { // save encryption kit to userdefaults since we do not care about its safety
+            switch newValue { // save encryption kit to userdefaults for PushNotificationDecryptor but not persist over reinstalls
             case .reported(let settings):   self.encryptionKitSaver.set(newValue: settings)
             default:                        self.encryptionKitSaver.set(newValue: nil)
             }
@@ -94,18 +92,22 @@ public class PushNotificationService {
     }
     
     public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
-        self.newerDeviceToken = deviceToken
+        self.latestDeviceToken = deviceToken
         if self.signInProvider.isSignedIn, let _ = keymaker.mainKey {
             self.didUnlock()
         }
     }
     
     @objc private func didUnlock() {
-        guard let sessionID = self.sessionIDProvider.sessionID, let deviceToken = self.newerDeviceToken else {
+        guard let sessionID = self.sessionIDProvider.sessionID, let deviceToken = self.latestDeviceToken else {
             return
         }
         
-        let newSettings = SubscriptionSettings(token: deviceToken, UID: sessionID) // Important: here the new keypair will be created. Consider defferring it in case of performance issues
+        var newSettings = SubscriptionSettings(token: deviceToken, UID: sessionID)
+        guard let _ = try? newSettings.generateEncryptionKit() else {
+            assert(false, "failed to generate enryption kit") // will crash only on debug builds
+            return // cuz no sence in subscribing without privateKey
+        }
         
         switch self.currentSubscription {
         case .none, .notReported:

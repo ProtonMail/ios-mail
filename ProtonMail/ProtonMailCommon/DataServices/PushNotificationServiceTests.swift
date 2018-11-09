@@ -242,7 +242,7 @@ class PushNotificationServiceTests: XCTestCase {
 
 extension PushNotificationServiceTests {
     typealias Subscription = PushNotificationService.Subscription
-    typealias SubscriptionSettings = APIService.PushSubscriptionSettings
+    typealias SubscriptionSettings = PushSubscriptionSettings
     typealias Completion = APIService.CompletionBlock
     
     private class InMemorySaver<T: Codable>: Saver<T> {

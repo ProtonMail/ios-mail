@@ -11,8 +11,8 @@ import Foundation
 struct PushSubscriptionSettings: Hashable, Codable {
     typealias EncryptionKit = PushNotificationDecryptor.EncryptionKit
     
-    var token, UID: String
-    var encryptionKit: EncryptionKit! // FIXME: ugly
+    let token, UID: String
+    var encryptionKit: EncryptionKit!
     
     static func == (lhs: PushSubscriptionSettings, rhs: PushSubscriptionSettings) -> Bool {
         return lhs.token == rhs.token && lhs.UID == rhs.UID
@@ -26,21 +26,13 @@ struct PushSubscriptionSettings: Hashable, Codable {
     init(token: String, UID: String) {
         self.token = token
         self.UID = UID
-        
-        // FIXME: ugly edgecase
-        #if !APP_EXTENSION
-        self.encryptionKit = try? PushSubscriptionSettings.generateEncryptionKit()
-        #else
-        self.encryptionKit = nil
-        #endif
     }
     
     #if !APP_EXTENSION
-    private static func generateEncryptionKit() throws -> EncryptionKit {
+    mutating func generateEncryptionKit() throws {
         let crypto = PMNOpenPgp.createInstance()!
         let keypair = try crypto.generateRandomKeypair()
-        let encryptionKit = EncryptionKit(passphrase: keypair.passphrase, privateKey: keypair.privateKey, publicKey: keypair.publicKey)
-        return encryptionKit
+        self.encryptionKit = EncryptionKit(passphrase: keypair.passphrase, privateKey: keypair.privateKey, publicKey: keypair.publicKey)
     }
     #endif
 }
