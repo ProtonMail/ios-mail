@@ -167,7 +167,6 @@ extension Message {
                     return label.name
                 } else if !lableOnly {
                     if let l_id = Int(label.labelID) {
-                        PMLog.D(label.name)
                         if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
                             return new_loc.title
                         }
