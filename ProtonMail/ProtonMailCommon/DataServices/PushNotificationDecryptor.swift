@@ -14,10 +14,26 @@ class PushNotificationDecryptor {
         var passphrase, privateKey, publicKey: String
     }
     
-    static var saver = UserDefaultsSaver<EncryptionKit>.init(key: "pushNotificationEncryptionKit")
+    static var saver = KeychainSaver<PushSubscriptionSettings>(key: "pushNotificationEncryptionKit")
+    static var outdater = KeychainSaver<Set<PushSubscriptionSettings>>(key: "pushNotificationOutdatedSubscriptions", caching: false)
+    static var deviceTokenSaver = KeychainSaver<[String]>(key: "latestDeviceToken", caching: false)
     
-    // this is uselsess after reinstall cuz app will not be subscribed to APNS iOS service
-    internal static var encryptionKit: EncryptionKit? {
-        return self.saver.get()
+    static func encryptionKit(forSession uid: String) -> EncryptionKit? {
+        guard let settings = self.saver.get(),
+            uid == settings.UID else
+        {
+            return nil
+        }
+        
+        return settings.encryptionKit
+    }
+    
+    static func markForUnsubscribing(uid: String) {
+        guard let deviceToken = self.deviceTokenSaver.get()?.first else { return } // FIXME: ugly wrapping
+        let settings = PushSubscriptionSettings(token: deviceToken, UID: uid)
+        
+        var outdated = self.outdater.get() ?? []
+        outdated.insert(settings)
+        self.outdater.set(newValue: outdated)
     }
 }

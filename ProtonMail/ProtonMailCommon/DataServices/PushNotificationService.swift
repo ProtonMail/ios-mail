@@ -20,26 +20,26 @@ import SWRevealViewController
 import Keymaker
 
 public class PushNotificationService {
-    typealias SubscriptionSettings = APIService.PushSubscriptionSettings
-    typealias EncryptionKit = PushNotificationDecryptor.EncryptionKit
+    typealias SubscriptionSettings = PushSubscriptionSettings
 
-    fileprivate var newerDeviceToken: String?
     fileprivate var launchOptions: [AnyHashable: Any]? = nil
 
     public static var shared = PushNotificationService()
     private let subscriptionSaver: Saver<Subscription>
     private let outdatedSaver: Saver<Set<SubscriptionSettings>>
-    private let encryptionKitSaver: Saver<EncryptionKit>
+    private let encryptionKitSaver: Saver<SubscriptionSettings>
     private let sessionIDProvider: SessionIdProvider
     private let deviceRegistrator: DeviceRegistrator
     private let signInProvider: SignInProvider
+    private let deviceTokenSaver: Saver<[String]>
     
     init(subscriptionSaver: Saver<Subscription> = KeychainSaver(key: "pushNotificationSubscription"),
-         encryptionKitSaver: Saver<EncryptionKit> = PushNotificationDecryptor.saver,
-         outdatedSaver: Saver<Set<SubscriptionSettings>> = KeychainSaver(key: "pushNotificationOutdatedSubscriptions"),
+         encryptionKitSaver: Saver<PushSubscriptionSettings> = PushNotificationDecryptor.saver,
+         outdatedSaver: Saver<Set<SubscriptionSettings>> = KeychainSaver(key: "pushNotificationOutdatedSubscriptions", caching: false),
          sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
          deviceRegistrator: DeviceRegistrator = sharedAPIService,
-         signInProvider: SignInProvider = SignInManagerProvider())
+         signInProvider: SignInProvider = SignInManagerProvider(),
+         deviceTokenSaver: Saver<[String]> = PushNotificationDecryptor.deviceTokenSaver)
     {
         self.subscriptionSaver = subscriptionSaver
         self.encryptionKitSaver = encryptionKitSaver
@@ -47,6 +47,7 @@ public class PushNotificationService {
         self.sessionIDProvider = sessionIDProvider
         self.deviceRegistrator = deviceRegistrator
         self.signInProvider = signInProvider
+        self.deviceTokenSaver = deviceTokenSaver
         defer {
             NotificationCenter.default.addObserver(self, selector: #selector(didUnlock), name: NSNotification.Name.didUnlock, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(didSignOut), name: NSNotification.Name.didSignOut, object: nil)
@@ -57,7 +58,11 @@ public class PushNotificationService {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // these two should be in Keychain in order to unregister them after reinstall
+    // these should be in Keychain in order to unregister them after reinstall
+    fileprivate var newerDeviceToken: String? {
+        get { return self.deviceTokenSaver.get()?.first }
+        set { self.deviceTokenSaver.set(newValue: newValue == nil ? nil : [newValue!])}
+    }
     fileprivate var outdatedSettings: Set<SubscriptionSettings> {
         get { return self.outdatedSaver.get() ?? [] }
         set { self.outdatedSaver.set(newValue: newValue) }
@@ -68,7 +73,7 @@ public class PushNotificationService {
             self.subscriptionSaver.set(newValue: newValue)
             
             switch newValue { // save encryption kit to userdefaults since we do not care about its safety
-            case .reported(let settings):   self.encryptionKitSaver.set(newValue: settings.encryptionKit)
+            case .reported(let settings):   self.encryptionKitSaver.set(newValue: settings)
             default:                        self.encryptionKitSaver.set(newValue: nil)
             }
         }
@@ -316,7 +321,7 @@ struct SignInManagerProvider: SignInProvider {
 }
 
 protocol DeviceRegistrator {
-    func device(registerWith settings: APIService.PushSubscriptionSettings, completion: APIService.CompletionBlock?)
-    func deviceUnregister(_ settings: APIService.PushSubscriptionSettings, completion: @escaping APIService.CompletionBlock)
+    func device(registerWith settings: PushSubscriptionSettings, completion: APIService.CompletionBlock?)
+    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping APIService.CompletionBlock)
 }
 extension APIService: DeviceRegistrator {}

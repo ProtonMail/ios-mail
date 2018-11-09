@@ -18,14 +18,16 @@ class Saver<T: Codable> {
     private let key: String
     private let store: KeyValueStoreProvider
     private lazy var value: T? = self.getFromStore()
+    private var isCaching: Bool
     
-    init(key: String, store: KeyValueStoreProvider) {
+    init(key: String, store: KeyValueStoreProvider, caching: Bool = true) {
         self.key = key
         self.store = store
+        self.isCaching = caching
     }
     
     func get() -> T? {
-        return self.value
+        return self.isCaching ? self.value : self.getFromStore()
     }
     
     private func getFromStore() -> T? {

@@ -9,8 +9,8 @@
 import Foundation
 
 class KeychainSaver<T>: Saver<T> where T: Codable {
-    convenience init(key: String) {
-        self.init(key: key, store: sharedKeychain)
+    convenience init(key: String, caching: Bool = true) {
+        self.init(key: key, store: sharedKeychain, caching: caching)
     }
 }
 

@@ -18,34 +18,7 @@ import Foundation
 import Crypto
 
 extension APIService {
-    typealias EncryptionKit = PushNotificationDecryptor.EncryptionKit
-    
-    struct PushSubscriptionSettings: Hashable, Codable {
-        var token, UID: String
-        var encryptionKit: EncryptionKit
-        
-        init(token: String, UID: String) {
-            self.token = token
-            self.UID = UID
-            self.encryptionKit = try! PushSubscriptionSettings.generateEncryptionKit()
-        }
-        
-        static func == (lhs: PushSubscriptionSettings, rhs: PushSubscriptionSettings) -> Bool {
-            return lhs.token == rhs.token && lhs.UID == rhs.UID
-        }
-        
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(self.token)
-            hasher.combine(self.UID)
-        }
-        
-        private static func generateEncryptionKit() throws -> EncryptionKit {
-            let crypto = PMNOpenPgp.createInstance()!
-            let keypair = try crypto.generateRandomKeypair()
-            let encryptionKit = EncryptionKit(passphrase: keypair.passphrase, privateKey: keypair.privateKey, publicKey: keypair.publicKey)
-            return encryptionKit
-        }
-    }
+    typealias EncryptionKit = PushSubscriptionSettings.EncryptionKit
     
     fileprivate struct DevicePath {
         static let basePath = "/devices"

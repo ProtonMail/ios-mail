@@ -55,6 +55,7 @@
 		07079172F08408217599170910D87AB1 /* TermsWebViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9C1DB9DCA27A1E893B9BFE52A76926 /* TermsWebViewModelImpl.swift */; };
 		0761CD1313D978661CB0DF1CDACE7EB7 /* ViewDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FDFFD7E8C5D6FADBD79A09D8232C4B6 /* ViewDefined.swift */; };
 		07673C668929EC4A40DDD446F29D9B33 /* JKBCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FAE4478843776BACC8DCA5D194552A /* JKBCrypt.swift */; };
+		077415E09D78238CB7D8C16C65D9902C /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4A5F1C9B9B429AB005131084CC1554 /* KeychainWrapper.swift */; };
 		079820C378B20013072796A9BAC58158 /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77669C3C0F15ACBCAC5071A59F5E57F0 /* Threading.swift */; };
 		07BEBB3803FBB5A0627A1C375384AF1D /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B220E1C9F1C225BFD6FE2E75455144 /* SettingDetailsViewModel.swift */; };
 		07DEAF452887D082E0A024895674D2B1 /* ZSSRichTextEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 8ABE8018821856432368075B017C939D /* ZSSRichTextEditor.js */; };
@@ -639,6 +640,7 @@
 		69FE0AC1235D4274D93FA3239B5EC155 /* Autolocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFE8928286EFBB4B76D3749D211BC90 /* Autolocker.swift */; };
 		69FF6B75A2D009991D64578347101051 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A3F7FEB833E1B45FB6F23517638989 /* Logger.swift */; };
 		6A002835D9C7CE7A0979DA68EEA1DB35 /* OpenPGP+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C5DCC81C6E61BD8EE0FA7C2E54CD7 /* OpenPGP+String+Extension.swift */; };
+		6A0E256F2AD0A8BD02B861A2D114302E /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4A5F1C9B9B429AB005131084CC1554 /* KeychainWrapper.swift */; };
 		6A17C94096C82F4E2DB4550E24B08F64 /* StringConversionTests+PM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BB638CC947874EC7D744E93F3914C0 /* StringConversionTests+PM.swift */; };
 		6A378C62A3EFD64B079D027DBE5CFDD3 /* ForceUpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AA9CD05E95098F2E1A5F5ADED547BF /* ForceUpgradeView.swift */; };
 		6A94EEC900E19AE19A16C7A4B801DBD4 /* ServicePlanHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E4855D3119DD0FEFE0E934AB22CFFE /* ServicePlanHeader.swift */; };
@@ -749,6 +751,7 @@
 		7A76929C2D788FFB449294ADC051D34C /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1C852E9CC196C3905CADD4C2704291 /* MenuItem.swift */; };
 		7A7CFA2309F2FB3FA6E32F2872A93FEF /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 262F367D949D94238B158C679184B520 /* Menu.storyboard */; };
 		7B495BECA0F5A911A86D60CA25C78B8E /* ViewModelProtocalT.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75EBFD70984828D2EE13F30B6946825 /* ViewModelProtocalT.swift */; };
+		7B4A90FB4B06506A99CCB29E07611458 /* KeychainSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDE89BA7AA59E01F098B12A7C1D81FE /* KeychainSaver.swift */; };
 		7B71395AE1592D80A1CFC2A0B3C7307B /* NetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */; };
 		7B9AC57F18FFCBCEFFA902AE398CD8FC /* String+Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8401423E8FE838D3E637E3CAB0244D4 /* String+Alert+Extension.swift */; };
 		7B9ACACA5757B5E06DA5D10EE1163462 /* GeneralSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA7289C7A00897216DF37D848BDD1EE /* GeneralSettingViewCell.swift */; };
@@ -939,6 +942,7 @@
 		9BCCE7FD2E2CFA14D09A4E5537042438 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3D751CFCE2A178E14C1341D4CDF7D7 /* SignupViewModel.swift */; };
 		9BE113EF467CECC1A46FDB54C3AB6F47 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815DFC41477DB4D20C79538B64D0893 /* Key.swift */; };
 		9BFFAF8C3F49CFDB874CC27B586366AA /* ContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0477F89137AAA9A42BC73B09D025A29 /* ContactModel.swift */; };
+		9C0007670A342A9F4856125D432132A4 /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE16BECF1CF9E505A361D41D83460C /* PushSubscriptionSettings.swift */; };
 		9C3B841CCD848FA7D6DE94ED5D2BF9F8 /* ComposeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC99702EB4FAE95D39DBCC4235BBC74C /* ComposeViewModelTests.swift */; };
 		9C5109EA75D691AC793EF6A72B712F27 /* TableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE657FA689CA1A6D37EA52D7D1CCFA7 /* TableLayout.swift */; };
 		9CEE379D2972180C86BA507E0CF028C9 /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493E60450A08C78D9D259E95FA6E897C /* CalendarIntervalRule.swift */; };
@@ -1160,6 +1164,7 @@
 		BEA303E2F3506A8943C83EDE3EB4804B /* AttachmentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AC6CA5B4D902A03E67C14BF56ECA20 /* AttachmentsTableViewController.swift */; };
 		BEA98836096B013C6D83F5172795DA09 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C351D63254CEA37CCEC1D2B914848B /* OnboardingView.swift */; };
 		BEEA05B8AEE78727C04DAB427C63B07D /* TwoFAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1082F0C2C5243D42EE1B0260D0C50E7 /* TwoFAViewModel.swift */; };
+		BF7020B65482BDE405ACCAB432FC314B /* KeychainSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDE89BA7AA59E01F098B12A7C1D81FE /* KeychainSaver.swift */; };
 		BF83EEFDC348701E41127776C92A706C /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1498B5ACE198B189543C431190024381 /* AppConstants.swift */; };
 		BF889EFB20A4FF58D689427B3D0F9EFB /* MenuViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE47FC012E64B0A6BE788D1DDFC03380 /* MenuViewModelImpl.swift */; };
 		BFAAB21AD648437D6376864F78E0C1D4 /* MessageDataService+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A9290E97B86BEF7B76F5C74E77B040 /* MessageDataService+Builder.swift */; };
@@ -1219,6 +1224,7 @@
 		C8DCAA5B202AC205B81A99CB5509695B /* SettingsNotificationsSnooze.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 715458403C778DA3437ED30E431AA4CD /* SettingsNotificationsSnooze.storyboard */; };
 		C908FFF67430AA75AC531FBA2C63151E /* RecipientView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09FF1FBAD2BDFD1136C90DF2200029B9 /* RecipientView.xib */; };
 		C91E6D0981798B5A65CA681C37F44260 /* ShareExtensionEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85850442C4864AE9C5F562412AEE815A /* ShareExtensionEntry.swift */; };
+		C95302F1743C635D38DD6F5F9CA32FB6 /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE16BECF1CF9E505A361D41D83460C /* PushSubscriptionSettings.swift */; };
 		CA4F2196C4ED76829194A8DBA8E2194D /* APIService+ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7E1E9A56A7D74BBF9EFBB27C845267 /* APIService+ContactExtension.swift */; };
 		CA824D3E15BACF8AC0CA1AE936B906FE /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C5A44A396F31F83DCAFDDFF6FF0381 /* PMImagePickerController.swift */; };
 		CA8AE80C4D57E5EFCABDA6760741974C /* AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83367E04E7FA6F07D0BA1041B066B8F /* AttachmentExtension.swift */; };
@@ -1389,6 +1395,7 @@
 		E15B8CAA9C004624E502D64C98C4F273 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B510F2298FF72A4B77337856F9219E /* SignInViewController.swift */; };
 		E1692741094216939715FD12E1EBE727 /* ContactCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C835E09ED80CEF24F9D8FAE4D2F8718E /* ContactCollectionViewFlowLayout.swift */; };
 		E1787538077789DF43FF27812D81A990 /* SpamScoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532AFF86A3CB09C1894B60EF1339626A /* SpamScoreWarningView.swift */; };
+		E1B89EF1D9F46FDFF1BD2BE1A675F8C7 /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE16BECF1CF9E505A361D41D83460C /* PushSubscriptionSettings.swift */; };
 		E1C9881496F314B6FA21C10FE44ED5F4 /* EmailExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BD9608A584A24A09728FC917C8551C /* EmailExtension.swift */; };
 		E1D383604577113DECD6CF979955F136 /* PushService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 00918B56B68A9926D7490AA22F6B62B4 /* PushService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E1F782A3C43D6E704BA0333A889A8B29 /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E897B0825B3C43D7FBBEC6F8616ECD /* DeviceAPI.swift */; };
@@ -1440,6 +1447,7 @@
 		E8822E1A68C378DCC3F15D7950E8D5C8 /* MessageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA5E8F1461234804B3FAB424722B8BF /* MessageAction.swift */; };
 		E8A82AB9F2098DE1A9D84ECCD8B5CE0C /* ActivityIndicatorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F668C31C82BEA50A922F88311FCB9D /* ActivityIndicatorHelper.swift */; };
 		E8D00E6784524B04ADC434EAF8211AAE /* UnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C6E2D20B275A72C9CABA3AD759418E /* UnlockPinCodeModelImpl.swift */; };
+		E8E58312FC626B165BEACF616E3767D4 /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE16BECF1CF9E505A361D41D83460C /* PushSubscriptionSettings.swift */; };
 		E95472B196088B3CE75E4642A5A672E7 /* PhotoAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */; };
 		E96D4142695B03C4B58040DB5DF61653 /* APIService+DefinedExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA0DEAAB391C18DAF3910013F144972 /* APIService+DefinedExtension.swift */; };
 		E9710A92098A25BB8602D3866E923039 /* ShareUnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E910C23C361F11C228DD5EA51E9BD73A /* ShareUnlockViewController.swift */; };
@@ -1876,6 +1884,7 @@
 		450D2530B2F47C55FBEABC6AC343D094 /* OpenPGPDefines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenPGPDefines.swift; sourceTree = "<group>"; };
 		451A9B0D4FA42E20F1E5DF6F73A2D947 /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		45885E1634D5EACB18C02CB6678FA056 /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
+		45AE16BECF1CF9E505A361D41D83460C /* PushSubscriptionSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSubscriptionSettings.swift; sourceTree = "<group>"; };
 		45C7A125474224515B6F45C3E8456DB5 /* UIStackView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extension.swift"; sourceTree = "<group>"; };
 		47AA066E127A4E761C07732C013385F4 /* MonitorSavesDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorSavesDataService.swift; sourceTree = "<group>"; };
 		47AE767C6397168279C0ADCF111E1383 /* ContactsDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsDefined.swift; sourceTree = "<group>"; };
@@ -3610,6 +3619,7 @@
 				3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */,
 				79AD9A432B98450B8391FB8A49EC0DB3 /* PushNotificationServiceSubscription.swift */,
 				A8E4737DF67D33D6DAE084BC812F84EB /* PushNotificationServiceSubscriptionTests.swift */,
+				45AE16BECF1CF9E505A361D41D83460C /* PushSubscriptionSettings.swift */,
 				A6136D6B85203E35609442F0412D0B4D /* ServicePlan.swift */,
 				42AFB2665732BDBF0C40E4F838A5D34E /* ServicePlanDetails.swift */,
 				C5E0B4D290AC1DC73777BD90814C4A29 /* ServicePlanDetailsTests.swift */,
@@ -5033,12 +5043,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6DFEA9689CB0D4D2F5FBDC21158BA14 /* AppConstants.swift in Sources */,
+				BF7020B65482BDE405ACCAB432FC314B /* KeychainSaver.swift in Sources */,
+				077415E09D78238CB7D8C16C65D9902C /* KeychainWrapper.swift in Sources */,
 				74F6EEE7F424802F48CE8E706685DFC9 /* Logger.swift in Sources */,
 				C7F52EAE895E77CF07257C44E671FD32 /* NSCoder+Extension.swift in Sources */,
 				0C16E84FD6EBA2CEB7C8CAE4C17446C7 /* NotificationService.swift in Sources */,
 				9683CE3DF05E2680185E452312E6B805 /* OpenPGP+String+Extension.swift in Sources */,
 				6680B419189C1F7035A421E6E5C88774 /* PushData.swift in Sources */,
 				DD1EFF3B4B4A6ADC8B362E53255E7C62 /* PushNotificationDecryptor.swift in Sources */,
+				C95302F1743C635D38DD6F5F9CA32FB6 /* PushSubscriptionSettings.swift in Sources */,
 				2ACEF348D0106626EE2C72C840ED5FF7 /* Saver.swift in Sources */,
 				A11B2611FE597A0F073EE46629DE0449 /* SharedCacheBase.swift in Sources */,
 				FBC06430567B2314F4F25E912E7D4760 /* String+Parse+Extension.swift in Sources */,
@@ -5368,6 +5381,7 @@
 				9BBB3A8AC99813402269F5223A8FCDF0 /* PushNotificationDecryptor.swift in Sources */,
 				726DC6344C5E930933CDF1BD812C3BCA /* PushNotificationService.swift in Sources */,
 				8AA4B9305D75E35D630E157E971463E1 /* PushNotificationServiceSubscription.swift in Sources */,
+				E8E58312FC626B165BEACF616E3767D4 /* PushSubscriptionSettings.swift in Sources */,
 				4AE404B53FE11F65FFAE78DE30019BC8 /* QueueConstant.swift in Sources */,
 				1069EAD92D55679A1D7176DE718F311C /* QueueManager.swift in Sources */,
 				4185C861C0E604AEFC2F4A5D0C9463BE /* QuickViewViewController.swift in Sources */,
@@ -5829,6 +5843,7 @@
 				CCC0DB285F82138F5AB71BCBFFECA319 /* PushNotificationDecryptor.swift in Sources */,
 				BB653B7C382ADF99992E478611BB6CD0 /* PushNotificationService.swift in Sources */,
 				F00CE29D1E0E7CF35E4E41A69BBD2D31 /* PushNotificationServiceSubscription.swift in Sources */,
+				E1B89EF1D9F46FDFF1BD2BE1A675F8C7 /* PushSubscriptionSettings.swift in Sources */,
 				00608F7601338D1F88485E9299A755EB /* QueueConstant.swift in Sources */,
 				AB016886037E9CBFBCB8DFF4AFA7048B /* QueueManager.swift in Sources */,
 				2DE62EFABFBF12EC018B83384DA928B3 /* QuickViewViewController.swift in Sources */,
@@ -5974,12 +5989,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF83EEFDC348701E41127776C92A706C /* AppConstants.swift in Sources */,
+				7B4A90FB4B06506A99CCB29E07611458 /* KeychainSaver.swift in Sources */,
+				6A0E256F2AD0A8BD02B861A2D114302E /* KeychainWrapper.swift in Sources */,
 				0B2A217947A5A0BB21BBE2D868EA7B95 /* Logger.swift in Sources */,
 				1F2481AA11E7221FAE70E9932DA35F2D /* NSCoder+Extension.swift in Sources */,
 				F999C98F2CB95DC37FEFA511F8BF5F6F /* NotificationService.swift in Sources */,
 				6A002835D9C7CE7A0979DA68EEA1DB35 /* OpenPGP+String+Extension.swift in Sources */,
 				79A6618BF1520085B23A22DE625650C8 /* PushData.swift in Sources */,
 				DE4C5249B2A4DFE52DF523D3C357EC9D /* PushNotificationDecryptor.swift in Sources */,
+				9C0007670A342A9F4856125D432132A4 /* PushSubscriptionSettings.swift in Sources */,
 				815906E09AF1658FFE51A9A57E88FE51 /* Saver.swift in Sources */,
 				E68C562A6D88714C82782BD866B0D6EA /* SharedCacheBase.swift in Sources */,
 				49B1695BCE32A09E83B8B3EC1DFA0FCB /* String+Parse+Extension.swift in Sources */,
