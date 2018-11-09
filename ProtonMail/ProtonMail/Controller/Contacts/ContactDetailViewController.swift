@@ -14,7 +14,8 @@ import UIKit
 import PromiseKit
 import AwaitKit
 
-class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactDetailViewController: ProtonMailViewController, ViewModelProtocolNew {
+    typealias argType = ContactDetailsViewModel
     
     fileprivate var viewModel : ContactDetailsViewModel!
     
@@ -53,8 +54,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     func inactiveViewModel() {
     }
     
-    func setViewModel(_ vm: Any) {
-        viewModel = vm as! ContactDetailsViewModel
+    func set(viewModel: ContactDetailsViewModel) {
+        self.viewModel = viewModel
     }
     
     ///
@@ -67,8 +68,9 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(didTapEditButton(sender:)))
         self.navigationItem.rightBarButtonItem = doneItem
-        
+        self.configHeaderStyle()
         viewModel.getDetails {
+            self.configHeaderDefault()
             ActivityIndicatorHelper.showActivityIndicator(at: self.view)
         }.done { (contact) in
             self.configHeader()
@@ -93,16 +95,69 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         }
     }
     
+    /// config header style only need once
+    private func configHeaderStyle() {
+        // setup profile image
+        profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.size.width / 2
+        profilePictureImageView.layer.masksToBounds = true
+        
+        // setup short label
+        shortNameLabel.layer.cornerRadius = shortNameLabel.frame.size.width / 2
+        shortNameLabel.textAlignment = .center
+        shortNameLabel.textColor = ContactGroupEditViewCellColor.deselected.text
+        shortNameLabel.backgroundColor = UIColor.lightGray
+        
+        // email contact
+        emailContactLabel.text = LocalString._contacts_email_contact_title
+        emailContactImageView.image = UIImage.init(named: "iap_email")
+        emailContactImageView.setupImage(scale: 0.5,
+                                         tintColor: UIColor.white,
+                                         backgroundColor: UIColor.ProtonMail.Blue_9397CD)
+        sendToPrimaryEmailButton.isUserInteractionEnabled = false
+        emailContactImageView.backgroundColor = UIColor.lightGray
+        // call contact
+        callContactLabel.text = LocalString._contacts_call_contact_title
+        callContactImageView.image = UIImage.init(named: "Phone-28px-#ffffff")
+        callContactImageView.setupImage(scale: 0.5,
+                                        tintColor: UIColor.white,
+                                        backgroundColor: UIColor.ProtonMail.Blue_9397CD)
+        callContactButton.isUserInteractionEnabled = false
+        callContactImageView.backgroundColor = UIColor.lightGray
+        
+        // share contact
+        shareContactLabel.text = LocalString._contacts_share_contact_action
+        shareContactImageView.image = UIImage.init(named: "Share-28px-#ffffff")
+        shareContactImageView.setupImage(scale: 0.5,
+                                         tintColor: UIColor.white,
+                                         backgroundColor: UIColor.ProtonMail.Blue_9397CD)
+        shareContactImageView.isUserInteractionEnabled = false
+        shareContactImageView.backgroundColor = UIColor.lightGray
+    }
+    
+    
+    /// config header default when loading details
+    private func configHeaderDefault() {
+        shortNameLabel.isHidden = false
+        profilePictureImageView.isHidden = true
+        
+        let name = viewModel.getProfile().newDisplayName
+        var shortName = ""
+        if name.count > 0 {
+            shortName = String(name[name.startIndex])
+        }
+        shortNameLabel.text = shortName
+        fullNameLabel.text = name
+    }
+    
+    
+    /// config header after got contact details
     private func configHeader() {
         // shortname / image
         if let profilePicture = viewModel.getProfilePicture() {
             // show profile picture
             shortNameLabel.isHidden = true
             profilePictureImageView.isHidden = false
-            
             profilePictureImageView.image = profilePicture
-            profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.size.width / 2
-            profilePictureImageView.layer.masksToBounds = true
         } else {
             shortNameLabel.isHidden = false
             profilePictureImageView.isHidden = true
@@ -113,53 +168,33 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             if name.count > 0 {
                 shortName = String(name[name.startIndex])
             }
-            
             shortNameLabel.text = shortName
-            
-            shortNameLabel.layer.cornerRadius = shortNameLabel.frame.size.width / 2
-            shortNameLabel.textAlignment = .center
-
-            shortNameLabel.textColor = ContactGroupEditViewCellColor.deselected.text
-            shortNameLabel.backgroundColor = UIColor.lightGray
         }
         
         // full name
         fullNameLabel.text = viewModel.getProfile().newDisplayName
         
         // email contact
-        emailContactLabel.text = LocalString._contacts_email_contact_title
-        emailContactImageView.image = UIImage.init(named: "iap_email")
-        emailContactImageView.setupImage(scale: 0.5,
-                                         tintColor: UIColor.white,
-                                         backgroundColor: UIColor.ProtonMail.Blue_9397CD)
         if viewModel.getEmails().count == 0 {
             // no email in contact, disable sending button
             sendToPrimaryEmailButton.isUserInteractionEnabled = false
             emailContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
         } else {
             sendToPrimaryEmailButton.isUserInteractionEnabled = true
+            emailContactImageView.backgroundColor = UIColor.ProtonMail.Blue_9397CD
         }
         
         // call contact
-        callContactLabel.text = LocalString._contacts_call_contact_title
-        callContactImageView.image = UIImage.init(named: "Phone-28px-#ffffff")
-        callContactImageView.setupImage(scale: 0.5,
-                                         tintColor: UIColor.white,
-                                         backgroundColor: UIColor.ProtonMail.Blue_9397CD)
         if self.viewModel.getPhones().count == 0 {
             // no tel in contact, disable
             callContactButton.isUserInteractionEnabled = false
             callContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
         } else {
             callContactButton.isUserInteractionEnabled = true
+            callContactImageView.backgroundColor = UIColor.ProtonMail.Blue_9397CD
         }
-        
-        // share contact
-        shareContactLabel.text = LocalString._contacts_share_contact_action
-        shareContactImageView.image = UIImage.init(named: "Share-28px-#ffffff")
-        shareContactImageView.setupImage(scale: 0.5,
-                                         tintColor: UIColor.white,
-                                         backgroundColor: UIColor.ProtonMail.Blue_9397CD)
+        shareContactImageView.backgroundColor = UIColor.ProtonMail.Blue_9397CD
+
     }
     
     @IBAction func didTapSendToPrimaryEmailButton(_ sender: UIButton) {
@@ -217,9 +252,15 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             addContactViewController.delegate = self
             sharedVMService.contactEditViewModel(addContactViewController, contact: contact)
         } else if (segue.identifier == kToComposeSegue) {
-            let composerVC = segue.destination.children[0] as! ComposeEmailViewController
+            let composerVC = segue.destination.children[0] as! ComposeViewController
             let contact = sender as? ContactVO
             sharedVMService.newDraft(vmp: composerVC, with: contact)
+            //TODO:: finish up here
+            let coordinator = ComposeCoordinator(vc: composerVC,
+                                                 vm: composerVC.viewModel) //set view model
+            coordinator.viewController = composerVC
+            composerVC.set(coordinator: coordinator)
+            
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController
             sharedVMService.upgradeAlert(contacts: popup)

@@ -70,23 +70,23 @@ class ViewModelService {
     }
     
     //contacts
-    func contactsViewModel(_ vmp : ViewModelProtocol) {
+    func contactsViewModel(_ vmp : ViewModelProtocolBase) {
         fatalError("This method must be overridden")
     }
     
-    func contactDetailsViewModel(_ vmp : ViewModelProtocol, contact: Contact!) {
+    func contactDetailsViewModel(_ vmp : ViewModelProtocolBase, contact: Contact!) {
         fatalError("This method must be overridden")
     }
     
-    func contactAddViewModel(_ vmp : ViewModelProtocol) {
+    func contactAddViewModel(_ vmp : ViewModelProtocolBase) {
         fatalError("This method must be overridden")
     }
     
-    func contactAddViewModel(_ vmp : ViewModelProtocol, contactVO: ContactVO!) {
+    func contactAddViewModel(_ vmp : ViewModelProtocolBase, contactVO: ContactVO!) {
         fatalError("This method must be overridden")
     }
     
-    func contactEditViewModel(_ vmp : ViewModelProtocol, contact: Contact!) {
+    func contactEditViewModel(_ vmp : ViewModelProtocolBase, contact: Contact!) {
         fatalError("This method must be overridden")
     }
     
@@ -94,7 +94,7 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func contactSelectContactGroupsViewModel(_ vmp: ViewModelProtocol,
+    func contactSelectContactGroupsViewModel(_ vmp: ViewModelProtocolBase,
                                              groupCountInformation: [(ID: String, name: String, color: String, count: Int)],
                                              selectedGroupIDs: Set<String>,
                                              refreshHandler: @escaping (Set<String>) -> Void) {
@@ -102,19 +102,19 @@ class ViewModelService {
     }
     
     // contact groups
-    func contactGroupsViewModel(_ vmp: ViewModelProtocol) {
+    func contactGroupsViewModel(_ vmp: ViewModelProtocolBase) {
         fatalError("This method must be overridden")
     }
     
-    func contactGroupDetailViewModel(_ vmp: ViewModelProtocol,
-                                   groupID: String,
-                                   name: String,
-                                   color: String,
-                                   emailIDs: NSSet) {
+    func contactGroupDetailViewModel(_ vmp: ViewModelProtocolBase,
+                                     groupID: String,
+                                     name: String,
+                                     color: String,
+                                     emailIDs: NSSet) {
         fatalError("This method must be overridden")
     }
     
-    func contactGroupEditViewModel(_ vmp: ViewModelProtocol,
+    func contactGroupEditViewModel(_ vmp: ViewModelProtocolBase,
                                    state: ContactGroupEditViewControllerState,
                                    groupID: String? = nil,
                                    name: String? = nil,
@@ -123,13 +123,13 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocol,
+    func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocolBase,
                                           currentColor: String,
                                           refreshHandler: @escaping (String) -> Void) {
         fatalError("This method must be overridden")
     }
     
-    func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocol,
+    func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocolBase,
                                           selectedEmails: NSSet,
                                           refreshHandler: @escaping (NSSet) -> Void) {
         fatalError("This method must be overridden")

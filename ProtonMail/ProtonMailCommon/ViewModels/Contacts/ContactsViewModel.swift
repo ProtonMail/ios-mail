@@ -20,6 +20,10 @@ class ContactsViewModel : ViewModelTimer {
         return false
     }
     
+    func resetFetchedController() {
+        
+    }
+    
     func set(searching isSearching: Bool) {
         fatalError("This method must be overridden")
     }

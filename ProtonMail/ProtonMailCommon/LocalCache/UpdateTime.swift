@@ -25,7 +25,7 @@ final class UpdateTime : NSObject {
     var total : Int32
     var unread : Int32
     
-    required init (start: Date!, end : Date, update : Date, total : Int32, unread: Int32){
+    required init (start: Date, end : Date, update : Date, total : Int32, unread: Int32) {
         self.start = start
         self.end = end
         self.update = update
@@ -54,6 +54,7 @@ extension UpdateTime : NSCoding {
         static let total = "total"
     }
     
+    // TODO:: fix the hard convert
     convenience init(coder aDecoder: NSCoder) {
         self.init(
             start: aDecoder.decodeObject(forKey: CoderKey.startCode) as! Date,

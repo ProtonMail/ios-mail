@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "1010"
    wasCreatedForAppExtension = "YES"
    version = "2.0">
    <BuildAction
@@ -11,7 +11,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "xunique &quot;${PROJECT_FILE_PATH}/project.pbxproj&quot;">
+               scriptText = "xunique &quot;${PROJECT_FILE_PATH}/project.pbxproj&quot;&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"

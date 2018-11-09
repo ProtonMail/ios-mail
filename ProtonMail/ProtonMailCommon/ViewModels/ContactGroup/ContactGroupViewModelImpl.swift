@@ -137,9 +137,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
      */
     func fetchLatestContactGroup() -> Promise<Void>
     {
-        return Promise {
-            seal in
-            
+        return Promise { seal in
             if self.isFetching == false {
                 self.isFetching = true
                 
@@ -154,6 +152,10 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
                                                                             seal.fulfill(())
                                                                         }
                 })
+                
+                sharedContactDataService.fetchContacts { (_, error) in
+                    
+                }
             } else {
                 seal.fulfill(())
             }
@@ -190,13 +192,15 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
     func search(text: String?) {
         if let text = text {
             if text == "" {
-                fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
+                fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(%K == 2)",
+                                                                               Label.Attributes.type)
             } else {
                 fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "%K == 2 AND name CONTAINS[cd] %@",
                                                                                argumentArray: [Label.Attributes.type, text])
             }
         } else {
-            fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
+            fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(%K == 2)",
+                                                                           Label.Attributes.type)
         }
         
         do {

@@ -2,10 +2,28 @@
 //  ContactGroupViewController.swift
 //  ProtonMail
 //
-//  Created by Chun-Hung Tseng on 2018/8/17.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
-
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 import UIKit
 import CoreData
 import PromiseKit
@@ -14,8 +32,9 @@ import PromiseKit
  When the core data that provides data to this controller has data changes,
  the update will be performed immediately and automatically by core data
  */
-class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
-{
+class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew {
+    typealias argType = ContactGroupsViewModel
+    
     private var viewModel: ContactGroupsViewModel!
     private var queryString = ""
     
@@ -47,9 +66,10 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     
-    func setViewModel(_ vm: Any) {
-        viewModel = vm as! ContactGroupsViewModel
+    func set(viewModel: ContactGroupsViewModel) {
+        self.viewModel = viewModel
     }
+    
     
     func inactiveViewModel() {
     }
@@ -131,6 +151,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                            forCellReuseIdentifier: kContactGroupCellIdentifier)
         
         tableView.noSeparatorsBelowFooter()
+        tableView.estimatedRowHeight = 60.0
     }
     
     private func prepareLongPressGesture() {
@@ -306,7 +327,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
-        self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.hidesNavigationBarDuringPresentation = false
         self.searchController.automaticallyAdjustsScrollViewInsets = true
         self.searchController.searchBar.sizeToFit()
         self.searchController.searchBar.keyboardType = .default
@@ -315,7 +336,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.searchController.searchBar.tintColor = .white
         self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
         self.searchController.searchBar.backgroundColor = .clear
-        
         if #available(iOS 11.0, *) {
             self.searchViewConstraint.constant = 0.0
             self.searchView.isHidden = true
@@ -334,12 +354,10 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     @objc func fireFetch() {
         firstly {
             return self.viewModel.fetchLatestContactGroup()
-            }.done {
-                self.refreshControl.endRefreshing()
-            }.catch {
-                error in
-                
-                error.alert(at: self.view)
+        }.done {
+            self.refreshControl.endRefreshing()
+        }.catch { error in
+            error.alert(at: self.view)
         }
     }
     
@@ -366,12 +384,16 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                                                        presentingController: popup,
                                                        style: .overFullScreen)
         } else if segue.identifier == kToComposerSegue {
-            let destination = segue.destination.children[0] as! ComposeEmailViewController
-            
+            let destination = segue.destination.children[0] as! ComposeViewController
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
                 sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
+                //TODO:: finish up here
+                let coordinator = ComposeCoordinator(vc: destination,
+                                                     vm: destination.viewModel) //set view model
+                coordinator.viewController = destination
+                destination.set(coordinator: coordinator)
             }
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController
@@ -618,7 +640,7 @@ extension ContactGroupsViewController: UpgradeAlertVCDelegate {
     }
     
     func learnMore() {
-        UIApplication.shared.openURL(URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!)
+        UIApplication.shared.openURL(.paidPlans)
     }
     
     func cancel() {

@@ -27,12 +27,14 @@ typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType : Int) -> Void)
     var displayEmail : String? { get }
     var contactSubtitle : String? { get }
     var contactImage : UIImage? {get}
+    var color: String? {get}
     var lock: UIImage? {get}
     var hasPGPPined : Bool {get}
     var hasNonePM : Bool {get}
     func notes(type: Int) -> String
     func setType(type: Int)
     func lockCheck(progress: LockCheckProgress, complete: LockCheckComplete?)
+    
     
     func equals(_ others: ContactPickerModelProtocol) -> Bool
 }

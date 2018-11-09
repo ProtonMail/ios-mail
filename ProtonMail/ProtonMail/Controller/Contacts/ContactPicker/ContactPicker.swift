@@ -36,13 +36,16 @@ class ContactPicker: UIView {
         controller.tableView.register(UINib.init(nibName: ContactPickerDefined.ContactsTableViewCellName,
                                                  bundle: nil),
                                  forCellReuseIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier)
-        controller.tableView.register(UINib.init(nibName: ContactPickerDefined.ContactGroupTableViewCellName,
-                                                 bundle: nil),
-                                      forCellReuseIdentifier: ContactPickerDefined.ContactGroupTableViewCellIdentifier)
-        
+        controller.tableView.translatesAutoresizingMaskIntoConstraints = false
+        controller.tableView.estimatedRowHeight = 60.0
+        controller.tableView.sectionHeaderHeight = 0;
+        controller.tableView.sectionFooterHeight = 0;
+        controller.tableView.reloadData()
+        if #available(iOS 11.0, *) {
+            controller.tableView.contentInsetAdjustmentBehavior = .never
+        }
         controller.onSelection = { [unowned self] model in
             self.hideSearchTableView()
-            
             // if contact group is selected, we add all emails in it as selected, initially
             if let contactGroup = model as? ContactGroupVO {
                 contactGroup.selectAllEmailFromGroup()
@@ -107,7 +110,7 @@ class ContactPicker: UIView {
         super.init(frame: frame)
         self.setup()
     }
-
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -123,19 +126,11 @@ class ContactPicker: UIView {
         self.addSubview(contactCollectionView)
         
         self.contactCollectionView = contactCollectionView
-        if #available(iOS 9.0, *) {
-            self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-            self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-            self.contactCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-            self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        } else {
-            NSLayoutConstraint.activate([
-                NSLayoutConstraint(item: self.contactCollectionView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0.0),
-                NSLayoutConstraint(item: self.contactCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0),
-                NSLayoutConstraint(item: self.contactCollectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0.0),
-                NSLayoutConstraint(item: self.contactCollectionView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0.0)
-            ])
-        }
+        
+        self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        self.contactCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         
         self.maxVisibleRows = ContactPickerDefined.kMaxVisibleRows
         self.animationSpeed = ContactPickerDefined.kAnimationSpeed
@@ -313,7 +308,8 @@ class ContactPicker: UIView {
          // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to  it's hierarchy explicitly
         self.window?.addSubview(searchWindow!)
         #endif
-        self.delegate.didShowFilteredContactsForContactPicker(contactPicker: self)
+        
+        self.delegate?.didShowFilteredContactsForContactPicker(contactPicker: self)
     }
 
     private func hideSearchTableView() {
@@ -325,14 +321,14 @@ class ContactPicker: UIView {
         // in app extenison window is strongly held by _UIHostedWindow and we can not change that since removeFromSuperview() does not work properly, so we'll just reuse same window all over again
         self.searchWindow = nil
         #endif
-        self.delegate.didHideFilteredContactsForContactPicker(contactPicker: self)
+        self.delegate?.didHideFilteredContactsForContactPicker(contactPicker: self)
     }
     
     private var frameForContactSearch: CGRect {
         guard let window = self.delegate?.view.window else {
             return .zero
         }
-
+        
         var topLine = self.convert(CGPoint.zero, to: window)
         topLine.y += self.frame.size.height
         let size = CGSize(width: window.bounds.width, height: window.bounds.size.height - self.keyboardFrame.size.height - topLine.y)
@@ -347,7 +343,7 @@ class ContactPicker: UIView {
 extension ContactPicker : ContactCollectionViewDelegate {
 
     internal func collectionContactCell(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
-        self.delegate.collectionContactCell(lockCheck: model, progress: progress) { (image, type) in
+        self.delegate?.collectionContactCell(lockCheck: model, progress: progress) { (image, type) in
             complete?(image, type)
             self.contactCollectionView.performBatchUpdates({
                 self.layoutIfNeeded()

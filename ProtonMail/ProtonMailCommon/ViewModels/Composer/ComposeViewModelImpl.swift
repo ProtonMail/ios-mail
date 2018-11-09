@@ -266,7 +266,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             case .newDraft, .forward, .newDraftFromShare:
                 break
             case .openDraft:
-                let toContacts = self.toContacts(self.message!.recipientList) // Json to contact/group objects
+                let toContacts = self.toContacts(self.message!.toList) // Json to contact/group objects
                 for cont in toContacts {
                     switch cont.modelType {
                     case .contact:
@@ -327,7 +327,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 }
             case .reply:
                 if oldLocation == .outbox {
-                    let toContacts = self.toContacts(self.message!.recipientList)
+                    let toContacts = self.toContacts(self.message!.toList)
                     for cont in toContacts {
                         self.toSelectedContacts.append(cont)
                     }
@@ -337,7 +337,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     if replytos.count > 0 {
                         senders += replytos
                     } else {
-                        if let newSender = self.toContact(self.message!.senderObject ?? "") {
+                        if let newSender = self.toContact(self.message!.sender ?? "") {
                             senders.append(newSender)
                         } else {
                             senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
@@ -347,7 +347,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 }
             case .replyAll:
                 if oldLocation == .outbox {
-                    let toContacts = self.toContacts(self.message!.recipientList)
+                    let toContacts = self.toContacts(self.message!.toList)
                     for cont in toContacts {
                         self.toSelectedContacts.append(cont)
                     }
@@ -362,7 +362,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     if replytos.count > 0 {
                         senders += replytos
                     } else {
-                        if let newSender = self.toContact(self.message!.senderObject ?? "") {
+                        if let newSender = self.toContact(self.message!.sender ?? "") {
                             senders.append(newSender)
                         } else {
                             senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
@@ -376,7 +376,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
 
-                    let toContacts = self.toContacts(self.message!.recipientList)
+                    let toContacts = self.toContacts(self.message!.toList)
                     for cont in toContacts {
                         if let cont = cont as? ContactVO,
                             !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
@@ -411,35 +411,39 @@ final class ComposeViewModelImpl : ComposeViewModel {
         self.setSubject(title)
         
         if message == nil || message?.managedObjectContext == nil {
-            self.message = MessageHelper.messageWithLocation(MessageLocation.draft,
-                                                             recipientList: toJsonString(self.toSelectedContacts),
-                                                             bccList: toJsonString(self.bccSelectedContacts),
-                                                             ccList: toJsonString(self.ccSelectedContacts),
-                                                             title: self.subject,
-                                                             encryptionPassword: "",
-                                                             passwordHint: "",
-                                                             expirationTimeInterval: expir,
-                                                             body: body,
-                                                             attachments: nil,
-                                                             mailbox_pwd: sharedUserDataService.mailboxPassword!, //better to check nil later
-                                                             inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
+            self.message = Message.messageWithLocation(MessageLocation.draft,
+                                                       recipientList: toJsonString(self.toSelectedContacts),
+                                                       bccList: toJsonString(self.bccSelectedContacts),
+                                                       ccList: toJsonString(self.ccSelectedContacts),
+                                                       title: self.getSubject(),
+                                                       encryptionPassword: "",
+                                                       passwordHint: "",
+                                                       expirationTimeInterval: expir,
+                                                       body: body,
+                                                       attachments: nil,
+                                                       mailbox_pwd: sharedUserDataService.mailboxPassword!, //better to check nil later
+                                                       inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
             self.message?.password = pwd
             self.message?.unRead = false
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
             
         } else {
-            self.message?.recipientList = toJsonString(self.toSelectedContacts)
+            self.message?.toList = toJsonString(self.toSelectedContacts)
             self.message?.ccList = toJsonString(self.ccSelectedContacts)
             self.message?.bccList = toJsonString(self.bccSelectedContacts)
-            self.message?.title = self.subject
+            self.message?.title = self.getSubject()
             self.message?.time = Date()
             self.message?.password = pwd
             self.message?.unRead = false
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
             self.message?.setLabelLocation(.draft)
-            MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil, mailbox_pwd: sharedUserDataService.mailboxPassword!)
+            Message.updateMessage(self.message!,
+                                  expirationTimeInterval: expir,
+                                  body: body,
+                                  attachments: nil,
+                                  mailbox_pwd: sharedUserDataService.mailboxPassword!)
             
             if let context = message?.managedObjectContext {
                 context.performAndWait {
@@ -496,9 +500,11 @@ final class ComposeViewModelImpl : ComposeViewModel {
     
     override func getHtmlBody() -> String {
         //sharedUserDataService.signature
-        let signature = self.getDefaultSendAddress()?.signature ?? sharedUserDataService.userDefaultSignature
-        
-        let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
+        var signature = self.getDefaultSendAddress()?.signature ?? sharedUserDataService.userDefaultSignature
+        // sometimes user will input 's in signature. we have to escape it first. need to make sure not to escape twice
+        signature = signature.escaped
+        var mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
+        mobileSignature = mobileSignature.escaped
         
         let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\">\(signature)</div>" : ""
         
@@ -538,6 +544,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
                 body = body.escaped
+                
                 let on = LocalString._composer_on
                 let at = LocalString._general_at_label
                 let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
@@ -552,11 +559,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 replyHeader = replyHeader.stringByStrippingStyleHTML()
                 replyHeader = replyHeader.stringByStrippingBodyStyle()
                 replyHeader = replyHeader.stringByPurifyHTML()
-                
                 let w = LocalString._composer_wrote
-                let sp = "<div><br><div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+                let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
                 
-                return " \(head) \(htmlString) \(sp) \(body)</blockquote> \(foot)"
+                return " \(head) \(htmlString) \(sp) \(body)</blockquote><div><br></div><div><br></div>\(foot)"
             case .forward:
                 let on = LocalString._composer_on
                 let at = LocalString._general_at_label
@@ -572,14 +578,18 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 var forwardHeader =
                 "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
                 
-                if message!.recipientList != "" {
-                    forwardHeader += "\(t) \(message!.recipientList.formatJsonContact(true))<br>"
+                if message!.toList != "" {
+                    forwardHeader += "\(t) \(message!.toList.formatJsonContact(true))<br>"
                 }
                 
                 if message!.ccList != "" {
                     forwardHeader += "\(c) \(message!.ccList.formatJsonContact(true))<br>"
                 }
                 forwardHeader += ""
+                forwardHeader = forwardHeader.stringByStrippingStyleHTML()
+                forwardHeader = forwardHeader.stringByStrippingBodyStyle()
+                forwardHeader = forwardHeader.stringByPurifyHTML()
+                forwardHeader = forwardHeader.escaped
                 var body = ""
                 
                 do {
@@ -597,8 +607,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 sp = sp.stringByStrippingStyleHTML()
                 sp = sp.stringByStrippingBodyStyle()
                 sp = sp.stringByPurifyHTML()
-                sp = sp.escaped
-                
                 return "\(head)\(htmlString)\(sp)\(body)\(foot)"
             case .newDraft:
                 if !self.body.isEmpty {
@@ -607,18 +615,25 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     return newhtmlString
                 } else {
                     if htmlString.trim().isEmpty {
-                        let ret_body = "<div><br><div><div><br></div><div><br></div><div><br></div>" //add some space
+                        let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>" //add some space
                         return ret_body
                     }
                 }
                 return htmlString
             case .newDraftFromShare:
                 if !self.body.isEmpty {
-                    let newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
+                    var newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
+                    
+                    newhtmlString = newhtmlString.stringByStrippingStyleHTML()
+                    newhtmlString = newhtmlString.stringByStrippingBodyStyle()
+                    newhtmlString = newhtmlString.stringByPurifyHTML()
+                    newhtmlString = newhtmlString.escaped
+                    
                     return newhtmlString
                 } else {
                     if htmlString.trim().isEmpty {
-                        let ret_body = "<div><br><div><div><br></div><div><br></div><div><br></div>" //add some space
+                        //add some space
+                        let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
                         return ret_body
                     }
                 }
@@ -626,7 +641,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
             }
 
         }
-        //when goes here , need log error
         return htmlString
     }
 }
@@ -639,6 +653,7 @@ extension ComposeViewModelImpl {
      Currently, the fields required in the message object are: Group, Address, and Name
     */
     func toJsonString(_ contacts : [ContactPickerModelProtocol]) -> String {
+        //TODO:: could be improved 
         var out : [[String : String]] = [[String : String]]();
         for contact in contacts {
             switch contact.modelType {
@@ -646,10 +661,9 @@ extension ComposeViewModelImpl {
                 let contact = contact as! ContactVO
                 let to: [String : String] = [
                     "Group": "",
-                    "Name" : contact.name ?? "",
+                    "Name" : contact.name,
                     "Address" : contact.email ?? ""
                 ]
-                print(to)
                 out.append(to)
             case .contactGroup:
                 let contactGroup = contact as! ContactGroupVO
@@ -661,7 +675,6 @@ extension ComposeViewModelImpl {
                         "Name" : member.Name,
                         "Address" : member.Address
                     ]
-                    print(to)
                     out.append(to)
                 }
             }

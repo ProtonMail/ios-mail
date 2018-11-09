@@ -110,7 +110,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
         self.webViewBottomLine.isActive = true
 
         // compose view
-        let w = UIScreen.main.applicationFrame.width;
+        let w = UIScreen.main.bounds.width;
         self.composeViewController.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
         self.addChild(self.composeViewController)
         self.webView?.scrollView.addSubview(composeViewController.view);
@@ -298,7 +298,7 @@ class ComposerViewController: UIViewController, ViewModelProtocolNew {
     internal func updateComposeFrame() {
         let inset = self.view.safeAreaInsets
         let offset = inset.left + inset.right
-        var w = UIScreen.main.applicationFrame.width - offset;
+        var w = UIScreen.main.bounds.width - offset;
         if w < 0 {
             w = 0
         }
@@ -551,7 +551,7 @@ extension ComposerViewController : ComposeViewDelegate {
         if #available(iOS 11.0, *) {
             self.updateComposeFrame()
         } else {
-            let w = UIScreen.main.applicationFrame.width
+            let w = UIScreen.main.bounds.width
             self.composeViewController.view.frame = CGRect(x: -8, y: 0, width: w, height: composeViewSize)
         }
         self.updateContentLayout(true)

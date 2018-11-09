@@ -16,11 +16,9 @@ extension PHAsset {
         
         var fname:String?
         
-        if #available(iOS 9.0, *) {
-            let resources = PHAssetResource.assetResources(for: self)
-            if let resource = resources.first {
-                fname = resource.originalFilename
-            }
+        let resources = PHAssetResource.assetResources(for: self)
+        if let resource = resources.first {
+            fname = resource.originalFilename
         }
         
         if fname == nil {

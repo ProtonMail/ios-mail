@@ -113,6 +113,15 @@ class MessageDataService {
         }
     }
     
+    func updateMessageCount() {
+        let counterApi = MessageCount()
+        counterApi.call({ (task, response, hasError) in
+            if !hasError {
+                self.processEvents(counts: response?.counts)
+            }
+        })
+    }
+    
     // MARK : fetch functions
     
     /**
@@ -709,7 +718,13 @@ class MessageDataService {
     func fetchedResultsControllerForLocation(_ location: MessageLocation) -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", "\(location.rawValue)", Message.Attributes.messageStatus)
+            if location == .outbox {
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (%K > 0)",
+                                                     "\(location.rawValue)", "\(MessageLocation.trash.rawValue)", "\(MessageLocation.archive.rawValue)", Message.Attributes.messageStatus)
+            } else {
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
+                                                     "\(location.rawValue)", Message.Attributes.messageStatus)
+            }
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
@@ -781,8 +796,8 @@ class MessageDataService {
         sharedFailedQueue.clear()
         
         //tempary for clean contact cache
-        sharedContactDataService.clean() //here need move to a general data service manager
         sharedLabelsDataService.cleanUp()
+        sharedContactDataService.clean() //here need move to a general data service manager
     }
     
     fileprivate func cleanMessage() {
@@ -1051,21 +1066,28 @@ class MessageDataService {
                         params["MessageID"] =  attachment.message.messageID 
                         default_address_id = attachment.message.getAddressID
                     }
-                    
                     let pwd = sharedUserDataService.mailboxPassword ?? ""
-                    let encrypt_data = attachment.encrypt(byAddrID: default_address_id, mailbox_pwd: pwd)
-                    //TODO:: here need check is encryptdata is nil and return the error to user.
-                    let keyPacket = encrypt_data?.keyPacket()
-                    let dataPacket = encrypt_data?.dataPacket()
+                    guard let encrypt_data = attachment.encrypt(byAddrID: default_address_id, mailbox_pwd: pwd) else {
+                        completion?(nil, nil, NSError.encryptionError()) //
+                        return
+                    }
+                    guard let keyPacket = encrypt_data.keyPacket() else {
+                        completion?(nil, nil, NSError.encryptionError()) //
+                        return
+                    }
+                    guard let dataPacket = encrypt_data.dataPacket() else {
+                        completion?(nil, nil, NSError.encryptionError())
+                        return
+                    }
                     let signed = attachment.sign(byAddrID: default_address_id, mailbox_pwd: pwd)
+                    
                     let completionWrapper: CompletionBlock = { task, response, error in
                         PMLog.D("SendAttachmentDebug == finish upload att!")
                         if error == nil {
                             if let attDict = response?["Attachment"] as? [String : Any] {
                                 if let messageID = attDict["ID"] as? String {
                                     attachment.attachmentID = messageID
-                                    attachment.keyPacket = keyPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
-                                    
+                                    attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                                     // since the encrypted attachment is successfully uploaded, we no longer need it cleartext in db
                                     attachment.fileData = nil
                                     if let fileUrl = attachment.localURL,
@@ -1156,25 +1178,25 @@ class MessageDataService {
     struct SendStatus : OptionSet {
         let rawValue: Int
         
-        static let justStart             = RefreshStatus(rawValue: 0)
-        static let fetchEmailOK          = RefreshStatus(rawValue: 1 << 0)
-        static let getBody               = RefreshStatus(rawValue: 1 << 1)
-        static let updateBuilder         = RefreshStatus(rawValue: 1 << 2)
-        static let processKeyResponse    = RefreshStatus(rawValue: 1 << 3)
-        static let checkMimeAndPlainText = RefreshStatus(rawValue: 1 << 4)
-        static let setAtts               = RefreshStatus(rawValue: 1 << 5)
-        static let goNext                = RefreshStatus(rawValue: 1 << 6)
-        static let checkMime             = RefreshStatus(rawValue: 1 << 7)
-        static let buildMime             = RefreshStatus(rawValue: 1 << 8)
-        static let checkPlainText        = RefreshStatus(rawValue: 1 << 9)
-        static let buildPlainText        = RefreshStatus(rawValue: 1 << 10)
-        static let initBuilders          = RefreshStatus(rawValue: 1 << 11)
-        static let encodeBody            = RefreshStatus(rawValue: 1 << 12)
-        static let buildSend             = RefreshStatus(rawValue: 1 << 13)
-        static let sending               = RefreshStatus(rawValue: 1 << 14)
-        static let done                  = RefreshStatus(rawValue: 1 << 15)
-        static let doneWithError         = RefreshStatus(rawValue: 1 << 16)
-        static let exceptionCatched      = RefreshStatus(rawValue: 1 << 17)
+        static let justStart             = SendStatus(rawValue: 0)
+        static let fetchEmailOK          = SendStatus(rawValue: 1 << 0)
+        static let getBody               = SendStatus(rawValue: 1 << 1)
+        static let updateBuilder         = SendStatus(rawValue: 1 << 2)
+        static let processKeyResponse    = SendStatus(rawValue: 1 << 3)
+        static let checkMimeAndPlainText = SendStatus(rawValue: 1 << 4)
+        static let setAtts               = SendStatus(rawValue: 1 << 5)
+        static let goNext                = SendStatus(rawValue: 1 << 6)
+        static let checkMime             = SendStatus(rawValue: 1 << 7)
+        static let buildMime             = SendStatus(rawValue: 1 << 8)
+        static let checkPlainText        = SendStatus(rawValue: 1 << 9)
+        static let buildPlainText        = SendStatus(rawValue: 1 << 10)
+        static let initBuilders          = SendStatus(rawValue: 1 << 11)
+        static let encodeBody            = SendStatus(rawValue: 1 << 12)
+        static let buildSend             = SendStatus(rawValue: 1 << 13)
+        static let sending               = SendStatus(rawValue: 1 << 14)
+        static let done                  = SendStatus(rawValue: 1 << 15)
+        static let doneWithError         = SendStatus(rawValue: 1 << 16)
+        static let exceptionCatched      = SendStatus(rawValue: 1 << 17)
     }
     
     
@@ -1188,7 +1210,12 @@ class MessageDataService {
         if let context = managedObjectContext,
             let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
             let message = context.find(with: objectID) as? Message {
-
+            
+            if message.messageID.isEmpty {//
+                errorBlock(nil, nil, NSError.badParameter(messageID))
+                return
+            }
+            
             if message.managedObjectContext == nil {
                 NSError.alertLocalCacheErrorToast()
                 let err = RuntimeError.bad_draft.error
@@ -1374,7 +1401,6 @@ class MessageDataService {
                         }
                         
                         if attachments.count > 0 {
-                            message.hasAttachments = true
                             message.numAttachments = NSNumber(value: attachments.count)
                         }
                         //TODO::fix later 1.7

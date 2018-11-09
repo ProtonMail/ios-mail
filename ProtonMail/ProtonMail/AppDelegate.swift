@@ -171,7 +171,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         if mode != .dev && mode != .sim {
             AFNetworkActivityLogger.shared().stopLogging()
         }
-        
+         AFNetworkActivityLogger.shared().stopLogging()
         //setup language
         LanguageManager.setupCurrentLanguage()
         

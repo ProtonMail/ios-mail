@@ -2,9 +2,28 @@
 //  ContactsAPI.swift
 //  ProtonMail
 //
-//  Created by Yanfeng Zhang on 3/10/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import Foundation
 
@@ -33,8 +52,7 @@ class ContactsResponse : ApiResponse {
     var total : Int = -1
     var contacts : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D("[Contact] Get contacts response \(response)")
-        
+        //PMLog.D("[Contact] Get contacts response \(response)")
         self.total = response?["Total"] as? Int ?? -1
         self.contacts = response?["Contacts"] as? [[String : Any]] ?? []
         return true
@@ -78,8 +96,7 @@ class ContactEmailsResponse: ApiResponse {
     var total : Int = -1
     var contacts : [[String : Any]] = [] // [["ID": ..., "Name": ..., "ContactEmails": ...], ...]
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D("[Contact] Get contact emails response \(response)")
-        
+        //PMLog.D("[Contact] Get contact emails response \(response)")
         self.total = response?["Total"] as? Int ?? -1
         if let tempContactEmails = response?["ContactEmails"] as? [[String : Any]] {
             // setup emails
@@ -412,7 +429,7 @@ final class ContactLabelAnArrayOfContactEmailsResponse: ApiResponse {
     var emailIDs: [String] = []
     
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D("[Contact] label an array of contact emails response \(response)")
+        //PMLog.D("[Contact] label an array of contact emails response \(response)")
         if let responses = response["Responses"] as? [[String: Any]] {
             for data in responses {
                 if let ID = data["ID"] as? String, let tmp = data["Response"] as? [String: Any] {
@@ -461,8 +478,7 @@ final class ContactUnlabelAnArrayOfContactEmailsResponse: ApiResponse {
     var emailIDs: [String] = []
     
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D("[Contact] unlabel an array of contact emails response \(response)")
-        
+        //PMLog.D("[Contact] unlabel an array of contact emails response \(response)")
         if let responses = response["Responses"] as? [[String: Any]] {
             for data in responses {
                 if let ID = data["ID"] as? String, let tmp = data["Response"] as? [String: Any] {

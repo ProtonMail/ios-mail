@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -1174,8 +1174,6 @@
                         <outlet property="undoView" destination="3pf-Hd-Pee" id="5Dw-zE-4Wk"/>
                         <segue destination="xBI-ex-VGk" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
                         <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewController" id="f3k-3A-WEA"/>
-                        <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="fux-iz-qV0"/>
-                        <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toComposeShow" id="uv8-bX-yhD"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" id="zIE-XJ-wkG"/>
                         <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewControllerFromNotification" id="hZj-FM-cPb"/>
                         <segue destination="49o-KF-b5x" kind="presentation" identifier="to_onboarding_segue" id="2RB-hE-91p"/>
@@ -1183,6 +1181,8 @@
                         <segue destination="PB6-QM-CEf" kind="show" identifier="to_feedback_view_segue" id="0zg-HM-MdK"/>
                         <segue destination="Qwy-GJ-vAH" kind="presentation" identifier="toHumanCheckView" id="dts-X9-0aN"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" id="XIN-Jt-JzU"/>
+                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toCompose" id="dh2-Js-yHz"/>
+                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toComposeShow" id="A0a-yx-qTn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1222,10 +1222,11 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="backButton" destination="IrE-60-aCv" id="eWw-9W-awV"/>
-                        <segue destination="3qu-iX-9kV" kind="show" identifier="toCompose" id="ddm-eA-erE"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" id="xUw-S1-zl5"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" id="CfN-TC-C8a"/>
                         <segue destination="6Wk-yf-evB" kind="show" identifier="toAddContact" id="gfN-F5-Ywe"/>
+                        <segue destination="Pr4-fX-gNy" kind="show" identifier="toComposeTest" id="Vk8-EF-JzJ"/>
+                        <segue destination="Pr4-fX-gNy" kind="show" identifier="toCompose" id="QMs-AM-7qw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X4f-eM-03N" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1247,7 +1248,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XP8-md-UoJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3956" y="3360"/>
+            <point key="canvasLocation" x="5849" y="2988"/>
         </scene>
         <!--Compose Email View Controller-->
         <scene sceneID="Nqt-Qf-jZf">
@@ -1293,7 +1294,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WN4-FR-nyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5458" y="2794"/>
+            <point key="canvasLocation" x="6534" y="2988"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="z3E-8M-2ks">
@@ -1946,7 +1947,7 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y0x-Sh-VpS">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="Y0x-Sh-VpS">
                                             <rect key="frame" x="23" y="17" width="200" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="200" id="CLB-Yo-H6k"/>
@@ -2130,8 +2131,33 @@
                                     <outlet property="headerText" destination="i7C-fQ-acK" id="bBM-a7-6Xb"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="settings_general_single_line" editingAccessoryType="disclosureIndicator" id="a8V-rc-iwG" customClass="GeneralSettingSinglelineCell" customModule="ProtonMail" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="365.5" width="375" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a8V-rc-iwG" id="z4V-8m-HcD">
+                                    <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="QIk-df-Ewb">
+                                            <rect key="frame" x="23" y="17" width="318" height="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="QIk-df-Ewb" firstAttribute="top" secondItem="z4V-8m-HcD" secondAttribute="topMargin" constant="6" id="FwO-e8-aV2"/>
+                                        <constraint firstAttribute="trailing" secondItem="QIk-df-Ewb" secondAttribute="trailing" id="X49-GY-Y6N"/>
+                                        <constraint firstItem="QIk-df-Ewb" firstAttribute="leading" secondItem="z4V-8m-HcD" secondAttribute="leadingMargin" constant="7" id="dbc-x7-zQh"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="QIk-df-Ewb" secondAttribute="bottom" constant="6" id="lWA-U9-hk5"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="LeftText" destination="QIk-df-Ewb" id="fjI-Pt-r3X"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="settings_twolines" rowHeight="120" id="7Jh-rt-PYs" customClass="SettingsCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="365.5" width="375" height="120"/>
+                                <rect key="frame" x="0.0" y="415.5" width="375" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Jh-rt-PYs" id="Pat-mZ-FC0">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="119.5"/>
@@ -3468,7 +3494,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="6678" y="3030"/>
+            <point key="canvasLocation" x="7302" y="2988"/>
         </scene>
         <!--TwoFA Code View Controller-->
         <scene sceneID="w0j-1V-fOM">
@@ -3915,7 +3941,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Lc-Ph-W7X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6677.6000000000004" y="2263.7181409295354"/>
+            <point key="canvasLocation" x="7322" y="2323"/>
         </scene>
         <!--Contact Detail View Controller-->
         <scene sceneID="pqh-Ju-xzs">
@@ -4139,13 +4165,13 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="rMv-dt-zfT" id="Hju-O5-rMY"/>
-                        <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="rru-oY-8Lv"/>
                         <segue destination="bwU-38-Jat" kind="presentation" identifier="toUpgradeAlertSegue" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="sDR-N5-yCe"/>
+                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toCompose" id="fVS-Y2-fEe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TF4-Th-N3Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2256.8000000000002" y="4441.5292353823088"/>
+            <point key="canvasLocation" x="3628" y="4627"/>
         </scene>
         <!--Contact Type-->
         <scene sceneID="kfF-I9-UhM">
@@ -4379,7 +4405,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qxN-37-xCU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2910" y="2776"/>
+            <point key="canvasLocation" x="2978" y="4627"/>
         </scene>
         <!--Upgrade Alert View Controller-->
         <scene sceneID="QUA-Pe-gcX">
@@ -4727,7 +4753,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jiv-Wi-eAq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6679" y="3821"/>
+            <point key="canvasLocation" x="7377" y="3749"/>
         </scene>
         <!--Contact Storyboard-->
         <scene sceneID="lfj-HT-x7A">
@@ -4743,7 +4769,15 @@
                 <viewControllerPlaceholder storyboardName="Contact" referencedIdentifier="UINavigationController-d3P-H0-xNt" id="6Wk-yf-evB" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ETS-LH-5Th" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3982" y="5155"/>
+            <point key="canvasLocation" x="5126" y="3154"/>
+        </scene>
+        <!--ref_composer_nav_controller-->
+        <scene sceneID="b9I-Wi-Bnh">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Composer" referencedIdentifier="ref_composer_nav_controller" id="Pr4-fX-gNy" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9wK-OO-beg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3734" y="3183"/>
         </scene>
     </scenes>
     <resources>
@@ -4779,16 +4813,15 @@
         <image name="upgrade_background" width="325.5" height="437"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="A0a-yx-qTn"/>
         <segue reference="sDR-N5-yCe"/>
         <segue reference="oa9-8b-dT8"/>
         <segue reference="Yep-Vd-dxY"/>
         <segue reference="0zg-HM-MdK"/>
         <segue reference="PpL-SW-U8F"/>
         <segue reference="3FM-PP-oeV"/>
-        <segue reference="uj7-oW-fwS"/>
-        <segue reference="fux-iz-qV0"/>
         <segue reference="f3k-3A-WEA"/>
-        <segue reference="CfN-TC-C8a"/>
+        <segue reference="GgS-nT-ctf"/>
         <segue reference="YGe-pV-72F"/>
     </inferredMetricsTieBreakers>
 </document>

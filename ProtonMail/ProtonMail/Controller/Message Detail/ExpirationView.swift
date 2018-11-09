@@ -9,7 +9,7 @@
 import Foundation
 
 
-
+@IBDesignable
 class ExpirationView: PMView {
     override func getNibName() -> String {
         return "ExpirationView"
