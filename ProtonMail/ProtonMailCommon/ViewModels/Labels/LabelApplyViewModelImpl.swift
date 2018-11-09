@@ -137,7 +137,9 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                 }
             }
             let ids = self.messages.map { ($0).messageID }
-            let api = MessageActionRequest(action: "archive", ids: ids)
+            
+            let labelID = "\(MessageLocation.archive.rawValue)"
+            let api = ApplyLabelToMessages(labelID: labelID, messages: ids)
             api.call(nil)
         }
         
