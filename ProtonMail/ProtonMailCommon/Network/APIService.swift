@@ -88,7 +88,7 @@ class APIService {
             pthread_mutex_lock(&self.mutex)
             
             //fetch auth info
-            guard let credential = AuthCredential.fetchFromKeychain() else { // app is locked, fail with error gracefully
+            guard let _ = keymaker.mainKey else { // app is locked, fail with error gracefully
                 pthread_mutex_unlock(&self.mutex)
                 DispatchQueue.main.async {
                     completion(nil, NSError.authCacheBad())
@@ -96,7 +96,9 @@ class APIService {
                 return
             }
             
-            guard !(credential.password ?? "").isEmpty else { // mailbox pwd is empty should show error and logout
+            guard let credential = AuthCredential.fetchFromKeychain(),  // mailbox pwd is empty should show error and logout
+                !(credential.password ?? "").isEmpty else
+            {
                 //clean auth cache let user relogin
                 AuthCredential.clearFromKeychain()
                 pthread_mutex_unlock(&self.mutex)

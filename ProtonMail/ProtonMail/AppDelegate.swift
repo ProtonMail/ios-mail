@@ -190,9 +190,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         //setup language
         LanguageManager.setupCurrentLanguage()
         
-        //TODO::remove from here. load after user login/restore from cache
-        ServicePlanDataService.shared.updateServicePlans()
-        
         PushNotificationService.shared.registerForRemoteNotifications()
         PushNotificationService.shared.setLaunchOptions(launchOptions)
         
