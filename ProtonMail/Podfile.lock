@@ -18,7 +18,6 @@ PODS:
     - AFNetworking/NSURLSession
   - AwaitKit (5.0.0):
     - PromiseKit (~> 6)
-  - CryptoSwift (0.12.0)
   - DKImagePickerController/Core (4.0.0-beta2):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -45,7 +44,6 @@ PODS:
     - SDWebImage/GIF
   - DKPhotoGallery/Resource (0.0.7):
     - SDWebImage/GIF
-  - EllipticCurveKeyPair (1.0.2)
   - FLAnimatedImage (1.0.12)
   - Groot (3.0.1):
     - Groot/Swift (= 3.0.1)
@@ -97,9 +95,7 @@ DEPENDENCIES:
   - AFNetworkActivityLogger (from `https://github.com/AFNetworking/AFNetworkActivityLogger.git`, branch `3_0_0`)
   - AFNetworking (= 3.2.1)
   - AwaitKit (~> 5.0.0)
-  - CryptoSwift (= 0.12.0)
   - DKImagePickerController/PhotoGallery (= 4.0.0-beta2)
-  - EllipticCurveKeyPair (= 1.0.2)
   - Groot (= 3.0.1)
   - Masonry (= 1.1.0)
   - MBProgressHUD (= 0.9.2)
@@ -119,10 +115,8 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
     - AwaitKit
-    - CryptoSwift
     - DKImagePickerController
     - DKPhotoGallery
-    - EllipticCurveKeyPair
     - FLAnimatedImage
     - Groot
     - Masonry
@@ -162,10 +156,8 @@ SPEC CHECKSUMS:
   AFNetworkActivityLogger: e77f68d014becb33c4306a23f56a64906ff72670
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   AwaitKit: d8a6e30eeb2da916630270b44636b31033388bd8
-  CryptoSwift: 1c07ca50843dd48bc54e6ea53d7a4dba3b645716
   DKImagePickerController: 43789fb00974b13f26263cc1ee0de5c2e6c6390d
   DKPhotoGallery: 7f07b6d8a47733fdd76856113c474456b92fc769
-  EllipticCurveKeyPair: 80c2effda68925851c12562dcfc3fe94489b5eba
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -184,6 +176,6 @@ SPEC CHECKSUMS:
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: 53fd660ed37df3ccc3752ab15a04a4fdca35e6d2
 
-PODFILE CHECKSUM: 7b7818c75d0f32fd242296e28d4844de9d1cb90e
+PODFILE CHECKSUM: 10f4ec876a857e4a0a90d5ce123b8a0292100b01
 
 COCOAPODS: 1.5.3
