@@ -70,7 +70,7 @@ public class Keymaker: NSObject {
         return newKey
     }
     
-    private let controlThread = DispatchQueue.global(qos: .utility)
+    private let controlThread = DispatchQueue.global(qos: .userInteractive)
     
     public func wipeMainKey() {
         NoneProtection.removeCyphertext(from: self.keychain)

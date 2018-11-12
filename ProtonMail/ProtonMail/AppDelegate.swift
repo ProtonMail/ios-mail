@@ -25,85 +25,7 @@ let sharedUserDataService = UserDataService()
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    
-    //FIXME: tempory
-    var upgradeView : ForceUpgradeView?
-    
-    // FIXME: this is new navigation system Router's work
-    lazy var window: UIWindow? = {
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = UIViewController() // simple black background for animation in switchTo(_:_:) method
-        window.makeKeyAndVisible()
-        return window
-    }()
-    
-    // FIXME: this is new navigation system Router's work
-    @objc func setupWindow(gotMainKey: Bool) {
-        guard SignInManager.shared.isSignedIn() else {
-            self.switchTo(storyboard: .signIn, animated: false)
-            return
-        }
-        
-        switch gotMainKey {
-        case true: self.switchTo(storyboard: .inbox, animated: true)
-        case false: self.switchTo(storyboard: .signIn, animated: true)
-        }
-    }
-    
-    @objc func lockWindow() {
-        self.setupWindow(gotMainKey: false)
-    }
-    
-    @objc func unlockWindow() {
-        self.setupWindow(gotMainKey: true)
-    }
-    
-    // MARK: - Public methods
-    
-    // FIXME: this is new navigation system Router's work
-    func switchTo(storyboard: UIStoryboard.Storyboard, animated: Bool) {
-        DispatchQueue.main.async {
-            guard let window = self.window else {
-                return
-            }
-            
-            guard let rootViewController = window.rootViewController,
-                rootViewController.restorationIdentifier != storyboard.restorationIdentifier else {
-                return
-            }
-            
-            if !animated {
-                window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-            } else {
-                UIView.animate(withDuration: ViewDefined.animationDuration/2,
-                               delay: 0,
-                               options: UIView.AnimationOptions(),
-                               animations: { () -> Void in
-                                rootViewController.view.alpha = 0
-                }, completion: { (finished) -> Void in
-                    guard let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard) else {
-                        return
-                    }
-                    if let oldView = window.rootViewController as? SWRevealViewController {
-                        if let navigation = oldView.frontViewController as? UINavigationController {
-                            if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-                                mailboxViewController.resetFetchedResultsController()
-                                //TODO:: fix later, this logic change to viewModel service
-                            }
-                        }
-                    }
-                    viewController.view.alpha = 0
-                    window.rootViewController = viewController
-                    
-                    UIView.animate(withDuration: ViewDefined.animationDuration/2,
-                                   delay: 0, options: UIView.AnimationOptions(),
-                                   animations: { () -> Void in
-                                    viewController.view.alpha = 1.0
-                    }, completion: nil)
-                })
-            }
-        }
-    }
+    lazy var coordinator = WindowsCoordinator()
 }
 
 extension SWRevealViewController {
@@ -126,7 +48,7 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 
 extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServiceDelegate {
     func onLogout(animated: Bool) {
-        self.switchTo(storyboard: .signIn, animated: animated)
+        self.coordinator.go(dest: .signInWindow)
     }
     
     func onError(error: NSError) {
@@ -196,11 +118,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         StoreKitManager.default.subscribeToPaymentQueue()
         StoreKitManager.default.updateAvailableProductsList()
         
-        
-        //TODO:: Tempory later move it into App coordinator
-        NotificationCenter.default.addObserver(self, selector: #selector(performForceUpgrade), name: .forceUpgrade, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(lockWindow), name: Keymaker.requestMainKey, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(unlockWindow), name: Keymaker.obtainedMainKey, object: nil)
+        self.coordinator.start()
         
         return true
     }
@@ -227,8 +145,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        Snapshot().didEnterBackground(application)
         keymaker.updateAutolockCountdownStart()
+        Snapshot().didEnterBackground(application)
         
         var taskID : UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask {
@@ -253,10 +171,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         Snapshot().willEnterForeground(application)
-        if keymaker.mainKey == nil {
-            sharedVMService.resetView()
-            (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
-        }
+        let _ = keymaker.mainKey
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -312,7 +227,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
-            let point = touch.location(in: self.window)
+            let point = touch.location(in: UIApplication.shared.keyWindow)
             let statusBarFrame = UIApplication.shared.statusBarFrame
             if (statusBarFrame.contains(point)) {
                 self.touchStatusBar()
@@ -323,60 +238,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     func touchStatusBar() {
         let notification = Notification(name: .touchStatusBar, object: nil, userInfo: nil)
         NotificationCenter.default.post(notification)
-    }
-    
-    @objc func performForceUpgrade(_ notification: Notification) {
-        guard let keywindow = UIApplication.shared.keyWindow else {
-            return
-        }
-        
-        if let exsitView = upgradeView {
-            keywindow.bringSubviewToFront(exsitView)
-            return
-        }
-        
-        let view = ForceUpgradeView(frame: keywindow.bounds)
-        self.upgradeView = view
-        if let msg = notification.object as? String {
-            view.messageLabel.text = msg
-        }
-        view.delegate = self
-        UIView.transition(with: keywindow, duration: 0.25,
-                          options: .transitionCrossDissolve, animations: {
-            keywindow.addSubview(view)
-        }, completion: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(AppDelegate.rotated),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil)
-    }
-    
-    @objc func rotated() {
-        if let view = self.upgradeView {
-            guard let keywindow = UIApplication.shared.keyWindow else {
-                return
-            }
-            
-            UIView.animate(withDuration: 0.25, delay: 0.0,
-                           options: UIView.AnimationOptions.layoutSubviews, animations: {
-                view.frame = keywindow.frame
-                view.layoutIfNeeded()
-            }, completion: nil)
-        }
-    }
-}
-
-extension AppDelegate : ForceUpgradeViewDelegate {
-    func learnMore() {
-        if UIApplication.shared.canOpenURL(.kbUpdateRequired) {
-            UIApplication.shared.openURL(.kbUpdateRequired)
-        }
-    }
-    func update() {
-        if UIApplication.shared.canOpenURL(.appleStore) {
-            UIApplication.shared.openURL(.appleStore)
-        }
     }
 }
 

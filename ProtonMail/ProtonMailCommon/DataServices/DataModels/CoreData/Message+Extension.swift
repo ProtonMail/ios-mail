@@ -369,6 +369,7 @@ extension Message {
     
     // MARK: methods
     func decryptBody(keys: Data) throws -> String? {
+        guard let passphrase = self.cachedPassphrase ?? sharedUserDataService.mailboxPassword else { return nil }
         return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
     }
     
@@ -379,8 +380,12 @@ extension Message {
     //  failed     = 3
     //  )
     func verifyBody(verifier : Data) -> SignStatus {
-        let keys = sharedUserDataService.addressPrivKeys
-
+        guard let passphrase = self.cachedPassphrase ?? sharedUserDataService.mailboxPassword,
+            case let keys = sharedUserDataService.addressPrivKeys else
+        {
+                return .failed
+        }
+        
         do {
             let time : Int64 = Int64(round(self.time?.timeIntervalSince1970 ?? 0))
             if let verify = try body.verifyMessage(verifier: verifier, binKeys: keys, passphrase: passphrase, time: time) {
@@ -397,6 +402,7 @@ extension Message {
     }
     
     func getSessionKey(keys: Data) throws -> ModelsSessionSplit? {
+        guard let passphrase = self.cachedPassphrase ?? sharedUserDataService.mailboxPassword else { return nil }
         return try split()?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: keys)
     }
     
@@ -498,11 +504,6 @@ extension Message {
     
     var lockType : LockTypes! {
         return self.encryptType.lockType
-    }
-    
-    // MARK: Private variables
-    fileprivate var passphrase: String! {
-        return self.cachedPassphrase ?? sharedUserDataService.mailboxPassword
     }
     
     //this function need to factor

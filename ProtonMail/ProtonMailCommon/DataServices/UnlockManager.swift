@@ -85,7 +85,6 @@ class UnlockManager: NSObject {
         self.updateUserData()
         sharedMessageDataService.injectTransientValuesIntoMessages()
         ServicePlanDataService.shared.updateServicePlans()
-        (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
         NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil)
         #endif
     }

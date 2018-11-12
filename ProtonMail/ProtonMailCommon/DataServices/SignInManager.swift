@@ -65,10 +65,8 @@ class SignInManager: NSObject {
             return
         }
         
-        guard !sharedUserDataService.isSet else {
+        if !sharedUserDataService.isSet {
             sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil)
-            (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-            return
         }
         
         do {

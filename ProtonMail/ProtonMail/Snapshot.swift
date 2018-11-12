@@ -30,27 +30,16 @@ class Snapshot {
     
     static var cachedSnapshotView : UIView? = nil
     
-    // create a view and overlay the screen
     func didEnterBackground(_ application: UIApplication) {
-        if let window = application.keyWindow {
-            guard let view = Snapshot.cachedSnapshotView else {
-                if let launchScreen = Bundle.main.loadNibNamed(NibName.Name, owner: window, options: nil),
-                    let snapshotView = launchScreen.first as? UIView {
-                    snapshotView.tag = Tag.snapshot
-                    Snapshot.cachedSnapshotView = snapshotView
-                    show(at: window, with: snapshotView)
-                } else {
-                    let v = getDefaultView()
-                    Snapshot.cachedSnapshotView = v
-                    show(at: window, with: v)
-                }
-                return
-            }
-            show(at: window, with: view)
+        guard let window = application.keyWindow else {
+            return
         }
+        self.show(at: window)
     }
     
-    func show(at window: UIWindow, with view: UIView) {
+    func show(at window: UIWindow) {
+        let view = Snapshot.cachedSnapshotView ?? self.getFancyView(for: window) ?? self.getDefaultView()
+        
         window.addSubview(view)
         view.mas_makeConstraints { (make) -> Void in
             make?.top.equalTo()(window)
@@ -60,10 +49,20 @@ class Snapshot {
         }
     }
     
+    func getFancyView(for window: UIWindow) -> UIView? {
+        guard let view = Bundle.main.loadNibNamed(NibName.Name, owner: window, options: nil)?.first as? UIView else {
+            return nil
+        }
+        view.tag = Tag.snapshot
+        Snapshot.cachedSnapshotView = view
+        return view
+    }
+    
     func getDefaultView() -> UIView {
         let view = UIView(frame: CGRect.zero)
         view.backgroundColor = UIColor.ProtonMail.Blue_85B1DE
         view.tag = Tag.snapshot
+        Snapshot.cachedSnapshotView = view
         return view
     }
     
