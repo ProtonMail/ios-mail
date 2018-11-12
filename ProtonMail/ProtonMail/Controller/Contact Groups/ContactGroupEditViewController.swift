@@ -2,9 +2,28 @@
 //  ContactGroupEditViewController.swift
 //  ProtonMail
 //
-//  Created by Chun-Hung Tseng on 2018/8/16.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import UIKit
 import PromiseKit
@@ -12,10 +31,12 @@ import PromiseKit
 /**
  The design for now is no auto-saving
  */
-class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocolNew {
+
+    typealias argType = ContactGroupEditViewModel
+
     let kToContactGroupSelectColorSegue = "toContactGroupSelectColorSegue"
     let kToContactGroupSelectEmailSegue = "toContactGroupSelectEmailSegue"
-    
     let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
     
     @IBOutlet weak var contactGroupNameInstructionLabel: UILabel!
@@ -32,8 +53,8 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     var viewModel: ContactGroupEditViewModel!
     var activeText: UIResponder? = nil
     
-    func setViewModel(_ vm: Any) {
-        viewModel = vm as! ContactGroupEditViewModel
+    func set(viewModel: ContactGroupEditViewModel) {
+        self.viewModel = viewModel
     }
     
     func inactiveViewModel() {}
@@ -123,22 +144,27 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         }
     }
     
+    private func dismiss() {
+        if self.presentingViewController != nil {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            let _ = self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
     private func save() {
-        firstly {
-            () -> Promise<Void> in
-            
+        firstly { () -> Promise<Void> in
             ActivityIndicatorHelper.showActivityIndicator(at: self.view)
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            
             return viewModel.saveDetail()
-            }.done {
-                self.dismiss(animated: true, completion: nil)
-            }.ensure {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-            }.catch {
-                error in
-                error.alert(at: self.view)
+        }.done {
+            self.dismiss()
+        }.ensure {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+        }.catch {
+            error in
+            error.alert(at: self.view)
         }
     }
     
@@ -155,8 +181,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                 (newColor: String) -> Void in
                 self.viewModel.setColor(newColor: newColor)
             }
-            sharedVMService.contactGroupSelectColorViewModel(
-                contactGroupSelectColorViewController,
+            sharedVMService.contactGroupSelectColorViewModel(contactGroupSelectColorViewController,
                                                              currentColor: viewModel.getColor(),
                                                              refreshHandler: refreshHandler)
         } else if segue.identifier == kToContactGroupSelectEmailSegue {
@@ -172,8 +197,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                                                              selectedEmails: data.viewModel.getEmails(),
                                                              refreshHandler: refreshHandler)
         } else {
-            PMLog.D("No such segue")
-            fatalError("No such segue")
+            PMLog.D("FatalError: No such segue")
         }
     }
 }
@@ -210,12 +234,10 @@ extension ContactGroupEditViewController: UITableViewDataSource
                         state: .editView,
                         viewModel: viewModel)
             return cell
-        case .deleteGroup:
+        case .deleteGroup, .error: // TODO: fix this .error state
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupDeleteCell", for: indexPath) as UITableViewCell
             cell.textLabel?.text = LocalString._contact_groups_delete
             return cell
-        case .error:
-            fatalError("This is a bug")
         }
     }
     
@@ -242,7 +264,7 @@ extension ContactGroupEditViewController: UITableViewDelegate
         case .manageContact:
             self.performSegue(withIdentifier: kToContactGroupSelectEmailSegue, sender: self)
         case .email:
-            print("email actions")
+            PMLog.D("email actions")
         case .deleteGroup:
             let deleteActionHandler = {
                 (action: UIAlertAction) -> Void in
@@ -253,7 +275,7 @@ extension ContactGroupEditViewController: UITableViewDelegate
                     UIApplication.shared.isNetworkActivityIndicatorVisible = true
                     return self.viewModel.deleteContactGroup()
                     }.done {
-                        self.dismiss(animated: true, completion: nil)
+                        self.dismiss()
                     }.ensure {
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
@@ -275,7 +297,7 @@ extension ContactGroupEditViewController: UITableViewDelegate
             alertController.popoverPresentationController?.sourceRect = self.view.frame
             self.present(alertController, animated: true, completion: nil)
         case .error:
-            fatalError("This is a bug")
+            PMLog.D("FatalError: This is a bug")
         }
     }
 }

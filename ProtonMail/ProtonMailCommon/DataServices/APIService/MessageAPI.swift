@@ -209,7 +209,7 @@ class CreateDraft : ApiRequest<MessageResponse> {
             "Address": address
         ]
         
-        messsageDict["ToList"]  = message.recipientList.parseJson()
+        messsageDict["ToList"]  = message.toList.parseJson()
         messsageDict["CCList"]  = message.ccList.parseJson()
         messsageDict["BCCList"] = message.bccList.parseJson()
         var out : [String : Any] = ["Message" : messsageDict]
@@ -423,7 +423,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
                 for it in cAtts {
                     atts[it.ID] = [
                         "Key" : it.encodedSession,
-                        "Algorithm" : it.algo
+                        "Algorithm" : it.algo == "3des" ? "tripledes" : it.algo
                     ]
                 }
                 plainTextAddress["AttachmentKeys"] = atts
@@ -462,7 +462,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
                 for it in cAtts {
                     atts[it.ID] = [
                         "Key" : it.encodedSession,
-                        "Algorithm" : it.algo
+                        "Algorithm" : it.algo == "3des" ? "tripledes" : it.algo
                     ]
                 }
                 htmlAddress["AttachmentKeys"] = atts
@@ -495,7 +495,8 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
             packages.append(mimeAddress)
         }
         out["Packages"] = packages
-        PMLog.D( out.json(prettyPrinted: true) )
+        //PMLog.D( out.json(prettyPrinted: true) )
+        PMLog.D( "API toDict done" )
         return out
     }
     

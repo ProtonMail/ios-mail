@@ -188,7 +188,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         if self.message.managedObjectContext != nil {
             self.emailView?.updateHeaderData(self.message.subject,
                                              sender: self.message.senderContactVO,
-                                             to: self.message.recipientList.toContacts(),
+                                             to: self.message.toList.toContacts(),
                                              cc: self.message.ccList.toContacts(),
                                              bcc: self.message.bccList.toContacts(),
                                              isStarred: self.message.isStarred,
@@ -278,9 +278,23 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                     continue
                 }
                 
-                alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
-                    self.message.removeLocationFromLabels(currentlocation: self.message.location, location: location, keepSent: true)
-                    self.messagesSetValue(setValue: location.rawValue, forKey: Message.Attributes.locationNumber)
+                alertController.addAction(UIAlertAction(title: location.actionTitle,
+                                                        style: style,
+                                                        handler: { (action) -> Void in
+                                                            
+                    var toLocation = location
+                    if location == .inbox {
+                        if self.message.hasLocation(location: .outbox)  {
+                            toLocation = .outbox
+                        }
+                        if self.message.hasLocation(location: .draft) {
+                            toLocation = .draft
+                        }
+                    }
+                    self.message.removeLocationFromLabels(currentlocation: self.message.location,
+                                                          location: toLocation,
+                                                          keepSent: true)
+                    self.messagesSetValue(setValue: toLocation.rawValue, forKey: Message.Attributes.locationNumber)
                     self.popViewController()
                 }))
             }
@@ -363,11 +377,11 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             render.drawPage(at: i - 1, in: bounds)
         }
         UIGraphicsEndPDFContext();
-        let documentsPath = FileManager.default.attachmentDirectory.appendingPathComponent("\(self.message.subject).pdf")
+        var filename = self.message.subject
+        filename = filename.preg_replace("[^a-zA-Z0-9_]+", replaceto: "-")
+        let documentsPath = FileManager.default.attachmentDirectory.appendingPathComponent("\(filename).pdf")
         PMLog.D(documentsPath.absoluteString)
         try? pdfData.write(to: documentsPath, options: [.atomic])
-//        pdfData.write(toFile: documentsPath, atomically: true)
-        
         tempFileUri = documentsPath
         let previewQL = QuickViewViewController()
         previewQL.dataSource = self
@@ -427,16 +441,32 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == kToComposerSegue {
             if let contact = sender as? ContactVO {
-                let composeViewController = segue.destination as! ComposeEmailViewController
+                let composeViewController = segue.destination.children[0] as! ComposeViewController
                 sharedVMService.newDraft(vmp: composeViewController, with: contact)
-            } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft{
-                let composeViewController = segue.destination as! ComposeEmailViewController
+                //TODO:: finish up here
+                let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                     vm: composeViewController.viewModel) //set view model
+                coordinator.viewController = composeViewController
+                composeViewController.set(coordinator: coordinator)
+            } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft {
+                let composeViewController = segue.destination.children[0] as! ComposeViewController
                 sharedVMService.newDraft(vmp: composeViewController, with: message, action: tapped)
+                //TODO:: finish up here
+                let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                     vm: composeViewController.viewModel) //set view model
+                coordinator.viewController = composeViewController
+                composeViewController.set(coordinator: coordinator)
             } else {
-                let composeViewController = segue.destination as! ComposeEmailViewController
+                let composeViewController = segue.destination.children[0] as! ComposeViewController
                 sharedVMService.newDraft(vmp: composeViewController, with: self.url)
+                //TODO:: finish up here
+                let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                     vm: composeViewController.viewModel) //set view model
+                coordinator.viewController = composeViewController
+                composeViewController.set(coordinator: coordinator)
             }
         } else if segue.identifier == kSegueToApplyLabels {
             let popup = segue.destination as! LablesViewController
@@ -592,7 +622,6 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             bodyText = bodyText.stringByStrippingStyleHTML()
             bodyText = bodyText.stringByStrippingBodyStyle()
             bodyText = bodyText.stringByPurifyHTML()
-            
             self.bodyHasImages = bodyText.hasImage()
             if !autoloadimage {
                 bodyText = bodyText.stringByPurifyImages()

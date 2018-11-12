@@ -9,24 +9,35 @@
 
 import UIKit
 
-protocol SharePinUnlockViewControllerDelegate {
-    func Cancel()
-    func Next()
-    func Failed()
+protocol SharePinUnlockViewControllerDelegate : AnyObject {
+    func cancel()
+    func next()
+    func failed()
 }
 
-class SharePinUnlockViewController : UIViewController {
-    
+class SharePinUnlockViewController : UIViewController, CoordinatedNew {
+    typealias coordinatorType = SharePinUnlockCoordinator
+    private var coordinator: SharePinUnlockCoordinator?
     var viewModel : PinCodeViewModel!
-    var delegate : SharePinUnlockViewControllerDelegate?
+    weak var delegate : SharePinUnlockViewControllerDelegate?
     
+    func set(coordinator: SharePinUnlockCoordinator) {
+        self.coordinator = coordinator
+    }
+    
+    func getCoordinator() -> CoordinatorNew? {
+        return coordinator
+    }
+
+    /// UI
     @IBOutlet weak var pinCodeView: PinCodeView!
+    
+    ///
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.layoutIfNeeded()
         self.pinCodeView.delegate = self
         self.pinCodeView.hideTouchID()
-        
         self.setUpView(true)
     }
     
@@ -75,16 +86,17 @@ extension SharePinUnlockViewController : PinCodeViewDelegate {
     }
     
     func Cancel() {
+        //TODO:: use the coordinator delegated
         self.dismiss(animated: true) { 
-            self.delegate?.Cancel()
+            self.delegate?.cancel()
         }
     }
     
     func Next(_ code : String) {
         if code.isEmpty {
-//            let alert = LocalString._pin_code_cant_be_empty.alertController()
-//            alert.addOKAction()
-//            self.present(alert, animated: true, completion: nil)
+            let alert = LocalString._pin_code_cant_be_empty.alertController()
+            alert.addOKAction()
+            self.present(alert, animated: true, completion: nil)
         } else {
             let step : PinCodeStep = self.viewModel.setCode(code)
             if step != .done {
@@ -94,7 +106,7 @@ extension SharePinUnlockViewController : PinCodeViewDelegate {
                     if matched {
                         self.pinCodeView.hideAttempError(true)
                         self.viewModel.done() { _ in
-                            self.delegate?.Next()
+                            self.delegate?.next()
                             self.dismiss(animated: true, completion: { })
                         }
                     } else {

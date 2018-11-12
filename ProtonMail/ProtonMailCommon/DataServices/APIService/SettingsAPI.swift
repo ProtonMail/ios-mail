@@ -12,10 +12,10 @@ import Foundation
 struct News : OptionSet {
     let rawValue: Int
     //255 means throw out client cache and reload everything from server, 1 is mail, 2 is contacts
-    static let announcements = RefreshStatus(rawValue: 1 << 0) //1 is announcements
-    static let features      = RefreshStatus(rawValue: 1 << 1) //2 is features
-    static let newsletter    = RefreshStatus(rawValue: 1 << 2) //4 is newsletter
-    static let all           = RefreshStatus(rawValue: 0xFF)
+    static let announcements = News(rawValue: 1 << 0) //1 is announcements
+    static let features      = News(rawValue: 1 << 1) //2 is features
+    static let newsletter    = News(rawValue: 1 << 2) //4 is newsletter
+    static let all           = News(rawValue: 0xFF)
 }
 
 // Mark : get settings

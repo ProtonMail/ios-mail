@@ -2,14 +2,34 @@
 //  ContactGroupDetailViewController.swift
 //  ProtonMail
 //
-//  Created by Chun-Hung Tseng on 2018/9/10.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import UIKit
 import PromiseKit
 
-class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol {
+class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocolNew {
+    typealias argType = ContactGroupDetailViewModel
 
     var viewModel: ContactGroupDetailViewModel!
     
@@ -19,17 +39,14 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
     
-    let kToContactGroupEditSegue = "toContactGroupEditSegue"
-    
-    let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
+    private let kToContactGroupEditSegue = "toContactGroupEditSegue"
+    private let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
     private let kToComposerSegue = "toComposer"
     private let kToUpgradeAlertSegue = "toUpgradeAlertSegue"
     
-    func setViewModel(_ vm: Any) {
-        viewModel = vm as! ContactGroupDetailViewModel
+    func set(viewModel: ContactGroupDetailViewModel) {
+        self.viewModel = viewModel
     }
-    
-    func inactiveViewModel() {}
     
     @IBAction func sendButtonTapped(_ sender: UIButton) {
         if sharedUserDataService.isPaidUser() {
@@ -60,24 +77,24 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        firstly {
-            () -> Promise<Bool> in
-            
+        firstly { () -> Promise<Bool> in
             ActivityIndicatorHelper.showActivityIndicator(at: self.view)
             return self.viewModel.reload()
-            }.ensure {
-                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-            }.done {
-                (isDeleted) in
-                
-                if isDeleted {
-                    self.navigationController?.popViewController(animated: true)
-                } else {
-                    self.refresh()
-                }
+        }.ensure {
+            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+        }.done { (isDeleted) in
+            
+            if isDeleted {
+                self.navigationController?.popViewController(animated: true)
+            } else {
+                self.refresh()
             }
+        }.catch { error in
+            //PMLog.D(error)
+        }
+        
     }
-    
+
     private func refresh() {
         prepareHeader()
         tableView.reloadData()
@@ -102,7 +119,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactGroupViewCellIdentifier)
         tableView.noSeparatorsBelowFooter()
-        
+        tableView.estimatedRowHeight = 60.0
         tableView.allowsSelection = false
     }
     
@@ -120,15 +137,20 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                                                           emailIDs: viewModel.getEmailIDs())
             } else {
                 // TODO: handle error
-                fatalError("Can't prepare for the contact group edit view")
+                PMLog.D("FatalError: Can't prepare for the contact group edit view")
+                return
             }
         } else if segue.identifier == kToComposerSegue {
-            let destination = segue.destination.children[0] as! ComposeEmailViewController
-            
+            let destination = segue.destination.children[0] as! ComposeViewController
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
                 sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
+                //TODO:: finish up here
+                let coordinator = ComposeCoordinator(vc: destination,
+                                                     vm: destination.viewModel) //set view model
+                coordinator.viewController = destination
+                destination.set(coordinator: coordinator)
             }
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController
@@ -150,7 +172,7 @@ extension ContactGroupDetailViewController: UpgradeAlertVCDelegate {
     }
     
     func learnMore() {
-        UIApplication.shared.openURL(URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!)
+        UIApplication.shared.openURL(.paidPlans)
     }
     
     func cancel() {

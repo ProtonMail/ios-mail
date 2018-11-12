@@ -22,7 +22,7 @@ extension UIStoryboard {
         case attachments = "Attachments"
         case inbox = "Menu"
         case signIn = "SignIn"
-        
+        case composer = "Composer"
         var restorationIdentifier: String {
             return rawValue
         }

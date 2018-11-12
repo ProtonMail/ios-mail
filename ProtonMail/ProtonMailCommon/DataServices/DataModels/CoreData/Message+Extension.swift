@@ -3,16 +3,27 @@
 //  ProtonMail
 //
 //
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
+//  The MIT License
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
+//  Copyright (c) 2018 Proton Technologies AG
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import Foundation
 import CoreData
@@ -26,9 +37,9 @@ extension Message {
         static let isDetailDownloaded = "isDetailDownloaded"
         static let isStarred = "isStarred"
         static let messageID = "messageID"
-        static let recipientList = "recipientList"
+        static let toList = "toList"
         static let senderName = "senderName"
-        static let senderObject = "senderObject"
+        static let sender = "sender"
         static let time = "time"
         static let title = "title"
         static let labels = "labels"
@@ -57,22 +68,22 @@ extension Message {
     var allEmails: [String] {
         var lists: [String] = []
         
-        if !recipientList.isEmpty {
-            let to = MessageHelper.contactsToAddressesArray(recipientList)
+        if !toList.isEmpty {
+            let to = Message.contactsToAddressesArray(toList)
             if !to.isEmpty  {
                 lists.append(contentsOf: to)
             }
         }
         
         if !ccList.isEmpty {
-            let cc = MessageHelper.contactsToAddressesArray(ccList)
+            let cc = Message.contactsToAddressesArray(ccList)
             if !cc.isEmpty  {
                 lists.append(contentsOf: cc)
             }
         }
         
         if !bccList.isEmpty {
-            let bcc = MessageHelper.contactsToAddressesArray(bccList)
+            let bcc = Message.contactsToAddressesArray(bccList)
             if !bcc.isEmpty  {
                 lists.append(contentsOf: bcc)
             }
@@ -156,7 +167,6 @@ extension Message {
                     return label.name
                 } else if !lableOnly {
                     if let l_id = Int(label.labelID) {
-                        PMLog.D(label.name)
                         if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
                             return new_loc.title
                         }
@@ -205,14 +215,14 @@ extension Message {
                             }
                         }
                     }
+                    
                 }
-                
                 let toLableID = String(location.rawValue)
                 if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
                     var exsited = false
                     for l in labelObjs {
                         if let label = l as? Label {
-                            if label == toLabel {
+                            if label.labelID == toLabel.labelID {
                                 exsited = true
                                 break
                             }
@@ -400,6 +410,9 @@ extension Message {
     }
     
     func decryptBodyIfNeeded() throws -> String? {
+        PMLog.D("Flags: \(self.flag.description)")
+        
+        let flag = self.flag
         if !checkIsEncrypted() {
             if isPlainText() {
                 return body.ln2br() 
@@ -544,7 +557,7 @@ extension Message {
         let message = self
         let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext!)
         newMessage.location = MessageLocation.draft
-        newMessage.recipientList = message.recipientList
+        newMessage.toList = message.toList
         newMessage.bccList = message.bccList
         newMessage.ccList = message.ccList
         newMessage.title = message.title
@@ -553,8 +566,7 @@ extension Message {
         newMessage.isEncrypted = message.isEncrypted
         newMessage.senderAddress = message.senderAddress
         newMessage.senderName = message.senderName
-        newMessage.senderObject = message.senderObject
-        newMessage.replyTo = message.replyTo
+        newMessage.sender = message.sender
         newMessage.replyTos = message.replyTos
         
         newMessage.orginalTime = message.time
@@ -568,6 +580,13 @@ extension Message {
 
         if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
+        }
+        
+        var key: Key?
+        if let address_id = message.addressID,
+            let userinfo = sharedUserDataService.userInfo,
+            let addr = userinfo.userAddresses.indexOfAddress(address_id) {
+            key = addr.keys.first
         }
         
         for (index, attachment) in message.attachments.enumerated() {
@@ -585,7 +604,20 @@ extension Message {
                     attachment.localURL = att.localURL
                     attachment.keyPacket = att.keyPacket
                     attachment.isTemp = true
-                    attachment.keyChanged = true
+                    do {
+                        if let k = key,
+                            let sessionPack = try att.getSession(keys: sharedUserDataService.addressPrivKeys),
+                            let session = sessionPack.session(),
+                            let algo = sessionPack.algo(),
+                            let newkp = try session.getKeyPackage(strKey: k.publicKey, algo: algo) {
+                                let encodedkp = newkp.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+                                attachment.keyPacket = encodedkp
+                                attachment.keyChanged = true
+                        }
+                    } catch {
+                        
+                    }
+                    
                     if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
                         PMLog.D("error: \(error)")
                     }
@@ -593,7 +625,6 @@ extension Message {
                 
             }
         }
-        
         return newMessage
     }
     

@@ -51,7 +51,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     public var title: String
     public var subtitle: String
     public var contactId: String
-    public var name: String!
+    public var name: String
     @objc public var email: String!
     public var isProtonMailContact: Bool = false
     
@@ -77,6 +77,13 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         }
     }
     
+    var color: String? {
+        get {
+            return nil
+        }
+    }
+    
+
     var displayName : String? {
         get {
             return name
@@ -327,7 +334,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     }
     
     override public var description: String {
-        return "\(name) \(email)"
+        return "\(name) \(email ?? "")"
     }
     
     override public func isEqual(_ object: Any?) -> Bool {

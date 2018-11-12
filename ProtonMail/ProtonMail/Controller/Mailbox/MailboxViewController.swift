@@ -287,10 +287,17 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             }
         } else if segue.identifier == kSegueToComposeShow {
             self.cancelButtonTapped()
-            let composeViewController = segue.destination.children[0] as! ComposeEmailViewController
+            //TODO:: Check
+            let composeViewController = segue.destination.children[0] as! ComposeViewController
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
                     sharedVMService.openDraft(vmp: composeViewController, with: selectedDraft ?? message)
+                    
+                    //TODO:: finish up here
+                    let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                         vm: composeViewController.viewModel) //set view model
+                    coordinator.viewController = composeViewController
+                    composeViewController.set(coordinator: coordinator)
                 } else {
                     let alert = LocalString._messages_cant_find_message.alertController()
                     alert.addOKAction()
@@ -323,8 +330,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             
         } else if segue.identifier == kSegueToCompose {
-            let composeViewController = segue.destination.children[0] as! ComposeEmailViewController
+            let composeViewController = segue.destination.children[0] as! ComposeViewController
             sharedVMService.newDraft(vmp: composeViewController)
+            
+            //TODO:: finish up here
+            let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                 vm: composeViewController.viewModel) //set view model
+            coordinator.viewController = composeViewController
+            composeViewController.set(coordinator: coordinator)
         } else if segue.identifier == kSegueToTour {
             let popup = segue.destination as! OnboardingViewController
             self.setPresentationStyleForSelfController(self, presentingController: popup)
@@ -387,9 +400,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         
         if viewModel.isShowEmptyFolder() {
+            let locations: [MessageLocation : UIAlertAction.Style] = [.inbox : .default]
+            for (location, style) in locations {
+                if !viewModel.isCurrentLocation(location) {
+                    alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
+                        self.moveMessagesToLocation(location)
+                        self.cancelButtonTapped();
+                        self.navigationController?.popViewController(animated: true)
+                    }))
+                }
+            }
+            
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Empty Folder",  comment: "Action"),
                                                     style: .destructive, handler: { (action) -> Void in
-
                 self.viewModel.emptyFolder()
                 self.showNoResultLabel()
                 self.navigationController?.popViewController(animated: true)
@@ -530,7 +553,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     @objc func refreshPage() {
         if !fetchingStopped {
-            getLatestMessages()
+            self.getLatestMessages()
+        }
+    }
+    
+    private func checkContact() {
+        sharedContactDataService.fetchContacts { (_, _) in
+
         }
     }
     
@@ -904,6 +933,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                     if let more = res?["More"] as? Int {
                        loadMore = more
                     }
+                    
+                    if loadMore <= 0 {
+                        sharedMessageDataService.updateMessageCount()
+                    }
                 }
                 
                 if loadMore > 0 {
@@ -937,6 +970,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                                            completion: complete)
                 self.checkEmptyMailbox()
             }
+            
+            self.checkContact()
         }
     }
     
@@ -957,9 +992,26 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             do {
                 if let messages = try context.fetch(fetchRequest) as? [Message] {
                     for message in messages {
-                        message.removeLocationFromLabels(currentlocation: message.location, location: location, keepSent: true);
+                        var toLocation = location
+                        if location == .inbox {
+                            if message.hasLocation(location: .outbox)  {
+                                toLocation = .outbox
+                            }
+                            if message.hasLocation(location: .draft) {
+                                toLocation = .draft
+                            }
+                        }
+                        
+                        var fromLocation = message.location
+                        if let floc = self.viewModel.currentLocation() {
+                            fromLocation = floc
+                        }
+                        
+                        message.removeLocationFromLabels(currentlocation: fromLocation,
+                                                         location: toLocation,
+                                                         keepSent: true);
                         message.needsUpdate = true
-                        message.location = location
+                        message.location = toLocation
                         if let error = context.saveUpstreamIfNeeded() {
                             PMLog.D("error: \(error)")
                         }

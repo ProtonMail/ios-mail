@@ -15,8 +15,8 @@ protocol ContactGroupSubSelectionViewModelDelegate
 
 protocol ContactGroupSubSelectionViewModelEmailCellDelegate
 {
-    func select(data: DraftEmailData)
-    func deselect(data: DraftEmailData)
+    func select(indexPath: IndexPath)
+    func deselect(indexPath: IndexPath)
     func setRequiredEncryptedCheckStatus(at indexPath: IndexPath,
                                          to: ContactGroupSubSelectionEmailLockCheckingState,
                                          isEncrypted: UIImage?)

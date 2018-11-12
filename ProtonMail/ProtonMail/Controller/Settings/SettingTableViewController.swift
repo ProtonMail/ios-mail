@@ -60,6 +60,7 @@ class SettingTableViewController: ProtonMailViewController {
     
     /// cells
     let SettingSingalLineCell         = "settings_general"
+    let SettingSingalSingleLineCell   = "settings_general_single_line"
     let SettingTwoLinesCell           = "settings_twolines"
     let SettingDomainsCell            = "setting_domains"
     let SettingStorageCell            = "setting_storage_cell"
@@ -234,12 +235,12 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .cleanCache:
-                        let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
-                        cell.configCell(itme.description, right: "")
+                        let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalSingleLineCell, for: indexPath) as! GeneralSettingSinglelineCell
+                        cell.configCell(itme.description)
                         cell.accessoryType = UITableViewCell.AccessoryType.none
                         cellout = cell
                     case .notificationsSnooze:
-                        let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
+                        let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalSingleLineCell, for: indexPath) as! GeneralSettingViewCell
                         cell.configCell(itme.description, right: "")
                         cell.accessoryType = .disclosureIndicator
                         cellout = cell

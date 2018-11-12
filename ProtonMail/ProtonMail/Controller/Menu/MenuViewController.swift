@@ -78,7 +78,7 @@ class MenuViewController: UIViewController {
             name: .switchView,
             object: nil)
 
-        sharedLabelsDataService.fetchLabels();
+        sharedLabelsDataService.fetchLabels()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -194,11 +194,11 @@ class MenuViewController: UIViewController {
     }
     
     func updateEmailLabel() {
-        emailLabel.text = sharedUserDataService.defaultEmail;
+        emailLabel.text = sharedUserDataService.defaultEmail
     }
     
     func updateRevealWidth() {
-        let w = UIScreen.main.applicationFrame.width;
+        let w = UIScreen.main.bounds.width
         let offset =  (w - kMenuOptionsWidthOffset)
         self.revealViewController().rearViewRevealWidth = kMenuOptionsWidth > offset ? offset : kMenuOptionsWidth
     }
@@ -270,7 +270,7 @@ extension MenuViewController: UITableViewDelegate {
         let section = self.viewModel.section(at: s)
         switch section {
         case .inboxes:
-            self.performSegue(withIdentifier: kSegueToMailbox, sender: indexPath);
+            self.performSegue(withIdentifier: kSegueToMailbox, sender: indexPath)
         case .others:
             let item = self.viewModel.item(others: row)
             if item == .signout {
@@ -278,13 +278,13 @@ extension MenuViewController: UITableViewDelegate {
                 let cell = tableView.cellForRow(at: indexPath)
                 self.handleSignOut(cell)
             } else if item == .settings {
-                self.performSegue(withIdentifier: kSegueToSettings, sender: indexPath);
+                self.performSegue(withIdentifier: kSegueToSettings, sender: indexPath)
             } else if item == .bugs {
-                self.performSegue(withIdentifier: kSegueToBugs, sender: indexPath);
+                self.performSegue(withIdentifier: kSegueToBugs, sender: indexPath)
             } else if item == .contacts {
-                self.performSegue(withIdentifier: kSegueToContacts, sender: indexPath);
+                self.performSegue(withIdentifier: kSegueToContacts, sender: indexPath)
             } else if item == .feedback {
-                self.performSegue(withIdentifier: kSegueToFeedback, sender: indexPath);
+                self.performSegue(withIdentifier: kSegueToFeedback, sender: indexPath)
             } else if item == .lockapp {
                 keymaker.lockTheApp() // remove mainKey from memory
                 let _ = keymaker.mainKey // provoke mainKey obtaining
@@ -295,7 +295,7 @@ extension MenuViewController: UITableViewDelegate {
                 coordinator.go(to: .serviceLevel, creating: ServiceLevelViewController.self)
             }
         case .labels:
-            self.performSegue(withIdentifier: kSegueToLabelbox, sender: indexPath);
+            self.performSegue(withIdentifier: kSegueToLabelbox, sender: indexPath)
         default:
             break
         }

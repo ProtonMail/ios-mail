@@ -2,13 +2,32 @@
 //  ContactGroupsViewCell.swift
 //  ProtonMail
 //
-//  Created by Chun-Hung Tseng on 2018/9/5.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import UIKit
 
-protocol ContactGroupsViewCellDelegate {
+protocol ContactGroupsViewCellDelegate : AnyObject {
     func isMultiSelect() -> Bool
     func sendEmailToGroup(ID: String, name: String)
 }
@@ -27,7 +46,7 @@ class ContactGroupsViewCell: UITableViewCell {
     private var name = ""
     private var count = 0
     private var color = ColorManager.defaultColor
-    private var delegate: ContactGroupsViewCellDelegate?
+    private weak var delegate: ContactGroupsViewCellDelegate?
     
     // the count of emails in a contact group
     // the assumption of this variable to work properly is that the contact group data won't be updated
@@ -93,9 +112,9 @@ class ContactGroupsViewCell: UITableViewCell {
             sendButton.imageView?.image = UIImage.resize(image: image, targetSize: CGSize.init(width: 20, height: 20))
         }
         
-        self.nameLabel.attributedText = NSMutableAttributedString.highlightedString(text: name,
-                                                                                    search: queryString,
-                                                                                    font: FontManager.highlightSearchTextForTitle)
+        self.nameLabel.attributedText = .highlightedString(text: name,
+                                                           search: queryString,
+                                                           font: .highlightSearchTextForTitle)
         self.setDetailString()
         groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: UIColor.init(hexString: color, alpha: 1),

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="17G3025" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18B75" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -192,11 +192,6 @@
                 <entry key="JSONTransformerName" value="JsonStringTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="bccNameList" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="BCCNameList"/>
-            </userInfo>
-        </attribute>
         <attribute name="body" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Body"/>
@@ -212,11 +207,6 @@
                 <entry key="JSONTransformerName" value="JsonStringTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="ccNameList" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="CCNameList"/>
-            </userInfo>
-        </attribute>
         <attribute name="expirationOffset" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="expirationTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES">
             <userInfo>
@@ -224,10 +214,10 @@
                 <entry key="JSONTransformerName" value="DateTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="hasAttachments" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES">
+        <attribute name="flags" optional="YES" attributeType="Integer 32" defaultValueString="1" usesScalarValueType="NO" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="HasAttachment"/>
-                <entry key="JSONTransformerName" value="BoolTransformer"/>
+                <entry key="JSONKeyPath" value="Flags"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="header" optional="YES" attributeType="String" syncable="YES">
@@ -312,27 +302,16 @@
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="passwordEncryptedBody" attributeType="String" syncable="YES"/>
         <attribute name="passwordHint" attributeType="String" syncable="YES"/>
-        <attribute name="recipientList" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="ToList"/>
-                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
-            </userInfo>
-        </attribute>
-        <attribute name="recipientNameList" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="RecipientNameList"/>
-            </userInfo>
-        </attribute>
-        <attribute name="replyTo" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="ReplyTo"/>
-                <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
-            </userInfo>
-        </attribute>
         <attribute name="replyTos" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ReplyTos"/>
                 <entry key="JSONTransformerName" value="JsonStringTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="sender" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Sender"/>
+                <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="senderAddress" attributeType="String" syncable="YES">
@@ -345,10 +324,10 @@
                 <entry key="JSONKeyPath" value="SenderName"/>
             </userInfo>
         </attribute>
-        <attribute name="senderObject" optional="YES" attributeType="String" syncable="YES">
+        <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="Sender"/>
-                <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
+                <entry key="JSONKeyPath" value="Size"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="spamScore" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
@@ -373,10 +352,10 @@
                 <entry key="JSONKeyPath" value="Subject"/>
             </userInfo>
         </attribute>
-        <attribute name="totalSize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
+        <attribute name="toList" attributeType="String" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="TotalSize"/>
-                <entry key="JSONTransformerName" value="NumberTransformer"/>
+                <entry key="JSONKeyPath" value="ToList"/>
+                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="unRead" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES">
@@ -404,6 +383,6 @@
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
         <element name="Email" positionX="1539" positionY="-3582" width="128" height="30"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="178"/>
-        <element name="Message" positionX="1717" positionY="-3867" width="128" height="825"/>
+        <element name="Message" positionX="1717" positionY="-3867" width="128" height="705"/>
     </elements>
 </model>

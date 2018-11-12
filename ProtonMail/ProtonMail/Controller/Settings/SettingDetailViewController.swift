@@ -252,7 +252,7 @@ extension SettingDetailViewController : UpgradeAlertVCDelegate {
     }
     
     func learnMore() {
-        UIApplication.shared.openURL(URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!)
+        UIApplication.shared.openURL(.paidPlans)
     }
     
     func cancel() {

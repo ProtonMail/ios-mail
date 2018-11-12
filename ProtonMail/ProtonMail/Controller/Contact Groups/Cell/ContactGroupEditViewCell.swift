@@ -73,7 +73,9 @@ class ContactGroupEditViewCell: UITableViewCell {
         } else {
             guard viewModel != nil else {
                 // TODO: handle this
-                fatalError("In editing mode, view model must be present")
+//                fatalError("In editing mode, view model must be present")
+                PMLog.D("In editing mode, view model must be present")
+                return
             }
         }
         
@@ -85,10 +87,10 @@ class ContactGroupEditViewCell: UITableViewCell {
         
         nameLabel.attributedText = NSMutableAttributedString.highlightedString(text: name,
                                                                                search: queryString,
-                                                                               font: FontManager.highlightSearchTextForTitle)
+                                                                               font: .highlightSearchTextForTitle)
         emailLabel.attributedText = NSMutableAttributedString.highlightedString(text: email,
                                                                                 search: queryString,
-                                                                                font: FontManager.highlightSearchTextForSubtitle)
+                                                                                font: .highlightSearchTextForSubtitle)
         
         prepareShortName()
     }

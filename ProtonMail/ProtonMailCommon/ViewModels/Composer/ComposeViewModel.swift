@@ -36,7 +36,7 @@ class ComposeViewModel {
     var ccSelectedContacts: [ContactPickerModelProtocol] = []
     var bccSelectedContacts: [ContactPickerModelProtocol] = []
     
-    var subject : String! = ""
+    private var _subject : String! = ""
     var body : String! = ""
     
     var hasDraft : Bool {
@@ -82,11 +82,11 @@ class ComposeViewModel {
     }
     
     func getSubject() -> String {
-        return self.subject
+        return self._subject
     }
     
     func setSubject(_ sub : String) {
-        self.subject = sub
+        self._subject = sub
     }
     
     func setBody(_ body : String) {

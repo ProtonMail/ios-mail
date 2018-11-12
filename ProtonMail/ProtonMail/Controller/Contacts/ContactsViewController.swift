@@ -14,23 +14,19 @@ import UIKit
 import Contacts
 import CoreData
 
-class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
-{
+class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew {
+    typealias argType = ContactsViewModel
     
-    fileprivate let kContactCellIdentifier: String = "ContactCell"
-    fileprivate let kProtonMailImage: UIImage      = UIImage(named: "encrypted_main")!
-    
-    fileprivate let kContactDetailsSugue : String  = "toContactDetailsSegue";
-    
-    fileprivate var searchString : String = ""
- 
     // Mark: - view model
-    fileprivate var viewModel : ContactsViewModel!
+    private var viewModel : ContactsViewModel!
+    
+    private let kProtonMailImage: UIImage      = UIImage(named: "encrypted_main")!
+    private let kContactDetailsSugue : String  = "toContactDetailsSegue";
+    private var searchString : String = ""
     
     // MARK: - View Outlets
-    @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
     // MARK: - Private attributes
     fileprivate var refreshControl: UIRefreshControl!
@@ -39,26 +35,26 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
     
-    func inactiveViewModel() {
+    func set(viewModel: ContactsViewModel) {
+        self.viewModel = viewModel
     }
     
-    func setViewModel(_ vm: Any) {
-        viewModel = vm as! ContactsViewModel
+    deinit {
+        self.viewModel.resetFetchedController()
     }
-    
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main),
-                           forCellReuseIdentifier: kContactCellIdentifier)
-        
+        tableView.register(ContactsTableViewCell.nib,
+                           forCellReuseIdentifier: ContactsTableViewCell.cellID)
         refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
         refreshControl.addTarget(self,
                                  action: #selector(fireFetch),
                                  for: UIControl.Event.valueChanged)
         
+        tableView.estimatedRowHeight = 60.0
         tableView.addSubview(self.refreshControl)
         tableView.dataSource = self
         tableView.delegate = self
@@ -69,9 +65,10 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
         if #available(iOS 11.0, *) {
             self.navigationController?.navigationBar.prefersLargeTitles = false
         } else {
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage.image(with: UIColor.ProtonMail.Nav_Bar_Background),
-                                                                        for: UIBarPosition.any, barMetrics: UIBarMetrics.default)
-            self.navigationController?.navigationBar.shadowImage = UIImage.image(with: UIColor.ProtonMail.Nav_Bar_Background)
+            self.navigationController?.navigationBar.setBackgroundImage(.image(with: UIColor.ProtonMail.Nav_Bar_Background),
+                                                                        for: UIBarPosition.any,
+                                                                        barMetrics: UIBarMetrics.default)
+            self.navigationController?.navigationBar.shadowImage = .image(with: UIColor.ProtonMail.Nav_Bar_Background)
             self.refreshControl.backgroundColor = .white
         }
         self.definesPresentationContext = true
@@ -82,7 +79,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
         
         //get all contacts
         self.viewModel.setupFetchedResults(delaget: self)
-        tableView.reloadData()
         self.prepareSearchBar()
         
         prepareNavigationItemRightDefault()
@@ -92,6 +88,8 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
         super.viewDidAppear(animated)
         tableView.setEditing(false, animated: true)
         self.title = LocalString._contacts_title
+
+        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -116,7 +114,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol
     private func prepareSearchBar() {
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = LocalString._general_search_placeholder
-        searchController.searchBar.setValue(LocalString._general_cancel_button,
+        searchController.searchBar.setValue(LocalString._general_done_button,
                                             forKey:"_cancelButtonText")
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
@@ -197,7 +195,7 @@ extension ContactsViewController: UpgradeAlertVCDelegate {
     }
     
     func learnMore() {
-        UIApplication.shared.openURL(URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!)
+        UIApplication.shared.openURL(.paidPlans)
     }
     
     func cancel() {
@@ -238,12 +236,14 @@ extension ContactsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: ContactsTableViewCell = tableView.dequeueReusableCell(withIdentifier: kContactCellIdentifier,
-                                                                        for: indexPath) as! ContactsTableViewCell
-        if let contact = self.viewModel.item(index: indexPath) {
-            cell.config(name: contact.name,
-                        email: contact.getDisplayEmails(),
-                        highlight: self.searchString)
+        let cell = tableView.dequeueReusableCell(withIdentifier: ContactsTableViewCell.cellID,
+                                                 for: indexPath)
+        if let contactCell = cell as? ContactsTableViewCell {
+            if let contact = self.viewModel.item(index: indexPath) {
+                contactCell.config(name: contact.name,
+                                   email: contact.getDisplayEmails(),
+                                   highlight: self.searchString)
+            }
         }
         return cell
     }
@@ -267,13 +267,13 @@ extension ContactsViewController: UITableViewDelegate {
                 alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 alertController.addAction(UIAlertAction(title: LocalString._delete_contact,
                                                         style: .destructive, handler: { (action) -> Void in
-                    ActivityIndicatorHelper.showActivityIndicator(at: self.view)
-                    self.viewModel.delete(contactID: contact.contactID, complete: { (error) in
-                        ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-                        if let err = error {
-                            err.alert(at : self.view)
-                        }
-                    })
+                                                            ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                                                            self.viewModel.delete(contactID: contact.contactID, complete: { (error) in
+                                                                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                                                                if let err = error {
+                                                                    err.alert(at : self.view)
+                                                                }
+                                                            })
                 }))
                 
                 alertController.popoverPresentationController?.sourceView = self.view
@@ -301,34 +301,34 @@ extension ContactsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         //TODO:: add this later the full size index
-//        - (void)viewDidLoad
-//            {
-//                [super viewDidLoad];
-//                self.indexArray = @[@"{search}", @"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J",@"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
-//            }
-//
-//            - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-//        {
-//            NSString *letter = [self.indexArray objectAtIndex:index];
-//            NSUInteger sectionIndex = [[self.fetchedResultsController sectionIndexTitles] indexOfObject:letter];
-//            while (sectionIndex > [self.indexArray count]) {
-//                if (index <= 0) {
-//                    sectionIndex = 0;
-//                    break;
-//                }
-//                sectionIndex = [self tableView:tableView sectionForSectionIndexTitle:title atIndex:index - 1];
-//            }
-//
-//            return sectionIndex;
-//            }
-//
-//            - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-//        {
-//            return self.indexArray;
-//        }
+        //        - (void)viewDidLoad
+        //            {
+        //                [super viewDidLoad];
+        //                self.indexArray = @[@"{search}", @"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J",@"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
+        //            }
+        //
+        //            - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+        //        {
+        //            NSString *letter = [self.indexArray objectAtIndex:index];
+        //            NSUInteger sectionIndex = [[self.fetchedResultsController sectionIndexTitles] indexOfObject:letter];
+        //            while (sectionIndex > [self.indexArray count]) {
+        //                if (index <= 0) {
+        //                    sectionIndex = 0;
+        //                    break;
+        //                }
+        //                sectionIndex = [self tableView:tableView sectionForSectionIndexTitle:title atIndex:index - 1];
+        //            }
+        //
+        //            return sectionIndex;
+        //            }
+        //
+        //            - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+        //        {
+        //            return self.indexArray;
+        //        }
         return self.viewModel.sectionForSectionIndexTitle(title: title, atIndex: index)
     }
-
+    
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return self.viewModel.sectionIndexTitle()
     }
@@ -385,8 +385,9 @@ extension ContactsViewController : NSFetchedResultsControllerDelegate {
         }
     }
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch(type) {
         case .delete:
             if let indexPath = indexPath {
@@ -394,21 +395,20 @@ extension ContactsViewController : NSFetchedResultsControllerDelegate {
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                PMLog.D("Section: \(newIndexPath.section) Row: \(newIndexPath.row) ")
                 tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         case .update:
             if let indexPath = indexPath {
                 if let cell = tableView.cellForRow(at: indexPath) as? ContactsTableViewCell {
                     if let contact = self.viewModel.item(index: indexPath) {
-                        cell.contactEmailLabel.text = contact.getDisplayEmails()
-                        cell.contactNameLabel.text = contact.name
+                        cell.config(name: contact.name,
+                                    email: contact.getDisplayEmails(),
+                                    highlight: self.searchString)
                     }
                 }
             }
-            break
         default:
-            return
+            break
         }
     }
 }

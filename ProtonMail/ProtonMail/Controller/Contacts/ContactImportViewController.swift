@@ -58,14 +58,11 @@ class ContactImportViewController: UIViewController {
         super.viewDidLoad()
         progressView.progress = 0.0
         titleLabel.text = LocalString._contacts_import_title
-        if #available(iOS 9.0, *) {
-            delay(0.5) {
-                self.fetchedResultsController = self.getFetchedResultsController()
-                self.messageLabel.text = LocalString._contacts_reading_contacts_data
-                self.getContacts()
-            }
-        } else {
-            self.dismiss()
+        
+        delay(0.5) {
+            self.fetchedResultsController = self.getFetchedResultsController()
+            self.messageLabel.text = LocalString._contacts_reading_contacts_data
+            self.getContacts()
         }
     }
     
@@ -155,7 +152,7 @@ class ContactImportViewController: UIViewController {
         do {
             allContainers = try contactStore.containers(matching: nil)
         } catch {
-            print("Error fetching containers")
+            PMLog.D("Error fetching containers")
         }
         
         var results: [CNContact] = []
@@ -167,7 +164,7 @@ class ContactImportViewController: UIViewController {
                 let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch)
                 results.append(contentsOf: containerResults)
             } catch {
-                print("Error fetching results for container")
+                PMLog.D("Error fetching results for container")
             }
         }
         

@@ -1371,6 +1371,7 @@ class LocalizedString {
 
     /// "Mark as unread"
     lazy var _mark_as_unread = NSLocalizedString("Mark as unread", comment: "Action")
+    lazy var _mark_as_unread_short = NSLocalizedString("Unread", comment: "The verb for describing the unread action")
 
     /// "All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!"
     @available(*, deprecated )
@@ -1598,7 +1599,7 @@ class LocalizedString {
     
     lazy var _plus_header = NSLocalizedString("For individuals that need more capacity, customization and advanced features", comment: "Service Plan description")
     
-    lazy var _pro_header = NSLocalizedString("For organizations that need multi-user support nd additional productivity features", comment: "Service Plan description")
+    lazy var _pro_header = NSLocalizedString("For organizations that need multi-user support and additional productivity features", comment: "Service Plan description")
     
     lazy var _vis_header = NSLocalizedString("For power users and groups of people that value full anonymity and privacy", comment: "Service Plan description")
     

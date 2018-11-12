@@ -9,15 +9,26 @@ import UIKit
 
 var sharedUserDataService : UserDataService!
 
-class ShareUnlockViewController: UIViewController {
+class ShareUnlockViewController: UIViewController, CoordinatedNew {
+    typealias coordinatorType = ShareUnlockCoordinator
+    private var coordinator: ShareUnlockCoordinator?
+    
+    func set(coordinator: ShareUnlockCoordinator) {
+        self.coordinator = coordinator
+    }
+    
+    func getCoordinator() -> CoordinatorNew? {
+        return coordinator
+    }
+    
     @IBOutlet weak var pinUnlock: UIButton!
     @IBOutlet weak var touchID: UIButton!
     
     //
-    fileprivate var inputSubject : String! = ""
-    fileprivate var inputContent : String! = ""
+    var inputSubject : String! = ""
+    var inputContent : String! = ""
     fileprivate var inputAttachments : String! = ""
-    fileprivate var files = [FileData]()
+    var files = [FileData]()
     fileprivate let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000
     fileprivate var currentAttachmentSize : Int = 0
     
@@ -183,30 +194,8 @@ class ShareUnlockViewController: UIViewController {
             self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
             return
         }
-        self.goto_composer()
-    }
-    
-    func goto_composer() {
-        let composer = ComposerViewController(nibName: "ComposerViewController", bundle: nil) //69 mb
-        sharedVMService.buildComposer(composer,
-                                      subject: self.inputSubject,
-                                      content: self.inputContent,
-                                      files: self.files)
         
-        let w = UIScreen.main.bounds.width;
-        composer.view.frame = CGRect(x: 0, y: 0, width: w, height: 186 + 60)
-        self.navigationController?.setViewControllers([composer], animated: true) //71mb
-    }
-    
-    func goto_pin() {
-        pinUnlock.isEnabled = false
-        let pinVC = SharePinUnlockViewController(nibName: "SharePinUnlockViewController", bundle: nil)
-        pinVC.viewModel = ShareUnlockPinCodeModelImpl()
-        pinVC.delegate = self
-        let w = UIScreen.main.bounds.width;
-        let h = UIScreen.main.bounds.height;
-        pinVC.view.frame = CGRect(x: 0, y: 0, width: w, height: h)
-        self.present(pinVC, animated: true, completion: nil)
+        self.coordinator?.go(dest: .composer)
     }
     
     @objc func cancelButtonTapped(sender: UIBarButtonItem) {
@@ -221,11 +210,11 @@ class ShareUnlockViewController: UIViewController {
     }
     
     @IBAction func pin_unlock_action(_ sender: Any) {
-        self.goto_pin()
+        self.coordinator?.go(dest: .pin)
     }
     
     func authenticateUser() {
-        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: self.goto_composer, afterSignIn: {})
+        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: { self.coordinator?.go(dest: .composer) }, afterSignIn: {})
     }
     
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
@@ -249,21 +238,6 @@ class ShareUnlockViewController: UIViewController {
                 NSAttributedString.Key.font: Fonts.h2.regular
             ]
         }
-    }
-}
-
-extension ShareUnlockViewController : SharePinUnlockViewControllerDelegate {
-    func Cancel() {
-        pinUnlock.isEnabled = true
-        //UserTempCachedStatus.backup()
-    }
-    
-    func Next() {
-        self.signInIfRememberedCredentials()
-    }
-    
-    func Failed() {
-        //clean and show error
     }
 }
 

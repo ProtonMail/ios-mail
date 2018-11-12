@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "1010"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
-      <PostActions>
+      <PreActions>
          <ExecutionAction
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
+               scriptText = "#!/bin/sh&#10;if [ ${CONFIGURATION} == &quot;Debug&quot; ]; then&#10;buildNumber=${CONFIGURATION}&#10;fi;&#10;if [ ${CONFIGURATION} == &quot;Release&quot; ]; then&#10;cd ${SRCROOT}&#10;buildNumber=&quot;$(git rev-list HEAD | wc -l | tr -d &apos; &apos;)&quot;&#10;fi;&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;${SRCROOT}/ProtonMail/Supporting Files/Info.plist&quot;&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;${SRCROOT}/PushService/Info.plist&quot;&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;${SRCROOT}/Share/Info.plist&quot;&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "7CC48161B0FC946A8DB234B96B6A66DD"
+                     BuildableName = "ProtonMail.app"
+                     BlueprintName = "ProtonMail"
+                     ReferencedContainer = "container:ProtonMail.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "run xunique"
                scriptText = "xunique &quot;${PROJECT_FILE_PATH}/project.pbxproj&quot;&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
@@ -68,7 +86,8 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES">
+      allowLocationSimulation = "YES"
+      showNonLocalizedStrings = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
@@ -80,6 +99,11 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
+         <AdditionalOption
+            key = "NSZombieEnabled"
+            value = "YES"
+            isEnabled = "YES">
+         </AdditionalOption>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction

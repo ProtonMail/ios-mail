@@ -42,6 +42,7 @@ class PushNotificationServiceTests: XCTestCase {
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
                                                    signInProvider: SignInMock())
+        NotificationCenter.default.removeObserver(service)
         currentSubscriptionPin.set(newValue: Optional.none)
         
         
@@ -87,6 +88,7 @@ class PushNotificationServiceTests: XCTestCase {
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
                                                    signInProvider: SignInMock())
+        NotificationCenter.default.removeObserver(service)
         currentSubscriptionPin.set(newValue: Optional.none)
         
         service.didRegisterForRemoteNotifications(withDeviceToken: newToken)
@@ -139,7 +141,7 @@ class PushNotificationServiceTests: XCTestCase {
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
                                                    signInProvider: SignInMock())
-        
+        NotificationCenter.default.removeObserver(service)
         currentSubscriptionPin.set(newValue: .reported(.init(token: oldToken, UID: session.sessionID!))) // already have some reported subscription
         
         service.didRegisterForRemoteNotifications(withDeviceToken: newToken)
@@ -183,7 +185,7 @@ class PushNotificationServiceTests: XCTestCase {
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
                                                    signInProvider: SignInMock())
-        
+        NotificationCenter.default.removeObserver(service)
         currentSubscriptionPin.set(newValue: .reported(.init(token: oldToken, UID: session.sessionID!))) // already have some reported subscription
         
         service.didRegisterForRemoteNotifications(withDeviceToken: oldToken)
@@ -221,6 +223,7 @@ class PushNotificationServiceTests: XCTestCase {
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
                                                    signInProvider: SignInMock())
+        NotificationCenter.default.removeObserver(service)
         
         currentSubscriptionPin.set(newValue: .notReported(.init(token: oldToken, UID: session.sessionID!))) // already have not reported subscription
         

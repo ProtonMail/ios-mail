@@ -14,7 +14,7 @@ import Foundation
 // view model impl control viewmodel navigate
 // View model service tracking the ui flows
 
-protocol ViewModelProtocolBase {
+protocol ViewModelProtocolBase : AnyObject {
     func setModel(vm: Any)
     func inactiveViewModel() -> Void
 }
@@ -31,6 +31,11 @@ extension ViewModelProtocolNew {
             fatalError("This view model type doesn't match") //this shouldn't happend
         }
         self.set(viewModel: viewModel)
+    }
+    
+    /// optional
+    func inactiveViewModel() {
+        
     }
 }
 

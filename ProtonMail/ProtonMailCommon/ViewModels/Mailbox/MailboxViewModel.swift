@@ -203,6 +203,10 @@ class MailboxViewModel {
         return false
     }
     
+    func currentLocation() -> MessageLocation? {
+        return nil
+    }
+    
     func isSwipeActionValid(_ action: MessageSwipeAction) -> Bool {
         return true
     }

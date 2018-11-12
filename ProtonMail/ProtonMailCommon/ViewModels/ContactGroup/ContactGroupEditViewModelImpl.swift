@@ -176,7 +176,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         }
         
         // TODO: handle error
-        fatalError("Email to delete doesn't exist")
+        PMLog.D("FatalError: Email to delete doesn't exist")
     }
     
     /**
@@ -457,7 +457,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     func getEmail(at indexPath: IndexPath) -> (String, String, String) {
         let index = indexPath.row
         guard index < emailsInGroup.count else {
-            fatalError("Calculation error")
+            PMLog.D("FatalError: Calculation error")
+            return ("", "", "")
         }
         
         return (emailsInGroup[index].emailID, emailsInGroup[index].name, emailsInGroup[index].email)
