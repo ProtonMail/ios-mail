@@ -49,7 +49,7 @@ public class PushNotificationService {
         self.signInProvider = signInProvider
         self.deviceTokenSaver = deviceTokenSaver
         defer {
-            NotificationCenter.default.addObserver(self, selector: #selector(didUnlock), name: NSNotification.Name.didUnlock, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(didUnlockAsync), name: NSNotification.Name.didUnlock, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(didSignOut), name: NSNotification.Name.didSignOut, object: nil)
         }
     }
@@ -94,20 +94,22 @@ public class PushNotificationService {
     public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
         self.latestDeviceToken = deviceToken
         if self.signInProvider.isSignedIn, let _ = keymaker.mainKey {
-            self.didUnlock()
+            self.didUnlockAsync()
         }
     }
     
-    @objc private func didUnlock() {
+    @objc private func didUnlockAsync() {
+        DispatchQueue.global().async {
+            self.didUnlock()    // cuz encryption kit generation can take significant time
+        }
+    }
+    
+    private func didUnlock() {
         guard let sessionID = self.sessionIDProvider.sessionID, let deviceToken = self.latestDeviceToken else {
             return
         }
         
-        var newSettings = SubscriptionSettings(token: deviceToken, UID: sessionID)
-        guard let _ = try? newSettings.generateEncryptionKit() else {
-            assert(false, "failed to generate enryption kit") // will crash only on debug builds
-            return // cuz no sence in subscribing without privateKey
-        }
+        let newSettings = SubscriptionSettings(token: deviceToken, UID: sessionID)
         
         switch self.currentSubscription {
         case .none, .notReported:
@@ -124,11 +126,17 @@ public class PushNotificationService {
         default: break
         }
         
-        guard case Subscription.notReported(let currentSettings) = self.currentSubscription else {
-            return
+        guard case Subscription.notReported(var newSettingsWithEncryptionKit) = self.currentSubscription else {
+            return // cuz nothing needs to be repoorted
         }
         
-        self.report(currentSettings)
+        guard let _ = try? newSettingsWithEncryptionKit.generateEncryptionKit() else {
+            assert(false, "failed to generate enryption kit") // will crash only on debug builds
+            return // cuz no sence in subscribing without privateKey
+        }
+        
+        self.currentSubscription = .notReported(newSettingsWithEncryptionKit)
+        self.report(newSettingsWithEncryptionKit)
     }
     
     @objc private func didSignOut() {

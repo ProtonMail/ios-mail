@@ -30,6 +30,7 @@ import Foundation
 import Keymaker
 
 class WindowsCoordinator: CoordinatorNew {
+    private lazy var snapshot = Snapshot()
     private var upgradeView: ForceUpgradeView?
     private var appWindow: UIWindow?
     var currentWindow: UIWindow! {
@@ -48,15 +49,26 @@ class WindowsCoordinator: CoordinatorNew {
             NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.requestMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: Keymaker.obtainedMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
     }
     
     func start() {
         let placeholder = UIWindow(frame: UIScreen.main.bounds)
         placeholder.rootViewController = UIViewController() 
-        Snapshot().show(at: placeholder)
+        self.snapshot.show(at: placeholder)
         self.currentWindow = placeholder
         let _ = keymaker.mainKey
+    }
+    
+    @objc func willEnterForeground() {
+        self.snapshot.remove()
+    }
+    
+    @objc func didEnterBackground() {
+        self.snapshot.show(at: self.currentWindow)
     }
     
     @objc func lock() {
@@ -107,10 +119,12 @@ class WindowsCoordinator: CoordinatorNew {
         source.addSubview(effectView)
         destination.alpha = 0.0
         
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.5, animations: {
             effectView.effect = UIBlurEffect(style: .dark)
             destination.alpha = 1.0
         }, completion: { _ in
+            let _ = source
+            let _ = destination
             effectView.removeFromSuperview()
         })
         

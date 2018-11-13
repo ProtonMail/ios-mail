@@ -146,8 +146,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         keymaker.updateAutolockCountdownStart()
-        Snapshot().didEnterBackground(application)
-        
+
         var taskID : UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask {
             //timed out
@@ -170,7 +169,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        Snapshot().willEnterForeground(application)
         let _ = keymaker.mainKey
     }
     
