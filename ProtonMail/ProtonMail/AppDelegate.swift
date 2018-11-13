@@ -146,30 +146,27 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         keymaker.updateAutolockCountdownStart()
-
-        var taskID : UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
-        taskID = application.beginBackgroundTask {
-            //timed out
-        }
         sharedMessageDataService.purgeOldMessages()
-        if sharedUserDataService.isUserCredentialStored {
-            sharedMessageDataService.backgroundFetch {
-                delay(3, closure: {
-                    PMLog.D("End Background Task")
-                    application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(taskID.rawValue))
-                })
-            }
-        } else {
-            delay(3, closure: {
+        
+        var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
+        taskID = application.beginBackgroundTask { PMLog.D("Background Task Timed Out") }
+        let delayedCompletion: ()->Void = {
+            delay(3) {
+                PMLog.D("End Background Task")
                 application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(taskID.rawValue))
-            })
+            }
         }
         
+        if SignInManager.shared.isSignedIn() {
+            sharedMessageDataService.backgroundFetch { delayedCompletion() }
+        } else {
+            delayedCompletion()
+        }
         PMLog.D("Enter Background")
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        let _ = keymaker.mainKey
+        let _ = UnlockManager.shared.isUnlocked() // this will access mainKey and block the UI if it is blocked
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -192,15 +189,17 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         }
     }
     
-    // MARK: Background methods`
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        if sharedUserDataService.isUserCredentialStored {
-            //sharedMessageDataService.fetchNewMessagesForLocation(.inbox, notificationMessageID: nil) { (task, nil, nil ) in
-            sharedMessageDataService.backgroundFetch {
-                completionHandler(.newData)
-            }
-        } else {
+    // MARK: Background methods
+    func application(_ application: UIApplication,
+                     performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void)
+    {
+        // this feature can only work if user did not lock the app
+        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else {
             completionHandler(.noData)
+            return
+        }
+        sharedMessageDataService.backgroundFetch {
+            completionHandler(.newData)
         }
     }
     
@@ -212,7 +211,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         PMLog.D("receive \(userInfo)")
 
-        if let _ = keymaker.mainKey { // means app is unlocked
+        if UnlockManager.shared.isUnlocked() {
             PushNotificationService.shared.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
         } else {
             PushNotificationService.shared.setNotificationOptions(userInfo)

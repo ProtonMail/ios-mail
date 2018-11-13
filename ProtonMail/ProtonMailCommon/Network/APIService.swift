@@ -88,7 +88,7 @@ class APIService {
             pthread_mutex_lock(&self.mutex)
             
             //fetch auth info
-            guard let _ = keymaker.mainKey else { // app is locked, fail with error gracefully
+            guard UnlockManager.shared.isUnlocked() else { // app is locked, fail with error gracefully
                 pthread_mutex_unlock(&self.mutex)
                 DispatchQueue.main.async {
                     completion(nil, NSError.authCacheBad())

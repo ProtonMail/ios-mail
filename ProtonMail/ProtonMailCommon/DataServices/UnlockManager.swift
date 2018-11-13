@@ -12,6 +12,10 @@ import Keymaker
 class UnlockManager: NSObject {
     static var shared = UnlockManager()
     
+    internal func isUnlocked() -> Bool {
+        return keymaker.mainKey != nil
+    }
+    
     internal func getUnlockFlow() -> SignInUIFlow {
         if userCachedStatus.isPinCodeEnabled {
             return SignInUIFlow.requirePin

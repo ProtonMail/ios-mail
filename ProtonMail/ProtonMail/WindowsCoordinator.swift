@@ -60,7 +60,7 @@ class WindowsCoordinator: CoordinatorNew {
         placeholder.rootViewController = UIViewController() 
         self.snapshot.show(at: placeholder)
         self.currentWindow = placeholder
-        let _ = keymaker.mainKey
+        UnlockManager.shared.isUnlocked()
     }
     
     @objc func willEnterForeground() {

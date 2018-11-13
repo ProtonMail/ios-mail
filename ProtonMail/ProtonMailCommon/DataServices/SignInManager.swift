@@ -59,7 +59,6 @@ class SignInManager: NSObject {
     internal func proceedWithMailboxPassword(_ mailboxPassword: String,
                                   onError: @escaping (NSError)->Void)
     {
-        let isRemembered = true
         guard sharedUserDataService.isMailboxPasswordValid(mailboxPassword, privateKey: AuthCredential.getPrivateKey()) else {
             onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
             return
@@ -70,7 +69,7 @@ class SignInManager: NSObject {
         }
         
         do {
-            try AuthCredential.setupToken(mailboxPassword, isRememberMailbox: isRemembered)
+            try AuthCredential.setupToken(mailboxPassword, isRememberMailbox: true)
         } catch let ex as NSError {
             onError(ex)
         }

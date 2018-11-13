@@ -31,6 +31,7 @@ public class PushNotificationService {
     private let sessionIDProvider: SessionIdProvider
     private let deviceRegistrator: DeviceRegistrator
     private let signInProvider: SignInProvider
+    private let unlockProvider: UnlockProvider
     private let deviceTokenSaver: Saver<String>
     
     init(subscriptionSaver: Saver<Subscription> = KeychainSaver(key: "pushNotificationSubscription"),
@@ -39,7 +40,8 @@ public class PushNotificationService {
          sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
          deviceRegistrator: DeviceRegistrator = sharedAPIService,
          signInProvider: SignInProvider = SignInManagerProvider(),
-         deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver)
+         deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver,
+         unlockProvider: UnlockProvider = UnlockManagerProvider())
     {
         self.subscriptionSaver = subscriptionSaver
         self.encryptionKitSaver = encryptionKitSaver
@@ -48,6 +50,7 @@ public class PushNotificationService {
         self.deviceRegistrator = deviceRegistrator
         self.signInProvider = signInProvider
         self.deviceTokenSaver = deviceTokenSaver
+        self.unlockProvider = unlockProvider
         defer {
             NotificationCenter.default.addObserver(self, selector: #selector(didUnlockAsync), name: NSNotification.Name.didUnlock, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(didSignOut), name: NSNotification.Name.didSignOut, object: nil)
@@ -93,7 +96,7 @@ public class PushNotificationService {
     
     public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
         self.latestDeviceToken = deviceToken
-        if self.signInProvider.isSignedIn, let _ = keymaker.mainKey {
+        if self.signInProvider.isSignedIn, self.unlockProvider.isUnlocked {
             self.didUnlockAsync()
         }
     }
@@ -327,6 +330,15 @@ protocol SignInProvider {
 struct SignInManagerProvider: SignInProvider {
     var isSignedIn: Bool {
         return SignInManager.shared.isSignedIn()
+    }
+}
+
+protocol UnlockProvider {
+    var isUnlocked: Bool { get }
+}
+struct UnlockManagerProvider: UnlockProvider {
+    var isUnlocked: Bool {
+        return UnlockManager.shared.isUnlocked()
     }
 }
 
