@@ -83,9 +83,13 @@ class UnlockManager: NSObject {
             requestMailboxPassword()
             return
         }
-        #if !APP_EXTENSION
+        
+        ValueTransformer.setValueTransformer(StringCryptoTransformer(key: keymaker.mainKey!),
+                                             forName: .init(rawValue: String(describing: StringCryptoTransformer.self)))
         UserTempCachedStatus.clearFromKeychain()
         userCachedStatus.pinFailedCount = 0
+        
+        #if !APP_EXTENSION
         self.updateUserData()
         sharedMessageDataService.injectTransientValuesIntoMessages()
         ServicePlanDataService.shared.updateServicePlans()

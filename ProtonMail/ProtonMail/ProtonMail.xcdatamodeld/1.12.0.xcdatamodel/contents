@@ -347,7 +347,7 @@
                 <entry key="JSONTransformerName" value="DateTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="title" attributeType="String" indexed="YES" syncable="YES">
+        <attribute name="title" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Subject"/>
             </userInfo>
@@ -383,6 +383,6 @@
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
         <element name="Email" positionX="1539" positionY="-3582" width="128" height="30"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="178"/>
-        <element name="Message" positionX="1717" positionY="-3867" width="128" height="705"/>
+        <element name="Message" positionX="1717" positionY="-3867" width="128" height="765"/>
     </elements>
 </model>
