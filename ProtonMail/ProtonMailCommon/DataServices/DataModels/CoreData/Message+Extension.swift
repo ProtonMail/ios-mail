@@ -368,8 +368,7 @@ extension Message {
     }
     
     // MARK: methods
-    func decryptBody(keys: Data) throws -> String? {
-        guard let passphrase = self.cachedPassphrase ?? sharedUserDataService.mailboxPassword else { return nil }
+    func decryptBody(keys: Data, passphrase: String) throws -> String? {
         return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
     }
     
@@ -379,8 +378,8 @@ extension Message {
     //  noVerifier = 2
     //  failed     = 3
     //  )
-    func verifyBody(verifier : Data) -> SignStatus {
-        guard let passphrase = self.cachedPassphrase ?? sharedUserDataService.mailboxPassword,
+    func verifyBody(verifier : Data, passphrase: String) -> SignStatus {
+        guard let passphrase = sharedUserDataService.mailboxPassword,
             case let keys = sharedUserDataService.addressPrivKeys else
         {
                 return .failed
@@ -401,8 +400,7 @@ extension Message {
         return try body.split()
     }
     
-    func getSessionKey(keys: Data) throws -> ModelsSessionSplit? {
-        guard let passphrase = self.cachedPassphrase ?? sharedUserDataService.mailboxPassword else { return nil }
+    func getSessionKey(keys: Data, passphrase: String) throws -> ModelsSessionSplit? {
         return try split()?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: keys)
     }
     
@@ -425,7 +423,7 @@ extension Message {
             }
             return body
         } else {
-            if var body = try decryptBody(keys: sharedUserDataService.addressPrivKeys) {
+            if var body = try decryptBody(keys: sharedUserDataService.addressPrivKeys, passphrase: sharedUserDataService.mailboxPassword!) {
                 //PMLog.D(body)
                 if isEncrypted == 8 || isEncrypted == 9 {
                     if let mimeMsg = MIMEMessage(string: body) {

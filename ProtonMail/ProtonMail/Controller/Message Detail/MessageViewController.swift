@@ -771,7 +771,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                                 //internal emails
                                 if keyRes.recipientType == 1 {
                                     if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
-                                        let status = self.message.verifyBody(verifier: pgpKeys)
+                                        let status = self.message.verifyBody(verifier: pgpKeys, passphrase: sharedUserDataService.mailboxPassword!)
                                         switch status {
                                         case .ok:
                                             c.pgpType = .internal_trusted_key
@@ -823,7 +823,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
 //                                    }
                                 } else {
                                     if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
-                                        let status = self.message.verifyBody(verifier: pgpKeys)
+                                        let status = self.message.verifyBody(verifier: pgpKeys, passphrase: sharedUserDataService.mailboxPassword!)
                                         switch status {
                                         case .ok:
                                             if c.pgpType == .zero_access_store {

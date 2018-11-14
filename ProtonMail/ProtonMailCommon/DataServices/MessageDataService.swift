@@ -1288,7 +1288,7 @@ class MessageDataService {
                 status.insert(SendStatus.getBody)
                 //all prebuild errors need pop up from here
                 guard let bodyData = try message.split()?.dataPacket(),
-                    let session = try message.getSessionKey(keys: privKeys) else {
+                    let session = try message.getSessionKey(keys: privKeys, passphrase: passphrase) else {
                     throw RuntimeError.cant_decrypt.error
                 }
                 //Debug info
@@ -1323,7 +1323,7 @@ class MessageDataService {
                 status.insert(SendStatus.checkMimeAndPlainText)
 
                 if sendBuilder.hasMime || sendBuilder.hasPlainText {
-                    guard let clearbody = try message.decryptBody(keys: privKeys) else {
+                    guard let clearbody = try message.decryptBody(keys: privKeys, passphrase: passphrase) else {
                         throw RuntimeError.cant_decrypt.error
                     }
                     sendBuilder.set(clear: clearbody)
