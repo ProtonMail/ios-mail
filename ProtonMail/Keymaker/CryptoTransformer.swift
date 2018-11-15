@@ -1,6 +1,7 @@
+
 //
-//  StringCryptoTransformer.swift
-//  ProtonMail - Created on 14/11/2018.
+//  CryptoTransformer.swift
+//  ProtonMail - Created on 15/11/2018.
 //
 //
 //  The MIT License
@@ -24,61 +25,61 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-    
 
 import Foundation
-import Keymaker
+import CryptoSwift
 
-
-class StringCryptoTransformer: CryptoTransformer<String> { }
-
-class CryptoTransformer<T: Codable>: ValueTransformer {
-    private var key: Keymaker.Key
-    init(key: Keymaker.Key) {
-        self.key = key
-    }
-    
-    override class func transformedValueClass() -> AnyClass {
-        return NSData.self
-    }
-    
-    override class func allowsReverseTransformation() -> Bool {
-        return true
-    }
-    
+public class StringCryptoTransformer: CryptoTransformer {
     // String -> Data
-    override func transformedValue(_ value: Any?) -> Any? {
-        guard let string = value as? T else {
+    public override func transformedValue(_ value: Any?) -> Any? {
+        guard let string = value as? String else {
             return nil
         }
         
         do {
-            let locked = try Locked<[T]>(clearValue: [string], with: key) // ugly wrap
+            let locked = try Locked<String>(clearValue: string, with: self.key)
             return locked.encryptedValue as NSData
         } catch let error {
             print(error)
-            assert(false, "Wrong key")
+            assert(false, "Error while decrypting value")
         }
         
         return nil
     }
     
     // Data -> String
-    override func reverseTransformedValue(_ value: Any?) -> Any? {
-        guard let data = value as? NSData else {
+    public override func reverseTransformedValue(_ value: Any?) -> Any? {
+        guard let data = value as? Data else {
             return nil
         }
         
-        let locked = Locked<[T]>(encryptedValue: data as Data)  // ugly wrap
-        
+        let locked = Locked<String>(encryptedValue: data)
         do {
-            let string = try locked.unlock(with: key).first
+            let string = try locked.unlock(with: self.key)
             return string
+        } catch AES.Error.dataPaddingRequired {
+            print("Looks like there is a bug in  CryptoSwift that makes some LabelNames undecryptable")
+            
         } catch let error {
             print(error)
-            assert(false, "Wrong key")
+            assert(false, "Error while decrypting value")
         }
         
         return nil
+    }
+}
+
+public class CryptoTransformer: ValueTransformer {
+    fileprivate var key: Keymaker.Key
+    public init(key: Keymaker.Key) {
+        self.key = key
+    }
+    
+    public override class func transformedValueClass() -> AnyClass {
+        return NSData.self
+    }
+    
+    public override class func allowsReverseTransformation() -> Bool {
+        return true
     }
 }
