@@ -17,7 +17,6 @@ class SignInManager: NSObject {
         sharedUserDataService.signOut(true)
         userCachedStatus.signOut()
         sharedMessageDataService.launchCleanUpIfNeeded()
-        keymaker.generateNewMainKeyWithDefaultProtection()
     }
     
     internal func signIn(username: String,

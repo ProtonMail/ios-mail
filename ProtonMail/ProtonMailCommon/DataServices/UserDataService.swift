@@ -888,6 +888,7 @@ class UserDataService {
         userInfo = nil
         twoFactorStatus = 0
         passwordMode = 2
+        keymaker.wipeMainKey()
     }
     
     func clearAuthToken() {

@@ -87,8 +87,6 @@ class UnlockManager: NSObject {
         }
         
         userCachedStatus.pinFailedCount = 0
-        ValueTransformer.setValueTransformer(StringCryptoTransformer(key: keymaker.mainKey!),
-                                             forName: .init(rawValue: String(describing: StringCryptoTransformer.self)))
         
         #if !APP_EXTENSION
         UserTempCachedStatus.clearFromKeychain()

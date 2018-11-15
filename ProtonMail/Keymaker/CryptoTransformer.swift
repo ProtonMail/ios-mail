@@ -38,10 +38,11 @@ public class StringCryptoTransformer: CryptoTransformer {
         
         do {
             let locked = try Locked<String>(clearValue: string, with: self.key)
-            return locked.encryptedValue as NSData
+            let result = locked.encryptedValue as NSData
+            return result
         } catch let error {
             print(error)
-            assert(false, "Error while decrypting value")
+            assert(false, "Error while encrypting value")
         }
         
         return nil
@@ -58,8 +59,7 @@ public class StringCryptoTransformer: CryptoTransformer {
             let string = try locked.unlock(with: self.key)
             return string
         } catch AES.Error.dataPaddingRequired {
-            print("Looks like there is a bug in  CryptoSwift that makes some LabelNames undecryptable")
-            
+            assert(false, "A bug in  CryptoSwift makes some LabelNames undecryptable")
         } catch let error {
             print(error)
             assert(false, "Error while decrypting value")

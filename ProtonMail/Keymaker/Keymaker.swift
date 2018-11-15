@@ -30,6 +30,7 @@ public class Keymaker: NSObject {
         didSet {
             if _mainKey != nil {
                 self.autolocker?.autolockCountdownStart = nil
+                self.setupCryptoTransformers(key: _mainKey)
             }
         }
     }
@@ -73,6 +74,9 @@ public class Keymaker: NSObject {
         NoneProtection.removeCyphertext(from: self.keychain)
         BioProtection.removeCyphertext(from: self.keychain)
         PinProtection.removeCyphertext(from: self.keychain)
+        
+        self._mainKey = nil
+        self.setupCryptoTransformers(key: nil)
     }
     
     public func lockTheApp() {
@@ -141,12 +145,20 @@ public class Keymaker: NSObject {
         return true
     }
     
-    @discardableResult public func generateNewMainKeyWithDefaultProtection() -> Key {
+    private func generateNewMainKeyWithDefaultProtection() -> Key {
         self.wipeMainKey() // get rid of all old protected mainKeys
         let newMainKey = NoneProtection.generateRandomValue(length: 32)
-        self._mainKey = newMainKey
         try! NoneProtection(keychain: self.keychain).lock(value: newMainKey)
         return newMainKey
+    }
+    
+    private func setupCryptoTransformers(key: Key?) {
+        guard let key = key else {
+            ValueTransformer.setValueTransformer(nil, forName: .init(rawValue: String(describing: StringCryptoTransformer.self)))
+            return
+        }
+        ValueTransformer.setValueTransformer(StringCryptoTransformer(key: key),
+                                             forName: .init(rawValue: String(describing: StringCryptoTransformer.self)))
     }
     
     public func updateAutolockCountdownStart() {

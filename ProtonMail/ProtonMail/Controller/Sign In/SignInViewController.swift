@@ -80,9 +80,7 @@ class SignInViewController: ProtonMailViewController {
         setupVersionLabel()
         
         let signinFlow = UnlockManager.shared.getUnlockFlow()
-        if signinFlow == .requireTouchID {
-            self.showTouchID(false)
-        }
+        signinFlow == .requireTouchID ? self.showTouchID(false) : self.hideTouchID(true)
         UnlockManager.shared.initiateUnlock(flow: signinFlow,
                         requestPin: { self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
                         requestMailboxPassword: {
