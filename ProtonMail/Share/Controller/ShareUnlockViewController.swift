@@ -214,7 +214,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
     }
     
     func authenticateUser() {
-        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: { self.coordinator?.go(dest: .composer) }, afterSignIn: {})
+        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: { self.coordinator?.go(dest: .composer) })
     }
     
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {

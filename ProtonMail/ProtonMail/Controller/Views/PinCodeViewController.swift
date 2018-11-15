@@ -81,7 +81,7 @@ class PinCodeViewController : UIViewController {
                 self.delegate?.Next()
                 let _ = self.navigationController?.popViewController(animated: true)
             }
-        }, afterSignIn: { })
+        })
     }
 }
 

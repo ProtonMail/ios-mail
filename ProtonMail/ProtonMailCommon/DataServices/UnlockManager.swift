@@ -43,31 +43,33 @@ class UnlockManager: NSObject {
         }
     }
     
-    internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void,
-                                          afterSignIn: @escaping ()->Void)
-    {
+    internal func biometricAuthentication(requestMailboxPassword: @escaping ()->Void) {
         keymaker.obtainMainKey(with: BioProtection()) { key in
             guard let _ = key else { return }
-            self.unlockIfRememberedCredentials(requestMailboxPassword: afterSignIn)
+            self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
+        }
+    }
+    
+    internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void) {
+        keymaker.obtainMainKey(with: BioProtection()) { key in
+            guard let _ = key else { return }
             afterBioAuthPassed()
         }
     }
     
     internal func initiateUnlock(flow signinFlow: SignInUIFlow,
                                  requestPin: @escaping ()->Void,
-                                 onRestore: @escaping ()->Void,
-                                 afterSignIn: @escaping ()->Void)
+                                 requestMailboxPassword: @escaping ()->Void)
     {
         switch signinFlow {
         case .requirePin:
             requestPin()
             
         case .requireTouchID:
-            self.biometricAuthentication(afterBioAuthPassed: onRestore, afterSignIn: afterSignIn)
+            self.biometricAuthentication(requestMailboxPassword: requestMailboxPassword) // will send message
             
         case .restore:
-            self.unlockIfRememberedCredentials(requestMailboxPassword: afterSignIn)
-            onRestore()
+            self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
         }
     }
     
@@ -79,27 +81,28 @@ class UnlockManager: NSObject {
             return
         }
         
-        guard sharedUserDataService.isMailboxPasswordStored else {
+        guard sharedUserDataService.isMailboxPasswordStored else { // this will provoke mainKey obtention
             requestMailboxPassword()
             return
         }
         
+        userCachedStatus.pinFailedCount = 0
         ValueTransformer.setValueTransformer(StringCryptoTransformer(key: keymaker.mainKey!),
                                              forName: .init(rawValue: String(describing: StringCryptoTransformer.self)))
-        UserTempCachedStatus.clearFromKeychain()
-        userCachedStatus.pinFailedCount = 0
         
         #if !APP_EXTENSION
-        self.updateUserData()
+        UserTempCachedStatus.clearFromKeychain()
         sharedMessageDataService.injectTransientValuesIntoMessages()
-        ServicePlanDataService.shared.updateServicePlans()
-        NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil)
+        self.updateUserData()
         #endif
+        
+        NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil)
     }
     
     
     #if !APP_EXTENSION
     private func updateUserData() { // previously this method was called loadContactsAfterInstall()
+        ServicePlanDataService.shared.updateServicePlans()
         ServicePlanDataService.shared.updateCurrentSubscription()
         sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
         

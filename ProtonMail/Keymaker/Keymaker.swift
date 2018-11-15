@@ -16,7 +16,6 @@ import UICKeyChainStore
 
 public class Keymaker: NSObject {
     public static let requestMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".requestMainKey")
-    public static let obtainedMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".obtainedMainKey")
     public typealias Key = Array<UInt8>
     
     private var autolocker: Autolocker?
@@ -60,13 +59,11 @@ public class Keymaker: NSObject {
         
         // if we have NoneProtection active - get the key right ahead
         if let cypherText = NoneProtection.getCypherBits(from: self.keychain) {
-            NotificationCenter.default.post(.init(name: Keymaker.obtainedMainKey))
             return try! NoneProtection(keychain: self.keychain).unlock(cypherBits: cypherText)
         }
         
         // otherwise there is no saved mainKey at all, so we should generate a new one with default protection
         let newKey = self.generateNewMainKeyWithDefaultProtection()
-        NotificationCenter.default.post(.init(name: Keymaker.obtainedMainKey))
         return newKey
     }
     

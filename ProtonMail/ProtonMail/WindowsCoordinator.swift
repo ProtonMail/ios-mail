@@ -47,9 +47,7 @@ class WindowsCoordinator: CoordinatorNew {
         defer {
             NotificationCenter.default.addObserver(self, selector: #selector(performForceUpgrade), name: .forceUpgrade, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.requestMainKey, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: Keymaker.obtainedMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
-            
             NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
@@ -60,7 +58,12 @@ class WindowsCoordinator: CoordinatorNew {
         placeholder.rootViewController = UIViewController() 
         self.snapshot.show(at: placeholder)
         self.currentWindow = placeholder
-        UnlockManager.shared.isUnlocked()
+        DispatchQueue.main.async {
+            // initiate unlock process which will send .didUnlock or .requestMainKey eventually
+            UnlockManager.shared.initiateUnlock(flow: UnlockManager.shared.getUnlockFlow(),
+                                                requestPin: self.lock,
+                                                requestMailboxPassword: self.lock)
+        }
     }
     
     @objc func willEnterForeground() {
@@ -72,23 +75,19 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     @objc func lock() {
-        self.setupWindow(gotMainKey: false)
-    }
-    
-    @objc func unlock() {
-        self.setupWindow(gotMainKey: true)
-    }
-    
-    private func setupWindow(gotMainKey: Bool) {
         guard SignInManager.shared.isSignedIn() else {
             self.go(dest: .signInWindow)
             return
         }
-        
-        switch gotMainKey {
-        case true: self.go(dest: .appWindow)
-        case false: self.go(dest: .lockWindow)
+        self.go(dest: .lockWindow)
+    }
+    
+    @objc func unlock() {
+        guard SignInManager.shared.isSignedIn() else {
+            self.go(dest: .signInWindow)
+            return
         }
+        self.go(dest: .appWindow)
     }
     
     func go(dest: Destination) {

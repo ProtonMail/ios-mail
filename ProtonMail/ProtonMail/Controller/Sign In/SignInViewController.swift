@@ -85,8 +85,7 @@ class SignInViewController: ProtonMailViewController {
         }
         UnlockManager.shared.initiateUnlock(flow: signinFlow,
                         requestPin: { self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
-                        onRestore: self.setupView,
-                        afterSignIn: {
+                        requestMailboxPassword: {
                             self.isRemembered = true
                             self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
         })
@@ -193,7 +192,7 @@ class SignInViewController: ProtonMailViewController {
     
     @IBAction func touchIDAction(_ sender: UIButton) {
         if userCachedStatus.isTouchIDEnabled {
-            UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: self.setupView, afterSignIn: {
+            UnlockManager.shared.biometricAuthentication(requestMailboxPassword: {
                 self.isRemembered = true
                 self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
             })
@@ -263,8 +262,7 @@ class SignInViewController: ProtonMailViewController {
     
     @objc func doEnterForeground() {
         if (userCachedStatus.isTouchIDEnabled) {
-            UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: self.setupView,
-                                             afterSignIn: {
+            UnlockManager.shared.biometricAuthentication(requestMailboxPassword: {
                                                 self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
             })
         }
