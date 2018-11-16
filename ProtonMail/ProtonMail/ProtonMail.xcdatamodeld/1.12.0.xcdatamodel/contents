@@ -7,7 +7,7 @@
             </userInfo>
         </attribute>
         <attribute name="fileData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
-        <attribute name="fileName" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="fileName" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
@@ -18,7 +18,7 @@
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="headerInfo" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="headerInfo" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Headers"/>
                 <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
@@ -26,13 +26,13 @@
         </attribute>
         <attribute name="isTemp" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="keyChanged" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="keyPacket" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="keyPacket" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="KeyPackets"/>
             </userInfo>
         </attribute>
-        <attribute name="localURL" optional="YES" attributeType="Transformable" valueTransformerName="" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
-        <attribute name="mimeType" optional="YES" attributeType="Transformable" syncable="YES">
+        <attribute name="localURL" optional="YES" attributeType="Transformable" valueTransformerName="" allowsExternalBinaryDataStorage="YES" customClassName="URL" syncable="YES"/>
+        <attribute name="mimeType" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="MIMEType"/>
             </userInfo>
@@ -43,7 +43,7 @@
         </userInfo>
     </entity>
     <entity name="Contact" representedClassName=".Contact" syncable="YES">
-        <attribute name="cardData" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="cardData" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Cards"/>
                 <entry key="JSONTransformerName" value="JsonStringTransformer"/>
@@ -58,7 +58,7 @@
         <attribute name="isCorrected" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isDownloaded" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="modifyTIme" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="name" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" indexed="YES" syncable="YES">
+        <attribute name="name" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
@@ -69,7 +69,7 @@
                 <entry key="JSONKeyPath" value="Size"/>
             </userInfo>
         </attribute>
-        <attribute name="uuid" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="uuid" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="UID"/>
             </userInfo>
@@ -96,7 +96,7 @@
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="email" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="email" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Email"/>
             </userInfo>
@@ -106,7 +106,7 @@
                 <entry key="JSONKeyPath" value="ID"/>
             </userInfo>
         </attribute>
-        <attribute name="name" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
@@ -117,7 +117,7 @@
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="type" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="type" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Type"/>
                 <entry key="JSONTransformerName" value="JsonStringTransformer"/>
@@ -156,7 +156,7 @@
                 <entry key="JSONKeyPath" value="ID"/>
             </userInfo>
         </attribute>
-        <attribute name="name" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
@@ -186,7 +186,7 @@
                 <entry key="JSONKeyPath" value="AddressID"/>
             </userInfo>
         </attribute>
-        <attribute name="bccList" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="bccList" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="BCCList"/>
                 <entry key="JSONTransformerName" value="JsonStringTransformer"/>
@@ -201,7 +201,7 @@
         <attribute name="cachedAuthCredentialRaw" optional="YES" transient="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="cachedPassphraseRaw" optional="YES" transient="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="cachedPrivateKeysRaw" optional="YES" transient="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="ccList" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="ccList" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="CCList"/>
                 <entry key="JSONTransformerName" value="JsonStringTransformer"/>
@@ -220,7 +220,7 @@
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="header" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="header" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Header"/>
             </userInfo>
@@ -281,7 +281,7 @@
         </attribute>
         <attribute name="messageStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="mimeType" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="mimeType" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="MIMEType"/>
             </userInfo>
@@ -299,27 +299,27 @@
         </attribute>
         <attribute name="orginalMessageID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="orginalTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="password" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES"/>
+        <attribute name="password" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES"/>
         <attribute name="passwordEncryptedBody" attributeType="String" valueTransformerName="StringCryptoTransformer" syncable="YES"/>
-        <attribute name="passwordHint" attributeType="String" valueTransformerName="StringCryptoTransformer" syncable="YES"/>
-        <attribute name="replyTos" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="passwordHint" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES"/>
+        <attribute name="replyTos" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ReplyTos"/>
                 <entry key="JSONTransformerName" value="JsonStringTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="sender" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="sender" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Sender"/>
                 <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="senderAddress" attributeType="String" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="senderAddress" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="SenderAddress"/>
             </userInfo>
         </attribute>
-        <attribute name="senderName" attributeType="String" valueTransformerName="StringCryptoTransformer" indexed="YES" syncable="YES">
+        <attribute name="senderName" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="SenderName"/>
             </userInfo>
@@ -347,12 +347,12 @@
                 <entry key="JSONTransformerName" value="DateTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="title" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" indexed="YES" syncable="YES">
+        <attribute name="title" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Subject"/>
             </userInfo>
         </attribute>
-        <attribute name="toList" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" syncable="YES">
+        <attribute name="toList" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ToList"/>
                 <entry key="JSONTransformerName" value="JsonStringTransformer"/>
