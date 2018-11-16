@@ -114,6 +114,7 @@ class APIService {
             
             guard !credential.isExpired else { // access token time is valid
                 self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
+                    self.debugError(error)
                     pthread_mutex_unlock(&self.mutex)
                     if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
                         AuthCredential.clearFromKeychain()
@@ -158,6 +159,7 @@ class APIService {
                            completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
         let authBlock: AuthCredentialBlock = { auth, error in
             if let error = error {
+                self.debugError(error)
                 completion(nil, nil, error)
             } else {
                 let request = self.sessionManager.requestSerializer.request(withMethod: HTTPMethod.get.toString(),
@@ -190,6 +192,7 @@ class APIService {
                 }, destination: { (targetURL, response) -> URL in
                     return destinationDirectoryURL
                 }, completionHandler: { (response, url, error) in
+                    self.debugError(error)
                     completion(response, url, error as NSError?)
                 })
                 downloadTask?(sessionDownloadTask)
@@ -226,6 +229,7 @@ class APIService {
         
         let authBlock: AuthCredentialBlock = { auth, error in
             if let error = error {
+                self.debugError(error)
                 completion(nil, nil, error)
             } else {
                 let request = self.sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST",
@@ -265,6 +269,7 @@ class APIService {
                 uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request as URLRequest, progress: { (progress) in
                     //
                 }, completionHandler: { (response, responseObject, error) in
+                    self.debugError(error)
                     let resObject = responseObject as? [String : Any]
                     completion(uploadTask, resObject, error as NSError?)
                 })
@@ -289,10 +294,12 @@ class APIService {
                  completion: CompletionBlock?) {
         let authBlock: AuthCredentialBlock = { auth, error in
             if let error = error {
+                self.debugError(error)
                 completion?(nil, nil, error)
             } else {
                 let parseBlock: (_ task: URLSessionDataTask?, _ response: Any?, _ error: Error?) -> Void = { task, response, error in
                     if let error = error as NSError? {
+                        self.debugError(error)
                         PMLog.D(api: error)
                         var httpCode : Int = 200
                         if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
@@ -373,7 +380,9 @@ class APIService {
                             else {
                                 completion?(task, responseDictionary, error)
                             }
+                            self.debugError(error)
                         } else {
+                            self.debugError(NSError.unableToParseResponse(response))
                             completion?(task, nil, NSError.unableToParseResponse(response))
                         }
                     }
@@ -410,6 +419,7 @@ class APIService {
                 }, downloadProgress: { (progress) in
                     //TODO::add later
                 }, completionHandler: { (urlresponse, res, error) in
+                    self.debugError(error)
                     if let urlres = urlresponse as? HTTPURLResponse, let allheader = urlres.allHeaderFields as? [String : Any] {
                         //PMLog.D("\(allheader.json(prettyPrinted: true))")
                         if let strData = allheader["Date"] as? String {
@@ -436,5 +446,22 @@ class APIService {
             authBlock(customAuthCredential, nil)
         }
     }
+    
+    func debugError(_ error: NSError?) {
+        #if DEBUG
+        if let error = error {
+            self.delegate?.onError(error: error)
+        }
+        #endif
+    }
+    func debugError(_ error: Error?) {
+        #if DEBUG
+        if let error = error {
+            self.delegate?.onError(error: error as NSError)
+        }
+        #endif
+    }
 }
+
+
 

@@ -20,6 +20,7 @@ import SWRevealViewController
 import AFNetworking
 import AFNetworkActivityLogger
 import Keymaker
+import UserNotifications
 
 let sharedUserDataService = UserDataService()
 
@@ -52,7 +53,25 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     func onError(error: NSError) {
+        #if DEBUG
+        guard #available(iOS 10.0, *) else { return }
+        let timeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let content = UNMutableNotificationContent()
+        content.title = "🦐 API ERROR"
+        content.subtitle = error.localizedDescription
+        content.body = error.userInfo.debugDescription
+
+        if let data = error.userInfo["com.alamofire.serialization.response.error.data"] as? Data,
+            let resObj = String(data: data, encoding: .utf8)
+        {
+            content.body = resObj + content.body
+        }
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: timeTrigger)
+        UNUserNotificationCenter.current().add(request) { error in }
+        #else
         error.alertToast()
+        #endif
     }
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
@@ -83,6 +102,10 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         AppVersion.current.migration()
         
         Fabric.with([Crashlytics()])
+        
+        #if DEBUG // will fire local notifications on errors instead of toasts
+        if #available(iOS 10.0, *) { UNUserNotificationCenter.current().delegate = self }
+        #endif
         
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         
@@ -242,3 +265,14 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
 fileprivate func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
 	return UIBackgroundTaskIdentifier(rawValue: input)
 }
+
+#if DEBUG
+@available(iOS 10.0, *) extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    {
+        completionHandler([.alert, .sound]) // Display notification as regular alert and play sound
+    }
+}
+#endif
