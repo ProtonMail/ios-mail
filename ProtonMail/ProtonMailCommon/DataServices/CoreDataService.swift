@@ -81,9 +81,15 @@ class CoreDataService {
         }
         var url = containerUrl.appendingPathComponent("ProtonMail.sqlite")
         do {
-            try coordinator?.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
+            let options: [AnyHashable: Any] = [
+                NSMigratePersistentStoresAutomaticallyOption: NSNumber(booleanLiteral: true),
+                NSInferMappingModelAutomaticallyOption: NSNumber(booleanLiteral: true)
+            ]
+            try coordinator?.addPersistentStore(ofType: NSSQLiteStoreType,
+                                                configurationName: nil,
+                                                at: url,
+                                                options: options)
             url.excludeFromBackup()
-            //TODO:: need to handle empty instead of !
         } catch let ex as NSError {
             if (ex.domain == "NSCocoaErrorDomain" && ex.code == 134100) {
                 do {

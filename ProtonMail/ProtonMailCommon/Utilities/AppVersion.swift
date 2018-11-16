@@ -140,7 +140,6 @@ extension AppVersion {
             appLockMigration.notify(queue: .main) { keymaker.lockTheApp() }
         }
         
-        
         // Clear up the old stuff on fresh installs also
         sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserDataService.password)
         sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserDataService.mailboxPassword)
@@ -158,8 +157,6 @@ extension AppVersion {
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.UID)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.badToken)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.badUID)
-        
-        // FIXME: migrate CoreData
     }
 }
 

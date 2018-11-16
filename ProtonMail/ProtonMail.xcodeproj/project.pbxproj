@@ -1035,6 +1035,7 @@
 		A2EA7FA16B09D8E1972B17C7F07F07BC /* ViewModelProtocolNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380C8C900534007B0FE7A88A95D29030 /* ViewModelProtocolNew.swift */; };
 		A2F388AE5C22FA0F4A94A7FD64EB7225 /* ViewModelTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C7A81F18DD5275FF6DFE4F141BDAD /* ViewModelTimer.swift */; };
 		A2F8159D124EB1C7AA1ACC53B3D86351 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0EC4A77A2330BB1CE2BF6D2ECDDF37 /* AppConstants.swift */; };
+		A33AB81CFB24DF699DA49DDE56659F52 /* ProtonMail_to_1.12.0.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 041C4403845A70163F030E1F1232B426 /* ProtonMail_to_1.12.0.xcmappingmodel */; };
 		A34C37B43A37A7F335F1C6984F1FBE82 /* SplashSignInSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E4F4D1468CCEA2F32B1C38858CC1B1 /* SplashSignInSegue.swift */; };
 		A375428D87EB3F0762E4EC1C21F7BC42 /* ContactGroupsViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 380360BB9B1BCDAA8C4DBCC0B027C134 /* ContactGroupsViewCell.xib */; };
 		A3783BD12E1EA823B9979DA126E13025 /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090959F01713916918218A20B1ED07FF /* APIErrors.swift */; };
@@ -1462,6 +1463,7 @@
 		E1787538077789DF43FF27812D81A990 /* SpamScoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532AFF86A3CB09C1894B60EF1339626A /* SpamScoreWarningView.swift */; };
 		E1B89EF1D9F46FDFF1BD2BE1A675F8C7 /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE16BECF1CF9E505A361D41D83460C /* PushSubscriptionSettings.swift */; };
 		E1D383604577113DECD6CF979955F136 /* PushService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 00918B56B68A9926D7490AA22F6B62B4 /* PushService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E1EE1020DC0BEE82AA123D945565ECAB /* ProtonMail_to_1.12.0.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 041C4403845A70163F030E1F1232B426 /* ProtonMail_to_1.12.0.xcmappingmodel */; };
 		E1F782A3C43D6E704BA0333A889A8B29 /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E897B0825B3C43D7FBBEC6F8616ECD /* DeviceAPI.swift */; };
 		E20408F50EA4F9E209C894391753FF19 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6975591022B24982654B9F6C071D9C /* SignInViewModel.swift */; };
 		E220C6628D12932CB1B103FB1D541093 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052B8D056C5CE08382D71EDBD635B6A5 /* Label.swift */; };
@@ -1787,6 +1789,7 @@
 		0350DB1CE5A6D9FB0346D24A0319EB2E /* NSError+Alert+Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Alert+Mail.swift"; sourceTree = "<group>"; };
 		03B667127BCF3FD74EC8B166FB8B49A5 /* DurationPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DurationPickerViewController.xib; sourceTree = "<group>"; };
 		04025B7C6436895719C25378EBFF48C9 /* AddressAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressAPI.swift; sourceTree = "<group>"; };
+		041C4403845A70163F030E1F1232B426 /* ProtonMail_to_1.12.0.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = ProtonMail_to_1.12.0.xcmappingmodel; sourceTree = "<group>"; };
 		04CAE4733926A58198B65D2DC1B50F00 /* ContactGroupViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupViewModelImpl.swift; sourceTree = "<group>"; };
 		04FBD9E8AAC0584C8A2319FDD933EA87 /* MBContactCollectionViewEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBContactCollectionViewEntryCell.m; sourceTree = "<group>"; };
 		04FD71845357210A9E9B06A14940100F /* APIService+SettingsExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "APIService+SettingsExtension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -3727,6 +3730,7 @@
 				689C2D144EC02C85DBD7B3A17CF51E2E /* MessageLocation.swift */,
 				37F4282F6BDD6599DE8938B86E5B3C31 /* MessageSpamScore.swift */,
 				BB002B5675ED1988C1C86F59FDB410DA /* ProtonMail.xcdatamodeld */,
+				041C4403845A70163F030E1F1232B426 /* ProtonMail_to_1.12.0.xcmappingmodel */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -5516,6 +5520,7 @@
 				146758F8128B7B09EAF1E7CFCB6F94F8 /* ProtonMail-Bridging-Header.cpp in Sources */,
 				02FA2D4C14FAB65F01A26CF51368DF7E /* ProtonMail.xcdatamodeld in Sources */,
 				78F555E5782DFD3E2007362A8B762A23 /* ProtonMailViewController.swift in Sources */,
+				A33AB81CFB24DF699DA49DDE56659F52 /* ProtonMail_to_1.12.0.xcmappingmodel in Sources */,
 				E284B4562F53B10809F4378ADBF701CC /* PushData.swift in Sources */,
 				9BBB3A8AC99813402269F5223A8FCDF0 /* PushNotificationDecryptor.swift in Sources */,
 				726DC6344C5E930933CDF1BD812C3BCA /* PushNotificationService.swift in Sources */,
@@ -5989,6 +5994,7 @@
 				C655A8047C4902C34716969970217422 /* PolicyWebViewModelImpl.swift in Sources */,
 				D0901BBAEB31D2C8C2CE6407C90217BC /* ProtonMail-Bridging-Header.cpp in Sources */,
 				62AA2B38B172FE096BC01DC4ED264BE6 /* ProtonMailViewController.swift in Sources */,
+				E1EE1020DC0BEE82AA123D945565ECAB /* ProtonMail_to_1.12.0.xcmappingmodel in Sources */,
 				BD743FAD81E85FED83C054DA22411229 /* PushData.swift in Sources */,
 				CCC0DB285F82138F5AB71BCBFFECA319 /* PushNotificationDecryptor.swift in Sources */,
 				BB653B7C382ADF99992E478611BB6CD0 /* PushNotificationService.swift in Sources */,
