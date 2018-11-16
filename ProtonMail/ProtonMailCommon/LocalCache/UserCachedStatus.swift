@@ -25,21 +25,21 @@ final class UserCachedStatus : SharedCacheBase {
         static let isPM_MEWarningDisabled = "isPM_MEWarningDisabledKey" //user cache -- maybe could be global
         
         // touch id 
-        static let isTouchIDEnabled = "isTouchIDEnabled" //global cache
+        
         static let autoLogoutTime = "autoLogoutTime" //global cache
-        static let touchIDEmail = "touchIDEmail" //user cache
+        
         static let askEnableTouchID = "askEnableTouchID" //global cache
         
         // pin code
-        static let isPinCodeEnabled = "isPinCodeEnabled" //user cache but could restore
-        static let pinCodeCache = "pinCodeCache" //user cache but could restore
+        
+        
         static let autoLockTime = "autoLockTime" ///user cache but could restore
-        static let enterBackgroundTime = "enterBackgroundTime"
+        
         static let lastLoggedInUser = "lastLoggedInUser" //user cache but could restore
         static let lastPinFailedTimes = "lastPinFailedTimes" //user cache can't restore
         
         
-        static let isManuallyLockApp = "isManuallyLockApp"
+        
         
         //wait
         static let lastFetchMessageID = "last_fetch_message_id"
@@ -186,25 +186,17 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.lastAuthCacheVersion)
         getShared().removeObject(forKey: Key.isPM_MEWarningDisabled)
         
-        //touch id
-        getShared().removeObject(forKey: Key.touchIDEmail)
         
         //pin code
-        getShared().removeObject(forKey: Key.isPinCodeEnabled)
         getShared().removeObject(forKey: Key.lastPinFailedTimes)
-        getShared().removeObject(forKey: Key.isManuallyLockApp)
         
         //for version <= 1.6.5 clean old stuff.
-        UICKeyChainStore.removeItem(forKey: Key.pinCodeCache)
         UICKeyChainStore.removeItem(forKey: Key.lastLoggedInUser)
         UICKeyChainStore.removeItem(forKey: Key.autoLockTime)
-        UICKeyChainStore.removeItem(forKey: Key.enterBackgroundTime)
         
         //for newer version > 1.6.5
-        sharedKeychain.keychain.removeItem(forKey: Key.pinCodeCache)
         sharedKeychain.keychain.removeItem(forKey: Key.lastLoggedInUser)
         sharedKeychain.keychain.removeItem(forKey: Key.autoLockTime)
-        sharedKeychain.keychain.removeItem(forKey: Key.enterBackgroundTime)
         
         // Clean the keys Anatoly added
         getShared().removeObject(forKey: Key.snoozeConfiguration)
@@ -221,10 +213,8 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.lastTourViersion)
         
         //touch id
-        getShared().removeObject(forKey: Key.isTouchIDEnabled)
         getShared().removeObject(forKey: Key.autoLogoutTime)
         getShared().removeObject(forKey: Key.askEnableTouchID)
-        getShared().removeObject(forKey: Key.isManuallyLockApp)
         
         //
         getShared().removeObject(forKey: Key.lastLocalMobileSignature)

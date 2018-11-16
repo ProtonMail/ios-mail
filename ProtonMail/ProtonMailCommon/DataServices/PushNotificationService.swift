@@ -21,7 +21,11 @@ import Keymaker
 
 public class PushNotificationService {
     typealias SubscriptionSettings = PushSubscriptionSettings
-
+    
+    enum Key {
+        static let subscription = "pushNotificationSubscription"
+    }
+    
     fileprivate var launchOptions: [AnyHashable: Any]? = nil
 
     public static var shared = PushNotificationService()
@@ -34,9 +38,9 @@ public class PushNotificationService {
     private let unlockProvider: UnlockProvider
     private let deviceTokenSaver: Saver<String>
     
-    init(subscriptionSaver: Saver<Subscription> = KeychainSaver(key: "pushNotificationSubscription"),
+    init(subscriptionSaver: Saver<Subscription> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<PushSubscriptionSettings> = PushNotificationDecryptor.saver,
-         outdatedSaver: Saver<Set<SubscriptionSettings>> = KeychainSaver(key: "pushNotificationOutdatedSubscriptions", cachingInMemory: false),
+         outdatedSaver: Saver<Set<SubscriptionSettings>> = PushNotificationDecryptor.outdater,
          sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
          deviceRegistrator: DeviceRegistrator = sharedAPIService,
          signInProvider: SignInProvider = SignInManagerProvider(),

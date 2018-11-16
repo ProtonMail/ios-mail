@@ -20,8 +20,7 @@ import Keymaker
 //TODO:: refactor required later
 final class AuthCredential: NSObject, NSCoding {
     
-    struct Key{
-        static let keychainStorePreMainKey = "keychainStoreKey"
+    struct Key {
         static let keychainStore = "keychainStoreKeyProtectedWithMainKey"
     }
     

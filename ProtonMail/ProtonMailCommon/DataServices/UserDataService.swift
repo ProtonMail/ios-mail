@@ -60,19 +60,19 @@ class UserDataService {
     var delegate : UserDataServiceDelegate?
     
     struct Key {
-        static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
-        static let isRememberUser            = "isRememberUserKey"
-        static let mailboxPasswordPreMainKey = "mailboxPasswordKey"
+        
+        
         static let mailboxPassword           = "mailboxPasswordKeyProtectedWithMainKey"
         static let username                  = "usernameKey"
-        static let password                  = "passwordKey"
-        static let userInfoPreMainKey                  = "userInfoKey"
+        
         static let userInfo                  = "userInfoKeyProtectedWithMainKey"
         static let twoFAStatus               = "twofaKey"
         static let userPasswordMode          = "userPasswordModeKey"
         
         static let roleSwitchCache           = "roleSwitchCache"
         static let defaultSignatureStatus    = "defaultSignatureStatus"
+        
+        static let firstRunKey = "FirstRunKey"
     }
     
     // MARK: - Private variables
@@ -874,12 +874,14 @@ class UserDataService {
     // MARK: - Private methods
     
     func cleanUpIfFirstRun() {
-        let firstRunKey = "FirstRunKey"
-        if SharedCacheBase.getDefault().object(forKey: firstRunKey) == nil {
+        #if !APP_EXTENSION
+        if AppVersion.isFirstRun() {
             clearAll()
-            SharedCacheBase.getDefault().set(Date(), forKey: firstRunKey)
+            SharedCacheBase.getDefault().set(Date(), forKey: Key.firstRunKey)
             SharedCacheBase.getDefault().synchronize()
         }
+        AppVersion.lastMigratedTo = AppVersion.current
+        #endif
     }
     
     func clearAll() {
@@ -933,7 +935,7 @@ class UserDataService {
 
 #if !APP_EXTENSION
 extension AppVersion {
-    func inject(userInfo: UserInfo, into userDataService: UserDataService) {
+    static func inject(userInfo: UserInfo, into userDataService: UserDataService) {
         userDataService.userInfo = userInfo
     }
 }

@@ -29,7 +29,181 @@ import Foundation
 import Keymaker
 import Crypto
 
-struct AppVersion: Comparable, Equatable {
+struct AppVersion {
+    typealias MigrationBlock = ()->Void
+
+    private(set) var string: String
+    private var numbers: Array<Int>
+    private var migration: MigrationBlock?
+    
+    init(_ string: String, migration: MigrationBlock? = nil) {
+        self.numbers = string.components(separatedBy: CharacterSet.punctuationCharacters.union(CharacterSet.whitespaces)).compactMap { Int($0) }
+        self.string = self.numbers.map(String.init).joined(separator: ".")
+        self.migration = migration
+    }
+    
+    // vars
+    
+    static var current = AppVersion(Bundle.main.appVersion)
+    static var lastVersionBeforeMigratorWasReleased = AppVersion("1.11.0")
+    static var lastMigratedTo: AppVersion {
+        get {
+            // on first launch after install we're setting this value to .current
+            // then if there is no value in UserDefaults means it's the first time user updated to a version with migrator implemented
+            // and we should run all the migrations we have since first migrator
+            guard let string = UserDefaultsSaver<String>(key: Keys.lastMigratedToVersion).get(), !self.isFirstRun() else {
+                return AppVersion.lastVersionBeforeMigratorWasReleased
+            }
+            return AppVersion(string)
+        }
+        set { UserDefaultsSaver(key: Keys.lastMigratedToVersion).set(newValue: newValue.string) }
+    }
+
+    // methods
+    
+    static internal func migrate() {
+        let knownVersions = [self.v1_12_0].sorted()
+        let shouldMigrateTo = knownVersions.filter { $0 > self.lastMigratedTo && $0 <= self.current }
+        shouldMigrateTo.forEach {
+            $0.migration?()
+            self.lastMigratedTo = $0
+        }
+    }
+    
+    static func isFirstRun() -> Bool {
+        return SharedCacheBase.getDefault().object(forKey: UserDataService.Key.firstRunKey) == nil
+    }
+}
+
+extension AppVersion {
+    /*
+     IMPORTANT: each of these migrations read legacy values and transform them into current ones, not passing thru middle version's migrators. Please mind that user can migrate from every one of prevoius version, not only from the latest!
+    */
+    
+    static var v1_12_0 = AppVersion("1.12.0") {
+        // Push subscriptions
+        if let oldToken = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.PushNotificationService.token),
+            let oldDeviceUID = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.PushNotificationService.UID)
+        {
+            // FIXME: this should somehow work with new APIs
+            //PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: oldToken, deviceID: oldDeviceUID))
+        }
+        
+        if let badToken = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.PushNotificationService.badToken),
+            let badDeviceUID = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.PushNotificationService.badUID)
+        {
+            // FIXME: this should somehow work with new APIs
+            //PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: badToken, deviceID: badDeviceUID))
+        }
+        
+        // UserInfo
+        if let userInfo = SharedCacheBase.getDefault().customObjectForKey(DeprecatedKeys.UserDataService.userInfo) as? UserInfo {
+            AppVersion.inject(userInfo: userInfo, into: sharedUserDataService)
+        }
+        
+        // mailboxPassword
+        if let triviallyProtectedMailboxPassword = sharedKeychain.keychain.string(forKey: DeprecatedKeys.UserDataService.mailboxPassword),
+            let cleartextMailboxPassword = try? triviallyProtectedMailboxPassword.decrypt(withPwd: "$Proton$" + DeprecatedKeys.UserDataService.mailboxPassword)
+        {
+            sharedUserDataService.mailboxPassword = cleartextMailboxPassword
+        }
+        
+        // AuthCredential
+        if let credentialRaw = sharedKeychain.keychain.data(forKey: DeprecatedKeys.AuthCredential.keychainStore),
+            let credential = NSKeyedUnarchiver.unarchiveObject(with: credentialRaw) as? AuthCredential
+        {
+            credential.storeInKeychain()
+        }
+        
+        // MainKey
+        let appLockMigration = DispatchGroup()
+        var appWasLocked = false
+        
+        // via touch id
+        if userCachedStatus.getShared().bool(forKey: DeprecatedKeys.UserCachedStatus.isTouchIDEnabled) {
+            appWasLocked = true
+            appLockMigration.enter()
+            keymaker.activate(BioProtection()) { _ in appLockMigration.leave() }
+        }
+        
+        // via pin
+        if userCachedStatus.getShared().bool(forKey: DeprecatedKeys.UserCachedStatus.isPinCodeEnabled),
+            let pin = sharedKeychain.keychain.string(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
+        {
+            appWasLocked = true
+            appLockMigration.enter()
+            keymaker.activate(PinProtection(pin: pin)) { _ in appLockMigration.leave() }
+        }
+        
+        // and lock the app afterwards
+        if appWasLocked {
+            appLockMigration.notify(queue: .main) { keymaker.lockTheApp() }
+        }
+        
+        
+        // Clear up the old stuff on fresh installs also
+        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserDataService.password)
+        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserDataService.mailboxPassword)
+        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
+        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.AuthCredential.keychainStore)
+        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.enterBackgroundTime)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isTouchIDEnabled)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isPinCodeEnabled)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isManuallyLockApp)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.touchIDEmail)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserDataService.isRememberUser)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserDataService.userInfo)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserDataService.isRememberMailboxPassword)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.token)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.UID)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.badToken)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.badUID)
+        
+        // FIXME: migrate CoreData
+    }
+}
+
+
+extension AppVersion {
+    enum Keys {
+        static let lastMigratedToVersion = "lastMigratedToVersion"
+    }
+    
+    enum DeprecatedKeys {
+        enum AuthCredential {
+            static let keychainStore = "keychainStoreKey"
+        }
+        enum UserCachedStatus {
+            static let pinCodeCache         = "pinCodeCache"
+            static let enterBackgroundTime  = "enterBackgroundTime"
+            static let isManuallyLockApp    = "isManuallyLockApp"
+            static let isPinCodeEnabled     = "isPinCodeEnabled"
+            static let isTouchIDEnabled     = "isTouchIDEnabled"
+            static let touchIDEmail         = "touchIDEmail"
+        }
+        enum UserDataService {
+            static let password                  = "passwordKey"
+            static let mailboxPassword           = "mailboxPasswordKey"
+            static let isRememberUser            = "isRememberUserKey"
+            static let userInfo                  = "userInfoKey"
+            static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
+        }
+        enum PushNotificationService {
+            static let token    = "DeviceTokenKey"
+            static let UID      = "DeviceUID"
+            
+            static let badToken = "DeviceBadToken"
+            static let badUID   = "DeviceBadUID"
+        }
+    }
+}
+
+
+extension AppVersion: Comparable, Equatable {
+    static func == (lhs: AppVersion, rhs: AppVersion) -> Bool {
+        return lhs.numbers == rhs.numbers
+    }
+    
     static func < (lhs: AppVersion, rhs: AppVersion) -> Bool {
         let maxCount: Int = max(lhs.numbers.count, rhs.numbers.count)
         
@@ -49,112 +223,5 @@ struct AppVersion: Comparable, Equatable {
             }
         }
         return false
-    }
-
-    private(set) var string: String
-    private var numbers: Array<Int>
-    
-    static var current: AppVersion {
-        return .init(Bundle.main.appVersion)
-    }
-    
-    init(_ string: String) {
-        self.string = string
-        self.numbers = string.split(separator: ".").compactMap { Int($0) }
-    }
-}
-
-extension AppVersion {
-    
-    internal func migration() { // TODO: this logic should depend of pre-migration version and current version
-        // Values need to be protected with mainKey
-        
-        // + Push subscriptions
-        if let oldToken = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeprecatedDeviceKeys.token),
-            let oldDeviceUID = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeprecatedDeviceKeys.UID)
-        {
-            // FIXME: this should somehow work with new APIs
-            //PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: oldToken, deviceID: oldDeviceUID))
-        }
-        
-        if let badToken = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeprecatedDeviceKeys.badToken),
-            let badDeviceUID = SharedCacheBase.getDefault().string(forKey: PushNotificationService.DeprecatedDeviceKeys.badUID)
-        {
-            // FIXME: this should somehow work with new APIs
-            //PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: badToken, deviceID: badDeviceUID))
-        }
-        
-        // + UserInfo
-        if let userInfo = SharedCacheBase.getDefault().customObjectForKey(UserDataService.Key.userInfoPreMainKey) as? UserInfo {
-            self.inject(userInfo: userInfo, into: sharedUserDataService)
-        }
-        
-        // + mailboxPassword
-        if let triviallyProtectedMailboxPassword = sharedKeychain.keychain.string(forKey: UserDataService.Key.mailboxPasswordPreMainKey),
-            let cleartextMailboxPassword = try? triviallyProtectedMailboxPassword.decrypt(withPwd: "$Proton$" + UserDataService.Key.mailboxPasswordPreMainKey)
-        {
-            sharedUserDataService.mailboxPassword = cleartextMailboxPassword
-        }
-        
-        // + AuthCredential
-        if let credentialRaw = sharedKeychain.keychain.data(forKey: AuthCredential.Key.keychainStorePreMainKey),
-            let credential = NSKeyedUnarchiver.unarchiveObject(with: credentialRaw) as? AuthCredential
-        {
-            credential.storeInKeychain()
-        }
-        
-        // MainKey should be protected according to user settings
-        let appLockMigration = DispatchGroup()
-        var appWasLocked = false
-        
-        // + via touch id
-        if userCachedStatus.getShared().bool(forKey: UserCachedStatus.Key.isTouchIDEnabled) {
-            appWasLocked = true
-            appLockMigration.enter()
-            keymaker.activate(BioProtection()) { _ in appLockMigration.leave() }
-        }
-        
-        // + via pin
-        if userCachedStatus.getShared().bool(forKey: UserCachedStatus.Key.isPinCodeEnabled),
-            let pin = sharedKeychain.keychain.string(forKey: UserCachedStatus.Key.pinCodeCache)
-        {
-            appWasLocked = true
-            appLockMigration.enter()
-            keymaker.activate(PinProtection(pin: pin)) { _ in appLockMigration.leave() }
-        }
-        
-        // + and lock the app afterwards
-        if appWasLocked {
-            appLockMigration.notify(queue: .main) { keymaker.lockTheApp() }
-        }
-        
-        
-        // Clear up the old stuff on fresh installs also
-        sharedKeychain.keychain.removeItem(forKey: UserDataService.Key.password)
-        sharedKeychain.keychain.removeItem(forKey: UserCachedStatus.Key.pinCodeCache)
-        sharedKeychain.keychain.removeItem(forKey: UserDataService.Key.mailboxPasswordPreMainKey)
-        sharedKeychain.keychain.removeItem(forKey: AuthCredential.Key.keychainStorePreMainKey)
-        sharedKeychain.keychain.removeItem(forKey: UserCachedStatus.Key.enterBackgroundTime)
-        userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.isTouchIDEnabled)
-        userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.isPinCodeEnabled)
-        userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.isManuallyLockApp)
-        userCachedStatus.getShared().removeObject(forKey: UserCachedStatus.Key.touchIDEmail)
-        userCachedStatus.getShared().removeObject(forKey: UserDataService.Key.isRememberUser)
-        userCachedStatus.getShared().removeObject(forKey: UserDataService.Key.userInfoPreMainKey)
-        userCachedStatus.getShared().removeObject(forKey: UserDataService.Key.isRememberMailboxPassword)
-        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeprecatedDeviceKeys.token)
-        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeprecatedDeviceKeys.UID)
-        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeprecatedDeviceKeys.badToken)
-        userCachedStatus.getShared().removeObject(forKey: PushNotificationService.DeprecatedDeviceKeys.badUID)
-    }
-}
-
-extension PushNotificationService {
-    internal struct DeprecatedDeviceKeys { // TODO: move to migrations file
-        static let token = "DeviceTokenKey"
-        static let UID = "DeviceUID"
-        
-        static let badToken = "DeviceBadToken"
-        static let badUID = "DeviceBadUID"
     }
 }

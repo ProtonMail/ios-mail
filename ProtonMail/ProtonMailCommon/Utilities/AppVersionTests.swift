@@ -23,4 +23,11 @@ class AppVersionTests: XCTestCase {
         let correctOrder = [verA, verB, verC, verD, verE, verF, verG].map(AppVersion.init).sorted().map{ $0.string }
         XCTAssertEqual(correctOrder, [verD, verF, verA, verG, verB, verC, verE])
     }
+    
+    func testDebugBuild() {
+        let ver = "1.11.0"
+        let verD = "1.11.0 (Debug)"
+        
+        XCTAssertEqual(AppVersion(ver), AppVersion(verD))
+    }
 }
