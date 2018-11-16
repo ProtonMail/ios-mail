@@ -879,8 +879,8 @@ class UserDataService {
             clearAll()
             SharedCacheBase.getDefault().set(Date(), forKey: Key.firstRunKey)
             SharedCacheBase.getDefault().synchronize()
+            AppVersion.lastMigratedTo = AppVersion.current
         }
-        AppVersion.lastMigratedTo = AppVersion.current
         #endif
     }
     

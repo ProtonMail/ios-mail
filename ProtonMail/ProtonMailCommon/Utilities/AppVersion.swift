@@ -28,6 +28,7 @@
 import Foundation
 import Keymaker
 import Crypto
+import CoreData
 
 struct AppVersion {
     typealias MigrationBlock = ()->Void
@@ -35,28 +36,61 @@ struct AppVersion {
     private(set) var string: String
     private var numbers: Array<Int>
     private var migration: MigrationBlock?
+    private var model: NSManagedObjectModel?
+    private var modelUrl: URL?
+    private var modelName: String?
     
-    init(_ string: String, migration: MigrationBlock? = nil) {
+    // TODO: CAN WE IMPTOVE THIS API?
+    init(_ string: String,
+         modelName: String? = nil, // every known should have
+         migration: MigrationBlock? = nil) // every known should have
+    {
         self.numbers = string.components(separatedBy: CharacterSet.punctuationCharacters.union(CharacterSet.whitespaces)).compactMap { Int($0) }
         self.string = self.numbers.map(String.init).joined(separator: ".")
         self.migration = migration
+        
+        if let modelName = modelName,
+            let modelUrl = CoreDataService.modelBundle.url(forResource: modelName, withExtension: "mom"),
+            let model = NSManagedObjectModel(contentsOf: modelUrl)
+        {
+            self.modelName = modelName
+            self.modelUrl = modelUrl
+            self.model = model
+        }
     }
-    
-    // vars
-    
-    static var current = AppVersion(Bundle.main.appVersion)
-    static var lastVersionBeforeMigratorWasReleased = AppVersion("1.11.0")
+}
+
+extension AppVersion {
+    static var current: AppVersion = {
+        let filenames = CoreDataService.modelBundle.urls(forResourcesWithExtension: "mom", subdirectory: nil)
+        let versionsWithChangesInModel = filenames?.compactMap { AppVersion($0.lastPathComponent) }.sorted()
+        // by convention, model name corresponds with the version it was released in
+        let latestVersionWithModelUpdate = versionsWithChangesInModel?.last?.string ?? AppVersion.firstVersionWithMigratorReleased.modelName!
+        return AppVersion(Bundle.main.appVersion, modelName: latestVersionWithModelUpdate)
+    }()
+    static var firstVersionWithMigratorReleased = AppVersion("1.12.0", modelName: "1.12.0")
+    static var lastVersionBeforeMigratorWasReleased = AppVersion("1.11.0", modelName: "ProtonMail")
     static var lastMigratedTo: AppVersion {
         get {
             // on first launch after install we're setting this value to .current
             // then if there is no value in UserDefaults means it's the first time user updated to a version with migrator implemented
             // and we should run all the migrations we have since first migrator
-            guard let string = UserDefaultsSaver<String>(key: Keys.lastMigratedToVersion).get(), !self.isFirstRun() else {
+            guard !self.isFirstRun() else {
+                return self.current
+            }
+            guard let string = UserDefaultsSaver<String>(key: Keys.lastMigratedToVersion).get(),
+                let modelName = UserDefaultsSaver<String>(key: Keys.lastMigratedToModel).get() else
+            {
                 return AppVersion.lastVersionBeforeMigratorWasReleased
             }
-            return AppVersion(string)
+            return AppVersion(string, modelName: modelName)
         }
-        set { UserDefaultsSaver(key: Keys.lastMigratedToVersion).set(newValue: newValue.string) }
+        set {
+            UserDefaultsSaver(key: Keys.lastMigratedToVersion).set(newValue: newValue.string)
+            if let modelName = newValue.modelName {
+                UserDefaultsSaver(key: Keys.lastMigratedToModel).set(newValue: modelName)
+            }
+        }
     }
 
     // methods
@@ -64,10 +98,58 @@ struct AppVersion {
     static internal func migrate() {
         let knownVersions = [self.v1_12_0].sorted()
         let shouldMigrateTo = knownVersions.filter { $0 > self.lastMigratedTo && $0 <= self.current }
-        shouldMigrateTo.forEach {
-            $0.migration?()
-            self.lastMigratedTo = $0
+        
+        var previousModel = self.lastMigratedTo.model!
+        var previousUrl = CoreDataService.dbUrl
+        
+        shouldMigrateTo.forEach { nextKnownVersion in
+            nextKnownVersion.migration?()
+            
+            // core data
+            
+            guard lastMigratedTo.modelName != nextKnownVersion.modelName,
+                let nextModel = nextKnownVersion.model else
+            {
+                self.lastMigratedTo = nextKnownVersion
+                return
+            }
+            
+            guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType,
+                                                                                              at: previousUrl,
+                                                                                              options: nil),
+                !nextModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata) else
+            {
+                previousModel = nextModel
+                self.lastMigratedTo = nextKnownVersion
+                return
+            }
+            
+            let migrationManager = NSMigrationManager(sourceModel: previousModel, destinationModel: nextModel)
+            guard let mappingModel = NSMappingModel(from: [Bundle.main], forSourceModel: previousModel, destinationModel: nextModel) else {
+                assert(false, "No mapping model found but need one")
+                previousModel = nextModel
+                self.lastMigratedTo = nextKnownVersion
+                return
+            }
+            
+            let destUrl = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(UUID().uuidString, isDirectory: false)
+            try? migrationManager.migrateStore(from: previousUrl,
+                                              sourceType: NSSQLiteStoreType,
+                                              options: nil,
+                                              with: mappingModel,
+                                              toDestinationURL: destUrl,
+                                              destinationType: NSSQLiteStoreType,
+                                              destinationOptions: nil)
+            previousUrl = destUrl
+            previousModel = nextModel
+            self.lastMigratedTo = nextKnownVersion
         }
+        
+        try? NSPersistentStoreCoordinator(managedObjectModel: previousModel).replacePersistentStore(at: CoreDataService.dbUrl,
+                                                                                              destinationOptions: nil,
+                                                                                              withPersistentStoreFrom: previousUrl,
+                                                                                              sourceOptions: nil,
+                                                                                              ofType: NSSQLiteStoreType)
     }
     
     static func isFirstRun() -> Bool {
@@ -80,7 +162,7 @@ extension AppVersion {
      IMPORTANT: each of these migrations read legacy values and transform them into current ones, not passing thru middle version's migrators. Please mind that user can migrate from every one of prevoius version, not only from the latest!
     */
     
-    static var v1_12_0 = AppVersion("1.12.0") {
+    static var v1_12_0 = AppVersion("1.12.0", modelName: "1.12.0") {
         // Push subscriptions
         if let oldToken = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.PushNotificationService.token),
             let oldDeviceUID = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.PushNotificationService.UID)
@@ -164,6 +246,7 @@ extension AppVersion {
 extension AppVersion {
     enum Keys {
         static let lastMigratedToVersion = "lastMigratedToVersion"
+        static let lastMigratedToModel = "lastMigratedToModel"
     }
     
     enum DeprecatedKeys {

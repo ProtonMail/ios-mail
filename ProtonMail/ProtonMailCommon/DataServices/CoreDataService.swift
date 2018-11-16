@@ -72,17 +72,19 @@ class CoreDataService {
         return managedObjectContext
     }
     
+    class var dbUrl: URL {
+        return FileManager.default.appGroupsDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
+    }
+    class var modelBundle: Bundle {
+        return Bundle(url: Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!)!
+    }
+    
     func newPersistentStoreCoordinator(_ managedObjectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        guard let containerUrl = FileManager.default.appGroupsDirectoryURL else {
-            //TODO::fix later need add error
-            PMLog.D("Can't find the group")
-            return nil
-        }
-        var url = containerUrl.appendingPathComponent("ProtonMail.sqlite")
+
+        var url = CoreDataService.dbUrl
         do {
             let options: [AnyHashable: Any] = [
-                NSMigratePersistentStoresAutomaticallyOption: NSNumber(booleanLiteral: true),
                 NSInferMappingModelAutomaticallyOption: NSNumber(booleanLiteral: true)
             ]
             try coordinator?.addPersistentStore(ofType: NSSQLiteStoreType,
