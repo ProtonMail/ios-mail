@@ -200,7 +200,7 @@ class CreateDraft : ApiRequest<MessageResponse> {
             "Subject" : message.title,
             "Unread" : message.unRead]
         
-        let fromaddr = message.fromAddress ?? message.defaultAddress
+        let fromaddr = message.fromAddress ?? message.cachedAddress ?? message.defaultAddress
         let name = fromaddr?.display_name ?? "unknow"
         let address = fromaddr?.email ?? "unknow"
         

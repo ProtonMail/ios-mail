@@ -47,9 +47,9 @@ final public class Message: NSManagedObject {
     //"Sender": { "Address":"", "Name":"" }
     @NSManaged public var sender: String?
     @available(*, deprecated, message: "double check if ok to remove")
-    @NSManaged public var senderAddress: String
+    @NSManaged public var senderAddress: String?
     @available(*, deprecated, message: "double check if ok to remove")
-    @NSManaged public var senderName: String
+    @NSManaged public var senderName: String?
     //"ReplyTos": [{"Address":"", "Name":""}]
     @NSManaged public var replyTos: String?
     //"ToList":[ { "Address":"", "Name":"", "Group": ""} ]

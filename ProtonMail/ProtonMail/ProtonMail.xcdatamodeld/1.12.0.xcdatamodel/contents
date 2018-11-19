@@ -314,12 +314,12 @@
                 <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="senderAddress" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
+        <attribute name="senderAddress" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="SenderAddress"/>
             </userInfo>
         </attribute>
-        <attribute name="senderName" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" indexed="YES" syncable="YES">
+        <attribute name="senderName" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="SenderName"/>
             </userInfo>

@@ -165,7 +165,10 @@ extension Attachment {
                 }
                 
                 self.localURL = nil
-                sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
+                sharedMessageDataService.fetchAttachmentForAttachment(self,
+                                                                      customAuthCredential: self.message.cachedAuthCredential,
+                                                                      downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in },
+                                                                      completion: { (_, url, error) -> Void in
                     self.localURL = url;
                     seal.fulfill(self.base64DecryptAttachment())
                     if error != nil {

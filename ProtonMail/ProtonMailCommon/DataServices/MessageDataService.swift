@@ -513,7 +513,11 @@ class MessageDataService {
     // old functions
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
-    func fetchAttachmentForAttachment(_ attachment: Attachment, downloadTask: ((URLSessionDownloadTask) -> Void)?, completion:((URLResponse?, URL?, NSError?) -> Void)?) {
+    func fetchAttachmentForAttachment(_ attachment: Attachment,
+                                      customAuthCredential: AuthCredential? = nil,
+                                      downloadTask: ((URLSessionDownloadTask) -> Void)?,
+                                      completion:((URLResponse?, URL?, NSError?) -> Void)?)
+    {
         if let localURL = attachment.localURL {
             completion?(nil, localURL as URL, nil)
             return
@@ -524,6 +528,7 @@ class MessageDataService {
             if attachment.managedObjectContext != nil {
                 sharedAPIService.downloadAttachment(byID: attachment.attachmentID,
                                                     destinationDirectoryURL: FileManager.default.attachmentDirectory,
+                                                    customAuthCredential: customAuthCredential,
                                                     downloadTask: downloadTask,
                                                     completion: { task, fileURL, error in
                                                         var error = error
@@ -893,7 +898,6 @@ class MessageDataService {
     func saveDraft(_ message : Message!) {
         if let context = message.managedObjectContext {
             context.performAndWait {
-                self.cachePropertiesForBackground(in: message)
                 if let error = context.saveUpstreamIfNeeded() {
                     PMLog.D(" error: \(error)")
                 } else {
@@ -905,7 +909,6 @@ class MessageDataService {
     
     func deleteDraft (_ message : Message!) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            self.cachePropertiesForBackground(in: message)
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D(" error: \(error)")
             } else {
@@ -1149,7 +1152,6 @@ class MessageDataService {
             return
         }
         
-        var authCredential: AuthCredential?
         let messages = managedObjectIds.compactMap { (id: String) -> Message? in
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(id),
                 let managedObject = try? context.existingObject(with: objectID)
@@ -1158,8 +1160,9 @@ class MessageDataService {
             }
             return nil
         }
-        authCredential = messages.first?.cachedAuthCredential
-        sharedAPIService.PUT(MessageActionRequest(action: action, messages: messages), authCredential: authCredential, completion: completion)
+        let messageIds = messages.map { $0.messageID }
+        let authCredential = messages.first(where: { $0.cachedAuthCredential != nil })?.cachedAuthCredential
+        sharedAPIService.PUT(MessageActionRequest(action: action, ids: messageIds), authCredential: authCredential, completion: completion)
     }
     
     private func emptyMessage(at location: MessageLocation, completion: CompletionBlock?) {
@@ -1695,6 +1698,7 @@ class MessageDataService {
     
     
     fileprivate func queue(_ message: Message, action: MessageAction) {
+        self.cachePropertiesForBackground(in: message)
         if action == .saveDraft || action == .send || action == .delete || action == .read || action == .unread {
             let _ = sharedMessageQueue.addMessage(message.objectID.uriRepresentation().absoluteString, action: action)
         } else {
@@ -1711,6 +1715,7 @@ class MessageDataService {
     }
     
     fileprivate func queue(_ att: Attachment, action: MessageAction) {
+        self.cachePropertiesForBackground(in: att.message)
         let _ = sharedMessageQueue.addMessage(att.objectID.uriRepresentation().absoluteString, action: action)
         dequeueIfNeeded()
     }
