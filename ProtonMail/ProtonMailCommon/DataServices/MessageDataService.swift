@@ -1452,6 +1452,10 @@ class MessageDataService {
                     //Debug info
                     status.insert(SendStatus.doneWithError)
                     
+                    #if DEBUG && !APP_EXTENSION
+                    (UIApplication.shared.delegate as? AppDelegate)?.onError(error: error!)
+                    #endif
+                    
                     if error?.code == 9001 {
                         //here need let user to show the human check.
                         sharedMessageQueue.isRequiredHumanCheck = true
@@ -1471,6 +1475,9 @@ class MessageDataService {
                 completion?(nil, nil, error)
             }.catch { (error) in
                 //Debug info
+                #if DEBUG && !APP_EXTENSION
+                (UIApplication.shared.delegate as? AppDelegate)?.onError(error: error as NSError)
+                #endif
                 status.insert(SendStatus.exceptionCatched)
                 
                 let err = error as NSError
