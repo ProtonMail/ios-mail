@@ -91,7 +91,7 @@ class APIService {
             guard UnlockManager.shared.isUnlocked() else { // app is locked, fail with error gracefully
                 pthread_mutex_unlock(&self.mutex)
                 DispatchQueue.main.async {
-                    completion(nil, NSError.authCacheBad())
+                    completion(nil, NSError.authCacheLocked())
                 }
                 return
             }

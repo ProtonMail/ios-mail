@@ -32,6 +32,8 @@ public class APIErrorCode {
         static public let authUnableToGeneratePwd = 100
         static public let authInValidKeySalt = 110
         
+        static public let authCacheLocked = 665
+        
         static public let Cache_PasswordEmpty = 0x10000001
     }
     

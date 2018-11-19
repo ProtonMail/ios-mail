@@ -82,6 +82,12 @@ extension NSError {
             localizedFailureReason: LocalString._unable_to_parse_cased_authentication_token)
     }
     
+    class func authCacheLocked() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.AuthErrorCode.authCacheLocked,
+            localizedDescription: LocalString._app_is_locked,
+            localizedFailureReason: LocalString._authentication_token_is_locked)
+    }
     
     class func AuthCachePassEmpty() -> NSError {
         return apiServiceError(
