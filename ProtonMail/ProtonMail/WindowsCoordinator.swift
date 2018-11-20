@@ -127,6 +127,8 @@ class WindowsCoordinator: CoordinatorNew {
             effectView.removeFromSuperview()
         })
         
+        // FIXME: need to notify source's views that they are disappearing
+        
         self.currentWindow = destination
         
         return true
