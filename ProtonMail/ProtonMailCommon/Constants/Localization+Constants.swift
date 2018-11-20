@@ -1564,7 +1564,7 @@ class LocalizedString {
     
     lazy var _vpn_included = NSLocalizedString("ProtonVPN included", comment: "Service plan capability")
     
-    lazy var _migrate_beginning = NSLocalizedString("It is not possible to upgrade to ", comment: "")
+    lazy var _migrate_beginning = NSLocalizedString("It is not possible to switch to ", comment: "")
     lazy var _migrate_end = NSLocalizedString(" within our iOS application.", comment: "")
     
     lazy var _upgrade_to_paid = NSLocalizedString("Upgrade to a paid plan to benefit from more features", comment: "Service plan description footer")
