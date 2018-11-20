@@ -90,6 +90,8 @@ class StoreKitManager: NSObject {
         case haveTransactionOfAnotherUser
         case alreadyPurchasedPlanDoesNotMatchBackend
         case sandboxReceipt
+        case noHashedUsernameArrivedInTransaction
+        case noActiveUsernameInUserDataService
         
         var errorDescription: String? {
             switch self {
@@ -98,6 +100,8 @@ class StoreKitManager: NSObject {
             case .haveTransactionOfAnotherUser: return LocalString._another_user_transaction
             case .alreadyPurchasedPlanDoesNotMatchBackend: return LocalString._backend_mismatch
             case .sandboxReceipt: return LocalString._sandbox_receipt
+            case .noHashedUsernameArrivedInTransaction: return LocalString._no_hashed_username_arrived_in_transaction
+            case .noActiveUsernameInUserDataService: return LocalString._no_active_username_in_user_data_service
             }
         }
     }
@@ -114,13 +118,14 @@ extension StoreKitManager: SKProductsRequestDelegate {
 }
 
 extension StoreKitManager: SKPaymentTransactionObserver {
+    // FIXME: this should be called after login
     internal func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         DispatchQueue.global().async {
             transactions.forEach(self.process)
         }
     }
     
-    // FIXME: break down into multiple methods
+    // TODO: break down into multiple methods
     private func process(_ transaction: SKPaymentTransaction) {
         switch transaction.transactionState {
         case .failed:
@@ -132,10 +137,15 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             SKPaymentQueue.default().finishTransaction(transaction)
             
         case .purchased:
-            guard let hashedUsername = transaction.payment.applicationUsername,
-                let currentUsername = sharedUserDataService.username,
-                hashedUsername == self.hash(username: currentUsername) else
-            {
+            guard let hashedUsername = transaction.payment.applicationUsername else {
+                self.errorCompletion(Errors.noHashedUsernameArrivedInTransaction)
+                return
+            }
+            guard let currentUsername = sharedUserDataService.username else {
+                self.errorCompletion(Errors.noActiveUsernameInUserDataService)
+                return
+            }
+            guard hashedUsername == self.hash(username: currentUsername) else {
                 self.errorCompletion(Errors.haveTransactionOfAnotherUser)
                 return
             }
@@ -150,7 +160,8 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             
             guard let reciept = try? Data(contentsOf: receiptUrl).base64EncodedString() else {
                 self.errorCompletion(Errors.recieptLost)
-                SKPaymentQueue.default().finishTransaction(transaction)
+                // FIXME: until the situation with lost payments will be clear, i'd prefer not finishing stansactions
+                //SKPaymentQueue.default().finishTransaction(transaction)
                 return
             }
             do {

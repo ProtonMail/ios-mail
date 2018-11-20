@@ -1605,13 +1605,18 @@ class LocalizedString {
     
     lazy var _unavailable_product = NSLocalizedString("Failed to get list of available products from AppStore.", comment: "Error message")
     
-    lazy var _reciept_lost = NSLocalizedString("AppStore receipt lost. Please contact support if your plan was not activated.", comment: "Error message")
-    
-    lazy var _another_user_transaction = NSLocalizedString("Another user have unfinished in-app purchases on this device. Please, login with that user so we'll be able to complete the purchase and activate the plan.", comment: "Error message")
-    
-    lazy var _backend_mismatch = NSLocalizedString("We were not available to match AppStore product with products on our server. Please, contact support.", comment: "Error message")
+    lazy var _backend_mismatch = NSLocalizedString("We were not able to match AppStore product you've bought to products on our server. Please fill in the bugreport and our customer support team will contact you.", comment: "Error message")
     
     lazy var _sandbox_receipt = NSLocalizedString("Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!", comment: "Error message for beta users")
+    
+    
+    lazy var _reciept_lost = NSLocalizedString("Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.", comment: "Error message")
+    
+    lazy var _another_user_transaction = NSLocalizedString("Make sure you're logged into the same ProtonMail account that you were going to upgrade. If you have only one account, please fill in the bugreport and our customer support team will contact you." , comment: "Error message")
+    
+    lazy var _no_hashed_username_arrived_in_transaction = NSLocalizedString("Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade. Please fill in the bugreport and our customer support team will contact you.", comment: "Error message")
+    
+    lazy var _no_active_username_in_user_data_service = NSLocalizedString("Please login into the ProtonMail account you're upgrading the service plan for and relaunch the app so we'll be able to complete the purchase", comment: "Error message") // FIXME: relaunch the app is terrible UX, we need to fix StoreKitManager
     
     // Mark : Force Upgrade
     
