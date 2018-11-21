@@ -115,9 +115,11 @@ extension ServiceLevelViewControllerBase: ServiceLevelDataSourceDelegate {
             } ~> .main
         }
         let errorCompletion: (Error)->Void = { error in
-            let alert = UIAlertController(title: LocalString._error_occured, message: error.localizedDescription, preferredStyle: .alert)
-            alert.addAction(.init(title: LocalString._general_ok_action, style: .cancel, handler: nil))
-            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+            {
+                let alert = UIAlertController(title: LocalString._error_occured, message: error.localizedDescription, preferredStyle: .alert)
+                alert.addAction(.init(title: LocalString._general_ok_action, style: .cancel, handler: nil))
+                UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+            } ~> .main
         }
         let deferredCompletion: ()->Void = {
             

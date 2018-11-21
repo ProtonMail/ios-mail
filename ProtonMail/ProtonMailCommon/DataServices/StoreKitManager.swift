@@ -55,7 +55,7 @@ class StoreKitManager: NSObject {
     
     internal func readyToPurchaseProduct() -> Bool {
         // no matter which user is logged in now, if there is any unfinished transaction - we do not want to give opportunity to start new purchase. BE currently can process only last transaction in Receipts, so we do not want to mess up the older ones.
-        return SKPaymentQueue.default().transactions.isEmpty
+        return SKPaymentQueue.default().transactions.isEmpty && (self.applicationUsername() != nil)
     }
     
     internal func purchaseProduct(withId id: String,
@@ -63,7 +63,7 @@ class StoreKitManager: NSObject {
                                   errorCompletion: @escaping (Error)->Void,
                                   deferredCompletion: @escaping ()->Void)
     {
-        guard let username = sharedUserDataService.username else {
+        guard let username = self.applicationUsername() else {
             errorCompletion(Errors.noActiveUsernameInUserDataService)
             return
         }
@@ -114,11 +114,14 @@ extension StoreKitManager: SKProductsRequestDelegate {
     }
     
     private func hash(username: String) -> String {
-        let lowercase = username.lowercased()
-        let stripCom = lowercase.replacingOccurrences(of: "@protonmail.com", with: "")
-        let stripCh = stripCom.replacingOccurrences(of: "@protonmail.ch", with: "")
-        let stripMe = stripCh.replacingOccurrences(of: "@pm.me", with: "")
-        return stripMe.sha256
+        return username.sha256
+    }
+    
+    private func applicationUsername() -> String? {
+        guard let username = sharedUserDataService.userInfo?.userId, !username.isEmpty else {
+            return nil
+        }
+        return username
     }
     
     // this method attempts to match pre-1.11.1 hash which was calculated from case-insensitive username with optional "@protonmail.com" suffix for as much users as possible. Others should contact CS
@@ -188,12 +191,12 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 self.errorCompletion(Errors.noHashedUsernameArrivedInTransaction)
                 return
             }
-            guard let currentUsername = sharedUserDataService.username else {
+            guard let currentUsername = self.applicationUsername() else {
                 self.errorCompletion(Errors.noActiveUsernameInUserDataService)
                 return
             }
             guard hashedUsername == self.hash(username: currentUsername) ||
-                self.hashLegacy(username: currentUsername, mayMatch: hashedUsername) else
+                self.hashLegacy(username: sharedUserDataService.username ?? "", mayMatch: hashedUsername) else
             {
                 self.errorCompletion(Errors.haveTransactionOfAnotherUser)
                 return
