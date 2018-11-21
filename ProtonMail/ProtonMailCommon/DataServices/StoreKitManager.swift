@@ -117,7 +117,43 @@ extension StoreKitManager: SKProductsRequestDelegate {
         let lowercase = username.lowercased()
         let stripCom = lowercase.replacingOccurrences(of: "@protonmail.com", with: "")
         let stripCh = stripCom.replacingOccurrences(of: "@protonmail.ch", with: "")
-        return stripCh.sha256
+        let stripMe = stripCh.replacingOccurrences(of: "@pm.me", with: "")
+        return stripMe.sha256
+    }
+    
+    // this method attempts to match pre-1.11.1 hash which was calculated from case-insensitive username with optional "@protonmail.com" suffix for as much users as possible. Others should contact CS
+    private func hashLegacy(username: String, mayMatch hash: String) -> Bool {
+        if hash == username.sha256 ||
+            hash == username.lowercased().sha256 ||
+            hash == username.uppercased().sha256 ||
+            hash == (username + "@protonmail.com").sha256 ||
+            hash == (username + "@protonmail.ch").sha256 ||
+            hash == (username + "@ProtonMail.ch").sha256 ||
+            hash == (username + "@ProtonMail.ch").sha256 ||
+            hash == (username + "@pm.me").sha256 ||
+            hash == (username + "@PM.me").sha256 ||
+            hash == (username + "@PM.ME").sha256
+        {
+            return true
+        }
+        
+        var capitalizedUsername = username
+        let firstLetter = capitalizedUsername.removeFirst()
+        capitalizedUsername = String(firstLetter).uppercased() + capitalizedUsername
+        
+        if hash == capitalizedUsername.sha256 ||
+            hash == (capitalizedUsername + "@protonmail.com").sha256 ||
+            hash == (capitalizedUsername + "@protonmail.ch").sha256 ||
+            hash == (capitalizedUsername + "@ProtonMail.ch").sha256 ||
+            hash == (capitalizedUsername + "@ProtonMail.ch").sha256 ||
+            hash == (capitalizedUsername + "@PM.ME").sha256 ||
+            hash == (capitalizedUsername + "@PM.me").sha256 ||
+            hash == (capitalizedUsername + "@pm.me").sha256
+        {
+            return true
+        }
+        
+        return false
     }
 }
 
@@ -156,7 +192,9 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 self.errorCompletion(Errors.noActiveUsernameInUserDataService)
                 return
             }
-            guard hashedUsername == self.hash(username: currentUsername) else {
+            guard hashedUsername == self.hash(username: currentUsername) ||
+                self.hashLegacy(username: currentUsername, mayMatch: hashedUsername) else
+            {
                 self.errorCompletion(Errors.haveTransactionOfAnotherUser)
                 return
             }
