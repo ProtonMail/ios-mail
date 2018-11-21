@@ -109,9 +109,6 @@ class ServiceLevelViewControllerBase: UICollectionViewController {
 
 extension ServiceLevelViewControllerBase: ServiceLevelDataSourceDelegate {
     func purchaseProduct(id: String) {
-        guard let username = sharedUserDataService.username else {
-            return
-        }
         let successCompletion: ()->Void = {
             
             {
@@ -128,11 +125,10 @@ extension ServiceLevelViewControllerBase: ServiceLevelDataSourceDelegate {
             
         }
         
-        StoreKitManager.default.purchaseProduct(withId: id, username: username, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
+        StoreKitManager.default.purchaseProduct(withId: id, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
     }
     
     func canPurchaseProduct(id: String) -> Bool {
-        // no matter which user is logged in now, if there is any unfinished transaction - we do not want to give opportunity to start new purchase. BE currently can process only last transaction in Receipts, so we do not want to mess up the older ones.
         return StoreKitManager.default.readyToPurchaseProduct()
     }
 }

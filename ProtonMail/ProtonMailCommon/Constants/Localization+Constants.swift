@@ -1616,7 +1616,9 @@ class LocalizedString {
     
     lazy var _no_hashed_username_arrived_in_transaction = NSLocalizedString("Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade. Please fill in the bugreport and our customer support team will contact you.", comment: "Error message")
     
-    lazy var _no_active_username_in_user_data_service = NSLocalizedString("Please login into the ProtonMail account you're upgrading the service plan for and relaunch the app so we'll be able to complete the purchase", comment: "Error message") // FIXME: relaunch the app is terrible UX, we need to fix StoreKitManager
+    lazy var _no_active_username_in_user_data_service = NSLocalizedString("Please login into the ProtonMail account you're upgrading the service plan for so we'll be able to complete the purchase", comment: "Error message")
+    
+    lazy var _transaction_failed_by_unknown_reason = NSLocalizedString("Apple informed us that they could not process the purchase", comment: "Error message")
     
     // Mark : Force Upgrade
     

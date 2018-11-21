@@ -19,6 +19,12 @@ class StoreKitManager: NSObject {
     private var productIds = Set([ServicePlan.plus.storeKitProductId!])
     private var availableProducts: [SKProduct] = []
     private var request: SKProductsRequest!
+    private var transactionsQueue: OperationQueue = {
+       let queue = OperationQueue()
+        queue.qualityOfService = QualityOfService.userInteractive
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
     
     private var successCompletion: (()->Void)?
     private var deferredCompletion: (()->Void)?
@@ -47,28 +53,21 @@ class StoreKitManager: NSObject {
         return (product.price, product.priceLocale)
     }
     
-    internal func readyToPurchaseProduct(id productId: String? = nil,
-                          username: String? = nil) -> Bool
-    {
-        let newestTransaction = SKPaymentQueue.default().transactions.filter {
-                (productId == nil || $0.payment.productIdentifier == productId!)
-                && (username == nil || $0.payment.applicationUsername == self.hash(username: username!))
-        }.reduce(nil) { (previous, next) -> SKPaymentTransaction? in
-                guard let previous = previous else { return next }
-                return previous.transactionDate < next.transactionDate ? next : previous
-        }
-        guard newestTransaction == nil else {
-            return false // got unfinished transaction - do not allow new purchases
-        }
-        return true
+    internal func readyToPurchaseProduct() -> Bool {
+        // no matter which user is logged in now, if there is any unfinished transaction - we do not want to give opportunity to start new purchase. BE currently can process only last transaction in Receipts, so we do not want to mess up the older ones.
+        return SKPaymentQueue.default().transactions.isEmpty
     }
     
     internal func purchaseProduct(withId id: String,
-                                  username: String,
                                   successCompletion: @escaping ()->Void,
                                   errorCompletion: @escaping (Error)->Void,
                                   deferredCompletion: @escaping ()->Void)
     {
+        guard let username = sharedUserDataService.username else {
+            errorCompletion(Errors.noActiveUsernameInUserDataService)
+            return
+        }
+        
         guard let product = self.availableProducts.first(where: { $0.productIdentifier == id }) else {
             errorCompletion(Errors.unavailableProduct)
             return
@@ -92,6 +91,7 @@ class StoreKitManager: NSObject {
         case sandboxReceipt
         case noHashedUsernameArrivedInTransaction
         case noActiveUsernameInUserDataService
+        case transactionFailedByUnknownReason
         
         var errorDescription: String? {
             switch self {
@@ -102,6 +102,7 @@ class StoreKitManager: NSObject {
             case .sandboxReceipt: return LocalString._sandbox_receipt
             case .noHashedUsernameArrivedInTransaction: return LocalString._no_hashed_username_arrived_in_transaction
             case .noActiveUsernameInUserDataService: return LocalString._no_active_username_in_user_data_service
+            case .transactionFailedByUnknownReason: return LocalString._transaction_failed_by_unknown_reason
             }
         }
     }
@@ -113,15 +114,24 @@ extension StoreKitManager: SKProductsRequestDelegate {
     }
     
     private func hash(username: String) -> String {
-        return username.sha256
+        let lowercase = username.lowercased()
+        let stripCom = lowercase.replacingOccurrences(of: "@protonmail.com", with: "")
+        let stripCh = stripCom.replacingOccurrences(of: "@protonmail.ch", with: "")
+        return stripCh.sha256
     }
 }
 
 extension StoreKitManager: SKPaymentTransactionObserver {
-    // FIXME: this should be called after login
+    // this will be called right after the purchase and after relaunch
     internal func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        DispatchQueue.global().async {
-            transactions.forEach(self.process)
+        self.processTransactions()
+    }
+    
+    // this will be called after relogin and from the method above
+    internal func processTransactions() {
+        self.transactionsQueue.cancelAllOperations()
+        SKPaymentQueue.default().transactions.forEach { transaction in
+            self.transactionsQueue.addOperation { self.process(transaction) }
         }
     }
     
@@ -129,10 +139,11 @@ extension StoreKitManager: SKPaymentTransactionObserver {
     private func process(_ transaction: SKPaymentTransaction) {
         switch transaction.transactionState {
         case .failed:
-            let error = transaction.error! as NSError
+            let error = transaction.error as NSError?
             switch error {
-            case SKError.paymentCancelled: break // no need to do anything
-            default: self.errorCompletion(error)
+            case .some(SKError.paymentCancelled): break // no need to do anything
+            case .some(let error): self.errorCompletion(error)
+            case .none: self.errorCompletion(Errors.transactionFailedByUnknownReason)
             }
             SKPaymentQueue.default().finishTransaction(transaction)
             
@@ -160,8 +171,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             
             guard let reciept = try? Data(contentsOf: receiptUrl).base64EncodedString() else {
                 self.errorCompletion(Errors.recieptLost)
-                // FIXME: until the situation with lost payments will be clear, i'd prefer not finishing stansactions
-                //SKPaymentQueue.default().finishTransaction(transaction)
+                SKPaymentQueue.default().finishTransaction(transaction)
                 return
             }
             do {
