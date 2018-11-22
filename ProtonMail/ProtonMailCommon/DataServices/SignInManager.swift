@@ -74,7 +74,6 @@ class SignInManager: NSObject {
         }
         
         sharedLabelsDataService.fetchLabels()
-        ServicePlanDataService.shared.updateCurrentSubscription()
         sharedUserDataService.fetchUserInfo().done(on: .main) { info in
             guard let info = info else {
                 onError(NSError.unknowError())

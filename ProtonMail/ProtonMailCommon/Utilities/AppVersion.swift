@@ -69,7 +69,7 @@ extension AppVersion {
         return AppVersion(Bundle.main.appVersion, modelName: latestVersionWithModelUpdate)
     }()
     static var firstVersionWithMigratorReleased = AppVersion("1.12.0", modelName: "1.12.0")
-    static var lastVersionBeforeMigratorWasReleased = AppVersion("1.11.0", modelName: "ProtonMail")
+    static var lastVersionBeforeMigratorWasReleased = AppVersion("1.11.1", modelName: "ProtonMail")
     static var lastMigratedTo: AppVersion {
         get {
             // on first launch after install we're setting this value to .current

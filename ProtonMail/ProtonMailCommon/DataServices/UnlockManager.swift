@@ -99,9 +99,12 @@ class UnlockManager: NSObject {
     
     
     #if !APP_EXTENSION
+    // TODO: verify if some of these operations can be optimized
     private func updateUserData() { // previously this method was called loadContactsAfterInstall()
         ServicePlanDataService.shared.updateServicePlans()
         ServicePlanDataService.shared.updateCurrentSubscription()
+        StoreKitManager.default.processTransactions()
+        
         sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
         
         //TODO:: here need to be changed
