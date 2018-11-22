@@ -85,7 +85,6 @@ PODS:
   - SDWebImage/GIF (4.4.2):
     - FLAnimatedImage (~> 1.0)
     - SDWebImage/Core
-  - SwiftSoup (1.7.4)
   - SWRevealViewController (2.3.0)
   - UICKeyChainStore (2.1.1)
   - "UIColor+Hex (1.0.1)":
@@ -111,7 +110,6 @@ DEPENDENCIES:
   - PromiseKit (~> 6.0)
   - RHAddressBook (= 1.1.1)
   - RichEditorView (= 5.0.0)
-  - SwiftSoup
   - SWRevealViewController (= 2.3.0)
   - UICKeyChainStore (= 2.1.1)
   - "UIColor+Hex (= 1.0.1)"
@@ -136,7 +134,6 @@ SPEC REPOS:
     - RHAddressBook
     - RichEditorView
     - SDWebImage
-    - SwiftSoup
     - SWRevealViewController
     - UICKeyChainStore
     - "UIColor+Hex"
@@ -182,12 +179,11 @@ SPEC CHECKSUMS:
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
   RichEditorView: 1bbb07b87ca2d479ac29a6877014b38b8df233ef
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
-  SwiftSoup: 92f5b348c131aed8af04f4326db1579ab19fa08c
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: 53fd660ed37df3ccc3752ab15a04a4fdca35e6d2
 
-PODFILE CHECKSUM: d9da49bf8965a9db68b1cd20673fda66e35670cc
+PODFILE CHECKSUM: 694240387672400d30a8235f56e2c9735e4c634f
 
 COCOAPODS: 1.5.3
