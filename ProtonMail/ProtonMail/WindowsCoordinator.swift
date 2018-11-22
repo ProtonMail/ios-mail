@@ -127,9 +127,17 @@ class WindowsCoordinator: CoordinatorNew {
             effectView.removeFromSuperview()
         })
         
-        // FIXME: need to notify source's views that they are disappearing
+        // notify source's views they are disappearing
+        source.topmostViewController()?.viewWillDisappear(false)
         
         self.currentWindow = destination
+        
+        // notify destination views they are about to show up
+        if let topDestination = destination.topmostViewController(),
+            topDestination.isViewLoaded
+        {
+            topDestination.viewDidAppear(false)
+        }
         
         return true
     }
@@ -187,9 +195,3 @@ extension WindowsCoordinator: ForceUpgradeViewDelegate {
     }
 }
 
-extension UIWindow {
-    convenience init(storyboard: UIStoryboard.Storyboard) {
-        self.init(frame: UIScreen.main.bounds)
-        self.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-    }
-}

@@ -208,7 +208,7 @@ public class PushNotificationService {
     
     public func setNotificationOptions (_ userInfo: [AnyHashable: Any]?) {
         self.launchOptions = userInfo
-        guard let revealViewController =  UIApplication.shared.keyWindow?.rootViewController as? SWRevealViewController else {
+        guard let revealViewController =  UIApplication.shared.keyWindow?.rootViewController as? SWRevealViewController else { // FIXME: via WindowCoordinator?
             return
         }
         guard let front = revealViewController.frontViewController as? UINavigationController else {
@@ -235,57 +235,62 @@ public class PushNotificationService {
     // MARK: - notifications
     
     public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        if sharedUserDataService.isMailboxPasswordStored {
-            let application = UIApplication.shared
-            if let messageid = messageIDForUserInfo(userInfo) {
-                // if the app is in the background, then switch to the inbox and load the message detail
-                if application.applicationState == UIApplication.State.inactive || application.applicationState == UIApplication.State.background || forceProcess {
-                    if let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController {
-                        //revealViewController
-                        sharedMessageDataService.fetchNotificationMessageDetail(messageid, completion: { (task, response, message, error) -> Void in
-                            if error != nil {
-                                completionHandler(.failed)
-                            } else {
-                                if let front = revealViewController.frontViewController as? UINavigationController {
-                                    if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
-                                        sharedMessageDataService.pushNotificationMessageID = messageid
-                                        mailboxViewController.performSegueForMessageFromNotification()
-                                    } else {
-                                    }
-                                }
-                                completionHandler(.newData)
-                            }
-                        });
-                    } else {
-                        completionHandler(.failed)
-                    }
-                } else {
-                    completionHandler(.failed)
-                }
-            } else {
+        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else { // FIXME: test locked flow
+            completionHandler(.failed)
+            return
+        }
+        
+        let application = UIApplication.shared
+        guard let messageid = messageIDForUserInfo(userInfo) else {
+            completionHandler(.failed)
+            return
+        }
+        
+        // if the app is in the background, then switch to the inbox and load the message detail
+        guard application.applicationState == UIApplication.State.inactive || application.applicationState == UIApplication.State.background || forceProcess else {
+            completionHandler(.failed)
+            return
+        }
+        
+        guard let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController else {  // FIXME: via WindowCoordinator?
+            completionHandler(.failed)
+            return
+        }
+        
+        //revealViewController
+        sharedMessageDataService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
+            guard error == nil else {
                 completionHandler(.failed)
+                return
             }
+
+            if let front = revealViewController.frontViewController as? UINavigationController,
+                let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController
+            {
+                sharedMessageDataService.pushNotificationMessageID = messageid
+                mailboxViewController.performSegueForMessageFromNotification()
+            }
+            completionHandler(.newData)
         }
     }
     
     // MARK: - Private methods
     
     fileprivate func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
-        
         if let encrypted = userInfo["encryptedMessage"] as? String {
-            guard let userkey = sharedUserDataService.userInfo?.firstUserKey(), let password = sharedUserDataService.mailboxPassword else {
+            guard let encryptionKit = self.encryptionKitSaver.get()?.encryptionKit else {
                 return nil
             }
-            do
-            {
-                guard let plaintext = try encrypted.decryptMessageWithSinglKey(userkey.private_key, passphrase: password) else {
+            do {
+                guard let plaintext = try encrypted.decryptMessageWithSinglKey(encryptionKit.privateKey, passphrase: encryptionKit.passphrase) else {
                     return nil
                 }
                 guard let push = PushData.parse(with: plaintext) else {
                     return nil
                 }
                 return push.msgID
-            } catch {
+            } catch let error {
+                PMLog.D("Error while opening message via push: \(error)")
                 return nil
             }
         } else if let object = userInfo["data"] as? [String: Any]  {
