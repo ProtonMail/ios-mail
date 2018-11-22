@@ -109,30 +109,26 @@ class ServiceLevelViewControllerBase: UICollectionViewController {
 
 extension ServiceLevelViewControllerBase: ServiceLevelDataSourceDelegate {
     func purchaseProduct(id: String) {
-        guard let username = sharedUserDataService.username else {
-            return
-        }
         let successCompletion: ()->Void = {
-            
             {
                 self.navigationController?.popViewController(animated: true)
             } ~> .main
-            
         }
         let errorCompletion: (Error)->Void = { error in
-            let alert = UIAlertController(title: LocalString._error_occured, message: error.localizedDescription, preferredStyle: .alert)
-            alert.addAction(.init(title: LocalString._general_ok_action, style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            {
+                let alert = UIAlertController(title: LocalString._error_occured, message: error.localizedDescription, preferredStyle: .alert)
+                alert.addAction(.init(title: LocalString._general_ok_action, style: .cancel, handler: nil))
+                UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+            } ~> .main
         }
         let deferredCompletion: ()->Void = {
             
         }
         
-        StoreKitManager.default.purchaseProduct(withId: id, username: username, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
+        StoreKitManager.default.purchaseProduct(withId: id, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
     }
     
     func canPurchaseProduct(id: String) -> Bool {
-        // no matter which user is logged in now, if there is any unfinished transaction - we do not want to give opportunity to start new purchase. BE currently can process only last transaction in Receipts, so we do not want to mess up the older ones.
         return StoreKitManager.default.readyToPurchaseProduct()
     }
 }

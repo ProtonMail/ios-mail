@@ -35,6 +35,7 @@ final class UserInfo : NSObject {
     var maxSpace: Int64
     var usedSpace: Int64
     var maxUpload: Int64
+    var userId: String
     
     var userKeys: [Key] //user key
     //"VPN": { //TODO::handle this in the future
@@ -80,7 +81,8 @@ final class UserInfo : NSObject {
         swipeL:Int?, swipeR:Int?,  //v1.1.4
         role:Int?,
         delinquent : Int?,
-        keys : [Key]?)
+        keys : [Key]?,
+        userId: String?)
     {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
@@ -89,6 +91,7 @@ final class UserInfo : NSObject {
         self.role = role ?? 0
         self.delinquent = delinquent ?? 0
         self.userKeys = keys ?? [Key]()
+        self.userId = userId ?? ""
         
         // get from user settings
         self.notificationEmail = notificationEmail ?? ""
@@ -111,14 +114,15 @@ final class UserInfo : NSObject {
                   language:String?, maxUpload:Int64?,
                   role:Int?,
                   delinquent : Int?,
-                  keys : [Key]?) {
+                  keys : [Key]?,
+                  userId: String?) {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
         self.language = language ?? "en_US"
         self.maxUpload = maxUpload ?? 0
         self.role = role ?? 0
         self.delinquent = delinquent ?? 0
-        
+        self.userId = userId ?? ""
         self.userKeys = keys ?? [Key]()
     }
     
@@ -139,7 +143,7 @@ final class UserInfo : NSObject {
         self.maxUpload = userinfo.maxUpload
         self.role = userinfo.role
         self.delinquent = userinfo.delinquent
-        
+        self.userId = userinfo.userId
         self.userKeys = userinfo.userKeys
     }
     
@@ -184,7 +188,7 @@ extension UserInfo {
                     isupdated: false))
             }
         }
-        
+        let userId = response["ID"] as? String
         let usedS = response["UsedSpace"] as? NSNumber
         let maxS = response["MaxSpace"] as? NSNumber
         self.init(
@@ -194,7 +198,8 @@ extension UserInfo {
             maxUpload: response["MaxUpload"] as? Int64,
             role : response["Role"] as? Int,
             delinquent : response["Delinquent"] as? Int,
-            keys : uKeys
+            keys : uKeys,
+            userId: userId
         )
     }
 }
@@ -225,6 +230,7 @@ extension UserInfo: NSCoding {
         static let delinquent = "delinquent"
         
         static let userKeys = "userKeys"
+        static let userId = "userId"
     }
     
     convenience init(coder aDecoder: NSCoder) {
@@ -249,7 +255,8 @@ extension UserInfo: NSCoding {
             
             delinquent : aDecoder.decodeInteger(forKey: CoderKey.delinquent),
             
-            keys: aDecoder.decodeObject(forKey: CoderKey.userKeys) as? [Key]
+            keys: aDecoder.decodeObject(forKey: CoderKey.userKeys) as? [Key],
+            userId: aDecoder.decodeStringForKey(CoderKey.userId)
         )
     }
     
@@ -274,6 +281,7 @@ extension UserInfo: NSCoding {
         aCoder.encode(showImages.rawValue, forKey: CoderKey.showImages)
         aCoder.encode(swipeLeft, forKey: CoderKey.swipeLeft)
         aCoder.encode(swipeRight, forKey: CoderKey.swipeRight)
+        aCoder.encode(userId, forKey: CoderKey.userId)
     }
 }
 
