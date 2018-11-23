@@ -162,22 +162,7 @@ extension AppVersion {
      IMPORTANT: each of these migrations read legacy values and transform them into current ones, not passing thru middle version's migrators. Please mind that user can migrate from every one of prevoius version, not only from the latest!
     */
     
-    static var v1_12_0 = AppVersion("1.12.0", modelName: "1.12.0") {
-        // Push subscriptions
-        if let oldToken = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.PushNotificationService.token),
-            let oldDeviceUID = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.PushNotificationService.UID)
-        {
-            // FIXME: this should somehow work with new APIs
-            //PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: oldToken, deviceID: oldDeviceUID))
-        }
-        
-        if let badToken = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.PushNotificationService.badToken),
-            let badDeviceUID = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.PushNotificationService.badUID)
-        {
-            // FIXME: this should somehow work with new APIs
-            //PushNotificationService.shared.unreport(APIService.PushSubscriptionSettings(token: badToken, deviceID: badDeviceUID))
-        }
-        
+    static var v1_12_0 = AppVersion("1.12.0", modelName: "1.12.0") {        
         // UserInfo
         if let userInfo = SharedCacheBase.getDefault().customObjectForKey(DeprecatedKeys.UserDataService.userInfo) as? UserInfo {
             AppVersion.inject(userInfo: userInfo, into: sharedUserDataService)
