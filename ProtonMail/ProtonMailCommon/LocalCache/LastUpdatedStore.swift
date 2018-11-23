@@ -53,6 +53,7 @@ final class LastUpdatedStore : SharedCacheBase {
             return (getShared().customObjectForKey(Key.labelsUnreadCount) as? [String : Int]) ?? [:]
         }
         set {
+            UIApplication.setBadge(badge: self.UnreadCountForKey(.inbox))
             getShared().setCustomValue(newValue as NSCoding?, forKey: Key.labelsUnreadCount)
             getShared().synchronize()
         }
@@ -108,6 +109,8 @@ final class LastUpdatedStore : SharedCacheBase {
         
         //sync
         getShared().synchronize()
+        
+        UIApplication.setBadge(badge: 0)
     }
     
     
@@ -129,17 +132,17 @@ final class LastUpdatedStore : SharedCacheBase {
     :param: location   message location
     :param: updateTime the new update time
     */
-    func updateInboxForKey(_ location : MessageLocation, updateTime: UpdateTime) -> Void {
+    func updateInboxForKey(_ location : MessageLocation, updateTime: UpdateTime) {
         let str_location = String(location.rawValue)
-        return lastLabelsUpdateds[str_location] = updateTime
+        lastLabelsUpdateds[str_location] = updateTime
     }
     
     func labelsLastForKey(_ labelID : String) -> UpdateTime {
         return lastLabelsUpdateds[labelID] ?? UpdateTime.distantPast()
     }
     
-    func updateLabelsForKey(_ labelID : String, updateTime: UpdateTime) -> Void {
-        return lastLabelsUpdateds[labelID] = updateTime
+    func updateLabelsForKey(_ labelID : String, updateTime: UpdateTime) {
+        lastLabelsUpdateds[labelID] = updateTime
     }
     
     
@@ -153,13 +156,13 @@ final class LastUpdatedStore : SharedCacheBase {
         return labelsUnreadCounts[str_location] ?? 0
     }
     
-    func updateLabelsUnreadCountForKey(_ labelID : String, count: Int) -> Void {
-        return labelsUnreadCounts[labelID] = count
+    func updateLabelsUnreadCountForKey(_ labelID : String, count: Int) {
+        labelsUnreadCounts[labelID] = count
     }
     
-    func updateUnreadCountForKey(_ location : MessageLocation, count: Int) -> Void {
+    func updateUnreadCountForKey(_ location : MessageLocation, count: Int) {
         let str_location = String(location.rawValue)
-        return labelsUnreadCounts[str_location] = count
+        labelsUnreadCounts[str_location] = count
     }
     
     // Mailbox unread count change

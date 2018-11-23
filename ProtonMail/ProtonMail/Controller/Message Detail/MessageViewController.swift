@@ -431,9 +431,6 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             }
             lastUpdatedStore.updateUnreadCountForKey(.starred, count: staredCount)
         }
-        if location == .inbox {
-            UIApplication.setBadge(badge: count)
-        }
     }
     
     override var shouldAutorotate : Bool {
