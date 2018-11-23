@@ -250,16 +250,12 @@ class UserDataService {
         return displayName;
     }
     
-    var swiftLeft : MessageSwipeAction! {
-        get {
-            return MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 3) ?? .archive
-        }
+    var swiftLeft : MessageSwipeAction {
+        return userInfo?.swipeLeftAction ?? .archive
     }
     
-    var swiftRight : MessageSwipeAction! {
-        get {
-            return MessageSwipeAction(rawValue: userInfo?.swipeRight ?? 0) ?? .trash
-        }
+    var swiftRight : MessageSwipeAction {
+        return userInfo?.swipeRightAction ?? .trash
     }
     
     var userAddresses: [Address] { //never be null

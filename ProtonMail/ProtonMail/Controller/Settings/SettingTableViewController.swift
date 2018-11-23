@@ -43,7 +43,7 @@ class SettingTableViewController: ProtonMailViewController {
                                                             10, 15, 30, 60]
     
     var multi_domains: [Address]!
-    var userInfo = sharedUserDataService.userInfo
+    var userInfo: UserInfo = sharedUserDataService.userInfo!
     
     /// segues
     let NotificationSegue:String      = "setting_notification"
@@ -104,7 +104,7 @@ class SettingTableViewController: ProtonMailViewController {
             setting_general_items.append(.notificationsSnooze)
         }
         
-        userInfo = sharedUserDataService.userInfo
+        userInfo = sharedUserDataService.userInfo!
         multi_domains = sharedUserDataService.userAddresses
         UIView.setAnimationsEnabled(false)
         settingTableView.reloadData()
@@ -225,7 +225,7 @@ class SettingTableViewController: ProtonMailViewController {
                     case .notifyEmail:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description
-                        cell.RightText.text = userInfo?.notificationEmail
+                        cell.RightText.text = userInfo.notificationEmail
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .loginPWD, .mbp, .singlePWD:
@@ -248,7 +248,7 @@ class SettingTableViewController: ProtonMailViewController {
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
                         cell.accessoryType = UITableViewCell.AccessoryType.none
                         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-                        cell.configCell(itme.description, bottomLine: "", status: sharedUserDataService.autoLoadRemoteImages, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
+                        cell.configCell(itme.description, bottomLine: "", status: userInfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
                                     let view = UIApplication.shared.keyWindow
@@ -389,10 +389,10 @@ class SettingTableViewController: ProtonMailViewController {
                     case .displayName:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = address_item.description
-                        if let addr = sharedUserDataService.userAddresses.defaultAddress() {
+                        if let addr = userInfo.userAddresses.defaultAddress() {
                             cell.RightText.text = addr.display_name
                         } else {
-                            cell.RightText.text = sharedUserDataService.displayName
+                            cell.RightText.text = userInfo.displayName.decodeHtml()
                         }
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
@@ -412,7 +412,7 @@ class SettingTableViewController: ProtonMailViewController {
                 if indexPath.row < setting_swipe_action_items.count {
                     let actionItem = setting_swipe_action_items[indexPath.row]
                     let cell = tableView.dequeueReusableCell(withIdentifier: SettingDomainsCell, for: indexPath) as! DomainsTableViewCell
-                    let action = actionItem == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
+                    let action = actionItem == .left ? userInfo.swipeLeftAction : userInfo.swipeRightAction
                     cell.domainText.text = actionItem.description
                     cell.defaultMark.text = action?.description
                     cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
@@ -420,8 +420,8 @@ class SettingTableViewController: ProtonMailViewController {
                 }
             case .storage:
                 let cell = tableView.dequeueReusableCell(withIdentifier: SettingStorageCell, for: indexPath) as! StorageViewCell
-                let usedSpace = sharedUserDataService.usedSpace
-                let maxSpace = sharedUserDataService.maxSpace
+                let usedSpace = userInfo.usedSpace
+                let maxSpace = userInfo.maxSpace
                 cell.setValue(usedSpace, maxSpace: maxSpace)
                 cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 cellout = cell
@@ -648,7 +648,7 @@ class SettingTableViewController: ProtonMailViewController {
                     let alertController = UIAlertController(title: action_item.actionDescription, message: nil, preferredStyle: .actionSheet)
                     alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                     
-                    let currentAction = action_item == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
+                    let currentAction = action_item == .left ? userInfo.swipeLeftAction : userInfo.swipeRightAction
                     for swipeAction in setting_swipe_actions {
                         if swipeAction != currentAction {
                             alertController.addAction(UIAlertAction(title: swipeAction.description, style: .default, handler: { (action) -> Void in
