@@ -399,7 +399,6 @@ class SendBuilder {
     
     var hasMime : Bool {
         get {
-            return true
             return self.contains(type: .pgpmime) ||  self.contains(type: .cmime)
         }
     }
