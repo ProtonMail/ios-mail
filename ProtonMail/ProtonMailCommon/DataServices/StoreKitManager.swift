@@ -251,7 +251,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                         self.successCompletion?()
                         SKPaymentQueue.default().finishTransaction(transaction)
                     } catch let error {
-                        if (error as NSError).code == 22915 { // Apple payment already registered
+                        if (error as NSError).code == 22916 { // Apple payment already registered
                             SKPaymentQueue.default().finishTransaction(transaction)
                         } else {
                             self.errorCompletion(error)
@@ -261,6 +261,10 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                     // Sandbox receipt sent to prod BE
                     SKPaymentQueue.default().finishTransaction(transaction)
                     self.errorCompletion(error)
+                    
+                case 22916: // Apple payment already registered
+                    SKPaymentQueue.default().finishTransaction(transaction)
+                    
                 default:
                     self.errorCompletion(error)
                 }
