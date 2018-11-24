@@ -214,8 +214,8 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 return
             }
             
-            guard let receiptUrl = Bundle.main.appStoreReceiptURL/*,
-                !receiptUrl.lastPathComponent.contains("sandbox") */else
+            guard let receiptUrl = Bundle.main.appStoreReceiptURL,
+                !receiptUrl.lastPathComponent.contains("sandbox") else
             {
                 self.errorCompletion(Errors.sandboxReceipt)
                 SKPaymentQueue.default().finishTransaction(transaction)
