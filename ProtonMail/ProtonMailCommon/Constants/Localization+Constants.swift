@@ -1625,9 +1625,9 @@ class LocalizedString {
     
     lazy var _no_new_subscription_in_response = NSLocalizedString("We have successfully activated your subscription. Please, relaunch the app to benefit from your new service plan", comment: "Error message")
     
-    lazy var _do_you_want_to_bypass_validation = NSLocalizedString("Do you want to activate the purchased service plan for", comment: "Question is user wants to bypass username validation and activate plan for current username")
+    lazy var _do_you_want_to_bypass_validation = NSLocalizedString("Do you want to activate the purchased service plan for ", comment: "Question is user wants to bypass username validation and activate plan for current username")
     
-    lazy var _yes_bypass_validation = NSLocalizedString("Yes, activate it for", comment: "Warning message option to bypass validation and activate plan for current username")
+    lazy var _yes_bypass_validation = NSLocalizedString("Yes, activate it for ", comment: "Warning message option to bypass validation and activate plan for current username")
     
     lazy var _no_dont_bypass_validation = NSLocalizedString("No, for another ProtonMail account", comment: "Warning message option when user want to relogin to another account")
     

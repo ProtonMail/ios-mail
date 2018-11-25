@@ -44,7 +44,7 @@ class StoreKitManager: NSObject {
             
             let message = """
             \(error.localizedDescription)
-            \(LocalString._do_you_want_to_bypass_validation) \(currentUsername)?
+            \(LocalString._do_you_want_to_bypass_validation)\(currentUsername)?
             """
             let alert = UIAlertController(title: LocalString._warning, message: message, preferredStyle: .alert)
             alert.addAction(.init(title: LocalString._yes_bypass_validation + currentUsername,

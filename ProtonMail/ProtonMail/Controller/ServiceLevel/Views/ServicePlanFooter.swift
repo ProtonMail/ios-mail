@@ -37,15 +37,21 @@ class ServicePlanFooter: UIView {
             self.buyButton.titleLabel?.textAlignment = .center
             self.buttonAction = buttonAction
             self.buyButton.addTarget(self, action: #selector(self.performButtonAction), for: .touchUpInside)
-            self.buyButton.isUserInteractionEnabled = buttonEnabled
-            self.buyButton.backgroundColor = buttonEnabled ? UIColor.ProtonMail.ButtonBackground : UIColor.ProtonMail.TableSeparatorGray
+            self.style(buttonEnabled: buttonEnabled)
         } else {
             self.buyButton.isHidden = true
         }
     }
     
-    //FIXME: why manually set this and all the styles above.
+    private func style(buttonEnabled: Bool) {
+        DispatchQueue.main.async {
+            self.buyButton.isUserInteractionEnabled = buttonEnabled
+            self.buyButton.backgroundColor = buttonEnabled ? UIColor.ProtonMail.ButtonBackground : UIColor.ProtonMail.TableSeparatorGray
+        }
+    }
+    
     @objc private func performButtonAction() {
+        self.style(buttonEnabled: false)
         self.buttonAction?(self.buyButton)
     }
     

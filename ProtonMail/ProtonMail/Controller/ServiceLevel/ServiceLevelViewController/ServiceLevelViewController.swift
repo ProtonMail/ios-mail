@@ -109,20 +109,21 @@ class ServiceLevelViewControllerBase: UICollectionViewController {
 
 extension ServiceLevelViewControllerBase: ServiceLevelDataSourceDelegate {
     func purchaseProduct(id: String) {
-        let successCompletion: ()->Void = {
-            {
-                self.navigationController?.popViewController(animated: true)
-            } ~> .main
+        let successCompletion: ()->Void = { [weak self] in
+            DispatchQueue.main.async {
+                // TODO: nice congratulating animation
+                self?.navigationController?.popViewController(animated: true)
+            }
         }
         let errorCompletion: (Error)->Void = { error in
-            {
+            DispatchQueue.main.async {
                 let alert = UIAlertController(title: LocalString._error_occured, message: error.localizedDescription, preferredStyle: .alert)
                 alert.addAction(.init(title: LocalString._general_ok_action, style: .cancel, handler: nil))
                 UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
-            } ~> .main
+            }
         }
         let deferredCompletion: ()->Void = {
-            
+            // TODO: nice animation to explain user should be patient
         }
         
         StoreKitManager.default.purchaseProduct(withId: id, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
