@@ -72,31 +72,48 @@ class ReportBugsViewController: ProtonMailViewController {
     // MARK: Actions
     
     @IBAction fileprivate func sendAction(_ sender: UIBarButtonItem) {
-        if let text = textView.text {
-            if !text.isEmpty {
-                ActivityIndicatorHelper.showActivityIndicator(at: view)
-                sender.isEnabled = false
-                BugDataService().reportBug(text, completion: { error in
-                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
-                    sender.isEnabled = true
-                    if let error = error {
-                        let alert = error.alertController()
-                        alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
-                        self.present(alert, animated: true, completion: nil)
-                    } else {
-                        let alert = UIAlertController(title: LocalString._bug_report_received,
-                                                      message: LocalString._thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system,
-                                                      preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
-                        self.present(alert, animated: true, completion: {
-                            self.reset()
-                            NotificationCenter.default.post(name: .switchView,
-                                                            object: nil)
-                        })
-                    }
+        guard let text = textView.text, !text.isEmpty else {
+            return
+        }
+        
+        if StoreKitManager.default.hasUnfinishedPurchase(),
+            let receipt = try? StoreKitManager.default.readReceipt()
+        {
+            let alert = UIAlertController(title: LocalString._iap_bugreport_title, message: LocalString._iap_bugreport_user_agreement, preferredStyle: .alert)
+            alert.addAction(.init(title: LocalString._iap_bugreport_yes, style: .default, handler: { _ in
+                self.send(text + "\n\n\n --- AppStore receipt: ---\n\n\(receipt)")
+            }))
+            alert.addAction(.init(title: LocalString._iap_bugreport_no, style: UIAlertAction.Style.cancel, handler: { _ in
+                self.send(text)
+            }))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            self.send(text)
+        }
+    }
+    
+    private func send(_ text: String) {
+        ActivityIndicatorHelper.showActivityIndicator(at: view)
+        sendButton.isEnabled = false
+        BugDataService().reportBug(text, completion: { error in
+            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+            self.sendButton.isEnabled = true
+            if let error = error {
+                let alert = error.alertController()
+                alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: LocalString._bug_report_received,
+                                              message: LocalString._thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system,
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
+                self.present(alert, animated: true, completion: {
+                    self.reset()
+                    NotificationCenter.default.post(name: .switchView,
+                                                    object: nil)
                 })
             }
-        }
+        })
     }
 }
 

@@ -1631,6 +1631,14 @@ class LocalizedString {
     
     lazy var _no_dont_bypass_validation = NSLocalizedString("No, for another ProtonMail account", comment: "Warning message option when user want to relogin to another account")
     
+    lazy var _iap_bugreport_title = NSLocalizedString("Is this bugreport about in-app purchase?", comment: "Error message")
+    
+    lazy var _iap_bugreport_user_agreement = NSLocalizedString("Our Customer Support team will try to activate your service plan manually if you agree to attach technical data AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes accout, Apple ID, linked credit cards or other user information, but only helps us verify transaction passed correctly on AppStore servers.", comment: "Error message")
+    
+    lazy var _iap_bugreport_yes = NSLocalizedString("Yes, attach details of payment", comment: "Error message")
+    
+    lazy var _iap_bugreport_no = NSLocalizedString("No, this report is not about IAP", comment: "Error message")
+    
     // Mark : Force Upgrade
     
     /// "Update Required"

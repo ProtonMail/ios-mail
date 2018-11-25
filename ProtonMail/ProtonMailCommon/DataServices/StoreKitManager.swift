@@ -74,7 +74,11 @@ class StoreKitManager: NSObject {
     
     internal func readyToPurchaseProduct() -> Bool {
         // no matter which user is logged in now, if there is any unfinished transaction - we do not want to give opportunity to start new purchase. BE currently can process only last transaction in Receipts, so we do not want to mess up the older ones.
-        return SKPaymentQueue.default().transactions.isEmpty && (self.applicationUsername() != nil)
+        return (!self.hasUnfinishedPurchase()) && (self.applicationUsername() != nil)
+    }
+    
+    internal func hasUnfinishedPurchase() -> Bool {
+        return !SKPaymentQueue.default().transactions.isEmpty
     }
     
     internal func purchaseProduct(withId id: String,
@@ -258,7 +262,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         if shouldVerifyPurchaseWasForSameAccount {
             try self.verifyCurrentCredentialsMatch(usernameFromTransaction: transaction.payment.applicationUsername)
         }
-        let receipt = try StoreKitManager.readReceipt()
+        let receipt = try self.readReceipt()
         let planId = try servicePlan(for: transaction.payment.productIdentifier)
         
         do {  // payments/subscription
@@ -316,7 +320,7 @@ extension StoreKitManager {
         }
     }
     
-    class func readReceipt() throws -> String {
+    func readReceipt() throws -> String {
         guard let receiptUrl = Bundle.main.appStoreReceiptURL,
             !receiptUrl.lastPathComponent.contains("sandbox") else
         {
