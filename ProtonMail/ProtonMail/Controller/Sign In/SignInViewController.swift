@@ -611,7 +611,7 @@ class SignInViewController: ProtonMailViewController {
     
     func loadContactsAfterInstall() {
         ServicePlanDataService.shared.updateCurrentSubscription()
-        StoreKitManager.default.processTransactions() // this should run after every login
+        StoreKitManager.default.processAllTransactions() // this should run after every login
         sharedUserDataService.fetchUserInfo().done { (_) in
             
         }.catch { (_) in
