@@ -14,8 +14,12 @@ class StoreKitManager: NSObject {
     static var `default` = StoreKitManager()
     private override init() {
         super.init()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged), name: .reachabilityChanged, object: nil)
     }
-    
+    private lazy var isOffline: Bool = {
+        return sharedInternetReachability.currentReachabilityStatus() == .NotReachable
+    }()
     private var productIds = Set([ServicePlan.plus.storeKitProductId!])
     private var availableProducts: [SKProduct] = []
     private var request: SKProductsRequest!
@@ -26,6 +30,7 @@ class StoreKitManager: NSObject {
         return queue
     }()
     
+    internal var refreshHandler: (()->Void)?
     private var successCompletion: (()->Void)?
     private var deferredCompletion: (()->Void)?
     private lazy var errorCompletion: (Error)->Void = { error in
@@ -78,7 +83,7 @@ class StoreKitManager: NSObject {
     }
     
     internal func hasUnfinishedPurchase() -> Bool {
-        return !SKPaymentQueue.default().transactions.isEmpty
+        return !SKPaymentQueue.default().transactions.filter { $0.transactionState != .failed }.isEmpty
     }
     
     internal func purchaseProduct(withId id: String,
@@ -104,6 +109,23 @@ class StoreKitManager: NSObject {
         payment.quantity = 1
         payment.applicationUsername = self.hash(username: username)
         SKPaymentQueue.default().add(payment)
+    }
+    
+    @objc internal func reachabilityChanged(_ note : Notification) {
+        guard let current = note.object as? Reachability else {
+            return
+        }
+        switch current.currentReachabilityStatus() {
+        case .ReachableViaWiFi where self.isOffline,
+             .ReachableViaWWAN where self.isOffline:
+            self.processAllTransactions()
+            self.isOffline = false
+            
+        case .NotReachable:
+            self.isOffline = true
+            
+        default: break
+        }
     }
 }
 
@@ -244,16 +266,17 @@ extension StoreKitManager: SKPaymentTransactionObserver {
     }
     
     private func proceed(withFailed transaction: SKPaymentTransaction) {
+        SKPaymentQueue.default().finishTransaction(transaction)
         let error = transaction.error as NSError?
         switch error {
         case .some(SKError.paymentCancelled):
-            break
+            self.refreshHandler?()
         case .some(let error):
             self.errorCompletion(error)
+            self.refreshHandler?()
         case .none:
             self.errorCompletion(Errors.transactionFailedByUnknownReason)
         }
-        SKPaymentQueue.default().finishTransaction(transaction)
     }
     
     private func proceed(withPurchased transaction: SKPaymentTransaction,
@@ -326,7 +349,7 @@ extension StoreKitManager {
         {
             throw Errors.sandboxReceipt
         }
-        
+        PMLog.D(receiptUrl.path) // make use of this thing so maybe compiler will not screw it up while optimising
         guard let receipt = try? Data(contentsOf: receiptUrl).base64EncodedString() else {
             throw Errors.receiptLost
         }
