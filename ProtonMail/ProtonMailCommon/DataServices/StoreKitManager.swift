@@ -14,8 +14,12 @@ class StoreKitManager: NSObject {
     static var `default` = StoreKitManager()
     private override init() {
         super.init()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged), name: .reachabilityChanged, object: nil)
     }
-    
+    private lazy var isOffline: Bool = {
+        return sharedInternetReachability.currentReachabilityStatus() == .NotReachable
+    }()
     private var productIds = Set([ServicePlan.plus.storeKitProductId!])
     private var availableProducts: [SKProduct] = []
     private var request: SKProductsRequest!
@@ -105,6 +109,23 @@ class StoreKitManager: NSObject {
         payment.quantity = 1
         payment.applicationUsername = self.hash(username: username)
         SKPaymentQueue.default().add(payment)
+    }
+    
+    @objc internal func reachabilityChanged(_ note : Notification) {
+        guard let current = note.object as? Reachability else {
+            return
+        }
+        switch current.currentReachabilityStatus() {
+        case .ReachableViaWiFi where self.isOffline,
+             .ReachableViaWWAN where self.isOffline:
+            self.processAllTransactions()
+            self.isOffline = false
+            
+        case .NotReachable:
+            self.isOffline = true
+            
+        default: break
+        }
     }
 }
 
@@ -252,6 +273,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             self.refreshHandler?()
         case .some(let error):
             self.errorCompletion(error)
+            self.refreshHandler?()
         case .none:
             self.errorCompletion(Errors.transactionFailedByUnknownReason)
         }
