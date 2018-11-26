@@ -103,7 +103,7 @@ class UnlockManager: NSObject {
     private func updateUserData() { // previously this method was called loadContactsAfterInstall()
         ServicePlanDataService.shared.updateServicePlans()
         ServicePlanDataService.shared.updateCurrentSubscription()
-        StoreKitManager.default.processTransactions()
+        StoreKitManager.default.processAllTransactions()
         
         sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
         

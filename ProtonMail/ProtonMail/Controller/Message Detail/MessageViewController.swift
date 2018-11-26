@@ -157,15 +157,15 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         PMLog.D("connectionRequired : \(connectionRequired)")
         switch (netStatus)
         {
-        case NotReachable:
+        case .NotReachable:
             PMLog.D("Access Not Available")
             if !message.isDetailDownloaded {
                 self.emailView?.showNoInternetErrorMessage()
             }
-        case ReachableViaWWAN:
+        case .ReachableViaWWAN:
             PMLog.D("Reachable WWAN")
             recheckMessageDetails ()
-        case ReachableViaWiFi:
+        case .ReachableViaWiFi:
             PMLog.D("Reachable WiFi")
             recheckMessageDetails ()
         default:
