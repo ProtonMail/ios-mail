@@ -26,6 +26,7 @@ class StoreKitManager: NSObject {
         return queue
     }()
     
+    internal var refreshHandler: (()->Void)?
     private var successCompletion: (()->Void)?
     private var deferredCompletion: (()->Void)?
     private lazy var errorCompletion: (Error)->Void = { error in
@@ -78,7 +79,7 @@ class StoreKitManager: NSObject {
     }
     
     internal func hasUnfinishedPurchase() -> Bool {
-        return !SKPaymentQueue.default().transactions.isEmpty
+        return !SKPaymentQueue.default().transactions.filter { $0.transactionState != .failed }.isEmpty
     }
     
     internal func purchaseProduct(withId id: String,
@@ -244,16 +245,16 @@ extension StoreKitManager: SKPaymentTransactionObserver {
     }
     
     private func proceed(withFailed transaction: SKPaymentTransaction) {
+        SKPaymentQueue.default().finishTransaction(transaction)
         let error = transaction.error as NSError?
         switch error {
         case .some(SKError.paymentCancelled):
-            break
+            self.refreshHandler?()
         case .some(let error):
             self.errorCompletion(error)
         case .none:
             self.errorCompletion(Errors.transactionFailedByUnknownReason)
         }
-        SKPaymentQueue.default().finishTransaction(transaction)
     }
     
     private func proceed(withPurchased transaction: SKPaymentTransaction,
@@ -326,7 +327,7 @@ extension StoreKitManager {
         {
             throw Errors.sandboxReceipt
         }
-        
+        PMLog.D(receiptUrl.path) // make use of this thing so maybe compiler will not screw it up while optimising
         guard let receipt = try? Data(contentsOf: receiptUrl).base64EncodedString() else {
             throw Errors.receiptLost
         }

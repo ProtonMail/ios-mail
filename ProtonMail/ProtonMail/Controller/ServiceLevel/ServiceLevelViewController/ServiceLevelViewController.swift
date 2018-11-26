@@ -65,6 +65,12 @@ class ServiceLevelViewController: ServiceLevelViewControllerBase, Coordinated {
 
 class ServiceLevelViewControllerBase: UICollectionViewController {
     internal var dataSource: ServiceLevelDataSource!
+    internal lazy var refreshHandler: ()->Void = { [weak self] in
+        DispatchQueue.main.async {
+            self?.dataSource.reload()
+            self?.collectionView?.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +79,11 @@ class ServiceLevelViewControllerBase: UICollectionViewController {
             [AutoLayoutSizedCell.self, FirstSubviewSizedCell.self].forEach(collectionView.register)
             collectionView.setCollectionViewLayout(TableLayout(), animated: true, completion: nil)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        StoreKitManager.default.refreshHandler = self.refreshHandler
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
