@@ -101,7 +101,8 @@ class ServiceLevelViewControllerBase: UICollectionViewController {
                                  at indexPath: IndexPath) -> UICollectionReusableView
     {
         guard let separator = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: kind, for: indexPath) as? SeparatorDecorationView else {
-            fatalError()
+            assert(false, "Something wrong in collection view")
+            return UICollectionReusableView()
         }
         return separator
     }
@@ -111,7 +112,8 @@ class ServiceLevelViewControllerBase: UICollectionViewController {
     {
         let section = self.dataSource.sections[indexPath.section]
         guard let cell = self.collectionView?.dequeueReusableCell(section.cellType, for: indexPath) else {
-            fatalError()
+            assert(false, "Something wrong in collection view")
+            return UICollectionViewCell()
         }
         section.embed(indexPath.row, onto: cell)
         return cell
