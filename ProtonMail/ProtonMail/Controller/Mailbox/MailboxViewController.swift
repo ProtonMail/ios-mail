@@ -1405,15 +1405,15 @@ extension MailboxViewController : TopMessageViewDelegate {
     internal func updateInterfaceWithReachability(_ reachability : Reachability) {
         let netStatus = reachability.currentReachabilityStatus()
         switch (netStatus){
-        case NotReachable:
+        case .NotReachable:
             PMLog.D("Access Not Available")
             self.showNoInternetErrorMessage()
             
-        case ReachableViaWWAN:
+        case .ReachableViaWWAN:
             PMLog.D("Reachable WWAN")
             self.hideTopMessage()
 
-        case ReachableViaWiFi:
+        case .ReachableViaWiFi:
             PMLog.D("Reachable WiFi")
             self.hideTopMessage()
 

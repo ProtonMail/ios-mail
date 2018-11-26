@@ -13,6 +13,7 @@ protocol ServiceLevelDataSource {
     var title: String { get }
     var sections: [Section<UIView>] { get }
     func shouldPerformSegue(byItemOn: IndexPath) -> ServiceLevelCoordinator.Destination?
+    func reload()
 }
 
 extension ServiceLevelDataSource {
@@ -24,12 +25,17 @@ extension ServiceLevelDataSource {
 
 class BuyMoreDataSource: ServiceLevelDataSource {
     weak var delegate: ServiceLevelDataSourceDelegate!
-    
-    let title = LocalString._more_credits
+    internal let title = LocalString._more_credits
     internal var sections: [Section<UIView>] = []
+    private var subscription: Subscription
+    
+    internal func reload() {
+        self.setup(with: self.subscription)
+    }
     
     init(delegate: ServiceLevelDataSourceDelegate, subscription: Subscription!) {
         self.delegate = delegate
+        self.subscription = subscription
         self.setup(with: subscription)
     }
     
@@ -45,9 +51,18 @@ class PlanDetailsDataSource: ServiceLevelDataSource {
     internal var sections: [Section<UIView>] = []
     internal var title: String
     
+    private var plan: ServicePlan
+    
+    internal func reload() {
+        if let details = plan.fetchDetails() {
+            self.setup(with: self.plan, details: details)
+        }
+    }
+    
     init(delegate: ServiceLevelDataSourceDelegate, plan: ServicePlan) {
         self.delegate = delegate
         self.title = String(format: LocalString._get_plan, plan.subheader.0)
+        self.plan = plan
         guard let details = plan.fetchDetails() else {
             return
         }
@@ -77,7 +92,14 @@ class PlanDetailsDataSource: ServiceLevelDataSource {
 class PlanAndLinksDataSource: ServiceLevelDataSource {
     weak var delegate: ServiceLevelDataSourceDelegate!
     internal var sections: [Section<UIView>] = []
-    let title = LocalString._menu_service_plan_title
+    internal let title = LocalString._menu_service_plan_title
+    private var subscription: Subscription?
+    
+    internal func reload() {
+        if let subscription = subscription {
+            self.setup(with: subscription)
+        }
+    }
     
     init(delegate: ServiceLevelDataSourceDelegate, subscription: Subscription?) {
         self.delegate = delegate
@@ -85,6 +107,7 @@ class PlanAndLinksDataSource: ServiceLevelDataSource {
             self.sections = [ServiceLevelDataFactory.makeLinksSection()]
             return
         }
+        self.subscription = subscription
         self.setup(with: subscription)
     }
     

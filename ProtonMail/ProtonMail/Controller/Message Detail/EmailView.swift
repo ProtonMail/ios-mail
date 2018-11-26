@@ -266,14 +266,14 @@ extension EmailView {
         PMLog.D("connectionRequired : \(connectionRequired)")
         switch (netStatus)
         {
-        case NotReachable:
+        case .NotReachable:
             PMLog.D("Access Not Available")
             self.showNoInternetErrorMessage()
             
-        case ReachableViaWWAN:
+        case .ReachableViaWWAN:
             self.hideTopMessage()
             
-        case ReachableViaWiFi:
+        case .ReachableViaWiFi:
             self.hideTopMessage()
             
         default:
