@@ -1025,28 +1025,36 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         }
     }
     fileprivate func performSegueForMessage(_ message: Message) {
-        if viewModel.isDrafts() || message.hasDraftLabel() {
-            if !message.messageID.isEmpty {
-                sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
-                    if error != nil {
-                        PMLog.D("error: \(String(describing: error))")
-                    }
-                    else
-                    {
-                        self.selectedDraft = msg
-                        
-                        if self.checkHuman() {
-                            self.performSegue(withIdentifier: self.kSegueToComposeShow, sender: self)
-                        }
-                    }
-                }
-            } else {
-                if self.checkHuman() {
-                    self.performSegue(withIdentifier: self.kSegueToComposeShow, sender: self)
-                }
-            }
-        } else {
+        guard viewModel.isDrafts() || message.hasDraftLabel()  else {
             performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
+            return
+        }
+        
+        guard !message.messageID.isEmpty else {
+            if self.checkHuman() {
+                self.performSegue(withIdentifier: self.kSegueToComposeShow, sender: self)
+            }
+            return
+        }
+        
+        sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
+            guard msg?.body.isEmpty == false else {
+                if error != nil {
+                    PMLog.D("error: \(String(describing: error))")
+                    let alert = LocalString._unable_to_edit_offline.alertController()
+                    alert.addOKAction()
+                    self.present(alert, animated: true, completion: nil)
+                    self.tableView.indexPathsForSelectedRows?.forEach {
+                        self.tableView.deselectRow(at: $0, animated: true)
+                    }
+                }
+                return
+            }
+            
+            self.selectedDraft = msg
+            if self.checkHuman() {
+                self.performSegue(withIdentifier: self.kSegueToComposeShow, sender: self)
+            }
         }
     }
     

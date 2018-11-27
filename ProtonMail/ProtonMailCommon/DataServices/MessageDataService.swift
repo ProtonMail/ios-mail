@@ -581,13 +581,13 @@ class MessageDataService {
                             }
                         } else {
                             DispatchQueue.main.async {
-                                completion(task, response, nil, NSError.badResponse())
+                                completion(task, response, message, NSError.badResponse())
                             }
                         }
                     } else {
                         error = NSError.unableToParseResponse(response)
                         DispatchQueue.main.async {
-                            completion(task, response, nil, error)
+                            completion(task, response, message, error)
                         }
                     }
                     if error != nil  {
