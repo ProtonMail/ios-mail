@@ -86,73 +86,60 @@ class APIService {
     internal func fetchAuthCredential(_ completion: @escaping AuthCredentialBlock) {
         DispatchQueue.global(qos: .default).async {
             pthread_mutex_lock(&self.mutex)
+            
             //fetch auth info
-            if let credential = AuthCredential.fetchFromKeychain() {
-                if !credential.isExpired { // access token time is valid
-                    if (credential.password ?? "").isEmpty { // mailbox pwd is empty should show error and logout
-                        //clean auth cache let user relogin
-                        AuthCredential.clearFromKeychain()
-                        pthread_mutex_unlock(&self.mutex)
-                        DispatchQueue.main.async {
-                            completion(nil, NSError.AuthCachePassEmpty())
-                            UserTempCachedStatus.backup()
-                            sharedUserDataService.signOut(true) //NOTES:signout + errors
-                            userCachedStatus.signOut()
-                            NSError.alertBadTokenToast()
-                        }
-                    } else {
-                        pthread_mutex_unlock(&self.mutex)
-                        DispatchQueue.main.async {
-                            completion(credential, nil)
-                        }
-                    }
-                } else {
-                    if (credential.password ?? "").isEmpty {
-                        AuthCredential.clearFromKeychain()
-                        pthread_mutex_unlock(&self.mutex)
-                        DispatchQueue.main.async {
-                            completion(nil, NSError.AuthCachePassEmpty())
-                            UserTempCachedStatus.backup()
-                            sharedUserDataService.signOut(true)
-                            userCachedStatus.signOut()
-                            NSError.alertBadTokenToast()
-                        }
-                    } else {
-                        self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
-                            pthread_mutex_unlock(&self.mutex)
-                            if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
-                                AuthCredential.clearFromKeychain()
-                                DispatchQueue.main.async {
-                                    NSError.alertBadTokenToast()
-                                    self.fetchAuthCredential(completion)
-                                }
-                            } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                                AuthCredential.clearFromKeychain()
-                                DispatchQueue.main.async {
-                                    NSError.alertBadTokenToast()
-                                    self.fetchAuthCredential(completion)
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    completion(authCredential, error)
-                                }
-                            }
-                        }
-                    }
+            guard UnlockManager.shared.isUnlocked() else { // app is locked, fail with error gracefully
+                pthread_mutex_unlock(&self.mutex)
+                DispatchQueue.main.async {
+                    completion(nil, NSError.authCacheLocked())
                 }
-            } else { //the cache have issues
+                return
+            }
+            
+            guard let credential = AuthCredential.fetchFromKeychain(),  // mailbox pwd is empty should show error and logout
+                !(credential.password ?? "").isEmpty else
+            {
+                //clean auth cache let user relogin
                 AuthCredential.clearFromKeychain()
                 pthread_mutex_unlock(&self.mutex)
                 DispatchQueue.main.async {
-                    if sharedUserDataService.isSignedIn {
-                        completion(nil, NSError.authCacheBad())
-                        UserTempCachedStatus.backup()
-                        sharedUserDataService.signOut(true)
-                        userCachedStatus.signOut()
+                    completion(nil, NSError.AuthCachePassEmpty())
+                    UserTempCachedStatus.backup()
+                    sharedUserDataService.signOut(true) //NOTES:signout + errors
+                    userCachedStatus.signOut()
+                    NSError.alertBadTokenToast()
+                }
+                return
+            }
+            
+            guard !credential.isExpired else { // access token time is valid
+                self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
+                    self.debugError(error)
+                    pthread_mutex_unlock(&self.mutex)
+                    if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
+                        AuthCredential.clearFromKeychain()
+                        DispatchQueue.main.async {
+                            NSError.alertBadTokenToast()
+                            self.fetchAuthCredential(completion)
+                        }
+                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
+                        AuthCredential.clearFromKeychain()
+                        DispatchQueue.main.async {
+                            NSError.alertBadTokenToast()
+                            self.fetchAuthCredential(completion)
+                        }
                     } else {
-                        completion(nil, NSError.AuthCachePassEmpty())
+                        DispatchQueue.main.async {
+                            completion(authCredential, error)
+                        }
                     }
                 }
+                return
+            }
+            
+            pthread_mutex_unlock(&self.mutex)
+            DispatchQueue.main.async {
+                completion(credential, nil)
             }
         }
         
@@ -167,10 +154,12 @@ class APIService {
                            destinationDirectoryURL: URL,
                            headers: [String : Any]?,
                            authenticated: Bool = true,
+                           customAuthCredential: AuthCredential? = nil,
                            downloadTask: ((URLSessionDownloadTask) -> Void)?,
                            completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
         let authBlock: AuthCredentialBlock = { auth, error in
             if let error = error {
+                self.debugError(error)
                 completion(nil, nil, error)
             } else {
                 let request = self.sessionManager.requestSerializer.request(withMethod: HTTPMethod.get.toString(),
@@ -203,6 +192,7 @@ class APIService {
                 }, destination: { (targetURL, response) -> URL in
                     return destinationDirectoryURL
                 }, completionHandler: { (response, url, error) in
+                    self.debugError(error)
                     completion(response, url, error as NSError?)
                 })
                 downloadTask?(sessionDownloadTask)
@@ -210,10 +200,10 @@ class APIService {
             }
         }
         
-        if authenticated {
+        if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(nil, nil)
+            authBlock(customAuthCredential, nil)
         }
     }
     
@@ -233,11 +223,13 @@ class APIService {
                           signature : Data?,
                           headers: [String : Any]?,
                           authenticated: Bool = true,
+                          customAuthCredential: AuthCredential? = nil,
                           completion: @escaping CompletionBlock) {
         
         
         let authBlock: AuthCredentialBlock = { auth, error in
             if let error = error {
+                self.debugError(error)
                 completion(nil, nil, error)
             } else {
                 let request = self.sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST",
@@ -277,6 +269,7 @@ class APIService {
                 uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request as URLRequest, progress: { (progress) in
                     //
                 }, completionHandler: { (response, responseObject, error) in
+                    self.debugError(error)
                     let resObject = responseObject as? [String : Any]
                     completion(uploadTask, resObject, error as NSError?)
                 })
@@ -284,10 +277,10 @@ class APIService {
             }
         }
         
-        if authenticated {
+        if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(nil, nil)
+            authBlock(customAuthCredential, nil)
         }
     }
     
@@ -297,13 +290,16 @@ class APIService {
                  path: String, parameters: Any?,
                  headers: [String : Any]?,
                  authenticated: Bool = true,
+                 customAuthCredential: AuthCredential? = nil,
                  completion: CompletionBlock?) {
         let authBlock: AuthCredentialBlock = { auth, error in
             if let error = error {
+                self.debugError(error)
                 completion?(nil, nil, error)
             } else {
                 let parseBlock: (_ task: URLSessionDataTask?, _ response: Any?, _ error: Error?) -> Void = { task, response, error in
                     if let error = error as NSError? {
+                        self.debugError(error)
                         PMLog.D(api: error)
                         var httpCode : Int = 200
                         if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
@@ -327,6 +323,7 @@ class APIService {
                                              parameters: parameters,
                                              headers: ["x-pm-apiversion": 3],
                                              authenticated: authenticated,
+                                             customAuthCredential: customAuthCredential,
                                              completion: completion)
                             }
                         } else if let responseDict = response as? [String : Any], let responseCode = responseDict["Code"] as? Int {
@@ -370,6 +367,7 @@ class APIService {
                                              parameters: parameters,
                                              headers: ["x-pm-apiversion": 3],
                                              authenticated: authenticated,
+                                             customAuthCredential: customAuthCredential,
                                              completion: completion)
                             } else if responseCode.forceUpgrade  {
                                 //FIXME: shouldn't be here
@@ -382,7 +380,9 @@ class APIService {
                             else {
                                 completion?(task, responseDictionary, error)
                             }
+                            self.debugError(error)
                         } else {
+                            self.debugError(NSError.unableToParseResponse(response))
                             completion?(task, nil, NSError.unableToParseResponse(response))
                         }
                     }
@@ -419,6 +419,7 @@ class APIService {
                 }, downloadProgress: { (progress) in
                     //TODO::add later
                 }, completionHandler: { (urlresponse, res, error) in
+                    self.debugError(error)
                     if let urlres = urlresponse as? HTTPURLResponse, let allheader = urlres.allHeaderFields as? [String : Any] {
                         //PMLog.D("\(allheader.json(prettyPrinted: true))")
                         if let strData = allheader["Date"] as? String {
@@ -439,11 +440,28 @@ class APIService {
             }
         }
         
-        if authenticated {
+        if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(nil, nil)
+            authBlock(customAuthCredential, nil)
         }
     }
+    
+    func debugError(_ error: NSError?) {
+        #if DEBUG
+        if let error = error {
+            self.delegate?.onError(error: error)
+        }
+        #endif
+    }
+    func debugError(_ error: Error?) {
+        #if DEBUG
+        if let error = error {
+            self.delegate?.onError(error: error as NSError)
+        }
+        #endif
+    }
 }
+
+
 

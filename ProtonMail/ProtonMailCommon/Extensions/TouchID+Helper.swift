@@ -20,7 +20,7 @@ var biometricType: BiometricType {
     get {
         let context = LAContext()
         var error: NSError?
-        guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
+        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
             PMLog.D(error?.localizedDescription ?? "")
             return .none
         }

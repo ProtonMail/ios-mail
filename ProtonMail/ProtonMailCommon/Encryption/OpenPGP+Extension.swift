@@ -161,6 +161,21 @@ extension PMNOpenPgp {
         }
         return out_new_key
     }
+    
+    func generateRandomKeypair() throws -> (passphrase: String, publicKey: String, privateKey: String) {
+        let passphrase = UUID().uuidString
+        let username = UUID().uuidString
+        let domain = "protonmail.com"
+        
+        guard let keypair = try self.generateKey(passphrase,
+                                                 userName: (username + "@" + domain).isValidEmail() ? username : "noreply",
+                                                 domain: domain,
+                                                 bits: Int32(2048)) else
+        {
+            throw NSError(domain: #file, code: 1, localizedDescription: "Failed to generate random keypair")
+        }
+        return (passphrase, keypair.publicKey, keypair.privateKey)
+    }
 }
 //
 
@@ -200,8 +215,7 @@ extension PMNOpenPgp {
 //}
 
 extension Data {
-    func decryptAttachment(_ keyPackage:Data!, passphrase: String) throws -> Data? {
-        let privKeys = sharedUserDataService.addressPrivKeys
+    func decryptAttachment(_ keyPackage:Data!, passphrase: String, privKeys: Data) throws -> Data? {
         return try sharedOpenPGP.decryptAttachmentBinKey(keyPackage, dataPacket: self, privateKeys: privKeys, passphrase: passphrase)
     }
 
@@ -209,20 +223,18 @@ extension Data {
         return try sharedOpenPGP.decryptAttachment(keyPackage, dataPacket: self, privateKey: privateKey, passphrase: passphrase)
     }
     
-    func encryptAttachment(_ address_id: String, fileName:String, mailbox_pwd: String) throws -> ModelsEncryptedSplit? {
-        let pubkey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
-        return try sharedOpenPGP.encryptAttachment(self, fileName: fileName, publicKey: pubkey)
+    func encryptAttachment(_ address_id: String, fileName:String, mailbox_pwd: String, key: String) throws -> ModelsEncryptedSplit? {
+        return try sharedOpenPGP.encryptAttachment(self, fileName: fileName, publicKey: key)
     }
     
-    static func makeEncryptAttachmentProcessor(_ address_id: String, fileName:String, totalSize: Int) throws -> CryptoAttachmentProcessor {
-        let pubkey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
-        return try sharedOpenPGP.encryptAttachmentLowMemory(totalSize, fileName: fileName, publicKey: pubkey)
+    func signAttachment(_ address_id: String, mailbox_pwd: String, key: String) throws -> String? {
+        return try sharedOpenPGP.signBinDetached(self, privateKey: key, passphrase: mailbox_pwd)
     }
-    
-    func signAttachment(_ address_id: String, mailbox_pwd: String) throws -> String? {
-        let privateKey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
-        return try sharedOpenPGP.signBinDetached(self, privateKey: privateKey, passphrase: mailbox_pwd)
+
+    static func makeEncryptAttachmentProcessor(_ address_id: String, fileName:String, totalSize: Int, key: String) throws -> CryptoAttachmentProcessor {
+        return try sharedOpenPGP.encryptAttachmentLowMemory(totalSize, fileName: fileName, publicKey: key)
     }
+
     
     
     //
@@ -236,8 +248,7 @@ extension Data {
 //    }
 //    
     //key packet part
-    func getSessionFromPubKeyPackage(_ passphrase: String) throws -> ModelsSessionSplit? {
-        let privKeys = sharedUserDataService.addressPrivKeys
+    func getSessionFromPubKeyPackage(_ passphrase: String, privKeys: Data) throws -> ModelsSessionSplit? {
         let out = try sharedOpenPGP.getSessionFromKeyPacketBinkeys(self, privateKey: privKeys, passphrase: passphrase)
         return out
     }

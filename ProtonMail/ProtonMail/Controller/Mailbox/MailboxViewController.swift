@@ -144,10 +144,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             self.performSegue(withIdentifier: self.kSegueToTour, sender: self)
         }
         
-        if userCachedStatus.isTouchIDEnabled {
-            userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
-        }
-        
         self.undoBottomDistance.constant = -88
         self.undoButton.isHidden = true
         self.undoView.isHidden = true
@@ -191,7 +187,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        sharedPushNotificationService.processCachedLaunchOptions()
+        PushNotificationService.shared.processCachedLaunchOptions()
         
         let usedStorageSpace = sharedUserDataService.usedSpace
         let maxStorageSpace = sharedUserDataService.maxSpace

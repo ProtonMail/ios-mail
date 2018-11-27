@@ -31,7 +31,7 @@ extension NSManagedObjectContext {
                         self.delete(object)
                     }
                 }
-                PMLog.D("Deleted \(objects.count) objects.")
+                PMLog.D("Deleted \(objects.count) \(entityName) objects.")
                 if let error = self.saveUpstreamIfNeeded() {
                     PMLog.D("error: \(error)")
                 }

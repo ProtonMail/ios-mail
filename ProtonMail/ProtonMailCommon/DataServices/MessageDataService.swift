@@ -53,6 +53,38 @@ class MessageDataService {
         NotificationCenter.default.removeObserver(self)
     }
     
+    func injectTransientValuesIntoMessages() {
+        let ids = sharedMessageQueue.queuedMessageIds()
+        guard let context = managedObjectContext else {
+            let error = NSError.protonMailError(500, localizedDescription: "", localizedFailureReason: nil, localizedRecoverySuggestion: nil)
+            PMLog.D(" error: \(String(describing: error))")
+            return
+        }
+        
+        ids.forEach { messageID in
+            guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
+                let managedObject = try? context.existingObject(with: objectID) else
+            {
+                return
+            }
+            if let message = managedObject as? Message {
+                self.cachePropertiesForBackground(in: message)
+            }
+            if let attachment = managedObject as? Attachment {
+                self.cachePropertiesForBackground(in: attachment.message)
+            }
+        }
+    }
+    
+    private func cachePropertiesForBackground(in message: Message) {
+        // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
+        // they are transient and will not be persisted in the db, only in managed object context
+        message.cachedPassphrase = sharedUserDataService.mailboxPassword
+        message.cachedAuthCredential = AuthCredential.fetchFromKeychain()
+        message.cachedPrivateKeys = sharedUserDataService.addressPrivKeys
+        message.cachedAddress = message.defaultAddress // computed property depending on current user settings
+    }
+    
     // MAKR : upload attachment
     func uploadAttachment(_ att: Attachment!) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
@@ -481,7 +513,11 @@ class MessageDataService {
     // old functions
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
-    func fetchAttachmentForAttachment(_ attachment: Attachment, downloadTask: ((URLSessionDownloadTask) -> Void)?, completion:((URLResponse?, URL?, NSError?) -> Void)?) {
+    func fetchAttachmentForAttachment(_ attachment: Attachment,
+                                      customAuthCredential: AuthCredential? = nil,
+                                      downloadTask: ((URLSessionDownloadTask) -> Void)?,
+                                      completion:((URLResponse?, URL?, NSError?) -> Void)?)
+    {
         if let localURL = attachment.localURL {
             completion?(nil, localURL as URL, nil)
             return
@@ -492,6 +528,7 @@ class MessageDataService {
             if attachment.managedObjectContext != nil {
                 sharedAPIService.downloadAttachment(byID: attachment.attachmentID,
                                                     destinationDirectoryURL: FileManager.default.attachmentDirectory,
+                                                    customAuthCredential: customAuthCredential,
                                                     downloadTask: downloadTask,
                                                     completion: { task, fileURL, error in
                                                         var error = error
@@ -906,35 +943,6 @@ class MessageDataService {
         return []
     }
     
-    fileprivate func messageBodyForMessage(_ message: Message, response: [String : Any]?) throws -> [String : String] {
-        var messageBody: [String : String] = ["self" : message.body]
-        
-        let privKey = message.defaultAddress?.keys[0].private_key ?? ""
-        let pwd = sharedUserDataService.mailboxPassword ?? ""
-        
-        do {
-            if let keys = response?["keys"] as? [[String : String]] {
-                if let body = try message.decryptBody() {
-                    // encrypt body with each key
-                    for publicKeys in keys {
-                        for (email, publicKey) in publicKeys {
-                            if let encryptedBody = try body.encrypt(withPubKey: publicKey, privateKey: privKey, mailbox_pwd: pwd) {
-                                messageBody[email] = encryptedBody
-                            }
-                        }
-                    }
-                    messageBody["outsiders"] = (message.checkIsEncrypted() == true ? message.passwordEncryptedBody : body)
-                }
-            } else {
-                PMLog.D(" unable to parse response: \(String(describing: response))")
-            }
-        } catch let ex as NSError {
-            PMLog.D(" unable to decrypt \(message.body) with error: \(ex)")
-            
-        }
-        return messageBody
-    }
-    
     fileprivate func draft(save messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         if let context = managedObjectContext {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
@@ -1007,7 +1015,7 @@ class MessageDataService {
                         
                         PMLog.D("SendAttachmentDebug == start save draft!")
                         if message.isDetailDownloaded && message.messageID != "0" {
-                            let api = UpdateDraft(message: message)
+                            let api = UpdateDraft(message: message, authCredential: message.cachedAuthCredential)
                             api.call({ (task, response, hasError) -> Void in
                                 if hasError {
                                     completionWrapper(task, nil, response?.error)
@@ -1042,91 +1050,86 @@ class MessageDataService {
     
     
     private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        if let context = managedObjectContext {
-            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(managedObjectID) {
-                
-                var msgObject : NSManagedObject?
-                do {
-                    msgObject = try context.existingObject(with: objectID)
-                } catch {
-                    msgObject = nil
-                }
-                
-                if let attachment = msgObject as? Attachment {
-                    var params = [
-                        "Filename":attachment.fileName,
-                        "MIMEType" : attachment.mimeType,
-                        ]
-                    
-                    var default_address_id = sharedUserDataService.userAddresses.defaultSendAddress()?.address_id ?? ""
-                    //TODO::here need to fix sometime message is not valid'
-                    if attachment.message.managedObjectContext == nil {
-                        params["MessageID"] =  ""
-                    } else {
-                        params["MessageID"] =  attachment.message.messageID 
-                        default_address_id = attachment.message.getAddressID
-                    }
-                    let pwd = sharedUserDataService.mailboxPassword ?? ""
-                    guard let encrypt_data = attachment.encrypt(byAddrID: default_address_id, mailbox_pwd: pwd) else {
-                        completion?(nil, nil, NSError.encryptionError()) //
-                        return
-                    }
-                    guard let keyPacket = encrypt_data.keyPacket() else {
-                        completion?(nil, nil, NSError.encryptionError()) //
-                        return
-                    }
-                    guard let dataPacket = encrypt_data.dataPacket() else {
-                        completion?(nil, nil, NSError.encryptionError())
-                        return
-                    }
-                    let signed = attachment.sign(byAddrID: default_address_id, mailbox_pwd: pwd)
-                    
-                    let completionWrapper: CompletionBlock = { task, response, error in
-                        PMLog.D("SendAttachmentDebug == finish upload att!")
-                        if error == nil {
-                            if let attDict = response?["Attachment"] as? [String : Any] {
-                                if let messageID = attDict["ID"] as? String {
-                                    attachment.attachmentID = messageID
-                                    attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-                                    // since the encrypted attachment is successfully uploaded, we no longer need it cleartext in db
-                                    attachment.fileData = nil
-                                    if let fileUrl = attachment.localURL,
-                                        let _ = try? FileManager.default.removeItem(at: fileUrl)
-                                    {
-                                        attachment.localURL = nil
-                                    }
-                                    if let error = context.saveUpstreamIfNeeded() {
-                                        PMLog.D(" error: \(error)")
-                                    }
-                                }
-                            }
-                        }
-                        completion?(task, response, error)
-                    }
-                    PMLog.D("SendAttachmentDebug == start upload att!")
-                    sharedAPIService.upload( byUrl: AppConstants.API_HOST_URL + AppConstants.API_PATH + "/attachments",
-                                             parameters: params,
-                                             keyPackets: keyPacket,
-                                             dataPacket: dataPacket,
-                                             signature: signed,
-                                             headers: ["x-pm-apiversion":3],
-                                             authenticated: true,
-                                             completion: completionWrapper)
-                    return
-                }
-            }
+        guard let context = managedObjectContext,
+            let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(managedObjectID),
+            let managedObject = try? context.existingObject(with: objectID),
+            let attachment = managedObject as? Attachment else
+        {
+            // nothing to send, dequeue request
+            let _ = sharedMessageQueue.remove(writeQueueUUID)
+            self.dequeueIfNeeded()
+        
+            completion?(nil, nil, NSError.badParameter(managedObjectID))
+            return
         }
         
-        // nothing to send, dequeue request
-        let _ = sharedMessageQueue.remove(writeQueueUUID)
-        self.dequeueIfNeeded()
+        let params = [
+            "Filename": attachment.fileName,
+            "MIMEType": attachment.mimeType,
+            "MessageID": attachment.message.messageID
+        ]
         
-        completion?(nil, nil, NSError.badParameter(managedObjectID))
+        let address = attachment.message.cachedAddress?.address_id ?? attachment.message.getAddressID
+        let pubkey = attachment.message.cachedAddress?.keys.first?.private_key ?? sharedUserDataService.getAddressPrivKey(address_id: address)
+        guard let passphrase = attachment.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else {
+            completion?(nil, nil, NSError.lockError())
+            return
+        }
+        
+        guard let encryptedData = attachment.encrypt(byAddrID: address, mailbox_pwd: passphrase, key: pubkey),
+            let keyPacket = encryptedData.keyPacket(),
+            let dataPacket = encryptedData.dataPacket() else
+        {
+            completion?(nil, nil, NSError.encryptionError())
+            return
+        }
+        let signed = attachment.sign(byAddrID: address, mailbox_pwd: passphrase, key: pubkey)
+        
+        let completionWrapper: CompletionBlock = { task, response, error in
+            PMLog.D("SendAttachmentDebug == finish upload att!")
+            if error == nil,
+                let attDict = response?["Attachment"] as? [String : Any],
+                let id = attDict["ID"] as? String
+            {
+                attachment.attachmentID = id
+                attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+                attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
+                
+                if let fileUrl = attachment.localURL,
+                    let _ = try? FileManager.default.removeItem(at: fileUrl)
+                {
+                    attachment.localURL = nil
+                }
+                
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                }
+            }
+            completion?(task, response, error)
+        }
+        
+        PMLog.D("SendAttachmentDebug == start upload att!")
+        sharedAPIService.upload( byUrl: AppConstants.API_HOST_URL + AppConstants.API_PATH + "/attachments",
+                                 parameters: params,
+                                 keyPackets: keyPacket,
+                                 dataPacket: dataPacket,
+                                 signature: signed,
+                                 headers: ["x-pm-apiversion":3],
+                                 authenticated: true,
+                                 customAuthCredential: attachment.message.cachedAuthCredential,
+                                 completion: completionWrapper)
     }
     
     private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        if let _ = managedObjectContext {
-            let api = DeleteAttachment(attID: deleteObject)
+        if let context = managedObjectContext {
+            var authCredential: AuthCredential?
+            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(deleteObject),
+                let managedObject = try? context.existingObject(with: objectID),
+                let attachment = managedObject as? Attachment
+            {
+                authCredential = attachment.message.cachedAuthCredential
+            }
+            let api = DeleteAttachment(attID: deleteObject, authCredential: authCredential)
             api.call({ (task, response, hasError) -> Void in
                 completion?(task, nil, nil)
             })
@@ -1138,6 +1141,28 @@ class MessageDataService {
         self.dequeueIfNeeded()
         
         completion?(nil, nil, NSError.badParameter(deleteObject))
+    }
+    
+    private func messageAction(_ managedObjectIds: [String], writeQueueUUID: UUID, action: String, completion: CompletionBlock?) {
+        guard let context = managedObjectContext else {
+            let _ = sharedMessageQueue.remove(writeQueueUUID)
+            self.dequeueIfNeeded()
+            
+            completion?(nil, nil, NSError.badParameter(managedObjectIds))
+            return
+        }
+        
+        let messages = managedObjectIds.compactMap { (id: String) -> Message? in
+            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(id),
+                let managedObject = try? context.existingObject(with: objectID)
+            {
+                return managedObject as? Message
+            }
+            return nil
+        }
+        let messageIds = messages.map { $0.messageID }
+        let authCredential = messages.first(where: { $0.cachedAuthCredential != nil })?.cachedAuthCredential
+        sharedAPIService.PUT(MessageActionRequest(action: action, ids: messageIds), authCredential: authCredential, completion: completion)
     }
     
     private func emptyMessage(at location: MessageLocation, completion: CompletionBlock?) {
@@ -1227,10 +1252,19 @@ class MessageDataService {
             //start track status here :
             var status = SendStatus.justStart
             
+            let privKeys = message.cachedPrivateKeys ?? sharedUserDataService.addressPrivKeys
+            guard let authCredential = message.cachedAuthCredential ?? AuthCredential.fetchFromKeychain(),
+                let passphrase = message.cachedPassphrase ?? sharedUserDataService.mailboxPassword,
+                let addr = (message.cachedAddress ?? message.defaultAddress)?.keys.first else
+            {
+                errorBlock(nil, nil, NSError.lockError())
+                return
+            }
+
             var requests : [UserEmailPubKeys] = [UserEmailPubKeys]()
             let emails = message.allEmails
             for email in emails {
-                requests.append(UserEmailPubKeys(email: email))
+                requests.append(UserEmailPubKeys(email: email, authCredential: authCredential))
             }
             // is encrypt outside
             let isEO = !message.password.isEmpty
@@ -1257,7 +1291,7 @@ class MessageDataService {
                 status.insert(SendStatus.getBody)
                 //all prebuild errors need pop up from here
                 guard let bodyData = try message.split()?.dataPacket(),
-                        let session = try message.getSessionKey() else {
+                    let session = try message.getSessionKey(keys: privKeys, passphrase: passphrase) else {
                     throw RuntimeError.cant_decrypt.error
                 }
                 //Debug info
@@ -1292,7 +1326,7 @@ class MessageDataService {
                 status.insert(SendStatus.checkMimeAndPlainText)
 
                 if sendBuilder.hasMime || sendBuilder.hasPlainText {
-                    guard let clearbody = try message.decryptBody() else {
+                    guard let clearbody = try message.decryptBody(keys: privKeys, passphrase: passphrase) else {
                         throw RuntimeError.cant_decrypt.error
                     }
                     sendBuilder.set(clear: clearbody)
@@ -1302,7 +1336,7 @@ class MessageDataService {
                 
                 for att in attachments {
                     if att.managedObjectContext != nil {
-                        if let sessionPack = try att.getSession() {
+                        if let sessionPack = try att.getSession(keys: privKeys) {
                             sendBuilder.add(att: PreAttachment(id: att.attachmentID,
                                                                session: sessionPack.session(),
                                                                algo: sessionPack.algo(),
@@ -1325,10 +1359,9 @@ class MessageDataService {
                 status.insert(SendStatus.buildMime)
                 
                 //build pgp sending mime body
-                let addr = message.defaultAddress!.keys.first!
                 let privateKey = addr.private_key
                 let pubKey = addr.publicKey
-                return sendBuilder.buildMime(pubKey: pubKey, privKey: privateKey)
+                return sendBuilder.buildMime(pubKey: pubKey, privKey: privateKey, passphrase: passphrase, privKeys: privKeys)
             }.then{ (sendbuilder) -> Promise<SendBuilder> in
                 //Debug info
                 status.insert(SendStatus.checkPlainText)
@@ -1340,10 +1373,9 @@ class MessageDataService {
                 status.insert(SendStatus.buildPlainText)
                 
                 //build pgp sending mime body
-                let addr = message.defaultAddress!.keys.first!
                 let privateKey = addr.private_key
                 let pubKey = addr.publicKey
-                return sendBuilder.buildPlainText(pubKey: pubKey, privKey: privateKey)
+                return sendBuilder.buildPlainText(pubKey: pubKey, privKey: privateKey, passphrase: passphrase, privKeys: privKeys)
             } .then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
                 //Debug info
                 status.insert(SendStatus.initBuilders)
@@ -1373,8 +1405,8 @@ class MessageDataService {
                                           body: encodedBody,
                                           clearBody: sendBuilder.clearBodyPackage, clearAtts: sendBuilder.clearAtts,
                                           mimeDataPacket: sendBuilder.mimeBody, clearMimeBody: sendBuilder.clearMimeBodyPackage,
-                                          plainTextDataPacket : sendBuilder.plainBody, clearPlainTextBody : sendBuilder.clearPlainBodyPackage
-                )
+                                          plainTextDataPacket : sendBuilder.plainBody, clearPlainTextBody : sendBuilder.clearPlainBodyPackage,
+                                          authCredential: authCredential)
                 //Debug info
                 status.insert(SendStatus.sending)
                 
@@ -1423,6 +1455,10 @@ class MessageDataService {
                     //Debug info
                     status.insert(SendStatus.doneWithError)
                     
+                    #if DEBUG && !APP_EXTENSION
+                    (UIApplication.shared.delegate as? AppDelegate)?.onError(error: error!)
+                    #endif
+                    
                     if error?.code == 9001 {
                         //here need let user to show the human check.
                         sharedMessageQueue.isRequiredHumanCheck = true
@@ -1442,6 +1478,9 @@ class MessageDataService {
                 completion?(nil, nil, error)
             }.catch { (error) in
                 //Debug info
+                #if DEBUG && !APP_EXTENSION
+                (UIApplication.shared.delegate as? AppDelegate)?.onError(error: error as NSError)
+                #endif
                 status.insert(SendStatus.exceptionCatched)
                 
                 let err = error as NSError
@@ -1507,7 +1546,7 @@ class MessageDataService {
     // MARK: Notifications
     
     fileprivate func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(MessageDataService.didSignOutNotification(_:)), name: NSNotification.Name(rawValue: NotificationDefined.didSignOut), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MessageDataService.didSignOutNotification(_:)), name: NSNotification.Name.didSignOut, object: nil)
         // TODO: add monitoring for didBecomeActive
     }
     
@@ -1631,8 +1670,8 @@ class MessageDataService {
                     self.emptyMessage(at: .trash, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .emptySpam:
                     self.emptyMessage(at: .spam, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-                case .read, .unread: //1.9.1
-                    sharedAPIService.PUT(MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .read, .unread, .delete:
+                    self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .inbox:
                     self.labelMessage(.inbox, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .spam:
@@ -1645,8 +1684,7 @@ class MessageDataService {
                     self.labelMessage(.starred, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .unstar:
                     self.unLabelMessage(.starred, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-                case .delete:
-                    sharedAPIService.PUT(MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                
                 }
             } else {
                 PMLog.D(" Unsupported action \(actionString), removing from queue.")
@@ -1660,7 +1698,8 @@ class MessageDataService {
     
     
     fileprivate func queue(_ message: Message, action: MessageAction) {
-        if action == .saveDraft || action == .send {
+        self.cachePropertiesForBackground(in: message)
+        if action == .saveDraft || action == .send || action == .delete || action == .read || action == .unread {
             let _ = sharedMessageQueue.addMessage(message.objectID.uriRepresentation().absoluteString, action: action)
         } else {
             if message.managedObjectContext != nil && !message.messageID.isEmpty {
@@ -1676,6 +1715,7 @@ class MessageDataService {
     }
     
     fileprivate func queue(_ att: Attachment, action: MessageAction) {
+        self.cachePropertiesForBackground(in: att.message)
         let _ = sharedMessageQueue.addMessage(att.objectID.uriRepresentation().absoluteString, action: action)
         dequeueIfNeeded()
     }

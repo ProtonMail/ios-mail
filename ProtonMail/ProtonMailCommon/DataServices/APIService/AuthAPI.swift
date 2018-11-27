@@ -28,9 +28,7 @@ struct AuthKey {
 }
 
 struct Constants {
-    // FIXME: These values would be obtainable by inspecting the binary code, but to make thins a little more difficult, we probably don't want to these values visible when the source code is distributed.  We will probably want to come up with a way to pass in these values as pre-compiler macros.  Swift doesn't support pre-compiler macros, but we have Objective-C and can still use them.  The values would be passed in by the build scripts at build time.  Or, these values could be cleared before publishing the code.
     static let clientID = "iOS"
-    static let clientSecret = "db85d1c1a3021b8371ebdedd6f2fe354"
     static let rediectURL = "https://protonmail.ch"
 }
 
@@ -46,7 +44,6 @@ final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
             AuthKey.clientID : Constants.clientID,
-            AuthKey.clientSecret : Constants.clientSecret,
             AuthKey.userName : username
         ]
         return out
@@ -126,7 +123,6 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = [
             AuthKey.clientID : Constants.clientID,
-            AuthKey.clientSecret : Constants.clientSecret,
             AuthKey.userName : username,
             
             AuthKey.ephemeral : clientEphemeral,

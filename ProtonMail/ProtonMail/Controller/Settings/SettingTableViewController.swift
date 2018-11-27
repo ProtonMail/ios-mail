@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import LocalAuthentication
 import MBProgressHUD
+import Keymaker
 
 class SettingTableViewController: ProtonMailViewController {
     
@@ -43,7 +43,7 @@ class SettingTableViewController: ProtonMailViewController {
                                                             10, 15, 30, 60]
     
     var multi_domains: [Address]!
-    var userInfo = sharedUserDataService.userInfo
+    var userInfo: UserInfo = sharedUserDataService.userInfo!
     
     /// segues
     let NotificationSegue:String      = "setting_notification"
@@ -67,7 +67,6 @@ class SettingTableViewController: ProtonMailViewController {
     let HeaderCell                    = "header_cell"
     let SingleTextCell                = "single_text_cell"
     let SwitchCell                    = "switch_table_view_cell"
-    let kTouchIDCell                  = "touch_id_switch_table_cell"
     
     //
     let CellHeight : CGFloat = 30.0
@@ -105,7 +104,7 @@ class SettingTableViewController: ProtonMailViewController {
             setting_general_items.append(.notificationsSnooze)
         }
         
-        userInfo = sharedUserDataService.userInfo
+        userInfo = sharedUserDataService.userInfo!
         multi_domains = sharedUserDataService.userAddresses
         UIView.setAnimationsEnabled(false)
         settingTableView.reloadData()
@@ -226,7 +225,7 @@ class SettingTableViewController: ProtonMailViewController {
                     case .notifyEmail:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description
-                        cell.RightText.text = userInfo?.notificationEmail
+                        cell.RightText.text = userInfo.notificationEmail
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .loginPWD, .mbp, .singlePWD:
@@ -249,7 +248,7 @@ class SettingTableViewController: ProtonMailViewController {
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
                         cell.accessoryType = UITableViewCell.AccessoryType.none
                         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-                        cell.configCell(itme.description, bottomLine: "", status: sharedUserDataService.autoLoadRemoteImages, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
+                        cell.configCell(itme.description, bottomLine: "", status: userInfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
                                     let view = UIApplication.shared.keyWindow
@@ -287,38 +286,13 @@ class SettingTableViewController: ProtonMailViewController {
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
                                     if !userCachedStatus.isTouchIDEnabled {
-                                        // try to enable touch id
-                                        let context = LAContext()
-                                        // Declare a NSError variable.
-                                        var error: NSError?
-                                        // Check if the device can evaluate the policy.
-                                        if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-                                            userCachedStatus.isTouchIDEnabled = true
-                                            userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
+                                        // Enable Bio
+                                        keymaker.activate(BioProtection()) { _ in
                                             self.updateTableProtectionSection()
                                         }
-                                        else{
-                                            var alertString : String = ""
-                                            // If the security policy cannot be evaluated then show a short message depending on the error.
-                                            switch error!.code{
-                                            case LAError.Code.touchIDNotEnrolled.rawValue:
-                                                alertString = LocalString._general_touchid_not_enrolled
-                                            case LAError.Code.passcodeNotSet.rawValue:
-                                                alertString = LocalString._general_passcode_not_set
-                                            case -6:
-                                                alertString = error?.localizedDescription ?? LocalString._general_touchid_not_available
-                                            default:
-                                                // The LAError.TouchIDNotAvailable case.
-                                                alertString = LocalString._general_touchid_not_available
-                                            }
-                                            PMLog.D(alertString)
-                                            PMLog.D("\(String(describing: error?.localizedDescription))")
-                                            alertString.alertToast()
-                                            feedback(false)
-                                        }
                                     } else {
-                                        userCachedStatus.isTouchIDEnabled = false
-                                        userCachedStatus.touchIDEmail = ""
+                                        // Disable Bio
+                                        keymaker.deactivate(BioProtection())
                                         self.updateTableProtectionSection()
                                     }
                                 } else {
@@ -339,7 +313,7 @@ class SettingTableViewController: ProtonMailViewController {
                                     if !userCachedStatus.isPinCodeEnabled {
                                         self.performSegue(withIdentifier: self.kSetupPinCodeSegue, sender: self)
                                     } else {
-                                        userCachedStatus.isPinCodeEnabled = false
+                                        keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
                                         feedback(true)
                                         self.updateTableProtectionSection()
                                     }
@@ -373,10 +347,7 @@ class SettingTableViewController: ProtonMailViewController {
                         })
                         cellout = cell
                     case .enterTime:
-                        var timeIndex : Int = -1
-                        if let t = Int(userCachedStatus.lockTime) {
-                            timeIndex = t
-                        }
+                        let timeIndex = userCachedStatus.lockTime.rawValue
                         var text = String(format: LocalString._settings_auto_lock_minutes, timeIndex)
                         if timeIndex == -1 {
                             text = LocalString._general_none
@@ -418,10 +389,10 @@ class SettingTableViewController: ProtonMailViewController {
                     case .displayName:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = address_item.description
-                        if let addr = sharedUserDataService.userAddresses.defaultAddress() {
+                        if let addr = userInfo.userAddresses.defaultAddress() {
                             cell.RightText.text = addr.display_name
                         } else {
-                            cell.RightText.text = sharedUserDataService.displayName
+                            cell.RightText.text = userInfo.displayName.decodeHtml()
                         }
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
@@ -441,7 +412,7 @@ class SettingTableViewController: ProtonMailViewController {
                 if indexPath.row < setting_swipe_action_items.count {
                     let actionItem = setting_swipe_action_items[indexPath.row]
                     let cell = tableView.dequeueReusableCell(withIdentifier: SettingDomainsCell, for: indexPath) as! DomainsTableViewCell
-                    let action = actionItem == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
+                    let action = actionItem == .left ? userInfo.swipeLeftAction : userInfo.swipeRightAction
                     cell.domainText.text = actionItem.description
                     cell.defaultMark.text = action?.description
                     cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
@@ -449,8 +420,8 @@ class SettingTableViewController: ProtonMailViewController {
                 }
             case .storage:
                 let cell = tableView.dequeueReusableCell(withIdentifier: SettingStorageCell, for: indexPath) as! StorageViewCell
-                let usedSpace = sharedUserDataService.usedSpace
-                let maxSpace = sharedUserDataService.maxSpace
+                let usedSpace = userInfo.usedSpace
+                let maxSpace = userInfo.maxSpace
                 cell.setValue(usedSpace, maxSpace: maxSpace)
                 cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 cellout = cell
@@ -594,7 +565,7 @@ class SettingTableViewController: ProtonMailViewController {
                             }
                             alertController.addAction(UIAlertAction(title: text, style: .default, handler: { (action) -> Void in
                                 let _ = self.navigationController?.popViewController(animated: true)
-                                userCachedStatus.lockTime = "\(timeIndex)"
+                                userCachedStatus.lockTime = AutolockTimeout(rawValue: timeIndex)
                                 tableView.reloadData()
                             }))
                         }
@@ -677,7 +648,7 @@ class SettingTableViewController: ProtonMailViewController {
                     let alertController = UIAlertController(title: action_item.actionDescription, message: nil, preferredStyle: .actionSheet)
                     alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                     
-                    let currentAction = action_item == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
+                    let currentAction = action_item == .left ? userInfo.swipeLeftAction : userInfo.swipeRightAction
                     for swipeAction in setting_swipe_actions {
                         if swipeAction != currentAction {
                             alertController.addAction(UIAlertAction(title: swipeAction.description, style: .default, handler: { (action) -> Void in

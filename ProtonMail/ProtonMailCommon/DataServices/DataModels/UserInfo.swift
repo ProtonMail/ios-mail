@@ -65,6 +65,12 @@ final class UserInfo : NSObject {
     var swipeLeft : Int = 3
     var swipeRight : Int = 0
     
+    var swipeLeftAction: MessageSwipeAction! {
+        return MessageSwipeAction(rawValue: self.swipeLeft)
+    }
+    var swipeRightAction: MessageSwipeAction! {
+        return MessageSwipeAction(rawValue: self.swipeRight)
+    }
     
     //1.9.1 user settings
     var notificationEmail: String = ""

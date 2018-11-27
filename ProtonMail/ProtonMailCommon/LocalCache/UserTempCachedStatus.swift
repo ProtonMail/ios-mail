@@ -8,6 +8,7 @@
 
 import Foundation
 import UICKeyChainStore
+import Keymaker
 
 let userDebugCached =  SharedCacheBase.getDefault()
 class UserTempCachedStatus: NSObject, NSCoding {
@@ -74,13 +75,13 @@ class UserTempCachedStatus: NSObject, NSCoding {
     
     
     class func backup () {
-        if UserTempCachedStatus.fetchFromKeychain() == nil && sharedUserDataService.isSignedIn {
+        if UserTempCachedStatus.fetchFromKeychain() == nil {
             let u = UserTempCachedStatus(
                 lastLoggedInUser: sharedUserDataService.username,
-                touchIDEmail: userCachedStatus.touchIDEmail,
+                touchIDEmail: "FIXME",
                 isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
-                pinCodeCache: userCachedStatus.pinCode,
-                autoLockTime: userCachedStatus.lockTime,
+                pinCodeCache: "FIXME",
+                autoLockTime: "\(userCachedStatus.lockTime.rawValue)",
                 showMobileSignature: sharedUserDataService.showMobileSignature,
                 localMobileSignature: userCachedStatus.mobileSignature)
             u.storeInKeychain()
@@ -90,10 +91,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
     class func restore() {
         if let cache = UserTempCachedStatus.fetchFromKeychain() {
             if sharedUserDataService.username == cache.lastLoggedInUser {
-                userCachedStatus.touchIDEmail = cache.touchIDEmail ?? ""
-                userCachedStatus.isPinCodeEnabled = cache.isPinCodeEnabled
-                userCachedStatus.pinCode = cache.pinCodeCache ?? ""
-                userCachedStatus.lockTime = cache.autoLockTime ?? "-1"
+                userCachedStatus.lockTime = AutolockTimeout(rawValue: Int(cache.autoLockTime) ?? -1)
                 sharedUserDataService.showMobileSignature = cache.showMobileSignature
                 userCachedStatus.mobileSignature = cache.localMobileSignature ?? ""
             }
@@ -104,12 +102,12 @@ class UserTempCachedStatus: NSObject, NSCoding {
     
     func storeInKeychain() {
         userCachedStatus.isForcedLogout = false
-        sharedKeychain.keychain().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
+        sharedKeychain.keychain.setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
     }
     
     // MARK - Class methods
     class func clearFromKeychain() {
-        sharedKeychain.keychain().removeItem(forKey: Key.keychainStore) //newer version
+        sharedKeychain.keychain.removeItem(forKey: Key.keychainStore) //newer version
     }
     
     class func fetchFromKeychain() -> UserTempCachedStatus? {

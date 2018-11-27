@@ -1,3 +1,6 @@
+
+
+
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '9.0'
@@ -32,8 +35,6 @@ def common_pods
     pod 'PromiseKit', '~> 6.0'
     pod 'AwaitKit', '~> 5.0.0'
     #pod 'ReachabilitySwift' #use this later
-    
-    pod 'SwiftSoup', '~> 1.7.5'
 end
 
 #target 'ProtonMail','ProtonMailDev','ProtonMailTests'
@@ -81,8 +82,9 @@ target 'ProtonMailDev' do
 end
 
 target 'ProtonMailTests' do
-	pm_pods
-    
+    inherit! :search_paths
+    pod 'OpenPGP', :path => '../OpenPGP'
+    pod 'AFNetworking', '3.2.1'
     pod 'OHHTTPStubs/Swift'
 end
 
@@ -92,6 +94,16 @@ end
 
 target 'ShareDev' do
     pm_extensions
+end
+
+target 'Keymaker' do
+    pod 'UICKeyChainStore', '2.1.1'
+    pod 'CryptoSwift', '0.12.0'
+    pod 'EllipticCurveKeyPair', '1.0.2'
+end
+
+target 'KeymakerTests' do
+    inherit! :search_paths
 end
 
 post_install do | installer |

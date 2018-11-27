@@ -51,7 +51,7 @@ class CoreDataService {
     // MARK: - methods
     
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
-        if let url = URL(string: urlString) {
+        if let url = URL(string: urlString), url.scheme == "x-coredata" {
             return persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url)
         }
         return nil
@@ -72,18 +72,26 @@ class CoreDataService {
         return managedObjectContext
     }
     
+    class var dbUrl: URL {
+        return FileManager.default.appGroupsDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
+    }
+    class var modelBundle: Bundle {
+        return Bundle(url: Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!)!
+    }
+    
     func newPersistentStoreCoordinator(_ managedObjectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        guard let containerUrl = FileManager.default.appGroupsDirectoryURL else {
-            //TODO::fix later need add error
-            PMLog.D("Can't find the group")
-            return nil
-        }
-        var url = containerUrl.appendingPathComponent("ProtonMail.sqlite")
+
+        var url = CoreDataService.dbUrl
         do {
-            try coordinator?.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
+            let options: [AnyHashable: Any] = [
+                NSInferMappingModelAutomaticallyOption: NSNumber(booleanLiteral: true)
+            ]
+            try coordinator?.addPersistentStore(ofType: NSSQLiteStoreType,
+                                                configurationName: nil,
+                                                at: url,
+                                                options: options)
             url.excludeFromBackup()
-            //TODO:: need to handle empty instead of !
         } catch let ex as NSError {
             if (ex.domain == "NSCocoaErrorDomain" && ex.code == 134100) {
                 do {

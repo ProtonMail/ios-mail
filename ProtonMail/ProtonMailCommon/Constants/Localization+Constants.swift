@@ -834,6 +834,9 @@ class LocalizedString {
 
     /// "Unable to parse token"
     lazy var _unable_to_parse_token = NSLocalizedString("Unable to parse token", comment: "Error")
+    
+    /// "Unable to parse token"
+    lazy var _app_is_locked = NSLocalizedString("App is locked", comment: "Error")
 
     /// "Unable to parse authentication token!"
     lazy var _unable_to_parse_authentication_token = NSLocalizedString("Unable to parse authentication token!", comment: "Description")
@@ -864,6 +867,9 @@ class LocalizedString {
 
     /// "Unable to parse cased authentication token!"
     lazy var _unable_to_parse_cased_authentication_token = NSLocalizedString("Unable to parse cased authentication token!", comment: "Description")
+    
+    /// "Authentication token is not accessible because the app is locked"
+    lazy var _authentication_token_is_locked = NSLocalizedString("Authentication token is not accessible because the app is locked", comment: "Description")
 
     /// "Bad auth cache"
     lazy var _bad_auth_cache = NSLocalizedString("Bad auth cache", comment: "Error")
@@ -1638,7 +1644,12 @@ class LocalizedString {
     lazy var _iap_bugreport_yes = NSLocalizedString("Yes, attach details of payment", comment: "Error message")
     
     lazy var _iap_bugreport_no = NSLocalizedString("No, not related to in-app purchase", comment: "Error message")
-    
+
+    lazy var _unlock_to_proceed_with_iap = NSLocalizedString("Please unlock the app to proceed with your service plan activation", comment: "Error message")
+
+    lazy var _please_sign_in_iap = NSLocalizedString("Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.", comment: "Error message")
+
+
     // Mark : Force Upgrade
     
     /// "Update Required"

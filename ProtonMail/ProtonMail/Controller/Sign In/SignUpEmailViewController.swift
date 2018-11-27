@@ -110,91 +110,39 @@ class SignUpEmailViewController: UIViewController {
         let email = (recoveryEmailField.text ?? "").trim()
         if email.isEmpty {
             // show a warning
-            let alertController = UIAlertController(
-                title: LocalString._recovery_email_warning,
-                message: LocalString._warning_did_not_set_a_recovery_email_so_account_recovery_is_impossible,
-                preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .default, handler: { action in
-                
-            }))
-            alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action, style: .destructive, handler: { action in
-                if (!email.isEmpty && !email.isValidEmail()) {
-                    let alert = LocalString._please_input_a_valid_email_address.alertController()
-                    alert.addOKAction()
-                    self.present(alert, animated: true, completion: nil)
-                } else {
-                    if self.doneClicked {
-                        return
-                    }
-                    self.doneClicked = true
-                    MBProgressHUD.showAdded(to: self.view, animated: true)
-                    self.dismissKeyboard()
-                    self.viewModel.setRecovery(self.checkButton.isSelected, email: self.recoveryEmailField.text!, displayName: self.displayNameField.text!)
-                    DispatchQueue.main.async(execute: { () -> Void in
-                        MBProgressHUD.hide(for: self.view, animated: true)
-                        self.doneClicked = false
-                        self.moveToInbox()
-                    })
-                }
+            let alertController = UIAlertController(title: LocalString._recovery_email_warning,
+                                                    message: LocalString._warning_did_not_set_a_recovery_email_so_account_recovery_is_impossible,
+                                                    preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .default, handler: { _ in }))
+            alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action, style: .destructive, handler: { _ in
+                self.proceedWithRegistration(email, orAlertIf: !email.isEmpty && !email.isValidEmail())
             }))
             self.present(alertController, animated: true, completion: nil)
         } else {
-            if (!email.isValidEmail()) {
-                let alert = LocalString._please_input_a_valid_email_address.alertController()
-                alert.addOKAction()
-                self.present(alert, animated: true, completion: nil)
-            } else {
-                if self.doneClicked {
-                    return
-                }
-                self.doneClicked = true
-                MBProgressHUD.showAdded(to: self.view, animated: true)
-                self.dismissKeyboard()
-                self.viewModel.setRecovery(self.checkButton.isSelected, email: self.recoveryEmailField.text!, displayName: self.displayNameField.text!)
-                DispatchQueue.main.async(execute: { () -> Void in
-                    MBProgressHUD.hide(for: self.view, animated: true)
-                    self.doneClicked = false
-                    self.moveToInbox()
-                })
+            self.proceedWithRegistration(email, orAlertIf: !email.isValidEmail())
+        }
+    }
+    
+    private func proceedWithRegistration(_ email: String, orAlertIf condition: @autoclosure ()->Bool) {
+        if condition() {
+            let alert = LocalString._please_input_a_valid_email_address.alertController()
+            alert.addOKAction()
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            if self.doneClicked {
+                return
             }
+            self.doneClicked = true
+            MBProgressHUD.showAdded(to: self.view, animated: true)
+            self.dismissKeyboard()
+            self.viewModel.setRecovery(self.checkButton.isSelected, email: self.recoveryEmailField.text!, displayName: self.displayNameField.text!)
+            DispatchQueue.main.async(execute: { () -> Void in
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.doneClicked = false
+                UnlockManager.shared.unlockIfRememberedCredentials { }
+            })
         }
     }
-    
-    fileprivate func moveToInbox() {
-        sharedUserDataService.isSignedIn = true
-//        if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
-//            sharedOpenPGP.setAddresses(addresses);
-//        }
-        self.loadContent()
-    }
-    
-    fileprivate func loadContent() {
-        logUser()
-        userCachedStatus.pinFailedCount = 0;
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: self)
-        (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-        loadContactsAfterInstall()
-    }
-    
-    func logUser() {
-        if  let username = sharedUserDataService.username {
-            Crashlytics.sharedInstance().setUserIdentifier(username)
-            Crashlytics.sharedInstance().setUserName(username)
-        }
-    }
-    
-    func loadContactsAfterInstall()
-    {
-        sharedUserDataService.fetchUserInfo().done() { _ in }.catch { _ in }
-        sharedContactDataService.fetchContacts { (contacts, error) in
-            if error != nil {
-                PMLog.D("\(String(describing: error))")
-            } else {
-                PMLog.D("Contacts count: \(contacts!.count)")
-            }
-        }
-    }
-
     
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
         dismissKeyboard()

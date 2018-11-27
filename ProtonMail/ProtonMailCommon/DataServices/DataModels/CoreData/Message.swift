@@ -47,9 +47,9 @@ final public class Message: NSManagedObject {
     //"Sender": { "Address":"", "Name":"" }
     @NSManaged public var sender: String?
     @available(*, deprecated, message: "double check if ok to remove")
-    @NSManaged public var senderAddress: String
+    @NSManaged public var senderAddress: String?
     @available(*, deprecated, message: "double check if ok to remove")
-    @NSManaged public var senderName: String
+    @NSManaged public var senderName: String?
     //"ReplyTos": [{"Address":"", "Name":""}]
     @NSManaged public var replyTos: String?
     //"ToList":[ { "Address":"", "Name":"", "Group": ""} ]
@@ -115,8 +115,34 @@ final public class Message: NSManagedObject {
     @NSManaged public var messageStatus : NSNumber  // bit 0x00000000 no metadata  0x00000001 has
     
     @NSManaged public var isShowedImages : Bool
+
+    @NSManaged public var cachedPassphraseRaw: NSData? // transient
+    @NSManaged public var cachedPrivateKeysRaw: NSData? // transient
+    @NSManaged public var cachedAuthCredentialRaw: NSData? // transient // TODO: can this be kind of transient relatioship?
+    @NSManaged public var cachedAddressRaw: NSData? // transient // TODO: addresses can also be in db, but currently they are received from UserInfo singleton via message.defaultAddress getter
     
-    /// temp cache memory only
+    var cachedPassphrase: String? {
+        get {
+            guard let raw = self.cachedPassphraseRaw as Data? else { return nil }
+            return String(data: raw, encoding: .utf8)
+        }
+        set { self.cachedPassphraseRaw = newValue?.data(using: .utf8) as NSData? }
+    }
+    
+    var cachedAuthCredential: AuthCredential? {
+        get { return AuthCredential.unarchive(data: self.cachedAuthCredentialRaw) }
+        set { self.cachedAuthCredentialRaw = newValue?.archive() as NSData? }
+    }
+    var cachedPrivateKeys: Data? {
+        get { return self.cachedPrivateKeysRaw as Data? }
+        set { self.cachedPrivateKeysRaw = newValue as NSData? }
+    }
+    var cachedAddress: Address? {
+        get { return Address.unarchive(self.cachedAddressRaw as Data?) }
+        set { self.cachedAddressRaw = newValue?.archive() as NSData? }
+    }
+    
+    //temp cache memory only
     var checkingSign : Bool = false
     var checkedSign : Bool = false
     var pgpType : PGPType = .none

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Keymaker
 
 class SetPinCodeModelImpl : PinCodeViewModel {
     
@@ -54,19 +55,20 @@ class SetPinCodeModelImpl : PinCodeViewModel {
         return currentStep
     }
     
-    override func isPinMatched() -> Bool {
+    override func isPinMatched(completion: @escaping (Bool)->Void) {
         if !enterPin.isEmpty && !reEnterPin.isEmpty && reEnterPin == enterPin {
-            return true
+            completion(true)
         } else {
             currentStep = .reEnterPin
-            return false
+            completion(false)
         }
     }
     
-    override func done() {
-        if self.isPinMatched() {
-            userCachedStatus.isPinCodeEnabled = true
-            userCachedStatus.pinCode = self.enterPin
+    override func done(completion: @escaping (Bool)->Void) {
+        self.isPinMatched() { matched in
+            if matched {
+                keymaker.activate(PinProtection(pin: self.enterPin), completion: completion)
+            }
         }
     }
     

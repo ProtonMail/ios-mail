@@ -200,7 +200,7 @@ class CreateDraft : ApiRequest<MessageResponse> {
             "Subject" : message.title,
             "Unread" : message.unRead]
         
-        let fromaddr = message.fromAddress ?? message.defaultAddress
+        let fromaddr = message.fromAddress ?? message.cachedAddress ?? message.defaultAddress
         let name = fromaddr?.display_name ?? "unknow"
         let address = fromaddr?.email ?? "unknow"
         
@@ -250,6 +250,11 @@ class CreateDraft : ApiRequest<MessageResponse> {
 
 /// message update draft api request
 final class UpdateDraft : CreateDraft {
+    
+    convenience init(message: Message!, authCredential: AuthCredential? = nil) {
+        self.init(message: message)
+        self.authCredential = authCredential
+    }
     
     override func path() -> String {
         return MessageAPI.path + "/" + message.messageID + AppConstants.DEBUG_OPTION
@@ -352,7 +357,8 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
          messagePackage: [AddressPackageBase]!, body : String,
          clearBody : ClearBodyPackage?, clearAtts: [ClearAttachmentPackage]?,
          mimeDataPacket : String, clearMimeBody : ClearBodyPackage?,
-         plainTextDataPacket : String, clearPlainTextBody : ClearBodyPackage?) {
+         plainTextDataPacket : String, clearPlainTextBody : ClearBodyPackage?,
+         authCredential: AuthCredential?) {
         self.messageID = messageID
         self.messagePackage = messagePackage
         self.body = body
@@ -365,6 +371,10 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
         
         self.plainTextDataPacket = plainTextDataPacket
         self.clearPlainTextBody = clearPlainTextBody
+        
+        super.init()
+        
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {

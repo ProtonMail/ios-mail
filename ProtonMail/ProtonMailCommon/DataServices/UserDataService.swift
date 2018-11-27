@@ -17,8 +17,8 @@
 import Foundation
 import AwaitKit
 import PromiseKit
+import Keymaker
 import Crypto
-
 
 //TODO:: this class need suport mutiple user later
 protocol UserDataServiceDelegate {
@@ -60,24 +60,44 @@ class UserDataService {
     var delegate : UserDataServiceDelegate?
     
     struct Key {
-        static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
-        static let isRememberUser            = "isRememberUserKey"
-        static let mailboxPassword           = "mailboxPasswordKey"
+        
+        
+        static let mailboxPassword           = "mailboxPasswordKeyProtectedWithMainKey"
         static let username                  = "usernameKey"
-        static let password                  = "passwordKey"
-        static let userInfo                  = "userInfoKey"
+        
+        static let userInfo                  = "userInfoKeyProtectedWithMainKey"
         static let twoFAStatus               = "twofaKey"
         static let userPasswordMode          = "userPasswordModeKey"
         
         static let roleSwitchCache           = "roleSwitchCache"
         static let defaultSignatureStatus    = "defaultSignatureStatus"
+        
+        static let firstRunKey = "FirstRunKey"
     }
     
     // MARK: - Private variables
-    //TODO::Fix later fileprivate(set)
-    fileprivate(set) var userInfo: UserInfo? = SharedCacheBase.getDefault().customObjectForKey(Key.userInfo) as? UserInfo {
-        didSet {
-            SharedCacheBase.getDefault().setCustomValue(userInfo, forKey: Key.userInfo)
+    fileprivate(set) var userInfo: UserInfo? {
+        get {
+            guard let mainKey = keymaker.mainKey,
+                let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.userInfo) else
+            {
+                return nil
+            }
+            
+            let locked = Locked<UserInfo>(encryptedValue: cypherData)
+            return try? locked.unlock(with: mainKey)
+        }
+        set {
+            guard let newValue = newValue else {
+                SharedCacheBase.getDefault()?.removeObject(forKey: Key.userInfo)
+                return
+            }
+            guard let mainKey = keymaker.mainKey,
+                let locked = try? Locked<UserInfo>(clearValue: newValue, with: mainKey) else
+            {
+                return
+            }
+            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: Key.userInfo)
             SharedCacheBase.getDefault().synchronize()
         }
     }
@@ -89,24 +109,6 @@ class UserDataService {
         }
     }
     
-    // Value is only stored in the keychain
-    var password: String? {
-        get {
-            do {
-                let savedPwd = sharedKeychain.keychain().string(forKey: Key.password)
-                return try savedPwd?.decrypt(withPwd: "$Proton$" + Key.password)
-            }catch {
-                return nil
-            }
-        }
-        set {
-            do {
-                let nv = try newValue?.encrypt(withPwd: "$Proton$" + Key.password)
-                sharedKeychain.keychain().setString(nv, forKey: Key.password)
-            }catch {
-            }
-        }
-    }
     
     var switchCacheOff: Bool? = SharedCacheBase.getDefault().bool(forKey: Key.roleSwitchCache) {
         didSet {
@@ -248,16 +250,12 @@ class UserDataService {
         return displayName;
     }
     
-    var swiftLeft : MessageSwipeAction! {
-        get {
-            return MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 3) ?? .archive
-        }
+    var swiftLeft : MessageSwipeAction {
+        return userInfo?.swipeLeftAction ?? .archive
     }
     
-    var swiftRight : MessageSwipeAction! {
-        get {
-            return MessageSwipeAction(rawValue: userInfo?.swipeRight ?? 0) ?? .trash
-        }
+    var swiftRight : MessageSwipeAction {
+        return userInfo?.swipeRightAction ?? .trash
     }
     
     var userAddresses: [Address] { //never be null
@@ -269,50 +267,36 @@ class UserDataService {
     }
     
     var isMailboxPasswordStored: Bool {
-        
-        isMailboxPWDOk = mailboxPassword != nil;
-        
         return mailboxPassword != nil
     }
     
-    var isRememberMailboxPassword: Bool = SharedCacheBase.getDefault().bool(forKey: Key.isRememberMailboxPassword) {
-        didSet {
-            SharedCacheBase.getDefault().set(isRememberMailboxPassword, forKey: Key.isRememberMailboxPassword)
-            SharedCacheBase.getDefault().synchronize()
-        }
-    }
-    
-    var isRememberUser: Bool = SharedCacheBase.getDefault().bool(forKey: Key.isRememberUser) {
-        didSet {
-            SharedCacheBase.getDefault().set(isRememberUser, forKey: Key.isRememberUser)
-            SharedCacheBase.getDefault().synchronize()
-        }
-    }
-    
-    var isSignedIn: Bool = false
     var isNewUser : Bool = false
-    var isMailboxPWDOk: Bool = false
     
     var isUserCredentialStored: Bool {
-        return username != nil && password != nil && isRememberUser
+        return self.username != nil
     }
     
     /// Value is only stored in the keychain
     var mailboxPassword: String? {
         get {
-            do {
-                let savedPwd = sharedKeychain.keychain().string(forKey: Key.mailboxPassword)
-                return try savedPwd?.decrypt(withPwd: "$Proton$" + Key.mailboxPassword)
-            }catch {
+            guard let cypherBits = sharedKeychain.keychain.data(forKey: Key.mailboxPassword),
+                let key = keymaker.mainKey else
+            {
                 return nil
             }
+            let locked = Locked<String>(encryptedValue: cypherBits)
+            return try? locked.unlock(with: key)
         }
         set {
-            do {
-                let nv = try newValue?.encrypt(withPwd: "$Proton$" + Key.mailboxPassword)
-                sharedKeychain.keychain().setString(nv, forKey: Key.mailboxPassword)
-            }catch {
+            guard let newValue = newValue,
+                let key = keymaker.mainKey,
+                let locked = try? Locked<String>(clearValue: newValue, with: key) else
+            {
+                sharedKeychain.keychain.removeItem(forKey: Key.mailboxPassword)
+                return
             }
+            
+            sharedKeychain.keychain.setData(locked.encryptedValue, forKey: Key.mailboxPassword)
         }
     }
     
@@ -413,15 +397,10 @@ class UserDataService {
         return privateKey.check(passphrase: password)
     }
     
-    func setMailboxPassword(_ password: String, keysalt: String?, isRemembered: Bool) {
+    func setMailboxPassword(_ password: String, keysalt: String?) {
         mailboxPassword = password
-        isRememberMailboxPassword = isRemembered
-        self.isMailboxPWDOk = true;
     }
     
-    func isPasswordValid(_ password: String?) -> Bool {
-        return self.password == password
-    }
     
     func signIn(_ username: String, password: String, twoFACode: String?, ask2fa: @escaping LoginAsk2FABlock, onError:@escaping LoginErrorBlock, onSuccess: @escaping LoginSuccessBlock) {
         sharedAPIService.auth(username, password: password, twoFACode: twoFACode) { task, mpwd, status, error in
@@ -430,10 +409,7 @@ class UserDataService {
                 ask2fa()
             } else {
                 if error == nil {
-                    self.isSignedIn = true
                     self.username = username
-                    self.password = password
-                    self.isRememberUser = true
                     self.passwordMode = mpwd != nil ? 1 : 2
                     
                     onSuccess(mpwd)
@@ -462,11 +438,10 @@ class UserDataService {
                 
             }
         }
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignOut), object: self)
+        NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
         clearAll()
         clearAuthToken()
         delegate?.onLogout(animated: animated)
-        //(UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     
     func signOutAfterSignUp() {
@@ -476,7 +451,7 @@ class UserDataService {
                 
             }
         }
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignOut), object: self)
+        NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
         clearAll()
         clearAuthToken()
     }
@@ -610,7 +585,6 @@ class UserDataService {
                                                                 verifer: verifier.encodeBase64(),
                                                                 tfaCode: twoFACode).syncCall()
                         if updatePwd?.code == 1000 {
-                            self.password = new_password
                             forceRetry = false
                         } else {
                             throw UpdatePasswordError.default.error
@@ -896,26 +870,23 @@ class UserDataService {
     // MARK: - Private methods
     
     func cleanUpIfFirstRun() {
-        let firstRunKey = "FirstRunKey"
-        if SharedCacheBase.getDefault().object(forKey: firstRunKey) == nil {
+        #if !APP_EXTENSION
+        if AppVersion.isFirstRun() {
             clearAll()
-            SharedCacheBase.getDefault().set(Date(), forKey: firstRunKey)
+            SharedCacheBase.getDefault().set(Date(), forKey: Key.firstRunKey)
             SharedCacheBase.getDefault().synchronize()
+            AppVersion.lastMigratedTo = AppVersion.current
         }
+        #endif
     }
     
     func clearAll() {
-        isSignedIn = false
-        
-        isRememberUser = false
-        password = nil
         username = nil
-        
-        isRememberMailboxPassword = false
         mailboxPassword = nil
         userInfo = nil
         twoFactorStatus = 0
         passwordMode = 2
+        keymaker.wipeMainKey()
     }
     
     func clearAuthToken() {
@@ -940,15 +911,9 @@ class UserDataService {
     }
     
     func launchCleanUp() {
-        if !self.isRememberUser {
-            username = nil
-            password = nil
+        if username == nil {
             twoFactorStatus = 0
             passwordMode = 2
-        }
-        
-        if !isRememberMailboxPassword {
-            mailboxPassword = nil
         }
     }
     
@@ -964,3 +929,10 @@ class UserDataService {
     }
 }
 
+#if !APP_EXTENSION
+extension AppVersion {
+    static func inject(userInfo: UserInfo, into userDataService: UserDataService) {
+        userDataService.userInfo = userInfo
+    }
+}
+#endif

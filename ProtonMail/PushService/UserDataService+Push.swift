@@ -16,6 +16,18 @@
 
 import Foundation
 
+
+
+
+
+
+// LETS GET RID OF THIS!
+
+
+
+
+
+
 /// Stores information related to the user
 class UserDataService {
 
@@ -53,7 +65,7 @@ class UserDataService {
     var password: String? {
         get {
             do {
-                let savedPwd = sharedKeychain.keychain().string(forKey: Key.password)
+                let savedPwd = sharedKeychain.keychain.string(forKey: Key.password)
                 return try savedPwd?.decrypt(withPwd: "$Proton$" + Key.password)
             }catch {
                 return nil
@@ -62,7 +74,7 @@ class UserDataService {
         set {
             do {
                 let nv = try newValue?.encrypt(withPwd: "$Proton$" + Key.password)
-                sharedKeychain.keychain().setString(nv, forKey: Key.password)
+                sharedKeychain.keychain.setString(nv, forKey: Key.password)
             }catch {
             }
         }
@@ -92,7 +104,7 @@ class UserDataService {
     var mailboxPassword: String? {
         get {
             do {
-                let savedPwd = sharedKeychain.keychain().string(forKey: Key.mailboxPassword)
+                let savedPwd = sharedKeychain.keychain.string(forKey: Key.mailboxPassword)
                 return try savedPwd?.decrypt(withPwd: "$Proton$" + Key.mailboxPassword)
             }catch {
                 return nil
@@ -101,7 +113,7 @@ class UserDataService {
         set {
             do {
                 let nv = try newValue?.encrypt(withPwd: "$Proton$" + Key.mailboxPassword)
-                sharedKeychain.keychain().setString(nv, forKey: Key.mailboxPassword)
+                sharedKeychain.keychain.setString(nv, forKey: Key.mailboxPassword)
             }catch {
             }
         }

@@ -25,9 +25,7 @@ class MenuViewModelImpl : MenuViewModel {
     fileprivate var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
     
     override func setupMenu() {
-        if (!userCachedStatus.isPinCodeEnabled || userCachedStatus.pinCode.isEmpty),
-            (!userCachedStatus.isTouchIDEnabled || userCachedStatus.touchIDEmail.isEmpty)
-        {
+        if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {
             otherItems = otherItems.filter { $0 != .lockapp }
         }
         if !ServicePlanDataService.shared.isIAPAvailable || Bundle.main.bundleIdentifier != "ch.protonmail.protonmail" {

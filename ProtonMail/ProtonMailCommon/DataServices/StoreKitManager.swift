@@ -140,6 +140,8 @@ extension StoreKitManager {
         case noActiveUsernameInUserDataService
         case transactionFailedByUnknownReason
         case noNewSubscriptionInSuccessfullResponse
+        case appIsLocked
+        case pleaseSignIn
         
         var errorDescription: String? {
             switch self {
@@ -152,6 +154,8 @@ extension StoreKitManager {
             case .noActiveUsernameInUserDataService: return LocalString._no_active_username_in_user_data_service
             case .transactionFailedByUnknownReason: return LocalString._transaction_failed_by_unknown_reason
             case .noNewSubscriptionInSuccessfullResponse: return LocalString._no_new_subscription_in_response
+            case .appIsLocked: return LocalString._unlock_to_proceed_with_iap
+            case .pleaseSignIn: return LocalString._please_sign_in_iap
             }
         }
     }
@@ -230,6 +234,12 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             
         case .purchased:
             do {
+                guard SignInManager.shared.isSignedIn() else {
+                    throw Errors.pleaseSignIn
+                }
+                guard UnlockManager.shared.isUnlocked() else {
+                    throw Errors.appIsLocked
+                }
                 try self.proceed(withPurchased: transaction, shouldVerifyPurchaseWasForSameAccount: shouldVerify)
                 
             } catch Errors.noHashedUsernameArrivedInTransaction { // storekit bug

@@ -8,7 +8,7 @@ version: 2
 jobs:
     build-and-test:
         macos:
-            xcode: "9.4.0"
+            xcode: "10.0.0"
         working_directory: /Users/distiller/protonmail_ios/
         environment:
             FL_OUTPUT_DIR: output
@@ -20,10 +20,10 @@ jobs:
                 command: sudo pip install xUnique
             - run:
                 name: Run tests
-                command: fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "ProtonMail" --device "iPhone 8" --clean
+                command: fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "Tests" --device "iPhone 8" --clean
                 environment:
                     SCAN_DEVICE: iPhone 8
-                    SCAN_SCHEME: ProtonMail
+                    SCAN_SCHEME: Tests
             - store_test_results:
                 path: output/scan
 

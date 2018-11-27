@@ -368,8 +368,7 @@ extension Message {
     }
     
     // MARK: methods
-    func decryptBody() throws -> String? {
-        let keys = sharedUserDataService.addressPrivKeys
+    func decryptBody(keys: Data, passphrase: String) throws -> String? {
         return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
     }
     
@@ -379,9 +378,13 @@ extension Message {
     //  noVerifier = 2
     //  failed     = 3
     //  )
-    func verifyBody(verifier : Data) -> SignStatus {
-        let keys = sharedUserDataService.addressPrivKeys
-
+    func verifyBody(verifier : Data, passphrase: String) -> SignStatus {
+        guard let passphrase = sharedUserDataService.mailboxPassword,
+            case let keys = sharedUserDataService.addressPrivKeys else
+        {
+                return .failed
+        }
+        
         do {
             let time : Int64 = Int64(round(self.time?.timeIntervalSince1970 ?? 0))
             if let verify = try body.verifyMessage(verifier: verifier, binKeys: keys, passphrase: passphrase, time: time) {
@@ -397,8 +400,8 @@ extension Message {
         return try body.split()
     }
     
-    func getSessionKey() throws -> ModelsSessionSplit? {
-        return try split()?.keyPacket().getSessionFromPubKeyPackage(passphrase)
+    func getSessionKey(keys: Data, passphrase: String) throws -> ModelsSessionSplit? {
+        return try split()?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: keys)
     }
     
     func bodyToHtml() -> String {
@@ -420,7 +423,7 @@ extension Message {
             }
             return body
         } else {
-            if var body = try decryptBody() {
+            if var body = try decryptBody(keys: sharedUserDataService.addressPrivKeys, passphrase: sharedUserDataService.mailboxPassword!) {
                 //PMLog.D(body)
                 if isEncrypted == 8 || isEncrypted == 9 {
                     if let mimeMsg = MIMEMessage(string: body) {
@@ -469,7 +472,8 @@ extension Message {
         }
         
         do {
-            self.body = try body.encrypt(withAddr: address_id, mailbox_pwd: mailbox_pwd) ?? ""
+            let key = sharedUserDataService.getAddressPrivKey(address_id: address_id)
+            self.body = try body.encrypt(withAddr: address_id, mailbox_pwd: mailbox_pwd, key: key) ?? ""
         } catch let error {//TODO:: error handling
             PMLog.D(any: error.localizedDescription)
             self.body = ""
@@ -500,11 +504,7 @@ extension Message {
         return self.encryptType.lockType
     }
     
-    // MARK: Private variables
-    fileprivate var passphrase: String {
-        return sharedUserDataService.mailboxPassword ?? ""
-    }
-    
+    //this function need to factor
     var getAddressID: String {
         get {
             if let addr = defaultAddress {
@@ -534,6 +534,7 @@ extension Message {
         }
     }
     
+    //this function need to factor
     var fromAddress : Address? {
         get {
             if let addressID = addressID, !addressID.isEmpty {
@@ -604,7 +605,7 @@ extension Message {
                     attachment.isTemp = true
                     do {
                         if let k = key,
-                            let sessionPack = try att.getSession(),
+                            let sessionPack = try att.getSession(keys: sharedUserDataService.addressPrivKeys),
                             let session = sessionPack.session(),
                             let algo = sessionPack.algo(),
                             let newkp = try session.getKeyPackage(strKey: k.publicKey, algo: algo) {

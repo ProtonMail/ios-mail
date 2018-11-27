@@ -52,10 +52,7 @@ public class ChangeLoginPWDViewModel : ChangePWDViewModel{
         let newpwd = new_pwd //.trim();
         let confirmpwd = confirm_new_pwd //.trim();
         
-        if curr_pwd != sharedUserDataService.password {
-            complete(false, UpdatePasswordError.currentPasswordWrong.error)
-        }
-        else if newpwd == "" || confirmpwd == "" {
+        if newpwd == "" || confirmpwd == "" {
             complete(false, UpdatePasswordError.passwordEmpty.error)
         }
         else if newpwd != confirmpwd {

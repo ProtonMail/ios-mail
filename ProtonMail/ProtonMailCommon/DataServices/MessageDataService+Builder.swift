@@ -261,7 +261,7 @@ class SendBuilder {
         return .cinln
     }
     
-    func buildMime(pubKey: String, privKey : String) -> Promise<SendBuilder> {
+    func buildMime(pubKey: String, privKey : String, passphrase: String, privKeys: Data) -> Promise<SendBuilder> {
         return Promise { seal in
             async {
                 /// decrypt attachments
@@ -313,9 +313,9 @@ class SendBuilder {
 
                     let encrypted = try signbody.encrypt(withPubKey: pubKey,
                                                          privateKey: privKey,
-                                                         mailbox_pwd: sharedUserDataService.mailboxPassword!)
+                                                         mailbox_pwd: passphrase)
                     let spilted = try encrypted?.split()
-                    let session = try spilted?.keyPacket().getSessionFromPubKeyPackage(sharedUserDataService.mailboxPassword!)!
+                    let session = try spilted?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: privKeys)!
                     
                     self.mimeSession = session?.session()
                     self.mimeSessionAlgo = session?.algo()
@@ -330,7 +330,7 @@ class SendBuilder {
     }
     
     
-    func buildPlainText(pubKey: String, privKey : String) -> Promise<SendBuilder> {
+    func buildPlainText(pubKey: String, privKey : String, passphrase: String, privKeys: Data) -> Promise<SendBuilder> {
         return Promise { seal in
             async {
                 let messageBody = self.clearBody ?? ""
@@ -341,9 +341,9 @@ class SendBuilder {
                 
                 let encrypted = try plainText.encrypt(withPubKey: pubKey,
                                                        privateKey: privKey,
-                                                       mailbox_pwd: sharedUserDataService.mailboxPassword!)
+                                                       mailbox_pwd: passphrase)
                 let spilted = try encrypted?.split()
-                let session = try spilted?.keyPacket().getSessionFromPubKeyPackage(sharedUserDataService.mailboxPassword!)!
+                let session = try spilted?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: privKeys)!
                 
                 self.plainTextSession = session?.session()
                 self.plainTextSessionAlgo = session?.algo()

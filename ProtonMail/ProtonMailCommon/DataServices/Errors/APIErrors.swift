@@ -32,6 +32,8 @@ public class APIErrorCode {
         static public let authUnableToGeneratePwd = 100
         static public let authInValidKeySalt = 110
         
+        static public let authCacheLocked = 665
+        
         static public let Cache_PasswordEmpty = 0x10000001
     }
     
@@ -81,6 +83,12 @@ extension NSError {
             code: APIErrorCode.badParameter,
             localizedDescription: "Attachment encryption failed",
             localizedFailureReason: "Attachment encryption failed")
+    }
+    public class func lockError() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.badParameter,
+            localizedDescription: "Parameter locked or cache unaccessible",
+            localizedFailureReason: "Parameter locked or cache unaccessible")
     }
     
     public class func unableToParseResponse(_ response: Any?) -> NSError {

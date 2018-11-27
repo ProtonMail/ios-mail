@@ -21,6 +21,7 @@ extension APIService {
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     func downloadAttachment(byID attachmentID: String,
                             destinationDirectoryURL: URL,
+                            customAuthCredential: AuthCredential? = nil,
                             downloadTask: ((URLSessionDownloadTask) -> Void)?,
                             completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
         
@@ -28,6 +29,7 @@ extension APIService {
         download(byUrl: AppConstants.API_HOST_URL + pathForAttachmentID(attachmentID),
                  destinationDirectoryURL: filepath,
                  headers: ["x-pm-apiversion": 3],
+                 customAuthCredential: customAuthCredential,
                  downloadTask: downloadTask,
                  completion: completion)
     }

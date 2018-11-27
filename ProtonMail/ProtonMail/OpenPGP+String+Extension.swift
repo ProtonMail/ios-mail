@@ -59,9 +59,8 @@ extension String {
         return out
     }
     
-    func encrypt(withAddr address_id: String, mailbox_pwd: String) throws -> String? {
-        let privateKey = sharedUserDataService.getAddressPrivKey(address_id: address_id)
-        return try sharedOpenPGP.encryptMessage(self, publicKey: privateKey, privateKey: privateKey, passphrase: mailbox_pwd, trim: true)
+    func encrypt(withAddr address_id: String, mailbox_pwd: String, key: String) throws -> String? {
+        return try sharedOpenPGP.encryptMessage(self, publicKey: key, privateKey: key, passphrase: mailbox_pwd, trim: true)
     }
     
     func encrypt(withPubKey publicKey: String, privateKey: String, mailbox_pwd: String) throws -> String? {

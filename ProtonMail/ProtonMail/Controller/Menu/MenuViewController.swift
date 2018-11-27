@@ -286,9 +286,9 @@ extension MenuViewController: UITableViewDelegate {
             } else if item == .feedback {
                 self.performSegue(withIdentifier: kSegueToFeedback, sender: indexPath)
             } else if item == .lockapp {
-                userCachedStatus.lockedApp = true
-                (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: true)
-                sharedVMService.resetView()
+                keymaker.lockTheApp() // remove mainKey from memory
+                let _ = UnlockManager.shared.isUnlocked() // provoke mainKey obtaining
+                sharedVMService.resetView() // FIXME: do we still need this?
             } else if item == .servicePlan {
                 let coordinator = MenuCoordinator()
                 coordinator.controller = self

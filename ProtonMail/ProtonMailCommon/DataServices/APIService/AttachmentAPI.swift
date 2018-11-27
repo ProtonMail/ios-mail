@@ -15,6 +15,11 @@ final class DeleteAttachment : ApiRequest<ApiResponse> {
         self.attachmentID = attID
     }
     
+    convenience init(attID: String, authCredential: AuthCredential?) {
+        self.init(attID: attID)
+        self.authCredential = authCredential
+    }
+    
     override func path() -> String {
         //return AttachmentAPI.path + "/remove" + AppConstants.DEBUG_OPTION
         return AttachmentAPI.path + "/" + self.attachmentID + AppConstants.DEBUG_OPTION

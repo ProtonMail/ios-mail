@@ -141,7 +141,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             if let atts = self.getAttachments() {
                 for att in atts {
                     do {
-                        guard let sessionPack = try att.getSession() else {
+                        guard let sessionPack = try att.getSession(keys: sharedUserDataService.addressPrivKeys) else {
                             continue
                         }
                         guard let newKeyPack = try sessionPack.session().getKeyPackage(strKey: key.publicKey, algo: sessionPack.algo())?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
@@ -399,15 +399,12 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func sendMessage() {
-        
         self.updateDraft()
-        sharedMessageDataService.send(inQueue: self.message?.messageID)  { task, response, error in
-            
-        }
-        
+        sharedMessageDataService.send(inQueue: self.message?.messageID)  { _, _, _ in }
     }
     
     override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
+        guard let mailboxPassword = sharedUserDataService.mailboxPassword else { return }
         self.setSubject(title)
         
         if message == nil || message?.managedObjectContext == nil {
@@ -421,7 +418,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                                                        expirationTimeInterval: expir,
                                                        body: body,
                                                        attachments: nil,
-                                                       mailbox_pwd: sharedUserDataService.mailboxPassword!, //better to check nil later
+                                                       mailbox_pwd: mailboxPassword,
                                                        inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
             self.message?.password = pwd
             self.message?.unRead = false
@@ -443,7 +440,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                                   expirationTimeInterval: expir,
                                   body: body,
                                   attachments: nil,
-                                  mailbox_pwd: sharedUserDataService.mailboxPassword!)
+                                  mailbox_pwd: mailboxPassword)
             
             if let context = message?.managedObjectContext {
                 context.performAndWait {

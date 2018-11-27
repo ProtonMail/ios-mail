@@ -18,40 +18,18 @@ import UIKit
 import Foundation
 
 class Snapshot {
-    
     fileprivate struct Tag {
         static let snapshot = 101
     }
     
-    // the launchScreen
     fileprivate struct NibName {
         static let Name = "LaunchScreen"
     }
     
-    static var cachedSnapshotView : UIView? = nil
+    private lazy var view: UIView = self.getFancyView() ?? self.getDefaultView()
     
-    // create a view and overlay the screen
-    func didEnterBackground(_ application: UIApplication) {
-        if let window = application.keyWindow {
-            guard let view = Snapshot.cachedSnapshotView else {
-                if let launchScreen = Bundle.main.loadNibNamed(NibName.Name, owner: window, options: nil),
-                    let snapshotView = launchScreen.first as? UIView {
-                    snapshotView.tag = Tag.snapshot
-                    Snapshot.cachedSnapshotView = snapshotView
-                    show(at: window, with: snapshotView)
-                } else {
-                    let v = getDefaultView()
-                    Snapshot.cachedSnapshotView = v
-                    show(at: window, with: v)
-                }
-                return
-            }
-            show(at: window, with: view)
-        }
-    }
-    
-    func show(at window: UIWindow, with view: UIView) {
-        window.addSubview(view)
+    internal func show(at window: UIWindow) {
+        window.addSubview(self.view)
         view.mas_makeConstraints { (make) -> Void in
             make?.top.equalTo()(window)
             make?.left.equalTo()(window)
@@ -60,16 +38,22 @@ class Snapshot {
         }
     }
     
-    func getDefaultView() -> UIView {
-        let view = UIView(frame: CGRect.zero)
-        view.backgroundColor = UIColor.ProtonMail.Blue_85B1DE
+    internal func remove() {
+        self.view.removeFromSuperview()
+    }
+    
+    private func getFancyView() -> UIView? {
+        guard let view = Bundle.main.loadNibNamed(NibName.Name, owner: nil, options: nil)?.first as? UIView else {
+            return nil
+        }
         view.tag = Tag.snapshot
         return view
     }
     
-    func willEnterForeground(_ application: UIApplication) {
-        if let snapshotView = application.keyWindow?.viewWithTag(Tag.snapshot) {
-            snapshotView.removeFromSuperview()
-        }
+    private func getDefaultView() -> UIView {
+        let view = UIView(frame: CGRect.zero)
+        view.backgroundColor = UIColor.ProtonMail.Blue_85B1DE
+        view.tag = Tag.snapshot
+        return view
     }
 }
