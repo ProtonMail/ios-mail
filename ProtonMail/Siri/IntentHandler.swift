@@ -47,6 +47,8 @@ public class WipeMainKeyIntentHandler: NSObject, WipeMainKeyIntentHandling {
     
     public func handle(intent: WipeMainKeyIntent, completion: @escaping (WipeMainKeyIntentResponse) -> Void) {
         Keymaker(autolocker: nil, keychain: sharedKeychain.keychain).wipeMainKey()
+        PushNotificationDecryptor.wipeEncryptionKit()
+        
         completion(WipeMainKeyIntentResponse(code: WipeMainKeyIntentResponseCode.success, userActivity: nil))
     }
 }
