@@ -183,7 +183,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         let delayedCompletion: ()->Void = {
             delay(3) {
                 PMLog.D("End Background Task")
-                application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(taskID.rawValue))
+                application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: taskID.rawValue))
             }
         }
         
@@ -253,11 +253,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         let notification = Notification(name: .touchStatusBar, object: nil, userInfo: nil)
         NotificationCenter.default.post(notification)
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
-	return UIBackgroundTaskIdentifier(rawValue: input)
 }
 
 #if DEBUG
