@@ -371,7 +371,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                                                         groupID: contactGroup.labelID,
                                                         name: contactGroup.name,
                                                         color: contactGroup.color,
-                                                        emailIDs: contactGroup.emails)
+                                                        emailIDs: (contactGroup.emails as? Set<Email>) ?? Set<Email>())
         } else if (segue.identifier == kAddContactSugue) {
             let addContactViewController = segue.destination.children[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController)

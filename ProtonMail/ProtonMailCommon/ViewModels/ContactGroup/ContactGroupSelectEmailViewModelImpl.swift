@@ -21,12 +21,12 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
     private var selectedEmails: Set<Email>
     
     /// after saving the email list, we refresh the edit view controller's data
-    private let refreshHandler: (NSSet) -> Void
+    private let refreshHandler: (Set<Email>) -> Void
     
     /**
      Initializes a new ContactGroupSelectEmailViewModel
      */
-    init(selectedEmails: NSSet, refreshHandler: @escaping (NSSet) -> Void) {
+    init(selectedEmails: Set<Email>, refreshHandler: @escaping (Set<Email>) -> Void) {
         self.allEmails = sharedContactDataService.allEmails()
         self.allEmails.sort {
             if $0.name == $1.name {
@@ -36,7 +36,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
         }
         self.emailsForDisplay = self.allEmails
         
-        self.selectedEmails = selectedEmails as! Set
+        self.selectedEmails = selectedEmails
         self.refreshHandler = refreshHandler
     }
     
@@ -75,12 +75,12 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
      Return the selected emails to the contact group
      */
     func save() {
-        refreshHandler(selectedEmails as NSSet)
+        refreshHandler(selectedEmails)
     }
     
     /**
      Add the emailID from the selection state
-    */
+     */
     func selectEmail(ID: String) {
         for email in allEmails {
             if email.emailID == ID {
@@ -92,7 +92,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
     
     /**
      Remove the emailID from the selection state
-    */
+     */
     func deselectEmail(ID: String) {
         for email in allEmails {
             if email.emailID == ID {

@@ -21,7 +21,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
     var color: String
     
     /// the contact group's emails (in NSSet)
-    var emailIDs: NSSet {
+    var emailIDs: Set<Email> {
         didSet {
             setupEmailIDsArray()
         }
@@ -30,7 +30,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
     /// the contact group's email (in Array)
     var emailIDsArray: [Email]
     
-    init(groupID: String, name: String, color: String, emailIDs: NSSet) {
+    init(groupID: String, name: String, color: String, emailIDs: Set<Email>) {
         self.groupID = groupID
         self.name = name
         self.color = color
@@ -41,17 +41,13 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
     }
     
     private func setupEmailIDsArray() {
-        if let emailIDs = emailIDs.allObjects as? [Email] {
-            emailIDsArray = emailIDs
-            emailIDsArray.sort{
-                (first: Email, second: Email) -> Bool in
-                if first.name == second.name {
-                    return first.email < second.email
-                }
-                return first.name < second.name
+        emailIDsArray = emailIDs.map{$0}
+        emailIDsArray.sort{
+            (first: Email, second: Email) -> Bool in
+            if first.name == second.name {
+                return first.email < second.email
             }
-        } else {
-            PMLog.D("EmailIDs conversion error")
+            return first.name < second.name
         }
     }
     
@@ -71,7 +67,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
         return emailIDs.count
     }
     
-    func getEmailIDs() -> NSSet {
+    func getEmailIDs() -> Set<Email> {
         return emailIDs
     }
     
@@ -108,7 +104,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
                                               inManagedObjectContext: context) {
             name = label.name
             color = label.color
-            emailIDs = label.emails
+            emailIDs = (label.emails as? Set<Email>) ?? Set<Email>()
             
             return .value(false)
         } else {

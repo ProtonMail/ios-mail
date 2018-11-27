@@ -110,7 +110,7 @@ class ViewModelService {
                                      groupID: String,
                                      name: String,
                                      color: String,
-                                     emailIDs: NSSet) {
+                                     emailIDs: Set<Email>) {
         fatalError("This method must be overridden")
     }
     
@@ -119,7 +119,7 @@ class ViewModelService {
                                    groupID: String? = nil,
                                    name: String? = nil,
                                    color: String? = nil,
-                                   emailIDs: NSSet = NSSet()) {
+                                   emailIDs: Set<Email> = Set<Email>()) {
         fatalError("This method must be overridden")
     }
     
@@ -130,8 +130,8 @@ class ViewModelService {
     }
     
     func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocolBase,
-                                          selectedEmails: NSSet,
-                                          refreshHandler: @escaping (NSSet) -> Void) {
+                                          selectedEmails: Set<Email>,
+                                          refreshHandler: @escaping (Set<Email>) -> Void) {
         fatalError("This method must be overridden")
     }
     

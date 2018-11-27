@@ -243,7 +243,7 @@ class ViewModelServiceImpl: ViewModelService {
                                               groupID: String,
                                               name: String,
                                               color: String,
-                                              emailIDs: NSSet) {
+                                              emailIDs: Set<Email>) {
         activeViewControllerNew = vmp
         vmp.setModel(vm: ContactGroupDetailViewModelImpl(groupID: groupID,
                                                          name: name,
@@ -256,7 +256,7 @@ class ViewModelServiceImpl: ViewModelService {
                                             groupID: String? = nil,
                                             name: String? = nil,
                                             color: String? = nil,
-                                            emailIDs: NSSet = NSSet()) {
+                                            emailIDs: Set<Email> = Set<Email>()) {
         activeViewControllerNew = vmp
         vmp.setModel(vm: ContactGroupEditViewModelImpl(state: state,
                                                        groupID: groupID,
@@ -274,8 +274,8 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocolBase,
-                                                   selectedEmails: NSSet,
-                                                   refreshHandler: @escaping (NSSet) -> Void) {
+                                                   selectedEmails: Set<Email>,
+                                                   refreshHandler: @escaping (Set<Email>) -> Void) {
         activeViewControllerNew = vmp
         vmp.setModel(vm: ContactGroupSelectEmailViewModelImpl(selectedEmails: selectedEmails,
                                                               refreshHandler: refreshHandler))
