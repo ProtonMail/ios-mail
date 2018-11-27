@@ -1367,10 +1367,10 @@
 		D441FFCC8CBD6946FA018531B4C7F6B9 /* APIServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2293514215254B488A7DC1E65D59FF02 /* APIServiceRequest.swift */; };
 		D4562CE78A0548975B5A06A78C6C3858 /* MessageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB038FDBCBE4B85B9E43489F16961A2 /* MessageAction.swift */; };
 		D46FAC5275012CEA2B686470892376AD /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399221AA081E74249939780EA537FD0 /* PMDocumentPickerViewController.swift */; };
+		D496F72DA8FC94D1B72754BA271FA250 /* Keymaker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB38B7EF60BE4599C8E519598ACE3C62 /* Keymaker.framework */; };
 		D4B269EBE80EB202EBFECC4BD0F9AEFB /* ContactGroupDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B9D8479C48831A69305E90F288B2A3 /* ContactGroupDefined.swift */; };
 		D4C0D77CA839146790AC74B68D9B9905 /* ContactDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934EB5CEA1ACDD4A4555A00DDA4B7F8D /* ContactDataService.swift */; };
 		D4DD8C1D3353A4B1EB35C29B93A463A0 /* NotificationName+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E243EE0CFAE70B3136EDCD557999B1 /* NotificationName+Extension.swift */; };
-		D4DF66F1BE1EDF8E3AD7078426584B4C /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0742E240B9FDE75FE62CBCAA2789AF /* Address.swift */; };
 		D4E38EEC674BB70D921FE0E2E745CDA9 /* String+Parse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F996E06B90F64A83A7976D0EF4012E /* String+Parse+Extension.swift */; };
 		D4E6F863492709D4DBAA8EBD483308FE /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5893FDE19FD570A2A4670A50896625A1 /* MimeTypes.swift */; };
 		D4F3D7D6DA1A96685161DB06BBED0124 /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6576E6B2E5753D73F5405E8DA8E1137 /* NSManagedObjectContextExtension.swift */; };
@@ -2571,6 +2571,7 @@
 				221305AE09DF7C0D0D1882872274BB75 /* Crashlytics.framework in Frameworks */,
 				29B1FCE977921A7D75CECE7946613475 /* Crypto.framework in Frameworks */,
 				01128C7A1FDF2877C6F8E80CA2DD2F6C /* Fabric.framework in Frameworks */,
+				D496F72DA8FC94D1B72754BA271FA250 /* Keymaker.framework in Frameworks */,
 				4E1CCBDCF9F890CF0D017BCFBFB3F439 /* Pods_ShareDev.framework in Frameworks */,
 				63EEFAED29E34FD910625333133C4868 /* libstdc++.tbd in Frameworks */,
 			);
@@ -6156,7 +6157,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4DF66F1BE1EDF8E3AD7078426584B4C /* Address.swift in Sources */,
 				3A1D88D5187D4B271A70560C0AB75CB4 /* AppConstants.swift in Sources */,
 				7B4A90FB4B06506A99CCB29E07611458 /* KeychainSaver.swift in Sources */,
 				6A0E256F2AD0A8BD02B861A2D114302E /* KeychainWrapper.swift in Sources */,
