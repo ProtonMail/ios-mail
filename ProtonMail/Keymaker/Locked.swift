@@ -10,8 +10,9 @@ import Foundation
 import CryptoSwift
 
 public struct Locked<T> {
-    enum Errors: Error {
+    public enum Errors: Error {
         case failedToTurnValueIntoData
+        case keyDoesNotMatch
     }
     public private(set) var encryptedValue: Data
     

@@ -50,7 +50,7 @@ extension Locked where T == UserInfo {
         NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UpdateTime")
         
         guard let value = NSKeyedUnarchiver.unarchiveObject(with: data) as? T else {
-            fatalError()
+            throw Locked.Errors.keyDoesNotMatch
         }
         
         return value
