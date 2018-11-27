@@ -359,6 +359,9 @@ class LocalizedString {
     lazy var _contacts_call_contact_title = NSLocalizedString("Call Contact", comment: "Call the contact (button title text)")
     /// "Email addresses"
     lazy var _contacts_email_addresses_title = NSLocalizedString("Email Addresses", comment: "contact detail view, email addresses section title")
+    /// "Profile picture"
+    lazy var _contacts_add_profile_picture = NSLocalizedString("Add Photo", comment: "The button text for add profile picture")
+    lazy var _contacts_edit_profile_picture = NSLocalizedString("Edit Photo", comment: "The button text for edit profile picture")
     /// "Encrypted Contact Details"
     lazy var _contacts_encrypted_contact_details_title = NSLocalizedString("Encrypted Contact Details", comment: "contact section title")
     /// "Share Contact"

@@ -194,6 +194,18 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
         fatalError("This method must be overridden")
     }
     
+    func getProfilePicture() -> UIImage? {
+        fatalError("This method must be overridden")
+    }
+    
+    func setProfilePicture(image: UIImage?) {
+        fatalError("This method must be overridden")
+    }
+    
+    func profilePictureNeedsUpdate() -> Bool {
+        fatalError("This method must be overridden")
+    }
+    
     func getUrls() -> [ContactEditUrl] {
         fatalError("This method must be overridden")
     }
@@ -282,6 +294,10 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
             if field.needsUpdate() {
                 return true
             }
+        }
+        
+        if profilePictureNeedsUpdate() {
+            return true
         }
         
         return false

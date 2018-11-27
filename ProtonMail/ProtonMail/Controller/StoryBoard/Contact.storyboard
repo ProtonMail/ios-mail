@@ -518,46 +518,70 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <color key="separatorColor" red="0.57647058819999997" green="0.59215686270000001" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="SsN-qI-ND3">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="91"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Contact Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nSP-hg-62B">
-                                            <rect key="frame" x="18" y="41.5" width="302" height="26.5"/>
+                                            <rect key="frame" x="71" y="36" width="241" height="27"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="27" id="1Sn-ej-doW"/>
+                                            </constraints>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="name"/>
                                         </textField>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sa0-fx-sJw">
-                                            <rect key="frame" x="18" y="16" width="302" height="21.5"/>
+                                            <rect key="frame" x="71" y="8" width="241" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="hBP-XN-TCv"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6a0-Pb-HoV">
-                                            <rect key="frame" x="0.0" y="79.5" width="320" height="0.5"/>
-                                            <color key="backgroundColor" red="0.57647058819999997" green="0.59215686270000001" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6QC-wN-fmI" userLabel="Profile image">
+                                            <rect key="frame" x="8" y="8" width="55" height="55"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="0.5" id="qF4-He-xk2"/>
+                                                <constraint firstAttribute="height" constant="55" id="DHZ-o7-lWa"/>
+                                                <constraint firstAttribute="width" constant="55" id="Zy8-rd-277"/>
                                             </constraints>
-                                        </view>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="Y5O-Si-yfm" userLabel="Edit photo">
+                                            <rect key="frame" x="8" y="71" width="55" height="12"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4UR-jN-21S">
+                                            <rect key="frame" x="8" y="8" width="55" height="75"/>
+                                            <connections>
+                                                <action selector="tappedSelectProfilePictureButton:" destination="ZBC-AC-6J6" eventType="touchUpInside" id="cNA-Xf-YKd"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="6a0-Pb-HoV" secondAttribute="bottom" id="2Ak-06-X9E"/>
-                                        <constraint firstAttribute="trailing" secondItem="6a0-Pb-HoV" secondAttribute="trailing" id="5OE-I8-Hqu"/>
-                                        <constraint firstItem="nSP-hg-62B" firstAttribute="top" secondItem="sa0-fx-sJw" secondAttribute="bottom" constant="4" id="Cme-Mo-No6"/>
-                                        <constraint firstAttribute="trailing" secondItem="sa0-fx-sJw" secondAttribute="trailing" id="Hrj-ZD-dDX"/>
-                                        <constraint firstAttribute="bottom" secondItem="nSP-hg-62B" secondAttribute="bottom" constant="12" id="JBL-NW-Mz6"/>
-                                        <constraint firstItem="nSP-hg-62B" firstAttribute="leading" secondItem="SsN-qI-ND3" secondAttribute="leading" constant="18" id="con-We-Fhc"/>
-                                        <constraint firstItem="sa0-fx-sJw" firstAttribute="top" secondItem="SsN-qI-ND3" secondAttribute="top" constant="16" id="lDi-y6-HdV"/>
-                                        <constraint firstItem="sa0-fx-sJw" firstAttribute="leading" secondItem="SsN-qI-ND3" secondAttribute="leading" constant="18" id="n4O-VD-vRR"/>
-                                        <constraint firstAttribute="trailing" secondItem="nSP-hg-62B" secondAttribute="trailing" id="pav-Eb-w8Y"/>
-                                        <constraint firstItem="6a0-Pb-HoV" firstAttribute="leading" secondItem="SsN-qI-ND3" secondAttribute="leading" id="x9L-c0-k9o"/>
+                                        <constraint firstItem="Y5O-Si-yfm" firstAttribute="leading" secondItem="6QC-wN-fmI" secondAttribute="leading" id="2Yy-eV-R6O"/>
+                                        <constraint firstItem="Y5O-Si-yfm" firstAttribute="top" secondItem="6QC-wN-fmI" secondAttribute="bottom" constant="8" id="3Dh-I9-iHN"/>
+                                        <constraint firstItem="6QC-wN-fmI" firstAttribute="top" secondItem="SsN-qI-ND3" secondAttribute="top" constant="8" id="AFY-zz-Spw"/>
+                                        <constraint firstItem="nSP-hg-62B" firstAttribute="bottom" secondItem="6QC-wN-fmI" secondAttribute="bottom" id="Ajr-Ca-7Zx"/>
+                                        <constraint firstItem="sa0-fx-sJw" firstAttribute="top" secondItem="6QC-wN-fmI" secondAttribute="top" id="BcM-aA-xuK"/>
+                                        <constraint firstItem="4UR-jN-21S" firstAttribute="trailing" secondItem="6QC-wN-fmI" secondAttribute="trailing" id="Ey4-Az-blN"/>
+                                        <constraint firstItem="4UR-jN-21S" firstAttribute="leading" secondItem="6QC-wN-fmI" secondAttribute="leading" id="F59-Sb-Ckt"/>
+                                        <constraint firstItem="Y5O-Si-yfm" firstAttribute="trailing" secondItem="6QC-wN-fmI" secondAttribute="trailing" id="FaV-CZ-2uo"/>
+                                        <constraint firstItem="6QC-wN-fmI" firstAttribute="leading" secondItem="SsN-qI-ND3" secondAttribute="leading" constant="8" id="GI8-7y-CCm"/>
+                                        <constraint firstItem="4UR-jN-21S" firstAttribute="top" secondItem="6QC-wN-fmI" secondAttribute="top" id="Gak-GY-rkd"/>
+                                        <constraint firstAttribute="bottom" secondItem="Y5O-Si-yfm" secondAttribute="bottom" constant="8" id="HDO-uy-Wk6"/>
+                                        <constraint firstItem="sa0-fx-sJw" firstAttribute="leading" secondItem="6QC-wN-fmI" secondAttribute="trailing" constant="8" id="HXr-zS-u2T"/>
+                                        <constraint firstItem="nSP-hg-62B" firstAttribute="trailing" secondItem="sa0-fx-sJw" secondAttribute="trailing" id="kLT-Qp-qLp"/>
+                                        <constraint firstItem="nSP-hg-62B" firstAttribute="leading" secondItem="sa0-fx-sJw" secondAttribute="leading" id="nhX-GU-chr"/>
+                                        <constraint firstItem="4UR-jN-21S" firstAttribute="bottom" secondItem="Y5O-Si-yfm" secondAttribute="bottom" id="ugd-9L-Den"/>
+                                        <constraint firstAttribute="trailing" secondItem="sa0-fx-sJw" secondAttribute="trailing" constant="8" id="yLn-fK-5em"/>
                                     </constraints>
                                 </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactEditAddCell" textLabel="5QD-hJ-VO9" style="IBUITableViewCellStyleDefault" id="neS-qA-hDP" customClass="ContactEditAddCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="102" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="113" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="neS-qA-hDP" id="xD2-vf-t8m">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -578,7 +602,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactEditDeleteCell" textLabel="Y6d-ke-WyS" style="IBUITableViewCellStyleDefault" id="Bsv-Q4-rHD" customClass="ContactEditAddCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="146" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="157" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bsv-Q4-rHD" id="psN-ri-qlW">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -599,7 +623,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactEditEmailCell" rowHeight="96" id="V2Z-Z3-uUU" customClass="ContactEditEmailCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="190" width="320" height="96"/>
+                                        <rect key="frame" x="0.0" y="201" width="320" height="96"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="V2Z-Z3-uUU" id="ht2-hF-waT">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="95.5"/>
@@ -725,7 +749,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactAddEmailCell" id="GCw-QI-qnl" customClass="ContactAddEmailCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="286" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="297" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GCw-QI-qnl" id="ATz-14-YUo">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -799,7 +823,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactEditCellphoneCell" id="Ix5-f0-ond" customClass="ContactEditPhoneCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="330" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="341" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ix5-f0-ond" id="a1X-EL-31l">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -873,7 +897,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactEditAddressCell" rowHeight="180" id="qs9-Mo-xeL" customClass="ContactEditAddressCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="374" width="320" height="180"/>
+                                        <rect key="frame" x="0.0" y="385" width="320" height="180"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qs9-Mo-xeL" id="Nll-sU-GXO">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="179.5"/>
@@ -1107,7 +1131,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactEditInformationCell" id="qFo-SJ-5fy" customClass="ContactEditInformationCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="554" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="565" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qFo-SJ-5fy" id="gAu-xj-nL9">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -1181,7 +1205,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactEditFieldCell" id="WlH-jH-caI" customClass="ContactEditFieldCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="598" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="609" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WlH-jH-caI" id="a7W-ax-4Bd">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -1255,7 +1279,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactEditUrlCell" id="3Pu-li-gf1" userLabel="ContactEditUrlCell" customClass="ContactEditUrlCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="642" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="653" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Pu-li-gf1" id="ICc-VK-MU5">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -1329,7 +1353,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactEditDateCell" id="SnD-H5-1L3" userLabel="ContactEditDateCell">
-                                        <rect key="frame" x="0.0" y="686" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="697" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SnD-H5-1L3" id="g5h-D0-8EQ">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -1403,7 +1427,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactEditTextViewCell" rowHeight="120" id="lLk-AS-LyP" userLabel="ContactEditTextViewCell" customClass="ContactEditTextViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="730" width="320" height="120"/>
+                                        <rect key="frame" x="0.0" y="741" width="320" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lLk-AS-LyP" id="Ljt-vz-Dfp">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="119.5"/>
@@ -1456,7 +1480,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Instructions" textLabel="FrN-tO-378" style="IBUITableViewCellStyleDefault" id="I69-c4-NG7">
-                                        <rect key="frame" x="0.0" y="850" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="861" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I69-c4-NG7" id="bUD-xx-OlS">
                                             <rect key="frame" x="0.0" y="0.0" width="294" height="43.5"/>
@@ -1474,7 +1498,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="RecipeType" editingAccessoryType="detailDisclosureButton" textLabel="7j2-it-Hcu" style="IBUITableViewCellStyleDefault" id="ffb-ei-Iss">
-                                        <rect key="frame" x="0.0" y="894" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="905" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ffb-ei-Iss" id="4Ak-c4-c3N">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -1492,7 +1516,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="ContactEditUpgradeCell" rowHeight="281" id="PCJ-Vb-ZB9" customClass="ContactEditUpgradeCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="938" width="320" height="281"/>
+                                        <rect key="frame" x="0.0" y="949" width="320" height="281"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PCJ-Vb-ZB9" id="RHt-qH-5fg">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="280.5"/>
@@ -1576,6 +1600,8 @@
                     <connections>
                         <outlet property="cancelItem" destination="bSC-Uz-oGh" id="5io-Oy-LKx"/>
                         <outlet property="displayNameField" destination="nSP-hg-62B" id="9Fa-Gl-KQf"/>
+                        <outlet property="profilePictureImageView" destination="6QC-wN-fmI" id="dcc-ya-NFv"/>
+                        <outlet property="selectProfilePictureLabel" destination="Y5O-Si-yfm" id="QNp-pO-fpR"/>
                         <outlet property="tableView" destination="ZVw-UR-yrE" id="lYg-7O-sqP"/>
                         <outlet property="tableViewBottomOffset" destination="yM3-h1-tMh" id="Y65-ln-Ddx"/>
                         <segue destination="8FT-3K-fbA" kind="show" identifier="toContactTypeSegue" id="6uY-cJ-FnB"/>
@@ -1585,7 +1611,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uqF-zP-yCE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7900" y="3626.5367316341831"/>
+            <point key="canvasLocation" x="7899.375" y="3626.4084507042253"/>
         </scene>
         <!--AddContact Navigation-->
         <scene sceneID="IQb-f9-tk6">
@@ -2507,9 +2533,9 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="6gL-17-Vjp"/>
-        <segue reference="2p9-E1-lOg"/>
-        <segue reference="6yh-h8-btl"/>
-        <segue reference="pLm-6L-kNd"/>
+        <segue reference="oC7-Qd-EW1"/>
+        <segue reference="rru-oY-8Lv"/>
+        <segue reference="Grd-B0-e0M"/>
         <segue reference="GcK-DS-QnS"/>
         <segue reference="Rzd-pg-PEg"/>
     </inferredMetricsTieBreakers>
