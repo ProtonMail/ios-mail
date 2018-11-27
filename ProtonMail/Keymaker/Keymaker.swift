@@ -20,7 +20,7 @@ public class Keymaker: NSObject {
     
     private var autolocker: Autolocker?
     private let keychain: UICKeyChainStore
-    public init(autolocker: Autolocker, keychain: UICKeyChainStore) {
+    public init(autolocker: Autolocker?, keychain: UICKeyChainStore) {
         self.autolocker = autolocker
         self.keychain = keychain
     }

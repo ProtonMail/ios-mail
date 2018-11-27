@@ -111,6 +111,10 @@
 	<string>Required for saving image attachments to photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Required for attaching photos to the email.</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>WipeMainKeyIntent</string>
+	</array>
 	<key>UIAppFonts</key>
 	<array/>
 	<key>UIBackgroundModes</key>

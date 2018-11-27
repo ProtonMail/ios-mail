@@ -21,6 +21,7 @@ import AFNetworking
 import AFNetworkActivityLogger
 import Keymaker
 import UserNotifications
+import Intents
 
 let sharedUserDataService = UserDataService()
 
@@ -140,6 +141,12 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         
         StoreKitManager.default.subscribeToPaymentQueue()
         StoreKitManager.default.updateAvailableProductsList()
+        
+        if #available(iOS 12.0, *) {
+            let intent = WipeMainKeyIntent()
+            let suggestions = [INShortcut(intent: intent)!]
+            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
+        }
         
         self.coordinator.start()
         
