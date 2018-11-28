@@ -26,8 +26,10 @@ public class Keymaker: NSObject {
         
         super.init()
         defer {
-            NotificationCenter.default.addObserver(self, selector: #selector(verifyMainKeyExists),
+            NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
                                                    name: UIApplication.willEnterForegroundNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
+                                                   name: UIApplication.didBecomeActiveNotification, object: nil)
         }
     }
     
@@ -89,15 +91,18 @@ public class Keymaker: NSObject {
         self.setupCryptoTransformers(key: nil)
     }
     
-    @objc func verifyMainKeyExists() { // cuz another process can wipe main key from memory while the app is in background
+    @discardableResult @objc
+    public func mainKeyExists() -> Bool { // cuz another process can wipe main key from memory while the app is in background
         if !self.isProtectorActive(BioProtection.self),
             !self.isProtectorActive(PinProtection.self),
             !self.isProtectorActive(NoneProtection.self)
         {
             self._mainKey = nil
             NotificationCenter.default.post(.init(name: Keymaker.requestMainKey))
+            return false
         }
         let _ = self.mainKey
+        return true
     }
     
     public func lockTheApp() {

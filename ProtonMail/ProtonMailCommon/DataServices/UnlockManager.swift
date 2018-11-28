@@ -74,7 +74,9 @@ class UnlockManager: NSObject {
     }
     
     internal func unlockIfRememberedCredentials(requestMailboxPassword: ()->Void) {
-        guard sharedUserDataService.isUserCredentialStored else {
+        guard keymaker.mainKeyExists(),
+            sharedUserDataService.isUserCredentialStored else
+        {
             #if !APP_EXTENSION
             SignInManager.shared.clean()
             #endif
