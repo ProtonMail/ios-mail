@@ -60,10 +60,8 @@ class UserDataService {
     var delegate : UserDataServiceDelegate?
     
     struct Key {
-        
-        
         static let mailboxPassword           = "mailboxPasswordKeyProtectedWithMainKey"
-        static let username                  = "usernameKey"
+        static let username                  = "usernameKeyProtectedWithMainKey"
         
         static let userInfo                  = "userInfoKeyProtectedWithMainKey"
         static let twoFAStatus               = "twofaKey"
@@ -102,13 +100,31 @@ class UserDataService {
         }
     }
     //TODO::Fix later fileprivate(set)
-    fileprivate(set) var username: String? = SharedCacheBase.getDefault().string(forKey: Key.username) {
-        didSet {
-            SharedCacheBase.getDefault().setValue(username, forKey: Key.username)
+    fileprivate(set) var username: String? {
+        get {
+            guard let mainKey = keymaker.mainKey,
+                let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.username) else
+            {
+                return nil
+            }
+            
+            let locked = Locked<String>(encryptedValue: cypherData)
+            return try? locked.unlock(with: mainKey)
+        }
+        set {
+            guard let newValue = newValue else {
+                SharedCacheBase.getDefault()?.removeObject(forKey: Key.username)
+                return
+            }
+            guard let mainKey = keymaker.mainKey,
+                let locked = try? Locked<String>(clearValue: newValue, with: mainKey) else
+            {
+                return
+            }
+            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: Key.username)
             SharedCacheBase.getDefault().synchronize()
         }
     }
-    
     
     var switchCacheOff: Bool? = SharedCacheBase.getDefault().bool(forKey: Key.roleSwitchCache) {
         didSet {
@@ -273,7 +289,7 @@ class UserDataService {
     var isNewUser : Bool = false
     
     var isUserCredentialStored: Bool {
-        return self.username != nil
+        return SharedCacheBase.getDefault()?.data(forKey: Key.username) != nil
     }
     
     /// Value is only stored in the keychain
@@ -933,6 +949,10 @@ class UserDataService {
 extension AppVersion {
     static func inject(userInfo: UserInfo, into userDataService: UserDataService) {
         userDataService.userInfo = userInfo
+    }
+    
+    static func inject(username: String, into userDataService: UserDataService) {
+        userDataService.username = username
     }
 }
 #endif

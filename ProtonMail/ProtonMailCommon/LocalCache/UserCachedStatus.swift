@@ -50,7 +50,7 @@ final class UserCachedStatus : SharedCacheBase {
         //Global Cache
         static let lastSplashViersion = "last_splash_viersion" //global cache
         static let lastTourViersion = "last_tour_viersion" //global cache
-        static let lastLocalMobileSignature = "last_local_mobile_signature" //user cache but could restore
+        static let lastLocalMobileSignature = "last_local_mobile_signature_mainkeyProtected" //user cache but could restore
         
         // Snooze Notifications
         static let snoozeConfiguration = "snoozeConfiguration"
@@ -149,13 +149,25 @@ final class UserCachedStatus : SharedCacheBase {
     
     var mobileSignature : String {
         get {
-            if let s = getShared().string(forKey: Key.lastLocalMobileSignature) {
-                return s
+            guard let mainKey = keymaker.mainKey,
+                let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
+                case let locked = Locked<String>(encryptedValue: cypherData),
+                let customSignature = try? locked.unlock(with: mainKey) else
+            {
+                SharedCacheBase.getDefault()?.removeObject(forKey: Key.lastLocalMobileSignature)
+                return "Sent from ProtonMail Mobile"
             }
-            return "Sent from ProtonMail Mobile"
+
+            return customSignature
         }
         set {
-            setValue(newValue, forKey: Key.lastLocalMobileSignature)
+            guard let mainKey = keymaker.mainKey,
+                let locked = try? Locked<String>(clearValue: newValue, with: mainKey) else
+            {
+                return
+            }
+            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: Key.lastLocalMobileSignature)
+            SharedCacheBase.getDefault().synchronize()
         }
     }
     

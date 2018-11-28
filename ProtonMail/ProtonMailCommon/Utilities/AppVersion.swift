@@ -167,6 +167,12 @@ extension AppVersion {
         if let userInfo = SharedCacheBase.getDefault().customObjectForKey(DeprecatedKeys.UserDataService.userInfo) as? UserInfo {
             AppVersion.inject(userInfo: userInfo, into: sharedUserDataService)
         }
+        if let username = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.UserDataService.username) {
+            AppVersion.inject(username: username, into: sharedUserDataService)
+        }
+        if let mobileSignature = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.UserCachedStatus.lastLocalMobileSignature) {
+            userCachedStatus.mobileSignature = mobileSignature
+        }
         
         // mailboxPassword
         if let triviallyProtectedMailboxPassword = sharedKeychain.keychain.string(forKey: DeprecatedKeys.UserDataService.mailboxPassword),
@@ -217,8 +223,10 @@ extension AppVersion {
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isPinCodeEnabled)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isManuallyLockApp)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.touchIDEmail)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.lastLocalMobileSignature)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserDataService.isRememberUser)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserDataService.userInfo)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserDataService.username)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserDataService.isRememberMailboxPassword)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.token)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.UID)
@@ -245,6 +253,7 @@ extension AppVersion {
             static let isPinCodeEnabled     = "isPinCodeEnabled"
             static let isTouchIDEnabled     = "isTouchIDEnabled"
             static let touchIDEmail         = "touchIDEmail"
+            static let lastLocalMobileSignature = "last_local_mobile_signature"
         }
         enum UserDataService {
             static let password                  = "passwordKey"
@@ -252,6 +261,7 @@ extension AppVersion {
             static let isRememberUser            = "isRememberUserKey"
             static let userInfo                  = "userInfoKey"
             static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
+            static let username                  = "usernameKey"
         }
         enum PushNotificationService {
             static let token    = "DeviceTokenKey"
