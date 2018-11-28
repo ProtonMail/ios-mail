@@ -100,35 +100,35 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
             let plainText = item.attributedContentText?.string
             if let attachments = item.attachments {
                 for att in attachments {
-                    if let itemProvider = att as? NSItemProvider {
-                        if let type = itemProvider.hasItem(types: file_types) {
-                            group.enter() //#1
-                            self.loadItem(itemProvider, type: type) {
-                                 group.leave() //#1
-                            }
-                        } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
-                            PMLog.D("1")
-                        } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
-                            group.enter()//#2
-                            itemProvider.loadItem(forTypeIdentifier: url_key, options: nil) { [unowned self] url, error in
-                                defer {
-                                    group.leave()//#2
-                                }
-                                if let shareURL = url as? NSURL {
-                                    self.inputSubject = plainText ?? ""
-                                    let url = shareURL.absoluteString ?? ""
-                                    self.inputContent = self.inputContent + "\n" + "<a href=\"\(url)\">\(url)</a>"
-                                } else {
-                                    self.error(LocalString._cant_load_share_content)
-                                }
-                            }
-                        } else if let pt = plainText {
-                            self.inputSubject = ""
-                            self.inputContent = self.inputContent + "\n"  + pt
-                        } else {
-                            PMLog.D("4")
+                    let itemProvider = att
+                    if let type = itemProvider.hasItem(types: file_types) {
+                        group.enter() //#1
+                        self.loadItem(itemProvider, type: type) {
+                            group.leave() //#1
                         }
+                    } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
+                        PMLog.D("1")
+                    } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
+                        group.enter()//#2
+                        itemProvider.loadItem(forTypeIdentifier: url_key, options: nil) { [unowned self] url, error in
+                            defer {
+                                group.leave()//#2
+                            }
+                            if let shareURL = url as? NSURL {
+                                self.inputSubject = plainText ?? ""
+                                let url = shareURL.absoluteString ?? ""
+                                self.inputContent = self.inputContent + "\n" + "<a href=\"\(url)\">\(url)</a>"
+                            } else {
+                                self.error(LocalString._cant_load_share_content)
+                            }
+                        }
+                    } else if let pt = plainText {
+                        self.inputSubject = ""
+                        self.inputContent = self.inputContent + "\n"  + pt
+                    } else {
+                        PMLog.D("4")
                     }
+                    
                 }
             }
         }

@@ -13,9 +13,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     // MARK: - View Outlets
     @IBOutlet weak var tableView: UITableView!
     
+    
+    
+    
+    
+    
     // MARK: - Private constants
     
-    fileprivate let kMailboxCellHeight: CGFloat           = 62.0
+    fileprivate let kMailboxCellHeight: CGFloat           = 62.0 // change it to auto height
     fileprivate let kMailboxRateReviewCellHeight: CGFloat = 125.0
     fileprivate let kLongPressDuration: CFTimeInterval    = 0.60 // seconds
     fileprivate let kMoreOptionsViewHeight: CGFloat       = 123.0

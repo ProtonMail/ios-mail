@@ -2142,7 +2142,6 @@
 		6BE9BE4D06B98755374635BFE8886043 /* ComposeViewHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComposeViewHeader.xib; sourceTree = "<group>"; };
 		6C94282905B31CB4FD9261528DC8F5C7 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SearchViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		6C995A5395A5FEBA384F6A27BB2C2A2C /* UIStoryboard+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extension.swift"; sourceTree = "<group>"; };
-		6CED2A202598C4F4ED28859FA64E44DE /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExpirationWarningHeaderCell.xib; sourceTree = "<group>"; };
 		6D5C5D9E63258A5B438F12D3559A7F42 /* ComposeEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeEmailViewController.swift; sourceTree = "<group>"; };
 		6D6C64FE049CCAB116A41B87B7BC1195 /* ContactTypeViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTypeViewModelImpl.swift; sourceTree = "<group>"; };

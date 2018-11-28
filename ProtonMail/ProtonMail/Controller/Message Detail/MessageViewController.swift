@@ -16,7 +16,6 @@ import PromiseKit
 
 class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
-    
     fileprivate let kToComposerSegue : String    = "toCompose"
     fileprivate let kSegueMoveToFolders : String = "toMoveToFolderSegue"
     fileprivate let kSegueToApplyLabels : String = "toApplyLabelsSegue"

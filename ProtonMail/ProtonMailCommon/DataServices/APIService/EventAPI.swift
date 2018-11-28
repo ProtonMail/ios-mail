@@ -153,7 +153,7 @@ class Event {
 // TODO:: remove the hard convert
 final class MessageEvent {
     var Action : Int!
-    var ID : String!;
+    var ID : String!
     var message : [String : Any]?
     init(event: [String : Any]) {
         self.Action = event["Action"] as! Int
@@ -174,7 +174,7 @@ final class ContactEvent {
     }
     var action : UpdateType
     
-    var ID : String!;
+    var ID : String!
     var contact : [String : Any]?
     var contacts : [[String : Any]] = []
     init(event: [String : Any]!) {
@@ -231,7 +231,7 @@ final class EmailEvent {
 
 final class LabelEvent {
     var Action : Int!
-    var ID : String!;
+    var ID : String!
     var label : [String : Any]?
     
     init(event: [String : Any]!) {
