@@ -54,13 +54,11 @@ class NotificationService: UNNotificationServiceExtension {
                 return
             }
             
-            if let body = push.body {
-                bestAttemptContent.title = ""
-                bestAttemptContent.body = body
-            }
+            bestAttemptContent.title = push.sender.name.isEmpty ? push.sender.address : push.sender.name
+            bestAttemptContent.body = push.body
             
-            if let badge = push.badge, badge.intValue > 0 {
-                bestAttemptContent.badge = badge
+            if push.badge > 0 {
+                bestAttemptContent.badge = NSNumber(value: push.badge)
             }
         } catch let error {
             bestAttemptContent.body = "error: \(error.localizedDescription)"
