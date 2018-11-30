@@ -14,8 +14,6 @@
 //
 
 import UIKit
-import Fabric
-import Crashlytics
 import SWRevealViewController
 import AFNetworking
 import AFNetworkActivityLogger
@@ -102,7 +100,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         AppVersion.migrate()
         
-        Fabric.with([Crashlytics()])
+        Analytics.shared.setup()
         
         #if DEBUG // will fire local notifications on errors instead of toasts
         if #available(iOS 10.0, *) { UNUserNotificationCenter.current().delegate = self }
@@ -222,7 +220,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     // MARK: Notification methods
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        Answers.logCustomEvent(withName: "NotificationError", customAttributes:["error" : "\(error)"])
+        Analytics.shared.logCustomEvent(withName: "NotificationError", customAttributes:["error" : "\(error)"])
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
