@@ -79,6 +79,7 @@
 		0A0CC6D3D0AA947BC5E7E8392498B0CB /* ServiceLevel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 437553B32C1B4E43F061343518A57D5D /* ServiceLevel.storyboard */; };
 		0A24A88AC8877D8D8B27FF74B7CD2D27 /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0795584292A315BA131FB8D800A1AB /* SettingsNavigationController.swift */; };
 		0A6EDCAEDFC43FBE42BF2B875959C43A /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA73A35D604465146787543338B179D1 /* UIColor+ProtonMail.swift */; };
+		0A813271987E6633E1E981DBD3536C8C /* PushDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68BDAFD9795EAA46242A94EAD3D3453 /* PushDataTests.swift */; };
 		0A9EDBEA5F48200CE9A25C645EDCC6F9 /* ToastMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B449CD17806160C3549FDDFA2969C661 /* ToastMessageView.xib */; };
 		0AA9AD1D45388FF31E7E07B6B6B6D84C /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FA54B507F5B492266760AAACC658A6 /* SwiftTryCatch.m */; };
 		0AAEC3DAE649DD22D2A8368A570CAFA5 /* Message+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4510D080E8717C074690A6B039935D89 /* Message+Helper.swift */; };
@@ -2242,6 +2243,7 @@
 		A4D6B81CADB11CAD01B8E46E92DF6B12 /* ContactDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailsViewModel.swift; sourceTree = "<group>"; };
 		A56C53C0EE62F034C5DEC86CDDB56EFE /* ContactVO+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactVO+Extension.swift"; sourceTree = "<group>"; };
 		A6136D6B85203E35609442F0412D0B4D /* ServicePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlan.swift; sourceTree = "<group>"; };
+		A68BDAFD9795EAA46242A94EAD3D3453 /* PushDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushDataTests.swift; sourceTree = "<group>"; };
 		A6C04767BA1CE507C0BA14CCD593576F /* HtmlEditor.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = HtmlEditor.js; sourceTree = "<group>"; };
 		A6E60FC91F733F0C899B8269CF3D0E7D /* MultiLabelDisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiLabelDisplayView.xib; sourceTree = "<group>"; };
 		A7276672B20008AC48F0718FA117FB20 /* Pods_PushService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PushService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3762,6 +3764,7 @@
 				78935D907A4A5837283960605A94A31F /* MailSettings.swift */,
 				E023C430AFEAA97751DE6863630DE812 /* PaymentMethod.swift */,
 				3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */,
+				A68BDAFD9795EAA46242A94EAD3D3453 /* PushDataTests.swift */,
 				79AD9A432B98450B8391FB8A49EC0DB3 /* PushNotificationServiceSubscription.swift */,
 				A8E4737DF67D33D6DAE084BC812F84EB /* PushNotificationServiceSubscriptionTests.swift */,
 				45AE16BECF1CF9E505A361D41D83460C /* PushSubscriptionSettings.swift */,
@@ -5163,6 +5166,7 @@
 				CEA3E8BC7CCB2588E48BBD76FF2513EA /* OpenPGPDefines.swift in Sources */,
 				CCA051B6A323A02C4591B0F4D5D28A29 /* OpenPGPTests.swift in Sources */,
 				F9EA06F36FF372CC4A6D7461F3E3D361 /* ProtonMail-Bridging-Header.cpp in Sources */,
+				0A813271987E6633E1E981DBD3536C8C /* PushDataTests.swift in Sources */,
 				CBBE6D8D7B157433DFEC9DA1EC6AC100 /* PushNotificationServiceSubscriptionTests.swift in Sources */,
 				85EF0EAC287F2007DD442A3AD0FF6027 /* PushNotificationServiceTests.swift in Sources */,
 				97609BE67F6BF74B98CDF7D0D3110D20 /* ServicePlanDataServiceTests.swift in Sources */,

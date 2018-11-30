@@ -11,6 +11,8 @@ import Foundation
 public struct SenderData: Codable {
     let name: String
     let address: String
+    // Unused on iOS fields:
+    //    let group: Any
     
     private enum CodingKeys: String, CodingKey {
         case name = "Name"
@@ -19,16 +21,18 @@ public struct SenderData: Codable {
 }
 
 public struct PushData: Codable {
-    let title: String
-    let subtitle: String
+    let badge: Int
     let body: String
     let sender: SenderData
-    let vibrate: Int
-    let sound: Int
-    let largeIcon: String
-    let smallIcon: String
-    let badge: Int
     let messageId: String
+    // Unused on iOS fields:
+    //    let title: String
+    //    let subtitle: String
+    //    let vibrate: Int
+    //    let sound: Int
+    //    let largeIcon: String
+    //    let smallIcon: String
+    
     
     static func parse(with json: String) -> PushData? {
         guard let data = json.data(using: .utf8),
@@ -42,6 +46,7 @@ public struct PushData: Codable {
 
 public struct Push: Codable {
     let data: PushData
-    let type: String
-    let version: Int
+    // Unused on iOS fields
+    //    let type: String
+    //    let version: Int
 }
