@@ -232,6 +232,10 @@ extension AppVersion {
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.UID)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.badToken)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.badUID)
+        
+        try? FileManager.default.removeItem(at: FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("com.crashlytics"))
+        try? FileManager.default.removeItem(at: FileManager.default.cachesDirectoryURL.appendingPathComponent("com.crashlytics.data"))
+        try? FileManager.default.removeItem(at: FileManager.default.cachesDirectoryURL.appendingPathComponent("io.fabric.sdk.ios.data"))
     }
 }
 
