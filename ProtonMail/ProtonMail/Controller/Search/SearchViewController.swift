@@ -34,7 +34,7 @@ class SearchViewController: ProtonMailViewController {
             self.tableView.reloadData()
         }
     }
-    fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    
     fileprivate var managedObjectContext: NSManagedObjectContext?
     fileprivate lazy var fetchQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -46,16 +46,7 @@ class SearchViewController: ProtonMailViewController {
 
     fileprivate var query: String = "" {
         didSet {
-            guard let messages = self.fetchedResultsController?.fetchedObjects as? [Message] else {
-                self.dataSource = []
-                return
-            }
-            self.dataSource = messages.filter {
-                return nil != $0.title.range(of: query, options: [.caseInsensitive, .diacriticInsensitive])
-                    || nil != $0.senderName?.range(of: query, options: [.caseInsensitive, .diacriticInsensitive])
-                    || nil != $0.sender?.range(of: query, options: [.caseInsensitive, .diacriticInsensitive])
-                    || nil != $0.toList.range(of: query, options: [.caseInsensitive, .diacriticInsensitive])
-            }
+            self.fetchRemoteObjects(query)
         }
     }
     
@@ -86,12 +77,6 @@ class SearchViewController: ProtonMailViewController {
             ])
         
         managedObjectContext = sharedCoreDataService.newMainManagedObjectContext()
-        
-        if let context = managedObjectContext {
-            fetchedResultsController = self.makeFetchedResultsController(in: context)
-            fetchedResultsController?.delegate = self
-        }
-        
         searchTextField.becomeFirstResponder()
     }
     
@@ -114,7 +99,6 @@ class SearchViewController: ProtonMailViewController {
         super.viewWillAppear(animated)
         self.tableView.reloadData();
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        self.fetchLocalObjects()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -133,7 +117,9 @@ class SearchViewController: ProtonMailViewController {
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
     }
     
-    func makeFetchedResultsController(in context: NSManagedObjectContext) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func makeFetchedResultsController(in context: NSManagedObjectContext,
+                                      completion: @escaping ([Message])->Void) -> NSAsynchronousFetchRequest<NSFetchRequestResult>
+    {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
         fetchRequest.returnsObjectsAsFaults = false // will use more memory but will not fetch attributes while looping in dataSource.didSet
@@ -142,65 +128,97 @@ class SearchViewController: ProtonMailViewController {
                                                Message.Attributes.locationNumber,
                                                Message.Attributes.locationNumber)
 
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        return NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { result in
+            completion(result.finalResult as! [Message])
+        })
     }
     
     func fetchLocalObjects() {
-        if managedObjectContext != nil {
-            if let fetchedResultsController = fetchedResultsController {
-                do {
-                    try fetchedResultsController.performFetch()
-                }catch {
-                    PMLog.D(" performFetch error: \(error)")
-                }
-                
-                showHideNoresult()
-                self.query += "" // FIXME: hacky hacky hack hack to call query.didSet
+        // FIXME: this is increadibly slow cuz fetches all the messages from db on main thread
+        // we can switch it to background queue but will still have delay on big dbs
+        
+        /*
+        DispatchQueue.main.async {
+            guard let context = self.managedObjectContext else {
+                return
             }
+            
+            let request = self.makeFetchedResultsController(in: context) { [unowned self] messages in
+                self.dataSource = messages.filter {
+                    return nil != $0.title.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+                        || nil != $0.senderName?.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+                        || nil != $0.sender?.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+                        || nil != $0.toList.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+                }
+            }
+            
+            do {
+                try context.execute(request)
+            } catch let error {
+                PMLog.D(" performFetch error: \(error)")
+            }
+            
+            self.showHideNoresult()
         }
+        */
     }
     
     func showHideNoresult(){
         noResultLabel.isHidden = false
-        if let count = fetchedResultsController?.numberOfRows(in: 0) {
-            if count > 0 {
-                noResultLabel.isHidden = true
-            }
+        if self.dataSource.count > 0 {
+            noResultLabel.isHidden = true
         }
     }
     
-    func fetchRemoteObjects(_ query: String, afterPage: Int = -1) {
+    func fetchRemoteObjects(_ query: String,
+                            page: Int? = nil)
+    {
+        let pageToLoad = page ?? 0
         if query.isEmpty {
+            self.dataSource = []
+            self.currentPage = 0
             return
         }
         noResultLabel.isHidden = true
         tableView.showLoadingFooter()
         
+        self.fetchQueue.cancelAllOperations()
         self.fetchQueue.addOperation {
-            sharedMessageDataService.search(query, page: afterPage, completion: { (messages, error) -> Void in
+            let semaphore = DispatchSemaphore(value: 0)
+            sharedMessageDataService.search(query, page: pageToLoad, completion: { (messages, error) -> Void in
+                defer { semaphore.signal() }
                 self.tableView.hideLoadingFooter()
                 
-                guard error == nil else {
+                guard error == nil,
+                    let messages = messages else
+                {
                     PMLog.D(" search error: \(String(describing: error))")
+                    self.fetchQueue.cancelAllOperations()
+                    
+                    if pageToLoad == 0 {
+                        self.fetchQueue.addOperation {
+                            self.fetchLocalObjects()
+                        }
+                    }
                     return
                 }
-                
-                guard let messages = messages else {
+                self.currentPage = pageToLoad
+                guard !messages.isEmpty else {
                     return
                 }
-                
-                if !messages.isEmpty {
-                    self.currentPage = afterPage + 1
+                if pageToLoad > 0 {
+                    self.dataSource.append(contentsOf: messages)
+                } else {
+                    self.dataSource = messages
                 }
-                
-                self.fetchLocalObjects()
             })
+            semaphore.wait()
         }
     }
     
     func initiateFetchIfCloseToBottom(_ indexPath: IndexPath) {
         if (self.dataSource.count - 1) <= indexPath.row {
-            self.fetchRemoteObjects(query, afterPage: self.currentPage)
+            self.fetchRemoteObjects(query, page: self.currentPage + 1)
         }
     }
 
@@ -227,23 +245,6 @@ class SearchViewController: ProtonMailViewController {
         }
     }
 }
-
-
-// MARK: - NSFetchedResultsControllerDelegate
-
-extension SearchViewController: NSFetchedResultsControllerDelegate {
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        switch(type) {
-        case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-        case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-        default:
-            return
-        }
-    }
-}
-
 
 // MARK: - UITableViewDataSource
 
@@ -302,11 +303,6 @@ extension SearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
-        self.fetchQueue.cancelAllOperations()
-        self.currentPage = 0
-        self.fetchRemoteObjects(query)
-        
         return true
     }
 }
