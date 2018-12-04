@@ -288,31 +288,11 @@ public class PushNotificationService {
                 guard let push = PushData.parse(with: plaintext) else {
                     return nil
                 }
-                return push.msgID
+                return push.messageId
             } catch let error {
                 PMLog.D("Error while opening message via push: \(error)")
                 return nil
             }
-        } else if let object = userInfo["data"] as? [String: Any]  {
-            var v : Int?
-            if let version = userInfo["version"] as? String {
-                v = Int(version)
-            }
-            let type = userInfo["type"] as? String
-            guard let push = PushData.parse(dataDict: object, version: v, type: type) else {
-                return nil
-            }
-            return push.msgID
-        } else if let object = userInfo["data"] as? String {
-            var v : Int?
-            if let version = userInfo["version"] as? String {
-                v = Int(version)
-            }
-            let type = userInfo["type"] as? String
-            guard let push = PushData.parse(dataString: object, version: v, type: type) else {
-                return nil
-            }
-            return push.msgID
         } else {
             guard let messageArray = userInfo["message_id"] as? NSArray else {
                 return nil
