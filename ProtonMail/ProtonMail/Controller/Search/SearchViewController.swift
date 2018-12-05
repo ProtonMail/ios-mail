@@ -27,12 +27,38 @@ class SearchViewController: ProtonMailViewController {
     fileprivate let kSearchCellHeight: CGFloat = 64.0
     fileprivate let kCellIdentifier: String = "SearchedCell"
     fileprivate let kSegueToMessageDetailController: String = "toMessageDetailViewController"
-
-    // MARK: - Private attributes
-    fileprivate var dataSource: [Message] = [] { // messages that should be shown
+    
+    // TODO: need better UI solution for this progress bar
+    private lazy var progressBar: UIProgressView = {
+        let bar = UIProgressView()
+        bar.trackTintColor = .black
+        bar.progressTintColor = .white
+        bar.progressViewStyle = .bar
+        
+        let label = UILabel.init(font: UIFont.italicSystemFont(ofSize: UIFont.smallSystemFontSize), text: "Indexing local messages", textColor: .gray)
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        bar.addSubview(label)
+        bar.topAnchor.constraint(equalTo: label.topAnchor).isActive = true
+        bar.leadingAnchor.constraint(equalTo: label.leadingAnchor).isActive = true
+        bar.trailingAnchor.constraint(equalTo: label.trailingAnchor).isActive = true
+        
+        return bar
+    }()
+    private let localObjectIndexing: Progress = Progress(totalUnitCount: 1)
+    private var localObjectsIndexingObserver: NSKeyValueObservation? {
         didSet {
-            self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.progressBar.isHidden = (self?.localObjectsIndexingObserver == nil)
+            }
         }
+    }
+    
+    // MARK: - Private attributes
+    typealias LocalObjectsIndexRow = Dictionary<String, Any>
+    private var dbContents: Array<LocalObjectsIndexRow> = []
+    fileprivate var searchResult: [Message] = [] {
+        didSet { self.tableView.reloadData() }
     }
     
     fileprivate var managedObjectContext: NSManagedObjectContext?
@@ -49,7 +75,7 @@ class SearchViewController: ProtonMailViewController {
             self.fetchRemoteObjects(query)
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
@@ -78,6 +104,19 @@ class SearchViewController: ProtonMailViewController {
         
         managedObjectContext = sharedCoreDataService.newMainManagedObjectContext()
         searchTextField.becomeFirstResponder()
+        
+        self.progressBar.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.progressBar)
+        self.progressBar.topAnchor.constraint(equalTo: self.tableView.topAnchor).isActive = true
+        self.progressBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        self.progressBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        self.progressBar.heightAnchor.constraint(equalToConstant: UIFont.smallSystemFontSize).isActive = true
+        
+        self.indexLocalObjects {
+            if self.searchResult.isEmpty, !self.query.isEmpty {
+                self.fetchLocalObjects()
+            }
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -88,6 +127,7 @@ class SearchViewController: ProtonMailViewController {
     // my selector that was defined above
     @objc func willEnterForeground() {
         self.dismiss(animated: false, completion: nil)
+        self.localObjectIndexing.cancel() // switches off indexing of Messages in local db
     }
 
     override func viewDidLayoutSubviews() {
@@ -117,55 +157,97 @@ class SearchViewController: ProtonMailViewController {
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
     }
     
-    func makeFetchedResultsController(in context: NSManagedObjectContext,
-                                      completion: @escaping ([Message])->Void) -> NSAsynchronousFetchRequest<NSFetchRequestResult>
-    {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-        fetchRequest.returnsObjectsAsFaults = false // will use more memory but will not fetch attributes while looping in dataSource.didSet
-        fetchRequest.fetchBatchSize = 1000
-        fetchRequest.predicate = NSPredicate(format: "(%K != -1) AND (%K != 1)",
-                                               Message.Attributes.locationNumber,
-                                               Message.Attributes.locationNumber)
+    func indexLocalObjects(_ completion: @escaping ()->Void) {
+        DispatchQueue.global(qos: .background).async {
+            let context = sharedCoreDataService.newSeparateManagedObjectContext()
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+            fetchRequest.resultType = .dictionaryResultType
+    
+            let objectId = NSExpressionDescription()
+            objectId.name = "objectID"
+            objectId.expression = NSExpression.expressionForEvaluatedObject()
+            objectId.expressionResultType = NSAttributeType.objectIDAttributeType
+            
+            fetchRequest.propertiesToFetch = [objectId,
+                                              Message.Attributes.title,
+                                              Message.Attributes.sender,
+                                              Message.Attributes.senderName,
+                                              Message.Attributes.toList]
+            fetchRequest.predicate = NSPredicate(format: "(%K != -1) AND (%K != 1)",
+                                                   Message.Attributes.locationNumber,
+                                                   Message.Attributes.locationNumber)
 
-        return NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { result in
-            completion(result.finalResult as! [Message])
-        })
+            let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
+                self?.dbContents = result.finalResult as? Array<LocalObjectsIndexRow> ?? []
+                self?.localObjectsIndexingObserver = nil
+                completion()
+            })
+            
+            do {
+                let overallCountRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: Message.Attributes.entityName)
+                overallCountRequest.resultType = .countResultType
+                let result = try context.fetch(overallCountRequest)
+                let count = result.first as! Int
+            
+                self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
+                let index = try context.execute(async) as! NSPersistentStoreAsynchronousResult
+                self.localObjectIndexing.resignCurrent()
+                self.localObjectsIndexingObserver = index.progress?.observe(\Progress.completedUnitCount, options: NSKeyValueObservingOptions.new, changeHandler: { [weak self] (progress, change) in
+                    DispatchQueue.main.async {
+                        let completionRate = Float(progress.completedUnitCount) / Float(count)
+                        self?.progressBar.setProgress(completionRate, animated: true)
+                    }
+                })
+
+            } catch let error {
+                PMLog.D(" performFetch error: \(error)")
+                assert(false, "Failed to fetch message dicts")
+            }
+        }
     }
     
     func fetchLocalObjects() {
-        // FIXME: this is increadibly slow cuz fetches all the messages from db on main thread
-        // we can switch it to background queue but will still have delay on big dbs
-        
-        /*
         DispatchQueue.main.async {
             guard let context = self.managedObjectContext else {
                 return
             }
-            
-            let request = self.makeFetchedResultsController(in: context) { [unowned self] messages in
-                self.dataSource = messages.filter {
-                    return nil != $0.title.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-                        || nil != $0.senderName?.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-                        || nil != $0.sender?.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-                        || nil != $0.toList.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+
+            // TODO: this filter can be better. Can we lowercase and glue together all the strings via NSExpression during fetch?
+            let messageIds: [NSManagedObjectID] = self.dbContents.compactMap {
+                if let title = $0["title"] as? String,
+                    let _ = title.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+                {
+                    return $0["objectID"] as? NSManagedObjectID
                 }
+                if let senderName = $0["senderName"]  as? String,
+                    let _ = senderName.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+                {
+                    return $0["objectID"] as? NSManagedObjectID
+                }
+                if let sender = $0["sender"]  as? String,
+                    let _ = sender.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+                {
+                    return $0["objectID"] as? NSManagedObjectID
+                }
+                if let toList = $0["toList"]  as? String,
+                    let _ = toList.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+                {
+                    return $0["objectID"] as? NSManagedObjectID
+                }
+                return nil
             }
-            
-            do {
-                try context.execute(request)
-            } catch let error {
-                PMLog.D(" performFetch error: \(error)")
-            }
+
+            let messages = messageIds.compactMap(context.object) as? [Message]
+            self.searchResult = messages ?? []
             
             self.showHideNoresult()
         }
-        */
     }
     
     func showHideNoresult(){
         noResultLabel.isHidden = false
-        if self.dataSource.count > 0 {
+        if self.searchResult.count > 0 {
             noResultLabel.isHidden = true
         }
     }
@@ -175,7 +257,7 @@ class SearchViewController: ProtonMailViewController {
     {
         let pageToLoad = page ?? 0
         if query.isEmpty {
-            self.dataSource = []
+            self.searchResult = []
             self.currentPage = 0
             return
         }
@@ -207,9 +289,9 @@ class SearchViewController: ProtonMailViewController {
                     return
                 }
                 if pageToLoad > 0 {
-                    self.dataSource.append(contentsOf: messages)
+                    self.searchResult.append(contentsOf: messages)
                 } else {
-                    self.dataSource = messages
+                    self.searchResult = messages
                 }
             })
             semaphore.wait()
@@ -217,7 +299,7 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func initiateFetchIfCloseToBottom(_ indexPath: IndexPath) {
-        if (self.dataSource.count - 1) <= indexPath.row {
+        if (self.searchResult.count - 1) <= indexPath.row {
             self.fetchRemoteObjects(query, page: self.currentPage + 1)
         }
     }
@@ -238,7 +320,7 @@ class SearchViewController: ProtonMailViewController {
             let messageDetailViewController = segue.destination as! MessageViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
             if let indexPathForSelectedRow = indexPathForSelectedRow {
-                messageDetailViewController.message = self.dataSource[indexPathForSelectedRow.row]
+                messageDetailViewController.message = self.searchResult[indexPathForSelectedRow.row]
             } else {
                 PMLog.D("No selected row.")
             }
@@ -251,11 +333,11 @@ class SearchViewController: ProtonMailViewController {
 extension SearchViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.dataSource.isEmpty ? 0 : 1
+        return self.searchResult.isEmpty ? 0 : 1
     }
 
     @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.dataSource.count
+        return self.searchResult.count
     }
     
     @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -265,7 +347,7 @@ extension SearchViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let message = self.dataSource[indexPath.row]
+        let message = self.searchResult[indexPath.row]
         mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "")
         return mailboxCell
     }
